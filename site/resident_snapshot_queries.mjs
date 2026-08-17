@@ -1,3 +1,5 @@
+import { vendorStem } from "./vendor_stem.mjs";
+
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
 
@@ -18,6 +20,16 @@ export function moneySnapshotRows(payload) {
   return Array.isArray(payload?.rows) ? payload.rows : [];
 }
 
+export function vendorStemsFromEntityRefs(entityRefs = []) {
+  return [...new Set((Array.isArray(entityRefs) ? entityRefs : [])
+    .map((ref) => String(ref || "").trim().match(/^vendor:stem:(.+)$/)?.[1] || "")
+    .map((stem) => {
+      try { return decodeURIComponent(stem); } catch { return stem; }
+    })
+    .map(vendorStem)
+    .filter(Boolean))];
+}
+
 export function filterMoneySnapshot(rows, {
   mode = "open",
   agency = "",
@@ -29,6 +41,7 @@ export function filterMoneySnapshot(rows, {
   category = "",
   months = null,
   excludeSpecial = false,
+  entityRefs = [],
   sort = "deadline",
   today,
   weekEnd,
@@ -37,6 +50,7 @@ export function filterMoneySnapshot(rows, {
 } = {}) {
   const floor = String(today || "").slice(0, 10);
   const query = residentSnapshotLower(keyword);
+  const requiredVendorStems = vendorStemsFromEntityRefs(entityRefs);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     const type = residentSnapshotClean(row?.type_of_notice_description);
     if (mode === "award" && type !== "Award") return false;
@@ -46,6 +60,8 @@ export function filterMoneySnapshot(rows, {
     if (mode === "open" && (!due || (floor && due <= floor))) return false;
     if (mode === "open" && closingWeek && weekEnd && due > String(weekEnd).slice(0, 10)) return false;
     if (agency && residentSnapshotClean(row?.agency_name) !== residentSnapshotClean(agency)) return false;
+    if (requiredVendorStems.length
+      && !requiredVendorStems.every((stem) => vendorStem(row?.vendor_name) === stem)) return false;
     if (query && !residentSnapshotRowText(row).includes(query)) return false;
     const amount = residentSnapshotNumeric(row?.contract_amount);
     if (mode === "award" && minAmount != null && (amount == null || amount < Number(minAmount))) return false;

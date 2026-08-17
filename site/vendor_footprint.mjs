@@ -34,6 +34,14 @@ function browseHref(hash, surface) {
   return canonicalizeBrowseUrl(`/browse/${facet}/?${String(hash).split("?", 2)[1] || ""}`);
 }
 
+// Vendor refs already percent-encode their normalized stem. URLSearchParams
+// escapes that percent sign again when it embeds the ref inside facet JSON,
+// producing a route whose public href contains `%2520`. Keep one transport
+// layer in the published pivot; route readers normalize the decoded stem.
+function singlyEncodedVendorFacetHref(href) {
+  return String(href || "").replace(/%25([0-9a-f]{2})/gi, "%$1");
+}
+
 const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;",
   "<": "&lt;",
@@ -52,24 +60,22 @@ function strongObjects(response, group) {
 export function vendorFootprintScopeHref(
   ref,
   groupId,
-  { language = "en", query = "", resultCount = null } = {},
+  { language = "en", resultCount = null } = {},
 ) {
   const group = GROUPS.find((candidate) => candidate.id === groupId);
   if (!group?.surface || !ref) return "";
   const domainScope = emptyScope(language);
   domainScope.facets.domains = [group.surface];
   if (group.mode) domainScope.facets.values.mode = group.mode;
-  if (query) {
-    domainScope.topic.query = String(query);
-    domainScope.topic.keywords = [String(query)];
-  }
   const entityScope = scopeWithEntity(emptyScope(language), ref);
   const composed = intersectScopes(domainScope, entityScope);
   const count = Number(resultCount);
   if (Number.isInteger(count) && count >= 0) {
     composed.facets.values.result_count_receipt = count;
   }
-  return browseHref(routeHashFromScope(composed, { surface: group.surface }), group.surface);
+  return singlyEncodedVendorFacetHref(
+    browseHref(routeHashFromScope(composed, { surface: group.surface }), group.surface),
+  );
 }
 
 /**
@@ -212,7 +218,13 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
     as_of: model.provenance?.observed_on || null,
   })));
   const edgeByGroup = new Map(edgeSummary.map((record, index) => [model.groups[index].id, record]));
-  const sections = model.groups.map((group) => {
+  // Match the established agency/official constellation posture: known-empty
+  // relationship families are absent, while matched and genuinely unknown
+  // coverage can still speak for itself.
+  const visibleEdgeSummary = edgeSummary.filter((record) => record.state !== "empty");
+  const sections = model.groups
+    .filter((group) => group.edge_state !== "empty" || group.mention_count > 0)
+    .map((group) => {
     const edge = edgeByGroup.get(group.id);
     const confirmed = group.confirmed_count;
     const mentions = group.mention_count;
@@ -242,11 +254,11 @@ export function renderVendorFootprintHTML(response = {}, { formatDate = (value) 
       ${body}
       ${viewAll}
     </section>`;
-  }).join("");
+    }).join("");
   return `<div class="eicard vendor-footprint" data-vendor-ref="${escapeHTML(model.root.ref)}" data-coverage-status="${model.qualifier_required ? "qualified" : "promoted"}" lang="en">
     <div class="chain-h" style="margin:0 0 8px">Vendor city footprint</div>
     <p class="ei-lead">Published records connected with ${escapeHTML(displayName)}, grouped by what they show.</p>
-    ${renderEdgeSummaryRail(edgeSummary, { heading: "Vendor connections", id: "vendor-edge-summary-heading", className: "vendor-edge-summary" })}
+    ${renderEdgeSummaryRail(visibleEdgeSummary, { heading: "Vendor connections", id: "vendor-edge-summary-heading", className: "vendor-edge-summary" })}
     ${renderLocalConstellationHTML(model.local_constellation, { heading: "Nearby vendor records", id: "vendor-local-constellation-heading" })}
     <div class="ei-domains">${sections}</div>
   </div>`;

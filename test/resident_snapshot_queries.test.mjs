@@ -27,6 +27,19 @@ test("Money snapshot filtering composes mode, facet, keyword, and sort", () => {
   ]);
 });
 
+test("Money snapshot filtering matches a once-encoded vendor stem exactly", () => {
+  const rows = [
+    { request_id: "1", type_of_notice_description: "Award", start_date: "2026-08-10", vendor_name: "P&T II Contracting Corp" },
+    { request_id: "2", type_of_notice_description: "Award", start_date: "2026-08-09", vendor_name: "P & T II Contracting Corporation" },
+    { request_id: "3", type_of_notice_description: "Award", start_date: "2026-08-08", vendor_name: "P and T II Contracting Corp" },
+    { request_id: "4", type_of_notice_description: "Award", start_date: "2026-08-07", vendor_name: "Yonkers Contracting Company" },
+  ];
+  assert.deepEqual(filterMoneySnapshot(rows, {
+    mode: "award",
+    entityRefs: ["vendor:stem:P T II CONTRACTING"],
+  }).map((row) => row.request_id), ["1", "2"]);
+});
+
 test("Land snapshot resolves blocks and exact project BBLs without source egress", () => {
   const bblRows = [
     { project_id: "P1", bbls: ["1001230001"] },
