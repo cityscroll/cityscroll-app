@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture the People directory's community-board block before and after compaction."""
+"""Capture the People directory's compact community-board links before and after polish."""
 
 from __future__ import annotations
 
@@ -84,10 +84,26 @@ def capture_tree(browser, tree: Path, state: str, width: int, height: int) -> di
         covers = section.get_by_text("Covers ", exact=False).count()
         if board_links != 59:
             raise AssertionError(f"{state} rendered {board_links} board links, expected 59")
-        if state == "before" and (verbose_rows != 59 or covers != 59):
-            raise AssertionError(f"baseline was not reproduced: rows={verbose_rows}, covers={covers}")
-        if state == "after" and (borough_rows != 5 or covers != 0):
+        if borough_rows != 5 or covers != 0:
             raise AssertionError(f"compaction missing: boroughs={borough_rows}, covers={covers}")
+        geometry = section.locator(".browse-board-number-link").evaluate_all(
+            """links => links.map(link => {
+                const box = link.getBoundingClientRect();
+                return { left: box.left, right: box.right, top: box.top,
+                         width: box.width, height: box.height };
+            })"""
+        )
+        minimum_target = min(min(item["width"], item["height"]) for item in geometry)
+        same_row_gaps = [
+            current["left"] - previous["right"]
+            for previous, current in zip(geometry, geometry[1:])
+            if abs(current["top"] - previous["top"]) < 1
+        ]
+        minimum_gap = min(same_row_gaps)
+        if state == "after" and (minimum_target < 36 or minimum_gap < 8):
+            raise AssertionError(
+                f"board links remain cramped: target={minimum_target}px gap={minimum_gap}px"
+            )
         overflow = page.evaluate("document.documentElement.scrollWidth - innerWidth")
         if overflow > 1:
             raise AssertionError(f"{state} {width}px overflows by {overflow}px")
@@ -103,6 +119,8 @@ def capture_tree(browser, tree: Path, state: str, width: int, height: int) -> di
             "verbose_rows": verbose_rows,
             "borough_rows": borough_rows,
             "covers_restatements": covers,
+            "minimum_target_px": round(minimum_target),
+            "minimum_same_row_gap_px": round(minimum_gap),
             "section_height": round(box.get("height", 0)),
             "overflow_px": overflow,
         }
