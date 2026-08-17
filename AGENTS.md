@@ -250,6 +250,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   own classification. The City Record adapter is `worker/src/search.mjs`, and the search client
   groups only registered domains from `site/search_document.mjs`. Focused proof:
   `test/search_document_contract.test.mjs` plus `test/universal_search_object_gold.test.mjs`.
+- **Six-family keyword search:** `/search` returns `cityscroll.keyword_search_response.v1`, whose
+  Contracts, People + organizations, Land, Rules, Meetings, and Exams lanes keep independent
+  status, count, source, and as-of receipts. `site/keyword_matcher.mjs` is the literal-resolution
+  and offset-backed evidence narrow waist. Refresh the compact typed-object index with
+  `node tools/build_keyword_search_index.mjs`; the D1 notice mirror remains the Contracts/Rules
+  source, while the client projects the flattened compatibility results through the registered
+  universal-search domain lanes.
 - **Entity SearchDocument producers:** `site/{vendor,committee,board,exam,parcel}_search_producer.mjs`
   adapt the existing canonical read models into that contract and carry matched/empty/partial/
   not-indexed coverage. Vendor aliases are reviewed-registry-only; committee publication is gated;
