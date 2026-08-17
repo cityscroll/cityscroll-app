@@ -40,6 +40,20 @@ const forbidden = [
       path: "^(?:worker/src/|warehouse/scripts/|entity_resolution/(?:publication|review)/)",
     },
   },
+  {
+    name: "people-owner-must-not-import-exams-owner",
+    severity: "error",
+    comment: "People and Exams own independent descriptors, read models, filters, and controllers.",
+    from: { path: "^site/people_organizations_surface\\.mjs$" },
+    to: { path: "^site/exams_surface\\.mjs$" },
+  },
+  {
+    name: "exams-owner-must-not-import-people-owner",
+    severity: "error",
+    comment: "People and Exams own independent descriptors, read models, filters, and controllers.",
+    from: { path: "^site/exams_surface\\.mjs$" },
+    to: { path: "^site/people_organizations_surface\\.mjs$" },
+  },
 ];
 
 export default {
