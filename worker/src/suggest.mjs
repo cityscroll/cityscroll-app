@@ -92,11 +92,17 @@ async function validateCandidate(env, candidate, todayISO) {
   if (resolved.degraded) return null;
   const q = suggestionCountParams(candidate.lens, resolved.filter, todayISO);
   if (!q) return null;
-  const url = `${q.url}?${new URLSearchParams(q.params)}`;
-  const r = await fetch(url);
-  if (!r.ok) return null;
-  const rows = await r.json();
-  const n = Number(rows && rows[0] && rows[0].n) || 0;
+  let n;
+  if (typeof q.readRows === "function") {
+    const rows = await q.readRows();
+    n = Array.isArray(rows) ? rows.length : 0;
+  } else {
+    const url = `${q.url}?${new URLSearchParams(q.params)}`;
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const rows = await r.json();
+    n = Number(rows && rows[0] && rows[0].n) || 0;
+  }
   if (n < MIN_SUGGESTION_RESULTS) return { lens: candidate.lens, idx: candidate.idx, count: n };
   let enrichment = { lineageRich: false, forecastBearing: false };
   try {

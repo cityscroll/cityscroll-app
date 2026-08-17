@@ -60,6 +60,13 @@ test("suggestionCountParams: people-name suggestions count Changes in Personnel 
   assert.match(q.params["$where"], /Changes in Personnel/);
 });
 
+test("suggestionCountParams: meetings count the shared materialized read model", () => {
+  const q = suggestionCountParams("meetings", { keywords: [], when: "week" }, TODAY);
+  assert.equal(q.url, null);
+  assert.equal(typeof q.readRows, "function");
+  assert.ok(q.readRows().length > 0);
+});
+
 // ---- runSuggestionValidation: the daily pipeline ---------------------------------------
 
 test("runSuggestionValidation: field-evidence fixture — the dead money examples are excluded, the working one survives", async () => {
