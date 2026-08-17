@@ -118,6 +118,9 @@ test("evidence-only observations retain their notice route without acquiring a d
 
 test("the client accepts canonical object routes and has no unknown-to-mandate fallback", () => {
   assert.equal(searchResultLane({ domain: "contracts" }), "contracts");
+  assert.equal(searchResultLane({ domain: "people" }), "people-organizations");
+  assert.equal(searchResultLane({ domain: "property" }), "land");
+  assert.equal(searchResultLane({ domain: "staffing" }), "exams");
   assert.equal(searchResultLane({ domain: "publisher_miscellaneous" }), null);
   assert.equal(searchResultLane({ object_type: "unknown" }), null);
   assert.equal(searchResultHref({
