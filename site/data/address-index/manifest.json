@@ -1,0 +1,491 @@
+{
+  "schema": "cityscroll.address-index-manifest.v1",
+  "generated_at": "2026-08-17T11:24:50.716Z",
+  "delivery_tier": "daily-precomputed-citywide-snapshot",
+  "source": {
+    "name": "NYC Department of City Planning Property Address Directory",
+    "dataset_id": "bc8t-ecyu",
+    "version": "26b",
+    "download_url": "https://data.cityofnewyork.us/download/bc8t-ecyu/application%2Fzip",
+    "sha256": "016a29968b4bed9e8dde10b9c27b68132aba994baf1dc3e2543a861eadfdf4bd",
+    "updated_at": "2026-07-07T08:10:05.000Z"
+  },
+  "shard_count": 64,
+  "coverage": {
+    "source_address_rows": 1324519,
+    "included_real_and_vanity_ranges": 1181813,
+    "materialized_ranges": 1170495,
+    "normalized_streets": 8335,
+    "borough_source_ranges": {
+      "1": 60657,
+      "2": 116070,
+      "3": 368342,
+      "4": 488253,
+      "5": 148491
+    },
+    "excluded_by_address_type": {
+      "N": 4413,
+      "F": 34511,
+      "Q": 43316,
+      "W": 32086,
+      "B": 18633,
+      "G": 1274,
+      "X": 7437,
+      "R": 219,
+      "T": 141,
+      "U": 675,
+      "missing_house_range": 1
+    },
+    "statement": "Covers real and vanity address ranges published in this PAD snapshot. Pseudo-addresses, non-addressable names/frontages, invalid identities, and unmatched or ambiguous inputs remain unknown."
+  },
+  "shards": {
+    "10": {
+      "file": "./10.json",
+      "records": 14822,
+      "streets": 113,
+      "bytes": 705078,
+      "sha256": "1b324c7093b91c817aae08c52d8d903a87a296412ad632019145a162706c51ce"
+    },
+    "11": {
+      "file": "./11.json",
+      "records": 23189,
+      "streets": 137,
+      "bytes": 1112475,
+      "sha256": "cf6965374c84f1688f891fc53aafb6fdc6be4f3fe7943093a66c691d7da345bb"
+    },
+    "12": {
+      "file": "./12.json",
+      "records": 15682,
+      "streets": 131,
+      "bytes": 708796,
+      "sha256": "d705fe52a2c39ac6bb4e57f8b2951da0fa36f48509b99a5744d58893cb1fc04e"
+    },
+    "13": {
+      "file": "./13.json",
+      "records": 20368,
+      "streets": 136,
+      "bytes": 925771,
+      "sha256": "12c8d68578a31bf085e264b8b2d5397a0e450dd9cda4ac4ca31ca46076932830"
+    },
+    "14": {
+      "file": "./14.json",
+      "records": 17822,
+      "streets": 124,
+      "bytes": 843742,
+      "sha256": "4505d499edcce28afd6b3522c157b502b0b74c31a923c1aed4bdeddf2011396c"
+    },
+    "15": {
+      "file": "./15.json",
+      "records": 16283,
+      "streets": 122,
+      "bytes": 752395,
+      "sha256": "cb07fd741d643b3836068918925072252b79c85638c9f4076a5e0c9d51319b0f"
+    },
+    "16": {
+      "file": "./16.json",
+      "records": 16275,
+      "streets": 137,
+      "bytes": 760398,
+      "sha256": "7cff47afd4649888f7ab6a0826955eadf64470699854b5da42bc7349c00fb088"
+    },
+    "17": {
+      "file": "./17.json",
+      "records": 18249,
+      "streets": 132,
+      "bytes": 844215,
+      "sha256": "36d4dd58c87f9ae6cd1783f9539fe1080cfdadb969fcb29a55dfd75cb3e140b8"
+    },
+    "18": {
+      "file": "./18.json",
+      "records": 18371,
+      "streets": 153,
+      "bytes": 860498,
+      "sha256": "6a6517c251d6a9265050144b14206455187f3d0ca94f823ae20a6392f45de071"
+    },
+    "19": {
+      "file": "./19.json",
+      "records": 23462,
+      "streets": 137,
+      "bytes": 1124598,
+      "sha256": "16cb3e011d241b27c09adb4e52e4756b7b1bbe2bca0240649fe14623176698b6"
+    },
+    "20": {
+      "file": "./20.json",
+      "records": 18149,
+      "streets": 131,
+      "bytes": 845939,
+      "sha256": "37c5f671a107efe2247ba8e61313f9537f6c2a64b1901831af75aa4396187fee"
+    },
+    "21": {
+      "file": "./21.json",
+      "records": 16256,
+      "streets": 137,
+      "bytes": 759158,
+      "sha256": "17635f2fb52ca2453f71c6b63a2143d391956a37a362501687d0bfe9c89fb00d"
+    },
+    "22": {
+      "file": "./22.json",
+      "records": 18439,
+      "streets": 128,
+      "bytes": 850726,
+      "sha256": "2be78780aea6607ff3eb5db59755eb399255617549e551bc86677723ef621cb5"
+    },
+    "23": {
+      "file": "./23.json",
+      "records": 20882,
+      "streets": 132,
+      "bytes": 976459,
+      "sha256": "c64a30a10b196d4892ba1fc9fb449052e8a6639868202580d140064578780e9a"
+    },
+    "24": {
+      "file": "./24.json",
+      "records": 15810,
+      "streets": 112,
+      "bytes": 748908,
+      "sha256": "5dc81ccdb229b53760efd00f7e569d9c5e33c82e5bf91cfa43d7361540a09575"
+    },
+    "25": {
+      "file": "./25.json",
+      "records": 16007,
+      "streets": 120,
+      "bytes": 771823,
+      "sha256": "cda40c6ee00735d61e36a64e0d324685f252514c4719e892d263eb84a09e4fe0"
+    },
+    "26": {
+      "file": "./26.json",
+      "records": 18741,
+      "streets": 136,
+      "bytes": 842406,
+      "sha256": "e4a2bf65372a2784090a305f6a7f5517b9047462821e84c2ea2d22b564bccf1d"
+    },
+    "27": {
+      "file": "./27.json",
+      "records": 20965,
+      "streets": 141,
+      "bytes": 972112,
+      "sha256": "bb223d994f555666e72dfb01c5ef15822b385d7b1db72d58630ca5895fbba7ae"
+    },
+    "28": {
+      "file": "./28.json",
+      "records": 19286,
+      "streets": 131,
+      "bytes": 883011,
+      "sha256": "b1cf5325316a14573a03449e2608c8591e66cefef4de1b274430c1428bff8251"
+    },
+    "29": {
+      "file": "./29.json",
+      "records": 18444,
+      "streets": 117,
+      "bytes": 891036,
+      "sha256": "dc0fb6fed2235b1415689663fa342b5fb7c3573ce6215707e974b9d3ae534dd1"
+    },
+    "30": {
+      "file": "./30.json",
+      "records": 18174,
+      "streets": 125,
+      "bytes": 870358,
+      "sha256": "15a43602e77f8f16bfe111b886a06c4d3f7b6029e0a9a4b301dce691b444b207"
+    },
+    "31": {
+      "file": "./31.json",
+      "records": 14387,
+      "streets": 137,
+      "bytes": 669886,
+      "sha256": "dfa03910f34b1dfabc1b04a337b721e96a88bcd18a04520b8d1b1f544fbaa7d3"
+    },
+    "32": {
+      "file": "./32.json",
+      "records": 17250,
+      "streets": 123,
+      "bytes": 829983,
+      "sha256": "a61199e61e78d986f82f00123b28fb105344c74300885ed87b157813c6e7373e"
+    },
+    "33": {
+      "file": "./33.json",
+      "records": 19088,
+      "streets": 128,
+      "bytes": 904163,
+      "sha256": "6487a6322988a05ec980eb181547c326b889a3ea7a9159ba2d9426d9f86fe236"
+    },
+    "34": {
+      "file": "./34.json",
+      "records": 20046,
+      "streets": 129,
+      "bytes": 939259,
+      "sha256": "ba95f8659fe1d721ef01fb381501f2dbfa4fed5325f92f3098235aa3a22d64d0"
+    },
+    "35": {
+      "file": "./35.json",
+      "records": 18225,
+      "streets": 139,
+      "bytes": 856203,
+      "sha256": "95fa3c9b9c12f9ef58eb8c27f0fc50a4a2a24e260eaf3a371c4c7fe91b4b003e"
+    },
+    "36": {
+      "file": "./36.json",
+      "records": 16621,
+      "streets": 123,
+      "bytes": 790641,
+      "sha256": "719dcea210711b0aa8e8d16d41c60b5feb85c332b69603b6c015bf13a12df2a0"
+    },
+    "37": {
+      "file": "./37.json",
+      "records": 18102,
+      "streets": 136,
+      "bytes": 844707,
+      "sha256": "202f41dd9a1ddd8ee90ffdb6032f2bedb1be1a1b827c0e4d7628dc56626e2063"
+    },
+    "38": {
+      "file": "./38.json",
+      "records": 21115,
+      "streets": 124,
+      "bytes": 1035249,
+      "sha256": "cc247e855e5d55e3fe04fbbebcbaab15f7e7a2778aa20b4111f960549d6e5f9f"
+    },
+    "39": {
+      "file": "./39.json",
+      "records": 14622,
+      "streets": 109,
+      "bytes": 689287,
+      "sha256": "155ab22b5cc381d366f2abc34fe1f440cc768160e152131c93bd8edca39db481"
+    },
+    "00": {
+      "file": "./00.json",
+      "records": 17608,
+      "streets": 123,
+      "bytes": 807342,
+      "sha256": "413a72195a1f64611e990287f184e34a8d4a0c463179299e0a0e8641cd8648fd"
+    },
+    "01": {
+      "file": "./01.json",
+      "records": 20319,
+      "streets": 129,
+      "bytes": 946372,
+      "sha256": "9e38d55e4b53c0d06b1d16108881ef1d7b565c69ef9f768e1f83e05ca9ff2efd"
+    },
+    "02": {
+      "file": "./02.json",
+      "records": 17025,
+      "streets": 132,
+      "bytes": 816447,
+      "sha256": "64435c90087ac99904ccc7405456447777e1526afe772a2df8dbbd5e48edae48"
+    },
+    "03": {
+      "file": "./03.json",
+      "records": 21401,
+      "streets": 154,
+      "bytes": 999903,
+      "sha256": "d05a6a66091ca45ada3fa8aeecf2b5beede1bf2006c9179120ad8f169d67ec2b"
+    },
+    "04": {
+      "file": "./04.json",
+      "records": 19562,
+      "streets": 118,
+      "bytes": 901513,
+      "sha256": "23f6de8efa920152f047080f7af203fd1a7b3e06439e4d0047daed1090cf6620"
+    },
+    "05": {
+      "file": "./05.json",
+      "records": 19010,
+      "streets": 143,
+      "bytes": 862371,
+      "sha256": "17c3159acdba1a094b3890b46a434bef330788595be005ccc1e99cf6a9301ca8"
+    },
+    "06": {
+      "file": "./06.json",
+      "records": 16602,
+      "streets": 143,
+      "bytes": 785800,
+      "sha256": "c53c0bb1cefb4d9ccd67b5bda7108772879e565087f2e18d770dcc0a36a93fca"
+    },
+    "07": {
+      "file": "./07.json",
+      "records": 21183,
+      "streets": 132,
+      "bytes": 999660,
+      "sha256": "d18f947bdb81e25caf90dad1eecac16b840d2fb25ff4492f06f8bf0b386a0275"
+    },
+    "08": {
+      "file": "./08.json",
+      "records": 17704,
+      "streets": 109,
+      "bytes": 835284,
+      "sha256": "2a7978ea68acfa8d25d5b8699521226aab5dd59a74b5e9cfb8f61252f856c16e"
+    },
+    "09": {
+      "file": "./09.json",
+      "records": 18600,
+      "streets": 123,
+      "bytes": 881752,
+      "sha256": "fdaec4bb2ba55f1c0b4006d4f4e4a21296eac7896ea6bb628ef654427e049728"
+    },
+    "0a": {
+      "file": "./0a.json",
+      "records": 22303,
+      "streets": 132,
+      "bytes": 1048256,
+      "sha256": "9e641ab6099f061b3e1f151f63a0dd7b82e59f4b6a02ae6573ea7666ad2a523e"
+    },
+    "0b": {
+      "file": "./0b.json",
+      "records": 17652,
+      "streets": 119,
+      "bytes": 811025,
+      "sha256": "d1f339888069e368880a74515c43ff6054505d6da16e2ff69b33d660b57f6a47"
+    },
+    "0c": {
+      "file": "./0c.json",
+      "records": 14010,
+      "streets": 120,
+      "bytes": 679831,
+      "sha256": "62f97c3a7739c1a6ada5f337975b6c7c988c3a1c2ecb27e804d918b69cc309a8"
+    },
+    "0d": {
+      "file": "./0d.json",
+      "records": 21727,
+      "streets": 151,
+      "bytes": 1035852,
+      "sha256": "8d947f0cb1530dddf23d7111a02ea7123b0c057915407ca752bec689aba135a8"
+    },
+    "0e": {
+      "file": "./0e.json",
+      "records": 18294,
+      "streets": 141,
+      "bytes": 886359,
+      "sha256": "ac8f2b13415c9372cd8cd14f04264075514da0e40d687ec6b74115aa4dac6272"
+    },
+    "0f": {
+      "file": "./0f.json",
+      "records": 19853,
+      "streets": 152,
+      "bytes": 891799,
+      "sha256": "ed3e03f7375dc79c54dd9ce363bf8f3e61b87bec13c30f1de2c2fe7b05d97083"
+    },
+    "1a": {
+      "file": "./1a.json",
+      "records": 21314,
+      "streets": 154,
+      "bytes": 999436,
+      "sha256": "f1d0ce64b10e9c69e55c3c8578a8816ef9f1fbd478f5b9c83fedc2f72d73e07c"
+    },
+    "1b": {
+      "file": "./1b.json",
+      "records": 20632,
+      "streets": 135,
+      "bytes": 952317,
+      "sha256": "640c491b5fd87a9cf901c95837e9b4de051bf040d09050eeb3bed2aee29234a5"
+    },
+    "1c": {
+      "file": "./1c.json",
+      "records": 19740,
+      "streets": 139,
+      "bytes": 919388,
+      "sha256": "ea39c48b8defd823c1453aacc3b744c591ca5fb0da9438843c38590a9ec3e6e0"
+    },
+    "1d": {
+      "file": "./1d.json",
+      "records": 22605,
+      "streets": 126,
+      "bytes": 1072439,
+      "sha256": "26a66e55ac02acf0027700565e304a8cc768d017a1b91649408dcab6c5c24b47"
+    },
+    "1e": {
+      "file": "./1e.json",
+      "records": 16180,
+      "streets": 127,
+      "bytes": 761776,
+      "sha256": "c1ffe10f46c81b149378c18400a841d1d9a19cc90fcb6e7fcbd14798a851c812"
+    },
+    "1f": {
+      "file": "./1f.json",
+      "records": 21506,
+      "streets": 149,
+      "bytes": 968369,
+      "sha256": "369e5aebe603663224b085ecc566ec90de45fffb928e6a6a2bec3d40ad42ab85"
+    },
+    "2a": {
+      "file": "./2a.json",
+      "records": 13954,
+      "streets": 121,
+      "bytes": 651046,
+      "sha256": "5d83c4c15163897a078e9f75e577c49516923fa2bca33ebd23b52fba8ce766ee"
+    },
+    "2b": {
+      "file": "./2b.json",
+      "records": 18171,
+      "streets": 116,
+      "bytes": 878693,
+      "sha256": "abd148ac9caa482e07042a944fd069f641c18f30c1733a3ba456bab1598f1dcf"
+    },
+    "2c": {
+      "file": "./2c.json",
+      "records": 14581,
+      "streets": 127,
+      "bytes": 681906,
+      "sha256": "28d6c513816618e82f2b2cce3b1ce6ee41a3cd019b30ff3c0ebc6c7ba736f32d"
+    },
+    "2d": {
+      "file": "./2d.json",
+      "records": 11886,
+      "streets": 111,
+      "bytes": 554670,
+      "sha256": "6da0291b4b623829b4cc6854f8aff9a7a930febf1caef7af4a60285bbe9ac5b6"
+    },
+    "2e": {
+      "file": "./2e.json",
+      "records": 17356,
+      "streets": 130,
+      "bytes": 811881,
+      "sha256": "a1fe89bbc7c8e2d14b6451280c910ecf3721fd2b1956261dfb6a61c82bd4b11f"
+    },
+    "2f": {
+      "file": "./2f.json",
+      "records": 14010,
+      "streets": 131,
+      "bytes": 691318,
+      "sha256": "bc8f2b040d01bb3fe4a00fe29ead34336ed81f1cc6a5f73c48b8b72020eb5a00"
+    },
+    "3a": {
+      "file": "./3a.json",
+      "records": 14915,
+      "streets": 115,
+      "bytes": 686138,
+      "sha256": "5f7f3183c1cee5fe26196069e5446dc3251bd87f81b6749c75f3568f39d0a82e"
+    },
+    "3b": {
+      "file": "./3b.json",
+      "records": 13658,
+      "streets": 107,
+      "bytes": 645168,
+      "sha256": "76c1656cde1e87e574bf550ff0fcbe29b59a95c9548c67b999f363269f2b1991"
+    },
+    "3c": {
+      "file": "./3c.json",
+      "records": 21674,
+      "streets": 140,
+      "bytes": 1004194,
+      "sha256": "66249c2358e043efe8affe4548dba19f0c9a05cc066bb1dfbc96c1211c11206c"
+    },
+    "3d": {
+      "file": "./3d.json",
+      "records": 19999,
+      "streets": 142,
+      "bytes": 937013,
+      "sha256": "945808b06987cd7847f0b2ca6a4a990091579f6726540ac91deb0018113de53d"
+    },
+    "3e": {
+      "file": "./3e.json",
+      "records": 24829,
+      "streets": 134,
+      "bytes": 1156714,
+      "sha256": "923f65e203096370985c7fd43b66b7174218e41b06d1932b37db784a1b50af30"
+    },
+    "3f": {
+      "file": "./3f.json",
+      "records": 15500,
+      "streets": 130,
+      "bytes": 733118,
+      "sha256": "f84c12ce4becfb6405276bbb48c21c14b32c980e78d55d5548e26634b74d2e39"
+    }
+  }
+}

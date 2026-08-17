@@ -11,6 +11,7 @@ import {
 } from "../affordance_grammar.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
+import { createPrecomputedAddressGeocoder } from "../precomputed_address_geocoder.mjs";
 import {
   bblsForProject,
   filterLandSnapshot,
@@ -20,7 +21,6 @@ import {
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
-const GEO = "https://geosearch.planninglabs.nyc/v2/search";
 const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:[40.844,-73.865],Queens:[40.718,-73.806],"Staten Island":[40.580,-74.150]};
 // ZAP action labels live in i18n.js (zapact_* keys) — see ZAPACT_KEY in landSelect().
 let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
@@ -31,6 +31,7 @@ let landClosingWeek=false;
 let landCommunityDistrict="";
 let landCouncilDistrict="";
 let landRecordLinksPromise=null;
+const geocodeAddress=createPrecomputedAddressGeocoder();
 const mihOn = v => v===true || v==="true";
 
 function hydrateLandRecordLinks(record, selection){
@@ -375,7 +376,7 @@ async function landSearchHearings(stale){
     }
   }
 }
-function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
+function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect, statusMessage=""){
   if(stale()) return;
   // Preserve selection while the merged retained snapshots repaint.
   const selectedId=(!autoSelect && Array.isArray(lRows))
@@ -387,7 +388,7 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
   syncLandLensControls();
   setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
-  setLandStatus();
+  setLandStatus(statusMessage);
   setLandResultCount(lRows.length);
   announce(t("rezonings_announce",{n:lRows.length}));
   // A resolved block/nearby lookup doesn't filter rows by kw as TEXT (it's a BBL join) --
@@ -447,7 +448,13 @@ async function landSearch(){
   }
   $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   let geo=located?landResolvedArea:null, block=located?landResolvedArea.block:null;
-  if(kw){ geo=await geocode(kw); if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6); }
+  let addressStatus="";
+  if(kw){
+    geo=await geocode(kw);
+    if(geo?.status==="matched"&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6);
+    else if(geo?.reason==="snapshot_unavailable") addressStatus=t("could_not_reach");
+    else if(geo?.reason!=="not_full_address") addressStatus=t("address_snapshot_not_covered");
+  }
   try{
     const projects=await loadLandProjectsSnapshot();
     let projectIds=null,banner="";
@@ -459,7 +466,7 @@ async function landSearch(){
         banner=t("banner_on_block",{label:geo.label});
       }else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
     }
-    let rows=filterLandSnapshot(projects,{
+    let rows=addressStatus?[]:filterLandSnapshot(projects,{
       status,borough:boro,keyword:kw,communityDistrict:landCommunityDistrict,
       councilDistrict:landCouncilDistrict,projectIds,limit:40,
     });
@@ -467,7 +474,7 @@ async function landSearch(){
       rows=await landNearby(geo,status,projects);
       if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
     }
-    paintLandRows(rows,banner,kw,!!block,boro,stale,true);
+    paintLandRows(rows,banner,kw,!!block,boro,stale,true,addressStatus);
   }catch(e){
     if(!stale()){
       unbusy("#llist");
@@ -541,15 +548,7 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
 }
 
 async function geocode(q){
-  // TODO(precompute-no-live-api/geocoder-scope): keep this request-time lookup
-  // unchanged until the site owner chooses a bounded gazetteer or a complete
-  // precomputed citywide address index.
-  try{
-    const r=await fetch(`${GEO}?size=1&text=${encodeURIComponent(q)}`);
-    const j=await r.json(); const f=j.features&&j.features[0];
-    if(f&&f.geometry){const p=f.properties||{}; const pad=(p.addendum&&p.addendum.pad)||{}; return {lat:f.geometry.coordinates[1],lon:f.geometry.coordinates[0],label:p.label,borough:p.borough,neighbourhood:p.neighbourhood,bbl:pad.bbl};}
-  }catch(e){}
-  return null;
+  return geocodeAddress(q);
 }
 
 function landPermalinkActionHTML(r){
@@ -634,7 +633,7 @@ async function landSelect(i, el){
     const q=(r.project_name||"").replace(/rezoning|special (mixed use )?district|text amendment|\bnos?\.?\b/ig," ").replace(/\s+/g," ").trim();
     const geo = q ? await geocode(q+" "+(r.borough||"")+" New York") : null;
     if(selection!==landSelectionSeq) return;
-    if(geo) landShowMap(geo.lat,geo.lon,geo.label,selection);
+    if(geo?.status==="matched"&&Number.isFinite(geo.lat)&&Number.isFinite(geo.lon)) landShowMap(geo.lat,geo.lon,geo.label,selection);
     else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],t("lot_not_geocoded",{boro:r.borough||""}),selection); else { $("#landmap").style.display="none"; $("#landmapnote").textContent=t("location_not_resolved"); } }
   }
 }
@@ -1539,7 +1538,6 @@ async function loadNoticeLandSpine(r, el){
 
 // Publish live bindings for neighboring modules and legacy inline handlers.
 globalThis.BORO_CENTER = BORO_CENTER;
-globalThis.GEO = GEO;
 globalThis.LAND_DEFAULT_SNAPSHOT_URL = LAND_DEFAULT_SNAPSHOT_URL;
 globalThis.ZAP = ZAP;
 globalThis.ZAPBBL = ZAPBBL;

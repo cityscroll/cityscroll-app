@@ -458,7 +458,7 @@
     parcel_link_zola: "Zonage ZoLa",
     parcel_link_acris: "Actes ACRIS",
     parcel_link_wow: "Portefeuille Who Owns What",
-    parcel_via_geosearch: "lot {bbl} via GeoSearch — vérifiez la correspondance",
+    parcel_via_pad_snapshot: "lot {bbl} provenant de l’instantané d’adresses CityScroll — vérifiez la correspondance",
     parcel_via_notice_tax_lot: "lot {bbl} d’après le texte de lot fiscal de cet avis — vérifiez la correspondance",
     community_district_short: "District communautaire {n}",
     council_district_short: "Council District {n}",
@@ -904,6 +904,7 @@
     no_zap:            "Aucun rezonage sur le Portail des demandes de zonage (ZAP)",
     nothing_found_feed: "Rien trouvé. Essayez une recherche plus large.",
     could_not_reach:   "Le dernier instantané CityScroll est indisponible. Réessayez.",
+    address_snapshot_not_covered: "Cette adresse ne figure pas dans l’instantané CityScroll actuel. Aucune localisation approximative n’a été utilisée.",
     shared_meeting_read_model_unavailable: "L’instantané des réunions est indisponible. Réessayez.",
 
     // Feed card actions
