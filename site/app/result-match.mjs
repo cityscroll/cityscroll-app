@@ -44,7 +44,17 @@ function resultMatchEvidence(title, description, terms, contextTerms, attachment
   return evidence?.field==="unknown" ? null : evidence;
 }
 function matchText(r){
-  return [cleanText(r.additional_description_1),cleanText(r.other_info_1),cleanText(r.description)].filter(Boolean).join(" ");
+  return [
+    cleanText(r.agency_name),
+    cleanText(r.vendor_name),
+    cleanText(r.type_of_notice_description),
+    cleanText(r.category_description),
+    cleanText(r.pin),
+    cleanText(r.selection_method_description),
+    cleanText(r.additional_description_1),
+    cleanText(r.other_info_1),
+    cleanText(r.description),
+  ].filter(Boolean).join(" ");
 }
 function matchAttachmentText(r){
   if(r.attachment_text) return cleanText(r.attachment_text);

@@ -76,7 +76,7 @@ const {
   matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle",
+  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -129,6 +129,7 @@ const {
   fmtNumber,
   windowStub,
   (_row, titleMarkup) => `<p class="rtitle">${titleMarkup}</p>`,
+  () => "",
   landProjectDisplayTitle,
   noticeDisplayTitle,
   constellationLink,
@@ -213,6 +214,20 @@ test("moneyRowHTML: a title-field match highlights inline, no separate evidence 
   const html = moneyRowHTML(compassNotice, 0, ["Middle School"]);
   assert.match(html, /<mark>Middle School<\/mark>/);
   assert.doesNotMatch(html, /class="dev"/);
+});
+
+test("moneyRowHTML: a displayed agency-field match is highlighted as evidence", () => {
+  const html = moneyRowHTML({
+    ...compassNotice,
+    agency_name: "Police Department",
+    short_title: "Paid Detail Application and Software Platform",
+    type_of_notice_description: "Solicitation",
+    category_description: "Services",
+    other_info_1: null,
+  }, 0, ["police"]);
+  assert.match(html, /Police Department/);
+  assert.match(html, /class="dev"/, "the non-title match has a why-matched line");
+  assert.match(html, /<mark>Police<\/mark> Department/);
 });
 
 test("moneyRowHTML: an identified untitled row falls back to its notice ID", () => {

@@ -21,6 +21,7 @@ export const SEMANTIC_TOPIC_FAMILIES = Object.freeze([
 const MAX_QUERY_LENGTH = 240;
 const MAX_CANDIDATES = 20;
 const MAX_PASSAGE_LENGTH = 1_200;
+const MAX_MATCHED_TERMS = 24;
 const HASH = /^[a-f0-9]{64}$/;
 const METHODS = new Set([SEMANTIC_CANDIDATE_METHOD]);
 const COVERAGE_STATES = new Set(["partial", "complete", "unknown"]);
@@ -75,6 +76,11 @@ function normalizedCandidate(candidate, responseMethod) {
   const family = clean(candidate.source?.family, 80);
   const sourceId = clean(candidate.source?.id, 300);
   const sourceUrl = String(candidate.source?.url || "").trim();
+  const sourceTitle = clean(candidate.source?.title, 500) || null;
+  const nativeId = clean(candidate.source?.native_id, 240) || null;
+  const canonicalHref = candidate.source?.canonical_href == null
+    ? null
+    : String(candidate.source.canonical_href).trim();
   const passageId = clean(candidate.passage?.id, 360);
   const candidateId = clean(candidate.candidate_id, 360);
   const textState = clean(candidate.passage?.text_state, 40);
@@ -82,6 +88,13 @@ function normalizedCandidate(candidate, responseMethod) {
   const passageText = candidate.passage?.text == null
     ? null
     : String(candidate.passage.text).trim().slice(0, MAX_PASSAGE_LENGTH);
+  const matchedTerms = Array.isArray(candidate.matched_terms)
+    ? [...new Set(candidate.matched_terms.map((term) => clean(term, 120)).filter(Boolean))]
+    : [];
+  const expectedCanonicalHref = family === "city_record_notice" && nativeId
+    ? `/notices/${encodeURIComponent(nativeId)}`
+    : null;
+  const searchableText = `${sourceTitle || ""}\n${passageText || ""}`.toLocaleLowerCase("en-US");
 
   if (!SEMANTIC_TOPIC_FAMILIES.includes(family)
       || !sourceId.startsWith(`${family}:`)
@@ -89,6 +102,10 @@ function normalizedCandidate(candidate, responseMethod) {
       || !passageId.startsWith(`${sourceId}:`)
       || !PASSAGE_ID.test(passageId)
       || candidateId !== passageId
+      || canonicalHref !== expectedCanonicalHref
+      || matchedTerms.length < 1
+      || matchedTerms.length > MAX_MATCHED_TERMS
+      || matchedTerms.some((term) => !searchableText.includes(term.toLocaleLowerCase("en-US")))
       || clean(candidate.method, 64) !== responseMethod
       || candidate.hard_scope_state !== "matched"
       || !COVERAGE_STATES.has(coverageState)) {
@@ -102,9 +119,10 @@ function normalizedCandidate(candidate, responseMethod) {
     source: {
       id: sourceId,
       family,
-      native_id: clean(candidate.source?.native_id, 240) || null,
-      title: clean(candidate.source?.title, 500) || null,
+      native_id: nativeId,
+      title: sourceTitle,
       url: sourceUrl,
+      canonical_href: canonicalHref,
     },
     passage: {
       id: passageId,
@@ -115,6 +133,7 @@ function normalizedCandidate(candidate, responseMethod) {
         : null,
     },
     method: responseMethod,
+    matched_terms: matchedTerms,
     hard_scope_state: "matched",
     coverage_state: coverageState,
     freshness: candidate.freshness && typeof candidate.freshness === "object"

@@ -18,6 +18,10 @@ function realCandidate(sourceRecordId = "city_record_notice:20260715041") {
   const source = passageMap.sources.find((row) => row.source_record_id === sourceRecordId);
   const passage = passageMap.passages.find((row) => row.source_record_id === sourceRecordId);
   assert.ok(source && passage, `missing real source passage ${sourceRecordId}`);
+  const searchableText = `${source.title || ""} ${passage.text || ""}`.toLowerCase();
+  const matchedTerm = searchableText.includes("energy")
+    ? "energy"
+    : searchableText.match(/[a-z0-9]+/)?.[0];
   return {
     candidate_id: passage.candidate_id,
     source: {
@@ -26,6 +30,9 @@ function realCandidate(sourceRecordId = "city_record_notice:20260715041") {
       native_id: source.source_native_id,
       title: source.title,
       url: source.source_url,
+      canonical_href: source.source_family === "city_record_notice"
+        ? `/notices/${encodeURIComponent(source.source_native_id)}`
+        : null,
     },
     passage: {
       id: passage.passage_id,
@@ -34,6 +41,7 @@ function realCandidate(sourceRecordId = "city_record_notice:20260715041") {
       boundary: passage.boundary,
     },
     method: SEMANTIC_CANDIDATE_METHOD,
+    matched_terms: [matchedTerm],
     hard_scope_state: "matched",
     coverage_state: "partial",
     freshness: source.freshness,
@@ -78,6 +86,8 @@ test("topic search accepts the versioned sr5 envelope and groups real sources wi
   assert.equal(normalized.groups[1].state, "bounded_empty");
   assert.equal(normalized.groups[2].state, "bounded_empty");
   assert.equal(normalized.groups[0].candidates[0].source.url, "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041");
+  assert.equal(normalized.groups[0].candidates[0].source.canonical_href, "/notices/20260715041");
+  assert.deepEqual(normalized.groups[0].candidates[0].matched_terms, ["energy"]);
   assert.equal(topicCandidateTitle(normalized.groups[0].candidates[0]), "Amendments to Rules Relating to the Energy Conservation Code");
   assert.equal(Object.hasOwn(normalized.groups[0].candidates[0], "civic_object_family"), false);
 });
@@ -118,6 +128,14 @@ test("topic search fails closed on stale, mismatched, unsafe, or scored candidat
     response([{
       ...realCandidate(),
       source: { ...realCandidate().source, family: "rules" },
+    }]),
+    response([{
+      ...realCandidate(),
+      source: { ...realCandidate().source, canonical_href: "/notices/not-the-source-id" },
+    }]),
+    response([{
+      ...realCandidate(),
+      matched_terms: ["not present in this source"],
     }]),
   ];
 
