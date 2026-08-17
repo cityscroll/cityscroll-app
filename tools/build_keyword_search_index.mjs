@@ -74,6 +74,8 @@ const agencies = json("site/data/agency_constellation_lookup.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
 const meetings = json("site/data/shared_meeting_read_model.json");
 const exams = json("site/data/staffing_exams.json");
+const peopleCorpus = buildPeopleSearchDocuments(people);
+const agencyCorpus = buildAgencySearchDocuments(agencies);
 
 const output = {
   schema: "cityscroll.keyword_search_index.v1",
@@ -86,10 +88,15 @@ const output = {
   ),
   match_mode: "keyword",
   families: {
+    people: family(
+      "NYC Council person profiles",
+      people.retrieved_at,
+      [peopleCorpus],
+    ),
     "people-organizations": family(
-      "NYC Council people and CityScroll agency profiles",
-      latestClock(people.retrieved_at, agencies.generated_at),
-      [buildPeopleSearchDocuments(people), buildAgencySearchDocuments(agencies)],
+      "CityScroll agency profiles",
+      agencies.generated_at,
+      [agencyCorpus],
     ),
     land: family(
       "NYC Open Data Zoning Application Portal projects",
