@@ -64,30 +64,30 @@ export function renderAgencyCategorySection(category, source = {}) {
   if (category.status === "empty" && !items.length && !category.conformance?.items?.length) return "";
 
   if (category.id === "obligations" && category.conformance?.items?.length) {
-    const refine = category.mandate_follow_hrefs
-      ? [
-        category.mandate_follow_hrefs.report
+    const refine = [
+        category.mandate_follow_hrefs?.report
           ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.report)}">Watch report duties</a>`
           : "",
-        category.mandate_follow_hrefs.rulemaking
+        category.mandate_follow_hrefs?.rulemaking
           ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.rulemaking)}">Watch rule duties</a>`
           : "",
-        category.mandate_follow_hrefs.window_90
+        category.mandate_follow_hrefs?.window_90
           ? `<a class="node-action civic-object-action" href="${esc(category.mandate_follow_hrefs.window_90)}">Watch upcoming deadlines</a>`
           : "",
         category.follow_href
-          ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">Watch this agency's legal duties</a>`
+          ? `<a class="node-action civic-object-action" href="${esc(category.follow_href)}">Watch mandates and deadlines</a>`
           : "",
-      ].filter(Boolean).join("")
-      : "";
+      ].filter(Boolean).join("");
     const body = renderMandatesConformanceSection(category.conformance, { limit: 12 });
-    if (refine && body.includes("</section>")) {
-      return body.replace(
-        "</section>",
-        `<p class="node-inline-actions civic-object-inline-actions">${refine}</p></section>`,
-      );
+    if (body) {
+      if (refine && body.includes("</section>")) {
+        return body.replace(
+          "</section>",
+          `<p class="node-inline-actions civic-object-inline-actions">${refine}</p></section>`,
+        );
+      }
+      return body;
     }
-    return body;
   }
 
   const status = category.id === "obligations" && category.status === "matched"
@@ -164,6 +164,7 @@ export function renderAgencyCategorySection(category, source = {}) {
     exportClass: "object_members",
     extraClass: "node-card civic-object-section",
     attrs: {
+      ...(category.id === "obligations" ? { id: "agency-statutory-mandates" } : {}),
       "data-agency-constellation-category": category.id,
       "data-status": category.status,
       "data-edge-state": category.status,

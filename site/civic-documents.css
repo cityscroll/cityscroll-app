@@ -245,6 +245,171 @@ select {
   text-decoration: underline;
 }
 
+/* Agency constellation: identity → primary actions → typed relationships.
+   The cards reuse the civic-document type, color, radius, and spacing tokens;
+   relationship data and destinations still come from the shared edge model. */
+.agency-constellation-hero {
+  padding-block: var(--space-5) var(--space-4);
+}
+
+.agency-constellation-hero h1 {
+  max-width: 28ch;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+  line-height: 1.02;
+}
+
+.agency-hero-meta {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-muted);
+  font: 500 .8125rem/1.4 var(--font-label);
+}
+
+.agency-hero-meta a {
+  color: var(--color-action);
+}
+
+.agency-primary-actions {
+  gap: var(--space-2);
+  padding-block: var(--space-3);
+  border-block-end: 0;
+}
+
+.agency-primary-actions .civic-object-action {
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+}
+
+.agency-primary-actions .agency-evidence-action {
+  border-color: var(--color-border-strong);
+}
+
+.agency-connections {
+  min-width: 0;
+  margin: var(--space-2) 0 var(--space-5);
+}
+
+.agency-connections-heading {
+  display: flex;
+  min-width: 0;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: var(--space-3);
+}
+
+.agency-connections-kicker {
+  margin: 0 0 var(--space-1);
+  color: var(--color-text-muted);
+  font: 700 .72rem/1.3 var(--font-label);
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.agency-connections h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.1;
+}
+
+.agency-connections-summary {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 500 .8125rem/1.35 var(--font-label);
+  text-align: end;
+}
+
+.agency-connection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.agency-connection-card {
+  min-width: 0;
+  border-block-start: 3px solid var(--color-action);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: var(--color-surface);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
+.agency-connection-link {
+  display: flex;
+  min-width: 0;
+  min-height: 116px;
+  flex-direction: column;
+  padding: var(--space-3) var(--space-4);
+  color: inherit;
+  text-decoration: none;
+}
+
+.agency-connection-link:hover,
+.agency-connection-link:focus-visible {
+  background: color-mix(in srgb, var(--color-action) 5%, var(--color-surface));
+}
+
+.agency-connection-link:focus-visible {
+  outline: 3px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+.agency-connection-heading {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.agency-connection-title {
+  min-width: 0;
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.agency-connection-count {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font: 600 .75rem/1.3 var(--font-label);
+  white-space: nowrap;
+}
+
+.agency-connection-relation {
+  margin: var(--space-1) 0 var(--space-3);
+  color: var(--color-text-muted);
+  font: 500 .8125rem/1.35 var(--font-label);
+}
+
+.agency-connection-action {
+  margin-block-start: auto;
+  color: var(--color-action);
+  font: 700 .8125rem/1.3 var(--font-label);
+}
+
+.agency-secondary-actions {
+  margin-block-start: var(--space-4);
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--color-border);
+}
+
+@media (max-width: 680px) {
+  .agency-connections-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .agency-connections-summary {
+    text-align: start;
+  }
+
+  .agency-connection-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .exam-status-row {
   display: flex;
   flex-wrap: wrap;

@@ -1,0 +1,47 @@
+{
+  "phase": "before",
+  "agencies": [
+    "citywide-administrative-services",
+    "district-attorney-richmond-county"
+  ],
+  "viewports": [
+    390,
+    1440
+  ],
+  "frames": [
+    "site/media/review/agency-template-refactor/before-dcas-390.png",
+    "site/media/review/agency-template-refactor/before-dcas-1440.png",
+    "site/media/review/agency-template-refactor/before-staten-island-da-390.png",
+    "site/media/review/agency-template-refactor/before-staten-island-da-1440.png"
+  ],
+  "observations": [
+    {
+      "agency": "citywide-administrative-services",
+      "viewport": 390,
+      "primary_actions": 0,
+      "connection_cards": 0,
+      "h1_height": 141
+    },
+    {
+      "agency": "citywide-administrative-services",
+      "viewport": 1440,
+      "primary_actions": 0,
+      "connection_cards": 0,
+      "h1_height": 149
+    },
+    {
+      "agency": "district-attorney-richmond-county",
+      "viewport": 390,
+      "primary_actions": 0,
+      "connection_cards": 0,
+      "h1_height": 71
+    },
+    {
+      "agency": "district-attorney-richmond-county",
+      "viewport": 1440,
+      "primary_actions": 0,
+      "connection_cards": 0,
+      "h1_height": 149
+    }
+  ]
+}
