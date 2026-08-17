@@ -111,7 +111,7 @@ test("upstream obligations envelopes remain ingestable without changing product 
     obligations: lookup,
   }));
   const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
-  assert.match(readerHtml, />Mandates\b/);
+  assert.match(readerHtml, />Statutory mandates\b/);
   assert.doesNotMatch(readerHtml, />Obligations\b/);
   assert.match(readerHtml, /href="https:\/\/nyc\.legistar\.com\/Gateway\.aspx\?M=L&amp;ID=48909"/);
 });
@@ -379,18 +379,70 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /data-agency-constellation-category="meetings"/);
   assert.match(html, /data-agency-constellation-category="rules"/);
   assert.doesNotMatch(html, /id="mandates-conformance"/);
+  assert.match(html, /id="agency-statutory-mandates"/);
   assert.match(html, /data-agency-constellation-category="staffing"/);
   assert.match(html, /class="ui-constellation-link agency-edge-link"/);
   assert.match(html, /class="ui-official-source-link agency-source-link"/);
-  assert.match(html, /Get updates about this agency&#39;s public records/);
-  assert.match(html, /Watch mandates and deadlines/);
-  const actionNav = html.match(/<nav class="node-actions civic-object-actions"[\s\S]*?<\/nav>/)?.[0] || "";
-  assert.doesNotMatch(actionNav, /href="#edge-provenance"/);
-  assert.match(html, /class="ui-constellation-link agency-pivot-link" href="#edge-provenance"/);
+  assert.match(html, />Follow this agency<\/a>/);
+  assert.match(html, /class="agency-connection-action">View mandates/);
+  const actionNav = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
+  assert.match(actionNav, /href="#edge-provenance"/);
+  assert.doesNotMatch(html, /class="ui-constellation-link agency-pivot-link"/);
   assert.match(html, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
   assert.doesNotMatch(html, /civil-service certification|provenance inspector/i);
   assert.deepEqual(detectNodePageCruft(html), []);
+});
+
+test("shared agency template leads with compact actions and connected-record cards", () => {
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+  });
+  const html = renderAgencyConstellationDocument(view);
+  const primaryActions = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
+  const connectedRecords = html.match(/<section class="agency-connections"[\s\S]*?<\/section>/)?.[0] || "";
+
+  assert.match(html, /<header class="node-hero civic-object-hero agency-constellation-hero"/);
+  assert.match(html, /<p class="node-kicker civic-object-kicker">Agency constellation<\/p>/);
+  assert.doesNotMatch(html, /class="node-pivot civic-object-pivot"/);
+  assert.match(html, /class="agency-hero-meta"/);
+  assert.match(primaryActions, /aria-label="Primary agency actions"/);
+  assert.equal((primaryActions.match(/<a class="node-action/g) || []).length, 3);
+  assert.match(primaryActions, />Follow this agency<\/a>/);
+  assert.match(primaryActions, />View contracts<\/a>/);
+  assert.match(primaryActions, /href="#edge-provenance"[^>]*>Connection evidence<\/a>/);
+  assert.doesNotMatch(primaryActions, /Expected mandate events|Report mandates|Rulemaking mandates|Interactive profile|Copy link|Print|Download/);
+
+  assert.match(connectedRecords, /<h2 id="agency-connections-heading">Connected records<\/h2>/);
+  assert.match(connectedRecords, /5 kinds of connected records/);
+  assert.equal((connectedRecords.match(/class="agency-connection-card"/g) || []).length, 5);
+  assert.equal((connectedRecords.match(/class="agency-connection-action"/g) || []).length, 5);
+  assert.match(connectedRecords, /class="agency-connection-title">Statutory mandates<\/h3>/);
+  assert.match(connectedRecords, /class="agency-connection-count">\d+ records?<\/span>/);
+  assert.match(connectedRecords, /class="agency-connection-relation">published by this agency<\/p>/);
+  assert.match(connectedRecords, /View contracts <span aria-hidden="true">→<\/span>/);
+  assert.doesNotMatch(html, /Nearby agency records|\d+ connected records\./);
+});
+
+test("shared agency template selects the best available record action and degrades to one card", () => {
+  const view = buildAgencyConstellationView("district-attorney-richmond-county", {
+    intelligence,
+    certification,
+    staffing_exams: staffingExams,
+  });
+  const html = renderAgencyConstellationDocument(view);
+  const primaryActions = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
+  const connectedRecords = html.match(/<section class="agency-connections"[\s\S]*?<\/section>/)?.[0] || "";
+
+  assert.match(primaryActions, />View staffing exams<\/a>/);
+  assert.doesNotMatch(primaryActions, />View contracts<\/a>/);
+  assert.match(connectedRecords, /1 kind of connected record/);
+  assert.equal((connectedRecords.match(/class="agency-connection-card"/g) || []).length, 1);
+  assert.match(connectedRecords, /class="agency-connection-title">Staffing exams<\/h3>/);
+  assert.doesNotMatch(connectedRecords, /Contracts|Meetings|Rules|Statutory mandates/);
 });
 
 test("Parks edges carry real provenance and a shareable why-inspector", () => {
