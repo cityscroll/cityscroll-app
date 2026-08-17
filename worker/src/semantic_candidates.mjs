@@ -43,9 +43,10 @@ const PASSAGE_SOURCES = new Map(
 const PASSAGES = new Map(
   sourcePassageMap.passages.map((passage) => [passage.passage_id, passage]),
 );
-const SOURCE_FAMILIES = new Set(
+export const SEMANTIC_SOURCE_FAMILIES = Object.freeze(
   corpusManifest.source_families.map((family) => family.source_family),
 );
+const SOURCE_FAMILIES = new Set(SEMANTIC_SOURCE_FAMILIES);
 
 function cleanQuery(value) {
   return String(value ?? "")
