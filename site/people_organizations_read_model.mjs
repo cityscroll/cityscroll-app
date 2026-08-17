@@ -6,7 +6,10 @@
  */
 
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
-import { communityBoardPageHref } from "./community_board_links.mjs";
+import {
+  communityBoardPageHref,
+  communityDistrictDisplayName,
+} from "./community_board_links.mjs";
 import { communityBoardPlaceHref } from "./community_board_constellation.mjs";
 
 export const PEOPLE_ORGANIZATION_ROW_KINDS = Object.freeze([
@@ -264,6 +267,11 @@ function boardRows(geography = {}) {
     .map((node) => {
       const bodyId = clean(node.properties?.body_id || String(node.id).replace(/^community-board:/, ""), 80);
       const district = districtByBoard.get(node.id) || null;
+      const districtName = communityDistrictDisplayName({
+        borough: node.properties?.borough,
+        district: node.properties?.district,
+        id: district,
+      });
       const relations = node.properties?.identity?.projections?.organization?.relation_families;
       const organizationRelations = (Array.isArray(relations) && relations.length ? relations : DEFAULT_BOARD_RELATIONS).map((relation) => ({
         type: clean(relation?.type, 80),
@@ -277,9 +285,7 @@ function boardRows(geography = {}) {
         href: communityBoardPageHref(bodyId),
         entity_ref: `community-board:${bodyId}`,
         relation_state: "published",
-        detail: district
-          ? `Covers ${clean(node.properties?.borough)} Community District ${district}.`
-          : "Institution published · district coverage unknown",
+        detail: districtName ? `Covers ${districtName}.` : "",
         body_id: bodyId,
         borough: clean(node.properties?.borough),
         district,
