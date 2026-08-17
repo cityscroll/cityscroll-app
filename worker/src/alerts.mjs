@@ -1859,8 +1859,9 @@ async function evaluateCatchUpSub(env, s, ctx) {
   }
 }
 
-export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null } = {}) {
-  const day = new Date().toISOString().slice(0, 10);
+export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, now = new Date() } = {}) {
+  const clock = new Date(now);
+  const day = clock.toISOString().slice(0, 10);
   const sentToday = await getSendCount(env, day);
   const results = [];
 
@@ -1889,7 +1890,7 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null } 
     .filter(([email]) => selectedEmails.has(email))
     .map(([email, subs]) => ({ email, subs }));
 
-  const ctx = { today: day, now: new Date(), nowMs: Date.now() };
+  const ctx = { today: day, now: clock, nowMs: clock.getTime() };
 
   for (const { subs } of targetAccounts) {
     try {
@@ -1933,7 +1934,7 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null } 
     }
   }
 
-  const ranAt = new Date().toISOString();
+  const ranAt = clock.toISOString();
   const receipt = {
     ranAt, day, live: false, evaluation_only: true, mode: "catch_up",
     matched: results.filter((r) => !r.error && (Number(r.new) || 0) > 0).length,

@@ -44,8 +44,8 @@ function publicHeaders() {
   };
 }
 
-async function previewFor(watch, fetchImpl) {
-  const query = compileSub(watch, new Date().toISOString().slice(0, 10));
+async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10)) {
+  const query = compileSub(watch, todayISO);
   if (!query) return { items: [], error: "This scope cannot be previewed yet. You can still manage existing watches below." };
   try {
     let rows;
@@ -142,7 +142,7 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
   const parsed = watchFromFollowingParams(url.searchParams);
   const watch = { lens: parsed.lens, filter: sanitize(parsed.lens, parsed.filter) };
   const preview = parsed.requested
-    ? await previewFor(watch, options.fetchImpl || fetch)
+    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO)
     : { items: [], count: null, error: null };
   const view = buildFollowingViewModel({
     ...parsed,
