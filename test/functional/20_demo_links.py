@@ -55,6 +55,8 @@ def entry_applies(entry: dict, base: str = BASE) -> bool:
     """Select requested routes and keep deployment-ordered checks out of PR production runs."""
     if REQUESTED_ENTRY_IDS and entry.get("id") not in REQUESTED_ENTRY_IDS:
         return False
+    if entry.get("productionOnly") and not is_production_base(base):
+        return False
     if entry.get("localOnly") and is_production_base(base):
         return False
     if entry.get("postDeployOnly") and is_production_base(base) and entry.get("id") not in REQUESTED_ENTRY_IDS:

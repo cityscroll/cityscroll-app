@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date
 from pathlib import Path
 
 
@@ -43,7 +44,10 @@ def validate_state(state: object, path: str) -> None:
 def validate_entry(entry: object, index: int) -> None:
     path = f"entries[{index}]"
     require(isinstance(entry, dict), f"{path} must be an object")
-    allowed_fields = {"id", "url", "feature", "description", "expectations", "localOnly", "postDeployOnly"}  # source: site/demo/demo-links.schema.json
+    allowed_fields = {
+        "id", "url", "feature", "description", "expectations",
+        "localOnly", "postDeployOnly", "productionOnly",
+    }  # source: site/demo/demo-links.schema.json
     require(set(entry) <= allowed_fields, f"{path} has unknown fields")
     require(
         {"id", "url", "feature", "description", "expectations"} <= set(entry),
@@ -53,6 +57,12 @@ def validate_entry(entry: object, index: int) -> None:
         require(isinstance(entry["localOnly"], bool), f"{path}.localOnly must be a boolean")
     if "postDeployOnly" in entry:
         require(isinstance(entry["postDeployOnly"], bool), f"{path}.postDeployOnly must be a boolean")
+    if "productionOnly" in entry:
+        require(isinstance(entry["productionOnly"], bool), f"{path}.productionOnly must be a boolean")
+    require(
+        not (entry.get("localOnly") and entry.get("productionOnly")),
+        f"{path} cannot be both localOnly and productionOnly",
+    )
     require(isinstance(entry["id"], str) and ID_PATTERN.fullmatch(entry["id"]), f"{path}.id is invalid")
     require(
         isinstance(entry["feature"], str) and ID_PATTERN.fullmatch(entry["feature"]),
@@ -120,16 +130,38 @@ def main() -> None:
     manifest = json.loads(MANIFEST_PATH.read_text())
     schema = json.loads(SCHEMA_PATH.read_text())
     require(schema.get("$schema") == "https://json-schema.org/draft/2020-12/schema", "schema draft is not declared")
-    require(set(manifest) == {"$schema", "schemaVersion", "entries"}, "manifest root fields differ from the schema")
+    require(
+        set(manifest) == {"$schema", "schemaVersion", "capabilities", "entries"},
+        "manifest root fields differ from the schema",
+    )
     require(manifest["$schema"] == "./demo-links.schema.json", "manifest must link its sibling schema")
-    require(manifest["schemaVersion"] == 1, "unsupported manifest schemaVersion")
+    require(manifest["schemaVersion"] == 2, "unsupported manifest schemaVersion")
     entries = manifest["entries"]
     require(isinstance(entries, list) and len(entries) >= 12, "manifest needs at least 12 demo entries")
     for index, entry in enumerate(entries):
         validate_entry(entry, index)
     ids = [entry["id"] for entry in entries]
     require(len(ids) == len(set(ids)), "entry ids must be unique")
-    print(f"demo-links: {len(entries)} public routes match schema version 1")
+    capabilities = manifest["capabilities"]
+    require(isinstance(capabilities, dict), "capabilities must be an object")
+    require(set(capabilities) == {"updatedOn", "entryIds"}, "capabilities fields differ from the schema")
+    try:
+        date.fromisoformat(capabilities["updatedOn"])
+    except (TypeError, ValueError):
+        raise AssertionError("capabilities.updatedOn must be an ISO calendar date") from None
+    capability_ids = capabilities["entryIds"]
+    require(isinstance(capability_ids, list), "capabilities.entryIds must be an array")
+    require(6 <= len(capability_ids) <= 12, "capabilities.entryIds must contain 6–12 entries")
+    require(len(capability_ids) == len(set(capability_ids)), "capabilities.entryIds must be unique")
+    entries_by_id = {entry["id"]: entry for entry in entries}
+    missing = [entry_id for entry_id in capability_ids if entry_id not in entries_by_id]
+    require(not missing, f"capabilities references unknown entries: {', '.join(missing)}")
+    local_only = [entry_id for entry_id in capability_ids if entries_by_id[entry_id].get("localOnly")]
+    require(not local_only, f"capabilities cannot feature local-only entries: {', '.join(local_only)}")
+    print(
+        f"demo-links: {len(entries)} public routes and {len(capability_ids)} curated capabilities "
+        "match schema version 2"
+    )
 
 
 if __name__ == "__main__":
