@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-03T13:27:20.935Z",
-  "dataDate": "2026-08-03",
+  "generatedAt": "2026-08-17T15:00:38.453Z",
+  "dataDate": "2026-08-17",
   "scenarios": {
     "city-work-closing": {
       "id": "week",
       "href": "#money?mode=open&closing=week",
       "labelKey": "closing_this_week",
       "label": "Closing this week",
-      "count": 27,
+      "count": 25,
       "counts": {
-        "week": 27,
-        "open": 205,
-        "past": 53177
+        "week": 25,
+        "open": 197,
+        "past": 53397
       }
     },
     "city-work-all": {
@@ -20,9 +20,9 @@
       "href": "#money?mode=open",
       "labelKey": "tab_money",
       "label": "Contracts",
-      "count": 205,
+      "count": 197,
       "counts": {
-        "open": 205
+        "open": 197
       }
     },
     "neighborhood-land": {
@@ -30,9 +30,9 @@
       "href": "#land",
       "labelKey": "tab_land",
       "label": "Zoning",
-      "count": 12257,
+      "count": 12273,
       "counts": {
-        "land": 12257
+        "land": 12273
       }
     },
     "neighborhood-property": {
@@ -50,9 +50,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 21,
+      "count": 22,
       "counts": {
-        "upcoming": 21
+        "upcoming": 22
       }
     },
     "hearings-meetings": {
@@ -60,9 +60,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 21,
+      "count": 22,
       "counts": {
-        "upcoming": 21
+        "upcoming": 22
       }
     },
     "hearings-rules": {
@@ -70,9 +70,9 @@
       "href": "#rules",
       "labelKey": "tab_rules",
       "label": "Rules",
-      "count": 3061,
+      "count": 3070,
       "counts": {
-        "rules": 3061
+        "rules": 3070
       }
     },
     "city-career-people": {
@@ -103,9 +103,9 @@
       "href": "#land",
       "labelKey": "tab_land",
       "label": "Zoning",
-      "count": 12257,
+      "count": 12273,
       "counts": {
-        "land": 12257
+        "land": 12273
       }
     },
     "legal-property": {
@@ -115,7 +115,7 @@
       "label": "Property",
       "count": 156,
       "counts": {
-        "real_property": 156,
+        "realty": 156,
         "all": 243
       }
     },
@@ -124,9 +124,9 @@
       "href": "#rules",
       "labelKey": "tab_rules",
       "label": "Rules",
-      "count": 3061,
+      "count": 3070,
       "counts": {
-        "rules": 3061
+        "rules": 3070
       }
     },
     "legal-meetings": {
@@ -134,9 +134,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 21,
+      "count": 22,
       "counts": {
-        "upcoming": 21
+        "upcoming": 22
       }
     }
   },
@@ -144,14 +144,10 @@
     "minResults": 1,
     "byLens": {
       "money": [
-        0,
-        1,
-        2,
         3,
         4,
         5,
-        6,
-        7
+        6
       ],
       "people": [
         1,
@@ -213,7 +209,24 @@
           "name": null,
           "tab": null
         },
-        "count": 3370
+        "count": 0,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/?mode=award&q=construction&min=500000&category=Construction%2FConstruction+Services",
+          "readModel": "money_resident_snapshot+keyword_search_response",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": "cityscroll.keyword_search_response.v1",
+              "asOf": "2026-08-17T13:00:37.598Z"
+            }
+          },
+          "finalCount": 0
+        }
       },
       {
         "lens": "money",
@@ -235,7 +248,24 @@
           "name": null,
           "tab": null
         },
-        "count": 4
+        "count": 0,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/?q=consulting",
+          "readModel": "money_resident_snapshot",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": null,
+              "asOf": null
+            }
+          },
+          "finalCount": 0
+        }
       },
       {
         "lens": "money",
@@ -257,7 +287,24 @@
           "name": null,
           "tab": null
         },
-        "count": 20
+        "count": 0,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/?q=shelter",
+          "readModel": "money_resident_snapshot",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": null,
+              "asOf": null
+            }
+          },
+          "finalCount": 0
+        }
       },
       {
         "lens": "money",
@@ -279,7 +326,24 @@
           "name": null,
           "tab": null
         },
-        "count": 16
+        "count": 6,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/?q=maintenance",
+          "readModel": "money_resident_snapshot",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": null,
+              "asOf": null
+            }
+          },
+          "finalCount": 6
+        }
       },
       {
         "lens": "money",
@@ -301,7 +365,24 @@
           "name": null,
           "tab": null
         },
-        "count": 6
+        "count": 1,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/?q=food",
+          "readModel": "money_resident_snapshot",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": null,
+              "asOf": null
+            }
+          },
+          "finalCount": 1
+        }
       },
       {
         "lens": "money",
@@ -321,7 +402,24 @@
           "name": null,
           "tab": null
         },
-        "count": 199
+        "count": 39,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/",
+          "readModel": "money_resident_snapshot",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": null,
+              "asOf": null
+            }
+          },
+          "finalCount": 39
+        }
       },
       {
         "lens": "money",
@@ -341,7 +439,24 @@
           "name": null,
           "tab": null
         },
-        "count": 20
+        "count": 24,
+        "destination": {
+          "schema": "cityscroll.money_suggestion_destination.v1",
+          "route": "/browse/contracts/?closing=week",
+          "readModel": "money_resident_snapshot",
+          "corpus": {
+            "residentSnapshot": {
+              "schemaVersion": 1,
+              "generatedAt": "2026-08-15T19:35:39.293Z",
+              "rowCount": 379
+            },
+            "keywordSearch": {
+              "schema": null,
+              "asOf": null
+            }
+          },
+          "finalCount": 24
+        }
       },
       {
         "lens": "money",

@@ -69,35 +69,30 @@ test("suggestionCountParams: meetings count the shared materialized read model",
 
 // ---- runSuggestionValidation: the daily pipeline ---------------------------------------
 
-test("runSuggestionValidation: field-evidence fixture — the dead money examples are excluded, the working one survives", async () => {
+test("runSuggestionValidation: a proxy-rich money suggestion is excluded when its resident destination is empty", async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url, opts) => {
     if (String(url).includes("api.anthropic.com")) {
       const body = JSON.parse((opts && opts.body) || "{}");
       const isConstruction = /construction/i.test(body.messages[0].content);
       const input = isConstruction
-        ? { keywords: ["construction"], minAmount: 500000, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false }
+        ? { keywords: ["construction"], minAmount: 500000, maxAmount: null, category: "Construction/Construction Services", agency: null, months: null, noticeType: null, excludeSpecial: false }
         : { keywords: body.messages[0].content.toLowerCase().includes("it consulting") ? ["it", "consulting"] : ["shelter", "services"], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
       return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
     }
-    // The two dead field-evidence examples: zero live rows. Construction: plenty.
+    // This is the SUGGEST-01 oracle mismatch: Socrata says construction has thousands,
+    // while the committed resident snapshot has no row surviving the route's keyword,
+    // amount, and category filters.
     const isConstruction = String(url).includes("construction");
-    return { ok: true, json: async () => [{ n: isConstruction ? "42" : "0" }] };
+    return { ok: true, json: async () => [{ n: isConstruction ? "4955" : "0" }] };
   };
   const kvStore = {};
   const env = { ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async (k) => kvStore[k], put: async (k, v) => { kvStore[k] = v; } } };
 
   try {
     const res = await runSuggestionValidation(env);
-    assert.equal(res.status, "success");
-    const money = res.byLens.money.map((c) => c.idx);
-    assert.ok(money.includes(0), `expected idx 0 (construction) to survive: ${JSON.stringify(res.byLens.money)}`);
-    assert.ok(!money.includes(1), `expected idx 1 (IT consulting RFPs) excluded: ${JSON.stringify(res.byLens.money)}`);
-    assert.ok(!money.includes(2), `expected idx 2 (shelter services) excluded: ${JSON.stringify(res.byLens.money)}`);
-
-    const stored = JSON.parse(kvStore[SUGGESTIONS_KV_KEY]);
-    assert.equal(stored.minResults, MIN_SUGGESTION_RESULTS);
-    assert.ok(stored.byLens.money.some((c) => c.idx === 0));
+    assert.equal(res.status, "skipped");
+    assert.equal(kvStore[SUGGESTIONS_KV_KEY], undefined, "an all-empty destination run must not certify a proxy-rich candidate");
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -234,7 +229,12 @@ test("runSuggestionValidation: enriches a real lineage-rich candidate and a real
   const kvStore = { "fc:EDUCATION": JSON.stringify([{ source: "checkbook", agency_name: "Education", contract_id: "DOE-1", expiration_date: "2027-09-01" }]) };
   const env = { ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async (k) => kvStore[k], put: async (k, v) => { kvStore[k] = v; } } };
   try {
-    const res = await runSuggestionValidation(env);
+    const res = await runSuggestionValidation(env, {
+      moneyDestination: async (_env, filter) => ({
+        finalCount: filter.keywords?.includes("construction") ? 42 : filter.keywords?.includes("school") ? 8 : 0,
+        route: "/browse/contracts/",
+      }),
+    });
     const money = res.byLens.money;
     const construction = money.find((c) => c.idx === 0);
     const school = money.find((c) => c.idx === 4);
@@ -265,7 +265,9 @@ test("runSuggestionValidation: enrichment failure (bad sample fetch) never block
   };
   const env = { ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async () => null, put: async () => {} } };
   try {
-    const res = await runSuggestionValidation(env);
+    const res = await runSuggestionValidation(env, {
+      moneyDestination: async () => ({ finalCount: 42, route: "/browse/contracts/" }),
+    });
     const construction = res.byLens.money.find((c) => c.idx === 0);
     assert.ok(construction, "candidate still validates on its base count even when enrichment fails");
     assert.equal(construction.lineageRich, false, "uncertain — no indicator, not a guess");

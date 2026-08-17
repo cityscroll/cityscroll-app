@@ -143,3 +143,6 @@ view=tax-lien
 # Route-scoped stylesheet selectors and asset names; these are DOM plumbing, not chrome.
 link[data-route-style="
 property.css
+
+# Versioned machine contract checked before a suggestion receipt is admitted; never rendered.
+cityscroll.money_suggestion_destination.v1
