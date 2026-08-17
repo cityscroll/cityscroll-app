@@ -92,26 +92,30 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
     );
     assert.equal(response.status, 200);
     const body = await response.json();
+    assert.equal(body.schema, "cityscroll.keyword_search_response.v1");
+    assert.equal(body.match_mode, "keyword");
+    assert.equal(body.coverage.schema, "cityscroll.universal_search_coverage.v1");
+    assert.equal(body.coverage.snapshot.state, "incomplete");
+    assert.equal(body.coverage.complete_count, null);
+    assert.deepEqual(body.lanes.map((lane) => lane.id), [
+      "contracts",
+      "people-organizations",
+      "land",
+      "rules",
+      "meetings",
+      "exams",
+    ]);
+    for (const lane of body.lanes) {
+      assert.ok(["matched", "empty", "unknown", "not_covered"].includes(lane.status));
+      assert.ok(Object.hasOwn(lane, "count"));
+      assert.ok(Object.hasOwn(lane, "as_of"));
+      assert.equal(typeof lane.source, "string");
+      assert.equal(lane.match_mode, "keyword");
+      assert.ok(Array.isArray(lane.cards));
+    }
     assert.ok(body.results.length >= 1);
     const target = body.results.find((result) => result.object_ref === "notice:20260729004");
     assert.ok(target);
-    assert.deepEqual(Object.keys(target).sort(), [
-      "canonical_href",
-      "classification",
-      "coverage_state",
-      "domain",
-      "object_ref",
-      "object_type",
-      "outcome",
-      "process_role",
-      "provenance",
-      "schema",
-      "search_text",
-      "source_family",
-      "source_observation_refs",
-      "summary",
-      "title",
-    ].sort());
     assert.deepEqual({
       schema: target.schema,
       object_ref: target.object_ref,
@@ -137,6 +141,46 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
   } finally {
     sqlite.close();
   }
+});
+
+test("six lanes retain typed bounded results and honest empty states", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    const response = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=mosquitos"),
+      { DB },
+      {},
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
+    assert.equal(lanes.contracts.status, "matched");
+    assert.equal(lanes.contracts.cards[0].object_type, "procurement");
+    assert.match(lanes.contracts.cards[0].canonical_href, /^\/browse\/contracts\//);
+    assert.equal(lanes.contracts.cards[0].match_evidence.source_identifier, "notice:20260710020");
+    assert.deepEqual(lanes.contracts.cards[0].match_evidence.token_offsets, [2, 3]);
+    assert.equal(lanes.contracts.cards[0].provenance.producer, "city_record_search_document.v1");
+    assert.equal(lanes.rules.status, "empty");
+    assert.equal(lanes.rules.count, 0);
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("a missing notice mirror leaves static family lanes independently usable", async () => {
+  const response = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=parks"),
+    {},
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
+  assert.equal(lanes.contracts.status, "unknown");
+  assert.equal(lanes.contracts.count, null);
+  assert.equal(lanes.rules.status, "unknown");
+  assert.equal(lanes["people-organizations"].status, "matched");
+  assert.ok(lanes["people-organizations"].cards.some((card) => card.object_type === "agency"));
 });
 
 test("common civic terms return relevant records through the same FTS route", async () => {
@@ -216,15 +260,16 @@ test("the search route emits rules only from the bounded rule projection", async
     );
     assert.equal(response.status, 200);
     const body = await response.json();
-    assert.equal(body.results.length, 1);
+    const rules = body.results.filter((result) => result.domain === "rules");
+    assert.equal(rules.length, 1);
     assert.deepEqual({
-      object_ref: body.results[0].object_ref,
-      object_type: body.results[0].object_type,
-      domain: body.results[0].domain,
-      canonical_href: body.results[0].canonical_href,
-      process_role: body.results[0].process_role,
-      method: body.results[0].classification.method,
-      source_observation_refs: body.results[0].source_observation_refs,
+      object_ref: rules[0].object_ref,
+      object_type: rules[0].object_type,
+      domain: rules[0].domain,
+      canonical_href: rules[0].canonical_href,
+      process_role: rules[0].process_role,
+      method: rules[0].classification.method,
+      source_observation_refs: rules[0].source_observation_refs,
     }, {
       object_ref: "rulemaking:notice:20260728026",
       object_type: "rulemaking",
@@ -247,7 +292,10 @@ test("GET /search rejects a missing query and preserves empty result sets", asyn
 
     const empty = await worker.fetch(new Request("https://api.cityscroll.org/search?q=zzzz-no-match"), { DB }, {});
     assert.equal(empty.status, 200);
-    assert.deepEqual(await empty.json(), { results: [] });
+    const body = await empty.json();
+    assert.deepEqual(body.results, []);
+    assert.equal(body.lanes.length, 6);
+    assert.ok(body.lanes.every((lane) => lane.status !== "matched"));
   } finally {
     sqlite.close();
   }

@@ -151,6 +151,40 @@ function matchFieldValues(record, field) {
 }
 
 function matchEvidence(record) {
+  if (record?.keyword_evidence?.status === "unavailable") {
+    return Object.freeze({
+      field: "unavailable",
+      term: "",
+      value: clean(record.keyword_evidence.message, 500)
+        || "Keyword evidence unavailable for this source",
+      reason: "Keyword evidence unavailable",
+      source_observation_ref: null,
+    });
+  }
+  const offsetEvidence = record?.match_evidence;
+  const passage = clean(offsetEvidence?.snippet?.text, 2_000);
+  const markStart = Number(offsetEvidence?.snippet?.mark_start);
+  const markEnd = Number(offsetEvidence?.snippet?.mark_end);
+  if (
+    passage
+    && Number.isInteger(markStart)
+    && Number.isInteger(markEnd)
+    && markStart >= 0
+    && markEnd > markStart
+    && markEnd <= passage.length
+  ) {
+    const field = clean(offsetEvidence.field, 80).toLocaleLowerCase("en-US") || "search_text";
+    return Object.freeze({
+      field,
+      term: clean(offsetEvidence.matched_normalized_term, 240),
+      value: passage,
+      reason: FIELD_REASONS[field] || "Record details match",
+      source_observation_ref: clean(offsetEvidence.source_identifier, 240) || null,
+      mark_start: markStart,
+      mark_end: markEnd,
+      offset_backed: true,
+    });
+  }
   const match = Array.isArray(record?.match_fields) ? record.match_fields[0] : null;
   const field = clean(match?.field, 80).toLocaleLowerCase("en-US") || "search_text";
   const term = clean(match?.matched_term, 240) || clean(record?.query, 240);
@@ -254,11 +288,18 @@ export function highlightLiteralHtml(value, term) {
   return matchCount ? `${html}${escapeHtml(text.slice(cursor))}` : escapeHtml(text);
 }
 
+function highlightEvidenceHtml(evidence) {
+  if (!evidence?.offset_backed) return highlightLiteralHtml(evidence?.value, evidence?.term);
+  return `${escapeHtml(evidence.value.slice(0, evidence.mark_start))}<mark>${escapeHtml(
+    evidence.value.slice(evidence.mark_start, evidence.mark_end),
+  )}</mark>${escapeHtml(evidence.value.slice(evidence.mark_end))}`;
+}
+
 /** Render only escaped values; the sole emitted markup is this fixed template. */
 export function renderUniversalSearchResultHtml(record = {}) {
   const view = buildUniversalSearchResultView(record);
   if (!view) return "";
-  const titleHtml = ["title", "display_name", "name"].includes(view.evidence.field)
+  const titleHtml = !view.evidence.offset_backed && ["title", "display_name", "name"].includes(view.evidence.field)
     ? highlightLiteralHtml(view.title, view.evidence.term)
     : escapeHtml(view.title);
   const summaryHtml = view.summary
@@ -267,7 +308,7 @@ export function renderUniversalSearchResultHtml(record = {}) {
   return `<article class="topic-search-result is-${escapeHtml(view.lifecycle.group)}" data-search-result data-search-entity-type="${escapeHtml(view.entity_type)}" data-search-lens="${escapeHtml(view.lens)}" data-lifecycle-state="${escapeHtml(view.lifecycle.state)}">
     <h4><a href="${escapeHtml(view.href)}">${titleHtml}</a></h4>
     <p class="topic-search-result-meta"><span class="topic-search-result-type">${escapeHtml(view.entity_type_label)}</span><span class="topic-search-result-lens">${escapeHtml(view.lens_label)}</span><span class="topic-search-result-status is-${escapeHtml(view.lifecycle.group)}">${escapeHtml(view.lifecycle.label)}</span></p>
-    <p class="topic-search-result-evidence" data-match-field="${escapeHtml(view.evidence.field)}"><span class="topic-search-result-reason">${escapeHtml(view.evidence.reason)}</span><span>${highlightLiteralHtml(view.evidence.value, view.evidence.term)}</span></p>
+    <p class="topic-search-result-evidence" data-match-field="${escapeHtml(view.evidence.field)}"><span class="topic-search-result-reason">${escapeHtml(view.evidence.reason)}</span><span>${highlightEvidenceHtml(view.evidence)}</span></p>
     ${summaryHtml}
   </article>`;
 }
