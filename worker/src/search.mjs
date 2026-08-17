@@ -11,6 +11,7 @@ import { searchContractAwardDocuments } from "../../site/contract_award_search_p
 import {
   UNIVERSAL_SEARCH_COVERAGE_SCHEMA,
   UNIVERSAL_SEARCH_LENS_IDS,
+  federateUniversalSearch,
 } from "../../site/universal_search_federator.mjs";
 import {
   matchKeywordDocument,
@@ -33,6 +34,11 @@ const LANE_ORDER = Object.freeze([
 const D1_LANES = Object.freeze({
   contracts: Object.freeze({ domain: "contracts", source: "City Record daily mirror" }),
   rules: Object.freeze({ domain: "rules", source: "City Record daily mirror and bounded Rules projection" }),
+});
+// Production collection providers register here. Follow-on collection wiring
+// adds one lens-to-family entry without changing the federator contract.
+const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
+  people: "people",
 });
 
 function cleanQuery(value) {
@@ -292,6 +298,118 @@ function staticSearchLane(id, resolved) {
   }
 }
 
+function keywordFamilyProvider(familyId) {
+  return Object.freeze({
+    async search({ query, limit }) {
+      const family = keywordSearchIndex?.families?.[familyId];
+      if (!family) {
+        return {
+          candidates: [],
+          coverage: {
+            state: "not_indexed",
+            reason: "bounded_family_index_not_ready",
+            indexed_count: null,
+            as_of: null,
+            source: "No bounded source configured",
+            method: "bounded_keyword_family_v1",
+          },
+        };
+      }
+      const resolved = resolveKeywordQuery(query);
+      const matches = searchKeywordDocuments(family.documents, resolved, { limit });
+      const complete = Number.isInteger(family.source_row_count)
+        && family.source_row_count === family.indexed_count;
+      return {
+        candidates: matches.map((document, index) => {
+          const { match_evidence: evidence, ...searchDocument } = document;
+          return {
+            document: searchDocument,
+            local_score: index + 1,
+            match_fields: [{
+              field: evidence.field,
+              matched_term: evidence.matched_normalized_term,
+              source_observation_ref: evidence.source_identifier,
+            }],
+          };
+        }),
+        coverage: {
+          state: complete ? (matches.length ? "matched" : "empty") : "partial",
+          reason: complete ? null : "bounded_family_index_incomplete",
+          indexed_count: family.indexed_count,
+          as_of: family.as_of,
+          source: family.source,
+          method: "bounded_keyword_family_v1",
+        },
+      };
+    },
+  });
+}
+
+const PRODUCTION_COLLECTION_PROVIDERS = Object.freeze(Object.fromEntries(
+  Object.entries(PRODUCTION_COLLECTION_FAMILIES).map(([lens, familyId]) => (
+    [lens, keywordFamilyProvider(familyId)]
+  )),
+));
+
+function federatedCollectionLane(lens, federation, resolved) {
+  const coverage = federation.coverage.by_lens[lens];
+  const matched = federation.results.filter((result) => result.matched_lenses.includes(lens));
+  const available = coverage.state === "matched" || coverage.state === "empty";
+  return laneEnvelope(lens, {
+    status: available
+      ? (matched.length ? "matched" : "empty")
+      : coverage.state === "provider_unavailable" ? "unknown" : "not_covered",
+    count: available ? matched.length : null,
+    asOf: coverage.as_of,
+    source: coverage.source || "No bounded source configured",
+    cards: matched.slice(0, CARD_LIMIT).map((document) => (
+      publicCard(document, matchKeywordDocument(document, resolved))
+    )),
+    coverage: Object.freeze({
+      bounded: true,
+      source_row_count: coverage.indexed_count,
+      indexed_count: coverage.indexed_count,
+      card_limit: CARD_LIMIT,
+      reason: coverage.reason,
+    }),
+  });
+}
+
+function combinedStaticLane(id, source, members) {
+  const available = members.filter((lane) => ["matched", "empty"].includes(lane.status));
+  const cards = [];
+  const seen = new Set();
+  for (const card of members.flatMap((lane) => lane.cards || [])) {
+    if (seen.has(card.object_ref)) continue;
+    seen.add(card.object_ref);
+    cards.push(card);
+    if (cards.length >= CARD_LIMIT) break;
+  }
+  const count = available.length
+    ? available.reduce((sum, lane) => sum + lane.count, 0)
+    : null;
+  const clocks = members.map((lane) => lane.as_of).filter(Boolean).sort();
+  const sumCoverageCount = (key) => available.reduce((sum, lane) => {
+    const value = lane.coverage?.[key];
+    return Number.isInteger(value) ? sum + value : sum;
+  }, 0);
+  return laneEnvelope(id, {
+    status: cards.length
+      ? "matched"
+      : available.length ? "empty" : members.some((lane) => lane.status === "unknown") ? "unknown" : "not_covered",
+    count,
+    asOf: clocks.at(-1) || null,
+    source,
+    cards,
+    coverage: Object.freeze({
+      bounded: true,
+      source_row_count: sumCoverageCount("source_row_count"),
+      indexed_count: sumCoverageCount("indexed_count"),
+      card_limit: CARD_LIMIT,
+    }),
+  });
+}
+
 function flattenedResults(dynamicResults, lanes) {
   const seen = new Set();
   const results = [];
@@ -308,7 +426,7 @@ function flattenedResults(dynamicResults, lanes) {
   return results;
 }
 
-function universalSearchCoverage(lanes, results, dynamicResults) {
+function universalSearchCoverage(lanes, results, dynamicResults, federatedCoverage) {
   const typeCount = (types) => results.filter((document) => types.includes(document.object_type)).length;
   const partialLens = (lens, familyId, types) => {
     const family = lanes[familyId];
@@ -347,8 +465,8 @@ function universalSearchCoverage(lanes, results, dynamicResults) {
       source: "City Record and retained contract-award snapshots",
       method: "bounded_keyword_family_v1",
     },
-    people: partialLens("people", "people-organizations", ["person", "official"]),
-    agencies: partialLens("agencies", "people-organizations", ["agency"]),
+    people: federatedCoverage.by_lens.people,
+    agencies: partialLens("agencies", "agencies", ["agency"]),
     vendors: partialLens("vendors", null, ["vendor"]),
     committees: partialLens("committees", null, ["committee"]),
     community_boards: partialLens("community_boards", null, ["community_board"]),
@@ -416,9 +534,22 @@ export async function handleSearch(request, env) {
   if (!query) return json({ ok: false, reason: "missing-query" }, 400, cors);
   const resolved = resolveKeywordQuery(query);
   const dynamic = await noticeSearchLanes(env, resolved);
+  const collectionFederation = await federateUniversalSearch({
+    query: resolved.raw_query,
+    lenses: PRODUCTION_COLLECTION_PROVIDERS,
+    limit: RESULT_LIMIT,
+  });
+  const peopleLane = federatedCollectionLane("people", collectionFederation, resolved);
+  const agencyLane = staticSearchLane("people-organizations", resolved);
   const lanes = {
     ...dynamic.lanes,
-    "people-organizations": staticSearchLane("people-organizations", resolved),
+    people: peopleLane,
+    agencies: agencyLane,
+    "people-organizations": combinedStaticLane(
+      "people-organizations",
+      "NYC Council people and CityScroll agency profiles",
+      [agencyLane, peopleLane],
+    ),
     land: staticSearchLane("land", resolved),
     meetings: staticSearchLane("meetings", resolved),
     exams: staticSearchLane("exams", resolved),
@@ -435,6 +566,6 @@ export async function handleSearch(request, env) {
     },
     lanes: LANE_ORDER.map((id) => lanes[id]),
     results,
-    coverage: universalSearchCoverage(lanes, results, dynamic.results),
+    coverage: universalSearchCoverage(lanes, results, dynamic.results, collectionFederation.coverage),
   }, 200, cors, "public, max-age=60, stale-while-revalidate=300");
 }
