@@ -1126,8 +1126,6 @@ function parcelLinksHTML(links, provenanceKey, displayBbl = links.bbl){
     <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;
 }
 async function fillAddressLinks(r, el){
-  // TODO(precompute-no-live-api/geocoder-scope): preserve this address lookup
-  // until the site owner chooses a bounded gazetteer or full address index.
   if(!el || !r) return;
   let geo = null;
   if(goodAddr(r.street_address_1)){
@@ -1139,7 +1137,7 @@ async function fillAddressLinks(r, el){
     const tools = await propertyLocationTools();
     if(!document.contains(el)) return;
     const links = tools.parcelLinksFromBbl(geo.bbl);
-    if(links){ el.innerHTML = parcelLinksHTML(links, "parcel_via_geosearch", tools.bblReaderLabel(geo.bbl)); return; }
+    if(links){ el.innerHTML = parcelLinksHTML(links, "parcel_via_pad_snapshot", tools.bblReaderLabel(geo.bbl)); return; }
   }
   // BBL fallback: Property notices often name the site as Block/Lot in the body with no
   // usable street_address_1. Resolve the parcel from extracted tax-lot evidence only —

@@ -374,6 +374,13 @@
       ]
     },
     {
+      "id": "nyc-property-address-directory",
+      "kind": "html",
+      "identifier": "bc8t-ecyu",
+      "response_type": "text/html",
+      "fields": []
+    },
+    {
       "id": "nyc-geosearch",
       "kind": "geosearch",
       "identifier": "v2/search",
