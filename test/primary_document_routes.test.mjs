@@ -824,6 +824,7 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.equal(edgeRequestKind("https://cityscroll.org/vendors/CAMBA/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/officials/7801/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/committees/5261/"), "committee");
+  assert.equal(edgeRequestKind("https://cityscroll.org/mandates/64116-001"), "mandate");
   assert.equal(edgeRequestKind("https://cityscroll.org/stats.html"), "asset");
   assert.equal(edgeRequestKind("https://api.cityscroll.org/stats"), "asset");
   const routes = JSON.parse(read("../site/_routes.json"));
@@ -832,11 +833,52 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.ok(!routes.exclude.includes("/meeting.ics"));
   assert.ok(routes.include.length <= 100, "Pages Functions route include limit");
   assert.ok(routes.include.includes("/notices/*"));
+  // Without this include, Pages never invokes the worker for mandate documents
+  // and the route falls back to the blank SPA shell (live defect 64116-001).
+  assert.ok(routes.include.includes("/mandates/*"));
   assert.ok(routes.include.includes("/agencies/*"));
   assert.ok(routes.include.includes("/vendors/*"));
   assert.ok(routes.include.includes("/officials/*"));
   assert.ok(routes.include.includes("/committees/*"));
   assert.ok(routes.include.includes("/browse/*"));
+});
+
+test("notice-linked mandate route renders its real detail document at the edge", async () => {
+  // Regression lock for the notice → "Connected mandate" class: the backlink
+  // lookup names the mandate, and the same id must render a non-empty
+  // document through the edge worker against the committed read models.
+  const obligations = JSON.parse(read("../site/data/agency_obligations_lookup.json"));
+  const backlinks = JSON.parse(read("../site/data/notice_mandate_backlinks_lookup.json"));
+  const conformance = JSON.parse(read("../site/data/process_conformance_lookup.json"));
+  const linked = (backlinks.by_notice?.["20260605008"] || [])
+    .map((row) => row.mandate_id);
+  assert.ok(linked.includes("64116-001"), "notice 20260605008 links mandate 64116-001");
+  const env = {
+    ASSETS: {
+      async fetch(request) {
+        const path = new URL(request.url).pathname;
+        if (path === "/data/agency_obligations_lookup.json") return Response.json(obligations);
+        if (path === "/data/notice_mandate_backlinks_lookup.json") return Response.json(backlinks);
+        if (path === "/data/process_conformance_lookup.json") return Response.json(conformance);
+        return new Response("missing", { status: 404 });
+      },
+    },
+  };
+  const response = await edgeWorker.fetch(new Request("https://cityscroll.org/mandates/64116-001"), env);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /data-mandate-id="64116-001"/);
+  assert.match(html, /data-civic-object-kind="mandate"/);
+  assert.match(html, /Regulate the conduct of businesses authorized to collect commercial waste/);
+  assert.match(html, /Sanitation/);
+  assert.deepEqual(detectNodePageCruft(html), []);
+
+  const head = await edgeWorker.fetch(new Request("https://cityscroll.org/mandates/64116-001", { method: "HEAD" }), env);
+  assert.equal(head.status, 200);
+  assert.equal(await head.text(), "");
+
+  const missing = await edgeWorker.fetch(new Request("https://cityscroll.org/mandates/99999-999"), env);
+  assert.equal(missing.status, 404);
 });
 
 test("canonical committee routes serve exact graph records with linked officials", async () => {

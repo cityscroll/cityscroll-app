@@ -3,6 +3,7 @@
   "include": [
     "/meeting.ics",
     "/notices/*",
+    "/mandates/*",
     "/meetings/*",
     "/agencies/*",
     "/vendors/*",

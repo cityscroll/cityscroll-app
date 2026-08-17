@@ -434,6 +434,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - `node tools/build_primary_documents.mjs` builds the bounded Now and Browse defaults.
   `site/_worker.js` delegates document requests to `site/pages_edge.mjs`; notice permalinks are
   edge-rendered at `/notices/<request_id>`, while entity and matter hashes remain unchanged.
+- **`site/_routes.json` is the Pages worker invocation boundary (load-bearing):** the edge
+  renderer runs only for path patterns in `include`. A route family handled in
+  `pages_edge.mjs` but missing from `include` (as `/mandates/*` was) never reaches the
+  worker — Pages silently serves the SPA shell, rendering a blank document. Every new
+  edge-rendered route family must be added to `include` and locked by the routing test in
+  `test/primary_document_routes.test.mjs`.
 - `site/legacy_hash_forward.mjs` is the finite fragment-to-document compatibility bridge.
   Update its grammar through `site/route_migration.mjs`, then rebuild and review
   `docs/url-migration-map.csv` and `docs/url-migration-map.md` with
