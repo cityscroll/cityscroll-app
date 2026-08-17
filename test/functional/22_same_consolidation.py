@@ -2,8 +2,8 @@
 """Appointment component collapse, per-person reachability, and export census.
 
 The public Staffing document now owns People + organizations. Exercise the
-retained appointment component through Now's full-shell harness so this
-specialized UI contract cannot reclaim the primary Staffing route.
+retained appointment component through the committed legacy full-shell harness
+so this specialized UI contract cannot reclaim the primary Staffing route.
 """
 from __future__ import annotations
 
@@ -185,7 +185,7 @@ def main():
             context = browser.new_context(accept_downloads=True)
             page = context.new_page()
             install_staffing_routes(page)
-            page.goto(base + "now/", wait_until="load")
+            page.goto(base + "#money", wait_until="load")
             run(page, ROOT / ".tmp-same-consolidation")
             browser.close()
     finally:
