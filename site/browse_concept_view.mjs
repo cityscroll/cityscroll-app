@@ -2,7 +2,6 @@ import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
 import { renderEntityPivotLink } from "./edge_summary.mjs";
 import {
   communityBoardPageHref,
-  communityDistrictDisplayName,
 } from "./community_board_links.mjs";
 import {
   buildPeopleOrganizationsReadModel,
@@ -145,23 +144,21 @@ function renderCommittees(graph, people) {
 function renderBoardOrganizations(geography) {
   const boards = boardItems(geography);
   if (!boards.length) return "";
-  return `<ul class="browse-concept-list browse-board-organization-list">${boards.map((board) => {
-    const coverageName = communityDistrictDisplayName({
-      borough: board.borough,
-      district: board.district,
-      id: board.communityDistrict,
-    });
-    return `<li class="browse-board-organization" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">
-      <h3>${link(board.institutionHref, board.name)}</h3>
-      ${coverageName ? `<p class="browse-concept-meta">${esc(`Covers ${coverageName}.`)}</p>` : ""}
+  const byBorough = new Map();
+  for (const board of boards) {
+    if (!byBorough.has(board.borough)) byBorough.set(board.borough, []);
+    byBorough.get(board.borough).push(board);
+  }
+  return `<ul class="browse-concept-list browse-board-organization-list">${[...byBorough.entries()].map(([borough, boroughBoards]) => {
+    const links = boroughBoards.map((board) => `<a class="browse-board-number-link" href="${esc(board.institutionHref)}" aria-label="${esc(board.name)}" data-board-projection="organization" data-body-id="${esc(board.bodyId)}">${esc(board.number)}</a>`).join("");
+    return `<li class="browse-board-borough">
+      <h3>${esc(borough)} community boards:</h3>
+      <span class="browse-board-number-links">${links}</span>
     </li>`;
   }).join("")}</ul>`;
 }
 
 function boardItems(geography = {}) {
-  const districtByBoard = new Map((geography.public_edges || [])
-    .filter((edge) => edge?.type === "covers" && String(edge.to || "").startsWith("community-district:"))
-    .map((edge) => [edge.from, String(edge.to).replace("community-district:", "")]));
   return (geography.nodes || [])
     .filter((node) => node?.type === "community-board" && node?.name)
     .map((node) => ({
@@ -169,7 +166,9 @@ function boardItems(geography = {}) {
       name: node.name,
       borough: node.properties?.borough || "",
       district: node.properties?.district,
-      communityDistrict: districtByBoard.get(node.id) || null,
+      number: Number(node.properties?.district)
+        || Number(String(node.properties?.body_id || node.id || "").match(/-cb-(\d{2})$/)?.[1])
+        || Number(String(node.name).match(/Community Board\s+(\d{1,2})$/i)?.[1]),
       institutionHref: communityBoardPageHref(node.properties?.body_id || String(node.id || "").replace(/^community-board:/, "")),
     }))
     .sort((left, right) => left.borough.localeCompare(right.borough) || Number(left.district) - Number(right.district));
