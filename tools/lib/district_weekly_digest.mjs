@@ -139,6 +139,7 @@ export function buildDistrictWeeklyDigests({
   zapRows = [],
   propertyRows = [],
   meetingsRows = [],
+  communityBoardGeography = null,
   moneyRows = [],
   builtAt = new Date().toISOString(),
 } = {}) {
@@ -165,7 +166,7 @@ export function buildDistrictWeeklyDigests({
     add([...councils], landItem(row));
   }
 
-  const placeOpts = { cdCouncilIndex };
+  const placeOpts = { cdCouncilIndex, communityBoardGeography };
   for (const row of propertyRows) {
     add(councilsFromSlots(propertyPlacementsFromRow(row, boundaries, placeOpts), cdCouncilIndex), propertyItem(row));
   }

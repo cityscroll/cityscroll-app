@@ -61,6 +61,7 @@ export const GEOGRAPHY_COUNCIL_DISTRICT_IDS = Object.freeze(
 /** Closed subject kind registry (prefix of subject_ref). */
 export const SUBJECT_KINDS = Object.freeze({
   notice: { description: "City Record notice (request_id)" },
+  meeting: { description: "Source-qualified public meeting object" },
   exam: { description: "DCAS civil-service exam number" },
   "monitor-pack": { description: "Curated multi-watch monitor pack" },
   "district-digest": { description: "Council-district weekly digest" },
@@ -172,8 +173,8 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
     to_kinds: Object.freeze(["notice"]),
   },
   located_in: {
-    description: "Published civic subject has a deterministic polygon placement",
-    from_kinds: Object.freeze(["notice", "project"]),
+    description: "Published civic subject has a deterministic geographic placement",
+    from_kinds: Object.freeze(["notice", "meeting", "project"]),
     to_kinds: Object.freeze(["borough", "community-district", "council-district"]),
   },
 });

@@ -8,6 +8,7 @@ const readJson = (relativePath) => JSON.parse(
 
 const receipt = readJson("../site/data/meetings_location_residual_receipt.json");
 const meetings = readJson("../site/data/meetings_domain_observations.json");
+const sharedMeetings = readJson("../site/data/shared_meeting_read_model.json");
 const activity = readJson("../site/data/district_activity.json");
 const sources = readJson("../site/data/meetings_location_residual_sources.json");
 
@@ -68,11 +69,14 @@ test("the fixed 11-row follow-up has terminal source-backed classifications", ()
   assert.equal(receipt.followup.cases.filter((row) => row.terminal_classification === "virtual_only").length, 2);
 });
 
-test("fixed-corpus re-stamp advances Meetings coverage without changing corpus width", () => {
+test("district activity retains residual accounting while adding ontology-placed board meetings", () => {
   assert.equal(meetings.row_count, 119);
   assert.equal(meetings.location_residual.fixed_rows, 24);
-  assert.equal(activity.sources.meetings.counted, 119);
-  assert.equal(activity.sources.meetings.located, 106);
+  assert.equal(activity.sources.meetings.corpus, "shared_meeting_read_model");
+  assert.equal(activity.sources.meetings.counted, sharedMeetings.rows.length);
+  assert.equal(activity.sources.meetings.located, 172);
+  assert.equal(activity.sources.meetings.by_method.community_board_ontology, 58);
+  assert.equal(sharedMeetings.counts.community_board, 58);
   assert.equal(activity.unlocated.meetings, 13);
   assert.equal(activity.virtual.meetings, 5);
   assert.deepEqual(activity.unlocated_reasons.meetings, {
