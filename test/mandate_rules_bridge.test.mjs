@@ -184,8 +184,8 @@ test("Parks constellation document surfaces Mandates → Rules card", () => {
   assert.match(html, /data-agency-constellation-card="mandates-rules"/);
   assert.match(html, /data-bridge-side="mandates"/);
   assert.match(html, /data-bridge-side="rules"/);
-  assert.equal((html.match(/Browse agency Rules/g) || []).length, 1);
-  assert.match(html, /aria-label="Explore this agency"/);
+  assert.equal((html.match(/class="agency-connection-card" data-edge-type="issued_rule"/g) || []).length, 1);
+  assert.doesNotMatch(html, /aria-label="Explore this agency"|Browse agency Rules/);
   assert.match(html, /Watch rulemaking mandates/);
   assert.match(html, /Follow Rules activity/);
   // Per-row Source law (matter edge) — not agency-wide Open-in chips.

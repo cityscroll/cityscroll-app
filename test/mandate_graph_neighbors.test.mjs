@@ -299,16 +299,17 @@ test("Parks constellation document wires honest section-level agency neighbors",
   assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
   assert.match(html, /Report mandates/);
   assert.match(html, /Rulemaking mandates/);
-  // Agency-wide browse lives once in the page-level Explore group.
-  assert.match(html, /aria-label="Explore this agency"/);
-  for (const label of ["Browse agency Rules", "Browse agency Meetings", "Browse agency Contracts"]) {
-    assert.equal((html.match(new RegExp(label, "g")) || []).length, 1);
+  // Agency-wide browse lives in the typed connected-record cards, not a
+  // second undifferentiated route group.
+  assert.doesNotMatch(html, /aria-label="Explore this agency"|Browse agency /);
+  for (const edgeType of ["issued_rule", "hosts_meeting", "published_by_agency"]) {
+    assert.equal((html.match(new RegExp(`class="agency-connection-card" data-edge-type="${edgeType}"`, "g")) || []).length, 1);
   }
   assert.match(html, /data-mandate-edge="source_law"/);
   assert.deepEqual(detectNodePageCruft(html), []);
 });
 
-test("EPA page keeps one Explore group and distinct mandate section actions", () => {
+test("EPA page keeps one connected-record grid and distinct mandate section actions", () => {
   assert.ok(obligations, "agency_obligations_lookup.json required");
   const view = buildAgencyConstellationView(EPA, {
     intelligence,
@@ -317,9 +318,10 @@ test("EPA page keeps one Explore group and distinct mandate section actions", ()
     process_conformance: processConformance,
   });
   const html = renderAgencyConstellationDocument(view);
-  assert.equal((html.match(/aria-label="Explore this agency"/g) || []).length, 1);
-  for (const label of ["Browse agency Rules", "Browse agency Meetings", "Browse agency Contracts"]) {
-    assert.equal((html.match(new RegExp(label, "g")) || []).length, 1);
+  assert.equal((html.match(/<section class="agency-connections"/g) || []).length, 1);
+  assert.doesNotMatch(html, /aria-label="Explore this agency"|Browse agency /);
+  for (const edgeType of ["issued_rule", "published_by_agency", "statute_duty", "certified_to_agency"]) {
+    assert.equal((html.match(new RegExp(`class="agency-connection-card" data-edge-type="${edgeType}"`, "g")) || []).length, 1);
   }
   assert.match(html, /Share this view/);
   assert.match(html, /Watch expected mandate events|Watch report mandates|Watch rulemaking mandates|Follow Rules activity/);
