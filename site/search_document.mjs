@@ -236,13 +236,74 @@ function renderCoverage(root, coverage) {
   else root.querySelector(".topic-search-method")?.before(next);
 }
 
-function sourceDataNode(tag, className, text) {
+function appendHighlightedText(node, text, terms = []) {
+  const sourceText = String(text || "");
+  const needles = [...new Set((terms || []).map((term) => clean(term, 120)).filter(Boolean))]
+    .sort((left, right) => right.length - left.length);
+  if (!needles.length) {
+    node.textContent = sourceText;
+    return node;
+  }
+  const escaped = needles.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  let pattern;
+  try {
+    pattern = new RegExp(escaped.join("|"), "giu");
+  } catch {
+    node.textContent = sourceText;
+    return node;
+  }
+  let cursor = 0;
+  for (const match of sourceText.matchAll(pattern)) {
+    const index = match.index ?? cursor;
+    if (index > cursor) node.append(document.createTextNode(sourceText.slice(cursor, index)));
+    const mark = document.createElement("mark");
+    mark.textContent = match[0];
+    node.append(mark);
+    cursor = index + match[0].length;
+  }
+  if (cursor < sourceText.length) node.append(document.createTextNode(sourceText.slice(cursor)));
+  return node;
+}
+
+function semanticPassageExcerpt(text, terms, maxLength = 520) {
+  const sourceText = clean(text, 1_200);
+  if (sourceText.length <= maxLength) return sourceText;
+  const lowered = sourceText.toLocaleLowerCase("en-US");
+  const ranges = [...new Set((terms || []).map((term) => clean(term, 120)).filter(Boolean))]
+    .map((term) => {
+      const index = lowered.indexOf(term.toLocaleLowerCase("en-US"));
+      return index < 0 ? null : { start: index, end: index + term.length };
+    })
+    .filter(Boolean)
+    .sort((left, right) => left.start - right.start);
+  if (!ranges.length) return `${sourceText.slice(0, maxLength - 1)}…`;
+
+  const merged = [];
+  for (const range of ranges) {
+    const previous = merged.at(-1);
+    if (previous && range.start <= previous.end + 80) previous.end = Math.max(previous.end, range.end);
+    else merged.push({ ...range });
+  }
+  const coreLength = merged.reduce((total, range) => total + range.end - range.start, 0);
+  const markerLength = 2 + Math.max(0, merged.length - 1) * 3;
+  const context = Math.max(
+    0,
+    Math.floor((maxLength - coreLength - markerLength) / (merged.length * 2)),
+  );
+  const expanded = merged.map((range) => ({
+    start: Math.max(0, range.start - context),
+    end: Math.min(sourceText.length, range.end + context),
+  }));
+  const chunks = expanded.map((range) => sourceText.slice(range.start, range.end));
+  return `${expanded[0].start ? "…" : ""}${chunks.join(" … ")}${expanded.at(-1).end < sourceText.length ? "…" : ""}`;
+}
+
+function sourceDataNode(tag, className, text, matchedTerms = []) {
   const node = document.createElement(tag);
   node.className = className;
   node.lang = "en";
   node.dir = "ltr";
-  node.textContent = text;
-  return node;
+  return appendHighlightedText(node, text, matchedTerms);
 }
 
 function renderSemanticCandidate(candidate) {
@@ -251,7 +312,20 @@ function renderSemanticCandidate(candidate) {
   article.dataset.semanticCandidate = candidate.candidate_id;
 
   const heading = document.createElement("h4");
-  heading.append(sourceDataNode("span", "topic-search-result-title", topicCandidateTitle(candidate)));
+  const title = sourceDataNode(
+    "span",
+    "topic-search-result-title",
+    topicCandidateTitle(candidate),
+    candidate.matched_terms,
+  );
+  if (candidate.source.canonical_href) {
+    const primary = document.createElement("a");
+    primary.href = candidate.source.canonical_href;
+    primary.append(title);
+    heading.append(primary);
+  } else {
+    heading.append(title);
+  }
   article.append(heading);
 
   const rationale = document.createElement("p");
@@ -267,7 +341,8 @@ function renderSemanticCandidate(candidate) {
     article.append(sourceDataNode(
       "blockquote",
       "topic-search-result-passage",
-      clean(candidate.passage.text, 520),
+      semanticPassageExcerpt(candidate.passage.text, candidate.matched_terms),
+      candidate.matched_terms,
     ));
   } else {
     const limit = document.createElement("p");

@@ -34,6 +34,7 @@ test("cited retrieval returns typed, versioned passages with exact manifest join
     family: "city_record_notice",
     native_id: "20260715041",
     url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041",
+    canonical_href: "/notices/20260715041",
     title: "Amendments to Rules Relating to the Energy Conservation Code",
   });
   assert.equal(citation.passage.id, "city_record_notice:20260715041:p0001");
