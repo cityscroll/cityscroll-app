@@ -4,6 +4,10 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
 import worker from "../src/worker.mjs";
+import {
+  buildUniversalSearchCoverageView,
+  renderUniversalSearchCoverageHtml,
+} from "../../site/universal_search_coverage_receipt.mjs";
 
 const NOTICE_SCHEMA = readFileSync(new URL("../migrations/0001_notices.sql", import.meta.url), "utf8");
 const FACTS_SCHEMA = readFileSync(new URL("../migrations/0010_notice_facts.sql", import.meta.url), "utf8");
@@ -234,6 +238,34 @@ test("a missing notice mirror leaves static family lanes independently usable", 
   assert.equal(lanes.rules.status, "unknown");
   assert.equal(lanes["people-organizations"].status, "matched");
   assert.ok(lanes["people-organizations"].cards.some((card) => card.object_type === "agency"));
+});
+
+test("People uses its complete production provider for worker recall and coverage", async () => {
+  const response = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=Christopher%20Marte"),
+    {},
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.ok(body.results.some((result) => result.object_ref === "person:7801"));
+  assert.deepEqual({
+    participated: body.coverage.by_lens.people.participated,
+    state: body.coverage.by_lens.people.state,
+    indexed_count: body.coverage.by_lens.people.indexed_count,
+  }, {
+    participated: true,
+    state: "matched",
+    indexed_count: 215,
+  });
+
+  const peopleCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
+    .find((lens) => lens.lens === "people");
+  assert.equal(peopleCoverage?.state_label, "indexed");
+  assert.match(
+    renderUniversalSearchCoverageHtml(body.coverage),
+    /data-coverage-lens="people" data-coverage-state="matched"><span>People<\/span><strong>1 match · indexed<\/strong>/,
+  );
 });
 
 test("common civic terms return relevant records through the same FTS route", async () => {
