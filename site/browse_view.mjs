@@ -28,6 +28,7 @@ import { communityBoardPageHref } from "./community_board_links.mjs";
 import { communityBoardScopeHref } from "./community_board_scope_links.mjs";
 import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
+import { renderRulesSemanticLane, resolveRulesSemanticLane } from "./rules_semantic_lane.mjs";
 import {
   communityBoardDisambiguation,
   communityBoardIdFromRow,
@@ -931,6 +932,17 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
       ? matchedBase.filter((row) => rowMatchesScopeRefs(row, facet, effectiveScopeRefs, effectiveScopeKinds))
       : matchedBase
     : matchedBase;
+  const semanticLane = facet === "rules" && options.semanticArtifact
+    ? resolveRulesSemanticLane(options.semanticArtifact, {
+      query,
+      agency,
+      process: search.get("process"),
+      geography: borough,
+      date_from: search.get("date_from") || search.get("from"),
+      date_to: search.get("date_to") || search.get("to"),
+      lexical_request_ids: matched.map((row) => rowId(facet, row)).filter(Boolean),
+    })
+    : null;
   const boardRanking = ambiguousBoardSearch
     ? rankCommunityBoardRows(matched, {
       query: communityBoardQuery,
@@ -1010,6 +1022,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     communityBoardGroups: visibleBoardRanking?.groups || [],
     edgeInventory: edgeInventory.edgeInventory,
     edgePairs: edgeInventory.edgePairs,
+    semanticLane,
   };
 }
 
@@ -1290,7 +1303,22 @@ export function renderBrowseView(view) {
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${cards}</div>`;
+  const semanticLane = view.facet === "rules"
+    ? renderRulesSemanticLane(view.semanticLane, {
+      escape: esc,
+      t: (key) => ({
+        rules_semantic_heading: "Related-language matches",
+        rules_semantic_partial: "Reviewed pilot with partial coverage",
+        rules_semantic_match: "Related to your search",
+        rules_semantic_source_passage: "Source passage",
+        rules_semantic_open_rule: "Open rule",
+        rules_semantic_unavailable: "Related-language matches are unavailable.",
+        rules_semantic_held: "No related-language matches meet these filters.",
+        rules_semantic_not_yet_observed: "This reviewed pilot does not cover that search yet.",
+      })[key] || key,
+    })
+    : "";
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {
