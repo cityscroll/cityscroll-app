@@ -281,6 +281,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   evidence ownership; federation validates immutable SearchDocuments, calibrates local BM25 order,
   preserves observation refs on match edges, and reports empty, unavailable, and unindexed lenses
   distinctly. Focused proof: `test/universal_search_cross_lens_ranking.test.mjs`.
+- **Universal search relevance UI:** `site/universal_search_relevance_ux.mjs` projects federated
+  match fields and source lifecycle into escaped highlights, plain match reasons, typed lens labels,
+  and active/archive status without reclassifying the source row. `site/search_document.mjs` owns
+  browser grouping and route hydration. Focused proof:
+  `test/universal_search_relevance_ux.test.mjs` and `test/functional/29_search_results.py`.
 - **Browse object-card interactions:** `site/affordance_grammar.mjs` owns the shared
   `objectCardInteractionProjection` and title, verified-relation, canonical Copy link,
   external-handoff, and context-gated action-rail render primitives. Source adapters retain

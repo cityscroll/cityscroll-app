@@ -268,7 +268,7 @@ export function renderSearchDocument() {
     <form class="topic-search-form" method="get" action="/search/" data-search-form>
       <label for="search-query">What are you looking for?</label>
       <div class="topic-search-form-row"><input id="search-query" name="q" type="search" maxlength="240" autocomplete="off" placeholder="Try a topic, place, or agency"><button type="submit">Search records</button></div>
-      <p class="topic-search-note">You can compare Contracts, Rules, Meetings, and Mandates without choosing a type first.</p>
+      <p class="topic-search-note">Compare records, people, organizations, exams, and places without choosing a type first.</p>
     </form>
     <div class="topic-search-context" data-search-place hidden></div>
     <div class="topic-search-method" aria-label="Search method"><span>Match method</span><strong>Keyword search</strong></div>
@@ -277,6 +277,11 @@ export function renderSearchDocument() {
       ${searchLane("rules", "Rules", "Published rules and mandates.")}
       ${searchLane("meetings", "Meetings", "Public meetings and decisions.")}
       ${searchLane("obligations", "Mandates", "Published duties and requirements.")}
+      ${searchLane("people", "People and organizations", "Officials, agencies, and civic organizations.")}
+      ${searchLane("places", "Community boards", "Borough-qualified community boards.")}
+      ${searchLane("staffing", "Civil-service exams", "Publisher-identified exams and schedules.")}
+      ${searchLane("property", "Properties", "Exact property records and addresses.")}
+      ${searchLane("zoning", "Land use", "Projects and review records.")}
     </div>
   </div>`;
 }
