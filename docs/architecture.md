@@ -201,7 +201,10 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **`site/data/`** — committed product data, including Staffing role chips and `staffing_exams.json`,
   a build-time view of current DCAS exam schedules, notices, and active-list totals. Wave 4
   transforms use deterministic test datasets under `test/fixtures/wave4/`; joined production
-  records feed their product views.
+  records feed their product views. The Rules related-language pilot is a precomputed,
+  partial-coverage projection over the versioned semantic corpus manifest and reviewed source
+  passages; it adds no request-time embedding or vector index, keeps rule identity and hard
+  Rules filters, and yields duplicate ownership to the lexical lane.
 
 ## Serving & deploy
 

@@ -43,11 +43,26 @@ function rulePlaceChips(location){
 let rulesAll=[], rulesViewCache=null, rulesProcessSel="all", rulesBorough="", rulesAgency="";
 let rulesAgencyChoices=[];
 let rulesExplorerToolsPromise=null;
+let rulesSemanticToolsPromise=null,rulesSemanticArtifactPromise=null;
 function rulesExplorerTools(){
   if(!rulesExplorerToolsPromise){
     rulesExplorerToolsPromise=import("../rules_explorer.mjs").catch(()=>null);
   }
   return rulesExplorerToolsPromise;
+}
+function rulesSemanticTools(){
+  if(!rulesSemanticToolsPromise){
+    rulesSemanticToolsPromise=import("../rules_semantic_lane.mjs").catch(()=>null);
+  }
+  return rulesSemanticToolsPromise;
+}
+function loadRulesSemanticArtifact(){
+  if(!rulesSemanticArtifactPromise){
+    rulesSemanticArtifactPromise=fetch("/data/rules_semantic_lane.json",{credentials:"omit"})
+      .then(response=>response.ok?response.json():null)
+      .catch(()=>null);
+  }
+  return rulesSemanticArtifactPromise;
 }
 const RULES_PHASE_IDS=["proposal","public_process","adoption","effective"];
 const RULES_PHASE_LABEL_KEYS={
@@ -195,11 +210,15 @@ async function renderRulesExplorer(){
   renderRulesAgencyScopeLinks();
   renderRulesBoroughScopeLinks();
   updateRulesMoreFiltersState();
-  const tools=await rulesExplorerTools();
-  const bandTools=await rulesActionBandTools();
   const processRail=$("#rulesprocessrail");
   const agency=rulesAgency;
   const kw=($("#ruleskw")?.value||"").trim();
+  const [tools,bandTools,semanticTools,semanticArtifact]=await Promise.all([
+    rulesExplorerTools(),
+    rulesActionBandTools(),
+    rulesSemanticTools(),
+    kw?loadRulesSemanticArtifact():Promise.resolve(null),
+  ]);
   let entries=[];
   if(tools && tools.buildRulesExplorerEntries){
     entries=tools.buildRulesExplorerEntries(rulesAll, rulesViewCache);
@@ -269,8 +288,20 @@ async function renderRulesExplorer(){
       if(m?.request_id) feedRows.rules[m.request_id]=m;
     }
   }
+  const semanticProjection=semanticTools?.resolveRulesSemanticLane
+    ? semanticTools.resolveRulesSemanticLane(semanticArtifact,{
+        query:kw,
+        agency,
+        process:rulesProcessSel,
+        geography:rulesBorough,
+        lexical_request_ids:[...new Set(entries.flatMap(e=>(e.members||[e.primary]).map(row=>row?.request_id).filter(Boolean)))],
+      })
+    : (kw?{state:"unavailable",coverage:{state:"unavailable"},candidates:[]}:null);
+  const semanticHTML=semanticTools?.renderRulesSemanticLane
+    ? semanticTools.renderRulesSemanticLane(semanticProjection,{t,escape:escUiHtml})
+    : "";
   if(!entries.length){
-    feedEl.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>';
+    feedEl.innerHTML=semanticHTML+'<div class="empty">' + t("nothing_found_feed") + '</div>';
     return;
   }
   // Action-banded grouping: comment open / hearing / adopted / other — not date-only buckets.
@@ -292,7 +323,7 @@ async function renderRulesExplorer(){
   } else {
     html=entries.map(e=>rulesExplorerCardHTML(e, terms)).join("");
   }
-  feedEl.innerHTML=html;
+  feedEl.innerHTML=semanticHTML+html;
   feedEl.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   feedEl.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
   try{ renderSearchComponents("rules"); }catch(_e){}
