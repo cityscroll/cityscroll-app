@@ -263,6 +263,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   declared source families; never infer a civic lens or jurisdiction from passage text. The
   `/search/` renderer keeps the legacy keyword response as the endpoint-owned fallback. Focused
   proof: `test/semantic_topic_search.test.mjs` and `test/functional/29_search_results.py`.
+- **Typed search handoff:** `site/search_lens_handoff.mjs` carries a selected SearchDocument into
+  its established Browse route through scope v0. Keep raw and normalized topic terms separate,
+  preserve place/time and structured entity context, and render only source-provided evidence
+  offsets at the destination; unavailable evidence stays explicit. Query edits must remove stale
+  handoff evidence, and Back uses the stored Search lane. Focused proof:
+  `test/search_lens_handoff.test.mjs`, `test/scope_v0.test.mjs`, and
+  `test/functional/29_search_results.py`.
 - **Entity SearchDocument producers:** `site/{vendor,committee,board,exam,parcel}_search_producer.mjs`
   adapt the existing canonical read models into that contract and carry matched/empty/partial/
   not-indexed coverage. Vendor aliases are reviewed-registry-only; committee publication is gated;

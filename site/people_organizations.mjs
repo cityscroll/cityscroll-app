@@ -6,6 +6,10 @@ import {
 } from "./browse_list_contract.mjs";
 import { renderBrowseView } from "./browse_view.mjs";
 import { buildPeopleListBrowseView } from "./browse_reuse_surfaces.mjs";
+import {
+  parseSearchLensHandoff,
+  renderSearchLensHandoffHtml,
+} from "./search_lens_handoff.mjs";
 
 const root = document.querySelector("[data-people-organizations]");
 const input = root?.querySelector("[data-people-organizations-search]");
@@ -36,6 +40,10 @@ function updateShareState() {
 }
 
 if (root && input && type && summary && empty && list) {
+  const handoff = parseSearchLensHandoff(location.search);
+  if (handoff?.destination.surface === "people-organizations") {
+    root.insertAdjacentHTML("afterbegin", renderSearchLensHandoffHtml(handoff, { t: globalThis.t }));
+  }
   const model = readModel();
   const allRows = Array.isArray(model.rows) ? model.rows : [];
   const initialSummary = summary.textContent;

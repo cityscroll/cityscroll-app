@@ -261,7 +261,8 @@ test("local site server publishes an OS-assigned origin and serves the requested
   const searchBody = await search.text();
   assert.match(searchBody, /data-primary-context="search"/);
   assert.match(searchBody, /name="q"/);
-  assert.match(searchBody, /data-search-lane="obligations"/);
+  assert.equal((searchBody.match(/data-search-lane=/g) || []).length, 6);
+  assert.match(searchBody, /data-search-lane="exams"/);
 
   const agencyProfile = await fetch(new URL(
     "agencies/citywide-administrative-services/?tab=forecast",
