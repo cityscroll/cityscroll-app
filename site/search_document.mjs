@@ -10,6 +10,11 @@ import {
   topicCandidateTitle,
 } from "./semantic_topic_search.mjs";
 import { renderUniversalSearchCoverageHtml } from "./universal_search_coverage_receipt.mjs";
+import {
+  buildSearchLensHandoffHref,
+  searchDestinationForResult,
+  searchFamilyForResult,
+} from "./search_lens_handoff.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
@@ -17,14 +22,11 @@ const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
 const SEARCH_API_FALLBACK_ORIGIN = "https://crol-worker.crol-worker.workers.dev";
 const LANES = Object.freeze([
   "contracts",
+  "people-organizations",
+  "land",
   "rules",
   "meetings",
-  "obligations",
-  "people",
-  "places",
-  "staffing",
-  "property",
-  "zoning",
+  "exams",
 ]);
 // Stable resident labels are also inspected by entity surfaces that hand
 // results into Search; keep the product-domain vocabulary centralized here.
@@ -38,27 +40,6 @@ const DOMAIN_LANES = Object.freeze({
   staffing: "Civil-service exams",
   property: "Properties",
   zoning: "Land use",
-});
-const DOMAIN_TO_LANE = Object.freeze({
-  contracts: "contracts",
-  rules: "rules",
-  meetings: "meetings",
-  mandates: "obligations",
-  people: "people",
-  places: "places",
-  staffing: "staffing",
-  property: "property",
-  zoning: "zoning",
-});
-const DOMAIN_LANE_TO_FAMILY = Object.freeze({
-  contracts: "contracts",
-  rules: "rules",
-  meetings: "meetings",
-  people: "people-organizations",
-  places: "people-organizations",
-  staffing: "exams",
-  property: "land",
-  zoning: "land",
 });
 const PLACE_KEYS = Object.freeze([
   ["boro", "Borough"],
@@ -162,15 +143,30 @@ export function searchResultHref(record) {
 }
 
 export function searchResultLane(record) {
-  return DOMAIN_TO_LANE[record?.domain] || null;
+  return searchFamilyForResult(record);
 }
 
-function renderResult(record) {
+function renderResult(record, payload) {
   const html = renderUniversalSearchResultHtml(record);
   if (!html) return null;
   const template = document.createElement("template");
   template.innerHTML = html;
-  return template.content.firstElementChild;
+  const card = template.content.firstElementChild;
+  const destination = searchDestinationForResult(record);
+  const href = buildSearchLensHandoffHref(record, payload, location.search);
+  if (destination && href) {
+    const action = document.createElement("p");
+    action.className = "topic-search-result-handoff";
+    const link = document.createElement("a");
+    link.href = href;
+    link.dataset.searchHandoff = destination.surface;
+    link.textContent = typeof globalThis.t === "function"
+      ? globalThis.t("search_handoff_continue", { surface: destination.label })
+      : `Continue in ${destination.label}`;
+    action.append(link);
+    card.append(action);
+  }
+  return card;
 }
 
 function appendFamilyReceipt(body, family) {
@@ -198,7 +194,7 @@ function renderResults(root, payload) {
     const items = grouped[lane];
     const elements = laneElements(root, lane);
     if (!elements.body) continue;
-    const family = families.get(DOMAIN_LANE_TO_FAMILY[lane]);
+    const family = families.get(lane);
     elements.status.textContent = items.length === 1
       ? tr("one_result", null, "1 result")
       : items.length
@@ -223,7 +219,7 @@ function renderResults(root, payload) {
     const list = document.createElement("div");
     list.className = "topic-search-results";
     for (const record of items) {
-      const rendered = renderResult(record);
+      const rendered = renderResult(record, payload);
       if (rendered) list.append(rendered);
     }
     elements.body.append(list);

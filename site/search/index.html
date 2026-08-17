@@ -205,6 +205,16 @@
   .nlunderstood .nledit{margin-inline-start:8px;vertical-align:baseline}
   .searchactive{display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
   .searchactive .mini{flex:0 0 auto}
+  .search-handoff{margin:10px 0;padding:11px 12px;border:1px solid var(--rule);border-inline-start:4px solid var(--oxblood);border-radius:8px;background:var(--paper-2);color:var(--ink-soft);font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif}
+  .search-handoff-kicker{margin:0 0 8px;color:var(--ink);font-weight:750}
+  .search-handoff-topic{display:inline-block;text-decoration:none;cursor:pointer}
+  .search-handoff-evidence{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:5px 9px;margin:7px 0 0;overflow-wrap:anywhere}
+  .search-handoff-evidence>span:first-child{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
+  .search-handoff-evidence mark{padding:0 .08em;background:#ffe7a3;color:inherit;border-radius:2px}
+  .search-handoff-evidence.is-unavailable{display:block;color:var(--muted)}
+  .search-handoff-back{margin:8px 0 0}
+  .search-handoff-back a{color:var(--oxblood);font-weight:700}
+  @media(max-width:680px){.search-handoff-evidence{grid-template-columns:minmax(0,1fr)}}
   .nlqactions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
   .nlqactions .act,.nlqactions button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;border-radius:7px}
   .nlqactions .act{display:inline-flex;align-items:center;background:#fff;color:var(--oxblood);border:1px solid var(--rule);text-decoration:none}
@@ -1664,28 +1674,8 @@
     <header class="topic-search-lane-head"><div><h3 id="search-lane-meetings" data-i18n="tab_meetings">Meetings</h3><p>Public meetings and decisions.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
     <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
-      <section class="topic-search-lane" data-search-lane="obligations" aria-labelledby="search-lane-obligations">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-obligations" data-i18n="topic_search_family_mandates">Mandates</h3><p>Published duties and requirements.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="people" aria-labelledby="search-lane-people">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-people">People and organizations</h3><p>Officials, agencies, and civic organizations.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="places" aria-labelledby="search-lane-places">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-places">Community boards</h3><p>Borough-qualified community boards.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="staffing" aria-labelledby="search-lane-staffing">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-staffing">Civil-service exams</h3><p>Publisher-identified exams and schedules.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="property" aria-labelledby="search-lane-property">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-property">Properties</h3><p>Exact property records and addresses.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
-    <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
-  </section>
-      <section class="topic-search-lane" data-search-lane="zoning" aria-labelledby="search-lane-zoning">
-    <header class="topic-search-lane-head"><div><h3 id="search-lane-zoning">Land use</h3><p>Projects and review records.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
+      <section class="topic-search-lane" data-search-lane="exams" aria-labelledby="search-lane-exams">
+    <header class="topic-search-lane-head"><div><h3 id="search-lane-exams">Exams</h3><p>Civil-service exams and published schedules.</p></div><span class="topic-search-lane-status" data-i18n="topic_search_waiting">Waiting</span></header>
     <div class="topic-search-lane-body" role="status" aria-live="polite" data-i18n="topic_search_enter">Enter a topic to search public records.</div>
   </section>
     </div>

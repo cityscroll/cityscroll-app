@@ -20,6 +20,7 @@ def assert_axe_green(page, state):
 
 def typed_result(term, *, title, object_type, domain, lens, href, state="active"):
     observation_ref = f"fixture:{object_type}:{term}"
+    match_start = title.lower().index(term.lower())
     return {
         "schema": "cityscroll.search_document.v1",
         "result_schema": "cityscroll.universal_search_result.v1",
@@ -43,6 +44,17 @@ def typed_result(term, *, title, object_type, domain, lens, href, state="active"
             "matched_term": term,
             "source_observation_ref": observation_ref,
         }],
+        "match_evidence": {
+            "field": "title",
+            "matched_normalized_term": term,
+            "source_identifier": observation_ref,
+            "snippet": {
+                "text": title,
+                "mark_start": match_start,
+                "mark_end": match_start + len(term),
+            },
+        },
+        "keyword_evidence": {"status": "matched", "message": None},
         "ranking": {"lifecycle_state": state},
         "edge_provenance": {
             "document_producer": "functional_fixture.v1",
@@ -67,6 +79,15 @@ LEGACY_FALLBACK = typed_result(
     lens="notices",
     href="/browse/contracts/?mode=award&q=fixture-fallback",
     state="archived",
+)
+
+MEETING_FALLBACK = typed_result(
+    "meeting",
+    title="Meeting fallback public hearing",
+    object_type="meeting",
+    domain="meetings",
+    lens="notices",
+    href="/meetings/meeting%3Acity_record%3Afixture-meeting",
 )
 
 
@@ -96,7 +117,7 @@ def result_family(row):
     return None
 
 
-def fallback_payload(results):
+def fallback_payload(results, query):
     counts = {lens: 0 for lens in SEARCH_LENSES}
     for result in results:
         counts[result.get("lens", "notices")] += 1
@@ -119,7 +140,15 @@ def fallback_payload(results):
     observed = sum(counts.values())
     return {
         "schema": "cityscroll.keyword_search_response.v1",
+        "query": query,
         "match_mode": "keyword",
+        "resolved_term": {
+            "canonical_tokens": [
+                results[0]["match_evidence"]["matched_normalized_term"]
+            ] if results else [query],
+            "structured_filters": {},
+            "alias_receipt": None,
+        },
         "lanes": [{
             "id": family,
             "status": "matched" if any(result_family(row) == family for row in results) else "empty",
@@ -205,7 +234,10 @@ def main():
         def search_api(route):
             query = parse_qs(urlparse(route.request.url).query).get("q", [""])[0].lower()
             if query == "fallback":
-                json_response(route, fallback_payload([LEGACY_FALLBACK]))
+                json_response(route, fallback_payload([LEGACY_FALLBACK], query))
+                return
+            if query == "meeting-fallback":
+                json_response(route, fallback_payload([MEETING_FALLBACK], query))
                 return
             for term, passage_text in SEMANTIC_FIXTURES.items():
                 if term in query:
@@ -232,28 +264,52 @@ def main():
             assert source_link.count() == 1
             assert source_link.get_attribute("target") == "_blank"
 
-        page.goto(f"{BASE}/search/?q=fallback", wait_until="domcontentloaded", timeout=30000)
-        page.wait_for_selector("[data-search-result]")
-        fallback = page.locator("[data-search-result]").first
-        assert fallback.locator("a[href^='/']").count() == 1
-        assert LEGACY_FALLBACK["title"] in (fallback.text_content() or "")
-        assert fallback.locator("mark").count() >= 1
-        assert fallback.locator(".topic-search-result-reason").text_content() == "Title match"
-        assert fallback.locator(".topic-search-result-type").count() == 1
-        assert fallback.locator(".topic-search-result-lens").count() == 1
-        assert fallback.get_attribute("data-lifecycle-state") == "archived"
-        assert fallback.locator(".topic-search-result-status").text_content().lower() == "archived"
-        assert page.evaluate("el => el.scrollWidth <= el.clientWidth", fallback.element_handle())
-        fallback.locator("a").first.focus()
-        assert fallback.locator("a").first.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
-        coverage = page.locator("[data-search-coverage]")
-        assert coverage.get_attribute("data-coverage-state") == "complete"
-        assert coverage.locator("strong").first.text_content().startswith("1 match across")
-        assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
-        assert "Bounded public-record fixture" in (
-            page.locator('[data-search-lane="contracts"] .topic-search-lane-source').text_content() or ""
-        )
-        assert_axe_green(page, "keyword fallback coverage")
+        fallback_cases = [
+            ("fallback", LEGACY_FALLBACK, "/browse/contracts/?", "Opened Contracts", "contracts"),
+            ("meeting-fallback", MEETING_FALLBACK, "/browse/meetings/?", "Opened Meetings", "meetings"),
+        ]
+        for query, expected, expected_path, opened_copy, family in fallback_cases:
+            page.goto(f"{BASE}/search/?q={query}", wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_selector("[data-search-result]")
+            fallback = page.locator("[data-search-result]").first
+            assert fallback.locator("h4 a[href^='/']").count() == 1
+            handoff = fallback.locator("[data-search-handoff]")
+            assert handoff.count() == 1
+            assert expected["title"] in (fallback.text_content() or "")
+            assert fallback.locator("mark").count() >= 1
+            assert fallback.locator(".topic-search-result-reason").text_content() == "Title match"
+            assert fallback.locator(".topic-search-result-type").count() == 1
+            assert fallback.locator(".topic-search-result-lens").count() == 1
+            expected_state = expected["ranking"]["lifecycle_state"]
+            assert fallback.get_attribute("data-lifecycle-state") == expected_state
+            assert fallback.locator(".topic-search-result-status").text_content().lower() == expected_state
+            assert page.evaluate("el => el.scrollWidth <= el.clientWidth", fallback.element_handle())
+            fallback.locator("a").first.focus()
+            assert fallback.locator("a").first.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
+            coverage = page.locator("[data-search-coverage]")
+            assert coverage.get_attribute("data-coverage-state") == "complete"
+            assert coverage.locator("strong").first.text_content().startswith("1 match across")
+            assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
+            assert "Bounded public-record fixture" in (
+                page.locator(f'[data-search-lane="{family}"] .topic-search-lane-source').text_content() or ""
+            )
+            assert_axe_green(page, f"keyword fallback coverage: {query}")
+
+            handoff_href = handoff.get_attribute("href")
+            assert handoff_href and handoff_href.startswith(expected_path)
+            page.goto(f"{BASE}{handoff_href}", wait_until="domcontentloaded", timeout=30000)
+            page.wait_for_selector("[data-search-handoff-destination]", timeout=30000)
+            destination = page.locator("[data-search-handoff-destination]")
+            assert opened_copy in (destination.text_content() or "")
+            assert destination.locator("[data-search-topic-chip]").count() == 1
+            assert destination.locator("mark").text_content().lower() == (
+                expected["match_evidence"]["matched_normalized_term"]
+            )
+            assert destination.get_attribute("data-record-ref") == expected["object_ref"]
+            assert destination.locator(".search-handoff-back a").get_attribute("href").startswith(
+                f"/search/?q={query}"
+            )
+            assert_axe_green(page, f"typed handoff: {opened_copy}")
 
         page.goto(f"{BASE}/search/?q=police&lang=es", wait_until="domcontentloaded", timeout=30000)
         page.wait_for_selector("[data-semantic-candidate]")

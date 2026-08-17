@@ -289,12 +289,7 @@ export function renderSearchDocument() {
       ${searchLane("land", "Land", { description: "Zoning and land-use projects." })}
       ${searchLane("rules", "Rules", { description: "Published rulemaking records.", titleKey: "tab_rules" })}
       ${searchLane("meetings", "Meetings", { description: "Public meetings and decisions.", titleKey: "tab_meetings" })}
-      ${searchLane("obligations", "Mandates", { description: "Published duties and requirements.", titleKey: "topic_search_family_mandates" })}
-      ${searchLane("people", "People and organizations", { description: "Officials, agencies, and civic organizations." })}
-      ${searchLane("places", "Community boards", { description: "Borough-qualified community boards." })}
-      ${searchLane("staffing", "Civil-service exams", { description: "Publisher-identified exams and schedules." })}
-      ${searchLane("property", "Properties", { description: "Exact property records and addresses." })}
-      ${searchLane("zoning", "Land use", { description: "Projects and review records." })}
+      ${searchLane("exams", "Exams", { description: "Civil-service exams and published schedules." })}
     </div>
   </div>`;
 }

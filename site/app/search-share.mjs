@@ -1,4 +1,8 @@
 import { walkEntryHref } from "../walk_entry.mjs";
+import {
+  parseSearchLensHandoff,
+  renderSearchLensHandoffHtml,
+} from "../search_lens_handoff.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -747,7 +751,29 @@ function documentSearchHash(lens){
   return "#"+lens+(params.size?"?"+params.toString():"");
 }
 
+function currentHandoffSearch(){
+  const hashQuery=location.hash.includes("?")?location.hash.slice(location.hash.indexOf("?")):"";
+  return hashQuery||location.search;
+}
+
+function renderSearchLensHandoff(lens){
+  document.querySelectorAll('[data-search-handoff-destination][data-search-handoff-host]').forEach(node=>node.remove());
+  const handoff=parseSearchLensHandoff(currentHandoffSearch());
+  if(!handoff || handoff.destination.surface!==lens) return;
+  const state=lens==="money"
+    ?document.querySelector("#moneyactivefilters")
+    :document.querySelector(`[data-search-state="${lens}"]`);
+  if(!state) return;
+  const template=document.createElement("template");
+  template.innerHTML=renderSearchLensHandoffHtml(handoff,{t});
+  const node=template.content.firstElementChild;
+  if(!node) return;
+  node.dataset.searchHandoffHost=lens;
+  state.before(node);
+}
+
 function renderSearchComponents(lens, options){
+  renderSearchLensHandoff(lens);
   if(!["people","land","property","rules","meetings"].includes(lens)) return;
   const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():documentSearchHash(lens);
   const hash=(options&&options.hash)||serialized;
@@ -1246,6 +1272,7 @@ globalThis.renderLandingShareActions = renderLandingShareActions;
 globalThis.renderNLQPresets = renderNLQPresets;
 globalThis.renderNLSamples = renderNLSamples;
 globalThis.renderSearchComponents = renderSearchComponents;
+globalThis.renderSearchLensHandoff = renderSearchLensHandoff;
 globalThis.rerenderAllSuggestions = rerenderAllSuggestions;
 globalThis.resolveMoneyNarrow = resolveMoneyNarrow;
 globalThis.searchActionsHTML = searchActionsHTML;

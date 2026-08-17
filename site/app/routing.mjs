@@ -7,6 +7,7 @@ import { officialSourceLink } from "../affordance_grammar.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
 import { aliasHash, browseRouteAlias } from "../browse_route_aliases.mjs";
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
+import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -285,7 +286,10 @@ function serializeState(){
   const qs = q.toString();
   const rawHash="#" + tab + (qs ? "?" + qs : "");
   const scope=CrolScope.scopeFromRouteHash(rawHash,{language:window.LANG||"en"});
-  scope.facets.values={...scope.facets.values,...activeRouteFacetValues};
+  scope.facets.values=retainSearchHandoffForQuery(
+    {...scope.facets.values,...activeRouteFacetValues},
+    scope.topic.query,
+  );
   if(tab === "rules" && rulesAgency){
     const ref=entityRouteRef("agency", rulesAgency);
     if(ref){
@@ -1215,6 +1219,7 @@ function applyHash(){
       showTab(tab);
     }
   } finally { hashLock = false; }
+  globalThis.renderSearchLensHandoff?.(tab);
   syncNearYouLinks("#"+raw);
   return true;
 }
