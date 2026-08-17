@@ -33,18 +33,35 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(server, /connection refused/);
 
   const source = read("tools/preflight-required-checks.sh");
+  const prepareFunctionalSite = read("tools/prepare_functional_site.sh");
+  const preflightBuild = source.indexOf("run_and_fail tools/prepare_functional_site.sh");
+  const preflightServer = source.indexOf("python3 tools/local_site_server.py");
+  assert.match(prepareFunctionalSite, /node tools\/build_primary_documents\.mjs/);
+  assert.equal(source.match(/run_and_fail tools\/prepare_functional_site\.sh/g)?.length, 1,
+    "full preflight must prepare primary documents exactly once");
+  assert.ok(preflightBuild >= 0 && preflightBuild < preflightServer,
+    "full preflight must build primary documents before starting its functional server");
   assert.match(source, /tools\/local_site_server\.py/);
   assert.match(source, /CROL_TEST_PORT:-0/);
   assert.match(source, /export CROL_BASE/);
   assert.doesNotMatch(source, /lsof -tiTCP:8000|freeing port 8000/);
 
   const functional = read("test/functional/run.sh");
+  const functionalBuild = functional.indexOf("tools/prepare_functional_site.sh");
+  const functionalServer = functional.indexOf("python3 tools/local_site_server.py");
+  assert.equal(functional.match(/tools\/prepare_functional_site\.sh/g)?.length, 1,
+    "functional suite runner must prepare primary documents exactly once");
+  assert.ok(functionalBuild >= 0 && functionalBuild < functionalServer,
+    "functional suite must build primary documents before starting its local server");
   assert.match(functional, /tools\/local_site_server\.py/);
   assert.match(functional, /CROL_TEST_PORT:-0/);
   assert.match(functional, /export CROL_BASE/);
   assert.doesNotMatch(functional, /http\.server 8000|lsof -tiTCP:8000/);
 
   const ci = read(".github/workflows/ci.yml");
+  const functionalJob = ci.slice(ci.indexOf("  functional:\n"));
+  assert.match(functionalJob, /run: bash test\/functional\/run\.sh/,
+    "manual CI functional job must use the suite runner that prepares primary documents");
   const shardRunner = read("tools/run_a11y_ci_shard.sh");
   const readiness = read("tools/a11y_server_readiness.sh");
   const build = ci.indexOf("uses: ./.github/actions/build-site");

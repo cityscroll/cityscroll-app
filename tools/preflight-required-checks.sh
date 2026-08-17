@@ -338,6 +338,9 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/capture_qr_share.py --verify-only
   run_and_fail python3 test/functional/19_hash_route_focus.py
   run_and_fail python3 test/functional/21_module_dom_equivalence.py
+  run_banner "Accessibility + language gate (axe on every PR)" "Build primary static documents" \
+    "tools/prepare_functional_site.sh"
+  run_and_fail tools/prepare_functional_site.sh
   # Agency constellation HTML is gitignored; generate it before the local site
   # server so axe + demo-links hit the same static documents as production.
   run_banner "Accessibility + language gate (axe on every PR)" "Build agency constellation HTML artifacts" \
