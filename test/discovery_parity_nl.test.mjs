@@ -173,7 +173,7 @@ test("fallback indices match the receipt fruitful set and include discovery show
   }
   // Discovery surfaces must appear in the rotating fallback shop window.
   assert.ok(FALLBACK_INDICES.money.includes(6), "closing-this-week on money fallback");
-  assert.ok(FALLBACK_INDICES.money.includes(7), "agency forecast on money fallback");
+  assert.ok(!FALLBACK_INDICES.money.includes(7), "proxy-only agency forecast stays out until its destination is certifiable");
   assert.ok(FALLBACK_INDICES.land.includes(4), "council district on land fallback");
   assert.ok(FALLBACK_INDICES.rules.includes(4), "open for comment on rules fallback");
   assert.ok(FALLBACK_INDICES.meetings.includes(4), "hearings this week on meetings fallback");

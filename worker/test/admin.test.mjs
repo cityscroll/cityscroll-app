@@ -203,7 +203,7 @@ test("handleAdminSuggestRefresh: success returns runSuggestionValidation()'s sum
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url, opts) => {
     if (String(url).includes("api.anthropic.com")) {
-      const input = { keywords: ["construction"], minAmount: 500000, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      const input = { keywords: ["maintenance"], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
       return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
     }
     return { ok: true, json: async () => [{ n: "42" }] };
@@ -215,7 +215,11 @@ test("handleAdminSuggestRefresh: success returns runSuggestionValidation()'s sum
     assert.equal(r.status, 200);
     const body = await r.json();
     assert.equal(body.status, "success");
-    assert.ok(body.byLens.money.some((c) => c.count === 42));
+    const money = body.byLens.money.find((candidate) => candidate.count >= 3);
+    assert.ok(money);
+    assert.equal(money.destination.schema, "cityscroll.money_suggestion_destination.v1");
+    assert.equal(money.destination.finalCount, money.count);
+    assert.match(money.destination.route, /^\/browse\/contracts\//);
     assert.ok(body.triggeredAt, "should carry a triggeredAt timestamp");
     assert.ok(JSON.parse(kvStore[SUGGESTIONS_KV_KEY]).byLens.money.length, "should write the validated set to KV, same as the cron path");
   } finally {
@@ -247,7 +251,7 @@ test("handleAdminSuggestRefresh: a genuinely unanticipated throw outside the per
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url, opts) => {
     if (String(url).includes("api.anthropic.com")) {
-      const input = { keywords: ["construction"], minAmount: 500000, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      const input = { keywords: ["maintenance"], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
       return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
     }
     return { ok: true, json: async () => [{ n: "42" }] };
