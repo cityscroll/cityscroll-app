@@ -1,7 +1,9 @@
 /** Shared contract helpers for static Browse lists with typed rows. */
 
+import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
+
 export const PEOPLE_ORGANIZATIONS_BROWSE_CONFIG = Object.freeze({
-  route: "/browse/people/",
+  route: PEOPLE_ORGANIZATIONS_SURFACE.route,
   queryParam: "q",
   facetParam: "type",
   facetKey: "kind",

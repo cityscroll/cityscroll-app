@@ -16,6 +16,7 @@ import {
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
+import { EXAMS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -26,6 +27,10 @@ function json(path) {
 
 function output(path, content) {
   return [join(SITE, path, "index.html"), content];
+}
+
+function surfaceOutputPath(surface) {
+  return surface.route.replace(/^\/+|\/+$/g, "");
 }
 
 function cityRecordMeetingRows() {
@@ -141,7 +146,7 @@ export function primaryDocumentOutputs() {
       ] },
     },
   })));
-  outputs.push(output("browse/exams", buildBrowseAliasDocument(shell, "exams", { ...payloads.staffing, ...staffingExams })));
+  outputs.push(output(surfaceOutputPath(EXAMS_SURFACE), buildBrowseAliasDocument(shell, "exams", { ...payloads.staffing, ...staffingExams })));
   const conceptSources = {
     people,
     committees,
@@ -155,8 +160,8 @@ export function primaryDocumentOutputs() {
   }
   for (const [facet, payload] of Object.entries(payloads)) {
     if (facet === "staffing") {
-      outputs.push(output("browse/staffing", buildBrowseConceptDocument(shell, "people", conceptSources, {
-        route: "/browse/staffing/",
+      outputs.push(output(surfaceOutputPath(STAFFING_SURFACE), buildBrowseConceptDocument(shell, "people", conceptSources, {
+        route: STAFFING_SURFACE.route,
         title: "Staffing",
       })));
       continue;

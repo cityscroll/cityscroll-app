@@ -27,6 +27,7 @@ import {
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { communityBoardScopeHref } from "./community_board_scope_links.mjs";
 import { BROWSE_ROUTE_ALIASES } from "./browse_route_aliases.mjs";
+import { EXAMS_SURFACE, STAFFING_SURFACE } from "./browse_surface_contracts.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { renderRulesSemanticLane, resolveRulesSemanticLane } from "./rules_semantic_lane.mjs";
 import {
@@ -53,11 +54,11 @@ export const BROWSE_FACETS = Object.freeze({
     connectionRelation: "published_by_agency",
   },
   staffing: {
-    tab: "people",
-    label: "Staffing",
-    route: "/browse/staffing/",
+    tab: STAFFING_SURFACE.compatibility.runtimeTab,
+    label: STAFFING_SURFACE.label,
+    route: STAFFING_SURFACE.route,
     countLabel: "recent appointments",
-    description: "Recent appointments, payroll, civil-service exams, eligible lists, and hiring outcomes.",
+    description: STAFFING_SURFACE.description,
     sources: "City Record · DCAS · Citywide Payroll",
     container: "staffing-notice-list",
     dataPath: "/data/staffing_default_hires.json",
@@ -132,7 +133,7 @@ export const BROWSE_GROUPS = Object.freeze([
   {
     id: "people-organizations",
     label: "People + organizations",
-    primaryFacet: "staffing",
+    primaryFacet: STAFFING_SURFACE.compatibility.facet,
     description: "Officials, agencies, vendors, committees, and the relationships joining them.",
     sources: "Person hub · committee graph · agency constellation",
     children: [
@@ -181,7 +182,7 @@ export const BROWSE_GROUPS = Object.freeze([
     description: "Civil-service exam schedules, applications, eligible lists, and outcomes.",
     sources: "DCAS exam schedules · published exam records",
     children: [
-      { id: "exams", label: "Exams", route: "/browse/exams/", linkLabel: "Browse exams" },
+      { id: "exams", label: "Exams", route: EXAMS_SURFACE.route, linkLabel: "Browse exams" },
     ],
   },
 ]);
