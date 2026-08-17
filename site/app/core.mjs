@@ -1,5 +1,5 @@
 import { cityRecordRequestUrl } from "../city_record_id.mjs";
-import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT, browseRouteAlias } from "../browse_route_aliases.mjs";
+import { browseRouteAlias } from "../browse_route_aliases.mjs";
 import {
   externalActionLink as renderExternalActionLink,
   installObjectCardCopyLinks,
@@ -371,6 +371,8 @@ function showTab(name, push){
     Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
   }
 }
+
+import { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT } from "../browse_surface_contracts.mjs";
 
 const BROWSE_CONCEPT_DOCUMENT_PATHS = new Set([
   ...BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT,

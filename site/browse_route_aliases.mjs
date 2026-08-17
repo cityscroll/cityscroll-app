@@ -1,9 +1,4 @@
-import {
-  BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT,
-  BROWSE_ROUTE_ALIASES_COMPAT,
-} from "./browse_surface_contracts.mjs";
-
-export { BROWSE_CONCEPT_DOCUMENT_PATHS_COMPAT };
+import { BROWSE_ROUTE_ALIASES_COMPAT } from "./browse_surface_contracts.mjs";
 
 /**
  * Browse route aliases keep a public family URL on the runtime that already
