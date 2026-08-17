@@ -8,7 +8,9 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
+  pull-requests: write
 
 concurrency:
   group: refresh-preset-fallback-main
@@ -30,14 +32,14 @@ jobs:
           node-version: "22"
       - name: Regenerate the live-derived fallback
         run: node tools/validate_presets.mjs --write
-      - name: Commit a changed fallback
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Guard generated changes
+        id: generated
         run: |
           set -euo pipefail
           changed="$(git diff --name-only)"
           if [ -z "$changed" ]; then
             echo "Preset fallback is already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           while IFS= read -r path; do
@@ -47,8 +49,30 @@ jobs:
             esac
           done <<< "$changed"
           git diff --check
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add site/app/search-share.mjs worker/src/lib/suggestions.mjs site/data/preset-validation.json
-          git commit -m "Refresh live-derived preset fallback"
-          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the fallback refresh pull request
+        if: steps.generated.outputs.changed == 'true'
+        id: refresh-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/refresh-preset-fallback
+          delete-branch: true
+          commit-message: Refresh live-derived preset fallback
+          title: Refresh live-derived preset fallback
+          body: |
+            Automated refresh of the live-derived preset fallback.
+
+            Validation: `node tools/validate_presets.mjs --check`
+          add-paths: |
+            site/app/search-share.mjs
+            worker/src/lib/suggestions.mjs
+            site/data/preset-validation.json
+      # A PR created with GITHUB_TOKEN does not reliably start required checks without
+      # approval. workflow_dispatch is an explicit token exception and reports the same
+      # required job contexts on the refresh branch before it enters the merge queue.
+      - name: Run required checks for the refresh pull request
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/refresh-preset-fallback
