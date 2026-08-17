@@ -79,6 +79,7 @@ test("Community boards directory groups numbered institution links by borough", 
   assert.match(section, /aria-label="Bronx Community Board 1"[^>]*>1<\/a>/);
   assert.match(section, /aria-label="Bronx Community Board 2"[^>]*>2<\/a>/);
   assert.match(section, /aria-label="Brooklyn Community Board 1"[^>]*>1<\/a>/);
+  assert.match(section, />1<\/a> <a[^>]+aria-label="Bronx Community Board 2"/);
   assert.doesNotMatch(section, /Covers |Community District|>Bronx Community Board 1<|>Brooklyn Community Board 1</);
 });
 

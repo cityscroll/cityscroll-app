@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "before_revision": "8bbd2861d7a5",
+  "before_revision": "e0f3b05c56bf",
   "route": "/browse/people/#community-boards",
   "javascript": "disabled (no-JS document parity)",
   "captures": [
@@ -12,10 +12,12 @@
       ],
       "file": "docs/screenshots/community-boards-directory/before-390.png",
       "board_links": 59,
-      "verbose_rows": 59,
-      "borough_rows": 0,
-      "covers_restatements": 59,
-      "section_height": 5272,
+      "verbose_rows": 0,
+      "borough_rows": 5,
+      "covers_restatements": 0,
+      "minimum_target_px": 28,
+      "minimum_same_row_gap_px": 4,
+      "section_height": 546,
       "overflow_px": 0
     },
     {
@@ -29,7 +31,9 @@
       "verbose_rows": 0,
       "borough_rows": 5,
       "covers_restatements": 0,
-      "section_height": 546,
+      "minimum_target_px": 36,
+      "minimum_same_row_gap_px": 8,
+      "section_height": 678,
       "overflow_px": 0
     },
     {
@@ -40,10 +44,12 @@
       ],
       "file": "docs/screenshots/community-boards-directory/before-1440.png",
       "board_links": 59,
-      "verbose_rows": 59,
-      "borough_rows": 0,
-      "covers_restatements": 59,
-      "section_height": 5272,
+      "verbose_rows": 0,
+      "borough_rows": 5,
+      "covers_restatements": 0,
+      "minimum_target_px": 28,
+      "minimum_same_row_gap_px": 4,
+      "section_height": 425,
       "overflow_px": 0
     },
     {
@@ -57,7 +63,9 @@
       "verbose_rows": 0,
       "borough_rows": 5,
       "covers_restatements": 0,
-      "section_height": 425,
+      "minimum_target_px": 36,
+      "minimum_same_row_gap_px": 8,
+      "section_height": 557,
       "overflow_px": 0
     }
   ]
