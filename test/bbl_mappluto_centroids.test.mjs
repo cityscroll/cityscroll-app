@@ -195,16 +195,18 @@ test("normalizeBbl pads and strips non-digits", () => {
   assert.equal(normalizeBbl(3012660036), "3012660036");
 });
 
+const FIXTURE_NOW = "2026-08-18T12:00:00.000Z";
+
 test("serve gate fails closed on empty / low coverage / missing canary", () => {
   const empty = buildBblMapplutoCentroidsDoc({
     mode: "mappluto_pluto_csv",
     byBbl: {},
     sellFacingBbls: ["1010000001", "1010000002"],
-    materializedAt: new Date().toISOString(),
+    materializedAt: FIXTURE_NOW,
   });
-  const findings = bblMapplutoCentroidsServeGateFindings(empty);
+  const findings = bblMapplutoCentroidsServeGateFindings(empty, { now: FIXTURE_NOW });
   assert.ok(findings.some((line) => /empty|below floor|canary/i.test(line)));
-  assert.throws(() => assertBblMapplutoCentroidsServeGate(empty));
+  assert.throws(() => assertBblMapplutoCentroidsServeGate(empty, { now: FIXTURE_NOW }));
 });
 
 test("serve gate accepts retained MapPLUTO extract with canary + coverage", () => {
@@ -217,11 +219,11 @@ test("serve gate accepts retained MapPLUTO extract with canary + coverage", () =
       "1017670002": { lat: 40.801, lon: -73.951 },
     },
     sellFacingBbls: sellFacing,
-    materializedAt: new Date().toISOString(),
+    materializedAt: FIXTURE_NOW,
   });
   assert.equal(doc.coverage.rate, 1);
   assert.equal(doc.coverage.canaries["3012660036"].status, "matched");
-  assertBblMapplutoCentroidsServeGate(doc);
+  assertBblMapplutoCentroidsServeGate(doc, { now: FIXTURE_NOW });
   assert.deepEqual(lookupBblCentroid(doc, ["3012660036"]), {
     bbl: "3012660036",
     lat: 40.6696224,
@@ -263,7 +265,7 @@ test("2026K0123 map status resolves exact from committed BBL MapPLUTO centroid (
     mode: "mappluto_pluto_csv",
     byBbl: { [canaryBbl]: { lat: 40.6696224, lon: -73.9557834 } },
     sellFacingBbls: [canaryBbl],
-    materializedAt: new Date().toISOString(),
+    materializedAt: FIXTURE_NOW,
   });
 
   let geocodeCalls = 0;
