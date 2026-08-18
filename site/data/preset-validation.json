@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-18T12:36:54.326Z",
+  "generatedAt": "2026-08-18T13:23:25.577Z",
   "dataDate": "2026-08-18",
   "scenarios": {
     "city-work-closing": {
@@ -222,7 +222,7 @@
             },
             "keywordSearch": {
               "schema": "cityscroll.keyword_search_response.v1",
-              "asOf": "2026-08-18T10:00:04.580Z"
+              "asOf": "2026-08-18T13:01:39.509Z"
             }
           },
           "finalCount": 0
