@@ -14,19 +14,9 @@ import {
 const modelText = readFileSync(new URL("../architecture/workspace.dsl", import.meta.url), "utf8");
 const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
 
-function fullyObservedFacts(source = facts) {
-  const observed = structuredClone(source);
-  if (observed.observer_coverage) {
-    observed.observer_coverage = {
-      ...observed.observer_coverage,
-      unmapped_surfaces: [],
-    };
-  }
-  return observed;
-}
-
 test("fresh repository facts reconcile with the C4 model and ADRs", () => {
-  const report = buildReport({ facts: fullyObservedFacts() });
+  assert.deepEqual(facts.observer_coverage.unmapped_surfaces, []);
+  const report = buildReport({ facts });
   assert.equal(report.status, "healthy");
   assert.deepEqual(report.outcomes.additions, []);
   assert.deepEqual(report.outcomes.removals, []);
@@ -40,9 +30,8 @@ test("fresh repository facts reconcile with the C4 model and ADRs", () => {
 });
 
 test("an unmapped architecture-affecting search surface is drift, not healthy", () => {
-  // PR #1058 shape: Committees entered production Worker search, but
-  // worker/src/search.mjs is a known canary the observer does not parse.
-  // Topology is unchanged (facts compared to themselves); coverage is not.
+  // Detector regression: an injected unmapped production-search canary is
+  // drift even when topology is unchanged (facts compared to themselves).
   const searchFacts = structuredClone(facts);
   searchFacts.observer_coverage = {
     source: { path: "architecture/observer-canaries.json" },
