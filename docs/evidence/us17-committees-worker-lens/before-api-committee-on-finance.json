@@ -1,0 +1,19 @@
+{
+  "query": "Committee on Finance",
+  "source": "https://api.cityscroll.org/search?q=Committee%20on%20Finance",
+  "committees_coverage": {
+    "lens": "committees",
+    "participated": false,
+    "state": "not_indexed",
+    "reason": null,
+    "matched_count": null,
+    "candidate_count": null,
+    "invalid_candidate_count": null,
+    "indexed_count": null,
+    "as_of": null,
+    "source": "No bounded source configured",
+    "method": "bounded_keyword_family_v1"
+  },
+  "committee_result_count": 0,
+  "committee_object_refs": []
+}

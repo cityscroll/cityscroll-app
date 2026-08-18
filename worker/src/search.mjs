@@ -46,6 +46,7 @@ const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
   parcels: "parcels",
   community_boards: "community_boards",
   agencies: "agencies",
+  committees: "committees",
 });
 // Collection lenses that are not already represented in the six presentation
 // lanes still contribute typed objects to the flat result list. People compose
@@ -501,10 +502,9 @@ function universalSearchCoverage(lanes, results, dynamicResults, federatedCovera
     },
     people: federatedCoverage.by_lens.people,
     agencies: familiesMatchedLens("agencies", "agencies", ["agency"]),
-    vendors: partialLens("vendors", null, ["vendor"]),
     vendors: federatedCoverage.by_lens.vendors,
     community_boards: federatedCoverage.by_lens.community_boards,
-    committees: partialLens("committees", null, ["committee"]),
+    committees: federatedCoverage.by_lens.committees,
     exams: {
       lens: "exams",
       participated: examsAvailable,
@@ -579,6 +579,7 @@ export async function handleSearch(request, env) {
   const parcelsLane = federatedCollectionLane("parcels", collectionFederation, resolved);
   const communityBoardsLane = federatedCollectionLane("community_boards", collectionFederation, resolved);
   const agencyLane = federatedCollectionLane("agencies", collectionFederation, resolved);
+  const committeesLane = federatedCollectionLane("committees", collectionFederation, resolved);
   const contractsMirror = dynamic.lanes.contracts;
   const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
   // Keep an unavailable notice mirror honest as unknown unless a Vendor hit
@@ -603,6 +604,7 @@ export async function handleSearch(request, env) {
     agencies: agencyLane,
     contracts: contractsLane,
     parcels: parcelsLane,
+    committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,
     land: staticSearchLane("land", resolved),
     meetings: staticSearchLane("meetings", resolved),
