@@ -644,6 +644,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "জোনিং পর্যায়, পদ্ধতি ও পরবর্তী সুযোগের ফিল্টার",
+    land_family_label: "কর্মের ধরন",
     land_procedure_label: "পর্যালোচনা পদ্ধতি",
     land_procedure_review: "ULURP এবং ত্বরিত",
     land_procedure_ulurp: "শুধু ULURP",

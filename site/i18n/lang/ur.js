@@ -647,6 +647,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "زوننگ مرحلے، طریقہ کار اور اگلے شرکت کے موقع کے فلٹرز",
+    land_family_label: "کارروائی کی قسم",
     land_procedure_label: "جائزہ کا طریقہ",
     land_procedure_review: "ULURP اور تیز رفتار",
     land_procedure_ulurp: "صرف ULURP",

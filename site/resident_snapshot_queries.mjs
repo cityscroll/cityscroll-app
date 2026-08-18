@@ -1,10 +1,14 @@
 import { vendorStem } from "./vendor_stem.mjs";
 import {
+  DEFAULT_LAND_FAMILY,
   landActionEvidenceByProject,
   landActionsMatchFutureFilter,
   landFutureActionsByProject,
+  landRowMatchesFamily,
   landRowMatchesStage,
   landRowWithActionEvidence,
+  landUseFamilies,
+  normalizeLandFamily,
   normalizeLandFutureAction,
   normalizeLandStage,
 } from "./land_status_facets.mjs";
@@ -168,6 +172,7 @@ export function filterLandSnapshot(rows, {
   stage = null,
   futureAction = "any",
   procedure = DEFAULT_LAND_PROCEDURE,
+  family = DEFAULT_LAND_FAMILY,
   actionRows = [],
   today,
   borough = "",
@@ -187,10 +192,12 @@ export function filterLandSnapshot(rows, {
     ? "hearing"
     : normalizeLandFutureAction(futureAction);
   const selectedProcedure = normalizeLandProcedure(procedure);
+  const selectedFamily = normalizeLandFamily(family);
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     if (!landRowMatchesProcedure(row, selectedProcedure)) return false;
+    if (!landRowMatchesFamily(row, selectedFamily)) return false;
     if (status === "active" && residentSnapshotClean(row?.project_status) !== "Active") return false;
     if (statusMatch) {
       const field = statusMatch[1] === "project" ? "project_status" : "public_status";
@@ -222,6 +229,7 @@ export function filterLandSnapshot(rows, {
     return {
       ...effective,
       _procedure: resolveLandProcedure(effective),
+      _families: landUseFamilies(effective),
       _observed_dates: landObservedDates(effective, evidence),
       _future_actions: actions,
       _next_action: matchingActions[0] || null,

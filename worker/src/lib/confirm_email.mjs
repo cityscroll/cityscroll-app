@@ -44,6 +44,7 @@ export function describeFilterChips(lens, filter) {
   const kws = Array.isArray(f.keywords) ? f.keywords.filter(Boolean) : [];
   if (kws.length) chips.push({ axis: "keyword", label: kws.join(" ") });
   if (f.agency) chips.push({ axis: "agency", label: String(f.agency) });
+  if (f.family && f.family !== "any") chips.push({ axis: "family", label: String(f.family).replace(/_/g, " ") });
   if (f.boro) chips.push({ axis: "place", label: String(f.boro) });
   if (f.borough) chips.push({ axis: "place", label: String(f.borough) });
   if (f.neighborhood) chips.push({ axis: "place", label: String(f.neighborhood) });
@@ -100,6 +101,7 @@ export function describeFilter(lens, filter) {
   if (f.maxAmount) parts.push(`≤ ${usd(f.maxAmount)}`);
   if (f.category) parts.push(`category “${f.category}”`);
   if (f.agency) parts.push(`agency “${f.agency}”`);
+  if (f.family && f.family !== "any") parts.push(`action type “${String(f.family).replace(/_/g, " ")}”`);
   if (f.boro) parts.push(`in ${f.boro}`);
   if (f.borough) parts.push(`in ${f.borough}`);
   if (f.neighborhood) parts.push(`near ${f.neighborhood}`);

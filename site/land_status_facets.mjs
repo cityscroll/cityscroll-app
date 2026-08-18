@@ -1,5 +1,10 @@
 import { LAND_ULURP_PHASES, mapMilestoneToPhase } from "./land_phase_spine.mjs";
 import {
+  LAND_USE_ACTION_CODE_FAMILY,
+  LAND_USE_FAMILY_LABEL_KEY,
+  normalizeLandUseActionType,
+} from "./land_use_action_type.mjs";
+import {
   DEFAULT_LAND_PROCEDURE,
   LAND_PROCEDURE_OPTIONS,
   landRowMatchesProcedure,
@@ -39,8 +44,45 @@ export const LAND_FUTURE_ACTION_OPTIONS = Object.freeze([
   { id: "none", label_key: "land_future_none" },
 ]);
 
+export const DEFAULT_LAND_FAMILY = "any";
+
+/** Closed action-family facet. Generic land_use is not offered — it is the unmapped fallback. */
+export const LAND_FAMILY_OPTIONS = Object.freeze([
+  { id: "any", label_key: "status_all" },
+  { id: "acquisition", label_key: "land_use_family_acquisition" },
+  { id: "disposition", label_key: "land_use_family_disposition" },
+  { id: "certification", label_key: "land_use_family_certification" },
+  { id: "renewal", label_key: "land_use_family_renewal" },
+  { id: "major_concession", label_key: "land_use_family_major_concession" },
+  { id: "legal_document", label_key: "land_use_family_legal_document" },
+  { id: "rezoning", label_key: "land_use_family_rezoning" },
+  { id: "special_permit", label_key: "land_use_family_special_permit" },
+  { id: "authorization", label_key: "land_use_family_authorization" },
+  { id: "site_selection", label_key: "land_use_family_site_selection" },
+  { id: "mapping", label_key: "land_use_family_mapping" },
+  { id: "demapping", label_key: "land_use_family_demapping" },
+  { id: "urban_renewal", label_key: "land_use_family_urban_renewal" },
+  { id: "landmark", label_key: "land_use_family_landmark" },
+  { id: "follow_up", label_key: "land_use_family_follow_up" },
+  { id: "office_space", label_key: "land_use_family_office_space" },
+  { id: "bid", label_key: "land_use_family_bid" },
+  { id: "franchise_consent", label_key: "land_use_family_franchise_consent" },
+  { id: "housing_plan", label_key: "land_use_family_housing_plan" },
+  { id: "pops", label_key: "land_use_family_pops" },
+  { id: "landfill", label_key: "land_use_family_landfill" },
+]);
+
 const LAND_STAGE_IDS = new Set(LAND_STAGE_OPTIONS.map((option) => option.id));
 const LAND_FUTURE_ACTION_IDS = new Set(LAND_FUTURE_ACTION_OPTIONS.map((option) => option.id));
+const LAND_FAMILY_IDS = new Set(LAND_FAMILY_OPTIONS.map((option) => option.id));
+const LAND_FAMILY_CODES = Object.freeze(
+  Object.fromEntries(LAND_FAMILY_OPTIONS.filter((option) => option.id !== "any").map((option) => [
+    option.id,
+    Object.freeze(Object.entries(LAND_USE_ACTION_CODE_FAMILY)
+      .filter(([, family]) => family === option.id)
+      .map(([code]) => code)),
+  ])),
+);
 const PRE_CERTIFICATION_PHASES = new Set([
   "pre_application",
   "environmental",
@@ -57,6 +99,64 @@ export function normalizeLandStage(value, fallback = "active") {
 export function normalizeLandFutureAction(value, fallback = "any") {
   const action = cleanLandFacetValue(value).toLowerCase();
   return LAND_FUTURE_ACTION_IDS.has(action) ? action : fallback;
+}
+
+export function normalizeLandFamily(value, fallback = DEFAULT_LAND_FAMILY) {
+  const family = cleanLandFacetValue(value).toLowerCase().replace(/-/g, "_");
+  return LAND_FAMILY_IDS.has(family) ? family : fallback;
+}
+
+/** Mapped families for a ZAP row, preferring a stamped families[] bag when present. */
+export function landUseFamilies(row = {}) {
+  if (Array.isArray(row.families) && row.families.length) {
+    const seen = new Set();
+    const out = [];
+    for (const raw of row.families) {
+      const id = normalizeLandFamily(raw, "");
+      if (!id || id === "any" || seen.has(id)) continue;
+      seen.add(id);
+      out.push(id);
+    }
+    if (out.length) return out;
+  }
+  return normalizeLandUseActionType(row).families;
+}
+
+export function landRowMatchesFamily(row, family = DEFAULT_LAND_FAMILY) {
+  const selected = normalizeLandFamily(family);
+  if (selected === "any") return true;
+  return landUseFamilies(row).includes(selected);
+}
+
+export function landRecordHasFamilyEvidence(row = {}) {
+  return landUseFamilies(row).length > 0
+    || normalizeLandUseActionType(row).codes.length > 0
+    || (Array.isArray(row.families) && row.families.length > 0)
+    || Boolean(row.actions);
+}
+
+export function landFamilySodaWhere(family = DEFAULT_LAND_FAMILY) {
+  const selected = normalizeLandFamily(family);
+  if (selected === "any") return null;
+  const codes = LAND_FAMILY_CODES[selected] || [];
+  if (!codes.length) return null;
+  return codes.map((code) => `upper(actions) like '%${code}%'`).join(" OR ");
+}
+
+export function landFamilyLabelKey(family) {
+  const selected = normalizeLandFamily(family, "");
+  if (!selected || selected === "any") return null;
+  return LAND_USE_FAMILY_LABEL_KEY[selected] || null;
+}
+
+export function landFamilyChipsHTML(row = {}, { t, escape } = {}) {
+  const esc = typeof escape === "function" ? escape : (value) => String(value ?? "");
+  const translate = typeof t === "function" ? t : (key) => key;
+  return landUseFamilies(row).map((id) => {
+    const labelKey = LAND_USE_FAMILY_LABEL_KEY[id];
+    if (!labelKey) return "";
+    return `<span class="tag land-family" data-land-family="${esc(id)}">${esc(translate(labelKey))}</span>`;
+  }).filter(Boolean).join("");
 }
 
 /** Project-stage facet over the shared normalized ULURP phase ontology. */
@@ -166,14 +266,17 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
   stage = "active",
   futureAction = "any",
   procedure = DEFAULT_LAND_PROCEDURE,
+  family = DEFAULT_LAND_FAMILY,
 } = {}) {
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const rows = Array.isArray(projects) ? projects : [];
   const selectedProcedure = normalizeLandProcedure(procedure);
+  const selectedFamily = normalizeLandFamily(family);
   const stageCounts = Object.fromEntries(LAND_STAGE_OPTIONS.map(({ id }) => [id, 0]));
   const futureCounts = Object.fromEntries(LAND_FUTURE_ACTION_OPTIONS.map(({ id }) => [id, 0]));
   const procedureCounts = Object.fromEntries(LAND_PROCEDURE_OPTIONS.map(({ id }) => [id, 0]));
+  const familyCounts = Object.fromEntries(LAND_FAMILY_OPTIONS.map(({ id }) => [id, 0]));
   for (const row of rows) {
     const actions = actionsByProject.get(cleanLandFacetValue(row?.project_id)) || [];
     const evidence = evidenceByProject.get(cleanLandFacetValue(row?.project_id)) || [];
@@ -181,19 +284,25 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
     const matchesProcedure = landRowMatchesProcedure(effectiveRow, selectedProcedure);
     const matchesStage = landRowMatchesStage(effectiveRow, stage);
     const matchesFuture = landActionsMatchFutureFilter(actions, futureAction);
+    const matchesFamily = landRowMatchesFamily(effectiveRow, selectedFamily);
     for (const option of LAND_STAGE_OPTIONS) {
-      if (matchesProcedure && landRowMatchesStage(effectiveRow, option.id) && matchesFuture) {
+      if (matchesProcedure && matchesFamily && landRowMatchesStage(effectiveRow, option.id) && matchesFuture) {
         stageCounts[option.id] += 1;
       }
     }
     for (const option of LAND_FUTURE_ACTION_OPTIONS) {
-      if (matchesProcedure && matchesStage && landActionsMatchFutureFilter(actions, option.id)) {
+      if (matchesProcedure && matchesFamily && matchesStage && landActionsMatchFutureFilter(actions, option.id)) {
         futureCounts[option.id] += 1;
       }
     }
     for (const option of LAND_PROCEDURE_OPTIONS) {
-      if (landRowMatchesProcedure(effectiveRow, option.id) && matchesStage && matchesFuture) {
+      if (landRowMatchesProcedure(effectiveRow, option.id) && matchesFamily && matchesStage && matchesFuture) {
         procedureCounts[option.id] += 1;
+      }
+    }
+    for (const option of LAND_FAMILY_OPTIONS) {
+      if (matchesProcedure && landRowMatchesFamily(effectiveRow, option.id) && matchesStage && matchesFuture) {
+        familyCounts[option.id] += 1;
       }
     }
   }
@@ -201,6 +310,7 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
     stage: stageCounts,
     future_action: futureCounts,
     procedure: procedureCounts,
+    family: familyCounts,
     actions_by_project: actionsByProject,
   };
 }

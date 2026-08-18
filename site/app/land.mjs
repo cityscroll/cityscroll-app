@@ -18,14 +18,18 @@ import {
   projectIdsForBlock,
 } from "../resident_snapshot_queries.mjs";
 import {
+  DEFAULT_LAND_FAMILY,
   DEFAULT_LAND_PROCEDURE,
+  LAND_FAMILY_OPTIONS,
   LAND_FUTURE_ACTION_OPTIONS,
   LAND_PROCEDURE_OPTIONS,
   LAND_STAGE_OPTIONS,
   landFacetOptionCounts,
+  landFamilyChipsHTML,
   landObservedDates,
   landProcedureLabelKey,
   landProcedureSodaWhere,
+  normalizeLandFamily,
   normalizeLandFutureAction,
   normalizeLandProcedure,
   normalizeLandStage,
@@ -332,6 +336,7 @@ function isDefaultLandSearchState(status, boro, kw, located){
   return status==="active" && normalizeLandStage($("#lstage")?.value)==="active"
     && normalizeLandFutureAction($("#lfuture")?.value)==="any"
     && normalizeLandProcedure($("#lprocedure")?.value)===DEFAULT_LAND_PROCEDURE
+    && normalizeLandFamily($("#lfamily")?.value)===DEFAULT_LAND_FAMILY
     && !boro && !kw && !landCommunityDistrict && !landCouncilDistrict && !located;
 }
 function landHearingModeFieldSync(){
@@ -380,10 +385,11 @@ async function syncLandLensControls(){
   const stage=normalizeLandStage($("#lstage")?.value,status==="all"?"any":"active");
   const futureAction=normalizeLandFutureAction($("#lfuture")?.value);
   const procedure=normalizeLandProcedure($("#lprocedure")?.value);
+  const family=normalizeLandFamily($("#lfamily")?.value);
   const actionRows=futureAction==="hearing"
     ? filterLandHearingRows(landActionInventory,{mode:landAttendance,closingWeek:landClosingWeek,today:todayISO()})
     : landActionInventory;
-  const counts=landFacetOptionCounts(landProjectInventory,actionRows,{today:todayISO(),stage,futureAction,procedure});
+  const counts=landFacetOptionCounts(landProjectInventory,actionRows,{today:todayISO(),stage,futureAction,procedure,family});
   const renderOptions=(select,options,optionCounts)=>{
     if(!select) return;
     const selected=select.value;
@@ -393,6 +399,7 @@ async function syncLandLensControls(){
   renderOptions($("#lstage"),LAND_STAGE_OPTIONS,counts.stage);
   renderOptions($("#lfuture"),LAND_FUTURE_ACTION_OPTIONS,counts.future_action);
   renderOptions($("#lprocedure"),LAND_PROCEDURE_OPTIONS,counts.procedure);
+  renderOptions($("#lfamily"),LAND_FAMILY_OPTIONS,counts.family);
   landHearingModeFieldSync();
   renderLandAttendanceScopeLinks();
   renderLandBoroughScopeLinks();
@@ -401,6 +408,7 @@ async function syncLandLensControls(){
     landStageFilterIsApplied(),
     futureAction!=="any",
     procedure!==DEFAULT_LAND_PROCEDURE,
+    family!==DEFAULT_LAND_FAMILY,
     futureAction==="hearing"&&!!landAttendance,
     futureAction==="hearing"&&landClosingWeek,
     !!landResolvedArea,
@@ -430,6 +438,7 @@ function landHasAppliedFilters(){
     || landCouncilDistrict || landResolvedArea || landStageFilterIsApplied()
     || normalizeLandFutureAction($("#lfuture")?.value)!=="any"
     || normalizeLandProcedure($("#lprocedure")?.value)!==DEFAULT_LAND_PROCEDURE
+    || normalizeLandFamily($("#lfamily")?.value)!==DEFAULT_LAND_FAMILY
     || landAttendance || landClosingWeek);
 }
 function resetLandFilters(){
@@ -444,6 +453,7 @@ function resetLandFilters(){
   $("#lstage").value="any";
   $("#lfuture").value="any";
   if($("#lprocedure")) $("#lprocedure").value=DEFAULT_LAND_PROCEDURE;
+  if($("#lfamily")) $("#lfamily").value=DEFAULT_LAND_FAMILY;
   $("#nltrans-land").innerHTML="";
   landSearch();
 }
@@ -595,6 +605,7 @@ async function landSearch(){
   const stage=normalizeLandStage($("#lstage")?.value,status==="all"?"any":"active");
   const futureAction=normalizeLandFutureAction($("#lfuture")?.value);
   const procedure=normalizeLandProcedure($("#lprocedure")?.value);
+  const family=normalizeLandFamily($("#lfamily")?.value);
   if(kw){
     try{
       const neighborhoodTools=await import("../neighborhood_search.mjs");
@@ -655,11 +666,11 @@ async function landSearch(){
       }else banner=t("banner_none_lot",{label:geo.label,area:geo.neighbourhood||geo.borough});
     }
     let rows=addressStatus?[]:filterLandSnapshot(projects,{
-      status,stage,futureAction,procedure,actionRows,today:todayISO(),borough:boro,keyword:kw,
+      status,stage,futureAction,procedure,family,actionRows,today:todayISO(),borough:boro,keyword:kw,
       communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,projectIds,limit:40,
     });
     if(block&&!rows.length){
-      rows=await landNearby(geo,status,projects,{stage,futureAction,procedure,actionRows});
+      rows=await landNearby(geo,status,projects,{stage,futureAction,procedure,family,actionRows});
       if(projectIds?.length) banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough});
     }
     paintLandRows(rows,banner,kw,!!block,boro,stale,true,addressStatus);
@@ -702,6 +713,7 @@ function landRowHTML(r, i, terms, contextTerms){
     escape:value=>value===title?digTitleHTML(title,ev):escUiHtml(value),
   });
   const applicantMention=listEntityMentionHTML({kind:"agency",value:r.primary_applicant,escape:escUiHtml,relation:"primary_applicant"});
+  const familyChips=landFamilyChipsHTML(r,{t,escape:escUiHtml});
   const procedureKey=landProcedureLabelKey(r);
   const procedureChip=procedureKey
     ? `<span class="tag land-procedure" data-land-procedure="${escUiHtml(resolveLandProcedure(r)||"")}">${escUiHtml(t(procedureKey))}</span>`
@@ -723,7 +735,7 @@ function landRowHTML(r, i, terms, contextTerms){
     : "";
   return `<div class="row" data-i="${i}" tabindex="0" role="group">
     <div class="ui-object-card-primary"><p class="rtitle">${titleHTML||digTitleHTML(title,ev)}</p>${renderObjectCardCopy(interaction,{label:t("copy_link"),escape:escUiHtml})}</div>
-    <p class="rmeta">${procedureChip}${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}${applicantMention?` · ${applicantMention}`:""}</span> · ${r.public_status||r.project_status||""}<br>
+    <p class="rmeta">${familyChips}${procedureChip}${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}${r.cc_district?" · "+t("council_district_short",{n:r.cc_district}):""}${applicantMention?` · ${applicantMention}`:""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}${observedHTML}${nextOpportunity}</p>
     ${digEvidenceHTML(ev)}
   </div>`;
@@ -781,7 +793,7 @@ async function landSelect(i, el){
     : "")+`<h2 class="rolename" lang="en" dir="ltr">${renderObjectCardTitle(interaction,{escape:escUiHtml})}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
-      ${landProcedureLabelKey(r)?`<span class="tag land-procedure" data-land-procedure="${escUiHtml(resolveLandProcedure(r)||"")}">${escUiHtml(t(landProcedureLabelKey(r)))}</span>`:""}
+      ${landFamilyChipsHTML(r,{t,escape:escUiHtml})}${landProcedureLabelKey(r)?`<span class="tag land-procedure" data-land-procedure="${escUiHtml(resolveLandProcedure(r)||"")}">${escUiHtml(t(landProcedureLabelKey(r)))}</span>`:""}
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
     </div>
     <div class="agencybar">
@@ -983,8 +995,9 @@ async function landShowLots(gj, n, selection){
 function landToAlert(term){
   const keywords = term ? [String(term).toLowerCase().trim()].filter(Boolean) : [];
   const procedure = normalizeLandProcedure($("#lprocedure")?.value);
+  const family = normalizeLandFamily($("#lfamily")?.value);
   import("../alerts_context_carry.mjs")
-    .then(carry=>location.assign(carry.alertsHref({lens:"land",filter:{keywords,status:"all",procedure}})))
+    .then(carry=>location.assign(carry.alertsHref({lens:"land",filter:{keywords,status:"all",procedure,...(family!==DEFAULT_LAND_FAMILY?{family}:{})}})))
     .catch(()=>location.assign("/following/"));
 }
 
