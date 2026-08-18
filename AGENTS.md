@@ -428,7 +428,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `site/land_status_facets.mjs`. Stage consumes `site/land_phase_spine.mjs` phase IDs; actionability
   is determined from the published event/deadline date with an injected test clock. Public URLs use
   `stage` + `future`, while legacy `status` links remain accepted. Focused field-data proof is
-  `test/land_stage_action_filters.test.mjs`.
+  `test/land_stage_action_filters.test.mjs`. That file asserts the public-review ∩ upcoming-hearing
+  join invariant with a frozen fixture plus a dynamic live pick from
+  `site/data/land_upcoming_hearings.json` — never pin a rolling project id (it ages out of the
+  daily refresh and blocks the land-upcoming-hearings publish loop).
 - Hydrated Meetings borough/location scopes must filter the current hearing rows through
   `filterMeetingRowsByAffectedArea` before any stamped district-bag materialization. The map
   artifact is a read model and can lag newly published or multi-borough hearings; community-
