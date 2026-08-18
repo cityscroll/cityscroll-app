@@ -16,11 +16,24 @@ const wrangler = readFileSync(new URL("../worker/wrangler.toml", import.meta.url
 const worker = readFileSync(new URL("../worker/src/worker.mjs", import.meta.url), "utf8");
 
 test("generated architecture facts contain every LA4 section", () => {
-  for (const key of ["routes", "bindings", "crons", "warehouse", "migrations", "entity_resolution", "ontology", "observer_coverage"]) {
+  for (const key of [
+    "routes",
+    "bindings",
+    "crons",
+    "warehouse",
+    "migrations",
+    "entity_resolution",
+    "ontology",
+    "observer_coverage",
+    "search",
+    "constellation",
+    "pages_edge",
+    "materializers",
+  ]) {
     assert.ok(key in facts, key);
   }
   assert.equal(facts.schema, "cityscroll.architecture.facts.v1");
-  assert.equal(facts.generator.version, "1.1.0");
+  assert.equal(facts.generator.version, "1.2.0");
   assert.ok(facts.commit);
   assert.ok(facts.source_paths.includes("worker/wrangler.toml"));
 });
@@ -86,18 +99,56 @@ test("a canary path not in observed_paths lands in unmapped_surfaces", () => {
   assert.equal(coverage.unmapped_surfaces.some((item) => item.id === "worker-bindings"), false);
 });
 
-test("current HEAD reports search, index, and constellation canaries as unmapped", () => {
+test("registered architecture canaries are first-class observed", () => {
+  const observed = new Set(facts.observer_coverage.observed_paths);
   const unmapped = new Set(facts.observer_coverage.unmapped_surfaces.map((item) => item.path));
   for (const path of [
     "worker/src/search.mjs",
     "tools/build_keyword_search_index.mjs",
     "site/agency_search_producer.mjs",
     "site/agency_constellation_model.mjs",
+    "tools/build_agency_constellation_documents.mjs",
+    "site/pages_edge.mjs",
+    "site/_routes.json",
+    "tools/build_primary_documents.mjs",
+    "ontology/registry.v0.json",
+    "worker/wrangler.toml",
   ]) {
-    assert.ok(unmapped.has(path), path);
+    assert.ok(observed.has(path), path);
+    assert.equal(unmapped.has(path), false, path);
   }
-  assert.equal(unmapped.has("ontology/registry.v0.json"), false);
-  assert.equal(unmapped.has("worker/wrangler.toml"), false);
+  assert.deepEqual(facts.observer_coverage.unmapped_surfaces, []);
+});
+
+test("search facts record production families, keyword-index families, and producers", () => {
+  assert.equal(facts.search.production.handler, "handleSearch");
+  assert.equal(facts.search.production.response_schema, "cityscroll.keyword_search_response.v1");
+  assert.ok(facts.search.production.presentation_lanes.includes("contracts"));
+  const familyIds = facts.search.production.collection_families.map((item) => item.family);
+  for (const family of ["people", "vendors", "parcels", "community_boards", "agencies", "committees"]) {
+    assert.ok(familyIds.includes(family), family);
+  }
+  assert.equal(facts.search.keyword_index.schema, "cityscroll.keyword_search_index.v1");
+  assert.ok(facts.search.keyword_index.families.includes("committees"));
+  assert.ok(facts.search.keyword_index.families.includes("agencies"));
+  const agency = facts.search.producers.find((item) => item.path === "site/agency_search_producer.mjs");
+  assert.ok(agency);
+  assert.equal(agency.producer_id, "agency_search_document.v1");
+});
+
+test("constellation, pages-edge, and primary-document facts match source text", () => {
+  assert.equal(facts.constellation.agency.schema, "cityscroll.agency_constellation.v1");
+  for (const category of ["contracts", "vendors", "meetings", "rules", "obligations", "staffing"]) {
+    assert.ok(facts.constellation.agency.categories.includes(category), category);
+  }
+  assert.equal(facts.constellation.materializer.lookup, "site/data/agency_constellation_lookup.json");
+  assert.ok(facts.pages_edge.routes.include.includes("/mandates/*"));
+  assert.ok(facts.pages_edge.routes.include.includes("/committees/*"));
+  assert.ok(facts.pages_edge.renderer.request_kinds.includes("notice"));
+  assert.ok(facts.pages_edge.renderer.handlers.includes("handleNotice"));
+  assert.ok(facts.materializers.primary_documents.builders.includes("buildNowDocument"));
+  assert.ok(facts.materializers.primary_documents.output_prefixes.includes("now"));
+  assert.ok(facts.materializers.primary_documents.output_prefixes.includes("search"));
 });
 
 test("observer_coverage is stable across runs", () => {
