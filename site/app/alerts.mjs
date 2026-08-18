@@ -240,8 +240,8 @@ async function aFetch(){
     if(kw) p["$q"]=kw;
     return { kind:"rfp", rows: await soda(p) };
   }
-  const zp={"$select":"project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date",
-    "$where":"ulurp_non='ULURP'","$order":"current_milestone_date DESC","$limit":"5"};
+  const zp={"$select":"project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date,ulurp_non",
+    "$where":"ulurp_non IN ('ULURP','ELURP')","$order":"current_milestone_date DESC","$limit":"5"};
   const REZ_ALIAS={"79 rivington":"Allen Street","79 rivington street":"Allen Street","allen street mall":"Allen Street"};
   const qv=$("#aparam").value.trim(), qq=REZ_ALIAS[qv.toLowerCase()]||qv;
   if(qq) zp["$q"]=qq;

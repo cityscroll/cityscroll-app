@@ -419,6 +419,7 @@ const NL = {
       landResolvedArea=null;
       if(f.boro) landBorough=f.boro;
       if(f.status) $("#lstatus").value=f.status;
+      if(f.procedure && $("#lprocedure")) $("#lprocedure").value=f.procedure;
       landCommunityDistrict=f.communityDistrict||"";
       landCouncilDistrict=f.councilDistrict||"";
       $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" ");

@@ -1984,7 +1984,16 @@
       </div>
     </div>
     <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" selected data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
-    <div class="land-primary-facets" aria-label="Zoning stage and next-opportunity filters" data-i18n-aria="land_filters_label">
+    <div class="land-primary-facets" aria-label="Zoning stage, procedure, and next-opportunity filters" data-i18n-aria="land_filters_label">
+      <div class="field">
+        <label for="lprocedure" data-i18n="land_procedure_label">Review procedure</label>
+        <select id="lprocedure">
+          <option value="review" selected data-i18n="land_procedure_review">ULURP and expedited</option>
+          <option value="ulurp" data-i18n="land_procedure_ulurp">ULURP only</option>
+          <option value="elurp" data-i18n="land_procedure_elurp">Expedited (ELURP)</option>
+          <option value="non_ulurp" data-i18n="land_procedure_non_ulurp">Non-ULURP</option>
+        </select>
+      </div>
       <div class="field">
         <label for="lstage" data-i18n="property_stage_label">Stage</label>
         <select id="lstage">

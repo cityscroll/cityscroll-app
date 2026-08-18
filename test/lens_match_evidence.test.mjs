@@ -27,6 +27,11 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../site/display_title.mjs";
 import {
+  landObservedDates,
+  landProcedureLabelKey,
+  resolveLandProcedure,
+} from "../site/land_procedure_facet.mjs";
+import {
   constellationLink,
   objectCardInteractionProjection,
   officialSourceLink,
@@ -76,7 +81,7 @@ const {
   matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle",
+  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle", "landProcedureLabelKey", "resolveLandProcedure", "landObservedDates",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -139,6 +144,9 @@ const {
   objectCardInteractionProjection,
   renderObjectCardCopy,
   renderObjectCardTitle,
+  landProcedureLabelKey,
+  resolveLandProcedure,
+  landObservedDates,
 );
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
