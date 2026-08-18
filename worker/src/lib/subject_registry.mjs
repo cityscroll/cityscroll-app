@@ -26,15 +26,24 @@ export const SUBJECT_REGISTRY_VERSION = "subject_registry_v3";
 export const SUBJECT_LINK_METHOD = "subject_registry_lifecycle_v1";
 export const SUBJECT_LINK_METHOD_VERSION = "1.0.0";
 
-/** Closed civic procedure vocabulary. New values require a version change. */
-export const LAND_USE_PROCEDURE_VOCABULARY_VERSION = "land_use_procedure_v1";
+/** Closed review-procedure vocabulary. Distinct from action families. */
+export const LAND_USE_PROCEDURE_VOCABULARY_VERSION = "land_use_procedure_v2";
 export const LAND_USE_PROCEDURE_KINDS = Object.freeze([
+  "ulurp",
+  "elurp",
+  "non_ulurp",
+]);
+
+/** Closed land-use action families. Distinct from review procedures. */
+export const LAND_USE_ACTION_FAMILY_VOCABULARY_VERSION = "land_use_action_family_v1";
+export const LAND_USE_ACTION_FAMILY_KINDS = Object.freeze([
   "landmark_designation",
   "rezoning",
-  "ulurp",
   "special_permit",
   "city_map_change",
   "site_selection",
+  "acquisition",
+  "disposition",
 ]);
 
 /** Closed polygon geography vocabularies. Non-polygon buckets are not subjects. */

@@ -11,6 +11,7 @@ import {
   routeCrossSpineEdge,
 } from "../entity_resolution/cross_domain/edge_policy.mjs";
 import {
+  LAND_USE_ACTION_FAMILY_KINDS,
   LAND_USE_PROCEDURE_KINDS,
   LAND_USE_PROCEDURE_VOCABULARY_VERSION,
   formatSubjectRef,
@@ -42,12 +43,9 @@ export const MANDATE_PROCEDURE_METHOD = "mandate_procedure_kind_exact_v1";
 export const PROJECT_PROCEDURE_METHOD = "project_procedure_action_code_exact_v1";
 
 const PROCEDURE_LABELS = Object.freeze({
-  landmark_designation: "Landmark designation procedure",
-  rezoning: "Rezoning procedure",
   ulurp: "Uniform Land Use Review Procedure",
-  special_permit: "Special permit procedure",
-  city_map_change: "City map change procedure",
-  site_selection: "Site selection procedure",
+  elurp: "Expedited Land Use Review Procedure",
+  non_ulurp: "Non-ULURP review",
 });
 
 const clean = (value, max = 500) => String(value ?? "")
@@ -64,7 +62,7 @@ function stablePart(value) {
   return clean(value, 160).toLowerCase().replace(/[^a-z0-9._:-]+/g, "-").replace(/^-+|-+$/g, "");
 }
 
-/** Structured civic-action classes explicitly required by a mandate. */
+/** Structured civic-action families explicitly required by a mandate. */
 export function mandateLandUseKinds(mandate = {}) {
   const duty = clean(mandate.duty_text || mandate.label, 1000).toLowerCase();
   const kinds = new Set();
@@ -75,23 +73,51 @@ export function mandateLandUseKinds(mandate = {}) {
   if (/\b(?:rezone|rezoning|zoning map amendment|amend(?:ment)? of (?:the )?zoning map)\b/i.test(duty)) {
     kinds.add("rezoning");
   }
-  if (/\b(?:ulurp|uniform land use review procedure)\b/i.test(duty)) kinds.add("ulurp");
   if (/\b(?:city map change|map change|demap(?:ping)?)\b/i.test(duty)) kinds.add("city_map_change");
   if (/\b(?:special permit|zoning permit)\b/i.test(duty)) kinds.add("special_permit");
-  if (/\b(?:site selection|site acquisition)\b/i.test(duty)) kinds.add("site_selection");
+  if (/\bsite selection\b/i.test(duty)) kinds.add("site_selection");
+  if (/\b(?:site )?acquisition\b/i.test(duty)) kinds.add("acquisition");
+  if (/\bdispos(?:al|ition)\b/i.test(duty)) kinds.add("disposition");
+  return [...kinds].filter((kind) => LAND_USE_ACTION_FAMILY_KINDS.includes(kind));
+}
+
+/** Review-procedure kinds named by a mandate. Distinct from action families. */
+export function mandateLandUseProcedures(mandate = {}) {
+  const duty = clean(mandate.duty_text || mandate.label, 1000).toLowerCase();
+  const kinds = new Set();
+  if (/\bexpedited land use review procedure\b|\belurp\b/i.test(duty)) kinds.add("elurp");
+  if (/\bnon[- ]ulurp\b/i.test(duty)) kinds.add("non_ulurp");
+  if ((/\buniform land use review procedure\b|\bulurp\b/i.test(duty)) && !/\bnon[- ]ulurp\b/i.test(duty)) {
+    kinds.add("ulurp");
+  }
   return [...kinds];
 }
 
-function landActionKinds(row = {}) {
+function publisherUlurpNon(row = {}) {
+  return clean(row.ulurp_non || row.open_data?.ulurp_non, 40);
+}
+
+/** Publisher action-code → action family. PQ/PC are acquisition, not site selection. */
+export function landActionKinds(row = {}) {
   const codes = new Set(clean(row.actions, 160).toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean));
   const kinds = new Set();
   if (codes.has("HI") || codes.has("LD")) kinds.add("landmark_designation");
   if (codes.has("ZM") || codes.has("ZR")) kinds.add("rezoning");
   if (codes.has("ZS")) kinds.add("special_permit");
-  if (codes.has("MM")) kinds.add("city_map_change");
-  if (codes.has("PS") || codes.has("PQ")) kinds.add("site_selection");
-  if (clean(row.ulurp_non, 40).toUpperCase() === "ULURP") kinds.add("ulurp");
+  if (codes.has("MM") || codes.has("DM")) kinds.add("city_map_change");
+  if (codes.has("PS")) kinds.add("site_selection");
+  if (codes.has("PQ") || codes.has("PC")) kinds.add("acquisition");
+  if (codes.has("HA") || codes.has("PP")) kinds.add("disposition");
   return [...kinds];
+}
+
+/** Publisher ulurp_non → review-procedure kind. ELURP is first-class. */
+export function landProcedureKinds(row = {}) {
+  const value = publisherUlurpNon(row).toUpperCase().replace(/[\s_]+/g, "-");
+  if (value === "ULURP") return ["ulurp"];
+  if (value === "ELURP") return ["elurp"];
+  if (value === "NON-ULURP" || value === "NONULURP") return ["non_ulurp"];
+  return [];
 }
 
 const IDENTITY_FIELDS = Object.freeze([
@@ -224,7 +250,8 @@ function landCandidates(entityIntelligence, landProjects, identity) {
       const raw = rowsById.get(projectId);
       if (!projectId || !raw || !agencyMatches(identity, object, raw)) continue;
       const actionKinds = landActionKinds(raw);
-      if (!actionKinds.length) continue;
+      const procedureKinds = landProcedureKinds(raw);
+      if (!actionKinds.length && !procedureKinds.length) continue;
       const objectHref = clean(object.href, 240);
       candidates.set(projectId, {
         project_id: projectId,
@@ -236,8 +263,9 @@ function landCandidates(entityIntelligence, landProjects, identity) {
         date: datePart(raw.current_milestone_date || object.when),
         public_status: clean(raw.public_status, 80) || null,
         action_codes: clean(raw.actions, 160),
-        ulurp_non: clean(raw.ulurp_non, 40) || null,
+        ulurp_non: publisherUlurpNon(raw) || null,
         action_kinds: actionKinds,
+        procedure_kinds: procedureKinds,
         identity_record: Object.fromEntries(IDENTITY_FIELDS
           .filter((field) => raw[field] != null)
           .map((field) => [field, raw[field]])),
@@ -480,8 +508,12 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
   if (!identity?.canonical_id) return null;
   const mandates = (sources.obligationsLookup?.by_agency?.[identity.canonical_id]?.obligations || [])
     .filter((row) => row?.certification?.quote_verified !== false)
-    .map((row) => ({ row, actionKinds: mandateLandUseKinds(row) }))
-    .filter(({ actionKinds }) => actionKinds.length);
+    .map((row) => ({
+      row,
+      actionKinds: mandateLandUseKinds(row),
+      procedureKinds: mandateLandUseProcedures(row),
+    }))
+    .filter(({ actionKinds, procedureKinds }) => actionKinds.length || procedureKinds.length);
   const candidates = landCandidates(sources.entityIntelligence, sources.landProjects, identity);
   const gate = publicationGate(sources.crossSpineGate);
   const edgePolicy = crossSpinePolicy(gate);
@@ -515,7 +547,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
 
   for (const { row: mandate, actionKinds } of mandates) {
     const mandateRef = mandateSubjectRef(mandate.obligation_id);
-    if (!mandateRef) continue;
+    if (!mandateRef || !actionKinds.length) continue;
     let matched = 0;
     for (const action of candidates) {
       const subjectScope = actionKinds.filter((kind) => action.action_kinds.includes(kind));
@@ -648,10 +680,10 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
     }
   }
 
-  for (const { row: mandate, actionKinds } of mandates) {
+  for (const { row: mandate, procedureKinds } of mandates) {
     const mandateRef = mandateSubjectRef(mandate.obligation_id);
     if (!mandateRef) continue;
-    for (const kind of actionKinds) {
+    for (const kind of procedureKinds) {
       const procedure = procedureDescriptor(kind);
       if (!procedure) continue;
       const sourceFields = ["duty_text", "certification.quote_verified"];
@@ -701,13 +733,12 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
   }
 
   for (const action of candidates) {
-    for (const kind of action.action_kinds) {
+    for (const kind of action.procedure_kinds) {
       const procedure = procedureDescriptor(kind);
       if (!procedure) continue;
       const sourceFields = [
         "project_id",
-        ...(action.action_codes ? ["actions"] : []),
-        ...(kind === "ulurp" && action.ulurp_non ? ["ulurp_non"] : []),
+        ...(action.ulurp_non ? ["ulurp_non"] : []),
       ];
       const projectSubject = parseSubjectRef(action.subject_ref);
       const evidence = {
@@ -728,7 +759,7 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
         features: {
           project_subject_exact: projectSubject?.kind === "project"
             && projectSubject.id === action.project_id,
-          publisher_action_kind_exact: action.action_kinds.includes(kind),
+          publisher_action_kind_exact: action.procedure_kinds.includes(kind),
           procedure_vocabulary_member: LAND_USE_PROCEDURE_KINDS.includes(kind),
         },
         evidence,
@@ -736,9 +767,9 @@ export function buildMandateLandUseView(agencyIdOrName, sources = {}) {
           source_system: action.source_system,
           source_record_id: action.source_record_id,
           source_fields: sourceFields,
-          input_value: `${action.action_codes}${action.ulurp_non ? ` · ${action.ulurp_non}` : ""}`,
+          input_value: action.ulurp_non || kind,
           observed_at: action.date,
-          basis: `publisher_action_code+closed_procedure_vocabulary:${LAND_USE_PROCEDURE_VOCABULARY_VERSION}`,
+          basis: `publisher_ulurp_non+closed_procedure_vocabulary:${LAND_USE_PROCEDURE_VOCABULARY_VERSION}`,
           source_excerpt: action.label,
         },
         policy: procedurePolicy,

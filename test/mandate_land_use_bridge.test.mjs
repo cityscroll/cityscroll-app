@@ -17,7 +17,10 @@ import {
   agencyMandateLandUsePath,
   buildMandateLandUseView,
   composePublicProcedurePaths,
+  landActionKinds,
+  landProcedureKinds,
   mandateLandUseKinds,
+  mandateLandUseProcedures,
   renderMandateLandUseSection,
 } from "../site/mandate_land_use_bridge.mjs";
 import {
@@ -162,32 +165,20 @@ test("resolver requires agency, structured action kind, and subject scope rather
   assert.equal(view.edges[0].claim.enrichment.entity_link_id.available, true);
   assert.equal(view.edges[0].claim.enrichment.resolution_run_id.available, true);
   assert.equal(view.edges[0].claim.claim_id, view.edges[0].entity_link.id);
-  assert.equal(view.procedure_paths.length, 1);
-  assert.equal(view.procedure_paths[0].procedure.subject_ref, "procedure:landmark_designation");
-  assert.equal(view.procedure_paths[0].mandate_edge.type, MANDATE_GOVERNS_PROCEDURE);
-  assert.equal(view.procedure_paths[0].project_edge.type, PROJECT_PARTICIPATES_IN_PROCEDURE);
-  assert.equal(view.procedure_paths[0].mandate_edge.to, view.procedure_paths[0].project_edge.to);
-  assert.equal(view.procedure_paths[0].mandate_edge.public, true);
-  assert.equal(view.procedure_paths[0].project_edge.public, true);
-  assert.deepEqual(view.procedure_paths[0].mandate_edge.evidence.source_fields, [
-    "duty_text", "certification.quote_verified",
-  ]);
-  assert.deepEqual(view.procedure_paths[0].project_edge.evidence.source_fields, [
-    "project_id", "actions",
-  ]);
+  assert.equal(view.procedure_paths.length, 0, "landmark designation is a family, not a review procedure");
 });
 
 test("composed procedure paths require both public edges", () => {
   const mandateEdge = {
     type: MANDATE_GOVERNS_PROCEDURE,
     from: "mandate:54431-002",
-    to: "procedure:landmark_designation",
+    to: "procedure:ulurp",
     public: true,
   };
   const projectEdge = {
     type: PROJECT_PARTICIPATES_IN_PROCEDURE,
     from: "project:2026K0443",
-    to: "procedure:landmark_designation",
+    to: "procedure:ulurp",
     public: true,
   };
   assert.equal(composePublicProcedurePaths([mandateEdge], [projectEdge]).length, 1);
@@ -231,7 +222,6 @@ test("live Landmarks materialization keeps agency-only land actions in shadow", 
     intelligence,
     land_projects: landProjects,
   });
-  assert.equal(view.mandates_land_use.status, "matched");
   assert.equal(view.mandates_land_use.edges.length, 0);
   assert.ok(view.mandates_land_use.shadow_edges.length >= 1);
   assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.decision === "evidence_only"));
@@ -243,20 +233,97 @@ test("live Landmarks materialization keeps agency-only land actions in shadow", 
     return reasons.includes("project_identity");
   }));
   assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.match?.project_identity === false));
-  assert.equal(
-    view.mandates_land_use.procedure_paths.length,
-    view.mandates_land_use.shadow_edges.length,
-  );
-  assert.ok(view.mandates_land_use.procedure_paths.every((path) => (
-    path.mandate_edge.public && path.project_edge.public
+  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => (
+    edge.land_action.action_kinds.includes("landmark_designation")
   )));
-  assert.ok(view.claims.some((claim) => claim.category_id === "mandate-land-use"));
-
+  // Landmark designation is a family. Procedure paths require a shared
+  // ulurp|elurp|non_ulurp kind named by both the law and the publisher row.
+  assert.ok(view.mandates_land_use.project_procedure_edges.every((edge) => (
+    edge.to === "procedure:non_ulurp" || edge.to === "procedure:ulurp" || edge.to === "procedure:elurp"
+  )));
+  assert.equal(view.mandates_land_use.procedure_paths.length, 0);
   const html = renderAgencyConstellationDocument(view);
-  assert.match(html, /id="mandates-land-use"/);
-  assert.match(html, /Landmark designation procedure/);
-  assert.match(html, /Projects participating in this procedure/);
+  assert.doesNotMatch(html, /Landmark designation procedure/);
   assert.doesNotMatch(html, /requires project|mandate requires this project/i);
+});
+
+test("PQ is acquisition and ELURP is a first-class procedure edge", () => {
+  assert.deepEqual(landActionKinds({ actions: "PQ" }), ["acquisition"]);
+  assert.deepEqual(landActionKinds({ actions: "PS; PQ" }), ["site_selection", "acquisition"]);
+  assert.deepEqual(landActionKinds({ actions: "PC; PP" }), ["acquisition", "disposition"]);
+  assert.deepEqual(landProcedureKinds({ ulurp_non: "ELURP" }), ["elurp"]);
+  assert.deepEqual(landProcedureKinds({ open_data: { ulurp_non: "ELURP" } }), ["elurp"]);
+  assert.deepEqual(landProcedureKinds({ ulurp_non: "Non-ULURP" }), ["non_ulurp"]);
+  assert.deepEqual(mandateLandUseKinds({ duty_text: "The agency shall complete the site acquisition." }), ["acquisition"]);
+  assert.deepEqual(mandateLandUseKinds({ duty_text: "The agency shall complete site selection." }), ["site_selection"]);
+  assert.deepEqual(mandateLandUseProcedures({
+    duty_text: "The agency shall file an ELURP application for the acquisition.",
+  }), ["elurp"]);
+  assert.equal(mandateLandUseKinds({
+    duty_text: "The agency shall file an application under the uniform land use review procedure.",
+  }).includes("ulurp"), false);
+
+  const view = buildMandateLandUseView("parks-and-recreation", {
+    obligationsLookup: {
+      by_agency: {
+        "parks-and-recreation": {
+          obligations: [{
+            obligation_id: "elurp-acq-001",
+            agency_id: "parks-and-recreation",
+            duty_text: "The department shall complete the site acquisition through ELURP.",
+            project_id: "2025R0257",
+            certification: { status: "auto_certified", quote_verified: true },
+            source: { legistar_url: "https://example.test/elurp" },
+          }],
+        },
+      },
+    },
+    entityIntelligence: {
+      by_ref: {
+        "agency:id:parks-and-recreation": {
+          domains: {
+            land: {
+              objects: [{
+                subject_ref: "project:2025R0257",
+                project_id: "2025R0257",
+                label: "Saw Mill Creek Marsh",
+                link_type: "applicant_agency",
+                method: "agency_canonical_v1",
+                provenance: {
+                  source_system: "warehouse",
+                  source_record_id: "warehouse:2025R0257",
+                  input_value: "Parks and Recreation",
+                },
+              }],
+            },
+          },
+        },
+      },
+    },
+    landProjects: {
+      rows: [{
+        project_id: "2025R0257",
+        project_name: "Saw Mill Creek Marsh",
+        actions: "PQ",
+        ulurp_non: "ELURP",
+        primary_applicant: "Parks and Recreation",
+        current_milestone: "Site acquisition certified",
+        current_milestone_date: "2026-03-02",
+      }],
+    },
+    generatedAt: "2026-08-18T12:00:00Z",
+  });
+
+  assert.deepEqual(view.edges[0].land_action.action_kinds, ["acquisition"]);
+  assert.deepEqual(view.edges[0].land_action.procedure_kinds, ["elurp"]);
+  assert.equal(view.edges[0].match.subject_scope.includes("site_selection"), false);
+  assert.ok(view.project_procedure_edges.some((edge) => edge.to === "procedure:elurp" && edge.public === true));
+  assert.ok(view.mandate_procedure_edges.some((edge) => edge.to === "procedure:elurp" && edge.public === true));
+  assert.equal(view.procedure_paths.length, 1);
+  assert.equal(view.procedure_paths[0].procedure.subject_ref, "procedure:elurp");
+  assert.deepEqual(view.procedure_paths[0].project_edge.evidence.source_fields, [
+    "project_id", "ulurp_non",
+  ]);
 });
 
 test("project identity without a compatible mandate phase remains evidence-only", () => {
