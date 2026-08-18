@@ -18,6 +18,11 @@
       "why": "Materializes the agency constellation lookup and documents. Constellation producers and their materializers sit outside the observer's closed source set."
     },
     {
+      "id": "exams-eligibility",
+      "path": "site/exams_surface.mjs",
+      "why": "Exams public eligibility and Interest Area multi-select. PR 1056 changed fail-closed open_competitive admission; eligibility semantics are architecture-affecting and were outside the observer."
+    },
+    {
       "id": "keyword-search-index",
       "path": "tools/build_keyword_search_index.mjs",
       "why": "Keyword-index builder for typed SearchDocuments. PR 1058 changed it with production search; the observer does not parse tools/build_* builders."

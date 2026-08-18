@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.architecture.backtest_set.v1",
-  "description": "Frozen architecture-observer backtest cases. Replay with tools/backtest_architecture_canaries.mjs --check. Feeds LA11.",
+  "description": "Frozen architecture-observer backtest cases. Replay with tools/backtest_architecture_canaries.mjs --check.",
   "cases": [
     {
       "id": "land-action-collapse",
@@ -9,6 +9,33 @@
       "path": "architecture/backtests/land-action-collapse.json",
       "feeds": "LA11",
       "observer": "tools/architecture_land_action_observer.mjs"
+    },
+    {
+      "id": "pr-1076-constellation-ceiling",
+      "pr": 1076,
+      "title": "PASSPort constellation graph ceiling raise",
+      "card": "cityscroll-kraken/cs-living-architecture-la11-history-backtest",
+      "path": "architecture/backtests/pr-1076-constellation-ceiling.json",
+      "feeds": "LA11",
+      "observer": "tools/architecture_canary_visibility_observer.mjs"
+    },
+    {
+      "id": "pr-1058-committees-search",
+      "pr": 1058,
+      "title": "Committees into production Worker search",
+      "card": "cityscroll-kraken/cs-living-architecture-la11-history-backtest",
+      "path": "architecture/backtests/pr-1058-committees-search.json",
+      "feeds": "LA11",
+      "observer": "tools/architecture_canary_visibility_observer.mjs"
+    },
+    {
+      "id": "pr-1056-exams-eligibility",
+      "pr": 1056,
+      "title": "Exams public eligibility and Interest Area multi-select",
+      "card": "cityscroll-kraken/cs-living-architecture-la11-history-backtest",
+      "path": "architecture/backtests/pr-1056-exams-eligibility.json",
+      "feeds": "LA11",
+      "observer": "tools/architecture_canary_visibility_observer.mjs"
     }
   ]
 }

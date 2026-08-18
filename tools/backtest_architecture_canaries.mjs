@@ -3,15 +3,23 @@
 /**
  * Replay frozen architecture-observer backtest cases.
  *
- * LA11 seam: a standing check that a known drift case stays visible. The first
- * worked case is land-action collapse. Topology-only LA4/LA8 comparison is
- * not sufficient; each case names the observer that must fail the collapsed
- * fixture and pass the post-fix projection.
+ * Standing observer-completeness check: known architecture-affecting PRs stay
+ * visible to the current LA7–LA8 observer, and the land-action-collapse
+ * semantic case stays red on the collapsed fixture. Change-history is
+ * projected from committed watermarks without retaining full facts.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import {
+  observeCanaryVisibility,
+  projectCurrentCanaryObservation,
+} from "./architecture_canary_visibility_observer.mjs";
+import {
+  loadWatermarkHistory,
+  projectChangeHistory,
+} from "./architecture_change_history.mjs";
 import {
   loadJsonRepoPath,
   observeLandActionCollapse,
@@ -20,6 +28,13 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const FROZEN_SET = "architecture/backtests/frozen-set.json";
+
+export const REQUIRED_FROZEN_IDS = Object.freeze([
+  "land-action-collapse",
+  "pr-1076-constellation-ceiling",
+  "pr-1058-committees-search",
+  "pr-1056-exams-eligibility",
+]);
 
 const OBSERVERS = {
   "tools/architecture_land_action_observer.mjs": {
@@ -37,6 +52,12 @@ const OBSERVERS = {
         mapIds: spec.land_ids?.map ?? null,
         listIds: spec.land_ids?.list ?? null,
       });
+    },
+  },
+  "tools/architecture_canary_visibility_observer.mjs": {
+    observe: observeCanaryVisibility,
+    projectCurrent(spec) {
+      return projectCurrentCanaryObservation(spec);
     },
   },
 };
@@ -113,7 +134,17 @@ export function runBacktestCase(entry, loaded, observer) {
 
 export function runFrozenBacktests({ root = ROOT } = {}) {
   const set = loadFrozenBacktestSet(root);
+  const listed = new Set(set.cases.map((entry) => entry.id));
   const results = [];
+  for (const id of REQUIRED_FROZEN_IDS) {
+    if (!listed.has(id)) {
+      results.push({
+        id,
+        ok: false,
+        error: `required frozen canary missing: ${id}`,
+      });
+    }
+  }
   for (const entry of set.cases) {
     const observer = OBSERVERS[entry.observer];
     if (!observer) {
@@ -127,11 +158,13 @@ export function runFrozenBacktests({ root = ROOT } = {}) {
     const loaded = loadBacktestCase(entry, root);
     results.push(runBacktestCase(entry, loaded, observer));
   }
+  const history = projectChangeHistory(loadWatermarkHistory({ root }));
   return {
     schema: "cityscroll.architecture.backtest_receipt.v1",
     source: FROZEN_SET,
     status: results.every((item) => item.ok) ? "healthy" : "drift",
     results,
+    history,
   };
 }
 
