@@ -18,6 +18,14 @@ import {
   staticFact,
 } from "../affordance_grammar.mjs";
 import { createIncrementalList } from "../incremental_list.mjs";
+import {
+  examFeeWaiverCopy,
+  examNoePostedLabel,
+  examQualificationLineHTML,
+  examResidencyCopy,
+  examTestMethodCopy,
+  examWindowBandLabel,
+} from "../exam_reader_copy.mjs";
 
 /* ===================== EXAMS ===================== */
 let careerData = null, careerLoadPromise = null, careerSelected = null;
@@ -258,9 +266,13 @@ function careerDiffLeadsHTML(exam, feeSalary){
   }
   if(view.exam_format && !seen.has("exam_format")) push("exam_format", careerFormatLabel(view.exam_format), view.exam_format);
 
-  const quals=exam.qualifications
-    ? `<p class="career-diff-quals" lang="en" dir="ltr"><b>${t("career_diff_quals")}</b> ${escUiHtml(exam.qualifications)}</p>`
-    : "";
+  const quals=examQualificationLineHTML(exam, {
+    lang: window.LANG || "en",
+    t,
+    esc: escUiHtml,
+    labelKey: "career_diff_quals",
+    className: "career-diff-quals",
+  });
   if(!chips.length && !quals) return "";
   return `${chips.length?`<div class="career-diff-leads" aria-label="${escUiHtml(t("career_diff_quals"))}">${chips.join("")}</div>`:""}${quals}`;
 }
@@ -623,19 +635,54 @@ function careerCardHTML(exam){
   ].filter(Boolean).join("");
   const actionFacts=`${factRows?`<div class="career-action-facts">${factRows}</div>`:""}${diffLeads}${examListForecastHTML(exam)}`;
   const expanded=selected;
-  const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || exam.qualifications || exam.test_method || exam.exam_format);
-  const feeWaiverLine=exam.fee_waiver_is_boilerplate
-    ? t("career_fee_waiver_boilerplate")
-    : (exam.fee_waiver || "");
+  const uiLang=window.LANG || "en";
+  const testMethodCopy=examTestMethodCopy(exam, {
+    lang: uiLang,
+    t,
+    formatLabel: careerFormatLabel,
+  });
+  const qualsDetail=examQualificationLineHTML(exam, {
+    lang: uiLang,
+    t,
+    esc: escUiHtml,
+    labelKey: "career_qualifications",
+    className: "career-detail-line",
+  });
+  const residencyCopy=examResidencyCopy(exam, { lang: uiLang, t });
+  const feeWaiverCopy=examFeeWaiverCopy(exam, { lang: uiLang, t });
+  const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || qualsDetail || testMethodCopy || exam.exam_format || residencyCopy || feeWaiverCopy);
+  const testMethodLine=testMethodCopy
+    ? `<p class="career-detail-line"><b>${t("career_test_method")}</b> ${
+      testMethodCopy.source === "en_source"
+        ? `<span lang="en" dir="ltr">${escUiHtml(testMethodCopy.text)}</span>`
+        : escUiHtml(testMethodCopy.text)
+    }</p>`
+    : "";
+  const residencyNotRequired=exam.residency_required === false
+    || /not required/i.test(String(exam.residency || ""));
+  const residencyLine=residencyCopy
+    ? (residencyCopy.source === "localized"
+      ? `<p class="career-detail-line">${escUiHtml(residencyCopy.text)}</p>`
+      : `<p class="career-detail-line"><b>${t(residencyNotRequired ? "career_diff_no_residency" : "career_diff_residency")}</b> <span lang="en" dir="ltr">${escUiHtml(residencyCopy.text)}</span></p>`)
+    : "";
+  const feeWaiverLine=feeWaiverCopy
+    ? `<p class="career-detail-line"><b>${t("career_fee_waiver")}</b> ${
+      feeWaiverCopy.source === "en_source"
+        ? `<span lang="en" dir="ltr">${escUiHtml(feeWaiverCopy.text)}</span>`
+        : escUiHtml(feeWaiverCopy.text)
+    }</p>`
+    : "";
   const details=hasNoeDetail ? `
     ${factRows?`<div class="career-metrics" data-fee-salary="${feeSalary.kind}">${factRows.replaceAll("career-action-fact","career-metric")}</div>`:""}
-    ${exam.test_method||exam.exam_format?`<p class="career-detail-line"><b>${t("career_test_method")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.test_method||careerFormatLabel(exam.exam_format))}</span></p>`:""}
-    ${exam.qualifications?`<p class="career-detail-line"><b>${t("career_qualifications")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.qualifications)}</span></p>`:""}
-    ${exam.residency?`<p class="career-detail-line"><b>${t("career_diff_residency")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.residency)}</span></p>`:""}
-    ${feeWaiverLine?`<p class="career-detail-line"><b>${t("career_fee_waiver")}</b> <span lang="en" dir="ltr">${escUiHtml(feeWaiverLine)}</span></p>`:""}
+    ${testMethodLine}
+    ${qualsDetail}
+    ${residencyLine}
+    ${feeWaiverLine}
     ${exam.amendment?`<p class="note warn" lang="en" dir="ltr">${escUiHtml(exam.amendment)}</p>`:""}
     <p class="career-english-note">${t("career_official_english_note")}</p>`
     : "";
+  const bandLabel=openBand ? examWindowBandLabel(openBand, { lang: uiLang, t }) : "";
+  const noePosted=exam.notice_url ? examNoePostedLabel({ lang: uiLang, t }) : "";
   return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" data-exam-format="${escUiHtml(exam.exam_format||"")}" data-salary-band="${escUiHtml(exam.salary_band||"")}" data-fee-level="${escUiHtml(exam.fee_level||"")}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
     <div class="career-deadline-lead">
       ${statusHref
@@ -646,8 +693,8 @@ function careerCardHTML(exam){
           escape: escUiHtml,
         })
         : staticFact({ label: careerStatusLabel(status), className: `career-status-fact ${careerStatusClass(status)}`, escape: escUiHtml })}
-      ${openBand?`<span class="tag" data-open-window-band="${openBand}" lang="en" dir="ltr">${openBand}</span>`:""}
-      ${exam.notice_url?`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted</span>`:""}
+      ${openBand?`<span class="tag" data-open-window-band="${openBand}"${uiLang==="en"?' lang="en" dir="ltr"':""}>${escUiHtml(bandLabel)}</span>`:""}
+      ${exam.notice_url?`<span class="tag" data-noe-state="posted"${uiLang==="en"?' lang="en" dir="ltr"':""}>${escUiHtml(noePosted)}</span>`:""}
       ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}
       <p class="career-deadline-primary">${careerWindowText(exam,status)}</p>
       ${countdown?`<span class="career-deadline-countdown">${countdown}</span>`:""}
@@ -689,9 +736,13 @@ function careerInterestContextHTML(){
   rows.forEach(exam=>{ const band=CrolStaffing.openWindowBand(exam,today); if(band) bands[band]+=1; });
   const noe=rows.filter(exam=>exam.notice_url).length;
   const label=t(CAREER_AREA_KEYS[area.id]||"career_area_other");
+  const uiLang=window.LANG || "en";
   const chips=["far","approaching","imminent"].filter(band=>bands[band]>0)
-    .map(band=>`<span class="tag" data-open-window-band="${band}" lang="en" dir="ltr">${band} ${bands[band]}</span>`);
-  if(noe>0) chips.push(`<span class="tag" data-noe-state="posted" lang="en" dir="ltr">NOE posted ${noe}</span>`);
+    .map(band=>{
+      const label=examWindowBandLabel(band, { lang: uiLang, t });
+      return `<span class="tag" data-open-window-band="${band}"${uiLang==="en"?' lang="en" dir="ltr"':""}>${escUiHtml(label)} ${bands[band]}</span>`;
+    });
+  if(noe>0) chips.push(`<span class="tag" data-noe-state="posted"${uiLang==="en"?' lang="en" dir="ltr"':""}>${escUiHtml(examNoePostedLabel({ lang: uiLang, t }))} ${noe}</span>`);
   return `<div class="career-interest-context" data-interest-context="${escUiHtml(area.id)}">
     <b>${escUiHtml(label)}</b>
     <div class="career-interest-context-meta">${chips.join("")}</div>
