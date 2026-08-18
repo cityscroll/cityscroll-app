@@ -411,6 +411,7 @@
     topic_search_family_minutes: "কমিউনিটি বোর্ডের কার্যবিবরণী",
     topic_search_family_mandates: "বাধ্যবাধকতা",
     topic_search_waiting: "অপেক্ষায়",
+    topic_search_searching: "খোঁজা হচ্ছে…",
     topic_search_enter: "সরকারি নথি খুঁজতে একটি বিষয় লিখুন।",
     topic_search_related_because: "সম্পর্কিত, কারণ উৎসের এই অনুচ্ছেদে বিষয়টির শব্দ রয়েছে।",
     topic_search_evidence_limit: "এই ফলাফলের উৎস-অনুচ্ছেদের লেখা পাওয়া যায়নি।",

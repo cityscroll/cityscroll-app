@@ -411,6 +411,7 @@
     topic_search_family_minutes: "社区委员会会议纪要",
     topic_search_family_mandates: "法定职责",
     topic_search_waiting: "等待中",
+    topic_search_searching: "正在搜索…",
     topic_search_enter: "输入主题以搜索公共记录。",
     topic_search_related_because: "之所以相关，是因为此来源段落包含该主题词。",
     topic_search_evidence_limit: "此结果没有可用的来源段落文本。",

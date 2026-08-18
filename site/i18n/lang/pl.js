@@ -419,6 +419,7 @@
     topic_search_family_minutes: "Protokoły rad społeczności",
     topic_search_family_mandates: "Obowiązki",
     topic_search_waiting: "Oczekiwanie",
+    topic_search_searching: "Wyszukiwanie…",
     topic_search_enter: "Wpisz temat, aby przeszukać publiczne rejestry.",
     topic_search_related_because: "Powiązane, ponieważ ten fragment źródła zawiera słowa tematu.",
     topic_search_evidence_limit: "Tekst fragmentu źródła jest niedostępny dla tego wyniku.",
