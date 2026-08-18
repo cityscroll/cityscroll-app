@@ -7,8 +7,9 @@
  * clocks were each locally "correct" while the composed page contradicted itself.
  */
 
-/** Keep this module import-light — it is pulled into the home loader via feed-actions. */
-const LAND_ULURP_PHASES = Object.freeze([
+/** Keep this module import-light — unique name so DOM-equivalence inlining
+ *  does not collide with `LAND_ULURP_PHASES` from land_phase_spine. */
+const LAND_COHERENCE_PHASE_ORDER = Object.freeze([
   "pre_application",
   "environmental",
   "pre_certification",
@@ -52,8 +53,12 @@ export function statusRank(status) {
 
 /**
  * Exactly one resolved public status for the detail page.
- * Prefer the more terminal / authoritative zap-outcomes record status over a
- * lagging Open Data list-row stamp when they disagree.
+ *
+ * Filed / Noticed / In Public Review / Completed are values of the SAME ZAP
+ * `public_status` dimension (portal process label) — not separate concepts.
+ * Open Data list rows often lag the portal (Filed while portal already Noticed);
+ * prefer the more advanced authoritative stamp and never paint two "Public status"
+ * lines for the same dimension.
  */
 export function resolveLandPublicStatus(listRow = null, outcomeRecord = null) {
   const candidates = [
@@ -70,21 +75,79 @@ export function resolveLandPublicStatus(listRow = null, outcomeRecord = null) {
       source: null,
       disagreement: false,
       candidates: [],
+      dimension: "public_status",
+      dimension_note: "single_zap_public_status_enum",
     };
   }
 
+  // Prefer portal / zap-outcomes public_status over project_status when ranks tie.
   let best = candidates[0];
   for (const c of candidates.slice(1)) {
-    if (statusRank(c.value) > statusRank(best.value)) best = c;
+    const rankDiff = statusRank(c.value) - statusRank(best.value);
+    if (rankDiff > 0) best = c;
+    else if (rankDiff === 0 && /public_status/.test(c.source) && !/public_status/.test(best.source)) {
+      best = c;
+    }
   }
 
+  const publicValues = candidates
+    .filter((c) => /public_status/.test(c.source))
+    .map((c) => c.value);
+  const distinctPublic = [...new Set(publicValues)];
   const distinct = [...new Set(candidates.map((c) => c.value))];
   return {
     public_status: best.value,
     source: best.source,
-    disagreement: distinct.length > 1,
+    disagreement: distinctPublic.length > 1 || distinct.length > 1,
     candidates,
+    dimension: "public_status",
+    dimension_note: "single_zap_public_status_enum",
+    source_lag: distinctPublic.length > 1
+      ? {
+          values: distinctPublic,
+          note: "Same public_status dimension; Open Data/list may lag the portal.",
+        }
+      : null,
   };
+}
+
+/**
+ * A phase displayed after the resolved current phase must not read as completed
+ * ("passed" / Done) unless it is an explained permitted overlap.
+ *
+ * @returns {{ ok: boolean, violations: object[] }}
+ */
+export function detectCompletedPhaseAfterCurrent(phaseView = null) {
+  const phases = Array.isArray(phaseView?.phases)
+    ? phaseView.phases
+    : (Array.isArray(phaseView?.all_phases) ? phaseView.all_phases : []);
+  const currentPhaseId = phaseView?.current?.phase_id || null;
+  const curIdx = LAND_COHERENCE_PHASE_ORDER.indexOf(currentPhaseId);
+  const violations = [];
+  if (curIdx < 0) return { ok: true, violations };
+
+  for (const phase of phases) {
+    const id = phase?.id || phase?.phase_id || null;
+    const idx = LAND_COHERENCE_PHASE_ORDER.indexOf(id);
+    if (idx < 0 || idx <= curIdx) continue;
+    const state = phase?.state || null;
+    // Plain completed/passed after current is forbidden.
+    if (state === "passed" || state === "completed" || state === "done") {
+      const explained =
+        phase?.overlap?.permitted === true
+        && phase?.overlap?.label_key
+        && state === "overlap";
+      if (!explained) {
+        violations.push({
+          phase_id: id,
+          state,
+          current_phase_id: currentPhaseId,
+          reason: "completed_after_current_unexplained",
+        });
+      }
+    }
+  }
+  return { ok: violations.length === 0, violations };
 }
 
 function hearingDay(hearing) {
@@ -110,11 +173,11 @@ export function selectNextLandHearing(hearings = [], today = null) {
  * an earlier incomplete phase in the fixed ULURP template.
  */
 export function selectNextLandPhase(phases = [], currentPhaseId = null) {
-  const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
+  const curIdx = LAND_COHERENCE_PHASE_ORDER.indexOf(currentPhaseId);
   if (curIdx < 0) return null;
   const list = Array.isArray(phases) ? phases : [];
-  for (let i = curIdx + 1; i < LAND_ULURP_PHASES.length; i++) {
-    const id = LAND_ULURP_PHASES[i];
+  for (let i = curIdx + 1; i < LAND_COHERENCE_PHASE_ORDER.length; i++) {
+    const id = LAND_COHERENCE_PHASE_ORDER[i];
     const phase = list.find((p) => p.id === id || p.phase_id === id);
     if (!phase) continue;
     const state = phase.state || null;
@@ -209,7 +272,7 @@ export function landDetailCoherenceReport({
   if (
     currentPhaseId
     && phaseView?.next?.phase_id
-    && LAND_ULURP_PHASES.indexOf(phaseView.next.phase_id) < LAND_ULURP_PHASES.indexOf(currentPhaseId)
+    && LAND_COHERENCE_PHASE_ORDER.indexOf(phaseView.next.phase_id) < LAND_COHERENCE_PHASE_ORDER.indexOf(currentPhaseId)
   ) {
     contradictions.push("next_phase_before_current");
   }
@@ -217,17 +280,99 @@ export function landDetailCoherenceReport({
   if (completed && phaseView?.current?.in_public_review) {
     contradictions.push("completed_marked_in_public_review");
   }
+  const phaseOrder = detectCompletedPhaseAfterCurrent(phaseView);
+  if (!phaseOrder.ok) contradictions.push("completed_phase_after_current");
 
   return {
     schema_version: 1,
     public_status: status.public_status,
     public_status_source: status.source,
     public_status_disagreement: status.disagreement,
+    public_status_dimension: status.dimension || "public_status",
     next_hearing: nextHearing,
     next_phase: nextPhase,
     completed,
     clock_issues: clockIssues,
+    phase_order_violations: phaseOrder.violations,
     contradictions,
     coherent: contradictions.length === 0,
+  };
+}
+
+/**
+ * Single resolved project-state object for every reader-facing land detail
+ * surface (participation panel, timeline lead, action rail, pipeline).
+ *
+ * Callers pass a phaseView already built with `public_status` from this object's
+ * resolved value so Filed/Noticed cannot diverge across panels.
+ *
+ * @param {object} [opts]
+ * @param {object|null} [opts.listRow]
+ * @param {object|null} [opts.outcomeRecord]
+ * @param {object|null} [opts.phaseView] buildLandPhaseView result (preferred)
+ * @param {Function|null} [opts.buildLandPhaseView] optional builder when phaseView omitted
+ * @param {object|null} [opts.clock]
+ * @param {object[]} [opts.hearings]
+ * @param {string|null} [opts.today]
+ */
+export function buildLandProjectState(opts = {}) {
+  const listRow = opts.listRow || null;
+  const outcomeRecord = opts.outcomeRecord || null;
+  const status = resolveLandPublicStatus(listRow, outcomeRecord);
+  const publicStatus = status.public_status;
+
+  let phaseView = opts.phaseView || null;
+  if (!phaseView && typeof opts.buildLandPhaseView === "function" && outcomeRecord?.spine) {
+    phaseView = opts.buildLandPhaseView(outcomeRecord.spine, {
+      open_data: outcomeRecord.open_data || listRow || null,
+      portal_url: outcomeRecord.portal_url || null,
+      public_status: publicStatus,
+      project_id: outcomeRecord.project_id || listRow?.project_id || null,
+    });
+  }
+
+  // Ensure the phase view's stamped public_status matches the reconciled value.
+  if (phaseView?.current && phaseView.current.public_status !== publicStatus) {
+    phaseView = {
+      ...phaseView,
+      current: {
+        ...phaseView.current,
+        public_status: publicStatus,
+        noticed: publicStatus ? /^noticed$/i.test(publicStatus) : !!phaseView.current.noticed,
+        in_public_review: publicStatus
+          ? /public review/i.test(publicStatus)
+            && !/completed|approved|disapproved|withdrawn|terminated/i.test(publicStatus)
+          : false,
+      },
+    };
+  }
+
+  const hearings = Array.isArray(opts.hearings)
+    ? opts.hearings
+    : (outcomeRecord?.hearing_logistics || []);
+  const report = landDetailCoherenceReport({
+    listRow,
+    outcomeRecord,
+    phaseView,
+    hearings,
+    clock: opts.clock || outcomeRecord?.statutory_clock || null,
+    today: opts.today || null,
+  });
+
+  return {
+    schema_version: 1,
+    project_id: outcomeRecord?.project_id || listRow?.project_id || phaseView?.project_id || null,
+    // One reader-facing public status (same ZAP enum dimension).
+    public_status: publicStatus,
+    public_status_source: status.source,
+    public_status_dimension: "public_status",
+    public_status_dimension_note:
+      "Filed/Noticed/In Public Review/Completed are values of one ZAP public_status field; Open Data may lag the portal.",
+    source_lag: status.source_lag || null,
+    phase_view: phaseView,
+    current_phase_id: phaseView?.current?.phase_id || null,
+    next_phase: phaseView?.next || report.next_phase,
+    next_hearing: report.next_hearing,
+    coherence: report,
   };
 }

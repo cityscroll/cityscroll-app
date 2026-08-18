@@ -1,7 +1,8 @@
 /**
  * Land-use participation copy + Council statutory-clock coherence.
  *
- * Specimens: acquisition 2026R0127, completed mixed-action 2023M0213.
+ * Specimens: acquisition 2026R0127, completed mixed-action 2023M0213,
+ * early-stage rezoning 2026K0123 (Filed vs Noticed + Notice after CEQR).
  * Verify: node --test test/land_use_copy_council_clock.test.mjs
  */
 import assert from "node:assert/strict";
@@ -11,7 +12,9 @@ import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 
 import {
+  buildLandProjectState,
   daysLeftFromDeadline,
+  detectCompletedPhaseAfterCurrent,
   landDetailCoherenceReport,
   resolveLandPublicStatus,
   selectNextLandHearing,
@@ -251,4 +254,79 @@ test("i18n English strings no longer hardcode rezoning for the generic land guid
     /next_action_land_steps_missing:\s*"No participation steps are published for this land-use review yet\."/,
   );
   assert.match(i18n, /land_pipeline_clock_in_progress:/);
+  assert.match(i18n, /land_spine_phase_overlap_notice:/);
+});
+
+test("2026K0123: Filed vs Noticed are one public_status dimension — resolve to portal Noticed", () => {
+  const live = loadLive("2026K0123");
+  assert.ok(live, "expected 2026K0123 live API fixture");
+  const listRow = { project_id: "2026K0123", public_status: "Filed", project_status: "Active" };
+  assert.equal(live.public_status, "Noticed");
+  assert.equal(live.open_data?.public_status, "Filed");
+
+  const status = resolveLandPublicStatus(listRow, live);
+  // Same ZAP public_status enum; Open Data lags. One reader-facing value.
+  assert.equal(status.dimension, "public_status");
+  assert.equal(status.dimension_note, "single_zap_public_status_enum");
+  assert.equal(status.public_status, "Noticed");
+  assert.equal(status.source, "zap_outcomes.public_status");
+  assert.equal(status.disagreement, true);
+  assert.ok(status.source_lag);
+
+  const project = buildLandProjectState({
+    listRow,
+    outcomeRecord: live,
+    buildLandPhaseView,
+  });
+  assert.equal(project.public_status, "Noticed");
+  assert.equal(project.phase_view?.current?.public_status, "Noticed");
+  // Participation + timeline must share this single resolved value — never two
+  // "Public status" labels for Filed vs Noticed.
+  assert.equal(project.public_status_dimension, "public_status");
+});
+
+test("2026K0123: Notice after CEQR cannot read completed; explained overlap only", () => {
+  const live = loadLive("2026K0123");
+  assert.ok(live, "expected 2026K0123 live API fixture");
+  const listRow = { project_id: "2026K0123", public_status: "Filed" };
+  const status = resolveLandPublicStatus(listRow, live);
+  const view = buildLandPhaseView(live.spine, {
+    open_data: live.open_data,
+    public_status: status.public_status,
+    project_id: live.project_id,
+  });
+
+  assert.equal(view.current.phase_id, "pre_application");
+  assert.equal(view.next?.phase_id, "environmental");
+
+  const notice = view.phases.find((p) => p.id === "pre_certification");
+  assert.ok(notice);
+  assert.equal(notice.state, "overlap");
+  assert.notEqual(notice.state, "passed");
+  assert.equal(notice.overlap?.permitted, true);
+  assert.equal(notice.overlap?.label_key, "land_spine_phase_overlap_notice");
+
+  const order = detectCompletedPhaseAfterCurrent(view);
+  assert.equal(order.ok, true);
+  assert.deepEqual(order.violations, []);
+
+  // Regression: a synthetic "passed" Notice after current must fail the invariant.
+  const broken = {
+    ...view,
+    phases: view.phases.map((p) =>
+      p.id === "pre_certification" ? { ...p, state: "passed", overlap: null } : p
+    ),
+  };
+  const brokenOrder = detectCompletedPhaseAfterCurrent(broken);
+  assert.equal(brokenOrder.ok, false);
+  assert.equal(brokenOrder.violations[0]?.reason, "completed_after_current_unexplained");
+
+  const report = landDetailCoherenceReport({
+    listRow,
+    outcomeRecord: live,
+    phaseView: view,
+    today: "2026-08-17",
+  });
+  assert.equal(report.coherent, true);
+  assert.equal(report.public_status, "Noticed");
 });

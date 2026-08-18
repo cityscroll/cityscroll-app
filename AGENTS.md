@@ -1165,8 +1165,12 @@ Capture: `python3 tools/capture_ulurp_statutory_clock.py`.
 special permits, map changes, and rezonings. Participation headings come from
 `site/land_use_action_type.mjs` (never the pathname). Reconcile list-row Open Data
 vs zap-outcomes status, future-only next hearings, and next-phase-after-current in
-`site/land_detail_coherence.mjs` before render (field case `2023M0213`). Verify:
-`node --test test/land_use_copy_council_clock.test.mjs`.
+`site/land_detail_coherence.mjs` / `buildLandProjectState` before render (field
+cases `2023M0213`, `2026K0123`). **Filed vs Noticed** are values of the same ZAP
+`public_status` enum (Open Data may lag the portal) — resolve to one reader-facing
+value, never two “Public status” lines. **Notice while filing/CEQR** is a permitted
+overlap (`phase.state: overlap` + explained copy), not plain “Done” after the current
+step. Verify: `node --test test/land_use_copy_council_clock.test.mjs`.
 
 **Land current-stage pointer (stranded outcomes):** `deriveLandCurrentPhaseId` in
 `site/land_phase_spine.mjs` must not keep an earlier phase as `current` when a

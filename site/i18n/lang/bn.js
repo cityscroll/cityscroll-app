@@ -2592,6 +2592,8 @@
     land_use_family_urban_renewal: "Urban renewal",
     land_use_family_landmark: "Landmark designation",
     land_use_family_generic: "Land-use review",
+    land_spine_phase_overlap: "Also underway",
+    land_spine_phase_overlap_notice: "Public notice issued while filing or environmental review continues — these steps can overlap.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

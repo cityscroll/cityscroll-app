@@ -2592,6 +2592,8 @@
     land_use_family_landmark: "Landmark designation",
     land_use_family_generic: "土地用途审查",
     next_action_land_steps_missing_rezoning: "No participation steps are published for this rezoning yet.",
+    land_spine_phase_overlap: "同时进行",
+    land_spine_phase_overlap_notice: "在申报或环境审查仍在进行时已发布公示——这些步骤可以重叠。",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

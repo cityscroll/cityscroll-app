@@ -25,6 +25,7 @@ import {
   normalizeLandFutureAction,
   normalizeLandStage,
 } from "../land_status_facets.mjs";
+import { resolveLandPublicStatus } from "../land_detail_coherence.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -1068,20 +1069,28 @@ function landPhaseSpineHTML(view, tools, record){
   </div>`;
   const stepper=`<ol class="land-phase-stepper lc-stepper" aria-label="${escUiHtml(t("land_spine_heading"))}">${
     (view.phases||[]).map((p,i)=>{
-      const cls=p.state==="current"?"current":p.state==="passed"?"passed":"future";
+      const cls=p.state==="current"?"current":p.state==="passed"?"passed":p.state==="overlap"?"overlap":"future";
       const aria=p.state==="current"?` aria-current="step"`:"";
       const arrow=i<(view.phases.length-1)?`<span class="land-phase-arrow lc-step-arrow" aria-hidden="true">→</span>`:"";
-      return `<li><button type="button" class="land-phase-step lc-step ${cls}" data-land-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(landPhaseLabel(p))}">${escUiHtml(p.short||landPhaseLabel(p))}</button>${arrow}</li>`;
+      return `<li><button type="button" class="land-phase-step lc-step ${cls}" data-land-phase="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}"${aria} title="${escUiHtml(landPhaseLabel(p))}">${escUiHtml(p.short||landPhaseLabel(p))}</button>${arrow}</li>`;
     }).join("")
   }</ol>`;
   const phasePanelHTML=(p)=>{
-    const open=p.state==="current"?" open":"";
-    const stateWord=p.state==="current"?t("land_spine_phase_current"):p.state==="passed"?t("land_spine_phase_done"):t("land_spine_phase_future");
+    const open=p.state==="current"||p.state==="overlap"?" open":"";
+    const stateWord=p.state==="current"
+      ? t("land_spine_phase_current")
+      : p.state==="passed"
+        ? t("land_spine_phase_done")
+        : p.state==="overlap"
+          ? t("land_spine_phase_overlap")
+          : t("land_spine_phase_future");
     const statutoryRow=(clock&&clock.status!=="ineligible")
       ? (clock.phases||[]).find(s=>s.phase_id===p.id)
       : null;
     let summary="";
-    if(p.state==="future"){
+    if(p.state==="overlap"){
+      summary=t(p.overlap?.label_key || "land_spine_phase_overlap_notice");
+    }else if(p.state==="future"){
       if(p.first){
         summary=p.last&&p.last!==p.first
           ? t("land_spine_planned_window",{first:fdate(p.first),last:fdate(p.last)})
@@ -1104,7 +1113,7 @@ function landPhaseSpineHTML(view, tools, record){
     const statutory=landStatutoryDeadlineHTML(p.id, clock, p.state);
     const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
       || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
-    return `<details class="land-phase${p.state==="current"?" current-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}">
+    return `<details class="land-phase${p.state==="current"?" current-phase":""}${p.state==="overlap"?" overlap-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}" data-land-phase-state="${escUiHtml(p.state||"")}">
       <summary>
         <span class="land-phase-name">${escUiHtml(landPhaseLabel(p))}</span>
         <span class="land-phase-state">${escUiHtml(stateWord)}</span>
@@ -1113,9 +1122,9 @@ function landPhaseSpineHTML(view, tools, record){
       <div class="land-phase-body">${statutory}${body}</div>
     </details>`;
   };
-  // Compact template: current (and attention) detail open; earlier stages under one history disclosure;
+  // Compact template: current (and explained overlap) open; earlier stages under history;
   // future unmatched stay as closed chips/panels without dominating the fold.
-  const currentPanels=(view.phases||[]).filter(p=>p.state==="current").map(phasePanelHTML).join("");
+  const currentPanels=(view.phases||[]).filter(p=>p.state==="current"||p.state==="overlap").map(phasePanelHTML).join("");
   const historyPanels=(view.phases||[]).filter(p=>p.state==="passed").map(phasePanelHTML).join("");
   const futurePanels=(view.phases||[]).filter(p=>p.state==="future").map(phasePanelHTML).join("");
   const historyWrap=historyPanels
@@ -1143,13 +1152,18 @@ function landSpineHTMLFlat(spine, record){
   const rail=events.map(e=>landSpineEventRowHTML(e, portalUrl, null)).join("");
   return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${landSpineLagHTML(spine.lag?.open_data_vs_portal||{})}${rail?`<div class="land-spine">${rail}</div>`:""}${landSpineGapsHTML(spine.gaps)}`;
 }
-function landSpineHTML(spine, record, phaseTools){
+function landSpineHTML(spine, record, phaseTools, listRow){
   if(!spine) return "";
   if(phaseTools && typeof phaseTools.buildLandPhaseView==="function"){
+    // One reconciled public_status for timeline + participation (same ZAP enum dimension).
+    const publicStatus=resolveLandPublicStatus(listRow||null, record||null).public_status
+      || record?.public_status
+      || record?.open_data?.public_status
+      || null;
     const view=phaseTools.buildLandPhaseView(spine, {
       open_data: record?.open_data || null,
       portal_url: record?.portal_url || null,
-      public_status: record?.public_status || record?.open_data?.public_status || null,
+      public_status: publicStatus,
       project_id: record?.project_id || spine.project_id || null
     });
     return landPhaseSpineHTML(view, phaseTools, record);
@@ -1186,10 +1200,10 @@ function bindLandSpineUI(root){
   });
 }
 
-function landOutcomesHTML(record, phaseTools){
+function landOutcomesHTML(record, phaseTools, listRow){
   if(!record) return "";
   record=normalizeLandRecord(record);
-  const spineHTML=landSpineHTML(record.spine, record, phaseTools);
+  const spineHTML=landSpineHTML(record.spine, record, phaseTools, listRow||null);
   const join = record.join || {};
   if(!join.matched || !record.filled) return `${spineHTML}${landOutcomeAbsentHTML(record)}`;
   const actions = Array.isArray(record.approved_actions) ? record.approved_actions : [];
@@ -1280,9 +1294,9 @@ function landOutcomeFirstPaintHTML(r){
   if(!record||record.snapshot_state==="absent") return "";
   return landOutcomeSnapshotHTML(record,null);
 }
-function landOutcomeSnapshotHTML(record,phaseTools){
+function landOutcomeSnapshotHTML(record,phaseTools,listRow){
   if(!record||record.snapshot_state==="absent") return "";
-  return `<section data-zap-outcomes-first-paint="1" data-zap-outcomes-state="present">${landOutcomesHTML(record,phaseTools)}</section>`;
+  return `<section data-zap-outcomes-first-paint="1" data-zap-outcomes-state="present">${landOutcomesHTML(record,phaseTools,listRow||null)}</section>`;
 }
 
 /* Session cache + list prefetch for zap-outcomes. Daily edge prewarm keeps the Worker KV
@@ -1426,8 +1440,8 @@ async function loadZapOutcomes(r, el, selection){
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
     el.innerHTML = warm.staticSnapshot
-      ? landOutcomeSnapshotHTML(record,phaseTools)
-      : landOutcomesHTML(record,phaseTools);
+      ? landOutcomeSnapshotHTML(record,phaseTools,r)
+      : landOutcomesHTML(record,phaseTools,r);
     bindLandSpineUI(el);
     paintLandActionRail($("#land-actions"), r, record, phaseTools);
     const generated=Date.parse(warm.generatedAt||warm.data.generated_at||"");
@@ -1456,7 +1470,7 @@ async function loadZapOutcomes(r, el, selection){
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
-  el.innerHTML = landOutcomesHTML(record, phaseTools);
+  el.innerHTML = landOutcomesHTML(record, phaseTools, r);
   bindLandSpineUI(el);
   paintLandActionRail($("#land-actions"), r, record, phaseTools);
 }

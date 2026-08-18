@@ -2081,6 +2081,8 @@ const STRINGS = {
     land_spine_next_html: "<strong>What’s next:</strong> {phase}",
     land_spine_phase_done: "Done",
     land_spine_phase_current: "Current",
+    land_spine_phase_overlap: "Also underway",
+    land_spine_phase_overlap_notice: "Public notice issued while filing or environmental review continues — these steps can overlap.",
     land_spine_phase_future: "Not started",
     land_spine_phase_empty: "No dated milestones yet",
     land_spine_milestones_count: "{n} milestones",

@@ -2592,6 +2592,8 @@
     land_use_family_landmark: "Landmark designation",
     land_use_family_generic: "Revisión de uso del suelo",
     next_action_land_steps_missing_rezoning: "No participation steps are published for this rezoning yet.",
+    land_spine_phase_overlap: "También en curso",
+    land_spine_phase_overlap_notice: "Aviso público emitido mientras continúa la presentación o la revisión ambiental — estos pasos pueden solaparse.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
