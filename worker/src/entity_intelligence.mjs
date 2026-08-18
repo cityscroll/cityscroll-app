@@ -16,6 +16,7 @@
 
 import materialization from "./data/entity_intelligence_lookup.json" with { type: "json" };
 import vendorFootprintCoverage from "./data/vendor_footprint_coverage.json" with { type: "json" };
+import passportGraph from "./data/passport_ei_graph.json" with { type: "json" };
 import {
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
   lookupEntityIntelligence,
@@ -102,6 +103,25 @@ export function attachVendorFootprint(
     if (section.id === "awards") {
       confirmedCount = Number.isFinite(awardCoverage.linked) ? awardCoverage.linked : confirmedCount;
       mentionCount = Number.isFinite(awardCoverage.eligible) ? awardCoverage.eligible : mentionCount;
+    }
+    if (section.id === "contracts") {
+      const stem = String(root?.stem || "").trim()
+        || String(root?.ref || "").replace(/^vendor:stem:/, "");
+      const decodedStem = (() => {
+        try {
+          return decodeURIComponent(stem);
+        } catch {
+          return stem;
+        }
+      })();
+      const graphRow = passportGraph?.by_vendor?.[decodedStem]
+        || passportGraph?.by_vendor?.[stem]
+        || null;
+      const graphCount = Number(graphRow?.selected_rows);
+      if (Number.isInteger(graphCount) && graphCount > 0) {
+        confirmedCount = graphCount;
+        mentionCount = Math.max(mentionCount, graphCount);
+      }
     }
     return [section.id, {
       confirmed_count: confirmedCount,
