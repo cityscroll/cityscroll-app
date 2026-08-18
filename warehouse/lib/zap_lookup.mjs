@@ -27,6 +27,7 @@ export const ZAP_SELECT_COLS = [
   "ulurp_numbers",
   "borough",
   "community_district",
+  "cc_district",
   "actions",
   "current_milestone",
   "current_milestone_date",
