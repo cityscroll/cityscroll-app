@@ -6,7 +6,8 @@
  * No live GIS at render time — the artifact is the source of truth for the map.
  *
  * Lenses:
- *   land     — ZAP publisher community_district (+ optional council)
+ *   land     — ZAP publisher community_district (+ optional council);
+ *              missing council fans out via definitional CD∩council intersects
  *   property — geometry / addresses → point-in-polygon
  *   meetings — affectedAreaFromRow (title + body) + stamped affected_area
  *   rules    — ruleLocationFromRow + stamped rule_location / affected_area
@@ -44,7 +45,6 @@ import {
 } from "../../site/meeting_origin.mjs";
 import {
   geocodeFromPlaceOrRow,
-  buildCommunityToCouncilIndex,
 } from "../../site/civic_address_geocode.mjs";
 import {
   GEOGRAPHY_BOROUGH_IDS,
@@ -56,11 +56,16 @@ import {
 } from "../../worker/src/lib/subject_registry.mjs";
 import { buildNearYouExplanationCandidates } from "../../site/near_you_explanation_path.mjs";
 import {
+  buildCommunityDistrictCouncilIntersectsIndex,
   communityBoardIdForMeeting,
   communityDistrictIdFromBoardOntology,
+  councilDistrictsIntersectingCommunity,
 } from "../../site/community_board_geography.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
+
+/** Council supplement from definitional CD∩council intersects (not centroid PIP). */
+export const CD_INTERSECTS_COUNCIL_METHOD = "cd_intersects_council";
 
 export const GEOGRAPHY_SUBJECT_GRAPH_SCHEMA = "cityscroll.geography_subjects.v1";
 export const GEOGRAPHY_LOCATION_METHOD = "district_activity_placement_v1";
@@ -89,7 +94,7 @@ function compactRecordBasis(lens, slots) {
   const numericConfidence = Number(first.confidence);
   const confidence = first.confidence_tier || (Number.isFinite(numericConfidence)
     ? (numericConfidence >= 0.8 ? "strong" : numericConfidence >= 0.55 ? "derived" : "weak")
-    : (["coordinates_pip", "publisher_council", "cd_centroid_council"].includes(method)
+    : (["coordinates_pip", "publisher_council", "cd_intersects_council", "publisher_district"].includes(method)
       ? "strong"
       : "derived"));
   if (slots.some((slot) => isVirtualPlacement(slot))) {
@@ -130,7 +135,7 @@ export const PUBLIC_GEOGRAPHY_PLACEMENT_METHODS = Object.freeze([
   "agency_borough",
   "agency_community_board",
   "agency_service_area",
-  "cd_centroid_council",
+  "cd_intersects_council",
   "civic_address_pip",
   "classic_affected_area",
   "community_board",
@@ -456,7 +461,7 @@ export function parseZapCommunityDistricts(value) {
  *
  * @param {object|null} area
  * @param {object} boundaries
- * @param {{ coords?: {lat:number, lon:number}|null, row?: object|null, cdCouncilIndex?: object|null }} [opts]
+ * @param {{ coords?: {lat:number, lon:number}|null, row?: object|null }} [opts]
  */
 export function placementsFromLocatedArea(area, boundaries, opts = {}) {
   if (!area || typeof area !== "object") return [];
@@ -467,21 +472,12 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
     || (area.derivation?.role === "agency" ? "agency_hq" : null);
   const push = (slot) => {
     const community = slot.community ? normalizeCommunityDistrictId(slot.community) : null;
-    let council = slot.council ? normalizeCouncilDistrictId(slot.council) : null;
-    let councilMethod = slot.council_method || null;
-    let borough = canonBorough(slot.borough)
+    const council = slot.council ? normalizeCouncilDistrictId(slot.council) : null;
+    const councilMethod = slot.council_method || null;
+    const borough = canonBorough(slot.borough)
       || (community ? boroughFromCommunityId(community) : null);
-    // When CD is known but council is not, join via CD centroid index (land density).
-    if (community && !council && opts.cdCouncilIndex) {
-      const fromCd = opts.cdCouncilIndex[community];
-      if (fromCd) {
-        council = normalizeCouncilDistrictId(fromCd);
-        if (council) {
-          councilMethod = "cd_centroid_council";
-          if (!slot.method) slot = { ...slot, method: "cd_centroid_council" };
-        }
-      }
-    }
+    // CD-only slots stay council-null here. buildDistrictActivity fans them out
+    // through definitional CD∩council intersects — never a centroid guess.
     if (!community && !council && !borough) return;
     const key = `${borough || ""}|${community || ""}|${council || ""}`;
     if (seen.has(key)) return;
@@ -615,7 +611,7 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
  *
  * @param {object} row
  * @param {object} boundaries
- * @param {{ cdCouncilIndex?: object|null }} [opts]
+ * @param {{ communityBoardGeography?: object|null }} [opts]
  */
 export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
   const boardId = communityBoardIdForMeeting(row);
@@ -627,7 +623,7 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
     return [{
       borough: boroughFromCommunityId(boardDistrict),
       community: boardDistrict,
-      council: opts.cdCouncilIndex?.[boardDistrict] || null,
+      council: null,
       method: "community_board_ontology",
       source_method: "board_covers_district",
       confidence: 1,
@@ -710,14 +706,13 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
   let slots = placementsFromLocatedArea(merged, boundaries, {
     coords,
     row,
-    cdCouncilIndex: opts.cdCouncilIndex || null,
   });
   // Agency CD alone (no extractor hit).
   if (!slots.length && agencyCd) {
     slots = [{
       borough: boroughFromCommunityId(agencyCd),
       community: agencyCd,
-      council: opts.cdCouncilIndex?.[agencyCd] || null,
+      council: null,
       method: "agency_community_board",
     }];
     meta.method = meta.method || "agency_community_board";
@@ -774,7 +769,7 @@ export function meetingPlacementsFromRow(row, boundaries, opts = {}) {
  *
  * @param {object} row
  * @param {object} boundaries
- * @param {{ cdCouncilIndex?: object|null }} [opts]
+ * @param {{ communityBoardGeography?: object|null }} [opts]
  */
 export function rulePlacementsFromRow(row, boundaries, opts = {}) {
   const stamped = row?.rule_location || row?.affected_area || row?.place || null;
@@ -819,13 +814,12 @@ export function rulePlacementsFromRow(row, boundaries, opts = {}) {
   let slots = placementsFromLocatedArea(merged, boundaries, {
     coords,
     row,
-    cdCouncilIndex: opts.cdCouncilIndex || null,
   });
   if (!slots.length && agencyCd) {
     slots = [{
       borough: boroughFromCommunityId(agencyCd),
       community: agencyCd,
-      council: opts.cdCouncilIndex?.[agencyCd] || null,
+      council: null,
     }];
     method = "agency_community_board";
     confidence = 0.85;
@@ -856,7 +850,7 @@ export function rulePlacementsFromRow(row, boundaries, opts = {}) {
  *
  * @param {object} row
  * @param {object} boundaries
- * @param {{ cdCouncilIndex?: object|null }} [opts]
+ * @param {{ communityBoardGeography?: object|null }} [opts]
  */
 export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
   const annotate = (slots, method, confidence) => slots.map((s) => ({
@@ -884,7 +878,6 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
     const slots = placementsFromLocatedArea(stamped, boundaries, {
       coords: coordsFromPropertyRow(row),
       row,
-      cdCouncilIndex: opts.cdCouncilIndex || null,
     });
     if (slots.length) {
       return annotate(
@@ -941,7 +934,7 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
       cds.map((cd) => ({
         borough: borough || boroughFromCommunityId(cd),
         community: cd,
-        council: council || opts.cdCouncilIndex?.[cd] || null,
+        council: council || null,
       })),
       "publisher_district",
       0.95,
@@ -967,7 +960,6 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
   if (derived.scope !== "unlocated") {
     const slots = placementsFromLocatedArea(derived, boundaries, {
       row,
-      cdCouncilIndex: opts.cdCouncilIndex || null,
     });
     if (slots.length) {
       return annotate(
@@ -1177,9 +1169,9 @@ export function buildDistrictActivity(opts = {}) {
     throw new Error("buildDistrictActivity requires a labeled boundary layer");
   }
 
-  // CD → council via centroid PIP (land density join; labeled when used).
-  const cdCouncilIndex = opts.cdCouncilIndex
-    || buildCommunityToCouncilIndex(boundaries, resolveCouncilDistrict);
+  // CD → councils via definitional intersects (multi-membership; centroid rejected).
+  const cdIntersectsIndex = opts.cdIntersectsIndex
+    || buildCommunityDistrictCouncilIntersectsIndex(opts.communityBoardGeography || {});
 
   const byBorough = Object.create(null);
   const byCommunity = Object.create(null);
@@ -1294,6 +1286,24 @@ export function buildDistrictActivity(opts = {}) {
     return isVirtualPlacement(slot);
   }
 
+  function placeCouncilsFromCommunity(lens, cd, itemId, slot = {}, primaryMethodRef = null) {
+    const councils = councilDistrictsIntersectingCommunity(cd, cdIntersectsIndex);
+    for (const fromCd of councils) {
+      bump(byCouncil, fromCd, lens);
+      addDistrictItem(lens, "council_district", fromCd, itemId, {
+        ...slot,
+        council: fromCd,
+        method: CD_INTERSECTS_COUNCIL_METHOD,
+        geography_method: CD_INTERSECTS_COUNCIL_METHOD,
+        council_method: CD_INTERSECTS_COUNCIL_METHOD,
+      });
+    }
+    if (councils.length && primaryMethodRef && !primaryMethodRef.method) {
+      primaryMethodRef.method = CD_INTERSECTS_COUNCIL_METHOD;
+    }
+    return councils.length > 0;
+  }
+
   function place(lens, { borough, community, council, method }, itemId = null) {
     sources[lens].counted += 1;
     let placed = false;
@@ -1308,10 +1318,13 @@ export function buildDistrictActivity(opts = {}) {
           bump(byBorough, b, lens);
           addDistrictItem(lens, "borough", b, itemId);
         }
-        // Council join when publisher field missing: CD centroid → council polygon.
-        if (!resolvedCouncil && cdCouncilIndex[cd]) {
-          resolvedCouncil = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
-          if (!method) method = "cd_centroid_council";
+        // Council join when publisher field missing: definitional CD∩council intersects.
+        if (!resolvedCouncil) {
+          const methodRef = { method };
+          if (placeCouncilsFromCommunity(lens, cd, itemId, { community: cd, borough: b }, methodRef)) {
+            method = method || methodRef.method;
+            placed = true;
+          }
         }
         placed = true;
       }
@@ -1387,17 +1400,15 @@ export function buildDistrictActivity(opts = {}) {
             bump(byBorough, b, lens);
             addDistrictItem(lens, "borough", b, itemId, slot);
           }
-          // Supplement council from CD centroid when the slot has CD but no council.
-          if (!slot.council && cdCouncilIndex[cd]) {
-            const fromCd = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
-            if (fromCd) {
-              bump(byCouncil, fromCd, lens);
-              addDistrictItem(lens, "council_district", fromCd, itemId, {
-                ...slot,
-                method: "cd_centroid_council",
-                geography_method: "cd_centroid_council",
-              });
-              if (!method || method === slot.method) method = method || "cd_centroid_council";
+          // Supplement councils from definitional CD∩council intersects (multi-membership).
+          if (!slot.council) {
+            const methodRef = { method: null };
+            if (placeCouncilsFromCommunity(lens, cd, itemId, slot, methodRef)) {
+              // Keep publisher-CD / source method as the primary row label when present;
+              // intersects is the council-supplement method on geography memberships.
+              if (!method || method === slot.method) {
+                method = method || slot.method || methodRef.method;
+              }
             }
           }
           slotPlaced = true;
@@ -1452,7 +1463,7 @@ export function buildDistrictActivity(opts = {}) {
     return compact?.id || null;
   }
 
-  // Land — publisher community_district on ZAP; council via ZAP field or CD centroid.
+  // Land — publisher community_district on ZAP; council via ZAP field or CD∩council intersects.
   for (const row of opts.zapRows || []) {
     const cds = parseZapCommunityDistricts(row.community_district);
     const boro = canonBorough(row.borough) || (cds[0] ? boroughFromCommunityId(cds[0]) : null);
@@ -1464,9 +1475,11 @@ export function buildDistrictActivity(opts = {}) {
           borough: boro,
           community: cd,
           council: publisherCouncil,
-          method: publisherCouncil ? "publisher_council" : "cd_centroid_council",
+          // Publisher CD is the primary land method; council supplement is labeled
+          // cd_intersects_council when placeSlots fans out definitional intersects.
+          method: publisherCouncil ? "publisher_council" : "publisher_district",
           geography_method: "publisher_district",
-          council_method: publisherCouncil ? "publisher_council" : "cd_centroid_council",
+          council_method: publisherCouncil ? "publisher_council" : null,
         }))
       : [{
         borough: boro,
@@ -1486,7 +1499,6 @@ export function buildDistrictActivity(opts = {}) {
   }
 
   const placeOpts = {
-    cdCouncilIndex,
     communityBoardGeography: opts.communityBoardGeography || null,
   };
 

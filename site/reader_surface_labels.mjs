@@ -17,6 +17,8 @@ export const READER_LABELS = Object.freeze({
   boro_cd: "borough and community district",
   coundist: "Council District",
   cd_centroid_council: "Council District center",
+  cd_intersects_council: "overlapping Council District",
+  publisher_district: "publisher community district",
   matter_title_place: "meeting title location",
   venue_line: "meeting address",
   the_geom: "map boundary",

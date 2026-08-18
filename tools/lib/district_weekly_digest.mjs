@@ -6,11 +6,11 @@
  */
 
 import {
-  buildCommunityToCouncilIndex,
-} from "../../site/civic_address_geocode.mjs";
+  buildCommunityDistrictCouncilIntersectsIndex,
+  councilDistrictsIntersectingCommunity,
+} from "../../site/community_board_geography.mjs";
 import {
   normalizeCouncilDistrictId,
-  resolveCouncilDistrict,
 } from "../../site/council_district_lookup.mjs";
 import {
   DISTRICT_DIGEST_SECTIONS,
@@ -39,14 +39,15 @@ function text(value, max = 240) {
   return clean ? clean.slice(0, max) : null;
 }
 
-function councilsFromSlots(slots = [], cdCouncilIndex = {}) {
+function councilsFromSlots(slots = [], cdIntersectsIndex = {}) {
   const ids = new Set();
   for (const slot of slots) {
     const direct = normalizeCouncilDistrictId(slot?.council);
     if (direct) ids.add(direct);
     if (!direct && slot?.community) {
-      const derived = normalizeCouncilDistrictId(cdCouncilIndex[slot.community]);
-      if (derived) ids.add(derived);
+      for (const derived of councilDistrictsIntersectingCommunity(slot.community, cdIntersectsIndex)) {
+        ids.add(derived);
+      }
     }
   }
   return [...ids];
@@ -145,7 +146,7 @@ export function buildDistrictWeeklyDigests({
 } = {}) {
   if (!boundaries?.boundary_vintage) throw new Error("district weekly digest requires district boundaries");
   const today = String(builtAt).slice(0, 10);
-  const cdCouncilIndex = buildCommunityToCouncilIndex(boundaries, resolveCouncilDistrict);
+  const cdIntersectsIndex = buildCommunityDistrictCouncilIntersectsIndex(communityBoardGeography || {});
   const buckets = Object.fromEntries(Array.from({ length: 51 }, (_, index) => [String(index + 1), new Map()]));
 
   const add = (councils, item) => {
@@ -160,22 +161,23 @@ export function buildDistrictWeeklyDigests({
     const publisher = normalizeCouncilDistrictId(row?.cc_district || row?.council_district || row?.city_council_district);
     const councils = new Set(publisher ? [publisher] : []);
     for (const cd of parseZapCommunityDistricts(row?.community_district)) {
-      const derived = normalizeCouncilDistrictId(cdCouncilIndex[cd]);
-      if (derived) councils.add(derived);
+      for (const derived of councilDistrictsIntersectingCommunity(cd, cdIntersectsIndex)) {
+        councils.add(derived);
+      }
     }
     add([...councils], landItem(row));
   }
 
-  const placeOpts = { cdCouncilIndex, communityBoardGeography };
+  const placeOpts = { communityBoardGeography };
   for (const row of propertyRows) {
-    add(councilsFromSlots(propertyPlacementsFromRow(row, boundaries, placeOpts), cdCouncilIndex), propertyItem(row));
+    add(councilsFromSlots(propertyPlacementsFromRow(row, boundaries, placeOpts), cdIntersectsIndex), propertyItem(row));
   }
   for (const row of meetingsRows) {
-    add(councilsFromSlots(meetingPlacementsFromRow(row, boundaries, placeOpts), cdCouncilIndex), hearingItem(row, today));
+    add(councilsFromSlots(meetingPlacementsFromRow(row, boundaries, placeOpts), cdIntersectsIndex), hearingItem(row, today));
   }
   for (const row of moneyRows) {
     if (isSyntheticWarehouseFixtureRow(row)) continue;
-    add(councilsFromSlots(moneyPlacementsFromRow(row, boundaries, placeOpts), cdCouncilIndex), awardItem(row));
+    add(councilsFromSlots(moneyPlacementsFromRow(row, boundaries, placeOpts), cdIntersectsIndex), awardItem(row));
   }
 
   const byCouncil = {};
