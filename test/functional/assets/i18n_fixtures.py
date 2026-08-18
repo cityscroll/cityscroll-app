@@ -325,7 +325,7 @@ ZAP_ROWS = [
 _LAND_LIST_FIELDS = (
     "project_id", "project_name", "primary_applicant", "public_status", "project_status",
     "borough", "community_district", "actions", "mih_flag", "current_milestone",
-    "current_milestone_date", "ulurp_numbers",
+    "current_milestone_date", "ulurp_numbers", "ulurp_non",
 )
 LAND_DEFAULT_SNAPSHOT = {
     "schema_version": 1,
@@ -338,7 +338,7 @@ LAND_DEFAULT_SNAPSHOT = {
     },
     "query": {
         "$select": ",".join(_LAND_LIST_FIELDS),
-        "$where": "ulurp_non='ULURP' AND project_status='Active'",
+        "$where": "ulurp_non IN ('ULURP','ELURP') AND project_status='Active'",
         "$order": "current_milestone_date DESC",
         "$limit": "40",
         "note": "Hermetic fixture mirror of land default snapshot; list fields only.",

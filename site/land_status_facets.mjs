@@ -1,4 +1,21 @@
 import { LAND_ULURP_PHASES, mapMilestoneToPhase } from "./land_phase_spine.mjs";
+import {
+  DEFAULT_LAND_PROCEDURE,
+  LAND_PROCEDURE_OPTIONS,
+  landRowMatchesProcedure,
+  normalizeLandProcedure,
+} from "./land_procedure_facet.mjs";
+
+export {
+  DEFAULT_LAND_PROCEDURE,
+  LAND_PROCEDURE_OPTIONS,
+  landObservedDates,
+  landProcedureLabelKey,
+  landProcedureSodaWhere,
+  landRowMatchesProcedure,
+  normalizeLandProcedure,
+  resolveLandProcedure,
+} from "./land_procedure_facet.mjs";
 
 const cleanLandFacetValue = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
@@ -148,28 +165,44 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
   today,
   stage = "active",
   futureAction = "any",
+  procedure = DEFAULT_LAND_PROCEDURE,
 } = {}) {
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const rows = Array.isArray(projects) ? projects : [];
+  const selectedProcedure = normalizeLandProcedure(procedure);
   const stageCounts = Object.fromEntries(LAND_STAGE_OPTIONS.map(({ id }) => [id, 0]));
   const futureCounts = Object.fromEntries(LAND_FUTURE_ACTION_OPTIONS.map(({ id }) => [id, 0]));
+  const procedureCounts = Object.fromEntries(LAND_PROCEDURE_OPTIONS.map(({ id }) => [id, 0]));
   for (const row of rows) {
     const actions = actionsByProject.get(cleanLandFacetValue(row?.project_id)) || [];
     const evidence = evidenceByProject.get(cleanLandFacetValue(row?.project_id)) || [];
     const effectiveRow = landRowWithActionEvidence(row, evidence, { today });
+    const matchesProcedure = landRowMatchesProcedure(effectiveRow, selectedProcedure);
+    const matchesStage = landRowMatchesStage(effectiveRow, stage);
+    const matchesFuture = landActionsMatchFutureFilter(actions, futureAction);
     for (const option of LAND_STAGE_OPTIONS) {
-      if (landRowMatchesStage(effectiveRow, option.id) && landActionsMatchFutureFilter(actions, futureAction)) {
+      if (matchesProcedure && landRowMatchesStage(effectiveRow, option.id) && matchesFuture) {
         stageCounts[option.id] += 1;
       }
     }
     for (const option of LAND_FUTURE_ACTION_OPTIONS) {
-      if (landRowMatchesStage(effectiveRow, stage) && landActionsMatchFutureFilter(actions, option.id)) {
+      if (matchesProcedure && matchesStage && landActionsMatchFutureFilter(actions, option.id)) {
         futureCounts[option.id] += 1;
       }
     }
+    for (const option of LAND_PROCEDURE_OPTIONS) {
+      if (landRowMatchesProcedure(effectiveRow, option.id) && matchesStage && matchesFuture) {
+        procedureCounts[option.id] += 1;
+      }
+    }
   }
-  return { stage: stageCounts, future_action: futureCounts, actions_by_project: actionsByProject };
+  return {
+    stage: stageCounts,
+    future_action: futureCounts,
+    procedure: procedureCounts,
+    actions_by_project: actionsByProject,
+  };
 }
 
 /** Build non-empty status facets from the current ZAP inventory. */
