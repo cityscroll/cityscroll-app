@@ -868,6 +868,67 @@
       },
       "eval": ["interpretation"],
       "notes": "Interpretation only. Offline via parseNL plus sanitize. Live Haiku stays in worker/e2e/nl.mjs and is not a required check."
+    },
+    {
+      "id": "gq-dot-agency-alias",
+      "category": "canonical_entity_alias",
+      "corpus": "canonical_entity",
+      "input": {
+        "channel": "nl",
+        "text": "dot"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "canonical_entity",
+          "kind": "agency",
+          "canonical_name": "Transportation",
+          "canonical_id": "transportation",
+          "subject_ref": "agency:id:transportation",
+          "unresolved": false
+        }
+      },
+      "eval": ["interpretation"],
+      "notes": "DOT-style acronym resolves through reviewed AGENCY_GROUPS / canonicalAgency, not NL_AGENCY_ALIASES."
+    },
+    {
+      "id": "gq-housing-department-alias",
+      "category": "canonical_entity_alias",
+      "corpus": "canonical_entity",
+      "input": {
+        "channel": "nl",
+        "text": "housing department"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "canonical_entity",
+          "kind": "agency",
+          "canonical_name": "Housing Preservation and Development",
+          "canonical_id": "housing-preservation-and-development",
+          "subject_ref": "agency:id:housing-preservation-and-development",
+          "unresolved": false
+        }
+      },
+      "eval": ["interpretation"],
+      "notes": "Informal 'housing department' is derived from the reviewed Department of Housing Preservation and Development surface."
+    },
+    {
+      "id": "gq-unresolved-agency-phrase",
+      "category": "canonical_entity_alias",
+      "corpus": "canonical_entity",
+      "input": {
+        "channel": "nl",
+        "text": "the civic bureau of madeup"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "canonical_entity",
+          "unresolved": true,
+          "subject_ref": null,
+          "text_remains": "the civic bureau of madeup"
+        }
+      },
+      "eval": ["interpretation"],
+      "notes": "Unresolved phrasing stays plain text. The request path must not mint agency:id:… from an unmatched slug."
     }
   ]
 }

@@ -134,6 +134,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   descriptor and the agency profile renders a strong, agency-scoped link. Use
   `entity_resolution/referents/index.mjs` for named heads, agency-scoped role mentions, and
   exact unique opaque aliases only. Unscoped or ambiguous referents remain plain text.
+- **Ask/device entity phrasing:** `site/canonical_entity_interpretation.mjs` is the request-path
+  adapter over `canonicalAgency` / `resolveAgencyIdentity` (`site/agency_identity.mjs`,
+  re-exported by `entity_resolution/normalizers/agency.mjs`) and optional reviewed
+  `entity_resolution/review/alias_registry.json` names. Unique reviewed hits may emit
+  `agency:id:<canonical_id>`; unmatched input stays plain text and must not mint an id from
+  the unmatched slug. `NL_AGENCY_ALIASES` in `site/nl_parse.js` is a classic-script fallback
+  only — do not copy it into graph identity. Proof: `test/canonical_entity_interpretation.test.mjs`
+  plus the `gq-dot-agency-alias` / `gq-housing-department-alias` / `gq-unresolved-agency-phrase`
+  golden queries.
 - **Cross-spine edge routing:** `entity_resolution/cross_domain/edge_policy.mjs` is the shared
   four-tier router (`deterministic`, `public_inferred`, `evidence_only`, `no_edge`). Keep
   uncertain candidates in `shadow_edges` only; verify the frozen relation gates with
