@@ -20,6 +20,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   watermark (LA9 supplies `baselineFacts`). Proof:
   `test/architecture_facts.test.mjs` and `test/reconcile_architecture.test.mjs`.
 
+- **Land-action-collapse backtest (LA11 seam):**
+  `tools/architecture_land_action_observer.mjs` fails when a bundled ZM+control
+  project is rezoning-collapsed, when Charter §197-c is applied to ELURP or
+  Non-ULURP, or when map land ids diverge from list ids on procedure. Frozen
+  case: `architecture/backtests/land-action-collapse.json` in
+  `architecture/backtests/frozen-set.json`. Replay:
+  `node tools/backtest_architecture_canaries.mjs --check`. Proof:
+  `test/architecture_land_action_collapse.test.mjs`.
+
 - **Cited semantic retrieval:** `worker/src/cited_retrieval.mjs` is the
   retrieval-only adapter from `worker/src/semantic_candidates.mjs` into the
   versioned MCP `retrieve_cited_passages` structured output. A citation is
