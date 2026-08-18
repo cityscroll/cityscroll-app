@@ -113,7 +113,15 @@ function rowMatchesWatch(row, watch) {
   if (filter.agency && String(row?.agency_name || "") !== String(filter.agency)) return false;
   if (filter.noticeType) {
     const wanted = String(filter.noticeType).toLowerCase();
-    if (String(row?.type_of_notice_description || "").toLowerCase() !== wanted) return false;
+    const stages = procurementStages(row);
+    const typedMatch = wanted === "award"
+      ? stages.some((stage) => ["award", "pending", "registered", "payment", "contract"].includes(stage))
+      : wanted === "solicitation" ? stages.includes("solicitation") : false;
+    if (!typedMatch && String(row?.type_of_notice_description || "").toLowerCase() !== wanted) return false;
+  }
+  if (Array.isArray(filter.procurementStages) && filter.procurementStages.length) {
+    const stages = new Set(procurementStages(row));
+    if (!filter.procurementStages.every((stage) => stages.has(String(stage).toLowerCase()))) return false;
   }
   if (filter.borough || filter.boro) {
     const wanted = String(filter.borough || filter.boro).toLowerCase();
@@ -130,6 +138,8 @@ function rowMatchesWatch(row, watch) {
     row?.short_title,
     row?.agency_name,
     row?.type_of_notice_description,
+    row?.primary_stage,
+    ...(Array.isArray(row?.procurement_stages) ? row.procurement_stages : []),
     ...(Array.isArray(row?.rule_evidence?.topic_keys) ? row.rule_evidence.topic_keys : []),
     ...(Array.isArray(row?.matter_subject?.subject_tokens) ? row.matter_subject.subject_tokens : []),
   ].join(" "));
@@ -150,6 +160,12 @@ function dateValue(value) {
 }
 
 function rowIdentity(row, lens, index) {
-  const id = row?.request_id || row?.id || row?.project_id || row?.district_item_id;
+  const id = row?.procurement_id || row?.canonical_id || row?.request_id || row?.id || row?.project_id || row?.district_item_id;
   return id ? String(id) : `${lens}:${index}`;
+}
+
+function procurementStages(row) {
+  const values = Array.isArray(row?.procurement_stages)
+    ? row.procurement_stages : row?.primary_stage ? [row.primary_stage] : [];
+  return [...new Set(values.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean))];
 }
