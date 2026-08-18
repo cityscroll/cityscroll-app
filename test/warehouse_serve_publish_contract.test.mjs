@@ -17,6 +17,7 @@ const COMMITTED_SERVES = Object.freeze({
   zap_projects: "zap_projects_warehouse_lookup.json",
   zap_bbl: "zap_bbl_warehouse_lookup.json",
   doing_business: "doing_business_warehouse_lookup.json",
+  city_record_pin_chain: "city_record_pin_chain_warehouse_lookup.json",
 });
 
 function canaryDoc(contract, stamped = "2026-08-18T00:00:00.000Z") {

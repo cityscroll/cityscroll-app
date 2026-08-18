@@ -43,6 +43,17 @@ export const SERVE_LOOKUP_CONTRACTS = Object.freeze({
       Object.freeze({ field: "organization_name", value: "CAMBA  INC" }),
     ]),
   }),
+  city_record_pin_chain: Object.freeze({
+    id: "city_record_pin_chain",
+    label: "City Record PIN-chain",
+    timestamp_field: "materialized_at",
+    // No daily refresh workflow yet — match Doing Business until a publish loop lands.
+    max_age_days: 180,
+    canaries: Object.freeze([
+      Object.freeze({ field: "pin", value: "07219P0148001R004" }),
+      Object.freeze({ field: "request_id", value: "20260723031" }),
+    ]),
+  }),
 });
 
 function normalized(value) {
