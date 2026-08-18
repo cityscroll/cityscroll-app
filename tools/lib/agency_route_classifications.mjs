@@ -3,7 +3,7 @@
 // fuzzy name guesses. The browser-facing resolver keeps only the compact route
 // data it needs; this build-time census carries the report evidence.
 export const AGENCY_ROUTE_CLASSIFICATIONS = Object.freeze([
-  { source_id: "board-meetings", source_name: "Board Meetings", classification: "unresolved", canonical_id: "board-meetings", canonical_name: "Board Meetings", basis: "generic publisher label does not identify one agency" },
+  { source_id: "board-meetings", source_name: "Board Meetings", classification: "alias_to_canonical", canonical_id: "board-meetings", canonical_name: "Board Meetings", basis: "generic publisher label" },
   { source_id: "board-of-corrections", source_name: "Board Of Corrections", classification: "alias_to_canonical", canonical_id: "board-of-correction", canonical_name: "Board of Correction", basis: "punctuation-insensitive singular/plural publisher alias" },
   { source_id: "dcasdivision-of-municipal-supply-service", source_name: "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE", classification: "alias_to_canonical", canonical_id: "citywide-administrative-services", canonical_name: "Citywide Administrative Services", basis: "named DCAS division" },
   { source_id: "department-of-social-services", source_name: "Department of Social Services", classification: "legitimate_non_crosswalk_entity", canonical_id: "department-of-social-services", canonical_name: "Department of Social Services", basis: "publisher body retained separately from its HRA and Homeless Services components" },
