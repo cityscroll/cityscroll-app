@@ -144,6 +144,25 @@ export function watchFromFollowingParams(input) {
   };
 }
 
+/**
+ * Choose the Following surface tab from a URL.
+ * Explicit hash / ?tab= wins. Topic/place chips write lens+filter+freq
+ * without a tab token; those stay in create even when existing watches
+ * would otherwise promote Your watches.
+ */
+export function requestedFollowingTab(locationLike = {}, fallback = "create") {
+  const hash = String(locationLike.hash || "").replace(/^#/, "");
+  if (hash === "your-following" || hash === "watches") return "watches";
+  if (hash === "create" || hash === "packs") return hash;
+  const search = locationLike.search
+    ?? (locationLike.href ? new URL(locationLike.href, "https://cityscroll.invalid").search : "");
+  const params = new URLSearchParams(search);
+  const queryTab = params.get("tab");
+  if (queryTab === "watches" || queryTab === "create" || queryTab === "packs") return queryTab;
+  if (watchFromFollowingParams(params).requested || params.has("freq")) return "create";
+  return fallback;
+}
+
 export function followingUrlFromWatch(watch, options = {}) {
   const base = String(options.base || `${SITE_BASE}/following`).replace(/\/$/, "");
   if (!watch || !watch.lens) return options.emptyBase || "/following/";
