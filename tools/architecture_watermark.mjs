@@ -22,6 +22,7 @@ const CANARY_SLICES = {
       schema: facts.constellation?.agency?.schema ?? null,
       method: facts.constellation?.agency?.method ?? null,
       categories: facts.constellation?.agency?.categories ?? [],
+      graph_cap: facts.constellation?.graph?.cap ?? null,
     },
   }),
   "agency-search-producer": (facts) => {
@@ -39,6 +40,15 @@ const CANARY_SLICES = {
     payload: {
       lookup: facts.constellation?.materializer?.lookup ?? null,
       path: facts.constellation?.materializer?.path ?? null,
+    },
+  }),
+  "exams-eligibility": (facts) => ({
+    count: facts.exams?.surface?.fail_closed_public_eligibility ? 1 : 0,
+    payload: {
+      row_kind: facts.exams?.surface?.row_kind ?? null,
+      public_eligibility: facts.exams?.surface?.public_eligibility ?? null,
+      fail_closed_public_eligibility: facts.exams?.surface?.fail_closed_public_eligibility ?? false,
+      interest_multiselect: facts.exams?.surface?.interest_multiselect ?? false,
     },
   }),
   "keyword-search-index": (facts) => ({

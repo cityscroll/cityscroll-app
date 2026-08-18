@@ -1,0 +1,82 @@
+{
+  "schema": "cityscroll.architecture.backtest_case.v1",
+  "id": "pr-1058-committees-search",
+  "pr": 1058,
+  "title": "Committees into production Worker search",
+  "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
+  "source": "https://github.com/cityscroll/cityscroll-app/pull/1058",
+  "expected_finding_types": [
+    "unmapped_surface",
+    "missing_signal"
+  ],
+  "collapsed": {
+    "required_paths": [
+      "worker/src/search.mjs",
+      "tools/build_keyword_search_index.mjs"
+    ],
+    "observed_paths": [
+      "worker/wrangler.toml",
+      "ontology/registry.v0.json"
+    ],
+    "unmapped_surfaces": [
+      {
+        "id": "production-search",
+        "path": "worker/src/search.mjs"
+      },
+      {
+        "id": "keyword-search-index",
+        "path": "tools/build_keyword_search_index.mjs"
+      }
+    ],
+    "signals": {
+      "committees_family": true,
+      "committees_index_family": true
+    },
+    "observed_signals": {
+      "committees_family": false,
+      "committees_index_family": false
+    }
+  },
+  "conditions": {
+    "unmapped_surface": {
+      "required_paths": [
+        "worker/src/search.mjs"
+      ],
+      "observed_paths": [
+        "worker/wrangler.toml"
+      ],
+      "unmapped_surfaces": [
+        {
+          "id": "production-search",
+          "path": "worker/src/search.mjs"
+        }
+      ],
+      "signals": {}
+    },
+    "missing_signal": {
+      "required_paths": [
+        "worker/src/search.mjs"
+      ],
+      "observed_paths": [
+        "worker/src/search.mjs"
+      ],
+      "unmapped_surfaces": [],
+      "signals": {
+        "committees_family": true
+      },
+      "observed_signals": {
+        "committees_family": false
+      }
+    }
+  },
+  "current": {
+    "required_paths": [
+      "worker/src/search.mjs",
+      "tools/build_keyword_search_index.mjs"
+    ],
+    "signals": {
+      "committees_family": true,
+      "committees_index_family": true
+    }
+  }
+}

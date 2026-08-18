@@ -1,0 +1,86 @@
+{
+  "schema": "cityscroll.architecture.backtest_case.v1",
+  "id": "pr-1076-constellation-ceiling",
+  "pr": 1076,
+  "title": "PASSPort constellation graph ceiling raise",
+  "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
+  "source": "https://github.com/cityscroll/cityscroll-app/pull/1076",
+  "expected_finding_types": [
+    "unmapped_surface",
+    "missing_signal"
+  ],
+  "collapsed": {
+    "required_paths": [
+      "site/agency_constellation_model.mjs",
+      "site/agency_search_producer.mjs"
+    ],
+    "observed_paths": [
+      "worker/wrangler.toml",
+      "ontology/registry.v0.json"
+    ],
+    "unmapped_surfaces": [
+      {
+        "id": "agency-constellation-model",
+        "path": "site/agency_constellation_model.mjs"
+      },
+      {
+        "id": "agency-search-producer",
+        "path": "site/agency_search_producer.mjs"
+      }
+    ],
+    "signals": {
+      "graph_cap": {
+        "gte": 20000
+      }
+    },
+    "observed_signals": {
+      "graph_cap": 1550
+    }
+  },
+  "conditions": {
+    "unmapped_surface": {
+      "required_paths": [
+        "site/agency_constellation_model.mjs"
+      ],
+      "observed_paths": [
+        "worker/wrangler.toml"
+      ],
+      "unmapped_surfaces": [
+        {
+          "id": "agency-constellation-model",
+          "path": "site/agency_constellation_model.mjs"
+        }
+      ],
+      "signals": {}
+    },
+    "missing_signal": {
+      "required_paths": [
+        "site/agency_constellation_model.mjs"
+      ],
+      "observed_paths": [
+        "site/agency_constellation_model.mjs"
+      ],
+      "unmapped_surfaces": [],
+      "signals": {
+        "graph_cap": {
+          "gte": 20000
+        }
+      },
+      "observed_signals": {
+        "graph_cap": 1550
+      }
+    }
+  },
+  "current": {
+    "required_paths": [
+      "site/agency_constellation_model.mjs",
+      "site/agency_search_producer.mjs",
+      "tools/lib/entity_intelligence_build.mjs"
+    ],
+    "signals": {
+      "graph_cap": {
+        "gte": 20000
+      }
+    }
+  }
+}
