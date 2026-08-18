@@ -56,7 +56,8 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /name="filter"[^>]+value="[^"]*curb/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
   assert.match(html, /following-cadence-card/);
-  assert.match(html, /Monday note even when nothing is new/);
+  assert.match(html, /Daily when there are matches/);
+  assert.match(html, /Weekly digest/);
   assert.match(html, /data-following-rule-line/);
   assert.match(html, /Notify me when/);
   assert.match(html, /following-digitem|following-dig-title/);
@@ -74,13 +75,62 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /class="document-brand brand-lockup home"/);
 });
 
+test("Following create flow presents preview-first CTA text", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
+
+  assert.match(html, /<button[^>]*class="following-form-action-preview"[^>]*>Preview matches<\/button>/);
+  assert.doesNotMatch(html, /<button[^>]*>Create this watch<\/button>/);
+  assert.match(html, /<p class="following-kicker">Delivery<\/p><h2>Create a watch<\/h2>/);
+  assert.match(html, /class="following-refinements"/);
+  assert.match(html, /<summary>Narrow it down<\/summary>/);
+});
+
+test("Following requested watch surface exposes create-watch submit state with summary", () => {
+  const requestedHtml = renderFollowingDocument(buildFollowingViewModel({
+    lens: "meetings",
+    filter: {
+      keywords: ["curb"],
+      borough: "Queens",
+      agency: "Transportation",
+    },
+    requested: true,
+    frequency: "daily",
+    matchCount: 7,
+  }, templates));
+
+  assert.match(requestedHtml, /<h2 id="following-subscribe-heading">Create this watch<\/h2>/);
+  assert.match(requestedHtml, /<form[^>]+method="post"[^>]+data-following-subscribe-form/);
+  assert.match(requestedHtml, /name="freq" value="daily"/);
+  assert.match(requestedHtml, /name="email"/);
+  assert.match(requestedHtml, /Notify me when new hearings and meetings mentioning/);
+  assert.match(requestedHtml, /Notify me when new hearings and meetings mentioning 'curb' from Transportation are published in Queens\./);
+  assert.match(requestedHtml, /data-following-preview-status/);
+});
+
+test("Following topic-place scope is shown as explicit one-line sections", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({
+    lens: "land",
+    filter: { borough: "Queens" },
+  }, templates));
+
+  assert.match(html, /What do you want to follow\?/);
+  assert.match(html, /Where\?/);
+  assert.match(html, /Any place \/ borough \/ district/);
+  assert.match(html, /<p class="following-scope-rail-label">Topic<\/p>/);
+  assert.match(html, /<p class="following-scope-rail-label">Any place \/ borough \/ district<\/p>/);
+});
+
 test("Following has a useful server-rendered empty state before personalization", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
 
   assert.match(html, /data-personal-watch-list/);
   assert.match(html, /Open a CityScroll email to see your watches/);
-  assert.match(html, /Pick a topic or place to see matches|Pick a topic or place/);
-  assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first/);
+  assert.match(
+    html,
+    /Follow what you care about\. Save a topic, place, agency, or keyword and get updates when new City records match\./,
+  );
+  assert.doesNotMatch(html, /Pick a topic or place to see matches|Pick a topic or place/);
+  assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first|Monday note even when nothing is new/);
 });
 
 test("Following leads with create flow; saved watches are secondary", () => {
@@ -222,11 +272,11 @@ test("composeWatchRuleSentence makes refine conjunction visible", () => {
       agency: "Parks",
       borough: "Brooklyn",
     }),
-    "Notify me when Contracts and RFPs match keyword housing AND agency Parks AND in Brooklyn.",
+    "Notify me when new contracts mentioning 'housing' from Parks are published in Brooklyn.",
   );
   assert.equal(
     composeWatchRuleSentence("money", {}),
-    "Notify me when Contracts and RFPs match citywide.",
+    "Notify me when new contracts are published citywide.",
   );
   assert.equal(isCitywideWatchScope({ keywords: ["housing"] }), true);
   assert.equal(isCitywideWatchScope({ borough: "Queens" }), false);

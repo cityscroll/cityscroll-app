@@ -47,7 +47,7 @@ test("the edge Following renderer keeps the create-first empty state on a fresh 
   assert.equal(response.status, 200);
   assert.match(html, /data-following-preview-form/);
   assert.match(html, /data-following-subscribe-panel/);
-  assert.match(html, /Pick a topic or place to see matches\./);
+  assert.match(html, /Follow what you care about\. Save a topic, place, agency, or keyword and get updates when new City records match\./);
   assert.match(html, /data-personal-watch-list/);
 });
 
@@ -157,11 +157,14 @@ test("the recognized-session island renders inline cadence, pause, and unsubscri
   assert.match(html, /data-session-recognized="true"/);
   assert.match(html, /data-watch-lens="meetings"/);
   assert.match(html, /Transportation/);
+  assert.match(html, /Email frequency:\s*Daily when there are matches|Email frequency:\s*Weekly digest/);
   assert.match(html, /name="freq"/);
   assert.match(html, /name="action" value="update"/);
   assert.match(html, /name="action" value="pause"/);
   assert.match(html, /name="action" value="delete"/);
   assert.match(html, /action="https:\/\/cityscroll\.org\/prefs"/);
+  assert.match(html, /<h3>Notify me when new hearings and meetings are published/);
+  assert.match(html, /See current matches/);
   assert.match(html, /name="token" value="[^"]+"/);
   assert.doesNotMatch(html, /href="[^"]*prefs\?token=/);
   assert.doesNotMatch(html, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));

@@ -7,7 +7,6 @@ import {
   followingLensNeedsRedirect,
   renderFollowingDocument,
   buildFollowingGraphContext,
-  followingWatchIdentityHtml,
   followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
@@ -79,13 +78,43 @@ function hiddenCredential(token, watch) {
   return `<input type="hidden" name="token" value="${esc(token)}"><input type="hidden" name="key" value="${esc(watch.key)}">`;
 }
 
+function watchCadenceLabel(value) {
+  return value === "weekly" ? "Weekly digest" : "Daily when there are matches";
+}
+
+function watchFacts(context) {
+  const rows = [
+    ["Topic", context.topicLabel || context.lens || "Contracts"],
+    ["Place", context.placeLabel || "Citywide"],
+    ["Keyword", context.keywordLabel || null],
+    ["Agency", context.agencyLabel || null],
+    ["District", context.districtLabel || null],
+  ].filter(([, value]) => value);
+  if (!rows.length) return "";
+  return `<details class="following-watch-facts">
+      <summary>Technical details</summary>
+      <dl class="following-watch-fact-list">
+        ${rows.map(([term, value]) => `<div class="following-watch-fact"><dt>${esc(term)}</dt><dd>${esc(value)}</dd></div>`).join("")}
+      </dl>
+    </details>`;
+}
+
 function personalWatchHtml(watch, credential) {
   const action = watch.paused ? "unpause" : "pause";
   const context = buildFollowingGraphContext(watch, { backToEntity: true });
+  const summary = watch.query || context.ruleSentence;
+  const status = watch.paused ? "Paused" : "Active";
+  const cadenceLabel = watchCadenceLabel(watch.freq || watch.frequency);
   return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}">
-    <div class="following-watch-heading"><h3>${esc(watch.query || context.ruleSentence)}</h3><p class="watch-meta">${watch.paused ? "Paused" : "Active"}</p></div>
-    ${followingWatchIdentityHtml(context, { heading: "Watch details", headingTag: "h4", backToEntity: true })}
-    ${followingWatchScopeLinksHtml(context)}
+    <div class="following-watch-heading">
+      <h3>${esc(summary)}</h3>
+      <p class="watch-meta">${status} · Email frequency: ${esc(cadenceLabel)}</p>
+    </div>
+    <div class="following-watch-actions">
+      ${context.currentMatchesHref ? `<a class="following-current-matches" href="${esc(context.currentMatchesHref)}">See current matches</a>` : ""}
+      ${followingWatchScopeLinksHtml(context, { entityClass: "following-watch-entity" })}
+    </div>
+    ${watchFacts(context)}
     <div class="following-watch-controls">
       <form method="post" action="${SITE_ORIGIN}/prefs" data-watch-action>
         ${hiddenCredential(credential, watch)}<input type="hidden" name="action" value="update">

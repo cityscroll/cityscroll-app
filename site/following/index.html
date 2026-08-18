@@ -8,11 +8,11 @@
 <link rel="stylesheet" href="/civic-documents.css"></head>
 <body><a class="skip" href="#main">Skip to content</a>
 <header class="document-mast following-mast"><div class="document-mast-inner">
-    <a class="document-brand brand-lockup home" href="/"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+    <a class="document-brand brand-lockup home" href="https://cityscroll.org"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
     <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
     <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg><span>CityScroll</span></a>
-    <nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a aria-current="page" href="/following/">Following</a><a href="/browse/">Browse</a></nav>
+    <nav class="document-nav" aria-label="Primary"><a href="https://cityscroll.org/now/">Now</a><a href="https://cityscroll.org/near-you/">Near you</a><a aria-current="page" href="https://cityscroll.org/following/">Following</a><a href="https://cityscroll.org/browse/">Browse</a></nav>
   </div></header>
 <main id="main" data-following-root data-personal-url="https://api.cityscroll.org/following/personal"
     data-following-layout="browse"
@@ -38,49 +38,62 @@
   </nav>
     <section id="create" class="following-create" data-following-panel="create" aria-labelledby="following-create-heading">
     <p class="following-kicker">Create</p>
-    <h2 id="following-create-heading">Pick a topic or place</h2>
+    <h2 id="following-create-heading">Follow what you care about</h2>
     <div class="following-scope-pickers">
-    <div class="following-scope-rail" role="group" aria-label="Topic">
-      <p class="following-scope-rail-label">Topic</p>
-      <div class="following-scope-links" data-following-topic-scope><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="topic" data-following-scope-value="money" data-scope-edge="following.topic.money" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily">Contracts and RFPs</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="people" data-scope-edge="following.topic.people" data-filter-href="https://cityscroll.org/following?lens=people&amp;filter=%7B%7D&amp;freq=daily">Staffing and exams</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="land" data-scope-edge="following.topic.land" data-filter-href="https://cityscroll.org/following?lens=land&amp;filter=%7B%7D&amp;freq=daily">Zoning</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="property" data-scope-edge="following.topic.property" data-filter-href="https://cityscroll.org/following?lens=property&amp;filter=%7B%7D&amp;freq=daily">Property</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="rules" data-scope-edge="following.topic.rules" data-filter-href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%7D&amp;freq=daily">Rules</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="meetings" data-scope-edge="following.topic.meetings" data-filter-href="https://cityscroll.org/following?lens=meetings&amp;filter=%7B%7D&amp;freq=daily">Hearings and meetings</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="district" data-scope-edge="following.topic.district" data-filter-href="https://cityscroll.org/following?lens=district&amp;filter=%7B%7D&amp;freq=daily">Council district weekly</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="entity" data-scope-edge="following.topic.entity" data-filter-href="https://cityscroll.org/following?lens=entity&amp;filter=%7B%7D&amp;freq=daily">Agency or vendor</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="mandates" data-scope-edge="following.topic.mandates" data-filter-href="https://cityscroll.org/following?lens=mandates&amp;filter=%7B%7D&amp;freq=daily">Mandates</button></div>
-    </div>
-    <div class="following-scope-rail" role="group" aria-label="Place">
-      <p class="following-scope-rail-label">Place</p>
-      <div class="following-scope-links" data-following-place-scope><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="place" data-following-scope-value="all" data-scope-edge="following.place.all" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily">Any place</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Manhattan" data-scope-edge="following.place.Manhattan" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Manhattan%22%7D&amp;freq=daily">Manhattan</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Brooklyn" data-scope-edge="following.place.Brooklyn" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Brooklyn%22%7D&amp;freq=daily">Brooklyn</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Queens" data-scope-edge="following.place.Queens" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Queens%22%7D&amp;freq=daily">Queens</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Bronx" data-scope-edge="following.place.Bronx" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Bronx%22%7D&amp;freq=daily">Bronx</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Staten Island" data-scope-edge="following.place.Staten Island" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Staten+Island%22%7D&amp;freq=daily">Staten Island</button></div>
-    </div>
+    <section class="following-scope-block">
+      <p class="following-scope-title">What do you want to follow?</p>
+      <div class="following-scope-rail" role="group" aria-label="Topic">
+        <p class="following-scope-rail-label">Topic</p>
+        <div class="following-scope-links" data-following-topic-scope><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="topic" data-following-scope-value="money" data-scope-edge="following.topic.money" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily">Contracts and RFPs</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="people" data-scope-edge="following.topic.people" data-filter-href="https://cityscroll.org/following?lens=people&amp;filter=%7B%7D&amp;freq=daily">Staffing and exams</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="land" data-scope-edge="following.topic.land" data-filter-href="https://cityscroll.org/following?lens=land&amp;filter=%7B%7D&amp;freq=daily">Zoning</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="property" data-scope-edge="following.topic.property" data-filter-href="https://cityscroll.org/following?lens=property&amp;filter=%7B%7D&amp;freq=daily">Property</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="rules" data-scope-edge="following.topic.rules" data-filter-href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%7D&amp;freq=daily">Rules</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="meetings" data-scope-edge="following.topic.meetings" data-filter-href="https://cityscroll.org/following?lens=meetings&amp;filter=%7B%7D&amp;freq=daily">Hearings and meetings</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="district" data-scope-edge="following.topic.district" data-filter-href="https://cityscroll.org/following?lens=district&amp;filter=%7B%7D&amp;freq=daily">Council district weekly</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="entity" data-scope-edge="following.topic.entity" data-filter-href="https://cityscroll.org/following?lens=entity&amp;filter=%7B%7D&amp;freq=daily">Agency or vendor</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="mandates" data-scope-edge="following.topic.mandates" data-filter-href="https://cityscroll.org/following?lens=mandates&amp;filter=%7B%7D&amp;freq=daily">Mandates</button></div>
+      </div>
+    </section>
+    <section class="following-scope-block">
+      <p class="following-scope-title">Where?</p>
+      <div class="following-scope-rail" role="group" aria-label="Place">
+        <p class="following-scope-rail-label">Any place / borough / district</p>
+        <div class="following-scope-links" data-following-place-scope><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="place" data-following-scope-value="all" data-scope-edge="following.place.all" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily">Any place</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Manhattan" data-scope-edge="following.place.Manhattan" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Manhattan%22%7D&amp;freq=daily">Manhattan</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Brooklyn" data-scope-edge="following.place.Brooklyn" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Brooklyn%22%7D&amp;freq=daily">Brooklyn</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Queens" data-scope-edge="following.place.Queens" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Queens%22%7D&amp;freq=daily">Queens</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Bronx" data-scope-edge="following.place.Bronx" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Bronx%22%7D&amp;freq=daily">Bronx</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Staten Island" data-scope-edge="following.place.Staten Island" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Staten+Island%22%7D&amp;freq=daily">Staten Island</button></div>
+      </div>
+    </section>
   </div>
   <form class="following-form" method="get" action="https://cityscroll.org/following" data-following-preview-form>
     <input type="hidden" name="lens" value="money">
     <input type="hidden" name="filter" value="{}">
 
-    <label>Keyword<input name="q" value="" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
-    <label>Agency<input name="agency" value="" placeholder="Any agency" data-following-refine="agency"></label>
-    <label>Council district<input name="council" value="" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" data-following-refine="council"></label>
+    <details class="following-refinements">
+      <summary>Narrow it down</summary>
+      <div class="following-refinement-grid">
+        <label>Keyword<input name="q" value="" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
+        <label>Agency<input name="agency" value="" placeholder="Any agency" data-following-refine="agency"></label>
+        <label>Council district<input name="council" value="" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" data-following-refine="council"></label>
+      </div>
+    </details>
     <fieldset class="following-cadence" data-following-cadence>
-    <legend>How often to email</legend>
+    <legend>Email frequency</legend>
     <div class="following-cadence-cards">
       <label class="following-cadence-card is-selected">
         <input type="radio" name="freq" value="daily" checked data-following-freq="daily">
         <span class="following-cadence-title">Daily</span>
-        <span class="following-cadence-copy">Email only on match days. Quiet days stay quiet. After about 14 quiet days, we send a short check-in.</span>
+        <span class="following-cadence-copy">Daily when there are matches.</span>
       </label>
       <label class="following-cadence-card">
         <input type="radio" name="freq" value="weekly" data-following-freq="weekly">
         <span class="following-cadence-title">Weekly</span>
-        <span class="following-cadence-copy">A Monday note even when nothing is new.</span>
+        <span class="following-cadence-copy">Weekly digest.</span>
       </label>
     </div>
   </fieldset>
-    <button type="submit">See matches</button>
+    <div class="following-form-actions">
+      <button type="submit" class="following-form-action-preview" aria-label="Preview matches before saving">Preview matches</button>
+    </div>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>
   <div class="following-rule" data-following-rule-panel>
-    <p class="following-rule-line" data-following-rule-line>Notify me when Contracts and RFPs match citywide.</p>
+    <p class="following-rule-line" data-following-rule-line aria-live="polite" role="status" aria-atomic="true">Notify me when new contracts are published citywide.</p>
   </div>
   </section>
     <div class="following-workspace" data-following-workspace data-following-panel-workspace><section class="following-subscribe" data-following-subscribe-panel>
-      <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
-      <p>Pick a topic or place to see matches.</p>
+    <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
+      <p>Follow what you care about. Save a topic, place, agency, or keyword and get updates when new City records match.</p>
       <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
     </section></div>
     <section id="your-following" class="following-personal" data-following-panel="watches" data-following-personal-mode="secondary" aria-labelledby="following-personal-heading">

@@ -96,7 +96,7 @@ function updateRuleLine() {
   for (const line of root.querySelectorAll("[data-following-identity-rule]")) {
     line.textContent = sentence;
   }
-  const cadenceLabel = frequency === "weekly" ? "Weekly" : "Daily";
+  const cadenceLabel = frequency === "weekly" ? "Weekly digest" : "Daily when there are matches";
   for (const label of root.querySelectorAll("[data-following-identity-cadence]")) {
     label.textContent = cadenceLabel;
   }
