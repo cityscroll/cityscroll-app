@@ -210,11 +210,27 @@ export function isoDate(value) {
   return value ? String(value).slice(0, 10) : null;
 }
 
+/**
+ * Classify publisher eligibility for the public "Anyone who qualifies" filter.
+ * Fail closed: only an explicit open-competitive signal becomes public. Promotion,
+ * city-employee, title-restricted, or unrecognized labels stay out of that filter.
+ * Ambiguous / missing evidence is `unknown` — never silently treated as public.
+ */
 export function eligibilityFor(row) {
-  if (/promotion/i.test(row.open_competitive_promotion || "") || /\(prom\)/i.test(row.exam_title || "")) {
+  const field = String(row.open_competitive_promotion || "").trim();
+  const title = String(row.exam_title || row.title || "");
+  const promoTitle = /\(prom\)/i.test(title);
+  const promoField = /promotion/i.test(field);
+  const openField = /open[\s-]*competitive/i.test(field);
+  const internalField = /\b(?:city\s+employees?|employees?\s+only|promotional|internal(?:\s+only)?|restricted|incumbents?)\b/i.test(field);
+
+  if (promoField || promoTitle || internalField) {
+    // Conflicting open + internal/promotional wording without a clear promo class.
+    if (openField && !(promoField || promoTitle)) return "unknown";
     return "promotion";
   }
-  return "open_competitive";
+  if (openField) return "open_competitive";
+  return "unknown";
 }
 
 export function scheduleStatus(row) {
@@ -271,12 +287,14 @@ function normalizeCurrent(row) {
   const examNumber = String(row.exam_number || "").trim();
   assert(/^\d{4}$/.test(examNumber), `invalid current exam number: ${row.exam_number}`);
   // When a raw NOE body is present, densify missing fee/salary before merge.
+  // DCAS open-competitive schedule page is definitionally public eligibility.
   const densified = applyNoeFeeSalaryFromBody({
     exam_number: examNumber,
     ...row,
     application_start: isoDate(row.application_start),
     application_end: isoDate(row.application_end),
     schedule_status: scheduleStatus(row),
+    eligibility: "open_competitive",
     sources: [
       "dcas-open-competitive",
       NOE_ID,

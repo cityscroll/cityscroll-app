@@ -57,6 +57,61 @@
     return INTEREST_AREAS.includes(String(value || ""));
   }
 
+  /**
+   * Normalize interest filter input to a sorted unique list of known area ids.
+   * Accepts a single id, comma/space-separated string, or array. "all"/empty → [].
+   * Deterministic order so equivalent selections serialize identically.
+   */
+  function normalizeInterestSelection(value) {
+    if (value == null || value === "" || value === "all") return [];
+    const raw = Array.isArray(value)
+      ? value
+      : String(value).split(/[,|]/).map((part) => part.trim()).filter(Boolean);
+    const selected = [...new Set(raw.filter(isInterestArea))];
+    selected.sort((a, b) => INTEREST_AREAS.indexOf(a) - INTEREST_AREAS.indexOf(b));
+    return selected;
+  }
+
+  /** Stable URL/wire form: sorted comma-joined ids, or "" when none (All interests). */
+  function serializeInterestSelection(value) {
+    return normalizeInterestSelection(value).join(",");
+  }
+
+  /** Record may carry one interest_area and/or an interest_areas list; preserve both. */
+  function examInterestAreas(exam) {
+    const fromList = Array.isArray(exam?.interest_areas)
+      ? exam.interest_areas.filter(isInterestArea)
+      : [];
+    const single = isInterestArea(exam?.interest_area) ? [exam.interest_area] : [];
+    return [...new Set([...fromList, ...single])];
+  }
+
+  /** OR match: exam matches when it shares any selected area. Empty selection = all. */
+  function examMatchesInterest(exam, selection) {
+    const selected = normalizeInterestSelection(selection);
+    if (!selected.length) return true;
+    const areas = examInterestAreas(exam);
+    return selected.some((area) => areas.includes(area));
+  }
+
+  /**
+   * "Anyone who qualifies" is only publisher-backed open_competitive.
+   * Unknown/ambiguous and promotional/internal pools are excluded.
+   */
+  function isPublicEligibility(exam) {
+    if (!exam || exam.eligibility !== "open_competitive") return false;
+    // Belt-and-suspenders: title/field promo markers never pass as public.
+    if (/\(prom\)/i.test(String(exam.title || ""))) return false;
+    if (/promotion/i.test(String(exam.open_competitive_promotion || ""))) return false;
+    return true;
+  }
+
+  function examMatchesEligibility(exam, eligibility) {
+    if (!eligibility || eligibility === "all") return true;
+    if (eligibility === "open_competitive") return isPublicEligibility(exam);
+    return String(exam?.eligibility || "") === String(eligibility);
+  }
+
   function isContinuousExam(exam) {
     const mode = `${exam?.application_mode || ""} ${exam?.filing_method || ""} ${exam?.schedule_status || ""}`.toLowerCase();
     return /continuous|walk[- ]?in/.test(mode);
@@ -148,11 +203,14 @@
 
   function filterExams(exams, filters, today) {
     const q = String(filters.query || "").trim().toLowerCase();
+    const interestSelection = filters.interests != null
+      ? filters.interests
+      : filters.interest;
     return exams.filter(exam => {
       const status = statusFor(exam, today);
       const continuous = isContinuousExam(exam);
-      if (filters.eligibility && filters.eligibility !== "all" && exam.eligibility !== filters.eligibility) return false;
-      if (filters.interest && filters.interest !== "all" && exam.interest_area !== filters.interest) return false;
+      if (!examMatchesEligibility(exam, filters.eligibility)) return false;
+      if (!examMatchesInterest(exam, interestSelection)) return false;
       if (filters.window === "actionable" && !["open", "upcoming"].includes(status) && !continuous) return false;
       if (filters.window === "open" && status !== "open") return false;
       if (filters.window === "upcoming" && status !== "upcoming") return false;
@@ -386,6 +444,12 @@
     applicationDaysLeft,
     openWindowBand,
     isInterestArea,
+    normalizeInterestSelection,
+    serializeInterestSelection,
+    examInterestAreas,
+    examMatchesInterest,
+    isPublicEligibility,
+    examMatchesEligibility,
     isContinuousExam,
     filterExams,
     sourceAgeDays,
