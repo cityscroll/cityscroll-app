@@ -39,6 +39,7 @@ import {
 import {
   buildContractActionBasisLayer,
   buildDistrictActivity,
+  CD_INTERSECTS_COUNCIL_METHOD,
   communityDistrictFromAgencyName,
   geographyPlacementDecision,
   meetingPlacementsFromRow,
@@ -46,12 +47,17 @@ import {
 } from "../tools/lib/district_activity.mjs";
 import {
   geocodeCivicAddress,
-  buildCommunityToCouncilIndex,
 } from "../site/civic_address_geocode.mjs";
-import { resolveCouncilDistrict } from "../site/council_district_lookup.mjs";
+import {
+  buildCommunityDistrictCouncilIntersectsIndex,
+  councilDistrictsIntersectingCommunity,
+} from "../site/community_board_geography.mjs";
 
 const boundaries = JSON.parse(
   readFileSync(new URL("../site/data/district_boundaries.json", import.meta.url), "utf8"),
+);
+const communityBoardGeography = JSON.parse(
+  readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url), "utf8"),
 );
 
 test("map helpers project lon/lat and emit SVG paths", () => {
@@ -594,6 +600,7 @@ test("buildDistrictActivity places rules via rule-scope extractor", () => {
 test("buildDistrictActivity places money rows with publisher geo or coordinates via PIP", () => {
   const activity = buildDistrictActivity({
     boundaries,
+    communityBoardGeography,
     moneyRows: [
       {
         request_id: "money-geo-1",
@@ -621,7 +628,7 @@ test("buildDistrictActivity places money rows with publisher geo or coordinates 
     `publisher geo + PIP coords should locate money rows, got ${activity.sources.money.located}`,
   );
   // Both publisher-CD and PIP (Elmhurst) resolve into Queens CD Q04 / council 25.
-  // Publisher-CD also joins council via CD centroid, so council density is 2.
+  // Publisher-CD fans out via definitional CD∩council intersects (includes 25).
   assert.equal(activity.by_level.community_district.Q04.money, 2);
   assert.equal(activity.by_level.council_district["25"].money, 2);
   assert.equal(activity.by_level.borough.Queens.money, 2);
@@ -728,9 +735,10 @@ test("virtual-only meetings land in the Virtual bucket, not silent unlocated", (
   assert.ok(bags.some((b) => b.kind === "virtual" && b.counts.meetings === 1));
 });
 
-test("land ZAP community districts join council via CD centroid", () => {
+test("land ZAP community districts join council via definitional CD∩council intersects", () => {
   const activity = buildDistrictActivity({
     boundaries,
+    communityBoardGeography,
     zapRows: [
       { project_id: "2018X0438", borough: "Bronx", community_district: "X05" },
       { project_id: "2022M0258", borough: "Manhattan", community_district: "M04" },
@@ -740,18 +748,59 @@ test("land ZAP community districts join council via CD centroid", () => {
   assert.equal(activity.by_level.community_district.X05.land, 1);
   assert.equal(activity.by_level.community_district.M04.land, 1);
   assert.equal(activity.by_level.community_district.Q04.land, 1);
-  // Council must be nonzero — CD centroid PIP against the boundary layer.
+  assert.equal(activity.sources.land.by_method.publisher_district, 3);
+  assert.equal(activity.sources.land.by_method.cd_centroid_council || 0, 0);
+  const index = buildCommunityDistrictCouncilIntersectsIndex(communityBoardGeography);
+  assert.ok(index.X05?.length >= 2, "X05 must intersect multiple council districts");
+  assert.ok(index.M04?.length >= 2, "M04 must intersect multiple council districts");
+  assert.ok(index.Q04?.length >= 2, "Q04 must intersect multiple council districts");
+  // Multi-membership: one publisher-CD row contributes to every intersecting council.
+  for (const council of index.X05) {
+    assert.equal(activity.by_level.council_district[council].land, 1, `X05 → council ${council}`);
+  }
+  for (const council of index.M04) {
+    assert.equal(activity.by_level.council_district[council].land, 1, `M04 → council ${council}`);
+  }
+  for (const council of index.Q04) {
+    assert.equal(activity.by_level.council_district[council].land, 1, `Q04 → council ${council}`);
+  }
   const councilTotal = Object.values(activity.by_level.council_district)
     .reduce((sum, bag) => sum + (bag.land || 0), 0);
-  assert.ok(councilTotal >= 3, `expected council land ≥3, got ${councilTotal}`);
-  // Spot-check index: X05 centroid should resolve to a real council id.
-  const index = buildCommunityToCouncilIndex(boundaries, resolveCouncilDistrict);
-  assert.ok(index.X05, "X05 must map to a council district");
-  assert.ok(index.M04, "M04 must map to a council district");
-  assert.ok(index.Q04, "Q04 must map to a council district");
-  assert.equal(activity.by_level.council_district[index.X05].land, 1);
-  assert.equal(activity.by_level.council_district[index.M04].land, 1);
-  assert.equal(activity.by_level.council_district[index.Q04].land, 1);
+  assert.equal(councilTotal, index.X05.length + index.M04.length + index.Q04.length);
+});
+
+test("multi-council CD contributes to all intersecting councils via definitional key", () => {
+  assert.equal(communityBoardGeography.receipt.centroid_proxy, "rejected");
+  const k01Councils = councilDistrictsIntersectingCommunity("K01", communityBoardGeography);
+  assert.deepEqual(k01Councils, ["2", "4", "30", "33", "34", "36"]);
+
+  const activity = buildDistrictActivity({
+    boundaries,
+    communityBoardGeography,
+    zapRows: [
+      { project_id: "2024K0001", borough: "Brooklyn", community_district: "K01" },
+    ],
+  });
+  assert.equal(activity.by_level.community_district.K01.land, 1);
+  assert.equal(activity.sources.land.by_method.publisher_district, 1);
+  assert.equal(activity.sources.land.by_method.cd_centroid_council || 0, 0);
+  for (const council of k01Councils) {
+    assert.equal(
+      activity.by_level.council_district[council].land,
+      1,
+      `K01 must contribute to council ${council} via ${CD_INTERSECTS_COUNCIL_METHOD}`,
+    );
+  }
+  const geographyCouncils = (activity.geography_subjects?.edges || [])
+    .filter((edge) => edge.type === "located_in"
+      && edge.from === "record:land:2024K0001"
+      && String(edge.to || "").startsWith("council-district:"))
+    .map((edge) => String(edge.to).replace(/^council-district:/, ""))
+    .sort((a, b) => Number(a) - Number(b));
+  // Prefer geography membership evidence when present; density bags are authoritative either way.
+  if (geographyCouncils.length) {
+    assert.deepEqual(geographyCouncils, k01Councils);
+  }
 });
 
 test("citywide rules land in the first-class citywide bag", () => {
@@ -1005,6 +1054,7 @@ test("granularityCollapseFindings flags council zero-collapse and clears on heal
 
   const healthy = buildDistrictActivity({
     boundaries,
+    communityBoardGeography,
     zapRows: [{ project_id: "1", borough: "Queens", community_district: "Q04" }],
     meetingsRows: [{
       request_id: "m1",

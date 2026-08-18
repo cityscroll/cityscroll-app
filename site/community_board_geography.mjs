@@ -68,6 +68,53 @@ export function communityDistrictIdForBoard(row = {}) {
   return `${prefix}${String(district).padStart(2, "0")}`;
 }
 
+/**
+ * Definitional CD∩council membership from published intersects edges.
+ * One community district may intersect many council districts; never collapse
+ * that to a centroid guess.
+ *
+ * @param {object} [geography] — community_board_geography.v1 lookup
+ * @returns {Record<string, string[]>} community-district id → sorted council ids
+ */
+export function buildCommunityDistrictCouncilIntersectsIndex(geography = {}) {
+  const index = Object.create(null);
+  if (geography?.gate?.publication_allowed !== true) return index;
+  const edges = Array.isArray(geography.public_edges) ? geography.public_edges : [];
+  for (const edge of edges) {
+    if (edge?.type !== "intersects") continue;
+    const community = clean(edge.from).match(/^community-district:([MXKQR]\d{2})$/)?.[1] || null;
+    const council = clean(edge.to).match(/^council-district:(\d{1,2})$/)?.[1] || null;
+    if (!community || !council) continue;
+    if (!index[community]) index[community] = new Set();
+    index[community].add(String(Number(council)));
+  }
+  return Object.fromEntries(
+    Object.entries(index).map(([cd, councils]) => [
+      cd,
+      [...councils].sort((a, b) => Number(a) - Number(b)),
+    ]),
+  );
+}
+
+/** Sorted council-district ids that definitionally intersect a community district. */
+export function councilDistrictsIntersectingCommunity(communityDistrictId, geographyOrIndex = {}) {
+  const cd = clean(communityDistrictId).match(/^([MXKQR]\d{2})$/i)?.[1]?.toUpperCase() || null;
+  if (!cd) return [];
+  if (geographyOrIndex?.gate || Array.isArray(geographyOrIndex?.public_edges)) {
+    return buildCommunityDistrictCouncilIntersectsIndex(geographyOrIndex)[cd] || [];
+  }
+  const raw = geographyOrIndex?.[cd];
+  if (Array.isArray(raw)) {
+    return [...new Set(raw.map((id) => String(Number(id))).filter((id) => id && id !== "NaN"))]
+      .sort((a, b) => Number(a) - Number(b));
+  }
+  if (raw != null && raw !== "") {
+    const one = String(Number(raw));
+    return one && one !== "NaN" ? [one] : [];
+  }
+  return [];
+}
+
 function bboxOverlaps(a, b) {
   return a && b && a[0] <= b[2] && b[0] <= a[2] && a[1] <= b[3] && b[1] <= a[3];
 }

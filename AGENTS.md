@@ -875,13 +875,15 @@ surface. See `docs/module-map.md`.
 
 **All five map lenses** (land / property / rules / meetings / money) roll through
 `tools/lib/district_activity.mjs` at build time: land uses ZAP publisher CDs +
-council join via CD-centroid PIP (`cd_centroid_council`); property and geocoded
-pins use boundary-layer point-in-polygon; meetings / rules / money use the
-human-derivation location chain (below). Venue / vendor addresses upgrade from
-borough-only to CD + council via the offline civic gazetteer
-(`site/civic_address_geocode.mjs` → PIP). Never invent districts for unlocated
-rows. `--check` fails if meetings are counted but zero-located, and if land or
-meetings have coarser density while council-district is all-zero.
+definitional CD∩council `intersects` multi-membership from
+`site/data/community_board_geography_lookup.json` (`publisher_district` primary
+method; council supplement `cd_intersects_council` — centroid PIP retired);
+property and geocoded pins use boundary-layer point-in-polygon; meetings /
+rules / money use the human-derivation location chain (below). Venue / vendor
+addresses upgrade from borough-only to CD + council via the offline civic
+gazetteer (`site/civic_address_geocode.mjs` → PIP). Never invent districts for
+unlocated rows. `--check` fails if meetings are counted but zero-located, and if
+land or meetings have coarser density while council-district is all-zero.
 
 **First-class non-polygon bags:** `citywide` (rules that apply everywhere, citywide
 phrase awards) and `virtual` (virtual-only meetings with no matter pin). The map
@@ -891,8 +893,9 @@ citywide items that apply city-scale without counting them into polygons.
 **Geography subject graph:** `district_activity.geography_subjects` materializes
 canonical borough / regular community-district / council-district nodes and one
 routed `located_in` candidate per polygon membership. Publisher, structured-bag,
-PIP, and centroid placements are public; weak agency-HQ / vendor fallbacks remain
-`evidence_only`. Citywide, virtual, and unlocated never become polygon subjects.
+PIP, and definitional CD∩council intersects placements are public; weak agency-HQ
+/ vendor fallbacks remain `evidence_only`. Citywide, virtual, and unlocated never
+become polygon subjects.
 Rebuild and verify the reconciled receipt at
 `docs/evidence/geography-subjects/located-in-audit.json` with
 `node tools/build_district_activity.mjs --check`.
@@ -920,7 +923,7 @@ first missing structured geo field. Pure lib `site/location_derivation.mjs`
 | Lens | Where a human looks | Methods (strong → weak) |
 |---|---|---|
 | **Meetings** | Matter place in title/body ("Borough of X", tax block, park name); hearing **venue** line / `street_address_1`; sponsor agency HQ last | `matter_body_borough` → `matter_title_place` → `venue_column` / `venue_line` → `civic_address_pip` → `agency_hq` |
-| **Land** | ZAP `community_district` (+ publisher council when present) | `cd_centroid_council` when council field absent |
+| **Land** | ZAP `community_district` (+ publisher council when present) | `publisher_district` + `cd_intersects_council` fan-out when council field absent |
 | **Rules** | Affected-geography phrases and titled borough/district scope — **not** the comment-drop venue | `rule-scope` / `matter_title_place`; default **citywide** when no local pin |
 | **Money** | Title/body place phrases, citywide wording, borough-scoped agencies (BP/CB), neighborhood gazetteer, CD tokens (`MN04`); OCP has **no** service-borough column. Vendor address is weak fallback only (org HQ ≠ service geography) | `matter_title_place` / `citywide_phrase` / `agency_service_area` / `community_board` → `civic_address_pip` / weak `vendor_address` |
 
