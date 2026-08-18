@@ -74,6 +74,39 @@ test("Land snapshot resolves blocks and exact project BBLs without source egress
   assert.deepEqual(filterLandSnapshot(projects, { status: "project:On-Hold" }).map((row) => row.project_id), ["P2"]);
 });
 
+test("Land stage and future-action facets combine and sort by the nearest action", () => {
+  const projects = [
+    { project_id: "PRE", project_status: "Active", public_status: "Filed", current_milestone: "Project Readiness", current_milestone_date: "2026-08-16" },
+    { project_id: "CB", project_status: "Active", public_status: "In Public Review", current_milestone: "EAS - Community Board Referral", current_milestone_date: "2026-08-10" },
+    { project_id: "CPC", project_status: "Active", public_status: "In Public Review", current_milestone: "CPC Public Hearing", current_milestone_date: "2026-08-15" },
+    { project_id: "PAST", project_status: "Active", public_status: "In Public Review", current_milestone: "Community Board Review", current_milestone_date: "2026-08-14" },
+    { project_id: "DONE", project_status: "Complete", public_status: "Completed", current_milestone: "Project Completed", current_milestone_date: "2026-08-17" },
+  ];
+  const actionRows = [
+    { project_id: "PRE", event_class: "cpc_public_hearing", hearing_date: "2026-08-19" },
+    { project_id: "CB", event_class: "cpc_public_hearing", hearing_date: "2026-08-22" },
+    { project_id: "CPC", event_class: "cpc_public_hearing", hearing_date: "2026-08-20" },
+    { project_id: "PAST", event_class: "cpc_public_hearing", hearing_date: "2026-08-16" },
+    { project_id: "DONE", event_class: "cpc_public_hearing", hearing_date: "2026-08-21" },
+  ];
+  assert.deepEqual(filterLandSnapshot(projects, {
+    status: "all", stage: "public_review", futureAction: "hearing", actionRows, today: "2026-08-17",
+  }).map((row) => row.project_id), ["CPC", "CB"]);
+  const matchingAction = filterLandSnapshot(projects, {
+    status: "all", stage: "public_review", futureAction: "hearing", actionRows: [
+      { project_id: "CPC", event_class: "cpc_session", event_date: "2026-08-18" },
+      ...actionRows,
+    ], today: "2026-08-17",
+  })[0];
+  assert.equal(matchingAction._next_action.action_kind, "hearing");
+  assert.deepEqual(filterLandSnapshot(projects, {
+    status: "all", stage: "community_board", futureAction: "hearing", actionRows, today: "2026-08-17",
+  }).map((row) => row.project_id), ["CB"]);
+  assert.deepEqual(filterLandSnapshot(projects, {
+    status: "all", stage: "public_review", futureAction: "hearing", actionRows, today: "2026-08-23",
+  }), []);
+});
+
 test("Staffing snapshot supports role and named-person lookup", () => {
   const roles = staffingRolesFromExamples([{ official_title: "CITY PLANNER", competitive: true, headcount: 5, base_min: 10, base_max: 20, base_median: 15, ladder: [] }], "planner");
   assert.equal(roles[0].competitive, true);

@@ -394,6 +394,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Browse scope uses the pure `site/scope_v0.mjs` adapter; existing DOM controls, hashes,
   map state, presets, and watch drafts remain the state owners. Do not add a parallel scope
   store. Verify cross-surface round trips with `node --test test/scope_v0.test.mjs`.
+- Zoning Browse keeps process stage and future action as orthogonal facets in
+  `site/land_status_facets.mjs`. Stage consumes `site/land_phase_spine.mjs` phase IDs; actionability
+  is determined from the published event/deadline date with an injected test clock. Public URLs use
+  `stage` + `future`, while legacy `status` links remain accepted. Focused field-data proof is
+  `test/land_stage_action_filters.test.mjs`.
 - Hydrated Meetings borough/location scopes must filter the current hearing rows through
   `filterMeetingRowsByAffectedArea` before any stamped district-bag materialization. The map
   artifact is a read model and can lag newly published or multi-borough hearings; community-

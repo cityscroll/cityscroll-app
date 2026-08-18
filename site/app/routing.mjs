@@ -1,5 +1,6 @@
 import { noticeDocumentUrl } from "../notice_permalink.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../display_title.mjs";
+import { landProjectPath } from "../land_project_route.mjs";
 import { resolveAgencyIdentity } from "../agency_identity.mjs";
 import { agencyNameFromEntityFacet } from "../agency_scope_route.mjs";
 import { entityRouteRef } from "../entity_pivot.mjs";
@@ -102,7 +103,10 @@ function routeFocusKey(){
     : `${location.pathname}${location.search}`;
 }
 const noticeLink = id => currentLanguageURL(noticeDocumentUrl(id, location.origin));
-const landLink = id => currentLanguageURL(location.origin + location.pathname + "#land/" + encodeURIComponent(id));
+const landLink = id => {
+  const path=landProjectPath(id);
+  return path?currentLanguageURL(location.origin+path):"";
+};
 let hashLock = false;
 let focusedItemRouteHash = "";
 let activeRouteFacetValues = {};
@@ -241,9 +245,14 @@ function serializeState(){
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
     if(landCouncilDistrict) q.set("council", landCouncilDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
-    if($("#lstatus").value !== "all") q.set("status", $("#lstatus").value);
-    if($("#lstatus").value==="hearings" && landAttendance) q.set("attendance", landAttendance);
-    if($("#lstatus").value==="hearings" && landClosingWeek) q.set("closing", "week");
+    const landStatus=$("#lstatus").value;
+    const landStage=$("#lstage")?.value||"active";
+    const landFuture=$("#lfuture")?.value||"any";
+    if(!["active","all"].includes(landStatus)) q.set("status",landStatus);
+    if(landStage!=="active") q.set("stage",landStage);
+    if(landFuture!=="any") q.set("future",landFuture);
+    if(landFuture==="hearing" && landAttendance) q.set("attendance", landAttendance);
+    if(landFuture==="hearing" && landClosingWeek) q.set("closing", "week");
   } else if(SECTIONS[tab]){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
@@ -1056,10 +1065,38 @@ function applyHash(){
       landCouncilDistrict=/^(?:[1-9]|[1-4]\d|5[01])$/.test(q.get("council")||"")?q.get("council"):"";
       $("#lkw").value = q.get("q") || "";
       const landStatus=q.get("status");
-      $("#lstatus").value = landStatus==="all"||landStatus==="hearings"||/^(?:project|public):.+$/.test(landStatus||"") ? landStatus : "active";
+      const explicitStage=q.get("stage");
+      const explicitFuture=q.get("future");
+      const validStage=["any","active","public_review","pre_certification","community_board","borough_president","cpc","city_council","completed"].includes(explicitStage||"");
+      const validFuture=["any","any_future","hearing","other","none"].includes(explicitFuture||"");
+      const legacyExactStatus=/^(?:project|public):.{1,80}$/.test(landStatus||"");
+      const legacyPublicReview=["public","In Public Review"].join(":");
+      const legacyProjectActive=["project","Active"].join(":");
+      let adoptedStage=validStage?explicitStage:"active";
+      let adoptedFuture=validFuture?explicitFuture:"any";
+      let adoptedStatus="all";
+      if(!validStage){
+        if(landStatus==="all") adoptedStage="any";
+        else if(landStatus==="active"||!landStatus) adoptedStage="active";
+        else if(landStatus===legacyPublicReview) adoptedStage="public_review";
+        else if(landStatus===legacyProjectActive) adoptedStage="active";
+        else adoptedStage="any";
+      }
+      if(!validFuture && landStatus==="hearings") adoptedFuture="hearing";
+      if(legacyExactStatus && ![legacyPublicReview,legacyProjectActive].includes(landStatus)) adoptedStatus=landStatus;
+      const landStatusSelect=$("#lstatus");
+      if(adoptedStatus!=="all" && ![...landStatusSelect.options].some(option=>option.value===adoptedStatus)){
+        const option=document.createElement("option");
+        option.value=adoptedStatus;
+        option.textContent=adoptedStatus.split(":").slice(1).join(":");
+        landStatusSelect.append(option);
+      }
+      landStatusSelect.value=adoptedStatus;
+      $("#lstage").value=adoptedStage;
+      $("#lfuture").value=adoptedFuture;
       const att=q.get("attendance");
-      landAttendance=landStatus==="hearings" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
-      landClosingWeek=landStatus==="hearings" && q.get("closing")==="week";
+      landAttendance=adoptedFuture==="hearing" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
+      landClosingWeek=adoptedFuture==="hearing" && q.get("closing")==="week";
       let scopedProjectId="";
       try{
         const facet=JSON.parse(q.get("facet")||"{}");

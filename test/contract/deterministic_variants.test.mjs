@@ -153,6 +153,6 @@ test("existing share owners apply language to copy, QR, notice, land, and search
   assert.match(SITE_SOURCE, /copyText\(txt, btn\)[\s\S]{0,180}txt=currentLanguageURL\(txt\)/);
   assert.match(SITE_SOURCE, /QRShare\.bind\(button, currentLanguageURL\(url\), qrLabels\)/);
   assert.match(SITE_SOURCE, /const noticeLink = id => currentLanguageURL\(/);
-  assert.match(SITE_SOURCE, /const landLink = id => currentLanguageURL\(/);
+  assert.match(SITE_SOURCE, /const landLink = id => \{[\s\S]{0,180}landProjectPath\(id\)[\s\S]{0,180}currentLanguageURL\(/);
   assert.match(SITE_SOURCE, /currentLanguageURL\(canonicalSearchURL\(location, hash\)\)/);
 });
