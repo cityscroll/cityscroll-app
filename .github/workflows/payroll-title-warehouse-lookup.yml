@@ -1,0 +1,92 @@
+# Refresh→publish loop for the FY payroll title mart (aggregate only).
+# SODA group-by export — never the 6.8M employee file — opens a PR when
+# the title census drifts. Not a resident hot-path fetch.
+name: Payroll title warehouse lookup
+
+on:
+  schedule:
+    # Weekly Tuesday 07:47 UTC — publisher is fiscal-year; gate max age is 180d.
+    - cron: "47 7 * * 2"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: payroll-title-warehouse-lookup
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Materialize payroll title mart
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Materialize from SODA group-by and gate
+        run: |
+          set -euo pipefail
+          node tools/build_payroll_title_warehouse_lookup.mjs --from-soda --bench
+          node tools/build_payroll_title_warehouse_lookup.mjs --check
+      - name: Guard generated changes
+        id: generated
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo "Payroll title mart is already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/data/payroll_title_warehouse_lookup.json|\
+              worker/src/data/payroll_title_warehouse_lookup.json|\
+              warehouse/receipts/proof/payroll_title_lookup_speed.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the payroll title refresh pull request
+        if: steps.generated.outputs.changed == 'true'
+        id: refresh-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.REFRESH_PR_TOKEN }}
+          branch: automation/payroll-title-warehouse-lookup
+          delete-branch: true
+          commit-message: Refresh payroll title mart
+          title: Refresh payroll title mart
+          body: |
+            Automated refresh→publish of the FY payroll title mart
+            (`k397-673e` group-by — title count and compensation band only).
+
+            Validation:
+            - `node tools/build_payroll_title_warehouse_lookup.mjs --check`
+            - `node --test test/payroll_title_mart.test.mjs worker/test/suggestions.test.mjs`
+          add-paths: |
+            site/data/payroll_title_warehouse_lookup.json
+            worker/src/data/payroll_title_warehouse_lookup.json
+            warehouse/receipts/proof/payroll_title_lookup_speed.json
+      - name: Run required checks for the refresh pull request
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/payroll-title-warehouse-lookup
+      - name: Queue the verified refresh for merge
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+          REFRESH_PR: ${{ steps.refresh-pr.outputs.pull-request-number }}
+          REFRESH_HEAD: ${{ steps.refresh-pr.outputs.pull-request-head-sha }}
+        run: gh pr merge "$REFRESH_PR" --auto --match-head-commit "$REFRESH_HEAD"

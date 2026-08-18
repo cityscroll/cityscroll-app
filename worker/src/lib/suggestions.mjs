@@ -85,10 +85,43 @@ export const FALLBACK_INDICES = {
 export const MIN_SUGGESTION_RESULTS = 3;
 
 import { compileSub } from "./compile.mjs";
+import {
+  countPayrollTitleMatches,
+  payrollTitleMartReady,
+  payrollTitleRows,
+} from "../../../site/payroll_title_mart.mjs";
+import payrollTitleMart from "../data/payroll_title_warehouse_lookup.json" with { type: "json" };
 
 const CITY_RECORD = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAYROLL = "https://data.cityofnewyork.us/resource/k397-673e.json";
-const PAYROLL_FY = 2025; // Must match the browser Staffing lens's PAYFY.
+const PAYROLL_FY = 2025; // Must match the browser Staffing lens's PAYFY and the title mart.
+
+function peopleTitleMartQuery(filter, mart) {
+  if (!payrollTitleMartReady(mart)) return null;
+  if (filter.view === "guide") {
+    const rows = payrollTitleRows(mart);
+    const count = rows.reduce((sum, row) => sum + row.n, 0);
+    if (count <= 0) return null;
+    return {
+      url: null,
+      params: {},
+      count,
+      readRows: () => rows,
+      source: "payroll_title_mart",
+    };
+  }
+  const keyword = (Array.isArray(filter.keywords) ? filter.keywords : []).filter(Boolean).join(" ").trim();
+  if (!keyword || filter.lookupType === "person") return null;
+  const counted = countPayrollTitleMatches(mart, keyword);
+  if (!counted.hit) return null;
+  return {
+    url: null,
+    params: {},
+    count: counted.count,
+    readRows: () => counted.rows,
+    source: "payroll_title_mart",
+  };
+}
 
 // {lens, filter} (the exact shape parseLensFilter()/nlResolve() produce for this candidate's
 // text) -> a Socrata/ZAP { url, params } count query, or null when this lens/filter can't be
@@ -97,7 +130,7 @@ const PAYROLL_FY = 2025; // Must match the browser Staffing lens's PAYFY.
 // pure query-builder the digest cron already trusts to replay a saved subscription — so a
 // suggestion's honesty is judged by the identical query shape a real click resolves to,
 // not a bespoke second implementation that could quietly drift from it.
-export function suggestionCountParams(lens, filter, todayISO) {
+export function suggestionCountParams(lens, filter, todayISO, options = {}) {
   const f = filter || {};
   // Agency/vendor profile + forecast deep links: prove fruitfulness via City Record notice
   // volume for that agency (same bar as a non-empty agency profile).
@@ -112,6 +145,11 @@ export function suggestionCountParams(lens, filter, todayISO) {
     };
   }
   if (lens === "people") {
+    const mart = options.payrollTitleMart === undefined
+      ? payrollTitleMart
+      : options.payrollTitleMart;
+    const fromMart = peopleTitleMartQuery(f, mart);
+    if (fromMart) return fromMart;
     // Career/exam guide is a built surface (not a SODA keyword) — always fruitful when asked.
     if (f.view === "guide") {
       return {
