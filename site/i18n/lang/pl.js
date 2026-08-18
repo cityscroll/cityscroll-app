@@ -275,6 +275,8 @@
     min_award_label: "Min. kwota przyznania $",
     min_award_any: "Dowolna",
     watch_this_search: "Obserwuj to wyszukiwanie",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "Zamyka się w tym tygodniu",
     money_trail_heading: "Ślad kontraktu",
     export_csv: "Eksportuj CSV",

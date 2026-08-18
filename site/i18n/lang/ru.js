@@ -267,6 +267,8 @@
     min_award_label: "Мин. сумма контракта $",
     min_award_any: "Любая",
     watch_this_search: "Следить за этим поиском",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "Закрывается на этой неделе",
     money_trail_heading: "След контракта",
     export_csv: "Экспорт в CSV",
