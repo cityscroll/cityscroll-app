@@ -294,6 +294,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   own classification. The City Record adapter is `worker/src/search.mjs`, and the search client
   groups only registered domains from `site/search_document.mjs`. Focused proof:
   `test/search_document_contract.test.mjs` plus `test/universal_search_object_gold.test.mjs`.
+- **Search-quality golden queries:** `queries[]` in
+  `test/fixtures/universal_search_object_gold.json` plus
+  `test/universal_search_golden_queries.test.mjs` score current keyword, coverage,
+  and offline Ask interpretation — including expected misses (typo, synonym).
+  Do not change retrieval to turn a documented miss green.
 - **Six-family keyword search:** `/search` returns `cityscroll.keyword_search_response.v1`, whose
   Contracts, People + organizations, Land, Rules, Meetings, and Exams lanes keep independent
   status, count, source, and as-of receipts. `site/keyword_matcher.mjs` is the literal-resolution
