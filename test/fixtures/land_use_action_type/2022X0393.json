@@ -1,0 +1,27 @@
+{
+  "project_id": "2022X0393",
+  "project_name": "110 East 138th Street/63 Exterior Street",
+  "public_status": "In Public Review",
+  "project_status": "Active",
+  "primary_applicant": "east 138th street JV associates LLC",
+  "actions": [
+    { "action": "ZS", "ulurp_number": "260190ZSX" },
+    { "action": "ZC", "ulurp_number": "N260191ZCX" },
+    { "action": "LD", "ulurp_number": "260192LDX" },
+    { "action": "HA", "ulurp_number": "260193HAX" },
+    { "action": "ZA", "ulurp_number": "N260194ZAX" },
+    { "action": "ZA", "ulurp_number": "N260195ZAX" },
+    { "action": "ZA", "ulurp_number": "N260336ZAX" }
+  ],
+  "open_data": {
+    "project_id": "2022X0393",
+    "project_name": "110 East 138th Street/63 Exterior Street",
+    "public_status": "In Public Review",
+    "project_status": "Active",
+    "actions": "ZS; ZC; LD; HA; ZA; ZA; ZA",
+    "ulurp_numbers": "260190ZSX; N260191ZCX; 260192LDX; 260193HAX; N260194ZAX; N260195ZAX; N260336ZAX",
+    "current_milestone": "HA - Community Board Referral",
+    "borough": "Bronx",
+    "community_district": "X01"
+  }
+}
