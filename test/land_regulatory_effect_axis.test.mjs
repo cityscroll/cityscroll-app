@@ -15,6 +15,16 @@ import {
   landRowMatchesRegulatoryEffect,
   normalizeLandRegulatoryEffect,
 } from "../site/land_regulatory_effect.mjs";
+
+test("public regulatory-effect modules stay inside the built site boundary", () => {
+  const effectModule = readFileSync(new URL("../site/land_regulatory_effect.mjs", import.meta.url), "utf8");
+  const codesModule = readFileSync(new URL("../site/land_use_action_codes.mjs", import.meta.url), "utf8");
+  assert.doesNotMatch(effectModule, /(?:from|export\s+\*)\s+["']\.\.\/ontology\//);
+  assert.doesNotMatch(codesModule, /(?:from|export\s+\*)\s+["']\.\.\/ontology\//);
+  assert.doesNotMatch(effectModule, /^const clean\b/m);
+  assert.match(effectModule, /export const ZONING_MAX_FAR_TABLE/);
+  assert.match(codesModule, /export function landUseActionCodes/);
+});
 import {
   LAND_FAMILY_OPTIONS,
   landFacetOptionCounts,

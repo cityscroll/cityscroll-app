@@ -6,7 +6,7 @@
  * never the pathname.
  */
 
-import { landUseActionCodes } from "../ontology/land_use_action_codes.mjs";
+import { landUseActionCodes } from "./land_use_action_codes.mjs";
 
 export { landUseActionCodes };
 
