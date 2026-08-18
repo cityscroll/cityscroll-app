@@ -19,6 +19,7 @@ on:
       - "worker/**"
       - "tools/build_*.mjs"
       - "tools/architecture_*.mjs"
+      - "tools/backtest_architecture_canaries.mjs"
       - "tools/reconcile_architecture.mjs"
       - ".github/workflows/architecture-reconciliation.yml"
   merge_group:
@@ -42,6 +43,8 @@ jobs:
           node-version: "22"
       - name: Check architecture reconciliation
         run: node tools/reconcile_architecture.mjs --check --output-dir "$RUNNER_TEMP/architecture-evidence"
+      - name: Replay frozen architecture canaries
+        run: node tools/backtest_architecture_canaries.mjs --check
       - name: Upload short-lived architecture evidence
         if: always()
         uses: actions/upload-artifact@v4

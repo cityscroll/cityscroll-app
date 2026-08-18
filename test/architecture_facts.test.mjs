@@ -27,13 +27,14 @@ test("generated architecture facts contain every LA4 section", () => {
     "observer_coverage",
     "search",
     "constellation",
+    "exams",
     "pages_edge",
     "materializers",
   ]) {
     assert.ok(key in facts, key);
   }
   assert.equal(facts.schema, "cityscroll.architecture.facts.v1");
-  assert.equal(facts.generator.version, "1.2.0");
+  assert.equal(facts.generator.version, "1.3.0");
   assert.ok(facts.commit);
   assert.ok(facts.source_paths.includes("worker/wrangler.toml"));
 });
@@ -108,6 +109,8 @@ test("registered architecture canaries are first-class observed", () => {
     "site/agency_search_producer.mjs",
     "site/agency_constellation_model.mjs",
     "tools/build_agency_constellation_documents.mjs",
+    "tools/lib/entity_intelligence_build.mjs",
+    "site/exams_surface.mjs",
     "site/pages_edge.mjs",
     "site/_routes.json",
     "tools/build_primary_documents.mjs",
@@ -142,6 +145,13 @@ test("constellation, pages-edge, and primary-document facts match source text", 
     assert.ok(facts.constellation.agency.categories.includes(category), category);
   }
   assert.equal(facts.constellation.materializer.lookup, "site/data/agency_constellation_lookup.json");
+  assert.equal(facts.constellation.graph.path, "tools/lib/entity_intelligence_build.mjs");
+  assert.equal(facts.constellation.graph.cap, 20000);
+  assert.equal(facts.exams.surface.path, "site/exams_surface.mjs");
+  assert.equal(facts.exams.surface.row_kind, "civil_service_exam");
+  assert.equal(facts.exams.surface.public_eligibility, "open_competitive");
+  assert.equal(facts.exams.surface.fail_closed_public_eligibility, true);
+  assert.equal(facts.exams.surface.interest_multiselect, true);
   assert.ok(facts.pages_edge.routes.include.includes("/mandates/*"));
   assert.ok(facts.pages_edge.routes.include.includes("/committees/*"));
   assert.ok(facts.pages_edge.renderer.request_kinds.includes("notice"));

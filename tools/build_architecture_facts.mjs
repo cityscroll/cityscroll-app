@@ -21,7 +21,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "architecture", "generated", "facts.json");
 const CANARY_LIST = "architecture/observer-canaries.json";
-const GENERATOR_VERSION = "1.2.0";
+const GENERATOR_VERSION = "1.3.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -307,6 +307,11 @@ function stringConst(contents, name) {
   return match ? match[1] : null;
 }
 
+function numberConst(contents, name) {
+  const match = contents.match(new RegExp(`(?:export\\s+)?const\\s+${name}\\s*=\\s*([\\d_]+)`));
+  return match ? Number(match[1].replaceAll("_", "")) : null;
+}
+
 function frozenStringArray(contents, name) {
   const match = contents.match(new RegExp(`(?:export\\s+)?const\\s+${name}\\s*=\\s*Object\\.freeze\\(\\s*\\[([\\s\\S]*?)\\]\\s*\\)`));
   if (!match) return [];
@@ -416,14 +421,16 @@ function buildSearchFacts() {
 function buildConstellationFacts() {
   const modelPath = "site/agency_constellation_model.mjs";
   const materializerPath = "tools/build_agency_constellation_documents.mjs";
+  const graphPath = "tools/lib/entity_intelligence_build.mjs";
   const model = text(modelPath);
   const materializer = text(materializerPath);
+  const graph = text(graphPath);
   const categories = [...(model.match(/AGENCY_CONSTELLATION_CATEGORIES\s*=\s*Object\.freeze\(\[([\s\S]*?)\]\)/)?.[1] || "")
     .matchAll(/\bid:\s*["']([^"']+)["']/g)]
     .map((item) => item[1]);
   const lookupMatch = materializer.match(/["']data\/agency_constellation_lookup\.json["']/);
   return {
-    sources: [modelPath, materializerPath],
+    sources: [modelPath, materializerPath, graphPath],
     agency: {
       path: modelPath,
       schema: stringConst(model, "AGENCY_CONSTELLATION_SCHEMA"),
@@ -435,6 +442,30 @@ function buildConstellationFacts() {
       path: materializerPath,
       lookup: lookupMatch ? "site/data/agency_constellation_lookup.json" : null,
       source: source(materializerPath, lineOf(materializer, "agency_constellation_lookup.json")),
+    },
+    graph: {
+      path: graphPath,
+      cap: numberConst(graph, "DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP"),
+      source: source(graphPath, lineOf(graph, "DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP")),
+    },
+  };
+}
+
+function buildExamsFacts() {
+  const path = "site/exams_surface.mjs";
+  const contents = text(path);
+  const failClosed = contents.includes('eligibility === "open_competitive"')
+    && contents.includes('row.eligibility !== "open_competitive"');
+  return {
+    sources: [path],
+    surface: {
+      path,
+      row_kind: stringConst(contents, "EXAMS_BROWSE_ROW_KIND"),
+      public_eligibility: failClosed ? "open_competitive" : null,
+      fail_closed_public_eligibility: failClosed,
+      interest_multiselect: /function parseInterestParam/.test(contents)
+        && /split\(\/\[,\|\]\/\)/.test(contents),
+      source: source(path, lineOf(contents, 'eligibility === "open_competitive"')),
     },
   };
 }
@@ -594,9 +625,16 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
   for (const importer of entity.importers) sources.add(importer.file);
   const search = buildSearchFacts();
   const constellation = buildConstellationFacts();
+  const exams = buildExamsFacts();
   const pagesEdge = buildPagesEdgeFacts();
   const materializers = buildMaterializerFacts();
-  for (const path of [...search.sources, ...constellation.sources, ...pagesEdge.sources, ...materializers.sources]) {
+  for (const path of [
+    ...search.sources,
+    ...constellation.sources,
+    ...exams.sources,
+    ...pagesEdge.sources,
+    ...materializers.sources,
+  ]) {
     sources.add(path);
   }
   const sourcePaths = [...sources].sort();
@@ -635,6 +673,10 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
     constellation: {
       agency: constellation.agency,
       materializer: constellation.materializer,
+      graph: constellation.graph,
+    },
+    exams: {
+      surface: exams.surface,
     },
     pages_edge: {
       renderer: pagesEdge.renderer,
@@ -684,6 +726,7 @@ export {
   buildObserverCoverage,
   buildSearchFacts,
   buildConstellationFacts,
+  buildExamsFacts,
   buildPagesEdgeFacts,
   buildMaterializerFacts,
   loadObserverCanaries,

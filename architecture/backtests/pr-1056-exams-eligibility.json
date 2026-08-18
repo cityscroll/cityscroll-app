@@ -1,0 +1,79 @@
+{
+  "schema": "cityscroll.architecture.backtest_case.v1",
+  "id": "pr-1056-exams-eligibility",
+  "pr": 1056,
+  "title": "Exams public eligibility and Interest Area multi-select",
+  "card": "cityscroll-release-control/cs-living-architecture-la11-history-backtest",
+  "source": "https://github.com/cityscroll/cityscroll-app/pull/1056",
+  "expected_finding_types": [
+    "unmapped_surface",
+    "missing_signal"
+  ],
+  "collapsed": {
+    "required_paths": [
+      "site/exams_surface.mjs"
+    ],
+    "observed_paths": [
+      "worker/wrangler.toml",
+      "ontology/registry.v0.json"
+    ],
+    "unmapped_surfaces": [
+      {
+        "id": "exams-eligibility",
+        "path": "site/exams_surface.mjs"
+      }
+    ],
+    "signals": {
+      "public_eligibility": "open_competitive",
+      "fail_closed_public_eligibility": true,
+      "interest_multiselect": true
+    },
+    "observed_signals": {
+      "public_eligibility": null,
+      "fail_closed_public_eligibility": false,
+      "interest_multiselect": false
+    }
+  },
+  "conditions": {
+    "unmapped_surface": {
+      "required_paths": [
+        "site/exams_surface.mjs"
+      ],
+      "observed_paths": [
+        "worker/wrangler.toml"
+      ],
+      "unmapped_surfaces": [
+        {
+          "id": "exams-eligibility",
+          "path": "site/exams_surface.mjs"
+        }
+      ],
+      "signals": {}
+    },
+    "missing_signal": {
+      "required_paths": [
+        "site/exams_surface.mjs"
+      ],
+      "observed_paths": [
+        "site/exams_surface.mjs"
+      ],
+      "unmapped_surfaces": [],
+      "signals": {
+        "fail_closed_public_eligibility": true
+      },
+      "observed_signals": {
+        "fail_closed_public_eligibility": false
+      }
+    }
+  },
+  "current": {
+    "required_paths": [
+      "site/exams_surface.mjs"
+    ],
+    "signals": {
+      "public_eligibility": "open_competitive",
+      "fail_closed_public_eligibility": true,
+      "interest_multiselect": true
+    }
+  }
+}
