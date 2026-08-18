@@ -18,12 +18,9 @@ export const CROSS_SPINE_GOLD_V3_CONFIG_PATH = resolve(
 );
 const V2_PATH = resolve(ROOT, "entity_resolution/eval/cross_spine_gold_v2.jsonl");
 const PROCEDURE_LABELS = Object.freeze({
-  landmark_designation: "Landmark designation",
-  rezoning: "Rezoning",
   ulurp: "Uniform Land Use Review Procedure",
-  special_permit: "Special permit",
-  city_map_change: "City map change",
-  site_selection: "Site selection",
+  elurp: "Expedited Land Use Review Procedure",
+  non_ulurp: "Non-ULURP review",
 });
 
 const hash = (value) => createHash("sha256").update(value).digest("hex");
