@@ -17,6 +17,7 @@ import {
 } from "../../../site/mandate_prediction_alerts.mjs";
 import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.json" with { type: "json" };
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
+import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
@@ -346,6 +347,8 @@ export function compileSub(sub, todayISO) {
     // Mirror the Land tab's zapWhere + district filters so suggestion fruitfulness counts
     // the same surface a click resolves to (borough / community district / council district).
     let where = landProcedureSodaWhere(f.procedure);
+    const familyWhere = landFamilySodaWhere(f.family);
+    if (familyWhere) where += ` AND (${familyWhere})`;
     if (f.status !== "all") where += " AND project_status='Active'";
     const boro = typeof f.boro === "string" && f.boro.trim() ? f.boro.trim().replace(/'/g, "''") : null;
     if (boro) where += ` AND borough='${boro}'`;
@@ -364,7 +367,11 @@ export function compileSub(sub, todayISO) {
     const params = { "$select": ZAP_SELECT, "$where": where, "$order": "current_milestone_date DESC", "$limit": "25" };
     const q = kws.map((k) => REZ_ALIAS[k.toLowerCase()] || k).join(" ");
     if (q) params["$q"] = q;
-    return { url: ZAP, idField: "project_id", kind: "rezone", params };
+    const family = normalizeLandFamily(f.family);
+    const postFilter = family !== "any"
+      ? (row) => landRowMatchesFamily(row, family)
+      : undefined;
+    return { url: ZAP, idField: "project_id", kind: "rezone", params, postFilter };
   }
 
   return null; // payroll/person-name watches still need a separate replay source

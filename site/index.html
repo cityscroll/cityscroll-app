@@ -1169,7 +1169,7 @@
   #land-toolbar .lens-toolbar-actions{margin-inline-start:auto}
   #land-toolbar .lens-more-content{inset-inline-start:auto;inset-inline-end:0}
   .land-control-button{align-self:flex-end}
-  .land-primary-facets{display:grid;grid-template-columns:repeat(3,minmax(0,220px));gap:var(--space-3);align-items:end;margin:var(--space-3) 0}
+  .land-primary-facets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,220px));gap:var(--space-3);align-items:end;margin:var(--space-3) 0}
   .land-primary-facets .field{min-width:0}
   .land-primary-facets select{width:100%;min-width:0}
   @media(max-width:600px){.land-primary-facets{grid-template-columns:minmax(0,1fr)}}
@@ -1930,7 +1930,34 @@
       </div>
     </div>
     <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" selected data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
-    <div class="land-primary-facets" aria-label="Zoning stage, procedure, and next-opportunity filters" data-i18n-aria="land_filters_label">
+    <div class="land-primary-facets" aria-label="Zoning action type, procedure, stage, and next-opportunity filters" data-i18n-aria="land_filters_label">
+      <div class="field">
+        <label for="lfamily" data-i18n="land_family_label">Action type</label>
+        <select id="lfamily">
+          <option value="any" selected data-i18n="status_all">All</option>
+          <option value="acquisition" data-i18n="land_use_family_acquisition">Acquisition</option>
+          <option value="disposition" data-i18n="land_use_family_disposition">Disposition</option>
+          <option value="certification" data-i18n="land_use_family_certification">Certification</option>
+          <option value="renewal" data-i18n="land_use_family_renewal">Renewal</option>
+          <option value="major_concession" data-i18n="land_use_family_major_concession">Major concession</option>
+          <option value="legal_document" data-i18n="land_use_family_legal_document">Legal document</option>
+          <option value="rezoning" data-i18n="land_use_family_rezoning">Rezoning</option>
+          <option value="special_permit" data-i18n="land_use_family_special_permit">Special permit</option>
+          <option value="authorization" data-i18n="land_use_family_authorization">Authorization</option>
+          <option value="site_selection" data-i18n="land_use_family_site_selection">Site selection</option>
+          <option value="mapping" data-i18n="land_use_family_mapping">City map change</option>
+          <option value="demapping" data-i18n="land_use_family_demapping">Demapping</option>
+          <option value="urban_renewal" data-i18n="land_use_family_urban_renewal">Urban renewal</option>
+          <option value="landmark" data-i18n="land_use_family_landmark">Landmark designation</option>
+          <option value="follow_up" data-i18n="land_use_family_follow_up">Substantial compliance</option>
+          <option value="office_space" data-i18n="land_use_family_office_space">Office space</option>
+          <option value="bid" data-i18n="land_use_family_bid">Business improvement district</option>
+          <option value="franchise_consent" data-i18n="land_use_family_franchise_consent">Franchise or consent</option>
+          <option value="housing_plan" data-i18n="land_use_family_housing_plan">Housing plan</option>
+          <option value="pops" data-i18n="land_use_family_pops">Privately owned public space</option>
+          <option value="landfill" data-i18n="land_use_family_landfill">Landfill</option>
+        </select>
+      </div>
       <div class="field">
         <label for="lprocedure" data-i18n="land_procedure_label">Review procedure</label>
         <select id="lprocedure">

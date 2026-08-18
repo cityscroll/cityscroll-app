@@ -79,6 +79,11 @@ test("land → ZAP query (project_id diff), place alias applied", () => {
   assert.equal(q.params["$where"], "ulurp_non IN ('ULURP','ELURP')");
   const ulurpOnly = compileSub({ lens: "land", filter: { procedure: "ulurp", status: "all" } }, "2026-06-30");
   assert.equal(ulurpOnly.params["$where"], "ulurp_non='ULURP'");
+  const family = compileSub({ lens: "land", filter: { family: "acquisition", status: "all" } }, "2026-06-30");
+  assert.match(family.params["$where"], /ulurp_non IN \('ULURP','ELURP'\)/);
+  assert.match(family.params["$where"], /upper\(actions\) like '%PQ%'/);
+  assert.equal(family.postFilter({ actions: "PQ" }), true);
+  assert.equal(family.postFilter({ actions: "ZM" }), false);
 });
 
 test("rules → City Record section query with agency + $q", () => {

@@ -672,6 +672,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "Filtres de l’étape de zonage, de la procédure et de la prochaine occasion",
+    land_family_label: "Type d’action",
     land_procedure_label: "Procédure d’examen",
     land_procedure_review: "ULURP et accéléré",
     land_procedure_ulurp: "ULURP uniquement",

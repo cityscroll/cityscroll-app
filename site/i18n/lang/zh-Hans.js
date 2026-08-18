@@ -643,6 +643,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "分区阶段、审查程序和下一次参与机会筛选",
+    land_family_label: "行动类型",
     land_procedure_label: "审查程序",
     land_procedure_review: "ULURP 与加急",
     land_procedure_ulurp: "仅 ULURP",
