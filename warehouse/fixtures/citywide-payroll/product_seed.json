@@ -1,0 +1,42 @@
+{
+  "note": "Offline seed for the FY2025 title mart. Publisher aggregates only — no employee rows.",
+  "fiscal_year": 2025,
+  "soda_dataset": "k397-673e",
+  "rows": [
+    {
+      "title_description": "TEACHER",
+      "n": 56041,
+      "mn": 57.6,
+      "mx": 160588,
+      "avg": 110282.36
+    },
+    {
+      "title_description": "POLICE OFFICER",
+      "n": 24153,
+      "mn": 43456,
+      "mx": 109352,
+      "avg": 85299.01
+    },
+    {
+      "title_description": "FIREFIGHTER",
+      "n": 9187,
+      "mn": 50524,
+      "mx": 109352,
+      "avg": 94424.13
+    },
+    {
+      "title_description": "CASEWORKER",
+      "n": 1354,
+      "mn": 30.9,
+      "mx": 82691,
+      "avg": 53234.78
+    },
+    {
+      "title_description": "EMERGENCY MEDICAL SPECIALIST-PARAMEDIc",
+      "n": 1017,
+      "mn": 53891,
+      "mx": 76586,
+      "avg": 69003.58
+    }
+  ]
+}
