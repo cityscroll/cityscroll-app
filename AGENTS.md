@@ -795,12 +795,19 @@ Host proof: `node tools/retain_zap_project_source_records.mjs --check`. Public
 edge totals never read or count the shadow rows.
 
 **WH-05 Doing Business serve:** materialize Doing Business Search Entities into
-`site/data/doing_business_warehouse_lookup.json` (+ Worker twin). Replaces live
-multi-page SODA in `attachDoingBusiness` for materialization hits; live SODA
-remains the miss / partial-snapshot gap-fill:
+`site/data/doing_business_warehouse_lookup.json` (+ Worker twin) from the WH-02
+optional pack (`doing-business-entities` / SODA `72mk-a8z7`). Full-catalog modes
+(`bulk_warehouse` / `bulk_soda`, ~10.8k rows) make `attachDoingBusiness` skip
+multi-page SODA; empty/partial snapshots remain the only live gap-fill. Serve
+gate (`doingBusinessServeGateFindings`) fails `--check` on age / row-count drift
+/ missing `CAMBA  INC`. Weekly refresh→publish:
+`.github/workflows/doing-business-warehouse-lookup.yml` (`--from-soda`).
 
 ```bash
-node tools/build_doing_business_warehouse_lookup.mjs --fixture --bench
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset doing-business-entities --bulk --ack-large
+node tools/build_doing_business_warehouse_lookup.mjs --bench
+node tools/build_doing_business_warehouse_lookup.mjs --check
 # receipt: warehouse/receipts/proof/wh05_doing_business_lookup_speed.json
 node --test test/warehouse_wh05_lookups.test.mjs worker/test/wh05_warehouse_lookups.test.mjs
 ```
@@ -1105,11 +1112,12 @@ rejected by the temporal filter. Source contract `checkbook-nycha-contracts` is
 Vendor identity enrichment (listing, ownership structure, phone, start date). **Measured
 above usefulness** (2026-07-30): `vendorStem` join is **70.42%** notice-level and
 **61.62%** of distinct vendors on modern awards (`start_date` ≥ 2025-01-01). Four
-columns only (no EIN/BIN/PIN). Source contract `doing-business-entities` is **live**
-edge-materialized onto daily vendor-profile rebuilds (`doingBusiness` field).
-Strategies and receipts: `worker/src/lib/doing_business_join.mjs`,
-`site/data/doing_business_sources/`. Publisher dates often use truncated `00YY` years —
-normalize to `20YY` before display.
+columns only (no EIN/BIN/PIN). Source contract `doing-business-entities` is served from
+the committed WH-05 lookup on daily vendor-profile rebuilds (`doingBusiness` field);
+live multi-page SODA is gap-fill only. Strategies and receipts:
+`worker/src/lib/doing_business_join.mjs`, `site/data/doing_business_sources/`,
+`site/data/doing_business_warehouse_lookup.json`. Publisher dates often use truncated
+`00YY` years — normalize to `20YY` before display.
 
 ## ULURP Recommendations (`4j6i-9rmr` + PDF `gt5i-dmde`)
 

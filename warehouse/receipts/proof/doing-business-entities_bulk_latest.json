@@ -1,0 +1,96 @@
+{
+  "bulk": true,
+  "cpu_discipline": {
+    "duckdb_threads": 1,
+    "headroom_gated": true,
+    "sequential_one_dataset": true,
+    "single_job_lock": true,
+    "taskpolicy_or_nice_wrap": true
+  },
+  "dataset_id": "doing-business-entities",
+  "headroom": {
+    "constrained": true,
+    "ok": false,
+    "post_ingest": {
+      "constrained": true,
+      "ok": false,
+      "problems": [
+        "disk 19GB < 20GB"
+      ],
+      "returncode": 1,
+      "status": "constrained"
+    },
+    "pre_convert": {
+      "constrained": true,
+      "ok": false,
+      "problems": [
+        "disk 19GB < 20GB"
+      ],
+      "returncode": 1,
+      "status": "constrained"
+    },
+    "problems": [
+      "disk 19GB < 20GB"
+    ],
+    "returncode": 1,
+    "status": "constrained"
+  },
+  "limit": null,
+  "observed_at": "2026-08-18T02:18:18Z",
+  "parquet": {
+    "bytes": 203864,
+    "column_map_applied": true,
+    "column_map_size": 8,
+    "columns": [
+      "organization_name",
+      "ownership_structure_code",
+      "organization_phone",
+      "doing_business_start_date",
+      "snapshot_date"
+    ],
+    "parquet_path": "warehouse/parquet/doing-business-entities/snapshot_date=2026-08-18/part-000.parquet",
+    "row_count": 10787,
+    "threads": 1
+  },
+  "phase": "WH-02",
+  "raw": {
+    "bytes": 575114,
+    "column_map_entries": 8,
+    "column_map_path": "warehouse/raw/doing-business-entities/snapshot_date=2026-08-18/column_map.json",
+    "content_type": "text/csv; charset=utf-8",
+    "elapsed_s": 0.88,
+    "http_status": 200,
+    "last_modified": "Fri, 21 Nov 2025 21:42:33 GMT",
+    "mode": "soda_bulk",
+    "path": "warehouse/raw/doing-business-entities/snapshot_date=2026-08-18/72mk-a8z7_bulk.csv",
+    "row_count": 10787,
+    "sha256": "768841e9442629a7e45161bfdab343e6d939d8a0d57e6d7341a56a69771c7bca",
+    "url": "https://data.cityofnewyork.us/api/views/72mk-a8z7/rows.csv?accessType=DOWNLOAD"
+  },
+  "register": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "columns": [
+      "organization_name",
+      "ownership_structure_code",
+      "organization_phone",
+      "doing_business_start_date",
+      "snapshot_date"
+    ],
+    "parquet_glob": "warehouse/parquet/doing-business-entities/snapshot_date=2026-08-18/*.parquet",
+    "row_count": 10787,
+    "table": "doing_business_entities"
+  },
+  "schema_version": 1,
+  "snapshot_date": "2026-08-18",
+  "snapshot_profile": null,
+  "socrata_dataset_id": "72mk-a8z7",
+  "source_contract_id": "doing-business-entities",
+  "source_summary": {
+    "row_count": 10787,
+    "section_counts": {},
+    "start_date_max": null,
+    "start_date_min": null
+  },
+  "table_name": "doing_business_entities",
+  "warehouse_root": "warehouse"
+}

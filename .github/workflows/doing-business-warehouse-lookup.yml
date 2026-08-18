@@ -1,0 +1,85 @@
+# Refresh→publish loop for the WH-05 Doing Business serve lookup.
+# Build-time SODA paging (--from-soda) materializes the committed twins and
+# opens a PR when the catalog drifts — never a resident hot-path fetch.
+name: Doing Business warehouse lookup
+
+on:
+  schedule:
+    # Weekly Monday 07:41 UTC — publisher rarely moves; gate max age is 180d.
+    - cron: "41 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: doing-business-warehouse-lookup
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Materialize Doing Business serve lookup
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Materialize from SODA and gate
+        run: |
+          set -euo pipefail
+          node tools/build_doing_business_warehouse_lookup.mjs --from-soda --bench
+          node tools/build_doing_business_warehouse_lookup.mjs --check
+      - name: Guard generated changes
+        id: generated
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo "Doing Business serve lookup is already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/data/doing_business_warehouse_lookup.json|\
+              worker/src/data/doing_business_warehouse_lookup.json|\
+              warehouse/receipts/proof/wh05_doing_business_lookup_speed.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the Doing Business refresh pull request
+        if: steps.generated.outputs.changed == 'true'
+        id: refresh-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/doing-business-warehouse-lookup
+          delete-branch: true
+          commit-message: Refresh Doing Business WH-05 serve lookup
+          title: Refresh Doing Business WH-05 serve lookup
+          body: |
+            Automated refresh→publish of the Doing Business warehouse serve lookup
+            (`72mk-a8z7`) so vendor profiles stay on the committed stem index.
+
+            Validation:
+            - `node tools/build_doing_business_warehouse_lookup.mjs --check`
+            - `node --test test/warehouse_wh05_lookups.test.mjs worker/test/wh05_warehouse_lookups.test.mjs`
+          add-paths: |
+            site/data/doing_business_warehouse_lookup.json
+            worker/src/data/doing_business_warehouse_lookup.json
+            warehouse/receipts/proof/wh05_doing_business_lookup_speed.json
+      - name: Run required checks for the refresh pull request
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/doing-business-warehouse-lookup

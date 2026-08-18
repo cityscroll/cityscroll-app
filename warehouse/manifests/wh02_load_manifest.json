@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "WH-02",
   "title": "First bulk pack into the warehouse (CPU-capped, incremental)",
-  "updated_at": "2026-08-05T10:51:25Z",
+  "updated_at": "2026-08-18T02:25:10Z",
   "strategy": "smallest_or_most_valuable_first_sequential",
   "first_pick": "ocp-recent-contract-awards",
   "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
@@ -214,9 +214,40 @@
     }
   ],
   "remaining_primary_queue": [],
+  "optional_loaded": [
+    {
+      "dataset_id": "dof-tax-lien-sale-lists",
+      "socrata_dataset_id": "9rz4-mjek",
+      "table_name": "dof_tax_lien_sale_lists",
+      "snapshot_date": "2026-08-03",
+      "observed_at": "2026-08-03T04:27:32Z",
+      "mode": "soda_bulk",
+      "row_count": 264142,
+      "raw_bytes": 30068971,
+      "raw_sha256": "1deb309fe45558c5b679627a1d0a7e8121914caf764eb766c39ce069e54df469",
+      "parquet_bytes": 1918558,
+      "parquet_row_count": 264142,
+      "proof_receipt": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+      "serve_lookup": null
+    },
+    {
+      "dataset_id": "doing-business-entities",
+      "socrata_dataset_id": "72mk-a8z7",
+      "table_name": "doing_business_entities",
+      "snapshot_date": "2026-08-18",
+      "observed_at": "2026-08-18T02:18:18Z",
+      "mode": "soda_bulk",
+      "row_count": 10787,
+      "raw_bytes": 575114,
+      "raw_sha256": "768841e9442629a7e45161bfdab343e6d939d8a0d57e6d7341a56a69771c7bca",
+      "parquet_bytes": 203864,
+      "parquet_row_count": 10787,
+      "proof_receipt": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+      "serve_lookup": "site/data/doing_business_warehouse_lookup.json"
+    }
+  ],
   "optional_later": [
-    "dof-tax-lien-sale-lists",
-    "doing-business-entities"
+    "city-council-committee-membership"
   ],
   "next_dataset": null,
   "next_dataset_notes": "Add next only when headroom stays green after the previous pack. City Record last (largest).",
@@ -231,6 +262,9 @@
     "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql",
     "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset city-record --bulk --ack-large --resume",
     "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/city_record_bulk_verify.sql",
+    "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset doing-business-entities --bulk --ack-large --write-sample 25",
+    "node tools/build_doing_business_warehouse_lookup.mjs --bench",
+    "node tools/build_doing_business_warehouse_lookup.mjs --check",
     "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py",
     "node tools/build_zap_warehouse_lookup.mjs --fixture --bench",
     "node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --bench"
