@@ -39,8 +39,8 @@ const D1_LANES = Object.freeze({
 // adds one lens-to-family entry without changing the federator contract.
 const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
   people: "people",
+  vendors: "vendors",
 });
-
 function cleanQuery(value) {
   return String(value ?? "")
     .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -467,9 +467,8 @@ function universalSearchCoverage(lanes, results, dynamicResults, federatedCovera
     },
     people: federatedCoverage.by_lens.people,
     agencies: partialLens("agencies", "agencies", ["agency"]),
-    vendors: partialLens("vendors", null, ["vendor"]),
-    committees: partialLens("committees", null, ["committee"]),
-    community_boards: partialLens("community_boards", null, ["community_board"]),
+    vendors: federatedCoverage.by_lens.vendors,
+    committees: partialLens("committees", null, ["committee"]),    community_boards: partialLens("community_boards", null, ["community_board"]),
     exams: {
       lens: "exams",
       participated: examsAvailable,
@@ -540,11 +539,25 @@ export async function handleSearch(request, env) {
     limit: RESULT_LIMIT,
   });
   const peopleLane = federatedCollectionLane("people", collectionFederation, resolved);
+  const vendorLane = federatedCollectionLane("vendors", collectionFederation, resolved);
   const agencyLane = staticSearchLane("people-organizations", resolved);
+  const contractsMirror = dynamic.lanes.contracts;
+  const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
+  // Keep an unavailable notice mirror honest as unknown unless a Vendor hit
+  // can still publish through the Contracts presentation lane.
+  const contractsLane = contractsMirrorAvailable || vendorLane.cards.length
+    ? combinedStaticLane(
+      "contracts",
+      "City Record daily mirror and CityScroll vendor profiles",
+      [contractsMirror, vendorLane],
+    )
+    : contractsMirror;
   const lanes = {
     ...dynamic.lanes,
     people: peopleLane,
+    vendors: vendorLane,
     agencies: agencyLane,
+    contracts: contractsLane,
     "people-organizations": combinedStaticLane(
       "people-organizations",
       "NYC Council people and CityScroll agency profiles",

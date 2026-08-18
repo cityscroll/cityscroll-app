@@ -8,6 +8,7 @@ import { buildExamSearchDocuments } from "../site/exam_search_producer.mjs";
 import { buildLandSearchDocuments } from "../site/land_search_producer.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
+import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUTPUT = new URL("../worker/src/data/keyword_search_index.json", import.meta.url);
@@ -71,17 +72,44 @@ function family(source, asOf, corpora) {
 
 const people = json("site/data/person_hub_lookup.json");
 const agencies = json("site/data/agency_constellation_lookup.json");
+const vendors = json("site/data/entity_intelligence_lookup.json");
+const vendorAliases = json("entity_resolution/review/alias_registry.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
 const meetings = json("site/data/shared_meeting_read_model.json");
 const exams = json("site/data/staffing_exams.json");
 const peopleCorpus = buildPeopleSearchDocuments(people);
 const agencyCorpus = buildAgencySearchDocuments(agencies);
+const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });
+// Production completeness is over currently eligible Vendor documents. Tentative
+// or unpublished roots stay outside the indexed family and are receipted below.
+const eligibleVendorCorpus = {
+  documents: vendorCorpus.documents,
+  coverage: {
+    ...vendorCorpus.coverage,
+    state: vendorCorpus.documents.length ? "matched" : "empty",
+    reason: vendorCorpus.documents.length
+      ? "eligible_vendor_read_model_indexed"
+      : "vendor_read_model_has_no_entries",
+    source_count: vendorCorpus.documents.length,
+    total_count: vendorCorpus.documents.length,
+    indexed_count: vendorCorpus.documents.length,
+    not_indexed_count: 0,
+  },
+};
+const excludedVendorRoots = (Array.isArray(vendorCorpus.outcomes) ? vendorCorpus.outcomes : [])
+  .filter((row) => row?.outcome && row.outcome !== "indexed")
+  .map((row) => ({
+    entity_ref: row.entity_ref || null,
+    outcome: row.outcome,
+    reason: row.reason || null,
+  }));
 
 const output = {
   schema: "cityscroll.keyword_search_index.v1",
   generated_at: latestClock(
     people.retrieved_at,
     agencies.generated_at,
+    vendors.generated_at,
     land.materialized_at,
     meetings.generated_at,
     exams.generated_at,
@@ -97,6 +125,11 @@ const output = {
       "CityScroll agency profiles",
       agencies.generated_at,
       [agencyCorpus],
+    ),
+    vendors: family(
+      "CityScroll vendor profiles from cross-domain entity intelligence",
+      vendors.generated_at,
+      [eligibleVendorCorpus],
     ),
     land: family(
       "NYC Open Data Zoning Application Portal projects",
@@ -118,14 +151,21 @@ const output = {
     source_artifacts: {
       people: "site/data/person_hub_lookup.json",
       agencies: "site/data/agency_constellation_lookup.json",
+      vendors: "site/data/entity_intelligence_lookup.json",
+      vendor_aliases: "entity_resolution/review/alias_registry.json",
       land: "site/data/zap_projects_warehouse_lookup.json",
       meetings: "site/data/shared_meeting_read_model.json",
       exams: "site/data/staffing_exams.json",
     },
     excluded_artifacts: ["worker/src/data/ocp_awards_warehouse_lookup.json"],
+    excluded_vendor_roots: excludedVendorRoots,
+    vendor_root_counts: {
+      source_roots: Number(vendorCorpus.coverage?.total_count ?? 0),
+      eligible_indexed: eligibleVendorCorpus.documents.length,
+      excluded: excludedVendorRoots.length,
+    },
   },
 };
-
 const serialized = `${JSON.stringify(output, null, 2)}\n`;
 if (process.argv.includes("--check")) {
   if (readFileSync(OUTPUT, "utf8") !== serialized) {
