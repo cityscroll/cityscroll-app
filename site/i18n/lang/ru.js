@@ -411,6 +411,7 @@
     topic_search_family_minutes: "Протоколы общественных советов",
     topic_search_family_mandates: "Обязательства",
     topic_search_waiting: "Ожидание",
+    topic_search_searching: "Поиск…",
     topic_search_enter: "Введите тему для поиска в публичных записях.",
     topic_search_related_because: "Связано, потому что этот фрагмент источника содержит слова темы.",
     topic_search_evidence_limit: "Текст исходного фрагмента для этого результата недоступен.",

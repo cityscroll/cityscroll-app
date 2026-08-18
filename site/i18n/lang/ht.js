@@ -410,6 +410,7 @@
     topic_search_family_minutes: "Pwosè vèbal konsèy kominotè",
     topic_search_family_mandates: "Obligasyon",
     topic_search_waiting: "Annatant",
+    topic_search_searching: "Ap chèche…",
     topic_search_enter: "Antre yon sijè pou chèche dosye piblik.",
     topic_search_related_because: "Li gen rapò paske pasaj sous sa a gen mo sijè a ladan.",
     topic_search_evidence_limit: "Tèks pasaj sous la pa disponib pou rezilta sa a.",

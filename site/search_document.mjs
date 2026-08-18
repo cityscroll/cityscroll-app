@@ -111,8 +111,12 @@ function laneElements(root, lane) {
 
 function setLaneState(root, lane, statusText, bodyText, className = "") {
   const elements = laneElements(root, lane);
-  if (elements.status) elements.status.textContent = statusText;
+  if (elements.status) {
+    elements.status.removeAttribute("data-i18n");
+    elements.status.textContent = statusText;
+  }
   if (elements.body) {
+    elements.body.removeAttribute("data-i18n");
     elements.body.className = `topic-search-lane-body${className ? ` ${className}` : ""}`;
     elements.body.textContent = bodyText;
   }
@@ -129,8 +133,12 @@ function semanticLaneElements(root, family) {
 
 function setSemanticLaneState(root, family, statusText, bodyText, className = "") {
   const elements = semanticLaneElements(root, family);
-  if (elements.status) elements.status.textContent = statusText;
+  if (elements.status) {
+    elements.status.removeAttribute("data-i18n");
+    elements.status.textContent = statusText;
+  }
   if (elements.body) {
+    elements.body.removeAttribute("data-i18n");
     elements.body.className = `topic-search-lane-body${className ? ` ${className}` : ""}`;
     elements.body.textContent = bodyText;
     elements.body.setAttribute("aria-busy", className === "is-loading" ? "true" : "false");
@@ -242,9 +250,27 @@ function renderCoverage(root, coverage, matchCount = null) {
     translate: tr,
   });
   const next = template.content.firstElementChild;
+  next.setAttribute("aria-busy", "false");
   const current = root.querySelector("[data-search-coverage]");
   if (current) current.replaceWith(next);
   else root.querySelector(".topic-search-lanes")?.before(next);
+}
+
+function renderLoadingState(root) {
+  const status = root.querySelector("[data-search-coverage]");
+  if (!status) return;
+  status.className = "topic-search-coverage is-loading";
+  status.dataset.coverageState = "loading";
+  status.removeAttribute("hidden");
+  status.setAttribute("aria-busy", "true");
+  const message = document.createElement("p");
+  const spinner = document.createElement("span");
+  spinner.className = "loading";
+  spinner.setAttribute("aria-hidden", "true");
+  const copy = document.createElement("strong");
+  copy.textContent = tr("topic_search_searching", null, "Searching…");
+  message.append(spinner, copy);
+  status.replaceChildren(message);
 }
 
 function appendHighlightedText(node, text, terms = []) {
@@ -482,14 +508,17 @@ function renderLegacyResults(root, payload) {
 function renderInitialState(root, query) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
-  root.querySelector("[data-search-coverage]")?.setAttribute("hidden", "");
   const instruction = tr("topic_search_enter", null, "Enter a topic to search public records.");
+  const searching = tr("topic_search_searching", null, "Searching…");
+  if (query) renderLoadingState(root);
+  else root.querySelector("[data-search-coverage]")?.setAttribute("hidden", "");
   for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
       root,
       family,
-      tr("topic_search_waiting", null, "Waiting"),
-      query ? tr("loading_data", null, "Loading…") : instruction,
+      query ? searching : tr("topic_search_waiting", null, "Waiting"),
+      query ? searching : instruction,
+      query ? "is-loading" : "",
     );
   }
   for (const lane of LANES) {
@@ -553,12 +582,14 @@ async function fetchKeywordResults(query) {
 
 async function loadResults(root, query) {
   if (!query) return;
+  renderLoadingState(root);
+  const searching = tr("topic_search_searching", null, "Searching…");
   for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
       root,
       family,
-      tr("loading_data", null, "Loading…"),
-      tr("loading_data", null, "Loading…"),
+      searching,
+      searching,
       "is-loading",
     );
   }
@@ -605,6 +636,7 @@ async function loadResults(root, query) {
     renderLegacyResults(root, keywordPayload);
     return;
   }
+  renderCoverage(root, null);
   for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
       root,
@@ -656,7 +688,8 @@ function render() {
   void loadResults(root, query);
   window.initSubpageLangSwitcher?.(() => {
     paintHeading();
-    repaintResults(root);
+    if (lastResponse) repaintResults(root);
+    else renderInitialState(root, query);
   });
   // The language switcher paints static data-i18n text during initialization.
   // Restore the query-bearing title afterward because it is runtime copy.

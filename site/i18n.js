@@ -605,6 +605,7 @@ const STRINGS = {
     topic_search_family_minutes: "Community board minutes",
     topic_search_family_mandates: "Mandates",
     topic_search_waiting: "Waiting",
+    topic_search_searching: "Searching…",
     topic_search_enter: "Enter a topic to search public records.",
     topic_search_related_because: "Related because this source passage contains the topic words.",
     topic_search_evidence_limit: "Source passage text is unavailable for this candidate.",

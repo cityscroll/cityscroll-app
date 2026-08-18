@@ -411,6 +411,7 @@
     topic_search_family_minutes: "커뮤니티 보드 회의록",
     topic_search_family_mandates: "의무 사항",
     topic_search_waiting: "대기 중",
+    topic_search_searching: "검색 중…",
     topic_search_enter: "공공 기록을 검색할 주제를 입력하세요.",
     topic_search_related_because: "이 출처 구절에 주제 단어가 포함되어 있어 관련 결과로 표시됩니다.",
     topic_search_evidence_limit: "이 결과의 출처 구절 텍스트를 사용할 수 없습니다.",
