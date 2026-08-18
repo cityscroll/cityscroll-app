@@ -27,6 +27,9 @@ const MAX_PAGE_SIZE = 999;
 const MAX_FISCAL_YEARS = 5;
 const MAX_RAW_ROWS = 100_000;
 const MAX_RESUME_AGE_HOURS = 6;
+const DEFAULT_GRAPH_CAP = 2_000;
+const MAX_GRAPH_CAP = 2_000;
+const HISTORICAL_GRAPH_CAP = 500;
 const DEFAULT_YEARS = [2025, 2026, 2027];
 const DEFAULT_STAGE = join(ROOT, "warehouse/raw/checkbook-contracts");
 const DEFAULT_RECEIPT = join(DEFAULT_STAGE, "receipt.json");
@@ -51,7 +54,7 @@ function parseArgs(argv) {
     fiscalYears: DEFAULT_YEARS,
     pageSize: 500,
     delayMs: MIN_DELAY_MS,
-    graphCap: 500,
+    graphCap: DEFAULT_GRAPH_CAP,
     stageDir: DEFAULT_STAGE,
     receipt: DEFAULT_RECEIPT,
     snapshot: DEFAULT_SNAPSHOT,
@@ -86,8 +89,8 @@ function parseArgs(argv) {
   if (!args.fromFixture && args.delayMs < MIN_DELAY_MS) {
     throw new Error(`live collection delay must be at least ${MIN_DELAY_MS} ms`);
   }
-  if (!Number.isInteger(args.graphCap) || args.graphCap < 1 || args.graphCap > 2_000) {
-    throw new Error("--graph-cap must be 1..2000");
+  if (!Number.isInteger(args.graphCap) || args.graphCap < 1 || args.graphCap > MAX_GRAPH_CAP) {
+    throw new Error(`--graph-cap must be 1..${MAX_GRAPH_CAP}`);
   }
   if (args.publish && args.fromFixture) throw new Error("fixture collection cannot publish");
   if (args.resume && args.refresh) throw new Error("--resume and --refresh are mutually exclusive");
@@ -414,6 +417,7 @@ function checkCommitted() {
   if (rows.length !== receipt.graph_slice?.row_count) throw new Error("Checkbook graph row count does not match receipt");
   if (sha256Json(rows) !== receipt.checksums?.committed_graph_slice_sha256) throw new Error("Checkbook graph slice checksum does not match receipt");
   if (spine.sources?.checkbook_contracts?.population_backed !== true) throw new Error("Checkbook source is not marked population-backed");
+  if (rows.length <= HISTORICAL_GRAPH_CAP) throw new Error(`Checkbook graph must exceed the historical ${HISTORICAL_GRAPH_CAP}-row cap`);
   console.log(`checkbook contracts ok: population=${receipt.population.normalized_unique_contracts} graph=${rows.length}`);
 }
 
