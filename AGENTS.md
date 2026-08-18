@@ -288,7 +288,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - **Six-family keyword search:** `/search` returns `cityscroll.keyword_search_response.v1`, whose
   Contracts, People + organizations, Land, Rules, Meetings, and Exams lanes keep independent
   status, count, source, and as-of receipts. `site/keyword_matcher.mjs` is the literal-resolution
-  and offset-backed evidence narrow waist. Refresh the compact typed-object index with
+  and offset-backed evidence narrow waist. Matching is exact whole-token (plus simple +s
+  plural), never infix/substring or prefix — `rat` does not match `integrated` / `rate`.
+  A published keyword hit must carry markable evidence; evidence-less award recall is
+  fail-closed. Refresh the compact typed-object index with
   `node tools/build_keyword_search_index.mjs`; the D1 notice mirror remains the Contracts/Rules
   source, while the client projects the flattened compatibility results through the registered
   universal-search domain lanes.
