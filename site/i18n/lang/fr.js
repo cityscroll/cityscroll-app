@@ -274,6 +274,8 @@
     min_award_label:  "Attribution minimale $",
     min_award_any:    "Peu importe",
     watch_this_search:"Surveiller cette recherche",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week:"Clôture cette semaine",
     money_trail_heading: "Suivi du contrat",
     export_csv:       "Exporter en CSV",

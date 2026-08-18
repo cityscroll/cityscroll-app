@@ -267,6 +267,8 @@
     min_award_label: "সর্বনিম্ন প্রদান $",
     min_award_any: "যেকোনো",
     watch_this_search: "এই অনুসন্ধান নজরে রাখুন",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "এই সপ্তাহে বন্ধ হচ্ছে",
     money_trail_heading: "চুক্তির ধারাবাহিক পথ",
     export_csv: "CSV রপ্তানি করুন",

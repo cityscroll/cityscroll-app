@@ -267,6 +267,8 @@
     min_award_label: "最低中标金额 $",
     min_award_any: "任意",
     watch_this_search: "关注此搜索",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "本周截止",
     money_trail_heading: "合同追踪",
     export_csv: "导出 CSV",

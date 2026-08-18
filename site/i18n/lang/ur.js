@@ -269,6 +269,8 @@
     min_award_label: "کم از کم ایوارڈ $",
     min_award_any: "کوئی بھی",
     watch_this_search: "یہ تلاش دیکھیں",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "اس ہفتے بند ہو رہا ہے",
     money_trail_heading: "ٹھیکے کا سراغ",
     export_csv: "CSV ایکسپورٹ کریں",

@@ -267,6 +267,8 @@
     min_award_label: "Monto mínimo $",
     min_award_any: "Cualquiera",
     watch_this_search: "Seguir esta búsqueda",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "Cierra esta semana",
     money_trail_heading: "Rastro del contrato",
     export_csv: "Exportar CSV",

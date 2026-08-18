@@ -267,6 +267,8 @@
     min_award_label: "최소 낙찰 금액 $",
     min_award_any: "제한 없음",
     watch_this_search: "이 검색 관심 등록",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "이번 주 마감",
     money_trail_heading: "계약 흐름",
     export_csv: "CSV 내보내기",
