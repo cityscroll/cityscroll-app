@@ -261,6 +261,9 @@ test("a missing notice mirror leaves static family lanes independently usable", 
   }
   assert.equal(lanes["people-organizations"].status, "matched");
   assert.ok(lanes["people-organizations"].cards.some((card) => card.object_type === "agency"));
+  const coverageHtml = renderUniversalSearchCoverageHtml(body.coverage);
+  assert.match(coverageHtml, /Published notices results temporarily unavailable/);
+  assert.doesNotMatch(coverageHtml, /People<\/span>|Coverage by collection/);
 });
 
 test("People uses its complete production provider for worker recall and coverage", async () => {
@@ -285,9 +288,9 @@ test("People uses its complete production provider for worker recall and coverag
   const peopleCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
     .find((lens) => lens.lens === "people");
   assert.equal(peopleCoverage?.state_label, "indexed");
-  assert.match(
+  assert.doesNotMatch(
     renderUniversalSearchCoverageHtml(body.coverage),
-    /data-coverage-lens="people" data-coverage-state="matched"><span>People<\/span><strong>1 match · indexed<\/strong>/,
+    /data-coverage-lens="people"|Coverage by collection/,
   );
 });
 
@@ -316,9 +319,9 @@ test("Community boards uses its dedicated production provider for recall and ind
   const communityBoardCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
     .find((lens) => lens.lens === "community_boards");
   assert.equal(communityBoardCoverage?.state_label, "indexed");
-  assert.match(
+  assert.doesNotMatch(
     renderUniversalSearchCoverageHtml(body.coverage),
-    /data-coverage-lens="community_boards" data-coverage-state="matched"><span>Community boards<\/span><strong>1 match · indexed<\/strong>/,
+    /data-coverage-lens="community_boards"|Coverage by collection/,
   );
 });
 
@@ -348,9 +351,9 @@ test("Vendors uses its complete production provider for worker recall and covera
   const vendorsCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
     .find((lens) => lens.lens === "vendors");
   assert.equal(vendorsCoverage?.state_label, "indexed");
-  assert.match(
+  assert.doesNotMatch(
     renderUniversalSearchCoverageHtml(body.coverage),
-    /data-coverage-lens="vendors" data-coverage-state="matched"><span>Vendors<\/span><strong>1 match · indexed<\/strong>/,
+    /data-coverage-lens="vendors"|Coverage by collection/,
   );
 });
 
@@ -398,9 +401,9 @@ test("Parcels use the exact-BBL production corpus for worker recall and coverage
     .find((lens) => lens.lens === "parcels");
   assert.equal(parcelsCoverage?.label, "Properties");
   assert.equal(parcelsCoverage?.state_label, "indexed");
-  assert.match(
+  assert.doesNotMatch(
     renderUniversalSearchCoverageHtml(addressBody.coverage),
-    /data-coverage-lens="parcels" data-coverage-state="matched"><span>Properties<\/span><strong>1 match · indexed<\/strong>/,
+    /data-coverage-lens="parcels"|Coverage by collection/,
   );
 });
 
@@ -431,9 +434,9 @@ test("Committees use the published graph production corpus for worker recall and
   const committeesCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
     .find((lens) => lens.lens === "committees");
   assert.equal(committeesCoverage?.state_label, "indexed");
-  assert.match(
+  assert.doesNotMatch(
     renderUniversalSearchCoverageHtml(body.coverage),
-    /data-coverage-lens="committees" data-coverage-state="matched"><span>Committees<\/span><strong>1 match · indexed<\/strong>/,
+    /data-coverage-lens="committees"|Coverage by collection/,
   );
 });
 
@@ -621,8 +624,8 @@ test("Agencies uses its dedicated production provider for worker recall and cove
     .find((lane) => lane.lens === "agencies");
   assert.equal(agenciesCoverage?.state_label, "indexed");
 
-  assert.match(
+  assert.doesNotMatch(
     renderUniversalSearchCoverageHtml(body.coverage),
-    /data-coverage-lens="agencies" data-coverage-state="matched"><span>Agencies<\/span><strong>1 match · indexed<\/strong>/,
+    /data-coverage-lens="agencies"|Coverage by collection/,
   );
 });
