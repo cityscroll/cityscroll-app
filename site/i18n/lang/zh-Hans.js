@@ -1031,7 +1031,7 @@
     project_connections_coverage_measured: '覆盖率：{scope} 中 {eligible} 个项目已关联 {linked} 个。',
     project_connections_coverage_bounded: '{scope} 中观察到 {linked} 个项目；未测量符合条件的分母。',
     project_connections_coverage_unknown: '未测量 {scope} 的符合条件分母。',
-    project_connections_scope_current: '当前 231 个项目快照',
+    project_connections_scope_current: '当前项目快照',
     project_connections_scope_sample: '固定的 50 个已完成项目样本',
     project_connections_scope_bounded: '有限关联物化数据',
     project_connections_scope_project: '此项目',

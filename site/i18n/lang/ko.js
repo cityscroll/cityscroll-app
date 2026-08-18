@@ -1031,7 +1031,7 @@
     project_connections_coverage_measured: '포괄 범위: {scope}에서 {eligible}개 중 {linked}개.',
     project_connections_coverage_bounded: '{scope}에서 {linked}개 프로젝트가 관찰되었으며 적격 분모는 측정되지 않았습니다.',
     project_connections_coverage_unknown: '{scope}의 적격 분모는 측정되지 않았습니다.',
-    project_connections_scope_current: '현재 231개 프로젝트 스냅샷',
+    project_connections_scope_current: '현재 프로젝트 스냅샷',
     project_connections_scope_sample: '완료된 프로젝트 50개의 고정 표본',
     project_connections_scope_bounded: '제한된 연결 구체화 자료',
     project_connections_scope_project: '이 프로젝트',

@@ -1039,7 +1039,7 @@
     project_connections_coverage_measured: 'التغطية: {linked} من {eligible} في {scope}.',
     project_connections_coverage_bounded: 'لوحظ في {linked} مشروعًا ضمن {scope}؛ لم يُقَس مقام العناصر المؤهلة.',
     project_connections_coverage_unknown: 'لم يُقَس مقام العناصر المؤهلة لـ {scope}.',
-    project_connections_scope_current: 'اللقطة الحالية التي تضم 231 مشروعًا',
+    project_connections_scope_current: 'اللقطة الحالية للمشاريع',
     project_connections_scope_sample: 'العينة الثابتة من 50 مشروعًا مكتملًا',
     project_connections_scope_bounded: 'مادة الروابط المحدودة',
     project_connections_scope_project: 'هذا المشروع',

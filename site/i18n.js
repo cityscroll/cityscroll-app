@@ -1550,7 +1550,7 @@ const STRINGS = {
     project_connections_coverage_measured: "Connected records are listed for {linked} of the {eligible} projects checked in {scope}.",
     project_connections_coverage_bounded: "Connected records are listed for {linked} projects in {scope}.",
     project_connections_coverage_unknown: "The available records for {scope} do not have a complete project count.",
-    project_connections_scope_current: "the 231-project current snapshot",
+    project_connections_scope_current: "the current project snapshot",
     project_connections_scope_sample: "the fixed 50 completed-project sample",
     project_connections_scope_bounded: "the bounded connection dataset",
     project_connections_scope_project: "this project",

@@ -22,16 +22,16 @@ const PROJECT = {
 };
 const COVERAGE = {
   applicant: {
-    eligible: 231,
-    linked: 231,
+    eligible: 238,
+    linked: 238,
     rate: 1,
     scope: "current_zap_snapshot",
-    vintage: "2026-08-02T10:22:34.003Z",
+    vintage: "2026-08-18T02:19:26.208Z",
   },
   parcels: {
-    eligible: 231,
-    linked: 224,
-    rate: 224 / 231,
+    eligible: 238,
+    linked: 199,
+    rate: 199 / 238,
     scope: "current_zap_snapshot",
     vintage: "2026-08-05T10:41:38.120Z",
   },

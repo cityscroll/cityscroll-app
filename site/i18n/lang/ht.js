@@ -1030,7 +1030,7 @@
     project_connections_coverage_measured: 'Kouvèti: {linked} sou {eligible} nan {scope}.',
     project_connections_coverage_bounded: 'Obsève sou {linked} pwojè nan {scope}; denominatè elijib la pa mezire.',
     project_connections_coverage_unknown: 'Denominatè elijib la pa mezire pou {scope}.',
-    project_connections_scope_current: 'foto aktyèl 231 pwojè a',
+    project_connections_scope_current: 'foto aktyèl pwojè yo',
     project_connections_scope_sample: 'echantiyon fiks 50 pwojè fini an',
     project_connections_scope_bounded: 'materyalizasyon koneksyon limite a',
     project_connections_scope_project: 'pwojè sa a',
