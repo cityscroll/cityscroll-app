@@ -405,6 +405,23 @@ test("private stats separate active watches from unique accounts and keep digest
   assert.equal(body.digests.sent_today, 1, "two watches in one account remain one digest send unit");
 });
 
+test("topicless weekly-contracts defaults count as active watches and digest accounts", async () => {
+  const subs = fakeKV({
+    "sub:intent": JSON.stringify({
+      email: "interest@example.com",
+      no_topic: true,
+      no_topic_default: true,
+      source: "top-of-site",
+      state: "confirmed",
+      lens: "money",
+      filter: {},
+      freq: "weekly",
+    }),
+    "sub:watch": JSON.stringify({ email: "watch@example.com", lens: "rules", filter: {} }),
+  });
+  assert.deepEqual(await countSubscriptionMetrics({ SUBS: subs }), { active: 2, accounts: 2 });
+});
+
 // ---- w12-16: daily gauge snapshots (active watches has no discrete "event") -------------
 
 test("snapshotHistDay writes today's gauge reading directly — not an increment — and a second call the same day overwrites rather than accumulates", async () => {

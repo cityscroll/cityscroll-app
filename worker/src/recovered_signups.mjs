@@ -1,0 +1,155 @@
+// Bounded, operator-authenticated recovery for delivered signup emails that were stranded by
+// the retired double-opt-in gate. It writes enrollment + delivery/ops watermarks but sends no
+// welcome and invokes no digest compiler. The caller supplies the private vetted manifest.
+
+import {
+  DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+  buildSubscription,
+  deriveSubscriberId,
+  deriveWatchId,
+  isDeveloperTestEmail,
+  isValidEmail,
+  normalizeEmail,
+  subscriptionKey,
+} from "./lib/subscriptions.mjs";
+import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
+
+export const RECOVERY_EXPLANATION = "was stuck in the now-deprecated double opt-in; emails start next scheduled digest";
+const RECOVERY_MANIFEST_SIZE = 4;
+
+function validOriginalSignupAt(value) {
+  if (typeof value !== "string" || !value.trim()) return false;
+  const parsed = new Date(value);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString() === value;
+}
+
+function isEmptyFilter(value) {
+  return value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0;
+}
+
+function recoveryMarkerKey(subscriberId) {
+  return `recovery:deprecated-double-opt-in:${subscriberId}`;
+}
+
+function developerMarkerKey(subscriberId) {
+  return `developer-test-account:${subscriberId}`;
+}
+
+async function readJson(store, key) {
+  try {
+    const raw = await store.get(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function validateRow(row) {
+  if (!row || !isValidEmail(row.email)) throw new TypeError("recovery row has an invalid email");
+  if (!validOriginalSignupAt(row.original_signup_at)) throw new TypeError("recovery row has an invalid original_signup_at");
+  if (isDeveloperTestEmail(row.email)) return;
+  if (row.lens !== "money" || !isEmptyFilter(row.filter)) {
+    throw new TypeError("recovery is limited to the vetted broad contracts watch");
+  }
+  if (row.freq !== "weekly") throw new TypeError("recovery is limited to the weekly cadence");
+}
+
+async function markDeveloperTestAccount(env, row, recoveredAt) {
+  const email = normalizeEmail(row.email);
+  const subscriberId = await deriveSubscriberId(email);
+  const key = developerMarkerKey(subscriberId);
+  const prior = await readJson(env.SUBS, key);
+  if (!prior) {
+    await env.SUBS.put(key, JSON.stringify({
+      email,
+      subscriber_id: subscriberId,
+      status: "developer/test",
+      developer_test: true,
+      source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+      reason: "plus-tagged scope-watch/e2e account; excluded from real enrollment and digest delivery",
+      original_signup_at: row.original_signup_at,
+      marked_at: recoveredAt,
+    }));
+  }
+  return { status: prior ? "already-marked-developer-test" : "marked-developer-test", subscriber_id: subscriberId };
+}
+
+async function recoverOne(env, row, recoveredAt) {
+  validateRow(row);
+  if (isDeveloperTestEmail(row.email)) return markDeveloperTestAccount(env, row, recoveredAt);
+
+  const candidate = buildSubscription({
+    email: row.email,
+    lens: "money",
+    filter: {},
+    freq: "weekly",
+    lang: row.lang || "en",
+    now: Date.parse(row.original_signup_at),
+  });
+  const key = await subscriptionKey(candidate);
+  const subscriberId = await deriveSubscriberId(candidate.email);
+  const markerKey = recoveryMarkerKey(subscriberId);
+  const completed = await readJson(env.SUBS, markerKey);
+  if (completed?.status === "recovered") return { status: "already-recovered", key, subscriber_id: subscriberId };
+
+  const existing = await readJson(env.SUBS, key);
+  if (existing && existing.source !== DEPRECATED_OPT_IN_RECOVERY_SOURCE) {
+    return { status: "already-enrolled", key, subscriber_id: subscriberId };
+  }
+  const recoveryTime = existing?.recovered_at || recoveredAt;
+  const record = {
+    ...candidate,
+    subscriber_id: existing?.subscriber_id || subscriberId,
+    watch_id: existing?.watch_id || await deriveWatchId(key),
+    source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+    original_signup_at: row.original_signup_at,
+    recovered_at: recoveryTime,
+    delivery_not_before: recoveryTime,
+    recovery_explanation: RECOVERY_EXPLANATION,
+  };
+  await env.SUBS.put(key, JSON.stringify(record));
+  await env.ALERT_STATE.put(`lastsent:${key}`, recoveryTime.slice(0, 10));
+  const logged = await appendWatchLog(env, {
+    action: "subscribe",
+    email: record.email,
+    subKey: key,
+    lens: record.lens,
+    label: watchLabel(record),
+    freq: record.freq,
+    source: record.source,
+    detail: RECOVERY_EXPLANATION,
+    originalSignupAt: record.original_signup_at,
+    recoveredAt: record.recovered_at,
+    at: record.recovered_at,
+  });
+  if (!logged) throw new Error("recovery ops receipt could not be stored");
+  await env.SUBS.put(markerKey, JSON.stringify({
+    status: "recovered",
+    sub_key: key,
+    subscriber_id: subscriberId,
+    recovered_at: recoveryTime,
+  }));
+  return { status: "recovered", key, subscriber_id: subscriberId };
+}
+
+export async function recoverDeprecatedDoubleOptIn(env, rows, { now = new Date() } = {}) {
+  if (!env?.SUBS || !env?.ALERT_STATE) throw new TypeError("SUBS and ALERT_STATE are required");
+  if (!Array.isArray(rows) || rows.length !== RECOVERY_MANIFEST_SIZE) {
+    throw new TypeError(`recovery manifest must contain exactly ${RECOVERY_MANIFEST_SIZE} rows`);
+  }
+  rows.forEach(validateRow);
+  const distinct = new Set(rows.map((row) => normalizeEmail(row.email)));
+  if (distinct.size !== RECOVERY_MANIFEST_SIZE) throw new TypeError("recovery manifest contains duplicate addresses");
+  if (rows.filter((row) => isDeveloperTestEmail(row.email)).length !== 1) {
+    throw new TypeError("recovery manifest must contain exactly one scope-watch/e2e developer account");
+  }
+  const recoveredAt = new Date(now).toISOString();
+  const results = [];
+  for (const row of rows) results.push(await recoverOne(env, row, recoveredAt));
+  return {
+    recovered_at: recoveredAt,
+    results,
+    recovered: results.filter((row) => row.status === "recovered").length,
+    developer_test: results.filter((row) => row.status === "marked-developer-test").length,
+  };
+}

@@ -50,8 +50,8 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/nl` | POST | Claude Haiku decodes English → lens filters | `ANTHROPIC_API_KEY`; degrades to `{degraded:true}` |
 | `/checkbook` | POST | CORS proxy to checkbooknyc.com/api | none |
 | `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Calendar UIDs retain the `@crol-list` namespace so existing subscribers do not receive duplicate events | none |
-| `/subscribe` | POST | Double-opt-in signup (per-IP/per-address rate limits; no CAPTCHA on this path); emails a signed [`optin-token`](https://github.com/jimdc/optin-token) confirm link, stores nothing until clicked | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
-| `/confirm` | GET | Verifies the `optin-token`, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
+| `/subscribe` | POST | Single-opt-in signup (per-IP/per-address rate limits; no CAPTCHA on this path); stores the watch immediately and sends a substantive welcome with signed manage and one-click unsubscribe links | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
+| `/confirm` | GET | Compatibility path for signed links already in flight; existing immediate enrollments are an idempotent success | `TOKEN_SECRET` + `SUBS` |
 | `/unsubscribe` | GET/POST | Removes one watch (`{k}`) or all watches for an email (`{all:1,e}`); POST = RFC 8058 one-click | `TOKEN_SECRET` + `SUBS` |
 | `/prefs` | GET/POST | **Preference center** — magic-link list/edit/pause/delete watches for one email; changes take effect next daily cron (~9am ET) | `TOKEN_SECRET` + `SUBS` |
 | `/feedback` | POST | Stores + emails operator feedback (rate-limited; rows keep IP+UA; notifies `FEEDBACK_TO`, default `feedback@cityscroll.org`) | fails closed 503 without `RESEND_API_KEY` + `FEEDBACK` |
@@ -68,7 +68,8 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/events` | POST | Bounded first-party event intake. Accepts only the enumerations in `../docs/analytics-event-taxonomy.md`, caps payloads at 1 KiB, and writes one aggregate Analytics Engine point with no visitor identifier. | allowed site origin + production runtime binding + `USAGE_ANALYTICS` |
 | `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `cityscroll.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
 | `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
-| `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
+| `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted); subscriptions include status, source, creation time, and recovery provenance when present | `ADMIN_KEY` → 404 if unset |
+| `/admin/recover-deprecated-opt-in` | POST | Idempotently enrolls the private, vetted four-row recovery manifest (three weekly broad-contract watches plus one excluded developer account), stamps the next-send boundary, and emits ops receipts without sending email | `ADMIN_KEY` + `SUBS` + `ALERT_STATE` |
 | `/admin/ops-contract` | GET | **Versioned ops contract** (`ops-contract.v1`) — digest modes, daylog actions/fields, stats metrics (incl. developer-traffic exclusion), admin routes + auth classes, KV key prefixes, feature flags. No secrets. Desk panels pin `min_compatible_version` against this document (or the committed fixture `worker/ops-contract.v1.json`). Never served on public `/stats` | `ADMIN_KEY` → 404 if unset |
 | `/admin/stats` | GET | **Private product activity and delivery operations** formerly returned by public `/stats`: subscriptions, sends, searches, visits, interaction breakdowns, and daily history. JSON by default; `?view=html` renders the responsive desk panel. | `ADMIN_KEY` → 404 if unset |
 | `/admin/owed-backlog` | GET | Read-only owed digest items grouped by subscriber, with redacted labels, delivery state, and next schedule. | `ADMIN_KEY` → 404 if unset |
@@ -243,8 +244,8 @@ libraries that were **extracted out of it** so anyone can reuse them, then pulle
 each piece of logic now lives (and is exhaustively unit-tested) in its own package instead of
 inline here:
 
-- **[`optin-token`](https://github.com/jimdc/optin-token)** — the double-opt-in confirmation
-  tokens (`signToken`/`verifyToken` behind `/subscribe`, `/confirm`, `/unsubscribe`) and the
+- **[`optin-token`](https://github.com/jimdc/optin-token)** — signed lifecycle tokens
+  (`signToken`/`verifyToken` behind manage, legacy `/confirm`, and `/unsubscribe`) and the
   `List-Unsubscribe` / RFC 8058 one-click headers on every digest. Web Crypto only, which is why
   it bundles for Workers with no `nodejs_compat`.
 - **[`sendcap`](https://github.com/jimdc/sendcap)** — the alert-mailer spend guard (`MAX_PER_RUN`

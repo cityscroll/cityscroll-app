@@ -8,6 +8,9 @@
 
 export const CHANNELS = ["email", "sms"];
 export const FREQS = ["daily", "weekly"];
+export const TOPICLESS_SOURCE = "top-of-site";
+export const TOPICLESS_STATES = Object.freeze(["confirmed"]);
+export const DEPRECATED_OPT_IN_RECOVERY_SOURCE = "recovered-from-deprecated-double-opt-in";
 // Supported language codes for subscriptions (clamp unknown → "en").
 // Extend as new languages ship in i18n.js; email templates must have matching entries.
 export const SUPPORTED_LANGS = ["en", "es"];
@@ -24,6 +27,30 @@ export function isValidEmail(raw) {
   return e.length > 0 && e.length <= 254 && EMAIL_RE.test(e);
 }
 
+/** Plus-tagged automation accounts are evidence, not real digest subscribers. */
+export function isDeveloperTestEmail(raw) {
+  const email = normalizeEmail(raw);
+  const local = email.slice(0, email.indexOf("@"));
+  const plus = local.indexOf("+");
+  if (plus < 0) return false;
+  const tag = local.slice(plus + 1);
+  return /(?:^|[-_.])(?:scope-watch|e2e)(?:$|[-_.])/.test(tag);
+}
+
+/**
+ * Recovered watches start at recovery, not at the beginning of the query's open-result set.
+ * Rows without a trustworthy source day fail closed on this one migration-only boundary.
+ */
+export function rowAfterDeliveryNotBefore(record, row) {
+  const boundary = record?.delivery_not_before;
+  if (!boundary) return true;
+  const observed = row?.start_date || row?.observed_at || row?.source_observed_at;
+  const boundaryDay = String(boundary).slice(0, 10);
+  const observedDay = String(observed || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(boundaryDay) || !/^\d{4}-\d{2}-\d{2}$/.test(observedDay)) return false;
+  return observedDay > boundaryDay;
+}
+
 // Build the stored record from validated parts. Channel/freq/lang clamp to safe defaults;
 // the caller is responsible for having already sanitize()d `filter` for its lens.
 // NOTE: `lang` is intentionally excluded from subCanonical — changing language must not
@@ -38,6 +65,40 @@ export function buildSubscription({ email, lens, filter, channel = "email", freq
     lang: SUPPORTED_LANGS.includes(lang) ? lang : "en",
     createdAt: new Date(now).toISOString(),
   };
+}
+
+/** Build the disclosed weekly-contracts default created by the topicless homepage CTA. */
+export function buildTopiclessIntent({ email, source = TOPICLESS_SOURCE, lang = "en", now = Date.now() }) {
+  const at = new Date(now).toISOString();
+  return {
+    email: normalizeEmail(email),
+    no_topic: true,
+    no_topic_default: true,
+    source,
+    state: "confirmed",
+    lens: "money",
+    filter: {},
+    channel: "email",
+    freq: "weekly",
+    lang: SUPPORTED_LANGS.includes(lang) ? lang : "en",
+    createdAt: at,
+    confirmedAt: at,
+    updatedAt: at,
+  };
+}
+
+/** Only new, explicitly marked homepage intents qualify; legacy money/{} stays untouched. */
+export function isTopiclessIntent(record) {
+  return !!record
+    && record.no_topic === true
+    && record.source === TOPICLESS_SOURCE
+    && TOPICLESS_STATES.includes(record.state);
+}
+
+/** Stable per-address key: repeated homepage requests refresh the same marked default watch. */
+export async function topiclessIntentKey(email, source = TOPICLESS_SOURCE) {
+  const canonical = JSON.stringify({ email: normalizeEmail(email), no_topic: true, source });
+  return `sub:${(await digestHex(canonical)).slice(0, 16)}`;
 }
 
 // Immutable carry-forward identities.  `subscriber_id` is account-scoped; `watch_id`
@@ -76,6 +137,11 @@ export async function ensureSubscriptionIdentity(record, legacyKey) {
 // IMPORTANT: `lang` is deliberately excluded — changing language must not duplicate a watch.
 export function subCanonical({ email, lens, filter }) {
   return JSON.stringify({ email: normalizeEmail(email), lens, filter: filter || {} });
+}
+
+/** Stable KV key shared by immediate signup and legacy confirmation-link replay. */
+export async function subscriptionKey(sub) {
+  return `sub:${(await digestHex(subCanonical(sub))).slice(0, 16)}`;
 }
 
 async function digestHex(value) {

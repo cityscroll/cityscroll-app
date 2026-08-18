@@ -4,7 +4,7 @@
 // Edits write immediately to SUBS KV; delivery reads SUBS on the next daily cron
 // (~13:00 UTC / ~9am Eastern) — document that cutover on every prefs surface.
 //
-// No passwords / full accounts — identity is the confirmed email only.
+// No passwords / full accounts — identity comes from the signed email link.
 
 import { normalizeEmail, FREQS, SUPPORTED_LANGS } from "./subscriptions.mjs";
 import { sanitize } from "./filter.mjs";

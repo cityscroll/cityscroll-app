@@ -1,6 +1,16 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isValidEmail, normalizeEmail, buildSubscription, redactEmail, subCanonical, SUPPORTED_LANGS } from "../src/lib/subscriptions.mjs";
+import {
+  SUPPORTED_LANGS,
+  buildSubscription,
+  buildTopiclessIntent,
+  isTopiclessIntent,
+  isValidEmail,
+  normalizeEmail,
+  redactEmail,
+  subCanonical,
+  topiclessIntentKey,
+} from "../src/lib/subscriptions.mjs";
 
 test("isValidEmail accepts well-formed and rejects junk", () => {
   for (const ok of ["a@b.co", "Jane.Doe@example.com", "x+y@sub.domain.org"]) {
@@ -32,6 +42,32 @@ test("buildSubscription keeps valid channel/freq", () => {
   const s = buildSubscription({ email: "a@b.com", lens: "land", filter: {}, channel: "sms", freq: "weekly", now: 0 });
   assert.equal(s.channel, "sms");
   assert.equal(s.freq, "weekly");
+});
+
+test("topicless default has a stable distinct key and a disclosed weekly contracts lens", async () => {
+  const record = buildTopiclessIntent({ email: " Reader@Example.com ", now: 0 });
+  assert.equal(isTopiclessIntent(record), true);
+  assert.deepEqual({
+    no_topic: record.no_topic,
+    no_topic_default: record.no_topic_default,
+    source: record.source,
+    state: record.state,
+    lens: record.lens,
+    filter: record.filter,
+    freq: record.freq,
+  }, {
+    no_topic: true,
+    no_topic_default: true,
+    source: "top-of-site",
+    state: "confirmed",
+    lens: "money",
+    filter: {},
+    freq: "weekly",
+  });
+  assert.equal(await topiclessIntentKey(" Reader@Example.com "), await topiclessIntentKey("reader@example.com"));
+
+  const legacy = { email: "reader@example.com", lens: "money", filter: {} };
+  assert.equal(isTopiclessIntent(legacy), false);
 });
 
 test("redactEmail hides the local part for logs", () => {

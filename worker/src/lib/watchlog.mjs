@@ -97,9 +97,11 @@ function nonEmptyString(value) {
 /** Append one redacted lifecycle event; logging is fail-soft when the binding is absent. */
 export async function appendWatchLog(env, {
   action, email, subKey, lens, label, freq, detail, before, after, source,
+  originalSignupAt, recoveredAt,
   at = new Date().toISOString(),
 }) {
   const actionType = {
+    subscribe: "watch_confirmed",
     update: "watch_updated",
     pause: "watch_paused",
     unpause: "watch_resumed",
@@ -108,15 +110,22 @@ export async function appendWatchLog(env, {
     unsub_all: "watch_removed",
   }[action];
   if (actionType) {
+    const methodName = action === "subscribe"
+      ? (source === "legacy-confirm"
+        ? "legacy_double_opt_in"
+        : source === "recovered-from-deprecated-double-opt-in"
+          ? "deprecated_double_opt_in_recovery"
+          : "single_opt_in")
+      : (source === "prefs" ? "preference_center" : "unsubscribe");
     await appendActionLog(env, {
       action_type: actionType,
-      object: { type: "watch", id: lens || "unknown" },
-      method: { name: source === "prefs" ? "preference_center" : "unsubscribe", version: "v1" },
-      metadata: { lens, freq, source },
+      object: { type: "watch", id: lens || "topicless" },
+      method: { name: methodName, version: "v1" },
+      metadata: { lens, freq, source, original_signup_at: originalSignupAt, recovered_at: recoveredAt },
       ts: at,
     });
   }
-  if (!env?.ALERT_STATE || !action || !email || !source) return;
+  if (!env?.ALERT_STATE || !action || !email || !source) return false;
   const event = {
     at,
     action,
@@ -134,6 +143,8 @@ export async function appendWatchLog(env, {
   if (cleanLabel) event.label = cleanLabel;
   if (cleanFreq) event.freq = cleanFreq;
   if (cleanDetail) event.detail = cleanDetail;
+  if (nonEmptyString(originalSignupAt)) event.original_signup_at = originalSignupAt;
+  if (nonEmptyString(recoveredAt)) event.recovered_at = recoveredAt;
   if (cleanBefore) event.before = cleanBefore;
   if (cleanAfter) event.after = cleanAfter;
 
@@ -149,7 +160,11 @@ export async function appendWatchLog(env, {
       env.ALERT_STATE.put(dayKey, JSON.stringify(day)),
       env.ALERT_STATE.put(WATCHLOG_LATEST_KEY, JSON.stringify(latest.slice(-WATCHLOG_LATEST_LIMIT))),
     ]);
-  } catch { /* the audit trail must not block the user's lifecycle change */ }
+    return true;
+  } catch {
+    // Ordinary lifecycle writes are fail-soft; recovery callers use the false return to retry.
+    return false;
+  }
 }
 
 export async function readWatchLog(env, days = 7, now = new Date()) {

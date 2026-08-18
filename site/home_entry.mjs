@@ -14,7 +14,7 @@ async function subscribe(email) {
       const response = await fetch(homeSubscribeUrl(origin), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, lens: "money", filter: {}, freq: "weekly", lang: window.LANG || "en" }),
+        body: JSON.stringify({ email, no_topic: true, source: "top-of-site", lang: window.LANG || "en" }),
       });
       if (response.ok) return response.json().catch(() => ({}));
       lastError = new Error(`subscribe failed: ${response.status}`);
@@ -52,11 +52,11 @@ function initSubscription() {
     }
     emailInput.removeAttribute("aria-invalid");
     button.disabled = true;
-    message.textContent = window.t?.("sending_confirm_link") || "Sending a confirmation link…";
+    message.textContent = window.t?.("subscribing_now") || "Subscribing…";
     try {
       const result = await subscribe(email);
       if (result?.ok) {
-        message.textContent = `${window.t?.("check_inbox") || "Check your inbox."} ${window.t?.("sent_confirm_to", { email }) || ""}`.trim();
+        message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
         emailInput.value = "";
       } else {
         message.textContent = window.t?.("cant_reach_server") || "We could not reach the subscription service.";
