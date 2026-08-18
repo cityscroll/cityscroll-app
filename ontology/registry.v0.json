@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "generated_note": "Civic Graph catalog (object\u2013link\u2013action). Catalog only \u2014 no production writer or public route. Each object/link carries grounding built|partial|gap from the measured existence matrix. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
@@ -1901,6 +1901,267 @@
       "grounding": "partial"
     }
   ],
+  "procurement_policy_registry": {
+    "schema": "cityscroll.procurement_publication_policy_registry.v1",
+    "version": "effective-2023-06-03-amended-through-2025-09-26",
+    "description": "Versioned publication and access policy for procurement methods governed by PPB Rule § 3-08. Coverage observations are separate from legal obligations.",
+    "source": {
+      "title": "PPB Rule § 3-08 Small Purchases",
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+      "rule_version": "effective-2023-06-03-amended-through-2025-09-26",
+      "effective_from": "2023-06-03",
+      "effective_to": null,
+      "amendment_effective_dates": [
+        "2023-06-03",
+        "2024-09-22",
+        "2025-09-26"
+      ]
+    },
+    "publication_obligations": [
+      "required",
+      "not_required",
+      "unknown"
+    ],
+    "access_scopes": [
+      "agency_procurement_file",
+      "selected_vendors",
+      "public_city_record",
+      "unknown"
+    ],
+    "coverage_state_boundary": {
+      "coverage_state_is_observation": true,
+      "absence_states": [
+        "not_checked",
+        "source_checked_no_record",
+        "source_unavailable"
+      ],
+      "absence_default_publication_obligation": "unknown",
+      "not_required_requires": [
+        "method_family",
+        "procurement_category",
+        "amount",
+        "occurred_on",
+        "matching_rule_version"
+      ]
+    },
+    "method_families": [
+      {
+        "id": "ordinary_micropurchase",
+        "label": "Ordinary micropurchase",
+        "effective_from": "2023-06-03",
+        "effective_to": null,
+        "applicability": {
+          "requires_explicit_match": true,
+          "excluded_categories": [],
+          "amount_bands": [
+            {
+              "procurement_category": "goods_and_non_construction_services",
+              "minimum": 0,
+              "minimum_inclusive": true,
+              "maximum": 20000,
+              "maximum_inclusive": true,
+              "currency": "USD"
+            },
+            {
+              "procurement_category": "construction",
+              "minimum": 0,
+              "minimum_inclusive": true,
+              "maximum": 35000,
+              "maximum_inclusive": true,
+              "currency": "USD"
+            }
+          ]
+        },
+        "stages": [
+          {
+            "id": "solicitation",
+            "publication_obligation": "not_required",
+            "access_scope": "agency_procurement_file",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08(c)(1)(i)-(ii)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          },
+          {
+            "id": "award",
+            "publication_obligation": "not_required",
+            "access_scope": "agency_procurement_file",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08(c)(1)(i)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          }
+        ]
+      },
+      {
+        "id": "ordinary_5_plus_10",
+        "label": "Ordinary small purchase (five-vendor solicitation)",
+        "effective_from": "2023-06-03",
+        "effective_to": null,
+        "applicability": {
+          "requires_explicit_match": true,
+          "excluded_categories": [],
+          "amount_bands": [
+            {
+              "procurement_category": "goods_and_non_construction_services",
+              "minimum": 20000,
+              "minimum_inclusive": false,
+              "maximum": 100000,
+              "maximum_inclusive": true,
+              "currency": "USD"
+            },
+            {
+              "procurement_category": "construction",
+              "minimum": 35000,
+              "minimum_inclusive": false,
+              "maximum": 100000,
+              "maximum_inclusive": true,
+              "currency": "USD"
+            }
+          ]
+        },
+        "stages": [
+          {
+            "id": "solicitation",
+            "publication_obligation": "not_required",
+            "access_scope": "selected_vendors",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08(c)(1)(i), (iii); 3-08(c)(2)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          },
+          {
+            "id": "award",
+            "publication_obligation": "not_required",
+            "access_scope": "agency_procurement_file",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08(c)(1)(i); 3-08(d)(1)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          }
+        ]
+      },
+      {
+        "id": "mwbe_small_purchase",
+        "label": "M/WBE Small Purchase",
+        "effective_from": "2023-06-03",
+        "effective_to": null,
+        "applicability": {
+          "requires_explicit_match": true,
+          "excluded_categories": [
+            "human_services"
+          ],
+          "maximum_authorized_amount": 1500000,
+          "amount_bands": [
+            {
+              "procurement_category": "goods_and_non_construction_services",
+              "minimum": 20000,
+              "minimum_inclusive": false,
+              "maximum": 1500000,
+              "maximum_inclusive": true,
+              "currency": "USD"
+            },
+            {
+              "procurement_category": "construction",
+              "minimum": 35000,
+              "minimum_inclusive": false,
+              "maximum": 1500000,
+              "maximum_inclusive": true,
+              "currency": "USD"
+            }
+          ]
+        },
+        "stages": [
+          {
+            "id": "solicitation",
+            "publication_obligation": "not_required",
+            "access_scope": "selected_vendors",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08(c)(1)(i), (iv)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          },
+          {
+            "id": "award",
+            "publication_obligation": "required",
+            "access_scope": "public_city_record",
+            "deadline": {
+              "days": 15,
+              "begins_at": "contract_registration"
+            },
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08(c)(1)(i); 3-08(d)(2)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          }
+        ]
+      },
+      {
+        "id": "unmapped_publisher_variant",
+        "label": "Unmapped publisher method variant",
+        "effective_from": "2023-06-03",
+        "effective_to": null,
+        "applicability": {
+          "requires_explicit_match": true,
+          "mapping_state": "unmapped",
+          "excluded_categories": [],
+          "amount_bands": []
+        },
+        "stages": [
+          {
+            "id": "solicitation",
+            "publication_obligation": "unknown",
+            "access_scope": "unknown",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08 (method match required before applying a subsection)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          },
+          {
+            "id": "award",
+            "publication_obligation": "unknown",
+            "access_scope": "unknown",
+            "effective_from": "2023-06-03",
+            "effective_to": null,
+            "legal_citation": {
+              "rule": "PPB Rule § 3-08",
+              "section": "3-08 (method match required before applying a subsection)",
+              "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCrules/0-0-0-153328",
+              "rule_version": "effective-2023-06-03-amended-through-2025-09-26"
+            }
+          }
+        ]
+      }
+    ]
+  },
   "flywheel": {
     "schema": "cityscroll.multi_flywheel_queue.v0",
     "policy_version": "v0",
