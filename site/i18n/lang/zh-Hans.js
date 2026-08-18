@@ -2577,6 +2577,21 @@
     exam_source_schedule: "the DCAS exam schedule / Notice of Examination",
     exam_source_list: "the Civil Service List open data feed",
     exam_source_outcomes: "the DCAS annual civil-service exam outcomes publication",
+    land_pipeline_clock_in_progress: "{n} 日法定时限 — 进行中",
+    land_spine_phase_in_progress_html: "{stage} — 自 {date} 起进行中。",
+    land_use_family_rezoning: "重新分区",
+    land_use_family_special_permit: "特别许可",
+    land_use_family_authorization: "Authorization",
+    land_use_family_certification: "Certification",
+    land_use_family_acquisition: "收购",
+    land_use_family_site_selection: "Site selection",
+    land_use_family_mapping: "City map change",
+    land_use_family_demapping: "Demapping",
+    land_use_family_disposition: "Disposition",
+    land_use_family_urban_renewal: "Urban renewal",
+    land_use_family_landmark: "Landmark designation",
+    land_use_family_generic: "土地用途审查",
+    next_action_land_steps_missing_rezoning: "No participation steps are published for this rezoning yet.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

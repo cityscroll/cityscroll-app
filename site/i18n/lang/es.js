@@ -2577,6 +2577,21 @@
     exam_source_schedule: "the DCAS exam schedule / Notice of Examination",
     exam_source_list: "the Civil Service List open data feed",
     exam_source_outcomes: "the DCAS annual civil-service exam outcomes publication",
+    land_pipeline_clock_in_progress: "Plazo legal de {n} días — en curso",
+    land_spine_phase_in_progress_html: "{stage} — en curso desde {date}.",
+    land_use_family_rezoning: "Rezonificación",
+    land_use_family_special_permit: "Permiso especial",
+    land_use_family_authorization: "Authorization",
+    land_use_family_certification: "Certification",
+    land_use_family_acquisition: "Adquisición",
+    land_use_family_site_selection: "Site selection",
+    land_use_family_mapping: "City map change",
+    land_use_family_demapping: "Demapping",
+    land_use_family_disposition: "Disposition",
+    land_use_family_urban_renewal: "Urban renewal",
+    land_use_family_landmark: "Landmark designation",
+    land_use_family_generic: "Revisión de uso del suelo",
+    next_action_land_steps_missing_rezoning: "No participation steps are published for this rezoning yet.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
