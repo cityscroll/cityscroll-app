@@ -1296,7 +1296,8 @@ Capture: `python3 tools/capture_ulurp_statutory_clock.py`.
 
 **Land-use action copy + detail coherence:** `/browse/zoning/` hosts acquisitions,
 special permits, map changes, and rezonings. `site/land_use_action_type.mjs`
-keeps `families[]` first-class (`PP`/`HA` disposition, `PQ`/`PC` acquisition);
+keeps `families[]` first-class (`PP`/`HA` disposition, `PQ`/`PC` acquisition;
+`LD` is `legal_document`, not landmark — `HK`/`HI` are the landmark codes);
 `primary` / `is_rezoning` are sole-family conveniences and must not collapse a
 bundled application into “this rezoning”. Participation headings come from that
 module (never the pathname). Reconcile list-row Open Data
