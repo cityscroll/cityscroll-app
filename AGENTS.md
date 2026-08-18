@@ -190,7 +190,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Daily refresh PR publish loop:** the data-refresh workflows
   (`doing-business-warehouse-lookup`, `geocoder-address-index`,
   `land-upcoming-hearings`, `land-zap-freshness-refresh`,
-  `refresh-preset-fallback`, `staffing-exams-refresh`) must open PRs with repo
+  `payroll-title-warehouse-lookup`, `refresh-preset-fallback`,
+  `staffing-exams-refresh`) must open PRs with repo
   secret `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests
   R/W), not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from
   triggering required checks (anti-recursion), which stalls merge-queue
@@ -836,6 +837,17 @@ node tools/build_doing_business_warehouse_lookup.mjs --check
 # receipt: warehouse/receipts/proof/wh05_doing_business_lookup_speed.json
 node --test test/warehouse_wh05_lookups.test.mjs worker/test/wh05_warehouse_lookups.test.mjs
 ```
+
+**Payroll title mart (optional-pack projection, not a 6.8M bulk):** SODA
+`k397-673e` group-by → `site/data/payroll_title_warehouse_lookup.json` (+ Worker
+twin). One FY title → `{count, min/max/avg base}` row; no employee PII. People
+title/payroll suggestion counts prefer the mart before live SODA. Age/canary
+gate + last-known-good; weekly
+`.github/workflows/payroll-title-warehouse-lookup.yml`. Follow-ons: agency ×
+title, median bands, multi-FY, optional raw pack. Rebuild:
+`node tools/build_payroll_title_warehouse_lookup.mjs --from-soda --bench`;
+`--check` + `node --test test/payroll_title_mart.test.mjs
+worker/test/suggestions.test.mjs`.
 
 **WH-06 ZAP BBL serve:** materialize project→BBL groups (+ demo `2022M0258`)
 into `site/data/zap_bbl_warehouse_lookup.json` (+ Worker twin). Replaces live

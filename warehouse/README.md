@@ -562,7 +562,27 @@ edges; unmatched notice IDs are absent, so the notice page stays unchanged.
 | **WH-05** | ZAP sell-facing materialization (`fetchOpenDataRow`) + Doing Business stem index (`attachDoingBusiness`) |
 | **WH-06** | ZAP BBL materialization (`fetchBbls`) + parcel cross-domain edges |
 | **WH-07 serve (first)** | City Record **PIN-chain** history lookup → `fetchRelatedProcurementNotices` precompute-first |
+| **Payroll title mart** | FY `k397-673e` **group-by** → title/{count, min/max/avg base}; not a 6.8M employee pack |
 | **Next** | City Record 90d/365d Money-archive index + agency rollups; keep WH-05 Doing Business on the weekly refresh→publish loop |
+
+## Payroll title mart (bounded optional-pack projection)
+
+Title search was the remaining live `k397-673e` RTT (~6.8M employee rows). The
+first serve is a **FY group-by**: 1 557 titles covering 550 219 FY2025 rows
+(8.1% of the publisher file). Public JSON has only
+`title_description` / `n` / `mn` / `mx` / `avg`. Agency × title, median bands,
+multi-FY history, and a raw optional pack are follow-ons.
+
+```bash
+node tools/build_payroll_title_warehouse_lookup.mjs --from-soda --bench
+node tools/build_payroll_title_warehouse_lookup.mjs --check
+node --test test/payroll_title_mart.test.mjs worker/test/suggestions.test.mjs
+# receipt: warehouse/receipts/proof/payroll_title_lookup_speed.json
+```
+
+Weekly workflow `.github/workflows/payroll-title-warehouse-lookup.yml` uses
+`REFRESH_PR_TOKEN` + `gh pr merge --auto`. A failed rebuild keeps the
+last-known-good twins.
 
 ## WH-05: Doing Business + ZAP live fetches → warehouse materialization
 
