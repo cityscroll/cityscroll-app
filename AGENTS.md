@@ -1220,14 +1220,18 @@ batch-stamped on `/zap-outcomes` as `statutory_clock` + `cityscroll.prediction.v
 assertions (`method: statutory_clock`). Pure table:
 `site/ulurp_statutory_clock.mjs`; emission:
 `worker/src/lib/ulurp_statutory_predictions.mjs` via
-`attachUlurpStatutoryPredictions` in `buildZapOutcomeRecord`. **Reader-facing
-phase deadlines use phase start + window days** (`deadline_basis: phase_window`)
-when a milestone actual_start / prior completion is known; `outer_bound_due_date`
-keeps certified+cumulative for predictions only. Never paint the outer envelope
-as a live “N-day clock” (field case `2026R0127`: Council start 2026-07-31 → due
-2026-09-19, not certified+200 = Nov 27). Insufficient timing fails closed
-(`due_date: null`). UI uses the precomputed view only. Withdrawn projects close
-open predictions as `withdrawn`. Verify:
+`attachUlurpStatutoryPredictions` in `buildZapOutcomeRecord`. **ULURP only:**
+resolve `ulurp_non` from the record or `open_data.ulurp_non` (top-level is often
+null). ELURP / Non-ULURP return `status: ineligible` / `reason: wrong_procedure`
+— do not invent a §197-e day table. Uncertified stays `not_certified`.
+**Reader-facing phase deadlines use phase start + window days**
+(`deadline_basis: phase_window`) when a milestone actual_start / prior
+completion is known; `outer_bound_due_date` keeps certified+cumulative for
+predictions only. Never paint the outer envelope as a live “N-day clock”
+(field case `2026R0127`: Council start 2026-07-31 → due 2026-09-19, not
+certified+200 = Nov 27). Insufficient timing fails closed (`due_date: null`).
+UI uses the precomputed view only. Withdrawn projects close open predictions
+as `withdrawn`. Verify:
 `node --test test/ulurp_statutory_clock.test.mjs test/land_use_copy_council_clock.test.mjs`.
 Capture: `python3 tools/capture_ulurp_statutory_clock.py`.
 
