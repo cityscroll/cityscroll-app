@@ -21,6 +21,10 @@ import {
   buildUniversalSearchCoverageView,
   renderUniversalSearchCoverageHtml,
 } from "../site/universal_search_coverage_receipt.mjs";
+import {
+  buildFacts,
+  buildObserverCoverage,
+} from "../tools/build_architecture_facts.mjs";
 
 const PEOPLE = JSON.parse(readFileSync(
   new URL("../site/data/person_hub_lookup.json", import.meta.url),
@@ -38,7 +42,19 @@ const VENDOR_ALIASES = JSON.parse(readFileSync(
   new URL("../entity_resolution/review/alias_registry.json", import.meta.url),
 ));
 
+const GOLD = JSON.parse(readFileSync(
+  new URL("./fixtures/universal_search_object_gold.json", import.meta.url),
+));
+const OBSERVER_CANARIES = JSON.parse(readFileSync(
+  new URL("../architecture/observer-canaries.json", import.meta.url),
+));
+
 const SNAPSHOT_AS_OF = "2026-08-15T12:00:00Z";
+const LA7_SEARCH_CANARY_PATHS = Object.freeze([
+  "worker/src/search.mjs",
+  "tools/build_keyword_search_index.mjs",
+  "site/agency_search_producer.mjs",
+]);
 
 function matchField(document, query) {
   const normalized = query.toLocaleLowerCase("en-US");
@@ -172,6 +188,48 @@ test("complete_count is the sum of declared per-lens counts at one snapshot boun
   assert.match(html, /data-coverage-lens="agencies"[^>]*data-coverage-state="matched"/);
 });
 
+test("honest empty is a complete zero, not missing coverage", async () => {
+  const lenses = Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lensId) => (
+    [lensId, completeLens()]
+  )));
+  const response = await federateUniversalSearch({
+    query: "zzzx-no-such-civic-object",
+    lenses,
+  });
+  const view = buildUniversalSearchCoverageView(response.coverage);
+  const html = renderUniversalSearchCoverageHtml(response.coverage);
+
+  assert.equal(response.results.length, 0);
+  assert.equal(response.coverage.snapshot.state, "complete");
+  assert.equal(response.coverage.complete_count, 0);
+  assert.equal(response.coverage.all_lenses_participated, true);
+  for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
+    assert.equal(response.coverage.by_lens[lensId].state, "empty", lensId);
+  }
+  assert.match(view.headline, /0 matches across all indexed collections/);
+  assert.match(html, /0 matches across all indexed collections/);
+});
+
+test("unindexed collections do not collapse into a citywide zero", async () => {
+  const response = await federateUniversalSearch({
+    query: "shelter contracts",
+    lenses: {},
+  });
+  const view = buildUniversalSearchCoverageView(response.coverage);
+  const html = renderUniversalSearchCoverageHtml(response.coverage);
+
+  assert.equal(response.results.length, 0);
+  assert.equal(response.coverage.snapshot.state, "incomplete");
+  assert.equal(response.coverage.complete_count, null);
+  assert.equal(response.coverage.all_lenses_participated, false);
+  for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
+    assert.equal(response.coverage.by_lens[lensId].state, "not_indexed", lensId);
+  }
+  assert.match(view.headline, /Search coverage is incomplete/);
+  assert.doesNotMatch(view.headline, /0 matches across all/);
+  assert.doesNotMatch(html, /0 matches across all/);
+});
+
 test("missing and stale lenses invalidate complete_count instead of producing a false zero", async () => {
   const lenses = Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lensId) => (
     [lensId, completeLens()]
@@ -203,6 +261,42 @@ test("missing and stale lenses invalidate complete_count instead of producing a 
   assert.doesNotMatch(html, /People<\/span><strong>0 matches/);
   assert.match(html, /data-coverage-lens="people"[^>]*data-coverage-state="not_indexed"/);
   assert.match(html, /data-coverage-lens="vendors"[^>]*data-coverage-state="stale"/);
+});
+
+test("coverage-honesty and LA7 unmapped-surface misses are one class", () => {
+  const twin = GOLD.query_suite.coverage_honesty_twin;
+  assert.ok(twin);
+  assert.equal(twin.feeds, "LA7");
+  assert.equal(twin.observer_canaries, "architecture/observer-canaries.json");
+  assert.deepEqual(twin.canary_paths, [...LA7_SEARCH_CANARY_PATHS]);
+
+  const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
+  const byId = new Map(OBSERVER_CANARIES.canaries.map((row) => [row.id, row]));
+  for (const [index, path] of twin.canary_paths.entries()) {
+    const id = twin.canary_ids[index];
+    const listed = byId.get(id);
+    assert.ok(listed, id);
+    assert.equal(listed.path, path);
+    assert.ok(
+      facts.observer_coverage.known_canaries.some((row) => row.id === id && row.path === path),
+      id,
+    );
+    assert.ok(facts.observer_coverage.observed_paths.includes(path), path);
+    assert.equal(
+      facts.observer_coverage.unmapped_surfaces.some((row) => row.path === path),
+      false,
+      path,
+    );
+  }
+
+  const synthetic = buildObserverCoverage(
+    ["worker/wrangler.toml"],
+    twin.canary_ids.map((id, index) => ({ id, path: twin.canary_paths[index] })),
+  );
+  assert.deepEqual(
+    synthetic.unmapped_surfaces.map((row) => row.path).sort(),
+    [...LA7_SEARCH_CANARY_PATHS].sort(),
+  );
 });
 
 test("coverage UI fails closed when an API response omits its machine receipt", () => {

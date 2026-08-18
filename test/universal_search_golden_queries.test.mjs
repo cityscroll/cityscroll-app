@@ -85,8 +85,14 @@ const REQUIRED_CATEGORIES = Object.freeze([
   "ambiguous",
   "zero_result",
   "partial_coverage",
+  "unindexed",
   "ranking_competition",
   "nl_ask",
+]);
+const LA7_SEARCH_CANARY_PATHS = Object.freeze([
+  "worker/src/search.mjs",
+  "tools/build_keyword_search_index.mjs",
+  "site/agency_search_producer.mjs",
 ]);
 const SNAPSHOT_AS_OF = "2026-08-15T12:00:00Z";
 const EDUCATION_FIXTURE_REF = "procurement:education-synonym-fixture";
@@ -343,6 +349,10 @@ async function runCorpus(query) {
         [lensId, completeLens()]
       )));
       const federated = await federateUniversalSearch({ query: text, lenses });
+      return { resolved, documents: [], hits: [], federated };
+    }
+    case "federator_all_unindexed": {
+      const federated = await federateUniversalSearch({ query: text, lenses: {} });
       return { resolved, documents: [], hits: [], federated };
     }
     case "federator_missing_people_stale_vendors": {
@@ -643,6 +653,9 @@ function assertCoverageHonesty(query, world) {
     assert.equal(row.state, expected.state);
     assert.equal(row.reason, expected.reason);
     assert.notEqual(row.reason, "No matches");
+    if (expected.zero_means === "no_coverage") {
+      assert.notEqual(row.state, "empty", `${query.id} unindexed producer must not look empty`);
+    }
     return;
   }
   const coverage = world.federated.coverage;
@@ -653,7 +666,17 @@ function assertCoverageHonesty(query, world) {
   if (expected.empty_means === "no_match_in_participating_lenses") {
     assert.equal(world.federated.results.length, 0);
     assert.equal(view.complete_count, 0);
+    assert.equal(expected.zero_means, "no_match", `${query.id} honest empty is no-match`);
+    assert.equal(coverage.all_lenses_participated, true, `${query.id} every lens participated`);
     assert.match(view.headline, /0 matches across all indexed collections/);
+    for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
+      assert.equal(coverage.by_lens[lensId].state, "empty", `${query.id} ${lensId}`);
+    }
+  }
+  if (expected.zero_means === "no_coverage") {
+    assert.equal(coverage.complete_count, null, `${query.id} complete_count must stay null`);
+    assert.notEqual(coverage.snapshot.state, "complete", `${query.id} must not look complete`);
+    assert.doesNotMatch(view.headline, /0 matches across all/);
   }
   if (expected.must_not_read_as) {
     assert.doesNotMatch(view.headline, new RegExp(expected.must_not_read_as, "i"));
@@ -663,6 +686,12 @@ function assertCoverageHonesty(query, world) {
     assert.deepEqual(coverage.incomplete_lenses, expected.incomplete_lenses);
     assert.equal(coverage.by_lens.people.state, "not_indexed");
     assert.equal(coverage.by_lens.vendors.state, "stale");
+  }
+  if (expected.all_lenses_not_indexed) {
+    assert.equal(coverage.all_lenses_participated, false, `${query.id} no lens participated`);
+    for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
+      assert.equal(coverage.by_lens[lensId].state, "not_indexed", `${query.id} ${lensId}`);
+    }
   }
 }
 
@@ -711,6 +740,33 @@ test("each golden query names only the axes it can fail", () => {
       assert.equal(query.eval.includes("interpretation"), false);
     }
   }
+});
+
+test("coverage-honesty twin cites the same LA7 search canaries", () => {
+  const twin = GOLD.query_suite.coverage_honesty_twin;
+  const listed = JSON.parse(readFileSync(
+    new URL("../architecture/observer-canaries.json", import.meta.url),
+    "utf8",
+  ));
+  assert.ok(twin);
+  assert.equal(twin.feeds, "LA7");
+  assert.equal(twin.observer_canaries, "architecture/observer-canaries.json");
+  assert.deepEqual(twin.canary_paths, [...LA7_SEARCH_CANARY_PATHS]);
+  for (const [index, path] of twin.canary_paths.entries()) {
+    const canary = listed.canaries.find((row) => row.id === twin.canary_ids[index]);
+    assert.ok(canary, twin.canary_ids[index]);
+    assert.equal(canary.path, path);
+  }
+  const byCategory = Object.fromEntries(
+    ["zero_result", "partial_coverage", "unindexed"].map((category) => [
+      category,
+      GOLD.queries.filter((query) => query.category === category),
+    ]),
+  );
+  assert.ok(byCategory.zero_result.some((query) => query.id === "gq-zero-result"));
+  assert.ok(byCategory.partial_coverage.some((query) => query.id === "gq-partial-coverage"));
+  assert.ok(byCategory.unindexed.some((query) => query.id === "gq-unindexed-coverage"));
+  assert.ok(byCategory.unindexed.some((query) => query.id === "gq-law-mandates-not-indexed"));
 });
 
 test("golden-query suite stays offline and does not import the live Ask client", () => {
