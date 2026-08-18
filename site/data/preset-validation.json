@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-18T12:02:05.760Z",
+  "generatedAt": "2026-08-18T12:36:54.326Z",
   "dataDate": "2026-08-18",
   "scenarios": {
     "city-work-closing": {
@@ -11,8 +11,8 @@
       "count": 25,
       "counts": {
         "week": 25,
-        "open": 196,
-        "past": 53397
+        "open": 202,
+        "past": 53409
       }
     },
     "city-work-all": {
@@ -20,9 +20,9 @@
       "href": "#money?mode=open",
       "labelKey": "tab_money",
       "label": "Contracts",
-      "count": 196,
+      "count": 202,
       "counts": {
-        "open": 196
+        "open": 202
       }
     },
     "neighborhood-land": {
@@ -50,9 +50,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 21,
+      "count": 23,
       "counts": {
-        "upcoming": 21
+        "upcoming": 23
       }
     },
     "hearings-meetings": {
@@ -60,9 +60,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 21,
+      "count": 23,
       "counts": {
-        "upcoming": 21
+        "upcoming": 23
       }
     },
     "hearings-rules": {
@@ -70,9 +70,9 @@
       "href": "#rules",
       "labelKey": "tab_rules",
       "label": "Rules",
-      "count": 3070,
+      "count": 3072,
       "counts": {
-        "rules": 3070
+        "rules": 3072
       }
     },
     "city-career-people": {
@@ -124,9 +124,9 @@
       "href": "#rules",
       "labelKey": "tab_rules",
       "label": "Rules",
-      "count": 3070,
+      "count": 3072,
       "counts": {
-        "rules": 3070
+        "rules": 3072
       }
     },
     "legal-meetings": {
@@ -134,9 +134,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 21,
+      "count": 23,
       "counts": {
-        "upcoming": 21
+        "upcoming": 23
       }
     }
   },
