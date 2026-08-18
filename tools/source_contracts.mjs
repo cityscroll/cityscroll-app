@@ -15,6 +15,19 @@ const ALLOWED_ENDPOINT_FORMAT = new Set(["js-dump", "json-api"]);
 const ALLOWED_STALE_POLICY = new Set(["error", "skip"]);
 const ALLOWED_EGRESS_CLASS = new Set(["open", "bot_blocked"]);
 const ALLOWED_WAREHOUSE_SNAPSHOT_STATUS = new Set(["materialized"]);
+const ALLOWED_FRESHNESS_MODE = new Set([
+  "continuous",
+  "periodic",
+  "historical",
+  "manual-conditional",
+  "pointer",
+]);
+const ALLOWED_FRESHNESS_CLOCK_BASIS = new Set([
+  "publisher_updated",
+  "checked_acquired",
+  "manual_condition",
+]);
+const ALLOWED_HEALTH_PUBLIC_VISIBILITY = new Set(["public", "backstage-only"]);
 
 /**
  * Concrete URL the live monitor should probe. Templates like
@@ -61,6 +74,56 @@ export function validateSourceContracts(registry) {
     }
     if (!Array.isArray(contract.code_references) || contract.code_references.length === 0) {
       errors.push(`${label}: code_references must be non-empty`);
+    }
+
+    const freshness = contract.freshness_contract;
+    if (!freshness || typeof freshness !== "object") {
+      errors.push(`${label}: missing freshness_contract`);
+    } else {
+      if (!ALLOWED_FRESHNESS_MODE.has(freshness.mode)) {
+        errors.push(`${label}: invalid freshness_contract.mode ${freshness.mode}`);
+      }
+      if (!ALLOWED_FRESHNESS_CLOCK_BASIS.has(freshness.clock_basis)) {
+        errors.push(`${label}: invalid freshness_contract.clock_basis ${freshness.clock_basis}`);
+      }
+      if (["continuous", "periodic"].includes(freshness.mode)) {
+        if (!(Number(freshness.max_stale_days) > 0)) {
+          errors.push(`${label}: freshness_contract.max_stale_days must be positive`);
+        }
+      } else if (freshness.max_stale_days !== null) {
+        errors.push(`${label}: ${freshness.mode} freshness_contract.max_stale_days must be null`);
+      }
+      if (
+        freshness.mode === "manual-conditional"
+        && (typeof freshness.manual_refresh_condition !== "string"
+          || !freshness.manual_refresh_condition.trim())
+      ) {
+        errors.push(`${label}: manual-conditional freshness needs manual_refresh_condition`);
+      }
+      if (
+        freshness.serving_max_age_days !== null
+        && !(Number(freshness.serving_max_age_days) > 0)
+      ) {
+        errors.push(`${label}: freshness_contract.serving_max_age_days must be positive or null`);
+      }
+      if (freshness.serve_contract_id !== null && typeof freshness.serve_contract_id !== "string") {
+        errors.push(`${label}: freshness_contract.serve_contract_id must be a string or null`);
+      }
+    }
+
+    const healthPolicy = contract.health_policy;
+    if (!healthPolicy || typeof healthPolicy !== "object") {
+      errors.push(`${label}: missing health_policy`);
+    } else {
+      if (!ALLOWED_HEALTH_PUBLIC_VISIBILITY.has(healthPolicy.public_visibility)) {
+        errors.push(`${label}: invalid health_policy.public_visibility ${healthPolicy.public_visibility}`);
+      }
+      if (healthPolicy.backstage_detail !== "receipts-and-errors") {
+        errors.push(`${label}: health_policy.backstage_detail must be receipts-and-errors`);
+      }
+      if (healthPolicy.relationship_coverage !== "separate") {
+        errors.push(`${label}: health_policy.relationship_coverage must be separate`);
+      }
     }
 
     if (contract.kind === "socrata") {
