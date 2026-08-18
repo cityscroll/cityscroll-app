@@ -2360,9 +2360,9 @@ select {
   }
 }
 
-/* Near-you surface switch (list-first on small screens; dual on desktop). */
+/* Near-you Records / Map switch: progressive enhancement at every width. */
 .near-surface-switch {
-  display: none;
+  display: flex;
   gap: var(--space-2);
   margin: var(--space-4) 0 var(--space-2);
   flex-wrap: wrap;
@@ -2384,6 +2384,17 @@ select {
   background: var(--color-action);
   border-color: var(--color-action);
   color: var(--color-surface);
+}
+@media (min-width: 561px) {
+  .near-surface-switch {
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
+  }
+}
+[data-near-you-root][data-near-mobile-surface="list"] [data-near-surface-panel="map"],
+[data-near-you-root][data-near-mobile-surface="map"] [data-near-surface-panel="list"] {
+  display: none;
 }
 
 .following-scope-chips {
@@ -2482,16 +2493,7 @@ select {
     padding-block: var(--space-6);
   }
 
-  /* Mobile: list-first document order; surface switch is progressive enhancement.
-     Without JS both panels stay visible (map under results). With JS, choosing a
-     surface focuses one panel while the other stays available via the switch. */
-  .near-surface-switch {
-    display: flex;
-  }
-  [data-near-you-root][data-near-mobile-surface="list"] [data-near-surface-panel="map"],
-  [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface-panel="list"] {
-    display: none;
-  }
+  /* Mobile keeps the same list-first switch, with its compact active-state rule. */
   [data-near-you-root][data-near-mobile-surface="map"] [data-near-surface="map"],
   [data-near-you-root][data-near-mobile-surface="list"] [data-near-surface="list"],
   [data-near-you-root]:not([data-near-mobile-surface]) [data-near-surface="list"] {
