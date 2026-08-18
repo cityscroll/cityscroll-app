@@ -2401,6 +2401,11 @@ const STRINGS = {
     zapact_ha: "Disposition (HPD)",
     zapact_pc: "Acquisition",
     zapact_hg: "Urban renewal",
+    zapact_pp: "Disposition",
+    zapact_ps: "Site selection",
+    zapact_mm: "City map amendment",
+    zapact_dm: "Demapping",
+    zapact_hi: "Landmark designation",
 
     // Property explorer — surplus-goods buyer categories (persona vocabulary)
     all_types: "All types",

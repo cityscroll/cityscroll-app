@@ -26,11 +26,12 @@ import {
 } from "../land_status_facets.mjs";
 import { resolveLandPublicStatus } from "../land_detail_coherence.mjs";
 import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
+import { zapActionDisplayLabels } from "../zap_action_labels.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
 const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:[40.844,-73.865],Queens:[40.718,-73.806],"Staten Island":[40.580,-74.150]};
-// ZAP action labels live in i18n.js (zapact_* keys) — see ZAPACT_KEY in landSelect().
+// ZAP action labels live in i18n.js (zapact_* keys) via zapActionDisplayLabels.
 let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
 let landResolvedArea=null;
 let landBorough="";
@@ -744,8 +745,7 @@ async function landSelect(i, el){
   const displayTitle=landProjectDisplayTitle(r);
   const interaction=landObjectCardProjection(r,displayTitle);
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
-  const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
-  const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
+  const actList=zapActionDisplayLabels(r.actions,t);
   let html=(location.hash.startsWith("#land/")
     ? `<p style="margin:4px 0 12px">${routeBackHTML("#land")}</p>`
     : "")+`<h2 class="rolename" lang="en" dir="ltr">${renderObjectCardTitle(interaction,{escape:escUiHtml})}</h2>
