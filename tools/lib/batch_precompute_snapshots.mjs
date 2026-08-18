@@ -22,13 +22,14 @@ export const LAND_DEFAULT_LIST_FIELDS = Object.freeze([
   "current_milestone",
   "current_milestone_date",
   "ulurp_numbers",
+  "ulurp_non",
 ]);
 
 export const LAND_DEFAULT_SELECT = LAND_DEFAULT_LIST_FIELDS.join(",");
 /** Full detail select for acquisition-time materialization. */
 export const LAND_DEFAULT_DETAIL_SELECT = [...LAND_DEFAULT_LIST_FIELDS, "project_brief"].join(",");
 
-export const LAND_DEFAULT_WHERE = "ulurp_non='ULURP' AND project_status='Active'";
+export const LAND_DEFAULT_WHERE = "ulurp_non IN ('ULURP','ELURP') AND project_status='Active'";
 export const LAND_DEFAULT_LIMIT = 40;
 
 // Money default open RFP strip — list-card fields only on the committed snapshot so the

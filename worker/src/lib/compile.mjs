@@ -16,6 +16,7 @@ import {
   mergeObligationDigestWithPredictions,
 } from "../../../site/mandate_prediction_alerts.mjs";
 import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.json" with { type: "json" };
+import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
@@ -35,7 +36,7 @@ const SECTION_BY_LENS = {
   rules: "Agency Rules",
   meetings: "Public Hearings and Meetings",
 };
-const ZAP_SELECT = "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date";
+const ZAP_SELECT = "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date,ulurp_non";
 const REZ_ALIAS = { "79 rivington": "Allen Street", "79 rivington street": "Allen Street", "allen street mall": "Allen Street" };
 
 function materializedMeetingRows(filter, todayISO, dateWindow) {
@@ -344,7 +345,7 @@ export function compileSub(sub, todayISO) {
   if (sub.lens === "land") {
     // Mirror the Land tab's zapWhere + district filters so suggestion fruitfulness counts
     // the same surface a click resolves to (borough / community district / council district).
-    let where = "ulurp_non='ULURP'";
+    let where = landProcedureSodaWhere(f.procedure);
     if (f.status !== "all") where += " AND project_status='Active'";
     const boro = typeof f.boro === "string" && f.boro.trim() ? f.boro.trim().replace(/'/g, "''") : null;
     if (boro) where += ` AND borough='${boro}'`;

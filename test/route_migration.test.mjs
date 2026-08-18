@@ -29,8 +29,8 @@ test("legacy borough scope links still normalize across list lenses", () => {
 
 test("orthogonal Zoning stage and future-action filters survive document migration", () => {
   assert.equal(
-    migrateLegacyUrl("/#land?stage=public_review&future=hearing&sort=action_date").target,
-    "/browse/zoning/?stage=public_review&future=hearing&sort=action_date",
+    migrateLegacyUrl("/#land?stage=public_review&future=hearing&procedure=elurp&sort=action_date").target,
+    "/browse/zoning/?stage=public_review&future=hearing&procedure=elurp&sort=action_date",
   );
 });
 

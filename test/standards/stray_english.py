@@ -32,7 +32,7 @@ ALLOWLIST_FILE = pathlib.Path(__file__).parent / "stray_english_allowlist.txt"
 # Terms allowed as-printed (mirrors the runtime guard's case-sensitive acronym list).
 ALLOWED_TERMS = {
     "RFP", "RFPs", "PIN", "ZAP", "ZoLa", "PASSPort", "API", "RSS", "Atom", "JSON", "CSV",
-    "ICS", "DOB", "HPD", "DCAS", "NYC", "MOCS", "ULURP", "MIH", "FY", "CD", "M/WBE",
+    "ICS", "DOB", "HPD", "DCAS", "NYC", "MOCS", "ULURP", "ELURP", "MIH", "FY", "CD", "M/WBE",
 }
 ALLOWED_PHRASES = ["CityScroll", "City Record", "NYC Open Data", "Checkbook NYC", "New York",
                    "MapPLUTO", "GeoSearch", "Staten Island"]
@@ -157,7 +157,7 @@ def extract_literals(src, _stop_at_brace=False, _pos=0):
 # A literal is skipped entirely (cannot be UI text) if it matches any of these.
 NON_UI_RE = [
     re.compile(r"\$(select|where|order|group|limit|q)\b"),           # SODA param names/values
-    re.compile(r"\b(AND|IS NOT NULL|IS NULL|LIKE|DESC|ASC|between)\b"),  # SQL-ish where/order
+    re.compile(r"\b(AND|OR|IN|IS NOT NULL|IS NULL|LIKE|DESC|ASC|between)\b"),  # SQL-ish where/order
     re.compile(r"^[a-z0-9_]+(,[a-z0-9_]+)+$"),                       # column lists
     re.compile(r"https?://|mailto:|tel:|\.json$|\.csv|\.ics|\.png"),  # URLs / files
     re.compile(r"[{;]\s*$|font(-|:)|margin|padding|width:|color:|border|display:|position:"),  # CSS

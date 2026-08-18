@@ -252,9 +252,11 @@ function serializeState(){
     const landStatus=$("#lstatus").value;
     const landStage=$("#lstage")?.value||"active";
     const landFuture=$("#lfuture")?.value||"any";
+    const landProcedure=$("#lprocedure")?.value||"review";
     if(!["active","all"].includes(landStatus)) q.set("status",landStatus);
     if(landStage!=="active") q.set("stage",landStage);
     if(landFuture!=="any") q.set("future",landFuture);
+    if(landProcedure && landProcedure!=="review") q.set("procedure",landProcedure);
     if(landFuture==="hearing" && landAttendance) q.set("attendance", landAttendance);
     if(landFuture==="hearing" && landClosingWeek) q.set("closing", "week");
   } else if(SECTIONS[tab]){
@@ -382,7 +384,7 @@ const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
@@ -425,6 +427,7 @@ function deeplinkClampField(name, v){
     case "excludeSpecial": return !!v;
     case "boro": { const s = typeof v==="string" ? v.trim().toLowerCase() : ""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s) || null; }
     case "status": return v==="all" ? "all" : v==="active" ? "active" : null;
+    case "procedure": return ["review","ulurp","elurp","non_ulurp"].includes(v) ? v : null;
     case "when": return ["all","upcoming","week","month","past"].includes(v) ? v : null;
     case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
     case "neighborhood": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
@@ -1072,8 +1075,10 @@ function applyHash(){
       const landStatus=q.get("status");
       const explicitStage=q.get("stage");
       const explicitFuture=q.get("future");
+      const explicitProcedure=q.get("procedure");
       const validStage=["any","active","public_review","pre_certification","community_board","borough_president","cpc","city_council","completed"].includes(explicitStage||"");
       const validFuture=["any","any_future","hearing","other","none"].includes(explicitFuture||"");
+      const validProcedure=["review","ulurp","elurp","non_ulurp"].includes(explicitProcedure||"");
       const legacyExactStatus=/^(?:project|public):.{1,80}$/.test(landStatus||"");
       const legacyPublicReview=["public","In Public Review"].join(":");
       const legacyProjectActive=["project","Active"].join(":");
@@ -1099,6 +1104,7 @@ function applyHash(){
       landStatusSelect.value=adoptedStatus;
       $("#lstage").value=adoptedStage;
       $("#lfuture").value=adoptedFuture;
+      if($("#lprocedure")) $("#lprocedure").value=validProcedure?explicitProcedure:"review";
       const att=q.get("attendance");
       landAttendance=adoptedFuture==="hearing" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
       landClosingWeek=adoptedFuture==="hearing" && q.get("closing")==="week";
