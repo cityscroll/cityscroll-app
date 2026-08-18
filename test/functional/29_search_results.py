@@ -307,6 +307,19 @@ def main():
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 390, "height": 844})
+        page.add_init_script("""
+            (() => {
+              const nativeFetch = window.fetch.bind(window);
+              window.fetch = async (...args) => {
+                const response = nativeFetch(...args);
+                const url = String(args[0]?.url || args[0] || "");
+                if (url.includes("q=elevator")) {
+                  await new Promise((resolve) => setTimeout(resolve, 1200));
+                }
+                return response;
+              };
+            })();
+        """)
 
         def search_api(route):
             query = parse_qs(urlparse(route.request.url).query).get("q", [""])[0].lower()
@@ -348,6 +361,27 @@ def main():
             "**/data/money_resident_snapshot.json",
             lambda route: json_response(route, POLICE_CONTRACT_SNAPSHOT),
         )
+
+        page.goto(f"{BASE}/search/?q=elevator", wait_until="domcontentloaded", timeout=30000)
+        loading = page.locator("[data-search-coverage]")
+        assert loading.is_visible()
+        assert loading.get_attribute("data-coverage-state") == "loading"
+        assert loading.get_attribute("aria-busy") == "true"
+        assert loading.locator(".loading").count() == 1
+        assert loading.locator("strong").text_content() == "Searching…"
+        lane = page.locator('[data-semantic-family="contracts"] .topic-search-lane-body')
+        assert lane.get_attribute("aria-busy") == "true"
+        assert lane.text_content() == "Searching…"
+        if screenshot := os.environ.get("CROL_LOADING_SCREENSHOT"):
+            page.screenshot(path=screenshot, animations="disabled", full_page=False)
+        page.wait_for_function(
+            "document.querySelector('[data-search-coverage]')?.dataset.coverageState === 'complete'",
+            timeout=30000,
+        )
+        assert loading.get_attribute("aria-busy") == "false"
+        assert loading.locator(".loading").count() == 0
+        assert loading.text_content().strip() == "0 matches"
+        assert "coverage is incomplete" not in (page.locator("main").text_content() or "").lower()
 
         for term, passage_text in SEMANTIC_FIXTURES.items():
             page.goto(f"{BASE}/search/?q={term}", wait_until="domcontentloaded", timeout=30000)
