@@ -10,6 +10,10 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import {
+  LAND_USE_ACTION_CODE_FAMILY,
+  normalizeLandUseActionType,
+} from "../site/land_use_action_type.mjs";
+import {
   MANDATE_GOVERNS_PROCEDURE,
   MANDATE_LAND_USE_EDGE_TYPE,
   MANDATE_LAND_USE_METHOD,
@@ -153,7 +157,7 @@ test("resolver requires agency, structured action kind, and subject scope rather
   assert.deepEqual(view.edges[0].match.keys, [
     "agency", "land_action_kind", "project_identity", "mandate_phase_compatible",
   ]);
-  assert.deepEqual(view.edges[0].match.subject_scope, ["landmark_designation"]);
+  assert.deepEqual(view.edges[0].match.subject_scope, ["landmark"]);
   assert.equal(view.edges[0].match.project_identity, true);
   assert.equal(view.edges[0].match.project_identity_detail.matched, true);
   assert.equal(view.edges[0].match.mandate_phase_compatible, true);
@@ -234,7 +238,7 @@ test("live Landmarks materialization keeps agency-only land actions in shadow", 
   }));
   assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.match?.project_identity === false));
   assert.ok(view.mandates_land_use.shadow_edges.every((edge) => (
-    edge.land_action.action_kinds.includes("landmark_designation")
+    edge.land_action.action_kinds.includes("landmark")
   )));
   // Landmark designation is a family. Procedure paths require a shared
   // ulurp|elurp|non_ulurp kind named by both the law and the publisher row.
@@ -251,6 +255,10 @@ test("PQ is acquisition and ELURP is a first-class procedure edge", () => {
   assert.deepEqual(landActionKinds({ actions: "PQ" }), ["acquisition"]);
   assert.deepEqual(landActionKinds({ actions: "PS; PQ" }), ["site_selection", "acquisition"]);
   assert.deepEqual(landActionKinds({ actions: "PC; PP" }), ["acquisition", "disposition"]);
+  assert.deepEqual(landActionKinds({ actions: "LD" }), ["legal_document"]);
+  assert.deepEqual(landActionKinds({ actions: "HI" }), ["landmark"]);
+  assert.ok(!landActionKinds({ actions: "LD" }).includes("landmark"));
+  assert.ok(!landActionKinds({ actions: "PQ" }).includes("site_selection"));
   assert.deepEqual(landProcedureKinds({ ulurp_non: "ELURP" }), ["elurp"]);
   assert.deepEqual(landProcedureKinds({ open_data: { ulurp_non: "ELURP" } }), ["elurp"]);
   assert.deepEqual(landProcedureKinds({ ulurp_non: "Non-ULURP" }), ["non_ulurp"]);
@@ -387,4 +395,34 @@ test("a sub-threshold land-use gate keeps an otherwise qualified edge in shadow"
   assert.equal(view.shadow_edges.length, 1);
   assert.deepEqual(view.shadow_edges[0].reason, ["held_out_precision_gate"]);
   assert.equal(view.publication_gate.passed, false);
+});
+
+test("graph and UI land-use families share LAND_USE_ACTION_CODE_FAMILY", () => {
+  const southRichmond = landProjects.rows.find((row) => row.project_id === "2025R0222");
+  assert.ok(southRichmond, "warehouse must retain 2025R0222 St. Joseph by the Sea");
+  const graph = landActionKinds(southRichmond);
+  const ui = normalizeLandUseActionType(southRichmond);
+  assert.deepEqual(graph, ui.families);
+  assert.deepEqual(graph, [
+    "special_permit",
+    "certification",
+    "authorization",
+    "legal_document",
+  ]);
+  assert.ok(!graph.includes("landmark"));
+  assert.ok(!graph.includes("landmark_designation"));
+
+  for (const [code, family] of Object.entries(LAND_USE_ACTION_CODE_FAMILY)) {
+    const row = { actions: code };
+    assert.deepEqual(
+      landActionKinds(row),
+      [family],
+      `graph landActionKinds(${code}) must follow LAND_USE_ACTION_CODE_FAMILY`,
+    );
+    assert.deepEqual(
+      normalizeLandUseActionType(row).families,
+      [family],
+      `UI normalizeLandUseActionType(${code}) must follow LAND_USE_ACTION_CODE_FAMILY`,
+    );
+  }
 });

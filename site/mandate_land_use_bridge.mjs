@@ -23,6 +23,7 @@ import {
   claimInspectHref,
   renderWhyBelieveControl,
 } from "./graph_edge_provenance.mjs";
+import { normalizeLandUseActionType } from "./land_use_action_type.mjs";
 import { canonicalizeBrowseUrl } from "./route_migration.mjs";
 import { mandateSubjectRef } from "./mandate_subject_ref.mjs";
 import {
@@ -68,12 +69,13 @@ export function mandateLandUseKinds(mandate = {}) {
   const kinds = new Set();
   if (!/\beffective date of (?:the|this) local law\b/i.test(duty)
     && /\b(?:designat(?:e|es|ed|ion)|calendar(?:ed|ing)?)\b[^.!?]{0,220}\b(?:interior |scenic )?landmarks?\b|\b(?:interior |scenic )?landmarks?\b[^.!?]{0,220}\bdesignat(?:e|es|ed|ion)\b/i.test(duty)) {
-    kinds.add("landmark_designation");
+    kinds.add("landmark");
   }
   if (/\b(?:rezone|rezoning|zoning map amendment|amend(?:ment)? of (?:the )?zoning map)\b/i.test(duty)) {
     kinds.add("rezoning");
   }
-  if (/\b(?:city map change|map change|demap(?:ping)?)\b/i.test(duty)) kinds.add("city_map_change");
+  if (/\bdemap(?:ping)?\b/i.test(duty)) kinds.add("demapping");
+  if (/\b(?:city map change|map change)\b/i.test(duty)) kinds.add("mapping");
   if (/\b(?:special permit|zoning permit)\b/i.test(duty)) kinds.add("special_permit");
   if (/\bsite selection\b/i.test(duty)) kinds.add("site_selection");
   if (/\b(?:site )?acquisition\b/i.test(duty)) kinds.add("acquisition");
@@ -97,18 +99,14 @@ function publisherUlurpNon(row = {}) {
   return clean(row.ulurp_non || row.open_data?.ulurp_non, 40);
 }
 
-/** Publisher action-code → action family. PQ/PC are acquisition, not site selection. */
+/**
+ * Publisher action-code → action family.
+ * Consumes LAND_USE_ACTION_CODE_FAMILY through normalizeLandUseActionType;
+ * do not keep a parallel code→kind table here. LD is legal_document, not
+ * landmark; PQ/PC are acquisition, not site selection.
+ */
 export function landActionKinds(row = {}) {
-  const codes = new Set(clean(row.actions, 160).toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean));
-  const kinds = new Set();
-  if (codes.has("HI") || codes.has("LD")) kinds.add("landmark_designation");
-  if (codes.has("ZM") || codes.has("ZR")) kinds.add("rezoning");
-  if (codes.has("ZS")) kinds.add("special_permit");
-  if (codes.has("MM") || codes.has("DM")) kinds.add("city_map_change");
-  if (codes.has("PS")) kinds.add("site_selection");
-  if (codes.has("PQ") || codes.has("PC")) kinds.add("acquisition");
-  if (codes.has("HA") || codes.has("PP")) kinds.add("disposition");
-  return [...kinds];
+  return normalizeLandUseActionType(row).families;
 }
 
 /** Publisher ulurp_non → review-procedure kind. ELURP is first-class. */
