@@ -7,6 +7,7 @@ import { buildAgencySearchDocuments } from "../site/agency_search_producer.mjs";
 import { buildExamSearchDocuments } from "../site/exam_search_producer.mjs";
 import { buildLandSearchDocuments } from "../site/land_search_producer.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
+import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
 import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 
@@ -77,6 +78,8 @@ const vendorAliases = json("entity_resolution/review/alias_registry.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
 const meetings = json("site/data/shared_meeting_read_model.json");
 const exams = json("site/data/staffing_exams.json");
+const parcels = json("site/data/property_cross_domain_lookup.json");
+const propertyResidents = json("site/data/property_resident_snapshot.json");
 const peopleCorpus = buildPeopleSearchDocuments(people);
 const agencyCorpus = buildAgencySearchDocuments(agencies);
 const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });
@@ -103,6 +106,9 @@ const excludedVendorRoots = (Array.isArray(vendorCorpus.outcomes) ? vendorCorpus
     outcome: row.outcome,
     reason: row.reason || null,
   }));
+const parcelCorpus = buildParcelSearchDocuments(parcels, {
+  residentSnapshot: propertyResidents,
+});
 
 const output = {
   schema: "cityscroll.keyword_search_index.v1",
@@ -113,6 +119,8 @@ const output = {
     land.materialized_at,
     meetings.generated_at,
     exams.generated_at,
+    parcels.generated_at,
+    propertyResidents.generated_at,
   ),
   match_mode: "keyword",
   families: {
@@ -146,6 +154,11 @@ const output = {
       exams.data_current_as_of || exams.generated_at,
       [buildExamSearchDocuments(exams)],
     ),
+    parcels: family(
+      "City property parcels by exact BBL",
+      parcels.generated_at,
+      [parcelCorpus],
+    ),
   },
   build_receipt: {
     source_artifacts: {
@@ -156,6 +169,8 @@ const output = {
       land: "site/data/zap_projects_warehouse_lookup.json",
       meetings: "site/data/shared_meeting_read_model.json",
       exams: "site/data/staffing_exams.json",
+      parcels: "site/data/property_cross_domain_lookup.json",
+      property_residents: "site/data/property_resident_snapshot.json",
     },
     excluded_artifacts: ["worker/src/data/ocp_awards_warehouse_lookup.json"],
     excluded_vendor_roots: excludedVendorRoots,
