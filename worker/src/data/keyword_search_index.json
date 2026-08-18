@@ -6385,21 +6385,21 @@
         }
       ]
     },
-    "people-organizations": {
+    "agencies": {
       "source": "CityScroll agency profiles",
       "as_of": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z",
       "source_row_count": 82,
-      "indexed_count": 81,
+      "indexed_count": 82,
       "coverage": [
         {
           "producer": "agency_search_document.v1",
           "object_type": "agency",
           "domain": "people",
-          "state": "partial",
-          "reason": "some_agency_entries_not_indexed",
+          "state": "matched",
+          "reason": "agency_read_model_indexed",
           "total_count": 82,
-          "indexed_count": 81,
-          "not_indexed_count": 1
+          "indexed_count": 82,
+          "not_indexed_count": 0
         }
       ],
       "documents": [
@@ -6488,6 +6488,40 @@
           "classification": {
             "method": "canonical_agency_read_model",
             "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:board-meetings",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/board-meetings/",
+          "title": "Board Meetings",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Board Meetings board-meetings agency:id:board-meetings meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:board-meetings"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:generic publisher label"
           },
           "provenance": {
             "producer": "agency_search_document.v1",
@@ -8357,7 +8391,7 @@
           "process_role": null,
           "classification": {
             "method": "canonical_agency_read_model",
-            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:distinct MTA operating authority; no parent merge"
           },
           "provenance": {
             "producer": "agency_search_document.v1",
@@ -9105,7 +9139,2815 @@
           "process_role": null,
           "classification": {
             "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:distinct MTA operating authority; no parent merge"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:youth-and-community-development",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/youth-and-community-development/",
+          "title": "Department of Youth and Community Development",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Youth and Community Development youth-and-community-development agency:id:youth-and-community-development Youth and Community Development DEPT OF YOUTH & COMM DEV SRVS vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:youth-and-community-development"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
             "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        }
+      ]
+    },
+    "people-organizations": {
+      "source": "CityScroll agency profiles",
+      "as_of": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z",
+      "source_row_count": 82,
+      "indexed_count": 82,
+      "coverage": [
+        {
+          "producer": "agency_search_document.v1",
+          "object_type": "agency",
+          "domain": "people",
+          "state": "matched",
+          "reason": "agency_read_model_indexed",
+          "total_count": 82,
+          "indexed_count": 82,
+          "not_indexed_count": 0
+        }
+      ],
+      "documents": [
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:administration-for-childrens-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/administration-for-childrens-services/",
+          "title": "Administration for Children's Services",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Administration for Children's Services administration-for-childrens-services agency:id:administration-for-childrens-services ADMIN FOR CHILDREN'S SERVICES ADMIN FOR CHILDRENS SERVICES ADMIN FOR CHILDREN'S SVCS ADMIN FOR CHILDRENS SVCS ADMIN FOR CHILDREN' SVCS vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:administration-for-childrens-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:administrative-trials-and-hearings",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/administrative-trials-and-hearings/",
+          "title": "Office of Administrative Trials and Hearings",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Office of Administrative Trials and Hearings administrative-trials-and-hearings agency:id:administrative-trials-and-hearings Administrative Trials and Hearings office-of-administrative-trials-and-hearings vendors rules staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:administrative-trials-and-hearings"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:aging",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/aging/",
+          "title": "Department for the Aging",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Department for the Aging aging agency:id:aging Aging DEPARTMENT FOR THE AGING vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:aging"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:board-meetings",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/board-meetings/",
+          "title": "Board Meetings",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Board Meetings board-meetings agency:id:board-meetings meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:board-meetings"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:generic publisher label"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:board-of-correction",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/board-of-correction/",
+          "title": "Board of Correction",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Board of Correction board-of-correction agency:id:board-of-correction board-of-corrections meetings rules obligations staffing Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:board-of-correction"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:board-of-elections",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/board-of-elections/",
+          "title": "Board of Elections",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Board of Elections board-of-elections agency:id:board-of-elections BOARD OF ELECTION obligations Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:board-of-elections"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:board-of-standards-and-appeals",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/board-of-standards-and-appeals/",
+          "title": "Board of Standards and Appeals",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Board of Standards and Appeals board-of-standards-and-appeals agency:id:board-of-standards-and-appeals meetings rules Meetings and hearings: related meetings and hearings Rules: issued rule",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:board-of-standards-and-appeals"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:borough-president-bronx",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/borough-president-bronx/",
+          "title": "Office of the Borough President of The Bronx",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Office of the Borough President of The Bronx borough-president-bronx agency:id:borough-president-bronx Borough President - Bronx BOROUGH PRESIDENT-BRONX meetings staffing Meetings and hearings: related meetings and hearings Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:borough-president-bronx"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:borough-president-brooklyn",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/borough-president-brooklyn/",
+          "title": "Office of the Borough President of Brooklyn",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Office of the Borough President of Brooklyn borough-president-brooklyn agency:id:borough-president-brooklyn Borough President - Brooklyn BOROUGH PRESIDENT-BROOKLYN meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:borough-president-brooklyn"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:borough-president-queens",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/borough-president-queens/",
+          "title": "Office of the Borough President of Queens",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Office of the Borough President of Queens borough-president-queens agency:id:borough-president-queens Borough President - Queens BOROUGH PRESIDENT-QUEENS meetings staffing Meetings and hearings: related meetings and hearings Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:borough-president-queens"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:buildings",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/buildings/",
+          "title": "Department of Buildings",
+          "summary": "Agency with public records in 6 connected categories.",
+          "search_text": "Department of Buildings buildings agency:id:buildings Buildings DEPARTMENT OF BUILDINGS contracts vendors meetings rules obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:buildings"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:business-integrity-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/business-integrity-commission/",
+          "title": "Business Integrity Commission",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Business Integrity Commission business-integrity-commission agency:id:business-integrity-commission BUSINESS INTEGRITY COMMISSION vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:business-integrity-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:campaign-finance-board",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/campaign-finance-board/",
+          "title": "Campaign Finance Board",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Campaign Finance Board campaign-finance-board agency:id:campaign-finance-board CAMPAIGN FINANCE BOARD rules obligations Rules: issued rule Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:campaign-finance-board"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:charter-revision-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/charter-revision-commission/",
+          "title": "Charter Revision Commission",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Charter Revision Commission charter-revision-commission agency:id:charter-revision-commission meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:charter-revision-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:chief-medical-examiner",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/chief-medical-examiner/",
+          "title": "Office of the Chief Medical Examiner",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Office of the Chief Medical Examiner chief-medical-examiner agency:id:chief-medical-examiner chief medical examiner office-of-the-chief-medical-examiner vendors Top vendors by award $ (last 12 mo): top vendors by award value",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:chief-medical-examiner"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:city-clerk",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/city-clerk/",
+          "title": "Office of the City Clerk",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Office of the City Clerk city-clerk agency:id:city-clerk City Clerk CITY CLERK rules obligations Rules: issued rule Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:city-clerk"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:city-council",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/city-council/",
+          "title": "New York City Council",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "New York City Council city-council agency:id:city-council City Council CITY COUNCIL contracts meetings obligations Contracts: published by this agency Meetings and hearings: related meetings and hearings Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:city-council"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:city-planning",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/city-planning/",
+          "title": "Department of City Planning",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Department of City Planning city-planning agency:id:city-planning City Planning DEPARTMENT OF CITY PLANNING DCP Department of City Planning vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:city-planning"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:city-planning-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/city-planning-commission/",
+          "title": "City Planning Commission",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "City Planning Commission city-planning-commission agency:id:city-planning-commission meetings rules Meetings and hearings: related meetings and hearings Rules: issued rule",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:city-planning-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:city-university",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/city-university/",
+          "title": "City University of New York",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "City University of New York city-university agency:id:city-university meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:city-university"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:citywide-administrative-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/citywide-administrative-services/",
+          "title": "Department of Citywide Administrative Services",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Department of Citywide Administrative Services citywide-administrative-services agency:id:citywide-administrative-services Citywide Administrative Services dcasdivision-of-municipal-supply-service contracts vendors meetings obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:citywide-administrative-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:civilian-complaint-review-board",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/civilian-complaint-review-board/",
+          "title": "Civilian Complaint Review Board",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Civilian Complaint Review Board civilian-complaint-review-board agency:id:civilian-complaint-review-board CIVILIAN COMPLAINT REVIEW BD vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:civilian-complaint-review-board"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:commission-on-human-rights",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/commission-on-human-rights/",
+          "title": "City Commission on Human Rights",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "City Commission on Human Rights commission-on-human-rights agency:id:commission-on-human-rights Commission on Human Rights HUMAN RIGHTS COMMISSION vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:commission-on-human-rights"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:commission-on-racial-equity",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/commission-on-racial-equity/",
+          "title": "Commission on Racial Equity",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Commission on Racial Equity commission-on-racial-equity agency:id:commission-on-racial-equity COMMISSION ON RACIAL EQUITY OFFICE OF RACIAL EQUITY obligations Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:commission-on-racial-equity"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:community-boards",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/community-boards/",
+          "title": "Community Boards",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Community Boards community-boards agency:id:community-boards meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:community-boards"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:comptroller",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/comptroller/",
+          "title": "Office of the New York City Comptroller",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Office of the New York City Comptroller comptroller agency:id:comptroller Comptroller OFFICE OF THE COMPTROLLER vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:comptroller"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:consumer-and-worker-protection",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/consumer-and-worker-protection/",
+          "title": "Department of Consumer and Worker Protection",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Department of Consumer and Worker Protection consumer-and-worker-protection agency:id:consumer-and-worker-protection Consumer and Worker Protection CONSUMER AFFAIRS CONSUMER AND WORKER PROTECTION Department of Consumer Affairs vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:consumer-and-worker-protection"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:correction",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/correction/",
+          "title": "Department of Correction",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Correction correction agency:id:correction Correction DEPARTMENT OF CORRECTION vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:correction"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:criminal-justice-coordinator",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/criminal-justice-coordinator/",
+          "title": "Criminal Justice Coordinator",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Criminal Justice Coordinator criminal-justice-coordinator agency:id:criminal-justice-coordinator CRIMINAL JUSTICE COORDINATOR OFFICE OF CRIMINAL JUSTICE obligations Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:criminal-justice-coordinator"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:cultural-affairs",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/cultural-affairs/",
+          "title": "Department of Cultural Affairs",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Department of Cultural Affairs cultural-affairs agency:id:cultural-affairs Cultural Affairs CULTURAL AFFAIRS vendors obligations Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:cultural-affairs"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:design-and-construction",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/design-and-construction/",
+          "title": "Department of Design and Construction",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Design and Construction design-and-construction agency:id:design-and-construction Design and Construction DESIGN AND CONSTRUCTION DESIGN & CONSTRUCTION DEPT. OF DESIGN & CONSTRUCTION contracts vendors staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:design-and-construction"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:district-attorney-bronx-county",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/district-attorney-bronx-county/",
+          "title": "Bronx District Attorney's Office",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Bronx District Attorney's Office district-attorney-bronx-county agency:id:district-attorney-bronx-county District Attorney - Bronx County BRONX DISTRICT ATTORNEY Bronx County District Attorney's Office staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:district-attorney-bronx-county"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:district-attorney-kings-county",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/district-attorney-kings-county/",
+          "title": "Brooklyn District Attorney's Office",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Brooklyn District Attorney's Office district-attorney-kings-county agency:id:district-attorney-kings-county District Attorney - Kings County DISTRICT ATTORNEY KINGS COUNTY Kings County District Attorney's Office staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:district-attorney-kings-county"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:district-attorney-new-york-county",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/district-attorney-new-york-county/",
+          "title": "Manhattan District Attorney's Office",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Manhattan District Attorney's Office district-attorney-new-york-county agency:id:district-attorney-new-york-county District Attorney - New York County DISTRICT ATTORNEY-MANHATTAN New York County District Attorney's Office vendors staffing Top vendors by award $ (last 12 mo): top vendors by award value Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:district-attorney-new-york-county"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:district-attorney-queens-county",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/district-attorney-queens-county/",
+          "title": "Queens District Attorney's Office",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Queens District Attorney's Office district-attorney-queens-county agency:id:district-attorney-queens-county District Attorney - Queens County DISTRICT ATTORNEY QNS COUNTY Queens County District Attorney's Office staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:district-attorney-queens-county"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:district-attorney-richmond-county",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/district-attorney-richmond-county/",
+          "title": "Staten Island District Attorney's Office",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Staten Island District Attorney's Office district-attorney-richmond-county agency:id:district-attorney-richmond-county District Attorney - Richmond County DISTRICT ATTORNEY RICHMOND COU Richmond County District Attorney's Office staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:district-attorney-richmond-county"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:economic-development-corporation",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/economic-development-corporation/",
+          "title": "Economic Development Corporation",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Economic Development Corporation economic-development-corporation agency:id:economic-development-corporation contracts Contracts: published by this agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:economic-development-corporation"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:education",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/education/",
+          "title": "New York City Public Schools",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "New York City Public Schools education agency:id:education Education contracts vendors obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:education"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:emergency-management",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/emergency-management/",
+          "title": "New York City Emergency Management",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "New York City Emergency Management emergency-management agency:id:emergency-management Emergency Management vendors obligations Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:emergency-management"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:employees-retirement-system",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/employees-retirement-system/",
+          "title": "Employees' Retirement System",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Employees' Retirement System employees-retirement-system agency:id:employees-retirement-system nyc-employees-retirement-system vendors staffing Top vendors by award $ (last 12 mo): top vendors by award value Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:employees-retirement-system"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:environmental-protection",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/environmental-protection/",
+          "title": "Department of Environmental Protection",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Department of Environmental Protection environmental-protection agency:id:environmental-protection Environmental Protection DEPT OF ENVIRONMENT PROTECTION contracts vendors rules obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:environmental-protection"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:equal-employment-practices-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/equal-employment-practices-commission/",
+          "title": "Equal Employment Practices Commission",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Equal Employment Practices Commission equal-employment-practices-commission agency:id:equal-employment-practices-commission meetings staffing Meetings and hearings: related meetings and hearings Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:equal-employment-practices-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:finance",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/finance/",
+          "title": "Department of Finance",
+          "summary": "Agency with public records in 6 connected categories.",
+          "search_text": "Department of Finance finance agency:id:finance Finance DEPARTMENT OF FINANCE contracts vendors meetings rules obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:finance"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:financial-information-services-agency",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/financial-information-services-agency/",
+          "title": "Financial Information Services Agency",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Financial Information Services Agency financial-information-services-agency agency:id:financial-information-services-agency FINANCIAL INFO SVCS AGENCY vendors staffing Top vendors by award $ (last 12 mo): top vendors by award value Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:financial-information-services-agency"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:fire-department",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/fire-department/",
+          "title": "Fire Department of the City of New York",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Fire Department of the City of New York fire-department agency:id:fire-department Fire Department FIRE DEPARTMENT vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:fire-department"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:health-and-mental-hygiene",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/health-and-mental-hygiene/",
+          "title": "Department of Health and Mental Hygiene",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Department of Health and Mental Hygiene health-and-mental-hygiene agency:id:health-and-mental-hygiene Health and Mental Hygiene DEPT OF HEALTH/MENTAL HYGIENE DEPT OF MH MR AND ALC SVCS vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:health-and-mental-hygiene"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:homeless-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/homeless-services/",
+          "title": "Department of Homeless Services",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Department of Homeless Services homeless-services agency:id:homeless-services Homeless Services DEPT. OF HOMELESS SERVICES contracts vendors obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:homeless-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:housing-authority",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/housing-authority/",
+          "title": "New York City Housing Authority",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "New York City Housing Authority housing-authority agency:id:housing-authority Housing Authority n-y-c-housing-authority contracts meetings staffing Contracts: published by this agency Meetings and hearings: related meetings and hearings Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:housing-authority"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:housing-preservation-and-development",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/housing-preservation-and-development/",
+          "title": "Department of Housing Preservation and Development",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Department of Housing Preservation and Development housing-preservation-and-development agency:id:housing-preservation-and-development Housing Preservation and Development HOUSING PRESERVATION & DVLPMNT HPD - NYC Dept of Housing Preservation & Development HPD - NYC Dept of Housing Preservation and Development vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:housing-preservation-and-development"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:human-resources-administration",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/human-resources-administration/",
+          "title": "Human Resources Administration",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Human Resources Administration human-resources-administration agency:id:human-resources-administration hra-department-of-social-services vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:human-resources-administration"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:independent-budget-office",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/independent-budget-office/",
+          "title": "Independent Budget Office",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Independent Budget Office independent-budget-office agency:id:independent-budget-office INDEPENDENT BUDGET OFFICE meetings obligations Meetings and hearings: related meetings and hearings Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:independent-budget-office"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:information-technology-and-telecommunications",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/information-technology-and-telecommunications/",
+          "title": "Office of Technology and Innovation",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Office of Technology and Innovation information-technology-and-telecommunications agency:id:information-technology-and-telecommunications Information Technology and Telecommunications DEPT OF INFO TECH & TELECOMM TECHNOLOGY & INNOVATION Office of Technology & Innovation Department of Information Technology and Telecommunications vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:information-technology-and-telecommunications"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:investigation",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/investigation/",
+          "title": "Department of Investigation",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Investigation investigation agency:id:investigation Investigation DEPARTMENT OF INVESTIGATION vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:investigation"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:landmarks-preservation-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/landmarks-preservation-commission/",
+          "title": "Landmarks Preservation Commission",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Landmarks Preservation Commission landmarks-preservation-commission agency:id:landmarks-preservation-commission LANDMARKS PRESERVATION COMM LPC - NYC Landmarks Preservation Commission vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:landmarks-preservation-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:law-department",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/law-department/",
+          "title": "New York City Law Department",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "New York City Law Department law-department agency:id:law-department Law Department LAW DEPARTMENT vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:law-department"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:management-and-budget",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/management-and-budget/",
+          "title": "Mayor's Office of Management and Budget",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Mayor's Office of Management and Budget management-and-budget agency:id:management-and-budget Management and Budget OFFICE OF MANAGEMENT AND BUDGET OFFICE OF MANAGEMENT & BUDGET vendors obligations Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:management-and-budget"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:mayors-office-of-contract-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/mayors-office-of-contract-services/",
+          "title": "Mayor's Office of Contract Services",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "Mayor's Office of Contract Services mayors-office-of-contract-services agency:id:mayors-office-of-contract-services office-of-contract-services vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:mayors-office-of-contract-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:mayors-office-of-criminal-justice",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/mayors-office-of-criminal-justice/",
+          "title": "Mayor's Office of Criminal Justice",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Mayor's Office of Criminal Justice mayors-office-of-criminal-justice agency:id:mayors-office-of-criminal-justice mayors office of criminal justice office-of-criminal-justice-002 vendors Top vendors by award $ (last 12 mo): top vendors by award value",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:mayors-office-of-criminal-justice"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:n-y-c-transit-authority",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/n-y-c-transit-authority/",
+          "title": "N.Y.C. Transit Authority",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "N.Y.C. Transit Authority n-y-c-transit-authority agency:id:n-y-c-transit-authority staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:n-y-c-transit-authority"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:distinct MTA operating authority; no parent merge"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:new-york-city-police-pension-fund",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/new-york-city-police-pension-fund/",
+          "title": "New York City Police Pension Fund",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "New York City Police Pension Fund new-york-city-police-pension-fund agency:id:new-york-city-police-pension-fund new york city police pension fund nyc-police-pension-fund staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:new-york-city-police-pension-fund"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:nyc-department-of-veterans-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/nyc-department-of-veterans-services/",
+          "title": "Department of Veterans' Services",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Veterans' Services nyc-department-of-veterans-services agency:id:nyc-department-of-veterans-services NYC Department of Veterans' Services NYC DEPT OF VETERANS SERVICES NYC DEPT OF VETERANS' SERVICES Veterans' Services vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:nyc-department-of-veterans-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:nyc-health-hospitals",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/nyc-health-hospitals/",
+          "title": "NYC Health + Hospitals",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "NYC Health + Hospitals nyc-health-hospitals agency:id:nyc-health-hospitals nyc health hospitals nyc-health-and-hospitals-corporation contracts staffing Contracts: published by this agency Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:nyc-health-hospitals"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:office-of-collective-bargaining",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/office-of-collective-bargaining/",
+          "title": "Office of Collective Bargaining",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Office of Collective Bargaining office-of-collective-bargaining agency:id:office-of-collective-bargaining OFFICE OF COLLECTIVE BARGAININ obligations Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:office-of-collective-bargaining"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:office-of-labor-relations",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/office-of-labor-relations/",
+          "title": "Office of Labor Relations",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Office of Labor Relations office-of-labor-relations agency:id:office-of-labor-relations OFFICE OF LABOR RELATIONS vendors meetings staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:office-of-labor-relations"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:office-of-special-narcotics-prosecutor",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/office-of-special-narcotics-prosecutor/",
+          "title": "Office of the Special Narcotics Prosecutor",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Office of the Special Narcotics Prosecutor office-of-special-narcotics-prosecutor agency:id:office-of-special-narcotics-prosecutor Office of Special Narcotics Prosecutor district-attorney-special-narcotics vendors staffing Top vendors by award $ (last 12 mo): top vendors by award value Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:office-of-special-narcotics-prosecutor"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:office-of-the-mayor",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/office-of-the-mayor/",
+          "title": "Office of the Mayor",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Office of the Mayor office-of-the-mayor agency:id:office-of-the-mayor mayoralty vendors rules obligations Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:office-of-the-mayor"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:parks-and-recreation",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/parks-and-recreation/",
+          "title": "Department of Parks and Recreation",
+          "summary": "Agency with public records in 6 connected categories.",
+          "search_text": "Department of Parks and Recreation parks-and-recreation agency:id:parks-and-recreation Parks and Recreation DEPT OF PARKS & RECREATION DPR - Department of Parks & Recreation NYC DPR - Department of Parks and Recreation NYC contracts vendors meetings rules obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:parks-and-recreation"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:payroll-administration",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/payroll-administration/",
+          "title": "Office of Payroll Administration",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Office of Payroll Administration payroll-administration agency:id:payroll-administration Payroll Administration office-of-payroll-administration staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:payroll-administration"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:police-department",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/police-department/",
+          "title": "New York City Police Department",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "New York City Police Department police-department agency:id:police-department Police Department new-york-city-police-department contracts vendors meetings obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:police-department"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:probation",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/probation/",
+          "title": "Department of Probation",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Probation probation agency:id:probation Probation DEPARTMENT OF PROBATION vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:probation"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:public-advocate",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/public-advocate/",
+          "title": "Office of the Public Advocate",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Office of the Public Advocate public-advocate agency:id:public-advocate Public Advocate PUBLIC ADVOCATE obligations Mandates: statutory mandates",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:public-advocate"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:public-design-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/public-design-commission/",
+          "title": "Public Design Commission",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Public Design Commission public-design-commission agency:id:public-design-commission Art Commission meetings Meetings and hearings: related meetings and hearings",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:public-design-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:records-and-information-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/records-and-information-services/",
+          "title": "Department of Records and Information Services",
+          "summary": "Agency with public records in 3 connected categories.",
+          "search_text": "Department of Records and Information Services records-and-information-services agency:id:records-and-information-services Records and Information Services DEPT OF RECORDS & INFO SERVICE vendors obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:records-and-information-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:rent-guidelines-board",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/rent-guidelines-board/",
+          "title": "Rent Guidelines Board",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Rent Guidelines Board rent-guidelines-board agency:id:rent-guidelines-board meetings rules Meetings and hearings: related meetings and hearings Rules: issued rule",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:rent-guidelines-board"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:sanitation",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/sanitation/",
+          "title": "New York City Department of Sanitation",
+          "summary": "Agency with public records in 6 connected categories.",
+          "search_text": "New York City Department of Sanitation sanitation agency:id:sanitation Sanitation DEPARTMENT OF SANITATION contracts vendors meetings rules obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:sanitation"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:small-business-services",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/small-business-services/",
+          "title": "Department of Small Business Services",
+          "summary": "Agency with public records in 4 connected categories.",
+          "search_text": "Department of Small Business Services small-business-services agency:id:small-business-services Small Business Services DEPARTMENT OF BUSINESS SERV. Department of Business Services DEPARTMENT OF SMALL BUSINESS SERVICES vendors rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:small-business-services"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:tax-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/tax-commission/",
+          "title": "New York City Tax Commission",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "New York City Tax Commission tax-commission agency:id:tax-commission Tax Commission TAX COMMISSION obligations staffing Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:tax-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:taxi-and-limousine-commission",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/taxi-and-limousine-commission/",
+          "title": "New York City Taxi and Limousine Commission",
+          "summary": "Agency with public records in 5 connected categories.",
+          "search_text": "New York City Taxi and Limousine Commission taxi-and-limousine-commission agency:id:taxi-and-limousine-commission Taxi and Limousine Commission TAXI & LIMOUSINE COMMISSION vendors meetings rules obligations staffing Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:taxi-and-limousine-commission"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:teachers-retirement-system",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/teachers-retirement-system/",
+          "title": "Teachers' Retirement System of City of New York",
+          "summary": "Agency with public records in 2 connected categories.",
+          "search_text": "Teachers' Retirement System of City of New York teachers-retirement-system agency:id:teachers-retirement-system Teachers' Retirement System TEACHERS RETIREMENT SYSTEM meetings staffing Meetings and hearings: related meetings and hearings Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:teachers-retirement-system"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:transportation",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/transportation/",
+          "title": "New York City Department of Transportation",
+          "summary": "Agency with public records in 6 connected categories.",
+          "search_text": "New York City Department of Transportation transportation agency:id:transportation Transportation DEPARTMENT OF TRANSPORTATION NYC DOT Department of Transportation NYC Department of Transportation contracts vendors meetings rules obligations staffing Contracts: published by this agency Top vendors by award $ (last 12 mo): top vendors by award value Meetings and hearings: related meetings and hearings Rules: issued rule Mandates: statutory mandates Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:transportation"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:canonical identity retained by the agency constellation read model"
+          },
+          "provenance": {
+            "producer": "agency_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+              "certification_generated_at": "2026-08-06T00:00:00Z",
+              "obligations_generated_at": "2026-08-07T23:52:53.226Z",
+              "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",
+              "vendor_rollup_as_of": "2026-08-05",
+              "vendor_rollup_window_start": "2025-08-05",
+              "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed."
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "agency:id:triborough-bridge-and-tunnel-authority",
+          "object_type": "agency",
+          "domain": "people",
+          "canonical_href": "/agencies/triborough-bridge-and-tunnel-authority/",
+          "title": "Triborough Bridge and Tunnel Authority",
+          "summary": "Agency with public records in 1 connected category.",
+          "search_text": "Triborough Bridge and Tunnel Authority triborough-bridge-and-tunnel-authority agency:id:triborough-bridge-and-tunnel-authority Triborough Bridge And Tunnel Authority staffing Staffing exams: certified to the agency",
+          "source_family": "agency_constellation",
+          "source_observation_refs": [
+            "agency_constellation:triborough-bridge-and-tunnel-authority"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_agency_read_model",
+            "basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1:distinct MTA operating authority; no parent merge"
           },
           "provenance": {
             "producer": "agency_search_document.v1",

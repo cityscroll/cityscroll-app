@@ -148,7 +148,7 @@ test("GET /search/candidates stays separate from the six-family keyword response
     const lexical = await lexicalResponse.json();
     assert.equal(lexical.schema, "cityscroll.keyword_search_response.v1");
     assert.equal(lexical.match_mode, "keyword");
-    assert.equal(lexical.lanes.length, 7);
+    assert.equal(lexical.lanes.length, 9);
     assert.ok(Array.isArray(lexical.results));
     assert.equal(Object.hasOwn(lexical, "candidates"), false);
   } finally {

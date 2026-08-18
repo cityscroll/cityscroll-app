@@ -157,7 +157,7 @@ test("all reviewed constellation-only routes have an explicit non-fuzzy disposit
         classification,
         AGENCY_ROUTE_CLASSIFICATIONS.filter((row) => row.classification === classification).length,
       ])),
-    { alias_to_canonical: 15, legitimate_non_crosswalk_entity: 4, unresolved: 1 },
+    { alias_to_canonical: 16, legitimate_non_crosswalk_entity: 4, unresolved: 0 },
   );
 });
 
@@ -743,9 +743,9 @@ test("lookup materialization includes Parks multi-category demo when built", () 
   const report = JSON.parse(readFileSync(join(ROOT, "site/data/agency_route_identity_report.json"), "utf8"));
   assert.equal(report.constellation_only_source_count, 22);
   assert.deepEqual(report.classification_counts, {
-    alias_to_canonical: 15,
+    alias_to_canonical: 16,
     legitimate_non_crosswalk_entity: 4,
-    unresolved: 3,
+    unresolved: 2,
   });
   assert.equal(report.cases.length, 22);
   assert.ok(report.cases.every((row) => row.classification && row.basis));
