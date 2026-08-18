@@ -2,6 +2,11 @@ name: Architecture reconciliation
 
 on:
   pull_request:
+    # architecture/observer-canaries.json is the single registration. This
+    # filter must cover every listed path so a canary change fires CI.
+    # site/** and tools/build_*.mjs keep search, constellation, and
+    # materializer canaries on the trigger. Proof:
+    # test/architecture_path_coverage.test.mjs
     paths:
       - "ARCHITECTURE.md"
       - "architecture/**"
@@ -9,10 +14,11 @@ on:
       - "docs/architecture.md"
       - "entity_resolution/**"
       - "ontology/**"
+      - "site/**"
       - "warehouse/**"
       - "worker/**"
-      - "tools/build_architecture_facts.mjs"
-      - "tools/architecture_watermark.mjs"
+      - "tools/build_*.mjs"
+      - "tools/architecture_*.mjs"
       - "tools/reconcile_architecture.mjs"
       - ".github/workflows/architecture-reconciliation.yml"
   merge_group:
