@@ -110,7 +110,7 @@ test("every current browse lens preserves its existing route grammar", () => {
   const routes = [
     "#money?mode=award&agency=Buildings&q=roofing&sort=amount&min=1000000&max=5000000&category=Construction&months=3&standard=1&m=sealed_bid",
     "#people?view=guide&interest=technology&eligibility=promotion&window=open&format=mixed&salary=80k_plus&fee=none&experience=yes",
-    "#land?boro=Queens&cd=Q04&council=25&q=rezoning&status=hearings&attendance=in_person",
+    "#land?boro=Queens&cd=Q04&council=25&q=rezoning&stage=public_review&future=hearing&attendance=in_person",
     "#property?agency=DCAS&q=auction&boro=Bronx&neighborhood=Morrisania&cd=X03&asset=vehicle&method=online_auction&price=priced&sort=price_desc&process=auction_or_rfp&stage=open&view=tax-lien",
     "#property?council=25",
     "#rules?agency=Buildings&q=energy&process=public_process&scope=citywide",
@@ -120,6 +120,29 @@ test("every current browse lens preserves its existing route grammar", () => {
     const surface = hash.slice(1).split("?", 1)[0];
     assert.equal(routeHashFromScope(scopeFromRouteHash(hash), { surface }), hash, hash);
   }
+});
+
+test("Zoning stage and future action survive Browse, Near-you, and watch adapters", () => {
+  const original = "#land?boro=Queens&stage=community_board&future=hearing";
+  const scope = scopeFromRouteHash(original);
+  assert.equal(scope.facets.values.stage, "community_board");
+  assert.equal(scope.facets.values.futureAction, "hearing");
+  assert.equal(routeHashFromScope(scope, { surface: "land" }), original);
+
+  const mapHash = routeHashFromScope(scope, { surface: "map" });
+  const nowHash = routeHashFromScope(scope, { surface: "now" });
+  assert.equal(routeHashFromScope(scopeFromRouteHash(mapHash), { surface: "land" }), original);
+  assert.equal(routeHashFromScope(scopeFromRouteHash(nowHash), { surface: "land" }), original);
+
+  const watch = watchFromScope(scope, { lens: "land" });
+  assert.equal(watch.filter.stage, "community_board");
+  assert.equal(watch.filter.futureAction, "hearing");
+  assert.equal(routeHashFromScope(scopeFromWatch(watch), { surface: "land" }), original);
+});
+
+test("legacy Zoning status URLs remain lossless at the scope boundary", () => {
+  const legacy = "#land?status=public%3AIn+Public+Review";
+  assert.equal(routeHashFromScope(scopeFromRouteHash(legacy), { surface: "land" }), legacy);
 });
 
 test("map adapts selected place, basis, and viewport without becoming a second store", () => {

@@ -117,6 +117,9 @@ def main() -> None:
                 })"""
             )
             assert page.locator("#lstatus").input_value() == "all"
+            assert page.locator("#lstage").input_value() == "any"
+            assert page.locator("#lfuture").input_value() == "any"
+            assert "boro=" not in page.url
             context.close()
             browser.close()
     finally:

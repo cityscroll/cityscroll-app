@@ -107,6 +107,17 @@ test("lens list state → matching filter prefill (meetings with boro)", () => {
   assert.deepEqual(scope.filter.keywords, ["dining"]);
 });
 
+test("Zoning list state carries stage and future action into Following", () => {
+  const scope = alertScopeFromLensState("land", {
+    status: "all",
+    stage: "public_review",
+    futureAction: "hearing",
+  });
+  const parsed = parseAlertsEntryParams(alertsHref(scope));
+  assert.equal(parsed.filter.stage, "public_review");
+  assert.equal(parsed.filter.futureAction, "hearing");
+});
+
 test("lens list state preserves typed route facets in the standing watch", () => {
   const facet = {
     entity_refs_all: ["agency:id:housing-preservation-and-development"],

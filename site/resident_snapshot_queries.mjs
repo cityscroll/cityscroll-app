@@ -1,4 +1,13 @@
 import { vendorStem } from "./vendor_stem.mjs";
+import {
+  landActionEvidenceByProject,
+  landActionsMatchFutureFilter,
+  landFutureActionsByProject,
+  landRowMatchesStage,
+  landRowWithActionEvidence,
+  normalizeLandFutureAction,
+  normalizeLandStage,
+} from "./land_status_facets.mjs";
 
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
@@ -149,6 +158,10 @@ export function bblsForProject(bblRows, projectId) {
 
 export function filterLandSnapshot(rows, {
   status = "active",
+  stage = null,
+  futureAction = "any",
+  actionRows = [],
+  today,
   borough = "",
   keyword = "",
   communityDistrict = "",
@@ -159,13 +172,25 @@ export function filterLandSnapshot(rows, {
   const query = residentSnapshotLower(keyword);
   const ids = projectIds ? new Set(projectIds) : null;
   const statusMatch = String(status || "active").match(/^(project|public):(.*)$/);
-  return (Array.isArray(rows) ? rows : []).filter((row) => {
+  const selectedStage = stage == null
+    ? (status === "active" ? "active" : "any")
+    : normalizeLandStage(stage, "any");
+  const selectedFutureAction = status === "hearings"
+    ? "hearing"
+    : normalizeLandFutureAction(futureAction);
+  const actionsByProject = landFutureActionsByProject(actionRows, { today });
+  const evidenceByProject = landActionEvidenceByProject(actionRows);
+  const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     if (row?.ulurp_non && row.ulurp_non !== "ULURP") return false;
     if (status === "active" && residentSnapshotClean(row?.project_status) !== "Active") return false;
     if (statusMatch) {
       const field = statusMatch[1] === "project" ? "project_status" : "public_status";
       if (residentSnapshotClean(row?.[field]) !== residentSnapshotClean(statusMatch[2])) return false;
     }
+    const actions = actionsByProject.get(residentSnapshotClean(row?.project_id)) || [];
+    const evidence = evidenceByProject.get(residentSnapshotClean(row?.project_id)) || [];
+    if (!landRowMatchesStage(landRowWithActionEvidence(row, evidence, { today }), selectedStage)) return false;
+    if (!landActionsMatchFutureFilter(actions, selectedFutureAction)) return false;
     if (borough && residentSnapshotClean(row?.borough) !== residentSnapshotClean(borough)) return false;
     if (communityDistrict && !residentSnapshotClean(row?.community_district).includes(residentSnapshotClean(communityDistrict))) return false;
     if (councilDistrict) {
@@ -176,8 +201,29 @@ export function filterLandSnapshot(rows, {
     if (ids && !ids.has(row?.project_id)) return false;
     if (query && !residentSnapshotRowText(row).includes(query)) return false;
     return true;
-  }).sort((left, right) => String(right?.current_milestone_date || "").localeCompare(String(left?.current_milestone_date || "")))
-    .slice(0, limit);
+  }).map((row) => {
+    const actions = actionsByProject.get(residentSnapshotClean(row?.project_id)) || [];
+    const evidence = evidenceByProject.get(residentSnapshotClean(row?.project_id)) || [];
+    const matchingActions = selectedFutureAction === "hearing"
+      ? actions.filter((action) => action.action_kind === "hearing")
+      : selectedFutureAction === "other"
+        ? actions.filter((action) => action.action_kind !== "hearing")
+        : selectedFutureAction === "none" ? [] : actions;
+    return {
+      ...landRowWithActionEvidence(row, evidence, { today }),
+      _future_actions: actions,
+      _next_action: matchingActions[0] || null,
+    };
+  });
+  selected.sort((left, right) => {
+    if (selectedFutureAction !== "any") {
+      return String(left?._next_action?.action_date || "9999-12-31")
+        .localeCompare(String(right?._next_action?.action_date || "9999-12-31"))
+        || String(right?.current_milestone_date || "").localeCompare(String(left?.current_milestone_date || ""));
+    }
+    return String(right?.current_milestone_date || "").localeCompare(String(left?.current_milestone_date || ""));
+  });
+  return selected.slice(0, limit);
 }
 
 export function staffingRolesFromExamples(examples, keyword, limit = 40) {

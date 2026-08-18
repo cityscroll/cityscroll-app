@@ -55,7 +55,7 @@ const WATCH_SCOPE_VALUE_KEYS = new Set([
   "councilDistrict", "council", "neighborhood", "locationScope", "dateWindow", "when",
   "months", "action", "actions", "minAmount", "maxAmount", "category", "mode",
   "noticeType", "excludeSpecial", "nearMe", "asset", "saleMethod", "method", "priceBand",
-  "sort", "process", "stage", "status", "group", "result_count_receipt",
+  "sort", "process", "stage", "status", "futureAction", "group", "result_count_receipt",
 ]);
 
 function scopeValuesFromLensState(state) {
@@ -238,12 +238,16 @@ export function alertScopeFromLensState(lens, state) {
   }
   if (L === "land") {
     const kw = s.keywords || (s.q ? [String(s.q).toLowerCase().trim()].filter(Boolean) : []);
+    const stage = s.stage && !["active", "any"].includes(s.stage) ? String(s.stage) : null;
+    const futureAction = s.futureAction && s.futureAction !== "any" ? String(s.futureAction) : null;
     return {
       lens: "land",
       filter: {
         keywords: kw,
         status: s.status === "all" ? "all" : "active",
         ...scopeValuesFromLensState(s),
+        ...(stage ? { stage } : {}),
+        ...(futureAction ? { futureAction } : {}),
         ...(s.boro ? { boro: s.boro } : {}),
       },
       digKind: "rezone",
