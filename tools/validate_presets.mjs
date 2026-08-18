@@ -166,7 +166,7 @@ async function countScenarioHash(hash) {
     });
   }
   if (lens === "land") {
-    const queryParams = { "$select": "count(1) as n", "$where": "ulurp_non='ULURP'" };
+    const queryParams = { "$select": "count(1) as n", "$where": "ulurp_non IN ('ULURP','ELURP')" };
     if (keyword) queryParams["$q"] = keyword;
     return countQuery(ZAP, queryParams);
   }

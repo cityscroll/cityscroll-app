@@ -130,7 +130,7 @@ test("LA4/LA8 topology observer stays blind to the land-collapse surfaces", () =
   assert.equal(observeLandActionCollapse(loaded.collapsed).status, "drift");
 });
 
-test("filterLandSnapshot dropping ELURP while the map keeps it is map/list drift", () => {
+test("default filterLandSnapshot admits map-counted ELURP; dropping it remains map/list drift", () => {
   const rows = [
     {
       project_id: "2026R0127",
@@ -148,10 +148,15 @@ test("filterLandSnapshot dropping ELURP while the map keeps it is map/list drift
   const list = filterLandSnapshot(rows, { status: "all", stage: "any", limit: 40 })
     .map((row) => row.project_id);
   const map = rows.map((row) => row.project_id);
-  const report = observeLandActionCollapse({ land_ids: { map, list } });
-  assert.deepEqual(list, ["2026R0127"]);
-  assert.equal(report.status, "drift");
-  assert.ok(report.findings.some((item) => (
+  const live = observeLandActionCollapse({ land_ids: { map, list } });
+  assert.deepEqual(list.slice().sort(), ["2024Q0356", "2026R0127"]);
+  assert.equal(live.status, "healthy");
+
+  const dropped = observeLandActionCollapse({
+    land_ids: { map, list: ["2026R0127"] },
+  });
+  assert.equal(dropped.status, "drift");
+  assert.ok(dropped.findings.some((item) => (
     item.type === LAND_ACTION_COLLAPSE_FINDINGS.MAP_LIST_PROCEDURE_DIVERGENCE
     && item.map_only.includes("2024Q0356")
   )));

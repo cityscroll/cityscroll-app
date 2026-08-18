@@ -72,6 +72,13 @@ test("Land snapshot resolves blocks and exact project BBLs without source egress
   ];
   assert.deepEqual(filterLandSnapshot(projects, { status: "active", borough: "Manhattan" }).map((row) => row.project_id), ["P1"]);
   assert.deepEqual(filterLandSnapshot(projects, { status: "project:On-Hold" }).map((row) => row.project_id), ["P2"]);
+  const mixed = [
+    ...projects,
+    { project_id: "P3", project_status: "Active", ulurp_non: "ELURP", borough: "Bronx", project_name: "Powers" },
+    { project_id: "P4", project_status: "Active", ulurp_non: "Non-ULURP", borough: "Queens", project_name: "Authorization" },
+  ];
+  assert.deepEqual(filterLandSnapshot(mixed, { status: "active" }).map((row) => row.project_id).sort(), ["P1", "P3"]);
+  assert.deepEqual(filterLandSnapshot(mixed, { status: "active", procedure: "ulurp" }).map((row) => row.project_id), ["P1"]);
 });
 
 test("Land stage and future-action facets combine and sort by the nearest action", () => {

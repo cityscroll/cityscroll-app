@@ -76,6 +76,9 @@ test("land → ZAP query (project_id diff), place alias applied", () => {
   assert.equal(q.idField, "project_id");
   assert.match(q.url, /hgx4-8ukb/);
   assert.equal(q.params["$q"], "Allen Street"); // alias mapped
+  assert.equal(q.params["$where"], "ulurp_non IN ('ULURP','ELURP')");
+  const ulurpOnly = compileSub({ lens: "land", filter: { procedure: "ulurp", status: "all" } }, "2026-06-30");
+  assert.equal(ulurpOnly.params["$where"], "ulurp_non='ULURP'");
 });
 
 test("rules → City Record section query with agency + $q", () => {

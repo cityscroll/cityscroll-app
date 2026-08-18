@@ -8,6 +8,13 @@ import {
   normalizeLandFutureAction,
   normalizeLandStage,
 } from "./land_status_facets.mjs";
+import {
+  DEFAULT_LAND_PROCEDURE,
+  landObservedDates,
+  landRowMatchesProcedure,
+  normalizeLandProcedure,
+  resolveLandProcedure,
+} from "./land_procedure_facet.mjs";
 
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
@@ -160,6 +167,7 @@ export function filterLandSnapshot(rows, {
   status = "active",
   stage = null,
   futureAction = "any",
+  procedure = DEFAULT_LAND_PROCEDURE,
   actionRows = [],
   today,
   borough = "",
@@ -178,10 +186,11 @@ export function filterLandSnapshot(rows, {
   const selectedFutureAction = status === "hearings"
     ? "hearing"
     : normalizeLandFutureAction(futureAction);
+  const selectedProcedure = normalizeLandProcedure(procedure);
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
-    if (row?.ulurp_non && row.ulurp_non !== "ULURP") return false;
+    if (!landRowMatchesProcedure(row, selectedProcedure)) return false;
     if (status === "active" && residentSnapshotClean(row?.project_status) !== "Active") return false;
     if (statusMatch) {
       const field = statusMatch[1] === "project" ? "project_status" : "public_status";
@@ -209,8 +218,11 @@ export function filterLandSnapshot(rows, {
       : selectedFutureAction === "other"
         ? actions.filter((action) => action.action_kind !== "hearing")
         : selectedFutureAction === "none" ? [] : actions;
+    const effective = landRowWithActionEvidence(row, evidence, { today });
     return {
-      ...landRowWithActionEvidence(row, evidence, { today }),
+      ...effective,
+      _procedure: resolveLandProcedure(effective),
+      _observed_dates: landObservedDates(effective, evidence),
       _future_actions: actions,
       _next_action: matchingActions[0] || null,
     };
