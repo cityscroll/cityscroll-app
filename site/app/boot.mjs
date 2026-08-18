@@ -361,6 +361,28 @@ function currentLensFilterState(tab){
       when: landClosingWeek ? ["closing", "week"].join(":") : "",
     });
   }
+  if(tab === "people" || tab === "exams"){
+    // Exams Follow/share: retain multi-interest + eligibility with the guide watch.
+    const filters = (typeof globalThis.careerFilters === "function" ? globalThis.careerFilters() : null) || {};
+    const interests = Array.isArray(filters.interests)
+      ? filters.interests
+      : (filters.interest && filters.interest !== "all"
+        ? String(filters.interest).split(",").map((part) => part.trim()).filter(Boolean)
+        : []);
+    return adapt({
+      view: "guide",
+      q: filters.query || "",
+      interest: interests.length ? interests.join(",") : null,
+      interests,
+      interestArea: interests[0] || null,
+      eligibility: filters.eligibility || "open_competitive",
+      window: filters.window || "actionable",
+      format: filters.format && filters.format !== "all" ? filters.format : null,
+      salary: filters.salary_band && filters.salary_band !== "all" ? filters.salary_band : null,
+      fee: filters.fee_level && filters.fee_level !== "all" ? filters.fee_level : null,
+      experience: filters.no_experience && filters.no_experience !== "all" ? filters.no_experience : null,
+    });
+  }
   if(tab === "meetings" || tab === "property" || tab === "rules"){
     const state = {
       agency: tab === "rules" ? (rulesAgency || "") : ($("#"+tab+"agency") && $("#"+tab+"agency").value || ""),

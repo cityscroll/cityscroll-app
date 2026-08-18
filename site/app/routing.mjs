@@ -222,9 +222,13 @@ function serializeState(){
     if($("#career-query").value.trim()) q.set("q",$("#career-query").value.trim());
     if(globalThis.examsAgencyScope) q.set("agency",globalThis.examsAgencyScope);
     const facetState=globalThis.careerFacetState || {};
-    const interest=facetState.interest;
-    if(interest && interest!=="all" && CrolStaffing.isInterestArea(interest)) q.set("interest",interest);
+    const interestWire=CrolStaffing.serializeInterestSelection
+      ? CrolStaffing.serializeInterestSelection(facetState.interest)
+      : (facetState.interest && facetState.interest!=="all" ? String(facetState.interest) : "");
+    if(interestWire) q.set("interest",interestWire);
     const eligibility=$("#career-eligibility")?.value;
+    // Anyone who qualifies is the default; still omit from URL when default to keep
+    // share links short. Non-default eligibility (promotion / all) always serializes.
     if(eligibility && eligibility!=="open_competitive") q.set("eligibility",eligibility);
     const windowFilter=facetState.window;
     if(windowFilter && windowFilter!=="actionable") q.set("window",windowFilter);
@@ -1038,7 +1042,8 @@ function applyHash(){
       const FEE_OK=["none","low","fee-bearing","mid","high","all"];
       const EXP_OK=["yes","no","all"];
       careerRouteFilters={
-        interest:CrolStaffing.isInterestArea(interest)?interest:null,
+        // Single legacy interest=health-care and multi interest=a,b both normalize.
+        interest:interest || null,
         eligibility:["open_competitive","promotion","all"].includes(eligibility)?eligibility:null,
         window:["actionable","open","upcoming","closed","all"].includes(windowFilter)?windowFilter:null,
         format:FORMAT_OK.includes(format)?format:null,

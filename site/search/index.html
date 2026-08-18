@@ -1053,7 +1053,15 @@
   .career-facet-field{display:flex;flex-direction:column;gap:6px}
   .career-facet-label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .career-facet-links{display:flex;flex-wrap:wrap;align-content:flex-start;gap:5px;min-height:30px}
-  #career-format-facets.lens-primary-rail{margin-bottom:var(--space-2)}
+  .career-primary-facet{margin-top:var(--space-2)}
+  .career-primary-facet .lens-primary-rail{margin-bottom:var(--space-2)}
+  .career-interest-multi{max-width:100%}
+  .qchip-remove{cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit}
+  .qchip-remove:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  @media (max-width:680px){
+    .career-facet-links.lens-primary-rail{gap:6px}
+    .qchip-remove{margin-bottom:6px}
+  }
   .career-source{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:#f6f7f9;border-inline-start:4px solid var(--green);padding:10px 12px;margin:0 0 14px;font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .career-source.stale{border-inline-start-color:var(--rose);background:#eef2ff}
   .career-source details{flex:0 0 auto}
@@ -2229,20 +2237,6 @@
               <div class="utility-overflow-content lens-more-content">
                 <div class="lens-controls-grid career-more-grid">
                   <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</span>
-                    <div id="career-interest-facets" class="career-facet-links" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label"></div>
-                    <div id="career-interest-context"></div>
-                  </div>
-                  <div class="field career-facet-field">
-                    <span class="career-facet-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</span>
-                    <div id="career-eligibility-facets" class="career-facet-links" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
-                    <select id="career-eligibility" hidden aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label">
-                      <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
-                      <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
-                      <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
-                    </select>
-                  </div>
-                  <div class="field career-facet-field">
                     <span class="career-facet-label" id="career-window-facets-label" data-i18n="career_window_label">Application window</span>
                     <div id="career-window-facets" class="career-facet-links" data-career-facets="window" role="group" aria-labelledby="career-window-facets-label"></div>
                   </div>
@@ -2258,14 +2252,30 @@
                     <span class="career-facet-label" id="career-no-experience-facets-label" data-i18n="career_no_experience_label">Experience</span>
                     <div id="career-no-experience-facets" class="career-facet-links" data-career-facets="experience" role="group" aria-labelledby="career-no-experience-facets-label"></div>
                   </div>
+                  <div class="field career-facet-field">
+                    <span class="career-facet-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</span>
+                    <div id="career-format-facets" class="career-facet-links" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
+                  </div>
                 </div>
               </div>
             </details>
             <button type="button" class="watchbtn" data-lens="people" data-i18n="watch_this_search">Follow this search</button>
           </div>
         </div>
-        <div class="career-rail-label lens-primary-label" id="career-format-facets-label" data-i18n="career_format_label">Exam format</div>
-        <div id="career-format-facets" class="career-facet-links lens-primary-rail" data-career-facets="format" role="group" aria-labelledby="career-format-facets-label"></div>
+        <div class="career-primary-facet">
+          <div class="career-rail-label lens-primary-label" id="career-eligibility-facets-label" data-i18n="career_eligibility_label">Who can apply</div>
+          <div id="career-eligibility-facets" class="career-facet-links lens-primary-rail" data-career-facets="eligibility" role="group" aria-labelledby="career-eligibility-facets-label"></div>
+          <select id="career-eligibility" hidden aria-hidden="true" tabindex="-1" aria-labelledby="career-eligibility-facets-label">
+            <option value="open_competitive" data-i18n="career_anyone_option">Anyone who qualifies</option>
+            <option value="promotion" data-i18n="career_city_employee_option">Current City employees</option>
+            <option value="all" data-i18n="career_all_eligibility_option">All exam types</option>
+          </select>
+        </div>
+        <div class="career-primary-facet">
+          <div class="career-rail-label lens-primary-label" id="career-interest-facets-label" data-i18n="career_interest_label">Interest area</div>
+          <div id="career-interest-facets" class="career-facet-links lens-primary-rail career-interest-multi" data-career-facets="interest" role="group" aria-labelledby="career-interest-facets-label" data-interest-counts-basis="under_current_filter"></div>
+          <div id="career-interest-context"></div>
+        </div>
         <div class="lens-search-state" id="staffing-active-filters" data-search-state="people"></div>
         <div class="lens-resultbar career-resultbar" id="career-resultbar">
           <span class="lens-count" id="career-result-count" aria-live="polite"></span>
