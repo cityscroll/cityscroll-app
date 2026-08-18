@@ -21,6 +21,7 @@ const ACCEPTED_IDENTITY_CLASSIFICATIONS = new Set([
   "canonical_route",
   "publisher_crosswalk",
   "publisher_crosswalk_canonical",
+  "alias_to_canonical",
   "legitimate_non_crosswalk_entity",
 ]);
 

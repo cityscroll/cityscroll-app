@@ -150,7 +150,7 @@ test("producer coverage distinguishes matched, partial, empty, and not_indexed",
   assert.equal(unavailable.coverage.reason, "unsupported_agency_read_model");
 });
 
-test("the committed read model indexes canonical agencies and excludes reviewed unresolved labels", () => {
+test("the committed read model indexes canonical agencies and includes closed publisher aliases", () => {
   const lookup = JSON.parse(readFileSync(
     new URL("../site/data/agency_constellation_lookup.json", import.meta.url),
     "utf8",
@@ -161,23 +161,17 @@ test("the committed read model indexes canonical agencies and excludes reviewed 
   ));
   const result = buildAgencySearchDocuments(lookup, { identityReport });
 
-  assert.equal(result.coverage.state, "partial");
+  assert.equal(result.coverage.state, "matched");
   assert.equal(result.coverage.total_count, lookup.agency_count);
-  assert.equal(result.coverage.indexed_count, lookup.agency_count - 1);
+  assert.equal(result.coverage.indexed_count, lookup.agency_count);
   assert.ok(result.documents.some((document) => (
     document.object_ref === "agency:id:parks-and-recreation"
   )));
-  assert.ok(!result.documents.some((document) => (
+  assert.ok(result.documents.some((document) => (
     document.object_ref === "agency:id:board-meetings"
   )));
-  assert.deepEqual(
-    result.outcomes.find((outcome) => outcome.agency_id === "board-meetings"),
-    {
-      agency_id: "board-meetings",
-      outcome: "unclassified",
-      document: null,
-      reason: "unresolved_agency_identity",
-      errors: ["identity"],
-    },
-  );
+  const boardMeetingsOutcome = result.outcomes.find((outcome) => outcome.agency_id === "board-meetings");
+  assert.equal(boardMeetingsOutcome?.outcome, "indexed");
+  assert.equal(boardMeetingsOutcome?.reason, "canonical_agency_identity");
+  assert.equal(boardMeetingsOutcome?.document?.object_ref, "agency:id:board-meetings");
 });
