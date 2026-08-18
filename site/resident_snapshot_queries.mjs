@@ -19,6 +19,11 @@ import {
   normalizeLandProcedure,
   resolveLandProcedure,
 } from "./land_procedure_facet.mjs";
+import {
+  landRegulatoryEffectForRow,
+  landRowMatchesRegulatoryEffect,
+  normalizeLandRegulatoryEffect,
+} from "./land_regulatory_effect.mjs";
 
 const residentSnapshotClean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const residentSnapshotLower = (value) => residentSnapshotClean(value).toLowerCase();
@@ -173,6 +178,7 @@ export function filterLandSnapshot(rows, {
   futureAction = "any",
   procedure = DEFAULT_LAND_PROCEDURE,
   family = DEFAULT_LAND_FAMILY,
+  regulatoryEffect = "any",
   actionRows = [],
   today,
   borough = "",
@@ -193,11 +199,13 @@ export function filterLandSnapshot(rows, {
     : normalizeLandFutureAction(futureAction);
   const selectedProcedure = normalizeLandProcedure(procedure);
   const selectedFamily = normalizeLandFamily(family);
+  const selectedRegulatoryEffect = normalizeLandRegulatoryEffect(regulatoryEffect);
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     if (!landRowMatchesProcedure(row, selectedProcedure)) return false;
     if (!landRowMatchesFamily(row, selectedFamily)) return false;
+    if (!landRowMatchesRegulatoryEffect(row, selectedRegulatoryEffect)) return false;
     if (status === "active" && residentSnapshotClean(row?.project_status) !== "Active") return false;
     if (statusMatch) {
       const field = statusMatch[1] === "project" ? "project_status" : "public_status";
@@ -230,6 +238,7 @@ export function filterLandSnapshot(rows, {
       ...effective,
       _procedure: resolveLandProcedure(effective),
       _families: landUseFamilies(effective),
+      _regulatory_effect: landRegulatoryEffectForRow(effective),
       _observed_dates: landObservedDates(effective, evidence),
       _future_actions: actions,
       _next_action: matchingActions[0] || null,

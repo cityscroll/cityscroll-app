@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-18T14:01:09-04:00",
-  "commit": "a4979bc408b0b2f6aeee83262da6d101c1eb3adc",
-  "observer_coverage_hash": "f8adb9598baa9bba69e0834568fe85bdd2c0c618f83410bfd8d298feb2ff6957",
+  "generated_at": "2026-08-18T16:37:53-04:00",
+  "commit": "60b916c6e183ed81afc54f283cb860958db28a5a",
+  "observer_coverage_hash": "88e46c5b52ed5beb1f9418834c4b10518ac86ba756a824a32a0a5cf8b5078a6e",
   "canaries": {
     "agency-constellation-model": {
       "path": "site/agency_constellation_model.mjs",
@@ -32,7 +32,7 @@
     "ontology-registry": {
       "path": "ontology/registry.v0.json",
       "count": 116,
-      "fingerprint": "ba44a442d24869684434cfa57e6da772a3f72f6189c52d4e05ef52c796998051"
+      "fingerprint": "0d8b1a4801951811ca3490be39807e3960b607dc2a056427dbba615f911d0659"
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
@@ -62,7 +62,7 @@
   },
   "ontology": {
     "schema": "cityscroll.ontology.registry.v0",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "collection_counts": {
       "object_types": 33,
       "link_types": 34,
