@@ -1,0 +1,83 @@
+{
+  "schema": "cityscroll.architecture.backtest_case.v1",
+  "id": "land-action-collapse",
+  "title": "Land action-ontology collapse",
+  "card": "cityscroll-release-control/cs-living-architecture-observer-land-action-collapse",
+  "source": "data/scout-landuse-action-ontology-extension/report.md section 8",
+  "expected_finding_types": [
+    "primary_collapse",
+    "wrong_procedure_clock",
+    "map_list_procedure_divergence"
+  ],
+  "collapsed": {
+    "action": {
+      "project_id": "2024M0158",
+      "codes": ["ZM", "ZS", "ZR", "PP", "PC", "PQ"],
+      "families": ["rezoning", "special_permit", "acquisition"],
+      "primary": "rezoning",
+      "is_rezoning": true,
+      "heading_key": "land_guide_heading_rezoning"
+    },
+    "clock": {
+      "project_id": "2024Q0419",
+      "ulurp_non": "ELURP",
+      "status": "open",
+      "reason": null,
+      "statute_ref": "NYC Charter §197-c",
+      "phases": [
+        {
+          "phase_id": "community_board",
+          "days": 60,
+          "statute_ref": "NYC Charter §197-c"
+        },
+        {
+          "phase_id": "city_council",
+          "days": 50,
+          "statute_ref": "NYC Charter §197-c"
+        }
+      ]
+    },
+    "land_ids": {
+      "map": ["2026R0127", "2024Q0356", "2026X0362"],
+      "list": ["2026R0127"]
+    }
+  },
+  "conditions": {
+    "primary_collapse": {
+      "action": {
+        "project_id": "2024M0158",
+        "codes": ["ZM", "PP", "PQ"],
+        "families": ["rezoning"],
+        "primary": "rezoning",
+        "is_rezoning": true
+      }
+    },
+    "wrong_procedure_clock": {
+      "clock": {
+        "project_id": "2024Q0419",
+        "ulurp_non": "ELURP",
+        "status": "open",
+        "phases": [
+          {
+            "phase_id": "community_board",
+            "statute_ref": "NYC Charter §197-c"
+          }
+        ]
+      }
+    },
+    "map_list_procedure_divergence": {
+      "land_ids": {
+        "map": ["2026R0127", "2024Q0356"],
+        "list": ["2026R0127"]
+      }
+    }
+  },
+  "current": {
+    "action_fixture": "test/fixtures/land_use_action_type/2024M0158.json",
+    "clock_fixture": "test/fixtures/ulurp_statutory_clock/certified_elurp_2024Q0419.json",
+    "land_ids": {
+      "map": ["2026R0127", "2022X0393"],
+      "list": ["2026R0127", "2022X0393"]
+    }
+  }
+}

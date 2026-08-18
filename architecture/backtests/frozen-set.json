@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.architecture.backtest_set.v1",
+  "description": "Frozen architecture-observer backtest cases. Replay with tools/backtest_architecture_canaries.mjs --check. Feeds LA11.",
+  "cases": [
+    {
+      "id": "land-action-collapse",
+      "title": "Land action-ontology collapse: rezoning-wins primary, ULURP clock on ELURP, map/list procedure split",
+      "card": "cityscroll-release-control/cs-living-architecture-observer-land-action-collapse",
+      "path": "architecture/backtests/land-action-collapse.json",
+      "feeds": "LA11",
+      "observer": "tools/architecture_land_action_observer.mjs"
+    }
+  ]
+}
