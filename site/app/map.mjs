@@ -282,18 +282,19 @@ function wireForms() {
   }
 }
 
-/** Mobile list-first: Records / Map switch keeps count≡list while map stays optional. */
+/** Records / Map switch keeps count≡list while map stays optional. */
 function wireSurfaceSwitch() {
   const nav = root.querySelector("[data-near-surface-switch]");
   if (!nav || wired.has(nav)) return;
   wired.add(nav);
-  if (!root.dataset.nearMobileSurface) root.dataset.nearMobileSurface = "list";
+  if (
+    !root.dataset.nearMobileSurface
+    && window.matchMedia?.("(max-width: 560px)").matches
+  ) root.dataset.nearMobileSurface = "list";
   nav.querySelectorAll("[data-near-surface]").forEach((link) => {
     link.addEventListener("click", (event) => {
       const surface = link.dataset.nearSurface;
       if (surface !== "list" && surface !== "map") return;
-      // Only intercept on the mobile switch layout; desktop keeps dual overview.
-      if (!window.matchMedia || !window.matchMedia("(max-width: 560px)").matches) return;
       event.preventDefault();
       root.dataset.nearMobileSurface = surface;
       nav.querySelectorAll("[data-near-surface]").forEach((node) => {
