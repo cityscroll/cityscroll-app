@@ -14,7 +14,9 @@ import {
   ULURP_STATUTORY_TOTAL_DAYS,
   addCalendarDays,
   buildUlurpStatutoryClockView,
+  isUlurpStatutoryProcedure,
   resolveCertificationDate,
+  resolveUlurpNon,
 } from "../../../site/ulurp_statutory_clock.mjs";
 import { buildPrediction, validatePrediction } from "./prediction_contract.mjs";
 
@@ -25,7 +27,9 @@ export {
   ULURP_STATUTORY_STAGES,
   ULURP_STATUTORY_TOTAL_DAYS,
   buildUlurpStatutoryClockView,
+  isUlurpStatutoryProcedure,
   resolveCertificationDate,
+  resolveUlurpNon,
   detectStaleOpenStatutoryClock,
   completedStatutoryPhases,
   projectIsCompleted,
@@ -178,7 +182,8 @@ export function resolveStatutoryPrediction(prediction, phaseOrDisposition, opts 
 
 /**
  * Emit timing predictions for each statutory stage plus the final
- * land.zap_disposition. Returns [] when the project is not certified.
+ * land.zap_disposition. Returns [] when the project is not certified
+ * or the publisher procedure is not ULURP (ELURP / Non-ULURP).
  *
  * Intermediate stages target land.zap_milestone (phase conclusion on the ZAP
  * rail). The final prediction targets land.zap_disposition.

@@ -1,10 +1,12 @@
 /**
  * ULURP statutory review clocks (NYC Charter §197-c).
  *
- * Once a project is certified / referred into formal ULURP public review, the
+ * Once a ULURP project is certified / referred into formal public review, the
  * Charter fixes sequential review windows. This table is the versioned day-math
- * source of truth. Predictions that ride these deadlines are emitted elsewhere
- * via cityscroll.prediction.v0 (method: statutory_clock) — they are not source
+ * source of truth for §197-c only — ELURP and Non-ULURP are ineligible
+ * (`wrong_procedure`). Do not invent a §197-e / ELURP day table here.
+ * Predictions that ride these deadlines are emitted elsewhere via
+ * cityscroll.prediction.v0 (method: statutory_clock) — they are not source
  * assertions (the clock can toll; projects can withdraw).
  *
  * Phase status is not only open/withdrawn: completed milestones and terminal
@@ -103,6 +105,30 @@ export function addCalendarDays(isoDate, days) {
   const ms = Date.parse(`${day}T00:00:00Z`);
   if (!Number.isFinite(ms)) return null;
   return new Date(ms + days * 86_400_000).toISOString().slice(0, 10);
+}
+
+/**
+ * Publisher ULURP / ELURP / Non-ULURP procedure label.
+ * Assembled /zap-outcomes records often leave top-level `ulurp_non` null
+ * while Open Data parks the field on `open_data.ulurp_non` (2026R0127).
+ *
+ * @returns {string|null}
+ */
+export function resolveUlurpNon(record = {}) {
+  const openData = record.open_data && typeof record.open_data === "object"
+    ? record.open_data
+    : {};
+  return clean(record.ulurp_non) || clean(openData.ulurp_non) || null;
+}
+
+/**
+ * Charter §197-c public-review windows apply only to ULURP.
+ * Unknown / missing procedure stays eligible so existing certified fixtures
+ * keep their clock; a resolved non-ULURP label is fail-closed.
+ */
+export function isUlurpStatutoryProcedure(record = {}) {
+  const procedure = resolveUlurpNon(record);
+  return procedure == null || procedure.toUpperCase() === "ULURP";
 }
 
 /**
@@ -499,23 +525,35 @@ export function certificationEvidenceIds(record = {}, certifiedDate) {
  * @param {object} record - parseZapApiProject / buildZapOutcomeRecord shape
  * @param {object} [opts]
  * @param {string} [opts.generatedAt] ISO timestamp
- * @returns {object|null} null when the project is not yet certified
+ * @returns {object} ineligible when not certified or not a ULURP procedure
  */
+function ineligibleClockView(reason, opts = {}) {
+  return {
+    schema_version: ULURP_STATUTORY_CLOCK_SCHEMA_VERSION,
+    statute_ref: ULURP_STATUTORY_STATUTE_REF,
+    model_name: ULURP_STATUTORY_MODEL_NAME,
+    model_version: ULURP_STATUTORY_MODEL_VERSION,
+    status: "ineligible",
+    reason,
+    certified_date: opts.certifiedDate || null,
+    phases: [],
+    disposition: null,
+    generated_at: opts.generatedAt || null,
+  };
+}
+
 export function buildUlurpStatutoryClockView(record = {}, opts = {}) {
   const certifiedDate = resolveCertificationDate(record);
   if (!certifiedDate) {
-    return {
-      schema_version: ULURP_STATUTORY_CLOCK_SCHEMA_VERSION,
-      statute_ref: ULURP_STATUTORY_STATUTE_REF,
-      model_name: ULURP_STATUTORY_MODEL_NAME,
-      model_version: ULURP_STATUTORY_MODEL_VERSION,
-      status: "ineligible",
-      reason: "not_certified",
-      certified_date: null,
-      phases: [],
-      disposition: null,
-      generated_at: opts.generatedAt || null,
-    };
+    return ineligibleClockView("not_certified", { generatedAt: opts.generatedAt || null });
+  }
+  if (!isUlurpStatutoryProcedure(record)) {
+    // ELURP / Non-ULURP / any other publisher procedure: do not invent a
+    // non-§197-c day table. Those clocks are a later, statute-sourced card.
+    return ineligibleClockView("wrong_procedure", {
+      certifiedDate,
+      generatedAt: opts.generatedAt || null,
+    });
   }
 
   const withdrawn = projectIsWithdrawn(record);
