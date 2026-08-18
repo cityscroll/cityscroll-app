@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Stable repository entrypoint for the positive plain-language copy gate."""
+"""Stable repository entrypoint for the positive plain-language copy gate.
+
+Patterns live in civic_content_gates.disclaimer_slop. They include a
+provenance-restatement class for copy that repeats what per-link markers
+already say (City Record awards, Checkbook live-on, timeline-lead search).
+Do not allowlist that class — put the source on the link and drop the wall.
+"""
 import sys
 from pathlib import Path
 

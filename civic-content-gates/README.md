@@ -91,7 +91,9 @@ and `reading_level` against plain HTML.
 source, and generated HTML pages. It starts in `warn` mode so the curated pattern
 set can be reviewed against real copy. Each finding points to a positive rewrite:
 say what the thing is, why it matters, and what the reader should do — for example,
-“Default: X, because Y; do Z.”
+“Default: X, because Y; do Z.” Standing provenance walls that restate what a
+per-link marker already shows (City Record awards, Checkbook “live on”,
+timeline-lead search) are a first-class class — keep the marker, drop the wall.
 
 The repository wrapper is:
 

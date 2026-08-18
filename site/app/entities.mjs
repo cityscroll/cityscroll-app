@@ -701,6 +701,7 @@ function vendorProfileHeaderHTML(profile){
         <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
         <div><div class="big" style="font-size:17px">${profile.first?fdate(profile.first):"—"} – ${profile.last?fdate(profile.last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
       </div>
+      ${`<p class="rmeta vendor-identity-note">${t("vendor_identity_note_html")}</p>`}
       ${doingBusinessCardHTML(profile.doingBusiness)}`;
 }
 
@@ -1105,7 +1106,6 @@ function vendorProfileHTML(profile, details, hydrating){
         ${pinBtn("vendor", display, display, t("meta_vendor_profile"))}
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}
       </div>
-      <div class="note">${t("vendor_identity_note_html",{source: t("lifecycle_source_checkbook")})}</div>
     </div></div>`;
 }
 

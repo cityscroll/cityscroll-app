@@ -68,6 +68,21 @@ PATTERNS = (
         ),
     ),
     Pattern(
+        "provenance_restatement",
+        "provenance-restatement disclaimer",
+        re.compile(
+            r"(?:"
+            r"\bawards?\s+are\s+as\s+published\s+in\s+the\s+city\s+record\b|"
+            r"\bregistered\s+contracts\s+and\s+payments\s+live\s+on\b|"
+            r"\btimeline\s+lead\s+carries\b|"
+            r"\blas\s+adjudicaciones\s+son\s+las\s+del\s+city\s+record\b|"
+            r"\bcontratos\s+registrados\s+y\s+los\s+pagos\s+est[aá]n\s+en\b|"
+            r"\bencabezado\s+de\s+la\s+cronolog[ií]a\b"
+            r")",
+            re.IGNORECASE,
+        ),
+    ),
+    Pattern(
         "defensive_hedge_shape",
         "defensive hedge",
         re.compile(
@@ -86,7 +101,7 @@ PATTERNS = (
 LEGITIMATE_BOUNDARY_RE = re.compile(
     r"(?:^status is\b|historical context|historical, not a current warning|"
     r"source-linked measure|published layer|"
-    r"timeline lead carries|date is context)",
+    r"date is context)",
     re.IGNORECASE,
 )
 
