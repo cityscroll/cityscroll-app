@@ -73,6 +73,11 @@ export const ULURP_STATUTORY_STAGES = Object.freeze([
 
 export const ULURP_STATUTORY_TOTAL_DAYS = 205;
 
+/** Statutory public-review phase ids in Charter order (CB → … → Mayor). */
+export const ULURP_PUBLIC_REVIEW_PHASE_IDS = Object.freeze(
+  ULURP_STATUTORY_STAGES.map((s) => s.phase_id),
+);
+
 function clean(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
@@ -321,7 +326,11 @@ export function detectStaleOpenStatutoryClock(record = {}, clock = null) {
 }
 
 /**
- * Build per-phase statutory due dates from a certification date.
+ * Build per-phase outer-bound due dates from a certification date
+ * (certified + cumulative Charter windows). These are NOT the same as a
+ * phase's live N-day clock once prior stages finish early — see
+ * resolveStatutoryPhaseStart + buildUlurpStatutoryClockView.
+ *
  * Does not invent a cert date — returns null when uncertified.
  *
  * @param {string} certifiedDate YYYY-MM-DD
@@ -337,9 +346,113 @@ export function projectStatutoryDeadlines(certifiedDate) {
     days: stage.days,
     cumulative_days: stage.cumulative_days,
     model_stage: stage.model_stage,
+    // Outer envelope if every prior body used its full window.
+    outer_bound_due_date: addCalendarDays(d, stage.cumulative_days),
+    // Historical alias retained for callers that still read due_date as
+    // certified+cumulative. Display paths must prefer phase-window due dates.
     due_date: addCalendarDays(d, stage.cumulative_days),
     statute_ref: ULURP_STATUTORY_STATUTE_REF,
   }));
+}
+
+/**
+ * Resolve when a statutory public-review phase's N-day clock started.
+ *
+ * Authority order:
+ * 1. Milestone / spine event for that phase with actual_start (In Progress)
+ * 2. Earliest actual milestone date mapped to the phase (when In Progress lacks a start)
+ * 3. Prior statutory phase's completed_at (referral proxy after early finish)
+ * 4. Certification date for Community Board only
+ *
+ * Planned-only portal dates never become a statutory start.
+ *
+ * @returns {{ start_date: string, start_basis: string, evidence_id: string|null }|null}
+ */
+export function resolveStatutoryPhaseStart(record = {}, phaseId, completedMap = null) {
+  if (!ULURP_PUBLIC_REVIEW_PHASE_IDS.includes(phaseId)) return null;
+  const completed = completedMap || completedStatutoryPhases(record);
+
+  const considerMilestone = (title, status, detail, date, basis, certainty, evidenceId) => {
+    const day = isoDateOnly(date);
+    if (!day) return null;
+    if (certainty === "planned" || basis === "planned_completion") return null;
+    const mapped = mapMilestoneToPhase(title, {
+      kind: "zap_milestone",
+      representing: detail || null,
+      detail: detail || null,
+    });
+    if (mapped !== phaseId) return null;
+    const statusBlob = `${status || ""} ${detail || ""}`.toLowerCase();
+    const isStart =
+      basis === "actual_start"
+      || /\bin progress\b/.test(statusBlob)
+      || (basis === "actual_end" && /\bin progress\b/.test(statusBlob));
+    if (isStart || basis === "actual_start") {
+      return {
+        start_date: day,
+        start_basis: basis === "actual_start" ? "milestone_actual_start" : "milestone_in_progress",
+        evidence_id: evidenceId || null,
+      };
+    }
+    return null;
+  };
+
+  const starts = [];
+  const milestones = Array.isArray(record.milestones) ? record.milestones : [];
+  for (const m of milestones) {
+    const hit = considerMilestone(
+      m?.title,
+      m?.status,
+      m?.outcome || m?.detail,
+      m?.time?.value || m?.date || m?.display_date,
+      m?.time?.basis || null,
+      m?.time?.certainty || null,
+      m?.id ? `zap-milestone:${m.id}` : null,
+    );
+    if (hit) starts.push(hit);
+  }
+  const events = Array.isArray(record.spine?.events) ? record.spine.events : [];
+  for (const e of events) {
+    const hit = considerMilestone(
+      e?.title,
+      e?.status,
+      e?.detail || e?.outcome,
+      e?.time?.value,
+      e?.time?.basis || null,
+      e?.time?.certainty || null,
+      e?.id ? String(e.id) : null,
+    );
+    if (hit) starts.push(hit);
+  }
+  if (starts.length) {
+    starts.sort((a, b) => String(a.start_date).localeCompare(String(b.start_date)));
+    return starts[0];
+  }
+
+  // Prior completed statutory phase → next body's clock can start on that day.
+  const idx = ULURP_PUBLIC_REVIEW_PHASE_IDS.indexOf(phaseId);
+  if (idx > 0) {
+    const priorId = ULURP_PUBLIC_REVIEW_PHASE_IDS[idx - 1];
+    const prior = completed.get(priorId);
+    if (prior?.completed_at) {
+      return {
+        start_date: prior.completed_at,
+        start_basis: "prior_phase_completed",
+        evidence_id: prior.evidence_id || null,
+      };
+    }
+  } else if (idx === 0) {
+    const certified = resolveCertificationDate(record);
+    if (certified) {
+      return {
+        start_date: certified,
+        start_basis: "certification_date",
+        evidence_id: null,
+      };
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -411,13 +524,32 @@ export function buildUlurpStatutoryClockView(record = {}, opts = {}) {
   const dispositionDue = addCalendarDays(certifiedDate, ULURP_STATUTORY_TOTAL_DAYS);
 
   const phases = projectStatutoryDeadlines(certifiedDate).map((p) => {
+    const outerBound = p.outer_bound_due_date || p.due_date || null;
     if (withdrawn) {
-      return { ...p, status: "withdrawn", completed_at: null, evidence_id: null };
+      return {
+        ...p,
+        outer_bound_due_date: outerBound,
+        due_date: null,
+        start_date: null,
+        start_basis: null,
+        deadline_basis: null,
+        deadline_certainty: "insufficient",
+        status: "withdrawn",
+        completed_at: null,
+        evidence_id: null,
+      };
     }
     const hit = completed.get(p.phase_id);
     if (hit) {
+      // Completed phases: do not present the outer envelope as a live statutory deadline.
       return {
         ...p,
+        outer_bound_due_date: outerBound,
+        due_date: null,
+        start_date: null,
+        start_basis: null,
+        deadline_basis: null,
+        deadline_certainty: "completed",
         status: "completed",
         completed_at: hit.completed_at,
         evidence_id: hit.evidence_id,
@@ -427,12 +559,50 @@ export function buildUlurpStatutoryClockView(record = {}, opts = {}) {
     if (projectDone) {
       return {
         ...p,
+        outer_bound_due_date: outerBound,
+        due_date: null,
+        start_date: null,
+        start_basis: null,
+        deadline_basis: null,
+        deadline_certainty: "completed",
         status: "completed",
         completed_at: null,
         evidence_id: null,
       };
     }
-    return { ...p, status: "open", completed_at: null, evidence_id: null };
+
+    // Live open phase: only emit a statutory due date when the phase clock start
+    // is known. certified+cumulative (Nov 27 on a 50-day Council clock) is an
+    // outer bound, not the phase deadline — never present it as statutory fact.
+    const start = resolveStatutoryPhaseStart(record, p.phase_id, completed);
+    if (start?.start_date) {
+      const phaseDue = addCalendarDays(start.start_date, p.days);
+      return {
+        ...p,
+        outer_bound_due_date: outerBound,
+        start_date: start.start_date,
+        start_basis: start.start_basis,
+        due_date: phaseDue,
+        deadline_basis: "phase_window",
+        deadline_certainty: "statutory",
+        status: "open",
+        completed_at: null,
+        evidence_id: start.evidence_id || null,
+      };
+    }
+
+    return {
+      ...p,
+      outer_bound_due_date: outerBound,
+      start_date: null,
+      start_basis: null,
+      due_date: null,
+      deadline_basis: null,
+      deadline_certainty: "insufficient",
+      status: "open",
+      completed_at: null,
+      evidence_id: null,
+    };
   });
 
   let dispositionStatus = "open";
@@ -497,11 +667,6 @@ export function statutoryDeadlineForPhase(clockView, phaseId) {
   if (!clockView || clockView.status === "ineligible") return null;
   return (clockView.phases || []).find((p) => p.phase_id === phaseId) || null;
 }
-
-/** Statutory public-review phase ids in Charter order (CB → … → Mayor). */
-export const ULURP_PUBLIC_REVIEW_PHASE_IDS = Object.freeze(
-  ULURP_STATUTORY_STAGES.map((s) => s.phase_id),
-);
 
 /**
  * True when public_status (or clock status) means formal review has ended.
@@ -613,7 +778,19 @@ export function buildUlurpPipelinePosition(opts = {}) {
   const clockRow = statutoryDeadlineForPhase(clock, stepPhaseId);
   // Completed/closed phase rows must not drive an "open window / overdue" count.
   const phaseStillOpen = !clockRow?.status || clockRow.status === "open";
-  const dueDate = phaseStillOpen ? (clockRow?.due_date || null) : null;
+  // Only a phase-window statutory due date may drive days-left. Outer-bound
+  // cumulative envelopes (certified+200 on a 50-day Council clock) stay off this
+  // sentence — prefer "in progress" over an impossible clock.
+  const statutoryDue =
+    phaseStillOpen
+    && clockRow?.deadline_certainty === "statutory"
+    && clockRow?.deadline_basis === "phase_window"
+      ? (clockRow?.due_date || null)
+      : null;
+  const startDate = phaseStillOpen ? (clockRow?.start_date || null) : null;
+  // Guard: never publish a due date that precedes the phase start.
+  let dueDate = statutoryDue;
+  if (dueDate && startDate && dueDate < startDate) dueDate = null;
   const windowDays = stageMeta?.days ?? clockRow?.days ?? null;
 
   let daysLeft = null;
@@ -635,7 +812,10 @@ export function buildUlurpPipelinePosition(opts = {}) {
     step_n: stepN,
     step_m: stepM,
     window_days: windowDays,
+    start_date: startDate,
+    start_basis: clockRow?.start_basis || null,
     due_date: dueDate,
+    deadline_certainty: dueDate ? "statutory" : (clockRow?.deadline_certainty || "insufficient"),
     days_left: daysLeft,
     statute_ref: ULURP_STATUTORY_STATUTE_REF,
     certified_date: clock?.certified_date || null,

@@ -204,8 +204,9 @@ test("pipeline position joins public review with BP step and 30-day clock", () =
   assert.equal(pos.step_n, 2);
   assert.equal(pos.step_m, 5);
   assert.equal(pos.window_days, 30);
-  assert.equal(pos.due_date, "2026-08-09");
-  assert.equal(pos.days_left, 6);
+  // Phase-window: BP actual_start 2026-07-09 + 30 calendar days (not certified+90).
+  assert.equal(pos.due_date, "2026-08-08");
+  assert.equal(pos.days_left, 5);
   assert.equal(pos.overall_status, "public_review");
 });
 

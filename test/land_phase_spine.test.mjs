@@ -115,7 +115,11 @@ test("2019K0147: current CEQR, Filed×16 aggregate, 40 portal-link candidates, n
   assert.equal(easAgg.count, 12);
 
   const notice = view.phases.find((p) => p.id === "pre_certification");
-  assert.equal(notice.state, "passed");
+  // Noticed while current is still CEQR: concurrent overlap, not plain "Done"
+  // after the next step in the Filing→CEQR→Notice sequence.
+  assert.equal(notice.state, "overlap");
+  assert.equal(notice.overlap?.permitted, true);
+  assert.equal(notice.overlap?.label_key, "land_spine_phase_overlap_notice");
 
   const cb = view.phases.find((p) => p.id === "community_board");
   assert.equal(cb.state, "future");
