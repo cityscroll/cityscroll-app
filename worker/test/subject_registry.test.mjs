@@ -14,11 +14,13 @@ import { assembleLifecycle } from "../src/lib/checkbook_lifecycle.mjs";
 import { mapFixtureDoc } from "../src/lib/civic_time.mjs";
 import { labelOcpDisagreements } from "../src/lib/claim_layer.mjs";
 import { subjectRefForActionObject } from "../src/lib/action_log.mjs";
+import { LAND_USE_ACTION_CODE_FAMILY } from "../../site/land_use_action_type.mjs";
 import {
   GEOGRAPHY_BOROUGH_IDS,
   GEOGRAPHY_COMMUNITY_DISTRICT_IDS,
   GEOGRAPHY_COUNCIL_DISTRICT_IDS,
   LAND_USE_ACTION_FAMILY_KINDS,
+  LAND_USE_ACTION_FAMILY_VOCABULARY_VERSION,
   LAND_USE_PROCEDURE_KINDS,
   LAND_USE_PROCEDURE_VOCABULARY_VERSION,
   SUBJECT_REGISTRY_VERSION,
@@ -74,8 +76,17 @@ test("land-use procedure subjects use a closed, versioned vocabulary", () => {
     "elurp",
     "non_ulurp",
   ]);
+  assert.equal(LAND_USE_ACTION_FAMILY_VOCABULARY_VERSION, "land_use_action_family_v2");
+  assert.deepEqual(
+    [...LAND_USE_ACTION_FAMILY_KINDS].sort(),
+    [...new Set(Object.values(LAND_USE_ACTION_CODE_FAMILY))].sort(),
+  );
   assert.ok(LAND_USE_ACTION_FAMILY_KINDS.includes("acquisition"));
-  assert.ok(LAND_USE_ACTION_FAMILY_KINDS.includes("landmark_designation"));
+  assert.ok(LAND_USE_ACTION_FAMILY_KINDS.includes("landmark"));
+  assert.ok(LAND_USE_ACTION_FAMILY_KINDS.includes("legal_document"));
+  assert.equal(LAND_USE_ACTION_FAMILY_KINDS.includes("landmark_designation"), false);
+  assert.equal(LAND_USE_ACTION_FAMILY_KINDS.includes("city_map_change"), false);
+  assert.equal(LAND_USE_PROCEDURE_KINDS.includes("landmark"), false);
   assert.equal(LAND_USE_PROCEDURE_KINDS.includes("landmark_designation"), false);
   assert.equal(LAND_USE_PROCEDURE_KINDS.includes("acquisition"), false);
   assert.deepEqual(parseSubjectRef("procedure:ulurp"), {

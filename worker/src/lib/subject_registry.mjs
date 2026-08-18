@@ -16,6 +16,7 @@
  */
 
 import { parseAuthorityKey, authorityKeyId } from "../../../entity_resolution/authority_keys/index.mjs";
+import { LAND_USE_ACTION_CODE_FAMILY } from "../../../site/land_use_action_type.mjs";
 import { migrateLegacyMandateSubjectRef } from "../../../site/mandate_subject_ref.mjs";
 import {
   normalizeCommunityDistrictId,
@@ -34,16 +35,14 @@ export const LAND_USE_PROCEDURE_KINDS = Object.freeze([
   "non_ulurp",
 ]);
 
-/** Closed land-use action families. Distinct from review procedures. */
-export const LAND_USE_ACTION_FAMILY_VOCABULARY_VERSION = "land_use_action_family_v1";
+/**
+ * Closed land-use action families. Distinct from review procedures.
+ * Derived from LAND_USE_ACTION_CODE_FAMILY so a glossary fix (LD, PQ, …)
+ * reaches UI chips and graph edges together.
+ */
+export const LAND_USE_ACTION_FAMILY_VOCABULARY_VERSION = "land_use_action_family_v2";
 export const LAND_USE_ACTION_FAMILY_KINDS = Object.freeze([
-  "landmark_designation",
-  "rezoning",
-  "special_permit",
-  "city_map_change",
-  "site_selection",
-  "acquisition",
-  "disposition",
+  ...new Set(Object.values(LAND_USE_ACTION_CODE_FAMILY)),
 ]);
 
 /** Closed polygon geography vocabularies. Non-polygon buckets are not subjects. */
