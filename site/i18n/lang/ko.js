@@ -2545,7 +2545,7 @@
     career_show_more: "{n} 더 많은 시험 보기",
     career_exam_not_found: "해당 시험은 현재 DCAS 일정에 없습니다.",
     career_no_results: "이 필터와 일치하는 시험이 없습니다. 모든 관심분야 또는 모든 예정된 시험에 도전해 보세요.",
-    career_source_current: "공식 DCAS 소스에서 미리 계산되었습니다. 공개 시험은 {date}를 확인했습니다. {annual}를 통한 연간 일정.",
+    career_source_current: "공식 DCAS 소스에서 미리 계산되었습니다. 공개 시험은 {date}를 확인했습니다. {annual}를 통한 연간 일정. 활성 명단은 {list}까지.",
     career_source_stale: "최신 공개 시험 점검은 {date}에서 이루어졌습니다. 조치를 취하기 전에 공식 DCAS 사이트에서 모든 날짜를 확인하세요.",
     career_source_details: "소스 및 새로 고침 규칙",
     career_city_record_finding: "City Record 데이터세트도 확인되었습니다. DCAS 시험 통지서를 시험 발표 섹션으로 게시하지 않으므로 이 안내서에서는 대신 DCAS 일정과 NOE를 사용합니다.",

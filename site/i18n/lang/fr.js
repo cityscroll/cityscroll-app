@@ -2645,7 +2645,7 @@
     career_show_more: "Afficher {n} plus d'examens",
     career_exam_not_found: "Cet examen ne figure pas dans le calendrier actuel du DCAS.",
     career_no_results: "Aucun examen ne correspond à ces filtres. Essayez tous les centres d’intérêt ou tous les examens programmés.",
-    career_source_current: "Précalculé à partir des sources DCAS officielles. Examens ouverts vérifiés {date} ; horaire annuel en vigueur via {annual}.",
+    career_source_current: "Précalculé à partir des sources DCAS officielles. Examens ouverts vérifiés {date} ; horaire annuel en vigueur via {annual}. Liste active jusqu’au {list}.",
     career_source_stale: "Le dernier contrôle d’examen ouvert provient de {date}. Confirmez chaque date sur le site officiel de DCAS avant d'agir.",
     career_source_details: "Sources et règles d'actualisation",
     career_city_record_finding: "L’ensemble de données City Record a également été vérifié. Il ne publie pas les avis d'examen DCAS en tant que section d'annonce d'examen, ce guide utilise donc les horaires DCAS et les NOE.",

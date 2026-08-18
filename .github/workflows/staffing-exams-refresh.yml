@@ -1,0 +1,110 @@
+# Daily refresh→publish for the civil-service exams precompute artifact.
+# SODA schedule + exam-level list aggregates (never roster/PII rows) → commit PR.
+name: Staffing exams refresh
+
+on:
+  schedule:
+    # Daily 08:23 UTC — after land-upcoming-hearings (08:17), before geocoder (09:47)
+    - cron: "23 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: staffing-exams-refresh-main
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh staffing exams artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Refresh OASys deep-link map
+        run: node tools/build_oasys_exam_map.mjs
+      - name: Refresh SODA schedule + exam-level list aggregates
+        run: |
+          set -euo pipefail
+          node tools/build_staffing_exams.mjs --refresh
+          node tools/build_staffing_exams.mjs
+          node tools/build_staffing_exams.mjs --check
+      - name: Guard generated changes
+        id: generated
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo "Staffing exams artifact is already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/data/staffing_exams.json) ;;
+              site/data/exam_sources/annual_schedule.json) ;;
+              site/data/exam_sources/active_list_summary.json) ;;
+              site/data/exam_sources/civil_service_list_aggregates.json) ;;
+              site/data/exam_sources/city_record_check.json) ;;
+              site/data/exam_sources/oasys_exam_map.json) ;;
+              site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json) ;;
+              site/data/exam_sources/verification_receipts/staffing_list_establishment_prediction_latest.json) ;;
+              site/data/exam_sources/verification_receipts/oasys_exam_map_latest.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the staffing exams refresh pull request
+        if: steps.generated.outputs.changed == 'true'
+        id: refresh-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.REFRESH_PR_TOKEN }}
+          branch: automation/staffing-exams-refresh
+          delete-branch: true
+          commit-message: Refresh staffing exams schedule and list aggregates
+          title: Refresh staffing exams schedule and list aggregates
+          body: |
+            Automated refresh→publish of `site/data/staffing_exams.json` from the
+            DCAS annual schedule (`4ptz-hmtc`) and exam-level Civil Service List
+            aggregates (`vx8i-nprf` group-by only — no roster/PII rows), plus the
+            OASys deep-link map when reachable.
+
+            Closes the staffing exams freshness publish loop (scout P2).
+
+            Validation:
+            - `node tools/build_staffing_exams.mjs --check`
+            - serve-age gate (`STAFFING_EXAMS_MAX_AGE_DAYS`)
+          add-paths: |
+            site/data/staffing_exams.json
+            site/data/exam_sources/annual_schedule.json
+            site/data/exam_sources/active_list_summary.json
+            site/data/exam_sources/civil_service_list_aggregates.json
+            site/data/exam_sources/city_record_check.json
+            site/data/exam_sources/oasys_exam_map.json
+            site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json
+            site/data/exam_sources/verification_receipts/staffing_list_establishment_prediction_latest.json
+            site/data/exam_sources/verification_receipts/oasys_exam_map_latest.json
+      - name: Run required checks for the refresh pull request
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/staffing-exams-refresh
+      - name: Queue the verified refresh for merge
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+          REFRESH_PR: ${{ steps.refresh-pr.outputs.pull-request-number }}
+          REFRESH_HEAD: ${{ steps.refresh-pr.outputs.pull-request-head-sha }}
+        run: gh pr merge "$REFRESH_PR" --auto --match-head-commit "$REFRESH_HEAD"

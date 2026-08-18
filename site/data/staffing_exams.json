@@ -2,6 +2,9 @@
   "schema_version": 6,
   "generated_at": "2026-08-03",
   "data_current_as_of": "2026-07-22",
+  "list_current_as_of": "2026-07-22",
+  "open_window_as_of": "2026-08-03",
+  "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
     "health-care",
@@ -89,8 +92,8 @@
       "public-safety": {
         "id": "public-safety",
         "exam_count": 60,
-        "open_count": 2,
-        "upcoming_count": 42,
+        "open_count": 3,
+        "upcoming_count": 41,
         "closed_count": 16,
         "canceled_count": 0,
         "postponed_count": 0,
@@ -98,6 +101,7 @@
         "continuous_count": 0,
         "actionable_count": 44,
         "open_exam_numbers": [
+          "7312",
           "7323",
           "7331"
         ],
@@ -113,7 +117,6 @@
           "7308",
           "7309",
           "7310",
-          "7312",
           "7313",
           "7314",
           "7315",
@@ -613,8 +616,8 @@
       "exam_count": 228,
       "area_count": 8,
       "tagged_non_other": 228,
-      "open_count": 8,
-      "upcoming_count": 139
+      "open_count": 9,
+      "upcoming_count": 138
     }
   },
   "sources": [

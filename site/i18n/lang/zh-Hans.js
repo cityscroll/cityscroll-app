@@ -2539,7 +2539,7 @@
     career_show_more: "显示 {n} 更多考试",
     career_exam_not_found: "该考试不在当前 DCAS 时间表中。",
     career_no_results: "没有考试与这些过滤器匹配。尝试所有兴趣或所有安排的考试。",
-    career_source_current: "根据 DCAS 官方来源预先计算。公开考试已检查 {date}；当前年度时间表通过 {annual}。",
+    career_source_current: "根据 DCAS 官方来源预先计算。公开考试已检查 {date}；当前年度时间表通过 {annual}。 在册名单截至 {list}。",
     career_source_stale: "最新的公开考试检查来自{date}。行动前请确认 DCAS 官方网站上的每个日期。",
     career_source_details: "来源和刷新规则",
     career_city_record_finding: "还检查了 City Record 数据集。它不会将 DCAS 考试通知作为考试公告部分发布，因此本指南使用 DCAS 时间表和 NOE 代替。",

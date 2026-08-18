@@ -2538,7 +2538,7 @@
     career_show_more: "Montre {n} plis egzamen",
     career_exam_not_found: "Egzamen sa a pa nan orè DCAS aktyèl la.",
     career_no_results: "Pa gen okenn egzamen ki matche ak filtè sa yo. Eseye tout enterè oswa tout egzamen pwograme yo.",
-    career_source_current: "Prekalkile apati sous ofisyèl DCAS. Egzamen louvri tcheke {date}; orè anyèl aktyèl jiska {annual}.",
+    career_source_current: "Prekalkile apati sous ofisyèl DCAS. Egzamen louvri tcheke {date}; orè anyèl aktyèl jiska {annual}. Lis aktif jiska {list}.",
     career_source_stale: "Dènye chèk egzamen ouvè a soti nan {date}. Konfime chak dat sou sit ofisyèl DCAS la anvan w aji.",
     career_source_details: "Sous ak rafrechi règ",
     career_city_record_finding: "Yo te tcheke seri done Dosye Vil la tou. Li pa pibliye Avi Egzamen DCAS kòm yon seksyon anons egzamen, kidonk gid sa a sèvi ak orè DCAS ak NOE pito.",

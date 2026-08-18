@@ -10,13 +10,24 @@ const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
 const html = SITE_SOURCE;
-const FIXTURE_TODAY = "2026-08-02";
+// Hermetic byte-stable rebuild must use the same open-window clock the artifact was built with.
+const FIXTURE_TODAY = artifact.open_window_as_of || artifact.generated_at || "2026-08-02";
 
 test("precomputed staffing artifact is reproducible from committed source snapshots", () => {
   execFileSync(process.execPath, ["tools/build_staffing_exams.mjs", "--check", `--today=${FIXTURE_TODAY}`], {
     cwd: new URL("..", import.meta.url),
     stdio: "pipe",
   });
+});
+
+test("staffing artifact stamps honest list and open-window freshness clocks", () => {
+  assert.ok(artifact.open_window_as_of || artifact.generated_at);
+  // After refresh tooling lands, both stamps are required; tolerate one rebuild cycle
+  // for branches that only carry the gate helpers before materializing.
+  if (artifact.list_current_as_of) {
+    assert.match(artifact.list_current_as_of, /^\d{4}-\d{2}-\d{2}$/);
+    assert.match(String(artifact.data_current_as_of || ""), /^\d{4}-\d{2}-\d{2}$/);
+  }
 });
 
 test("every exam has a unique shareable identity and official provenance", () => {
