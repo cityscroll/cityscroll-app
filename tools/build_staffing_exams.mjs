@@ -283,11 +283,10 @@ export function staffingArtifactDataCurrentAsOf({ annual, activeList, listAggreg
 
 export function staffingListCurrentAsOf({ activeList, listAggregates } = {}) {
   return (
-    isoDate(listAggregates?.source?.data_current_as_of)
-    || isoDate(listAggregates?.summary?.latest_established)
+    isoDate(listAggregates?.summary?.latest_established)
     || isoDate(activeList?.summary?.latest_established)
-    || isoDate(activeList?.source?.fetched_at)
-    || isoDate(listAggregates?.source?.fetched_at)
+    || isoDate(listAggregates?.source?.data_current_as_of)
+    || isoDate(activeList?.source?.data_current_as_of)
     || null
   );
 }
@@ -1174,7 +1173,8 @@ export async function fetchCivilServiceListAggregates({ fetchedAt } = {}) {
       url: `https://data.cityofnewyork.us/resource/${ACTIVE_LIST_ID}.json`,
       landing_page: `https://data.cityofnewyork.us/d/${ACTIVE_LIST_ID}`,
       fetched_at: day,
-      data_current_as_of: latestEstablished,
+      // Freshness for --check uses fetched_at (snapshot age). latest_established is a
+      // world-fact on summary/artifact.list_current_as_of — it can pause for days.
       refresh_cadence: "Daily",
       stale_after_days: 3,
       privacy: "Per-applicant rows and names are never retained. Only exam-level counts and list dates from group-by.",
@@ -1218,7 +1218,6 @@ async function refreshSnapshots() {
   const activeSummary = (await fetchJson(sodaUrl(ACTIVE_LIST_ID, {
     "$select": "count(*) as candidate_rows,count(distinct exam_no) as distinct_exams,count(distinct list_title_code) as distinct_titles,max(established_date) as latest_established,max(extension_date) as latest_extension",
   })))[0];
-  const listCurrent = isoDate(activeSummary?.latest_established);
   const activeList = {
     source: {
       id: "dcas-active-civil-service-list",
@@ -1226,7 +1225,6 @@ async function refreshSnapshots() {
       dataset_id: ACTIVE_LIST_ID,
       url: `https://data.cityofnewyork.us/resource/${ACTIVE_LIST_ID}.json`,
       fetched_at: fetchedAt,
-      data_current_as_of: listCurrent,
       refresh_cadence: "Daily",
       stale_after_days: 3,
       privacy: "Only aggregate counts are retained; candidate records and names are not copied.",
@@ -1284,7 +1282,7 @@ async function refreshSnapshots() {
   }
   console.log(
     `refreshed exam sources (schedule ${annual.source.data_current_as_of}; `
-    + `list ${listAggregates.summary.distinct_exams} exams / as-of ${listAggregates.source.data_current_as_of})`,
+    + `list ${listAggregates.summary.distinct_exams} exams / as-of ${listAggregates.summary.latest_established})`,
   );
 }
 

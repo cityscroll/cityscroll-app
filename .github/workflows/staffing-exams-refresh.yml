@@ -32,7 +32,9 @@ jobs:
         with:
           node-version: "22"
       - name: Refresh OASys deep-link map
-        run: node tools/build_oasys_exam_map.mjs
+        # Retain previously mapped exams so rotating GetActiveExams rows do not
+        # drop still-valid NOE deep links (goldens 6125 / 7312).
+        run: node tools/build_oasys_exam_map.mjs --retain-mapped
       - name: Refresh SODA schedule + exam-level list aggregates
         run: |
           set -euo pipefail
@@ -57,6 +59,7 @@ jobs:
               site/data/exam_sources/civil_service_list_aggregates.json) ;;
               site/data/exam_sources/city_record_check.json) ;;
               site/data/exam_sources/oasys_exam_map.json) ;;
+              site/data/exam_sources/oasys_active_exams_fixture.json) ;;
               site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json) ;;
               site/data/exam_sources/verification_receipts/staffing_list_establishment_prediction_latest.json) ;;
               site/data/exam_sources/verification_receipts/oasys_exam_map_latest.json) ;;
@@ -79,7 +82,7 @@ jobs:
             Automated refresh→publish of `site/data/staffing_exams.json` from the
             DCAS annual schedule (`4ptz-hmtc`) and exam-level Civil Service List
             aggregates (`vx8i-nprf` group-by only — no roster/PII rows), plus the
-            OASys deep-link map when reachable.
+            OASys deep-link map with `--retain-mapped`.
 
             Closes the staffing exams freshness publish loop (scout P2).
 
@@ -93,6 +96,7 @@ jobs:
             site/data/exam_sources/civil_service_list_aggregates.json
             site/data/exam_sources/city_record_check.json
             site/data/exam_sources/oasys_exam_map.json
+            site/data/exam_sources/oasys_active_exams_fixture.json
             site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json
             site/data/exam_sources/verification_receipts/staffing_list_establishment_prediction_latest.json
             site/data/exam_sources/verification_receipts/oasys_exam_map_latest.json

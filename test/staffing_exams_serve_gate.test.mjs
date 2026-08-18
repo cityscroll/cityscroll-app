@@ -59,7 +59,8 @@ test("staffing data_current_as_of tracks the freshest schedule or list publisher
     staffingListCurrentAsOf({
       activeList: { summary: { latest_established: "2026-08-17" } },
       listAggregates: {
-        source: { data_current_as_of: "2026-08-17", fetched_at: "2026-08-18" },
+        source: { fetched_at: "2026-08-18" },
+        summary: { latest_established: "2026-08-17" },
       },
     }),
     "2026-08-17",
