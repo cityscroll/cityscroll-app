@@ -533,24 +533,35 @@ export function buildLandPhaseView(spine, opts = {}) {
   /**
    * Phase state:
    * - current: derived current phase
-   * - passed: has actual progress OR (pre_certification && Noticed) OR strictly before current with actuals
+   * - passed: completed work at or before current
+   * - overlap: permitted concurrent work that sits AFTER current in the template
+   *   (CEQR ↔ pre-cert notice) — never labeled plain "Done" without explanation
    * - future: otherwise (including planned-only public-review stages)
    *
-   * Note: CEQR and pre-cert can overlap (Noticed while EAS still in progress). Both may be
-   * non-future; only one is `current`. Later-stage actuals force earlier stranded
-   * in-progress phases to `passed` (outcome may be missing — see outcome_status).
+   * Note: CEQR and pre-cert can overlap (Noticed while filing/EAS still in progress).
+   * Field case 2026K0123: Noticed while current=Filing and next=CEQR must not paint
+   * Notice as completed after CEQR in the stepper.
    */
   function phaseState(id) {
     if (id === currentPhaseId) return "current";
+    const idx = LAND_ULURP_PHASES.indexOf(id);
+    const cur = LAND_ULURP_PHASES.indexOf(currentPhaseId);
     const actuals = (byPhase[id] || []).some(eventIsActualProgress);
-    if (id === "pre_certification" && noticed) return "passed";
+
+    // Public "Noticed" while the pointer is still in filing/CEQR: notice is concurrent,
+    // not a later completed stage.
+    if (id === "pre_certification" && noticed && cur >= 0 && idx > cur) {
+      return "overlap";
+    }
+
     if (actuals) {
-      const idx = LAND_ULURP_PHASES.indexOf(id);
-      const cur = LAND_ULURP_PHASES.indexOf(currentPhaseId);
-      // Actuals at or before current → passed; actuals only as planned-labeled rarely after
       if (idx <= cur) return "passed";
-      // Actual activity after current (data quirk) still counts as material → passed
-      return "passed";
+      // Material rows after current without a permitted overlap story stay passed only
+      // when the process already advanced (later terminal work). Synthetic Noticed alone
+      // never takes this path.
+      const material = (byPhase[id] || []).some((e) => eventIsActualProgress(e) && !e._synthetic);
+      if (material) return "passed";
+      return "future";
     }
     return "future";
   }
@@ -565,6 +576,9 @@ export function buildLandPhaseView(spine, opts = {}) {
     } else if (state === "current" && !(byPhase[id] || []).some(eventIsActualProgress)) {
       // Arrived at next phase with only planned Not Started rows — show them as current work.
       display = all;
+    } else if (state === "overlap") {
+      display = all.filter((e) => !eventIsPlanned(e) || eventIsInProgress(e) || e._synthetic);
+      if (!display.length) display = all;
     } else {
       // History / current: hide pure planned Not Started rows (they live under future phases).
       display = all.filter((e) => !eventIsPlanned(e) || eventIsInProgress(e) || e._synthetic);
@@ -576,6 +590,15 @@ export function buildLandPhaseView(spine, opts = {}) {
       .filter(Boolean)
       .sort();
 
+    const overlapExplained =
+      state === "overlap" && id === "pre_certification" && noticed
+        ? {
+            reason: "noticed_during_filing_or_ceqr",
+            label_key: "land_spine_phase_overlap_notice",
+            permitted: true,
+          }
+        : null;
+
     return {
       id,
       short: LAND_PHASE_META[id].short,
@@ -584,6 +607,7 @@ export function buildLandPhaseView(spine, opts = {}) {
       // "no_recorded_outcome" when the pipeline advanced past this stage without a
       // terminal completion row (stranded In Progress / missing disposition).
       outcome_status: missingOutcomes.has(id) ? "no_recorded_outcome" : null,
+      overlap: overlapExplained,
       event_count: display.length,
       total_count: all.length,
       first: dates[0] || null,
@@ -594,19 +618,42 @@ export function buildLandPhaseView(spine, opts = {}) {
     };
   });
 
-  // Next = first future phase after current; if current is CEQR and notice already passed, skip notice.
+  // Next = first future phase AFTER current only. Never fall back to an earlier
+  // incomplete template slot (that produced "What's next: Pre-certification"
+  // while current was Mayoral on completed projects).
   const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
   let nextPhase = null;
-  for (let i = curIdx + 1; i < phases.length; i++) {
-    if (phases[i].state === "future") {
-      nextPhase = phases[i];
-      break;
+  if (!completedLike) {
+    for (let i = curIdx + 1; i < phases.length; i++) {
+      if (phases[i].state === "future") {
+        nextPhase = phases[i];
+        break;
+      }
+      // Skip passed/overlap (e.g. concurrent notice while still in filing/CEQR)
     }
-    // Skip phases already passed (e.g. notice while still in CEQR)
   }
-  if (!nextPhase) {
-    nextPhase = phases.find((p) => p.state === "future") || null;
-  }
+
+  // Applicable phases: omit empty pre-public-review slots the project never
+  // entered once review has moved past them (acquisition apps often skip CEQR /
+  // pre-cert notice). Always keep the current phase and any phase with events.
+  const applicablePhases = phases.filter((p) => {
+    if (p.state === "current" || p.state === "passed" || p.state === "overlap") return true;
+    if ((p.total_count || p.event_count || 0) > 0) return true;
+    const idx = LAND_ULURP_PHASES.indexOf(p.id);
+    // Future statutory public-review stages after current remain visible.
+    if (
+      idx > curIdx
+      && (p.id === "community_board"
+        || p.id === "borough_president"
+        || p.id === "cpc"
+        || p.id === "city_council"
+        || p.id === "mayoral_appeals")
+    ) {
+      return true;
+    }
+    // Empty future pre-review stages behind or with no justification → omit.
+    return false;
+  });
 
   return {
     schema_version: LAND_PHASE_SPINE_SCHEMA_VERSION,
@@ -620,8 +667,9 @@ export function buildLandPhaseView(spine, opts = {}) {
       public_status: publicStatus,
       noticed,
       // True only when Open Data already labels full public review / completion paths.
+      // Completed/approved are terminal — not "in public review" for action rails.
       in_public_review: publicStatus
-        ? /public review|completed|approved/i.test(publicStatus)
+        ? /public review/i.test(publicStatus) && !/completed|approved|disapproved|withdrawn|terminated/i.test(publicStatus)
         : false,
       // Machine-readable derivation reason (stranded-stage advance, in_progress, …).
       derivation: derived.reason || null,
@@ -633,7 +681,8 @@ export function buildLandPhaseView(spine, opts = {}) {
           short: nextPhase.short,
         }
       : null,
-    phases,
+    phases: applicablePhases,
+    all_phases: phases,
     chronological: events,
     event_count: events.length,
     portal_row_link_candidates: countDuplicatePortalLinks({ events }, portalUrl),

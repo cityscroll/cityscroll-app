@@ -1,0 +1,21 @@
+{
+  "label": "after",
+  "project_id": "2026R0127",
+  "actions": [
+    {
+      "id": "27e384fd-3b8f-f011-b4cc-001dd80340cd",
+      "action": "PQ",
+      "ulurp_number": "C260330PQR",
+      "status": "Certified",
+      "approved": true,
+      "cc_resolution": null,
+      "sharepoint_url": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PQ_Acquisition of Property by the City_27E384FD3B8FF011B4CC001DD80340CD"
+    }
+  ],
+  "public_status": "In Public Review",
+  "notes": [
+    "after: participation heading driven by acquisition action type",
+    "after: Council due_date = start 2026-07-31 + 50 days = 2026-09-19",
+    "outer_bound Nov 27 retained only as cumulative envelope"
+  ]
+}

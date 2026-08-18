@@ -80,12 +80,20 @@ test("fixture project certified on D renders CB/BP/CPC/Council due dates D+60/90
   assert.equal(clock.status, "open");
   assert.equal(clock.statute_ref, "NYC Charter §197-c");
   assert.equal(clock.certified_date, D);
-  const map = Object.fromEntries(clock.phases.map((p) => [p.phase_id, p.due_date]));
-  assert.equal(map.community_board, expected.community_board);
-  assert.equal(map.borough_president, expected.borough_president);
-  assert.equal(map.cpc, expected.cpc);
-  assert.equal(map.city_council, expected.city_council);
-  assert.equal(map.mayoral_appeals, addCalendarDays(D, 205));
+  // Reader-facing due_date is phase-window only when the phase start is known.
+  // Certification alone starts the Community Board clock; later stages stay
+  // insufficient until a start (or prior completion) is observed. Outer bounds
+  // retain the certified+cumulative envelope for predictions.
+  const byId = Object.fromEntries(clock.phases.map((p) => [p.phase_id, p]));
+  assert.equal(byId.community_board.due_date, expected.community_board);
+  assert.equal(byId.community_board.deadline_certainty, "statutory");
+  assert.equal(byId.community_board.start_basis, "certification_date");
+  for (const phaseId of ["borough_president", "cpc", "city_council", "mayoral_appeals"]) {
+    assert.equal(byId[phaseId].due_date, null);
+    assert.equal(byId[phaseId].deadline_certainty, "insufficient");
+    assert.equal(byId[phaseId].outer_bound_due_date, expected[phaseId] || addCalendarDays(D, 205));
+  }
+  assert.equal(byId.mayoral_appeals.outer_bound_due_date, addCalendarDays(D, 205));
 
   const predictions = emitUlurpStatutoryPredictions(record, {
     generatedAt: "2024-01-16T12:00:00Z",
@@ -322,7 +330,7 @@ test("completed project with stale-open edge clock does not claim overdue public
   });
   assert.equal(good, null);
 
-  // Still in public review with a real open step keeps days-left.
+  // Still in public review with a phase-window statutory due date keeps days-left.
   const openPos = buildUlurpPipelinePosition({
     phaseView: {
       current: { phase_id: "borough_president", public_status: "In Public Review", in_public_review: true },
@@ -331,11 +339,19 @@ test("completed project with stale-open edge clock does not claim overdue public
       status: "open",
       certified_date: "2026-05-11",
       phases: [
-        { phase_id: "community_board", status: "completed", due_date: "2026-07-10", days: 60 },
-        { phase_id: "borough_president", status: "open", due_date: "2026-08-09", days: 30 },
-        { phase_id: "cpc", status: "open", due_date: "2026-10-08", days: 60 },
-        { phase_id: "city_council", status: "open", due_date: "2026-11-27", days: 50 },
-        { phase_id: "mayoral_appeals", status: "open", due_date: "2026-12-02", days: 5 },
+        { phase_id: "community_board", status: "completed", due_date: null, days: 60, deadline_certainty: "completed" },
+        {
+          phase_id: "borough_president",
+          status: "open",
+          start_date: "2026-07-10",
+          due_date: "2026-08-09",
+          days: 30,
+          deadline_basis: "phase_window",
+          deadline_certainty: "statutory",
+        },
+        { phase_id: "cpc", status: "open", due_date: null, days: 60, deadline_certainty: "insufficient" },
+        { phase_id: "city_council", status: "open", due_date: null, days: 50, deadline_certainty: "insufficient" },
+        { phase_id: "mayoral_appeals", status: "open", due_date: null, days: 5, deadline_certainty: "insufficient" },
       ],
     },
     publicStatus: "In Public Review",
@@ -344,5 +360,7 @@ test("completed project with stale-open edge clock does not claim overdue public
   assert.ok(openPos);
   assert.equal(openPos.step_phase_id, "borough_president");
   assert.equal(openPos.step_n, 2);
+  assert.equal(openPos.due_date, "2026-08-09");
   assert.ok(Number.isFinite(openPos.days_left));
+  assert.equal(openPos.days_left, 5);
 });
