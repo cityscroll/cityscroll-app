@@ -251,6 +251,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   set `NO_DISCLAIMER_SLOP_MODE=block` locally or the repository variable of the same name in
   CI after the curated pattern set is calibrated. Reviewed exceptions use the adjacent
   `no_disclaimer_slop_allowlist.txt` or a local `no-disclaimer-slop: ignore` comment.
+  Provenance restatement of per-link markers (City Record awards, Checkbook “live on”,
+  timeline-lead search) is a detector class — do not allowlist it.
 - Run `make prepush` (or `./tools/preflight-required-checks.sh`) before creating or
   handing back a PR URL and before opening a pull request. Install the versioned
   pre-push hook once per clone with `make install-hooks` (`core.hooksPath=tools/git-hooks`);
