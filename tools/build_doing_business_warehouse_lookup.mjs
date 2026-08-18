@@ -34,6 +34,10 @@ import {
   rowToSodaShape,
 } from "../warehouse/lib/doing_business_lookup.mjs";
 import {
+  assertServePublishTwins,
+  SERVE_LOOKUP_CONTRACTS,
+} from "../warehouse/lib/serve_publish_contract.mjs";
+import {
   DOING_BUSINESS_SODA,
 } from "../worker/src/lib/doing_business_join.mjs";
 import {
@@ -342,9 +346,13 @@ async function main() {
   if (args.check) {
     for (const filePath of [OUT_SITE, OUT_WORKER]) {
       assert.ok(existsSync(filePath), `${path.relative(ROOT, filePath)} missing`);
-      assertDoingBusinessServeGate(readCommittedDoc(filePath));
-      console.log(`ok serve-gate ${path.relative(ROOT, filePath)}`);
     }
+    const site = readCommittedDoc(OUT_SITE);
+    const worker = readCommittedDoc(OUT_WORKER);
+    assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.doing_business);
+    assertDoingBusinessServeGate(site);
+    assertDoingBusinessServeGate(worker);
+    console.log("ok serve-publish contract for Doing Business twins");
   }
 
   const { rows, mode, publisherRowCount } = await collectRows(args);

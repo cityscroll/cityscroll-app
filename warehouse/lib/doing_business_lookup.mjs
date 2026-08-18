@@ -12,6 +12,10 @@ import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { catalogExists, getDataset, WAREHOUSE_DIR } from "./catalog.mjs";
 import { queryWarehouse } from "./query.mjs";
+import {
+  SERVE_LOOKUP_CONTRACTS,
+  servePublishFindings,
+} from "./serve_publish_contract.mjs";
 
 export const DB_DATASET_KEY = "doing-business-entities";
 export const DB_SELECT_COLS = [
@@ -99,9 +103,12 @@ export const DOING_BUSINESS_ROW_COUNT_DRIFT_ABS = 250;
 /** Refuse empty / fixture-sized snapshots that would re-open live SODA. */
 export const DOING_BUSINESS_MIN_ROW_COUNT = 10000;
 /** Serve lookup must be republished within this window (refresh→publish loop). */
-export const DOING_BUSINESS_MAX_AGE_DAYS = 180;
+export const DOING_BUSINESS_MAX_AGE_DAYS =
+  SERVE_LOOKUP_CONTRACTS.doing_business.max_age_days;
 /** Exact organization_name canaries that must remain in the committed serve. */
-export const DOING_BUSINESS_CANARIES = Object.freeze(["CAMBA  INC"]);
+export const DOING_BUSINESS_CANARIES = Object.freeze(
+  SERVE_LOOKUP_CONTRACTS.doing_business.canaries.map((canary) => canary.value),
+);
 export const DOING_BUSINESS_FULL_CATALOG_MODES = Object.freeze([
   "bulk_warehouse",
   "bulk_soda",
@@ -116,7 +123,11 @@ export const DOING_BUSINESS_FULL_CATALOG_MODES = Object.freeze([
  * @returns {string[]} finding messages (empty ⇒ pass)
  */
 export function doingBusinessServeGateFindings(doc, opts = {}) {
-  const findings = [];
+  const findings = servePublishFindings(
+    doc,
+    SERVE_LOOKUP_CONTRACTS.doing_business,
+    opts,
+  );
   const rows = Array.isArray(doc?.rows) ? doc.rows : [];
   const rowCount =
     Number.isFinite(Number(doc?.row_count)) ? Number(doc.row_count) : rows.length;
@@ -147,30 +158,6 @@ export function doingBusinessServeGateFindings(doc, opts = {}) {
     );
   }
 
-  const names = new Set(
-    rows.map((r) => String(r?.organization_name || "").trim()).filter(Boolean),
-  );
-  for (const canary of DOING_BUSINESS_CANARIES) {
-    if (!names.has(canary)) {
-      findings.push(`Doing Business serve missing canary organization_name ${JSON.stringify(canary)}`);
-    }
-  }
-
-  const stamped = doc?.materialized_at ? Date.parse(String(doc.materialized_at)) : NaN;
-  const nowMs = Date.parse(String(opts.now || new Date().toISOString()));
-  if (!Number.isFinite(stamped)) {
-    findings.push("Doing Business serve missing materialized_at");
-  } else if (Number.isFinite(nowMs)) {
-    const ageDays = (nowMs - stamped) / 86_400_000;
-    if (ageDays > DOING_BUSINESS_MAX_AGE_DAYS) {
-      findings.push(
-        `Doing Business serve age ${ageDays.toFixed(1)}d exceeds max ${DOING_BUSINESS_MAX_AGE_DAYS}d — refresh and republish`,
-      );
-    }
-    if (ageDays < -1) {
-      findings.push("Doing Business serve materialized_at is in the future");
-    }
-  }
   return findings;
 }
 
