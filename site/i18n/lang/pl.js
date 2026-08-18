@@ -2567,7 +2567,7 @@
     career_show_more: "Pokaż {n} więcej badań",
     career_exam_not_found: "Egzamin ten nie jest uwzględniony w bieżącym harmonogramie DCAS.",
     career_no_results: "Żadne badania nie pasują do tych filtrów. Wypróbuj wszystkie zainteresowania lub wszystkie zaplanowane egzaminy.",
-    career_source_current: "Wstępnie obliczone na podstawie oficjalnych źródeł DCAS. Egzaminy otwarte sprawdzone {date}; harmonogram roczny aktualny poprzez {annual}.",
+    career_source_current: "Wstępnie obliczone na podstawie oficjalnych źródeł DCAS. Egzaminy otwarte sprawdzone {date}; harmonogram roczny aktualny poprzez {annual}. Aktywna lista do {list}.",
     career_source_stale: "Najnowszy test egzaminu otwartego pochodzi z {date}. Zanim podejmiesz jakiekolwiek działania, potwierdź każdą datę na oficjalnej stronie DCAS.",
     career_source_details: "Źródła i zasady odświeżania",
     career_city_record_finding: "Sprawdzono także zbiór danych City Record. Nie publikuje Powiadomień o egzaminie DCAS jako sekcji zawierającej ogłoszenia o egzaminach, dlatego w tym przewodniku zastosowano zamiast tego harmonogramy DCAS i NOE.",

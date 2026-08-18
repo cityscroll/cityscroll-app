@@ -6,14 +6,14 @@
     "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
     "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
     "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-    "fetched_at": "2026-08-03",
+    "fetched_at": "2026-08-18",
     "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
     "stale_after_days": 3,
     "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
   },
   "summary": {
-    "input_rows": 9,
-    "mapped": 9,
+    "input_rows": 18,
+    "mapped": 18,
     "skipped": 0
   },
   "records": [
@@ -90,6 +90,78 @@
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9631"
     },
     {
+      "exam_number": "7023",
+      "oasys_exam_id": "9638",
+      "title": "Contract Specialist",
+      "is_promotional": false,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 68,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9638",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277023000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9638"
+    },
+    {
+      "exam_number": "7028",
+      "oasys_exam_id": "9639",
+      "title": "Electrician's Helper",
+      "is_promotional": false,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 91,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9639",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277028000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9639"
+    },
+    {
+      "exam_number": "7029",
+      "oasys_exam_id": "9640",
+      "title": "Electrician's Helper (CUNY)",
+      "is_promotional": false,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 91,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277029000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9640"
+    },
+    {
+      "exam_number": "7033",
+      "oasys_exam_id": "9641",
+      "title": "Estimator (General Construction)",
+      "is_promotional": false,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 82,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9641",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277033000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9641"
+    },
+    {
+      "exam_number": "7056",
+      "oasys_exam_id": "9643",
+      "title": "Plan Examiner (Buildings)",
+      "is_promotional": false,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 91,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277056000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9643"
+    },
+    {
+      "exam_number": "7070",
+      "oasys_exam_id": "9645",
+      "title": "Plant Maintainer (Hospitals)/Tender (NYC H+H)",
+      "is_promotional": false,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-09-22",
+      "filing_fee": 88,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9645",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277070000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9645"
+    },
+    {
       "exam_number": "7312",
       "oasys_exam_id": "9646",
       "title": "Police Officer",
@@ -124,6 +196,42 @@
       "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635",
       "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277331000.pdf",
       "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9635"
+    },
+    {
+      "exam_number": "7508",
+      "oasys_exam_id": "9636",
+      "title": "Assistant Resident Buildings Superintendent (Prom)",
+      "is_promotional": true,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 68,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9636",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277508000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9636"
+    },
+    {
+      "exam_number": "7522",
+      "oasys_exam_id": "9642",
+      "title": "Marine Engineer (Uniformed - Fire Department) (Prom)",
+      "is_promotional": true,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-10-27",
+      "filing_fee": 101,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9642",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277522000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9642"
+    },
+    {
+      "exam_number": "7527",
+      "oasys_exam_id": "9644",
+      "title": "Plan Examiner (Buildings) (Prom)",
+      "is_promotional": true,
+      "filing_start": "2026-08-05",
+      "filing_end": "2026-08-25",
+      "filing_fee": 91,
+      "noe_page_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9644",
+      "noe_pdf_url": "https://a856-exams.nyc.gov/OASysWeb/noe/20277527000.pdf",
+      "official_application_url": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=9644"
     }
   ]
 }

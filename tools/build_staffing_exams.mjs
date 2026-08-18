@@ -63,6 +63,16 @@ const INTEREST_TAXONOMY_FILE = "interest_area_taxonomy.json";
 /** Bump when densify merge / fee-salary / OASys handoff / differentiator / interest taxonomy materialization changes. */
 export const STAFFING_EXAMS_SCHEMA_VERSION = 6;
 
+/**
+ * Fail-closed refresh→publish age window for the committed staffing exams artifact.
+ * Daily workflow refreshes SODA schedule + exam-level list aggregates; seven days
+ * leaves weekend/Actions slack without letting the card freeze for weeks.
+ */
+export const STAFFING_EXAMS_MAX_AGE_DAYS = 7;
+
+/** Minimum distinct exams expected from the active-list group-by (exam-level only). */
+export const STAFFING_EXAMS_LIST_MIN_DISTINCT = 100;
+
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
   "notice_url",
@@ -254,6 +264,136 @@ export function assertSourceFresh(source, today) {
   assert(Number.isFinite(source.stale_after_days) && source.stale_after_days > 0, `${source.id}: stale_after_days must be positive`);
   const age = sourceAgeDays(source, today);
   assert(age <= source.stale_after_days, `${source.id}: source is stale (${age} days; limit ${source.stale_after_days})`);
+}
+
+/**
+ * Freshest publisher calendar day among schedule vintage + active-list establishment.
+ * Keeps annual `data_current_as_of` semantics on the annual source while the artifact
+ * top-level stamp can advance when the civil-service list moves.
+ */
+export function staffingArtifactDataCurrentAsOf({ annual, activeList, listAggregates } = {}) {
+  const candidates = [
+    isoDate(annual?.source?.data_current_as_of),
+    isoDate(activeList?.summary?.latest_established),
+    isoDate(listAggregates?.summary?.latest_established),
+    isoDate(listAggregates?.source?.data_current_as_of),
+  ].filter(Boolean);
+  return candidates.sort().at(-1) || null;
+}
+
+export function staffingListCurrentAsOf({ activeList, listAggregates } = {}) {
+  return (
+    isoDate(listAggregates?.summary?.latest_established)
+    || isoDate(activeList?.summary?.latest_established)
+    || isoDate(listAggregates?.source?.data_current_as_of)
+    || isoDate(activeList?.source?.data_current_as_of)
+    || null
+  );
+}
+
+/**
+ * Serve-publish drift findings for the committed staffing exams artifact.
+ * Age is measured against open_window_as_of / generated_at (build clock), not the
+ * slower annual-schedule vintage alone.
+ */
+export function staffingExamsServeGateFindings(artifact, opts = {}) {
+  const findings = [];
+  const maxAge = Number.isFinite(Number(opts.maxAgeDays))
+    ? Number(opts.maxAgeDays)
+    : STAFFING_EXAMS_MAX_AGE_DAYS;
+  const minDistinct = Number.isFinite(Number(opts.minDistinctExams))
+    ? Number(opts.minDistinctExams)
+    : STAFFING_EXAMS_LIST_MIN_DISTINCT;
+  const nowDay = isoDate(
+    opts.now instanceof Date
+      ? opts.now.toISOString()
+      : (opts.now || opts.today || new Date().toISOString()),
+  );
+  if (!artifact || typeof artifact !== "object") {
+    return ["staffing exams serve artifact is missing"];
+  }
+  if (!Number.isFinite(maxAge) || maxAge <= 0) {
+    findings.push("staffing exams serve has no finite max_age_days contract");
+  }
+  const stamped = isoDate(
+    artifact.open_window_as_of || artifact.generated_at || artifact.data_current_as_of,
+  );
+  if (!stamped) {
+    findings.push("staffing exams serve missing open_window_as_of/generated_at");
+  } else if (!nowDay) {
+    findings.push("staffing exams serve check received an invalid now value");
+  } else {
+    const age = sourceAgeDays({ fetched_at: stamped }, nowDay);
+    if (age > maxAge) {
+      findings.push(
+        `staffing exams serve age ${age}d exceeds max ${maxAge}d (stamped ${stamped})`,
+      );
+    }
+  }
+  if (!artifact.data_current_as_of) {
+    findings.push("staffing exams serve missing data_current_as_of");
+  }
+  if (!isoDate(artifact.list_current_as_of)) {
+    findings.push("staffing exams serve missing list_current_as_of");
+  }
+  if (!isoDate(artifact.open_window_as_of)) {
+    findings.push("staffing exams serve missing open_window_as_of");
+  }
+  // Fetch freshness for the active-list source (not latest_established — that can
+  // pause when DCAS establishes no new lists even while the snapshot still refreshes).
+  const listSource = (Array.isArray(artifact.sources) ? artifact.sources : [])
+    .find((source) => source?.id === "dcas-active-civil-service-list"
+      || source?.dataset_id === ACTIVE_LIST_ID);
+  const listFetched = isoDate(listSource?.fetched_at || artifact.list_aggregates?.source?.fetched_at);
+  if (!listFetched) {
+    findings.push("staffing exams serve missing active-list fetched_at");
+  } else if (nowDay) {
+    const fetchAge = sourceAgeDays({ fetched_at: listFetched }, nowDay);
+    if (fetchAge > maxAge) {
+      findings.push(
+        `staffing exams active-list fetch age ${fetchAge}d exceeds max ${maxAge}d (${listFetched})`,
+      );
+    }
+  }
+  const listSummary = artifact.source_checks?.list_aggregates
+    || artifact.source_checks?.active_list
+    || {};
+  const distinct = Number(
+    listSummary.distinct_exams
+    ?? listSummary.exams_with_list_aggregate
+    ?? 0,
+  );
+  if (!(distinct >= minDistinct)) {
+    findings.push(
+      `staffing exams list aggregates distinct_exams ${distinct} below minimum ${minDistinct}`,
+    );
+  }
+  const examCount = Array.isArray(artifact.exams) ? artifact.exams.length : 0;
+  if (examCount < 100) {
+    findings.push(`staffing exams serve exam_count ${examCount} below minimum 100`);
+  }
+  // Privacy: committed aggregates and exam cards must never carry roster PII keys.
+  const sample = [
+    ...(Array.isArray(artifact.exams) ? artifact.exams.slice(0, 25) : []),
+    ...(Array.isArray(artifact.list_aggregates?.records)
+      ? artifact.list_aggregates.records.slice(0, 25)
+      : []),
+  ];
+  for (const row of sample) {
+    for (const key of Object.keys(row || {})) {
+      if (/first_name|last_name|middle_name|ssn|address|phone|email|list_rank/i.test(key)) {
+        findings.push(`staffing exams serve includes PII field ${key}`);
+        break;
+      }
+    }
+  }
+  return findings;
+}
+
+export function assertStaffingExamsServeGate(artifact, opts = {}) {
+  const findings = staffingExamsServeGateFindings(artifact, opts);
+  if (findings.length) throw new Error(findings.join("; "));
+  return true;
 }
 
 export function examStatusFor(row, today) {
@@ -840,10 +980,23 @@ export function buildArtifact({
   if (oasysMap?.source) sources.push(oasysMap.source);
   if (eligibleListUtilization?.source) sources.push(eligibleListUtilization.source);
 
+  const listCurrentAsOf = staffingListCurrentAsOf({ activeList, listAggregates });
+  const dataCurrentAsOf = staffingArtifactDataCurrentAsOf({
+    annual,
+    activeList,
+    listAggregates,
+  }) || annual.source.data_current_as_of || null;
+
   return {
     schema_version: STAFFING_EXAMS_SCHEMA_VERSION,
     generated_at: latestSourceAt,
-    data_current_as_of: annual.source.data_current_as_of,
+    // Freshest publisher clock across annual schedule vintage + active-list establishment.
+    data_current_as_of: dataCurrentAsOf,
+    // Active civil-service list establishment frontier (exam-level aggregates only).
+    list_current_as_of: listCurrentAsOf,
+    // Calendar day used for open/upcoming/closed window classification at build time.
+    open_window_as_of: generatedAt,
+    annual_schedule_current_as_of: isoDate(annual.source.data_current_as_of),
     // Backward-compatible ordered id list for the Staffing interest filter.
     interest_areas: areaIds,
     // Full taxonomy + per-area exam lists with open-window state.
@@ -968,6 +1121,73 @@ function sodaUrl(id, params) {
   return `https://data.cityofnewyork.us/resource/${id}.json?${new URLSearchParams(params)}`;
 }
 
+/**
+ * Privacy-safe SODA group-by for Civil Service List (Active).
+ * Retains only exam_no + list_count + dates + title_count — never roster rows.
+ */
+export async function fetchCivilServiceListAggregates({ fetchedAt } = {}) {
+  const day = fetchedAt || new Date().toISOString().slice(0, 10);
+  const rawRows = [];
+  for (let offset = 0; ; offset += 1000) {
+    const page = await fetchJson(sodaUrl(ACTIVE_LIST_ID, {
+      "$select": [
+        "exam_no",
+        "count(*) as list_count",
+        "max(established_date) as established_date",
+        "max(extension_date) as extension_date",
+        "count(distinct list_title_code) as title_count",
+      ].join(","),
+      "$group": "exam_no",
+      "$order": "exam_no",
+      "$limit": "1000",
+      "$offset": String(offset),
+    }));
+    rawRows.push(...page);
+    if (page.length < 1000) break;
+  }
+  const records = rawRows.map((row) => {
+    const examNo = String(row.exam_no || "").trim();
+    assert(examNo, `active list aggregate missing exam_no: ${JSON.stringify(row)}`);
+    return {
+      exam_number: examNo,
+      exam_no_raw: examNo,
+      list_count: Number(row.list_count || 0),
+      established_date: isoDate(row.established_date),
+      extension_date: isoDate(row.extension_date),
+      title_count: Number(row.title_count || 0) || 0,
+    };
+  });
+  // Index validates the PII hard rule before we commit the snapshot.
+  buildListAggregateIndex(records);
+  const latestEstablished = records
+    .map((row) => row.established_date)
+    .filter(Boolean)
+    .sort()
+    .at(-1) || null;
+  const totalListRows = records.reduce((sum, row) => sum + Number(row.list_count || 0), 0);
+  return {
+    source: {
+      id: "dcas-active-civil-service-list",
+      name: "Civil Service List (Active) — exam-level aggregates only",
+      dataset_id: ACTIVE_LIST_ID,
+      url: `https://data.cityofnewyork.us/resource/${ACTIVE_LIST_ID}.json`,
+      landing_page: `https://data.cityofnewyork.us/d/${ACTIVE_LIST_ID}`,
+      fetched_at: day,
+      // Freshness for --check uses fetched_at (snapshot age). latest_established is a
+      // world-fact on summary/artifact.list_current_as_of — it can pause for days.
+      refresh_cadence: "Daily",
+      stale_after_days: 3,
+      privacy: "Per-applicant rows and names are never retained. Only exam-level counts and list dates from group-by.",
+    },
+    summary: {
+      distinct_exams: records.length,
+      total_list_rows_sum: totalListRows,
+      latest_established: latestEstablished,
+    },
+    records,
+  };
+}
+
 async function refreshSnapshots() {
   const fetchedAt = new Date().toISOString().slice(0, 10);
   const annualMeta = await fetchJson(`https://data.cityofnewyork.us/api/views/${ANNUAL_ID}`);
@@ -1012,6 +1232,8 @@ async function refreshSnapshots() {
     summary: activeSummary,
   };
 
+  const listAggregates = await fetchCivilServiceListAggregates({ fetchedAt });
+
   const cityCandidates = (await fetchJson(sodaUrl(CITY_RECORD_ID, {
     "$select": "count(*) as candidate_rows",
     "$where": "upper(short_title) like '%EXAM%' OR upper(additional_description_1) like '%NOTICE OF EXAMINATION%' OR upper(other_info_1) like '%NOTICE OF EXAMINATION%'",
@@ -1052,11 +1274,16 @@ async function refreshSnapshots() {
   await Promise.all([
     writeFile(path.join(SOURCE_DIR, "annual_schedule.json"), stableJson(annual)),
     writeFile(path.join(SOURCE_DIR, "active_list_summary.json"), stableJson(activeList)),
+    writeFile(path.join(SOURCE_DIR, LIST_AGGREGATES_FILE), stableJson(listAggregates)),
     writeFile(path.join(SOURCE_DIR, "city_record_check.json"), stableJson(cityRecord)),
   ]);
   if (!(await readJsonOptional("dcas_exam_outcomes.json"))) {
     await writeFile(path.join(SOURCE_DIR, "dcas_exam_outcomes.json"), stableJson(outcomes));
   }
+  console.log(
+    `refreshed exam sources (schedule ${annual.source.data_current_as_of}; `
+    + `list ${listAggregates.summary.distinct_exams} exams / as-of ${listAggregates.summary.latest_established})`,
+  );
 }
 
 async function refreshAnnualScheduleHistory() {
@@ -1238,6 +1465,10 @@ async function main() {
     today,
   });
   const rendered = stableJson(artifact);
+  // Serve-publish drift gate: fail closed when the committed (or just-built) artifact
+  // ages past the refresh cadence, even if individual source snapshots were marked fresh
+  // against a frozen --today= fixture clock.
+  assertStaffingExamsServeGate(artifact, { today, now: today });
   if (check) {
     assert.equal(await readFile(OUTPUT, "utf8"), rendered, "data/staffing_exams.json is stale; rebuild it");
     const predictionReceiptPath = path.join(

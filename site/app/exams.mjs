@@ -409,11 +409,15 @@ function careerSourceHTML(){
   const stale=careerData.sources.some(source=>CrolStaffing.sourceIsStale(source,today));
   const current=careerData.sources.find(source=>source.id==="dcas-open-competitive");
   const annual=careerData.sources.find(source=>source.id==="dcas-annual-schedule");
+  const list=careerData.sources.find(source=>source.id==="dcas-active-civil-service-list");
   const box=$("#career-source");
   box.classList.toggle("stale",stale);
+  const openChecked=careerDate(current?.verified_at||careerData.open_window_as_of||careerData.generated_at);
+  const annualAsOf=careerDate(careerData.annual_schedule_current_as_of||annual?.data_current_as_of);
+  const listAsOf=careerDate(careerData.list_current_as_of||list?.data_current_as_of||list?.fetched_at);
   const lead=stale
-    ? t("career_source_stale",{date:careerDate(current?.verified_at||careerData.generated_at)})
-    : t("career_source_current",{date:careerDate(current?.verified_at||careerData.generated_at),annual:careerDate(annual?.data_current_as_of)});
+    ? t("career_source_stale",{date:openChecked})
+    : t("career_source_current",{date:openChecked,annual:annualAsOf,list:listAsOf});
   box.innerHTML=`<span>${lead}</span>`;
 }
 function careerCount(value){

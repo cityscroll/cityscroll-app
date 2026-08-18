@@ -110,9 +110,47 @@ function receiptFor(artifact, meta = {}) {
   };
 }
 
+function payloadFromMapRecords(records) {
+  return (records || []).map((r) => ({
+    examId: Number(r.oasys_exam_id),
+    title: r.title,
+    examNumber: r.exam_number,
+    filingStart: r.filing_start,
+    filingEnd: r.filing_end,
+    filingFee: r.filing_fee,
+    isPromotional: r.is_promotional,
+    noeUrl: r.noe_pdf_url,
+  }));
+}
+
+/**
+ * Union live GetActiveExams rows with previously mapped exams so a daily refresh
+ * does not drop deep links the moment OASys rotates an exam off the active list.
+ * Live rows win on exam_number collision.
+ */
+export function mergeOasysPayloads(livePayload, priorRecords) {
+  const byNumber = new Map();
+  for (const row of payloadFromMapRecords(priorRecords)) {
+    const num = String(row.examNumber || "").trim();
+    if (/^\d{4}$/.test(num) && Number.isFinite(row.examId) && row.examId > 0) {
+      byNumber.set(num, row);
+    }
+  }
+  for (const row of livePayload || []) {
+    const num = String(row?.examNumber ?? row?.exam_number ?? "").trim();
+    if (/^\d{4}$/.test(num)) byNumber.set(num, row);
+  }
+  return [...byNumber.values()].sort((a, b) =>
+    String(a.examNumber || a.exam_number || "").localeCompare(
+      String(b.examNumber || b.exam_number || ""),
+    ),
+  );
+}
+
 async function main() {
   const check = process.argv.includes("--check");
   const useFixture = process.argv.includes("--fixture");
+  const retainPrior = process.argv.includes("--retain-mapped");
   let payload;
   let meta = {};
   if (useFixture) {
@@ -123,6 +161,15 @@ async function main() {
     const live = await fetchActiveExams();
     payload = live.payload;
     meta = live;
+    if (retainPrior) {
+      try {
+        const prior = JSON.parse(await readFile(OUTPUT, "utf8"));
+        payload = mergeOasysPayloads(live.payload, prior.records || []);
+        meta = { ...live, retained_prior_mapped: true };
+      } catch (error) {
+        if (error.code !== "ENOENT") throw error;
+      }
+    }
     // Refresh the raw fixture body so offline rebuilds stay current.
     await mkdir(SOURCE_DIR, { recursive: true });
     await writeFile(
@@ -131,7 +178,8 @@ async function main() {
         fetched_at: live.fetched_at,
         fetched_at_utc: live.fetched_at_utc,
         http_status: live.http_status,
-        payload: live.payload,
+        payload,
+        retained_prior_mapped: Boolean(retainPrior),
       }),
     );
   } else {
