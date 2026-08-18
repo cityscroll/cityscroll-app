@@ -72,8 +72,8 @@ function exactContractRefs(url) {
   const sourceRef = cleanQuery(url.searchParams.get("source_ref"));
   if (!objectRef && !sourceRef) return null;
   if (
-    !/^procurement:[A-Za-z0-9][A-Za-z0-9._/-]{4,159}$/.test(objectRef)
-    || !/^(?:notice|ocp_award):[A-Za-z0-9_-]{1,80}$/.test(sourceRef)
+    !/^procurement:[^\s\u0000-\u001f]{4,300}$/.test(objectRef)
+    || !/^(?:notice|ocp_award|city_record|passport_public_contracts|passport_public_rfx|checkbook_contracts|checkbook_spending):[^\u0000-\u001f]{1,220}$/.test(sourceRef)
   ) return Object.freeze({ invalid: true });
   return Object.freeze({ objectRef, sourceRef });
 }
@@ -89,14 +89,16 @@ export function publicSearchResult(record, { ruleIndex = RULE_PROJECTION_INDEX }
 
 async function exactContractDocuments(env, refs) {
   if (!refs || refs.invalid) return [];
-  let document = null;
-  if (refs.sourceRef.startsWith("notice:") && env?.DB) {
+  let document = keywordSearchIndex?.families?.procurements?.documents
+    ?.find((candidate) => candidate.object_ref === refs.objectRef
+      && candidate.source_observation_refs.includes(refs.sourceRef)) || null;
+  if (!document && refs.sourceRef.startsWith("notice:") && env?.DB) {
     const requestId = refs.sourceRef.slice("notice:".length);
     const row = await env.DB.prepare("SELECT * FROM notices WHERE request_id = ?")
       .bind(requestId)
       .first();
     if (row) document = publicSearchResult(toRecord(row));
-  } else if (refs.sourceRef.startsWith("ocp_award:")) {
+  } else if (!document && refs.sourceRef.startsWith("ocp_award:")) {
     const pin = refs.objectRef.slice("procurement:".length);
     document = searchContractAwardDocuments(ocpAwardLookup, pin, { limit: 10 }).documents
       .find((candidate) => candidate.source_observation_refs.includes(refs.sourceRef)) || null;
@@ -396,8 +398,9 @@ function combinedStaticLane(id, source, members) {
   const cards = [];
   const seen = new Set();
   for (const card of members.flatMap((lane) => lane.cards || [])) {
-    if (seen.has(card.object_ref)) continue;
-    seen.add(card.object_ref);
+    const identities = [card.object_ref, ...(card.provenance?.alias_object_refs || [])].filter(Boolean);
+    if (identities.some((identity) => seen.has(identity))) continue;
+    identities.forEach((identity) => seen.add(identity));
     cards.push(card);
     if (cards.length >= CARD_LIMIT) break;
   }
@@ -433,9 +436,10 @@ function flattenedResults(dynamicResults, lanes) {
     ...(Array.isArray(dynamicResults) ? dynamicResults : []),
     ...[...LANE_ORDER, ...EXTRA_RESULT_LANES].flatMap((id) => lanes[id]?.cards || []),
   ]) {
-    const key = `${document?.object_type}:${document?.object_ref}`;
-    if (!document?.object_ref || seen.has(key)) continue;
-    seen.add(key);
+    const identities = [document?.object_ref, ...(document?.provenance?.alias_object_refs || [])]
+      .filter(Boolean).map((identity) => `${document?.object_type}:${identity}`);
+    if (!document?.object_ref || identities.some((identity) => seen.has(identity))) continue;
+    identities.forEach((identity) => seen.add(identity));
     results.push(document);
     if (results.length >= RESULT_LIMIT) break;
   }
@@ -581,14 +585,15 @@ export async function handleSearch(request, env) {
   const agencyLane = federatedCollectionLane("agencies", collectionFederation, resolved);
   const committeesLane = federatedCollectionLane("committees", collectionFederation, resolved);
   const contractsMirror = dynamic.lanes.contracts;
+  const procurementLane = staticSearchLane("procurements", resolved);
   const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
   // Keep an unavailable notice mirror honest as unknown unless a Vendor hit
   // can still publish through the Contracts presentation lane.
-  const contractsLane = contractsMirrorAvailable || vendorLane.cards.length
+  const contractsLane = contractsMirrorAvailable || vendorLane.cards.length || procurementLane.cards.length
     ? combinedStaticLane(
       "contracts",
-      "City Record daily mirror and CityScroll vendor profiles",
-      [contractsMirror, vendorLane],
+      "City Record, PASSPort, Checkbook NYC, and CityScroll vendor profiles",
+      [contractsMirror, vendorLane, procurementLane],
     )
     : contractsMirror;
   const peopleOrganizationsLane = combinedStaticLane(
@@ -603,6 +608,7 @@ export async function handleSearch(request, env) {
     community_boards: communityBoardsLane,
     agencies: agencyLane,
     contracts: contractsLane,
+    procurements: procurementLane,
     parcels: parcelsLane,
     committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,

@@ -49,7 +49,7 @@ function exactKey(value) {
   return text(value)?.toUpperCase().replace(/[^A-Z0-9]/g, "") || null;
 }
 
-function snapshot(record) {
+export function procurementObservationSnapshot(record) {
   for (const value of [record?.normalized_snapshot, record?.raw_snapshot, record?.snapshot]) {
     if (value && typeof value === "object") return value;
     if (typeof value !== "string" || !value.trim()) continue;
@@ -64,6 +64,8 @@ function snapshot(record) {
   return {};
 }
 
+const snapshot = procurementObservationSnapshot;
+
 function sourceSystem(record) {
   return text(record?.source_system)?.toLowerCase() || null;
 }
@@ -72,11 +74,13 @@ function sourceId(record) {
   return text(record?.source_system_id || record?.source_id);
 }
 
-function observationRef(record) {
+export function procurementObservationRef(record) {
   const system = sourceSystem(record);
   const id = sourceId(record);
   return system && id ? `${system}:${id}` : null;
 }
+
+const observationRef = procurementObservationRef;
 
 function hasStableSourceId(record) {
   const id = sourceId(record);

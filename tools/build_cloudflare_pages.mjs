@@ -78,9 +78,11 @@ if (existsSync(graphTool)) {
 }
 
 const optionalBuilds = [
+  ["build_shared_procurement_read_model.mjs", []],
   ["build_money_resident_snapshot.mjs", []],
   ["build_property_resident_snapshot.mjs", []],
   ["build_primary_documents.mjs", []],
+  ["build_keyword_search_index.mjs", []],
   ["build_district_activity.mjs", []],
   ["build_near_you_pages.mjs", []],
   ["build_following_page.mjs", []],

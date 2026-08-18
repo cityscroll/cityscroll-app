@@ -2,6 +2,8 @@ import templates from "../../site/data/watch_templates.json" with { type: "json"
 import moneyOpen from "../../site/data/money_default_open.json" with { type: "json" };
 import rulesOpen from "../../site/data/rules_domain_observations.json" with { type: "json" };
 import meetingsOpen from "../../site/data/meetings_domain_observations.json" with { type: "json" };
+import procurementBrowse from "../../site/data/procurement_browse_rows.json" with { type: "json" };
+import { mergeCanonicalProcurementBrowseRows } from "../../site/contract_search_bridge.mjs";
 import {
   followingCadenceLabel,
   buildFollowingViewModel,
@@ -22,7 +24,7 @@ import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
 const SITE_ORIGIN = "https://cityscroll.org";
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
 const suggestedTemplates = buildResultsBackedWatchTemplateRegistry(templates, {
-  money: moneyOpen,
+  money: { ...moneyOpen, notices: mergeCanonicalProcurementBrowseRows(moneyOpen.notices, procurementBrowse.rows) },
   rules: rulesOpen,
   meetings: meetingsOpen,
 });

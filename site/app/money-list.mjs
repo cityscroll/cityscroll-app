@@ -16,14 +16,16 @@ import {
   moneyLineageRows,
   moneyMethodFacet,
   moneySnapshotRows,
+  procurementStagesForRow,
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
-import { mergeContractSearchRows } from "../contract_search_bridge.mjs";
+import { mergeCanonicalProcurementBrowseRows, mergeContractSearchRows } from "../contract_search_bridge.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
 const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
-let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null;
+const MONEY_PROCUREMENT_SNAPSHOT_URL="data/procurement_browse_rows.json";
+let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyProcurementSnapshotPromise=null,moneyActionLocationToolsPromise=null;
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
@@ -112,6 +114,14 @@ function loadMoneyResidentSnapshot(){
       .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
   }
   return moneyResidentSnapshotPromise;
+}
+function loadMoneyProcurementSnapshot(){
+  if(!moneyProcurementSnapshotPromise){
+    moneyProcurementSnapshotPromise=fetch(MONEY_PROCUREMENT_SNAPSHOT_URL)
+      .then(r=>r.ok?r.json():{rows:[]})
+      .catch(()=>({rows:[]}));
+  }
+  return moneyProcurementSnapshotPromise;
 }
 async function residentMoneyRows(){
   return moneySnapshotRows(await loadMoneyResidentSnapshot());
@@ -337,7 +347,11 @@ async function search(){
     const searchDocuments=((contractIdentity||retrievalQuery)&&(mode==="award"||mode==="archive"))
       ? await loadContractSearchDocuments(retrievalQuery,contractIdentity)
       : [];
-    const snapshotRows=mergeContractSearchRows(retainedRows,searchDocuments);
+    const canonicalSnapshot=(mode==="award"||mode==="archive")
+      ? await loadMoneyProcurementSnapshot()
+      : {rows:[]};
+    const searchedRows=mergeContractSearchRows(retainedRows,searchDocuments);
+    const snapshotRows=mergeCanonicalProcurementBrowseRows(searchedRows,canonicalSnapshot?.rows);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
@@ -452,6 +466,7 @@ function moneyListPrimaryAction(r, today=todayISO()){
 }
 function moneyListInteractionProjection(r, today=todayISO()){
   const requestId=String(r?.request_id||"").trim();
+  const canonicalHref=String(r?.canonical_href||"").trim();
   const presentation=moneyListPrimaryAction(r,today);
   const kineticActions=presentation ? [{
     label:t(presentation.label_key),
@@ -461,8 +476,8 @@ function moneyListInteractionProjection(r, today=todayISO()){
     primary:true,
   }] : [];
   return objectCardInteractionProjection({
-    target:requestId ? {
-      href:`/notices/${encodeURIComponent(requestId)}`,
+    target:(canonicalHref||requestId) ? {
+      href:canonicalHref||`/notices/${encodeURIComponent(requestId)}`,
       label:noticeDisplayTitle(r),
     } : null,
     kinetic_actions:kineticActions,
@@ -487,7 +502,10 @@ function moneyListCardInteractionsHTML(r, titleMarkup, today=todayISO()){
   });
 }
 function moneyRowHTML(r, i, terms){
-  const isAward = r.type_of_notice_description === "Award";
+  const typedStages=(Array.isArray(r.procurement_stages)?r.procurement_stages:(r.primary_stage?[r.primary_stage]:[]))
+    .map(stage=>String(stage||"").trim().toLowerCase());
+  const isAward = r.type_of_notice_description === "Award"
+    || typedStages.some(stage=>["award","pending","registered","payment","contract"].includes(stage));
   const lead = isAward
     ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
     : deadlineTag(r.due_date);
@@ -618,13 +636,13 @@ function renderList(autoSelect,lineageRows=null){
   }else{
     $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
   }
-  const keepId=autoSelect===false&&selectedRFP?selectedRFP.request_id:null;
+  const keepId=autoSelect===false&&selectedRFP?(selectedRFP.procurement_id||selectedRFP.request_id):null;
   ensureMwbeListChipsReady().then((tools)=>{
     if(!tools || !document.querySelector("#list .row")) return;
     document.querySelectorAll("#list .row").forEach((el)=>{
       if(el.querySelector("[data-mwbe-list-chips]")) return;
       const r = currentRows[+el.dataset.i];
-      if(!r || /award/i.test(r.type_of_notice_description||"")) return;
+      if(!r || /award/i.test(r.type_of_notice_description||"") || procurementStagesForRow(r).length) return;
       const chips = solicitationListChipsHTML(r);
       if(!chips) return;
       const rmeta = el.querySelector(".rmeta");
@@ -633,10 +651,12 @@ function renderList(autoSelect,lineageRows=null){
   }).catch(()=>{});
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",event=>{
     if(event.target.closest?.("a,button")) return;
+    const row=currentRows[+el.dataset.i];
+    if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
     select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:lineageRows);
   }));
   if(autoSelect===false&&keepId){
-    const idx=currentRows.findIndex(r=>r&&r.request_id===keepId);
+    const idx=currentRows.findIndex(r=>r&&(r.procurement_id||r.request_id)===keepId);
     if(idx>=0){
       const el=document.querySelector(`#list .row[data-i="${idx}"]`);
       if(el){ el.classList.add("sel"); selectedRFP=currentRows[idx]; }
@@ -725,6 +745,7 @@ async function select(i, el, planningDetailRequested=false, precomputedRows=null
   const r = currentRows[i];
   if(planningDetailRequested) r.planning_detail_requested = true;
   selectedRFP = r;
+  if(!r?.request_id&&r?.canonical_href){ $("#detail").innerHTML=""; return; }
   if(typeof globalThis.renderDetail === "function") renderDetail(r, null, null, planningDetailRequested);
   else {
     const detail = $("#detail");

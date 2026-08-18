@@ -9,6 +9,8 @@
 import {
   PROCUREMENT_SOURCE_SYSTEMS,
   buildProcurementObjects,
+  procurementObservationRef,
+  procurementObservationSnapshot,
 } from "./procurement_object_contract.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procurement_read_model.v1";
@@ -39,6 +41,25 @@ function sourceEnvelope(source, records, override, generatedAt) {
   };
 }
 
+function retainedObservations(records) {
+  const latest = new Map();
+  for (const record of records) {
+    const ref = procurementObservationRef(record);
+    if (!ref) continue;
+    const prior = latest.get(ref);
+    if (!prior || String(record?.ingested_at || "") >= String(prior?.ingested_at || "")) {
+      latest.set(ref, record);
+    }
+  }
+  return [...latest.entries()].map(([sourceObservationRef, record]) => Object.freeze({
+    source_observation_ref: sourceObservationRef,
+    source_system: String(record.source_system || "").toLowerCase(),
+    source_system_id: record.source_system_id || record.source_id || null,
+    ingested_at: record.ingested_at || null,
+    snapshot: Object.freeze({ ...procurementObservationSnapshot(record) }),
+  })).sort((left, right) => left.source_observation_ref.localeCompare(right.source_observation_ref));
+}
+
 /** Build one source-enveloped aggregate read model without fetching fallbacks. */
 export function buildSharedProcurementReadModel({
   sourceRecords = [],
@@ -54,6 +75,7 @@ export function buildSharedProcurementReadModel({
     sourceEnvelope(source, records, sourceStatus?.[source], generatedAt),
   ]));
   const rows = built.objects;
+  const observations = retainedObservations(records);
   return {
     schema: SHARED_PROCUREMENT_READ_MODEL_SCHEMA,
     version: SHARED_PROCUREMENT_READ_MODEL_VERSION,
@@ -67,6 +89,7 @@ export function buildSharedProcurementReadModel({
     identity_gate: built.identity_gate,
     identity_edges: built.identity_edges,
     cross_source_identity_joins: built.cross_source_identity_joins,
+    observations,
     counts: {
       total: rows.length,
       source_observations: records.length,
