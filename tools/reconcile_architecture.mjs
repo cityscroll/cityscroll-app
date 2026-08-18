@@ -7,8 +7,19 @@
  * mismatch, but it cannot know why a design changed. Every proposed semantic
  * change therefore carries a null rationale and the literal status
  * "rationale required" for human adjudication.
+ *
+ * Over-time comparison uses the committed compact watermark at
+ * architecture/generated/watermark.json as baselineFacts. Advance that
+ * baseline with --write-watermark after review. --check never writes it.
  */
 import { buildFacts } from "./build_architecture_facts.mjs";
+import {
+  WATERMARK_RELATIVE,
+  buildWatermark,
+  isWatermark,
+  loadWatermark,
+  projectForDiff,
+} from "./architecture_watermark.mjs";
 import {
   existsSync,
   mkdirSync,
@@ -164,7 +175,7 @@ function diffFacts(before, after) {
 
   function walk(left, right, path) {
     // Observer coverage is a first-class LA8 outcome, not a topology diff.
-    // LA9 may later pass a compact watermark as baselineFacts; skip this
+    // Compact watermarks carry observer_coverage_hash instead; skip this
     // block so coverage never double-counts as addition/removal.
     if (path === "generated_at" || path === "commit" || path === "observer_coverage") return;
     if (Array.isArray(left) && Array.isArray(right)) {
@@ -251,7 +262,9 @@ function proposalFor(item) {
   const action = {
     addition: "Decide whether to add or reject the observed element in the C4 model.",
     removal: "Decide whether to remove or retain the C4 declaration.",
-    contradiction: "Resolve the implementation/model state mismatch.",
+    contradiction: item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
+      ? "Review the compact watermark against current observed canary fingerprints, then advance it with --write-watermark or restore the prior topology."
+      : "Resolve the implementation/model state mismatch.",
     unknown_surface: "Extend the facts observer to cover this known canary, or record an ADR explaining the unobserved architecture-affecting surface.",
   }[item.type] ?? "Decide how the architecture record should change.";
   return {
@@ -259,7 +272,9 @@ function proposalFor(item) {
     target: item.target,
     files: item.type === "unknown_surface"
       ? ["architecture/observer-canaries.json", "tools/build_architecture_facts.mjs", "ARCHITECTURE.md", "docs/adr/"]
-      : ["architecture/workspace.dsl", "ARCHITECTURE.md", "docs/adr/"],
+      : item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
+        ? [WATERMARK_RELATIVE, "ARCHITECTURE.md", "docs/adr/"]
+        : ["architecture/workspace.dsl", "ARCHITECTURE.md", "docs/adr/"],
     action,
     rationale: null,
     rationale_status: "rationale required",
@@ -290,21 +305,40 @@ function apparentSupersededAdrs(adrs) {
   return results;
 }
 
-function reconcileArchitecture({ facts, baselineFacts = facts, model, adrs = [] }) {
-  // baselineFacts is the LA9 seam. Until a committed watermark exists, the
-  // caller (and CLI) default it to the current facts — topology self-compare.
-  // LA8 does not load or invent that watermark; it fails on presence of an
-  // architecture-affecting unmapped canary from observer_coverage.
+function missingWatermarkIssue() {
+  return issue("contradiction", WATERMARK_RELATIVE, {
+    before: null,
+    after: "required compact baseline",
+    source: WATERMARK_RELATIVE,
+  });
+}
+
+function reconcileArchitecture({ facts, baselineFacts, model, adrs = [], root = ROOT } = {}) {
+  // baselineFacts is the LA9 seam. The CLI and buildReport load the committed
+  // compact watermark; explicit callers may still pass full facts. LA8 still
+  // fails independently when observer_coverage.unmapped_surfaces is non-empty.
   const parsedModel = typeof model === "string" ? parseWorkspace(model) : model;
   const additions = [];
   const removals = [];
   const contradictions = [];
   const declared = new Map(parsedModel.elements.map((element) => [element.id, element]));
 
-  const factChanges = diffFacts(baselineFacts, facts);
+  const resolvedBaseline = baselineFacts !== undefined
+    ? baselineFacts
+    : loadWatermark({ root });
+  if (resolvedBaseline == null) {
+    contradictions.push(missingWatermarkIssue());
+  }
+  const factChanges = resolvedBaseline == null
+    ? { additions: [], removals: [], contradictions: [] }
+    : diffFacts(projectForDiff(resolvedBaseline, facts), projectForDiff(facts, resolvedBaseline));
   additions.push(...factChanges.additions.map((change) => issue("addition", `facts:${change.target}`, { value: change.value, source: change.value?.source ?? null })));
   removals.push(...factChanges.removals.map((change) => issue("removal", `facts:${change.target}`, { value: change.value, source: change.value?.source ?? null })));
-  contradictions.push(...factChanges.contradictions.map((change) => issue("contradiction", `facts:${change.target}`, change)));
+  contradictions.push(...factChanges.contradictions.map((change) => issue("contradiction", `facts:${change.target}`, {
+    before: change.before,
+    after: change.after,
+    source: change.source ?? null,
+  })));
 
   for (const target of RESOURCE_TARGETS) {
     const state = bindingState(facts, target);
@@ -416,15 +450,22 @@ function collectSourceNulls(facts) {
   return nulls;
 }
 
-// LA9 seam: pass a committed compact watermark as baselineFacts. Until then
-// this defaults to the current facts (topology self-compare). LA8 still fails
-// independently when observer_coverage.unmapped_surfaces is non-empty.
-function buildReport({ root = ROOT, facts = buildFacts(), baselineFacts = facts, modelPath = MODEL_PATH, adrDir = ADR_DIR } = {}) {
+function baselineLabel(baselineFacts) {
+  if (baselineFacts == null) return null;
+  if (isWatermark(baselineFacts)) return WATERMARK_RELATIVE;
+  return "supplied";
+}
+
+function buildReport({ root = ROOT, facts = buildFacts(), baselineFacts, modelPath = MODEL_PATH, adrDir = ADR_DIR } = {}) {
+  const resolvedBaseline = baselineFacts !== undefined
+    ? baselineFacts
+    : loadWatermark({ root });
   const report = reconcileArchitecture({
     facts,
-    baselineFacts,
+    baselineFacts: resolvedBaseline,
     model: parseWorkspace(readFileSync(modelPath, "utf8")),
     adrs: loadAdrs(adrDir, root),
+    root,
   });
   return {
     ...report,
@@ -432,6 +473,7 @@ function buildReport({ root = ROOT, facts = buildFacts(), baselineFacts = facts,
     facts: {
       source: "generated_in_memory",
       regenerated_commit: facts.commit,
+      baseline: baselineLabel(resolvedBaseline),
     },
   };
 }
@@ -453,6 +495,8 @@ function main() {
   const args = new Set(argv);
   const check = args.has("--check");
   const noWrite = args.has("--no-write");
+  // Watermark advancement is a reviewed LA6 step. --check never writes it.
+  const writeWatermark = args.has("--write-watermark");
   const outputDir = resolve(ROOT, optionValue(argv, "--output-dir") || DEFAULT_OUTPUT_DIR);
   const facts = buildFacts();
   const report = buildReport({ facts });
@@ -461,6 +505,11 @@ function main() {
     mkdirSync(outputDir, { recursive: true });
     writeFileSync(join(outputDir, "facts.json"), render(facts));
     writeFileSync(join(outputDir, "reconciliation.json"), render(report));
+  }
+  if (writeWatermark) {
+    const target = join(ROOT, WATERMARK_RELATIVE);
+    mkdirSync(dirname(target), { recursive: true });
+    writeFileSync(target, render(buildWatermark(facts)));
   }
 
   process.stdout.write(render(report));
