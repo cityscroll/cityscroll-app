@@ -1,8 +1,8 @@
-/** Pure adapter from canonical procurement SearchDocuments to Contracts Browse rows. */
+/** Pure adapter from procurement SearchDocuments to Contracts Browse rows. */
 
 import { admitSearchDocument } from "./search_document_contract.mjs";
 
-const cleanContractSearchValue = (value, max = 500) => String(value ?? "")
+const contractSearchBridgeClean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
   .replace(/\s+/g, " ")
   .trim()
@@ -10,77 +10,104 @@ const cleanContractSearchValue = (value, max = 500) => String(value ?? "")
 
 function requestIdFromRefs(refs) {
   for (const ref of Array.isArray(refs) ? refs : []) {
-    const match = cleanContractSearchValue(ref, 240).match(/^(?:notice|ocp_award):([A-Za-z0-9_-]{1,80})$/);
+    const match = contractSearchBridgeClean(ref, 240).match(/^(?:notice|ocp_award|city_record):([A-Za-z0-9_-]{1,80})$/);
     if (match) return match[1];
   }
   return null;
 }
 
-function pinFromDocument(document) {
-  const pin = cleanContractSearchValue(document?.object_ref, 320).replace(/^procurement:/, "");
-  if (!pin || `procurement:${pin}` !== document?.object_ref) return null;
-  try {
-    const route = new URL(document.canonical_href, "https://cityscroll.org");
-    return route.pathname === "/browse/contracts/"
-      && route.searchParams.get("mode") === "award"
-      && route.searchParams.get("q") === pin
-      ? pin
-      : null;
-  } catch {
-    return null;
-  }
+function procurementId(document) {
+  const id = contractSearchBridgeClean(document?.object_ref, 320);
+  return id.startsWith("procurement:") ? id : null;
 }
 
-/** Recover the safe row shape already consumed by the Contracts list. */
+function stagesFor(document, carried) {
+  const stages = Array.isArray(carried?.procurement_stages)
+    ? carried.procurement_stages.map((stage) => contractSearchBridgeClean(stage, 80)).filter(Boolean)
+    : [contractSearchBridgeClean(carried?.primary_stage || document?.process_role, 80)].filter(Boolean);
+  return [...new Set(stages)];
+}
+
+/** Project a source-independent Browse row. request_id is optional evidence. */
 export function contractSearchDocumentToMoneyRow(candidate = {}) {
   if (
     candidate?.outcome !== "indexed"
     || candidate?.object_type !== "procurement"
     || candidate?.domain !== "contracts"
-    || candidate?.process_role !== "award"
   ) return null;
   const admitted = admitSearchDocument(candidate, { outcome: "indexed" });
   if (!admitted.document) return null;
   const document = admitted.document;
-  const pin = pinFromDocument(document);
-  const fallbackRequestId = requestIdFromRefs(document.source_observation_refs);
-  if (!pin || !fallbackRequestId) return null;
-
+  const id = procurementId(document);
+  if (!id) return null;
+  const legacyPin = /^procurement:[^:]+$/.test(id) ? id.slice("procurement:".length) : null;
   const carried = document.provenance?.browse_record;
   if (carried != null && (!carried || typeof carried !== "object" || Array.isArray(carried))) return null;
-  const carriedPin = carried ? cleanContractSearchValue(carried.pin, 160) : pin;
-  const carriedRequestId = carried ? cleanContractSearchValue(carried.request_id, 100) : fallbackRequestId;
-  const validRefs = new Set(document.source_observation_refs.map((ref) => cleanContractSearchValue(ref, 240)));
-  if (
-    carriedPin !== pin
-    || !/^[A-Za-z0-9_-]{1,80}$/.test(carriedRequestId)
-    || (!validRefs.has(`notice:${carriedRequestId}`) && !validRefs.has(`ocp_award:${carriedRequestId}`))
-  ) return null;
-
+  if (carried?.procurement_id && contractSearchBridgeClean(carried.procurement_id, 320) !== id) return null;
+  if (carried?.canonical_href && contractSearchBridgeClean(carried.canonical_href, 600) !== document.canonical_href) return null;
+  if (legacyPin && carried?.pin && contractSearchBridgeClean(carried.pin, 160).toUpperCase() !== legacyPin.toUpperCase()) return null;
+  const stages = stagesFor(document, carried);
+  if (!stages.length) return null;
+  const requestId = contractSearchBridgeClean(carried?.request_id, 100) || requestIdFromRefs(document.source_observation_refs);
+  const noticeEvidence = Array.isArray(document.provenance?.notice_evidence)
+    ? document.provenance.notice_evidence
+    : Array.isArray(carried?.notice_evidence) ? carried.notice_evidence : [];
   return Object.freeze({
-    request_id: carriedRequestId,
-    start_date: cleanContractSearchValue(carried?.start_date, 40) || null,
-    agency_name: cleanContractSearchValue(carried?.agency_name, 240) || null,
-    type_of_notice_description: "Award",
-    short_title: cleanContractSearchValue(carried?.short_title, 500) || document.title,
-    pin,
-    contract_amount: cleanContractSearchValue(carried?.contract_amount, 80) || null,
-    vendor_name: cleanContractSearchValue(carried?.vendor_name, 240) || null,
+    procurement_id: id,
+    canonical_href: document.canonical_href,
+    procurement_stages: Object.freeze(stages),
+    primary_stage: contractSearchBridgeClean(carried?.primary_stage || document.process_role, 80) || stages.at(-1),
+    source_observation_refs: document.source_observation_refs,
+    ...(requestId ? { request_id: requestId } : {}),
+    start_date: contractSearchBridgeClean(carried?.start_date, 40) || null,
+    agency_name: contractSearchBridgeClean(carried?.agency_name, 240) || null,
+    short_title: contractSearchBridgeClean(carried?.short_title, 500) || document.title,
+    pin: contractSearchBridgeClean(carried?.pin, 160) || legacyPin,
+    contract_id: contractSearchBridgeClean(carried?.contract_id, 160) || null,
+    contract_amount: carried?.contract_amount ?? null,
+    vendor_name: contractSearchBridgeClean(carried?.vendor_name, 240) || null,
+    selection_method_description: contractSearchBridgeClean(carried?.selection_method_description, 240) || null,
     additional_description_1: document.summary,
-    source_system: cleanContractSearchValue(carried?.source_system, 120) || document.source_family,
+    notice_evidence: Object.freeze(noticeEvidence),
+    source_system: contractSearchBridgeClean(carried?.source_system, 120) || document.source_family,
+    source_systems: Object.freeze(Array.isArray(carried?.source_systems) ? carried.source_systems : []),
     search_document: document,
   });
 }
 
-/** Add query hits without replacing richer rows already carried by the resident snapshot. */
+/** Add canonical query hits without replacing richer resident rows. */
 export function mergeContractSearchRows(baseRows = [], documents = []) {
   const rows = Array.isArray(baseRows) ? [...baseRows] : [];
-  const seenRequestIds = new Set(rows.map((row) => cleanContractSearchValue(row?.request_id, 100)).filter(Boolean));
+  const seenCanonicalIds = new Set(rows.map((row) => contractSearchBridgeClean(row?.procurement_id, 320)).filter(Boolean));
+  const seenRequestIds = new Set(rows.map((row) => contractSearchBridgeClean(row?.request_id, 100)).filter(Boolean));
   for (const document of Array.isArray(documents) ? documents : []) {
     const row = contractSearchDocumentToMoneyRow(document);
-    if (!row || seenRequestIds.has(row.request_id)) continue;
-    seenRequestIds.add(row.request_id);
+    if (!row || seenCanonicalIds.has(row.procurement_id)) continue;
+    if (!row.procurement_id && row.request_id && seenRequestIds.has(row.request_id)) continue;
+    seenCanonicalIds.add(row.procurement_id);
+    if (row.request_id) seenRequestIds.add(row.request_id);
     rows.push(row);
+  }
+  return Object.freeze(rows);
+}
+
+/** Add canonical rows while retaining every field from a matching City Record row. */
+export function mergeCanonicalProcurementBrowseRows(baseRows = [], canonicalRows = []) {
+  const rows = Array.isArray(baseRows) ? [...baseRows] : [];
+  const indexByRequestId = new Map(rows.map((row, index) => [contractSearchBridgeClean(row?.request_id, 100), index])
+    .filter(([id]) => id));
+  const seenCanonicalIds = new Set(rows.map((row) => contractSearchBridgeClean(row?.procurement_id, 320)).filter(Boolean));
+  for (const canonical of Array.isArray(canonicalRows) ? canonicalRows : []) {
+    const id = contractSearchBridgeClean(canonical?.procurement_id, 320);
+    if (!id || seenCanonicalIds.has(id)) continue;
+    const requestId = contractSearchBridgeClean(canonical?.request_id, 100);
+    const existingIndex = requestId ? indexByRequestId.get(requestId) : null;
+    if (Number.isInteger(existingIndex)) {
+      rows[existingIndex] = Object.freeze({ ...rows[existingIndex], ...canonical });
+    } else {
+      rows.push(Object.freeze({ ...canonical }));
+    }
+    seenCanonicalIds.add(id);
   }
   return Object.freeze(rows);
 }

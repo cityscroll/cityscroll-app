@@ -152,7 +152,7 @@ for (const row of GOLD.cases) {
     assert.ok(Object.hasOwn(expected, "domain"), "product domain projection");
     assert.match(
       expected.canonical_href,
-      /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/|officials\/|vendors\/|committees\/|community-boards\/|exams\/|parcels\/)/,
+      /^\/(?:agencies\/|browse\/|contracts\/|mandates\/|meetings\/|notices\/|officials\/|vendors\/|committees\/|community-boards\/|exams\/|parcels\/|procurements\/)/,
     );
     assert.ok(expected.source_observation_refs.length > 0, "source provenance");
     assert.ok(COVERAGE_STATES.has(expected.coverage_state), "registered coverage state");

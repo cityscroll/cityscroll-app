@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-08-18T20:00:00Z",
+  "source_records": [
+    {
+      "source_system": "checkbook_contracts",
+      "source_system_id": "contract:registered:CT101520271400806:BILLIG LAW PC:prime-vendor:2026-08-15",
+      "content_hash": "negative-checkbook",
+      "normalized_snapshot": "{\"id\":\"CT101520271400806\",\"pin\":\"01523BLA66814-03-R1\",\"title\":\"Small purchase legal services\",\"vendor\":\"BILLIG LAW PC\",\"agency\":\"Office of the Comptroller\",\"status\":\"registered\",\"current\":1790827,\"registered\":\"2026-08-15\",\"selection_bucket\":\"new_unique\"}",
+      "raw_snapshot": "{\"id\":\"CT101520271400806\",\"pin\":\"01523BLA66814-03-R1\",\"title\":\"Small purchase legal services\",\"vendor\":\"BILLIG LAW PC\",\"agency\":\"Office of the Comptroller\",\"status\":\"registered\",\"current\":1790827,\"registered\":\"2026-08-15\",\"selection_bucket\":\"new_unique\"}",
+      "ingested_at": "2026-08-18T19:46:32Z"
+    },
+    {
+      "source_system": "passport_public_contracts",
+      "source_system_id": "contract:84126P0001001:CTR-POSITIVE",
+      "content_hash": "positive-passport",
+      "normalized_snapshot": "{\"ctr_id\":\"CTR-POSITIVE\",\"epin\":\"84126P0001001\",\"contract_id\":\"CT1841260001\",\"title\":\"Bridge inspection\",\"vendor\":\"HNTB Corporation\",\"agency\":\"Department of Transportation\",\"status\":\"Registered\",\"award_amount\":13533763,\"registration_date\":\"2026-07-20\"}",
+      "raw_snapshot": "{\"ctr_id\":\"CTR-POSITIVE\",\"epin\":\"84126P0001001\",\"contract_id\":\"CT1841260001\",\"title\":\"Bridge inspection\",\"vendor\":\"HNTB Corporation\",\"agency\":\"Department of Transportation\",\"status\":\"Registered\",\"award_amount\":13533763,\"registration_date\":\"2026-07-20\"}",
+      "ingested_at": "2026-08-18T19:46:32Z"
+    },
+    {
+      "source_system": "city_record",
+      "source_system_id": "20260623008",
+      "content_hash": "positive-city-record",
+      "normalized_snapshot": "{\"request_id\":\"20260623008\",\"pin\":\"84126P0001001\",\"type_of_notice_description\":\"Award\",\"short_title\":\"Bridge inspection\",\"additional_description_1\":\"Notice evidence retained for the registered contract.\",\"contact_name\":\"Procurement officer\",\"vendor_name\":\"HNTB Corporation\",\"agency_name\":\"Department of Transportation\",\"contract_amount\":13533763,\"start_date\":\"2026-06-29\"}",
+      "raw_snapshot": "{\"request_id\":\"20260623008\",\"pin\":\"84126P0001001\",\"type_of_notice_description\":\"Award\",\"short_title\":\"Bridge inspection\",\"additional_description_1\":\"Notice evidence retained for the registered contract.\",\"contact_name\":\"Procurement officer\",\"vendor_name\":\"HNTB Corporation\",\"agency_name\":\"Department of Transportation\",\"contract_amount\":13533763,\"start_date\":\"2026-06-29\"}",
+      "ingested_at": "2026-08-18T19:46:32Z"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-18T16:37:53-04:00",
-  "commit": "60b916c6e183ed81afc54f283cb860958db28a5a",
-  "observer_coverage_hash": "88e46c5b52ed5beb1f9418834c4b10518ac86ba756a824a32a0a5cf8b5078a6e",
+  "generated_at": "2026-08-18T22:02:51Z",
+  "commit": "d261e1eea2b87a1f95d11c1a8f232c895cfd61fc",
+  "observer_coverage_hash": "ce34d05aa93f34dbbc6109f811d8f15836bdeae49f9dd4956832ffbdeed8fb8e",
   "canaries": {
     "agency-constellation-model": {
       "path": "site/agency_constellation_model.mjs",
@@ -26,23 +26,23 @@
     },
     "keyword-search-index": {
       "path": "tools/build_keyword_search_index.mjs",
-      "count": 10,
-      "fingerprint": "c9f582a85e96cfaabb79c5e2d7092b995f25ff2272dc9a61832054588a423c4e"
+      "count": 11,
+      "fingerprint": "b63137d26e4ba20f1c926cd99459c3d12fd2c775ff200d5a2bfec37be24895f3"
     },
     "ontology-registry": {
       "path": "ontology/registry.v0.json",
-      "count": 116,
-      "fingerprint": "0d8b1a4801951811ca3490be39807e3960b607dc2a056427dbba615f911d0659"
+      "count": 117,
+      "fingerprint": "b9a2fb8f5548af37cc8b3696f922b4fc6011333fe813f2b317242f3780a54a93"
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
-      "count": 12,
-      "fingerprint": "b842ee3f82445ca0ec118f7897d27966a5213592f3bf0a11f01b06eb7e67274b"
+      "count": 13,
+      "fingerprint": "e8f69afc6da5039b2ad36f256e45fe9dba207636fec21a0fa88232eb93a17bab"
     },
     "pages-edge-routes": {
       "path": "site/_routes.json",
-      "count": 13,
-      "fingerprint": "83f095978cc514ac505b79634928d5eccf47671b5b8154fc60951ad563e88180"
+      "count": 14,
+      "fingerprint": "aa5ce3c91e897b8ffbfed03874450015e81d8efefd5e3c1fa39a4acdb737507b"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -64,7 +64,7 @@
     "schema": "cityscroll.ontology.registry.v0",
     "version": "0.5.0",
     "collection_counts": {
-      "object_types": 33,
+      "object_types": 34,
       "link_types": 34,
       "event_kinds": 37,
       "assertion_classifications": 2,

@@ -46,8 +46,8 @@ export function contractIdentityFromFacetValues(values = {}) {
   const objectRef = residentSnapshotClean(identity?.object_ref);
   const sourceObservationRef = residentSnapshotClean(identity?.source_observation_ref);
   if (
-    !/^procurement:[A-Za-z0-9][A-Za-z0-9._/-]{4,159}$/.test(objectRef)
-    || !/^(?:notice|ocp_award):[A-Za-z0-9_-]{1,80}$/.test(sourceObservationRef)
+    !/^procurement:[^\s\u0000-\u001f]{4,300}$/.test(objectRef)
+    || !/^(?:notice|ocp_award|city_record|passport_public_contracts|passport_public_rfx|checkbook_contracts|checkbook_spending):[^\u0000-\u001f]{1,220}$/.test(sourceObservationRef)
   ) return null;
   return Object.freeze({ object_ref: objectRef, source_observation_ref: sourceObservationRef });
 }
@@ -79,6 +79,7 @@ export function filterMoneySnapshot(rows, {
   excludeSpecial = false,
   entityRefs = [],
   contractObjectRef = "",
+  stages = [],
   sort = "deadline",
   today,
   weekEnd,
@@ -88,19 +89,29 @@ export function filterMoneySnapshot(rows, {
   const floor = String(today || "").slice(0, 10);
   const query = residentSnapshotLower(keyword);
   const requiredPin = residentSnapshotClean(contractObjectRef).replace(/^procurement:/, "");
+  const requiredStages = new Set((Array.isArray(stages) ? stages : [stages])
+    .map((stage) => residentSnapshotLower(stage)).filter(Boolean));
   const requiredVendorStems = vendorStemsFromEntityRefs(entityRefs);
   const selected = (Array.isArray(rows) ? rows : []).filter((row) => {
     const type = residentSnapshotClean(row?.type_of_notice_description);
-    if (mode === "award" && type !== "Award") return false;
-    if (mode === "archive" && type !== "Award" && type !== "Solicitation") return false;
-    if ((mode === "open" || mode === "allrfp") && type !== "Solicitation") return false;
+    const typedStages = procurementStagesForRow(row);
+    const isAward = typedStages.length
+      ? typedStages.some((stage) => ["award", "pending", "registered", "payment", "contract"].includes(stage))
+      : type === "Award";
+    const isSolicitation = typedStages.length ? typedStages.includes("solicitation") : type === "Solicitation";
+    if (mode === "award" && !isAward) return false;
+    if (mode === "archive" && !isAward && !isSolicitation) return false;
+    if ((mode === "open" || mode === "allrfp") && !isSolicitation) return false;
+    if (requiredStages.size && !typedStages.some((stage) => requiredStages.has(stage))) return false;
     const due = String(row?.due_date || "").slice(0, 10);
     if (mode === "open" && (!due || (floor && due <= floor))) return false;
     if (mode === "open" && closingWeek && weekEnd && due > String(weekEnd).slice(0, 10)) return false;
     if (agency && residentSnapshotClean(row?.agency_name) !== residentSnapshotClean(agency)) return false;
     if (requiredVendorStems.length
       && !requiredVendorStems.every((stem) => vendorStem(row?.vendor_name) === stem)) return false;
-    if (requiredPin && residentSnapshotClean(row?.pin) !== requiredPin) return false;
+    if (contractObjectRef && row?.procurement_id) {
+      if (residentSnapshotClean(row.procurement_id) !== residentSnapshotClean(contractObjectRef)) return false;
+    } else if (requiredPin && residentSnapshotClean(row?.pin) !== requiredPin) return false;
     if (!requiredPin && query && !residentSnapshotRowText(row).includes(query)) return false;
     const amount = residentSnapshotNumeric(row?.contract_amount);
     if (mode === "award" && minAmount != null && (amount == null || amount < Number(minAmount))) return false;
@@ -120,6 +131,13 @@ export function filterMoneySnapshot(rows, {
     return String(left?.due_date || "").localeCompare(String(right?.due_date || ""));
   });
   return selected.slice(0, limit);
+}
+
+export function procurementStagesForRow(row) {
+  const stages = Array.isArray(row?.procurement_stages)
+    ? row.procurement_stages
+    : row?.primary_stage ? [row.primary_stage] : [];
+  return [...new Set(stages.map((stage) => residentSnapshotLower(stage)).filter(Boolean))];
 }
 
 export function moneyMethodFacet(rows, limit = 7) {

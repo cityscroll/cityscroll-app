@@ -254,6 +254,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   envelopes in `site/shared_procurement_read_model.mjs`; retained objects and nested lifecycle
   detail stay unchanged. Focused proof: `test/procurement_object_contract.test.mjs` and
   `test/shared_procurement_read_model.test.mjs`.
+- **Canonical procurement product projection:** `site/procurement_search_producer.mjs` and
+  `site/contract_search_bridge.mjs` project the shared procurement read model into source-independent
+  SearchDocuments and typed Browse rows. Canonical identity is `procurement_id`; `request_id` is
+  optional City Record evidence and must never gate Search, Browse, lifecycle, Following, or
+  `/procurements/<id>`. Refresh `site/data/shared_procurement_read_model.json`,
+  `site/data/procurement_browse_rows.json`, and the keyword family with
+  `node tools/build_shared_procurement_read_model.mjs && node tools/build_keyword_search_index.mjs`.
+  Focused proof: `test/universal_search_procurement_producer.test.mjs`,
+  `test/procurement_browse_parity.test.mjs`, `test/procurement_following.test.mjs`, and
+  `test/procurement_route.test.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
   model and derives a source-qualified board meeting's community district from the published
   `community-board → covers → community-district` edge in

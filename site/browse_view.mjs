@@ -617,21 +617,35 @@ export function rowMatchesProcurementMode(row, mode) {
   if (!mode) return true;
   const target = String(mode).trim().toLocaleLowerCase();
   if (!target || target === "allrfp") {
+    const stages = procurementStages(row);
+    if (stages.length) return stages.includes("solicitation");
     const type = String(row?.type_of_notice_description || "").toLocaleLowerCase();
     return !type || type.includes("solicitation");
   }
   if (target === "open") {
+    const stages = procurementStages(row);
+    if (stages.length) return stages.includes("solicitation");
     const type = String(row?.type_of_notice_description || "").toLocaleLowerCase();
     return !type || type.includes("solicitation");
   }
   if (target === "award") {
+    const stages = procurementStages(row);
+    if (stages.length) return stages.some((stage) => ["award", "pending", "registered", "payment", "contract"].includes(stage));
     return String(row?.type_of_notice_description || "").toLocaleLowerCase().includes("award");
   }
   if (target === "archive") {
+    const stages = procurementStages(row);
+    if (stages.length) return stages.some((stage) => ["solicitation", "award", "pending", "registered", "payment", "contract"].includes(stage));
     const type = String(row?.type_of_notice_description || "").toLocaleLowerCase();
     return !type || type.includes("award") || type.includes("solicitation");
   }
   return true;
+}
+
+function procurementStages(row) {
+  const values = Array.isArray(row?.procurement_stages)
+    ? row.procurement_stages : row?.primary_stage ? [row.primary_stage] : [];
+  return [...new Set(values.map((value) => String(value || "").trim().toLocaleLowerCase()).filter(Boolean))];
 }
 
 function rowMatchesCommunityDistrict(row, cd) {

@@ -45,7 +45,8 @@ test("current D1 contract SearchDocuments recover Browse award rows for regresse
   const rows = documents.map(contractSearchDocumentToMoneyRow);
   assert.deepEqual(rows.map((row) => row.pin), ["05626S0012", "05626W0023001"]);
   assert.deepEqual(rows.map((row) => row.request_id), ["20260807032", "20260731016"]);
-  assert.ok(rows.every((row) => row.type_of_notice_description === "Award"));
+  assert.ok(rows.every((row) => row.primary_stage === "award"));
+  assert.ok(rows.every((row) => !Object.hasOwn(row, "type_of_notice_description")));
 
   const merged = mergeContractSearchRows([
     { request_id: "old", pin: "OLD-1", type_of_notice_description: "Award" },
@@ -74,6 +75,7 @@ test("the Contracts award query path augments the bounded resident snapshot from
   assert.match(source, /const retrievalQuery=kw\|\|scopedVendorStem/);
   assert.match(source, /contractObjectRef:contractIdentity\?\.object_ref\|\|""/);
   assert.match(source, /mergeContractSearchRows\(retainedRows,searchDocuments\)/);
+  assert.match(source, /mergeCanonicalProcurementBrowseRows\(searchedRows,canonicalSnapshot\?\.rows\)/);
 });
 
 test("the spaced vendor pivot returns all 16 retained P&T II awards in-window", () => {

@@ -832,6 +832,7 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.equal(edgeRequestKind("https://cityscroll.org/officials/7801/"), "entity");
   assert.equal(edgeRequestKind("https://cityscroll.org/committees/5261/"), "committee");
   assert.equal(edgeRequestKind("https://cityscroll.org/mandates/64116-001"), "mandate");
+  assert.equal(edgeRequestKind("https://cityscroll.org/procurements/procurement%3Acontract%3ACT1"), "procurement");
   assert.equal(edgeRequestKind("https://cityscroll.org/stats.html"), "asset");
   assert.equal(edgeRequestKind("https://api.cityscroll.org/stats"), "asset");
   const routes = JSON.parse(read("../site/_routes.json"));
@@ -843,6 +844,7 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   // Without this include, Pages never invokes the worker for mandate documents
   // and the route falls back to the blank SPA shell (live defect 64116-001).
   assert.ok(routes.include.includes("/mandates/*"));
+  assert.ok(routes.include.includes("/procurements/*"));
   assert.ok(routes.include.includes("/agencies/*"));
   assert.ok(routes.include.includes("/vendors/*"));
   assert.ok(routes.include.includes("/officials/*"));
