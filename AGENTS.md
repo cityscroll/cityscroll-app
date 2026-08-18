@@ -836,6 +836,17 @@ node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --bench
 node tools/build_entity_intelligence.mjs
 ```
 
+**Land BBL→MapPLUTO centroids:** WH-06 stores `project_id → bbls[]` only.
+Exact Land map pins use the committed BBL→centroid table
+`site/data/bbl_mappluto_centroids_lookup.json` (pure `site/bbl_mappluto_centroids.mjs`;
+`resolveLandMapLocation` precedence: authoritative point → BBL centroid → address
+geocode → unresolved). Rebuild offline from a PLUTO CSV or build-time ArcGIS
+batch — never live ArcGIS on the resident hot path:
+`node tools/build_bbl_mappluto_centroids.mjs --from-pluto-csv <pluto.csv>` or
+`--from-arcgis`; gate with `--check` (age ≤120d, ≥95% sell-facing BBL coverage,
+canary `3012660036` / `2026K0123`). Focused proof:
+`node --test test/bbl_mappluto_centroids.test.mjs`.
+
 **Remaining bulk (sequential, only if headroom green):** `city-record`
 (`dg92-zbpx`). Optional later: full `doing-business-entities` bulk (~11k; enables
 zero-SODA vendor attach). Query seam: `warehouse/lib/query.mjs` /
