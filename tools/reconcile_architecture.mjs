@@ -34,6 +34,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUTPUT_DIR = join(ROOT, "architecture", "generated");
 const MODEL_PATH = join(ROOT, "architecture", "workspace.dsl");
 const ADR_DIR = join(ROOT, "docs", "adr");
+const ARCHITECTURE_NARRATIVE_RELATIVE = "ARCHITECTURE.md";
+const CANONICAL_ARCHITECTURE_RELATIVE = "docs/architecture.md";
+const RESIDENT_READ_POLICY_RELATIVE = "architecture/resident-read-policy.json";
+const RESIDENT_READ_TARGET = `${ARCHITECTURE_NARRATIVE_RELATIVE}:resident-read-invariant`;
 
 const RESOURCE_TARGETS = [
   { modelId: "d1_notices", section: "d1_databases", binding: "DB" },
@@ -258,19 +262,100 @@ function unmappedSurfacesFromCoverage(facts) {
     }));
 }
 
+function normalizeProse(value) {
+  return String(value || "")
+    .replace(/[`*_>#\[\]()]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function narrativeStatements(contents) {
+  const prose = String(contents || "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ");
+  return prose
+    .split(/(?<=[.!?])\s+|\n+/)
+    .map((statement) => normalizeProse(statement))
+    .filter(Boolean);
+}
+
+function assertsRequestTimePublisherRead(statement) {
+  const text = normalizeProse(statement).toLowerCase();
+  if (!text) return false;
+  if (/\b(?:never|does not|do not|must not|may not|cannot|can't|none? permits?|without)\b/.test(text)) {
+    return false;
+  }
+
+  // These are assertion shapes, not an invariant registry. The invariant
+  // itself remains owned by resident-read-policy.json; this detector catches
+  // prose that grants the request-time publisher behavior that it forbids.
+  const directPublisherRead = /\b(?:browser|resident|visitor|read path|reader|view|lens|route|site|page|hydration|request)\b.{0,180}\b(?:can|may|does|will|uses?|allows?|supports?)\b.{0,100}\b(?:read|fetch|query|call|lookup|refresh)\b.{0,100}\b(?:live|publisher|upstream|external|socrata|geospatial|api|source)\b/;
+  const liveFallback = /\b(?:bounded|documented|synchronous|request[- ]time|live)\s+(?:(?:publisher|upstream|external|source)\s+)?(?:live\s+)?fallback\b|\bfallback\b.{0,80}\b(?:publisher|upstream|external|live source)\b/;
+  const liveRequest = /\b(?:live\s+)?(?:publisher|upstream|external)\s+(?:request|call|lookup|fetch|read)s?\b.{0,80}\b(?:remain|retained|allowed|supported|freshness|fallback)\b|\bfreshness\b.{0,60}\b(?:live request|live source)\b|\blive sources?\b.{0,80}\b(?:remain|retained|allowed|supported|freshness|fallback)\b/;
+  const exactExternalLookup = /\b(?:resident|visitor|browser|hydration|read|view|route)\b.{0,160}\bexact external lookup\b/;
+
+  return directPublisherRead.test(text)
+    || liveFallback.test(text)
+    || liveRequest.test(text)
+    || exactExternalLookup.test(text);
+}
+
+function residentReadDocumentContradictions({
+  architectureNarrative,
+  canonicalArchitecture,
+  residentReadPolicy,
+} = {}) {
+  if (architectureNarrative == null && canonicalArchitecture == null && residentReadPolicy == null) return [];
+
+  const invariant = normalizeProse(residentReadPolicy?.invariant);
+  if (!invariant) {
+    return [issue("contradiction", `${RESIDENT_READ_POLICY_RELATIVE}#invariant`, {
+      declared: residentReadPolicy?.invariant ?? null,
+      required: "non-empty authoritative invariant string",
+      source: RESIDENT_READ_POLICY_RELATIVE,
+    })];
+  }
+
+  const findings = [];
+  if (!normalizeProse(canonicalArchitecture).includes(invariant)) {
+    findings.push(issue("contradiction", `${CANONICAL_ARCHITECTURE_RELATIVE}:resident-read-invariant`, {
+      declared: "authoritative policy invariant is absent from the canonical architecture document",
+      required: residentReadPolicy.invariant,
+      source: `${RESIDENT_READ_POLICY_RELATIVE}#invariant`,
+    }));
+  }
+
+  for (const statement of narrativeStatements(architectureNarrative)) {
+    if (!assertsRequestTimePublisherRead(statement)) continue;
+    findings.push(issue("contradiction", RESIDENT_READ_TARGET, {
+      declared: statement,
+      required: residentReadPolicy.invariant,
+      source: `${RESIDENT_READ_POLICY_RELATIVE}#invariant`,
+    }));
+  }
+  return findings;
+}
+
 function proposalFor(item) {
+  const documentInvariant = item.target === RESIDENT_READ_TARGET
+    || String(item.target || "").startsWith(`${CANONICAL_ARCHITECTURE_RELATIVE}:`)
+    || String(item.target || "").startsWith(`${RESIDENT_READ_POLICY_RELATIVE}#`);
   const action = {
     addition: "Decide whether to add or reject the observed element in the C4 model.",
     removal: "Decide whether to remove or retain the C4 declaration.",
-    contradiction: item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
-      ? "Review the compact watermark against current observed canary fingerprints, then advance it with --write-watermark or restore the prior topology."
-      : "Resolve the implementation/model state mismatch.",
+    contradiction: documentInvariant
+      ? "Align the human architecture narrative with the canonical resident-read invariant and its policy gate."
+      : item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
+        ? "Review the compact watermark against current observed canary fingerprints, then advance it with --write-watermark or restore the prior topology."
+        : "Resolve the implementation/model state mismatch.",
     unknown_surface: "Extend the facts observer to cover this known canary, or record an ADR explaining the unobserved architecture-affecting surface.",
   }[item.type] ?? "Decide how the architecture record should change.";
   return {
     type: item.type,
     target: item.target,
-    files: item.type === "unknown_surface"
+    files: documentInvariant
+      ? [ARCHITECTURE_NARRATIVE_RELATIVE, CANONICAL_ARCHITECTURE_RELATIVE, RESIDENT_READ_POLICY_RELATIVE]
+      : item.type === "unknown_surface"
       ? ["architecture/observer-canaries.json", "tools/build_architecture_facts.mjs", "ARCHITECTURE.md", "docs/adr/"]
       : item.target === WATERMARK_RELATIVE || String(item.target || "").startsWith("facts:canaries.")
         ? [WATERMARK_RELATIVE, "ARCHITECTURE.md", "docs/adr/"]
@@ -313,14 +398,27 @@ function missingWatermarkIssue() {
   });
 }
 
-function reconcileArchitecture({ facts, baselineFacts, model, adrs = [], root = ROOT } = {}) {
+function reconcileArchitecture({
+  facts,
+  baselineFacts,
+  model,
+  adrs = [],
+  root = ROOT,
+  architectureNarrative,
+  canonicalArchitecture,
+  residentReadPolicy,
+} = {}) {
   // baselineFacts is the LA9 seam. The CLI and buildReport load the committed
   // compact watermark; explicit callers may still pass full facts. LA8 still
   // fails independently when observer_coverage.unmapped_surfaces is non-empty.
   const parsedModel = typeof model === "string" ? parseWorkspace(model) : model;
   const additions = [];
   const removals = [];
-  const contradictions = [];
+  const contradictions = residentReadDocumentContradictions({
+    architectureNarrative,
+    canonicalArchitecture,
+    residentReadPolicy,
+  });
   const declared = new Map(parsedModel.elements.map((element) => [element.id, element]));
 
   const resolvedBaseline = baselineFacts !== undefined
@@ -456,16 +554,37 @@ function baselineLabel(baselineFacts) {
   return "supplied";
 }
 
-function buildReport({ root = ROOT, facts = buildFacts(), baselineFacts, modelPath = MODEL_PATH, adrDir = ADR_DIR } = {}) {
+function buildReport({
+  root = ROOT,
+  facts = buildFacts(),
+  baselineFacts,
+  modelPath = MODEL_PATH,
+  adrDir = ADR_DIR,
+  architectureNarrative,
+  canonicalArchitecture,
+  residentReadPolicy,
+} = {}) {
   const resolvedBaseline = baselineFacts !== undefined
     ? baselineFacts
     : loadWatermark({ root });
+  const resolvedNarrative = architectureNarrative !== undefined
+    ? architectureNarrative
+    : readFileSync(join(root, ARCHITECTURE_NARRATIVE_RELATIVE), "utf8");
+  const resolvedCanonical = canonicalArchitecture !== undefined
+    ? canonicalArchitecture
+    : readFileSync(join(root, CANONICAL_ARCHITECTURE_RELATIVE), "utf8");
+  const resolvedPolicy = residentReadPolicy !== undefined
+    ? residentReadPolicy
+    : JSON.parse(readFileSync(join(root, RESIDENT_READ_POLICY_RELATIVE), "utf8"));
   const report = reconcileArchitecture({
     facts,
     baselineFacts: resolvedBaseline,
     model: parseWorkspace(readFileSync(modelPath, "utf8")),
     adrs: loadAdrs(adrDir, root),
     root,
+    architectureNarrative: resolvedNarrative,
+    canonicalArchitecture: resolvedCanonical,
+    residentReadPolicy: resolvedPolicy,
   });
   return {
     ...report,
@@ -526,4 +645,5 @@ export {
   parseAdr,
   parseWorkspace,
   reconcileArchitecture,
+  residentReadDocumentContradictions,
 };
