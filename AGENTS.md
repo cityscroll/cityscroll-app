@@ -76,6 +76,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   controllers. Legacy hashes translate by intent only in `site/route_migration.mjs`; never add an
   active-runtime alias between owners. Focused proof: `test/browse_surface_contract.test.mjs`,
   `test/primary_document_routes.test.mjs`, and `test/route_migration.test.mjs`.
+- **Exams Interest Area multi-select + public eligibility:** records keep a single
+  `interest_area` (optional `interest_areas` preserved when present). Browse selects many
+  areas with OR matching via `CrolStaffing.normalizeInterestSelection` /
+  `filterExams`; URL wire is sorted `interest=a,b` (single-id links stay valid).
+  "Anyone who qualifies" is fail-closed `open_competitive` only
+  (`eligibilityFor` + `isPublicEligibility`) — promotion/internal/unknown never
+  silently count as public. Interest counts are under-current-filter. Proof:
+  `test/exams_interest_eligibility_multiselect.test.mjs`.
 - Place-scoped Property routes use `site/property_scope_fallback.mjs`: if the scoped current
   view is empty but the same scope has closed records, the route opens the archive view so a
   valid place link does not present a misleading empty result. Coverage is in
