@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "phase": "WH-07",
+  "source": "warehouse",
+  "dataset_id": "dg92-zbpx",
+  "table_name": "city_record",
+  "mode": "verified_seed",
+  "materialized_at": "2026-08-18T13:12:27.955Z",
+  "row_count": 8,
+  "pin_count": 7,
+  "bulk_snapshot_date": "2026-08-05",
+  "coverage": {
+    "bulk_procurement_section_rows": 105158,
+    "selected_rows": 8,
+    "selected_pins": 7,
+    "note": "Selected rows are procurement notice types with a non-empty pin from WH-07 (or verified seed)."
+  },
+  "window": {
+    "kind": "procurement_pin_chain",
+    "notice_types": [
+      "Solicitation",
+      "Intent to Negotiate",
+      "Vendor List",
+      "Intent to Award",
+      "Award"
+    ],
+    "require_pin": true,
+    "per_pin_limit": 25
+  },
+  "replaces_live_fetch": {
+    "worker": "worker/src/checkbook_lifecycle.mjs#fetchRelatedProcurementNotices",
+    "soda_dataset": "dg92-zbpx",
+    "description": "City Record PIN siblings on /contract-lifecycle — warehouse materialization first, then D1, then live SODA on miss"
+  },
+  "rows": [
+    {
+      "request_id": "20211028125",
+      "start_date": "2021-11-03T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "Inmate Phone System - Renewal #2",
+      "pin": "07219P0148001R002",
+      "contract_amount": "2250000",
+      "vendor_name": "Securus Technologies LLC"
+    },
+    {
+      "request_id": "20220811115",
+      "start_date": "2022-08-17T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "Inmate Phone Systems",
+      "pin": "07219P0148001R003",
+      "contract_amount": "3000000",
+      "vendor_name": "Securus Technologies LLC"
+    },
+    {
+      "request_id": "20230414106",
+      "start_date": "2023-04-20T00:00:00.000",
+      "agency_name": "Correction",
+      "type_of_notice_description": "Award",
+      "short_title": "Inmate Phone System - Renewal No. 4",
+      "pin": "07219P0148001R004",
+      "contract_amount": "5395600",
+      "vendor_name": "Securus Technologies LLC"
+    },
+    {
+      "request_id": "20220706041",
+      "start_date": "2022-07-06T00:00:00.000",
+      "agency_name": "Aging",
+      "type_of_notice_description": "Award",
+      "short_title": "PROVIDE OLDER ADULT CENTER SERVICES",
+      "pin": "12522P0001001",
+      "contract_amount": "1500000",
+      "vendor_name": "Crown Heights Preservation Committee Corp."
+    },
+    {
+      "request_id": "20240705012",
+      "start_date": "2024-07-05T00:00:00.000",
+      "agency_name": "Aging",
+      "type_of_notice_description": "Award",
+      "short_title": "OLDER ADULT CENTERS",
+      "pin": "12522P0001001R002",
+      "contract_amount": "1600000",
+      "vendor_name": "Crown Heights Preservation Committee Corp."
+    },
+    {
+      "request_id": "20260624018",
+      "start_date": "2026-06-24T00:00:00.000",
+      "agency_name": "Aging",
+      "type_of_notice_description": "Award",
+      "short_title": "OLDER ADULT CENTER",
+      "pin": "12522P0001001R004",
+      "contract_amount": "1700000",
+      "vendor_name": "Crown Heights Preservation Committee Corp."
+    },
+    {
+      "request_id": "20260515020",
+      "start_date": "2026-05-15T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Solicitation",
+      "short_title": "Catering Services",
+      "pin": "81626W0043001",
+      "contract_amount": null,
+      "vendor_name": null
+    },
+    {
+      "request_id": "20260723031",
+      "start_date": "2026-07-30T00:00:00.000",
+      "agency_name": "Health and Mental Hygiene",
+      "type_of_notice_description": "Award",
+      "short_title": "Catering Services",
+      "pin": "81626W0043001",
+      "contract_amount": "250000",
+      "vendor_name": "Make it Zesty LLC"
+    }
+  ]
+}
