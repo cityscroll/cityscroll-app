@@ -54,6 +54,17 @@ export const SERVE_LOOKUP_CONTRACTS = Object.freeze({
       Object.freeze({ field: "request_id", value: "20260723031" }),
     ]),
   }),
+  payroll_title: Object.freeze({
+    id: "payroll_title",
+    label: "Payroll title mart",
+    timestamp_field: "materialized_at",
+    // Fiscal-year publisher; weekly refresh loop keeps this well inside the window.
+    max_age_days: 180,
+    canaries: Object.freeze([
+      Object.freeze({ field: "title_description", value: "POLICE OFFICER" }),
+      Object.freeze({ field: "title_description", value: "FIREFIGHTER" }),
+    ]),
+  }),
 });
 
 function normalized(value) {

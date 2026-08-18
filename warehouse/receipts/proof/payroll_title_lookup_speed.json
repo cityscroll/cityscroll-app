@@ -1,0 +1,33 @@
+{
+  "phase": "WH-optional-payroll-title",
+  "measured_at": "2026-08-18T14:14:03.368Z",
+  "replaces_live_fetch": {
+    "function": "suggestionCountParams",
+    "soda_dataset": "k397-673e",
+    "note": "Previous live path counted FY title rows on SODA at request time"
+  },
+  "materialization": {
+    "title_count": 1557,
+    "window_row_count": 550219,
+    "publisher_row_count": 6775830
+  },
+  "edge_materialization_lookup": {
+    "samples_ms": [
+      1.6731,
+      1.109,
+      1.2314,
+      1.4071,
+      0.9934
+    ],
+    "p50_ms": 0.7441,
+    "mean_ms": 0.798,
+    "n": 50,
+    "note": "In-process title LIKE over the committed FY mart"
+  },
+  "prior_live_soda": {
+    "p50_ms_floor": 180,
+    "provenance": "derived",
+    "note": "Request-time SODA group/count RTT floor before the mart"
+  },
+  "summary": "Payroll title count p50: live SODA floor 180ms → mart 0.7441ms (1557 titles over 550219 FY rows; publisher file 6775830)"
+}
