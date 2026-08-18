@@ -3323,6 +3323,16 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 - Contracts “Try asking” candidates are certified through `site/suggestion_destination.mjs`, which replays the canonical route over the same resident snapshot, keyword SearchDocuments, and final Money filters as `site/app/money-list.mjs`. Both the daily worker receipt and `tools/validate_presets.mjs` fallback must carry the destination route, corpus clocks, and final count; proxy-only Money counts are not display-eligible. Focused proof: `test/suggestion_destination.test.mjs` and `worker/test/suggestions.test.mjs`.
 
+## Canonical source-health foundation
+
+- `site/data/source_contracts.json` owns durable freshness expectations and
+  public/backstage policy; transient clocks never belong there. Build the
+  receipt-derived sibling with `node tools/build_source_health_observations.mjs`
+  and verify it with `--check` plus `test/source_health_projection.test.mjs`.
+  `ontology/source_health.mjs` evaluates the three clocks deterministically;
+  D1 relationship coverage remains a separate axis. The raw observation file
+  is excluded from Pages until a strict public allowlist projection exists.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

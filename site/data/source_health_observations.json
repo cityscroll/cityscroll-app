@@ -1,0 +1,2004 @@
+{
+  "schema": "cityscroll.source_health_observations.v1",
+  "generated_at": "2026-08-18T14:14:03.293Z",
+  "contract_count": 54,
+  "observations": [
+    {
+      "source_id": "abo-local-authorities",
+      "contract_fingerprint": "d7bcd2453d15180211aee4e27d1048bfdadbe9845fb73525f5aa02b7dcf3be1f",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "gap",
+        "join_status": "accepted",
+        "row_count": 0,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "abo-local-development-corporations",
+      "contract_fingerprint": "80dbcff46a9b6fc9783529779b60a6cb4db728ad3e006594ae537086c49cd2e7",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "gap",
+        "join_status": "accepted",
+        "row_count": 0,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "abo-state-authorities",
+      "contract_fingerprint": "62dd427068c43bc8f67b02d44cc117f5b26204ec58ae1e2a8e4e98f3743ffcff",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "gap",
+        "join_status": "accepted",
+        "row_count": 0,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "active-civil-service-list",
+      "contract_fingerprint": "2f26628eaaae91883cddd960ef04cda13ede0e9709f921451c0a83a165a12b64",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "annual-examination-schedule",
+      "contract_fingerprint": "53945cd45eeddb00b2e4a367efb70416b2758e3ba6d91d5daf6be57be0df477c",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "bid-tabulations-historical",
+      "contract_fingerprint": "90d3324f92a4284559df1f7e1c545d47c86e0827b7b94c1a40847098c49ee5d2",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "capital-projects",
+      "contract_fingerprint": "30fca9d59ff1941de59514d73b34a534bee0b15de1f376754eb42e657b386323",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "source-disabled"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "capital-projects-dashboard",
+      "contract_fingerprint": "881d7cfe0588f5cfec50396d5c5643e56d6ecb457d285c7d52a4d1fb9a598b15",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "cfb-campaign-contributions",
+      "contract_fingerprint": "4962cc561fd9891ef061d885e9135fbc59df3d6a20c7e2256a1932e5e04b15c6",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 117,
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "checkbook-contracts",
+      "contract_fingerprint": "50f987de87d19fbc085122ca6cf2253f5135d8cf1dd483940a2b81c0fce9df31",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 121,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "checkbook-nycha-contracts",
+      "contract_fingerprint": "a8f52c1738b89045db1b314129578a33de04ff95bdff21aacf909058c6f6de91",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "source-disabled"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "gap",
+        "join_status": "accepted",
+        "row_count": 0,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "checkbook-spending",
+      "contract_fingerprint": "c415c4fb708d79c72f036b5f6ae0ccbf26dcc8557b57878150d4d40e091697d8",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 344,
+        "measured_at": "2026-08-11T19:25:33.574Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "city-clerk-elobbyist",
+      "contract_fingerprint": "1fa8383f1baff3885cc4f323e8b82600da072ce62f8a3a35631b639988178172",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 51,
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "city-council-committee-membership",
+      "contract_fingerprint": "a518444aabf84cb2e8ea6cf4f39ba545f087732e85e1117cd2d0b7bd9d8099ba",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-06T00:03:31.348Z",
+            "state": "KNOWN",
+            "basis": "warehouse_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/official_committee_memberships_lookup.json",
+          "at": "2026-08-06T00:03:31.348Z",
+          "status": "current"
+        }
+      ]
+    },
+    {
+      "source_id": "city-council-district-boundaries",
+      "contract_fingerprint": "2afe039cce763de7bc424571c3bff2346650e445eff369ce817d4940a4e333c7",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "city-council-meetings-open-data",
+      "contract_fingerprint": "d8c6b5c6dfe4df257ca2379a3d55de9464975bd9b8b2ef6ba503147b380f7c6a",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "city-record",
+      "contract_fingerprint": "d980af194199a9df161642737d83010e1de9bb237ecdb64d38b3244a89aab6d6",
+      "health": {
+        "status": "Delayed",
+        "reason_codes": [
+          "publisher-clock-stale"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2026-08-04T04:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_source_summary"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-05T10:41:44.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T13:12:27.955Z",
+            "state": "KNOWN",
+            "basis": "serve_contract:city_record_pin_chain"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "partial",
+        "join_status": "accepted",
+        "row_count": 32,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/city_record_pin_chain_warehouse_lookup.json",
+          "at": "2026-08-18T13:12:27.955Z",
+          "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/city-record_bulk_latest.json",
+          "at": "2026-08-05T10:41:44.000Z",
+          "status": "succeeded"
+        }
+      ]
+    },
+    {
+      "source_id": "citywide-payroll",
+      "contract_fingerprint": "5f7f8a19b573663f9b20aee68c770ceb746aa3f93dbf67a1bd78174611cd048a",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T14:14:03.293Z",
+            "state": "KNOWN",
+            "basis": "serve_contract:payroll_title"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/payroll_title_warehouse_lookup.json",
+          "at": "2026-08-18T14:14:03.293Z",
+          "status": "current"
+        }
+      ]
+    },
+    {
+      "source_id": "civil-service-list-certification",
+      "contract_fingerprint": "598eb7edaa750bd365142d28682222208e107882229849f90680186ff0a1b6bd",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "civil-service-titles",
+      "contract_fingerprint": "35d0d197016e675ff2b672449c6ac861d0d918fa3b2271f4f8017b7287b5382d",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "community-district-boundaries",
+      "contract_fingerprint": "22a3cb93c1a3f0d40f9f1fc73ed737db3185da5feb9ae944b6ef34401f8543b3",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dcas-annual-exam-outcomes",
+      "contract_fingerprint": "dbeb369ce9cce33a1a1ecb7fbf26d86680b454f80861041fe41457ee9be139d6",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dcas-eligible-list-utilization",
+      "contract_fingerprint": "73f1afea3d7aa4b450e8387d509376ed15eda9f6b129957b5db7095638f300e5",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dcas-exam-notices",
+      "contract_fingerprint": "b3886596b0112d3ecfe769a43df98c50a56632be4fbc0bf7896131ddf1d25293",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dcas-vehicle-auction-list",
+      "contract_fingerprint": "c6616dba6de714593c840a504e2dbbb22467f3156548a1e3148c189b6bd22106",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dob-certificate-of-occupancy",
+      "contract_fingerprint": "e16f6eafff4f32324270c916d1a8ce4feebcb9c3db2c7a9bd5ec4b51c785ad36",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dob-now-job-filings",
+      "contract_fingerprint": "aa5d542da4768ebedb1da48b642cebd3a114ac92824d9e81c0a1b6e0a8ef0eda",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "dof-tax-lien-sale-lists",
+      "contract_fingerprint": "cb4f6336629e6b89e1031a46d97de49ceadd82e5b1a3877df4f49d829db66be5",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-03T04:27:32.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+          "at": "2026-08-03T04:27:32.000Z",
+          "status": "succeeded"
+        }
+      ]
+    },
+    {
+      "source_id": "doing-business-entities",
+      "contract_fingerprint": "cd229d2573d9ef059faa61236882fc23062d6c5b1755351f8b6f4b4da5c7704f",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T02:18:18.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T02:22:33.016Z",
+            "state": "KNOWN",
+            "basis": "serve_contract:doing_business"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "gap",
+        "join_status": "accepted",
+        "row_count": 0,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/doing_business_warehouse_lookup.json",
+          "at": "2026-08-18T02:22:33.016Z",
+          "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+          "at": "2026-08-18T02:18:18.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/doing-business-entities_latest.json",
+          "at": "2026-08-02T10:35:17.000Z",
+          "status": "succeeded"
+        }
+      ]
+    },
+    {
+      "source_id": "expense-budget",
+      "contract_fingerprint": "cff0dbe3001d2e22407f3b84bda975ecbc6058add8c8dde94bb2b239aeb5aac1",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "legacy-dob-job-filings",
+      "contract_fingerprint": "7e4156cf9086aefb1585da34ec959cfbf645015564252c03768ac9b5499ef0aa",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "mandatory-inclusionary-housing",
+      "contract_fingerprint": "0fa148f011f689f372263ba77b7f825773a8f1ae8d2d768c9665d09a53aad51f",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-05T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/mih_project_lookup.json",
+          "at": "2026-08-05T00:00:00.000Z",
+          "status": "current"
+        }
+      ]
+    },
+    {
+      "source_id": "mappluto",
+      "contract_fingerprint": "dfcb94d8a67214b8c970fbfd841b2e62789ee4dc3e97c9ff9c0987af3c051361",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "mocs-ll1-plans",
+      "contract_fingerprint": "1c555ee99842acd71133d45673b763fbb5bad9e084b096bf2ae197b4ed3e0993",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "mocs-ll63-plans",
+      "contract_fingerprint": "df9bff2d7e393b511ad5794db0a151de96128fbebf37e1e604fd15f41039fc03",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "non-council-board-minutes",
+      "contract_fingerprint": "59bdc37ba0cdb6986a410de3122b077507af8e7a95a21f4d80036a3be9371869",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-agencies",
+      "contract_fingerprint": "ef01abc247b0ce92da34ad34a65c39c447f2adc9e7a59105816a22f6246d5c6d",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-council-legistar",
+      "contract_fingerprint": "d3656e28bfce1fae5e7e8f48fe189580785694b687901380508503b4a061f33c",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "partial",
+        "join_status": "accepted",
+        "row_count": 760,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-council-members",
+      "contract_fingerprint": "eaad6f199d0f181761445786d0de956fb754f87248d35468b6c6f50c88d16d99",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 40,
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-geosearch",
+      "contract_fingerprint": "bc284c968809d948dbdef0317100a17c50c4a2a57437b92622218f4598d2652f",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-jobs-postings",
+      "contract_fingerprint": "b845126627d06e263fdf661474f22bef2e6a96c20ee06238fdff1722ecc704f0",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-property-address-directory",
+      "contract_fingerprint": "e42dff797d63027e47442f37c8cfb370614b898ff3b44909a9c04f761dd9802b",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nyc-rules-rss",
+      "contract_fingerprint": "15bb8ac7e8a35c509932af20949b82275b228aaaf38647e942cbfbaf073d6d57",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "nycida-build-nyc-projects",
+      "contract_fingerprint": "ad441ff89bf9e1e6debcfd1492dd905042e413cc6bea1035a86c21848bd2cc92",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "gap",
+        "join_status": "accepted",
+        "row_count": 0,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "ocp-current-solicitations",
+      "contract_fingerprint": "e5070d54383f7da8c43c6c910560672274244b68ac4929a438f16f16cbd9ad4b",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "ocp-recent-contract-awards",
+      "contract_fingerprint": "2b51d7bb4007104589e0a763cec66a518a2ca246cd1fbc3e24e4e2a434229eaa",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-05T10:36:28.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-05T10:40:50.286Z",
+            "state": "KNOWN",
+            "basis": "serve_contract:ocp_awards"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/ocp_awards_warehouse_lookup.json",
+          "at": "2026-08-05T10:40:50.286Z",
+          "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+          "at": "2026-08-05T10:36:28.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
+          "at": "2026-08-03T16:37:39.000Z",
+          "status": "succeeded"
+        }
+      ]
+    },
+    {
+      "source_id": "passport-public-contracts",
+      "contract_fingerprint": "5b4f31730f406787d9ea08c969025567f7401f8a76100a9cffc032b19a8a667c",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 61451,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "passport-public-rfx",
+      "contract_fingerprint": "aaa6875d66a0de734d0969f339447971e5ac2f9ea4897d57d78d5d1754b56e03",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 11996,
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "suitability-city-owned-leased-property-ll48",
+      "contract_fingerprint": "c676db36241cc21005692eb59de2a825067acbf9fe54440d21d8d96de890ddc6",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "ulurp-recommendation-pdfs",
+      "contract_fingerprint": "167ad3dd712b11e53891d230729f487812f627eda3a1340a0f770fcca38265eb",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 86,
+        "measured_at": "2026-08-12T00:00:00.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "ulurp-recommendations",
+      "contract_fingerprint": "f990989639980dc7179573911427ffe1b302690235b37dd1c9763ca250ad456a",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 91,
+        "measured_at": "2026-08-12T00:00:00.000Z",
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "zap-api-outcomes",
+      "contract_fingerprint": "ac071fce4eb8733d1e99efbdf4d9253e1308180813abd1545096871254f6da47",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": []
+    },
+    {
+      "source_id": "zap-bbl",
+      "contract_fingerprint": "09d9722f50b86a9ec692e9497849b84ed8096c22cfd5e4c887733aa0b46bba78",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-05T10:36:34.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-05T10:41:38.120Z",
+            "state": "KNOWN",
+            "basis": "serve_contract:zap_bbl"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/zap_bbl_warehouse_lookup.json",
+          "at": "2026-08-05T10:41:38.120Z",
+          "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+          "at": "2026-08-05T10:36:34.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-bbl_latest.json",
+          "at": "2026-08-02T11:45:54.000Z",
+          "status": "succeeded"
+        }
+      ]
+    },
+    {
+      "source_id": "zap-projects",
+      "contract_fingerprint": "41f9a48c56f7c1dd86827ff0a19fcd73840f73f9c7c9912ccace2102c32134ba",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-03T05:05:03.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T12:06:08.839Z",
+            "state": "KNOWN",
+            "basis": "serve_contract:zap_projects"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete",
+        "join_status": "accepted",
+        "row_count": 231,
+        "measured_at": "2026-08-16T12:00:00.000Z",
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/zap_projects_warehouse_lookup.json",
+          "at": "2026-08-18T12:06:08.839Z",
+          "status": "current"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+          "at": "2026-08-03T05:05:03.000Z",
+          "status": "succeeded"
+        },
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/zap-projects_latest.json",
+          "at": "2026-08-02T10:16:52.000Z",
+          "status": "succeeded"
+        }
+      ]
+    }
+  ]
+}
