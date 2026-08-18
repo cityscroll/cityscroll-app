@@ -12,6 +12,8 @@ import { computeLifecycle } from "../src/checkbook_lifecycle.mjs";
 import {
   checkbookContractSourceSystemId,
   checkbookSpendingSourceSystemId,
+  dualWriteCheckbookContractObservations,
+  dualWriteCheckbookSpendingObservations,
   CHECKBOOK_SOURCE_RECORD_DUAL_WRITE_FLAG,
   CHECKBOOK_CONTRACTS_SOURCE_SYSTEM,
   CHECKBOOK_SPENDING_SOURCE_SYSTEM,
@@ -49,7 +51,7 @@ function d1FromSqlite(db) {
   };
 }
 
-function database({ observations = true } = {}) {
+function database({ observations = true, seedNotice = true } = {}) {
   const sqlite = new DatabaseSync(":memory:");
   if (observations) {
     sqlite.exec(readFileSync(new URL("../migrations/0008_source_records.sql", import.meta.url), "utf8"));
@@ -66,20 +68,22 @@ function database({ observations = true } = {}) {
       vendor_name TEXT
     );
   `);
-  sqlite.prepare(
-    `INSERT INTO notices
-      (request_id, start_date, agency, type_of_notice, short_title, pin, contract_amount, vendor_name)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    "20240723114",
-    "2024-07-23",
-    "Transportation",
-    "Award",
-    "Bridge inspection",
-    "84126P0001001",
-    100000,
-    "HNTB Corporation",
-  );
+  if (seedNotice) {
+    sqlite.prepare(
+      `INSERT INTO notices
+        (request_id, start_date, agency, type_of_notice, short_title, pin, contract_amount, vendor_name)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    ).run(
+      "20240723114",
+      "2024-07-23",
+      "Transportation",
+      "Award",
+      "Bridge inspection",
+      "84126P0001001",
+      100000,
+      "HNTB Corporation",
+    );
+  }
   return { sqlite, DB: d1FromSqlite(sqlite) };
 }
 
@@ -91,6 +95,9 @@ function contractTx(fields) {
     pin: "84126P0001001",
     status: "registered",
     vendor_record_type: "Prime Vendor",
+    award_method: "SMALL PURCHASE - WRITTEN",
+    document_code: "CT1",
+    oca_number: "REQ795408",
     current: "4020000.00",
     original: "4000000.00",
     spent: "4020000.00",
@@ -107,6 +114,9 @@ function contractTx(fields) {
     + `<pin>${f.pin}</pin>`
     + `<status>${f.status}</status>`
     + `<vendor_record_type>${f.vendor_record_type}</vendor_record_type>`
+    + `<prime_contract_award_method>${f.award_method}</prime_contract_award_method>`
+    + `<document_code>${f.document_code}</document_code>`
+    + `<prime_oca_number>${f.oca_number}</prime_oca_number>`
     + `<prime_contract_current_amount>${f.current}</prime_contract_current_amount>`
     + `<prime_contract_original_amount>${f.original}</prime_contract_original_amount>`
     + `<prime_vendor_spent_to_date>${f.spent}</prime_vendor_spent_to_date>`
@@ -202,6 +212,77 @@ test("Checkbook spending keys keep distinct payment documents under one contract
     /^payment:CT107120248803393:DOC-B:HNTB CORPORATION:2024-06-15:200$/,
   );
   assert.notEqual(checkbookSpendingSourceSystemId(a), checkbookSpendingSourceSystemId(b));
+});
+
+test("CROL-negative Checkbook rows promote exact contract/payment observations with publisher fields", async () => {
+  const { sqlite, DB } = database({ seedNotice: false });
+  const env = { DB, [CHECKBOOK_SOURCE_RECORD_DUAL_WRITE_FLAG]: "true" };
+  const contract = parseContractTransaction(contractTx({
+    id: "CT183620271402476",
+    pin: "REQ795408",
+    vendor: "Thomson Reuters Tax & Accounting",
+    agency: "Department of Finance",
+    award_method: "SMALL PURCH -SUBSCRIPTION ETC",
+    document_code: "CT1",
+    oca_number: "REQ795408",
+    registered: "2026-08-14",
+    received: "2026-08-12",
+  }));
+  const payment = parseSpendingTransaction(spendingTx({
+    document_id: "DOC-REQ795408-1",
+    contract_id: "CT183620271402476",
+    payee: "Thomson Reuters Tax & Accounting",
+  }));
+
+  const contracts = await dualWriteCheckbookContractObservations(
+    env,
+    [contract],
+    "2026-08-18T19:46:32.000Z",
+  );
+  const payments = await dualWriteCheckbookSpendingObservations(
+    env,
+    [payment],
+    "2026-08-18T19:46:32.000Z",
+  );
+
+  assert.equal(contracts.written, 1);
+  assert.equal(payments.written, 1);
+  assert.equal(
+    sqlite.prepare("SELECT COUNT(*) AS n FROM notices").get().n,
+    0,
+    "City Record is not an insert prerequisite",
+  );
+
+  const contractObservation = sqlite.prepare(
+    `SELECT source_system_id, raw_snapshot
+       FROM source_records
+      WHERE source_system = ?`,
+  ).get(CHECKBOOK_CONTRACTS_SOURCE_SYSTEM);
+  assert.equal(
+    contractObservation.source_system_id,
+    checkbookContractSourceSystemId(contract),
+  );
+  assert.match(contractObservation.source_system_id, /:CT183620271402476:/);
+  const contractSnapshot = JSON.parse(contractObservation.raw_snapshot);
+  assert.equal(contractSnapshot.id, "CT183620271402476");
+  assert.equal(contractSnapshot.pin, "REQ795408");
+  assert.equal(contractSnapshot.awardMethod, "SMALL PURCH -SUBSCRIPTION ETC");
+  assert.equal(contractSnapshot.documentCode, "CT1");
+  assert.equal(contractSnapshot.ocaNumber, "REQ795408");
+
+  const paymentObservation = sqlite.prepare(
+    `SELECT source_system_id, raw_snapshot
+       FROM source_records
+      WHERE source_system = ?`,
+  ).get(CHECKBOOK_SPENDING_SOURCE_SYSTEM);
+  assert.equal(
+    paymentObservation.source_system_id,
+    checkbookSpendingSourceSystemId(payment),
+  );
+  const paymentSnapshot = JSON.parse(paymentObservation.raw_snapshot);
+  assert.equal(paymentSnapshot.contractId, "CT183620271402476");
+  assert.equal(paymentSnapshot.id, "DOC-REQ795408-1");
+  sqlite.close();
 });
 
 test("Checkbook observation capture is production-on / beta-off", () => {
