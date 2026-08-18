@@ -12,6 +12,7 @@ on:
       - "warehouse/**"
       - "worker/**"
       - "tools/build_architecture_facts.mjs"
+      - "tools/architecture_watermark.mjs"
       - "tools/reconcile_architecture.mjs"
       - ".github/workflows/architecture-reconciliation.yml"
   merge_group:
