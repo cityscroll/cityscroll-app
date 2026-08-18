@@ -19,6 +19,10 @@ const LENS_LABELS = Object.freeze({
   parcels: "Properties",
 });
 
+const LENS_I18N_KEYS = Object.freeze(Object.fromEntries(
+  UNIVERSAL_SEARCH_LENS_IDS.map((lens) => [lens, `topic_search_coverage_lens_${lens}`]),
+));
+
 const STATE_LABELS = Object.freeze({
   matched: "indexed",
   empty: "indexed",
@@ -26,6 +30,21 @@ const STATE_LABELS = Object.freeze({
   stale: "older snapshot",
   not_indexed: "not indexed",
   provider_unavailable: "unavailable",
+});
+
+const VARYING_NOTE_COPY = Object.freeze({
+  provider_unavailable: Object.freeze({
+    key: "topic_search_coverage_provider_unavailable",
+    fallback: "{source} results temporarily unavailable.",
+  }),
+  stale: Object.freeze({
+    key: "topic_search_coverage_stale",
+    fallback: "{source} results may be out of date.",
+  }),
+  not_indexed: Object.freeze({
+    key: "topic_search_coverage_not_indexed",
+    fallback: "{source} results are not available for this search.",
+  }),
 });
 
 function clean(value, max = 500) {
@@ -53,6 +72,17 @@ function count(value) {
 
 function countLabel(value) {
   return `${value} ${value === 1 ? "match" : "matches"}`;
+}
+
+function interpolate(template, variables = {}) {
+  return Object.entries(variables || {}).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    template,
+  );
+}
+
+function translateFallback(_key, variables, fallback) {
+  return interpolate(fallback, variables);
 }
 
 function dayLabel(value) {
@@ -87,8 +117,8 @@ export function buildUniversalSearchCoverageView(coverage = null) {
       state: "unavailable",
       complete_count: null,
       observed_count: null,
-      headline: "Coverage details are unavailable.",
-      detail: "Results may come from only some public-record collections.",
+      match_count: null,
+      notes: Object.freeze([]),
       lenses: Object.freeze([]),
     });
   }
@@ -100,33 +130,51 @@ export function buildUniversalSearchCoverageView(coverage = null) {
     lens,
     receipt.by_lens?.[lens],
   ));
-  const asOf = dayLabel(receipt.snapshot?.as_of);
+  const matchCount = complete ? completeCount : observedCount;
+  const notes = lenses
+    .filter((lens) => Object.hasOwn(VARYING_NOTE_COPY, lens.state))
+    .map((lens) => Object.freeze({
+      lens: lens.lens,
+      state: lens.state,
+      label: lens.label,
+      message_key: VARYING_NOTE_COPY[lens.state].key,
+      fallback: VARYING_NOTE_COPY[lens.state].fallback,
+    }));
   return Object.freeze({
     schema: UNIVERSAL_SEARCH_COVERAGE_VIEW_SCHEMA,
     state: complete ? "complete" : "incomplete",
     complete_count: completeCount,
     observed_count: observedCount,
-    headline: complete
-      ? `${countLabel(completeCount)} across all indexed collections.`
-      : "Search coverage is incomplete.",
-    detail: complete
-      ? (asOf ? `Collection snapshots are current through ${asOf}.` : "Every declared collection reported its snapshot.")
-      : (observedCount
-        ? `${countLabel(observedCount)} found in the available collections.`
-        : "No matches were found in the available collections; other collections may be missing."),
+    match_count: matchCount,
+    notes: Object.freeze(notes),
     lenses: Object.freeze(lenses),
   });
 }
 
-export function renderUniversalSearchCoverageHtml(coverage = null) {
+/** Render only the useful count plus query-specific degraded-source signals. */
+export function renderUniversalSearchCoverageHtml(coverage = null, options = {}) {
   const view = buildUniversalSearchCoverageView(coverage);
-  const lensDetails = view.lenses.length
-    ? `<details><summary>Coverage by collection</summary><ul>${view.lenses.map((lens) => (
-      `<li data-coverage-lens="${escapeHtml(lens.lens)}" data-coverage-state="${escapeHtml(lens.state)}"><span>${escapeHtml(lens.label)}</span><strong>${escapeHtml(lens.copy)}</strong></li>`
-    )).join("")}</ul></details>`
-    : "";
-  return `<section class="topic-search-coverage is-${escapeHtml(view.state)}" data-search-coverage data-coverage-state="${escapeHtml(view.state)}" role="status">
-    <p><strong>${escapeHtml(view.headline)}</strong><span>${escapeHtml(view.detail)}</span></p>
-    ${lensDetails}
+  const translate = typeof options.translate === "function"
+    ? options.translate
+    : translateFallback;
+  const optionCount = count(options.matchCount);
+  const matchCount = optionCount ?? view.match_count;
+  const countCopy = matchCount === null
+    ? ""
+    : translate(
+      matchCount === 1 ? "topic_search_match_count_one" : "topic_search_match_count_other",
+      { n: matchCount },
+      countLabel(matchCount),
+    );
+  const noteItems = view.notes.map((note) => {
+    const source = translate(LENS_I18N_KEYS[note.lens], null, note.label);
+    const copy = translate(note.message_key, { source }, note.fallback);
+    return `<li data-coverage-lens="${escapeHtml(note.lens)}" data-coverage-state="${escapeHtml(note.state)}">${escapeHtml(copy)}</li>`;
+  }).join("");
+  const hidden = !countCopy && !noteItems ? " hidden" : "";
+  const notes = noteItems ? `<ul>${noteItems}</ul>` : "";
+  return `<section class="topic-search-coverage is-${escapeHtml(view.state)}" data-search-coverage data-coverage-state="${escapeHtml(view.state)}" role="status"${hidden}>
+    ${countCopy ? `<p><strong>${escapeHtml(countCopy)}</strong></p>` : ""}
+    ${notes}
   </section>`;
 }

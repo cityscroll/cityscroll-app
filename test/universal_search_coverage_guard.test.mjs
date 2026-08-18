@@ -184,8 +184,9 @@ test("complete_count is the sum of declared per-lens counts at one snapshot boun
   const html = renderUniversalSearchCoverageHtml(response.coverage);
   assert.equal(view.complete_count, response.coverage.complete_count);
   assert.equal(view.lenses.find((lens) => lens.lens === "agencies").matched_count, 1);
-  assert.match(html, /1 match across all indexed collections/);
-  assert.match(html, /data-coverage-lens="agencies"[^>]*data-coverage-state="matched"/);
+  assert.equal(view.notes.length, 0);
+  assert.match(html, />1 match</);
+  assert.doesNotMatch(html, /Coverage by collection|data-coverage-lens|indexed collections/);
 });
 
 test("honest empty is a complete zero, not missing coverage", async () => {
@@ -206,8 +207,9 @@ test("honest empty is a complete zero, not missing coverage", async () => {
   for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
     assert.equal(response.coverage.by_lens[lensId].state, "empty", lensId);
   }
-  assert.match(view.headline, /0 matches across all indexed collections/);
-  assert.match(html, /0 matches across all indexed collections/);
+  assert.equal(view.match_count, 0);
+  assert.match(html, />0 matches</);
+  assert.doesNotMatch(html, /across all indexed collections|Coverage by collection/);
 });
 
 test("unindexed collections do not collapse into a citywide zero", async () => {
@@ -225,9 +227,10 @@ test("unindexed collections do not collapse into a citywide zero", async () => {
   for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
     assert.equal(response.coverage.by_lens[lensId].state, "not_indexed", lensId);
   }
-  assert.match(view.headline, /Search coverage is incomplete/);
-  assert.doesNotMatch(view.headline, /0 matches across all/);
-  assert.doesNotMatch(html, /0 matches across all/);
+  assert.equal(view.match_count, 0);
+  assert.equal(view.notes.length, UNIVERSAL_SEARCH_LENS_IDS.length);
+  assert.match(html, />0 matches</);
+  assert.doesNotMatch(html, /Search coverage is incomplete|0 matches across all|Coverage by collection/);
 });
 
 test("missing and stale lenses invalidate complete_count instead of producing a false zero", async () => {
@@ -256,11 +259,14 @@ test("missing and stale lenses invalidate complete_count instead of producing a 
   assert.equal(view.state, "incomplete");
   assert.equal(view.complete_count, null);
   assert.equal(view.lenses.find((lens) => lens.lens === "people").matched_count, null);
-  assert.match(view.detail, /available collections/);
-  assert.doesNotMatch(view.headline, /0 matches across all/);
-  assert.doesNotMatch(html, /People<\/span><strong>0 matches/);
-  assert.match(html, /data-coverage-lens="people"[^>]*data-coverage-state="not_indexed"/);
-  assert.match(html, /data-coverage-lens="vendors"[^>]*data-coverage-state="stale"/);
+  assert.deepEqual(view.notes.map(({ lens, state }) => ({ lens, state })), [
+    { lens: "people", state: "not_indexed" },
+    { lens: "vendors", state: "stale" },
+  ]);
+  assert.match(html, />0 matches</);
+  assert.match(html, /People results are not available for this search/);
+  assert.match(html, /Vendors results may be out of date/);
+  assert.doesNotMatch(html, /Coverage by collection|0 matches · indexed|Keyword fallback/);
 });
 
 test("coverage-honesty and LA7 unmapped-surface misses are one class", () => {
@@ -299,12 +305,12 @@ test("coverage-honesty and LA7 unmapped-surface misses are one class", () => {
   );
 });
 
-test("coverage UI fails closed when an API response omits its machine receipt", () => {
+test("coverage UI stays absent when an API response omits its machine receipt", () => {
   const view = buildUniversalSearchCoverageView(null);
   const html = renderUniversalSearchCoverageHtml(null);
 
   assert.equal(view.state, "unavailable");
   assert.equal(view.complete_count, null);
-  assert.match(html, /Coverage details are unavailable/);
-  assert.doesNotMatch(html, /No matches|0 matches/);
+  assert.match(html, /data-search-coverage[^>]*hidden/);
+  assert.doesNotMatch(html, /Coverage details|No matches|0 matches/);
 });

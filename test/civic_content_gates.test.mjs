@@ -445,6 +445,34 @@ test("no_disclaimer_slop: flags provenance restatement that per-link markers alr
   }
 });
 
+test("no_disclaimer_slop: repository wrapper blocks standing search debug copy", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-search-disclaimer-slop-"));
+  try {
+    writeFileSync(
+      join(dir, "index.html"),
+      `<!doctype html><html><body><main>` +
+        `<p>Search coverage is incomplete.</p>` +
+        `<p>Results may be incomplete.</p>` +
+        `<p>Coverage by collection</p>` +
+        `<p>Keyword fallback</p>` +
+        `<p>How results match</p>` +
+        `<p>generated_in_memory</p>` +
+        `</main></body></html>\n`,
+    );
+    const blocked = runPython([
+      join(STANDARDS, "no_disclaimer_slop.py"),
+      "--root", dir,
+      "--mode", "block",
+    ]);
+    assert.notEqual(blocked.status, 0, "standing search debug copy must fail the repository gate");
+    assert.match(blocked.stdout, /standing_coverage_self_deprecation/);
+    assert.match(blocked.stdout, /collection_coverage_debug_breakdown/);
+    assert.match(blocked.stdout, /search_implementation_label/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("no_disclaimer_slop: CI defaults the rendered census to blocking enforcement", () => {
   const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
   const a11yShard = workflow.slice(
