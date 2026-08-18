@@ -1033,7 +1033,7 @@
     project_connections_coverage_measured: 'Cobertura: {linked} de {eligible} en {scope}.',
     project_connections_coverage_bounded: 'Observado en {linked} proyectos en {scope}; no se midió el denominador elegible.',
     project_connections_coverage_unknown: 'No se midió el denominador elegible para {scope}.',
-    project_connections_scope_current: 'la captura actual de 231 proyectos',
+    project_connections_scope_current: 'la captura actual de proyectos',
     project_connections_scope_sample: 'la muestra fija de 50 proyectos terminados',
     project_connections_scope_bounded: 'la materialización acotada de conexiones',
     project_connections_scope_project: 'este proyecto',

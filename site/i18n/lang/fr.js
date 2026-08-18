@@ -1115,7 +1115,7 @@
     project_connections_coverage_measured: 'Couverture : {linked} sur {eligible} dans {scope}.',
     project_connections_coverage_bounded: 'Observé sur {linked} projets dans {scope} ; le dénominateur admissible n’est pas mesuré.',
     project_connections_coverage_unknown: 'Le dénominateur admissible n’est pas mesuré pour {scope}.',
-    project_connections_scope_current: 'l’instantané actuel de 231 projets',
+    project_connections_scope_current: 'l’instantané actuel des projets',
     project_connections_scope_sample: 'l’échantillon fixe de 50 projets achevés',
     project_connections_scope_bounded: 'la matérialisation bornée des connexions',
     project_connections_scope_project: 'ce projet',

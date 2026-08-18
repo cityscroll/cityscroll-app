@@ -37,7 +37,7 @@ test("OCP and ZAP contracts record their warehouse product snapshots", () => {
     },
     "zap-projects": {
       artifact: "site/data/zap_projects_warehouse_lookup.json",
-      row_count: 231,
+      row_count: 238,
     },
     "zap-bbl": {
       artifact: "site/data/zap_bbl_warehouse_lookup.json",
@@ -51,7 +51,7 @@ test("OCP and ZAP contracts record their warehouse product snapshots", () => {
     assert.equal(contract.warehouse_snapshot.status, "materialized");
     assert.equal(contract.warehouse_snapshot.artifact, snapshot.artifact);
     assert.equal(contract.warehouse_snapshot.row_count, snapshot.row_count);
-    assert.match(contract.warehouse_snapshot.materialized_at, /^2026-08-0[25]T/);
+    assert.match(contract.warehouse_snapshot.materialized_at, /^2026-08-/);
   }
 });
 

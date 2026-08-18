@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 /**
- * WH-05: materialize ZAP project lookup from the warehouse (DuckDB) for the Worker.
+ * WH-05: materialize ZAP project lookup from the warehouse (DuckDB) or live SODA.
  *
  * Replaces the live SODA fetch in fetchOpenDataRow for project_ids present in the
  * warehouse snapshot. Misses still fall through to live SODA at request time.
  *
  * Usage:
  *   node tools/build_zap_warehouse_lookup.mjs            # warehouse catalog → JSON
+ *   node tools/build_zap_warehouse_lookup.mjs --from-soda  # current sell-facing SODA
  *   node tools/build_zap_warehouse_lookup.mjs --fixture  # seed + WH sample offline
- *   node tools/build_zap_warehouse_lookup.mjs --check    # fail if committed JSON is stale
+ *   node tools/build_zap_warehouse_lookup.mjs --check    # canaries + twin parity
+ *   node tools/build_zap_warehouse_lookup.mjs --check --against-live  # + sell-facing drift
  *   node tools/build_zap_warehouse_lookup.mjs --limit 500
  *   node tools/build_zap_warehouse_lookup.mjs --bench    # print warehouse vs SODA timing
  *
- * Does NOT download bulk data. If the catalog is empty/missing, --fixture builds
- * from warehouse fixtures (product_seed + sample) after a tiny offline ingest.
+ * --from-soda is the closed refresh→publish path (no DuckDB required). Bulk DuckDB
+ * export remains available when the catalog is fresh.
  */
 
 import assert from "node:assert/strict";
@@ -23,6 +25,13 @@ import path from "node:path";
 import { performance } from "node:perf_hooks";
 
 import { catalogExists, WAREHOUSE_DIR, REPO_ROOT } from "../warehouse/lib/catalog.mjs";
+import {
+  assessSellFacingDrift,
+  assertLandCanariesPresent,
+  projectIdSet,
+  sellFacingIdDelta,
+  sodaSellFacingUrl,
+} from "../warehouse/lib/zap_freshness.mjs";
 import {
   buildMaterializationDoc,
   buildZapLookupIndex,
@@ -53,12 +62,22 @@ const BENCH_RECEIPT = path.join(
 const SAMPLE_CSV = path.join(WAREHOUSE_DIR, "fixtures", "zap-projects", "sample.csv");
 
 function parseArgs(argv) {
-  const out = { fixture: false, check: false, bench: false, limit: null, all: false };
+  const out = {
+    fixture: false,
+    check: false,
+    bench: false,
+    limit: null,
+    all: false,
+    fromSoda: false,
+    againstLive: false,
+  };
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === "--fixture") out.fixture = true;
     else if (argv[i] === "--check") out.check = true;
     else if (argv[i] === "--bench") out.bench = true;
     else if (argv[i] === "--all") out.all = true;
+    else if (argv[i] === "--from-soda" || argv[i] === "--from-live") out.fromSoda = true;
+    else if (argv[i] === "--against-live") out.againstLive = true;
     else if (argv[i] === "--limit") out.limit = Number(argv[++i]);
   }
   return out;
@@ -110,7 +129,49 @@ function dedupeRows(rows) {
   return out;
 }
 
-function collectRows({ fixture, limit, all }) {
+async function fetchJson(fetchImpl, url) {
+  const response = await fetchImpl(url);
+  if (!response.ok) throw new Error(`fetch ${url} → HTTP ${response.status}`);
+  const body = await response.json();
+  if (!Array.isArray(body) && body && typeof body === "object" && body.error) {
+    throw new Error(`SODA error: ${body.message || JSON.stringify(body)}`);
+  }
+  return body;
+}
+
+/** Page current sell-facing ZAP projects from live SODA (no DuckDB). */
+export async function fetchSellFacingFromSoda(fetchImpl = fetch, opts = {}) {
+  const pageSize = Math.min(Math.max(Number(opts.pageSize) || 1000, 1), 50000);
+  const hardCap = opts.limit != null && Number.isFinite(Number(opts.limit))
+    ? Math.floor(Number(opts.limit))
+    : 5000;
+  const rows = [];
+  let offset = 0;
+  while (rows.length < hardCap) {
+    const batchLimit = Math.min(pageSize, hardCap - rows.length);
+    const url = sodaSellFacingUrl({ limit: batchLimit, offset });
+    const batch = await fetchJson(fetchImpl, url);
+    if (!Array.isArray(batch) || !batch.length) break;
+    for (const row of batch) {
+      const shaped = rowToSodaShape(row);
+      if (shaped) rows.push(shaped);
+    }
+    if (batch.length < batchLimit) break;
+    offset += batch.length;
+  }
+  return rows;
+}
+
+async function collectRows({ fixture, limit, all, fromSoda, fetchImpl = fetch }) {
+  if (fromSoda) {
+    const sodaRows = await fetchSellFacingFromSoda(fetchImpl, { limit: limit || null });
+    const seed = loadProductSeedRows();
+    return {
+      rows: dedupeRows([...sodaRows, ...seed]),
+      mode: "soda_sell_facing",
+    };
+  }
+
   if (fixture || !catalogExists()) {
     if (!catalogExists()) {
       try {
@@ -145,6 +206,32 @@ function collectRows({ fixture, limit, all }) {
     rows: dedupeRows([...rows, ...seed]),
     mode: rows.length > 100 ? "bulk_warehouse" : "warehouse",
   };
+}
+
+function loadCommittedLookup() {
+  const raw = readFileSync(OUT_SITE, "utf8");
+  return JSON.parse(raw);
+}
+
+async function checkAgainstLive(committedDoc, fetchImpl = fetch) {
+  const liveRows = await fetchSellFacingFromSoda(fetchImpl);
+  const delta = sellFacingIdDelta(
+    projectIdSet(liveRows),
+    projectIdSet(committedDoc.rows),
+  );
+  const assessment = assessSellFacingDrift(delta);
+  if (!assessment.ok) {
+    const sample = delta.missing_from_committed.slice(0, 12).join(", ");
+    const err = new Error(
+      `WH-05 sell-facing drift: ${assessment.reasons.join("; ")}` +
+        (sample ? ` (missing sample: ${sample})` : "") +
+        ". Rebuild with node tools/build_zap_warehouse_lookup.mjs --from-soda",
+    );
+    err.code = "LAND_ZAP_SELL_FACING_DRIFT";
+    err.assessment = assessment;
+    throw err;
+  }
+  return assessment;
 }
 
 function statsMs(samples, digits = 3) {
@@ -299,12 +386,43 @@ function writeOutputs(doc, check) {
   };
 }
 
+function checkCommittedCanariesAndTwins() {
+  assert.ok(existsSync(OUT_SITE), `missing ${path.relative(ROOT, OUT_SITE)}`);
+  assert.ok(existsSync(OUT_WORKER), `missing ${path.relative(ROOT, OUT_WORKER)}`);
+  const site = JSON.parse(readFileSync(OUT_SITE, "utf8"));
+  const worker = JSON.parse(readFileSync(OUT_WORKER, "utf8"));
+  assert.equal(site.schema_version, worker.schema_version);
+  assert.equal(site.row_count, worker.row_count);
+  assert.deepEqual(site.rows, worker.rows);
+  assertLandCanariesPresent(site, { context: "zap_projects_warehouse_lookup" });
+  return site;
+}
+
 async function main() {
   const args = parseArgs(process.argv);
-  const { rows, mode } = collectRows({
+
+  // Honesty gate: canaries must be present on the committed twin even when
+  // --check is not regenerating from warehouse/SODA.
+  if (args.check && !args.fixture && !args.fromSoda && !args.bench) {
+    const committed = checkCommittedCanariesAndTwins();
+    const result = {
+      status: "ok",
+      check: "canaries_and_twins",
+      row_count: committed.row_count,
+      materialized_at: committed.materialized_at,
+    };
+    if (args.againstLive) {
+      result.against_live = await checkAgainstLive(committed);
+    }
+    console.log(JSON.stringify(result, null, 2));
+    return;
+  }
+
+  const { rows, mode } = await collectRows({
     fixture: args.fixture,
     limit: args.limit,
     all: args.all,
+    fromSoda: args.fromSoda,
   });
   assert.ok(rows.length >= 1, "expected at least one ZAP row to materialize");
 
@@ -323,7 +441,16 @@ async function main() {
   );
   doc.row_count = doc.rows.length;
 
+  if (!args.fixture) {
+    assertLandCanariesPresent(doc, {
+      context: args.fromSoda ? "SODA sell-facing materialization" : "warehouse materialization",
+    });
+  }
+
   const written = writeOutputs(doc, args.check);
+  if (args.check && args.againstLive) {
+    written.against_live = await checkAgainstLive(loadCommittedLookup());
+  }
   console.log(JSON.stringify(written, null, 2));
 
   if (args.bench) {
