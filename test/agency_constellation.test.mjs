@@ -352,6 +352,8 @@ test("passport EI graph hydrates a denser precomputed contracts category", () =>
   assert.equal(byId.contracts.universe, "linked");
   assert.equal(byId.contracts.as_of, "2026-08-18");
   assert.ok(byId.contracts.count > 1, "graph inventory must exceed the open-RFP snapshot");
+  assert.match(byId.contracts.view_all_href, /mode=award/);
+  assert.doesNotMatch(byId.contracts.view_all_href, /mode=open/);
   const html = renderAgencyConstellationDocument(view);
   assert.match(html, /data-total-count="12"/);
   assert.doesNotMatch(html, /https?:\/\/a0333-passportpublic/);

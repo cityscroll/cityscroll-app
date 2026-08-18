@@ -732,7 +732,7 @@ function categoryFromDomain(
         warrant_summary: summarizeCategoryWarrants(items),
         method: PASSPORT_EI_GRAPH_METHOD,
         view_all_href: total
-          ? agencyCategoryBrowseHref(identity.canonical_id, spec.id)
+          ? agencyCategoryBrowseHref(identity.canonical_id, spec.id, { mode: "award" })
           : "",
         archive_href: agencyCategoryArchiveHref(identity.canonical_id, spec.id),
         follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
