@@ -4,6 +4,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- **Observer-coverage canaries:** `architecture/observer-canaries.json` is the
+  human-owned list of architecture-affecting surfaces that LA4 facts must
+  observe. `tools/build_architecture_facts.mjs` emits `observer_coverage`
+  (`observed_paths`, `known_canaries`, `unmapped_surfaces`). Register a new
+  canary there; do not infer the list. This layer makes the observer's gaps
+  visible and does not add the missing observers. Proof:
+  `test/architecture_facts.test.mjs`.
+
 - **Cited semantic retrieval:** `worker/src/cited_retrieval.mjs` is the
   retrieval-only adapter from `worker/src/semantic_candidates.mjs` into the
   versioned MCP `retrieve_cited_passages` structured output. A citation is
