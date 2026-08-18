@@ -106,6 +106,50 @@
       "grounding": "partial"
     },
     {
+      "id": "procurement",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "PASSPort and Checkbook source observations construct one aggregate procurement object through accepted exact identity edges; City Record remains stage evidence and never constructs identity.",
+      "primary_key_pattern": "procurement:{contract_id|epin|source_system:source_id}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "source_records",
+        "passport_contracts",
+        "passport_rfx",
+        "checkbook_contracts",
+        "checkbook_spending"
+      ],
+      "properties_ref": [
+        "contract_id",
+        "pin",
+        "epin",
+        "source_observation_refs",
+        "stage_refs"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.procurement_object.v1",
+        "observation_fed": true,
+        "source_keys": [
+          "passport_public_contracts:source_system_id",
+          "passport_public_rfx:source_system_id",
+          "checkbook_contracts:source_system_id",
+          "checkbook_spending:source_system_id"
+        ],
+        "accepted_join_keys": [
+          "exact_contract_id",
+          "unambiguous_exact_epin",
+          "exact_publisher_source_id"
+        ],
+        "minimum_stable_source_id_rate": 0.95,
+        "required_exact_join_precision": 1,
+        "city_record_constructor": false,
+        "descriptive_identity_forbidden": true
+      },
+      "grounding": "partial"
+    },
+    {
       "id": "award",
       "status": "registered",
       "layer": "semantic",
