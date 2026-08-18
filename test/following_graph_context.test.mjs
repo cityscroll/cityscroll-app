@@ -22,8 +22,8 @@ test("a topic and place watch explains its identity, cadence, and return path pu
   assert.match(html, /<dt>Place<\/dt>.*Queens/s);
   assert.match(html, /<dt>Keyword<\/dt>.*curb/s);
   assert.match(html, /<dt>Agency<\/dt>.*Transportation/s);
-  assert.match(html, /data-following-identity-cadence[^>]*>Weekly</);
-  assert.match(html, /Notify me when Hearings and meetings match keyword curb AND agency Transportation AND in Queens\./);
+  assert.match(html, /data-following-identity-cadence[^>]*>Weekly digest/);
+  assert.match(html, /Notify me when new hearings and meetings mentioning 'curb' from Transportation are published in Queens\./);
   assert.match(html, /href="\/browse\/meetings\/[^\"]*"[^>]*data-following-current-matches/);
 });
 

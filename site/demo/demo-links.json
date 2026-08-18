@@ -790,7 +790,7 @@
           },
           {
             "selector": "[data-following-subscribe-panel]",
-            "text": "Pick a topic or place to see matches."
+            "text": "Follow what you care about"
           }
         ],
         "notVisible": [
@@ -992,11 +992,11 @@
         "visible": [
           {
             "selector": "#create",
-            "text": "Pick a topic or place"
+            "text": "What do you want to follow?"
           },
           {
             "selector": "[data-following-subscribe-panel]",
-            "text": "Pick a topic or place to see matches."
+            "text": "Follow what you care about"
           },
           {
             "selector": "[data-following-preview-form]"
