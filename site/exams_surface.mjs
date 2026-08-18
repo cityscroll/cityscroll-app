@@ -58,17 +58,29 @@ export function examBrowseRows(artifact = {}) {
       detail: examDetail(exam, status),
       status,
       interest_area: String(exam.interest_area || ""),
+      eligibility: String(exam.eligibility || ""),
       search_text: [exam.title, id, exam.title_code, exam.interest_area, exam.eligibility, status].filter(Boolean).join(" "),
     }];
   });
 }
 
+function parseInterestParam(raw) {
+  const value = String(raw || "").trim();
+  if (!value || value === "all") return [];
+  return [...new Set(value.split(/[,|]/).map((part) => part.trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b));
+}
+
 export function buildExamsBrowseView(artifact = {}, params = new URLSearchParams(), options = {}) {
   const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
-  const interest = String(search.get("interest") || "").trim();
+  const interests = parseInterestParam(search.get("interest"));
+  const eligibility = String(search.get("eligibility") || "").trim();
   const window = String(search.get("window") || "").trim();
   const rows = examBrowseRows(artifact).filter((row) => {
-    if (interest && interest !== "all" && row.interest_area !== interest) return false;
+    if (interests.length && !interests.includes(row.interest_area)) return false;
+    // Anyone who qualifies: only publisher open_competitive; never unknown/promo.
+    if (eligibility === "open_competitive" && row.eligibility !== "open_competitive") return false;
+    if (eligibility === "promotion" && row.eligibility !== "promotion") return false;
     if (window && window !== "all" && window !== "actionable" && row.status !== window) return false;
     if (window === "actionable" && !["open", "upcoming"].includes(row.status)) return false;
     return true;
@@ -78,7 +90,7 @@ export function buildExamsBrowseView(artifact = {}, params = new URLSearchParams
     rows,
     asOf: artifact.data_current_as_of || artifact.generated_at,
     limit: options.limit ?? 24,
-    handledFilters: ["interest", "window"],
+    handledFilters: ["interest", "window", "eligibility"],
   });
 }
 

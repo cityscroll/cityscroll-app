@@ -56,14 +56,34 @@ export function examFacetOptionValues(exams, facet, options = {}) {
   return known.filter((value) => values.has(value));
 }
 
+/** Sort known interest ids into the closed vocabulary order for stable URLs. */
+export function serializeExamInterestParam(value) {
+  const known = EXAM_FACETS.interest.values;
+  const raw = Array.isArray(value)
+    ? value
+    : String(value || "").split(/[,|]/).map((part) => part.trim()).filter(Boolean);
+  const selected = [...new Set(raw.filter((id) => known.includes(id)))];
+  selected.sort((a, b) => known.indexOf(a) - known.indexOf(b));
+  return selected.join(",");
+}
+
+/**
+ * Build a shareable Exams browse URL. Interest supports multi-select: pass the
+ * full resulting selection (comma string or array). Equivalent selections
+ * serialize identically regardless of click order.
+ */
 export function examFacetHref(filters, facet, value, { language = "en" } = {}) {
   const definition = EXAM_FACETS[facet];
-  if (!definition || !value || value === UNKNOWN || (value !== "all" && !definition.values.includes(value))) return "";
+  if (!definition || value == null || value === "" || value === UNKNOWN) return "";
+  if (facet !== "interest" && value !== "all" && !definition.values.includes(value)) return "";
   const scope = emptyScope(language);
   scope.facets.domains = [EXAMS_SURFACE.sourceDomain];
   const current = filters && typeof filters === "object" ? filters : {};
+  const interestWire = serializeExamInterestParam(
+    current.interests != null ? current.interests : current.interest,
+  );
   const currentValues = {
-    interest: current.interest,
+    interest: interestWire || null,
     eligibility: current.eligibility,
     window: current.window,
     format: current.format,
@@ -75,7 +95,13 @@ export function examFacetHref(filters, facet, value, { language = "en" } = {}) {
     if (key === definition.routeKey || currentValue == null || currentValue === "" || currentValue === "all") continue;
     scope.facets.values[key] = currentValue;
   }
-  if (value !== "all") scope.facets.values[definition.routeKey] = value;
+  if (facet === "interest") {
+    const next = serializeExamInterestParam(value);
+    if (next) scope.facets.values.interest = next;
+    else delete scope.facets.values.interest;
+  } else if (value !== "all") {
+    scope.facets.values[definition.routeKey] = value;
+  }
   // Scope v0 keeps its stable field/value wire. The owner descriptor supplies
   // the public route, so the source-domain name never chooses a surface.
   const legacyWire = routeHashFromScope({ ...scope, facets: {

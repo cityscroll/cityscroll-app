@@ -22,7 +22,10 @@ import { createIncrementalList } from "../incremental_list.mjs";
 /* ===================== EXAMS ===================== */
 let careerData = null, careerLoadPromise = null, careerSelected = null;
 let careerIncrementalList = null, careerRenderItems = [];
-let careerFacetState = {interest:"all",window:"actionable",format:"all",salary_band:"all",fee_level:"all",no_experience:"all"};
+// interest: sorted known area ids (OR semantics). Empty = All interests.
+let careerFacetState = {interest:[],window:"actionable",format:"all",salary_band:"all",fee_level:"all",no_experience:"all"};
+/** Counts next to Interest Area options are under-current-filter (other active filters applied; interest itself excluded). */
+const CAREER_INTEREST_COUNTS_BASIS = "under_current_filter";
 const CAREER_DATA_URL = "data/staffing_exams.json";
 const CAREER_DATA_SCHEMA_VERSION = 4;
 const CAREER_LOAD_ATTEMPTS = 2;
@@ -120,15 +123,25 @@ function careerFormatLabel(format){
     other:"career_diff_format_other",
   }[format] || "career_diff_format_other");
 }
+function careerSelectedInterests(){
+  return CrolStaffing.normalizeInterestSelection(careerFacetState.interest);
+}
 function careerFacetFilters(){
+  const interests=careerSelectedInterests();
   return {
     ...careerFacetState,
+    interest: interests.length ? CrolStaffing.serializeInterestSelection(interests) : "all",
+    interests,
     eligibility:$("#career-eligibility")?.value || "open_competitive",
   };
 }
 function careerFacetLabel(facet,value){
   if(value==="all") return t({eligibility:"career_all_eligibility_option",interest:"career_all_interests",window:"career_all_windows_option",format:"career_format_all",salary:"career_salary_band_all",fee:"career_fee_level_all",experience:"career_experience_all"}[facet]);
-  if(facet==="eligibility") return t(value==="promotion" ? "career_city_employee_option" : "career_anyone_option");
+  if(facet==="eligibility"){
+    if(value==="promotion") return t("career_city_employee_option");
+    if(value==="open_competitive") return t("career_anyone_option");
+    return t("career_all_eligibility_option");
+  }
   if(facet==="interest") return t(CAREER_AREA_KEYS[value]||"career_area_other");
   if(facet==="window") return value==="actionable" ? t("career_actionable_option") : careerStatusLabel(value);
   if(facet==="format") return careerFormatLabel(value);
@@ -142,7 +155,39 @@ function careerFacetLabel(facet,value){
   if(facet==="experience") return t(value==="yes" ? "career_no_experience_yes" : "career_experience_required");
   return value;
 }
-function careerFacetLinkHTML(facet,value,filters,sourceValue=""){
+function setCareerInterests(next){
+  careerFacetState.interest=CrolStaffing.normalizeInterestSelection(next);
+}
+function toggleCareerInterest(area){
+  if(area==="all"){
+    setCareerInterests([]);
+    return;
+  }
+  if(!CrolStaffing.isInterestArea(area)) return;
+  const current=new Set(careerSelectedInterests());
+  if(current.has(area)) current.delete(area);
+  else current.add(area);
+  setCareerInterests([...current]);
+}
+function careerInterestCountMap(filters){
+  // under-current-filter: apply eligibility/window/format/etc, not the interest selection.
+  if(!careerData) return new Map();
+  const today=careerToday();
+  const baseFilters={
+    ...filters,
+    interest:"all",
+    interests:[],
+  };
+  const pool=CrolStaffing.filterExams(careerExamsForActiveScope(careerData.exams),baseFilters,today);
+  const counts=new Map();
+  for(const exam of pool){
+    for(const area of CrolStaffing.examInterestAreas(exam)){
+      counts.set(area,(counts.get(area)||0)+1);
+    }
+  }
+  return counts;
+}
+function careerFacetLinkHTML(facet,value,filters,sourceValue="",{count=null}={}){
   const label=careerFacetLabel(facet,value);
   if(facet==="eligibility"){
     return filterChip({
@@ -151,6 +196,37 @@ function careerFacetLinkHTML(facet,value,filters,sourceValue=""){
       className:"career-facet-chip",
       attributes:{"data-career-eligibility":value},
       escape:escUiHtml,
+    });
+  }
+  if(facet==="interest"){
+    const selected=CrolStaffing.normalizeInterestSelection(filters.interests ?? filters.interest);
+    const pressed=value==="all" ? selected.length===0 : selected.includes(value);
+    let nextSelection;
+    if(value==="all") nextSelection=[];
+    else {
+      const set=new Set(selected);
+      if(set.has(value)) set.delete(value);
+      else set.add(value);
+      nextSelection=[...set];
+    }
+    const href=examFacetHref({...filters,interests:nextSelection,interest:CrolStaffing.serializeInterestSelection(nextSelection)||"all"},"interest",nextSelection,{language:window.LANG||"en"});
+    if(!href) return "";
+    const edge=["people","interest",value].join(":");
+    // Multi-select toggles: aria-pressed (shared filterChip grammar) announces
+    // selected/unselected; each chip is independently removable via selected strip.
+    return filterChip({
+      label,
+      count,
+      pressed,
+      className: ["career-facet-chip","career-interest-chip",pressed?"current":""].filter(Boolean).join(" "),
+      attributes: {
+        "data-career-facet": edge,
+        "data-career-interest": value,
+        "data-scope-edge": edge,
+        "data-filter-href": href,
+        ...(sourceValue ? { "data-source-value": sourceValue } : {}),
+      },
+      escape: escUiHtml,
     });
   }
   const href=examFacetHref(filters,facet,value,{language:window.LANG||"en"});
@@ -175,6 +251,7 @@ function careerFacetControlsHTML(){
   if(!careerData) return;
   const today=careerToday();
   const filters=careerFacetFilters();
+  const interestCounts=careerInterestCountMap(filters);
   const specs=[
     ["eligibility","career-eligibility-facets"],
     ["interest","career-interest-facets"],
@@ -186,21 +263,40 @@ function careerFacetControlsHTML(){
     const box=$("#"+id);
     if(!box) continue;
     const values=facet==="interest"
-      ? careerData.interest_areas.filter(area=>careerData.exams.some(exam=>exam.interest_area===area))
+      ? careerData.interest_areas.filter(area=>careerData.exams.some(exam=>CrolStaffing.examInterestAreas(exam).includes(area)))
       : examFacetOptionValues(careerData.exams,facet,{today,statusFor:CrolStaffing.statusFor});
-    const fieldHost=box.closest(".career-facet-field");
+    const fieldHost=box.closest(".career-facet-field") || box.closest(".career-primary-facet");
     if(fieldHost) fieldHost.hidden=values.length===0;
     if(!values.length){ box.innerHTML=""; continue; }
-    const all="all";
-    const links=[careerFacetLinkHTML(facet,all,filters)];
+    const links=[careerFacetLinkHTML(facet,"all",filters,"",{
+      count: facet==="interest" ? null : null,
+    })];
     if(facet==="window") links.push(careerFacetLinkHTML(facet,"actionable",filters));
-    for(const value of values) links.push(careerFacetLinkHTML(facet,value,filters));
+    for(const value of values){
+      const count=facet==="interest" ? (interestCounts.get(value)||0) : null;
+      links.push(careerFacetLinkHTML(facet,value,filters,"",{count: facet==="interest" ? count : null}));
+    }
     box.innerHTML=links.filter(Boolean).join("");
     if(facet==="eligibility"){
       box.querySelectorAll("[data-career-eligibility]").forEach(button=>button.addEventListener("click",()=>{
         $("#career-eligibility").value=button.dataset.careerEligibility;
         careerSelected=null; careerIncrementalList?.reset(); syncExamsModeUI(); renderCareerGuide(); updateHash();
       }));
+    }
+    if(facet==="interest"){
+      // Multi-select toggles via href navigation (installFilterChipNavigation) —
+      // also handle in-page when SPA owns the route without a full reload.
+      box.querySelectorAll("[data-career-interest]").forEach(button=>{
+        button.addEventListener("click",(event)=>{
+          // Prefer in-page toggle so multi-select survives without depending on
+          // soft-nav; still keep data-filter-href for Copy link / share parity.
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          toggleCareerInterest(button.dataset.careerInterest);
+          careerSelected=null; careerIncrementalList?.reset();
+          syncExamsModeUI(); renderCareerGuide(); updateHash();
+        },{capture:true});
+      });
     }
   }
   installFilterChipNavigation(document);
@@ -679,12 +775,13 @@ function careerCardHTML(exam){
 }
 function careerInterestContextHTML(){
   const index=careerData?.interest_taxonomy;
-  const selected=careerFacetState.interest;
-  if(!index || !Array.isArray(index.areas) || !selected || selected==="all") return "";
-  const area=index.areas.find(item=>item.id===selected && item.subscribable);
+  const selected=careerSelectedInterests();
+  // Subscribe context only when exactly one interest is selected (single-area watch).
+  if(!index || !Array.isArray(index.areas) || selected.length!==1) return "";
+  const area=index.areas.find(item=>item.id===selected[0] && item.subscribable);
   if(!area) return "";
   const today=careerToday();
-  const rows=careerData.exams.filter(exam=>exam.interest_area===area.id);
+  const rows=careerData.exams.filter(exam=>CrolStaffing.examInterestAreas(exam).includes(area.id));
   const bands={far:0,approaching:0,imminent:0};
   rows.forEach(exam=>{ const band=CrolStaffing.openWindowBand(exam,today); if(band) bands[band]+=1; });
   const noe=rows.filter(exam=>exam.notice_url).length;
@@ -723,21 +820,29 @@ function careerResultsHTML(exams){
   }).join("");
 }
 function careerFilters(){
+  const interests=careerSelectedInterests();
   return {
     query:$("#career-query")?.value || "",
     eligibility:$("#career-eligibility").value,
     ...careerFacetState,
+    interest: interests.length ? CrolStaffing.serializeInterestSelection(interests) : "all",
+    interests,
   };
+}
+function careerRemovableChip(label, removeKey, removeValue){
+  const safeLabel=escUiHtml(label);
+  return `<button type="button" class="qchip qchip-remove" data-remove-filter="${escUiHtml(removeKey)}" data-remove-value="${escUiHtml(removeValue)}" aria-label="${escUiHtml(t("clear_filters_btn"))}: ${safeLabel}">${safeLabel} <span aria-hidden="true">×</span></button>`;
 }
 function updateStaffingMoreFiltersState(){
   const filters=careerFilters();
+  const interests=careerSelectedInterests();
+  // Badge counts only More-filters selections (interest + eligibility are primary rails).
   const active=[
-    filters.interest && filters.interest!=="all",
-    filters.eligibility && filters.eligibility!=="open_competitive",
     filters.window && filters.window!=="actionable",
     filters.salary_band && filters.salary_band!=="all",
     filters.fee_level && filters.fee_level!=="all",
     filters.no_experience && filters.no_experience!=="all",
+    filters.format && filters.format!=="all",
   ].filter(Boolean).length;
   const badge=$("#staffing-filter-badge");
   if(badge){
@@ -748,23 +853,53 @@ function updateStaffingMoreFiltersState(){
   if(!strip) return;
   const chips=[];
   if(filters.query) chips.push(`<span class="qchip">${escUiHtml(filters.query)}</span>`);
-  if(filters.format && filters.format!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("format",filters.format))}</span>`);
-  if(filters.interest && filters.interest!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("interest",filters.interest))}</span>`);
-  if(filters.eligibility && filters.eligibility!=="open_competitive") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("eligibility",filters.eligibility))}</span>`);
-  if(filters.window && filters.window!=="actionable") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("window",filters.window))}</span>`);
-  if(filters.salary_band && filters.salary_band!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("salary",filters.salary_band))}</span>`);
-  if(filters.fee_level && filters.fee_level!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("fee",filters.fee_level))}</span>`);
-  if(filters.no_experience && filters.no_experience!=="all") chips.push(`<span class="qchip">${escUiHtml(careerFacetLabel("experience",filters.no_experience))}</span>`);
+  if(filters.format && filters.format!=="all") chips.push(careerRemovableChip(careerFacetLabel("format",filters.format),"format",filters.format));
+  for(const area of interests){
+    chips.push(careerRemovableChip(careerFacetLabel("interest",area),"interest",area));
+  }
+  if(filters.eligibility){
+    chips.push(careerRemovableChip(careerFacetLabel("eligibility",filters.eligibility),"eligibility",filters.eligibility));
+  }
+  if(filters.window && filters.window!=="actionable") chips.push(careerRemovableChip(careerFacetLabel("window",filters.window),"window",filters.window));
+  if(filters.salary_band && filters.salary_band!=="all") chips.push(careerRemovableChip(careerFacetLabel("salary",filters.salary_band),"salary_band",filters.salary_band));
+  if(filters.fee_level && filters.fee_level!=="all") chips.push(careerRemovableChip(careerFacetLabel("fee",filters.fee_level),"fee_level",filters.fee_level));
+  if(filters.no_experience && filters.no_experience!=="all") chips.push(careerRemovableChip(careerFacetLabel("experience",filters.no_experience),"no_experience",filters.no_experience));
   strip.innerHTML=chips.length
     ? `<div class="nlunderstood searchactive"><span role="status">${t("nl_understood_label")} ${chips.join(" ")}</span><button type="button" class="mini" data-staffing-clear-filters>${t("clear_filters_btn")}</button></div>`
     : "";
+  strip.querySelectorAll("[data-remove-filter]").forEach((button)=>{
+    button.addEventListener("click",()=>{
+      const key=button.dataset.removeFilter;
+      const value=button.dataset.removeValue;
+      if(key==="interest"){
+        setCareerInterests(careerSelectedInterests().filter((area)=>area!==value));
+      }else if(key==="eligibility"){
+        const eligibility=$("#career-eligibility");
+        if(eligibility) eligibility.value="all";
+      }else if(key==="window"){
+        careerFacetState.window="actionable";
+      }else if(key==="format"){
+        careerFacetState.format="all";
+      }else if(key==="salary_band"){
+        careerFacetState.salary_band="all";
+      }else if(key==="fee_level"){
+        careerFacetState.fee_level="all";
+      }else if(key==="no_experience"){
+        careerFacetState.no_experience="all";
+      }
+      careerSelected=null;
+      careerIncrementalList?.reset();
+      renderCareerGuide();
+      updateHash();
+    });
+  });
   strip.querySelector("[data-staffing-clear-filters]")?.addEventListener("click",()=>{
     const query=$("#career-query");
     if(query) query.value="";
     const eligibility=$("#career-eligibility");
     if(eligibility) eligibility.value="open_competitive";
     careerFacetState={
-      interest:"all",
+      interest:[],
       window:"actionable",
       format:"all",
       salary_band:"all",
@@ -855,7 +990,7 @@ function applyCareerRouteFilters(){
     else if(eligibility===null) eligibilityEl.value="open_competitive";
   }
   careerFacetState={
-    interest:interest && CrolStaffing.isInterestArea(interest) ? interest : "all",
+    interest:CrolStaffing.normalizeInterestSelection(interest),
     window:windowFilter && ["actionable","open","upcoming","closed","all"].includes(windowFilter) ? windowFilter : "actionable",
     format:format && ["education_experience","multiple_choice","physical","mixed","written","oral","practical","other","all"].includes(format) ? format : "all",
     salary_band:salaryBand && ["under_45k","45k_60k","60k_80k","80k_plus","all"].includes(salaryBand) ? salaryBand : "all",
@@ -1010,6 +1145,7 @@ function showExam(examNumber){
 // Publish live bindings for routing, boot, and retained inline handlers.
 globalThis.CAREER_AREA_KEYS = CAREER_AREA_KEYS;
 globalThis.CAREER_HOW_SEEN_KEY = CAREER_HOW_SEEN_KEY;
+globalThis.CAREER_INTEREST_COUNTS_BASIS = CAREER_INTEREST_COUNTS_BASIS;
 globalThis.applyCareerRouteFilters = applyCareerRouteFilters;
 globalThis.careerActionGroup = careerActionGroup;
 globalThis.careerCardHTML = careerCardHTML;
