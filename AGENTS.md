@@ -3348,7 +3348,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   and verify it with `--check` plus `test/source_health_projection.test.mjs`.
   `ontology/source_health.mjs` evaluates the three clocks deterministically;
   D1 relationship coverage remains a separate axis. The raw observation file
-  is excluded from Pages until a strict public allowlist projection exists.
+  stays excluded from Pages. Build the strict allowlisted public sibling with
+  `node tools/build_source_health_public_projection.mjs`; Worker `/source-health`
+  serves that artifact with null-on-unavailable semantics. Public fields and
+  leak guards live in `site/source_health_public_projection.mjs`. Proof:
+  `test/source_health_public_projection.test.mjs` and
+  `worker/test/source_health.test.mjs`.
 
 ## Maintaining this file
 
