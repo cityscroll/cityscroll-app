@@ -668,7 +668,8 @@ function assertCoverageHonesty(query, world) {
     assert.equal(view.complete_count, 0);
     assert.equal(expected.zero_means, "no_match", `${query.id} honest empty is no-match`);
     assert.equal(coverage.all_lenses_participated, true, `${query.id} every lens participated`);
-    assert.match(view.headline, /0 matches across all indexed collections/);
+    assert.equal(view.match_count, 0);
+    assert.match(html, />0 matches</);
     for (const lensId of UNIVERSAL_SEARCH_LENS_IDS) {
       assert.equal(coverage.by_lens[lensId].state, "empty", `${query.id} ${lensId}`);
     }
@@ -676,10 +677,10 @@ function assertCoverageHonesty(query, world) {
   if (expected.zero_means === "no_coverage") {
     assert.equal(coverage.complete_count, null, `${query.id} complete_count must stay null`);
     assert.notEqual(coverage.snapshot.state, "complete", `${query.id} must not look complete`);
-    assert.doesNotMatch(view.headline, /0 matches across all/);
+    assert.equal(view.match_count, coverage.observed_count, `${query.id} uses the observed match count`);
+    assert.doesNotMatch(html, /Search coverage is incomplete|0 matches across all|Coverage by collection/);
   }
   if (expected.must_not_read_as) {
-    assert.doesNotMatch(view.headline, new RegExp(expected.must_not_read_as, "i"));
     assert.doesNotMatch(html, /0 matches across all/);
   }
   if (expected.incomplete_lenses) {

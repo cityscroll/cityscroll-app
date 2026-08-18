@@ -3,7 +3,6 @@ import {
   renderUniversalSearchResultHtml,
 } from "./universal_search_relevance_ux.mjs";
 import {
-  SEMANTIC_CANDIDATE_METHOD,
   SEMANTIC_CANDIDATE_RESPONSE_SCHEMA,
   SEMANTIC_CIVIC_OBJECT_FAMILIES,
   normalizeSemanticCandidateResponse,
@@ -194,6 +193,7 @@ function renderResults(root, payload) {
     if (!lane || !searchResultHref(record)) continue;
     grouped[lane].push(record);
   }
+  let renderedCount = 0;
   for (const lane of LANES) {
     const items = grouped[lane];
     const elements = laneElements(root, lane);
@@ -224,20 +224,27 @@ function renderResults(root, payload) {
     list.className = "topic-search-results";
     for (const record of items) {
       const rendered = renderResult(record, payload);
-      if (rendered) list.append(rendered);
+      if (rendered) {
+        list.append(rendered);
+        renderedCount += 1;
+      }
     }
     elements.body.append(list);
     appendFamilyReceipt(elements.body, family);
   }
+  return renderedCount;
 }
 
-function renderCoverage(root, coverage) {
+function renderCoverage(root, coverage, matchCount = null) {
   const template = document.createElement("template");
-  template.innerHTML = renderUniversalSearchCoverageHtml(coverage);
+  template.innerHTML = renderUniversalSearchCoverageHtml(coverage, {
+    matchCount,
+    translate: tr,
+  });
   const next = template.content.firstElementChild;
   const current = root.querySelector("[data-search-coverage]");
   if (current) current.replaceWith(next);
-  else root.querySelector(".topic-search-method")?.before(next);
+  else root.querySelector(".topic-search-lanes")?.before(next);
 }
 
 function appendHighlightedText(node, text, terms = []) {
@@ -373,25 +380,13 @@ function renderSemanticCandidate(candidate) {
   return article;
 }
 
-function renderSemanticResults(root, response) {
+function renderSemanticResults(root, response, keywordCoverage = null) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
-  root.querySelector("[data-search-coverage]")?.setAttribute("hidden", "");
-  const method = root.querySelector("[data-search-method-value]");
-  if (method) {
-    method.textContent = response.method === SEMANTIC_CANDIDATE_METHOD
-      ? tr("topic_search_passage_matches", null, "Source-passage matches")
-      : tr("topic_search_related_matches", null, "Related topic matches");
-  }
-  const coverage = root.querySelector("[data-semantic-coverage]");
-  if (coverage) {
-    coverage.hidden = false;
-    coverage.textContent = tr(
-      "topic_search_bounded_coverage",
-      { date: response.corpus.observed_on || response.index.observed_on || "—" },
-      "Results cover a bounded source set observed {date}.",
-    );
-  }
+  renderCoverage(root, keywordCoverage, response.groups.reduce(
+    (total, group) => total + group.candidates.length,
+    0,
+  ));
 
   for (const group of response.groups) {
     const elements = semanticLaneElements(root, group.id);
@@ -421,23 +416,6 @@ function renderSemanticResults(root, response) {
 function renderCombinedResults(root, response, keywordPayload) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
-  const method = root.querySelector("[data-search-method-value]");
-  if (method) {
-    method.textContent = [
-      tr("topic_search_passage_matches", null, "Source-passage matches"),
-      tr("topic_search_keyword_fallback", null, "Keyword matches"),
-    ].join(" · ");
-  }
-  const semanticCoverage = root.querySelector("[data-semantic-coverage]");
-  if (semanticCoverage) {
-    semanticCoverage.hidden = false;
-    semanticCoverage.textContent = tr(
-      "topic_search_bounded_coverage",
-      { date: response.corpus.observed_on || response.index.observed_on || "—" },
-      "Results cover a bounded source set observed {date}.",
-    );
-  }
-  renderCoverage(root, keywordPayload?.coverage);
 
   const families = new Map((keywordPayload?.lanes || []).map((family) => [family?.id, family]));
   const grouped = Object.fromEntries(LANES.map((lane) => [lane, []]));
@@ -447,6 +425,7 @@ function renderCombinedResults(root, response, keywordPayload) {
     grouped[lane].push(record);
   }
 
+  let renderedCount = 0;
   for (const group of response.groups) {
     const elements = semanticLaneElements(root, group.id);
     if (!elements.body || !elements.status) continue;
@@ -476,32 +455,34 @@ function renderCombinedResults(root, response, keywordPayload) {
     }
     const list = document.createElement("div");
     list.className = "topic-search-results";
-    group.candidates.forEach((candidate) => list.append(renderSemanticCandidate(candidate)));
+    group.candidates.forEach((candidate) => {
+      list.append(renderSemanticCandidate(candidate));
+      renderedCount += 1;
+    });
     for (const record of keywordResults) {
       const rendered = renderResult(record, keywordPayload);
-      if (rendered) list.append(rendered);
+      if (rendered) {
+        list.append(rendered);
+        renderedCount += 1;
+      }
     }
     elements.body.append(list);
     appendFamilyReceipt(elements.body, families.get(group.id));
   }
+  renderCoverage(root, keywordPayload?.coverage, renderedCount);
 }
 
 function renderLegacyResults(root, payload) {
   root.querySelector("[data-semantic-lanes]")?.setAttribute("hidden", "");
   root.querySelector("[data-keyword-lanes]")?.removeAttribute("hidden");
-  const method = root.querySelector("[data-search-method-value]");
-  if (method) method.textContent = tr("topic_search_keyword_fallback", null, "Keyword fallback");
-  const coverage = root.querySelector("[data-semantic-coverage]");
-  if (coverage) coverage.hidden = true;
-  renderResults(root, payload);
-  renderCoverage(root, payload?.coverage);
+  const matchCount = renderResults(root, payload);
+  renderCoverage(root, payload?.coverage, matchCount);
 }
 
 function renderInitialState(root, query) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
-  const method = root.querySelector("[data-search-method-value]");
-  if (method) method.textContent = tr("topic_search_passage_matches", null, "Source-passage matches");
+  root.querySelector("[data-search-coverage]")?.setAttribute("hidden", "");
   const instruction = tr("topic_search_enter", null, "Enter a topic to search public records.");
   for (const family of SEMANTIC_CIVIC_OBJECT_FAMILIES) {
     setSemanticLaneState(
@@ -606,8 +587,12 @@ async function loadResults(root, query) {
     return;
   }
   if (semantic?.state === "typed") {
-    renderSemanticResults(root, semantic);
-    lastResponse = semantic;
+    renderSemanticResults(root, semantic, keywordPayload?.coverage);
+    lastResponse = {
+      state: "semantic",
+      semantic,
+      keywordCoverage: keywordPayload?.coverage,
+    };
     return;
   }
   if (candidateLegacy) {
@@ -634,7 +619,9 @@ async function loadResults(root, query) {
 let lastResponse = null;
 
 function repaintResults(root) {
-  if (lastResponse?.state === "typed") renderSemanticResults(root, lastResponse);
+  if (lastResponse?.state === "semantic") {
+    renderSemanticResults(root, lastResponse.semantic, lastResponse.keywordCoverage);
+  }
   else if (lastResponse?.state === "combined") {
     renderCombinedResults(root, lastResponse.semantic, lastResponse.keyword);
   }

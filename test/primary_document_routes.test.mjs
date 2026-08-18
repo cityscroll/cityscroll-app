@@ -356,7 +356,8 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.match(search, /data-primary-context="search"/);
   assert.match(search, /href="search\.css"/);
   assert.match(search, /<form class="topic-search-form" method="get" action="\/search\/"/);
-  assert.match(search, /data-search-method-value[^>]*>Source-passage matches<\/strong>/);
+  assert.match(search, /data-search-coverage[^>]*hidden/);
+  assert.doesNotMatch(search, /How results match|Keyword fallback|data-search-method-value/);
   assert.match(search, /data-semantic-lanes/);
   for (const lane of ["Contracts", "People + organizations", "Land", "Rules", "Meetings", "Exams"]) {
     const escapedLane = lane.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
