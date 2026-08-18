@@ -1,0 +1,1942 @@
+{
+  "schema": "cityscroll.public_source_health.v1",
+  "generated_at": "2026-08-18T14:14:03.293Z",
+  "available": true,
+  "source_count": 54,
+  "sources": [
+    {
+      "source_id": "abo-local-authorities",
+      "name": "NYS Authorities Budget Office — local authorities",
+      "publisher": "NYS Authorities Budget Office",
+      "official_url": "https://data.ny.gov/d/8w5p-k45m",
+      "expected_cadence": "Publisher cadence not stated in dataset metadata",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "abo-local-development-corporations",
+      "name": "NYS Authorities Budget Office — local development corporations",
+      "publisher": "NYS Authorities Budget Office",
+      "official_url": "https://data.ny.gov/d/d84c-dk28",
+      "expected_cadence": "Publisher cadence not stated in dataset metadata",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "abo-state-authorities",
+      "name": "NYS Authorities Budget Office — state authorities",
+      "publisher": "NYS Authorities Budget Office",
+      "official_url": "https://data.ny.gov/d/ehig-g5x3",
+      "expected_cadence": "Publisher cadence not stated in dataset metadata",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "active-civil-service-list",
+      "name": "Civil Service List (Active)",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/vx8i-nprf",
+      "expected_cadence": "Frequent list updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "annual-examination-schedule",
+      "name": "Annual Examination Schedule",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/4ptz-hmtc",
+      "expected_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "bid-tabulations-historical",
+      "name": "Bid Tabulations (Historical)",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/9k82-ys7w",
+      "expected_cadence": "Historical / irregular (publisher labels the view historical; openings end 2021-03-24; rows last modified 2023-09-16)",
+      "mode": "historical",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "capital-projects",
+      "name": "Capital Projects",
+      "publisher": "Mayor's Office of Operations (OPS)",
+      "official_url": "https://data.cityofnewyork.us/d/n7gv-k5yt",
+      "expected_cadence": "Periodic capital dashboard refresh (time-series by date_reported_as_of)",
+      "mode": "pointer",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "source-disabled"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "capital-projects-dashboard",
+      "name": "Capital Projects Dashboard - Citywide Budget and Schedule",
+      "publisher": "Mayor's Office of Operations",
+      "official_url": "https://data.cityofnewyork.us/d/fb86-vt7u",
+      "expected_cadence": "Three times a year after OMB commitment-plan releases (January, May, and September)",
+      "mode": "manual-conditional",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "cfb-campaign-contributions",
+      "name": "Campaign Finance Board Contributions",
+      "publisher": "NYC Campaign Finance Board",
+      "official_url": "https://data.cityofnewyork.us/d/rjkp-yttg",
+      "expected_cadence": "Periodic CFB disclosure filings",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "checkbook-contracts",
+      "name": "Checkbook NYC registered contracts",
+      "publisher": "Office of the New York City Comptroller",
+      "official_url": "https://www.checkbooknyc.com/data-feeds/api",
+      "expected_cadence": "Ongoing registrations and spending updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "checkbook-nycha-contracts",
+      "name": "Checkbook NYC NYCHA contracts",
+      "publisher": "Office of the New York City Comptroller",
+      "official_url": "https://www.checkbooknyc.com/data-feeds/api",
+      "expected_cadence": "Ongoing contract updates",
+      "mode": "continuous",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "source-disabled"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "checkbook-spending",
+      "name": "Checkbook NYC spending transactions",
+      "publisher": "Office of the New York City Comptroller",
+      "official_url": "https://www.checkbooknyc.com/data-feeds/api",
+      "expected_cadence": "Ongoing spending and payment updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-11T19:25:33.574Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "city-clerk-elobbyist",
+      "name": "City Clerk eLobbyist Data",
+      "publisher": "NYC City Clerk",
+      "official_url": "https://data.cityofnewyork.us/d/fmf3-knd8",
+      "expected_cadence": "Lobbying registrations and periodic reports",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "city-council-committee-membership",
+      "name": "City Council Committee Membership (1999 to 2025)",
+      "publisher": "NYC Council",
+      "official_url": "https://data.cityofnewyork.us/d/aabe-yfm9",
+      "expected_cadence": "Historical export updated when committee membership records are revised",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-06T00:03:31.348Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "city-council-district-boundaries",
+      "name": "City Council Districts",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://data.cityofnewyork.us/d/872g-cjhh",
+      "expected_cadence": "Updated when City Council district lines are redrawn or geometry is corrected",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "city-council-meetings-open-data",
+      "name": "City Council Meetings (Open Data)",
+      "publisher": "NYC Council / NYC Open Data",
+      "official_url": "https://data.cityofnewyork.us/d/m48u-yjt8",
+      "expected_cadence": "Historical series labeled 1999 to 2024; meetings end 2024-12-19; resource Last-Modified 2025-12-30",
+      "mode": "historical",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "city-record",
+      "name": "City Record Online",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/dg92-zbpx",
+      "expected_cadence": "Daily",
+      "mode": "continuous",
+      "health": {
+        "status": "Delayed",
+        "reason_codes": [
+          "publisher-clock-stale"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2026-08-04T04:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-05T10:41:44.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T13:12:27.955Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "citywide-payroll",
+      "name": "Citywide Payroll Data",
+      "publisher": "NYC Office of Payroll Administration",
+      "official_url": "https://data.cityofnewyork.us/d/k397-673e",
+      "expected_cadence": "Fiscal-year releases",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T14:14:03.293Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "civil-service-list-certification",
+      "name": "Civil Service List Certification",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/a9md-ynri",
+      "expected_cadence": "Frequent certification updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "civil-service-titles",
+      "name": "NYC Civil Service Titles",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/nzjr-3966",
+      "expected_cadence": "Periodic DCAS title-table updates",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "community-district-boundaries",
+      "name": "Community Districts",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://data.cityofnewyork.us/d/5crt-au7u",
+      "expected_cadence": "Updated when community district lines are redrawn or geometry is corrected",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dcas-annual-exam-outcomes",
+      "name": "DCAS annual civil-service exam outcome aggregates",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "expected_cadence": "Annual outcomes publication with potential corrections during the fiscal-year outcomes cycle",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dcas-eligible-list-utilization",
+      "name": "Annual City Council Report on Eligible List Utilization (Local Law 50 of 2004)",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/qjzt-ytn9",
+      "expected_cadence": "Annual Local Law 50 report with corrections or refreshed publication rows as DCAS updates the report",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dcas-exam-notices",
+      "name": "DCAS open-competitive exam schedule and Notices of Examination",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+      "expected_cadence": "Monthly schedule posts with mid-cycle Notice of Examination amendments; re-check daily while any application window is open",
+      "mode": "manual-conditional",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dcas-vehicle-auction-list",
+      "name": "DCAS Vehicle Auction List",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/ynic-uz5i",
+      "expected_cadence": "Weekly",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dob-certificate-of-occupancy",
+      "name": "DOB Certificate Of Occupancy",
+      "publisher": "NYC Department of Buildings",
+      "official_url": "https://data.cityofnewyork.us/d/bs8b-p36w",
+      "expected_cadence": "Ongoing DOB certificate and issue updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dob-now-job-filings",
+      "name": "DOB NOW job application filings",
+      "publisher": "NYC Department of Buildings",
+      "official_url": "https://data.cityofnewyork.us/d/w9ak-ipjd",
+      "expected_cadence": "Frequent filing updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "dof-tax-lien-sale-lists",
+      "name": "DOF Tax Lien Sale Lists",
+      "publisher": "NYC Department of Finance",
+      "official_url": "https://data.cityofnewyork.us/d/9rz4-mjek",
+      "expected_cadence": "Irregular lien-sale cycles; dataset metadata says every six months",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-03T04:27:32.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "doing-business-entities",
+      "name": "Doing Business Search - Entities",
+      "publisher": "Mayor's Office of Contract Services (MOCS)",
+      "official_url": "https://data.cityofnewyork.us/d/72mk-a8z7",
+      "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T02:18:18.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T02:22:33.016Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "expense-budget",
+      "name": "NYC Expense Budget",
+      "publisher": "NYC Office of Management and Budget",
+      "official_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+      "expected_cadence": "Fiscal-year budget releases",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "legacy-dob-job-filings",
+      "name": "Legacy DOB job application filings",
+      "publisher": "NYC Department of Buildings",
+      "official_url": "https://data.cityofnewyork.us/d/ic3t-wcy2",
+      "expected_cadence": "Frequent filing updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "mandatory-inclusionary-housing",
+      "name": "Mandatory Inclusionary Housing",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://data.cityofnewyork.us/d/m79g-k9r4",
+      "expected_cadence": "Monthly (Open Data metadata; 31-day working cadence)",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-05T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "mappluto",
+      "name": "MapPLUTO",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
+      "expected_cadence": "Periodic PLUTO releases",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "mocs-ll1-plans",
+      "name": "MOCS Local Law 1 M/WBE procurement plans",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "official_url": "https://www.nyc.gov/site/mocs/resources/m-wbe-ll1.page",
+      "expected_cadence": "Annual plans with in-year agency spreadsheet updates",
+      "mode": "manual-conditional",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "mocs-ll63-plans",
+      "name": "MOCS Local Law 63 procurement plans",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "official_url": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
+      "expected_cadence": "Annual plans with in-year agency spreadsheet updates",
+      "mode": "manual-conditional",
+      "health": {
+        "status": "Manual-refresh",
+        "reason_codes": [
+          "manual-refresh-condition-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "non-council-board-minutes",
+      "name": "Community board and borough president minutes",
+      "publisher": "NYC community boards and borough president offices",
+      "official_url": "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      "expected_cadence": "Heterogeneous; usually monthly for verified full-board minutes pages",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-agencies",
+      "name": "NYC Agencies and Governance Organizations",
+      "publisher": "NYC Office of Technology and Innovation",
+      "official_url": "https://data.cityofnewyork.us/d/t3jq-9nkf",
+      "expected_cadence": "Slow-changing organizational data",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-council-legistar",
+      "name": "NYC Council Legistar API",
+      "publisher": "NYC Council",
+      "official_url": "https://council.nyc.gov/legislation/api/",
+      "expected_cadence": "Updated as meetings, agenda items, and votes change",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-council-members",
+      "name": "NYC Council Members (1999 to Present)",
+      "publisher": "NYC Council",
+      "official_url": "https://data.cityofnewyork.us/d/uvw5-9znb",
+      "expected_cadence": "Council membership roster; term rows accumulate over time",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-11T20:00:00.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-geosearch",
+      "name": "NYC GeoSearch",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://geosearch.planninglabs.nyc/",
+      "expected_cadence": "No upstream data timestamp is published",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-jobs-postings",
+      "name": "Jobs NYC Postings",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/kpav-sd4t",
+      "expected_cadence": "Ongoing job-posting updates",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-property-address-directory",
+      "name": "NYC Property Address Directory",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://data.cityofnewyork.us/d/bc8t-ecyu",
+      "expected_cadence": "Quarterly",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-rules-rss",
+      "name": "NYC Rules RSS feed",
+      "publisher": "NYC Office of the Mayor",
+      "official_url": "https://rules.cityofnewyork.us/",
+      "expected_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nycida-build-nyc-projects",
+      "name": "NYCIDA/Build NYC subsidy project records",
+      "publisher": "NYC Economic Development Corporation",
+      "official_url": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+      "expected_cadence": "Annual project workbook plus authority board-document publication cadence",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "limited_coverage",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "ocp-current-solicitations",
+      "name": "Current Solicitations (OCP / Open Data)",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/3khw-qi8f",
+      "expected_cadence": "Daily (Open Data automation metadata)",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "ocp-recent-contract-awards",
+      "name": "Recent Contract Awards (OCP)",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "official_url": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+      "expected_cadence": "Frequent (Open Data metadata)",
+      "mode": "continuous",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-05T10:36:28.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-05T10:40:50.286Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "passport-public-contracts",
+      "name": "PASSPort Public contracts",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "official_url": "https://a0333-passportpublic.nyc.gov/contracts.html",
+      "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "passport-public-rfx",
+      "name": "PASSPort Public solicitations (RFx)",
+      "publisher": "NYC Mayor's Office of Contract Services",
+      "official_url": "https://a0333-passportpublic.nyc.gov/rfx.html",
+      "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "suitability-city-owned-leased-property-ll48",
+      "name": "Suitability of City-Owned and Leased Property for Urban Agriculture (LL48)",
+      "publisher": "NYC Department of Citywide Administrative Services",
+      "official_url": "https://data.cityofnewyork.us/d/4e2n-s75z",
+      "expected_cadence": "Periodic civic-data updates",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "ulurp-recommendation-pdfs",
+      "name": "ULURP Recommendation PDFs",
+      "publisher": "NYC Open Data (Borough President PDF companion)",
+      "official_url": "https://data.cityofnewyork.us/d/gt5i-dmde",
+      "expected_cadence": "Historical / irregular PDF companion letters (resource Last-Modified 2018-01-25; 88 rows)",
+      "mode": "historical",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-12T00:00:00.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "ulurp-recommendations",
+      "name": "ULURP Recommendations (Borough President positions)",
+      "publisher": "Brooklyn Borough President / NYC Open Data",
+      "official_url": "https://data.cityofnewyork.us/d/4j6i-9rmr",
+      "expected_cadence": "Historical / irregular Brooklyn Borough President recommendations (resource Last-Modified 2021-06-29; 91 rows)",
+      "mode": "historical",
+      "health": {
+        "status": "Historical",
+        "reason_codes": [
+          "historical-source"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-12T00:00:00.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "zap-api-outcomes",
+      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://zap.planning.nyc.gov/",
+      "expected_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
+      "mode": "continuous",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "zap-bbl",
+      "name": "Zoning Application Portal — tax lots",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://data.cityofnewyork.us/d/2iga-a6mk",
+      "expected_cadence": "Periodic project updates",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-05T10:36:34.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-05T10:41:38.120Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "zap-projects",
+      "name": "Zoning Application Portal — projects",
+      "publisher": "NYC Department of City Planning",
+      "official_url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+      "expected_cadence": "Periodic project updates",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-03T05:05:03.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": "2026-08-18T12:06:08.839Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "complete_for_declared_scope",
+        "measured_at": "2026-08-16T12:00:00.000Z",
+        "reason_codes": []
+      }
+    }
+  ]
+}
