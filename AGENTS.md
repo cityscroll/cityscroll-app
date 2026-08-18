@@ -239,6 +239,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   the same bounded board snapshot, while the SPA falls back to the shared artifact rather than
   appending a second board fetch. Verify with
   `test/shared_meeting_read_model.test.mjs` and the focused meeting contract tests.
+- **Observation-fed procurement object:** `site/procurement_object_contract.mjs` constructs the
+  aggregate only from accepted exact PASSPort/Checkbook `source_records` edges. Contract IDs are
+  strong keys; PIN/EPIN attaches a stage only when it does not collapse multiple contracts; title,
+  vendor, agency, and dates never create identity. City Record may add stage refs and compatibility
+  links to an existing object but is never a constructor. Source failures belong only to the
+  envelopes in `site/shared_procurement_read_model.mjs`; retained objects and nested lifecycle
+  detail stay unchanged. Focused proof: `test/procurement_object_contract.test.mjs` and
+  `test/shared_procurement_read_model.test.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
   model and derives a source-qualified board meeting's community district from the published
   `community-board → covers → community-district` edge in
