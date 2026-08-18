@@ -18,6 +18,7 @@ import {
 import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.json" with { type: "json" };
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
+import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
@@ -368,8 +369,10 @@ export function compileSub(sub, todayISO) {
     const q = kws.map((k) => REZ_ALIAS[k.toLowerCase()] || k).join(" ");
     if (q) params["$q"] = q;
     const family = normalizeLandFamily(f.family);
-    const postFilter = family !== "any"
+    const regulatoryEffect = normalizeLandRegulatoryEffect(f.regulatoryEffect);
+    const postFilter = family !== "any" || regulatoryEffect !== "any"
       ? (row) => landRowMatchesFamily(row, family)
+        && landRowMatchesRegulatoryEffect(row, regulatoryEffect)
       : undefined;
     return { url: ZAP, idField: "project_id", kind: "rezone", params, postFilter };
   }

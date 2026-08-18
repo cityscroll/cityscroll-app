@@ -189,6 +189,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/mandate_land_use_bridge.mjs` composes mandate → procedure ← project only
   when both evaluated edges are public; the direct `mandate_land_use`
   identity-and-phase gate remains a family match and must not be weakened.
+- **Land regulatory-effect axis:** `site/land_regulatory_effect.mjs` is the fail-closed
+  ZM brief-pair extractor and versioned max-FAR lookup. Upzone/downzone is a derived
+  property, never an action family; materialized rows retain its basis, while public chips
+  render only high/medium confidence and unknown stays absent. Focused proof:
+  `test/land_regulatory_effect_axis.test.mjs`. Build-time consumers use the thin
+  `ontology/land_regulatory_effect.mjs` re-export; browser-facing modules must stay inside
+  `site/` because the public artifact does not copy sibling source trees.
 - **Community-board meeting labels:** `site/non_council_outcome_panel.mjs` promotes a notice
   to an official board label only from the receipt-backed
   `cityscroll.community_board_source_join.v1` contract (`exact_board_date_publisher_identifier`);

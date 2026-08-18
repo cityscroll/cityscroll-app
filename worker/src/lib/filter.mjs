@@ -40,7 +40,7 @@ export const LENSES = {
   // closing-this-week, agency forecast tab) — not only keyword lists.
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
@@ -135,6 +135,11 @@ function clampField(name, v) {
         "mapping", "demapping", "urban_renewal", "landmark", "follow_up", "office_space",
         "bid", "franchise_consent", "housing_plan", "pops", "landfill",
       ].includes(s) ? s : null;
+    }
+    case "regulatoryEffect": {
+      const raw = typeof v === "string" ? v.trim().toLowerCase().replace(/[\s-]+/g, "_") : "";
+      const s = ({ up_zone: "upzone", down_zone: "downzone" })[raw] || raw;
+      return ["upzone", "downzone", "mixed", "no_density_change"].includes(s) ? s : null;
     }
     case "when":
       return ["all", "upcoming", "week", "month", "past"].includes(v) ? v : null;

@@ -1,3 +1,5 @@
+import { stampLandRegulatoryEffect } from "../../ontology/land_regulatory_effect.mjs";
+
 // Pure builders for daily resident snapshots. Publisher requests belong to the
 // acquisition commands; browser filters read the resulting artifacts locally.
 
@@ -25,7 +27,7 @@ export const LAND_DEFAULT_LIST_FIELDS = Object.freeze([
   "ulurp_non",
 ]);
 
-export const LAND_DEFAULT_SELECT = LAND_DEFAULT_LIST_FIELDS.join(",");
+export const LAND_DEFAULT_SELECT = [...LAND_DEFAULT_LIST_FIELDS, "project_brief"].join(",");
 /** Full detail select for acquisition-time materialization. */
 export const LAND_DEFAULT_DETAIL_SELECT = [...LAND_DEFAULT_LIST_FIELDS, "project_brief"].join(",");
 
@@ -345,10 +347,14 @@ export function buildStaffingHiresSnapshot(rows, { now = new Date() } = {}) {
 
 export function projectToLandListRow(project) {
   if (!project || typeof project !== "object") return project;
+  const stamped = stampLandRegulatoryEffect(project);
   const row = {};
   for (const key of LAND_DEFAULT_LIST_FIELDS) {
     if (project[key] !== undefined) row[key] = project[key];
   }
+  row.regulatory_effect = stamped.regulatory_effect;
+  row.regulatory_effect_confidence = stamped.regulatory_effect_confidence;
+  row.regulatory_effect_basis = stamped.regulatory_effect_basis;
   return row;
 }
 
@@ -414,7 +420,7 @@ export function buildLandDefaultSnapshot(
     },
     query: {
       ...landDefaultQuery(),
-      note: "Default Land tab: Active ULURP, all boroughs, no keyword/geo. List fields only; brief hydrates on select.",
+      note: "Default Land tab: Active ULURP, all boroughs, no keyword/geo. The brief is reduced at build time to a cited regulatory-effect stamp.",
     },
     count: rows.length,
     projects: rows,

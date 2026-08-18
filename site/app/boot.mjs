@@ -361,6 +361,8 @@ function currentLensFilterState(tab){
       futureAction: $("#lfuture") && $("#lfuture").value || "any",
       procedure: $("#lprocedure") && $("#lprocedure").value || "review",
       family: $("#lfamily") && $("#lfamily").value || "any",
+      ...($("#leffect")?.value && $("#leffect").value!=="any"
+        ? {regulatoryEffect:$("#leffect").value} : {}),
       attendance: landAttendance || "",
       when: landClosingWeek ? ["closing", "week"].join(":") : "",
     });
@@ -570,6 +572,10 @@ $("#lprocedure")?.addEventListener("change",()=>{
   landSearch();
 });
 $("#lfamily")?.addEventListener("change",()=>{
+  $("#lstatus").value="all";
+  landSearch();
+});
+$("#leffect")?.addEventListener("change",()=>{
   $("#lstatus").value="all";
   landSearch();
 });

@@ -32,6 +32,7 @@ import {
   resolveLandProcedure,
 } from "../site/land_procedure_facet.mjs";
 import { landFamilyChipsHTML } from "../site/land_status_facets.mjs";
+import { landRegulatoryEffectChipHTML } from "../site/land_regulatory_effect.mjs";
 import {
   constellationLink,
   objectCardInteractionProjection,
@@ -82,7 +83,7 @@ const {
   matchEvidence, resultMatchEvidence, matchText, digTitleHTML, digEvidenceHTML,
   moneyRowHTML, landRowHTML, feedCardHTML, roleRowHTML, personRowHTML,
 } = new Function(
-  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle", "landProcedureLabelKey", "resolveLandProcedure", "landObservedDates", "landFamilyChipsHTML",
+  "t", "tn", "fmtNumber", "window", "moneyListCardInteractionsHTML", "solicitationListChipsHTML", "landProjectDisplayTitle", "noticeDisplayTitle", "constellationLink", "officialSourceLink", "listEntityMentionHTML", "landLink", "objectCardInteractionProjection", "renderObjectCardCopy", "renderObjectCardTitle", "landProcedureLabelKey", "resolveLandProcedure", "landObservedDates", "landFamilyChipsHTML", "landRegulatoryEffectChipHTML",
   extractDecl("JUNK_PINS") +
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
@@ -149,6 +150,7 @@ const {
   resolveLandProcedure,
   landObservedDates,
   landFamilyChipsHTML,
+  landRegulatoryEffectChipHTML,
 );
 
 // Real fixture: request_id 20260709010 (see file header for provenance). additional_description_1
