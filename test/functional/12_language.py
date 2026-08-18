@@ -4,6 +4,7 @@ Verifies: switcher present with native labels; switching to Español translates 
 shows the "notices remain in English" banner, flips document lang, persists via localStorage
 across reload; notice-content containers keep translate="no"; switching back restores English.
 """
+import json
 import os
 import pathlib
 import re
@@ -222,8 +223,18 @@ with sync_playwright() as pw:
         "start_date": "2026-07-16T00:00:00.000",
         "additional_description_1": "A public hearing notice used for shared-link testing.",
     }]
-    linked.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*",
-                 lambda route: route.fulfill(status=200, content_type="application/json", body=__import__("json").dumps(fixture)))
+    notice_row = fixture[0]
+    notice_payload = json.dumps({"ok": True, "row": notice_row})
+    soda_payload = json.dumps(fixture)
+    def fulfill_notice(route):
+        url = route.request.url
+        if "dg92-zbpx" in url:
+            route.fulfill(status=200, content_type="application/json", body=soda_payload)
+            return
+        route.fulfill(status=200, content_type="application/json", body=notice_payload)
+    linked.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", fulfill_notice)
+    linked.route("https://api.cityscroll.org/notice*", fulfill_notice)
+    linked.route("https://api.crol-list.org/notice*", fulfill_notice)
     linked.route("**/attachment-metadata*",
                  lambda route: route.fulfill(status=200, content_type="application/json", body='{"attachments":[]}'))
     linked.goto(BASE.rstrip("/") + "/?lang=es#notice/20260716022", timeout=30000)
