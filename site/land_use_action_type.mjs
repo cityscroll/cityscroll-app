@@ -21,6 +21,7 @@ export const LAND_USE_ACTION_CODE_FAMILY = Object.freeze({
   MM: "mapping",
   DM: "demapping",
   HA: "disposition",
+  PP: "disposition",
   HG: "urban_renewal",
   HI: "landmark",
   LD: "landmark",
@@ -77,9 +78,12 @@ export function landUseActionCodes(record = {}) {
 }
 
 /**
- * Primary land-use family for copy. Prefer rezoning when any ZM/ZR is present
- * alongside other actions (mixed applications are still "rezoning" for readers);
- * otherwise first mapped family; else generic land_use.
+ * Normalize publisher action codes into the public family set.
+ *
+ * families[] is the first-class ontology. primary / is_rezoning are
+ * single-label conveniences only — a sole mapped family, never a
+ * rezoning-wins collapse that erases disposition, acquisition, or
+ * other siblings. Unmapped codes stay on codes[] and never invent a family.
  */
 export function normalizeLandUseActionType(record = {}) {
   const codes = landUseActionCodes(record);
@@ -92,28 +96,31 @@ export function normalizeLandUseActionType(record = {}) {
     families.push(family);
   }
 
-  let primary = "land_use";
-  if (families.includes("rezoning")) primary = "rezoning";
-  else if (families.length === 1) primary = families[0];
-  else if (families.length > 1) primary = families[0];
+  const sole = families.length === 1 ? families[0] : null;
+  const primary = sole || "land_use";
 
   return {
     schema_version: 1,
     codes,
     families,
     primary,
-    is_rezoning: primary === "rezoning" || families.includes("rezoning"),
+    is_rezoning: sole === "rezoning",
     label_key: LAND_USE_FAMILY_LABEL_KEY[primary] || LAND_USE_FAMILY_LABEL_KEY.land_use,
+    label_keys: families.map((family) => LAND_USE_FAMILY_LABEL_KEY[family]).filter(Boolean),
   };
+}
+
+function usesRezoningOnlyCopy(type) {
+  return type.primary === "rezoning" && type.families.length === 1;
 }
 
 /**
  * i18n key for the participation-guide heading.
- * Rezoning wording only when the normalized family is rezoning.
+ * Rezoning wording only when rezoning is the sole mapped family.
  */
 export function landParticipationGuideHeadingKey(record = {}) {
   const type = normalizeLandUseActionType(record);
-  return type.is_rezoning ? "land_guide_heading_rezoning" : "land_guide_heading";
+  return usesRezoningOnlyCopy(type) ? "land_guide_heading_rezoning" : "land_guide_heading";
 }
 
 /**
@@ -121,7 +128,7 @@ export function landParticipationGuideHeadingKey(record = {}) {
  */
 export function landParticipationStepsMissingKey(record = {}) {
   const type = normalizeLandUseActionType(record);
-  return type.is_rezoning
+  return usesRezoningOnlyCopy(type)
     ? "next_action_land_steps_missing_rezoning"
     : "next_action_land_steps_missing";
 }

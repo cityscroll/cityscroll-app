@@ -1232,8 +1232,11 @@ open predictions as `withdrawn`. Verify:
 Capture: `python3 tools/capture_ulurp_statutory_clock.py`.
 
 **Land-use action copy + detail coherence:** `/browse/zoning/` hosts acquisitions,
-special permits, map changes, and rezonings. Participation headings come from
-`site/land_use_action_type.mjs` (never the pathname). Reconcile list-row Open Data
+special permits, map changes, and rezonings. `site/land_use_action_type.mjs`
+keeps `families[]` first-class (`PP`/`HA` disposition, `PQ`/`PC` acquisition);
+`primary` / `is_rezoning` are sole-family conveniences and must not collapse a
+bundled application into “this rezoning”. Participation headings come from that
+module (never the pathname). Reconcile list-row Open Data
 vs zap-outcomes status, future-only next hearings, and next-phase-after-current in
 `site/land_detail_coherence.mjs` / `buildLandProjectState` before render (field
 cases `2023M0213`, `2026K0123`). **Filed vs Noticed** are values of the same ZAP
