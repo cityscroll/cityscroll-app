@@ -20,7 +20,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "architecture", "generated", "facts.json");
-const GENERATOR_VERSION = "1.0.0";
+const CANARY_LIST = "architecture/observer-canaries.json";
+const GENERATOR_VERSION = "1.1.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -295,6 +296,77 @@ function buildOntologyFacts() {
   };
 }
 
+function normalizeRepoPath(value) {
+  return String(value || "").trim().split("\\").join("/");
+}
+
+function globToRegExp(pattern) {
+  const escaped = pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^${escaped.replace(/\*\*/g, "\0").replace(/\*/g, "[^/]*").replace(/\0/g, ".*")}$`);
+}
+
+function pathIsObserved(canaryPath, observedPaths) {
+  const target = normalizeRepoPath(canaryPath);
+  if (!target) return false;
+  const isGlob = target.includes("*");
+  const globRe = isGlob ? globToRegExp(target) : null;
+  const globPrefix = isGlob ? target.split("*")[0].replace(/\/$/, "") : "";
+  for (const observed of observedPaths) {
+    const root = normalizeRepoPath(observed);
+    if (!root) continue;
+    if (isGlob) {
+      if (globRe.test(root)) return true;
+      if (globPrefix === root || globPrefix.startsWith(`${root}/`)) return true;
+      continue;
+    }
+    if (target === root) return true;
+    if (target.startsWith(`${root}/`)) return true;
+  }
+  return false;
+}
+
+function loadObserverCanaries() {
+  if (!existsSync(absolute(CANARY_LIST))) {
+    throw new Error(`observer canary list missing: ${CANARY_LIST}`);
+  }
+  const document = json(CANARY_LIST);
+  if (!Array.isArray(document.canaries)) {
+    throw new Error(`observer canary list must include a canaries array: ${CANARY_LIST}`);
+  }
+  const seen = new Set();
+  const entries = [];
+  for (const raw of document.canaries) {
+    const id = String(raw?.id || "").trim();
+    const path = normalizeRepoPath(raw?.path);
+    const why = String(raw?.why || "").trim();
+    if (!id || !path || !why) {
+      throw new Error("observer canary entries require id, path, and why");
+    }
+    if (seen.has(id)) {
+      throw new Error(`duplicate observer canary id: ${id}`);
+    }
+    seen.add(id);
+    entries.push({ id, path });
+  }
+  return entries.sort((a, b) => a.id.localeCompare(b.id) || a.path.localeCompare(b.path));
+}
+
+function buildObserverCoverage(observedPaths, canaries) {
+  const observed = [...new Set((observedPaths || []).map(normalizeRepoPath).filter(Boolean))].sort();
+  const known = (canaries || [])
+    .map((entry) => ({
+      id: String(entry?.id || "").trim(),
+      path: normalizeRepoPath(entry?.path),
+    }))
+    .filter((entry) => entry.id && entry.path)
+    .sort((a, b) => a.id.localeCompare(b.id) || a.path.localeCompare(b.path));
+  return {
+    observed_paths: observed,
+    known_canaries: known,
+    unmapped_surfaces: known.filter((entry) => !pathIsObserved(entry.path, observed)),
+  };
+}
+
 function gitCommit() {
   try {
     return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim() || null;
@@ -329,6 +401,8 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
   ]);
   const entity = buildEntityResolutionFacts();
   for (const importer of entity.importers) sources.add(importer.file);
+  const sourcePaths = [...sources].sort();
+  const observerCoverage = buildObserverCoverage(sourcePaths, loadObserverCanaries());
   return {
     schema: "cityscroll.architecture.facts.v1",
     generator: {
@@ -337,7 +411,11 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
     },
     generated_at: generatedAt,
     commit,
-    source_paths: [...sources].sort(),
+    source_paths: sourcePaths,
+    observer_coverage: {
+      source: source(CANARY_LIST),
+      ...observerCoverage,
+    },
     routes: {
       config: parseRoutes(wrangler),
       dispatch: dispatchRoutes(worker),
@@ -387,4 +465,13 @@ function main() {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
 
-export { buildFacts, parseBindings, parseCrons, parseRoutes, dispatchRoutes };
+export {
+  buildFacts,
+  buildObserverCoverage,
+  loadObserverCanaries,
+  parseBindings,
+  parseCrons,
+  parseRoutes,
+  dispatchRoutes,
+  pathIsObserved,
+};
