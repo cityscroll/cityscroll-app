@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "title": "Fixture PASSPort census for sharded EI graph tests",
+  "observed_on": "2026-08-18",
+  "generated_at": "2026-08-18T00:00:00.000Z",
+  "sources": {
+    "passport_contracts": {
+      "source_system": "passport-public-contracts",
+      "coverage_status": "measured",
+      "population_backed": true,
+      "population": {
+        "parsed": 40,
+        "source_rows": 40,
+        "pulled_on": "2026-08-18"
+      }
+    }
+  },
+  "rows": {
+    "passport_contracts_materialization": [
+      {
+        "ctr_id": "demo-1",
+        "contract_id": "CT1-846-DEMO1",
+        "epin": "84626W0001001",
+        "agency": "DEPARTMENT OF PARKS AND RECREATION",
+        "vendor": "Demo Parks Vendor LLC"
+      }
+    ],
+    "passport_contracts": [
+      {
+        "ctr_id": "p-1",
+        "contract_id": "CT1-846-1",
+        "epin": "84626W0002001",
+        "agency": "DEPARTMENT OF PARKS AND RECREATION",
+        "vendor": "Parks One Inc",
+        "registration_date": "01/15/2026"
+      },
+      {
+        "ctr_id": "p-2",
+        "contract_id": "CT1-846-2",
+        "epin": "84626W0003001",
+        "agency": "DEPARTMENT OF PARKS AND RECREATION",
+        "vendor": "Parks Two LLC",
+        "registration_date": "02/15/2026"
+      },
+      {
+        "ctr_id": "p-3",
+        "contract_id": "CT1-846-3",
+        "epin": "84626W0004001",
+        "agency": "DEPARTMENT OF PARKS AND RECREATION",
+        "vendor": "Parks Three Corp",
+        "registration_date": "03/15/2026"
+      },
+      {
+        "ctr_id": "n-1",
+        "contract_id": "CT1-056-1",
+        "epin": "05626W0001001",
+        "agency": "NEW YORK CITY POLICE DEPARTMENT",
+        "vendor": "Police Vendor Inc",
+        "registration_date": "04/01/2026"
+      },
+      {
+        "ctr_id": "n-2",
+        "contract_id": "CT1-056-2",
+        "epin": "05626W0002001",
+        "agency": "NEW YORK CITY POLICE DEPARTMENT",
+        "vendor": "Police Vendor Two LLC",
+        "registration_date": "05/01/2026"
+      },
+      {
+        "ctr_id": "s-1",
+        "contract_id": "CT1-069-1",
+        "epin": "06926W0001001",
+        "agency": "DEPARTMENT OF SOCIAL SERVICES",
+        "vendor": "Social Vendor Inc",
+        "registration_date": "06/01/2026"
+      }
+    ]
+  }
+}

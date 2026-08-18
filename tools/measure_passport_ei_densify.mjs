@@ -16,8 +16,14 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildEntityIntelligenceDoc,
+  buildPassportEiGraphPublication,
+  passportEiGraphCoverageFindings,
   selectPassportContractsForMaterialization,
+  selectPassportContractsForShardedGraph,
   slimDocForWorker,
+  DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+  DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP,
+  PASSPORT_EI_CORE_PAYLOAD_BUDGET_BYTES,
 } from "./lib/entity_intelligence_build.mjs";
 import {
   linkObservation,
@@ -27,7 +33,7 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_PATH = path.join(ROOT, "site/data/procurement_spine_sources.json");
 const RECEIPT_PATH = path.join(ROOT, "docs/evidence/passport-ei-densify/comparison.json");
-const PAYLOAD_BUDGET_BYTES = 445_000;
+const PAYLOAD_BUDGET_BYTES = PASSPORT_EI_CORE_PAYLOAD_BUDGET_BYTES;
 const CANDIDATE_CAPS = [500, 1000, 1250, 1500, 1550, 1600, 1750, 2000];
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
@@ -110,24 +116,63 @@ function benchmark(root) {
   });
 }
 
+function measureCorePayload() {
+  const committedPath = path.join(ROOT, "site/data/entity_intelligence_lookup.json");
+  const slim = JSON.parse(readFileSync(committedPath, "utf8"));
+  const pretty = JSON.stringify(slim, null, 2);
+  return {
+    cap: DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+    selected_rows: slim.procurement_spine?.materialization?.passport_contracts?.selected_rows
+      ?? DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+    pretty_bytes: pretty.length,
+    gzip_pretty_bytes: gzipSync(pretty).length,
+  };
+}
+
+function measureShardPayload(publication) {
+  const pretty = JSON.stringify(publication, null, 2);
+  return {
+    pretty_bytes: pretty.length,
+    gzip_pretty_bytes: gzipSync(pretty).length,
+    agency_shards: Object.keys(publication.by_agency || {}).length,
+    vendor_shards: Object.keys(publication.by_vendor || {}).length,
+  };
+}
+
 function buildReceipt() {
   const source = JSON.parse(readFileSync(SOURCE_PATH, "utf8"));
   const census = Array.isArray(source.rows?.passport_contracts) ? source.rows.passport_contracts : [];
-  const before = legacySelection(source, 500);
-  const after = selectPassportContractsForMaterialization(source).rows;
+  const sharded = selectPassportContractsForShardedGraph(source);
+  const before = selectPassportContractsForMaterialization(source, {
+    cap: DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+  }).rows;
+  const after = sharded.graph.rows;
   const beforeIds = new Set(before.map(rowId));
   const afterIds = new Set(after.map(rowId));
   const droppedBefore = census.filter((row) => !beforeIds.has(rowId(row)));
   const droppedAfter = census.filter((row) => !afterIds.has(rowId(row)));
-  const benchmarks = benchmark(ROOT);
-  const chosen = benchmarks.find((entry) => entry.cap === after.length);
-  const next = benchmarks.find((entry) => entry.cap === after.length + 50);
+  const publication = buildPassportEiGraphPublication(source, { now: new Date() });
+  const corePayload = measureCorePayload();
+  const shardPayload = measureShardPayload(publication);
+  const coverage = passportEiGraphCoverageFindings(publication, { now: new Date() });
+  const prior = existsSyncCommitted()
+    ? JSON.parse(readFileSync(RECEIPT_PATH, "utf8"))
+    : null;
+  const benchmarks = Array.isArray(prior?.candidate_benchmarks) && prior.schema_version >= 2
+    ? prior.candidate_benchmarks
+    : benchmark(ROOT);
+  const chosen = benchmarks.find((entry) => entry.cap === DEFAULT_PASSPORT_CONTRACT_CORE_CAP)
+    || corePayload;
+  const next = benchmarks.find((entry) => entry.cap === DEFAULT_PASSPORT_CONTRACT_CORE_CAP + 50);
 
   return {
-    schema_version: 2,
+    schema_version: 3,
     title: "PASSPort contract census → entity-intelligence graph densification",
-    observed_on: "2026-08-12",
-    change: "Raise the population-backed graph cap to the measured compressed read-model ceiling and select rows by agency-stratified round-robin; compatibility examples remain first.",
+    observed_on: source.observed_on || publication.observed_on || null,
+    change:
+      "Keep the Worker single-file lookup at the measured 1,550-row gzip ceiling and "
+      + "publish the award-corroborated census as agency/vendor shards so constellations "
+      + "see the denser graph without a new live fetch.",
     source: {
       path: "site/data/procurement_spine_sources.json#rows.passport_contracts",
       census_rows: census.length,
@@ -135,9 +180,16 @@ function buildReceipt() {
       compatibility_rows: source.rows?.passport_contracts_materialization?.length ?? 0,
       source_null_policy: "source fields remain null; no row or edge is fabricated",
     },
+    shard_strategy: {
+      worker_core_cap: DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+      graph_hard_ceiling: DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP,
+      selection: "compatibility examples first, then agency-stratified round-robin",
+      publication: "compact by_agency / by_vendor index with bounded previews",
+      artifact: "site/data/entity_intelligence_shards/passport_graph.json",
+    },
     before: {
-      strategy: "compatibility examples first, then census rows in source order",
-      cap: 500,
+      strategy: "single-file Worker lookup at the measured gzip ceiling",
+      cap: DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
       selected_rows: before.length,
       dropped_census_rows: droppedBefore.length,
       edges: edgeStats(before),
@@ -145,13 +197,15 @@ function buildReceipt() {
       agency_coverage: agencyCoverage(census, before),
     },
     after: {
-      strategy: "compatibility examples first, then agency-stratified round-robin",
-      cap: after.length,
+      strategy: sharded.shard_strategy,
+      cap: DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP,
       selected_rows: after.length,
       dropped_census_rows: droppedAfter.length,
       edges: edgeStats(after),
       dropped_edges: edgeStats(droppedAfter),
       agency_coverage: agencyCoverage(census, after),
+      agency_shards: shardPayload.agency_shards,
+      vendor_shards: shardPayload.vendor_shards,
     },
     highlighted_agency: {
       agency: "NEW YORK CITY POLICE DEPARTMENT",
@@ -159,16 +213,25 @@ function buildReceipt() {
       before: agencyCoverage(census, before)["NEW YORK CITY POLICE DEPARTMENT"] ?? null,
       after: agencyCoverage(census, after)["NEW YORK CITY POLICE DEPARTMENT"] ?? null,
     },
+    excluded: publication.excluded,
+    coverage,
     payload_budget: {
       metric: "gzip bytes of the pretty-printed Worker read model",
       budget_bytes: PAYLOAD_BUDGET_BYTES,
-      selected_cap: chosen?.cap ?? null,
-      selected_gzip_bytes: chosen?.gzip_pretty_bytes ?? null,
-      selected_headroom_bytes: chosen ? PAYLOAD_BUDGET_BYTES - chosen.gzip_pretty_bytes : null,
+      selected_cap: DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+      selected_gzip_bytes: corePayload.gzip_pretty_bytes,
+      selected_headroom_bytes: PAYLOAD_BUDGET_BYTES - corePayload.gzip_pretty_bytes,
       next_candidate_cap: next?.cap ?? null,
       next_candidate_gzip_bytes: next?.gzip_pretty_bytes ?? null,
       next_candidate_over_budget_bytes: next ? next.gzip_pretty_bytes - PAYLOAD_BUDGET_BYTES : null,
-      ceiling_is_measured: Boolean(chosen && next && chosen.gzip_pretty_bytes <= PAYLOAD_BUDGET_BYTES && next.gzip_pretty_bytes > PAYLOAD_BUDGET_BYTES),
+      ceiling_is_measured: Boolean(
+        chosen
+        && next
+        && (chosen.gzip_pretty_bytes ?? corePayload.gzip_pretty_bytes) <= PAYLOAD_BUDGET_BYTES
+        && next.gzip_pretty_bytes > PAYLOAD_BUDGET_BYTES,
+      ),
+      shard_pretty_bytes: shardPayload.pretty_bytes,
+      shard_gzip_bytes: shardPayload.gzip_pretty_bytes,
     },
     candidate_benchmarks: benchmarks,
     validation: {
@@ -176,13 +239,24 @@ function buildReceipt() {
       reading_ratchet: "not applicable to JSON-only read-model change",
       axe: "not applicable to JSON-only read-model change",
       perf_p95: "run in CI; home cold route is unchanged",
+      graph_coverage_ok: coverage.ok,
     },
     reproduce: [
       "node tools/measure_passport_ei_densify.mjs",
       "node --test test/procurement_spine_ei_densify.test.mjs",
-      "node tools/build_entity_intelligence.mjs --check",
+      "node tools/build_entity_intelligence.mjs --graph-only",
+      "node tools/build_entity_intelligence.mjs --check --graph-only",
     ],
   };
+}
+
+function existsSyncCommitted() {
+  try {
+    readFileSync(RECEIPT_PATH, "utf8");
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const receipt = buildReceipt();
@@ -194,7 +268,7 @@ if (check) {
     if (!value || typeof value !== "object") return value;
     return Object.fromEntries(
       Object.entries(value)
-        .filter(([key]) => key !== "build_ms_p95" && key !== "build_ms_samples")
+        .filter(([key]) => key !== "build_ms_p95" && key !== "build_ms_samples" && key !== "age_days")
         .map(([key, entry]) => [key, stable(entry)]),
     );
   };
@@ -216,6 +290,10 @@ if (check) {
       : JSON.stringify(committedStable[key]) === JSON.stringify(receiptStable[key]));
   if (!same) {
     console.error("PASSPort densification receipt drift — rerun without --check");
+    process.exit(1);
+  }
+  if (!receipt.coverage?.ok) {
+    console.error(`PASSPort graph coverage gate failed: ${(receipt.coverage?.findings || []).join("; ")}`);
     process.exit(1);
   }
   console.log("PASSPort densification receipt is current");

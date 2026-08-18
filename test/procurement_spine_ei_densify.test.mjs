@@ -11,13 +11,21 @@ import { describe, it } from "node:test";
 
 import {
   selectPassportContractsForMaterialization,
+  selectPassportContractsForShardedGraph,
   selectCheckbookContractsForMaterialization,
   selectOcpAwardsForMaterialization,
   collectProcurementSpineObservations,
   slimProcurementMaterializationReceipt,
+  buildPassportEiGraphPublication,
+  passportEiGraphCoverageFindings,
+  hydrateIntelligenceFromPassportGraph,
+  passportGraphAgencyEntry,
   DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP,
+  DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+  DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP,
   DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP,
   DEFAULT_OCP_AWARD_MATERIALIZATION_CAP,
+  PASSPORT_EI_GRAPH_METHOD,
   buildEntityIntelligenceDoc,
 } from "../tools/lib/entity_intelligence_build.mjs";
 import {
@@ -302,5 +310,79 @@ describe("procurement spine observation feed", () => {
     );
     const sample = selected.rows.find((r) => joinPinToEpin(r.pin, epinIndex));
     assert.ok(sample?.pin, "at least one selected award joins the passport slice");
+  });
+});
+
+describe("sharded PASSPort EI graph", () => {
+  const fixturePath = path.join(ROOT, "test/fixtures/passport_ei_graph/spine_sample.json");
+
+  it("publishes the fixture census above the Worker core cap without a live fetch", () => {
+    const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
+    const publication = buildPassportEiGraphPublication(fixture, {
+      core_cap: 3,
+      graph_cap: 20,
+      now: "2026-08-18T12:00:00Z",
+    });
+    assert.equal(publication.schema, "cityscroll.passport_ei_graph.v1");
+    assert.equal(publication.method, PASSPORT_EI_GRAPH_METHOD);
+    assert.equal(publication.worker_core.selected_rows, 3);
+    assert.equal(publication.published_graph.selected_rows, 7);
+    assert.ok(publication.published_graph.selected_rows > publication.worker_core.selected_rows);
+    assert.equal(publication.source.census_rows, 6);
+    assert.equal(publication.excluded.above_graph_ceiling, 0);
+    assert.equal(publication.excluded.not_in_award_corroborated_census, 34);
+    const parks = passportGraphAgencyEntry(publication, "parks-and-recreation");
+    assert.ok(parks, "Parks shard is precomputed from the fixture");
+    assert.equal(parks.selected_rows, 4);
+    assert.ok(parks.selected_rows > parks.core_rows);
+    assert.ok(parks.preview.length <= 8);
+    assert.ok(parks.preview.every((item) => item.object_kind === "contract"));
+    const findings = passportEiGraphCoverageFindings(publication, { now: "2026-08-18T12:00:00Z" });
+    assert.equal(findings.ok, true, findings.findings.join("; "));
+    assert.equal(findings.published_rows, 7);
+  });
+
+  it("hydrates a core intelligence dossier from the precomputed graph", () => {
+    const fixture = JSON.parse(readFileSync(fixturePath, "utf8"));
+    const publication = buildPassportEiGraphPublication(fixture, { core_cap: 3, graph_cap: 20 });
+    const intelligence = {
+      by_ref: {
+        "agency:id:parks-and-recreation": {
+          domains: { money: { status: "matched", count: 2, objects: [{ subject_ref: "contract:core" }] } },
+        },
+      },
+    };
+    const hydrated = hydrateIntelligenceFromPassportGraph(intelligence, publication);
+    assert.equal(hydrated.by_ref["agency:id:parks-and-recreation"].domains.money.graph_count, 4);
+    assert.equal(hydrated.by_ref["agency:id:parks-and-recreation"].domains.money.count, 4);
+    assert.equal(hydrated.passport_graph.selected_rows, 7);
+    assert.equal(
+      intelligence.by_ref["agency:id:parks-and-recreation"].domains.money.count,
+      2,
+      "hydration must not mutate the Worker-core dossier",
+    );
+  });
+
+  it("committed census publishes a graph materially above the 1550 Worker ceiling", () => {
+    assert.ok(existsSync(SPINE), "procurement_spine_sources.json committed");
+    const doc = JSON.parse(readFileSync(SPINE, "utf8"));
+    const selected = selectPassportContractsForShardedGraph(doc);
+    assert.equal(selected.core_cap, DEFAULT_PASSPORT_CONTRACT_CORE_CAP);
+    assert.equal(selected.core.selected_rows, DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP);
+    assert.equal(selected.graph_cap, DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP);
+    assert.ok(
+      selected.graph.selected_rows > DEFAULT_PASSPORT_CONTRACT_CORE_CAP,
+      `expected published graph >1550, got ${selected.graph.selected_rows}`,
+    );
+    assert.ok(selected.graph.selected_rows >= selected.graph.census_rows);
+    assert.ok(
+      selected.graph.selected_rows <= selected.graph.census_rows + selected.graph.compatibility_rows,
+    );
+    assert.ok(selected.graph.census_rows > selected.core.selected_rows);
+    const publication = buildPassportEiGraphPublication(doc, { now: "2026-08-18T12:00:00Z" });
+    const findings = passportEiGraphCoverageFindings(publication, { now: "2026-08-18T12:00:00Z" });
+    assert.equal(findings.ok, true, findings.findings.join("; "));
+    const parks = passportGraphAgencyEntry(publication, "parks-and-recreation");
+    assert.ok(parks?.selected_rows > 45, "Parks constellation graph must exceed the core agency slice");
   });
 });

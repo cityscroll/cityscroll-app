@@ -29,6 +29,7 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
+import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -55,11 +56,13 @@ function loadSources() {
   const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
   const ocpAwardsPath = join(SITE, "data/ocp_awards_warehouse_lookup.json");
   const publisherCrosswalkPath = join(ROOT, "worker/src/data/agency_crosswalk.json");
+  const passportGraphPath = join(SITE, "data/entity_intelligence_shards/passport_graph.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
   return {
     intelligence: readJson(intelligencePath),
+    passport_graph: existsSync(passportGraphPath) ? readJson(passportGraphPath) : null,
     procurement_awards: existsSync(procurementAwardsPath) ? readJson(procurementAwardsPath) : null,
     certification: existsSync(certificationPath) ? readJson(certificationPath) : null,
     // Staffing-guide corpus gates which certification exams become public links.
@@ -349,6 +352,8 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.money_open?.open_as_of,
     sources.meetings_domain?.retrieved_at,
     sources.ocp_awards?.materialized_at,
+    sources.passport_graph?.observed_on,
+    sources.passport_graph?.published_graph?.selected_rows,
   ].filter(Boolean).sort().join("|") || "unknown";
   const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
   const vendorRollups = buildAgencyVendorRollups(sources.ocp_awards?.rows || [], {
@@ -370,6 +375,19 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     if (!view) continue;
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;
+    // A denser PASSPort graph can light up unmatched route spellings. Public
+    // pages stay on identities the SearchDocument producer can admit.
+    const identity = reconcileAgencyIdentity(id, publisherRows);
+    const matched = (view.categories || []).filter((category) => category.status === "matched");
+    const onlyGraphContracts = matched.length > 0
+      && matched.every((category) => category.id === "contracts" && category.method === "passport_ei_graph_v1");
+    if (
+      !DEMO_IDS.includes(id)
+      && !ACCEPTED_IDENTITY_CLASSIFICATIONS.has(identity.route_classification)
+      && onlyGraphContracts
+    ) {
+      continue;
+    }
     byId[id] = {
       subject_ref: view.subject_ref,
       display_name: view.display_name,
@@ -410,7 +428,9 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       process_conformance_generated_at: sources.process_conformance?.generated_at || null,
       vendor_rollup_as_of: vendorRollups.as_of,
       vendor_rollup_window_start: vendorRollups.window_start,
-      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed.",
+      passport_graph_observed_on: sources.passport_graph?.observed_on || null,
+      passport_graph_selected_rows: sources.passport_graph?.published_graph?.selected_rows || 0,
+      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, process-conformance expected-vs-observed, and the sharded PASSPort EI graph.",
     },
   };
 
