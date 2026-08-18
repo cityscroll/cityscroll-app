@@ -15,10 +15,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   A remaining registered canary must be observed the same way or acknowledged
   by ADR — do not silence `unmapped_surfaces`. The reconciler consumes that
   same block: a non-empty `unmapped_surfaces` set is first-class
-  `unknown_surface` drift, so `--check` is healthy only when coverage is
-  complete and topology is unchanged. It does not recompute coverage or load a
-  watermark (LA9 supplies `baselineFacts`). Proof:
-  `test/architecture_facts.test.mjs` and `test/reconcile_architecture.test.mjs`.
+  `unknown_surface` drift. It loads the compact committed watermark at
+  `architecture/generated/watermark.json` as `baselineFacts`, so `--check` is
+  healthy only when coverage is complete, topology is unchanged, and canary
+  fingerprints match the watermark. Advance the watermark with an explicit
+  reviewed `node tools/reconcile_architecture.mjs --write-watermark`, never as
+  a `--check` side effect. Proof: `test/architecture_facts.test.mjs`,
+  `test/architecture_watermark.test.mjs`, and
+  `test/reconcile_architecture.test.mjs`.
 
 - **Land-action-collapse backtest (LA11 seam):**
   `tools/architecture_land_action_observer.mjs` fails when a bundled ZM+control

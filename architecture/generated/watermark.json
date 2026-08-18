@@ -1,0 +1,108 @@
+{
+  "schema": "cityscroll.architecture.watermark.v1",
+  "generated_at": "2026-08-18T16:33:25Z",
+  "commit": "69acbb75f97be6d7e004fd90dcc1bdb794b71755",
+  "observer_coverage_hash": "2e5ec686453f191352fa1ec395116c77f8631f25ba30fbad98090cc7bba76b04",
+  "canaries": {
+    "agency-constellation-model": {
+      "path": "site/agency_constellation_model.mjs",
+      "count": 6,
+      "fingerprint": "856e0baa6583e0b9269cf21c529785fcbe7a1aaffd082eff93ec01d8cb4b19a2"
+    },
+    "agency-search-producer": {
+      "path": "site/agency_search_producer.mjs",
+      "count": 1,
+      "fingerprint": "50f4437efb1e5f0b563686969eee98a326a2c81f2bfdee4ae7448063c95503cf"
+    },
+    "constellation-document-materializer": {
+      "path": "tools/build_agency_constellation_documents.mjs",
+      "count": 1,
+      "fingerprint": "2585a7342268ee1bde77e3ed7debeb56a2b6f4ecb09d08cced8bbea50f79c2eb"
+    },
+    "keyword-search-index": {
+      "path": "tools/build_keyword_search_index.mjs",
+      "count": 10,
+      "fingerprint": "c9f582a85e96cfaabb79c5e2d7092b995f25ff2272dc9a61832054588a423c4e"
+    },
+    "ontology-registry": {
+      "path": "ontology/registry.v0.json",
+      "count": 116,
+      "fingerprint": "ba44a442d24869684434cfa57e6da772a3f72f6189c52d4e05ef52c796998051"
+    },
+    "pages-edge-renderer": {
+      "path": "site/pages_edge.mjs",
+      "count": 12,
+      "fingerprint": "b842ee3f82445ca0ec118f7897d27966a5213592f3bf0a11f01b06eb7e67274b"
+    },
+    "pages-edge-routes": {
+      "path": "site/_routes.json",
+      "count": 13,
+      "fingerprint": "83f095978cc514ac505b79634928d5eccf47671b5b8154fc60951ad563e88180"
+    },
+    "primary-document-materializer": {
+      "path": "tools/build_primary_documents.mjs",
+      "count": 5,
+      "fingerprint": "b8862d5e48ec6a5c7e2761f1cf77d1979b29df3852ff6c480a8527cb3dd249b8"
+    },
+    "production-search": {
+      "path": "worker/src/search.mjs",
+      "count": 6,
+      "fingerprint": "e52234de65c55e08b8cda2c1a21d3702ea1ab0a12deac4a9970cc7a88e39ef2d"
+    },
+    "worker-bindings": {
+      "path": "worker/wrangler.toml",
+      "count": 7,
+      "fingerprint": "845453ca2cb12a447e8bd94f148e2c139084f931a0c3ae8d68ea7f13814d5ba9"
+    }
+  },
+  "ontology": {
+    "schema": "cityscroll.ontology.registry.v0",
+    "version": "0.4.0",
+    "collection_counts": {
+      "object_types": 33,
+      "link_types": 34,
+      "event_kinds": 37,
+      "assertion_classifications": 2,
+      "assertion_facts": 10
+    }
+  },
+  "bindings": {
+    "topology": [
+      {
+        "environment": "production",
+        "section": "analytics_engine_datasets",
+        "binding": "USAGE_ANALYTICS"
+      },
+      {
+        "environment": "production",
+        "section": "d1_databases",
+        "binding": "DB"
+      },
+      {
+        "environment": "production",
+        "section": "kv_namespaces",
+        "binding": "ALERT_STATE"
+      },
+      {
+        "environment": "production",
+        "section": "kv_namespaces",
+        "binding": "FEEDBACK"
+      },
+      {
+        "environment": "production",
+        "section": "kv_namespaces",
+        "binding": "NL_METER"
+      },
+      {
+        "environment": "production",
+        "section": "kv_namespaces",
+        "binding": "SUBS"
+      },
+      {
+        "environment": "production",
+        "section": "queues.producers",
+        "binding": "DIGEST_QUEUE"
+      }
+    ]
+  }
+}
