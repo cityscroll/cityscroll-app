@@ -13,7 +13,6 @@ import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import { createPrecomputedAddressGeocoder } from "../precomputed_address_geocoder.mjs";
 import {
-  bblsForProject,
   filterLandSnapshot,
   mergeLandProjects,
   projectIdsForBlock,
@@ -121,6 +120,133 @@ function loadLandBblSnapshot(){
       .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
   }
   return landBblSnapshotPromise;
+}
+function toFiniteCoordinates(lat, lon){
+  const y = Number(lat);
+  const x = Number(lon);
+  if(!Number.isFinite(y)||!Number.isFinite(x)) return null;
+  return [y, x];
+}
+function toFinitePoint(record){
+  const pairs = [
+    [record?.latitude, record?.longitude],
+    [record?.lat, record?.lon],
+    [record?.latlng?.lat, record?.latlng?.lng],
+    [record?.y, record?.x],
+    [record?.geometry?.latitude, record?.geometry?.longitude],
+    [record?.location?.latitude, record?.location?.longitude],
+  ];
+  for(const [lat, lon] of pairs){
+    const point = toFiniteCoordinates(lat, lon);
+    if(point) return point;
+  }
+  if(record?.geometry?.type==="Point" && Array.isArray(record.geometry.coordinates) && record.geometry.coordinates.length>=2){
+    const point = toFiniteCoordinates(record.geometry.coordinates[1], record.geometry.coordinates[0]);
+    if(point) return point;
+  }
+  return null;
+}
+function normalizeLandBbl(value){
+  const bbl = String(value || "").trim();
+  if(!bbl) return null;
+  const normalized = bbl.replace(/\D/g, "");
+  return normalized ? normalized : bbl;
+}
+function collectProjectBbls(record, outcomeRecord){
+  const out = new Set();
+  const add=(value)=>{
+    const b=normalizeLandBbl(value);
+    if(b) out.add(b);
+  };
+  if(Array.isArray(record?.bbls)) for(const b of record.bbls) add(b);
+  if(Array.isArray(record?.bbls_list)) for(const b of record.bbls_list) add(b);
+  if(record?.bbl) add(record.bbl);
+  if(Array.isArray(outcomeRecord?.bbls)) for(const b of outcomeRecord.bbls) add(b);
+  for(const filing of outcomeRecord?.dob?.filings || []){
+    add(filing?.bbl);
+  }
+  const groups = Array.isArray(outcomeRecord?.project_connections?.groups) ? outcomeRecord.project_connections.groups : [];
+  for(const group of groups){
+    if(!group || group.id !== "parcels" || !Array.isArray(group.items)) continue;
+    for(const item of group.items){
+      if(typeof item?.ref === "string" && item.ref.startsWith("bbl:")) add(item.ref.slice(4));
+    }
+  }
+  return [...out];
+}
+function collectAddressCandidates(record, outcomeRecord){
+  const seen = new Set();
+  const out = [];
+  const add=(value)=>{
+    const valueKey = cleanText(value || "").toLowerCase();
+    if(!valueKey || seen.has(valueKey)) return;
+    seen.add(valueKey);
+    out.push(value);
+  };
+  const boro = cleanText(record?.borough || outcomeRecord?.open_data?.borough || outcomeRecord?.borough || "");
+  const filings = Array.isArray(outcomeRecord?.dob?.filings) ? outcomeRecord.dob.filings : [];
+  for(const filing of filings){
+    const label = `${cleanText(filing?.house_no)} ${cleanText(filing?.street_name)}`.trim();
+    if(!label) continue;
+    add(`${label}${boro ? ` ${boro}` : ""}`);
+    add(`${label}${boro ? `, ${boro}` : ""}`);
+  }
+  const base = cleanText(record?.project_name || outcomeRecord?.project_name || "");
+  if(base){
+    add(
+      base.replace(/rezoning|demapping|rezone|special (mixed use )?district|text amendment|special permit|special district|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice/ig, "")
+        .replace(/\bnos?\.?\b/ig, "")
+        .replace(/\s+/g, " ")
+        .trim()
+    );
+  }
+  return out.map((q)=>`${q}${boro?` ${boro}`:""} New York`).map((q)=>q.replace(/\s+,/g,",").replace(/\s+/g," ").trim());
+}
+async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, geocode} = {}){
+  const outcome = outcomeRecord || null;
+  const geoPoint = toFinitePoint(record) || toFinitePoint(outcome);
+  if(geoPoint){
+    return {status:"exact", precision:"exact", lat:geoPoint[0], lon:geoPoint[1], label: cleanText(record?.project_name || record?.borough || outcome?.project_name || outcome?.borough || "")};
+  }
+  const bbls = collectProjectBbls(record, outcome).slice(0,25);
+  const propertyRows = propertyPayload?.property_rows || [];
+  if(bbls.length && propertyRows.length){
+    const bblSet = new Set(bbls);
+    const address = propertyRows.flatMap(item=>item?.property_location?.addresses||[])
+      .find((item)=> bblSet.has(String(item?.bbl||"")) && Number.isFinite(Number(item?.latitude)) && Number.isFinite(Number(item?.longitude)));
+    if(address){
+      return {status:"exact", precision:"exact", lat:Number(address.latitude), lon:Number(address.longitude), label:address.label||record?.project_name||""};
+    }
+    const geometryPoint = propertyRows.find((row)=>{
+      const bblMatch = bblSet.has(String(row?.property_location?.bbl||"")) ||
+        (Array.isArray(row?.property_location?.bbls) && row.property_location.bbls.some((b)=>bblSet.has(String(b||""))));
+      if(!bblMatch) return false;
+      const toPoint = toFinitePoint(row?.property_location);
+      return Boolean(toPoint);
+    });
+    if(geometryPoint){
+      const toPoint = toFinitePoint(geometryPoint?.property_location);
+      if(toPoint) return {status:"exact", precision:"exact", lat:toPoint[0], lon:toPoint[1], label:geometryPoint?.short_title||record?.project_name||""};
+    }
+  }
+  if(!geocode) return {status:"unresolved", reason:"no-resolution"};
+  const candidates = collectAddressCandidates(record, outcome);
+  for(const query of candidates){
+    const next = await Promise.resolve(geocode?.(query)).catch(()=>null);
+    if(next?.status==="matched"&&Number.isFinite(next?.lat)&&Number.isFinite(next?.lon)){
+      return {status:"approximate", precision:"approximate", lat:next.lat, lon:next.lon, label: next.label || record?.project_name || outcome?.borough || ""};
+    }
+  }
+  return {status:"unresolved", reason:"no-resolution"};
+}
+function hideLandMap(selection, reason){
+  if(selection!==undefined && selection!==landSelectionSeq) return;
+  if(landMap){ landMap.remove(); landMap=null; landMarker=null; }
+  const mapEl=$("#landmap");
+  if(mapEl) mapEl.style.display="none";
+  const mapControls=$("#landpan");
+  if(mapControls) mapControls.hidden=true;
+  if(reason!==undefined && $("#landmapnote")) $("#landmapnote").textContent=reason;
 }
 function loadLandMeetingsSnapshot(){
   if(!landMeetingsSnapshotPromise){
@@ -617,24 +743,29 @@ async function landSelect(i, el){
   if(crterm.length>3){ loadLandMeetingsSnapshot().then(payload=>{ const query=crterm.toLowerCase(); const row=(payload?.rows||[]).find(item=>(item.zap_project_ids||[]).includes(r.project_id)||matchText(item).toLowerCase().includes(query)); if(selection!==landSelectionSeq) return; const cr=$("#land-city-record-source"); if(cr&&row?.request_id){ cr.outerHTML=officialSourceLink({ href:REQ_URL(row.request_id), label:t("rezoning_notice_link"), className:"land-city-record-source", escape:escUiHtml }); } }).catch(()=>{}); }
   let drew=false;
   try{
-    const bblPayload=await loadLandBblSnapshot();
-    const bbls=bblsForProject(bblPayload?.rows,r.project_id).slice(0,25);
-    if(bbls.length){
-      const propertyPayload=await loadLandPropertySnapshot();
-      const bblSet=new Set(bbls);
-      const address=(propertyPayload?.property_rows||[]).flatMap(item=>item?.property_location?.addresses||[])
-        .find(item=>bblSet.has(String(item?.bbl||""))&&Number.isFinite(Number(item?.latitude))&&Number.isFinite(Number(item?.longitude)));
-      if(selection!==landSelectionSeq) return;
-      if(address){ landShowMap(Number(address.latitude),Number(address.longitude),address.label||r.project_name,selection); drew=true; }
+    const outcomePayload = await fetchZapOutcomesPayload(r.project_id,{allowStatic:true}).catch(()=>null);
+    const outcomeRecord = outcomePayload?.record ? normalizeLandRecord(outcomePayload.record) : null;
+    if(selection!==landSelectionSeq) return;
+    const propertyPayload=await loadLandPropertySnapshot().catch(()=>null);
+    const resolution = await resolveLandMapLocation(r, outcomeRecord, {
+      propertyPayload,
+      geocode:(q)=>geocode(q),
+    });
+    if(selection!==landSelectionSeq) return;
+    if(resolution.status==="exact"||resolution.status==="approximate"){
+      landShowMap(
+        Number(resolution.lat),
+        Number(resolution.lon),
+        resolution.label || r.project_name || r.borough || "",
+        selection,
+        resolution.precision,
+      );
+      drew=true;
     }
   }catch(e){}
   if(selection!==landSelectionSeq) return;
   if(!drew){
-    const q=(r.project_name||"").replace(/rezoning|special (mixed use )?district|text amendment|\bnos?\.?\b/ig," ").replace(/\s+/g," ").trim();
-    const geo = q ? await geocode(q+" "+(r.borough||"")+" New York") : null;
-    if(selection!==landSelectionSeq) return;
-    if(geo?.status==="matched"&&Number.isFinite(geo.lat)&&Number.isFinite(geo.lon)) landShowMap(geo.lat,geo.lon,geo.label,selection);
-    else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],t("lot_not_geocoded",{boro:r.borough||""}),selection); else { $("#landmap").style.display="none"; $("#landmapnote").textContent=t("location_not_resolved"); } }
+    hideLandMap(selection, t("location_not_resolved"));
   }
 }
 
@@ -719,9 +850,10 @@ function wireLandPanControls(map){
     button.addEventListener("click",()=>map.panBy(offsets[button.dataset.mapPan],{animate:false}));
   });
 }
-async function landShowMap(lat, lon, label, selection){
+async function landShowMap(lat, lon, label, selection, precision="approximate"){
   const el=$("#landmap"); if(!el) return; el.style.display="none";
-  $("#landmapnote").innerHTML=t("map_approx_note_html",{label});
+  const note = precision==="exact" ? "" : t("map_approx_note_html",{label});
+  if($("#landmapnote")) $("#landmapnote").innerHTML=note;
   try{ await loadLeaflet(); }catch(e){}
   if(selection!==undefined && selection!==landSelectionSeq) return;
   if(typeof L==="undefined"){
