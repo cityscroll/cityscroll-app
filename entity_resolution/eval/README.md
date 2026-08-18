@@ -116,7 +116,7 @@ and are still applied at connected-component scope, so no endpoint can cross
 between train and holdout. V1 and V2 remain immutable for comparison. V3 retains
 all V2 cases and adds `mandate_governs_procedure` and
 `project_participates_in_procedure` field cases against the closed
-`land_use_procedure_v1` vocabulary. The committed runtime policy names V3 only
+`land_use_procedure_v2` vocabulary. The committed runtime policy names V3 only
 after all six gates pass.
 
 Optional flags:

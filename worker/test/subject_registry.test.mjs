@@ -18,6 +18,7 @@ import {
   GEOGRAPHY_BOROUGH_IDS,
   GEOGRAPHY_COMMUNITY_DISTRICT_IDS,
   GEOGRAPHY_COUNCIL_DISTRICT_IDS,
+  LAND_USE_ACTION_FAMILY_KINDS,
   LAND_USE_PROCEDURE_KINDS,
   LAND_USE_PROCEDURE_VOCABULARY_VERSION,
   SUBJECT_REGISTRY_VERSION,
@@ -67,39 +68,47 @@ test("parse/format subject_ref is closed and never rewrites kind or id", () => {
 });
 
 test("land-use procedure subjects use a closed, versioned vocabulary", () => {
-  assert.equal(LAND_USE_PROCEDURE_VOCABULARY_VERSION, "land_use_procedure_v1");
+  assert.equal(LAND_USE_PROCEDURE_VOCABULARY_VERSION, "land_use_procedure_v2");
   assert.deepEqual(LAND_USE_PROCEDURE_KINDS, [
-    "landmark_designation",
-    "rezoning",
     "ulurp",
-    "special_permit",
-    "city_map_change",
-    "site_selection",
+    "elurp",
+    "non_ulurp",
   ]);
-  assert.deepEqual(parseSubjectRef("procedure:landmark_designation"), {
+  assert.ok(LAND_USE_ACTION_FAMILY_KINDS.includes("acquisition"));
+  assert.ok(LAND_USE_ACTION_FAMILY_KINDS.includes("landmark_designation"));
+  assert.equal(LAND_USE_PROCEDURE_KINDS.includes("landmark_designation"), false);
+  assert.equal(LAND_USE_PROCEDURE_KINDS.includes("acquisition"), false);
+  assert.deepEqual(parseSubjectRef("procedure:ulurp"), {
     kind: "procedure",
-    id: "landmark_designation",
-    ref: "procedure:landmark_designation",
+    id: "ulurp",
+    ref: "procedure:ulurp",
   });
+  assert.deepEqual(parseSubjectRef("procedure:elurp"), {
+    kind: "procedure",
+    id: "elurp",
+    ref: "procedure:elurp",
+  });
+  assert.equal(formatSubjectRef("procedure", "landmark_designation"), null);
+  assert.equal(formatSubjectRef("procedure", "rezoning"), null);
   assert.equal(formatSubjectRef("procedure", "variance"), null);
   assert.equal(parseSubjectRef("procedure:title-similarity"), null);
 
   const mandateLink = makeSubjectLink({
     type: "mandate_governs_procedure",
     from: "mandate:54431-002",
-    to: "procedure:landmark_designation",
+    to: "procedure:ulurp",
   });
   const projectLink = makeSubjectLink({
     type: "project_participates_in_procedure",
     from: "project:2026K0443",
-    to: "procedure:landmark_designation",
+    to: "procedure:elurp",
   });
   assert.equal(mandateLink?.type, "mandate_governs_procedure");
   assert.equal(projectLink?.type, "project_participates_in_procedure");
   assert.equal(makeSubjectLink({
     type: "mandate_governs_procedure",
     from: "project:2026K0443",
-    to: "procedure:landmark_designation",
+    to: "procedure:ulurp",
   }), null);
 });
 

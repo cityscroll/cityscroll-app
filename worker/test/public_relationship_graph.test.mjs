@@ -321,7 +321,7 @@ test("public graph omits evidence-only cross-spine candidates", () => {
 
 test("public graph traverses a reified procedure only through evaluated public edges", () => {
   const provenance = {
-    source: { system: "cityscroll_procedure_vocabulary", id: "land_use_procedure_v1" },
+    source: { system: "cityscroll_procedure_vocabulary", id: "land_use_procedure_v2" },
     source_fields: ["procedure_kind"],
     observed_at: "2026-08-09T00:00:00.000Z",
   };
@@ -329,7 +329,7 @@ test("public graph traverses a reified procedure only through evaluated public e
     type: "mandate_governs_procedure",
     relation: "mandate_governs_procedure",
     from: "mandate:54431-002",
-    to: "procedure:landmark_designation",
+    to: "procedure:ulurp",
     features: {
       mandate_quote_verified: true,
       procedure_kind_exact: true,
@@ -341,7 +341,7 @@ test("public graph traverses a reified procedure only through evaluated public e
     type: "project_participates_in_procedure",
     relation: "project_participates_in_procedure",
     from: "project:2026K0443",
-    to: "procedure:landmark_designation",
+    to: "procedure:ulurp",
     features: {
       project_subject_exact: true,
       publisher_action_kind_exact: true,
@@ -360,7 +360,7 @@ test("public graph traverses a reified procedure only through evaluated public e
     raw_snapshot: "{}",
   }];
   const crossSpineNodes = [
-    { id: "procedure:landmark_designation", type: "procedure", name: "Landmark designation procedure" },
+    { id: "procedure:ulurp", type: "procedure", name: "Uniform Land Use Review Procedure" },
     { id: "project:2026K0443", type: "project", name: "Public School 15 Annex" },
   ];
   const graph = serializePublicRelationshipGraph(rows, {
@@ -372,7 +372,7 @@ test("public graph traverses a reified procedure only through evaluated public e
     "mandate_governs_procedure",
     "project_participates_in_procedure",
   ]);
-  assert.ok(graph.nodes.some((node) => node.id === "procedure:landmark_designation"));
+  assert.ok(graph.nodes.some((node) => node.id === "procedure:ulurp"));
   assert.ok(graph.nodes.some((node) => node.id === "project:2026K0443"));
 
   const heldProject = serializePublicRelationshipGraph(rows, {
