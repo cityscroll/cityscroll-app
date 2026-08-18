@@ -55,6 +55,39 @@ const MAX_PAGES = 4; // 4 × 25 = 100 records cap per domain per notice
 const PREWARM_MAX = 40;
 const OCP_PIN_LIMIT = 10;
 
+/** Project observed lifecycle stages from canonical procurement identity. */
+export function procurementLifecycleForObject(object = {}, observations = []) {
+  const procurementId = String(object?.procurement_id || "").trim();
+  if (!procurementId.startsWith("procurement:")) return null;
+  const index = new Map((Array.isArray(observations) ? observations : [])
+    .map((entry) => [entry?.source_observation_ref, entry]));
+  const timeline = (Array.isArray(object?.stages) ? object.stages : []).map((stage) => {
+    const refs = (Array.isArray(stage?.source_observation_refs) ? stage.source_observation_refs : [])
+      .filter((ref) => index.has(ref));
+    return {
+      stage: String(stage?.stage || "unknown"),
+      status: refs.length ? "matched" : "unknown",
+      source_observation_refs: refs,
+      observations: refs.map((ref) => {
+        const observation = index.get(ref);
+        return {
+          source_system: observation.source_system,
+          source_system_id: observation.source_system_id,
+          ingested_at: observation.ingested_at || null,
+        };
+      }),
+    };
+  });
+  return Object.freeze({
+    schema: "cityscroll.procurement_lifecycle.v1",
+    procurement_id: procurementId,
+    canonical_href: object?.compatibility?.canonical_href || null,
+    timeline: Object.freeze(timeline),
+    source_observation_refs: Object.freeze([...(object?.source_observation_refs || [])]),
+    ok: timeline.every((stage) => stage.status === "matched"),
+  });
+}
+
 function escXml(s) {
   return String(s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;" }[c]));
 }

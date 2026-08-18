@@ -12,6 +12,7 @@ import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs
 import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
 import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
+import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUTPUT = new URL("../worker/src/data/keyword_search_index.json", import.meta.url);
@@ -53,6 +54,9 @@ function compactDocument(document) {
           || provenance.source_retrieved_at
           || null,
       },
+      browse_record: provenance.browse_record || null,
+      notice_evidence: provenance.notice_evidence || [],
+      alias_object_refs: provenance.alias_object_refs || [],
     },
     outcome: document.outcome || "indexed",
     coverage_state: document.coverage_state || "matched",
@@ -85,6 +89,7 @@ const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");
 const propertyResidents = json("site/data/property_resident_snapshot.json");
 const committees = json("site/data/committee_graph_lookup.json");
+const procurements = json("site/data/shared_procurement_read_model.json");
 const peopleCorpus = buildPeopleSearchDocuments(people);
 const agencyCorpus = buildAgencySearchDocuments(agencies, { identityReport: agencyIdentityReport });
 const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });
@@ -116,6 +121,7 @@ const parcelCorpus = buildParcelSearchDocuments(parcels, {
 });
 const communityBoardCorpus = buildBoardSearchDocuments(communityBoards);
 const committeeCorpus = buildCommitteeSearchDocuments(committees);
+const procurementCorpus = buildProcurementSearchDocuments(procurements);
 
 const output = {
   schema: "cityscroll.keyword_search_index.v1",
@@ -130,6 +136,7 @@ const output = {
     parcels.generated_at,
     propertyResidents.generated_at,
     committees.generated_at,
+    procurements.generated_at,
   ),
   match_mode: "keyword",
   families: {
@@ -183,6 +190,11 @@ const output = {
       committees.generated_at,
       [committeeCorpus],
     ),
+    procurements: family(
+      "PASSPort, Checkbook NYC, and City Record procurement observations",
+      procurements.generated_at,
+      [procurementCorpus],
+    ),
   },
   build_receipt: {
     source_artifacts: {
@@ -197,6 +209,7 @@ const output = {
       parcels: "site/data/property_cross_domain_lookup.json",
       property_residents: "site/data/property_resident_snapshot.json",
       committees: "site/data/committee_graph_lookup.json",
+      procurements: "site/data/shared_procurement_read_model.json",
     },
     excluded_artifacts: ["worker/src/data/ocp_awards_warehouse_lookup.json"],
     excluded_vendor_roots: excludedVendorRoots,

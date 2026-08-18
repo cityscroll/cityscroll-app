@@ -5,6 +5,7 @@
     "/notices/*",
     "/mandates/*",
     "/meetings/*",
+    "/procurements/*",
     "/agencies/*",
     "/vendors/*",
     "/officials/*",

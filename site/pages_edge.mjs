@@ -4,6 +4,7 @@ import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs"
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
+import { renderProcurementDocument } from "./procurement_document.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
@@ -71,6 +72,11 @@ function safeId(pathname) {
 
 function safeMeeting(pathname) {
   const match = pathname.match(/^\/meetings\/([^/?#]{1,320})\/?$/);
+  return match ? match[1] : null;
+}
+
+function safeProcurement(pathname) {
+  const match = pathname.match(/^\/procurements\/([^/?#]{1,500})\/?$/);
   return match ? match[1] : null;
 }
 
@@ -160,6 +166,7 @@ export function edgeRequestKind(urlValue) {
   if (safeId(url.pathname)) return "notice";
   if (safeMandate(url.pathname)) return "mandate";
   if (safeMeeting(url.pathname)) return "meeting";
+  if (safeProcurement(url.pathname)) return "procurement";
   if (safeExamNumber(url.pathname)) return "exam";
   if (safeMonitorPack(url.pathname)) return "monitor-pack";
   if (safeDistrictDigest(url.pathname)) return "district-digest";
@@ -606,6 +613,34 @@ async function noticeRow(id) {
   return Array.isArray(rows) ? { row: rows[0] || null, civic_time: null } : { row: null, civic_time: null };
 }
 
+async function handleProcurement(request, env, encodedId) {
+  let id;
+  try { id = decodeURIComponent(encodedId); } catch { return new Response("Invalid procurement link", { status: 400 }); }
+  const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const snapshot = await staticAsset(env, snapshotRequest, "/data/shared_procurement_read_model.json");
+  let html = null;
+  if (snapshot.ok) {
+    try {
+      const payload = await snapshot.json();
+      const object = (Array.isArray(payload?.rows) ? payload.rows : [])
+        .find((row) => row?.procurement_id === id);
+      if (object) html = renderProcurementDocument(object, payload.observations, { currentHref: request.url });
+    } catch { html = null; }
+  }
+  if (!html) {
+    return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Procurement not found · CityScroll</title></head><body><main><h1>Procurement not found</h1><p><a href=\"/browse/contracts/\">Browse contracts</a></p></main></body></html>", {
+      status: 404,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
+    });
+  }
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD" ? new Response(null, { status: 200, headers }) : new Response(html, { status: 200, headers });
+}
+
 async function handleNotice(request, env, id) {
   const [asset, meetingSnapshotResponse, mandateBacklinksResponse] = await Promise.all([
     staticAsset(env, request, "/"),
@@ -871,6 +906,8 @@ export default {
     if (url.pathname === "/meeting.ics") return handleMeetingICS(request, env);
     const meetingId = safeMeeting(url.pathname);
     if (meetingId) return handleMeeting(request, env, meetingId);
+    const procurementId = safeProcurement(url.pathname);
+    if (procurementId) return handleProcurement(request, env, procurementId);
     const examNumber = safeExamNumber(url.pathname);
     if (examNumber) return handleExam(request, env, examNumber);
     const pack = safeMonitorPack(url.pathname);
