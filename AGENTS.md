@@ -23,7 +23,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   and materializer canaries fire CI. Advance the compact watermark at
   `architecture/generated/watermark.json` with an explicit reviewed
   `node tools/reconcile_architecture.mjs --write-watermark`, never as a
-  `--check` side effect. Proof: `test/architecture_facts.test.mjs`,
+  `--check` side effect. Watermark-vs-current-facts fingerprint drift is the
+  reconciler `--check` (advisory architecture job), not a Unit assertion.
+  Proof: `test/architecture_facts.test.mjs`,
   `test/architecture_path_coverage.test.mjs`,
   `test/architecture_watermark.test.mjs`, and
   `test/reconcile_architecture.test.mjs`.
