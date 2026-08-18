@@ -508,7 +508,22 @@
       "canonical_route",
       "dedup",
       "coverage_honesty"
-    ]
+    ],
+    "coverage_honesty_twin": {
+      "card": "cityscroll-search-quality/sq-05-coverage-honesty-twin",
+      "feeds": "LA7",
+      "observer_canaries": "architecture/observer-canaries.json",
+      "canary_ids": [
+        "production-search",
+        "keyword-search-index",
+        "agency-search-producer"
+      ],
+      "canary_paths": [
+        "worker/src/search.mjs",
+        "tools/build_keyword_search_index.mjs",
+        "site/agency_search_producer.mjs"
+      ]
+    }
   },
   "queries": [
     {
@@ -785,10 +800,12 @@
         "coverage_honesty": {
           "snapshot_state": "complete",
           "complete_count": 0,
+          "zero_means": "no_match",
           "empty_means": "no_match_in_participating_lenses"
         }
       },
-      "eval": ["coverage_honesty"]
+      "eval": ["coverage_honesty"],
+      "notes": "Every declared collection participated and is empty. Zero means no match, not missing coverage."
     },
     {
       "id": "gq-partial-coverage",
@@ -802,15 +819,17 @@
         "coverage_honesty": {
           "snapshot_state": "incomplete",
           "complete_count": null,
+          "zero_means": "no_coverage",
           "incomplete_lenses": ["people", "vendors"],
           "must_not_read_as": "0 matches across all"
         }
       },
-      "eval": ["coverage_honesty"]
+      "eval": ["coverage_honesty"],
+      "notes": "Missing people plus stale vendors is no-coverage. A citywide 0 would lie about the unindexed and expired collections."
     },
     {
       "id": "gq-law-mandates-not-indexed",
-      "category": "partial_coverage",
+      "category": "unindexed",
       "corpus": "gold_coverage_rows",
       "input": {
         "channel": "keyword",
@@ -820,10 +839,32 @@
         "coverage_honesty": {
           "producer": "law_mandates",
           "state": "not_indexed",
-          "reason": "producer_not_yet_connected_to_search"
+          "reason": "producer_not_yet_connected_to_search",
+          "zero_means": "no_coverage"
         }
       },
-      "eval": ["coverage_honesty"]
+      "eval": ["coverage_honesty"],
+      "notes": "Law-derived mandates are a registered producer that is not yet connected to search. Absence is not_indexed, never No matches."
+    },
+    {
+      "id": "gq-unindexed-coverage",
+      "category": "unindexed",
+      "corpus": "federator_all_unindexed",
+      "input": {
+        "channel": "keyword",
+        "text": "shelter contracts"
+      },
+      "expect": {
+        "coverage_honesty": {
+          "snapshot_state": "incomplete",
+          "complete_count": null,
+          "zero_means": "no_coverage",
+          "all_lenses_not_indexed": true,
+          "must_not_read_as": "0 matches across all"
+        }
+      },
+      "eval": ["coverage_honesty"],
+      "notes": "No lens provider registered. Zero here means the collections are not indexed, not that the city published nothing."
     },
     {
       "id": "gq-mosquito-ranking",
