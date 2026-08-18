@@ -4,9 +4,11 @@ import { readFileSync } from "node:fs";
 
 import {
   buildCommunityBoardGeography,
+  buildCommunityDistrictCouncilIntersectsIndex,
   buildPlaceLocalConstellation,
   COMMUNITY_BOARD_ORGANIZATION_RELATION_FAMILIES,
   communityDistrictIdForBoard,
+  councilDistrictsIntersectingCommunity,
   polygonsIntersect,
 } from "../site/community_board_geography.mjs";
 
@@ -67,6 +69,14 @@ test("overlay reproduces the 237-pair many-to-many census and rejects centroid s
   assert.ok(doc.public_edges.every((edge) => edge.boundary_vintage === "2026-05-26"));
   assert.ok(doc.public_edges.filter((edge) => edge.type === "intersects")
     .every((edge) => edge.intersection_method === "polygon_segment_crossing_or_containment"));
+  const index = buildCommunityDistrictCouncilIntersectsIndex(doc);
+  assert.equal(Object.keys(index).length, 59);
+  assert.deepEqual(index.K01, ["2", "4", "30", "33", "34", "36"]);
+  assert.deepEqual(councilDistrictsIntersectingCommunity("K01", doc), index.K01);
+  assert.equal(
+    Object.values(index).reduce((sum, councils) => sum + councils.length, 0),
+    237,
+  );
 });
 
 test("community-board place neighbors route through the scoped Near you view", () => {
