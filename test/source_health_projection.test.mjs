@@ -1,0 +1,282 @@
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+import assert from "node:assert/strict";
+
+import {
+  HEALTH_STATUSES,
+  evaluateSourceHealth,
+  normalizeClock,
+  normalizeRelationshipCoverage,
+} from "../ontology/source_health.mjs";
+import {
+  buildSourceHealthObservations,
+  externalScheduleObservations,
+  validateSourceHealthProjection,
+} from "../tools/source_health_observations.mjs";
+import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
+
+const NOW = "2026-08-18T12:00:00.000Z";
+
+function contract(overrides = {}) {
+  return {
+    id: "daily-source",
+    status: "live",
+    freshness_contract: {
+      mode: "continuous",
+      max_stale_days: 7,
+      clock_basis: "publisher_updated",
+    },
+    health_policy: {
+      public_visibility: "public",
+      backstage_detail: "receipts-and-errors",
+      relationship_coverage: "separate",
+    },
+    ...overrides,
+  };
+}
+
+function observation(overrides = {}) {
+  return {
+    source_id: "daily-source",
+    publisher_updated_at: "2026-08-12T12:00:00.000Z",
+    checked_at: "2026-08-18T10:00:00.000Z",
+    acquired_at: "2026-08-18T10:00:00.000Z",
+    acquisition_status: "succeeded",
+    serving: {
+      status: "current",
+      at: "2026-08-18T10:30:00.000Z",
+      fallback_valid: false,
+    },
+    ...overrides,
+  };
+}
+
+test("canonical contracts declare structured freshness and public/backstage health policy", () => {
+  const registry = loadSourceContracts();
+  assert.equal(registry.contracts.length, 54);
+  assert.deepEqual(validateSourceContracts(registry), []);
+  for (const source of registry.contracts) {
+    assert.ok(source.freshness_contract, source.id);
+    assert.match(source.freshness_contract.mode, /^(continuous|periodic|historical|manual-conditional|pointer)$/);
+    if (["continuous", "periodic"].includes(source.freshness_contract.mode)) {
+      assert.ok(Number(source.freshness_contract.max_stale_days) > 0, source.id);
+    } else {
+      assert.equal(source.freshness_contract.max_stale_days, null, source.id);
+    }
+    if (source.freshness_contract.mode === "manual-conditional") {
+      assert.ok(source.freshness_contract.manual_refresh_condition, source.id);
+    }
+    assert.equal(source.health_policy.backstage_detail, "receipts-and-errors", source.id);
+    assert.equal(source.health_policy.relationship_coverage, "separate", source.id);
+    assert.match(source.health_policy.public_visibility, /^(public|backstage-only)$/, source.id);
+    assert.equal("last_checked" in source, false, `${source.id} has transient last_checked in its contract`);
+  }
+});
+
+test("health evaluation uses the source's own freshness contract", () => {
+  const within = evaluateSourceHealth(
+    contract(),
+    observation({ publisher_updated_at: "2026-08-11T12:00:00.000Z" }),
+    { now: NOW },
+  );
+  assert.equal(within.status, "Healthy");
+
+  const breached = evaluateSourceHealth(
+    contract(),
+    observation({ publisher_updated_at: "2026-08-11T11:59:59.999Z" }),
+    { now: NOW },
+  );
+  assert.equal(breached.status, "Delayed");
+  assert.deepEqual(breached.reason_codes, ["publisher-clock-stale"]);
+
+  const slower = evaluateSourceHealth(
+    contract({ freshness_contract: { mode: "periodic", max_stale_days: 30, clock_basis: "publisher_updated" } }),
+    observation({ publisher_updated_at: "2026-08-01T00:00:00.000Z" }),
+    { now: NOW },
+  );
+  assert.equal(slower.status, "Healthy");
+});
+
+test("historical and manual-conditional sources do not inherit generic age alarms", () => {
+  const historical = evaluateSourceHealth(
+    contract({ freshness_contract: { mode: "historical", max_stale_days: null, clock_basis: "publisher_updated" } }),
+    observation({ publisher_updated_at: "2001-01-01T00:00:00.000Z" }),
+    { now: NOW },
+  );
+  assert.equal(historical.status, "Historical");
+  assert.doesNotMatch(historical.reason_codes.join(" "), /stale|delayed/);
+
+  const manual = evaluateSourceHealth(
+    contract({ freshness_contract: { mode: "manual-conditional", max_stale_days: null, clock_basis: "manual_condition" } }),
+    observation({
+      publisher_updated_at: "2025-01-01T00:00:00.000Z",
+      manual_refresh: { due: false, evaluated_at: NOW },
+    }),
+    { now: NOW },
+  );
+  assert.equal(manual.status, "Healthy");
+
+  const due = evaluateSourceHealth(
+    contract({ freshness_contract: { mode: "manual-conditional", max_stale_days: null, clock_basis: "manual_condition" } }),
+    observation({ manual_refresh: { due: true, evaluated_at: NOW } }),
+    { now: NOW },
+  );
+  assert.equal(due.status, "Manual-refresh");
+});
+
+test("a failed acquisition with a valid serving fallback is degraded, never healthy", () => {
+  const withFallback = evaluateSourceHealth(
+    contract(),
+    observation({
+      acquisition_status: "failed",
+      serving: { status: "fallback", at: "2026-08-18T09:00:00.000Z", fallback_valid: true },
+    }),
+    { now: NOW },
+  );
+  assert.equal(withFallback.status, "Degraded");
+  assert.deepEqual(withFallback.reason_codes, ["acquisition-failed", "serving-valid-fallback"]);
+
+  const withoutFallback = evaluateSourceHealth(
+    contract(),
+    observation({
+      acquisition_status: "failed",
+      serving: { status: "unavailable", at: null, fallback_valid: false },
+    }),
+    { now: NOW },
+  );
+  assert.equal(withoutFallback.status, "Source-unavailable");
+
+  const partial = evaluateSourceHealth(
+    contract(),
+    observation({ acquisition_status: "partial" }),
+    { now: NOW },
+  );
+  assert.equal(partial.status, "Limited-coverage");
+});
+
+test("invalid or missing clocks stay explicit UNKNOWN values", () => {
+  for (const value of [null, undefined, "", 0, "0", "1970-01-01T00:00:00.000Z", "not-a-date"]) {
+    assert.deepEqual(normalizeClock(value, "fixture"), {
+      at: null,
+      state: "UNKNOWN",
+      basis: null,
+    });
+  }
+  const result = evaluateSourceHealth(
+    contract(),
+    observation({ publisher_updated_at: 0, checked_at: "bad", acquired_at: null, serving: {} }),
+    { now: NOW },
+  );
+  assert.equal(result.clocks.publisher_updated.at, null);
+  assert.equal(result.clocks.publisher_updated.state, "UNKNOWN");
+  assert.equal(result.clocks.cityscroll_checked_acquired.at, null);
+  assert.equal(result.clocks.cityscroll_serving.at, null);
+  assert.doesNotMatch(JSON.stringify(result), /1970|epoch/i);
+});
+
+test("relationship coverage is a separate axis and failed or held joins cannot be complete", () => {
+  const held = normalizeRelationshipCoverage({
+    status: "complete",
+    row_count: 12,
+    measured_at: NOW,
+    join_status: "held",
+  });
+  assert.equal(held.status, "held");
+  assert.deepEqual(held.reason_codes, ["relationship-join-held"]);
+
+  const failed = normalizeRelationshipCoverage({
+    status: "complete",
+    row_count: 12,
+    measured_at: NOW,
+    join_status: "failed",
+  });
+  assert.equal(failed.status, "failed");
+
+  const completeWithZero = normalizeRelationshipCoverage({
+    status: "complete",
+    row_count: 0,
+    measured_at: NOW,
+    join_status: "accepted",
+  });
+  assert.equal(completeWithZero.status, "empty-declared-live");
+
+  const health = evaluateSourceHealth(contract(), observation(), { now: NOW });
+  assert.equal(health.status, "Healthy");
+  assert.equal("relationship_coverage" in health, false);
+});
+
+test("projection rejects orphan and duplicate canonical source ids", () => {
+  const registry = { contracts: [contract()] };
+  assert.deepEqual(validateSourceHealthProjection(registry, {
+    observations: [{ source_id: "daily-source" }, { source_id: "daily-source" }],
+  }), ["daily-source: duplicate source health observation"]);
+  assert.deepEqual(validateSourceHealthProjection(registry, {
+    observations: [{ source_id: "orphan" }],
+  }), ["orphan: source health observation has no canonical contract"]);
+
+  const duplicateContracts = { contracts: [contract(), contract()] };
+  assert.deepEqual(validateSourceHealthProjection(duplicateContracts, { observations: [] }), [
+    "daily-source: duplicate source contract id",
+  ]);
+});
+
+test("projection ordering and reason codes are deterministic", () => {
+  const registry = {
+    contracts: [contract({ id: "z-source" }), contract({ id: "a-source" })],
+  };
+  const inputs = {
+    asOf: NOW,
+    scheduleObservations: [
+      { source_id: "z-source", observed_at: NOW, status: "failed" },
+      { source_id: "a-source", observed_at: NOW, status: "partial" },
+    ],
+  };
+  const first = buildSourceHealthObservations(registry, inputs);
+  const second = buildSourceHealthObservations(registry, {
+    ...inputs,
+    scheduleObservations: [...inputs.scheduleObservations].reverse(),
+  });
+  assert.deepEqual(first, second);
+  assert.deepEqual(first.observations.map((row) => row.source_id), ["a-source", "z-source"]);
+  assert.ok(first.observations.every((row) => HEALTH_STATUSES.includes(row.health.status)));
+  assert.ok(first.observations.every((row) => (
+    [...row.health.reason_codes].sort().join("|") === row.health.reason_codes.join("|")
+  )));
+});
+
+test("external-schedule outbox results normalize to canonical acquisition observations", () => {
+  const path = ".external-schedule-state/results/source-contracts-live/fixture.json";
+  const rows = externalScheduleObservations([{
+    path,
+    result: {
+      observed_at: NOW,
+      healthy: ["a-source"],
+      failures: [{ id: "z-source", detail: "operator-only detail" }],
+    },
+  }]);
+  assert.deepEqual(rows, [
+    { source_id: "a-source", observed_at: NOW, status: "succeeded", path },
+    { source_id: "z-source", observed_at: NOW, status: "failed", path },
+  ]);
+  assert.doesNotMatch(JSON.stringify(rows), /operator-only detail/);
+});
+
+test("committed observations are canonical, complete, and generated from receipts", () => {
+  const registry = loadSourceContracts();
+  const projection = JSON.parse(readFileSync(
+    new URL("../site/data/source_health_observations.json", import.meta.url),
+    "utf8",
+  ));
+  assert.deepEqual(validateSourceHealthProjection(registry, projection), []);
+  assert.equal(projection.observations.length, registry.contracts.length);
+  assert.deepEqual(
+    projection.observations.map((row) => row.source_id),
+    [...registry.contracts.map((source) => source.id)].sort(),
+  );
+  assert.ok(projection.observations.some((row) => row.evidence.length > 0));
+});
+
+test("raw receipt observations remain backstage until a strict public projection exists", () => {
+  const publicBuildConfig = readFileSync(new URL("../site/_config.yml", import.meta.url), "utf8");
+  assert.match(publicBuildConfig, /^\s+- data\/source_health_observations\.json$/m);
+});
