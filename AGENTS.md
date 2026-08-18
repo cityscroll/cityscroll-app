@@ -71,6 +71,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `node tools/build_agency_lifecycle_conformance.mjs`; focused proof remains in
   `test/process_conformance.test.mjs`.
 
+- **Procurement publication policy:** `ontology/registry.v0.json` contains the versioned PPB
+  Rule § 3-08 method/stage registry; `ontology/procurement_policy.mjs` is its fail-closed
+  resolver. A `not_required` obligation requires an exact method-family, category, amount, and
+  effective-date match. Publisher-label ambiguity or source absence remains `unknown` coverage,
+  never a legal exemption. Focused proof: `test/procurement_policy_registry.test.mjs`.
+
 - Committee traversal exposes `public_reverse_edges` from the same accepted
   `member_of` observation in `site/committee_graph.mjs`; browse renders the
   exact-ID `has member` pivot, while held/empty/unknown graph states stay
