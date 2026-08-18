@@ -215,13 +215,13 @@ node warehouse/scripts/checkbook_contracts.mjs --from-fixture \
 
 # Population refresh and bounded graph publication.
 node warehouse/scripts/checkbook_contracts.mjs --publish \
-  --refresh --fiscal-years 2025,2026,2027 --page-size 999 --graph-cap 500
+  --refresh --fiscal-years 2025,2026,2027 --page-size 999 --graph-cap 2000
 node warehouse/scripts/checkbook_contracts.mjs --check
 ```
 
 The committed denominator and overlap receipt is
 `warehouse/receipts/proof/checkbook_contracts_population_latest.json`; only the
-500-row stratified graph slice is stored in
+2,000-row stratified graph slice is stored in
 `site/data/procurement_spine_sources.json`.
 
 

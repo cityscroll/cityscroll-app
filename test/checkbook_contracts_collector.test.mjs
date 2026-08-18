@@ -9,11 +9,14 @@ import {
   measureCheckbookOverlap,
   normalizeCheckbookContractRows,
   selectCheckbookContractsForGraph,
+  sha256Json,
 } from "../warehouse/lib/checkbook_contracts.mjs";
 import { parseContractTransactions } from "../worker/src/lib/checkbook_lifecycle.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-contracts/collector.json");
+const PUBLIC_RECEIPT = join(ROOT, "warehouse/receipts/proof/checkbook_contracts_population_latest.json");
+const PROCUREMENT_SPINE = join(ROOT, "site/data/procurement_spine_sources.json");
 
 function fixtureRows() {
   const fixture = JSON.parse(readFileSync(FIXTURE, "utf8"));
@@ -107,5 +110,21 @@ describe("Checkbook Contracts fixture collector", () => {
     assert.equal(resumed.paging.fetched_pages, 0);
     assert.equal(resumed.paging.checkpoint_hits, 2);
     assert.equal(resumed.checksums.normalized_contracts_sha256, firstReceipt.checksums.normalized_contracts_sha256);
+  });
+});
+
+describe("Checkbook Contracts published graph", () => {
+  it("exceeds the historical cap with an exact-key population receipt", () => {
+    const receipt = JSON.parse(readFileSync(PUBLIC_RECEIPT, "utf8"));
+    const spine = JSON.parse(readFileSync(PROCUREMENT_SPINE, "utf8"));
+    const rows = spine.rows?.checkbook_contracts || [];
+
+    assert.ok(rows.length > 500, `expected more than 500 graph rows, got ${rows.length}`);
+    assert.equal(rows.length, receipt.graph_slice.row_count);
+    assert.equal(rows.length, spine.materialization.checkbook_contracts.graph_rows);
+    assert.equal(sha256Json(rows), receipt.checksums.committed_graph_slice_sha256);
+    assert.equal(new Set(rows.map((row) => row.contract_id)).size, rows.length);
+    assert.ok(rows.every((row) => row.exact_key_status?.contract_id === "exact"));
+    assert.equal(receipt.identity_policy.authority_keys, "exact contract_id and exact PIN/EPIN only");
   });
 });
