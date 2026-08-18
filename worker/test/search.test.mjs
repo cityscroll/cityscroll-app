@@ -308,6 +308,56 @@ test("Vendors uses its complete production provider for worker recall and covera
   );
 });
 
+test("Parcels use the exact-BBL production corpus for worker recall and coverage", async () => {
+  const exact = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=1000730008"),
+    {},
+    {},
+  );
+  assert.equal(exact.status, 200);
+  const exactBody = await exact.json();
+  const parcel = exactBody.results.find((result) => result.object_ref === "bbl:1000730008");
+  assert.ok(parcel);
+  assert.equal(parcel.object_type, "parcel");
+  assert.equal(parcel.domain, "property");
+  assert.equal(parcel.canonical_href, "/parcels/1000730008/");
+  assert.equal(exactBody.results.some((result) => result.object_type === "land_use_project"
+    && result.object_ref === "bbl:1000730008"), false);
+  assert.deepEqual({
+    participated: exactBody.coverage.by_lens.parcels.participated,
+    state: exactBody.coverage.by_lens.parcels.state,
+    indexed_count: exactBody.coverage.by_lens.parcels.indexed_count,
+  }, {
+    participated: true,
+    state: "matched",
+    indexed_count: 320,
+  });
+
+  const address = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=PIER-16%20SOUTH%20STREET"),
+    {},
+    {},
+  );
+  assert.equal(address.status, 200);
+  const addressBody = await address.json();
+  assert.ok(addressBody.results.some((result) => (
+    result.object_ref === "bbl:1000730008" && result.object_type === "parcel"
+  )));
+  assert.equal(addressBody.results.some((result) => (
+    result.object_type === "parcel" && result.object_ref !== "bbl:1000730008"
+  )), false);
+  assert.equal(addressBody.coverage.by_lens.parcels.matched_count, 1);
+
+  const parcelsCoverage = buildUniversalSearchCoverageView(exactBody.coverage).lenses
+    .find((lens) => lens.lens === "parcels");
+  assert.equal(parcelsCoverage?.label, "Properties");
+  assert.equal(parcelsCoverage?.state_label, "indexed");
+  assert.match(
+    renderUniversalSearchCoverageHtml(addressBody.coverage),
+    /data-coverage-lens="parcels" data-coverage-state="matched"><span>Properties<\/span><strong>1 match · indexed<\/strong>/,
+  );
+});
+
 test("common civic terms return relevant records through the same FTS route", async () => {
   const { sqlite, DB } = database(ROWS);
   try {

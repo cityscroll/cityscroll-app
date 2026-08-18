@@ -40,7 +40,17 @@ const D1_LANES = Object.freeze({
 const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
   people: "people",
   vendors: "vendors",
+  parcels: "parcels",
 });
+// Collection lenses that are not already represented in the six presentation
+// lanes still contribute typed objects to the flat result list. People compose
+// into people-organizations; Vendors compose into Contracts.
+const EXTRA_RESULT_LANES = Object.freeze(
+  Object.keys(PRODUCTION_COLLECTION_FAMILIES).filter((lens) => (
+    !LANE_ORDER.includes(lens) && lens !== "people" && lens !== "vendors"
+  )),
+);
+
 function cleanQuery(value) {
   return String(value ?? "")
     .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -415,7 +425,7 @@ function flattenedResults(dynamicResults, lanes) {
   const results = [];
   for (const document of [
     ...(Array.isArray(dynamicResults) ? dynamicResults : []),
-    ...LANE_ORDER.flatMap((id) => lanes[id]?.cards || []),
+    ...[...LANE_ORDER, ...EXTRA_RESULT_LANES].flatMap((id) => lanes[id]?.cards || []),
   ]) {
     const key = `${document?.object_type}:${document?.object_ref}`;
     if (!document?.object_ref || seen.has(key)) continue;
@@ -482,7 +492,7 @@ function universalSearchCoverage(lanes, results, dynamicResults, federatedCovera
       source: examFamily?.source || "No bounded source configured",
       method: "bounded_keyword_family_v1",
     },
-    parcels: partialLens("parcels", null, ["parcel"]),
+    parcels: federatedCoverage.by_lens.parcels,
   };
   const incompleteLenses = UNIVERSAL_SEARCH_LENS_IDS.filter((lens) => (
     !["matched", "empty"].includes(byLens[lens].state)
@@ -540,6 +550,7 @@ export async function handleSearch(request, env) {
   });
   const peopleLane = federatedCollectionLane("people", collectionFederation, resolved);
   const vendorLane = federatedCollectionLane("vendors", collectionFederation, resolved);
+  const parcelsLane = federatedCollectionLane("parcels", collectionFederation, resolved);
   const agencyLane = staticSearchLane("people-organizations", resolved);
   const contractsMirror = dynamic.lanes.contracts;
   const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
@@ -558,6 +569,7 @@ export async function handleSearch(request, env) {
     vendors: vendorLane,
     agencies: agencyLane,
     contracts: contractsLane,
+    parcels: parcelsLane,
     "people-organizations": combinedStaticLane(
       "people-organizations",
       "NYC Council people and CityScroll agency profiles",
