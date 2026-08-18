@@ -218,7 +218,7 @@ function careerFacetLinkHTML(facet,value,filters,sourceValue="",{count=null}={})
       label,
       count,
       pressed,
-      className: `career-facet-chip career-interest-chip${pressed ? " current" : ""}`,
+      className: ["career-facet-chip","career-interest-chip",pressed?"current":""].filter(Boolean).join(" "),
       attributes: {
         "data-career-facet": edge,
         "data-career-interest": value,
