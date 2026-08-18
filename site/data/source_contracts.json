@@ -592,15 +592,33 @@
       ],
       "max_stale_days": 550,
       "publisher_cadence": "Fiscal-year releases",
-      "product_freshness": "Queried live with a five-minute browser cache.",
+      "product_freshness": "FY title mart (count + min/max/avg base) is committed and refreshed weekly from a SODA group-by. People title/payroll suggestion counts prefer that mart; live SODA remains the miss fallback. Individual employee rows are never served.",
       "used_for": "Title and pay history in the Staffing experience.",
       "code_references": [
         {
           "path": "site/app/core.mjs",
           "contains": "k397-673e"
+        },
+        {
+          "path": "site/payroll_title_mart.mjs",
+          "contains": "k397-673e"
+        },
+        {
+          "path": "worker/src/lib/suggestions.mjs",
+          "contains": "payroll_title_mart"
+        },
+        {
+          "path": "tools/build_payroll_title_warehouse_lookup.mjs",
+          "contains": "k397-673e"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized",
+      "warehouse_snapshot": {
+        "status": "materialized",
+        "artifact": "site/data/payroll_title_warehouse_lookup.json",
+        "materialized_at": "2026-08-18T14:14:03.293Z",
+        "row_count": 1557
+      }
     },
     {
       "id": "active-civil-service-list",

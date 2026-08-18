@@ -45,8 +45,53 @@ test("suggestionCountParams: alerts non-rezone watch maps to a money-shaped coun
   assert.match(q.params["$where"], /contract_amount >= 1000000/);
 });
 
-test("suggestionCountParams: people role suggestions use the same payroll year and title match as Staffing", () => {
+test("suggestionCountParams: people role suggestions count the payroll title mart before SODA", () => {
   const q = suggestionCountParams("people", { keywords: ["paramedic"], lookupType: "role" }, TODAY);
+  assert.equal(q.url, null);
+  assert.equal(q.source, "payroll_title_mart");
+  assert.ok(q.count >= 1017);
+  assert.equal(typeof q.readRows, "function");
+  assert.ok(q.readRows().some((row) => /paramedic/i.test(row.title_description)));
+});
+
+test("suggestionCountParams: people title mart hit never calls live payroll SODA", async () => {
+  const { loadProductSeedRows, buildMaterializationDoc } = await import(
+    "../../warehouse/lib/payroll_title_lookup.mjs"
+  );
+  const mart = buildMaterializationDoc(loadProductSeedRows(), {
+    mode: "product_seed",
+    now: "2026-08-18T00:00:00.000Z",
+  });
+  const sodaHits = [];
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    sodaHits.push(String(url));
+    throw new Error("live SODA must not run on a payroll title mart hit");
+  };
+  try {
+    const q = suggestionCountParams(
+      "people",
+      { keywords: ["paramedic"], lookupType: "role" },
+      TODAY,
+      { payrollTitleMart: mart },
+    );
+    assert.equal(q.url, null);
+    assert.equal(q.source, "payroll_title_mart");
+    const n = Number.isFinite(Number(q.count)) ? Number(q.count) : (await q.readRows()).length;
+    assert.equal(n, 1017);
+    assert.deepEqual(sodaHits, []);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("suggestionCountParams: people title miss still falls through to payroll SODA", () => {
+  const q = suggestionCountParams(
+    "people",
+    { keywords: ["paramedic"], lookupType: "role" },
+    TODAY,
+    { payrollTitleMart: { schema_version: 1, fiscal_year: 2025, rows: [] } },
+  );
   assert.match(q.url, /k397-673e\.json/);
   assert.equal(q.params["$select"], "count(1) as n");
   assert.match(q.params["$where"], /fiscal_year=2025/);

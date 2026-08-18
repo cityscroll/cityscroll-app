@@ -547,11 +547,11 @@
       "id": "citywide-payroll",
       "name": "Citywide Payroll Data",
       "source_contract_id": "citywide-payroll",
-      "status": "live-only",
+      "status": "landed",
       "join_keys": [],
       "join_coverage": {},
       "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
-      "delivery_tier": "live-only"
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "civil-service-list-certification",

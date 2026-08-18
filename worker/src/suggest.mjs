@@ -130,7 +130,9 @@ async function validateCandidate(env, candidate, todayISO, { moneyDestination = 
   const q = suggestionCountParams(candidate.lens, resolved.filter, todayISO);
   if (!q) return null;
   let n;
-  if (typeof q.readRows === "function") {
+  if (Number.isFinite(Number(q.count))) {
+    n = Number(q.count);
+  } else if (typeof q.readRows === "function") {
     const rows = await q.readRows();
     n = Array.isArray(rows) ? rows.length : 0;
   } else {
