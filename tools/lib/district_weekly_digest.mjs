@@ -160,9 +160,11 @@ export function buildDistrictWeeklyDigests({
   for (const row of zapRows) {
     const publisher = normalizeCouncilDistrictId(row?.cc_district || row?.council_district || row?.city_council_district);
     const councils = new Set(publisher ? [publisher] : []);
-    for (const cd of parseZapCommunityDistricts(row?.community_district)) {
-      for (const derived of councilDistrictsIntersectingCommunity(cd, cdIntersectsIndex)) {
-        councils.add(derived);
+    if (!publisher) {
+      for (const cd of parseZapCommunityDistricts(row?.community_district)) {
+        for (const derived of councilDistrictsIntersectingCommunity(cd, cdIntersectsIndex)) {
+          councils.add(derived);
+        }
       }
     }
     add([...councils], landItem(row));

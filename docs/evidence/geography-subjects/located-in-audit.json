@@ -1,25 +1,30 @@
 {
   "schema": "cityscroll.geography_located_in_audit.v1",
-  "polygon_memberships": 2463,
-  "public_edges": 2452,
+  "polygon_memberships": 1881,
+  "public_edges": 1870,
   "evidence_only_edges": 11,
   "reconciled": true,
   "by_lens": {
     "land": {
-      "polygon_memberships": 1330,
-      "public_edges": 1330,
+      "polygon_memberships": 748,
+      "public_edges": 748,
       "evidence_only_edges": 0,
       "reconciled": true,
       "by_method": {
         "publisher_district": {
-          "public": 457,
+          "public": 470,
           "evidence_only": 0,
-          "total": 457
+          "total": 470
+        },
+        "publisher_council": {
+          "public": 217,
+          "evidence_only": 0,
+          "total": 217
         },
         "cd_intersects_council": {
-          "public": 871,
+          "public": 59,
           "evidence_only": 0,
-          "total": 871
+          "total": 59
         },
         "structured_bag": {
           "public": 2,
@@ -176,7 +181,7 @@
   },
   "note": "Each polygon membership has exactly one routed located_in candidate. Citywide, virtual, and unlocated remain non-polygon buckets. Weak agency-HQ and vendor fallbacks remain evidence-only.",
   "boundary_vintage": "2026-05-26",
-  "built_at": "2026-08-18T03:02:40.606Z",
+  "built_at": "2026-08-18T04:27:39.274Z",
   "subject_counts": {
     "borough": 5,
     "community-district": 59,

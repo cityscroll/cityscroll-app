@@ -10,9 +10,14 @@ import {
   districtDigestRows,
   groupDistrictDigestRows,
 } from "../site/district_weekly_digest.mjs";
+import { buildDistrictWeeklyDigests } from "../tools/lib/district_weekly_digest.mjs";
 
 const ROOT = join(fileURLToPath(new URL("..", import.meta.url)));
 const artifact = JSON.parse(readFileSync(join(ROOT, "site/data/district_weekly_digests.json"), "utf8"));
+const boundaries = JSON.parse(readFileSync(join(ROOT, "site/data/district_boundaries.json"), "utf8"));
+const communityBoardGeography = JSON.parse(
+  readFileSync(join(ROOT, "site/data/community_board_geography_lookup.json"), "utf8"),
+);
 
 test("district weekly artifact covers all 51 council districts with exact count/list parity", () => {
   assert.equal(artifact.schema, "district_weekly_digests.v1");
@@ -25,6 +30,26 @@ test("district weekly artifact covers all 51 council districts with exact count/
     assert.equal(record.total, Object.values(record.counts).reduce((n, value) => n + value, 0));
     assert.equal(new Set(rows.map((row) => row.district_item_id)).size, rows.length, "items are unique within a district");
   }
+});
+
+test("publisher council takes precedence over community-district fallback in weekly land items", () => {
+  const digest = buildDistrictWeeklyDigests({
+    boundaries,
+    communityBoardGeography,
+    builtAt: "2026-08-18T00:00:00.000Z",
+    zapRows: [
+      {
+        project_id: "2024K0001",
+        borough: "Brooklyn",
+        community_district: "K01",
+        cc_district: "33",
+      },
+    ],
+  });
+  const councils = Object.entries(digest.by_council_district)
+    .filter(([, record]) => record.items.some((item) => item.project_id === "2024K0001"))
+    .map(([id]) => id);
+  assert.deepEqual(councils, ["33"]);
 });
 
 test("hearing actions are current or upcoming at build time", () => {

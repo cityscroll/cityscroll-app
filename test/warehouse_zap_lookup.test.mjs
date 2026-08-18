@@ -91,6 +91,21 @@ describe("WH-05 pure ZAP materialization index", () => {
     assert.equal(getDataset(ZAP_DATASET_KEY).dataset_id, "hgx4-8ukb");
   });
 
+  it("retains the publisher council district in WH-05 rows", () => {
+    const shaped = rowToSodaShape({
+      project_id: "2024K0001",
+      community_district: "K01",
+      cc_district: "33",
+    });
+    assert.equal(shaped.cc_district, "33");
+
+    const doc = buildMaterializationDoc([shaped], {
+      mode: "test",
+      now: "2026-08-18T00:00:00.000Z",
+    });
+    assert.equal(doc.rows[0].cc_district, "33");
+  });
+
   it("sqlZapByProjectId escapes and limits", () => {
     const sql = sqlZapByProjectId("2022M0258");
     assert.match(sql, /project_id/);
@@ -110,6 +125,8 @@ describe("WH-05 committed materialization + speed receipt", () => {
     assert.ok(site.row_count >= 2);
     assert.deepEqual(site.rows, worker.rows);
     assert.ok(site.rows.some((r) => r.project_id === "2022M0258"));
+    assert.ok(site.rows.every((r) => Object.hasOwn(r, "cc_district")));
+    assert.ok(site.rows.some((r) => r.cc_district), "publisher council districts were dropped");
   });
 
   it("ships optional speed receipt when present", () => {
