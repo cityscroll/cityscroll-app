@@ -106,10 +106,14 @@ Sources and refresh rules:
   data-integrity dimension.
 
 Run `node tools/build_staffing_exams.mjs --refresh` to refresh the Open Data
-snapshots and rebuild the client artifact. The DCAS current-page snapshot remains
+snapshots (annual schedule `4ptz-hmtc`, active-list summary, **exam-level**
+`civil_service_list_aggregates.json` group-by from `vx8i-nprf`, and the City
+Record negative-control check) and then rebuild the client artifact. Per-applicant
+list rows and names are never retained. The DCAS current-page snapshot remains
 a reviewed input because nyc.gov sometimes blocks unattended requests from build
 networks. Run `node tools/build_staffing_exams.mjs --check` for the hermetic CI
-drift check.
+byte-stable + serve-age drift check (`STAFFING_EXAMS_MAX_AGE_DAYS`). Scheduled
+refresh→publish lives in `.github/workflows/staffing-exams-refresh.yml`.
 
 - `civil_service_list_aggregates.json` — **exam-level only** group-by from the
   active Civil Service List (`vx8i-nprf`): list_count, established_date,

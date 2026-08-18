@@ -1212,7 +1212,7 @@ const STRINGS = {
     career_show_more: "Show {n} more exams",
     career_exam_not_found: "That exam is not in the current DCAS schedule.",
     career_no_results: "No exams match these filters. Try all interests or all scheduled exams.",
-    career_source_current: "From official DCAS sources. Open exams checked {date}. Annual schedule current through {annual}.",
+    career_source_current: "From official DCAS sources. Open exams checked {date}. Annual schedule current through {annual}. Active list through {list}.",
     career_source_stale: "The latest open-exam check is from {date}. Confirm every date on the official DCAS site before acting.",
     career_source_details: "Official exam source",
     career_load_failed: "The exam guide could not load. Use the official DCAS exam schedule and try this page again later.",

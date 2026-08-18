@@ -187,16 +187,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## PR and CI preflight
 
-- **Daily refresh PR publish loop:** the five data-refresh workflows
+- **Daily refresh PR publish loop:** the data-refresh workflows
   (`doing-business-warehouse-lookup`, `geocoder-address-index`,
   `land-upcoming-hearings`, `land-zap-freshness-refresh`,
-  `refresh-preset-fallback`) must open PRs with repo secret
-  `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests R/W),
-  not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from triggering
-  required checks (anti-recursion), which stalls merge-queue auto-merge.
-  After `peter-evans/create-pull-request`, each workflow enables auto-merge via
-  `gh pr merge "$REFRESH_PR" --auto --match-head-commit "$REFRESH_HEAD"` with
-  the same PAT as `GH_TOKEN`.
+  `refresh-preset-fallback`, `staffing-exams-refresh`) must open PRs with repo
+  secret `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests
+  R/W), not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from
+  triggering required checks (anti-recursion), which stalls merge-queue
+  auto-merge. After `peter-evans/create-pull-request`, each workflow enables
+  auto-merge via `gh pr merge "$REFRESH_PR" --auto --match-head-commit
+  "$REFRESH_HEAD"` with the same PAT as `GH_TOKEN`.
 - Shared browser artifacts use `tools/site_artifact_identity.mjs` plus
   `.github/actions/use-site-artifact`: the run/attempt artifact and exact-input
   cache are trusted only after `_site.sha256`, commit/tree, lockfile, Node
@@ -1674,11 +1674,16 @@ Closed-exam exam_no overlap **44.54%** (494/1,109) — ship post-list depth;
 open-exam overlap 0%. Artifact:
 `site/data/exam_sources/civil_service_list_aggregates.json` joined at build via
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
-Closed exams that leave the current FY annual snapshot stay joinable through
-`list_depth_closed_exams.json` (open 7xxx series has 0% list presence). UI:
-`list_joined` when list depth attaches; empty aggregate slots use class-(a)
-`not_yet_ingested` (`career_outcomes_not_yet_ingested_html`) — never class-(b)
-city-withhold for aggregates. Individual scores remain class-(b).
+`--refresh` re-pages the SODA group-by (never roster rows). Daily
+refresh→publish: `.github/workflows/staffing-exams-refresh.yml` (`REFRESH_PR_TOKEN`
++ `gh pr merge --auto`); serve-age gate `STAFFING_EXAMS_MAX_AGE_DAYS` (7) fails
+closed on `open_window_as_of` / active-list `fetched_at`. Artifact stamps
+`list_current_as_of`, `open_window_as_of`, and freshest-source
+`data_current_as_of`. Closed exams that leave the current FY annual snapshot stay
+joinable through `list_depth_closed_exams.json` (open 7xxx series has 0% list
+presence). UI: `list_joined` when list depth attaches; empty aggregate slots use
+class-(a) `not_yet_ingested` (`career_outcomes_not_yet_ingested_html`) — never
+class-(b) city-withhold for aggregates. Individual scores remain class-(b).
 
 ## Staffing list-establishment predictions
 
