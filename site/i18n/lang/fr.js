@@ -1946,6 +1946,11 @@
     zapact_ha: "Cession (HPD)",
     zapact_pc: "Acquisition",
     zapact_hg: "Rénovation urbaine",
+    zapact_pp: "Cession",
+    zapact_ps: "Sélection de site",
+    zapact_mm: "Modification du plan de la ville",
+    zapact_dm: "Suppression du plan",
+    zapact_hi: "Désignation de monument historique",
 
     // Property explorer
     all_types: "Tous les types",
