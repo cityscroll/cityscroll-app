@@ -282,7 +282,8 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   stays collection-specific. Vendor indexing is over currently eligible roots only; tentative
   exclusions (for example Extell without a strong source observation) stay in
   `build_receipt.excluded_vendor_roots` and must not make the Vendors lens report partial.
-  Worker-route proof for People and Vendors is in `worker/test/search.test.mjs`.
+  Registered families today: People, Vendors, and Parcels (exact-BBL Properties). Worker-route
+  proof is in `worker/test/search.test.mjs`.
 - **Semantic topic-search consumer:** `site/semantic_topic_search.mjs` is the fail-closed adapter
   for `cityscroll.semantic_retrieval.candidate_response.v1`. It verifies the sr1 corpus and sr2
   passage receipts, rejects public scores and unsafe evidence, retains the three source families
