@@ -25,6 +25,7 @@ import {
   normalizeLandStage,
 } from "../land_status_facets.mjs";
 import { resolveLandPublicStatus } from "../land_detail_coherence.mjs";
+import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -98,11 +99,12 @@ const LAND_DEFAULT_SNAPSHOT_URL="data/land_default_ulurp.json";
 const LAND_UPCOMING_HEARINGS_URL="data/land_upcoming_hearings.json";
 const LAND_PROJECTS_SNAPSHOT_URL="data/zap_projects_warehouse_lookup.json";
 const LAND_BBLS_SNAPSHOT_URL="data/zap_bbl_warehouse_lookup.json";
+const LAND_BBL_CENTROIDS_SNAPSHOT_URL="data/bbl_mappluto_centroids_lookup.json";
 const LAND_MEETINGS_SNAPSHOT_URL="data/shared_meeting_read_model.json";
 const LAND_PROPERTY_SNAPSHOT_URL="data/property_domain_observations.json";
 let landDefaultSnapshotPromise=null;
 let landUpcomingHearingsPromise=null;
-let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
+let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landBblCentroidSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
     landDefaultSnapshotPromise=fetch(LAND_DEFAULT_SNAPSHOT_URL)
@@ -130,6 +132,14 @@ function loadLandBblSnapshot(){
       .then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable")));
   }
   return landBblSnapshotPromise;
+}
+function loadLandBblCentroidSnapshot(){
+  if(!landBblCentroidSnapshotPromise){
+    landBblCentroidSnapshotPromise=fetch(LAND_BBL_CENTROIDS_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"})
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return landBblCentroidSnapshotPromise;
 }
 function toFiniteCoordinates(lat, lon){
   const y = Number(lat);
@@ -212,20 +222,36 @@ function collectAddressCandidates(record, outcomeRecord){
   }
   return out.map((q)=>`${q}${boro?` ${boro}`:""} New York`).map((q)=>q.replace(/\s+,/g,",").replace(/\s+/g," ").trim());
 }
-async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, geocode} = {}){
+async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, geocode, centroidLookup} = {}){
   const outcome = outcomeRecord || null;
   const geoPoint = toFinitePoint(record) || toFinitePoint(outcome);
   if(geoPoint){
-    return {status:"exact", precision:"exact", lat:geoPoint[0], lon:geoPoint[1], label: cleanText(record?.project_name || record?.borough || outcome?.project_name || outcome?.borough || "")};
+    return {status:"exact", precision:"exact", lat:geoPoint[0], lon:geoPoint[1], label: cleanText(record?.project_name || record?.borough || outcome?.project_name || outcome?.borough || ""), method:"authoritative_point"};
   }
   const bbls = collectProjectBbls(record, outcome).slice(0,25);
+  // Precedence: authoritative point → committed MapPLUTO BBL centroid → property geometry → address geocode → unresolved.
+  // MapPLUTO stays off the resident hot path; only the retained centroid table is consulted here.
+  if(bbls.length && centroidLookup){
+    const centroid = lookupBblCentroid(centroidLookup, bbls);
+    if(centroid){
+      return {
+        status:"exact",
+        precision:"exact",
+        lat:centroid.lat,
+        lon:centroid.lon,
+        bbl:centroid.bbl,
+        method:"bbl_mappluto_centroid",
+        label:cleanText(record?.project_name || outcome?.project_name || record?.borough || outcome?.borough || ""),
+      };
+    }
+  }
   const propertyRows = propertyPayload?.property_rows || [];
   if(bbls.length && propertyRows.length){
     const bblSet = new Set(bbls);
     const address = propertyRows.flatMap(item=>item?.property_location?.addresses||[])
       .find((item)=> bblSet.has(String(item?.bbl||"")) && Number.isFinite(Number(item?.latitude)) && Number.isFinite(Number(item?.longitude)));
     if(address){
-      return {status:"exact", precision:"exact", lat:Number(address.latitude), lon:Number(address.longitude), label:address.label||record?.project_name||""};
+      return {status:"exact", precision:"exact", lat:Number(address.latitude), lon:Number(address.longitude), label:address.label||record?.project_name||"", method:"property_address"};
     }
     const geometryPoint = propertyRows.find((row)=>{
       const bblMatch = bblSet.has(String(row?.property_location?.bbl||"")) ||
@@ -236,7 +262,7 @@ async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, g
     });
     if(geometryPoint){
       const toPoint = toFinitePoint(geometryPoint?.property_location);
-      if(toPoint) return {status:"exact", precision:"exact", lat:toPoint[0], lon:toPoint[1], label:geometryPoint?.short_title||record?.project_name||""};
+      if(toPoint) return {status:"exact", precision:"exact", lat:toPoint[0], lon:toPoint[1], label:geometryPoint?.short_title||record?.project_name||"", method:"property_geometry"};
     }
   }
   if(!geocode) return {status:"unresolved", reason:"no-resolution"};
@@ -244,7 +270,7 @@ async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, g
   for(const query of candidates){
     const next = await Promise.resolve(geocode?.(query)).catch(()=>null);
     if(next?.status==="matched"&&Number.isFinite(next?.lat)&&Number.isFinite(next?.lon)){
-      return {status:"approximate", precision:"approximate", lat:next.lat, lon:next.lon, label: next.label || record?.project_name || outcome?.borough || ""};
+      return {status:"approximate", precision:"approximate", lat:next.lat, lon:next.lon, label: next.label || record?.project_name || outcome?.borough || "", method:"address_geocode"};
     }
   }
   return {status:"unresolved", reason:"no-resolution"};
@@ -771,8 +797,10 @@ async function landSelect(i, el){
     const outcomeRecord = outcomePayload?.record ? normalizeLandRecord(outcomePayload.record) : null;
     if(selection!==landSelectionSeq) return;
     const propertyPayload=await loadLandPropertySnapshot().catch(()=>null);
+    const centroidLookup=await loadLandBblCentroidSnapshot();
     const resolution = await resolveLandMapLocation(r, outcomeRecord, {
       propertyPayload,
+      centroidLookup,
       geocode:(q)=>geocode(q),
     });
     if(selection!==landSelectionSeq) return;

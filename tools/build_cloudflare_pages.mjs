@@ -56,6 +56,7 @@ const commitSha = args["commit-sha"] || "";
 // must never be the first place a resident live-data dependency is discovered.
 runNode(sourceDir, "no_live_external_reads.mjs", ["--check"]);
 runNode(sourceDir, "build_geocoder_address_index.mjs", ["--check"]);
+runNode(sourceDir, "build_bbl_mappluto_centroids.mjs", ["--check"]);
 
 if (refresh) {
   runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--land-only"]);

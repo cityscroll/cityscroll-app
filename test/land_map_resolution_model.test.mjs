@@ -4,6 +4,8 @@ import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
+import { lookupBblCentroid } from "../site/bbl_mappluto_centroids.mjs";
+
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const landSrc = readFileSync(new URL("../site/app/land.mjs", import.meta.url), "utf8");
 
@@ -174,6 +176,7 @@ const {
   resolveLandMapLocation,
 } = new Function(
   "cleanText",
+  "lookupBblCentroid",
   [
     extractFunction(landSrc, "toFiniteCoordinates"),
     extractFunction(landSrc, "toFinitePoint"),
@@ -184,7 +187,8 @@ const {
     "return {toFinitePoint, normalizeLandBbl, collectProjectBbls, collectAddressCandidates, resolveLandMapLocation};",
   ].join("\n")
 )(
-  cleanText
+  cleanText,
+  lookupBblCentroid
 );
 
 test("exact location preference uses authoritative point from project/outcome", async()=>{
