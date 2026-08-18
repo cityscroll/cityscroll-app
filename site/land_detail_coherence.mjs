@@ -7,14 +7,34 @@
  * clocks were each locally "correct" while the composed page contradicted itself.
  */
 
-import { LAND_ULURP_PHASES } from "./land_phase_spine.mjs";
-import { isoDateOnly } from "./ulurp_statutory_clock.mjs";
+/** Keep this module import-light — it is pulled into the home loader via feed-actions. */
+const LAND_ULURP_PHASES = Object.freeze([
+  "pre_application",
+  "environmental",
+  "pre_certification",
+  "certification",
+  "community_board",
+  "borough_president",
+  "cpc",
+  "city_council",
+  "mayoral_appeals",
+]);
 
-const clean = (value) => {
+function landCoherenceIsoDate(value) {
+  if (!value) return null;
+  const s = String(value);
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (m) return m[1];
+  const t = Date.parse(s);
+  if (!Number.isFinite(t)) return null;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+function cleanLandStatusText(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
   return s || null;
-};
+}
 
 const TERMINAL_STATUS_RE = /\bcompleted\b|\bapproved\b|\bdisapproved\b|\bwithdrawn\b|\bterminated\b/i;
 const PUBLIC_REVIEW_RE = /public review/i;
@@ -37,11 +57,11 @@ export function statusRank(status) {
  */
 export function resolveLandPublicStatus(listRow = null, outcomeRecord = null) {
   const candidates = [
-    { value: clean(outcomeRecord?.public_status), source: "zap_outcomes.public_status" },
-    { value: clean(listRow?.public_status), source: "list_row.public_status" },
-    { value: clean(outcomeRecord?.open_data?.public_status), source: "open_data.public_status" },
-    { value: clean(listRow?.project_status), source: "list_row.project_status" },
-    { value: clean(outcomeRecord?.open_data?.project_status), source: "open_data.project_status" },
+    { value: cleanLandStatusText(outcomeRecord?.public_status), source: "zap_outcomes.public_status" },
+    { value: cleanLandStatusText(listRow?.public_status), source: "list_row.public_status" },
+    { value: cleanLandStatusText(outcomeRecord?.open_data?.public_status), source: "open_data.public_status" },
+    { value: cleanLandStatusText(listRow?.project_status), source: "list_row.project_status" },
+    { value: cleanLandStatusText(outcomeRecord?.open_data?.project_status), source: "open_data.project_status" },
   ].filter((c) => c.value);
 
   if (!candidates.length) {
@@ -68,7 +88,7 @@ export function resolveLandPublicStatus(listRow = null, outcomeRecord = null) {
 }
 
 function hearingDay(hearing) {
-  return isoDateOnly(hearing?.event_date || hearing?.hearing_at || hearing?.hearing_date || hearing?.deadline);
+  return landCoherenceIsoDate(hearing?.event_date || hearing?.hearing_at || hearing?.hearing_date || hearing?.deadline);
 }
 
 /**
@@ -76,7 +96,7 @@ function hearingDay(hearing) {
  * retained separately for venue/maps context, but never labeled "Next hearing".
  */
 export function selectNextLandHearing(hearings = [], today = null) {
-  const day = isoDateOnly(today) || new Date().toISOString().slice(0, 10);
+  const day = landCoherenceIsoDate(today) || new Date().toISOString().slice(0, 10);
   const list = Array.isArray(hearings) ? hearings : [];
   const upcoming = list
     .map((h) => ({ hearing: h, date: hearingDay(h) }))
@@ -117,8 +137,8 @@ export function selectNextLandPhase(phases = [], currentPhaseId = null) {
  * Returns null due when the inputs cannot form a coherent statutory fact.
  */
 export function coherentStatutoryDue({ startDate = null, dueDate = null, windowDays = null } = {}) {
-  const start = isoDateOnly(startDate);
-  const due = isoDateOnly(dueDate);
+  const start = landCoherenceIsoDate(startDate);
+  const due = landCoherenceIsoDate(dueDate);
   if (!due) {
     return { due_date: null, ok: false, reason: "missing_due" };
   }
@@ -144,8 +164,8 @@ export function coherentStatutoryDue({ startDate = null, dueDate = null, windowD
  * yield a positive count.
  */
 export function daysLeftFromDeadline(dueDate, today = null) {
-  const due = isoDateOnly(dueDate);
-  const day = isoDateOnly(today) || new Date().toISOString().slice(0, 10);
+  const due = landCoherenceIsoDate(dueDate);
+  const day = landCoherenceIsoDate(today) || new Date().toISOString().slice(0, 10);
   if (!due) return null;
   const dueMs = Date.parse(`${due}T00:00:00Z`);
   const todayMs = Date.parse(`${day}T00:00:00Z`);

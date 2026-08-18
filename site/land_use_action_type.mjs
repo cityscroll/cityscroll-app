@@ -6,7 +6,7 @@
  * never the pathname.
  */
 
-const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+const cleanActionText = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
 /** DCP action-code → family (exact publisher codes only). */
 export const LAND_USE_ACTION_CODE_FAMILY = Object.freeze({
@@ -50,7 +50,7 @@ export function landUseActionCodes(record = {}) {
   const out = [];
   const seen = new Set();
   const push = (raw) => {
-    const code = clean(raw).toUpperCase();
+    const code = cleanActionText(raw).toUpperCase();
     if (!code || seen.has(code)) return;
     if (!/^[A-Z0-9]{1,4}$/.test(code)) return;
     seen.add(code);
