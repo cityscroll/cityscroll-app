@@ -97,6 +97,13 @@ test("English land methodology is the approved note verbatim", () => {
   );
 });
 
+test("Land map copy does not leak internal geocoder failure states", () => {
+  assert.doesNotMatch(landSrc, /lot_not_geocoded/);
+  assert.doesNotMatch(indexSrc, /exact lot not geocoded/i);
+  assert.match(landSrc, /hideLandMap\(selection, t\("location_not_resolved"\)\)/);
+  assert.match(landSrc, /resolveLandMapLocation\(/);
+});
+
 test("Land methodology lives once in progressive disclosure, outside list and empty states", () => {
   assert.match(
     indexSrc,
