@@ -416,6 +416,35 @@ test("no_disclaimer_slop: warns, blocks on request, and preserves honest copy", 
   }
 });
 
+test("no_disclaimer_slop: flags provenance restatement that per-link markers already show", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-provenance-restatement-"));
+  try {
+    writeFileSync(
+      join(dir, "i18n.js"),
+      `const STRINGS = { en: {\n` +
+        `  wall: "Awards are as published in the City Record. Registered contracts and payments live on Checkbook NYC. The timeline lead carries one search for this vendor name, not a link on every award.",\n` +
+        `  marker: "Registered contracts and payments: {link}.",\n` +
+        `  caveat: "Totals are published under this name, not a legal entity.",\n` +
+        `} };\n`,
+    );
+    writeFileSync(join(dir, "index.html"), "<!doctype html><html><body><main></main></body></html>\n");
+
+    const blocked = runPython([
+      "-m", "civic_content_gates", "check", "no_disclaimer_slop",
+      "--root", dir, "--no-disclaimer-slop-mode", "block",
+    ]);
+    assert.notEqual(blocked.status, 0, `provenance wall must fail closed: ${blocked.stdout}\n${blocked.stderr}`);
+    assert.match(blocked.stdout, /provenance-restatement disclaimer/);
+    assert.match(blocked.stdout, /Awards are as published in the City Record/);
+    assert.match(blocked.stdout, /Registered contracts and payments live on/);
+    assert.match(blocked.stdout, /timeline lead carries/);
+    assert.doesNotMatch(blocked.stdout, /Registered contracts and payments: \{link\}\./);
+    assert.doesNotMatch(blocked.stdout, /Totals are published under this name/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("no_disclaimer_slop: CI defaults the rendered census to blocking enforcement", () => {
   const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
   const a11yShard = workflow.slice(

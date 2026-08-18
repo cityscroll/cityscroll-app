@@ -1887,7 +1887,7 @@ const STRINGS = {
     agency_follow_btn: "Follow agency records",
     agency_watch_rules_btn: "Watch rules",
     agency_watch_meetings_btn: "Watch meetings",
-    vendor_identity_note_html: "Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above. Distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards are as published in the City Record. Registered contracts and payments live on {source}. The timeline lead carries one search for this vendor name, not a link on every award.",
+    vendor_identity_note_html: "Totals are published under this name, not a legal entity.",
     vendor_phase_heading: "Vendor procurement timeline",
     vendor_phase_award: "Award",
     vendor_phase_registration: "Registration",
