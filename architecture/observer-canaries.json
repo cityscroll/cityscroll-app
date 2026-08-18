@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.architecture.observer_canaries.v1",
-  "description": "Human-owned list of architecture-affecting surfaces the facts observer must see. Register a surface here; do not infer or auto-extend this list.",
+  "description": "Human-owned list of architecture-affecting surfaces. Register a surface here once; facts observer_coverage, the reconciliation workflow path-coverage check, and the watermark consume this list. Do not infer or auto-extend it.",
   "canaries": [
     {
       "id": "agency-constellation-model",
