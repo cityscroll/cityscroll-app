@@ -30,6 +30,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/architecture_watermark.test.mjs`, and
   `test/reconcile_architecture.test.mjs`.
 
+- **Architecture doc invariant consistency:** `docs/architecture.md` is the canonical
+  engineer register; its resident-read section carries the authoritative invariant from
+  `architecture/resident-read-policy.json`. `tools/reconcile_architecture.mjs --check`
+  treats a contradictory request-time publisher-read assertion in root `ARCHITECTURE.md`
+  as drift. The root narrative may summarize or link but must not grant behavior the
+  canonical invariant forbids. Proof: `test/reconcile_architecture.test.mjs`.
+
 - **Architecture canary backtest + change-history (LA11):**
   `tools/backtest_architecture_canaries.mjs --check` replays the frozen set in
   `architecture/backtests/frozen-set.json`. Seeded cases are land-action
