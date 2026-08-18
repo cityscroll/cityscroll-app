@@ -29,7 +29,7 @@ const zoningSection = html.slice(
 test("Zoning follows the shared lens hierarchy with the answer and review view first", () => {
   const intro = zoningSection.indexOf('id="land-domain-intro"');
   const toolbar = zoningSection.indexOf('id="land-toolbar"');
-  const primary = zoningSection.indexOf('id="land-status-rail"');
+  const primary = zoningSection.indexOf('class="land-primary-facets"');
   const resultbar = zoningSection.indexOf('id="land-resultbar"');
   const results = zoningSection.indexOf('id="land-results-grid"');
   assert.ok(intro >= 0 && intro < toolbar);
@@ -48,11 +48,13 @@ test("Zoning keeps review view visible while place controls stay in one disclosu
   assert.doesNotMatch(disclosure, /id="lhearingmode"/);
   assert.match(landSource, /boroughScopeLinksHTML/);
   assert.match(landSource, /renderLandBoroughScopeLinks/);
-  assert.doesNotMatch(disclosure, /id="lkw"|id="land-status-rail"/);
+  assert.doesNotMatch(disclosure, /id="lkw"|id="lstage"|id="lfuture"/);
   assert.match(zoningSection, /id="lkw"[\s\S]*?id="land-more-filters"/);
   assert.match(zoningSection, /id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"/);
   assert.match(zoningSection, /id="lstatus"[^>]*><option value="all"/);
-  assert.match(zoningSection, /data-land-status="active" aria-pressed="true"/);
+  assert.match(zoningSection, /id="lstage"[\s\S]*?value="active" selected/);
+  assert.match(zoningSection, /id="lfuture"[\s\S]*?value="hearing"/);
+  assert.ok(zoningSection.indexOf('id="lstage"') < zoningSection.indexOf('id="land-resultbar"'));
 });
 
 test("Zoning paints an exact count and gives empty scopes a prominent widen action", () => {
