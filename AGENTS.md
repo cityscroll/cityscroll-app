@@ -9,8 +9,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   observe. `tools/build_architecture_facts.mjs` emits `observer_coverage`
   (`observed_paths`, `known_canaries`, `unmapped_surfaces`). Register a new
   canary there; do not infer the list. This layer makes the observer's gaps
-  visible and does not add the missing observers. Proof:
-  `test/architecture_facts.test.mjs`.
+  visible and does not add the missing observers. The reconciler consumes that
+  same block: a non-empty `unmapped_surfaces` set is first-class
+  `unknown_surface` drift, so `--check` is healthy only when coverage is
+  complete and topology is unchanged. It does not recompute coverage or load a
+  watermark (LA9 supplies `baselineFacts`). Proof:
+  `test/architecture_facts.test.mjs` and `test/reconcile_architecture.test.mjs`.
 
 - **Cited semantic retrieval:** `worker/src/cited_retrieval.mjs` is the
   retrieval-only adapter from `worker/src/semantic_candidates.mjs` into the

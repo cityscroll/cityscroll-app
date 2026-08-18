@@ -163,7 +163,10 @@ function diffFacts(before, after) {
   const changes = { additions: [], removals: [], contradictions: [] };
 
   function walk(left, right, path) {
-    if (path === "generated_at" || path === "commit") return;
+    // Observer coverage is a first-class LA8 outcome, not a topology diff.
+    // LA9 may later pass a compact watermark as baselineFacts; skip this
+    // block so coverage never double-counts as addition/removal.
+    if (path === "generated_at" || path === "commit" || path === "observer_coverage") return;
     if (Array.isArray(left) && Array.isArray(right)) {
       const beforeItems = new Map(left.map((item) => [factArrayKey(item), item]));
       const afterItems = new Map(right.map((item) => [factArrayKey(item), item]));
@@ -225,16 +228,38 @@ function issue(type, target, details = {}) {
   };
 }
 
+function unknownSurfaceTarget(entry) {
+  const id = entry?.id ? String(entry.id) : "";
+  const path = entry?.path ? String(entry.path) : "";
+  if (id && path) return `${id} (${path})`;
+  return id || path || "unknown_surface";
+}
+
+function unmappedSurfacesFromCoverage(facts) {
+  const surfaces = facts?.observer_coverage?.unmapped_surfaces;
+  if (!Array.isArray(surfaces) || surfaces.length === 0) return [];
+  return surfaces
+    .filter((entry) => entry && (entry.id || entry.path))
+    .map((entry) => issue("unknown_surface", unknownSurfaceTarget(entry), {
+      canary_id: entry.id ?? null,
+      path: entry.path ?? null,
+      source: "observer_coverage.unmapped_surfaces",
+    }));
+}
+
 function proposalFor(item) {
   const action = {
     addition: "Decide whether to add or reject the observed element in the C4 model.",
     removal: "Decide whether to remove or retain the C4 declaration.",
     contradiction: "Resolve the implementation/model state mismatch.",
+    unknown_surface: "Extend the facts observer to cover this known canary, or record an ADR explaining the unobserved architecture-affecting surface.",
   }[item.type] ?? "Decide how the architecture record should change.";
   return {
     type: item.type,
     target: item.target,
-    files: ["architecture/workspace.dsl", "ARCHITECTURE.md", "docs/adr/"],
+    files: item.type === "unknown_surface"
+      ? ["architecture/observer-canaries.json", "tools/build_architecture_facts.mjs", "ARCHITECTURE.md", "docs/adr/"]
+      : ["architecture/workspace.dsl", "ARCHITECTURE.md", "docs/adr/"],
     action,
     rationale: null,
     rationale_status: "rationale required",
@@ -266,6 +291,10 @@ function apparentSupersededAdrs(adrs) {
 }
 
 function reconcileArchitecture({ facts, baselineFacts = facts, model, adrs = [] }) {
+  // baselineFacts is the LA9 seam. Until a committed watermark exists, the
+  // caller (and CLI) default it to the current facts — topology self-compare.
+  // LA8 does not load or invent that watermark; it fails on presence of an
+  // architecture-affecting unmapped canary from observer_coverage.
   const parsedModel = typeof model === "string" ? parseWorkspace(model) : model;
   const additions = [];
   const removals = [];
@@ -346,7 +375,8 @@ function reconcileArchitecture({ facts, baselineFacts = facts, model, adrs = [] 
 
   const supersededAdrs = apparentSupersededAdrs(adrs);
   const unique = (items) => [...new Map(items.map((item) => [JSON.stringify(item), item])).values()];
-  const allDrift = unique([...additions, ...removals, ...contradictions]);
+  const unmapped = unique(unmappedSurfacesFromCoverage(facts));
+  const allDrift = unique([...additions, ...removals, ...contradictions, ...unmapped]);
   const proposals = allDrift.map(proposalFor);
 
   return {
@@ -356,6 +386,7 @@ function reconcileArchitecture({ facts, baselineFacts = facts, model, adrs = [] 
       additions: unique(additions),
       removals: unique(removals),
       contradictions: unique(contradictions),
+      unmapped,
       superseded_adrs: unique(supersededAdrs),
       rationale_required: unique(parsedModel.rationaleRequired),
     },
@@ -385,6 +416,9 @@ function collectSourceNulls(facts) {
   return nulls;
 }
 
+// LA9 seam: pass a committed compact watermark as baselineFacts. Until then
+// this defaults to the current facts (topology self-compare). LA8 still fails
+// independently when observer_coverage.unmapped_surfaces is non-empty.
 function buildReport({ root = ROOT, facts = buildFacts(), baselineFacts = facts, modelPath = MODEL_PATH, adrDir = ADR_DIR } = {}) {
   const report = reconcileArchitecture({
     facts,
