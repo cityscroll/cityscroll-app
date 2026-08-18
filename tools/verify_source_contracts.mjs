@@ -21,7 +21,12 @@ const NETWORK_RETRY = 1;
 const DEFAULT_UA = "CityScrollSourceContracts/1.0 (+https://cityscroll.org; source-contract monitor)";
 
 export function freshnessLimit(contract) {
-  return Number(contract.freshness_policy?.limit_days || contract.max_stale_days || 0);
+  return Number(
+    contract.freshness_contract?.max_stale_days
+    || contract.freshness_policy?.limit_days
+    || contract.max_stale_days
+    || 0
+  );
 }
 
 function ageDays(epochMs) {
