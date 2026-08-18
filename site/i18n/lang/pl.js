@@ -1041,7 +1041,7 @@
     project_connections_coverage_measured: 'Pokrycie: {linked} z {eligible} w {scope}.',
     project_connections_coverage_bounded: 'Zaobserwowano {linked} projektów w {scope}; mianownik kwalifikujących się projektów nie został zmierzony.',
     project_connections_coverage_unknown: 'Mianownik kwalifikujących się projektów nie został zmierzony dla {scope}.',
-    project_connections_scope_current: 'bieżącym zrzucie 231 projektów',
+    project_connections_scope_current: 'bieżącym zrzucie projektów',
     project_connections_scope_sample: 'stałej próbie 50 ukończonych projektów',
     project_connections_scope_bounded: 'ograniczonej materializacji powiązań',
     project_connections_scope_project: 'tym projekcie',

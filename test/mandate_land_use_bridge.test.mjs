@@ -233,11 +233,20 @@ test("live Landmarks materialization keeps agency-only land actions in shadow", 
   });
   assert.equal(view.mandates_land_use.status, "matched");
   assert.equal(view.mandates_land_use.edges.length, 0);
-  assert.equal(view.mandates_land_use.shadow_edges.length, 9);
+  assert.ok(view.mandates_land_use.shadow_edges.length >= 1);
   assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.decision === "evidence_only"));
-  assert.ok(view.mandates_land_use.shadow_edges.some((edge) => edge.reason.includes("project_identity")));
-  assert.ok(view.mandates_land_use.shadow_edges.some((edge) => edge.reason.includes("mandate_phase_compatible")));
-  assert.equal(view.mandates_land_use.procedure_paths.length, 9);
+  // Agency-only actions never promote: withholding reason is missing project
+  // identity on the mandate. Phase may be compatible on current sell-facing
+  // rows after a WH-05 refresh; that alone must not publish the edge.
+  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => {
+    const reasons = Array.isArray(edge.reason) ? edge.reason : [edge.reason];
+    return reasons.includes("project_identity");
+  }));
+  assert.ok(view.mandates_land_use.shadow_edges.every((edge) => edge.match?.project_identity === false));
+  assert.equal(
+    view.mandates_land_use.procedure_paths.length,
+    view.mandates_land_use.shadow_edges.length,
+  );
   assert.ok(view.mandates_land_use.procedure_paths.every((path) => (
     path.mandate_edge.public && path.project_edge.public
   )));

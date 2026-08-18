@@ -459,11 +459,14 @@ export async function fetchDataPageCharts(fetchImpl = fetch, now = new Date()) {
 }
 
 /**
- * Prefer warehouse zap-projects (WH-05) when DuckDB has the table; otherwise acquire
- * from SODA. Resident parameterized search runs over this and the warehouse artifact.
+ * Prefer warehouse zap-projects (WH-05) only when DuckDB exists **and** the
+ * export milestone frontier is fresh. A stale bulk CSV (measured May-26 Last-
+ * Modified / April frontier while live SODA already carries June–July dates)
+ * must fall through so first paint is not frozen on lag.
  */
 export async function fetchLandDefaultProjects(fetchImpl = fetch, opts = {}) {
   const preferWarehouse = opts.preferWarehouse !== false;
+  const now = opts.now || new Date();
   if (preferWarehouse) {
     try {
       const { catalogExists } = await import("../../warehouse/lib/catalog.mjs");
@@ -471,18 +474,35 @@ export async function fetchLandDefaultProjects(fetchImpl = fetch, opts = {}) {
         const { exportLandDefaultFromWarehouse } = await import(
           "../../warehouse/lib/zap_lookup.mjs"
         );
+        const {
+          assessLandWarehouseFreshness,
+          bulkReceiptMilestoneMax,
+          readZapProjectsBulkReceipt,
+        } = await import("../../warehouse/lib/zap_freshness.mjs");
         const rows = exportLandDefaultFromWarehouse({ limit: LAND_DEFAULT_LIMIT });
         if (Array.isArray(rows) && rows.length) {
-          return rows.map((r) => ({ ...r, lookup_path: "warehouse" }));
+          const receipt = readZapProjectsBulkReceipt();
+          const assessment = assessLandWarehouseFreshness({
+            rows,
+            now,
+            bulkMilestoneMax: bulkReceiptMilestoneMax(receipt),
+          });
+          if (assessment.fresh) {
+            return rows.map((r) => ({
+              ...r,
+              lookup_path: "warehouse",
+              warehouse_freshness: assessment,
+            }));
+          }
         }
       }
     } catch {
-      // Fall through to live SODA (table missing, venv down, etc.).
+      // Fall through to live SODA (table missing, venv down, stale frontier, etc.).
     }
   }
   const rows = await fetchJson(fetchImpl, sodaUrl(LAND_DEFAULT_DATASET, landDefaultQuery()));
   if (!Array.isArray(rows)) throw new Error("land default SODA returned a non-array");
-  return rows;
+  return rows.map((r) => ({ ...r, lookup_path: r.lookup_path || "soda" }));
 }
 
 /**

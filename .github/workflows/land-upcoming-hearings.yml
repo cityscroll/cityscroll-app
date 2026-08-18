@@ -2,6 +2,10 @@
 # Lists sell-facing Open Data project statuses, polite-fetches each project from
 # the ZAP API, extracts venue/livestream/datetime, and fails if the product
 # snapshot would contain synthetic rows.
+#
+# Publish loop: open/update a PR that commits the product snapshot + receipt
+# (not upload-artifact-only). Pages/deploy consume the committed artifact;
+# build_cloudflare_pages.mjs still runs --check (not --live).
 name: Land upcoming hearings
 
 on:
@@ -19,7 +23,9 @@ on:
         default: "350"
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: land-upcoming-hearings
@@ -33,7 +39,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -51,7 +59,7 @@ jobs:
           args+=(--polite-delay-ms "$delay")
           node tools/build_land_upcoming_hearings.mjs "${args[@]}"
           node tools/build_land_upcoming_hearings.mjs --check
-      - name: Preserve product + receipt
+      - name: Preserve product + receipt artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -61,3 +69,48 @@ jobs:
             warehouse/receipts/proof/land_upcoming_hearings_latest.json
           if-no-files-found: error
           retention-days: 30
+      - name: Guard generated changes
+        id: generated
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo "Land upcoming hearings snapshot is already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/data/land_upcoming_hearings.json) ;;
+              warehouse/receipts/proof/land_upcoming_hearings_latest.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the upcoming-hearings pull request
+        if: steps.generated.outputs.changed == 'true'
+        id: refresh-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/land-upcoming-hearings
+          delete-branch: true
+          commit-message: Refresh land upcoming hearings snapshot
+          title: Refresh land upcoming hearings snapshot
+          body: |
+            Automated refresh of `site/data/land_upcoming_hearings.json` from the
+            daily ZAP hearing-logistics sweep.
+
+            Closes the compute-without-publish gap on card
+            `cityscroll/land-zap-freshness-publish-loop`.
+
+            Validation: `node tools/build_land_upcoming_hearings.mjs --check`
+          add-paths: |
+            site/data/land_upcoming_hearings.json
+            warehouse/receipts/proof/land_upcoming_hearings_latest.json
+      - name: Run required checks for the refresh pull request
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/land-upcoming-hearings

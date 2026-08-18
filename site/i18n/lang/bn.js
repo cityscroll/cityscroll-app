@@ -1034,7 +1034,7 @@
     project_connections_coverage_measured: 'কভারেজ: {scope}-এ {eligible}-এর মধ্যে {linked}।',
     project_connections_coverage_bounded: '{scope}-এ {linked}টি প্রকল্প দেখা গেছে; যোগ্য হর মাপা হয়নি।',
     project_connections_coverage_unknown: '{scope}-এর যোগ্য হর মাপা হয়নি।',
-    project_connections_scope_current: 'বর্তমান ২৩১-প্রকল্পের স্ন্যাপশট',
+    project_connections_scope_current: 'বর্তমান প্রকল্পের স্ন্যাপশট',
     project_connections_scope_sample: 'সম্পন্ন ৫০টি প্রকল্পের স্থির নমুনা',
     project_connections_scope_bounded: 'সীমিত সংযোগের উপাদানায়ন',
     project_connections_scope_project: 'এই প্রকল্প',
