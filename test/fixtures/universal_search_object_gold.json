@@ -497,5 +497,377 @@
       "state": "provider_unavailable",
       "reason": "upstream_provider_unavailable"
     }
+  ],
+  "query_suite": {
+    "schema": "cityscroll.search_quality.golden_query.v1",
+    "axes": [
+      "interpretation",
+      "recall",
+      "ranking",
+      "type_domain",
+      "canonical_route",
+      "dedup",
+      "coverage_honesty"
+    ]
+  },
+  "queries": [
+    {
+      "id": "gq-mosquito-title",
+      "category": "exact_known_title",
+      "corpus": "keyword_gold_mosquito",
+      "input": {
+        "channel": "keyword",
+        "text": "Pesticides and Mosquito Control Products"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["pesticide", "and", "mosquito", "control", "product"]
+        },
+        "recall": {
+          "must_include": ["procurement:81626S0021001"]
+        },
+        "type_domain": {
+          "object_type": "procurement",
+          "domain": "contracts"
+        },
+        "canonical_route": "/browse/contracts/?mode=award&q=81626S0021001"
+      },
+      "eval": ["interpretation", "recall", "type_domain", "canonical_route"]
+    },
+    {
+      "id": "gq-chris-marte-alias",
+      "category": "canonical_entity_alias",
+      "corpus": "people_hub",
+      "input": {
+        "channel": "keyword",
+        "text": "Chris Marte"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["chris", "marte"],
+          "notes": "Keyword resolve stays literal tokens. The Chris/Christopher alias is copied into people search_text, so sequence match can fire after the producer projects the hub row."
+        },
+        "recall": {
+          "must_include": ["person:7801"],
+          "via": "people_producer_alias"
+        },
+        "type_domain": {
+          "object_type": "person",
+          "domain": "people"
+        },
+        "canonical_route": "/officials/7801/"
+      },
+      "eval": ["interpretation", "recall", "type_domain", "canonical_route"]
+    },
+    {
+      "id": "gq-parks-agency-alias",
+      "category": "canonical_entity_alias",
+      "corpus": "agency_constellation",
+      "input": {
+        "channel": "keyword",
+        "text": "Parks"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["park"],
+          "retrieval_groups": [["parks", "park"]]
+        },
+        "recall": {
+          "must_include": ["agency:id:parks-and-recreation"]
+        },
+        "type_domain": {
+          "object_type": "agency",
+          "domain": "people"
+        },
+        "canonical_route": "/agencies/parks-and-recreation/"
+      },
+      "eval": ["interpretation", "recall", "type_domain", "canonical_route"]
+    },
+    {
+      "id": "gq-mosquito-typo",
+      "category": "typo",
+      "corpus": "keyword_gold_mosquito",
+      "input": {
+        "channel": "keyword",
+        "text": "mosqito"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["mosqito"],
+          "expansion": null
+        },
+        "recall": {
+          "expected": "miss",
+          "must_not_include": ["procurement:81626S0021001"]
+        }
+      },
+      "eval": ["interpretation", "recall"],
+      "notes": "Typo expansion does not exist on the keyword core. This case starts as an expected miss until a reviewed expander lands."
+    },
+    {
+      "id": "gq-school-synonym",
+      "category": "synonym",
+      "corpus": "education_only_fixture",
+      "input": {
+        "channel": "keyword",
+        "text": "school"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["school"],
+          "does_not_expand_to": ["education"]
+        },
+        "recall": {
+          "expected": "miss",
+          "must_not_include": ["procurement:education-synonym-fixture"]
+        }
+      },
+      "eval": ["interpretation", "recall"],
+      "notes": "Keyword /search does not expand school→education today. Device NL has separate education/schools dictionary entries, not a synonym expander. Encode the current miss rather than an aspiration."
+    },
+    {
+      "id": "gq-rodenticide-attachment",
+      "category": "attachment_only",
+      "corpus": "attachment_enrichment",
+      "input": {
+        "channel": "keyword",
+        "text": "rodenticide"
+      },
+      "expect": {
+        "recall": {
+          "baseline_must_not_include": ["procurement:81626S0021001"],
+          "enriched_must_include": ["procurement:81626S0021001"]
+        },
+        "type_domain": {
+          "object_type": "procurement",
+          "domain": "contracts"
+        },
+        "canonical_route": "/browse/contracts/?mode=award&q=81626S0021001"
+      },
+      "eval": ["recall", "type_domain", "canonical_route"]
+    },
+    {
+      "id": "gq-meeting-cross-source",
+      "category": "cross_source",
+      "corpus": "meeting_gold_pair",
+      "input": {
+        "channel": "keyword",
+        "text": "Public hearing on a local matter"
+      },
+      "expect": {
+        "recall": {
+          "must_include": [
+            "meeting:city_record:20260814001",
+            "meeting:community_board:event-abc-123"
+          ]
+        },
+        "type_domain": {
+          "object_type": "meeting",
+          "domain": "meetings"
+        },
+        "canonical_route": {
+          "meeting:city_record:20260814001": "/meetings/meeting%3Acity_record%3A20260814001",
+          "meeting:community_board:event-abc-123": "/meetings/meeting%3Acommunity_board%3Aevent-abc-123"
+        },
+        "dedup": {
+          "keep_distinct": [
+            "meeting:city_record:20260814001",
+            "meeting:community_board:event-abc-123"
+          ],
+          "same_title_date_does_not_collapse": true
+        }
+      },
+      "eval": ["recall", "type_domain", "canonical_route", "dedup"]
+    },
+    {
+      "id": "gq-parks-cross-lens",
+      "category": "cross_lens",
+      "corpus": "parks_agency_and_awards",
+      "input": {
+        "channel": "keyword",
+        "text": "parks"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["park"]
+        },
+        "recall": {
+          "must_include": ["agency:id:parks-and-recreation"],
+          "must_include_types": ["agency", "procurement"]
+        },
+        "ranking": {
+          "lenses_remain_independent": ["agencies", "notices"]
+        },
+        "type_domain": {
+          "by_object_ref": {
+            "agency:id:parks-and-recreation": {
+              "object_type": "agency",
+              "domain": "people"
+            }
+          },
+          "procurement_domain": "contracts"
+        },
+        "dedup": {
+          "agency_and_contracts_stay_distinct": true
+        }
+      },
+      "eval": ["interpretation", "recall", "ranking", "type_domain", "dedup"]
+    },
+    {
+      "id": "gq-community-board-3",
+      "category": "ambiguous",
+      "corpus": "community_board_disambiguation",
+      "input": {
+        "channel": "keyword",
+        "text": "community board 3"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "community_board",
+          "number": 3,
+          "borough": null,
+          "ambiguous": true
+        },
+        "ranking": {
+          "candidate_count": 5,
+          "does_not_hide_alternates": true
+        },
+        "type_domain": {
+          "object_type": "community_board",
+          "domain": "places"
+        }
+      },
+      "eval": ["interpretation", "ranking", "type_domain"]
+    },
+    {
+      "id": "gq-ida-vs-tidal",
+      "category": "ambiguous",
+      "corpus": "ida_title_document",
+      "input": {
+        "channel": "keyword",
+        "text": "ida"
+      },
+      "expect": {
+        "interpretation": {
+          "via": "resolve_keyword_query",
+          "canonical_tokens": ["industrial", "development", "agency"],
+          "structured_filters": {
+            "agency": "Industrial Development Agency",
+            "agency_id": "industrial-development-agency"
+          },
+          "retrieval_groups": [],
+          "tidal_tokens": ["tidal"]
+        },
+        "ranking": {
+          "tidal_does_not_match_ida_title": true
+        },
+        "type_domain": {
+          "structured_agency_filter": "industrial-development-agency"
+        }
+      },
+      "eval": ["interpretation", "ranking", "type_domain"]
+    },
+    {
+      "id": "gq-zero-result",
+      "category": "zero_result",
+      "corpus": "federator_all_empty",
+      "input": {
+        "channel": "keyword",
+        "text": "zzzx-no-such-civic-object"
+      },
+      "expect": {
+        "coverage_honesty": {
+          "snapshot_state": "complete",
+          "complete_count": 0,
+          "empty_means": "no_match_in_participating_lenses"
+        }
+      },
+      "eval": ["coverage_honesty"]
+    },
+    {
+      "id": "gq-partial-coverage",
+      "category": "partial_coverage",
+      "corpus": "federator_missing_people_stale_vendors",
+      "input": {
+        "channel": "keyword",
+        "text": "not-present"
+      },
+      "expect": {
+        "coverage_honesty": {
+          "snapshot_state": "incomplete",
+          "complete_count": null,
+          "incomplete_lenses": ["people", "vendors"],
+          "must_not_read_as": "0 matches across all"
+        }
+      },
+      "eval": ["coverage_honesty"]
+    },
+    {
+      "id": "gq-law-mandates-not-indexed",
+      "category": "partial_coverage",
+      "corpus": "gold_coverage_rows",
+      "input": {
+        "channel": "keyword",
+        "text": "shelter contracts"
+      },
+      "expect": {
+        "coverage_honesty": {
+          "producer": "law_mandates",
+          "state": "not_indexed",
+          "reason": "producer_not_yet_connected_to_search"
+        }
+      },
+      "eval": ["coverage_honesty"]
+    },
+    {
+      "id": "gq-mosquito-ranking",
+      "category": "ranking_competition",
+      "corpus": "mosquito_ranking",
+      "input": {
+        "channel": "keyword",
+        "text": "mosquito"
+      },
+      "expect": {
+        "recall": {
+          "must_include": ["procurement:81626S0021001"],
+          "min_distinct": 2
+        },
+        "ranking": {
+          "preferred_first": "procurement:81626S0021001",
+          "title_outranks": "procurement:decoy-vendor-mosquito"
+        },
+        "dedup": {
+          "keep_distinct_min": 2
+        }
+      },
+      "eval": ["recall", "ranking", "dedup"]
+    },
+    {
+      "id": "gq-nl-construction-ask",
+      "category": "nl_ask",
+      "corpus": "nl_offline",
+      "input": {
+        "channel": "nl",
+        "text": "I'm a construction company doing affordable housing — show contracts over $500k, no special requirements, deadline within 3 months."
+      },
+      "expect": {
+        "interpretation": {
+          "via": "parse_nl",
+          "lens": "money",
+          "keywords_include": ["construction"],
+          "minAmount": 500000,
+          "months": 3,
+          "excludeSpecial": true
+        }
+      },
+      "eval": ["interpretation"],
+      "notes": "Interpretation only. Offline via parseNL plus sanitize. Live Haiku stays in worker/e2e/nl.mjs and is not a required check."
+    }
   ]
 }
