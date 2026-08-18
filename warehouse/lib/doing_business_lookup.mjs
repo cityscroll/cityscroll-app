@@ -92,6 +92,96 @@ export function exportDoingBusinessRowsFromWarehouse(opts = {}) {
   }
 }
 
+/** Publisher census for SODA 72mk-a8z7 (scout 2026-08-17: 10 787). */
+export const DOING_BUSINESS_PUBLISHER_ROW_COUNT = 10787;
+/** Absolute drift allowed vs publisher after org-name dedupe (±). */
+export const DOING_BUSINESS_ROW_COUNT_DRIFT_ABS = 250;
+/** Refuse empty / fixture-sized snapshots that would re-open live SODA. */
+export const DOING_BUSINESS_MIN_ROW_COUNT = 10000;
+/** Serve lookup must be republished within this window (refresh→publish loop). */
+export const DOING_BUSINESS_MAX_AGE_DAYS = 180;
+/** Exact organization_name canaries that must remain in the committed serve. */
+export const DOING_BUSINESS_CANARIES = Object.freeze(["CAMBA  INC"]);
+export const DOING_BUSINESS_FULL_CATALOG_MODES = Object.freeze([
+  "bulk_warehouse",
+  "bulk_soda",
+]);
+
+/**
+ * Age/row-count/canary drift gate for the committed WH-05 serve lookup.
+ * Keeps the refresh→publish loop from re-freezing on an empty live_fallback.
+ *
+ * @param {object} doc committed or freshly built materialization
+ * @param {{ now?: Date|string|number, publisherRowCount?: number }} [opts]
+ * @returns {string[]} finding messages (empty ⇒ pass)
+ */
+export function doingBusinessServeGateFindings(doc, opts = {}) {
+  const findings = [];
+  const rows = Array.isArray(doc?.rows) ? doc.rows : [];
+  const rowCount =
+    Number.isFinite(Number(doc?.row_count)) ? Number(doc.row_count) : rows.length;
+  const publisher = Number.isFinite(Number(opts.publisherRowCount))
+    ? Number(opts.publisherRowCount)
+    : DOING_BUSINESS_PUBLISHER_ROW_COUNT;
+  const mode = String(doc?.mode || "");
+
+  if (mode === "live_fallback" || rowCount === 0) {
+    findings.push(
+      `Doing Business serve is empty/live_fallback (row_count=${rowCount}); rebuild via WH-02 bulk or --from-soda`,
+    );
+  }
+  if (rowCount < DOING_BUSINESS_MIN_ROW_COUNT) {
+    findings.push(
+      `Doing Business serve row_count ${rowCount} below floor ${DOING_BUSINESS_MIN_ROW_COUNT}`,
+    );
+  }
+  const drift = Math.abs(rowCount - publisher);
+  if (drift > DOING_BUSINESS_ROW_COUNT_DRIFT_ABS) {
+    findings.push(
+      `Doing Business serve row_count ${rowCount} drifts ${drift} from publisher ${publisher} (max ${DOING_BUSINESS_ROW_COUNT_DRIFT_ABS})`,
+    );
+  }
+  if (!DOING_BUSINESS_FULL_CATALOG_MODES.includes(mode) && rowCount >= DOING_BUSINESS_MIN_ROW_COUNT) {
+    findings.push(
+      `Doing Business serve mode ${JSON.stringify(mode)} is not a full-catalog mode (${DOING_BUSINESS_FULL_CATALOG_MODES.join("|")})`,
+    );
+  }
+
+  const names = new Set(
+    rows.map((r) => String(r?.organization_name || "").trim()).filter(Boolean),
+  );
+  for (const canary of DOING_BUSINESS_CANARIES) {
+    if (!names.has(canary)) {
+      findings.push(`Doing Business serve missing canary organization_name ${JSON.stringify(canary)}`);
+    }
+  }
+
+  const stamped = doc?.materialized_at ? Date.parse(String(doc.materialized_at)) : NaN;
+  const nowMs = Date.parse(String(opts.now || new Date().toISOString()));
+  if (!Number.isFinite(stamped)) {
+    findings.push("Doing Business serve missing materialized_at");
+  } else if (Number.isFinite(nowMs)) {
+    const ageDays = (nowMs - stamped) / 86_400_000;
+    if (ageDays > DOING_BUSINESS_MAX_AGE_DAYS) {
+      findings.push(
+        `Doing Business serve age ${ageDays.toFixed(1)}d exceeds max ${DOING_BUSINESS_MAX_AGE_DAYS}d — refresh and republish`,
+      );
+    }
+    if (ageDays < -1) {
+      findings.push("Doing Business serve materialized_at is in the future");
+    }
+  }
+  return findings;
+}
+
+export function assertDoingBusinessServeGate(doc, opts = {}) {
+  const findings = doingBusinessServeGateFindings(doc, opts);
+  if (findings.length) {
+    throw new Error(findings.join("; "));
+  }
+  return true;
+}
+
 /**
  * Build the committed materialization document (full entity rows for stem index).
  */
@@ -106,11 +196,12 @@ export function buildMaterializationDoc(rows, opts = {}) {
     mode: opts.mode || "export",
     materialized_at: opts.now || new Date().toISOString(),
     row_count: list.length,
+    publisher_row_count: opts.publisherRowCount ?? DOING_BUSINESS_PUBLISHER_ROW_COUNT,
     replaces_live_fetch: {
       worker: "worker/src/vendor_profile.mjs#attachDoingBusiness",
       soda_dataset: "72mk-a8z7",
       description:
-        "Doing Business Search Entities attach on daily vendor-profile refresh — warehouse materialization first, live multi-page SODA when materialization empty",
+        "Doing Business Search Entities attach on daily vendor-profile refresh — committed full-catalog materialization first (no resident multi-page SODA); live SODA only when the serve lookup is empty or partial",
     },
     rows: list,
   };

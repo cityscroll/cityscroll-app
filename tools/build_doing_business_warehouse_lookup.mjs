@@ -8,9 +8,14 @@
  * Usage:
  *   node tools/build_doing_business_warehouse_lookup.mjs            # warehouse → JSON
  *   node tools/build_doing_business_warehouse_lookup.mjs --fixture  # product_seed offline
- *   node tools/build_doing_business_warehouse_lookup.mjs --check
+ *   node tools/build_doing_business_warehouse_lookup.mjs --from-soda # build-time SODA page (refresh loop)
+ *   node tools/build_doing_business_warehouse_lookup.mjs --check    # byte-stable + serve gate
  *   node tools/build_doing_business_warehouse_lookup.mjs --bench
  *   node tools/build_doing_business_warehouse_lookup.mjs --limit 5000
+ *
+ * Refresh→publish loop: materialize (WH-02 bulk or --from-soda) → commit twins →
+ * `--check` fails on age / row-count drift / missing canaries so the serve cannot
+ * re-freeze as live_fallback.
  */
 
 import assert from "node:assert/strict";
@@ -22,11 +27,16 @@ import { performance } from "node:perf_hooks";
 
 import { catalogExists, WAREHOUSE_DIR, REPO_ROOT } from "../warehouse/lib/catalog.mjs";
 import {
+  assertDoingBusinessServeGate,
   buildMaterializationDoc,
+  DOING_BUSINESS_PUBLISHER_ROW_COUNT,
   exportDoingBusinessRowsFromWarehouse,
   loadProductSeedRows,
   rowToSodaShape,
 } from "../warehouse/lib/doing_business_lookup.mjs";
+import {
+  DOING_BUSINESS_SODA,
+} from "../worker/src/lib/doing_business_join.mjs";
 import {
   publicPayloadFindings,
   publicRecords,
@@ -54,13 +64,16 @@ const SAMPLE_CSV = path.join(
   "doing-business-entities",
   "sample.csv",
 );
+const SODA_PAGE = 5000;
+const SODA_MAX_PAGES = 50;
 
 function parseArgs(argv) {
-  const out = { fixture: false, check: false, bench: false, limit: null };
+  const out = { fixture: false, check: false, bench: false, fromSoda: false, limit: null };
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === "--fixture") out.fixture = true;
     else if (argv[i] === "--check") out.check = true;
     else if (argv[i] === "--bench") out.bench = true;
+    else if (argv[i] === "--from-soda") out.fromSoda = true;
     else if (argv[i] === "--limit") out.limit = Number(argv[++i]);
   }
   return out;
@@ -126,7 +139,66 @@ function dedupeRows(rows) {
   return out;
 }
 
-function collectRows({ fixture, limit }) {
+async function fetchPublisherRowCount(fetchImpl = fetch) {
+  try {
+    const res = await fetchImpl(
+      `${DOING_BUSINESS_SODA}?$select=${encodeURIComponent("count(*)")}`,
+    );
+    if (!res.ok) return DOING_BUSINESS_PUBLISHER_ROW_COUNT;
+    const body = await res.json();
+    const n = Number(body?.[0]?.count ?? body?.[0]?.count_star);
+    return Number.isFinite(n) && n > 0 ? n : DOING_BUSINESS_PUBLISHER_ROW_COUNT;
+  } catch {
+    return DOING_BUSINESS_PUBLISHER_ROW_COUNT;
+  }
+}
+
+/** Build-time SODA paging for the refresh→publish loop (not a resident hot path). */
+async function fetchDoingBusinessFromSoda({ limit = null, fetchImpl = fetch } = {}) {
+  const rows = [];
+  const pageLimit =
+    limit != null && Number.isFinite(Number(limit)) && Number(limit) > 0
+      ? Math.min(SODA_PAGE, Math.floor(Number(limit)))
+      : SODA_PAGE;
+  for (let page = 0; page < SODA_MAX_PAGES; page++) {
+    if (limit != null && rows.length >= limit) break;
+    const params = new URLSearchParams({
+      $limit: String(pageLimit),
+      $offset: String(page * pageLimit),
+      $order: "organization_name",
+    });
+    const res = await fetchImpl(`${DOING_BUSINESS_SODA}?${params}`);
+    if (!res.ok) {
+      throw new Error(`Doing Business SODA ${res.status} during --from-soda materialization`);
+    }
+    const pageRows = await res.json();
+    if (!Array.isArray(pageRows)) {
+      throw new Error("Doing Business SODA returned a non-array response");
+    }
+    for (const raw of pageRows) {
+      const shaped = rowToSodaShape(raw);
+      if (shaped) rows.push(shaped);
+      if (limit != null && rows.length >= limit) break;
+    }
+    if (pageRows.length < pageLimit) break;
+  }
+  return rows;
+}
+
+async function collectRows({ fixture, fromSoda, limit }) {
+  if (fromSoda) {
+    const sodaRows = publicRecords(
+      await fetchDoingBusinessFromSoda({ limit }),
+      "Doing Business SODA materialization",
+    );
+    const rows = dedupeRows(sodaRows);
+    return {
+      rows,
+      mode: rows.length > 1000 ? "bulk_soda" : rows.length ? "warehouse" : "live_fallback",
+      publisherRowCount: await fetchPublisherRowCount(),
+    };
+  }
+
   if (fixture || !catalogExists()) {
     if (!catalogExists()) {
       try {
@@ -256,9 +328,27 @@ function writeOrCheck(filePath, doc, check) {
   return { path: filePath, status: "wrote", bytes: Buffer.byteLength(rendered) };
 }
 
+function readCommittedDoc(filePath) {
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
 async function main() {
   const args = parseArgs(process.argv);
-  const { rows, mode } = collectRows(args);
+  if (args.fromSoda && args.fixture) {
+    throw new Error("Cannot combine --from-soda and --fixture");
+  }
+
+  // Serve gate always runs against the committed twins so CI catches empty/stale
+  // snapshots without requiring a local DuckDB catalog.
+  if (args.check) {
+    for (const filePath of [OUT_SITE, OUT_WORKER]) {
+      assert.ok(existsSync(filePath), `${path.relative(ROOT, filePath)} missing`);
+      assertDoingBusinessServeGate(readCommittedDoc(filePath));
+      console.log(`ok serve-gate ${path.relative(ROOT, filePath)}`);
+    }
+  }
+
+  const { rows, mode, publisherRowCount } = await collectRows(args);
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_WORKER)) {
     try {
@@ -270,25 +360,41 @@ async function main() {
   const doc = buildMaterializationDoc(rows, {
     mode,
     now,
+    publisherRowCount,
   });
   assert.deepEqual(
     publicPayloadFindings(doc, { source: "site/data/doing_business_warehouse_lookup.json" }),
     [],
     "Doing Business public materialization contains test-only records",
   );
-  const outs = [
-    writeOrCheck(OUT_SITE, doc, args.check),
-    writeOrCheck(OUT_WORKER, doc, args.check),
-  ];
-  for (const row of outs) {
+  if (!args.check && (mode === "bulk_warehouse" || mode === "bulk_soda")) {
+    assertDoingBusinessServeGate(doc);
+  }
+  // Byte-stable rebuild check only when the local catalog (or --from-soda) can
+  // reproduce a full snapshot; fixture-sized rebuilds would false-fail against
+  // the committed bulk serve.
+  const canByteCheck =
+    args.check &&
+    (args.fromSoda || (catalogExists() && (mode === "bulk_warehouse" || mode === "bulk_soda")));
+  if (args.check && !canByteCheck) {
     console.log(
-      args.check
-        ? `ok ${path.relative(ROOT, row.path)}`
-        : `wrote ${path.relative(ROOT, row.path)} (${row.bytes} bytes, ${doc.row_count} rows, mode=${mode})`,
+      "ok skip byte-stable rebuild (no full catalog in this environment; serve-gate already checked)",
     );
+  } else {
+    const outs = [
+      writeOrCheck(OUT_SITE, doc, args.check && canByteCheck),
+      writeOrCheck(OUT_WORKER, doc, args.check && canByteCheck),
+    ];
+    for (const row of outs) {
+      console.log(
+        args.check
+          ? `ok ${path.relative(ROOT, row.path)}`
+          : `wrote ${path.relative(ROOT, row.path)} (${row.bytes} bytes, ${doc.row_count} rows, mode=${mode})`,
+      );
+    }
   }
   if (args.bench) {
-    const receipt = await bench(rows);
+    const receipt = await bench(rows.length ? rows : readCommittedDoc(OUT_WORKER).rows || []);
     console.log(receipt.summary);
     console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
   }

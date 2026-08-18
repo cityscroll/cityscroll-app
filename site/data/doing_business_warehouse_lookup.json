@@ -5,12 +5,13 @@
   "dataset_id": "72mk-a8z7",
   "table_name": "doing_business_entities",
   "mode": "bulk_warehouse",
-  "materialized_at": "2026-08-18T02:18:24.795Z",
+  "materialized_at": "2026-08-18T02:22:33.016Z",
   "row_count": 10770,
+  "publisher_row_count": 10787,
   "replaces_live_fetch": {
     "worker": "worker/src/vendor_profile.mjs#attachDoingBusiness",
     "soda_dataset": "72mk-a8z7",
-    "description": "Doing Business Search Entities attach on daily vendor-profile refresh — warehouse materialization first, live multi-page SODA when materialization empty"
+    "description": "Doing Business Search Entities attach on daily vendor-profile refresh — committed full-catalog materialization first (no resident multi-page SODA); live SODA only when the serve lookup is empty or partial"
   },
   "rows": [
     {
