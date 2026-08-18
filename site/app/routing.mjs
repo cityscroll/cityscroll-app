@@ -391,7 +391,7 @@ const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
   rules:    ["keywords", "agency", "process"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
@@ -443,6 +443,11 @@ function deeplinkClampField(name, v){
         "urban_renewal","landmark","follow_up","office_space","bid","franchise_consent",
         "housing_plan","pops","landfill",
       ].includes(s) ? s : null;
+    }
+    case "regulatoryEffect": {
+      const raw=typeof v==="string"?v.trim().toLowerCase().replace(/[\s-]+/g,"_"):"";
+      const s=({up_zone:"upzone",down_zone:"downzone"})[raw]||raw;
+      return ["upzone","downzone","mixed","no_density_change"].includes(s)?s:null;
     }
     case "when": return ["all","upcoming","week","month","past"].includes(v) ? v : null;
     case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }

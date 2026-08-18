@@ -26,7 +26,7 @@ test("money: clamps junk / out-of-range (defense in depth)", () => {
 
 test("land: only land fields; borough validated to the 5", () => {
   const out = sanitize("land", { keywords: ["housing"], boro: "brooklyn", status: "all", minAmount: 9999 /* not a land field */ });
-  assert.deepEqual(Object.keys(out).sort(), ["boro", "communityDistrict", "councilDistrict", "family", "keywords", "nearMe", "procedure", "status"]);
+  assert.deepEqual(Object.keys(out).sort(), ["boro", "communityDistrict", "councilDistrict", "family", "keywords", "nearMe", "procedure", "regulatoryEffect", "status"]);
   assert.equal(out.boro, "Brooklyn"); // normalized to canonical casing
   assert.equal(out.status, "all");
   assert.equal(out.procedure, null);
@@ -37,6 +37,8 @@ test("land: only land fields; borough validated to the 5", () => {
   assert.equal(sanitize("land", { family: "acquisition" }).family, "acquisition");
   assert.equal(sanitize("land", { family: "major-concession" }).family, "major_concession");
   assert.equal(sanitize("land", { family: "dezoning" }).family, null);
+  assert.equal(sanitize("land", { regulatoryEffect: "down-zone" }).regulatoryEffect, "downzone");
+  assert.equal(sanitize("land", { regulatoryEffect: "unknown" }).regulatoryEffect, null);
 });
 
 test("land: council + community district clamped", () => {
