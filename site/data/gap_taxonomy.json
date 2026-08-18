@@ -3538,8 +3538,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-17",
-    "source_contracts_fingerprint": "a85508f43258bfbe34dc4994f2736ebd64ae1140b9fd4ef44e83e98f7448b96b",
+    "observed_on": "2026-08-18",
+    "source_contracts_fingerprint": "279241734d379ea1451f99e30fec53f01e53084b7807f94f7068dda35764a476",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 84,
     "class_changes": 0,
