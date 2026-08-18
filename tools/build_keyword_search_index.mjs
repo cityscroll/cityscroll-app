@@ -4,6 +4,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { buildAgencySearchDocuments } from "../site/agency_search_producer.mjs";
+import { buildCommitteeSearchDocuments } from "../site/committee_search_producer.mjs";
 import { buildExamSearchDocuments } from "../site/exam_search_producer.mjs";
 import { buildLandSearchDocuments } from "../site/land_search_producer.mjs";
 import { buildBoardSearchDocuments } from "../site/board_search_producer.mjs";
@@ -83,6 +84,7 @@ const meetings = json("site/data/shared_meeting_read_model.json");
 const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");
 const propertyResidents = json("site/data/property_resident_snapshot.json");
+const committees = json("site/data/committee_graph_lookup.json");
 const peopleCorpus = buildPeopleSearchDocuments(people);
 const agencyCorpus = buildAgencySearchDocuments(agencies, { identityReport: agencyIdentityReport });
 const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });
@@ -113,6 +115,7 @@ const parcelCorpus = buildParcelSearchDocuments(parcels, {
   residentSnapshot: propertyResidents,
 });
 const communityBoardCorpus = buildBoardSearchDocuments(communityBoards);
+const committeeCorpus = buildCommitteeSearchDocuments(committees);
 
 const output = {
   schema: "cityscroll.keyword_search_index.v1",
@@ -126,6 +129,7 @@ const output = {
     exams.generated_at,
     parcels.generated_at,
     propertyResidents.generated_at,
+    committees.generated_at,
   ),
   match_mode: "keyword",
   families: {
@@ -174,6 +178,11 @@ const output = {
       parcels.generated_at,
       [parcelCorpus],
     ),
+    committees: family(
+      "New York City Council committee graph",
+      committees.generated_at,
+      [committeeCorpus],
+    ),
   },
   build_receipt: {
     source_artifacts: {
@@ -187,6 +196,7 @@ const output = {
       exams: "site/data/staffing_exams.json",
       parcels: "site/data/property_cross_domain_lookup.json",
       property_residents: "site/data/property_resident_snapshot.json",
+      committees: "site/data/committee_graph_lookup.json",
     },
     excluded_artifacts: ["worker/src/data/ocp_awards_warehouse_lookup.json"],
     excluded_vendor_roots: excludedVendorRoots,
