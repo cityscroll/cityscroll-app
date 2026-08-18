@@ -1,8 +1,8 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "title": "PASSPort contract census → entity-intelligence graph densification",
-  "observed_on": "2026-08-12",
-  "change": "Raise the population-backed graph cap to the measured compressed read-model ceiling and select rows by agency-stratified round-robin; compatibility examples remain first.",
+  "observed_on": "2026-08-18",
+  "change": "Keep the Worker single-file lookup at the measured 1,550-row gzip ceiling and publish the award-corroborated census as agency/vendor shards so constellations see the denser graph without a new live fetch.",
   "source": {
     "path": "site/data/procurement_spine_sources.json#rows.passport_contracts",
     "census_rows": 12782,
@@ -10,261 +10,15 @@
     "compatibility_rows": 2,
     "source_null_policy": "source fields remain null; no row or edge is fabricated"
   },
-  "before": {
-    "strategy": "compatibility examples first, then census rows in source order",
-    "cap": 500,
-    "selected_rows": 500,
-    "dropped_census_rows": 12283,
-    "edges": {
-      "rows": 500,
-      "rows_with_edges": 500,
-      "edge_count": 1500,
-      "edge_types": {
-        "published_by_agency": 500,
-        "named_vendor": 500,
-        "shares_authority_key": 500
-      }
-    },
-    "dropped_edges": {
-      "rows": 12283,
-      "rows_with_edges": 12283,
-      "edge_count": 36848,
-      "edge_types": {
-        "published_by_agency": 12283,
-        "named_vendor": 12282,
-        "shares_authority_key": 12283
-      }
-    },
-    "agency_coverage": {
-      "DEPARTMENT OF SOCIAL SERVICES": {
-        "census": 1179,
-        "selected": 55,
-        "dropped": 1124
-      },
-      "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": {
-        "census": 1160,
-        "selected": 20,
-        "dropped": 1140
-      },
-      "ADMINISTRATION FOR CHILDREN'S SERVICES": {
-        "census": 909,
-        "selected": 93,
-        "dropped": 816
-      },
-      "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": {
-        "census": 855,
-        "selected": 68,
-        "dropped": 787
-      },
-      "DEPARTMENT OF ENVIRONMENTAL PROTECTION": {
-        "census": 770,
-        "selected": 14,
-        "dropped": 756
-      },
-      "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": {
-        "census": 755,
-        "selected": 9,
-        "dropped": 746
-      },
-      "DEPARTMENT OF DESIGN AND CONSTRUCTION": {
-        "census": 607,
-        "selected": 2,
-        "dropped": 605
-      },
-      "DEPARTMENT OF HOMELESS SERVICES": {
-        "census": 596,
-        "selected": 10,
-        "dropped": 586
-      },
-      "DEPARTMENT FOR THE AGING": {
-        "census": 592,
-        "selected": 28,
-        "dropped": 564
-      },
-      "DEPARTMENT OF TRANSPORTATION": {
-        "census": 544,
-        "selected": 7,
-        "dropped": 537
-      },
-      "DEPARTMENT OF PARKS AND RECREATION": {
-        "census": 539,
-        "selected": 9,
-        "dropped": 530
-      },
-      "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": {
-        "census": 518,
-        "selected": 12,
-        "dropped": 506
-      },
-      "DEPARTMENT OF HOUSING PRESERVATION AND DEVELOPMENT": {
-        "census": 499,
-        "selected": 16,
-        "dropped": 483
-      },
-      "DEPARTMENT OF EDUCATION": {
-        "census": 438,
-        "selected": 0,
-        "dropped": 438
-      },
-      "DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES": {
-        "census": 415,
-        "selected": 44,
-        "dropped": 371
-      },
-      "FIRE DEPARTMENT": {
-        "census": 295,
-        "selected": 8,
-        "dropped": 287
-      },
-      "DEPARTMENT OF CORRECTION": {
-        "census": 258,
-        "selected": 8,
-        "dropped": 250
-      },
-      "DEPARTMENT OF SANITATION": {
-        "census": 250,
-        "selected": 9,
-        "dropped": 241
-      },
-      "NEW YORK CITY POLICE DEPARTMENT": {
-        "census": 227,
-        "selected": 15,
-        "dropped": 212
-      },
-      "OFFICE OF EMERGENCY MANAGEMENT": {
-        "census": 150,
-        "selected": 6,
-        "dropped": 144
-      },
-      "DEPARTMENT OF PROBATION": {
-        "census": 148,
-        "selected": 10,
-        "dropped": 138
-      },
-      "DEPARTMENT OF FINANCE": {
-        "census": 141,
-        "selected": 1,
-        "dropped": 140
-      },
-      "DEPARTMENT OF SMALL BUSINESS SERVICES": {
-        "census": 134,
-        "selected": 23,
-        "dropped": 111
-      },
-      "OFFICE OF THE CHIEF MEDICAL EXAMINER": {
-        "census": 116,
-        "selected": 2,
-        "dropped": 114
-      },
-      "OFFICE OF CRIMINAL JUSTICE (002)": {
-        "census": 113,
-        "selected": 5,
-        "dropped": 108
-      },
-      "LAW DEPARTMENT": {
-        "census": 96,
-        "selected": 2,
-        "dropped": 94
-      },
-      "MAYORALTY": {
-        "census": 94,
-        "selected": 3,
-        "dropped": 91
-      },
-      "DEPARTMENT OF BUILDINGS": {
-        "census": 69,
-        "selected": 8,
-        "dropped": 61
-      },
-      "DEPT. OF CONSUMER & WORKER PROTECTION": {
-        "census": 62,
-        "selected": 0,
-        "dropped": 62
-      },
-      "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": {
-        "census": 41,
-        "selected": 2,
-        "dropped": 39
-      },
-      "NYC TAXI AND LIMOUSINE COMMISSION": {
-        "census": 35,
-        "selected": 1,
-        "dropped": 34
-      },
-      "OFFICE OF MANAGEMENT AND BUDGET": {
-        "census": 29,
-        "selected": 1,
-        "dropped": 28
-      },
-      "OFFICE OF CONTRACT SERVICES": {
-        "census": 28,
-        "selected": 5,
-        "dropped": 23
-      },
-      "DEPARTMENT OF INVESTIGATION": {
-        "census": 24,
-        "selected": 0,
-        "dropped": 24
-      },
-      "DEPARTMENT OF CITY PLANNING": {
-        "census": 23,
-        "selected": 2,
-        "dropped": 21
-      },
-      "DEPARTMENT OF CULTURAL AFFAIRS": {
-        "census": 22,
-        "selected": 1,
-        "dropped": 21
-      },
-      "OFFICE OF CRIMINAL JUSTICE (128)": {
-        "census": 14,
-        "selected": 0,
-        "dropped": 14
-      },
-      "OFFICE OF LABOR RELATIONS": {
-        "census": 11,
-        "selected": 0,
-        "dropped": 11
-      },
-      "DEPARTMENT OF VETERANS' SERVICES": {
-        "census": 8,
-        "selected": 0,
-        "dropped": 8
-      },
-      "DEPARTMENT OF RECORDS AND INFORMATION SERVICES": {
-        "census": 7,
-        "selected": 0,
-        "dropped": 7
-      },
-      "COMMISSION ON HUMAN RIGHTS": {
-        "census": 5,
-        "selected": 0,
-        "dropped": 5
-      },
-      "BUSINESS INTEGRITY COMMISSION": {
-        "census": 2,
-        "selected": 0,
-        "dropped": 2
-      },
-      "LANDMARKS PRESERVATION COMMISSION": {
-        "census": 2,
-        "selected": 0,
-        "dropped": 2
-      },
-      "CIVILIAN COMPLAINT REVIEW BOARD": {
-        "census": 1,
-        "selected": 0,
-        "dropped": 1
-      },
-      "HUMAN RESOURCES ADMINISTRATION": {
-        "census": 1,
-        "selected": 0,
-        "dropped": 1
-      }
-    }
+  "shard_strategy": {
+    "worker_core_cap": 1550,
+    "graph_hard_ceiling": 20000,
+    "selection": "compatibility examples first, then agency-stratified round-robin",
+    "publication": "compact by_agency / by_vendor index with bounded previews",
+    "artifact": "site/data/entity_intelligence_shards/passport_graph.json"
   },
-  "after": {
-    "strategy": "compatibility examples first, then agency-stratified round-robin",
+  "before": {
+    "strategy": "single-file Worker lookup at the measured gzip ceiling",
     "cap": 1550,
     "selected_rows": 1550,
     "dropped_census_rows": 11233,
@@ -516,30 +270,300 @@
       }
     }
   },
+  "after": {
+    "strategy": "agency- and vendor-keyed compact index over the award-corroborated census; Worker single-file lookup stays at the measured core gzip ceiling",
+    "cap": 20000,
+    "selected_rows": 12783,
+    "dropped_census_rows": 0,
+    "edges": {
+      "rows": 12783,
+      "rows_with_edges": 12783,
+      "edge_count": 38348,
+      "edge_types": {
+        "published_by_agency": 12783,
+        "named_vendor": 12782,
+        "shares_authority_key": 12783
+      }
+    },
+    "dropped_edges": {
+      "rows": 0,
+      "rows_with_edges": 0,
+      "edge_count": 0,
+      "edge_types": {}
+    },
+    "agency_coverage": {
+      "DEPARTMENT OF SOCIAL SERVICES": {
+        "census": 1179,
+        "selected": 1179,
+        "dropped": 0
+      },
+      "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT": {
+        "census": 1160,
+        "selected": 1160,
+        "dropped": 0
+      },
+      "ADMINISTRATION FOR CHILDREN'S SERVICES": {
+        "census": 909,
+        "selected": 909,
+        "dropped": 0
+      },
+      "DEPARTMENT OF HEALTH AND MENTAL HYGIENE": {
+        "census": 855,
+        "selected": 855,
+        "dropped": 0
+      },
+      "DEPARTMENT OF ENVIRONMENTAL PROTECTION": {
+        "census": 770,
+        "selected": 770,
+        "dropped": 0
+      },
+      "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE": {
+        "census": 755,
+        "selected": 755,
+        "dropped": 0
+      },
+      "DEPARTMENT OF DESIGN AND CONSTRUCTION": {
+        "census": 607,
+        "selected": 607,
+        "dropped": 0
+      },
+      "DEPARTMENT OF HOMELESS SERVICES": {
+        "census": 596,
+        "selected": 596,
+        "dropped": 0
+      },
+      "DEPARTMENT FOR THE AGING": {
+        "census": 592,
+        "selected": 592,
+        "dropped": 0
+      },
+      "DEPARTMENT OF TRANSPORTATION": {
+        "census": 544,
+        "selected": 544,
+        "dropped": 0
+      },
+      "DEPARTMENT OF PARKS AND RECREATION": {
+        "census": 539,
+        "selected": 539,
+        "dropped": 0
+      },
+      "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS": {
+        "census": 518,
+        "selected": 518,
+        "dropped": 0
+      },
+      "DEPARTMENT OF HOUSING PRESERVATION AND DEVELOPMENT": {
+        "census": 499,
+        "selected": 499,
+        "dropped": 0
+      },
+      "DEPARTMENT OF EDUCATION": {
+        "census": 438,
+        "selected": 438,
+        "dropped": 0
+      },
+      "DEPARTMENT OF CITYWIDE ADMINISTRATIVE SERVICES": {
+        "census": 415,
+        "selected": 415,
+        "dropped": 0
+      },
+      "FIRE DEPARTMENT": {
+        "census": 295,
+        "selected": 295,
+        "dropped": 0
+      },
+      "DEPARTMENT OF CORRECTION": {
+        "census": 258,
+        "selected": 258,
+        "dropped": 0
+      },
+      "DEPARTMENT OF SANITATION": {
+        "census": 250,
+        "selected": 250,
+        "dropped": 0
+      },
+      "NEW YORK CITY POLICE DEPARTMENT": {
+        "census": 227,
+        "selected": 227,
+        "dropped": 0
+      },
+      "OFFICE OF EMERGENCY MANAGEMENT": {
+        "census": 150,
+        "selected": 150,
+        "dropped": 0
+      },
+      "DEPARTMENT OF PROBATION": {
+        "census": 148,
+        "selected": 148,
+        "dropped": 0
+      },
+      "DEPARTMENT OF FINANCE": {
+        "census": 141,
+        "selected": 141,
+        "dropped": 0
+      },
+      "DEPARTMENT OF SMALL BUSINESS SERVICES": {
+        "census": 134,
+        "selected": 134,
+        "dropped": 0
+      },
+      "OFFICE OF THE CHIEF MEDICAL EXAMINER": {
+        "census": 116,
+        "selected": 116,
+        "dropped": 0
+      },
+      "OFFICE OF CRIMINAL JUSTICE (002)": {
+        "census": 113,
+        "selected": 113,
+        "dropped": 0
+      },
+      "LAW DEPARTMENT": {
+        "census": 96,
+        "selected": 96,
+        "dropped": 0
+      },
+      "MAYORALTY": {
+        "census": 94,
+        "selected": 94,
+        "dropped": 0
+      },
+      "DEPARTMENT OF BUILDINGS": {
+        "census": 69,
+        "selected": 69,
+        "dropped": 0
+      },
+      "DEPT. OF CONSUMER & WORKER PROTECTION": {
+        "census": 62,
+        "selected": 62,
+        "dropped": 0
+      },
+      "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS": {
+        "census": 41,
+        "selected": 41,
+        "dropped": 0
+      },
+      "NYC TAXI AND LIMOUSINE COMMISSION": {
+        "census": 35,
+        "selected": 35,
+        "dropped": 0
+      },
+      "OFFICE OF MANAGEMENT AND BUDGET": {
+        "census": 29,
+        "selected": 29,
+        "dropped": 0
+      },
+      "OFFICE OF CONTRACT SERVICES": {
+        "census": 28,
+        "selected": 28,
+        "dropped": 0
+      },
+      "DEPARTMENT OF INVESTIGATION": {
+        "census": 24,
+        "selected": 24,
+        "dropped": 0
+      },
+      "DEPARTMENT OF CITY PLANNING": {
+        "census": 23,
+        "selected": 23,
+        "dropped": 0
+      },
+      "DEPARTMENT OF CULTURAL AFFAIRS": {
+        "census": 22,
+        "selected": 22,
+        "dropped": 0
+      },
+      "OFFICE OF CRIMINAL JUSTICE (128)": {
+        "census": 14,
+        "selected": 14,
+        "dropped": 0
+      },
+      "OFFICE OF LABOR RELATIONS": {
+        "census": 11,
+        "selected": 11,
+        "dropped": 0
+      },
+      "DEPARTMENT OF VETERANS' SERVICES": {
+        "census": 8,
+        "selected": 8,
+        "dropped": 0
+      },
+      "DEPARTMENT OF RECORDS AND INFORMATION SERVICES": {
+        "census": 7,
+        "selected": 7,
+        "dropped": 0
+      },
+      "COMMISSION ON HUMAN RIGHTS": {
+        "census": 5,
+        "selected": 5,
+        "dropped": 0
+      },
+      "BUSINESS INTEGRITY COMMISSION": {
+        "census": 2,
+        "selected": 2,
+        "dropped": 0
+      },
+      "LANDMARKS PRESERVATION COMMISSION": {
+        "census": 2,
+        "selected": 2,
+        "dropped": 0
+      },
+      "CIVILIAN COMPLAINT REVIEW BOARD": {
+        "census": 1,
+        "selected": 1,
+        "dropped": 0
+      },
+      "HUMAN RESOURCES ADMINISTRATION": {
+        "census": 1,
+        "selected": 1,
+        "dropped": 0
+      }
+    },
+    "agency_shards": 45,
+    "vendor_shards": 3681
+  },
   "highlighted_agency": {
     "agency": "NEW YORK CITY POLICE DEPARTMENT",
     "census_rows": 227,
     "before": {
       "census": 227,
-      "selected": 15,
-      "dropped": 212
+      "selected": 44,
+      "dropped": 183
     },
     "after": {
       "census": 227,
-      "selected": 44,
-      "dropped": 183
+      "selected": 227,
+      "dropped": 0
     }
+  },
+  "excluded": {
+    "above_graph_ceiling": 0,
+    "not_in_award_corroborated_census": 48272,
+    "unresolved_agency_rows": 0,
+    "unresolved_vendor_rows": 0,
+    "rfx_rows": 0,
+    "note": "The published graph is the award-corroborated PASSPort census under the hard ceiling. Full daily dumps, RFx, and unresolved award joins stay out."
+  },
+  "coverage": {
+    "ok": true,
+    "published_rows": 12783,
+    "core_rows": 1550,
+    "census_rows": 12782,
+    "census_share": 1.000078235017994,
+    "age_days": 0,
+    "findings": []
   },
   "payload_budget": {
     "metric": "gzip bytes of the pretty-printed Worker read model",
     "budget_bytes": 445000,
     "selected_cap": 1550,
-    "selected_gzip_bytes": 440787,
-    "selected_headroom_bytes": 4213,
+    "selected_gzip_bytes": 442320,
+    "selected_headroom_bytes": 2680,
     "next_candidate_cap": 1600,
     "next_candidate_gzip_bytes": 445087,
     "next_candidate_over_budget_bytes": 87,
-    "ceiling_is_measured": true
+    "ceiling_is_measured": true,
+    "shard_pretty_bytes": 1128004,
+    "shard_gzip_bytes": 101904
   },
   "candidate_benchmarks": [
     {
@@ -643,11 +667,13 @@
     "home_cold_route_changed": false,
     "reading_ratchet": "not applicable to JSON-only read-model change",
     "axe": "not applicable to JSON-only read-model change",
-    "perf_p95": "run in CI; home cold route is unchanged"
+    "perf_p95": "run in CI; home cold route is unchanged",
+    "graph_coverage_ok": true
   },
   "reproduce": [
     "node tools/measure_passport_ei_densify.mjs",
     "node --test test/procurement_spine_ei_densify.test.mjs",
-    "node tools/build_entity_intelligence.mjs --check"
+    "node tools/build_entity_intelligence.mjs --graph-only",
+    "node tools/build_entity_intelligence.mjs --check --graph-only"
   ]
 }

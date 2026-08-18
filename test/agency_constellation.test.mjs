@@ -307,6 +307,58 @@ test("agency previews and Browse destinations share open/linked totals and snaps
   assert.match(html, /Browse archived awards and contracts/);
 });
 
+test("passport EI graph hydrates a denser precomputed contracts category", () => {
+  const passportGraph = {
+    observed_on: "2026-08-18",
+    by_agency: {
+      "police-department": {
+        selected_rows: 12,
+        core_rows: 3,
+        preview: Array.from({ length: 8 }, (_, index) => ({
+          subject_ref: `contract:CT1-056-${index + 1}`,
+          object_kind: "contract",
+          label: `Police vendor ${index + 1}`,
+          vendor_name: `Police vendor ${index + 1}`,
+          contract_id: `CT1-056-${index + 1}`,
+          when: `2026-0${(index % 8) + 1}-15`,
+          confidence: "strong",
+          method: "passport_ei_graph_v1",
+        })),
+      },
+    },
+  };
+  const view = buildAgencyConstellationView("police-department", {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+    money_open: {
+      open_as_of: "2026-08-11",
+      notices: [{
+        request_id: "police-open-1",
+        agency_name: "Police Department",
+        entity_refs_all: ["agency:id:police-department"],
+        short_title: "Open police service",
+        type_of_notice_description: "Solicitation",
+      }],
+    },
+    passport_graph: passportGraph,
+  });
+  const byId = Object.fromEntries(view.categories.map((category) => [category.id, category]));
+  assert.equal(byId.contracts.count, 12);
+  assert.equal(byId.contracts.total_count, 12);
+  assert.equal(byId.contracts.items.length, 8);
+  assert.equal(byId.contracts.method, "passport_ei_graph_v1");
+  assert.equal(byId.contracts.universe, "linked");
+  assert.equal(byId.contracts.as_of, "2026-08-18");
+  assert.ok(byId.contracts.count > 1, "graph inventory must exceed the open-RFP snapshot");
+  assert.match(byId.contracts.view_all_href, /mode=award/);
+  assert.doesNotMatch(byId.contracts.view_all_href, /mode=open/);
+  const html = renderAgencyConstellationDocument(view);
+  assert.match(html, /data-total-count="12"/);
+  assert.doesNotMatch(html, /https?:\/\/a0333-passportpublic/);
+});
+
 test("agency scope carries across category browse URLs", () => {
   const contracts = agencyCategoryBrowseHref(PARKS, "contracts");
   const meetings = agencyCategoryBrowseHref(PARKS, "meetings");
@@ -736,6 +788,11 @@ test("lookup materialization includes Parks multi-category demo when built", () 
   assert.equal(lookup.verified_demo, "agency:id:parks-and-recreation");
   assert.ok(lookup.by_id[PARKS]);
   assert.ok(lookup.by_id[PARKS].matched_categories >= 3);
+  assert.equal(lookup.by_id[PARKS].categories.contracts.method, "passport_ei_graph_v1");
+  assert.ok(
+    lookup.by_id[PARKS].categories.contracts.count > 45,
+    "Parks contracts must use the sharded PASSPort graph, not the 1550-row core slice",
+  );
   assert.equal(lookup.aliases["n-y-c-housing-authority"], "housing-authority");
   assert.equal(lookup.by_id["n-y-c-housing-authority"], undefined);
   assert.equal(lookup.by_id["housing-authority"].subject_ref, "agency:id:housing-authority");

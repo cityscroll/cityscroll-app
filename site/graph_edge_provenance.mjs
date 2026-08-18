@@ -102,6 +102,7 @@ function connectionHowCopy(claim) {
   const method = clean(claim?.how?.method?.value || claim?.how?.method || "", 120).toLowerCase();
   if (method.includes("publisher_certification")) return "Matched using the agency code in the published staffing record.";
   if (method.includes("agency_browse_snapshot")) return "Matched using the agency named in the published record.";
+  if (method.includes("passport_ei_graph")) return "Matched from the precomputed PASSPort contract graph.";
   if (method.includes("agency_canonical")) return "Matched to the agency's published name.";
   return "Matched using information in the published record.";
 }
@@ -158,6 +159,7 @@ export function warrantClassForEdge(input = {}) {
     method.includes("publisher_certification")
     || method.includes("agency_canonical")
     || method.includes("agency_browse_snapshot")
+    || method.includes("passport_ei_graph")
     || method.includes("pin_exact")
     || method.includes("exact_")
     || method.endsWith("_exact")
@@ -212,6 +214,7 @@ export function identityStanceForEdge(input = {}) {
       method.includes("publisher_certification")
       || method.includes("agency_canonical")
       || method.includes("agency_browse_snapshot")
+      || method.includes("passport_ei_graph")
       || method.includes("pin_exact")
       || method.includes("enacted_law_mandate")
       || method.includes("auto_certified_quote")

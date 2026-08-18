@@ -545,6 +545,14 @@ function obligationItems(obligationsLookup, identity, limit = 8, conformanceView
   };
 }
 
+const PASSPORT_EI_GRAPH_METHOD = "passport_ei_graph_v1";
+
+function passportGraphAgencyEntry(publication, agencyId) {
+  const id = clean(agencyId, 120).replace(/^agency:id:/, "");
+  if (!id) return null;
+  return publication?.by_agency?.[id] || null;
+}
+
 /** Keep only standable public edges (drop tentative rather than hedge them). */
 function standableItems(items = []) {
   return (Array.isArray(items) ? items : []).filter((item) => {
@@ -673,6 +681,64 @@ function categoryFromDomain(
       view_all_href: agencyCategoryBrowseHref(identity.canonical_id, spec.id),
       follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
     };
+  }
+
+  if (spec.id === "contracts") {
+    const graph = passportGraphAgencyEntry(browseSources.passport_graph, identity.canonical_id);
+    if (graph && graph.selected_rows > 0) {
+      const claimed = (graph.preview || []).map((object) => {
+        const subjectRef = clean(object.subject_ref, 120);
+        const label = clean(object.label || object.vendor_name || subjectRef, 240);
+        return attachClaim({
+          id: clean(object.contract_id || object.epin || subjectRef, 80),
+          subject_ref: subjectRef,
+          label,
+          date: clean(object.when, 40) || null,
+          source: "passport-public-contracts",
+          relation: spec.relation,
+          confidence: "strong",
+          method: PASSPORT_EI_GRAPH_METHOD,
+          object_kind: "contract",
+          vendor_name: clean(object.vendor_name, 240) || null,
+          contract_id: clean(object.contract_id, 80) || null,
+          href: constellationObjectHref({
+            ...object,
+            object_kind: "contract",
+            vendor_name: object.vendor_name || object.label,
+            subject_ref: subjectRef,
+            label,
+          }),
+          provenance: object.provenance || null,
+        }, {
+          categoryId: spec.id,
+          relation: spec.relation,
+          identity,
+        });
+      }).filter((item) => item?.subject_ref);
+      const items = standableItems(claimed);
+      const total = Number(graph.selected_rows) || items.length;
+      return {
+        id: spec.id,
+        label: spec.label,
+        relation: spec.relation,
+        status: total > 0 ? "matched" : "empty",
+        gap_class: total > 0 ? null : "empty_in_corpus",
+        note: null,
+        count: total,
+        total_count: total,
+        items,
+        as_of: clean(browseSources.passport_graph?.observed_on, 40) || null,
+        universe: "linked",
+        warrant_summary: summarizeCategoryWarrants(items),
+        method: PASSPORT_EI_GRAPH_METHOD,
+        view_all_href: total
+          ? agencyCategoryBrowseHref(identity.canonical_id, spec.id, { mode: "award" })
+          : "",
+        archive_href: agencyCategoryArchiveHref(identity.canonical_id, spec.id),
+        follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
+        graph_core_count: Number(graph.core_rows) || 0,
+      };
+    }
   }
 
   const browsePayload = spec.id === "contracts"
@@ -965,6 +1031,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       {
         money_open: sources.money_open,
         meetings_domain: sources.meetings_domain,
+        passport_graph: sources.passport_graph,
       },
     ));
   for (const category of categories) {
