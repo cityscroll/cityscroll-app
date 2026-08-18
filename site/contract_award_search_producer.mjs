@@ -1,5 +1,6 @@
 /** Canonical procurement-award SearchDocuments from the complete OCP award materialization. */
 
+import { keywordTextMatches, resolveKeywordQuery } from "./keyword_matcher.mjs";
 import { procurementObjectTarget } from "./notice_object_links.mjs";
 import { rankSearchDocuments, SEARCH_TEXT_MAX_LENGTH } from "./search_document_contract.mjs";
 import {
@@ -237,9 +238,13 @@ export function searchContractAwardDocuments(lookup = {}, query = "", { limit = 
     return buildContractAwardSearchDocuments(supportedLookup(lookup) ? { ...lookup, rows: [] } : lookup, options);
   }
   const candidateLimit = Math.max(Number(limit) || 40, 1) * 4;
+  const resolved = resolveKeywordQuery(query);
   const lexicalTerms = terms.filter((term) => !CONTRACT_CONCEPT_TERMS.has(term));
   const candidates = lexicalTerms.length
-    ? searchableRows(lookup).filter(({ text }) => lexicalTerms.every((term) => text.includes(term)))
+    ? searchableRows(lookup).filter(({ text }) => (
+      lexicalTerms.every((term) => text.includes(term))
+      && keywordTextMatches(text, resolved)
+    ))
     : searchableRows(lookup).slice(-candidateLimit);
   const matched = candidates
     .map(({ row }) => ({ row, score: rawScore(row, normalized) }))

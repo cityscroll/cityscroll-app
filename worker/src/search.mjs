@@ -236,7 +236,7 @@ async function noticeSearchLanes(env, resolved) {
     ).map((document) => ({
       document,
       evidence: matchKeywordDocument(document, resolved),
-    }));
+    })).filter(({ evidence }) => evidence || resolved.alias);
     console.log("notice-search-documents:", JSON.stringify({
       city_record_document_count: cityMatches.length,
       contract_award_document_count: awardDocuments.length,

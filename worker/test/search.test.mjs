@@ -88,6 +88,18 @@ const ROWS = [
     description: "A public hearing on incomplete inspections.",
     date: "2026-08-04", haystack: "proposed rule incomplete inspections public hearing",
   },
+  {
+    id: "20260818001", section: "Procurement", agency: "Health and Mental Hygiene",
+    noticeType: "Award", title: "Integrated Visiting 'Rosy' Program",
+    description: "Infix-only rat should never publish without a whole token.",
+    date: "2026-08-18", haystack: "integrated visiting rosy program infix rate strategy",
+  },
+  {
+    id: "20260818002", section: "Procurement", agency: "Health and Mental Hygiene",
+    noticeType: "Award", title: "Community Rat Management Training",
+    description: "Whole-token rodent control award.",
+    date: "2026-08-18", haystack: "community rat management training rodent control award",
+  },
 ];
 
 test("GET /search returns ranked validated SearchDocument records from the FTS5 mirror", async () => {
@@ -435,6 +447,51 @@ test("common civic terms return relevant records through the same FTS route", as
       assert.ok(body.results.length > 0, query);
       assert.ok(body.results.some((result) => result.search_text.toLowerCase().includes(query)), query);
       assert.ok(body.results.every((result) => result.object_type !== "mandate"), query);
+    }
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("q=rat is a whole token across contracts and meetings, never an infix", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    const response = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=rat", {
+        headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
+      }),
+      { DB },
+      {},
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
+    assert.equal(lanes.contracts.status, "matched");
+    assert.ok(lanes.contracts.count >= 1);
+    assert.ok(lanes.contracts.count < 20, `expected token-rat contracts, got ${lanes.contracts.count}`);
+    assert.equal(lanes.meetings.status, "matched");
+    assert.ok(lanes.meetings.cards.some((card) => (
+      card.title === "New Rules Relating to Rat Inspections"
+      && card.keyword_evidence?.status === "matched"
+    )));
+
+    const titles = body.results.map((result) => result.title);
+    assert.equal(titles.some((title) => /integrated visiting/i.test(title)), false);
+    assert.equal(titles.some((title) => /indirect rate/i.test(title)), false);
+    assert.ok(titles.some((title) => /community rat management/i.test(title)));
+    assert.ok(titles.some((title) => title === "New Rules Relating to Rat Inspections"));
+
+    for (const result of body.results) {
+      assert.equal(result.keyword_evidence?.status, "matched", result.title);
+      assert.ok(result.match_evidence?.snippet?.text, result.title);
+      assert.match(
+        result.match_evidence.snippet.text.slice(
+          result.match_evidence.snippet.mark_start,
+          result.match_evidence.snippet.mark_end,
+        ),
+        /^rats?$/i,
+        result.title,
+      );
     }
   } finally {
     sqlite.close();

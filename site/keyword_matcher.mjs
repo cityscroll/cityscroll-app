@@ -1,10 +1,33 @@
 /**
  * Literal keyword resolution shared by the bounded cross-family search route.
  *
- * Retrieval and explanation consume the same resolved term. Matching is based
- * on Unicode word tokens and contiguous token sequences; character offsets are
- * retained only so clients can render the exact publisher passage safely.
+ * Matching semantics (`cityscroll.keyword_match.v1`):
+ * - Exact whole-token match against Unicode word tokens. Infix/substring hits
+ *   (rat inside integrated, strategy, ratio) are not matches.
+ * - No prefix match. A query token must align to a whole document token, so
+ *   "rat" does not match "rate" or "rates".
+ * - Longer tokens keep query-side reviewed plural/singular normalization
+ *   (mosquitos → mosquito). Match-time also accepts a simple regular +s
+ *   plural in either direction so "rat" ↔ "rats" without stemming "rate".
+ * - Reviewed aliases (ida → Industrial Development Agency) stay agency
+ *   filters, not token expansions.
+ * - A surfaced keyword hit must produce offset-backed evidence. If the
+ *   matched token cannot be marked in a publisher field, the hit is
+ *   unjustified and must not be published.
+ *
+ * Retrieval and explanation consume the same resolved term. Character offsets
+ * are retained only so clients can render the exact publisher passage safely.
  */
+
+export const KEYWORD_MATCH_SEMANTICS = Object.freeze({
+  schema: "cityscroll.keyword_match.v1",
+  mode: "exact_token",
+  infix: false,
+  prefix: false,
+  simple_regular_plural: true,
+  reviewed_aliases: true,
+  evidence_required: true,
+});
 
 const MAX_QUERY_LENGTH = 240;
 const SNIPPET_RADIUS = 90;
@@ -104,14 +127,40 @@ export function resolveKeywordQuery(value) {
   });
 }
 
+function simplePlural(token) {
+  return `${token}s`;
+}
+
+function tokenEqualsQuery(documentToken, queryCanonical) {
+  const documentForms = [documentToken.canonical, documentToken.normalized];
+  if (documentForms.includes(queryCanonical) || documentForms.includes(simplePlural(queryCanonical))) {
+    return true;
+  }
+  if (
+    queryCanonical.length > 3
+    && queryCanonical.endsWith("s")
+    && !/(ss|us|is)$/.test(queryCanonical)
+  ) {
+    const stem = queryCanonical.slice(0, -1);
+    return documentForms.includes(stem);
+  }
+  return false;
+}
+
 function sequenceStart(tokens, canonicalTokens) {
   if (!canonicalTokens.length || tokens.length < canonicalTokens.length) return -1;
   for (let start = 0; start <= tokens.length - canonicalTokens.length; start += 1) {
-    if (canonicalTokens.every((token, offset) => tokens[start + offset].canonical === token)) {
+    if (canonicalTokens.every((token, offset) => tokenEqualsQuery(tokens[start + offset], token))) {
       return start;
     }
   }
   return -1;
+}
+
+/** True when `value` contains the resolved query as an adjacent whole-token sequence. */
+export function keywordTextMatches(value, resolved = resolveKeywordQuery("")) {
+  if (!resolved.canonical_tokens?.length) return false;
+  return sequenceStart(keywordTokens(value), resolved.canonical_tokens) >= 0;
 }
 
 function evidenceForField(field, value, resolved, sourceIdentifier) {

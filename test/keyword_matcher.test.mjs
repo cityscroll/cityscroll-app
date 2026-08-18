@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  KEYWORD_MATCH_SEMANTICS,
   matchKeywordDocument,
   resolveKeywordQuery,
 } from "../site/keyword_matcher.mjs";
@@ -68,6 +69,82 @@ test("IDA aliases become an agency filter and never match inside tidal", () => {
     title: "IDA public hearing",
     search_text: "IDA public hearing",
   }), tidal), null);
+});
+
+test("rat matches whole tokens and simple plurals, not infixes or prefixes", () => {
+  const resolved = resolveKeywordQuery("rat");
+  assert.deepEqual(resolved.canonical_tokens, ["rat"]);
+
+  for (const title of [
+    "Integrated Visiting 'Rosy' Program",
+    "Indirect Rate Implementation Services",
+    "Waterfront strategy and ratio study",
+    "Accreditation renewal",
+  ]) {
+    assert.equal(matchKeywordDocument(document({
+      title,
+      summary: title,
+      search_text: title,
+    }), resolved), null, title);
+  }
+
+  const whole = matchKeywordDocument(document({
+    title: "Community Rat Management",
+    summary: "Rodent control training",
+    search_text: "Community Rat Management training",
+  }), resolved);
+  assert.ok(whole);
+  assert.equal(whole.field, "title");
+  assert.equal(
+    whole.snippet.text.slice(whole.snippet.mark_start, whole.snippet.mark_end),
+    "Rat",
+  );
+
+  const plural = matchKeywordDocument(document({
+    title: "City rats inspection",
+    search_text: "City rats inspection",
+  }), resolved);
+  assert.ok(plural);
+  assert.equal(
+    plural.snippet.text.slice(plural.snippet.mark_start, plural.snippet.mark_end),
+    "rats",
+  );
+
+  const landHit = matchKeywordDocument(document({
+    object_type: "land_use_project",
+    domain: "zoning",
+    title: "Rat mitigation ULURP",
+    search_text: "Rat mitigation ULURP Brooklyn",
+  }), resolved);
+  assert.ok(landHit);
+  assert.equal(landHit.matched_normalized_term, "rat");
+
+  const fromPluralQuery = matchKeywordDocument(document({
+    title: "Community Rat Management",
+    search_text: "Community Rat Management",
+  }), resolveKeywordQuery("rats"));
+  assert.ok(fromPluralQuery);
+  assert.deepEqual(KEYWORD_MATCH_SEMANTICS, {
+    schema: "cityscroll.keyword_match.v1",
+    mode: "exact_token",
+    infix: false,
+    prefix: false,
+    simple_regular_plural: true,
+    reviewed_aliases: true,
+    evidence_required: true,
+  });
+});
+
+test("a multi-token contract phrase still requires adjacent whole tokens", () => {
+  const resolved = resolveKeywordQuery("mosquito control");
+  assert.ok(matchKeywordDocument(document({
+    title: "Aerial Mosquito Control",
+    search_text: "Aerial Mosquito Control Health Department",
+  }), resolved));
+  assert.equal(matchKeywordDocument(document({
+    title: "Mosquito products and rodent control",
+    search_text: "Mosquito products and rodent control",
+  }), resolved), null);
 });
 
 test("bounded ZAP rows become provenance-bearing typed Land cards", () => {
