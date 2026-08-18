@@ -642,6 +642,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "Filtè etap zonaj, pwosedi ak pwochen opòtinite",
+    land_family_label: "Kalite aksyon",
     land_procedure_label: "Pwosedi revizyon",
     land_procedure_review: "ULURP ak akselere",
     land_procedure_ulurp: "ULURP sèlman",

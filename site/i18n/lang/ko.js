@@ -643,6 +643,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "용도지역 단계, 심사 절차 및 다음 참여 기회 필터",
+    land_family_label: "행위 유형",
     land_procedure_label: "심사 절차",
     land_procedure_review: "ULURP 및 신속",
     land_procedure_ulurp: "ULURP만",

@@ -110,7 +110,7 @@ test("every current browse lens preserves its existing route grammar", () => {
   const routes = [
     "#money?mode=award&agency=Buildings&q=roofing&sort=amount&min=1000000&max=5000000&category=Construction&months=3&standard=1&m=sealed_bid",
     "#people?view=guide&interest=technology&eligibility=promotion&window=open&format=mixed&salary=80k_plus&fee=none&experience=yes",
-    "#land?boro=Queens&cd=Q04&council=25&q=rezoning&stage=public_review&future=hearing&procedure=ulurp&attendance=in_person",
+    "#land?boro=Queens&cd=Q04&council=25&q=rezoning&stage=public_review&future=hearing&procedure=ulurp&family=acquisition&attendance=in_person",
     "#property?agency=DCAS&q=auction&boro=Bronx&neighborhood=Morrisania&cd=X03&asset=vehicle&method=online_auction&price=priced&sort=price_desc&process=auction_or_rfp&stage=open&view=tax-lien",
     "#property?council=25",
     "#rules?agency=Buildings&q=energy&process=public_process&scope=citywide",
@@ -123,11 +123,12 @@ test("every current browse lens preserves its existing route grammar", () => {
 });
 
 test("Zoning stage and future action survive Browse, Near-you, and watch adapters", () => {
-  const original = "#land?boro=Queens&stage=community_board&future=hearing&procedure=ulurp";
+  const original = "#land?boro=Queens&stage=community_board&future=hearing&procedure=ulurp&family=disposition";
   const scope = scopeFromRouteHash(original);
   assert.equal(scope.facets.values.stage, "community_board");
   assert.equal(scope.facets.values.futureAction, "hearing");
   assert.equal(scope.facets.values.procedure, "ulurp");
+  assert.equal(scope.facets.values.family, "disposition");
   assert.equal(routeHashFromScope(scope, { surface: "land" }), original);
 
   const mapHash = routeHashFromScope(scope, { surface: "map" });
@@ -139,6 +140,7 @@ test("Zoning stage and future action survive Browse, Near-you, and watch adapter
   assert.equal(watch.filter.stage, "community_board");
   assert.equal(watch.filter.futureAction, "hearing");
   assert.equal(watch.filter.procedure, "ulurp");
+  assert.equal(watch.filter.family, "disposition");
   assert.equal(routeHashFromScope(scopeFromWatch(watch), { surface: "land" }), original);
 });
 

@@ -25,6 +25,11 @@ import { buildPlaceLocalConstellation } from "./community_board_geography.mjs";
 import { renderLocalConstellationHTML } from "./local_constellation.mjs";
 import { renderWalkEntry, walkEntryHref, walkEntryPlaceLabel } from "./walk_entry.mjs";
 import { meetingOriginLabel } from "./meeting_origin.mjs";
+import {
+  landRecordHasFamilyEvidence,
+  landRowMatchesFamily,
+  normalizeLandFamily,
+} from "./land_status_facets.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -122,6 +127,8 @@ function recordMatches(record, scope, builtAt) {
       .filter(Boolean).join(" ").toLowerCase();
     if (!haystack.includes(query)) return false;
   }
+  const family = normalizeLandFamily(scope.facets.values?.family);
+  if (family !== "any" && landRecordHasFamilyEvidence(record) && !landRowMatchesFamily(record, family)) return false;
   const { start, end } = effectiveTimeWindow(scope, builtAt);
   const date = record.date ? Date.parse(record.date) : NaN;
   if (Number.isFinite(start) && (!Number.isFinite(date) || date < start)) return false;
@@ -220,6 +227,10 @@ function scopeSummary(scope, lens) {
     ["keyword", scope.topic.query || first(scope.topic.keywords)],
     ["time", scope.time_window.preset],
     ["action", first(scope.facets.actions)],
+    ["action type", (() => {
+      const family = normalizeLandFamily(scope.facets.values?.family);
+      return family !== "any" ? family.replace(/_/g, " ") : null;
+    })()],
   ];
   if (lens === "money" && (scope.place.viewport?.basis || scope.facets.values?.basis) === "contract_action_address") {
     values.push(["map basis", "Contract response address"]);

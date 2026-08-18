@@ -643,6 +643,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "Filtros de etapa de zonificación, procedimiento y próxima oportunidad",
+    land_family_label: "Tipo de acción",
     land_procedure_label: "Procedimiento de revisión",
     land_procedure_review: "ULURP y expedito",
     land_procedure_ulurp: "Solo ULURP",
