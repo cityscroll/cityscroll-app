@@ -36,6 +36,10 @@ const LENS_LABELS = Object.freeze({
   entity: "Agency or vendor",
   mandates: "Mandates",
 });
+const FOLLOWING_FREQUENCY_LABELS = Object.freeze({
+  daily: "Daily when there are matches",
+  weekly: "Weekly digest",
+});
 const BOROUGHS = Object.freeze(["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]);
 const LENS_SUMMARY_SUBJECT = Object.freeze({
   money: "new contracts",
@@ -53,6 +57,14 @@ function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
     "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
   }[char]));
+}
+
+export function followingCadenceLabel(frequency, translate) {
+  const key = frequency === "weekly" ? "following_freq_weekly" : "following_freq_daily";
+  if (typeof translate === "function") {
+    return translate(key);
+  }
+  return FOLLOWING_FREQUENCY_LABELS[frequency === "weekly" ? "weekly" : "daily"];
 }
 
 function compact(value) {
@@ -326,7 +338,7 @@ export function followingWatchIdentityHtml(context, {
   className = "",
 } = {}) {
   if (!context) return "";
-  const cadenceLabel = context.frequency === "weekly" ? "Weekly digest" : "Daily when there are matches";
+  const cadenceLabel = followingCadenceLabel(context.frequency);
   const entityAction = context.entity
     ? graphLink({
       href: context.entity.href,

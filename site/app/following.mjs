@@ -1,5 +1,5 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
-import { composeWatchRuleSentence } from "../following_view.mjs";
+import { composeWatchRuleSentence, followingCadenceLabel } from "../following_view.mjs";
 
 const root = document.querySelector("[data-following-root]");
 const msg = (name) => root?.dataset[name] || "";
@@ -96,7 +96,7 @@ function updateRuleLine() {
   for (const line of root.querySelectorAll("[data-following-identity-rule]")) {
     line.textContent = sentence;
   }
-  const cadenceLabel = frequency === "weekly" ? "Weekly digest" : "Daily when there are matches";
+  const cadenceLabel = followingCadenceLabel(frequency, globalThis.t);
   for (const label of root.querySelectorAll("[data-following-identity-cadence]")) {
     label.textContent = cadenceLabel;
   }

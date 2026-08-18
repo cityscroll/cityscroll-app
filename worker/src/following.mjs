@@ -3,6 +3,7 @@ import moneyOpen from "../../site/data/money_default_open.json" with { type: "js
 import rulesOpen from "../../site/data/rules_domain_observations.json" with { type: "json" };
 import meetingsOpen from "../../site/data/meetings_domain_observations.json" with { type: "json" };
 import {
+  followingCadenceLabel,
   buildFollowingViewModel,
   followingLensNeedsRedirect,
   renderFollowingDocument,
@@ -78,10 +79,6 @@ function hiddenCredential(token, watch) {
   return `<input type="hidden" name="token" value="${esc(token)}"><input type="hidden" name="key" value="${esc(watch.key)}">`;
 }
 
-function watchCadenceLabel(value) {
-  return value === "weekly" ? "Weekly digest" : "Daily when there are matches";
-}
-
 function watchFacts(context) {
   const rows = [
     ["Topic", context.topicLabel || context.lens || "Contracts"],
@@ -104,7 +101,7 @@ function personalWatchHtml(watch, credential) {
   const context = buildFollowingGraphContext(watch, { backToEntity: true });
   const summary = watch.query || context.ruleSentence;
   const status = watch.paused ? "Paused" : "Active";
-  const cadenceLabel = watchCadenceLabel(watch.freq || watch.frequency);
+  const cadenceLabel = followingCadenceLabel(watch.freq || watch.frequency);
   return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}">
     <div class="following-watch-heading">
       <h3>${esc(summary)}</h3>
