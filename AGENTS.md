@@ -651,18 +651,20 @@ worker/test/entity_intelligence.test.mjs`.
 
 **PASSPort → EI densify (money multi-kind):** entity-intelligence feeds from the
 population-backed census in `site/data/procurement_spine_sources.json`
-(`rows.passport_contracts`, capped at the measured 1,550-row payload ceiling)
-plus OCP awards preferred by the
-existing PIN↔EPIN join — not from the 2-row
-`passport_contracts_materialization` Checkbook-crosswalk demo alone. Selection
+(`rows.passport_contracts`). The Worker single-file lookup stays at the
+measured 1,550-row gzip ceiling; the published constellation graph is the
+award-corroborated census under a 20,000-row hard ceiling, sharded as
+`site/data/entity_intelligence_shards/passport_graph.json` (agency previews +
+vendor counts). Full daily dumps, RFx, and unresolved award joins stay
+excluded. OCP awards still prefer the existing PIN↔EPIN join — not the 2-row
+`passport_contracts_materialization` Checkbook-crosswalk demo. Selection
 helpers: `selectPassportContractsForMaterialization` /
+`selectPassportContractsForShardedGraph` /
 `selectOcpAwardsForMaterialization` in `tools/lib/entity_intelligence_build.mjs`.
-Selection is agency-stratified round-robin within the cap so census order does
-not starve later agencies. Measure the graph and payload ceiling with
-`node tools/measure_passport_ei_densify.mjs`; receipt:
-`docs/evidence/passport-ei-densify/comparison.json`. Rebuild:
-`node tools/build_entity_intelligence.mjs`. Verify:
-`node --test test/procurement_spine_ei_densify.test.mjs`.
+Selection is agency-stratified round-robin. Rebuild the core lookup with
+`node tools/build_entity_intelligence.mjs`; shards only with `--graph-only`.
+Measure + age/coverage receipt: `node tools/measure_passport_ei_densify.mjs`.
+Verify: `node --test test/procurement_spine_ei_densify.test.mjs`.
 
 **Checkbook Contracts population feed:**
 `warehouse/scripts/checkbook_contracts.mjs` pages explicit fiscal-year
