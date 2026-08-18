@@ -5,22 +5,25 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Add durable project-specific notes here as they are discovered through real work.
 
 - **Observer-coverage canaries:** `architecture/observer-canaries.json` is the
-  human-owned list of architecture-affecting surfaces that LA4 facts must
-  observe. `tools/build_architecture_facts.mjs` emits `observer_coverage`
-  (`observed_paths`, `known_canaries`, `unmapped_surfaces`). Register a new
-  canary there; do not infer the list. The extractor first-class-observes
-  production search (`worker/src/search.mjs` collection families), the
-  keyword-index builder, constellation model/producers/materializer,
+  single registration for architecture-affecting surfaces. Facts
+  `observer_coverage`, the reconciliation workflow path filter, and the
+  watermark all consume that list — do not infer it or hand-maintain a second
+  canary inventory. `tools/build_architecture_facts.mjs` emits
+  `observed_paths`, `known_canaries`, and `unmapped_surfaces`. The extractor
+  first-class-observes production search (`worker/src/search.mjs` collection
+  families), the keyword-index builder, constellation model/producers/materializer,
   Pages-edge routes and renderer, and the primary-document materializer.
   A remaining registered canary must be observed the same way or acknowledged
-  by ADR — do not silence `unmapped_surfaces`. The reconciler consumes that
-  same block: a non-empty `unmapped_surfaces` set is first-class
-  `unknown_surface` drift. It loads the compact committed watermark at
-  `architecture/generated/watermark.json` as `baselineFacts`, so `--check` is
-  healthy only when coverage is complete, topology is unchanged, and canary
-  fingerprints match the watermark. Advance the watermark with an explicit
-  reviewed `node tools/reconcile_architecture.mjs --write-watermark`, never as
-  a `--check` side effect. Proof: `test/architecture_facts.test.mjs`,
+  by ADR — do not silence `unmapped_surfaces`. The reconciler treats a
+  non-empty `unmapped_surfaces` set as first-class `unknown_surface` drift.
+  `test/architecture_path_coverage.test.mjs` fails if a listed path is absent
+  from `.github/workflows/architecture-reconciliation.yml` trigger paths; keep
+  `site/**` and `tools/build_*.mjs` on that filter so search, constellation,
+  and materializer canaries fire CI. Advance the compact watermark at
+  `architecture/generated/watermark.json` with an explicit reviewed
+  `node tools/reconcile_architecture.mjs --write-watermark`, never as a
+  `--check` side effect. Proof: `test/architecture_facts.test.mjs`,
+  `test/architecture_path_coverage.test.mjs`,
   `test/architecture_watermark.test.mjs`, and
   `test/reconcile_architecture.test.mjs`.
 
