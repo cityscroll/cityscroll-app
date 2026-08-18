@@ -1699,6 +1699,15 @@ Precompute-first — no live fetch at render. Exemplars: Police Officer `7312`
 Service Worker `7013` (EEE, experience). Verify:
 `node --test test/noe_differentiators.test.mjs`.
 
+**Localized exam-card eligibility prose:** `site/exam_reader_copy.mjs` projects
+who-may-qualify / fee-waiver / residency / test-method / NOE-window labels from
+normalized categories (`education_level`, `no_experience_required`, promotion)
+into i18n keys. Under non-English UI never pair a translated label with raw
+English `exam.qualifications`; missing locale strings fail closed to a
+see-NOE line or omit. English keeps the compressed NOE-derived sentence; official
+NOE links stay on the publisher PDF. Wired from `site/app/exams.mjs`. Verify:
+`node --test test/exam_reader_copy.test.mjs`.
+
 ## Exam interest-area / series taxonomy
 
 Interest areas (public safety, social services, trades, admin, IT, etc.) are a
