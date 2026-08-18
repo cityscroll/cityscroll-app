@@ -75,3 +75,11 @@ export {
   runMultiFlywheel,
   planLessonFileUpdate,
 } from "./flywheel_run.mjs";
+
+export {
+  PROCUREMENT_POLICY_SCHEMA,
+  PUBLICATION_OBLIGATIONS,
+  PROCUREMENT_POLICY_STAGES,
+  validateProcurementPolicyRegistry,
+  resolveProcurementPublicationPolicy,
+} from "./procurement_policy.mjs";
