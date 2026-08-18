@@ -860,10 +860,22 @@ batch — never live ArcGIS on the resident hot path:
 canary `3012660036` / `2026K0123`). Focused proof:
 `node --test test/bbl_mappluto_centroids.test.mjs`.
 
-**Remaining bulk (sequential, only if headroom green):** `city-record`
-(`dg92-zbpx`). Optional later: full `doing-business-entities` bulk (~11k; enables
-zero-SODA vendor attach). Query seam: `warehouse/lib/query.mjs` /
-`warehouse/scripts/query.py`. Details: `warehouse/README.md`.
+**WH-07 City Record PIN-chain serve (first history projection):** materialize
+procurement-with-pin siblings from the WH-07 `city_record` bulk into
+`site/data/city_record_pin_chain_warehouse_lookup.json` (+ Worker twin).
+`fetchRelatedProcurementNotices` prefers the materialization before D1 / live
+SODA. Rebuild: `node tools/build_city_record_pin_chain_lookup.mjs` (`--fixture`
+offline; DuckDB export when catalog present). Serve gate + LKG retention via
+`cityRecordPinChainServeGateFindings` / `serve_publish_contract` canaries
+`07219P0148001R004` + `20260723031`. Proof:
+`node --test test/city_record_pin_chain_lookup.test.mjs worker/test/city_record_pin_chain_warehouse_lookup.test.mjs`.
+Follow-ons: 90d/365d Money-archive index, agency rollups, refresh→publish workflow.
+
+**Remaining bulk (sequential, only if headroom green):** optional later full
+`doing-business-entities` bulk (~11k; enables zero-SODA vendor attach) when the
+serve twin is not already filled via `--from-soda`. Query seam:
+`warehouse/lib/query.mjs` / `warehouse/scripts/query.py`. Details:
+`warehouse/README.md`.
 
 ## Warehouse batch ER (WH-04)
 
