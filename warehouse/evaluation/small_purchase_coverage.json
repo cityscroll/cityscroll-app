@@ -1,0 +1,1080 @@
+{
+  "schema": "cityscroll.small_purchase_coverage_census.v1",
+  "status": "complete",
+  "generated_at": "2026-08-18T20:21:08.040Z",
+  "measurement_kind": "source-row coverage census; source rows are not canonical procurements",
+  "scope": {
+    "fiscal_years": [
+      2025,
+      2026,
+      2027
+    ],
+    "admitted_publisher_label_fragments": [
+      "Small Purchase",
+      "SM Purch",
+      "Micropurchase"
+    ],
+    "method_families": [
+      "ordinary_small_purchase",
+      "micropurchase",
+      "mwbe_small_purchase"
+    ],
+    "value_rule": "Checkbook census uses publisher original contract value <= $100,000; PASSPort and OCP report all admitted values plus explicit <=$100,000 cuts where relevant.",
+    "source_row_rule": "No statistical estimates; counts are acquired source rows or exact-key derivations."
+  },
+  "identity_policy": {
+    "join_keys": [
+      "request_id",
+      "PIN/EPIN",
+      "contract_id"
+    ],
+    "normalization": "trim, uppercase, remove non-alphanumeric characters, then require equality; no prefixes or partial matches",
+    "prohibited": "fuzzy joins, vendor/agency/title/name joins, or inferred identifiers",
+    "negative_meaning": "not yet found in the complete acquired City Record Procurement snapshot by an allowed exact key"
+  },
+  "sources": {
+    "passport_contracts": {
+      "acquisition": {
+        "url": "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+        "fetched_at": "2026-08-18T20:18:49.920Z",
+        "http_status": 200,
+        "bytes": 24664549,
+        "sha256": "7fa84717fce7264f9aba8ac449bcf97509aac9a3a61bc1be151210cc48306cb5",
+        "etag": "\"dd8e93092c68db4f0a4fcbdec4a9e2d2-3\"",
+        "last_modified": "Tue, 18 Aug 2026 05:37:06 GMT",
+        "status": "complete",
+        "parsed_rows": 61240,
+        "excluded_exact_test_rows": 1
+      },
+      "distribution": {
+        "population_definition": "all non-test PASSPort contracts whose publisher method label contains Small Purchase, SM Purch, or Micropurchase",
+        "acquired_rows": 61240,
+        "publisher_small_like_rows": 8303,
+        "census_rows": 8303,
+        "fiscal_year": {
+          "FY2020": 1,
+          "FY2021": 399,
+          "FY2022": 874,
+          "FY2023": 1064,
+          "FY2024": 1670,
+          "FY2025": 1992,
+          "FY2026": 1948,
+          "FY2027": 355
+        },
+        "method_family": {
+          "micropurchase": 3169,
+          "mwbe_small_purchase": 5134
+        },
+        "publisher_method_label": {
+          "Micropurchase": 3169,
+          "MWBE Non Competitive Small Purchase": 5134
+        },
+        "value_band": {
+          ">$100k-$250k": 1086,
+          ">$1m-$1.5m": 189,
+          ">$20k-$35k": 479,
+          ">$250k-$500k": 931,
+          ">$35k-$100k": 2088,
+          ">$500k-$1m": 355,
+          ">$5k-$20k": 2164,
+          "$0.01-$5k": 1009,
+          "missing": 2
+        },
+        "value_summary": {
+          "measured_rows": 8301,
+          "missing_rows": 2,
+          "median": 53450,
+          "p90": 464720,
+          "p95": 734400,
+          "maximum": 1500000
+        },
+        "identifiers": {
+          "request_id": {
+            "present": 0,
+            "missing": 8303,
+            "rate": 0
+          },
+          "pin_epin": {
+            "present": 8303,
+            "missing": 0,
+            "rate": 1
+          },
+          "contract_id": {
+            "present": 8076,
+            "missing": 227,
+            "rate": 0.972660484162351
+          },
+          "publisher_record_id": {
+            "present": 8303,
+            "missing": 0,
+            "rate": 1
+          },
+          "document_code": {
+            "present": 8076,
+            "missing": 227,
+            "rate": 0.972660484162351
+          },
+          "oca_number": {
+            "present": 0,
+            "missing": 8303,
+            "rate": 0
+          }
+        }
+      }
+    },
+    "passport_rfx": {
+      "acquisition": {
+        "url": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
+        "fetched_at": "2026-08-18T20:18:49.420Z",
+        "http_status": 200,
+        "bytes": 3451755,
+        "sha256": "9d3d51e6820d448117b2904cbd9e339713a3499782895b99b9a606be1e407154",
+        "etag": "W/\"d7612df91e4b78a911c78f865edf830c\"",
+        "last_modified": "Tue, 18 Aug 2026 05:37:07 GMT",
+        "status": "complete",
+        "parsed_rows": 12060
+      },
+      "distribution": {
+        "population_definition": "all PASSPort RFx rows whose publisher method label contains Small Purchase, SM Purch, or Micropurchase",
+        "acquired_rows": 12060,
+        "publisher_small_like_rows": 0,
+        "census_rows": 0,
+        "fiscal_year": {},
+        "method_family": {},
+        "publisher_method_label": {},
+        "value_band": {},
+        "value_summary": {
+          "measured_rows": 0,
+          "missing_rows": 0,
+          "median": null,
+          "p90": null,
+          "p95": null,
+          "maximum": null
+        },
+        "identifiers": {
+          "request_id": {
+            "present": 0,
+            "missing": 0,
+            "rate": null
+          },
+          "pin_epin": {
+            "present": 0,
+            "missing": 0,
+            "rate": null
+          },
+          "contract_id": {
+            "present": 0,
+            "missing": 0,
+            "rate": null
+          },
+          "publisher_record_id": {
+            "present": 0,
+            "missing": 0,
+            "rate": null
+          },
+          "document_code": {
+            "present": 0,
+            "missing": 0,
+            "rate": null
+          },
+          "oca_number": {
+            "present": 0,
+            "missing": 0,
+            "rate": null
+          }
+        }
+      }
+    },
+    "checkbook_contracts": {
+      "acquisition": {
+        "status": "complete",
+        "url": "https://www.checkbooknyc.com/api",
+        "fetched_at": "2026-08-18T20:21:07.461Z",
+        "fiscal_years": [
+          2025,
+          2026,
+          2027
+        ],
+        "paging": {
+          "strategy": "complete fiscal-year partitions; 1-based records_from; fixed page size; record_count must remain stable within each partition",
+          "page_size": 999,
+          "pages": 37,
+          "population_counts": {
+            "2025": 19236,
+            "2026": 14575,
+            "2027": 1519
+          },
+          "raw_rows": 35330,
+          "normalized_exact_contract_ids": 26038,
+          "page_manifest_sha256": "81156adc5fdbeb06b4c372357147de4dab88dd9f4668126f508844422353afcc"
+        }
+      },
+      "distribution": {
+        "population_definition": "exact contract_id groups in registered expense Contracts for FY2025-FY2026-FY2027; admitted publisher labels; original value <= $100,000",
+        "acquired_rows": 26038,
+        "publisher_small_like_rows": 12935,
+        "census_rows": 11746,
+        "fiscal_year": {
+          "FY2025": 5644,
+          "FY2026": 5731,
+          "FY2027": 371
+        },
+        "method_family": {
+          "micropurchase": 3116,
+          "mwbe_small_purchase": 867,
+          "ordinary_small_purchase": 7763
+        },
+        "publisher_method_label": {
+          "M/WBE SMALL PURCHASE": 862,
+          "M/WBE SMALL PURCHASE RENEWALS": 5,
+          "SM PURCH CONSTR - 50K TO 100K": 2,
+          "SM PURCH GOODS SERVICES 100K": 672,
+          "SM PURCHASE COUNCIL & BP NEEDS": 461,
+          "SM. PURCHASE - BUY AGAINST": 1,
+          "SM. PURCHASE - GOV'T TO GOV'T": 3,
+          "SM. PURCHASE -PROF. MEMBERSHIP": 5,
+          "SMALL PURCH - IT- 25 K TO 100K": 25,
+          "SMALL PURCH -SUBSCRIPTION ETC": 50,
+          "SMALL PURCHASE - EMERGENCY": 1,
+          "SMALL PURCHASE - INFO TECH": 3,
+          "SMALL PURCHASE - INTERGOV'T": 6,
+          "SMALL PURCHASE - ORAL SOLICITA": 3,
+          "SMALL PURCHASE - PQVL COMP BID": 33,
+          "SMALL PURCHASE - PUBLICLY LET": 219,
+          "SMALL PURCHASE - RFP": 3,
+          "SMALL PURCHASE - SOLE SOURCE": 1,
+          "SMALL PURCHASE - UNDER $5,000": 3116,
+          "SMALL PURCHASE - WRITTEN": 6275
+        },
+        "value_band": {
+          ">$20k-$35k": 6528,
+          ">$35k-$100k": 1325,
+          ">$5k-$20k": 2665,
+          "$0.01-$5k": 1228
+        },
+        "value_summary": {
+          "measured_rows": 11746,
+          "missing_rows": 0,
+          "median": 25000,
+          "p90": 41477.5,
+          "p95": 82700.8925,
+          "maximum": 100000
+        },
+        "identifiers": {
+          "request_id": {
+            "present": 0,
+            "missing": 11746,
+            "rate": 0
+          },
+          "pin_epin": {
+            "present": 11746,
+            "missing": 0,
+            "rate": 1
+          },
+          "contract_id": {
+            "present": 11746,
+            "missing": 0,
+            "rate": 1
+          },
+          "publisher_record_id": {
+            "present": 11746,
+            "missing": 0,
+            "rate": 1
+          },
+          "document_code": {
+            "present": 11746,
+            "missing": 0,
+            "rate": 1
+          },
+          "oca_number": {
+            "present": 4504,
+            "missing": 7242,
+            "rate": 0.38344968499914867
+          }
+        }
+      }
+    },
+    "ocp_awards": {
+      "acquisition": {
+        "status": "complete",
+        "url": "https://data.cityofnewyork.us/resource/qyyg-4tf5.json",
+        "fetched_at": "2026-08-18T20:19:00.069Z",
+        "query": {
+          "where": null,
+          "select": [
+            "request_id",
+            "start_date",
+            "type_of_notice_description",
+            "selection_method_description",
+            "section_name",
+            "pin",
+            "contract_amount"
+          ],
+          "order": "request_id ASC"
+        },
+        "paging": {
+          "strategy": "bounded SODA offset pages bracketed by equal count queries",
+          "page_size": 50000,
+          "pages": 2,
+          "rows": 53409,
+          "page_manifest_sha256": "5f312d6e5c86197d20fe22f7334a1dd5df126888537c8516f6fdd1a46a075f99",
+          "count_before": 53409,
+          "count_after": 53409
+        }
+      },
+      "distribution": {
+        "population_definition": "all OCP Recent Contract Awards rows whose publisher method label contains Small Purchase, SM Purch, or Micropurchase",
+        "acquired_rows": 53409,
+        "publisher_small_like_rows": 3208,
+        "census_rows": 3208,
+        "fiscal_year": {
+          "FY2003": 21,
+          "FY2004": 23,
+          "FY2005": 29,
+          "FY2006": 43,
+          "FY2007": 50,
+          "FY2008": 16,
+          "FY2009": 18,
+          "FY2010": 14,
+          "FY2011": 7,
+          "FY2012": 4,
+          "FY2013": 1,
+          "FY2015": 1,
+          "FY2017": 1,
+          "FY2018": 4,
+          "FY2019": 26,
+          "FY2020": 37,
+          "FY2021": 87,
+          "FY2022": 10,
+          "FY2023": 59,
+          "FY2024": 833,
+          "FY2025": 884,
+          "FY2026": 941,
+          "FY2027": 99
+        },
+        "method_family": {
+          "mwbe_small_purchase": 2791,
+          "ordinary_small_purchase": 417
+        },
+        "publisher_method_label": {
+          "M/WBE Noncompetitive Small Purchase": 2791,
+          "Small Purchase": 417
+        },
+        "value_band": {
+          ">$100k-$250k": 662,
+          ">$1m-$1.5m": 164,
+          ">$20k-$35k": 331,
+          ">$250k-$500k": 482,
+          ">$35k-$100k": 1191,
+          ">$500k-$1m": 312,
+          ">$5k-$20k": 56,
+          "$0_or_less": 2,
+          "$0.01-$5k": 8
+        },
+        "value_summary": {
+          "measured_rows": 3208,
+          "missing_rows": 0,
+          "median": 104495.845,
+          "p90": 820266.6000000008,
+          "p95": 1042447.7499999984,
+          "maximum": 1500000
+        },
+        "identifiers": {
+          "request_id": {
+            "present": 3208,
+            "missing": 0,
+            "rate": 1
+          },
+          "pin_epin": {
+            "present": 3206,
+            "missing": 2,
+            "rate": 0.9993765586034913
+          },
+          "contract_id": {
+            "present": 0,
+            "missing": 3208,
+            "rate": 0
+          },
+          "publisher_record_id": {
+            "present": 3208,
+            "missing": 0,
+            "rate": 1
+          },
+          "document_code": {
+            "present": 0,
+            "missing": 3208,
+            "rate": 0
+          },
+          "oca_number": {
+            "present": 0,
+            "missing": 3208,
+            "rate": 0
+          }
+        }
+      }
+    },
+    "city_record_procurement": {
+      "acquisition": {
+        "status": "complete",
+        "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+        "fetched_at": "2026-08-18T20:19:07.888Z",
+        "query": {
+          "where": "section_name='Procurement'",
+          "select": [
+            "request_id",
+            "start_date",
+            "type_of_notice_description",
+            "selection_method_description",
+            "section_name",
+            "pin",
+            "contract_amount"
+          ],
+          "order": "request_id ASC"
+        },
+        "paging": {
+          "strategy": "bounded SODA offset pages bracketed by equal count queries",
+          "page_size": 50000,
+          "pages": 3,
+          "rows": 105368,
+          "page_manifest_sha256": "6ff93c70c3f1c379c65477c023dea7a2c2506446191a1cfcc06a54035fb34b1b",
+          "count_before": 105368,
+          "count_after": 105368
+        }
+      },
+      "distribution": {
+        "population_definition": "all City Record Procurement rows whose publisher method label contains Small Purchase, SM Purch, or Micropurchase",
+        "acquired_rows": 105368,
+        "publisher_small_like_rows": 3445,
+        "census_rows": 3445,
+        "fiscal_year": {
+          "FY2003": 22,
+          "FY2004": 26,
+          "FY2005": 30,
+          "FY2006": 44,
+          "FY2007": 51,
+          "FY2008": 30,
+          "FY2009": 42,
+          "FY2010": 16,
+          "FY2011": 70,
+          "FY2012": 40,
+          "FY2013": 15,
+          "FY2014": 10,
+          "FY2015": 12,
+          "FY2016": 4,
+          "FY2017": 5,
+          "FY2018": 8,
+          "FY2019": 27,
+          "FY2020": 45,
+          "FY2021": 95,
+          "FY2022": 12,
+          "FY2023": 59,
+          "FY2024": 836,
+          "FY2025": 888,
+          "FY2026": 956,
+          "FY2027": 102
+        },
+        "method_family": {
+          "mwbe_small_purchase": 2814,
+          "ordinary_small_purchase": 631
+        },
+        "publisher_method_label": {
+          "M/WBE Noncompetitive Small Purchase": 2814,
+          "Small Purchase": 631
+        },
+        "value_band": {
+          ">$100k-$250k": 662,
+          ">$1m-$1.5m": 164,
+          ">$20k-$35k": 331,
+          ">$250k-$500k": 482,
+          ">$35k-$100k": 1191,
+          ">$500k-$1m": 312,
+          ">$5k-$20k": 56,
+          "$0_or_less": 3,
+          "$0.01-$5k": 8,
+          "missing": 236
+        },
+        "value_summary": {
+          "measured_rows": 3209,
+          "missing_rows": 236,
+          "median": 104373.72,
+          "p90": 819810.4000000012,
+          "p95": 1042225.9999999997,
+          "maximum": 1500000
+        },
+        "identifiers": {
+          "request_id": {
+            "present": 3445,
+            "missing": 0,
+            "rate": 1
+          },
+          "pin_epin": {
+            "present": 3441,
+            "missing": 4,
+            "rate": 0.9988388969521045
+          },
+          "contract_id": {
+            "present": 0,
+            "missing": 3445,
+            "rate": 0
+          },
+          "publisher_record_id": {
+            "present": 3445,
+            "missing": 0,
+            "rate": 1
+          },
+          "document_code": {
+            "present": 0,
+            "missing": 3445,
+            "rate": 0
+          },
+          "oca_number": {
+            "present": 0,
+            "missing": 3445,
+            "rate": 0
+          }
+        }
+      }
+    }
+  },
+  "exact_cross_source_overlap": {
+    "passport_contracts": {
+      "passport_rfx": {
+        "from_rows": 8303,
+        "matched_rows": 0,
+        "rate": 0,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      },
+      "checkbook_contracts": {
+        "from_rows": 8303,
+        "matched_rows": 3944,
+        "rate": 0.47500903287968205,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 3658,
+          "contract_id": 3944
+        }
+      },
+      "ocp_awards": {
+        "from_rows": 8303,
+        "matched_rows": 2686,
+        "rate": 0.3234975310128869,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 2686,
+          "contract_id": 0
+        }
+      },
+      "city_record_procurement": {
+        "from_rows": 8303,
+        "matched_rows": 2687,
+        "rate": 0.32361796940864745,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 2687,
+          "contract_id": 0
+        }
+      }
+    },
+    "passport_rfx": {
+      "passport_contracts": {
+        "from_rows": 0,
+        "matched_rows": 0,
+        "rate": null,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      },
+      "checkbook_contracts": {
+        "from_rows": 0,
+        "matched_rows": 0,
+        "rate": null,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      },
+      "ocp_awards": {
+        "from_rows": 0,
+        "matched_rows": 0,
+        "rate": null,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      },
+      "city_record_procurement": {
+        "from_rows": 0,
+        "matched_rows": 0,
+        "rate": null,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      }
+    },
+    "checkbook_contracts": {
+      "passport_contracts": {
+        "from_rows": 11746,
+        "matched_rows": 3241,
+        "rate": 0.2759237187127533,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 3236,
+          "contract_id": 3237
+        }
+      },
+      "passport_rfx": {
+        "from_rows": 11746,
+        "matched_rows": 0,
+        "rate": 0,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      },
+      "ocp_awards": {
+        "from_rows": 11746,
+        "matched_rows": 703,
+        "rate": 0.05985016175719394,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 703,
+          "contract_id": 0
+        }
+      },
+      "city_record_procurement": {
+        "from_rows": 11746,
+        "matched_rows": 703,
+        "rate": 0.05985016175719394,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 703,
+          "contract_id": 0
+        }
+      }
+    },
+    "ocp_awards": {
+      "passport_contracts": {
+        "from_rows": 3208,
+        "matched_rows": 2680,
+        "rate": 0.8354114713216958,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 2680,
+          "contract_id": 0
+        }
+      },
+      "passport_rfx": {
+        "from_rows": 3208,
+        "matched_rows": 0,
+        "rate": 0,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 0,
+          "contract_id": 0
+        }
+      },
+      "checkbook_contracts": {
+        "from_rows": 3208,
+        "matched_rows": 1526,
+        "rate": 0.4756857855361596,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 1526,
+          "contract_id": 0
+        }
+      },
+      "city_record_procurement": {
+        "from_rows": 3208,
+        "matched_rows": 3208,
+        "rate": 1,
+        "matched_by_exact_key": {
+          "request_id": 3208,
+          "pin_epin": 3206,
+          "contract_id": 0
+        }
+      }
+    },
+    "city_record_procurement": {
+      "passport_contracts": {
+        "from_rows": 3445,
+        "matched_rows": 2683,
+        "rate": 0.7788098693759071,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 2683,
+          "contract_id": 0
+        }
+      },
+      "passport_rfx": {
+        "from_rows": 3445,
+        "matched_rows": 3,
+        "rate": 0.0008708272859216256,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 3,
+          "contract_id": 0
+        }
+      },
+      "checkbook_contracts": {
+        "from_rows": 3445,
+        "matched_rows": 1530,
+        "rate": 0.444121915820029,
+        "matched_by_exact_key": {
+          "request_id": 0,
+          "pin_epin": 1530,
+          "contract_id": 0
+        }
+      },
+      "ocp_awards": {
+        "from_rows": 3445,
+        "matched_rows": 3212,
+        "rate": 0.932365747460087,
+        "matched_by_exact_key": {
+          "request_id": 3208,
+          "pin_epin": 3210,
+          "contract_id": 0
+        }
+      }
+    }
+  },
+  "city_record_negative": {
+    "passport_contracts_all_values": {
+      "source_rows": 8303,
+      "city_record_not_yet_found_by_exact_key": 5616,
+      "rate": 0.6763820305913525,
+      "method_family": {
+        "micropurchase": 3155,
+        "mwbe_small_purchase": 2461
+      },
+      "fiscal_year": {
+        "FY2020": 1,
+        "FY2021": 320,
+        "FY2022": 868,
+        "FY2023": 974,
+        "FY2024": 903,
+        "FY2025": 1173,
+        "FY2026": 1091,
+        "FY2027": 286
+      },
+      "value_band": {
+        ">$100k-$250k": 495,
+        ">$1m-$1.5m": 29,
+        ">$20k-$35k": 256,
+        ">$250k-$500k": 481,
+        ">$35k-$100k": 1139,
+        ">$500k-$1m": 56,
+        ">$5k-$20k": 2149,
+        "$0.01-$5k": 1009,
+        "missing": 2
+      },
+      "exact_non_city_record_overlap": {
+        "checkbook_contracts": {
+          "from_rows": 5616,
+          "matched_rows": 2249,
+          "rate": 0.40046296296296297,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 2201,
+            "contract_id": 2249
+          }
+        },
+        "ocp_awards": {
+          "from_rows": 5616,
+          "matched_rows": 0,
+          "rate": 0,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        },
+        "passport_rfx": {
+          "from_rows": 5616,
+          "matched_rows": 0,
+          "rate": 0,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        }
+      },
+      "interpretation": "City Record not yet found by exact request_id or exact normalized PIN/EPIN; not a claim that no notice was published."
+    },
+    "passport_contracts_le_100k": {
+      "source_rows": 5740,
+      "city_record_not_yet_found_by_exact_key": 4553,
+      "rate": 0.793205574912892,
+      "method_family": {
+        "micropurchase": 3154,
+        "mwbe_small_purchase": 1399
+      },
+      "fiscal_year": {
+        "FY2020": 1,
+        "FY2021": 267,
+        "FY2022": 610,
+        "FY2023": 581,
+        "FY2024": 807,
+        "FY2025": 1094,
+        "FY2026": 1022,
+        "FY2027": 171
+      },
+      "value_band": {
+        ">$20k-$35k": 256,
+        ">$35k-$100k": 1139,
+        ">$5k-$20k": 2149,
+        "$0.01-$5k": 1009
+      },
+      "exact_non_city_record_overlap": {
+        "checkbook_contracts": {
+          "from_rows": 4553,
+          "matched_rows": 2100,
+          "rate": 0.4612343509773775,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 2077,
+            "contract_id": 2100
+          }
+        },
+        "ocp_awards": {
+          "from_rows": 4553,
+          "matched_rows": 0,
+          "rate": 0,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        },
+        "passport_rfx": {
+          "from_rows": 4553,
+          "matched_rows": 0,
+          "rate": 0,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        }
+      },
+      "interpretation": "City Record not yet found by exact request_id or exact normalized PIN/EPIN; not a claim that no notice was published."
+    },
+    "checkbook_contracts_le_100k": {
+      "source_rows": 11746,
+      "city_record_not_yet_found_by_exact_key": 11043,
+      "rate": 0.9401498382428061,
+      "method_family": {
+        "micropurchase": 3116,
+        "mwbe_small_purchase": 229,
+        "ordinary_small_purchase": 7698
+      },
+      "fiscal_year": {
+        "FY2025": 5315,
+        "FY2026": 5381,
+        "FY2027": 347
+      },
+      "value_band": {
+        ">$20k-$35k": 6369,
+        ">$35k-$100k": 802,
+        ">$5k-$20k": 2644,
+        "$0.01-$5k": 1228
+      },
+      "exact_non_city_record_overlap": {
+        "passport_contracts": {
+          "from_rows": 11043,
+          "matched_rows": 2620,
+          "rate": 0.23725436928370913,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 2617,
+            "contract_id": 2620
+          }
+        },
+        "ocp_awards": {
+          "from_rows": 11043,
+          "matched_rows": 0,
+          "rate": 0,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        },
+        "passport_rfx": {
+          "from_rows": 11043,
+          "matched_rows": 0,
+          "rate": 0,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        }
+      },
+      "interpretation": "City Record not yet found by exact request_id or exact normalized PIN/EPIN; not a claim that no notice was published."
+    },
+    "ocp_awards_all_values": {
+      "source_rows": 3208,
+      "city_record_not_yet_found_by_exact_key": 0,
+      "rate": 0,
+      "method_family": {},
+      "fiscal_year": {},
+      "value_band": {},
+      "exact_non_city_record_overlap": {
+        "passport_contracts": {
+          "from_rows": 0,
+          "matched_rows": 0,
+          "rate": null,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        },
+        "checkbook_contracts": {
+          "from_rows": 0,
+          "matched_rows": 0,
+          "rate": null,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        },
+        "passport_rfx": {
+          "from_rows": 0,
+          "matched_rows": 0,
+          "rate": null,
+          "matched_by_exact_key": {
+            "request_id": 0,
+            "pin_epin": 0,
+            "contract_id": 0
+          }
+        }
+      },
+      "interpretation": "City Record not yet found by exact request_id or exact normalized PIN/EPIN; not a claim that no notice was published."
+    }
+  },
+  "opportunity_vs_transaction_visibility": {
+    "passport_contracts_all_values": {
+      "rows": 8303,
+      "opportunity_visibility": {
+        "exact_passport_rfx": 0,
+        "exact_city_record_solicitation": 0,
+        "exact_public_opportunity_union": 0,
+        "rate": 0
+      },
+      "transaction_visibility": {
+        "source_observation_rows": 8303,
+        "positive_paid_or_spent_rows": 7377,
+        "positive_paid_or_spent_rate": 0.8884740455257136,
+        "interpretation": "A later contract/award/payment observation does not imply a generally public pre-award opportunity."
+      }
+    },
+    "passport_contracts_le_100k": {
+      "rows": 5740,
+      "opportunity_visibility": {
+        "exact_passport_rfx": 0,
+        "exact_city_record_solicitation": 0,
+        "exact_public_opportunity_union": 0,
+        "rate": 0
+      },
+      "transaction_visibility": {
+        "source_observation_rows": 5740,
+        "positive_paid_or_spent_rows": 5228,
+        "positive_paid_or_spent_rate": 0.910801393728223,
+        "interpretation": "A later contract/award/payment observation does not imply a generally public pre-award opportunity."
+      }
+    },
+    "checkbook_contracts_le_100k": {
+      "rows": 11746,
+      "opportunity_visibility": {
+        "exact_passport_rfx": 0,
+        "exact_city_record_solicitation": 29,
+        "exact_public_opportunity_union": 29,
+        "rate": 0.0024689255916907882
+      },
+      "transaction_visibility": {
+        "source_observation_rows": 11746,
+        "positive_paid_or_spent_rows": 10433,
+        "positive_paid_or_spent_rate": 0.8882172654520688,
+        "interpretation": "A later contract/award/payment observation does not imply a generally public pre-award opportunity."
+      }
+    },
+    "ocp_awards_all_values": {
+      "rows": 3208,
+      "opportunity_visibility": {
+        "exact_passport_rfx": 0,
+        "exact_city_record_solicitation": 3,
+        "exact_public_opportunity_union": 3,
+        "rate": 0.0009351620947630922
+      },
+      "transaction_visibility": {
+        "source_observation_rows": 3208,
+        "positive_paid_or_spent_rows": null,
+        "positive_paid_or_spent_rate": null,
+        "interpretation": "A later contract/award/payment observation does not imply a generally public pre-award opportunity."
+      }
+    }
+  },
+  "purchase_order_population": {
+    "status": "UNKNOWN",
+    "rows": null,
+    "observed_document_codes": {
+      "CT1": 11724,
+      "CTA1": 16,
+      "MA1": 6
+    },
+    "interpretation": "This bounded Checkbook Contracts pull is not a citywide purchase-order/direct-order census. No observed PO/DO code would be an API-surface miss, not a zero world fact."
+  },
+  "source_drift": {
+    "baseline": {
+      "observed_at": "2026-08-18T19:46:32Z",
+      "provenance": "data/scout-non-crol-small-purchase-coverage/report.md sections 3-6",
+      "counts": {
+        "passport_contracts_all_values": 5616,
+        "checkbook_contracts_le_100k": 11043,
+        "ocp_awards_all_values": 0
+      }
+    },
+    "policy": "Report measured change. A nonzero baseline passes the order-of-magnitude gate within max(500 rows, 35%); a zero baseline must remain zero. Counts are never substituted from the baseline.",
+    "comparisons": {
+      "passport_contracts_all_values": {
+        "scout_count": 5616,
+        "current_count": 5616,
+        "absolute_change": 0,
+        "relative_change": 0,
+        "tolerance_rows": 1966,
+        "within_fresh_source_tolerance": true
+      },
+      "checkbook_contracts_le_100k": {
+        "scout_count": 11043,
+        "current_count": 11043,
+        "absolute_change": 0,
+        "relative_change": 0,
+        "tolerance_rows": 3866,
+        "within_fresh_source_tolerance": true
+      },
+      "ocp_awards_all_values": {
+        "scout_count": 0,
+        "current_count": 0,
+        "absolute_change": 0,
+        "relative_change": 0,
+        "tolerance_rows": 0,
+        "within_fresh_source_tolerance": true
+      }
+    }
+  },
+  "receipt_sha256": "adacd2b23c6c8b32e4d1a4f11f1724daa7e8b35d681b1595d19a0fa97be78385"
+}
