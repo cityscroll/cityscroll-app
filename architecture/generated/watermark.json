@@ -1,13 +1,13 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-18T16:33:25Z",
-  "commit": "69acbb75f97be6d7e004fd90dcc1bdb794b71755",
-  "observer_coverage_hash": "2e5ec686453f191352fa1ec395116c77f8631f25ba30fbad98090cc7bba76b04",
+  "generated_at": "2026-08-18T17:49:52Z",
+  "commit": "19a53eed4efb81184f21e75e478619a753265600",
+  "observer_coverage_hash": "f8adb9598baa9bba69e0834568fe85bdd2c0c618f83410bfd8d298feb2ff6957",
   "canaries": {
     "agency-constellation-model": {
       "path": "site/agency_constellation_model.mjs",
       "count": 6,
-      "fingerprint": "856e0baa6583e0b9269cf21c529785fcbe7a1aaffd082eff93ec01d8cb4b19a2"
+      "fingerprint": "1990e89584beaf52aa2647d9aede6be7f7c5e1c0f77bd142a46d7432ef33678e"
     },
     "agency-search-producer": {
       "path": "site/agency_search_producer.mjs",
@@ -18,6 +18,11 @@
       "path": "tools/build_agency_constellation_documents.mjs",
       "count": 1,
       "fingerprint": "2585a7342268ee1bde77e3ed7debeb56a2b6f4ecb09d08cced8bbea50f79c2eb"
+    },
+    "exams-eligibility": {
+      "path": "site/exams_surface.mjs",
+      "count": 1,
+      "fingerprint": "72a4b772bae603b956465624471fc1cc5d86b8b4c0323d11293cd5e45bc4942b"
     },
     "keyword-search-index": {
       "path": "tools/build_keyword_search_index.mjs",

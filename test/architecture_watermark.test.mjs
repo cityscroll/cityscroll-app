@@ -37,6 +37,7 @@ test("committed watermark is compact, schema-stamped, and not a facts dump", () 
     "observer_coverage",
     "search",
     "constellation",
+    "exams",
     "pages_edge",
     "materializers",
   ]) {

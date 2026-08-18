@@ -11,8 +11,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   canary inventory. `tools/build_architecture_facts.mjs` emits
   `observed_paths`, `known_canaries`, and `unmapped_surfaces`. The extractor
   first-class-observes production search (`worker/src/search.mjs` collection
-  families), the keyword-index builder, constellation model/producers/materializer,
-  Pages-edge routes and renderer, and the primary-document materializer.
+  families), the keyword-index builder, constellation model/producers/materializer
+  plus the PASSPort graph ceiling, Exams public-eligibility, Pages-edge
+  routes and renderer, and the primary-document materializer.
   A remaining registered canary must be observed the same way or acknowledged
   by ADR — do not silence `unmapped_surfaces`. The reconciler treats a
   non-empty `unmapped_surfaces` set as first-class `unknown_surface` drift.
@@ -27,15 +28,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/architecture_watermark.test.mjs`, and
   `test/reconcile_architecture.test.mjs`.
 
-- **Land-action-collapse backtest (LA11 seam):**
-  `tools/architecture_land_action_observer.mjs` fails when a bundled ZM+control
-  project is rezoning-collapsed, when Charter §197-c is applied to ELURP or
-  Non-ULURP, or when map land ids diverge from list ids on procedure. Frozen
-  case: `architecture/backtests/land-action-collapse.json` in
-  `architecture/backtests/frozen-set.json`. The live
+- **Architecture canary backtest + change-history (LA11):**
+  `tools/backtest_architecture_canaries.mjs --check` replays the frozen set in
+  `architecture/backtests/frozen-set.json`. Seeded cases are land-action
+  collapse plus PRs #1076 (constellation ceiling), #1058 (Committees→search),
+  and #1056 (Exams eligibility). Visibility cases go through
+  `tools/architecture_canary_visibility_observer.mjs`; land-action stays on
+  `tools/architecture_land_action_observer.mjs`. The live
   `filterLandSnapshot` binding now admits default-review ELURP (`2024Q0356`);
   silent drop remains the frozen/synthetic drift fixture, not the current
-  list. Replay: `node tools/backtest_architecture_canaries.mjs --check`. Proof:
+  list. Change-history is projected from committed watermarks by
+  `tools/architecture_change_history.mjs` — no full-facts retention.
+  Proof: `test/architecture_history_backtest.test.mjs` and
   `test/architecture_land_action_collapse.test.mjs`.
 
 - **Cited semantic retrieval:** `worker/src/cited_retrieval.mjs` is the
