@@ -38,6 +38,7 @@ import {
   buildUniversalSearchCoverageView,
   renderUniversalSearchCoverageHtml,
 } from "../site/universal_search_coverage_receipt.mjs";
+import { interpretEntityPhrase } from "../site/canonical_entity_interpretation.mjs";
 import { sanitize } from "../worker/src/lib/filter.mjs";
 import {
   mergeUniversalSearchResults,
@@ -400,6 +401,14 @@ async function runCorpus(query) {
         mockedModel,
       };
     }
+    case "canonical_entity": {
+      return {
+        resolved,
+        documents: [],
+        hits: [],
+        interpreted: interpretEntityPhrase(text),
+      };
+    }
     default:
       throw new Error(`unknown golden-query corpus: ${query.corpus}`);
   }
@@ -413,6 +422,24 @@ function byRef(world, ref) {
 
 function assertInterpretation(query, world) {
   const expected = query.expect.interpretation;
+  if (expected.via === "canonical_entity") {
+    const hit = world.interpreted;
+    assert.ok(hit, `${query.id} missing interpretation`);
+    if (expected.unresolved) {
+      assert.equal(hit.status, "unresolved", `${query.id} should stay text`);
+      assert.equal(hit.subject_ref, null, `${query.id} minted a subject_ref`);
+      assert.equal(hit.canonical_id, null, `${query.id} minted a canonical_id`);
+      assert.equal(hit.text, expected.text_remains, `${query.id} text`);
+      return;
+    }
+    assert.equal(hit.status, "resolved", `${query.id} status`);
+    assert.equal(hit.kind, expected.kind, `${query.id} kind`);
+    assert.equal(hit.canonical_name, expected.canonical_name, `${query.id} canonical_name`);
+    assert.equal(hit.canonical_id, expected.canonical_id, `${query.id} canonical_id`);
+    assert.equal(hit.subject_ref, expected.subject_ref, `${query.id} subject_ref`);
+    assert.match(hit.method, /^reviewed_agency_/, `${query.id} method ${hit.method}`);
+    return;
+  }
   if (expected.via === "parse_nl") {
     assert.equal(world.parsed.minAmount, expected.minAmount, `${query.id} minAmount`);
     assert.equal(world.parsed.months, expected.months, `${query.id} months`);

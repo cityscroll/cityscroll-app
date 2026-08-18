@@ -82,7 +82,21 @@ function containsAliasWords(text, alias) {
   return words.every(word => text.includes(" " + word + " "));
 }
 
+function reviewedAgencyInterpreter() {
+  if (typeof CrolInterpretAgencyPhrase === "function") return CrolInterpretAgencyPhrase;
+  if (typeof globalThis !== "undefined" && typeof globalThis.CrolInterpretAgencyPhrase === "function") {
+    return globalThis.CrolInterpretAgencyPhrase;
+  }
+  return null;
+}
+
 function extractAgency(t) {
+  var interpret = reviewedAgencyInterpreter();
+  if (interpret) {
+    var hit = interpret(t);
+    if (hit && hit.status === "resolved" && hit.canonical_name) return hit.canonical_name;
+    return null;
+  }
   for (var i = 0; i < NL_AGENCY_ALIASES.length; i++) {
     var canonical = NL_AGENCY_ALIASES[i][0], aliases = NL_AGENCY_ALIASES[i][1];
     for (var j = 0; j < aliases.length; j++) {

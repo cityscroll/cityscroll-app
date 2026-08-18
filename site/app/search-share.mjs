@@ -9,13 +9,18 @@ function scopeHash(lens, hash){
   return hash&&CrolScope.routeHashFromScope(CrolScope.scopeFromRouteHash(hash,{language:window.LANG||"en"}),{surface:lens});
 }
 function loadNlParser(){
-  return nlParserPromise ||= new Promise(resolve=>{
-    const script=document.createElement("script");
-    script.src="nl_parse.js";
-    script.onload=()=>resolve(typeof parseNL==="function");
-    script.onerror=()=>resolve(false);
-    document.head.append(script);
-  });
+  return nlParserPromise ||= Promise.all([
+    new Promise(resolve=>{
+      const script=document.createElement("script");
+      script.src="nl_parse.js";
+      script.onload=()=>resolve(typeof parseNL==="function");
+      script.onerror=()=>resolve(false);
+      document.head.append(script);
+    }),
+    import("../canonical_entity_interpretation.mjs")
+      .then((mod)=>mod.installAgencyPhraseInterpreter(globalThis))
+      .catch(()=>null),
+  ]).then(([ok])=>ok);
 }
 
 async function nlResolve(text, lens){
