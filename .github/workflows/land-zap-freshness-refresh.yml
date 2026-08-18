@@ -1,0 +1,87 @@
+# Daily sell-facing WH-05 lookup + land keyword family refresh from current SODA.
+# Closes the land freshness publish loop: compute → commit PR (not artifact-only).
+name: Land ZAP freshness refresh
+
+on:
+  schedule:
+    # Daily 07:41 UTC — before land-upcoming-hearings (08:17) so hearings see fresh IDs
+    - cron: "41 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: land-zap-freshness-refresh-main
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Refresh sell-facing ZAP lookup + land keyword index
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Refresh from current SODA
+        run: node tools/refresh_land_zap_freshness.mjs
+      - name: Live sell-facing drift gate
+        run: node tools/build_zap_warehouse_lookup.mjs --check --against-live
+      - name: Guard generated changes
+        id: generated
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          if [ -z "$changed" ]; then
+            echo "Land ZAP freshness artifacts are already current."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          while IFS= read -r path; do
+            case "$path" in
+              site/data/zap_projects_warehouse_lookup.json) ;;
+              worker/src/data/zap_projects_warehouse_lookup.json) ;;
+              worker/src/data/keyword_search_index.json) ;;
+              site/data/land_default_ulurp.json) ;;
+              *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          git diff --check
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: Open or update the land ZAP freshness pull request
+        if: steps.generated.outputs.changed == 'true'
+        id: refresh-pr
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: automation/land-zap-freshness-refresh
+          delete-branch: true
+          commit-message: Refresh sell-facing ZAP land lookup and keyword index
+          title: Refresh sell-facing ZAP land lookup and keyword index
+          body: |
+            Automated refresh of the sell-facing WH-05 ZAP project lookup from current
+            SODA, plus the land keyword-search family and Active ULURP first-paint snapshot.
+
+            Closes the land freshness publish loop (card `cityscroll/land-zap-freshness-publish-loop`).
+
+            Validation:
+            - `node tools/build_zap_warehouse_lookup.mjs --check --against-live`
+            - `node tools/build_keyword_search_index.mjs --check`
+          add-paths: |
+            site/data/zap_projects_warehouse_lookup.json
+            worker/src/data/zap_projects_warehouse_lookup.json
+            worker/src/data/keyword_search_index.json
+            site/data/land_default_ulurp.json
+      - name: Run required checks for the refresh pull request
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref automation/land-zap-freshness-refresh

@@ -1033,7 +1033,7 @@
     project_connections_coverage_measured: 'Охват: {linked} из {eligible} в {scope}.',
     project_connections_coverage_bounded: 'Наблюдается для {linked} проектов в {scope}; знаменатель подходящих проектов не измерен.',
     project_connections_coverage_unknown: 'Знаменатель подходящих проектов не измерен для {scope}.',
-    project_connections_scope_current: 'текущем снимке 231 проекта',
+    project_connections_scope_current: 'текущем снимке проектов',
     project_connections_scope_sample: 'фиксированной выборке из 50 завершённых проектов',
     project_connections_scope_bounded: 'ограниченной материализации связей',
     project_connections_scope_project: 'этом проекте',

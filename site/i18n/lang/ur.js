@@ -1041,7 +1041,7 @@
     project_connections_coverage_measured: 'کوریج: {scope} میں {eligible} میں سے {linked}۔',
     project_connections_coverage_bounded: '{scope} میں {linked} منصوبوں پر مشاہدہ ہوا؛ اہل مخرج نہیں ناپا گیا۔',
     project_connections_coverage_unknown: '{scope} کے لیے اہل مخرج نہیں ناپا گیا۔',
-    project_connections_scope_current: 'موجودہ 231 منصوبوں کے اسنیپ شاٹ',
+    project_connections_scope_current: 'موجودہ منصوبوں کے اسنیپ شاٹ',
     project_connections_scope_sample: '50 مکمل منصوبوں کے مقررہ نمونے',
     project_connections_scope_bounded: 'محدود روابط کی مادّی شکل',
     project_connections_scope_project: 'اس منصوبے',

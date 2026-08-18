@@ -248,9 +248,9 @@ with sync_playwright() as pw:
         "current_milestone_date": "2024-03-13", "ulurp_numbers": "240046HAM; 240047PQM",
     }
     coverage = {
-        "applicant": {"eligible": 231, "linked": 231, "rate": 1,
-                      "scope": "current_zap_snapshot", "vintage": "2026-08-02"},
-        "parcels": {"eligible": 231, "linked": 224, "rate": 224 / 231,
+        "applicant": {"eligible": 238, "linked": 238, "rate": 1,
+                      "scope": "current_zap_snapshot", "vintage": "2026-08-18"},
+        "parcels": {"eligible": 238, "linked": 199, "rate": 199 / 238,
                     "scope": "current_zap_snapshot", "vintage": "2026-08-05"},
         "meetings": {"eligible": None, "linked": 6, "rate": None,
                      "scope": "bounded_entity_materialization", "vintage": "2026-08-05",

@@ -989,8 +989,8 @@
       "warehouse_snapshot": {
         "status": "materialized",
         "artifact": "site/data/zap_projects_warehouse_lookup.json",
-        "materialized_at": "2026-08-02T10:22:34.003Z",
-        "row_count": 231
+        "materialized_at": "2026-08-18T02:19:26.208Z",
+        "row_count": 238
       }
     },
     {
