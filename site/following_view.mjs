@@ -36,12 +36,41 @@ const LENS_LABELS = Object.freeze({
   entity: "Agency or vendor",
   mandates: "Mandates",
 });
+const FOLLOWING_FREQUENCY_LABELS = Object.freeze({
+  daily: "Daily when there are matches",
+  weekly: "Weekly digest",
+});
 const BOROUGHS = Object.freeze(["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"]);
+const LENS_SUMMARY_SUBJECT = Object.freeze({
+  money: "new contracts",
+  people: "new staffing and exams",
+  land: "new zoning records",
+  property: "new property records",
+  rules: "new rules",
+  meetings: "new hearings and meetings",
+  mandates: "new mandates",
+  district: "council district activity",
+  entity: "new entity mentions",
+});
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
     "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
   }[char]));
+}
+
+function escText(value) {
+  return String(value ?? "").replace(/[<>&"]/g, (char) => ({
+    "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;",
+  }[char]));
+}
+
+export function followingCadenceLabel(frequency, translate) {
+  const key = frequency === "weekly" ? "following_freq_weekly" : "following_freq_daily";
+  if (typeof translate === "function") {
+    return translate(key);
+  }
+  return FOLLOWING_FREQUENCY_LABELS[frequency === "weekly" ? "weekly" : "daily"];
 }
 
 function compact(value) {
@@ -230,6 +259,43 @@ function graphLink({ href, label, className, entity, relation } = {}) {
   });
 }
 
+function quoteTerm(value) {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  return `'${text.replace(/'/g, "’")}'`;
+}
+
+function placeClause(filter = {}) {
+  const f = filter && typeof filter === "object" ? filter : {};
+  if (f.communityDistrict) return `in community district ${f.communityDistrict}`;
+  if (f.councilDistrict) return `in Council District ${f.councilDistrict}`;
+  const place = f.borough || f.boro || f.neighborhood || "citywide";
+  return place || "citywide";
+}
+
+function refinementClauses(f) {
+  const filter = f && typeof f === "object" ? f : {};
+  const clauses = [];
+  const keywords = Array.isArray(filter.keywords) ? filter.keywords.filter(Boolean) : [];
+  if (keywords.length) {
+    clauses.push(`mentioning ${keywords.map((keyword) => quoteTerm(keyword)).join(" and ")}`);
+  }
+  if (filter.agency) clauses.push(`from ${filter.agency}`);
+  if (filter.name) clauses.push(`named ${filter.name}`);
+  if (filter.noticeType === "award") clauses.push("for awards");
+  else if (filter.noticeType === "solicitation") clauses.push("for open solicitations");
+  if (filter.noticeType && !["award", "solicitation"].includes(filter.noticeType)) {
+    clauses.push(`for ${filter.noticeType}`);
+  }
+  if (filter.dateWindow || filter.when) {
+    clauses.push(`within ${String(filter.dateWindow || filter.when).replace(/_/g, " ")}`);
+  }
+  if (filter.stage || filter.process) {
+    clauses.push(`in ${filter.stage || filter.process}`);
+  }
+  return clauses;
+}
+
 function watchIdentityRows(context) {
   const rows = [
     ["Topic", context.topicLabel, null],
@@ -278,6 +344,7 @@ export function followingWatchIdentityHtml(context, {
   className = "",
 } = {}) {
   if (!context) return "";
+  const cadenceLabel = followingCadenceLabel(context.frequency);
   const entityAction = context.entity
     ? graphLink({
       href: context.entity.href,
@@ -294,11 +361,14 @@ export function followingWatchIdentityHtml(context, {
     </nav>`
     : "";
   return `<section class="following-watch-identity${className ? ` ${esc(className)}` : ""}" data-following-watch-identity>
-    <p class="following-kicker">Orientation</p><${headingTag}>${esc(heading)}</${headingTag}>
-    <dl class="following-identity-facts">${watchIdentityRows(context)}</dl>
-    <p class="following-identity-rule" data-following-identity-rule>${esc(context.ruleSentence)}</p>
-    <p class="following-identity-cadence">Cadence: <strong data-following-identity-cadence>${esc(context.frequency === "weekly" ? "Weekly" : "Daily")}</strong></p>
-    ${actions}
+    <p class="following-kicker">Watch summary</p><${headingTag}>${esc(heading)}</${headingTag}>
+    <p class="following-identity-rule" aria-live="polite" role="status" aria-atomic="true" data-following-identity-rule>${escText(context.ruleSentence)}</p>
+    <p class="following-identity-cadence">Email frequency: <strong data-following-identity-cadence>${esc(cadenceLabel)}</strong></p>
+    <details class="following-identity-details">
+      <summary>Show technical details</summary>
+      <dl class="following-identity-facts">${watchIdentityRows(context)}</dl>
+    </details>
+    <div class="following-identity-actions-wrap">${actions}</div>
   </section>`;
 }
 
@@ -334,44 +404,35 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
   const wanted = canonicalFollowingLens(lens);
   const topic = LENS_LABELS[wanted] || wanted;
   const f = filter && typeof filter === "object" ? filter : {};
-  const clauses = [];
+  const clauses = refinementClauses(f);
+  const location = placeClause(f);
+  const locationClause = location === "citywide"
+    ? "citywide"
+    : location.startsWith("in ") ? location : `in ${location}`;
 
   if (wanted === "district") {
     const n = f.councilDistrict || "?";
-    return `Notify me for Council District ${n} weekly digest.`;
+    return `Notify me for Council District ${n}, weekly digest.`;
   }
   if (wanted === "mandates" || wanted === "obligations") {
     const who = f.agency || f.agency_id || "this agency";
-    if (f.mandate_id) return `Notify me for mandate ${f.mandate_id} at ${who}.`;
+    if (f.mandate_id) return `Notify me when new filings mention mandate ${f.mandate_id}.`;
     const type = f.deliverable_type ? String(f.deliverable_type).replace(/_/g, " ") : null;
-    if (type === "report") return `Notify me when ${who} report mandates expect filings.`;
-    if (type === "rulemaking") return `Notify me when ${who} rulemaking mandates expect filings.`;
-    if (type) return `Notify me for ${who} ${type} mandates.`;
-    return `Notify me for ${who} mandates — expected filings.`;
+    if (type === "report") return `Notify me when ${who} report filings are published.`;
+    if (type === "rulemaking") return `Notify me when ${who} rulemaking filings are published.`;
+    if (type) return `Notify me when ${who} ${type} filings are published.`;
+    return `Notify me when ${who} mandates are published.`;
   }
   if (wanted === "entity") {
     const kind = f.kind === "agency" ? "agency" : "vendor";
     const name = f.name || "this name";
-    return `Notify me when City Record names the ${kind} ${name}.`;
+    return `Notify me when City Record mentions the ${kind} ${name}.`;
   }
-
-  const keywords = Array.isArray(f.keywords) ? f.keywords.filter(Boolean) : [];
-  if (keywords.length) clauses.push(`keyword ${keywords.join(" ")}`);
-  if (f.agency) clauses.push(`agency ${f.agency}`);
-  if (f.name && wanted !== "entity") clauses.push(`name ${f.name}`);
-  if (f.noticeType === "award") clauses.push("awards only");
-  else if (f.noticeType === "solicitation") clauses.push("open solicitations only");
-  const place = f.borough || f.boro || f.neighborhood || null;
-  if (place) clauses.push(`in ${place}`);
-  if (f.councilDistrict) clauses.push(`Council District ${f.councilDistrict}`);
-  if (f.communityDistrict) clauses.push(`community district ${f.communityDistrict}`);
-  if (f.dateWindow || f.when) clauses.push(`time ${f.dateWindow || f.when}`);
-
+  const subject = LENS_SUMMARY_SUBJECT[wanted] || `new ${topic.toLowerCase()}`;
   if (!clauses.length) {
-    return `Notify me when ${topic} match citywide.`;
+    return `Notify me when ${subject} are published ${locationClause}.`;
   }
-  const joined = clauses.map((c, i) => (i === 0 ? c : `AND ${c}`)).join(" ");
-  return `Notify me when ${topic} match ${joined}.`;
+  return `Notify me when ${subject} ${clauses.join(" ")} are published ${locationClause}.`;
 }
 
 /** True when the filter has no geography pin (citywide / unscoped place). */
@@ -514,21 +575,27 @@ function topicPlacePickersHtml(view) {
     })),
   ].join("");
   return `<div class="following-scope-pickers">
-    <div class="following-scope-rail" role="group" aria-label="Topic">
-      <p class="following-scope-rail-label">Topic</p>
-      <div class="following-scope-links" data-following-topic-scope>${topic}</div>
-    </div>
-    <div class="following-scope-rail" role="group" aria-label="Place">
-      <p class="following-scope-rail-label">Place</p>
-      <div class="following-scope-links" data-following-place-scope>${place}</div>
-    </div>
+    <section class="following-scope-block">
+      <p class="following-scope-title">What do you want to follow?</p>
+      <div class="following-scope-rail" role="group" aria-label="Topic">
+        <p class="following-scope-rail-label">Topic</p>
+        <div class="following-scope-links" data-following-topic-scope>${topic}</div>
+      </div>
+    </section>
+    <section class="following-scope-block">
+      <p class="following-scope-title">Where?</p>
+      <div class="following-scope-rail" role="group" aria-label="Place">
+        <p class="following-scope-rail-label">Any place / borough / district</p>
+        <div class="following-scope-links" data-following-place-scope>${place}</div>
+      </div>
+    </section>
   </div>`;
 }
 
 function ruleLineHtml(view) {
   if (!view.requested) return "";
   return `<div class="following-rule" data-following-rule-panel>
-    <p class="following-rule-line" data-following-rule-line>${esc(view.ruleSentence)}</p>
+    <p class="following-rule-line" aria-live="polite" role="status" aria-atomic="true" data-following-rule-line>${escText(view.ruleSentence)}</p>
   </div>`;
 }
 
@@ -567,19 +634,18 @@ function previewHtml(view) {
 function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
   const dailyOn = view.frequency !== "weekly";
   const weeklyOn = view.frequency === "weekly";
-  const idBase = form === "subscribe" ? "following-sub" : "following";
   return `<fieldset class="following-cadence" data-following-cadence>
-    <legend>How often to email</legend>
+    <legend>Email frequency</legend>
     <div class="following-cadence-cards">
       <label class="following-cadence-card${dailyOn ? " is-selected" : ""}">
         <input type="radio" name="${esc(name)}" value="daily"${dailyOn ? " checked" : ""} data-following-freq="daily">
         <span class="following-cadence-title">Daily</span>
-        <span class="following-cadence-copy">Email only on match days. Quiet days stay quiet. After about 14 quiet days, we send a short check-in.</span>
+        <span class="following-cadence-copy">Daily when there are matches.</span>
       </label>
       <label class="following-cadence-card${weeklyOn ? " is-selected" : ""}">
         <input type="radio" name="${esc(name)}" value="weekly"${weeklyOn ? " checked" : ""} data-following-freq="weekly">
         <span class="following-cadence-title">Weekly</span>
-        <span class="following-cadence-copy">A Monday note even when nothing is new.</span>
+        <span class="following-cadence-copy">Weekly digest.</span>
       </label>
     </div>
   </fieldset>`;
@@ -588,9 +654,9 @@ function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
 function subscribeHtml(view) {
   if (!view.requested) {
     return `<section class="following-subscribe" data-following-subscribe-panel>
-      <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
-      <p>Pick a topic or place to see matches.</p>
-      <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
+    <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
+      <p>Follow what you care about. Save a topic, place, agency, or keyword. We send matching City Record updates.</p>
+      <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly emails are sent on Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
     </section>`;
   }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
@@ -601,7 +667,7 @@ function subscribeHtml(view) {
       <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
       <input type="hidden" name="lang" value="en">
       <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-confirm-note following-delivery-help"></label>
-      <button type="submit">Email me this watch</button>
+      <button type="submit">Create watch</button>
       <p id="following-confirm-note">We send one link first. Click it to start the watch.</p>
       <p id="following-delivery-help" class="following-note" data-following-delivery-help>
         After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.
@@ -642,16 +708,24 @@ function templateHtml(template) {
 function controlsHtml(view) {
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
   const borough = placeBorough(view.filter);
+  const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict ? " open" : "";
   return `${topicPlacePickersHtml(view)}
   <form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
     <input type="hidden" name="lens" value="${esc(view.lens)}">
     <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
     ${borough ? `<input type="hidden" name="boro" value="${esc(borough)}">` : ""}
-    <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
-    <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency" data-following-refine="agency"></label>
-    <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" data-following-refine="council"></label>
+    <details class="following-refinements"${refinementsOpen}>
+      <summary>Narrow it down</summary>
+      <div class="following-refinement-grid">
+        <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
+        <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency" data-following-refine="agency"></label>
+        <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" data-following-refine="council"></label>
+      </div>
+    </details>
     ${cadenceCardsHtml(view)}
-    <button type="submit">See matches</button>
+    <div class="following-form-actions">
+      <button type="submit" class="following-form-action-preview" aria-label="Preview matches before saving">Preview matches</button>
+    </div>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>
   ${view.requested ? "" : ruleLineHtml({ ...view, requested: true, ruleSentence: composeWatchRuleSentence(view.lens, view.filter) })}`;
@@ -679,7 +753,7 @@ function personalSectionHtml(view) {
 function createSectionHtml(view) {
   return `<section id="create" class="following-create" data-following-panel="create" aria-labelledby="following-create-heading">
     <p class="following-kicker">Create</p>
-    <h2 id="following-create-heading">Pick a topic or place</h2>
+    <h2 id="following-create-heading">Follow what you care about</h2>
     ${controlsHtml(view)}
   </section>`;
 }

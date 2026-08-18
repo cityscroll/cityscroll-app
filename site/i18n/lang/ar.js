@@ -269,6 +269,8 @@
     min_award_label: "الحد الأدنى لمبلغ الترسية $",
     min_award_any: "أي مبلغ",
     watch_this_search: "تابع هذا البحث",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "يُغلق هذا الأسبوع",
     money_trail_heading: "مسار العقد",
     export_csv: "تصدير CSV",

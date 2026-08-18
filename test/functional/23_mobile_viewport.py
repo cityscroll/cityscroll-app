@@ -277,10 +277,11 @@ def run(base: str) -> None:
         assert_mobile_surface(no_js_page, "following without JavaScript")
         following_contract = no_js_page.evaluate(
             """() => ({
-              scopeCount: Number(document.querySelector('[data-scope-count]')?.dataset.scopeCount || 0),
-              previewRows: document.querySelectorAll('[data-following-preview-panel] [data-record-id]').length,
-              criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
-              quietPrompt: /Pick a topic or place to see matches/.test(
+                scopeCount: Number(document.querySelector('[data-scope-count]')?.dataset.scopeCount || 0),
+                previewRows: document.querySelectorAll('[data-following-preview-panel] [data-record-id]').length,
+                criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
+              primaryActionLabel: document.querySelector('[data-following-preview-form] button[type="submit"]')?.textContent?.trim(),
+              quietPrompt: /Follow what you care about/.test(
                 document.querySelector('[data-following-subscribe-panel]')?.textContent || ''
               ),
               topicControls: [...document.querySelectorAll(
@@ -296,6 +297,7 @@ def run(base: str) -> None:
             })"""
         )
         assert following_contract["scopeCount"] == following_contract["previewRows"], following_contract
+        assert following_contract["primaryActionLabel"] == "Preview matches", following_contract
         assert following_contract["criteriaMethod"] == "get", following_contract
         assert following_contract["quietPrompt"], following_contract
         assert len(following_contract["topicControls"]) >= 5, following_contract

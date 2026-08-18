@@ -266,6 +266,8 @@
     min_award_label: "Montan minimòm $",
     min_award_any: "Nenpòt",
     watch_this_search: "Siveye rechèch sa a",
+    following_freq_daily: "Daily when there are matches",
+    following_freq_weekly: "Weekly digest",
     closing_this_week: "Fèmen semèn sa a",
     money_trail_heading: "Tras kontra a",
     export_csv: "Ekspòte CSV",

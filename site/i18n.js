@@ -505,6 +505,8 @@ const STRINGS = {
     freq_label:         "Frequency",
     freq_daily:         "Daily",
     freq_weekly:        "Weekly",
+    following_freq_daily:"Daily when there are matches",
+    following_freq_weekly:"Weekly digest",
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
