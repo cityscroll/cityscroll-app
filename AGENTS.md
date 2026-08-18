@@ -319,6 +319,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `test/universal_search_golden_queries.test.mjs` score current keyword, coverage,
   and offline Ask interpretation — including expected misses (typo, synonym).
   Do not change retrieval to turn a documented miss green.
+- **SearchIntent wrap projector:** `site/search_intent.mjs` is the read-only
+  `cityscroll.search_intent.v1` projection over `scopeFromRouteHash` /
+  `scopeFromLensState`, `resolveKeywordQuery`, and NL `sanitize`. It does not
+  change those compilers or wire `/search` / `/nl`. Focused proof:
+  `test/search_intent_projector.test.mjs`.
 - **Six-family keyword search:** `/search` returns `cityscroll.keyword_search_response.v1`, whose
   Contracts, People + organizations, Land, Rules, Meetings, and Exams lanes keep independent
   status, count, source, and as-of receipts. `site/keyword_matcher.mjs` is the literal-resolution
