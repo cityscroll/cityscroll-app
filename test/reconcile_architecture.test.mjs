@@ -14,17 +14,68 @@ import {
 const modelText = readFileSync(new URL("../architecture/workspace.dsl", import.meta.url), "utf8");
 const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
 
+function fullyObservedFacts(source = facts) {
+  const observed = structuredClone(source);
+  if (observed.observer_coverage) {
+    observed.observer_coverage = {
+      ...observed.observer_coverage,
+      unmapped_surfaces: [],
+    };
+  }
+  return observed;
+}
+
 test("fresh repository facts reconcile with the C4 model and ADRs", () => {
-  const report = buildReport({ facts });
+  const report = buildReport({ facts: fullyObservedFacts() });
   assert.equal(report.status, "healthy");
   assert.deepEqual(report.outcomes.additions, []);
   assert.deepEqual(report.outcomes.removals, []);
   assert.deepEqual(report.outcomes.contradictions, []);
+  assert.deepEqual(report.outcomes.unmapped, []);
   assert.deepEqual(report.outcomes.superseded_adrs, []);
   assert.deepEqual(report.facts, {
     source: "generated_in_memory",
     regenerated_commit: "test-commit",
   });
+});
+
+test("an unmapped architecture-affecting search surface is drift, not healthy", () => {
+  // PR #1058 shape: Committees entered production Worker search, but
+  // worker/src/search.mjs is a known canary the observer does not parse.
+  // Topology is unchanged (facts compared to themselves); coverage is not.
+  const searchFacts = structuredClone(facts);
+  searchFacts.observer_coverage = {
+    source: { path: "architecture/observer-canaries.json" },
+    observed_paths: [...facts.source_paths],
+    known_canaries: [
+      { id: "production-search", path: "worker/src/search.mjs" },
+      { id: "worker-bindings", path: "worker/wrangler.toml" },
+    ],
+    unmapped_surfaces: [
+      { id: "production-search", path: "worker/src/search.mjs" },
+    ],
+  };
+
+  const report = reconcileArchitecture({
+    facts: searchFacts,
+    baselineFacts: searchFacts,
+    model: parseWorkspace(modelText),
+  });
+
+  assert.notEqual(report.status, "healthy");
+  assert.equal(report.status, "drift");
+  assert.ok(Array.isArray(report.outcomes.unmapped));
+  const finding = report.outcomes.unmapped.find((item) =>
+    item.target.includes("production-search") || item.target.includes("worker/src/search.mjs"));
+  assert.ok(finding, "expected an unmapped/unknown_surface outcome for production-search");
+  assert.equal(finding.type, "unknown_surface");
+  assert.equal(finding.rationale, null);
+  assert.equal(finding.rationale_status, "rationale required");
+  assert.equal(finding.source, "observer_coverage.unmapped_surfaces");
+  assert.ok(report.proposals.some((item) => item.type === "unknown_surface" && item.target === finding.target));
+  assert.deepEqual(report.outcomes.additions, []);
+  assert.deepEqual(report.outcomes.removals, []);
+  assert.deepEqual(report.outcomes.contradictions, []);
 });
 
 test("parses stable C4 declarations and relationships", () => {
