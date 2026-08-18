@@ -440,6 +440,7 @@
     topic_search_family_minutes: "Procès-verbaux des conseils communautaires",
     topic_search_family_mandates: "Obligations",
     topic_search_waiting: "En attente",
+    topic_search_searching: "Recherche…",
     topic_search_enter: "Saisissez un sujet pour rechercher des dossiers publics.",
     topic_search_related_because: "Ce résultat est lié parce que ce passage source contient les mots du sujet.",
     topic_search_evidence_limit: "Le texte du passage source n’est pas disponible pour ce résultat.",

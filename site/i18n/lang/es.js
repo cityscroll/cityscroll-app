@@ -411,6 +411,7 @@
     topic_search_family_minutes: "Actas de juntas comunitarias",
     topic_search_family_mandates: "Mandatos",
     topic_search_waiting: "En espera",
+    topic_search_searching: "Buscando…",
     topic_search_enter: "Ingrese un tema para buscar registros públicos.",
     topic_search_related_because: "Relacionado porque este pasaje de la fuente contiene las palabras del tema.",
     topic_search_evidence_limit: "El texto del pasaje de la fuente no está disponible para este resultado.",

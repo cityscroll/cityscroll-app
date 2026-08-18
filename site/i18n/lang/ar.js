@@ -414,6 +414,7 @@
     topic_search_family_minutes: "محاضر مجالس المجتمع",
     topic_search_family_mandates: "الالتزامات",
     topic_search_waiting: "في الانتظار",
+    topic_search_searching: "جارٍ البحث…",
     topic_search_enter: "أدخل موضوعًا للبحث في السجلات العامة.",
     topic_search_related_because: "ذو صلة لأن هذا المقطع من المصدر يحتوي على كلمات الموضوع.",
     topic_search_evidence_limit: "نص مقطع المصدر غير متاح لهذه النتيجة.",

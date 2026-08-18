@@ -414,6 +414,7 @@
     topic_search_family_minutes: "کمیونٹی بورڈ کی کارروائی",
     topic_search_family_mandates: "ذمہ داریاں",
     topic_search_waiting: "انتظار میں",
+    topic_search_searching: "تلاش جاری ہے…",
     topic_search_enter: "عوامی ریکارڈ تلاش کرنے کے لیے موضوع درج کریں۔",
     topic_search_related_because: "متعلقہ ہے کیونکہ ماخذ کے اس اقتباس میں موضوع کے الفاظ شامل ہیں۔",
     topic_search_evidence_limit: "اس نتیجے کے لیے ماخذ کے اقتباس کا متن دستیاب نہیں ہے۔",

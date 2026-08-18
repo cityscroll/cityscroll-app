@@ -16,6 +16,8 @@
 .topic-search-coverage p strong{color:var(--ink);font-size:13px}
 .topic-search-coverage ul{display:grid;gap:3px;margin:5px 0 0;padding:0;list-style:none}
 .topic-search-coverage li{min-width:0;color:var(--oxblood);font-weight:650;overflow-wrap:anywhere}
+.topic-search-coverage.is-loading p{display:flex;align-items:center;gap:8px;min-height:18px}
+.topic-search-coverage.is-loading .loading{flex:0 0 auto}
 .topic-search-lanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;min-width:0}
 .topic-search-lanes[hidden]{display:none}
 .topic-search-lane{min-width:0;padding:15px;background:var(--card);border:1px solid var(--rule);border-radius:9px;box-shadow:var(--shadow)}
