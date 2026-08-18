@@ -38,6 +38,7 @@ import {
   OCP_DATASET_ID,
 } from "./lib/ocp_awards.mjs";
 import { lookupOcpFromWarehouseMaterialization } from "./lib/ocp_warehouse_lookup.mjs";
+import { lookupPinChainFromWarehouseMaterialization } from "./lib/city_record_pin_chain_warehouse_lookup.mjs";
 import { attachMoneyCivicEvents } from "./lib/civic_time.mjs";
 import { writeLifecycleCivicEvents } from "./lib/civic_time_writer.mjs";
 import { attachAwardPrimeGoal } from "./lib/award_prime_goal.mjs";
@@ -264,12 +265,18 @@ export async function fetchRelatedProcurementNotices(env, noticeRow) {
   }
 
   for (const candidate of pinCandidates) {
-    const d1 = await queryD1(candidate);
-    if (d1.length) take(d1);
-    // Prefer D1 for this candidate; still try SODA when D1 empty.
-    if (!d1.length) {
-      const soda = await querySoda(candidate);
-      take(soda);
+    // WH-07: warehouse PIN-chain materialization first (no network on hit).
+    const wh = lookupPinChainFromWarehouseMaterialization(candidate);
+    if (wh.hit && wh.rows.length) {
+      take(wh.rows);
+    } else {
+      const d1 = await queryD1(candidate);
+      if (d1.length) take(d1);
+      // Prefer D1 for this candidate; still try SODA when warehouse + D1 empty.
+      if (!d1.length) {
+        const soda = await querySoda(candidate);
+        take(soda);
+      }
     }
     // Stop early once we have a Solicitation sibling — primary recovery goal.
     if (out.some((row) => String(row.type_of_notice_description || row.type_of_notice || "") === "Solicitation")) {

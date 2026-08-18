@@ -561,7 +561,8 @@ edges; unmatched notice IDs are absent, so the notice page stays unchanged.
 | **WH-04** | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
 | **WH-05** | ZAP sell-facing materialization (`fetchOpenDataRow`) + Doing Business stem index (`attachDoingBusiness`) |
 | **WH-06** | ZAP BBL materialization (`fetchBbls`) + parcel cross-domain edges |
-| **Next** | City Record history serve projections; keep WH-05 Doing Business on the weekly refresh→publish loop |
+| **WH-07 serve (first)** | City Record **PIN-chain** history lookup → `fetchRelatedProcurementNotices` precompute-first |
+| **Next** | City Record 90d/365d Money-archive index + agency rollups; keep WH-05 Doing Business on the weekly refresh→publish loop |
 
 ## WH-05: Doing Business + ZAP live fetches → warehouse materialization
 
@@ -600,11 +601,39 @@ node tools/build_zap_warehouse_lookup.mjs --bench
 
 Speed receipts: `warehouse/receipts/proof/wh05_*_lookup_speed.json`.
 
-All four committed warehouse serve lookups share the age-and-canary contract in
-`warehouse/lib/serve_publish_contract.mjs`. CI runs plain `--check` on the OCP,
-ZAP project, ZAP BBL, and Doing Business builders; these checks read the
-committed site/Worker twins without requiring a local DuckDB catalog and fail
-when a named field case disappears or the lookup exceeds its declared age.
+All committed warehouse serve lookups share the age-and-canary contract in
+`warehouse/lib/serve_publish_contract.mjs` (OCP, ZAP project, ZAP BBL, Doing
+Business, and City Record PIN-chain). CI runs plain `--check` on each builder;
+these checks read the committed site/Worker twins without requiring a local
+DuckDB catalog and fail when a named field case disappears or the lookup exceeds
+its declared age.
+
+## WH-07: City Record PIN-chain history serve
+
+Highest-value first history projection from the WH-07 `city_record` bulk pack:
+exact **PIN → procurement notice siblings** for notice-context
+`/contract-lifecycle` recovery (`fetchRelatedProcurementNotices`). Warehouse
+materialization first, then D1, then live SODA on miss. Rebuild:
+
+```bash
+# Offline / CI verified seed (field-case PIN chains)
+node tools/build_city_record_pin_chain_lookup.mjs --fixture --bench
+node tools/build_city_record_pin_chain_lookup.mjs --check
+
+# Preferred when WH-07 DuckDB catalog is present
+node tools/build_city_record_pin_chain_lookup.mjs --bench
+node tools/build_city_record_pin_chain_lookup.mjs --check
+```
+
+Serve gate: age ≤180d + canaries `pin=07219P0148001R004` /
+`request_id=20260723031` + non-empty pin/row floors; `bulk_warehouse` mode also
+requires ≥10k rows. A rebuild that fails the gate retains the last-known-good
+committed twins. Speed receipt:
+`warehouse/receipts/proof/wh07_city_record_pin_chain_lookup_speed.json`.
+
+**Follow-ons (not this PR):** 90d/365d Money-archive row index for Browse archive
+filters; agency rollup index for `/agencies` + profile aggregates; daily/weekly
+refresh→publish workflow once DuckDB export is the committed mode.
 
 ## Characterization
 
