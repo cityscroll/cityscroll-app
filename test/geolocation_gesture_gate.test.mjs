@@ -55,7 +55,8 @@ test("every geolocation request is downstream of an explicit click handler", () 
 
 test("Zoning defaults to active and every zero-result scope renders a widen control", () => {
   assert.match(index, /id="lstatus"[^>]*><option value="all"/);
-  assert.match(index, /data-land-status="active" aria-pressed="true"/);
+  assert.match(index, /id="lstage"[\s\S]*?value="active" selected/);
+  assert.match(index, /id="lfuture"[\s\S]*?value="any" selected/);
   assert.match(land, /landEmptyStateHTML/);
   assert.match(land, /data-land-widen/);
   assert.match(land, /wireLandEmptyState/);

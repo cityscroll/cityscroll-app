@@ -314,7 +314,8 @@ test("site modules reference pipeline position and hearing logistics", () => {
   assert.match(land, /landPipelinePositionHTML/);
   assert.match(land, /buildUlurpPipelinePosition/);
   assert.match(land, /land_upcoming_hearings/);
-  assert.match(land, /status==="hearings"/);
+  assert.match(land, /normalizeLandFutureAction/);
+  assert.match(land, /futureAction==="hearing"/);
 
   const feed = readFileSync(join(ROOT, "site/app/feed-actions.mjs"), "utf8");
   assert.match(feed, /landActionZapHearingsFromRecord/);

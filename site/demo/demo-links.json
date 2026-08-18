@@ -385,9 +385,14 @@
         ],
         "states": [
           {
-            "selector": "#lstatus",
+            "selector": "#lstage",
             "property": "value",
             "equals": "active"
+          },
+          {
+            "selector": "#lfuture",
+            "property": "value",
+            "equals": "any"
           }
         ]
       }

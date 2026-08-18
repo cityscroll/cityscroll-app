@@ -134,6 +134,22 @@ export function mapMilestoneToPhase(title, hint = null) {
     return "pre_application";
   }
 
+  // Open Data prefixes institutional referrals with an action code (for
+  // example "EAS - Community Board Referral"). The institutional phase is
+  // authoritative; the action-code prefix must not pull it back into CEQR.
+  if (/community board/.test(t)) return "community_board";
+  if (/borough president|borough board/.test(t)) return "borough_president";
+  if (/city council/.test(t)) return "city_council";
+  if (/appeals board|request for appeals|\bmayor\b/.test(t)) return "mayoral_appeals";
+
+  // This exact review-session milestone is the certification gate, not CPC review.
+  if (/application reviewed at city planning commission review session/.test(t)) {
+    return "certification";
+  }
+  if (/city planning commission|\bcpc\b|review session - pre-hearing|post hearing follow-up|post-hearing/.test(t)) {
+    return "cpc";
+  }
+
   if (
     /environmental assessment|environmental impact|\beas\b|\beis\b|ceqr fee|\bceqr\b|negative declaration|positive declaration|draft scope|final scope|project readiness|notice of completion/.test(
       t,
@@ -144,22 +160,6 @@ export function mapMilestoneToPhase(title, hint = null) {
 
   if (/pre-?certif|pre certif|notice of certif|precertif/.test(t)) {
     return "pre_certification";
-  }
-
-  if (/community board/.test(t)) return "community_board";
-  if (/borough president|borough board/.test(t)) return "borough_president";
-  if (/city council/.test(t)) return "city_council";
-  if (/appeals board|request for appeals|\bmayor\b/.test(t)) return "mayoral_appeals";
-
-  // CPC review session used as the certification gate on many ZAP projects.
-  if (/application reviewed at city planning commission review session/.test(t)) {
-    return "certification";
-  }
-
-  if (
-    /city planning commission|review session - pre-hearing|post hearing follow-up|post-hearing/.test(t)
-  ) {
-    return "cpc";
   }
 
   if (/\bcertif(y|ied|ication)\b/.test(t) || t === "certified" || /certified \/ referred/.test(t)) {

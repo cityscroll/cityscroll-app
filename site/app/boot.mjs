@@ -357,6 +357,8 @@ function currentLensFilterState(tab){
       q: $("#lkw") && $("#lkw").value.trim() || "",
       boro: landBorough || "",
       status: $("#lstatus") && $("#lstatus").value || "all",
+      stage: $("#lstage") && $("#lstage").value || "active",
+      futureAction: $("#lfuture") && $("#lfuture").value || "any",
       attendance: landAttendance || "",
       when: landClosingWeek ? ["closing", "week"].join(":") : "",
     });
@@ -527,10 +529,16 @@ $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
 const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — a touch lazier
 $("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landCouncilDistrict=""; debouncedLandSearch(); });
 $("#lstatus").addEventListener("change", landSearch);
-$("#land-status-rail").addEventListener("click",event=>{
-  const button=event.target.closest("[data-land-status]");
-  if(!button) return;
-  $("#lstatus").value=button.dataset.landStatus||"all";
+$("#lstage").addEventListener("change",()=>{
+  $("#lstatus").value="all";
+  landSearch();
+});
+$("#lfuture").addEventListener("change",()=>{
+  $("#lstatus").value="all";
+  if($("#lfuture").value!=="hearing"){
+    landAttendance="";
+    landClosingWeek=false;
+  }
   landSearch();
 });
 const landLocationOptions={

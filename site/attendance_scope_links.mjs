@@ -33,7 +33,11 @@ export function normalizeAttendanceScope(value) {
 /** Replace only attendance and force the route back into the hearings view. */
 export function attendanceScopeHref(mode, currentHash = "#land") {
   const scope = scopeFromRouteHash(currentHash);
-  scope.facets.values = { ...(scope.facets.values || {}), status: "hearings" };
+  scope.facets.values = {
+    ...(scope.facets.values || {}),
+    status: "hearings",
+    futureAction: "hearing",
+  };
   const normalized = normalizeAttendanceScope(mode);
   if (normalized) scope.facets.values.attendance = normalized;
   else delete scope.facets.values.attendance;
@@ -46,7 +50,11 @@ export function attendanceScopeHref(mode, currentHash = "#land") {
 /** Return the Zoning hearings scope for the temporal closing-week facet. */
 export function landClosingWeekHash(currentHash = "#land", active = true) {
   const scope = scopeFromRouteHash(currentHash);
-  scope.facets.values = { ...(scope.facets.values || {}), status: "hearings" };
+  scope.facets.values = {
+    ...(scope.facets.values || {}),
+    status: "hearings",
+    futureAction: "hearing",
+  };
   if (active) scope.time_window.preset = CLOSING_WEEK_PRESET;
   else if (scope.time_window.preset === CLOSING_WEEK_PRESET) scope.time_window.preset = null;
   const hash = routeHashFromScope(scope, { surface: "land" });

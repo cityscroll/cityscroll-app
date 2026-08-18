@@ -27,6 +27,13 @@ test("legacy borough scope links still normalize across list lenses", () => {
   assert.equal(migrateLegacyUrl("/#meetings?boro=Manhattan").target, "/browse/meetings/?boro=Manhattan");
 });
 
+test("orthogonal Zoning stage and future-action filters survive document migration", () => {
+  assert.equal(
+    migrateLegacyUrl("/#land?stage=public_review&future=hearing&sort=action_date").target,
+    "/browse/zoning/?stage=public_review&future=hearing&sort=action_date",
+  );
+});
+
 test("unsupported legacy scope keys are surfaced explicitly", () => {
   const mapped = migrateLegacyUrl("/#notice/20240515016?q=air&retiredMode=secret");
   assert.equal(mapped.target, "/notices/20240515016?legacy=unsupported-filter");
