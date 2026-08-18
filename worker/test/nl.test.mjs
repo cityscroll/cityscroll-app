@@ -80,6 +80,48 @@ test("parseLensFilter: model returns a near-empty filter -> confidence:'low' (th
   }
 });
 
+test("handleNl: SearchIntent is a sibling and the legacy filter envelope stays byte-compatible", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = mockAnthropic({
+    keywords: ["education"], agency: null, minAmount: 200000, maxAmount: null,
+    category: null, months: 3, noticeType: null, excludeSpecial: false,
+  });
+  try {
+    const response = await handleNl(nlRequest(), {
+      ANTHROPIC_API_KEY: "test-key",
+      NL_METER: kvStore(),
+    });
+    const body = await response.json();
+    const { search_intent: searchIntent, ...legacyEnvelope } = body;
+
+    assert.equal(JSON.stringify(legacyEnvelope), '{"filter":{"keywords":["education"],"agency":null,"minAmount":200000,"maxAmount":null,"category":null,"months":3,"noticeType":null,"excludeSpecial":false,"closingWeek":false,"route":null,"name":null,"tab":null,"entity_refs_all":[],"connection_relation":null},"lens":"money","model":"claude-haiku-4-5","confidence":"high"}');
+    assert.deepEqual(searchIntent, {
+      schema: "cityscroll.search_intent.v1",
+      text: "education",
+      domains: ["money"],
+      entity_refs: [],
+      relations: [],
+      place: {
+        boroughs: [],
+        community_districts: [],
+        council_districts: [],
+        neighborhood: null,
+        location_scope: null,
+      },
+      time: {
+        preset: null,
+        start: null,
+        end: null,
+        rolling_months: 3,
+      },
+      compiler: "nl_sanitize",
+    });
+    assert.deepEqual(Object.keys(body), ["filter", "lens", "model", "confidence", "search_intent"]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 // ---- fail-soft contract, unchanged by this card (characterization) -----------------------
 
 test("parseLensFilter: empty text -> degraded, no fetch attempted", async () => {

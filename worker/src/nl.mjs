@@ -16,6 +16,7 @@ import { bumpStat, bumpStatAllTime, bumpCategoryStat, bumpCategoryDayStat, bumpH
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { overActorLimit, overSurfaceCap } from "./lib/meter.mjs";
+import { searchIntentFromNlFilter } from "../../site/search_intent.mjs";
 
 const MODEL = "claude-haiku-4-5";
 const DEFAULT_MAX_PER_IP_DAY = 60;
@@ -160,7 +161,10 @@ export async function handleNl(req, env) {
     surface: "api",
   });
   // Graceful degradation either way: the browser falls back to its on-device parser.
-  return json(res, 200, cors);
+  const response = res.filter
+    ? { ...res, search_intent: searchIntentFromNlFilter(lens, res.filter) }
+    : res;
+  return json(response, 200, cors);
 }
 
 function json(obj, status, cors) {
