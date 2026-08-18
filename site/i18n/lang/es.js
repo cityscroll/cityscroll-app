@@ -1325,7 +1325,7 @@
     agency_follow_btn: "Seguir agencia",
     agency_watch_rules_btn: "Vigilar normas",
     agency_watch_meetings_btn: "Vigilar reuniones",
-    vendor_identity_note_html: "La identidad se resuelve por normalización del nombre (mayúsculas, puntuación, sufijos legales). las variantes están arriba. Empresas distintas que compartan un nombre se combinarían, así que trate los totales como <b>“publicados bajo este nombre,”</b> no como una entidad legal. Las adjudicaciones son las del City Record. Los contratos registrados y los pagos están en {source}. el encabezado de la cronología lleva una sola búsqueda para este proveedor, no un enlace en cada adjudicación.",
+    vendor_identity_note_html: "Los totales se publican bajo este nombre, no como una entidad legal.",
     vendor_phase_heading: "Cronología de compras del proveedor",
     vendor_phase_award: "Adjudicación",
     vendor_phase_registration: "Registro",
