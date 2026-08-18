@@ -41,6 +41,8 @@ jobs:
           node tools/build_staffing_exams.mjs --refresh
           node tools/build_staffing_exams.mjs
           node tools/build_staffing_exams.mjs --check
+          node tools/build_exam_documents.mjs
+          node tools/build_exam_documents.mjs --check
       - name: Guard generated changes
         id: generated
         run: |
@@ -63,6 +65,7 @@ jobs:
               site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json) ;;
               site/data/exam_sources/verification_receipts/staffing_list_establishment_prediction_latest.json) ;;
               site/data/exam_sources/verification_receipts/oasys_exam_map_latest.json) ;;
+              site/exams/*/index.html) ;;
               *) echo "Unexpected generated change: $path" >&2; exit 1 ;;
             esac
           done <<< "$changed"
@@ -82,12 +85,14 @@ jobs:
             Automated refresh→publish of `site/data/staffing_exams.json` from the
             DCAS annual schedule (`4ptz-hmtc`) and exam-level Civil Service List
             aggregates (`vx8i-nprf` group-by only — no roster/PII rows), plus the
-            OASys deep-link map with `--retain-mapped`.
+            OASys deep-link map with `--retain-mapped` and regenerated `/exams/<id>/`
+            documents.
 
             Closes the staffing exams freshness publish loop (scout P2).
 
             Validation:
             - `node tools/build_staffing_exams.mjs --check`
+            - `node tools/build_exam_documents.mjs --check`
             - serve-age gate (`STAFFING_EXAMS_MAX_AGE_DAYS`)
           add-paths: |
             site/data/staffing_exams.json
@@ -100,6 +105,7 @@ jobs:
             site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json
             site/data/exam_sources/verification_receipts/staffing_list_establishment_prediction_latest.json
             site/data/exam_sources/verification_receipts/oasys_exam_map_latest.json
+            site/exams/*/index.html
       - name: Run required checks for the refresh pull request
         if: steps.refresh-pr.outputs.pull-request-number != ''
         env:
