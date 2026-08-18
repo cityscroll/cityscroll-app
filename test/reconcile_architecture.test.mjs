@@ -20,6 +20,10 @@ import {
 } from "../tools/reconcile_architecture.mjs";
 
 const modelText = readFileSync(new URL("../architecture/workspace.dsl", import.meta.url), "utf8");
+const residentReadPolicy = JSON.parse(readFileSync(
+  new URL("../architecture/resident-read-policy.json", import.meta.url),
+  "utf8",
+));
 const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
 
 test("fresh repository facts reconcile with the C4 model and ADRs", () => {
@@ -37,6 +41,72 @@ test("fresh repository facts reconcile with the C4 model and ADRs", () => {
   assert.deepEqual(report.outcomes.contradictions, []);
   assert.deepEqual(report.outcomes.unmapped, []);
   assert.deepEqual(report.outcomes.superseded_adrs, []);
+});
+
+test("a root narrative assertion of request-time publisher reads is doc invariant drift", () => {
+  const report = buildReport({
+    facts,
+    baselineFacts: buildWatermark(facts),
+    architectureNarrative: [
+      "# Architecture",
+      "",
+      "The browser can read public Socrata and geospatial sources directly for selected live or hybrid views.",
+      "A materialized read may use a bounded live fallback where the source contract allows it.",
+      "Committed site data makes common views predictable; live upstream calls remain for interactive freshness or a documented fallback.",
+      "A default lens reads committed data, then may refresh a live source according to its source contract.",
+      "Hydration can ask the Worker for a materialized read model or exact external lookup.",
+      "Source contracts define whether freshness favors a live request, build-time snapshot, or edge read model.",
+      "Live sources are retained for freshness and bounded fallback.",
+    ].join("\n"),
+    canonicalArchitecture: `### Resident-read invariant\n\n${residentReadPolicy.invariant}\n`,
+    residentReadPolicy,
+  });
+
+  assert.equal(report.status, "drift");
+  const findings = report.outcomes.contradictions.filter((item) =>
+    item.target === "ARCHITECTURE.md:resident-read-invariant");
+  assert.equal(findings.length, 7);
+  assert.ok(findings.every((item) => item.source === "architecture/resident-read-policy.json#invariant"));
+  assert.ok(findings.some((item) => item.declared.includes("browser can read public Socrata")));
+  assert.ok(findings.some((item) => item.declared.includes("bounded live fallback")));
+  assert.ok(report.proposals.some((item) =>
+    item.target === "ARCHITECTURE.md:resident-read-invariant"
+    && item.files.includes("docs/architecture.md")));
+});
+
+test("a narrative summary consistent with the canonical resident-read invariant stays healthy", () => {
+  const report = buildReport({
+    facts,
+    baselineFacts: buildWatermark(facts),
+    architectureNarrative: [
+      "# Architecture",
+      "",
+      "Resident views use CityScroll-owned materializations without request-time publisher retrieval.",
+      "Scheduled acquisition provides freshness, and official-source links remain navigation only.",
+    ].join("\n"),
+    canonicalArchitecture: `### Resident-read invariant\n\n${residentReadPolicy.invariant}\n`,
+    residentReadPolicy,
+  });
+
+  assert.equal(report.status, "healthy");
+  assert.deepEqual(report.outcomes.contradictions, []);
+});
+
+test("the canonical architecture document must carry the policy's authoritative invariant string", () => {
+  const report = buildReport({
+    facts,
+    baselineFacts: buildWatermark(facts),
+    architectureNarrative: "The root narrative links to the canonical resident-read invariant.",
+    canonicalArchitecture: "### Resident-read invariant\n\nResident reads are generally materialized.\n",
+    residentReadPolicy,
+  });
+
+  assert.equal(report.status, "drift");
+  const finding = report.outcomes.contradictions.find((item) =>
+    item.target === "docs/architecture.md:resident-read-invariant");
+  assert.ok(finding);
+  assert.equal(finding.required, residentReadPolicy.invariant);
+  assert.equal(finding.source, "architecture/resident-read-policy.json#invariant");
 });
 
 test("an unmapped architecture-affecting search surface is drift, not healthy", () => {
