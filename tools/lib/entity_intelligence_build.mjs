@@ -567,12 +567,15 @@ function addToBucket(buckets, key, label, preview, inCore) {
 }
 
 function finalizeBuckets(buckets, previewLimit) {
-  const limit = Math.max(1, Number(previewLimit) || PASSPORT_EI_GRAPH_PREVIEW_LIMIT);
+  const parsed = Number(previewLimit);
+  const limit = Number.isFinite(parsed)
+    ? Math.max(0, parsed)
+    : PASSPORT_EI_GRAPH_PREVIEW_LIMIT;
   return Object.fromEntries([...buckets.entries()]
     .sort((a, b) => b[1].selected_rows - a[1].selected_rows || a[0].localeCompare(b[0]))
     .map(([key, bucket]) => [key, {
       ...bucket,
-      preview: sortPreview(bucket.preview).slice(0, limit),
+      preview: limit === 0 ? [] : sortPreview(bucket.preview).slice(0, limit),
     }]));
 }
 
@@ -665,7 +668,9 @@ export function buildPassportEiGraphPublication(doc, opts = {}) {
       age_days: daysBetween(doc?.observed_on, opts.now),
     },
     by_agency: finalizeBuckets(byAgency, previewLimit),
-    by_vendor: finalizeBuckets(byVendor, Math.min(3, previewLimit)),
+    // Vendor pages already preview objects from the Worker-core lookup.
+    // The shard only needs honest counts so the file stays an index.
+    by_vendor: finalizeBuckets(byVendor, 0),
   };
 }
 

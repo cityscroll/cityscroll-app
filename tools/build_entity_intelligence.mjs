@@ -18,6 +18,8 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildEntityIntelligenceDoc,
+  buildPassportEiGraphPublication,
+  passportEiGraphCoverageFindings,
   slimDocForWorker,
 } from "./lib/entity_intelligence_build.mjs";
 import { vendorCoverageKey } from "../entity_resolution/cross_domain/vendor_coverage_key.mjs";
@@ -49,6 +51,20 @@ const OUT_VENDOR_FOOTPRINT_WORKER = path.join(
   "src",
   "data",
   "vendor_footprint_coverage.json",
+);
+const OUT_PASSPORT_GRAPH_SITE = path.join(
+  ROOT,
+  "site",
+  "data",
+  "entity_intelligence_shards",
+  "passport_graph.json",
+);
+const OUT_PASSPORT_GRAPH_WORKER = path.join(
+  ROOT,
+  "worker",
+  "src",
+  "data",
+  "passport_ei_graph.json",
 );
 
 function vendorFootprintEvidence(doc) {
@@ -90,10 +106,71 @@ function vendorFootprintCoverageIndex(doc) {
   };
 }
 
+function loadJsonIfExists(filePath) {
+  if (!existsSync(filePath)) return null;
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+function stripGeneratedAt(doc) {
+  const { generated_at, coverage, ...rest } = doc || {};
+  void generated_at;
+  if (!coverage || typeof coverage !== "object") return rest;
+  const { age_days: _age, ...coverageRest } = coverage;
+  void _age;
+  return { ...rest, coverage: coverageRest };
+}
+
 function main() {
   const args = process.argv.slice(2);
   const check = args.includes("--check");
   const printDemo = args.includes("--print-demo");
+  const graphOnly = args.includes("--graph-only");
+
+  const spine = loadJsonIfExists(path.join(ROOT, "site/data/procurement_spine_sources.json"));
+  const passportGraph = spine ? buildPassportEiGraphPublication(spine, { now: new Date() }) : null;
+  const graphFindings = passportGraph
+    ? passportEiGraphCoverageFindings(passportGraph, { now: new Date() })
+    : { ok: false, findings: ["passport graph source missing"] };
+  if (graphOnly && check) {
+    if (!existsSync(OUT_PASSPORT_GRAPH_SITE) || !existsSync(OUT_PASSPORT_GRAPH_WORKER)) {
+      console.error("PASSPort EI graph shard missing — run tools/build_entity_intelligence.mjs --graph-only");
+      process.exit(1);
+    }
+    if (!graphFindings.ok) {
+      console.error(`PASSPort EI graph coverage gate failed: ${graphFindings.findings.join("; ")}`);
+      process.exit(1);
+    }
+    const committedGraph = JSON.parse(readFileSync(OUT_PASSPORT_GRAPH_SITE, "utf8"));
+    const workerGraph = JSON.parse(readFileSync(OUT_PASSPORT_GRAPH_WORKER, "utf8"));
+    if (JSON.stringify(stripGeneratedAt(committedGraph)) !== JSON.stringify(stripGeneratedAt(passportGraph))) {
+      console.error("PASSPort EI graph shard drift — rebuild with tools/build_entity_intelligence.mjs --graph-only");
+      process.exit(1);
+    }
+    if (JSON.stringify(stripGeneratedAt(committedGraph)) !== JSON.stringify(stripGeneratedAt(workerGraph))) {
+      console.error("PASSPort EI graph worker twin drift — rebuild with tools/build_entity_intelligence.mjs --graph-only");
+      process.exit(1);
+    }
+    console.log(
+      `PASSPort EI graph ok: selected_rows=${passportGraph.published_graph.selected_rows} agencies=${Object.keys(passportGraph.by_agency).length}`,
+    );
+    return;
+  }
+
+  if (graphOnly) {
+    if (!graphFindings.ok) {
+      console.error(`PASSPort EI graph coverage gate failed: ${graphFindings.findings.join("; ")}`);
+      process.exit(1);
+    }
+    mkdirSync(path.dirname(OUT_PASSPORT_GRAPH_SITE), { recursive: true });
+    mkdirSync(path.dirname(OUT_PASSPORT_GRAPH_WORKER), { recursive: true });
+    const graphBody = `${JSON.stringify(passportGraph, null, 2)}\n`;
+    writeFileSync(OUT_PASSPORT_GRAPH_SITE, graphBody);
+    writeFileSync(OUT_PASSPORT_GRAPH_WORKER, graphBody);
+    console.log(
+      `wrote ${path.relative(ROOT, OUT_PASSPORT_GRAPH_SITE)} and worker twin — passport_graph=${passportGraph.published_graph.selected_rows}`,
+    );
+    return;
+  }
 
   const full = buildEntityIntelligenceDoc(ROOT);
   const slim = slimDocForWorker(full);
@@ -129,8 +206,14 @@ function main() {
     if (!existsSync(OUT_SITE) || !existsSync(OUT_WORKER)
       || !existsSync(OUT_VENDOR_FOOTPRINT_EVIDENCE)
       || !existsSync(OUT_VENDOR_FOOTPRINT_SITE)
-      || !existsSync(OUT_VENDOR_FOOTPRINT_WORKER)) {
+      || !existsSync(OUT_VENDOR_FOOTPRINT_WORKER)
+      || !existsSync(OUT_PASSPORT_GRAPH_SITE)
+      || !existsSync(OUT_PASSPORT_GRAPH_WORKER)) {
       console.error("entity intelligence lookup missing — run without --check");
+      process.exit(1);
+    }
+    if (!graphFindings.ok) {
+      console.error(`PASSPort EI graph coverage gate failed: ${graphFindings.findings.join("; ")}`);
       process.exit(1);
     }
     const site = JSON.parse(readFileSync(OUT_SITE, "utf8"));
@@ -157,17 +240,33 @@ function main() {
         process.exit(1);
       }
     }
+    const committedGraph = JSON.parse(readFileSync(OUT_PASSPORT_GRAPH_SITE, "utf8"));
+    const workerGraph = JSON.parse(readFileSync(OUT_PASSPORT_GRAPH_WORKER, "utf8"));
+    if (JSON.stringify(stripGeneratedAt(committedGraph)) !== JSON.stringify(stripGeneratedAt(passportGraph))) {
+      console.error("PASSPort EI graph shard drift — rebuild with tools/build_entity_intelligence.mjs");
+      process.exit(1);
+    }
+    if (JSON.stringify(stripGeneratedAt(committedGraph)) !== JSON.stringify(stripGeneratedAt(workerGraph))) {
+      console.error("PASSPort EI graph worker twin drift — rebuild with tools/build_entity_intelligence.mjs");
+      process.exit(1);
+    }
     console.log(
-      `entity intelligence ok: entities=${site.entity_count} multi_domain=${site.multi_domain_count}`,
+      `entity intelligence ok: entities=${site.entity_count} multi_domain=${site.multi_domain_count} passport_graph=${passportGraph.published_graph.selected_rows}`,
     );
     return;
   }
 
+  if (!graphFindings.ok) {
+    console.error(`PASSPort EI graph coverage gate failed: ${graphFindings.findings.join("; ")}`);
+    process.exit(1);
+  }
   mkdirSync(path.dirname(OUT_SITE), { recursive: true });
   mkdirSync(path.dirname(OUT_WORKER), { recursive: true });
   mkdirSync(path.dirname(OUT_VENDOR_FOOTPRINT_EVIDENCE), { recursive: true });
   mkdirSync(path.dirname(OUT_VENDOR_FOOTPRINT_SITE), { recursive: true });
   mkdirSync(path.dirname(OUT_VENDOR_FOOTPRINT_WORKER), { recursive: true });
+  mkdirSync(path.dirname(OUT_PASSPORT_GRAPH_SITE), { recursive: true });
+  mkdirSync(path.dirname(OUT_PASSPORT_GRAPH_WORKER), { recursive: true });
   const body = `${JSON.stringify(slim, null, 2)}\n`;
   writeFileSync(OUT_SITE, body);
   writeFileSync(OUT_WORKER, body);
@@ -175,8 +274,11 @@ function main() {
   const footprintBody = `${JSON.stringify(footprintCoverage)}\n`;
   writeFileSync(OUT_VENDOR_FOOTPRINT_SITE, footprintBody);
   writeFileSync(OUT_VENDOR_FOOTPRINT_WORKER, footprintBody);
+  const graphBody = `${JSON.stringify(passportGraph, null, 2)}\n`;
+  writeFileSync(OUT_PASSPORT_GRAPH_SITE, graphBody);
+  writeFileSync(OUT_PASSPORT_GRAPH_WORKER, graphBody);
   console.log(
-    `wrote ${path.relative(ROOT, OUT_SITE)} and worker twin — entities=${slim.entity_count} multi_domain=${slim.multi_domain_count} observations=${slim.observation_count}`,
+    `wrote ${path.relative(ROOT, OUT_SITE)} and worker twin — entities=${slim.entity_count} multi_domain=${slim.multi_domain_count} observations=${slim.observation_count} passport_graph=${passportGraph.published_graph.selected_rows}`,
   );
   if (slim.verified_demo) {
     console.log(

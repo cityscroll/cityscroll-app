@@ -55,11 +55,13 @@ function loadSources() {
   const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
   const ocpAwardsPath = join(SITE, "data/ocp_awards_warehouse_lookup.json");
   const publisherCrosswalkPath = join(ROOT, "worker/src/data/agency_crosswalk.json");
+  const passportGraphPath = join(SITE, "data/entity_intelligence_shards/passport_graph.json");
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
   return {
     intelligence: readJson(intelligencePath),
+    passport_graph: existsSync(passportGraphPath) ? readJson(passportGraphPath) : null,
     procurement_awards: existsSync(procurementAwardsPath) ? readJson(procurementAwardsPath) : null,
     certification: existsSync(certificationPath) ? readJson(certificationPath) : null,
     // Staffing-guide corpus gates which certification exams become public links.
@@ -349,6 +351,8 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.money_open?.open_as_of,
     sources.meetings_domain?.retrieved_at,
     sources.ocp_awards?.materialized_at,
+    sources.passport_graph?.observed_on,
+    sources.passport_graph?.published_graph?.selected_rows,
   ].filter(Boolean).sort().join("|") || "unknown";
   const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
   const vendorRollups = buildAgencyVendorRollups(sources.ocp_awards?.rows || [], {
@@ -410,7 +414,9 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       process_conformance_generated_at: sources.process_conformance?.generated_at || null,
       vendor_rollup_as_of: vendorRollups.as_of,
       vendor_rollup_window_start: vendorRollups.window_start,
-      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, and process-conformance expected-vs-observed.",
+      passport_graph_observed_on: sources.passport_graph?.observed_on || null,
+      passport_graph_selected_rows: sources.passport_graph?.published_graph?.selected_rows || 0,
+      note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, process-conformance expected-vs-observed, and the sharded PASSPort EI graph.",
     },
   };
 
