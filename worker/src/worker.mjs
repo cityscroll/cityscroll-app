@@ -37,6 +37,7 @@ import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
 import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
+import { handleSourceHealth } from "./source_health.mjs";
 import { handleEvent } from "./events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
@@ -130,6 +131,7 @@ export default {
     if (pathname === "/near-you" || pathname === "/near-you/") return handleNearYou(request, env, ctx);
     if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
+    if (pathname === "/source-health") return handleSourceHealth(request);
     if (pathname === "/events") return handleEvent(request, env);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
