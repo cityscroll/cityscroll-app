@@ -187,6 +187,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## PR and CI preflight
 
+- **Daily refresh PR publish loop:** the five data-refresh workflows
+  (`doing-business-warehouse-lookup`, `geocoder-address-index`,
+  `land-upcoming-hearings`, `land-zap-freshness-refresh`,
+  `refresh-preset-fallback`) must open PRs with repo secret
+  `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests R/W),
+  not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from triggering
+  required checks (anti-recursion), which stalls merge-queue auto-merge.
+  After `peter-evans/create-pull-request`, each workflow enables auto-merge via
+  `gh pr merge "$REFRESH_PR" --auto --match-head-commit "$REFRESH_HEAD"` with
+  the same PAT as `GH_TOKEN`.
 - Shared browser artifacts use `tools/site_artifact_identity.mjs` plus
   `.github/actions/use-site-artifact`: the run/attempt artifact and exact-input
   cache are trusted only after `_site.sha256`, commit/tree, lockfile, Node
