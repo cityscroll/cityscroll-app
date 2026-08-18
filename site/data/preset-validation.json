@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-18T13:23:25.577Z",
+  "generatedAt": "2026-08-18T17:35:13.191Z",
   "dataDate": "2026-08-18",
   "scenarios": {
     "city-work-closing": {
@@ -30,9 +30,9 @@
       "href": "#land",
       "labelKey": "tab_land",
       "label": "Zoning",
-      "count": 12273,
+      "count": 12277,
       "counts": {
-        "land": 12273
+        "land": 12277
       }
     },
     "neighborhood-property": {
@@ -103,9 +103,9 @@
       "href": "#land",
       "labelKey": "tab_land",
       "label": "Zoning",
-      "count": 12273,
+      "count": 12277,
       "counts": {
-        "land": 12273
+        "land": 12277
       }
     },
     "legal-property": {
