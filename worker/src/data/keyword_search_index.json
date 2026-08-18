@@ -13655,6 +13655,1678 @@
         }
       ]
     },
+    "community_boards": {
+      "source": "NYC Community Board institutions",
+      "as_of": "2026-08-13",
+      "source_row_count": 59,
+      "indexed_count": 59,
+      "coverage": [
+        {
+          "producer": "community_board_search_document.v1",
+          "object_type": "community_board",
+          "domain": "places",
+          "state": "matched",
+          "reason": "community_board_registry_indexed",
+          "total_count": 59,
+          "indexed_count": 59,
+          "not_indexed_count": 0
+        }
+      ],
+      "documents": [
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-01",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-01/",
+          "title": "Bronx Community Board 1",
+          "summary": "Bronx Community District 1.",
+          "search_text": "Bronx Community Board 1 bronx-cb-01 Community Board 1, Bronx Bronx CB1 CB1 Bronx District coverage Bronx Community District X01 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-01"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-02",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-02/",
+          "title": "Bronx Community Board 2",
+          "summary": "Bronx Community District 2.",
+          "search_text": "Bronx Community Board 2 bronx-cb-02 Community Board 2, Bronx Bronx CB2 CB2 Bronx District coverage Bronx Community District X02 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-02"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-03",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-03/",
+          "title": "Bronx Community Board 3",
+          "summary": "Bronx Community District 3.",
+          "search_text": "Bronx Community Board 3 bronx-cb-03 Community Board 3, Bronx Bronx CB3 CB3 Bronx District coverage Bronx Community District X03 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-03"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-04",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-04/",
+          "title": "Bronx Community Board 4",
+          "summary": "Bronx Community District 4.",
+          "search_text": "Bronx Community Board 4 bronx-cb-04 Community Board 4, Bronx Bronx CB4 CB4 Bronx District coverage Bronx Community District X04 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-04"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-05",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-05/",
+          "title": "Bronx Community Board 5",
+          "summary": "Bronx Community District 5.",
+          "search_text": "Bronx Community Board 5 bronx-cb-05 Community Board 5, Bronx Bronx CB5 CB5 Bronx District coverage Bronx Community District X05 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-05"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-06",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-06/",
+          "title": "Bronx Community Board 6",
+          "summary": "Bronx Community District 6.",
+          "search_text": "Bronx Community Board 6 bronx-cb-06 Community Board 6, Bronx Bronx CB6 CB6 Bronx District coverage Bronx Community District X06 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-06"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-07",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-07/",
+          "title": "Bronx Community Board 7",
+          "summary": "Bronx Community District 7.",
+          "search_text": "Bronx Community Board 7 bronx-cb-07 Community Board 7, Bronx Bronx CB7 CB7 Bronx District coverage Bronx Community District X07 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-07"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-08",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-08/",
+          "title": "Bronx Community Board 8",
+          "summary": "Bronx Community District 8.",
+          "search_text": "Bronx Community Board 8 bronx-cb-08 Community Board 8, Bronx Bronx CB8 CB8 Bronx District coverage Bronx Community District X08",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-08"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-09",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-09/",
+          "title": "Bronx Community Board 9",
+          "summary": "Bronx Community District 9.",
+          "search_text": "Bronx Community Board 9 bronx-cb-09 Community Board 9, Bronx Bronx CB9 CB9 Bronx District coverage Bronx Community District X09 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-09"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-10",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-10/",
+          "title": "Bronx Community Board 10",
+          "summary": "Bronx Community District 10.",
+          "search_text": "Bronx Community Board 10 bronx-cb-10 Community Board 10, Bronx Bronx CB10 CB10 Bronx District coverage Bronx Community District X10 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-10"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-11",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-11/",
+          "title": "Bronx Community Board 11",
+          "summary": "Bronx Community District 11.",
+          "search_text": "Bronx Community Board 11 bronx-cb-11 Community Board 11, Bronx Bronx CB11 CB11 Bronx District coverage Bronx Community District X11 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-11"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:bronx-cb-12",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/bronx-cb-12/",
+          "title": "Bronx Community Board 12",
+          "summary": "Bronx Community District 12.",
+          "search_text": "Bronx Community Board 12 bronx-cb-12 Community Board 12, Bronx Bronx CB12 CB12 Bronx District coverage Bronx Community District X12 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:bronx-cb-12"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-01",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-01/",
+          "title": "Brooklyn Community Board 1",
+          "summary": "Brooklyn Community District 1.",
+          "search_text": "Brooklyn Community Board 1 brooklyn-cb-01 Community Board 1, Brooklyn Brooklyn CB1 CB1 Brooklyn District coverage Brooklyn Community District K01 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-01"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-02",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-02/",
+          "title": "Brooklyn Community Board 2",
+          "summary": "Brooklyn Community District 2.",
+          "search_text": "Brooklyn Community Board 2 brooklyn-cb-02 Community Board 2, Brooklyn Brooklyn CB2 CB2 Brooklyn District coverage Brooklyn Community District K02",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-02"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-03",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-03/",
+          "title": "Brooklyn Community Board 3",
+          "summary": "Brooklyn Community District 3.",
+          "search_text": "Brooklyn Community Board 3 brooklyn-cb-03 Community Board 3, Brooklyn Brooklyn CB3 CB3 Brooklyn District coverage Brooklyn Community District K03 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-03"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-04",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-04/",
+          "title": "Brooklyn Community Board 4",
+          "summary": "Brooklyn Community District 4.",
+          "search_text": "Brooklyn Community Board 4 brooklyn-cb-04 Community Board 4, Brooklyn Brooklyn CB4 CB4 Brooklyn District coverage Brooklyn Community District K04 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-04"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-05",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-05/",
+          "title": "Brooklyn Community Board 5",
+          "summary": "Brooklyn Community District 5.",
+          "search_text": "Brooklyn Community Board 5 brooklyn-cb-05 Community Board 5, Brooklyn Brooklyn CB5 CB5 Brooklyn District coverage Brooklyn Community District K05",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-05"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-06",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-06/",
+          "title": "Brooklyn Community Board 6",
+          "summary": "Brooklyn Community District 6.",
+          "search_text": "Brooklyn Community Board 6 brooklyn-cb-06 Community Board 6, Brooklyn Brooklyn CB6 CB6 Brooklyn District coverage Brooklyn Community District K06",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-06"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-07",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-07/",
+          "title": "Brooklyn Community Board 7",
+          "summary": "Brooklyn Community District 7.",
+          "search_text": "Brooklyn Community Board 7 brooklyn-cb-07 Community Board 7, Brooklyn Brooklyn CB7 CB7 Brooklyn District coverage Brooklyn Community District K07",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-07"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-08",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-08/",
+          "title": "Brooklyn Community Board 8",
+          "summary": "Brooklyn Community District 8.",
+          "search_text": "Brooklyn Community Board 8 brooklyn-cb-08 Community Board 8, Brooklyn Brooklyn CB8 CB8 Brooklyn District coverage Brooklyn Community District K08 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-08"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-09",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-09/",
+          "title": "Brooklyn Community Board 9",
+          "summary": "Brooklyn Community District 9.",
+          "search_text": "Brooklyn Community Board 9 brooklyn-cb-09 Community Board 9, Brooklyn Brooklyn CB9 CB9 Brooklyn District coverage Brooklyn Community District K09 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-09"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-10",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-10/",
+          "title": "Brooklyn Community Board 10",
+          "summary": "Brooklyn Community District 10.",
+          "search_text": "Brooklyn Community Board 10 brooklyn-cb-10 Community Board 10, Brooklyn Brooklyn CB10 CB10 Brooklyn District coverage Brooklyn Community District K10 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-10"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-11",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-11/",
+          "title": "Brooklyn Community Board 11",
+          "summary": "Brooklyn Community District 11.",
+          "search_text": "Brooklyn Community Board 11 brooklyn-cb-11 Community Board 11, Brooklyn Brooklyn CB11 CB11 Brooklyn District coverage Brooklyn Community District K11 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-11"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-12",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-12/",
+          "title": "Brooklyn Community Board 12",
+          "summary": "Brooklyn Community District 12.",
+          "search_text": "Brooklyn Community Board 12 brooklyn-cb-12 Community Board 12, Brooklyn Brooklyn CB12 CB12 Brooklyn District coverage Brooklyn Community District K12 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-12"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-13",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-13/",
+          "title": "Brooklyn Community Board 13",
+          "summary": "Brooklyn Community District 13.",
+          "search_text": "Brooklyn Community Board 13 brooklyn-cb-13 Community Board 13, Brooklyn Brooklyn CB13 CB13 Brooklyn District coverage Brooklyn Community District K13 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-13"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-14",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-14/",
+          "title": "Brooklyn Community Board 14",
+          "summary": "Brooklyn Community District 14.",
+          "search_text": "Brooklyn Community Board 14 brooklyn-cb-14 Community Board 14, Brooklyn Brooklyn CB14 CB14 Brooklyn District coverage Brooklyn Community District K14 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-14"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-15",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-15/",
+          "title": "Brooklyn Community Board 15",
+          "summary": "Brooklyn Community District 15.",
+          "search_text": "Brooklyn Community Board 15 brooklyn-cb-15 Community Board 15, Brooklyn Brooklyn CB15 CB15 Brooklyn District coverage Brooklyn Community District K15 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-15"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-16",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-16/",
+          "title": "Brooklyn Community Board 16",
+          "summary": "Brooklyn Community District 16.",
+          "search_text": "Brooklyn Community Board 16 brooklyn-cb-16 Community Board 16, Brooklyn Brooklyn CB16 CB16 Brooklyn District coverage Brooklyn Community District K16",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-16"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-17",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-17/",
+          "title": "Brooklyn Community Board 17",
+          "summary": "Brooklyn Community District 17.",
+          "search_text": "Brooklyn Community Board 17 brooklyn-cb-17 Community Board 17, Brooklyn Brooklyn CB17 CB17 Brooklyn District coverage Brooklyn Community District K17 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-17"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:brooklyn-cb-18",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/brooklyn-cb-18/",
+          "title": "Brooklyn Community Board 18",
+          "summary": "Brooklyn Community District 18.",
+          "search_text": "Brooklyn Community Board 18 brooklyn-cb-18 Community Board 18, Brooklyn Brooklyn CB18 CB18 Brooklyn District coverage Brooklyn Community District K18 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:brooklyn-cb-18"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-01",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-01/",
+          "title": "Manhattan Community Board 1",
+          "summary": "Manhattan Community District 1.",
+          "search_text": "Manhattan Community Board 1 manhattan-cb-01 Community Board 1, Manhattan Manhattan CB1 CB1 Manhattan District coverage Manhattan Community District M01 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-01"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-02",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-02/",
+          "title": "Manhattan Community Board 2",
+          "summary": "Manhattan Community District 2.",
+          "search_text": "Manhattan Community Board 2 manhattan-cb-02 Community Board 2, Manhattan Manhattan CB2 CB2 Manhattan District coverage Manhattan Community District M02 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-02"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-03",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-03/",
+          "title": "Manhattan Community Board 3",
+          "summary": "Manhattan Community District 3.",
+          "search_text": "Manhattan Community Board 3 manhattan-cb-03 Community Board 3, Manhattan Manhattan CB3 CB3 Manhattan District coverage Manhattan Community District M03 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-03"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-04",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-04/",
+          "title": "Manhattan Community Board 4",
+          "summary": "Manhattan Community District 4.",
+          "search_text": "Manhattan Community Board 4 manhattan-cb-04 Community Board 4, Manhattan Manhattan CB4 CB4 Manhattan District coverage Manhattan Community District M04 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-04"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-05",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-05/",
+          "title": "Manhattan Community Board 5",
+          "summary": "Manhattan Community District 5.",
+          "search_text": "Manhattan Community Board 5 manhattan-cb-05 Community Board 5, Manhattan Manhattan CB5 CB5 Manhattan District coverage Manhattan Community District M05 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-05"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-06",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-06/",
+          "title": "Manhattan Community Board 6",
+          "summary": "Manhattan Community District 6.",
+          "search_text": "Manhattan Community Board 6 manhattan-cb-06 Community Board 6, Manhattan Manhattan CB6 CB6 Manhattan District coverage Manhattan Community District M06 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-06"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-07",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-07/",
+          "title": "Manhattan Community Board 7",
+          "summary": "Manhattan Community District 7.",
+          "search_text": "Manhattan Community Board 7 manhattan-cb-07 Community Board 7, Manhattan Manhattan CB7 CB7 Manhattan District coverage Manhattan Community District M07 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-07"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-08",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-08/",
+          "title": "Manhattan Community Board 8",
+          "summary": "Manhattan Community District 8.",
+          "search_text": "Manhattan Community Board 8 manhattan-cb-08 Community Board 8, Manhattan Manhattan CB8 CB8 Manhattan District coverage Manhattan Community District M08 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-08"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-09",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-09/",
+          "title": "Manhattan Community Board 9",
+          "summary": "Manhattan Community District 9.",
+          "search_text": "Manhattan Community Board 9 manhattan-cb-09 Community Board 9, Manhattan Manhattan CB9 CB9 Manhattan District coverage Manhattan Community District M09 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-09"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-10",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-10/",
+          "title": "Manhattan Community Board 10",
+          "summary": "Manhattan Community District 10.",
+          "search_text": "Manhattan Community Board 10 manhattan-cb-10 Community Board 10, Manhattan Manhattan CB10 CB10 Manhattan District coverage Manhattan Community District M10 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-10"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-11",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-11/",
+          "title": "Manhattan Community Board 11",
+          "summary": "Manhattan Community District 11.",
+          "search_text": "Manhattan Community Board 11 manhattan-cb-11 Community Board 11, Manhattan Manhattan CB11 CB11 Manhattan District coverage Manhattan Community District M11 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-11"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:manhattan-cb-12",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/manhattan-cb-12/",
+          "title": "Manhattan Community Board 12",
+          "summary": "Manhattan Community District 12.",
+          "search_text": "Manhattan Community Board 12 manhattan-cb-12 Community Board 12, Manhattan Manhattan CB12 CB12 Manhattan District coverage Manhattan Community District M12 Official source inventory Meetings and hearings",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:manhattan-cb-12"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-01",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-01/",
+          "title": "Queens Community Board 1",
+          "summary": "Queens Community District 1.",
+          "search_text": "Queens Community Board 1 queens-cb-01 Community Board 1, Queens Queens CB1 CB1 Queens District coverage Queens Community District Q01 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-01"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-02",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-02/",
+          "title": "Queens Community Board 2",
+          "summary": "Queens Community District 2.",
+          "search_text": "Queens Community Board 2 queens-cb-02 Community Board 2, Queens Queens CB2 CB2 Queens District coverage Queens Community District Q02 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-02"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-03",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-03/",
+          "title": "Queens Community Board 3",
+          "summary": "Queens Community District 3.",
+          "search_text": "Queens Community Board 3 queens-cb-03 Community Board 3, Queens Queens CB3 CB3 Queens District coverage Queens Community District Q03 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-03"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-04",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-04/",
+          "title": "Queens Community Board 4",
+          "summary": "Queens Community District 4.",
+          "search_text": "Queens Community Board 4 queens-cb-04 Community Board 4, Queens Queens CB4 CB4 Queens District coverage Queens Community District Q04 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-04"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-05",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-05/",
+          "title": "Queens Community Board 5",
+          "summary": "Queens Community District 5.",
+          "search_text": "Queens Community Board 5 queens-cb-05 Community Board 5, Queens Queens CB5 CB5 Queens District coverage Queens Community District Q05 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-05"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-06",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-06/",
+          "title": "Queens Community Board 6",
+          "summary": "Queens Community District 6.",
+          "search_text": "Queens Community Board 6 queens-cb-06 Community Board 6, Queens Queens CB6 CB6 Queens District coverage Queens Community District Q06 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-06"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-07",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-07/",
+          "title": "Queens Community Board 7",
+          "summary": "Queens Community District 7.",
+          "search_text": "Queens Community Board 7 queens-cb-07 Community Board 7, Queens Queens CB7 CB7 Queens District coverage Queens Community District Q07 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-07"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-08",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-08/",
+          "title": "Queens Community Board 8",
+          "summary": "Queens Community District 8.",
+          "search_text": "Queens Community Board 8 queens-cb-08 Community Board 8, Queens Queens CB8 CB8 Queens District coverage Queens Community District Q08 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-08"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-09",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-09/",
+          "title": "Queens Community Board 9",
+          "summary": "Queens Community District 9.",
+          "search_text": "Queens Community Board 9 queens-cb-09 Community Board 9, Queens Queens CB9 CB9 Queens District coverage Queens Community District Q09 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-09"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-10",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-10/",
+          "title": "Queens Community Board 10",
+          "summary": "Queens Community District 10.",
+          "search_text": "Queens Community Board 10 queens-cb-10 Community Board 10, Queens Queens CB10 CB10 Queens District coverage Queens Community District Q10 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-10"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-11",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-11/",
+          "title": "Queens Community Board 11",
+          "summary": "Queens Community District 11.",
+          "search_text": "Queens Community Board 11 queens-cb-11 Community Board 11, Queens Queens CB11 CB11 Queens District coverage Queens Community District Q11 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-11"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-12",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-12/",
+          "title": "Queens Community Board 12",
+          "summary": "Queens Community District 12.",
+          "search_text": "Queens Community Board 12 queens-cb-12 Community Board 12, Queens Queens CB12 CB12 Queens District coverage Queens Community District Q12 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-12"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-13",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-13/",
+          "title": "Queens Community Board 13",
+          "summary": "Queens Community District 13.",
+          "search_text": "Queens Community Board 13 queens-cb-13 Community Board 13, Queens Queens CB13 CB13 Queens District coverage Queens Community District Q13 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-13"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:queens-cb-14",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/queens-cb-14/",
+          "title": "Queens Community Board 14",
+          "summary": "Queens Community District 14.",
+          "search_text": "Queens Community Board 14 queens-cb-14 Community Board 14, Queens Queens CB14 CB14 Queens District coverage Queens Community District Q14 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:queens-cb-14"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:staten-island-cb-01",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/staten-island-cb-01/",
+          "title": "Staten Island Community Board 1",
+          "summary": "Staten Island Community District 1.",
+          "search_text": "Staten Island Community Board 1 staten-island-cb-01 Community Board 1, Staten Island Staten Island CB1 CB1 Staten Island District coverage Staten Island Community District R01 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:staten-island-cb-01"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:staten-island-cb-02",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/staten-island-cb-02/",
+          "title": "Staten Island Community Board 2",
+          "summary": "Staten Island Community District 2.",
+          "search_text": "Staten Island Community Board 2 staten-island-cb-02 Community Board 2, Staten Island Staten Island CB2 CB2 Staten Island District coverage Staten Island Community District R02 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:staten-island-cb-02"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        },
+        {
+          "schema": "cityscroll.search_document.v1",
+          "object_ref": "community-board:staten-island-cb-03",
+          "object_type": "community_board",
+          "domain": "places",
+          "canonical_href": "/community-boards/staten-island-cb-03/",
+          "title": "Staten Island Community Board 3",
+          "summary": "Staten Island Community District 3.",
+          "search_text": "Staten Island Community Board 3 staten-island-cb-03 Community Board 3, Staten Island Staten Island CB3 CB3 Staten Island District coverage Staten Island Community District R03 Official source inventory",
+          "source_family": "community_board_constellation",
+          "source_observation_refs": [
+            "community_board_registry:staten-island-cb-03"
+          ],
+          "process_role": null,
+          "classification": {
+            "method": "canonical_community_board_registry",
+            "basis": "borough-qualified community-board registry identity; bare board numbers are not identities"
+          },
+          "provenance": {
+            "producer": "community_board_search_document.v1",
+            "source_system": null,
+            "source_freshness": {
+              "generated_at": "2026-08-13"
+            }
+          },
+          "outcome": "indexed",
+          "coverage_state": "matched"
+        }
+      ]
+    },
     "land": {
       "source": "NYC Open Data Zoning Application Portal projects",
       "as_of": "2026-08-02T10:22:34.003Z",
@@ -41816,6 +43488,7 @@
       "agencies": "site/data/agency_constellation_lookup.json",
       "vendors": "site/data/entity_intelligence_lookup.json",
       "vendor_aliases": "entity_resolution/review/alias_registry.json",
+      "community_boards": "site/data/community_board_constellation_lookup.json",
       "land": "site/data/zap_projects_warehouse_lookup.json",
       "meetings": "site/data/shared_meeting_read_model.json",
       "exams": "site/data/staffing_exams.json",

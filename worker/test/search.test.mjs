@@ -110,6 +110,7 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
     assert.deepEqual(body.lanes.map((lane) => lane.id), [
       "contracts",
       "people-organizations",
+      "community_boards",
       "land",
       "rules",
       "meetings",
@@ -273,6 +274,37 @@ test("People uses its complete production provider for worker recall and coverag
   assert.match(
     renderUniversalSearchCoverageHtml(body.coverage),
     /data-coverage-lens="people" data-coverage-state="matched"><span>People<\/span><strong>1 match · indexed<\/strong>/,
+  );
+});
+
+test("Community boards uses its dedicated production provider for recall and indexed coverage", async () => {
+  const response = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=Bronx%20Community%20Board%201"),
+    {},
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
+  assert.equal(lanes.community_boards?.status, "matched");
+  assert.ok(lanes.community_boards?.cards.some((card) => card.object_ref === "community-board:bronx-cb-01"));
+  assert.ok(body.results.some((result) => result.object_ref === "community-board:bronx-cb-01"));
+  assert.deepEqual({
+    participated: body.coverage.by_lens.community_boards.participated,
+    state: body.coverage.by_lens.community_boards.state,
+    indexed_count: body.coverage.by_lens.community_boards.indexed_count,
+  }, {
+    participated: true,
+    state: "matched",
+    indexed_count: 59,
+  });
+
+  const communityBoardCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
+    .find((lens) => lens.lens === "community_boards");
+  assert.equal(communityBoardCoverage?.state_label, "indexed");
+  assert.match(
+    renderUniversalSearchCoverageHtml(body.coverage),
+    /data-coverage-lens="community_boards" data-coverage-state="matched"><span>Community boards<\/span><strong>1 match · indexed<\/strong>/,
   );
 });
 
@@ -469,7 +501,7 @@ test("GET /search rejects a missing query and preserves empty result sets", asyn
     assert.equal(empty.status, 200);
     const body = await empty.json();
     assert.deepEqual(body.results, []);
-    assert.equal(body.lanes.length, 6);
+    assert.equal(body.lanes.length, 7);
     assert.ok(body.lanes.every((lane) => lane.status !== "matched"));
   } finally {
     sqlite.close();
