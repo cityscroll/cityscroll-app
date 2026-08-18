@@ -1,0 +1,23 @@
+{
+  "project_id": "2024M0158",
+  "project_name": "SPARC Kips Bay",
+  "public_status": "Completed",
+  "project_status": "Complete",
+  "primary_applicant": "EDC - Economic Development Corporation for NYC",
+  "actions": [
+    { "action": "ZM" },
+    { "action": "ZS" },
+    { "action": "ZR", "ulurp_number": "240371ZRM" },
+    { "action": "PP", "ulurp_number": "C240372PPM" },
+    { "action": "PC" },
+    { "action": "PQ" }
+  ],
+  "open_data": {
+    "project_id": "2024M0158",
+    "project_name": "SPARC Kips Bay",
+    "public_status": "Completed",
+    "project_status": "Complete",
+    "actions": "ZM; ZS; ZR; PP; PC; PQ",
+    "ulurp_numbers": "240371ZRM; C240372PPM"
+  }
+}
