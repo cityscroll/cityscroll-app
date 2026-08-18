@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-17T15:00:38.453Z",
-  "dataDate": "2026-08-17",
+  "generatedAt": "2026-08-18T12:02:05.760Z",
+  "dataDate": "2026-08-18",
   "scenarios": {
     "city-work-closing": {
       "id": "week",
@@ -11,7 +11,7 @@
       "count": 25,
       "counts": {
         "week": 25,
-        "open": 197,
+        "open": 196,
         "past": 53397
       }
     },
@@ -20,9 +20,9 @@
       "href": "#money?mode=open",
       "labelKey": "tab_money",
       "label": "Contracts",
-      "count": 197,
+      "count": 196,
       "counts": {
-        "open": 197
+        "open": 196
       }
     },
     "neighborhood-land": {
@@ -50,9 +50,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 22,
+      "count": 21,
       "counts": {
-        "upcoming": 22
+        "upcoming": 21
       }
     },
     "hearings-meetings": {
@@ -60,9 +60,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 22,
+      "count": 21,
       "counts": {
-        "upcoming": 22
+        "upcoming": 21
       }
     },
     "hearings-rules": {
@@ -134,9 +134,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 22,
+      "count": 21,
       "counts": {
-        "upcoming": 22
+        "upcoming": 21
       }
     }
   },
@@ -222,7 +222,7 @@
             },
             "keywordSearch": {
               "schema": "cityscroll.keyword_search_response.v1",
-              "asOf": "2026-08-17T13:00:37.598Z"
+              "asOf": "2026-08-18T10:00:04.580Z"
             }
           },
           "finalCount": 0
@@ -326,7 +326,7 @@
           "name": null,
           "tab": null
         },
-        "count": 6,
+        "count": 5,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
           "route": "/browse/contracts/?q=maintenance",
@@ -342,7 +342,7 @@
               "asOf": null
             }
           },
-          "finalCount": 6
+          "finalCount": 5
         }
       },
       {
@@ -402,7 +402,7 @@
           "name": null,
           "tab": null
         },
-        "count": 39,
+        "count": 35,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
           "route": "/browse/contracts/",
@@ -418,7 +418,7 @@
               "asOf": null
             }
           },
-          "finalCount": 39
+          "finalCount": 35
         }
       },
       {
@@ -439,7 +439,7 @@
           "name": null,
           "tab": null
         },
-        "count": 24,
+        "count": 21,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
           "route": "/browse/contracts/?closing=week",
@@ -455,7 +455,7 @@
               "asOf": null
             }
           },
-          "finalCount": 24
+          "finalCount": 21
         }
       },
       {
