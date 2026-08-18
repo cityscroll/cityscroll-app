@@ -2539,7 +2539,7 @@
     career_show_more: "Mostrar {n} más exámenes",
     career_exam_not_found: "Ese examen no está en el calendario actual del DCAS.",
     career_no_results: "Ningún examen coincide con estos filtros. Pruebe todos los intereses o todos los exámenes programados.",
-    career_source_current: "Precalculado a partir de fuentes oficiales del DCAS. Exámenes abiertos marcados {date}; programación anual vigente a través de {annual}.",
+    career_source_current: "Precalculado a partir de fuentes oficiales del DCAS. Exámenes abiertos marcados {date}; programación anual vigente a través de {annual}. Lista activa hasta {list}.",
     career_source_stale: "La última verificación de examen abierto es de {date}. Confirme cada fecha en el sitio oficial de DCAS antes de actuar.",
     career_source_details: "Ver fuentes",
     career_city_record_finding: "También se verificó el conjunto de datos de City Record. No publica Avisos de examen de DCAS como una sección de anuncios de exámenes, por lo que esta guía utiliza horarios de DCAS y NOE en su lugar.",

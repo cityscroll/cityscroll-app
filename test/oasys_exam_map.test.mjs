@@ -232,6 +232,19 @@ test("specificity detector flags generic OASys hub when deep pattern is known", 
   assert.equal(productFindings[0].sample_id, "exam-6125-before");
 });
 
+
+test("mergeOasysPayloads retains prior mapped exams when live omits them", async () => {
+  const { mergeOasysPayloads } = await import("../tools/build_oasys_exam_map.mjs");
+  const merged = mergeOasysPayloads(
+    [{ examId: 1, examNumber: "7006", title: "Live" }],
+    [{ oasys_exam_id: "9619", exam_number: "6125", title: "Prior" }],
+  );
+  assert.deepEqual(
+    merged.map((row) => String(row.examNumber || row.exam_number)).sort(),
+    ["6125", "7006"],
+  );
+});
+
 test("fixture body materializes a stable map including golden cases", () => {
   const artifact = materializeOasysMapArtifact(fixtureBody.payload || fixtureBody, {
     fetched_at: "2026-08-03",

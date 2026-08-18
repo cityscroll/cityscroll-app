@@ -4,16 +4,16 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-08-03",
+  "verified_at": "2026-08-18",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 854,
-    "matched_pairs": 442,
+    "distinct_list_aggregate_exams": 851,
+    "matched_pairs": 437,
     "misses": {
-      "no_list_aggregate": 774,
-      "missing_application_close": 5,
+      "no_list_aggregate": 778,
+      "missing_application_close": 6,
       "missing_established_date": 50,
       "established_before_application_close": 0
     },
@@ -27,33 +27,33 @@
       "citywide": {
         "key": "citywide",
         "label": "citywide",
-        "n": 442,
+        "n": 437,
         "eligible": true,
         "p10_days": 99,
         "p50_days": 281,
         "p90_days": 736,
         "median_months": 9,
         "train_from": "2021-05-05",
-        "train_to": "2026-07-22"
+        "train_to": "2026-08-19"
       },
       "open_competitive": {
         "key": "open_competitive",
         "label": "open competitive",
-        "n": 307,
+        "n": 303,
         "eligible": true,
         "p10_days": 92,
         "p50_days": 246,
         "p90_days": 757,
         "median_months": 8,
         "train_from": "2021-05-05",
-        "train_to": "2026-07-22"
+        "train_to": "2026-08-19"
       },
       "promotion": {
         "key": "promotion",
         "label": "promotion",
-        "n": 135,
+        "n": 134,
         "eligible": true,
-        "p10_days": 127,
+        "p10_days": 134,
         "p50_days": 358,
         "p90_days": 617,
         "median_months": 12,
@@ -64,7 +64,7 @@
   },
   "backtest": {
     "protocol": "train establishment events through 2024; score lists established in 2025–2026 for exams already open at 2025-01-01",
-    "training_pairs": 290,
+    "training_pairs": 282,
     "scoring_pairs": 86,
     "scorecard": {
       "metric": "prediction_calibration",

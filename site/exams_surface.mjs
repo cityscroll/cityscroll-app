@@ -40,7 +40,11 @@ function examDetail(exam, status) {
 }
 
 export function examBrowseRows(artifact = {}) {
-  const asOf = day(artifact.data_current_as_of || artifact.generated_at);
+  // Prefer the build's open-window clock so application windows stay honest when
+  // the annual schedule vintage (data_current_as_of) lags the active list.
+  const asOf = day(
+    artifact.open_window_as_of || artifact.generated_at || artifact.data_current_as_of,
+  );
   return (Array.isArray(artifact.exams) ? artifact.exams : []).flatMap((exam) => {
     const id = String(exam?.exam_number || "").trim();
     if (!/^\d{4}$/.test(id)) return [];
@@ -88,7 +92,10 @@ export function buildExamsBrowseView(artifact = {}, params = new URLSearchParams
   return buildBrowseView("exams", { rows }, search, {
     config: EXAMS_BROWSE_VIEW,
     rows,
-    asOf: artifact.data_current_as_of || artifact.generated_at,
+    asOf: artifact.open_window_as_of
+      || artifact.list_current_as_of
+      || artifact.data_current_as_of
+      || artifact.generated_at,
     limit: options.limit ?? 24,
     handledFilters: ["interest", "window", "eligibility"],
   });
