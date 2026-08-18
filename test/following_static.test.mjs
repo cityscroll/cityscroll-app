@@ -127,7 +127,7 @@ test("Following has a useful server-rendered empty state before personalization"
   assert.match(html, /Open a CityScroll email to see your watches/);
   assert.match(
     html,
-    /Follow what you care about\. Save a topic, place, agency, or keyword and get updates when new City records match\./,
+    /Save a topic, place, agency, or keyword\. We send matching City Record updates\./,
   );
   assert.doesNotMatch(html, /Pick a topic or place to see matches|Pick a topic or place/);
   assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first|Monday note even when nothing is new/);

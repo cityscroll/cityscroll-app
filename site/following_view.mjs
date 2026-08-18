@@ -59,6 +59,12 @@ function esc(value) {
   }[char]));
 }
 
+function escText(value) {
+  return String(value ?? "").replace(/[<>&"]/g, (char) => ({
+    "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;",
+  }[char]));
+}
+
 export function followingCadenceLabel(frequency, translate) {
   const key = frequency === "weekly" ? "following_freq_weekly" : "following_freq_daily";
   if (typeof translate === "function") {
@@ -356,7 +362,7 @@ export function followingWatchIdentityHtml(context, {
     : "";
   return `<section class="following-watch-identity${className ? ` ${esc(className)}` : ""}" data-following-watch-identity>
     <p class="following-kicker">Watch summary</p><${headingTag}>${esc(heading)}</${headingTag}>
-    <p class="following-identity-rule" data-following-identity-rule aria-live="polite" role="status" aria-atomic="true">${esc(context.ruleSentence)}</p>
+    <p class="following-identity-rule" aria-live="polite" role="status" aria-atomic="true" data-following-identity-rule>${escText(context.ruleSentence)}</p>
     <p class="following-identity-cadence">Email frequency: <strong data-following-identity-cadence>${esc(cadenceLabel)}</strong></p>
     <details class="following-identity-details">
       <summary>Show technical details</summary>
@@ -589,7 +595,7 @@ function topicPlacePickersHtml(view) {
 function ruleLineHtml(view) {
   if (!view.requested) return "";
   return `<div class="following-rule" data-following-rule-panel>
-    <p class="following-rule-line" data-following-rule-line aria-live="polite" role="status" aria-atomic="true">${esc(view.ruleSentence)}</p>
+    <p class="following-rule-line" aria-live="polite" role="status" aria-atomic="true" data-following-rule-line>${escText(view.ruleSentence)}</p>
   </div>`;
 }
 
@@ -649,8 +655,8 @@ function subscribeHtml(view) {
   if (!view.requested) {
     return `<section class="following-subscribe" data-following-subscribe-panel>
     <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
-      <p>Follow what you care about. Save a topic, place, agency, or keyword and get updates when new City records match.</p>
-      <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
+      <p>Follow what you care about. Save a topic, place, agency, or keyword. We send matching City Record updates.</p>
+      <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly emails are sent on Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
     </section>`;
   }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
