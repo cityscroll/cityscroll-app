@@ -21,7 +21,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "architecture", "generated", "facts.json");
 const CANARY_LIST = "architecture/observer-canaries.json";
-const GENERATOR_VERSION = "1.1.0";
+const GENERATOR_VERSION = "1.2.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -296,6 +296,197 @@ function buildOntologyFacts() {
   };
 }
 
+function lineOf(contents, pattern) {
+  const index = typeof pattern === "string" ? contents.indexOf(pattern) : contents.search(pattern);
+  if (index < 0) return null;
+  return contents.slice(0, index).split("\n").length;
+}
+
+function stringConst(contents, name) {
+  const match = contents.match(new RegExp(`(?:export\\s+)?const\\s+${name}\\s*=\\s*["']([^"']+)["']`));
+  return match ? match[1] : null;
+}
+
+function frozenStringArray(contents, name) {
+  const match = contents.match(new RegExp(`(?:export\\s+)?const\\s+${name}\\s*=\\s*Object\\.freeze\\(\\s*\\[([\\s\\S]*?)\\]\\s*\\)`));
+  if (!match) return [];
+  return [...match[1].matchAll(/["']([^"']+)["']/g)].map((item) => item[1]);
+}
+
+function frozenStringMap(contents, name) {
+  const match = contents.match(new RegExp(`(?:export\\s+)?const\\s+${name}\\s*=\\s*Object\\.freeze\\(\\s*\\{([\\s\\S]*?)\\}\\s*\\)`));
+  if (!match) return [];
+  return [...match[1].matchAll(/(?:["']([^"']+)["']|([A-Za-z_][\w]*))\s*:\s*["']([^"']+)["']/g)]
+    .map((item) => ({ key: item[1] || item[2], value: item[3] }));
+}
+
+function namedFunctionBody(contents, name) {
+  const start = contents.search(new RegExp(`(?:export\\s+)?(?:async\\s+)?function\\s+${name}\\s*\\(`));
+  if (start < 0) return null;
+  const brace = contents.indexOf("{", start);
+  if (brace < 0) return null;
+  let depth = 0;
+  for (let index = brace; index < contents.length; index += 1) {
+    const char = contents[index];
+    if (char === "{") depth += 1;
+    else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return {
+          body: contents.slice(brace + 1, index),
+          line: contents.slice(0, brace).split("\n").length,
+        };
+      }
+    }
+  }
+  return null;
+}
+
+function resolveRelativeImport(fromPath, specifier) {
+  const resolved = normalize(join(dirname(fromPath), specifier)).split("\\").join("/");
+  return resolved.startsWith("./") ? resolved.slice(2) : resolved;
+}
+
+function keywordIndexFamilies(contents) {
+  const match = contents.match(/\n\s*families:\s*\{([\s\S]*?)\n\s*\},/);
+  if (!match) return [];
+  return [...match[1].matchAll(/(?:["']([^"']+)["']|([A-Za-z_][\w]*))\s*:\s*family\s*\(/g)]
+    .map((item) => item[1] || item[2]);
+}
+
+function producerConstants(contents) {
+  const producer = [...contents.matchAll(/export\s+const\s+(\w*PRODUCER)\s*=\s*["']([^"']+)["']/g)]
+    .find((item) => !item[1].endsWith("_SCHEMA") && !item[1].endsWith("_VERSION"));
+  const schema = [...contents.matchAll(/export\s+const\s+(\w*(?:PRODUCER_SCHEMA|READ_MODEL_SCHEMA))\s*=\s*["']([^"']+)["']/g)][0];
+  return {
+    producer_id: producer?.[2] ?? null,
+    schema: schema?.[2] ?? null,
+  };
+}
+
+function buildSearchFacts() {
+  const productionPath = "worker/src/search.mjs";
+  const indexPath = "tools/build_keyword_search_index.mjs";
+  const production = text(productionPath);
+  const index = text(indexPath);
+  const collectionFamilies = frozenStringMap(production, "PRODUCTION_COLLECTION_FAMILIES")
+    .map((entry) => ({
+      lens: entry.key,
+      family: entry.value,
+      source: source(productionPath, lineOf(production, `  ${entry.key}:`)),
+    }));
+  const presentationLanes = frozenStringArray(production, "LANE_ORDER");
+  const producerImports = [...index.matchAll(/from\s+["']([^"']*search_producer[^"']*)["']/g)]
+    .map((item) => resolveRelativeImport(indexPath, item[1]))
+    .filter((path) => existsSync(absolute(path)));
+  const producers = [...new Set(producerImports)].sort().map((path) => {
+    const contents = text(path);
+    const constants = producerConstants(contents);
+    return {
+      path,
+      producer_id: constants.producer_id,
+      schema: constants.schema,
+      source: source(path, lineOf(contents, "export const") || 1),
+    };
+  });
+  const families = keywordIndexFamilies(index);
+  return {
+    sources: [productionPath, indexPath, ...producers.map((item) => item.path)],
+    production: {
+      path: productionPath,
+      handler: namedFunctionBody(production, "handleSearch") ? "handleSearch" : null,
+      response_schema: stringConst(production, "RESPONSE_SCHEMA"),
+      presentation_lanes: presentationLanes,
+      collection_families: collectionFamilies,
+      source: source(productionPath, lineOf(production, "PRODUCTION_COLLECTION_FAMILIES")),
+    },
+    keyword_index: {
+      path: indexPath,
+      schema: index.match(/\bschema:\s*["'](cityscroll\.keyword_search_index(?:\.[^"']+)?)["']/)?.[1] ?? null,
+      families,
+      output: index.match(/["']([^"']*keyword_search_index\.json)["']/)?.[1]
+        ? "worker/src/data/keyword_search_index.json"
+        : null,
+      source: source(indexPath, lineOf(index, "families:")),
+    },
+    producers,
+  };
+}
+
+function buildConstellationFacts() {
+  const modelPath = "site/agency_constellation_model.mjs";
+  const materializerPath = "tools/build_agency_constellation_documents.mjs";
+  const model = text(modelPath);
+  const materializer = text(materializerPath);
+  const categories = [...(model.match(/AGENCY_CONSTELLATION_CATEGORIES\s*=\s*Object\.freeze\(\[([\s\S]*?)\]\)/)?.[1] || "")
+    .matchAll(/\bid:\s*["']([^"']+)["']/g)]
+    .map((item) => item[1]);
+  const lookupMatch = materializer.match(/["']data\/agency_constellation_lookup\.json["']/);
+  return {
+    sources: [modelPath, materializerPath],
+    agency: {
+      path: modelPath,
+      schema: stringConst(model, "AGENCY_CONSTELLATION_SCHEMA"),
+      method: stringConst(model, "AGENCY_CONSTELLATION_METHOD"),
+      categories,
+      source: source(modelPath, lineOf(model, "AGENCY_CONSTELLATION_CATEGORIES")),
+    },
+    materializer: {
+      path: materializerPath,
+      lookup: lookupMatch ? "site/data/agency_constellation_lookup.json" : null,
+      source: source(materializerPath, lineOf(materializer, "agency_constellation_lookup.json")),
+    },
+  };
+}
+
+function buildPagesEdgeFacts() {
+  const rendererPath = "site/pages_edge.mjs";
+  const routesPath = "site/_routes.json";
+  const renderer = text(rendererPath);
+  const routes = json(routesPath);
+  const kindFn = namedFunctionBody(renderer, "edgeRequestKind");
+  const requestKinds = kindFn
+    ? [...kindFn.body.matchAll(/return\s+["']([^"']+)["']/g)].map((item) => item[1])
+    : [];
+  const fetchStart = renderer.search(/export\s+default\s*\{[\s\S]*?async\s+fetch\s*\(/);
+  const fetchSlice = fetchStart >= 0 ? renderer.slice(fetchStart) : "";
+  const handlers = [...new Set([...fetchSlice.matchAll(/return\s+(handle[A-Za-z]+)/g)].map((item) => item[1]))].sort();
+  return {
+    sources: [rendererPath, routesPath],
+    renderer: {
+      path: rendererPath,
+      request_kinds: requestKinds,
+      handlers,
+      source: source(rendererPath, kindFn?.line || lineOf(renderer, "edgeRequestKind")),
+    },
+    routes: {
+      path: routesPath,
+      version: routes.version ?? null,
+      include: Array.isArray(routes.include) ? [...routes.include] : [],
+      exclude: Array.isArray(routes.exclude) ? [...routes.exclude] : [],
+      source: source(routesPath),
+    },
+  };
+}
+
+function buildMaterializerFacts() {
+  const path = "tools/build_primary_documents.mjs";
+  const contents = text(path);
+  const builders = [...contents.matchAll(/import\s*\{([^}]+)\}\s*from\s*["'][^"']*primary_document_view[^"']*["']/g)]
+    .flatMap((item) => item[1].split(",").map((name) => name.trim()).filter(Boolean))
+    .sort();
+  const outputPrefixes = [...contents.matchAll(/output\(\s*["']([^"']+)["']/g)].map((item) => item[1]);
+  return {
+    sources: [path],
+    primary_documents: {
+      path,
+      builders,
+      output_prefixes: outputPrefixes,
+      source: source(path, lineOf(contents, "primaryDocumentOutputs")),
+    },
+  };
+}
+
 function normalizeRepoPath(value) {
   return String(value || "").trim().split("\\").join("/");
 }
@@ -401,6 +592,13 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
   ]);
   const entity = buildEntityResolutionFacts();
   for (const importer of entity.importers) sources.add(importer.file);
+  const search = buildSearchFacts();
+  const constellation = buildConstellationFacts();
+  const pagesEdge = buildPagesEdgeFacts();
+  const materializers = buildMaterializerFacts();
+  for (const path of [...search.sources, ...constellation.sources, ...pagesEdge.sources, ...materializers.sources]) {
+    sources.add(path);
+  }
   const sourcePaths = [...sources].sort();
   const observerCoverage = buildObserverCoverage(sourcePaths, loadObserverCanaries());
   return {
@@ -429,6 +627,22 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
     migrations: buildMigrationFacts(),
     entity_resolution: entity,
     ontology: buildOntologyFacts(),
+    search: {
+      production: search.production,
+      keyword_index: search.keyword_index,
+      producers: search.producers,
+    },
+    constellation: {
+      agency: constellation.agency,
+      materializer: constellation.materializer,
+    },
+    pages_edge: {
+      renderer: pagesEdge.renderer,
+      routes: pagesEdge.routes,
+    },
+    materializers: {
+      primary_documents: materializers.primary_documents,
+    },
   };
 }
 
@@ -468,6 +682,10 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
 export {
   buildFacts,
   buildObserverCoverage,
+  buildSearchFacts,
+  buildConstellationFacts,
+  buildPagesEdgeFacts,
+  buildMaterializerFacts,
   loadObserverCanaries,
   parseBindings,
   parseCrons,

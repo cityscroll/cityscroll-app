@@ -8,8 +8,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   human-owned list of architecture-affecting surfaces that LA4 facts must
   observe. `tools/build_architecture_facts.mjs` emits `observer_coverage`
   (`observed_paths`, `known_canaries`, `unmapped_surfaces`). Register a new
-  canary there; do not infer the list. This layer makes the observer's gaps
-  visible and does not add the missing observers. The reconciler consumes that
+  canary there; do not infer the list. The extractor first-class-observes
+  production search (`worker/src/search.mjs` collection families), the
+  keyword-index builder, constellation model/producers/materializer,
+  Pages-edge routes and renderer, and the primary-document materializer.
+  A remaining registered canary must be observed the same way or acknowledged
+  by ADR — do not silence `unmapped_surfaces`. The reconciler consumes that
   same block: a non-empty `unmapped_surfaces` set is first-class
   `unknown_surface` drift, so `--check` is healthy only when coverage is
   complete and topology is unchanged. It does not recompute coverage or load a
