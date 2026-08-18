@@ -778,13 +778,25 @@ node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
 # receipt: warehouse/receipts/proof/wh03_ocp_lookup_speed.json
 ```
 
-**WH-05 ZAP serve:** materialize sell-facing ZAP projects (+ demo `2022M0258`)
-into `site/data/zap_projects_warehouse_lookup.json` (+ Worker twin). Replaces
-live SODA in `fetchOpenDataRow` (`/zap-outcomes`) for materialization hits; live
-SODA remains the miss fallback:
+**WH-05 ZAP serve + land freshness publish loop:** materialize sell-facing ZAP
+projects (+ demo `2022M0258`) into `site/data/zap_projects_warehouse_lookup.json`
+(+ Worker twin). Replaces live SODA in `fetchOpenDataRow` (`/zap-outcomes`) for
+materialization hits; live SODA remains the miss fallback. Resident land
+list/search/hearings must not freeze on a stale bulk CSV: daily
+`.github/workflows/land-zap-freshness-refresh.yml` rebuilds the lookup + land
+keyword family from **current SODA** and opens a PR;
+`.github/workflows/land-upcoming-hearings.yml` commits/PRs the hearings artifact
+(not upload-artifact-only). `fetchLandDefaultProjects` prefers DuckDB only when
+the milestone frontier clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA.
+Canaries `2025Q0331` / `2026K0123` fail `--check`. WH-02 bulk lag:
+`node tools/check_zap_bulk_freshness.mjs` (+ optional `--rematerialize-if-stale`).
 
 ```bash
-node tools/build_zap_warehouse_lookup.mjs --fixture --bench
+node tools/build_zap_warehouse_lookup.mjs --from-soda
+node tools/refresh_land_zap_freshness.mjs
+node tools/build_zap_warehouse_lookup.mjs --check --against-live
+node tools/check_zap_bulk_freshness.mjs
+node --test test/land_zap_freshness.test.mjs
 # receipt: warehouse/receipts/proof/wh05_zap_lookup_speed.json
 ```
 

@@ -251,13 +251,15 @@ export function lookupZapInIndex(projectId, index) {
  */
 export function buildMaterializationDoc(rows, opts = {}) {
   const list = Array.isArray(rows) ? rows.map(rowToSodaShape).filter(Boolean) : [];
+  const mode = opts.mode || "export";
+  const fromSoda = mode === "soda_sell_facing" || opts.source === "soda";
   return {
     schema_version: 1,
     phase: "WH-05",
-    source: "warehouse",
+    source: fromSoda ? "soda" : opts.source || "warehouse",
     dataset_id: getDataset(ZAP_DATASET_KEY).dataset_id,
     table_name: zapTableName(),
-    mode: opts.mode || "export",
+    mode,
     materialized_at: opts.now || new Date().toISOString(),
     row_count: list.length,
     replaces_live_fetch: {

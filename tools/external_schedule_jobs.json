@@ -29,6 +29,7 @@
   ],
   "follow_up_jobs": [
     "attachment-metadata",
+    "land-zap-freshness-refresh",
     "land-upcoming-hearings",
     "surface-load-live",
     "multi-flywheel"
