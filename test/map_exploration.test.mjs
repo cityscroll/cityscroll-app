@@ -769,6 +769,27 @@ test("land ZAP community districts join council via definitional CD∩council in
   assert.equal(councilTotal, index.X05.length + index.M04.length + index.Q04.length);
 });
 
+test("land ZAP publisher council takes precedence over community-district fallback joins", () => {
+  const activity = buildDistrictActivity({
+    boundaries,
+    communityBoardGeography,
+    zapRows: [
+      {
+        project_id: "2024K0001",
+        borough: "Brooklyn",
+        community_district: "K01",
+        cc_district: "33",
+      },
+    ],
+  });
+  const councils = Object.entries(activity.by_level.council_district)
+    .filter(([, counts]) => counts.land)
+    .map(([id]) => id);
+  assert.deepEqual(councils, ["33"]);
+  assert.equal(activity.sources.land.by_method.publisher_council, 1);
+  assert.equal(activity.sources.land.by_method.cd_intersects_council || 0, 0);
+});
+
 test("multi-council CD contributes to all intersecting councils via definitional key", () => {
   assert.equal(communityBoardGeography.receipt.centroid_proxy, "rejected");
   const k01Councils = councilDistrictsIntersectingCommunity("K01", communityBoardGeography);
