@@ -25,8 +25,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   project is rezoning-collapsed, when Charter §197-c is applied to ELURP or
   Non-ULURP, or when map land ids diverge from list ids on procedure. Frozen
   case: `architecture/backtests/land-action-collapse.json` in
-  `architecture/backtests/frozen-set.json`. Replay:
-  `node tools/backtest_architecture_canaries.mjs --check`. Proof:
+  `architecture/backtests/frozen-set.json`. The live
+  `filterLandSnapshot` binding now admits default-review ELURP (`2024Q0356`);
+  silent drop remains the frozen/synthetic drift fixture, not the current
+  list. Replay: `node tools/backtest_architecture_canaries.mjs --check`. Proof:
   `test/architecture_land_action_collapse.test.mjs`.
 
 - **Cited semantic retrieval:** `worker/src/cited_retrieval.mjs` is the
