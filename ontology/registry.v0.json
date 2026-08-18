@@ -265,7 +265,7 @@
       "id": "procedure",
       "status": "registered",
       "layer": "spine",
-      "primary_key_pattern": "procedure:{land_use_procedure_v1_kind}",
+      "primary_key_pattern": "procedure:{land_use_procedure_v2_kind}",
       "families": [
         "er:location"
       ],

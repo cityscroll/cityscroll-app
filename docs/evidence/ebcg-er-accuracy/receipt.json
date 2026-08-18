@@ -22,7 +22,7 @@
     "version": "cross_spine_edge_policy_v2",
     "evaluation_version": "cross_spine_eval_v3",
     "gold_version": "cross_spine_gold_v3",
-    "gold_content_hash": "724d5db40074bf85"
+    "gold_content_hash": "696ebc4790d97960"
   },
   "held_out_metrics": {
     "relations_measured": 6,
@@ -146,10 +146,10 @@
     ],
     "provisional_cross_spine_candidates": {
       "public_inferred": 5,
-      "evidence_only": 57,
+      "evidence_only": 61,
       "evidence_only_by_relation": {
         "mandate_meeting": 48,
-        "mandate_land_use": 9
+        "mandate_land_use": 13
       },
       "source": "site/data/cross_spine_shadow_census.json"
     }
@@ -161,7 +161,7 @@
   ],
   "stayed_provisional": [
     "274 quote-miss mandate extractions remain excluded from public edge totals.",
-    "57 evidence-only cross-spine candidates remain off public inferred-edge totals.",
+    "61 evidence-only cross-spine candidates remain off public inferred-edge totals.",
     "Vendor name mentions remain discovery scope, not reviewed identity links."
   ],
   "verification": [
