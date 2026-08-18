@@ -600,6 +600,12 @@ node tools/build_zap_warehouse_lookup.mjs --bench
 
 Speed receipts: `warehouse/receipts/proof/wh05_*_lookup_speed.json`.
 
+All four committed warehouse serve lookups share the age-and-canary contract in
+`warehouse/lib/serve_publish_contract.mjs`. CI runs plain `--check` on the OCP,
+ZAP project, ZAP BBL, and Doing Business builders; these checks read the
+committed site/Worker twins without requiring a local DuckDB catalog and fail
+when a named field case disappears or the lookup exceeds its declared age.
+
 ## Characterization
 
 ```bash

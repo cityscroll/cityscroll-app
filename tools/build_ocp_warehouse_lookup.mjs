@@ -33,6 +33,10 @@ import {
 } from "../warehouse/lib/ocp_lookup.mjs";
 import { queryWarehouse } from "../warehouse/lib/query.mjs";
 import {
+  assertServePublishTwins,
+  SERVE_LOOKUP_CONTRACTS,
+} from "../warehouse/lib/serve_publish_contract.mjs";
+import {
   publicPayloadFindings,
   publicRecords,
 } from "./lib/public_payload_integrity.mjs";
@@ -334,8 +338,27 @@ function writeOutputs(doc, check) {
   };
 }
 
+function checkCommittedServe() {
+  assert.ok(existsSync(OUT_SITE), `missing ${path.relative(ROOT, OUT_SITE)}`);
+  assert.ok(existsSync(OUT_WORKER), `missing ${path.relative(ROOT, OUT_WORKER)}`);
+  const site = JSON.parse(readFileSync(OUT_SITE, "utf8"));
+  const worker = JSON.parse(readFileSync(OUT_WORKER, "utf8"));
+  assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.ocp_awards);
+  return site;
+}
+
 async function main() {
   const args = parseArgs(process.argv);
+  if (args.check && !args.fixture && !args.bench) {
+    const committed = checkCommittedServe();
+    console.log(JSON.stringify({
+      status: "ok",
+      check: "serve_publish_contract",
+      row_count: committed.row_count,
+      materialized_at: committed.materialized_at,
+    }, null, 2));
+    return;
+  }
   const { rows, mode } = collectRows({
     fixture: args.fixture,
     limit: args.limit,
