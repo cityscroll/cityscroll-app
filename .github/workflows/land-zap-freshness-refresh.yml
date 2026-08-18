@@ -61,7 +61,7 @@ jobs:
         id: refresh-pr
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REFRESH_PR_TOKEN }}
           branch: automation/land-zap-freshness-refresh
           delete-branch: true
           commit-message: Refresh sell-facing ZAP land lookup and keyword index
@@ -83,5 +83,12 @@ jobs:
       - name: Run required checks for the refresh pull request
         if: steps.refresh-pr.outputs.pull-request-number != ''
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
         run: gh workflow run ci.yml --ref automation/land-zap-freshness-refresh
+      - name: Queue the verified refresh for merge
+        if: steps.refresh-pr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ secrets.REFRESH_PR_TOKEN }}
+          REFRESH_PR: ${{ steps.refresh-pr.outputs.pull-request-number }}
+          REFRESH_HEAD: ${{ steps.refresh-pr.outputs.pull-request-head-sha }}
+        run: gh pr merge "$REFRESH_PR" --auto --match-head-commit "$REFRESH_HEAD"
