@@ -388,9 +388,8 @@ def main():
             page.goto(f"{BASE}/search/?q={query}", wait_until="domcontentloaded", timeout=30000)
             page.wait_for_selector(f'[data-semantic-family="contracts"] [data-search-result]')
             assert page.locator("[data-semantic-candidate]").count() > 0
-            method = page.locator("[data-search-method-value]").text_content() or ""
-            assert "Source-passage matches" in method
-            assert "Keyword fallback" in method
+            assert page.locator("[data-search-method-value]").count() == 0
+            assert "matches" in (page.locator("[data-search-coverage]").text_content() or "")
             keyword = page.locator(
                 '[data-semantic-family="contracts"] [data-search-result]'
             ).first
@@ -442,8 +441,8 @@ def main():
             assert fallback.locator("a").first.evaluate("el => getComputedStyle(el).outlineStyle") != "none"
             coverage = page.locator("[data-search-coverage]")
             assert coverage.get_attribute("data-coverage-state") == "complete"
-            assert coverage.locator("strong").first.text_content().startswith("1 match across")
-            assert coverage.locator("[data-coverage-lens]").count() == len(SEARCH_LENSES)
+            assert coverage.locator("strong").first.text_content() == "1 match"
+            assert coverage.locator("[data-coverage-lens]").count() == 0
             assert "Bounded public-record fixture" in (
                 page.locator(f'[data-search-lane="{family}"] .topic-search-lane-source').text_content() or ""
             )
@@ -486,7 +485,7 @@ def main():
         )
         assert page.locator("[data-semantic-candidate]").count() == 0
         assert "bounded source set" in (page.locator("[data-semantic-family]").first.text_content() or "")
-        assert page.locator("[data-search-coverage]").get_attribute("hidden") is not None
+        assert page.locator("[data-search-coverage]").text_content().strip() == "0 matches"
 
         print("PASS: search renders typed passages, relevance-rich fallback, translations, and honest empty states")
         browser.close()
