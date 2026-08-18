@@ -202,6 +202,13 @@ jobs:
         # Pull-request CI is deterministic. The daily source-contract workflow owns live
         # upstream checks and opens an issue when a publisher drifts.
         run: node tools/verify_source_contracts.mjs
+      - name: Warehouse serve refresh-to-publish contract
+        if: matrix.family == 'static-standards'
+        run: |
+          node tools/build_ocp_warehouse_lookup.mjs --check
+          node tools/build_zap_warehouse_lookup.mjs --check
+          node tools/build_zap_bbl_warehouse_lookup.mjs --check
+          node tools/build_doing_business_warehouse_lookup.mjs --check
       - name: Depot re-derivation drift gate
         if: matrix.family == 'static-standards'
         # Gauge-fired on PR/push (never cron). Re-derives the join graph from the committed

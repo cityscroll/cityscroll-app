@@ -42,6 +42,10 @@ import {
   parseCsv,
   rowToSodaShape,
 } from "../warehouse/lib/zap_lookup.mjs";
+import {
+  assertServePublishTwins,
+  SERVE_LOOKUP_CONTRACTS,
+} from "../warehouse/lib/serve_publish_contract.mjs";
 
 const ROOT = REPO_ROOT;
 const OUT_SITE = path.join(ROOT, "site", "data", "zap_projects_warehouse_lookup.json");
@@ -391,10 +395,7 @@ function checkCommittedCanariesAndTwins() {
   assert.ok(existsSync(OUT_WORKER), `missing ${path.relative(ROOT, OUT_WORKER)}`);
   const site = JSON.parse(readFileSync(OUT_SITE, "utf8"));
   const worker = JSON.parse(readFileSync(OUT_WORKER, "utf8"));
-  assert.equal(site.schema_version, worker.schema_version);
-  assert.equal(site.row_count, worker.row_count);
-  assert.deepEqual(site.rows, worker.rows);
-  assertLandCanariesPresent(site, { context: "zap_projects_warehouse_lookup" });
+  assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.zap_projects);
   return site;
 }
 
@@ -407,7 +408,7 @@ async function main() {
     const committed = checkCommittedCanariesAndTwins();
     const result = {
       status: "ok",
-      check: "canaries_and_twins",
+      check: "serve_publish_contract",
       row_count: committed.row_count,
       materialized_at: committed.materialized_at,
     };
