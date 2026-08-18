@@ -13,6 +13,7 @@ import { test } from "node:test";
 
 import {
   LAND_USE_ACTION_CODE_FAMILY,
+  LAND_USE_FAMILY_LABEL_KEY,
   landParticipationGuideHeadingKey,
   landParticipationStepsMissingKey,
   normalizeLandUseActionType,
@@ -95,20 +96,108 @@ test("bundled ZM+disposition heading is not this-rezoning", () => {
   assert.equal(landParticipationGuideHeadingKey(bundled), "land_guide_heading");
 });
 
-test("unknown codes stay unmapped; no upzone/downzone family", () => {
-  for (const code of ["CM", "HU", "UK", "EAS", "RA", "RC", "RS"]) {
+test("glossary-backed DCP codes map; UK/EAS stay unmapped; no upzone/downzone family", () => {
+  // Meanings from the DCP ZAP Projects data dictionary (Action Types, shared
+  // string 252) and Land Use Application form §§6–13. South Richmond RA/RC/RS
+  // fold into the base families; they must not hide behind a south_richmond family.
+  const glossary = {
+    ZM: "rezoning",
+    ZR: "rezoning",
+    ZS: "special_permit",
+    RS: "special_permit",
+    ZA: "authorization",
+    RA: "authorization",
+    ZC: "certification",
+    RC: "certification",
+    PQ: "acquisition",
+    PC: "acquisition",
+    PS: "site_selection",
+    MM: "mapping",
+    ME: "mapping",
+    MD: "mapping",
+    DM: "demapping",
+    HA: "disposition",
+    PP: "disposition",
+    HN: "disposition",
+    HD: "disposition",
+    HG: "urban_renewal",
+    HU: "urban_renewal",
+    HC: "urban_renewal",
+    HI: "landmark",
+    HK: "landmark",
+    LD: "legal_document",
+    CM: "renewal",
+    CS: "follow_up",
+    PX: "office_space",
+    BD: "bid",
+    MC: "major_concession",
+    GF: "franchise_consent",
+    HO: "housing_plan",
+    SG: "pops",
+    ML: "landfill",
+  };
+  for (const [code, family] of Object.entries(glossary)) {
+    assert.equal(
+      LAND_USE_ACTION_CODE_FAMILY[code],
+      family,
+      `${code} must map to ${family}`,
+    );
+  }
+
+  for (const code of ["UK", "EAS"]) {
     assert.equal(
       LAND_USE_ACTION_CODE_FAMILY[code],
       undefined,
       `${code} must stay unmapped`,
     );
   }
+
   const families = Object.values(LAND_USE_ACTION_CODE_FAMILY);
   assert.ok(!families.includes("upzone"));
   assert.ok(!families.includes("downzone"));
+  assert.ok(!families.includes("south_richmond"));
 
-  const unknown = normalizeLandUseActionType({ actions: "CM,HU,UK,EAS,RA,RC,RS" });
-  assert.deepEqual(unknown.codes, ["CM", "HU", "UK", "EAS", "RA", "RC", "RS"]);
+  const newFamilyKeys = [
+    "legal_document",
+    "renewal",
+    "follow_up",
+    "office_space",
+    "bid",
+    "major_concession",
+    "franchise_consent",
+    "housing_plan",
+    "pops",
+    "landfill",
+  ];
+  for (const family of newFamilyKeys) {
+    assert.equal(
+      LAND_USE_FAMILY_LABEL_KEY[family],
+      `land_use_family_${family}`,
+      `${family} needs a family label key`,
+    );
+  }
+
+  // 2025R0222 St. Joseph by the Sea — South Richmond RS/RC/RA plus an LD
+  // legal document. LD must not paint this as a landmark.
+  const southRichmond = normalizeLandUseActionType({
+    project_id: "2025R0222",
+    actions: "RS;RC;RA;LD",
+  });
+  assert.deepEqual(southRichmond.codes, ["RS", "RC", "RA", "LD"]);
+  assert.ok(southRichmond.families.includes("special_permit"));
+  assert.ok(southRichmond.families.includes("authorization"));
+  assert.ok(southRichmond.families.includes("certification"));
+  assert.ok(southRichmond.families.includes("legal_document"));
+  assert.ok(!southRichmond.families.includes("landmark"));
+  assert.notEqual(southRichmond.primary, "landmark");
+
+  const ldOnly = normalizeLandUseActionType({ actions: "LD" });
+  assert.deepEqual(ldOnly.families, ["legal_document"]);
+  assert.equal(ldOnly.primary, "legal_document");
+  assert.notEqual(ldOnly.primary, "landmark");
+
+  const unknown = normalizeLandUseActionType({ actions: "UK,EAS" });
+  assert.deepEqual(unknown.codes, ["UK", "EAS"]);
   assert.deepEqual(unknown.families, []);
   assert.equal(unknown.primary, "land_use");
 });

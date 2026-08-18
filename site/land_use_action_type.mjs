@@ -8,23 +8,50 @@
 
 const cleanActionText = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
-/** DCP action-code → family (exact publisher codes only). */
+/**
+ * DCP action-code → family (exact publisher codes only).
+ *
+ * Meanings from the DCP ZAP Projects data dictionary ("Action Types",
+ * shared string 252) and the Land Use Application form §§6–13.
+ * LD is a legal document (NOC, NOR, RD), not a landmark; HK and HI are
+ * the landmark codes. UK (not an action type) and EAS (CEQR document)
+ * stay unmapped. South Richmond RA/RC/RS fold into the base families.
+ */
 export const LAND_USE_ACTION_CODE_FAMILY = Object.freeze({
   ZM: "rezoning",
   ZR: "rezoning",
   ZS: "special_permit",
+  RS: "special_permit",
   ZA: "authorization",
+  RA: "authorization",
   ZC: "certification",
+  RC: "certification",
   PQ: "acquisition",
   PC: "acquisition",
   PS: "site_selection",
   MM: "mapping",
+  ME: "mapping",
+  MD: "mapping",
   DM: "demapping",
   HA: "disposition",
   PP: "disposition",
+  HN: "disposition",
+  HD: "disposition",
   HG: "urban_renewal",
+  HU: "urban_renewal",
+  HC: "urban_renewal",
   HI: "landmark",
-  LD: "landmark",
+  HK: "landmark",
+  LD: "legal_document",
+  CM: "renewal",
+  CS: "follow_up",
+  PX: "office_space",
+  BD: "bid",
+  MC: "major_concession",
+  GF: "franchise_consent",
+  HO: "housing_plan",
+  SG: "pops",
+  ML: "landfill",
 });
 
 export const LAND_USE_FAMILY_LABEL_KEY = Object.freeze({
@@ -39,6 +66,16 @@ export const LAND_USE_FAMILY_LABEL_KEY = Object.freeze({
   disposition: "land_use_family_disposition",
   urban_renewal: "land_use_family_urban_renewal",
   landmark: "land_use_family_landmark",
+  legal_document: "land_use_family_legal_document",
+  renewal: "land_use_family_renewal",
+  follow_up: "land_use_family_follow_up",
+  office_space: "land_use_family_office_space",
+  bid: "land_use_family_bid",
+  major_concession: "land_use_family_major_concession",
+  franchise_consent: "land_use_family_franchise_consent",
+  housing_plan: "land_use_family_housing_plan",
+  pops: "land_use_family_pops",
+  landfill: "land_use_family_landfill",
   land_use: "land_use_family_generic",
 });
 
