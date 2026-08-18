@@ -30,16 +30,29 @@ import {
 } from "../../entity_resolution/cross_domain/index.mjs";
 import { vendorStem } from "../../entity_resolution/normalizers/vendor_stem.mjs";
 import { buildEpinIndex, joinPinToEpin } from "../../worker/src/lib/passport_join.mjs";
+import { resolveAgencyIdentity } from "../../site/agency_identity.mjs";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 export const DEFAULT_ENTITY_MATERIALIZATION_CAP = 200;
 /**
- * Population-backed PASSPort contracts admitted into the EI graph (not the
- * 2-row crosswalk demo). The cap is the measured compressed read-model
- * ceiling; selection below is agency-stratified so this budget does not turn
- * census order into an agency priority.
+ * Population-backed PASSPort contracts admitted into the Worker single-file
+ * EI lookup (not the 2-row crosswalk demo). This is the measured gzip
+ * ceiling of `entity_intelligence_lookup.json`; selection is agency-stratified
+ * so the budget does not turn census order into an agency priority.
  */
-export const DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP = 1550;
+export const DEFAULT_PASSPORT_CONTRACT_CORE_CAP = 1550;
+export const DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP = DEFAULT_PASSPORT_CONTRACT_CORE_CAP;
+/**
+ * Published constellation graph ceiling. The award-corroborated census is
+ * selected up to this hard bound and sharded by agency/vendor so the Worker
+ * single-file payload can stay at CORE_CAP.
+ */
+export const DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP = 20_000;
+export const PASSPORT_EI_GRAPH_SCHEMA = "cityscroll.passport_ei_graph.v1";
+export const PASSPORT_EI_GRAPH_METHOD = "passport_ei_graph_v1";
+export const PASSPORT_EI_GRAPH_PREVIEW_LIMIT = 8;
+export const PASSPORT_EI_GRAPH_MAX_AGE_DAYS = 21;
+export const PASSPORT_EI_CORE_PAYLOAD_BUDGET_BYTES = 445_000;
 /** Population-backed Checkbook contracts admitted after collector-side normalization. */
 export const DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP = 500;
 /** OCP awards admitted into the EI graph; selection prefers PIN↔EPIN joins to the passport slice. */
@@ -455,6 +468,305 @@ export function selectPassportContractsForMaterialization(doc, opts = {}) {
       "population-backed census (rows.passport_contracts) capped for entity-intelligence; "
       + "compatibility examples included first, then agency-stratified round-robin "
       + "within the remaining cap",
+  };
+}
+
+function passportRowId(row) {
+  return clean(row?.ctr_id || row?.contract_id || row?.epin || row?.epin_norm);
+}
+
+function compactPassportDay(value) {
+  const raw = clean(value);
+  const iso = raw.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (iso) return iso[1];
+  const us = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!us) return raw.slice(0, 10) || null;
+  return `${us[3]}-${us[1].padStart(2, "0")}-${us[2].padStart(2, "0")}`;
+}
+
+function compactPassportPreview(row) {
+  const id = passportRowId(row);
+  const vendor = clean(row?.vendor_name || row?.vendor);
+  const agency = clean(row?.agency_name || row?.agency);
+  const epin = clean(row?.epin || row?.epin_norm);
+  const contractId = clean(row?.contract_id);
+  const when = compactPassportDay(row?.registration_date || row?.start_date);
+  return {
+    subject_ref: contractId ? `contract:${contractId}` : (id ? `contract:passport:${id}` : ""),
+    object_kind: "contract",
+    label: vendor || contractId || epin || id,
+    vendor_name: vendor || null,
+    agency_name: agency || null,
+    contract_id: contractId || null,
+    epin: epin || null,
+    when: when || null,
+    confidence: "strong",
+    method: PASSPORT_EI_GRAPH_METHOD,
+    link_type: "published_by_agency",
+    provenance: {
+      source_system: "passport-public-contracts",
+      source_record_id: id ? `passport-public-contracts:${id}` : null,
+      source_fields: ["ctr_id", "contract_id", "epin", "agency", "vendor"],
+      basis: "award_corroborated_passport_census",
+      observed_at: when || null,
+    },
+  };
+}
+
+function sortPreview(rows) {
+  return [...rows].sort((left, right) => {
+    const day = String(right?.when || "").localeCompare(String(left?.when || ""));
+    if (day) return day;
+    return String(left?.subject_ref || "").localeCompare(String(right?.subject_ref || ""));
+  });
+}
+
+/**
+ * Select the Worker core slice and the larger published constellation graph
+ * from the same agency-stratified census. The graph is the raised ceiling;
+ * the core stays at the measured single-file gzip budget.
+ */
+export function selectPassportContractsForShardedGraph(doc, opts = {}) {
+  const coreCap = Math.max(1, Number(opts.core_cap) || DEFAULT_PASSPORT_CONTRACT_CORE_CAP);
+  const graphCap = Math.max(coreCap, Number(opts.graph_cap) || DEFAULT_PASSPORT_CONTRACT_GRAPH_CAP);
+  const core = selectPassportContractsForMaterialization(doc, { cap: coreCap });
+  const graph = selectPassportContractsForMaterialization(doc, { cap: graphCap });
+  const coreIds = new Set(core.rows.map(passportRowId).filter(Boolean));
+  return {
+    core,
+    graph,
+    core_ids: coreIds,
+    core_cap: coreCap,
+    graph_cap: graphCap,
+    shard_strategy:
+      "agency- and vendor-keyed compact index over the award-corroborated census; "
+      + "Worker single-file lookup stays at the measured core gzip ceiling",
+  };
+}
+
+function emptyBucket(key, label) {
+  return {
+    key,
+    label: label || key,
+    selected_rows: 0,
+    core_rows: 0,
+    graph_only_rows: 0,
+    preview: [],
+  };
+}
+
+function addToBucket(buckets, key, label, preview, inCore) {
+  if (!key) return;
+  const bucket = buckets.get(key) || emptyBucket(key, label);
+  bucket.label = bucket.label || label || key;
+  bucket.selected_rows += 1;
+  if (inCore) bucket.core_rows += 1;
+  else bucket.graph_only_rows += 1;
+  bucket.preview.push(preview);
+  buckets.set(key, bucket);
+}
+
+function finalizeBuckets(buckets, previewLimit) {
+  const limit = Math.max(1, Number(previewLimit) || PASSPORT_EI_GRAPH_PREVIEW_LIMIT);
+  return Object.fromEntries([...buckets.entries()]
+    .sort((a, b) => b[1].selected_rows - a[1].selected_rows || a[0].localeCompare(b[0]))
+    .map(([key, bucket]) => [key, {
+      ...bucket,
+      preview: sortPreview(bucket.preview).slice(0, limit),
+    }]));
+}
+
+function daysBetween(observedOn, now) {
+  const day = String(observedOn || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return null;
+  const then = Date.parse(`${day}T00:00:00Z`);
+  if (!Number.isFinite(then)) return null;
+  const clock = now instanceof Date ? now : new Date(now || Date.now());
+  return Math.floor((clock.getTime() - then) / 86_400_000);
+}
+
+/**
+ * Compact precomputed PASSPort graph used by agency/vendor constellations.
+ * Counts cover the raised graph; previews stay bounded. Row payloads remain
+ * in procurement_spine_sources.json — this artifact is the index, not a fork.
+ */
+export function buildPassportEiGraphPublication(doc, opts = {}) {
+  const selected = selectPassportContractsForShardedGraph(doc, opts);
+  const previewLimit = opts.preview_limit || PASSPORT_EI_GRAPH_PREVIEW_LIMIT;
+  const byAgency = new Map();
+  const byVendor = new Map();
+  let unresolvedAgency = 0;
+  let unresolvedVendor = 0;
+  for (const row of selected.graph.rows) {
+    const preview = compactPassportPreview(row);
+    const inCore = selected.core_ids.has(passportRowId(row));
+    const agencyName = clean(row?.agency_name || row?.agency);
+    const identity = agencyName ? resolveAgencyIdentity(agencyName) : null;
+    if (identity?.canonical_id) {
+      addToBucket(byAgency, identity.canonical_id, identity.canonical_name, preview, inCore);
+    } else {
+      unresolvedAgency += 1;
+    }
+    const stem = vendorStem(row?.vendor_name || row?.vendor);
+    if (stem) {
+      addToBucket(byVendor, stem, clean(row?.vendor_name || row?.vendor), preview, inCore);
+    } else {
+      unresolvedVendor += 1;
+    }
+  }
+  const sourcePopulation = Number(doc?.sources?.passport_contracts?.population?.parsed)
+    || Number(doc?.sources?.passport_contracts?.population?.source_rows)
+    || null;
+  const censusRows = selected.graph.census_rows;
+  const publishedRows = selected.graph.selected_rows;
+  const aboveCeiling = Math.max(0, censusRows - publishedRows);
+  const notInCensus = Number.isFinite(sourcePopulation)
+    ? Math.max(0, sourcePopulation - censusRows)
+    : null;
+  return {
+    schema: PASSPORT_EI_GRAPH_SCHEMA,
+    method: PASSPORT_EI_GRAPH_METHOD,
+    observed_on: doc?.observed_on || null,
+    generated_at: doc?.generated_at || null,
+    source: {
+      path: "site/data/procurement_spine_sources.json#rows.passport_contracts",
+      census_rows: censusRows,
+      source_population_rows: sourcePopulation,
+      compatibility_rows: selected.graph.compatibility_rows,
+      source_null_policy: "source fields remain null; no row or edge is fabricated",
+    },
+    worker_core: {
+      cap: selected.core_cap,
+      selected_rows: selected.core.selected_rows,
+      selected_agency_count: selected.core.selected_agency_count,
+      strategy: selected.core.strategy,
+    },
+    published_graph: {
+      cap: selected.graph_cap,
+      selected_rows: publishedRows,
+      selected_agency_count: selected.graph.selected_agency_count,
+      selected_vendor_count: byVendor.size,
+      strategy: selected.shard_strategy,
+    },
+    excluded: {
+      above_graph_ceiling: aboveCeiling,
+      not_in_award_corroborated_census: notInCensus,
+      unresolved_agency_rows: unresolvedAgency,
+      unresolved_vendor_rows: unresolvedVendor,
+      rfx_rows: Number(doc?.row_counts?.passport_rfx)
+        || (Array.isArray(doc?.rows?.passport_rfx) ? doc.rows.passport_rfx.length : 0),
+      note:
+        "The published graph is the award-corroborated PASSPort census under the "
+        + "hard ceiling. Full daily dumps, RFx, and unresolved award joins stay out.",
+    },
+    coverage: {
+      census_share: censusRows ? publishedRows / censusRows : null,
+      population_share: sourcePopulation ? publishedRows / sourcePopulation : null,
+      age_days: daysBetween(doc?.observed_on, opts.now),
+    },
+    by_agency: finalizeBuckets(byAgency, previewLimit),
+    by_vendor: finalizeBuckets(byVendor, Math.min(3, previewLimit)),
+  };
+}
+
+export function passportEiGraphCoverageFindings(publication, opts = {}) {
+  const maxAge = Number.isFinite(Number(opts.max_age_days))
+    ? Number(opts.max_age_days)
+    : PASSPORT_EI_GRAPH_MAX_AGE_DAYS;
+  const published = Number(publication?.published_graph?.selected_rows) || 0;
+  const core = Number(publication?.worker_core?.selected_rows) || 0;
+  const census = Number(publication?.source?.census_rows) || 0;
+  const ageDays = Number.isFinite(Number(publication?.coverage?.age_days))
+    ? Number(publication.coverage.age_days)
+    : daysBetween(publication?.observed_on, opts.now);
+  const share = census ? published / census : 0;
+  const findings = [];
+  const coreCeiling = Number(publication?.worker_core?.cap) || DEFAULT_PASSPORT_CONTRACT_CORE_CAP;
+  if (census > coreCeiling && published <= coreCeiling) {
+    findings.push("published graph does not exceed the Worker core ceiling");
+  }
+  if (published <= core) {
+    findings.push("published graph is not larger than the Worker core slice");
+  }
+  if (share < 0.99) {
+    findings.push(`census coverage ${share.toFixed(4)} is below the 0.99 shard gate`);
+  }
+  if (ageDays == null) {
+    findings.push("graph observed_on is missing");
+  } else if (ageDays > maxAge) {
+    findings.push(`graph age ${ageDays}d exceeds ${maxAge}d`);
+  }
+  return {
+    ok: findings.length === 0,
+    published_rows: published,
+    core_rows: core,
+    census_rows: census,
+    census_share: census ? published / census : null,
+    age_days: ageDays,
+    findings,
+  };
+}
+
+export function passportGraphAgencyEntry(publication, agencyId) {
+  const id = clean(agencyId).replace(/^agency:id:/, "");
+  if (!id) return null;
+  return publication?.by_agency?.[id] || null;
+}
+
+export function passportGraphVendorEntry(publication, stemOrRef) {
+  const raw = clean(stemOrRef);
+  if (!raw) return null;
+  const stem = raw.startsWith("vendor:stem:")
+    ? decodeURIComponent(raw.slice("vendor:stem:".length))
+    : vendorStem(raw) || raw;
+  return publication?.by_vendor?.[stem] || null;
+}
+
+/**
+ * Overlay honest graph counts onto a Worker-core intelligence dossier.
+ * Preview objects stay bounded; the count is the published shard total.
+ */
+export function hydrateIntelligenceFromPassportGraph(intelligence, publication) {
+  if (!intelligence || typeof intelligence !== "object") return intelligence;
+  const byRef = intelligence.by_ref && typeof intelligence.by_ref === "object"
+    ? intelligence.by_ref
+    : null;
+  if (!byRef) return intelligence;
+  const nextByRef = { ...byRef };
+  for (const [ref, dossier] of Object.entries(byRef)) {
+    const agencyMatch = String(ref).match(/^agency:id:(.+)$/);
+    const vendorMatch = String(ref).match(/^vendor:stem:(.+)$/);
+    const entry = agencyMatch
+      ? passportGraphAgencyEntry(publication, agencyMatch[1])
+      : vendorMatch
+        ? passportGraphVendorEntry(publication, ref)
+        : null;
+    if (!entry || !dossier?.domains?.money) continue;
+    const money = dossier.domains.money;
+    nextByRef[ref] = {
+      ...dossier,
+      domains: {
+        ...dossier.domains,
+        money: {
+          ...money,
+          status: entry.selected_rows > 0 ? "matched" : money.status,
+          count: Math.max(Number(money.count) || 0, entry.selected_rows),
+          graph_count: entry.selected_rows,
+          graph_core_count: entry.core_rows,
+          graph_method: PASSPORT_EI_GRAPH_METHOD,
+        },
+      },
+    };
+  }
+  return {
+    ...intelligence,
+    by_ref: nextByRef,
+    passport_graph: {
+      schema: publication?.schema || PASSPORT_EI_GRAPH_SCHEMA,
+      method: publication?.method || PASSPORT_EI_GRAPH_METHOD,
+      selected_rows: publication?.published_graph?.selected_rows || 0,
+      observed_on: publication?.observed_on || null,
+    },
   };
 }
 
