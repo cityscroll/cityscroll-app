@@ -1,0 +1,22 @@
+{
+  "label": "before",
+  "captured_from": "live api.cityscroll.org/zap-outcomes + page observation 2026-08-17",
+  "specimens": {
+    "2026R0127": {
+      "actions": "PQ Acquisition",
+      "participation_heading_observed": "How to participate in this rezoning",
+      "pipeline_observed": "Public review — step 4 of 5: City Council review (50-day clock, ~101 days left)",
+      "council_panel_start": "2026-07-31",
+      "council_panel_due_observed": "2026-11-27",
+      "council_panel_copy": "must conclude within 50 days",
+      "root_cause": "due_date = certified_referred + cumulative_days (200) while UI labeled it as the phase's 50-day clock; days_left from that outer bound"
+    },
+    "2023M0213": {
+      "list_or_open_data_status": "In Public Review",
+      "zap_outcomes_status": "Completed",
+      "next_hearing_observed": "February 4, 2026 (past)",
+      "whats_next_observed": "Pre-certification notice while current=Mayoral",
+      "root_cause": "independently derived status/phase/hearing/clock with no reconciliation before render"
+    }
+  }
+}

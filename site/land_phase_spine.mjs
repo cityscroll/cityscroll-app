@@ -594,19 +594,42 @@ export function buildLandPhaseView(spine, opts = {}) {
     };
   });
 
-  // Next = first future phase after current; if current is CEQR and notice already passed, skip notice.
+  // Next = first future phase AFTER current only. Never fall back to an earlier
+  // incomplete template slot (that produced "What's next: Pre-certification"
+  // while current was Mayoral on completed projects).
   const curIdx = LAND_ULURP_PHASES.indexOf(currentPhaseId);
   let nextPhase = null;
-  for (let i = curIdx + 1; i < phases.length; i++) {
-    if (phases[i].state === "future") {
-      nextPhase = phases[i];
-      break;
+  if (!completedLike) {
+    for (let i = curIdx + 1; i < phases.length; i++) {
+      if (phases[i].state === "future") {
+        nextPhase = phases[i];
+        break;
+      }
+      // Skip phases already passed (e.g. notice while still in CEQR)
     }
-    // Skip phases already passed (e.g. notice while still in CEQR)
   }
-  if (!nextPhase) {
-    nextPhase = phases.find((p) => p.state === "future") || null;
-  }
+
+  // Applicable phases: omit empty pre-public-review slots the project never
+  // entered once review has moved past them (acquisition apps often skip CEQR /
+  // pre-cert notice). Always keep the current phase and any phase with events.
+  const applicablePhases = phases.filter((p) => {
+    if (p.state === "current" || p.state === "passed") return true;
+    if ((p.total_count || p.event_count || 0) > 0) return true;
+    const idx = LAND_ULURP_PHASES.indexOf(p.id);
+    // Future statutory public-review stages after current remain visible.
+    if (
+      idx > curIdx
+      && (p.id === "community_board"
+        || p.id === "borough_president"
+        || p.id === "cpc"
+        || p.id === "city_council"
+        || p.id === "mayoral_appeals")
+    ) {
+      return true;
+    }
+    // Empty future pre-review stages behind or with no justification → omit.
+    return false;
+  });
 
   return {
     schema_version: LAND_PHASE_SPINE_SCHEMA_VERSION,
@@ -620,8 +643,9 @@ export function buildLandPhaseView(spine, opts = {}) {
       public_status: publicStatus,
       noticed,
       // True only when Open Data already labels full public review / completion paths.
+      // Completed/approved are terminal — not "in public review" for action rails.
       in_public_review: publicStatus
-        ? /public review|completed|approved/i.test(publicStatus)
+        ? /public review/i.test(publicStatus) && !/completed|approved|disapproved|withdrawn|terminated/i.test(publicStatus)
         : false,
       // Machine-readable derivation reason (stranded-stage advance, in_progress, …).
       derivation: derived.reason || null,
@@ -633,7 +657,8 @@ export function buildLandPhaseView(spine, opts = {}) {
           short: nextPhase.short,
         }
       : null,
-    phases,
+    phases: applicablePhases,
+    all_phases: phases,
     chronological: events,
     event_count: events.length,
     portal_row_link_candidates: countDuplicatePortalLinks({ events }, portalUrl),

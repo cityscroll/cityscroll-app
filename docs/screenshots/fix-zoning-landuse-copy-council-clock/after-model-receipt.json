@@ -1,0 +1,126 @@
+{
+  "2026R0127": {
+    "action_type": {
+      "schema_version": 1,
+      "codes": [
+        "PQ"
+      ],
+      "families": [
+        "acquisition"
+      ],
+      "primary": "acquisition",
+      "is_rezoning": false,
+      "label_key": "land_use_family_acquisition"
+    },
+    "guide_heading_key": "land_guide_heading",
+    "resolved_public_status": "In Public Review",
+    "current_phase": "city_council",
+    "next_phase": "mayoral_appeals",
+    "applicable_phases": [
+      "pre_application",
+      "certification",
+      "community_board",
+      "borough_president",
+      "cpc",
+      "city_council",
+      "mayoral_appeals"
+    ],
+    "pipeline": {
+      "schema_version": 1,
+      "overall_status": "public_review",
+      "overall_label_key": "land_pipeline_overall_public_review",
+      "step_phase_id": "city_council",
+      "step_label_key": "land_phase_city_council",
+      "step_short": "Council",
+      "step_n": 4,
+      "step_m": 5,
+      "window_days": 50,
+      "start_date": "2026-07-31",
+      "start_basis": "milestone_actual_start",
+      "due_date": "2026-09-19",
+      "deadline_certainty": "statutory",
+      "days_left": 33,
+      "statute_ref": "NYC Charter §197-c",
+      "certified_date": "2026-05-11",
+      "public_status": "In Public Review"
+    },
+    "council_clock": {
+      "start_date": "2026-07-31",
+      "due_date": "2026-09-19",
+      "days": 50,
+      "certainty": "statutory",
+      "outer_bound_due_date": "2026-11-27"
+    },
+    "next_hearing": null,
+    "coherence": {
+      "schema_version": 1,
+      "public_status": "In Public Review",
+      "public_status_source": "zap_outcomes.public_status",
+      "public_status_disagreement": true,
+      "next_hearing": null,
+      "next_phase": {
+        "phase_id": "mayoral_appeals",
+        "label_key": "land_phase_mayoral_appeals",
+        "short": "Mayor"
+      },
+      "completed": false,
+      "clock_issues": [],
+      "contradictions": [],
+      "coherent": true
+    }
+  },
+  "2023M0213": {
+    "action_type": {
+      "schema_version": 1,
+      "codes": [
+        "ZR",
+        "ZM",
+        "ZS",
+        "LD"
+      ],
+      "families": [
+        "rezoning",
+        "special_permit",
+        "landmark"
+      ],
+      "primary": "rezoning",
+      "is_rezoning": true,
+      "label_key": "land_use_family_rezoning"
+    },
+    "guide_heading_key": "land_guide_heading_rezoning",
+    "resolved_public_status": "Completed",
+    "current_phase": "mayoral_appeals",
+    "next_phase": null,
+    "applicable_phases": [
+      "pre_application",
+      "environmental",
+      "certification",
+      "community_board",
+      "borough_president",
+      "cpc",
+      "city_council",
+      "mayoral_appeals"
+    ],
+    "pipeline": null,
+    "council_clock": {
+      "start_date": null,
+      "due_date": null,
+      "days": 50,
+      "certainty": "completed",
+      "outer_bound_due_date": "2026-07-03"
+    },
+    "next_hearing": null,
+    "coherence": {
+      "schema_version": 1,
+      "public_status": "Completed",
+      "public_status_source": "zap_outcomes.public_status",
+      "public_status_disagreement": true,
+      "next_hearing": null,
+      "next_phase": null,
+      "completed": true,
+      "clock_issues": [],
+      "contradictions": [],
+      "coherent": true
+    }
+  }
+}

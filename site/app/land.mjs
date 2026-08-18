@@ -908,8 +908,17 @@ function landStatutoryDeadlineHTML(phaseId, clock, phaseState){
   // Terminal clocks: historical due dates only — no "testify before deadline" action frame.
   if(clock.status==="completed" || clock.status==="withdrawn") return "";
   const row=(clock.phases||[]).find(p=>p.phase_id===phaseId);
-  if(!row || !row.due_date) return "";
+  if(!row) return "";
   if(row.status && row.status!=="open") return "";
+  // Fail closed: only phase-window deadlines with a known start are statutory fact.
+  // Outer-bound certified+cumulative dates must not paint as "must conclude within N days".
+  if(row.deadline_certainty!=="statutory" || row.deadline_basis!=="phase_window" || !row.due_date){
+    if(phaseState==="current" && row.start_date){
+      return `<div class="note land-statutory-deadline" data-land-statutory-phase="${escUiHtml(phaseId)}" data-land-statutory-status="in_progress" data-land-statutory-certainty="insufficient">${t("land_spine_phase_in_progress_html",{stage:escUiHtml(landPhaseLabel({label_key:row.label_key, id:phaseId})),date:fdate(row.start_date)})}</div>`;
+    }
+    return "";
+  }
+  if(row.start_date && row.due_date < row.start_date) return "";
   const stageName=landPhaseLabel({label_key:row.label_key, id:phaseId});
   const deadline=t("land_spine_statutory_deadline_html",{
     stage:escUiHtml(stageName),
@@ -925,7 +934,7 @@ function landStatutoryDeadlineHTML(phaseId, clock, phaseState){
   const withdrawn=clock.status==="withdrawn"
     ? ` ${t("land_spine_statutory_withdrawn_note")}`
     : "";
-  return `<div class="note land-statutory-deadline" data-land-statutory-phase="${escUiHtml(phaseId)}" data-land-statutory-due="${escUiHtml(row.due_date)}" data-land-statutory-status="${escUiHtml(clock.status||"open")}">${deadline}${actionHint}${withdrawn} <span class="tag renewal">${t("cadence_estimate_tag")}</span></div>`;
+  return `<div class="note land-statutory-deadline" data-land-statutory-phase="${escUiHtml(phaseId)}" data-land-statutory-due="${escUiHtml(row.due_date)}" data-land-statutory-start="${escUiHtml(row.start_date||"")}" data-land-statutory-certainty="statutory" data-land-statutory-status="${escUiHtml(clock.status||"open")}">${deadline}${actionHint}${withdrawn}</div>`;
 }
 function landApplicantConditionedHTML(stats){
   const ac=stats?.applicant_conditioned;
@@ -1008,7 +1017,10 @@ function landPipelinePositionHTML(view, record){
   const stageName=landPhaseLabel({label_key:pos.step_label_key, id:pos.step_phase_id});
   const windowDays=pos.window_days!=null?String(pos.window_days):"—";
   let clockBit="";
-  if(pos.days_left!=null&&Number.isFinite(pos.days_left)){
+  // Days-left only when the pipeline due_date is the same statutory deadline shown
+  // on the phase panel. Insufficient timing → "in progress" / window-only, never an
+  // impossible "50-day clock, 101 days left" from a cumulative outer bound.
+  if(pos.due_date && pos.days_left!=null&&Number.isFinite(pos.days_left)){
     if(pos.days_left>0){
       clockBit=t("land_pipeline_clock_days_left",{n:String(pos.window_days||""),left:String(pos.days_left)});
     }else if(pos.days_left===0){
@@ -1017,7 +1029,7 @@ function landPipelinePositionHTML(view, record){
       clockBit=t("land_pipeline_clock_overdue",{n:windowDays,over:String(Math.abs(pos.days_left))});
     }
   }else if(pos.window_days!=null){
-    clockBit=t("land_pipeline_clock_window_only",{n:windowDays});
+    clockBit=t("land_pipeline_clock_in_progress",{n:windowDays});
   }
   const sentence=t("land_pipeline_position_html",{
     step:String(pos.step_n),
@@ -1074,7 +1086,7 @@ function landPhaseSpineHTML(view, tools, record){
         summary=p.last&&p.last!==p.first
           ? t("land_spine_planned_window",{first:fdate(p.first),last:fdate(p.last)})
           : t("land_spine_planned_window_one",{date:fdate(p.first)});
-      }else if(statutoryRow?.due_date){
+      }else if(statutoryRow?.due_date && statutoryRow.deadline_certainty==="statutory"){
         summary=t("land_spine_statutory_due_summary",{date:fdate(statutoryRow.due_date)});
       }else summary=t("land_spine_phase_empty");
     }else{
@@ -1084,7 +1096,7 @@ function landPhaseSpineHTML(view, tools, record){
         p.first&&p.last?t("land_spine_aggregate_range",{first:fdate(p.first),last:fdate(p.last)}):(p.first?fdate(p.first):""),
         notes
       ].filter(Boolean);
-      if(statutoryRow?.due_date && p.state==="current"){
+      if(statutoryRow?.due_date && statutoryRow.deadline_certainty==="statutory" && p.state==="current"){
         parts.push(t("land_spine_statutory_due_summary",{date:fdate(statutoryRow.due_date)}));
       }
       summary=parts.join(" · ") || t("land_spine_phase_empty");
