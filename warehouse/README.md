@@ -561,25 +561,37 @@ edges; unmatched notice IDs are absent, so the notice page stays unchanged.
 | **WH-04** | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
 | **WH-05** | ZAP sell-facing materialization (`fetchOpenDataRow`) + Doing Business stem index (`attachDoingBusiness`) |
 | **WH-06** | ZAP BBL materialization (`fetchBbls`) + parcel cross-domain edges |
-| **Next** | City Record bulk; full Doing Business catalog pack for zero-SODA vendor attach |
+| **Next** | City Record history serve projections; keep WH-05 Doing Business on the weekly refresh→publish loop |
 
 ## WH-05: Doing Business + ZAP live fetches → warehouse materialization
 
 | Live fetch replaced | Path now |
 |---|---|
-| `attachDoingBusiness` multi-page SODA `72mk-a8z7` | Warehouse stem index first; full-catalog or all-matched skips SODA; partial fixture keeps SODA gap-fill |
+| `attachDoingBusiness` multi-page SODA `72mk-a8z7` | Committed full-catalog stem index first (`bulk_warehouse` / `bulk_soda`); live SODA only when the serve lookup is empty or partial |
 | `fetchOpenDataRow` SODA `hgx4-8ukb` | Materialization by `project_id` first; live SODA on miss |
 | Land default Active ULURP rebuild | `fetchLandDefaultProjects` prefers DuckDB when `zap_projects` is packed |
 
+Doing Business serve gate (`doingBusinessServeGateFindings`): row_count within
+±250 of publisher ~10 787, mode full-catalog, canary `CAMBA  INC` present, and
+`materialized_at` younger than 180 days. `--check` fails closed so the lookup
+cannot re-freeze as `live_fallback`. Weekly workflow
+`.github/workflows/doing-business-warehouse-lookup.yml` republishes via
+`--from-soda` when the catalog drifts.
+
 ```bash
-# Offline / CI
+# Offline / CI fixture path (does not satisfy the serve gate)
 node tools/build_doing_business_warehouse_lookup.mjs --fixture --bench
 node tools/build_zap_warehouse_lookup.mjs --fixture --bench
 
-# After capped WH-02 pack of each dataset
+# Preferred: WH-02 optional pack → committed serve twins
 warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --dataset doing-business-entities --bulk --ack-large
 node tools/build_doing_business_warehouse_lookup.mjs --bench
+node tools/build_doing_business_warehouse_lookup.mjs --check
+
+# Refresh loop without a local DuckDB catalog (build-time SODA only)
+node tools/build_doing_business_warehouse_lookup.mjs --from-soda --bench
+node tools/build_doing_business_warehouse_lookup.mjs --check
 
 warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --dataset zap-projects --bulk --ack-large
