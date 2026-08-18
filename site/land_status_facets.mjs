@@ -10,6 +10,11 @@ import {
   landRowMatchesProcedure,
   normalizeLandProcedure,
 } from "./land_procedure_facet.mjs";
+import {
+  LAND_REGULATORY_EFFECT_OPTIONS,
+  landRowMatchesRegulatoryEffect,
+  normalizeLandRegulatoryEffect,
+} from "./land_regulatory_effect.mjs";
 
 export {
   DEFAULT_LAND_PROCEDURE,
@@ -267,16 +272,19 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
   futureAction = "any",
   procedure = DEFAULT_LAND_PROCEDURE,
   family = DEFAULT_LAND_FAMILY,
+  regulatoryEffect = "any",
 } = {}) {
   const actionsByProject = landFutureActionsByProject(actionRows, { today });
   const evidenceByProject = landActionEvidenceByProject(actionRows);
   const rows = Array.isArray(projects) ? projects : [];
   const selectedProcedure = normalizeLandProcedure(procedure);
   const selectedFamily = normalizeLandFamily(family);
+  const selectedRegulatoryEffect = normalizeLandRegulatoryEffect(regulatoryEffect);
   const stageCounts = Object.fromEntries(LAND_STAGE_OPTIONS.map(({ id }) => [id, 0]));
   const futureCounts = Object.fromEntries(LAND_FUTURE_ACTION_OPTIONS.map(({ id }) => [id, 0]));
   const procedureCounts = Object.fromEntries(LAND_PROCEDURE_OPTIONS.map(({ id }) => [id, 0]));
   const familyCounts = Object.fromEntries(LAND_FAMILY_OPTIONS.map(({ id }) => [id, 0]));
+  const regulatoryEffectCounts = Object.fromEntries(LAND_REGULATORY_EFFECT_OPTIONS.map(({ id }) => [id, 0]));
   for (const row of rows) {
     const actions = actionsByProject.get(cleanLandFacetValue(row?.project_id)) || [];
     const evidence = evidenceByProject.get(cleanLandFacetValue(row?.project_id)) || [];
@@ -285,24 +293,31 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
     const matchesStage = landRowMatchesStage(effectiveRow, stage);
     const matchesFuture = landActionsMatchFutureFilter(actions, futureAction);
     const matchesFamily = landRowMatchesFamily(effectiveRow, selectedFamily);
+    const matchesRegulatoryEffect = landRowMatchesRegulatoryEffect(effectiveRow, selectedRegulatoryEffect);
     for (const option of LAND_STAGE_OPTIONS) {
-      if (matchesProcedure && matchesFamily && landRowMatchesStage(effectiveRow, option.id) && matchesFuture) {
+      if (matchesProcedure && matchesFamily && matchesRegulatoryEffect && landRowMatchesStage(effectiveRow, option.id) && matchesFuture) {
         stageCounts[option.id] += 1;
       }
     }
     for (const option of LAND_FUTURE_ACTION_OPTIONS) {
-      if (matchesProcedure && matchesFamily && matchesStage && landActionsMatchFutureFilter(actions, option.id)) {
+      if (matchesProcedure && matchesFamily && matchesRegulatoryEffect && matchesStage && landActionsMatchFutureFilter(actions, option.id)) {
         futureCounts[option.id] += 1;
       }
     }
     for (const option of LAND_PROCEDURE_OPTIONS) {
-      if (landRowMatchesProcedure(effectiveRow, option.id) && matchesFamily && matchesStage && matchesFuture) {
+      if (landRowMatchesProcedure(effectiveRow, option.id) && matchesFamily && matchesRegulatoryEffect && matchesStage && matchesFuture) {
         procedureCounts[option.id] += 1;
       }
     }
     for (const option of LAND_FAMILY_OPTIONS) {
-      if (matchesProcedure && landRowMatchesFamily(effectiveRow, option.id) && matchesStage && matchesFuture) {
+      if (matchesProcedure && landRowMatchesFamily(effectiveRow, option.id) && matchesRegulatoryEffect && matchesStage && matchesFuture) {
         familyCounts[option.id] += 1;
+      }
+    }
+    for (const option of LAND_REGULATORY_EFFECT_OPTIONS) {
+      if (matchesProcedure && matchesFamily && matchesStage && matchesFuture
+        && landRowMatchesRegulatoryEffect(effectiveRow, option.id)) {
+        regulatoryEffectCounts[option.id] += 1;
       }
     }
   }
@@ -311,6 +326,7 @@ export function landFacetOptionCounts(projects = [], actionRows = [], {
     future_action: futureCounts,
     procedure: procedureCounts,
     family: familyCounts,
+    regulatory_effect: regulatoryEffectCounts,
     actions_by_project: actionsByProject,
   };
 }

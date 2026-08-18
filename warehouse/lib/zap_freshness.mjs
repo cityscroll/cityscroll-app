@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { REPO_ROOT, WAREHOUSE_DIR } from "./catalog.mjs";
-import { ZAP_ALL_COLS, ZAP_SELL_FACING_STATUSES } from "./zap_lookup.mjs";
+import { ZAP_SOURCE_COLS, ZAP_SELL_FACING_STATUSES } from "./zap_lookup.mjs";
 
 /** Field-case land projects that must stay in the sell-facing lookup + keyword index. */
 export const LAND_ZAP_FRESHNESS_CANARIES = Object.freeze([
@@ -278,7 +278,7 @@ export function sodaSellFacingWhere(statuses = ZAP_SELL_FACING_STATUSES) {
   return `public_status in(${list})`;
 }
 
-export function sodaSellFacingSelect(cols = ZAP_ALL_COLS) {
+export function sodaSellFacingSelect(cols = ZAP_SOURCE_COLS) {
   return cols.join(",");
 }
 
@@ -286,7 +286,7 @@ export function sodaSellFacingUrl({
   dataset = ZAP_SODA_DATASET,
   limit = 1000,
   offset = 0,
-  cols = ZAP_ALL_COLS,
+  cols = ZAP_SOURCE_COLS,
 } = {}) {
   const params = new URLSearchParams({
     $select: sodaSellFacingSelect(cols),

@@ -249,6 +249,14 @@ export function compactDistrictRecord(lens, row = {}, slots = []) {
         ? `/meetings/${encodeURIComponent(meetingId)}`
         : `/#notice/${encodeURIComponent(id)}`,
   };
+  if (lens === "land") {
+    record.actions = compactText(row.actions, 160) || null;
+    record.regulatory_effect = compactText(row.regulatory_effect, 40) || "unknown";
+    record.regulatory_effect_confidence = compactText(row.regulatory_effect_confidence, 20) || "unknown";
+    if (row.regulatory_effect_basis && typeof row.regulatory_effect_basis === "object") {
+      record.regulatory_effect_basis = row.regulatory_effect_basis;
+    }
+  }
   if (lens === "meetings") {
     record.meeting_origin = normalizeMeetingOrigin(row);
     record.source_url = meetingSourceUrl(row, record.meeting_origin);

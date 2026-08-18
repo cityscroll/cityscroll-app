@@ -5,7 +5,7 @@
   "dataset_id": "hgx4-8ukb",
   "table_name": "zap_projects",
   "mode": "soda_sell_facing",
-  "materialized_at": "2026-08-18T12:06:08.839Z",
+  "materialized_at": "2026-08-18T20:15:50.276Z",
   "row_count": 238,
   "replaces_live_fetch": {
     "worker": "worker/src/zap_outcomes.mjs#fetchOpenDataRow",
@@ -32,7 +32,48 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2024-11-01T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2019K0147",
@@ -53,7 +94,48 @@
       "mih_flag": "true",
       "app_filed_date": "2021-08-17T00:00:00.000",
       "noticed_date": "2026-05-15T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7D",
+              "kind": "base_district",
+              "max_far": 5.6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 5.6,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2019K0190",
@@ -74,7 +156,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2025-08-15T00:00:00.000",
-      "certified_referred": "2026-03-02T00:00:00.000"
+      "certified_referred": "2026-03-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2019K0217",
@@ -95,7 +182,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2026-01-30T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2019K0219",
@@ -116,7 +208,12 @@
       "mih_flag": null,
       "app_filed_date": "2018-12-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019K0301",
@@ -137,7 +234,68 @@
       "mih_flag": "true",
       "app_filed_date": "2020-10-01T00:00:00.000",
       "noticed_date": "2022-05-06T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C2-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2019K0383",
@@ -158,7 +316,12 @@
       "mih_flag": "true",
       "app_filed_date": "2021-05-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2019M0059",
@@ -179,7 +342,12 @@
       "mih_flag": null,
       "app_filed_date": "2019-05-24T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2019-08-21T00:00:00.000"
+      "certified_referred": "2019-08-21T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019M0107",
@@ -200,7 +368,12 @@
       "mih_flag": null,
       "app_filed_date": "2019-07-08T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019M0206",
@@ -221,7 +394,12 @@
       "mih_flag": null,
       "app_filed_date": "2021-03-31T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2023-08-02T00:00:00.000"
+      "certified_referred": "2023-08-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019M0453",
@@ -242,7 +420,12 @@
       "mih_flag": "false",
       "app_filed_date": "2019-08-26T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2019-10-18T00:00:00.000"
+      "certified_referred": "2019-10-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019M0455",
@@ -263,7 +446,12 @@
       "mih_flag": "false",
       "app_filed_date": "2019-08-28T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2019-10-18T00:00:00.000"
+      "certified_referred": "2019-10-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019R0267",
@@ -284,7 +472,12 @@
       "mih_flag": null,
       "app_filed_date": "2020-11-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2019X0255",
@@ -305,7 +498,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020K0276",
@@ -326,7 +524,58 @@
       "mih_flag": "true",
       "app_filed_date": "2022-06-02T00:00:00.000",
       "noticed_date": "2024-03-29T00:00:00.000",
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C4-5D",
+              "kind": "base_district",
+              "max_far": 4.2,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 4.2,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2020K0370",
@@ -347,7 +596,88 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C4-3",
+              "kind": "base_district",
+              "max_far": 3.4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            },
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2020K0413",
@@ -368,7 +698,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2020M0266",
@@ -389,7 +724,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2023-10-27T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2020M0325",
@@ -410,7 +750,12 @@
       "mih_flag": "false",
       "app_filed_date": "2019-12-16T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020M0375",
@@ -431,7 +776,12 @@
       "mih_flag": "false",
       "app_filed_date": "2020-05-21T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020M0383",
@@ -452,7 +802,12 @@
       "mih_flag": "true",
       "app_filed_date": "2021-06-28T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2020M0429",
@@ -473,7 +828,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020M0474",
@@ -494,7 +854,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020M0487",
@@ -515,7 +880,12 @@
       "mih_flag": "false",
       "app_filed_date": "2020-07-09T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020Q0157",
@@ -536,7 +906,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2020Q0240",
@@ -557,7 +932,12 @@
       "mih_flag": "false",
       "app_filed_date": "2020-06-19T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020Q0353",
@@ -578,7 +958,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2024-11-01T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2020R0264",
@@ -599,7 +984,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2024-01-12T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020X0410",
@@ -620,7 +1010,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021K0187",
@@ -641,7 +1036,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021K0261",
@@ -662,7 +1062,12 @@
       "mih_flag": "false",
       "app_filed_date": "2022-08-03T00:00:00.000",
       "noticed_date": "2026-03-27T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021K0376",
@@ -683,7 +1088,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-06-18T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021K0380",
@@ -704,7 +1114,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2021K0420",
@@ -725,7 +1140,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2026-05-01T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021M0264",
@@ -746,7 +1166,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-30T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021M0357",
@@ -767,7 +1192,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021Q0168",
@@ -788,7 +1218,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2022-07-22T00:00:00.000",
-      "certified_referred": "2023-01-03T00:00:00.000"
+      "certified_referred": "2023-01-03T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021Q0439",
@@ -809,7 +1244,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-11-30T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021R0348",
@@ -830,7 +1270,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2021X0247",
@@ -851,7 +1296,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2025-10-31T00:00:00.000",
-      "certified_referred": "2026-03-02T00:00:00.000"
+      "certified_referred": "2026-03-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2022K0121",
@@ -872,7 +1322,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-05-08T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2022K0171",
@@ -893,7 +1348,12 @@
       "mih_flag": "true",
       "app_filed_date": "2024-06-14T00:00:00.000",
       "noticed_date": "2023-10-27T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_incomplete"
+      }
     },
     {
       "project_id": "2022K0252",
@@ -914,7 +1374,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2022K0302",
@@ -935,7 +1400,12 @@
       "mih_flag": "true",
       "app_filed_date": "2024-05-29T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2022K0416",
@@ -956,7 +1426,48 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-10T00:00:00.000",
       "noticed_date": "2026-06-12T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C4-4A",
+              "kind": "base_district",
+              "max_far": 4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 4,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C6-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2022K0419",
@@ -977,7 +1488,68 @@
       "mih_flag": "true",
       "app_filed_date": "2026-04-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C2-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C4-4D",
+              "kind": "base_district",
+              "max_far": 3.4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            },
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 3.4,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2022K0430",
@@ -998,7 +1570,12 @@
       "mih_flag": "true",
       "app_filed_date": "2024-01-08T00:00:00.000",
       "noticed_date": "2026-02-13T00:00:00.000",
-      "certified_referred": "2026-03-16T00:00:00.000"
+      "certified_referred": "2026-03-16T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2022K0441",
@@ -1019,7 +1596,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-06-29T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2023-08-16T00:00:00.000"
+      "certified_referred": "2023-08-16T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2022M0258",
@@ -1040,7 +1622,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-07-26T00:00:00.000",
       "noticed_date": "2023-07-21T00:00:00.000",
-      "certified_referred": "2023-08-21T00:00:00.000"
+      "certified_referred": "2023-08-21T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2022Q0160",
@@ -1061,7 +1648,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2022Q0196",
@@ -1082,7 +1674,48 @@
       "mih_flag": "true",
       "app_filed_date": "2022-11-21T00:00:00.000",
       "noticed_date": "2023-10-27T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2022Q0214",
@@ -1103,7 +1736,12 @@
       "mih_flag": "true",
       "app_filed_date": "2025-04-24T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2022Q0248",
@@ -1124,7 +1762,68 @@
       "mih_flag": "true",
       "app_filed_date": "2024-07-09T00:00:00.000",
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R8X",
+              "kind": "base_district",
+              "max_far": 7.2,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 7.2,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2022Q0449",
@@ -1145,7 +1844,68 @@
       "mih_flag": "true",
       "app_filed_date": "2025-10-22T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": "2026-01-21T00:00:00.000"
+      "certified_referred": "2026-01-21T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C1-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2022R0134",
@@ -1166,7 +1926,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2022X0150",
@@ -1187,7 +1952,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-05-10T00:00:00.000",
       "noticed_date": "2026-05-29T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2022X0392",
@@ -1208,7 +1978,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2022X0393",
@@ -1229,7 +2004,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-26T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": "2026-06-15T00:00:00.000"
+      "certified_referred": "2026-06-15T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2022Y0395",
@@ -1250,7 +2030,12 @@
       "mih_flag": "false",
       "app_filed_date": "2022-09-30T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023K0126",
@@ -1271,7 +2056,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-04-19T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2024-06-05T00:00:00.000"
+      "certified_referred": "2024-06-05T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023K0148",
@@ -1292,7 +2082,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-02-06T00:00:00.000",
       "noticed_date": "2026-02-13T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_incomplete"
+      }
     },
     {
       "project_id": "2023K0183",
@@ -1313,7 +2108,78 @@
       "mih_flag": "true",
       "app_filed_date": "2025-04-04T00:00:00.000",
       "noticed_date": "2025-10-31T00:00:00.000",
-      "certified_referred": "2026-01-21T00:00:00.000"
+      "certified_referred": "2026-01-21T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "R7-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023K0203",
@@ -1334,7 +2200,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023K0231",
@@ -1355,7 +2226,58 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-20T00:00:00.000",
       "noticed_date": "2026-03-13T00:00:00.000",
-      "certified_referred": "2026-06-15T00:00:00.000"
+      "certified_referred": "2026-06-15T00:00:00.000",
+      "regulatory_effect": "no_density_change",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_overlay_grammar_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023K0248",
@@ -1376,7 +2298,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-06-16T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2023-10-11T00:00:00.000"
+      "certified_referred": "2023-10-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023K0276",
@@ -1397,7 +2324,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-07-05T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2023-10-11T00:00:00.000"
+      "certified_referred": "2023-10-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023K0357",
@@ -1418,7 +2350,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-12-17T00:00:00.000",
       "noticed_date": "2026-04-10T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023K0368",
@@ -1439,7 +2376,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-08-01T00:00:00.000",
       "noticed_date": "2026-06-12T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023K0398",
@@ -1460,7 +2402,12 @@
       "mih_flag": "true",
       "app_filed_date": "2024-05-21T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023K0400",
@@ -1481,7 +2428,68 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6-1",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "R7-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023M0116",
@@ -1502,7 +2510,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-07-07T00:00:00.000",
       "noticed_date": "2026-01-16T00:00:00.000",
-      "certified_referred": "2026-03-30T00:00:00.000"
+      "certified_referred": "2026-03-30T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023M0117",
@@ -1523,7 +2536,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023M0200",
@@ -1544,7 +2562,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-10-25T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023M0213",
@@ -1565,7 +2588,12 @@
       "mih_flag": "true",
       "app_filed_date": "2025-08-14T00:00:00.000",
       "noticed_date": "2025-09-05T00:00:00.000",
-      "certified_referred": "2025-12-15T00:00:00.000"
+      "certified_referred": "2025-12-15T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023M0271",
@@ -1586,7 +2614,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-02-26T00:00:00.000",
       "noticed_date": "2024-09-13T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023M0309",
@@ -1607,7 +2640,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-05-24T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2023-05-17T00:00:00.000"
+      "certified_referred": "2023-05-17T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023M0316",
@@ -1628,7 +2666,12 @@
       "mih_flag": "true",
       "app_filed_date": "2026-04-01T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023M0399",
@@ -1649,7 +2692,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-12-06T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2024-01-17T00:00:00.000"
+      "certified_referred": "2024-01-17T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023Q0125",
@@ -1670,7 +2718,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-11-22T00:00:00.000",
       "noticed_date": "2025-12-19T00:00:00.000",
-      "certified_referred": "2026-03-02T00:00:00.000"
+      "certified_referred": "2026-03-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023Q0177",
@@ -1691,7 +2744,12 @@
       "mih_flag": "true",
       "app_filed_date": "2024-05-23T00:00:00.000",
       "noticed_date": "2026-01-30T00:00:00.000",
-      "certified_referred": "2026-06-01T00:00:00.000"
+      "certified_referred": "2026-06-01T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023Q0211",
@@ -1712,7 +2770,68 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-11T00:00:00.000",
       "noticed_date": "2026-05-15T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023Q0242",
@@ -1733,7 +2852,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-03T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023Q0303",
@@ -1754,7 +2878,58 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R3-2",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023Q0328",
@@ -1775,7 +2950,12 @@
       "mih_flag": "true",
       "app_filed_date": "2025-04-01T00:00:00.000",
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023Q0351",
@@ -1796,7 +2976,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-16T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023Q0364",
@@ -1817,7 +3002,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023Q0424",
@@ -1838,7 +3028,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-15T00:00:00.000",
       "noticed_date": "2026-03-27T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023Q0450",
@@ -1859,7 +3054,98 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-20T00:00:00.000",
       "noticed_date": "2026-05-13T00:00:00.000",
-      "certified_referred": "2026-06-01T00:00:00.000"
+      "certified_referred": "2026-06-01T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R9X",
+              "kind": "base_district",
+              "max_far": 10.8,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R4B",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 10.8,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023R0111",
@@ -1880,7 +3166,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-18T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023R0153",
@@ -1901,7 +3192,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-01-09T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2025-11-12T00:00:00.000"
+      "certified_referred": "2025-11-12T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023R0199",
@@ -1922,7 +3218,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-02-26T00:00:00.000",
       "noticed_date": "2026-04-10T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023R0281",
@@ -1943,7 +3244,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-18T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023R0329",
@@ -1964,7 +3270,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-03-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2023-07-19T00:00:00.000"
+      "certified_referred": "2023-07-19T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023R0413",
@@ -1985,7 +3296,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023X0140",
@@ -2006,7 +3322,12 @@
       "mih_flag": "true",
       "app_filed_date": "2026-02-23T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023X0146",
@@ -2027,7 +3348,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-12-28T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023X0149",
@@ -2048,7 +3374,68 @@
       "mih_flag": "false",
       "app_filed_date": "2023-12-22T00:00:00.000",
       "noticed_date": "2026-02-27T00:00:00.000",
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R8",
+              "kind": "base_district",
+              "max_far": 8.64,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 8.64,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023X0347",
@@ -2069,7 +3456,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-09T00:00:00.000",
       "noticed_date": "2026-05-29T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2023X0393",
@@ -2090,7 +3482,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-05T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0196",
@@ -2111,7 +3508,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-27T00:00:00.000",
       "noticed_date": "2026-01-30T00:00:00.000",
-      "certified_referred": "2026-03-16T00:00:00.000"
+      "certified_referred": "2026-03-16T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0214",
@@ -2132,7 +3534,12 @@
       "mih_flag": "true",
       "app_filed_date": "2026-05-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0215",
@@ -2153,7 +3560,12 @@
       "mih_flag": "true",
       "app_filed_date": "2025-04-28T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0233",
@@ -2174,7 +3586,48 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-11T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0240",
@@ -2195,7 +3648,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-17T00:00:00.000",
       "noticed_date": "2026-02-27T00:00:00.000",
-      "certified_referred": "2026-04-13T00:00:00.000"
+      "certified_referred": "2026-04-13T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2024K0274",
@@ -2216,7 +3674,48 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-24T00:00:00.000",
       "noticed_date": "2026-05-15T00:00:00.000",
-      "certified_referred": "2026-06-15T00:00:00.000"
+      "certified_referred": "2026-06-15T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4B",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0286",
@@ -2237,7 +3736,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-23T00:00:00.000",
       "noticed_date": "2026-01-30T00:00:00.000",
-      "certified_referred": "2026-03-02T00:00:00.000"
+      "certified_referred": "2026-03-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2024K0294",
@@ -2258,7 +3762,68 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7D",
+              "kind": "base_district",
+              "max_far": 5.6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "R8X",
+              "kind": "base_district",
+              "max_far": 7.2,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 7.2,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0299",
@@ -2279,7 +3844,58 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C8-2",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C4-4",
+              "kind": "base_district",
+              "max_far": 3.4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            },
+            {
+              "id": "C4-4D",
+              "kind": "base_district",
+              "max_far": 3.4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 3.4,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0358",
@@ -2300,7 +3916,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-18T00:00:00.000",
       "noticed_date": "2025-10-03T00:00:00.000",
-      "certified_referred": "2025-12-15T00:00:00.000"
+      "certified_referred": "2025-12-15T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0369",
@@ -2321,7 +3942,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0421",
@@ -2342,7 +3968,12 @@
       "mih_flag": "true",
       "app_filed_date": "2025-12-08T00:00:00.000",
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024K0437",
@@ -2363,7 +3994,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-02-09T00:00:00.000"
+      "certified_referred": "2026-02-09T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024K0444",
@@ -2384,7 +4020,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024M0104",
@@ -2405,7 +4046,12 @@
       "mih_flag": "false",
       "app_filed_date": "2023-09-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0120",
@@ -2426,7 +4072,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0193",
@@ -2447,7 +4098,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-12-16T00:00:00.000",
       "noticed_date": "2026-02-27T00:00:00.000",
-      "certified_referred": "2026-06-01T00:00:00.000"
+      "certified_referred": "2026-06-01T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0194",
@@ -2468,7 +4124,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-25T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0223",
@@ -2489,7 +4150,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024M0243",
@@ -2510,7 +4176,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-02-11T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0244",
@@ -2531,7 +4202,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-20T00:00:00.000",
       "noticed_date": "2025-09-05T00:00:00.000",
-      "certified_referred": "2025-12-15T00:00:00.000"
+      "certified_referred": "2025-12-15T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2024M0267",
@@ -2552,7 +4228,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-21T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0278",
@@ -2573,7 +4254,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-11T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024M0372",
@@ -2594,7 +4280,12 @@
       "mih_flag": "false",
       "app_filed_date": "2024-06-07T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024Q0113",
@@ -2615,7 +4306,68 @@
       "mih_flag": "true",
       "app_filed_date": "2025-03-25T00:00:00.000",
       "noticed_date": "2025-09-19T00:00:00.000",
-      "certified_referred": "2026-01-21T00:00:00.000"
+      "certified_referred": "2026-01-21T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0164",
@@ -2636,7 +4388,58 @@
       "mih_flag": "true",
       "app_filed_date": "2025-05-08T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": "2026-01-05T00:00:00.000"
+      "certified_referred": "2026-01-05T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R3-2",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0189",
@@ -2657,7 +4460,78 @@
       "mih_flag": "false",
       "app_filed_date": "2025-03-28T00:00:00.000",
       "noticed_date": "2026-05-15T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R3-2",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C2-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6-1",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0219",
@@ -2678,7 +4552,48 @@
       "mih_flag": "false",
       "app_filed_date": "2025-06-23T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": "2026-04-27T00:00:00.000"
+      "certified_referred": "2026-04-27T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0292",
@@ -2699,7 +4614,48 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-20T00:00:00.000",
       "noticed_date": "2026-03-27T00:00:00.000",
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R1-2A",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0297",
@@ -2720,7 +4676,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024Q0324",
@@ -2741,7 +4702,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-22T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2024Q0325",
@@ -2762,7 +4728,48 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-23T00:00:00.000",
       "noticed_date": "2026-03-13T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4-1",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0356",
@@ -2783,7 +4790,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-23T00:00:00.000",
       "noticed_date": "2026-04-10T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024R0137",
@@ -2804,7 +4816,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-30T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024R0289",
@@ -2825,7 +4842,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-02-21T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024R0300",
@@ -2846,7 +4868,68 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-14T00:00:00.000",
       "noticed_date": "2025-11-14T00:00:00.000",
-      "certified_referred": "2026-02-18T00:00:00.000"
+      "certified_referred": "2026-02-18T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024R0332",
@@ -2867,7 +4950,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-20T00:00:00.000",
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024R0425",
@@ -2888,7 +4976,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-12T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024X0132",
@@ -2909,7 +5002,58 @@
       "mih_flag": "false",
       "app_filed_date": "2025-04-01T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": "2026-01-21T00:00:00.000"
+      "certified_referred": "2026-01-21T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024X0210",
@@ -2930,7 +5074,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-22T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025K0150",
@@ -2951,7 +5100,12 @@
       "mih_flag": "true",
       "app_filed_date": "2025-12-05T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025K0154",
@@ -2972,7 +5126,68 @@
       "mih_flag": "true",
       "app_filed_date": "2025-09-11T00:00:00.000",
       "noticed_date": "2025-12-19T00:00:00.000",
-      "certified_referred": "2026-01-21T00:00:00.000"
+      "certified_referred": "2026-01-21T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025K0226",
@@ -2993,7 +5208,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0229",
@@ -3014,7 +5234,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025K0232",
@@ -3035,7 +5260,12 @@
       "mih_flag": "true",
       "app_filed_date": "2026-03-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025K0250",
@@ -3056,7 +5286,58 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025K0284",
@@ -3077,7 +5358,78 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-22T00:00:00.000",
       "noticed_date": "2026-02-13T00:00:00.000",
-      "certified_referred": "2026-03-16T00:00:00.000"
+      "certified_referred": "2026-03-16T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025K0287",
@@ -3098,7 +5450,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-06-17T00:00:00.000",
       "noticed_date": "2025-10-03T00:00:00.000",
-      "certified_referred": "2025-12-15T00:00:00.000"
+      "certified_referred": "2025-12-15T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0293",
@@ -3119,7 +5476,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-02-28T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2025-03-26T00:00:00.000"
+      "certified_referred": "2025-03-26T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0305",
@@ -3140,7 +5502,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-06-24T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0306",
@@ -3161,7 +5528,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-25T00:00:00.000",
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025K0318",
@@ -3182,7 +5554,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2025-10-03T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0374",
@@ -3203,7 +5580,98 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-15T00:00:00.000",
       "noticed_date": "2026-06-12T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C8-2",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            },
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C4-4D",
+              "kind": "base_district",
+              "max_far": 3.4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            },
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025K0419",
@@ -3224,7 +5692,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-11T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-04-06T00:00:00.000"
+      "certified_referred": "2026-04-06T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0470",
@@ -3245,7 +5718,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0497",
@@ -3266,7 +5744,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-30T00:00:00.000",
       "noticed_date": "2026-04-10T00:00:00.000",
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0115",
@@ -3287,7 +5770,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-10T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0252",
@@ -3308,7 +5796,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-25T00:00:00.000",
       "noticed_date": "2025-10-31T00:00:00.000",
-      "certified_referred": "2026-02-02T00:00:00.000"
+      "certified_referred": "2026-02-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0265",
@@ -3329,7 +5822,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-09-22T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0329",
@@ -3350,7 +5848,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-16T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0332",
@@ -3371,7 +5874,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0338",
@@ -3392,7 +5900,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-03T00:00:00.000",
       "noticed_date": "2026-03-27T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0360",
@@ -3413,7 +5926,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-27T00:00:00.000",
       "noticed_date": "2026-06-12T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025M0395",
@@ -3434,7 +5952,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-09T00:00:00.000",
       "noticed_date": "2026-06-12T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0441",
@@ -3455,7 +5978,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-08T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0464",
@@ -3476,7 +6004,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-06-09T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0473",
@@ -3497,7 +6030,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-08T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025Q0124",
@@ -3518,7 +6056,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025Q0142",
@@ -3539,7 +6082,58 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-05T00:00:00.000",
       "noticed_date": "2025-12-05T00:00:00.000",
-      "certified_referred": "2026-02-02T00:00:00.000"
+      "certified_referred": "2026-02-02T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0155",
@@ -3560,7 +6154,78 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-25T00:00:00.000",
       "noticed_date": "2026-01-16T00:00:00.000",
-      "certified_referred": "2026-03-02T00:00:00.000"
+      "certified_referred": "2026-03-02T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R2",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0247",
@@ -3581,7 +6246,58 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-25T00:00:00.000",
       "noticed_date": "2026-03-27T00:00:00.000",
-      "certified_referred": "2026-04-27T00:00:00.000"
+      "certified_referred": "2026-04-27T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R1-2A",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7D",
+              "kind": "base_district",
+              "max_far": 5.6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0304",
@@ -3602,7 +6318,78 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-19T00:00:00.000",
       "noticed_date": "2026-05-15T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R8A",
+              "kind": "base_district",
+              "max_far": 7.2,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 7.2,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0314",
@@ -3623,7 +6410,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": "2026-02-10T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025Q0316",
@@ -3644,7 +6436,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-29T00:00:00.000",
       "noticed_date": "2025-08-15T00:00:00.000",
-      "certified_referred": "2026-02-02T00:00:00.000"
+      "certified_referred": "2026-02-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025Q0331",
@@ -3665,7 +6462,78 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-05T00:00:00.000",
       "noticed_date": "2026-05-15T00:00:00.000",
-      "certified_referred": "2026-06-15T00:00:00.000"
+      "certified_referred": "2026-06-15T00:00:00.000",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0335",
@@ -3686,7 +6554,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-04T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025Q0445",
@@ -3707,7 +6580,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-15T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-01-26T00:00:00.000"
+      "certified_referred": "2026-01-26T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0137",
@@ -3728,7 +6606,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-05T00:00:00.000",
       "noticed_date": "2025-12-19T00:00:00.000",
-      "certified_referred": "2026-03-02T00:00:00.000"
+      "certified_referred": "2026-03-02T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0140",
@@ -3749,7 +6632,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-12-12T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0222",
@@ -3770,7 +6658,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-19T00:00:00.000",
       "noticed_date": "2026-05-01T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0277",
@@ -3791,7 +6684,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-05T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0285",
@@ -3812,7 +6710,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-30T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-04-20T00:00:00.000"
+      "certified_referred": "2026-04-20T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0309",
@@ -3833,7 +6736,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-19T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0312",
@@ -3854,7 +6762,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-08-21T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0398",
@@ -3875,7 +6788,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-07T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025X0116",
@@ -3896,7 +6814,78 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R8A",
+              "kind": "base_district",
+              "max_far": 7.2,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 7.2,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025X0143",
@@ -3917,7 +6906,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2025X0283",
@@ -3938,7 +6932,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-24T00:00:00.000",
       "noticed_date": "2025-11-14T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2025X0385",
@@ -3959,7 +6958,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-30T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025Y0279",
@@ -3980,7 +6984,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026K0123",
@@ -4001,7 +7010,58 @@
       "mih_flag": "false",
       "app_filed_date": "2026-07-02T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C8-2",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R9A",
+              "kind": "base_district",
+              "max_far": 9.02,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 9.02,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2026K0129",
@@ -4022,7 +7082,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-21T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026K0233",
@@ -4043,7 +7108,48 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": "2026-06-26T00:00:00.000",
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C6-12",
+              "kind": "base_district",
+              "max_far": 15,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 15,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2026K0443",
@@ -4064,7 +7170,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0120",
@@ -4085,7 +7196,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-06T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0136",
@@ -4106,7 +7222,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-08T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0164",
@@ -4127,7 +7248,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-13T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0206",
@@ -4148,7 +7274,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0211",
@@ -4169,7 +7300,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-10-06T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0247",
@@ -4190,7 +7326,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-31T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-04-20T00:00:00.000"
+      "certified_referred": "2026-04-20T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0275",
@@ -4211,7 +7352,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-12T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0366",
@@ -4232,7 +7378,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-03T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0432",
@@ -4253,7 +7404,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-26T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0444",
@@ -4274,7 +7430,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-29T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026M0445",
@@ -4295,7 +7456,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-29T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026Q0128",
@@ -4316,7 +7482,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026Q0210",
@@ -4337,7 +7508,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-12-31T00:00:00.000",
       "noticed_date": "2026-01-16T00:00:00.000",
-      "certified_referred": "2026-02-18T00:00:00.000"
+      "certified_referred": "2026-02-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026Q0320",
@@ -4358,7 +7534,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-07T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0127",
@@ -4379,7 +7560,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-16T00:00:00.000",
       "noticed_date": "2026-04-10T00:00:00.000",
-      "certified_referred": "2026-05-11T00:00:00.000"
+      "certified_referred": "2026-05-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0137",
@@ -4400,7 +7586,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-10T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0142",
@@ -4421,7 +7612,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-15T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-04T00:00:00.000"
+      "certified_referred": "2026-05-04T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0145",
@@ -4442,7 +7638,12 @@
       "mih_flag": "false",
       "app_filed_date": "2025-11-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0166",
@@ -4463,7 +7664,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-03-10T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0186",
@@ -4484,7 +7690,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-21T00:00:00.000",
       "noticed_date": "2026-01-02T00:00:00.000",
-      "certified_referred": "2026-03-16T00:00:00.000"
+      "certified_referred": "2026-03-16T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0189",
@@ -4505,7 +7716,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0195",
@@ -4526,7 +7742,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-27T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0196",
@@ -4547,7 +7768,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-10T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0319",
@@ -4568,7 +7794,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-18T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-06-01T00:00:00.000"
+      "certified_referred": "2026-06-01T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0327",
@@ -4589,7 +7820,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-10T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026X0274",
@@ -4610,7 +7846,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-01-13T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-05-18T00:00:00.000"
+      "certified_referred": "2026-05-18T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026X0282",
@@ -4631,7 +7872,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-06-18T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026X0354",
@@ -4652,7 +7898,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-05-05T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026X0362",
@@ -4673,7 +7924,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-02-20T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026X0464",
@@ -4694,7 +7950,12 @@
       "mih_flag": "false",
       "app_filed_date": "2026-04-28T00:00:00.000",
       "noticed_date": null,
-      "certified_referred": "2026-07-13T00:00:00.000"
+      "certified_referred": "2026-07-13T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026Y0360",
@@ -4715,7 +7976,12 @@
       "mih_flag": "false",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2009M0029",
@@ -4736,7 +8002,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": "2008-08-11T00:00:00.000"
+      "certified_referred": "2008-08-11T00:00:00.000",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2012Q0076",
@@ -4757,7 +8028,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2012Q0110",
@@ -4778,7 +8054,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2012R0043",
@@ -4799,7 +8080,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "P2014M0309",
@@ -4820,7 +8106,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2014R0345",
@@ -4841,7 +8132,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2015M0247",
@@ -4862,7 +8158,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2016K0287",
@@ -4883,7 +8184,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2016M0148",
@@ -4904,7 +8210,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2016Q0288",
@@ -4925,7 +8236,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2017Q0152",
@@ -4946,7 +8262,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2017X0149",
@@ -4967,7 +8288,12 @@
       "mih_flag": "true",
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_incomplete"
+      }
     },
     {
       "project_id": "P2018M0168",
@@ -4988,7 +8314,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2018X0328",
@@ -5009,7 +8340,12 @@
       "mih_flag": null,
       "app_filed_date": null,
       "noticed_date": null,
-      "certified_referred": null
+      "certified_referred": null,
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     }
   ]
 }
