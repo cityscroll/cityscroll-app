@@ -278,8 +278,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   through `PRODUCTION_COLLECTION_FAMILIES` in `worker/src/search.mjs`; add each materialized family
   there rather than hand-building another coverage row. `tools/build_keyword_search_index.mjs`
   owns the matching family artifact. Domain presentation lanes may compose provider results after
-  federation, but machine coverage stays collection-specific. Worker-route proof for the first
-  registration (People) is in `worker/test/search.test.mjs`.
+  federation (People into People + organizations; Vendors into Contracts), but machine coverage
+  stays collection-specific. Vendor indexing is over currently eligible roots only; tentative
+  exclusions (for example Extell without a strong source observation) stay in
+  `build_receipt.excluded_vendor_roots` and must not make the Vendors lens report partial.
+  Worker-route proof for People and Vendors is in `worker/test/search.test.mjs`.
 - **Semantic topic-search consumer:** `site/semantic_topic_search.mjs` is the fail-closed adapter
   for `cityscroll.semantic_retrieval.candidate_response.v1`. It verifies the sr1 corpus and sr2
   passage receipts, rejects public scores and unsafe evidence, retains the three source families

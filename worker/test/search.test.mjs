@@ -233,9 +233,17 @@ test("a missing notice mirror leaves static family lanes independently usable", 
   assert.equal(response.status, 200);
   const body = await response.json();
   const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
-  assert.equal(lanes.contracts.status, "unknown");
-  assert.equal(lanes.contracts.count, null);
+  // Rules still need the notice mirror. Contracts may publish Vendor collection
+  // hits without it; People/agency static families stay independently usable.
   assert.equal(lanes.rules.status, "unknown");
+  assert.equal(lanes.rules.count, null);
+  assert.equal(body.coverage.by_lens.notices.state, "provider_unavailable");
+  if (lanes.contracts.status === "matched") {
+    assert.ok(lanes.contracts.cards.some((card) => card.object_type === "vendor"));
+  } else {
+    assert.equal(lanes.contracts.status, "unknown");
+    assert.equal(lanes.contracts.count, null);
+  }
   assert.equal(lanes["people-organizations"].status, "matched");
   assert.ok(lanes["people-organizations"].cards.some((card) => card.object_type === "agency"));
 });
@@ -265,6 +273,38 @@ test("People uses its complete production provider for worker recall and coverag
   assert.match(
     renderUniversalSearchCoverageHtml(body.coverage),
     /data-coverage-lens="people" data-coverage-state="matched"><span>People<\/span><strong>1 match · indexed<\/strong>/,
+  );
+});
+
+test("Vendors uses its complete production provider for worker recall and coverage", async () => {
+  const response = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=Accenture"),
+    {},
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.ok(body.results.some((result) => (
+    result.object_ref === "vendor:stem:ACCENTURE"
+    && result.object_type === "vendor"
+    && result.canonical_href === "/vendors/ACCENTURE/"
+  )));
+  assert.deepEqual({
+    participated: body.coverage.by_lens.vendors.participated,
+    state: body.coverage.by_lens.vendors.state,
+    indexed_count: body.coverage.by_lens.vendors.indexed_count,
+  }, {
+    participated: true,
+    state: "matched",
+    indexed_count: 132,
+  });
+
+  const vendorsCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
+    .find((lens) => lens.lens === "vendors");
+  assert.equal(vendorsCoverage?.state_label, "indexed");
+  assert.match(
+    renderUniversalSearchCoverageHtml(body.coverage),
+    /data-coverage-lens="vendors" data-coverage-state="matched"><span>Vendors<\/span><strong>1 match · indexed<\/strong>/,
   );
 });
 
