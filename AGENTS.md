@@ -370,8 +370,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - **SearchIntent wrap projector:** `site/search_intent.mjs` is the read-only
   `cityscroll.search_intent.v1` projection over `scopeFromRouteHash` /
   `scopeFromLensState`, `resolveKeywordQuery`, and NL `sanitize`. It does not
-  change those compilers or wire `/search` / `/nl`. Focused proof:
-  `test/search_intent_projector.test.mjs`.
+  change those compilers. `/nl` emits the projection as `search_intent` beside
+  its byte-compatible `filter`; `/search`, retrieval, and the Browse filter
+  consumer remain unchanged. Focused proof: `test/search_intent_projector.test.mjs`
+  and `worker/test/nl.test.mjs`.
 - **Six-family keyword search:** `/search` returns `cityscroll.keyword_search_response.v1`, whose
   Contracts, People + organizations, Land, Rules, Meetings, and Exams lanes keep independent
   status, count, source, and as-of receipts. `site/keyword_matcher.mjs` is the literal-resolution

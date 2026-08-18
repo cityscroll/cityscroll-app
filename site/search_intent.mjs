@@ -3,7 +3,8 @@
  *
  * Emits one frozen `cityscroll.search_intent.v1` by reading the three existing
  * compilers: scope-v0, resolveKeywordQuery, and NL sanitize. It does not change
- * those compilers and is not wired into /search or /nl.
+ * those compilers. `/nl` emits this projection beside its existing filter;
+ * `/search` and retrieval remain unchanged.
  *
  * `domains[]` keep compiler-native lens tokens (money, land, meetings, …).
  * Typed `entity_refs[]` are copied when a compiler already produced them;
