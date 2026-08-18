@@ -1,0 +1,78 @@
+{
+  "1000730008": {
+    "status": 200,
+    "parcels_coverage": {
+      "lens": "parcels",
+      "participated": true,
+      "state": "matched",
+      "reason": null,
+      "matched_count": 5,
+      "candidate_count": 5,
+      "invalid_candidate_count": 0,
+      "indexed_count": 320,
+      "as_of": "2026-08-06T00:05:16.576Z",
+      "source": "City property parcels by exact BBL",
+      "method": "bounded_keyword_family_v1"
+    },
+    "parcel_result_count": 5,
+    "parcel_object_refs": [
+      "bbl:1000730008",
+      "bbl:1000740001",
+      "bbl:1000740020",
+      "bbl:1000950101",
+      "bbl:1000960001"
+    ],
+    "canonical_hrefs": [
+      "/parcels/1000730008/",
+      "/parcels/1000740001/",
+      "/parcels/1000740020/",
+      "/parcels/1000950101/",
+      "/parcels/1000960001/"
+    ],
+    "coverage_view": {
+      "lens": "parcels",
+      "label": "Properties",
+      "state": "matched",
+      "state_label": "indexed",
+      "matched_count": 5,
+      "indexed_count": 320,
+      "as_of": "2026-08-06",
+      "copy": "5 matches · indexed"
+    },
+    "coverage_html_snippet": "data-coverage-lens=\"parcels\" data-coverage-state=\"matched\"><span>Properties</span><strong>5 matches · indexed</strong>"
+  },
+  "PIER-16 SOUTH STREET": {
+    "status": 200,
+    "parcels_coverage": {
+      "lens": "parcels",
+      "participated": true,
+      "state": "matched",
+      "reason": null,
+      "matched_count": 1,
+      "candidate_count": 1,
+      "invalid_candidate_count": 0,
+      "indexed_count": 320,
+      "as_of": "2026-08-06T00:05:16.576Z",
+      "source": "City property parcels by exact BBL",
+      "method": "bounded_keyword_family_v1"
+    },
+    "parcel_result_count": 1,
+    "parcel_object_refs": [
+      "bbl:1000730008"
+    ],
+    "canonical_hrefs": [
+      "/parcels/1000730008/"
+    ],
+    "coverage_view": {
+      "lens": "parcels",
+      "label": "Properties",
+      "state": "matched",
+      "state_label": "indexed",
+      "matched_count": 1,
+      "indexed_count": 320,
+      "as_of": "2026-08-06",
+      "copy": "1 match · indexed"
+    },
+    "coverage_html_snippet": "data-coverage-lens=\"parcels\" data-coverage-state=\"matched\"><span>Properties</span><strong>1 match · indexed</strong>"
+  }
+}
