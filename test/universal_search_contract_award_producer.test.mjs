@@ -3,6 +3,10 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  matchKeywordDocument,
+  resolveKeywordQuery,
+} from "../site/keyword_matcher.mjs";
+import {
   buildContractAwardSearchDocuments,
   projectContractAwardSearchDocument,
   searchContractAwardDocuments,
@@ -91,4 +95,28 @@ test("the committed complete award materialization makes mosquito findable", () 
   const generic = searchContractAwardDocuments(lookup, "contract award");
   assert.equal(generic.documents.length, 40);
   assert.ok(generic.documents.every((document) => document.domain === "contracts"));
+});
+
+test("rat does not retrieve infix award titles and keeps whole-token evidence", () => {
+  const lookup = JSON.parse(readFileSync(
+    new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url),
+    "utf8",
+  ));
+  const resolved = resolveKeywordQuery("rat");
+  const result = searchContractAwardDocuments(lookup, "rat");
+  assert.ok(result.documents.length >= 1, "expected whole-token rat awards");
+  assert.ok(result.documents.length < 20, `infix rat should not flood recall, got ${result.documents.length}`);
+  assert.equal(result.documents.some((document) => (
+    /integrated visiting/i.test(document.title) || /indirect rate/i.test(document.title)
+  )), false);
+  for (const document of result.documents) {
+    const evidence = matchKeywordDocument(document, resolved);
+    assert.ok(evidence, document.title);
+    assert.equal(evidence.matched_normalized_term, "rat");
+    assert.match(
+      evidence.snippet.text.slice(evidence.snippet.mark_start, evidence.snippet.mark_end),
+      /^rats?$/i,
+    );
+  }
+  assert.ok(result.documents.some((document) => /\brat\b/i.test(document.title)));
 });
