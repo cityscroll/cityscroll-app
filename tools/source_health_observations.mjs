@@ -50,6 +50,16 @@ function stableText(value) {
   return JSON.stringify(stableValue(value));
 }
 
+export function redactCredentialValues(value) {
+  if (typeof value !== "string") return value;
+  return value
+    .replace(/(authorization\s*:\s*(?:bearer|basic)\s+)[^\s,;]+/gi, "$1[REDACTED]")
+    .replace(/(^|[?&\s;])((?:api[_-]?key|access[_-]?token|auth[_-]?token|password|secret|token|s)\s*=\s*)[^&\s;]+/gi, "$1$2[REDACTED]")
+    .replace(/(["'](?:api[_-]?key|access[_-]?token|auth[_-]?token|password|secret|token)["']\s*:\s*["'])[^"']+/gi, "$1[REDACTED]")
+    .replace(/\b(?:github_pat_[A-Za-z0-9_]+|gh[opurs]_[A-Za-z0-9]+|sk-[A-Za-z0-9_-]{16,})\b/g, "[REDACTED]")
+    .replace(/(https?:\/\/)[^\s/@:]+:[^\s/@]+@/gi, "$1[REDACTED]@");
+}
+
 function fingerprint(contract) {
   const expectation = {
     id: contract.id,
@@ -189,6 +199,7 @@ function baseObservation(contract) {
       max_age_days: null,
     },
     evidence: [],
+    runs: [],
   };
 }
 
@@ -205,6 +216,31 @@ function applyAcquisition(target, input, kind) {
     }
   }
   target.evidence.push(evidenceItem(kind, input.path, at, input.status || "succeeded"));
+  target.runs.push({
+    adapter: input.adapter || kind,
+    run_id: input.run_id || null,
+    at,
+    status: input.status || "succeeded",
+    receipt_ref: input.path || null,
+    exact_error: input.exact_error ? redactCredentialValues(input.exact_error) : null,
+  });
+}
+
+function sortedRuns(items) {
+  const seen = new Set();
+  return items
+    .sort((left, right) => (
+      Date.parse(right.at) - Date.parse(left.at)
+      || String(left.adapter).localeCompare(String(right.adapter))
+      || String(left.run_id).localeCompare(String(right.run_id))
+      || String(left.receipt_ref).localeCompare(String(right.receipt_ref))
+    ))
+    .filter((item) => {
+      const key = stableText(item);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 }
 
 function applyServing(target, input) {
@@ -292,14 +328,17 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
       normalized.serving.fallback_valid = true;
     }
     normalized.evidence = sortedEvidence(normalized.evidence);
+    normalized.runs = sortedRuns(normalized.runs);
     const health = evaluateSourceHealth(contract, normalized, { now: asOf });
-    return {
+    const row = {
       source_id: contract.id,
       contract_fingerprint: fingerprint(contract),
       health,
       relationship_coverage: coverage.get(contract.id) || normalizeRelationshipCoverage(),
       evidence: normalized.evidence,
     };
+    if (normalized.runs.length) row.operator = { runs: normalized.runs };
+    return row;
   });
 
   const projection = {
@@ -334,6 +373,11 @@ function warehouseReceipts(root) {
         publisher_clock_basis: publisherDate(payload) ? "warehouse_source_summary" : null,
         status: failed ? "failed" : "succeeded",
         path: relative(root, path),
+        adapter: "warehouse-acquisition-receipt",
+        run_id: payload?.run_id || payload?.receipt_id || null,
+        exact_error: failed
+          ? redactCredentialValues(payload?.exact_error || payload?.error || payload?.message || "warehouse receipt reported failure")
+          : null,
       }];
     });
 }
@@ -377,12 +421,29 @@ export function externalScheduleObservations(events = []) {
     const result = event?.result || event;
     const observedAt = validAt(result?.observed_at || event?.observed_at);
     if (!observedAt) continue;
+    const runId = event?.run_key || result?.run_key || event?.event_id || null;
     for (const id of result?.healthy || []) {
-      rows.push({ source_id: id, observed_at: observedAt, status: "succeeded", path: event?.path || null });
+      rows.push({
+        source_id: id,
+        observed_at: observedAt,
+        status: "succeeded",
+        path: event?.path || null,
+        adapter: "source-contracts-live",
+        run_id: runId,
+        exact_error: null,
+      });
     }
     for (const failure of result?.failures || []) {
       if (!failure?.id) continue;
-      rows.push({ source_id: failure.id, observed_at: observedAt, status: "failed", path: event?.path || null });
+      rows.push({
+        source_id: failure.id,
+        observed_at: observedAt,
+        status: "failed",
+        path: event?.path || null,
+        adapter: "source-contracts-live",
+        run_id: runId,
+        exact_error: redactCredentialValues(failure.detail || "source contract check failed"),
+      });
     }
   }
   return rows;

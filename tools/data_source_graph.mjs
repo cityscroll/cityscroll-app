@@ -5,6 +5,8 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { dirname, isAbsolute, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { redactCredentialValues } from "./source_health_observations.mjs";
+
 export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 export const DEFAULT_OUTPUT_DIR = "docs";
 export const JSON_OUTPUT = "data-source-graph.json";
@@ -13,6 +15,7 @@ export const HTML_OUTPUT = "data-source-graph.html";
 const CORE_INPUTS = [
   "docs/data-sources.md",
   "site/data/source_contracts.json",
+  "site/data/source_health_observations.json",
   "site/data/gap_taxonomy.json",
   "warehouse/datasets.v0.json",
   "worker/wrangler.toml",
@@ -188,6 +191,104 @@ function coverageFor(contract) {
     : "No separate join-coverage measurement is recorded.";
 }
 
+function unknownClock() {
+  return { at: null, state: "UNKNOWN", basis: null };
+}
+
+function unknownHealth() {
+  return {
+    status: "Unknown",
+    reason_codes: ["missing-health-observation"],
+    clocks: {
+      publisher_updated: unknownClock(),
+      cityscroll_checked_acquired: unknownClock(),
+      cityscroll_serving: unknownClock(),
+    },
+  };
+}
+
+function normalizedOperatorRuns(observation) {
+  return (observation?.operator?.runs || []).map((run) => ({
+    adapter: String(run?.adapter || "unknown-adapter"),
+    run_id: run?.run_id ? String(run.run_id) : null,
+    at: typeof run?.at === "string" ? run.at : null,
+    status: String(run?.status || "unknown"),
+    receipt_ref: run?.receipt_ref ? String(run.receipt_ref) : null,
+    exact_error: run?.exact_error ? redactCredentialValues(String(run.exact_error)) : null,
+  })).sort((left, right) => (
+    (Date.parse(right.at || "") || 0) - (Date.parse(left.at || "") || 0)
+    || compareText(left.adapter, right.adapter)
+    || compareText(left.run_id || "", right.run_id || "")
+  ));
+}
+
+function sourceHealthIndex(registry, projection) {
+  const contractIds = new Set((registry?.contracts || []).map((contract) => contract.id));
+  const byId = new Map();
+  for (const observation of projection?.observations || []) {
+    const id = observation?.source_id;
+    if (!id || !contractIds.has(id)) throw new Error(`${id || "<missing>"}: desk health observation has no canonical contract`);
+    if (byId.has(id)) throw new Error(`${id}: duplicate desk health observation`);
+    byId.set(id, observation);
+  }
+  return byId;
+}
+
+function deskHealthFor(contract, observation, ingest, researchState) {
+  const health = observation?.health || unknownHealth();
+  const clocks = {
+    publisher_updated: health?.clocks?.publisher_updated || unknownClock(),
+    cityscroll_checked_acquired: health?.clocks?.cityscroll_checked_acquired || unknownClock(),
+    cityscroll_serving: health?.clocks?.cityscroll_serving || unknownClock(),
+  };
+  const reasonCodes = Array.isArray(health?.reason_codes) ? health.reason_codes : [];
+  const runs = normalizedOperatorRuns(observation);
+  const receipts = (observation?.evidence || []).map((item) => ({
+    kind: String(item?.kind || "receipt"),
+    path: item?.path ? String(item.path) : null,
+    at: typeof item?.at === "string" ? item.at : null,
+    status: String(item?.status || "unknown"),
+  })).sort((left, right) => (
+    (Date.parse(right.at || "") || 0) - (Date.parse(left.at || "") || 0)
+    || compareText(left.kind, right.kind)
+    || compareText(left.path || "", right.path || "")
+  ));
+  const adapters = [...new Set([
+    ingest.job,
+    ...(contract.code_references || []).map((ref) => `${ref.path}${ref.contains ? ` · ${ref.contains}` : ""}`),
+    ...runs.map((run) => run.adapter),
+  ].filter(Boolean).map(String))].sort(compareText);
+  const joinGate = observation?.relationship_coverage || {
+    status: "unknown",
+    join_status: "unknown",
+    row_count: null,
+    measured_at: null,
+    reason_codes: ["relationship-coverage-unknown"],
+  };
+  const fallbackActive = reasonCodes.includes("serving-valid-fallback") || observation?.serving?.status === "fallback";
+  const operatorNotes = [
+    ...(Array.isArray(observation?.operator?.notes) ? observation.operator.notes : []),
+    ...(contract.status_note ? [contract.status_note] : []),
+  ].map((note) => redactCredentialValues(String(note)));
+  return {
+    contract_fingerprint: observation?.contract_fingerprint || null,
+    health: { ...health, clocks },
+    clocks,
+    adapters,
+    runs,
+    exact_errors: runs.map((run) => run.exact_error).filter(Boolean),
+    receipts,
+    serving_fallback: {
+      active: fallbackActive,
+      valid: fallbackActive && reasonCodes.includes("serving-valid-fallback"),
+      status: fallbackActive ? "last-known-good" : "not-active",
+    },
+    join_gate: joinGate,
+    operator_notes: operatorNotes,
+    research_state: researchState,
+  };
+}
+
 function deriveIngest(contract, context) {
   const warehouse = context.warehouse.datasets?.[contract.id];
   if (contract.status === "disabled") {
@@ -263,9 +364,10 @@ function graphEdges(sources) {
   const edges = [];
   for (const source of sources) {
     const blocked = source.node_class === "blocked-source";
-    edges.push({ from: `body:${source.body_id}`, to: `source:${source.id}`, kind: blocked ? "holds" : "publishes", visual_class: source.visual_class });
-    edges.push({ from: `source:${source.id}`, to: `ingest:${source.id}`, kind: blocked ? "requires-access" : "pulls", visual_class: source.visual_class });
-    for (const surface of source.surfaces) edges.push({ from: `ingest:${source.id}`, to: `surface:${surface}`, kind: blocked ? "would-serve" : "serves", visual_class: source.visual_class });
+    const candidate = source.node_class === "candidate-source";
+    edges.push({ from: `body:${source.body_id}`, to: `source:${source.id}`, kind: blocked ? "holds" : candidate ? "researches" : "publishes", visual_class: source.visual_class });
+    edges.push({ from: `source:${source.id}`, to: `ingest:${source.id}`, kind: blocked ? "requires-access" : candidate ? "would-ingest" : "pulls", visual_class: source.visual_class });
+    for (const surface of source.surfaces) edges.push({ from: `ingest:${source.id}`, to: `surface:${surface}`, kind: blocked || candidate ? "would-serve" : "serves", visual_class: source.visual_class });
   }
   return edges;
 }
@@ -353,11 +455,73 @@ function deriveBlockedSources(gapTaxonomy) {
       last_successful_pull: null,
       latest_evidence: null,
       code_references: [],
+      contract_fingerprint: null,
+      health: unknownHealth(),
+      clocks: unknownHealth().clocks,
+      adapters: [preferred.label],
+      runs: [],
+      exact_errors: [],
+      receipts: [],
+      serving_fallback: { active: false, valid: false, status: "not-applicable" },
+      join_gate: { status: "blocked", join_status: "held", row_count: null, measured_at: null, reason_codes: ["access-not-authorized"] },
+      operator_notes: [redactCredentialValues(source.status_note)],
+      research_state: { status: source.status, kind: "access-blocked", wishlist_gap_id: source.wishlist_gap_id },
       data_offered: source.data_offered,
       access_mechanisms: source.access_mechanisms,
       policy_citations: source.policy_citations,
     };
   });
+}
+
+function deriveCandidateSources(gapTaxonomy) {
+  return (gapTaxonomy.sources || [])
+    .filter((source) => !source.source_contract_id && source.status === "not_ingested")
+    .map((source) => {
+      if (!source.id || !source.name || !source.landing_page) throw new Error("candidate source is missing id, name, or landing_page");
+      const ingest = {
+        job: "Candidate research · adapter not assigned",
+        cadence: "No ingest scheduled",
+        transform: "Research source shape and join gates before canonical registration",
+        evidence: ["site/data/gap_taxonomy.json"],
+      };
+      return {
+        id: source.id,
+        name: source.name,
+        node_class: "candidate-source",
+        visual_class: "candidate",
+        body: "Research backlog",
+        body_id: "research-backlog",
+        status: "candidate",
+        delivery_tier: source.delivery_tier || "not-ingested",
+        endpoint: { identity: source.id, url: source.landing_page },
+        publisher_cadence: "Unknown until the source is contracted",
+        ingest,
+        surfaces: surfacesFor(source),
+        approach: "Candidate source has not been ingested or promoted into the canonical source-contract ledger.",
+        coverage: "Join coverage is not yet measured.",
+        known_gap: null,
+        wishlist: null,
+        last_successful_pull: null,
+        latest_evidence: null,
+        code_references: [],
+        contract_fingerprint: null,
+        health: unknownHealth(),
+        clocks: unknownHealth().clocks,
+        adapters: [],
+        runs: [],
+        exact_errors: [],
+        receipts: [],
+        serving_fallback: { active: false, valid: false, status: "not-applicable" },
+        join_gate: { status: "not-measured", join_status: "candidate", row_count: null, measured_at: null, reason_codes: ["candidate-source"] },
+        operator_notes: [],
+        research_state: {
+          status: source.status,
+          kind: "candidate",
+          join_keys: Array.isArray(source.join_keys) ? source.join_keys : [],
+          join_coverage: source.join_coverage || {},
+        },
+      };
+    });
 }
 
 export function buildDataSourceGraph({
@@ -368,16 +532,26 @@ export function buildDataSourceGraph({
   workerText = "",
   externalAwardText = "",
   receipts = new Map(),
+  healthObservations = { observations: [] },
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
   const cron = cronSettings(wranglerText);
   const gapSources = new Set((gapTaxonomy.sources || []).map((source) => source.source_contract_id).filter(Boolean));
+  const gapSourcesByContract = new Map((gapTaxonomy.sources || []).filter((source) => source.source_contract_id).map((source) => [source.source_contract_id, source]));
+  const healthById = sourceHealthIndex(registry, healthObservations);
   const context = { warehouse: warehouse.datasets ? warehouse : { datasets: warehouse }, cron, workerText, weeklyDays: weeklyGate(externalAwardText) };
   const liveSources = contracts.map((contract) => {
     const evidence = receipts.get(contract.id) || [];
     const endpoint = endpointFor(contract);
     const hasWishlist = Boolean(contract.gap || gapSources.has(contract.id));
+    const ingest = deriveIngest(contract, context);
+    const gapSource = gapSourcesByContract.get(contract.id);
+    const researchState = {
+      status: gapSource?.status || (contract.status === "disabled" ? "blocked" : "landed"),
+      kind: contract.status === "disabled" ? "blocked" : hasWishlist ? "tracked-gap" : "operational",
+      join_keys: Array.isArray(gapSource?.join_keys) ? gapSource.join_keys : Array.isArray(contract.join_keys) ? contract.join_keys : [],
+    };
     return {
       id: contract.id,
       name: contract.name,
@@ -389,7 +563,7 @@ export function buildDataSourceGraph({
       delivery_tier: contract.delivery_tier || "unspecified",
       endpoint,
       publisher_cadence: contract.publisher_cadence || "Not published",
-      ingest: deriveIngest(contract, context),
+      ingest,
       surfaces: surfacesFor(contract),
       approach: contract.product_freshness || "No product-freshness note is recorded.",
       coverage: coverageFor(contract),
@@ -401,23 +575,26 @@ export function buildDataSourceGraph({
       last_successful_pull: contract.status === "disabled" ? null : evidence.find((item) => item.kind === "successful-pull") || null,
       latest_evidence: evidence[0] || null,
       code_references: (contract.code_references || []).map((ref) => ref.path),
+      ...deskHealthFor(contract, healthById.get(contract.id), ingest, researchState),
     };
   });
   const blockedSources = deriveBlockedSources(gapTaxonomy);
-  const sources = [...liveSources, ...blockedSources].sort((a, b) => compareText(a.body, b.body) || compareText(a.name, b.name));
+  const candidateSources = deriveCandidateSources(gapTaxonomy);
+  const sources = [...liveSources, ...candidateSources, ...blockedSources].sort((a, b) => compareText(a.body, b.body) || compareText(a.name, b.name));
   const bodies = [...new Map(sources.map((source) => [source.body_id, { id: source.body_id, name: source.body }])).values()];
   const surfaces = [...new Set(sources.flatMap((source) => source.surfaces))].sort();
   const sourcesHash = sha256(inputs.map((input) => `${input.path}:${input.sha256}`).join("\n"));
   const evidence = [...receipts.values()].flat();
   return {
-    schema_version: 3,
+    schema_version: 4,
     title: "CityScroll data-source topology",
     description: "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
-    current_as_of: latestFreshnessDate(registry, evidence),
+    current_as_of: latestFreshnessDate({ registry, healthObservations }, evidence),
     sources_hash: sourcesHash,
     declared_inputs: inputs,
     cron: { expressions: cron.expressions },
-    counts: { bodies: bodies.length, sources: sources.length, source_contracts: liveSources.length, blocked_sources: blockedSources.length, surfaces: surfaces.length },
+    counts: { bodies: bodies.length, sources: sources.length, source_contracts: liveSources.length, candidate_sources: candidateSources.length, blocked_sources: blockedSources.length, surfaces: surfaces.length },
+    research: { candidates: candidateSources.length, blocked: blockedSources.length },
     bodies,
     sources,
     surfaces,
@@ -430,10 +607,10 @@ function esc(value) {
 }
 
 function tableRows(graph) {
-  return graph.sources.map((source) => `<tr data-source-row="${esc(source.id)}" data-search="${esc(`${source.name} ${source.body} ${source.endpoint.identity} ${(source.access_mechanisms || []).map((mechanism) => mechanism.label).join(" ")}`.toLowerCase())}" data-status="${esc(source.status)}" data-node-class="${esc(source.node_class)}">
+  return graph.sources.map((source) => `<tr data-source-row="${esc(source.id)}" data-search="${esc(`${source.name} ${source.body} ${source.endpoint.identity} ${source.health?.status || "Unknown"} ${(source.adapters || []).join(" ")} ${(source.exact_errors || []).join(" ")} ${source.research_state?.status || ""} ${(source.access_mechanisms || []).map((mechanism) => mechanism.label).join(" ")}`.toLowerCase())}" data-status="${esc(source.status)}" data-node-class="${esc(source.node_class)}">
     <td><button class="table-source" type="button" data-source="${esc(source.id)}">${esc(source.name)}</button><small>${esc(source.endpoint.identity)}</small></td>
-    <td>${esc(source.body)}</td><td><span class="status status-${esc(source.status)}">${esc(source.status)}</span></td>
-    <td>${esc(source.ingest.cadence)}</td><td>${esc(source.ingest.transform)}</td><td>${source.surfaces.map(esc).join(", ")}</td>
+    <td>${esc(source.body)}</td><td><span class="status status-${esc(source.status)}">${esc(source.status)}</span></td><td>${esc(source.health?.status || "Unknown")}</td>
+    <td>${esc(source.ingest.cadence)}</td><td>${esc(source.join_gate?.status || "unknown")}</td><td>${source.surfaces.map(esc).join(", ")}</td>
   </tr>`).join("\n");
 }
 
@@ -445,15 +622,16 @@ export function renderGraphHtml(graph) {
 <style>
 :root{--ink:#18241d;--muted:#5d6d63;--paper:#f5f1e8;--panel:#fffdf8;--line:#ccd4cc;--green:#1f6a45;--mint:#dcecdf;--amber:#9d5b13;--red:#9f3a35;--blue:#315f78;--ghost:#775b85;--ghost-paper:#f7f1f8;--shadow:0 12px 32px rgba(24,36,29,.09)}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.shell{max-width:1720px;margin:auto;padding:28px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:11px;font-weight:800;color:var(--green)}h1{font:700 clamp(30px,4vw,52px)/1.03 Georgia,serif;margin:6px 0 10px;max-width:850px}.lede{color:var(--muted);max-width:820px;margin:0}.meta,.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.legend{margin-top:9px;color:var(--muted);font-size:12px}.legend span{display:inline-flex;gap:6px;align-items:center}.legend i{display:inline-block;width:22px;border-top:2px solid var(--green)}.legend .ghost-key{border-top:2px dashed var(--ghost)}.pill,.status{border:1px solid var(--line);border-radius:999px;padding:4px 9px;background:var(--panel);font-size:12px}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:24px 0 14px}.controls input{min-width:280px;flex:1}.controls input,.controls select,.toggle button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:9px 11px;color:var(--ink)}.toggle{display:flex}.toggle button{border-radius:0}.toggle button:first-child{border-radius:8px 0 0 8px}.toggle button:last-child{border-radius:0 8px 8px 0}.toggle button[aria-pressed=true]{background:var(--ink);color:white}.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,370px);gap:16px;align-items:start}.canvas,.details,.table-wrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}.canvas{overflow:auto;min-height:700px}.column-heads{display:grid;grid-template-columns:170px 245px 230px 170px;gap:35px;padding:14px 20px;border-bottom:1px solid var(--line);min-width:960px;position:sticky;top:0;background:rgba(255,253,248,.96);z-index:2}.column-heads b{font-size:11px;letter-spacing:.1em;text-transform:uppercase}.column-heads span{display:block;color:var(--muted);font-size:11px;margin-top:2px}svg{display:block;min-width:960px}.details{position:sticky;top:16px;padding:22px;min-height:430px}.details h2{font:700 26px/1.12 Georgia,serif;margin:6px 0 8px}.details h3{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--green);margin:20px 0 5px}.details p{margin:0;color:#35443b}.details a{color:var(--blue);font-weight:650}.details .endpoint{overflow-wrap:anywhere}.details ol{padding-left:20px;margin:5px 0}.details li+li{margin-top:10px}.route-preferred{color:var(--ghost);font-weight:800}.empty-detail{color:var(--muted);padding-top:30px}.status-live{color:var(--green);border-color:#9bc0a5}.status-build-time,.status-manual{color:var(--amber);border-color:#d9b989}.status-disabled{color:var(--red);border-color:#daa5a1}.status-application-possible,.status-blocked,.status-declined{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}tr[data-node-class="blocked-source"]{background:var(--ghost-paper)}.table-wrap{overflow:auto}.table-wrap[hidden],.graph-view[hidden]{display:none}table{width:100%;border-collapse:collapse;min-width:1100px}th,td{text-align:left;vertical-align:top;padding:11px 13px;border-bottom:1px solid #e2e5df}th{font-size:11px;text-transform:uppercase;letter-spacing:.08em;background:#f6f3eb;position:sticky;top:0}td small{display:block;color:var(--muted);margin-top:3px}.table-source{border:0;background:none;padding:0;color:var(--blue);font-weight:700;text-align:left}.foot{color:var(--muted);font-size:12px;margin-top:15px}.source-node:focus rect,.source-node:hover rect{stroke:var(--green);stroke-width:2.5}.source-node{cursor:pointer}.source-node.blocked-node rect{stroke-dasharray:7 5}.edge{stroke:#9daca2;stroke-width:1;opacity:.18;fill:none}.edge.blocked-edge{stroke:var(--ghost);stroke-dasharray:6 5;opacity:.36}.edge.active{stroke:var(--green);stroke-width:2.4;opacity:.72}.node-muted{opacity:.28}@media(max-width:1000px){.shell{padding:18px}.workspace{grid-template-columns:1fr}.details{position:static}.controls input{min-width:220px}}
+.details ol,.details ul{padding-left:20px;margin:5px 0}.details pre{margin:6px 0 0;padding:8px;border:1px solid var(--line);border-radius:7px;background:#f4f1e9;color:#5f302d;font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.status-candidate{color:var(--ghost);border-color:#baa7c2;background:var(--ghost-paper)}tr[data-node-class="candidate-source"]{background:var(--ghost-paper)}
 </style></head><body><main class="shell">
 <div class="eyebrow">Maintainer architecture</div><h1>Where CityScroll’s data comes from</h1>
-<p class="lede">Trace each collecting body through its concrete endpoint, the job and measured cadence that ingest it, and the product surfaces that consume it. Dashed ghost paths show access-gated sources in the position where they would connect if acquired.</p>
-<div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span>${graph.current_as_of ? `<span class="pill">Current as of ${esc(formatFreshnessDate(graph.current_as_of))}</span>` : ""}<span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
-<div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Access-gated source path</span></div>
-<div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, institution, or access route…"><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="graphToggle" type="button" aria-pressed="true">Graph view</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button></div></div>
+<p class="lede">Trace each collecting body through its endpoint, adapters and runs, receipt-backed three-clock health, join gates, and product surfaces. Dashed ghost paths keep candidate and access-blocked research visible without presenting it as a live source.</p>
+<div class="meta"><span class="pill">${graph.counts.bodies} collecting bodies</span><span class="pill">${graph.counts.source_contracts} source contracts</span><span class="pill">${graph.counts.candidate_sources || 0} candidates</span><span class="pill">${graph.counts.blocked_sources} access-gated sources</span><span class="pill">${graph.counts.surfaces} surfaces</span>${graph.current_as_of ? `<span class="pill">Current as of ${esc(formatFreshnessDate(graph.current_as_of))}</span>` : ""}<span class="pill">sources hash ${esc(graph.sources_hash.slice(0, 12))}</span></div>
+<div class="legend" aria-label="Graph visual classes"><span><i></i> Available source path</span><span><i class="ghost-key"></i> Candidate / access-gated research path</span></div>
+<div class="controls"><label class="sr-only" for="search">Filter sources</label><input id="search" type="search" placeholder="Filter by source, endpoint, adapter, error, or access route…"><select id="status"><option value="">All statuses</option><option value="live">Live</option><option value="build-time">Build-time</option><option value="manual">Manual</option><option value="disabled">Disabled</option><option value="candidate">Candidate</option><option value="application-possible">Application possible</option><option value="blocked">Blocked</option><option value="declined">Declined</option></select><div class="toggle" aria-label="View"><button id="graphToggle" type="button" aria-pressed="true">Graph view</button><button id="tableToggle" type="button" aria-pressed="false">Table view</button></div></div>
 <section class="graph-view" id="graphView"><div class="workspace"><div class="canvas"><div class="column-heads"><div><b>1 · Collecting bodies</b><span>Institutions that originate data</span></div><div><b>2 · Datasets / endpoints</b><span>Concrete source identity</span></div><div><b>3 · Our ingest</b><span>Job, cadence, transform</span></div><div><b>4 · Surfaces</b><span>Features that consume it</span></div></div><svg id="sourceGraph" role="img" aria-label="Data source topology graph"></svg></div><aside class="details" id="details" aria-live="polite"><div class="empty-detail"><div class="eyebrow">Source detail</div><h2>Select a dataset</h2><p>The selected path will highlight across all four layers.</p></div></aside></div></section>
-<section class="table-wrap" id="tableView" hidden><table><thead><tr><th>Source</th><th>Collecting body</th><th>Status</th><th>Ingest cadence</th><th>Transform</th><th>Surfaces</th></tr></thead><tbody>${tableRows(graph)}</tbody></table></section>
-<p class="foot">Generated from the source-contract ledger, lifecycle gap inventory, warehouse registry and receipts, and Worker cron implementation. Rebuild with <code>node tools/data_source_graph.mjs</code>; verify staleness with <code>--check</code>. The authenticated desk may embed this artifact without changing its access gate.</p>
+<section class="table-wrap" id="tableView" hidden><table><thead><tr><th>Source</th><th>Collecting body</th><th>Source state</th><th>Health</th><th>Ingest cadence</th><th>Join gate</th><th>Surfaces</th></tr></thead><tbody>${tableRows(graph)}</tbody></table></section>
+<p class="foot">Generated for the authenticated desk from the canonical source-contract ledger, the shared source-health observations, lifecycle research inventory, warehouse registry and receipts, and Worker cron implementation. Rebuild with <code>node tools/data_source_graph.mjs</code>; verify staleness with <code>--check</code>. This backstage artifact remains separate from the strict public projection and never includes credentials.</p>
 </main><script>
 const graph=${payload};
 const svg=document.getElementById("sourceGraph"),details=document.getElementById("details"),search=document.getElementById("search"),statusFilter=document.getElementById("status");
@@ -462,13 +640,44 @@ const escapeHtml=(v)=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt
 const short=(v,n)=>String(v).length>n?String(v).slice(0,n-1)+"…":String(v);
 function el(name,attrs={},text=""){const node=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text)node.textContent=text;return node}
 function lineText(parent,x,y,primary,secondary,color="#18241d"){parent.append(el("text",{x,y,"font-size":"12","font-weight":"700",fill:color},short(primary,30)));if(secondary)parent.append(el("text",{x,y:y+18,"font-size":"9.5",fill:"#65756b"},short(secondary,35)))}
-function visibleSources(){const q=search.value.trim().toLowerCase(),st=statusFilter.value;return graph.sources.filter(s=>(!st||s.status===st)&&(!q||([s.name,s.body,s.endpoint.identity,s.surfaces.join(" "),...(s.access_mechanisms||[]).map(m=>m.label+" "+m.requirement)].join(" ").toLowerCase().includes(q))));}
+function visibleSources(){const q=search.value.trim().toLowerCase(),st=statusFilter.value;return graph.sources.filter(s=>(!st||s.status===st)&&(!q||([s.name,s.body,s.endpoint.identity,s.health?.status,s.research_state?.status,s.surfaces.join(" "),...(s.adapters||[]),...(s.exact_errors||[]),...(s.access_mechanisms||[]).map(m=>m.label+" "+m.requirement)].join(" ").toLowerCase().includes(q))));}
 function render(){const sources=visibleSources(),row=78,top=34,height=Math.max(700,top*2+sources.length*row);svg.setAttribute("viewBox","0 0 960 "+height);svg.setAttribute("height",height);svg.replaceChildren();const ownerGroups=new Map();sources.forEach((s,i)=>{if(!ownerGroups.has(s.body))ownerGroups.set(s.body,[]);ownerGroups.get(s.body).push(i)});const surfaceNames=[...new Set(sources.flatMap(s=>s.surfaces))].sort(),surfaceY=new Map(surfaceNames.map((name,i)=>[name,top+(i+.5)*(Math.max(1,sources.length)*row/surfaceNames.length)]));
-  const paths=el("g");sources.forEach((s,i)=>{const y=top+i*row+30,bodyRows=ownerGroups.get(s.body),by=top+((bodyRows[0]+bodyRows.at(-1))/2)*row+30,edgeClass="edge edge-"+s.id+(s.node_class==="blocked-source"?" blocked-edge":"");paths.append(el("path",{class:edgeClass,d:"M 190 "+by+" C 205 "+by+",205 "+y+",220 "+y}));paths.append(el("path",{class:edgeClass,d:"M 465 "+y+" C 483 "+y+",483 "+y+",500 "+y}));s.surfaces.forEach(name=>paths.append(el("path",{class:edgeClass,d:"M 730 "+y+" C 745 "+y+",745 "+surfaceY.get(name)+",760 "+surfaceY.get(name)})))});svg.append(paths);
+  const paths=el("g");sources.forEach((s,i)=>{const y=top+i*row+30,bodyRows=ownerGroups.get(s.body),by=top+((bodyRows[0]+bodyRows.at(-1))/2)*row+30,edgeClass="edge edge-"+s.id+(s.node_class!=="source-contract"?" blocked-edge":"");paths.append(el("path",{class:edgeClass,d:"M 190 "+by+" C 205 "+by+",205 "+y+",220 "+y}));paths.append(el("path",{class:edgeClass,d:"M 465 "+y+" C 483 "+y+",483 "+y+",500 "+y}));s.surfaces.forEach(name=>paths.append(el("path",{class:edgeClass,d:"M 730 "+y+" C 745 "+y+",745 "+surfaceY.get(name)+",760 "+surfaceY.get(name)})))});svg.append(paths);
   for(const [owner,rows] of ownerGroups){const y=top+((rows[0]+rows.at(-1))/2)*row+30,g=el("g");g.append(el("rect",{x:20,y:y-25,width:170,height:50,rx:9,fill:"#edf2eb",stroke:"#c8d2c9"}));lineText(g,32,y-3,owner,rows.length+" source"+(rows.length===1?"":"s"));svg.append(g)}
-  sources.forEach((s,i)=>{const y=top+i*row+30,blocked=s.node_class==="blocked-source",g=el("g",{class:"source-node"+(blocked?" blocked-node":""),tabindex:"0",role:"button","aria-label":"Open "+s.name,"data-source":s.id});g.append(el("rect",{x:220,y:y-29,width:245,height:58,rx:9,fill:blocked?"#f7f1f8":"#fffdf8",stroke:s.id===selected?"#1f6a45":blocked?"#775b85":"#bdc8bf"}));g.append(el("circle",{cx:236,cy:y-8,r:4.5,fill:blocked?"#775b85":s.status==="disabled"?"#9f3a35":s.status==="live"?"#1f6a45":"#9d5b13"}));lineText(g,248,y-4,s.name,s.endpoint.identity,blocked?"#654b70":"#18241d");g.addEventListener("click",()=>selectSource(s.id));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectSource(s.id)}});svg.append(g);const job=el("g",{class:blocked?"source-node blocked-node":""});job.append(el("rect",{x:500,y:y-29,width:230,height:58,rx:9,fill:blocked?"#f7f1f8":"#f8f0df",stroke:blocked?"#9d82aa":"#d6c59f"}));lineText(job,512,y-4,s.ingest.job,s.ingest.cadence,blocked?"#654b70":"#684419");svg.append(job)});
+  sources.forEach((s,i)=>{const y=top+i*row+30,ghost=s.node_class!=="source-contract",g=el("g",{class:"source-node"+(ghost?" blocked-node":""),tabindex:"0",role:"button","aria-label":"Open "+s.name,"data-source":s.id});g.append(el("rect",{x:220,y:y-29,width:245,height:58,rx:9,fill:ghost?"#f7f1f8":"#fffdf8",stroke:s.id===selected?"#1f6a45":ghost?"#775b85":"#bdc8bf"}));g.append(el("circle",{cx:236,cy:y-8,r:4.5,fill:ghost?"#775b85":s.status==="disabled"?"#9f3a35":s.status==="live"?"#1f6a45":"#9d5b13"}));lineText(g,248,y-4,s.name,s.endpoint.identity,ghost?"#654b70":"#18241d");g.addEventListener("click",()=>selectSource(s.id));g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectSource(s.id)}});svg.append(g);const job=el("g",{class:ghost?"source-node blocked-node":""});job.append(el("rect",{x:500,y:y-29,width:230,height:58,rx:9,fill:ghost?"#f7f1f8":"#f8f0df",stroke:ghost?"#9d82aa":"#d6c59f"}));lineText(job,512,y-4,s.ingest.job,s.ingest.cadence,ghost?"#654b70":"#684419");svg.append(job)});
   surfaceNames.forEach(name=>{const y=surfaceY.get(name),g=el("g");g.append(el("rect",{x:760,y:y-21,width:175,height:42,rx:21,fill:"#e6eef1",stroke:"#b5c8d0"}));g.append(el("text",{x:775,y:y+5,"font-size":"12","font-weight":"700",fill:"#315f78"},name));svg.append(g)});if(selected)highlight(selected);filterTable()}
-function selectSource(id){selected=id;const s=graph.sources.find(x=>x.id===id);if(!s)return;const endpoint=s.endpoint.url?'<a href="'+escapeHtml(s.endpoint.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(s.endpoint.identity)+'</a>':escapeHtml(s.endpoint.identity),wishlist=s.wishlist?'<h3>Wishlist</h3><p>'+escapeHtml(s.wishlist.label)+'</p>':'';if(s.node_class==="blocked-source"){const citations=new Map((s.policy_citations||[]).map(c=>[c.id,c])),routes=(s.access_mechanisms||[]).map(m=>{const refs=(m.citation_ids||[]).map(cid=>citations.get(cid)).filter(Boolean).map(c=>'<a href="'+escapeHtml(c.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(c.title)+'</a>').join(' · ');return '<li><strong>'+escapeHtml(m.label)+'</strong>'+(m.preferred?'<br><span class="route-preferred">Preferred route</span>':'')+'<br>'+escapeHtml(m.requirement)+(refs?'<br><small>'+refs+'</small>':'')+'</li>'}).join(''),policies=(s.policy_citations||[]).map(c=>'<li><a href="'+escapeHtml(c.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(c.title)+'</a><br>'+escapeHtml(c.section)+' · '+escapeHtml(c.date)+(c.date_basis?'<br><small>'+escapeHtml(c.date_basis.replaceAll('_',' '))+'</small>':'')+'</li>').join('');details.innerHTML='<div class="eyebrow">Blocked source · '+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · access-gated</p><h3>What it offers</h3><p>'+escapeHtml(s.data_offered)+'</p><h3>Collecting body / platform</h3><p>'+escapeHtml(s.body)+'<br><span class="endpoint">'+endpoint+'</span></p><h3>Access mechanisms</h3><ol>'+routes+'</ol><h3>Policy citations</h3><ol>'+policies+'</ol><h3>Would light up</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>'+wishlist;render();return}const freshness=s.last_successful_pull?'<br><strong>Latest recorded pull:</strong> '+escapeHtml(s.last_successful_pull.at)+' <small>('+escapeHtml(s.last_successful_pull.path)+')</small>':s.latest_evidence?'<br><strong>Latest recorded evidence:</strong> '+escapeHtml(s.latest_evidence.at):'',gap=s.known_gap?'<h3>Known gap</h3><p>'+escapeHtml(s.known_gap)+'</p>':'';details.innerHTML='<div class="eyebrow">'+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · '+escapeHtml(s.delivery_tier)+'</p><h3>Collecting body</h3><p>'+escapeHtml(s.body)+'</p><h3>Endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Our ingest</h3><p><strong>'+escapeHtml(s.ingest.job)+'</strong><br>'+escapeHtml(s.ingest.cadence)+'<br>'+escapeHtml(s.ingest.transform)+'</p><h3>Freshness</h3><p><strong>Publisher cadence:</strong> '+escapeHtml(s.publisher_cadence)+'<br>'+escapeHtml(s.approach)+freshness+'</p><h3>Coverage</h3><p>'+escapeHtml(s.coverage)+'</p>'+gap+wishlist+'<h3>Surfaces</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';render()}
+function atText(value){return value?escapeHtml(value):'UNKNOWN'}
+function clockLine(label,clock){const value=clock||{};return '<li><strong>'+label+':</strong> '+atText(value.at)+'<br><small>'+escapeHtml(value.state||'UNKNOWN')+(value.basis?' · '+escapeHtml(value.basis):'')+'</small></li>'}
+function selectSource(id){
+  selected=id;
+  const s=graph.sources.find(x=>x.id===id);
+  if(!s)return;
+  const endpoint=s.endpoint.url?'<a href="'+escapeHtml(s.endpoint.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(s.endpoint.identity)+'</a>':escapeHtml(s.endpoint.identity),wishlist=s.wishlist?'<h3>Wishlist</h3><p>'+escapeHtml(s.wishlist.label)+'</p>':'';
+  if(s.node_class==="blocked-source"){
+    const citations=new Map((s.policy_citations||[]).map(c=>[c.id,c]));
+    const routes=(s.access_mechanisms||[]).map(m=>{const refs=(m.citation_ids||[]).map(cid=>citations.get(cid)).filter(Boolean).map(c=>'<a href="'+escapeHtml(c.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(c.title)+'</a>').join(' · ');return '<li><strong>'+escapeHtml(m.label)+'</strong>'+(m.preferred?'<br><span class="route-preferred">Preferred route</span>':'')+'<br>'+escapeHtml(m.requirement)+(refs?'<br><small>'+refs+'</small>':'')+'</li>'}).join('');
+    const policies=(s.policy_citations||[]).map(c=>'<li><a href="'+escapeHtml(c.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(c.title)+'</a><br>'+escapeHtml(c.section)+' · '+escapeHtml(c.date)+(c.date_basis?'<br><small>'+escapeHtml(c.date_basis.replaceAll('_',' '))+'</small>':'')+'</li>').join('');
+    details.innerHTML='<div class="eyebrow">Blocked source · '+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · access-gated</p><h3>Research state</h3><p>'+escapeHtml(s.research_state?.status||'blocked')+' · join gate '+escapeHtml(s.join_gate?.join_status||'held')+'</p><h3>What it offers</h3><p>'+escapeHtml(s.data_offered)+'</p><h3>Collecting body / platform</h3><p>'+escapeHtml(s.body)+'<br><span class="endpoint">'+endpoint+'</span></p><h3>Access mechanisms</h3><ol>'+routes+'</ol><h3>Policy citations</h3><ol>'+policies+'</ol><h3>Would light up</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>'+wishlist;
+    render();return;
+  }
+  if(s.node_class==="candidate-source"){
+    const keys=(s.research_state?.join_keys||[]).length?(s.research_state.join_keys||[]).map(escapeHtml).join(' · '):'Not declared';
+    details.innerHTML='<div class="eyebrow">Candidate research · '+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-candidate">candidate</span> · not ingested</p><h3>Research state</h3><p>'+escapeHtml(s.research_state?.status||'not_ingested')+'</p><h3>Official endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Candidate join keys</h3><p>'+keys+'</p><h3>Adapter</h3><p>Not assigned; promote through the canonical source-contract ledger before ingest.</p><h3>Would light up</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';
+    render();return;
+  }
+  const freshness=s.last_successful_pull?'<br><strong>Latest recorded pull:</strong> '+escapeHtml(s.last_successful_pull.at)+' <small>('+escapeHtml(s.last_successful_pull.path)+')</small>':s.latest_evidence?'<br><strong>Latest recorded evidence:</strong> '+escapeHtml(s.latest_evidence.at):'';
+  const gap=s.known_gap?'<h3>Known gap</h3><p>'+escapeHtml(s.known_gap)+'</p>':'';
+  const reasons=(s.health?.reason_codes||[]).length?'<br><small>'+s.health.reason_codes.map(escapeHtml).join(' · ')+'</small>':'';
+  const clocks='<ul>'+clockLine('Publisher updated',s.clocks?.publisher_updated)+clockLine('CityScroll checked / acquired',s.clocks?.cityscroll_checked_acquired)+clockLine('CityScroll serving',s.clocks?.cityscroll_serving)+'</ul>';
+  const adapters=(s.adapters||[]).length?'<ul>'+s.adapters.map(a=>'<li>'+escapeHtml(a)+'</li>').join('')+'</ul>':'<p>No adapter declared.</p>';
+  const runs=(s.runs||[]).length?'<ol>'+s.runs.map(run=>'<li><strong>'+escapeHtml(run.status)+'</strong> · '+atText(run.at)+'<br><small>'+escapeHtml(run.adapter)+(run.run_id?' · '+escapeHtml(run.run_id):'')+(run.receipt_ref?' · '+escapeHtml(run.receipt_ref):'')+'</small>'+(run.exact_error?'<pre>'+escapeHtml(run.exact_error)+'</pre>':'')+'</li>').join('')+'</ol>':'<p>No run receipt is available.</p>';
+  const receipts=(s.receipts||[]).length?'<ol>'+s.receipts.map(receipt=>'<li><strong>'+escapeHtml(receipt.kind)+'</strong> · '+escapeHtml(receipt.status)+'<br><small>'+atText(receipt.at)+(receipt.path?' · '+escapeHtml(receipt.path):'')+'</small></li>').join('')+'</ol>':'<p>No receipt is available.</p>';
+  const fallback=s.serving_fallback?.active?'<strong>Active:</strong> '+escapeHtml(s.serving_fallback.status)+(s.serving_fallback.valid?' · valid last-known-good':' · validity unknown'):'Not active';
+  const join=s.join_gate||{};
+  const notes=(s.operator_notes||[]).length?'<h3>Operator notes</h3><ul>'+s.operator_notes.map(note=>'<li>'+escapeHtml(note)+'</li>').join('')+'</ul>':'';
+  details.innerHTML='<div class="eyebrow">'+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · '+escapeHtml(s.delivery_tier)+'</p><h3>Health</h3><p><strong>'+escapeHtml(s.health?.status||'Unknown')+'</strong>'+reasons+'<br><small>contract '+escapeHtml(s.contract_fingerprint||'UNKNOWN')+'</small></p><h3>Collecting body</h3><p>'+escapeHtml(s.body)+'</p><h3>Endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Adapters</h3>'+adapters+'<h3>Our ingest</h3><p><strong>'+escapeHtml(s.ingest.job)+'</strong><br>'+escapeHtml(s.ingest.cadence)+'<br>'+escapeHtml(s.ingest.transform)+'</p><h3>Three clocks</h3>'+clocks+'<h3>Serving fallback</h3><p>'+fallback+'</p><h3>Runs and exact errors</h3>'+runs+'<h3>Receipts</h3>'+receipts+'<h3>Join gate</h3><p><strong>'+escapeHtml(join.status||'unknown')+'</strong> · '+escapeHtml(join.join_status||'unknown')+'<br><small>rows '+escapeHtml(join.row_count??'UNKNOWN')+' · measured '+atText(join.measured_at)+'</small></p><h3>Freshness contract</h3><p><strong>Publisher cadence:</strong> '+escapeHtml(s.publisher_cadence)+'<br>'+escapeHtml(s.approach)+freshness+'</p><h3>Coverage</h3><p>'+escapeHtml(s.coverage)+'</p>'+notes+gap+wishlist+'<h3>Surfaces</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';
+  render();
+}
 function highlight(id){svg.querySelectorAll(".edge").forEach(node=>node.classList.toggle("active",node.classList.contains("edge-"+CSS.escape(id))))}
 function filterTable(){const q=search.value.trim().toLowerCase(),st=statusFilter.value;document.querySelectorAll("[data-source-row]").forEach(row=>row.hidden=Boolean((st&&row.dataset.status!==st)||(q&&!row.dataset.search.includes(q))))}
 search.addEventListener("input",render);statusFilter.addEventListener("change",render);document.querySelectorAll(".table-source").forEach(button=>button.addEventListener("click",()=>{selectSource(button.dataset.source);setView("graph")}));
@@ -487,6 +696,7 @@ export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
     workerText: readFileSync(join(ROOT, "worker/src/worker.mjs"), "utf8"),
     externalAwardText: readFileSync(join(ROOT, "worker/src/external_award.mjs"), "utf8"),
     receipts: receiptEvidence(registry.contracts, receiptPaths),
+    healthObservations: readJson("site/data/source_health_observations.json"),
     inputs,
   });
   return {
