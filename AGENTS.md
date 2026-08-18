@@ -453,8 +453,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   its summary, preview count, results, and `/subscribe` form. Create flow: live conjunction rule
   line (`composeWatchRuleSentence`), digItem-shaped preview cards, cadence radio cards with
   quiet-day/weekly consequences, pack attention cost (`packAttentionCopy`). Client promotes
-  Your watches first when `/following/personal` returns ≥1 watch (manage-first tabs). Canonical
-  manage URL is `/following/#your-following` (digest footers use session exchange when a token
+  Your watches first when `/following/personal` returns ≥1 watch (manage-first tabs).
+  Create-flow query params (`lens` / `filter` / `freq`) keep the Create tab through
+  `requestedFollowingTab` even after that promotion; `#your-following` and `?tab=` still win.
+  Canonical manage URL is `/following/#your-following` (digest footers use session exchange when a token
   is available; `/prefs` remains account-level). Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
   Suggested Watch sets are results-backed: `site/following_suggestions.mjs` gates and counts the

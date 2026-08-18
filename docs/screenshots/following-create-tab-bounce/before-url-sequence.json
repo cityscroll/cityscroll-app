@@ -1,0 +1,37 @@
+{
+  "label": "before",
+  "steps": [
+    {
+      "step": "land-with-watches",
+      "url": "http://127.0.0.1:59589/following/",
+      "tab": "watches",
+      "tabLabel": "Your watches",
+      "createVisible": false,
+      "watchesVisible": true
+    },
+    {
+      "step": "click-create-tab",
+      "url": "http://127.0.0.1:59589/following/",
+      "tab": "create",
+      "tabLabel": "Create a watch",
+      "createVisible": true,
+      "watchesVisible": false
+    },
+    {
+      "step": "click-topic-mandates",
+      "url": "http://127.0.0.1:59589/following?lens=mandates&filter=%7B%7D&freq=daily",
+      "tab": "watches",
+      "tabLabel": "Your watches",
+      "createVisible": false,
+      "watchesVisible": true
+    },
+    {
+      "step": "click-place-queens",
+      "url": "http://127.0.0.1:59589/following?lens=mandates&filter=%7B%22borough%22%3A%22Queens%22%7D&freq=daily&count=2",
+      "tab": "watches",
+      "tabLabel": "Your watches",
+      "createVisible": false,
+      "watchesVisible": true
+    }
+  ]
+}

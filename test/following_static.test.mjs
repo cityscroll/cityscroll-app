@@ -12,6 +12,7 @@ import {
   followingUrlFromWatch,
   isCitywideWatchScope,
   renderFollowingDocument,
+  requestedFollowingTab,
   watchFromFollowingParams,
 } from "../site/following_view.mjs";
 import { packAttentionCopy } from "../site/watch_templates.mjs";
@@ -336,4 +337,57 @@ test("Following exposes surface tabs for manage-first promotion", () => {
   assert.match(html, /data-following-tab="watches"/);
   assert.match(html, /data-following-tab="create"/);
   assert.match(html, /data-following-personal-mode=/);
+});
+
+test("topic and place chips stay on Create a watch when existing watches would promote", () => {
+  const landing = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  const topicHref = landing.match(
+    /data-following-scope-axis="topic"[^>]*data-following-scope-value="mandates"[^>]*data-filter-href="([^"]+)"/,
+  )?.[1];
+  assert.ok(topicHref, "Mandates topic chip must publish a shareable href");
+  const topicUrl = new URL(topicHref.replaceAll("&amp;", "&"));
+  assert.equal(topicUrl.searchParams.get("lens"), "mandates");
+  assert.equal(topicUrl.searchParams.get("filter"), "{}");
+  assert.equal(topicUrl.searchParams.get("freq"), "daily");
+
+  // Same URL the captain hit: existing watches make promotePersonalWhenWatches
+  // reset with fallback "watches". The chip must still keep Create active.
+  assert.equal(
+    requestedFollowingTab({ search: topicUrl.search, hash: topicUrl.hash }, "watches"),
+    "create",
+    "empty-filter topic click must not bounce to Your watches",
+  );
+
+  const midCreate = renderFollowingDocument(buildFollowingViewModel({
+    lens: "mandates",
+    filter: {},
+    frequency: "daily",
+  }, templates));
+  const placeHref = midCreate.match(
+    /data-following-scope-axis="place"[^>]*data-following-scope-value="Queens"[^>]*data-filter-href="([^"]+)"/,
+  )?.[1];
+  assert.ok(placeHref, "Queens place chip must publish a shareable href");
+  const placeUrl = new URL(placeHref.replaceAll("&amp;", "&"));
+  assert.equal(placeUrl.searchParams.get("lens"), "mandates");
+  assert.match(placeUrl.searchParams.get("filter") || "", /Queens/);
+  assert.equal(
+    requestedFollowingTab({ search: placeUrl.search, hash: placeUrl.hash }, "watches"),
+    "create",
+    "place click after a topic must stay in Create a watch",
+  );
+
+  // Zero existing watches: same URLs stay in create via the create fallback.
+  assert.equal(requestedFollowingTab({ search: topicUrl.search }, "create"), "create");
+
+  // Deep links to the other two tabs still win over a create-flow query.
+  assert.equal(requestedFollowingTab({ search: "", hash: "#your-following" }, "create"), "watches");
+  assert.equal(requestedFollowingTab({ search: "?tab=watches" }, "create"), "watches");
+  assert.equal(requestedFollowingTab({ search: "?tab=packs" }, "create"), "packs");
+  assert.equal(requestedFollowingTab({ search: "?tab=create" }, "watches"), "create");
+  assert.equal(
+    requestedFollowingTab({ search: topicUrl.search, hash: "#your-following" }, "create"),
+    "watches",
+  );
+  // Bare /following with saved watches still opens Your watches.
+  assert.equal(requestedFollowingTab({ search: "", hash: "" }, "watches"), "watches");
 });
