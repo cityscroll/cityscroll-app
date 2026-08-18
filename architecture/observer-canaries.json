@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.architecture.observer_canaries.v1",
+  "description": "Human-owned list of architecture-affecting surfaces the facts observer must see. Register a surface here; do not infer or auto-extend this list.",
+  "canaries": [
+    {
+      "id": "agency-constellation-model",
+      "path": "site/agency_constellation_model.mjs",
+      "why": "Agency constellation and graph producer. PR 1076 raised the PASSPort constellation ceiling on this surface; graph-row ceilings are invisible to the observer's closed source set."
+    },
+    {
+      "id": "agency-search-producer",
+      "path": "site/agency_search_producer.mjs",
+      "why": "Agency SearchDocument producer. PR 1076 touched this file; it is absent from the observer's closed source set, so constellation/search-producer changes do not appear in facts."
+    },
+    {
+      "id": "constellation-document-materializer",
+      "path": "tools/build_agency_constellation_documents.mjs",
+      "why": "Materializes the agency constellation lookup and documents. Constellation producers and their materializers sit outside the observer's closed source set."
+    },
+    {
+      "id": "keyword-search-index",
+      "path": "tools/build_keyword_search_index.mjs",
+      "why": "Keyword-index builder for typed SearchDocuments. PR 1058 changed it with production search; the observer does not parse tools/build_* builders."
+    },
+    {
+      "id": "ontology-registry",
+      "path": "ontology/registry.v0.json",
+      "why": "Civic Graph catalog counts. Already in the observer's closed source set; registered so coverage of this surface is explicit rather than implicit."
+    },
+    {
+      "id": "pages-edge-renderer",
+      "path": "site/pages_edge.mjs",
+      "why": "Pages-edge document renderer. Search, Browse, and Pages-edge sit outside the observer's closed source set."
+    },
+    {
+      "id": "pages-edge-routes",
+      "path": "site/_routes.json",
+      "why": "Pages worker invocation boundary. A route family handled in the edge renderer but missing from this include list never reaches the worker."
+    },
+    {
+      "id": "primary-document-materializer",
+      "path": "tools/build_primary_documents.mjs",
+      "why": "C4 materialization_tools cites this builder as the seam that writes compact site read models. The observer does not parse materializers."
+    },
+    {
+      "id": "production-search",
+      "path": "worker/src/search.mjs",
+      "why": "Production Worker search federates collection families. Adding a family (PR 1058 Committees) does not change dispatch pathnames, so the route parser stays quiet."
+    },
+    {
+      "id": "worker-bindings",
+      "path": "worker/wrangler.toml",
+      "why": "Production bindings, routes, and crons. The reconciler already checks this file against C4; registered so the already-observed surface stays in the canary set."
+    }
+  ]
+}
