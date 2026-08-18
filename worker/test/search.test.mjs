@@ -392,6 +392,39 @@ test("Parcels use the exact-BBL production corpus for worker recall and coverage
   );
 });
 
+test("Committees use the published graph production corpus for worker recall and coverage", async () => {
+  const response = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=Committee%20on%20Finance"),
+    {},
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  const committee = body.results.find((result) => result.object_ref === "committee:11");
+  assert.ok(committee);
+  assert.equal(committee.object_type, "committee");
+  assert.equal(committee.domain, "meetings");
+  assert.equal(committee.canonical_href, "/committees/11/");
+  assert.equal(committee.title, "Committee on Finance");
+  assert.deepEqual({
+    participated: body.coverage.by_lens.committees.participated,
+    state: body.coverage.by_lens.committees.state,
+    indexed_count: body.coverage.by_lens.committees.indexed_count,
+  }, {
+    participated: true,
+    state: "matched",
+    indexed_count: 96,
+  });
+
+  const committeesCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
+    .find((lens) => lens.lens === "committees");
+  assert.equal(committeesCoverage?.state_label, "indexed");
+  assert.match(
+    renderUniversalSearchCoverageHtml(body.coverage),
+    /data-coverage-lens="committees" data-coverage-state="matched"><span>Committees<\/span><strong>1 match · indexed<\/strong>/,
+  );
+});
+
 test("common civic terms return relevant records through the same FTS route", async () => {
   const { sqlite, DB } = database(ROWS);
   try {
