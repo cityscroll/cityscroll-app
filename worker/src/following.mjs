@@ -99,13 +99,13 @@ function watchFacts(context) {
 function personalWatchHtml(watch, credential) {
   const action = watch.paused ? "unpause" : "pause";
   const context = buildFollowingGraphContext(watch, { backToEntity: true });
-  const summary = watch.query || context.ruleSentence;
+  const summary = context.ruleSentence || watch.query || "Custom watch";
   const status = watch.paused ? "Paused" : "Active";
   const cadenceLabel = followingCadenceLabel(watch.freq || watch.frequency);
   return `<article class="following-watch" data-watch-key="${esc(watch.key)}" data-watch-lens="${esc(watch.lens)}" data-watch-filter="${esc(JSON.stringify(watch.filter || {}))}">
     <div class="following-watch-heading">
       <h3>${esc(summary)}</h3>
-      <p class="watch-meta">${status} · Email frequency: ${esc(cadenceLabel)}</p>
+      <p class="watch-meta">${status} · ${esc(cadenceLabel)}</p>
     </div>
     <div class="following-watch-actions">
       ${context.currentMatchesHref ? `<a class="following-current-matches" href="${esc(context.currentMatchesHref)}">See current matches</a>` : ""}
@@ -134,7 +134,7 @@ function personalHtml(watches, credential, recognized) {
   if (!recognized) {
     return `<div data-session-recognized="false"><p>Open a CityScroll email to see your watches.</p></div>`;
   }
-  if (!watches?.length) return `<div data-session-recognized="true"><p>No saved watches yet.</p></div>`;
+  if (!watches?.length) return `<div data-session-recognized="true"><p>No saved watches yet. Create one above to save a watch and get updates on matching City Record rows.</p></div>`;
   return `<div data-session-recognized="true">${watches.map((watch) => personalWatchHtml(watch, credential)).join("")}</div>`;
 }
 
