@@ -1,5 +1,5 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
-import { composeWatchRuleSentence, followingCadenceLabel } from "../following_view.mjs";
+import { composeWatchRuleSentence, followingCadenceLabel, requestedFollowingTab } from "../following_view.mjs";
 
 const root = document.querySelector("[data-following-root]");
 const msg = (name) => root?.dataset[name] || "";
@@ -145,12 +145,7 @@ function setTab(tab) {
 }
 
 function requestedTab(fallback) {
-  const hash = (location.hash || "").replace(/^#/, "");
-  if (hash === "your-following" || hash === "watches") return "watches";
-  if (hash === "create" || hash === "packs") return hash;
-  const queryTab = new URLSearchParams(location.search).get("tab");
-  if (queryTab === "watches" || queryTab === "create" || queryTab === "packs") return queryTab;
-  return fallback;
+  return requestedFollowingTab(location, fallback);
 }
 
 function wireTabs(defaultTab = "create", { reset = false } = {}) {
