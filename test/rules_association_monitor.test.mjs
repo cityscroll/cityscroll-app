@@ -336,6 +336,47 @@ test("UI wires templates, action bands, participation, and blurb chrome", () => 
   assert.match(SITE_SOURCE, /rule-member-blurb/);
 });
 
+const MEMBER_BLURB_KEYS = [
+  "rule_member_blurb_summary",
+  "rule_member_blurb_lead",
+  "rule_member_blurb_copy",
+  "rule_member_blurb_copied",
+];
+const MEMBER_BLURB_SHIPPING_LANGS = [
+  "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur",
+];
+
+function extractI18nString(src, key) {
+  const re = new RegExp(`${key}:\\s*"((?:\\\\.|[^"\\\\])*)"`);
+  const m = src.match(re);
+  return m ? m[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\") : null;
+}
+
+test("member-blurb CTA chrome is translated in every shipping language", () => {
+  const en = Object.fromEntries(
+    MEMBER_BLURB_KEYS.map((key) => [key, extractI18nString(i18n, key)]),
+  );
+  for (const key of MEMBER_BLURB_KEYS) {
+    assert.equal(typeof en[key], "string");
+    assert.ok(en[key].length > 0, `en missing ${key}`);
+  }
+  assert.equal(en.rule_member_blurb_summary, "Share with your members");
+
+  for (const lang of MEMBER_BLURB_SHIPPING_LANGS) {
+    const src = readFileSync(join(ROOT, "site/i18n/lang", `${lang}.js`), "utf8");
+    for (const key of MEMBER_BLURB_KEYS) {
+      const value = extractI18nString(src, key);
+      assert.equal(typeof value, "string", `${lang} missing ${key}`);
+      assert.ok(value.length > 0, `${lang} empty ${key}`);
+      assert.notEqual(
+        value,
+        en[key],
+        `${lang}.${key} still ships the English UI string`,
+      );
+    }
+  }
+});
+
 test("describeWatchLine prefers explicit labels", () => {
   assert.equal(
     describeWatchLine({ label: "DOHMH Agency Rules", lens: "rules", filter: {} }),
