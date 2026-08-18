@@ -24,6 +24,12 @@ import {
   rankCommunityBoardRows,
 } from "../community_board_search.mjs";
 import { domainRows } from "../resident_snapshot_queries.mjs";
+import { resolveLandPublicStatus } from "../land_detail_coherence.mjs";
+import {
+  landParticipationGuideHeadingKey,
+  landParticipationStepsMissingKey,
+  normalizeLandUseActionType,
+} from "../land_use_action_type.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -746,8 +752,13 @@ function actionRailGuideHTML(actions){
   }
   else if(guide.system==="zoning_extracted"){
     // Land / ULURP: phase context + next hearing participation (only fields the city published).
-    headingKey="land_guide_heading";
-    const when=guide.event_date||action.deadline;
+    // Heading follows normalized action type — never assume /browse/zoning/ means rezoning.
+    headingKey=guide.guide_heading_key||"land_guide_heading";
+    // "Next hearing" is future-only — past logistics never take that label.
+    const nextHearing=guide.next_hearing && !guide.next_hearing.past ? guide.next_hearing : null;
+    const when=nextHearing?.event_date
+      || (guide.event_date && !guide.hearing_is_past ? guide.event_date : null)
+      || null;
     const whereBits=[guide.venue_building,guide.venue_address].filter(Boolean);
     const where=whereBits.map(escUiHtml).join(" · ");
     const phaseName=guide.phase_label
@@ -756,7 +767,7 @@ function actionRailGuideHTML(actions){
     facts=[
       phaseName?fact("land_phase",`<dt>${t("land_guide_phase_label")}</dt><dd>${phaseName}</dd>`):"",
       guide.public_status?fact("land_status",`<dt>${t("land_guide_status_label")}</dt><dd><b>${escUiHtml(guide.public_status)}</b></dd>`):"",
-      when?fact("land_hearing",`<dt>${t("land_guide_hearing_label")}</dt><dd>${fdt(when)}${guide.next_hearing&&guide.next_hearing.agency?` · ${escUiHtml(guide.next_hearing.agency)}`:""}</dd>`):"",
+      when?fact("land_hearing",`<dt>${t("land_guide_hearing_label")}</dt><dd>${fdt(when)}${nextHearing&&nextHearing.agency?` · ${escUiHtml(nextHearing.agency)}`:""}</dd>`):"",
       where?fact("land_where",`<dt>${t("venue_label")}</dt><dd>${where}</dd>`):"",
       guide.testimony_email?fact("land_testimony",`<dt>${t("land_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`):"",
       (()=>{
@@ -780,7 +791,7 @@ function actionRailGuideHTML(actions){
     }
     if(when && where) steps.push(step(t("land_guide_attend_step",{date:fdt(when),where}),"land_hearing"));
     else if(when) steps.push(step(t("land_guide_attend_date_step",{date:fdt(when)}),"land_hearing"));
-    else if(where) steps.push(step(t("land_guide_attend_where_step",{where}),"land_where"));
+    else if(where && nextHearing) steps.push(step(t("land_guide_attend_where_step",{where}),"land_where"));
     // Maps-friendly in-person deep link when ZAP disposition logistics published an address.
     if(guide.maps_url && guide.venue_address){
       steps.push(step(t("land_guide_attend_maps_step_html",{
@@ -1180,7 +1191,16 @@ function landActionMatter(projectRow, outcomeRecord, phaseTools){
   const projectId=r.project_id||(rec&&rec.project_id)||null;
   const portal=rec&&rec.portal_url
     || (projectId?`https://zap.planning.nyc.gov/projects/${encodeURIComponent(projectId)}`:null);
-  const publicStatus=r.public_status||(rec&&rec.public_status)||(rec&&rec.open_data&&rec.open_data.public_status)||null;
+  // Reconcile list-row Open Data vs zap-outcomes status — prefer the more terminal fact.
+  const typeSource={...(rec||{}), actions:(rec&&rec.actions)!=null?(rec.actions):r.actions};
+  const actionType=normalizeLandUseActionType(typeSource);
+  const guideHeadingKey=landParticipationGuideHeadingKey(typeSource);
+  const stepsMissingKey=landParticipationStepsMissingKey(typeSource);
+  const publicStatus=resolveLandPublicStatus(r, rec).public_status
+    || (rec&&rec.public_status)
+    || r.public_status
+    || (rec&&rec.open_data&&rec.open_data.public_status)
+    || null;
   let phaseId=null, phaseLabel=null;
   if(rec&&rec.spine&&phaseTools&&typeof phaseTools.buildLandPhaseView==="function"){
     try{
@@ -1208,6 +1228,10 @@ function landActionMatter(projectRow, outcomeRecord, phaseTools){
     project_name:r.project_name||(rec&&rec.project_name)||null,
     title:r.project_name||(rec&&rec.project_name)||null,
     public_status:publicStatus,
+    actions:(rec&&rec.actions)||r.actions||null,
+    land_use_action_type:actionType,
+    guide_heading_key:guideHeadingKey,
+    steps_missing_key:stepsMissingKey,
     lifecycle_stage:null, // zoningStage derives from public_status / phase_id
     phase_id:phaseId,
     phase_label:phaseLabel,

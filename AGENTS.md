@@ -1158,17 +1158,35 @@ batch-stamped on `/zap-outcomes` as `statutory_clock` + `cityscroll.prediction.v
 assertions (`method: statutory_clock`). Pure table:
 `site/ulurp_statutory_clock.mjs`; emission:
 `worker/src/lib/ulurp_statutory_predictions.mjs` via
-`attachUlurpStatutoryPredictions` in `buildZapOutcomeRecord`. UI uses the
-precomputed view only (shared labeled-forecast chip class). Withdrawn projects close open predictions
-as `withdrawn`. Verify:
-`node --test test/ulurp_statutory_clock.test.mjs`. Capture:
-`python3 tools/capture_ulurp_statutory_clock.py`.
+`attachUlurpStatutoryPredictions` in `buildZapOutcomeRecord`. **Reader-facing
+phase deadlines use phase start + window days** (`deadline_basis: phase_window`)
+when a milestone actual_start / prior completion is known; `outer_bound_due_date`
+keeps certified+cumulative for predictions only. Never paint the outer envelope
+as a live “N-day clock” (field case `2026R0127`: Council start 2026-07-31 → due
+2026-09-19, not certified+200 = Nov 27). Insufficient timing fails closed
+(`due_date: null`). UI uses the precomputed view only. Withdrawn projects close
+open predictions as `withdrawn`. Verify:
+`node --test test/ulurp_statutory_clock.test.mjs test/land_use_copy_council_clock.test.mjs`.
+Capture: `python3 tools/capture_ulurp_statutory_clock.py`.
+
+**Land-use action copy + detail coherence:** `/browse/zoning/` hosts acquisitions,
+special permits, map changes, and rezonings. Participation headings come from
+`site/land_use_action_type.mjs` (never the pathname). Reconcile list-row Open Data
+vs zap-outcomes status, future-only next hearings, and next-phase-after-current in
+`site/land_detail_coherence.mjs` / `buildLandProjectState` before render (field
+cases `2023M0213`, `2026K0123`). **Filed vs Noticed** are values of the same ZAP
+`public_status` enum (Open Data may lag the portal) — resolve to one reader-facing
+value, never two “Public status” lines. **Notice while filing/CEQR** is a permitted
+overlap (`phase.state: overlap` + explained copy), not plain “Done” after the current
+step. Verify: `node --test test/land_use_copy_council_clock.test.mjs`.
 
 **Land current-stage pointer (stranded outcomes):** `deriveLandCurrentPhaseId` in
 `site/land_phase_spine.mjs` must not keep an earlier phase as `current` when a
 later phase already has terminal completions (e.g. CB still "In Progress" while
 BP/CPC completed — field case `2019K0190`). Advance past missing outcome rows;
-mark those earlier phases `outcome_status: no_recorded_outcome`. Verify:
+mark those earlier phases `outcome_status: no_recorded_outcome`. “What's next”
+must never fall back to an earlier incomplete template slot. Empty pre-review
+phases the project never entered are omitted from the applicable stepper. Verify:
 `node --test test/land_phase_spine.test.mjs test/ontology_coherence.test.mjs`.
 Capture: `python3 tools/capture_land_stage_coherence.py`.
 
@@ -1176,11 +1194,12 @@ Capture: `python3 tools/capture_land_stage_coherence.py`.
 “In Public Review” is the overall frame; Community Board / Borough President /
 CPC / Council / Mayor is the current step inside it. `buildUlurpPipelinePosition`
 joins phase view + statutory clock into one sentence on the land detail spine
-(“Public review — step N of M: …”). Hearing venue/livestream free text lives on
+(“Public review — step N of M: …”). Days-left only from a phase-window statutory
+`due_date`. Hearing venue/livestream free text lives on
 ZAP disposition `dcp-publichearinglocation` (+ `dcp-dateofpublichearing` with
 clock time) — parse in `worker/src/lib/zap_hearing_logistics.mjs`, stamp
 `hearing_logistics` on `/zap-outcomes`, and feed the land action rail (maps
-attend + watch live). The individual-project shape is an array only when exact
+attend + watch live). “Next hearing” is future-dated only. The individual-project shape is an array only when exact
 disposition evidence exists; honest absence is `null`, and milestone review
 sessions do not become venue/livestream evidence. Fixed-sample measurement uses
 `tools/measure_zap_hearing_logistics.mjs`. Land filter `status=hearings` reads

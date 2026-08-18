@@ -203,12 +203,17 @@ export function emitUlurpStatutoryPredictions(record = {}, opts = {}) {
   const out = []; // cityscroll.prediction.v0 timing rows (Charter §197-c stages)
 
   for (const phase of clock.phases || []) {
-    if (!phase.due_date) continue;
+    // Predictions keep the Charter outer-bound envelope (certified + cumulative).
+    // Reader-facing phase-window due dates are separate and may be null when the
+    // phase start is unknown — do not drop timing predictions in that case.
+    const predictedDue = phase.outer_bound_due_date || phase.due_date || null;
+    if (!predictedDue) continue;
+    const phaseForResolve = { ...phase, due_date: predictedDue };
     let prediction = buildPrediction({
       subject_ref: subjectRef,
       predicted_event_kind: "land.zap_milestone",
       claim: "timing",
-      predicted_window: pointWindow(phase.due_date),
+      predicted_window: pointWindow(predictedDue),
       // Point statutory deadline — not a probability of approval.
       probability: 1,
       basis: statutoryBasis({
@@ -224,7 +229,7 @@ export function emitUlurpStatutoryPredictions(record = {}, opts = {}) {
       resolved_by_event_id: null,
     });
     if (!withdrawn) {
-      prediction = resolveStatutoryPrediction(prediction, phase, { graceDays });
+      prediction = resolveStatutoryPrediction(prediction, phaseForResolve, { graceDays });
     }
     out.push(validatePrediction(prediction));
   }

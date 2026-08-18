@@ -1161,7 +1161,8 @@
     const hearings = rawHearings
       .map((h) => hearingParticipationBits(h, today))
       .filter(Boolean);
-    // Prefer upcoming hearing matching current phase, else nearest future, else most recent with fields.
+    // Prefer upcoming hearing matching current phase, else nearest future.
+    // Past hearings are logistics-only — never the "Next hearing" fact.
     const upcoming = hearings
       .filter((h) => h.event_date && !h.past)
       .sort((a, b) => String(a.event_date).localeCompare(String(b.event_date)));
@@ -1170,23 +1171,19 @@
       nextHearing = upcoming.find((h) => h.body_kind === phaseId) || upcoming[0];
     } else if (upcoming.length) {
       nextHearing = upcoming[0];
-    } else {
-      nextHearing = hearings
-        .filter((h) => h.has_fields)
-        .sort((a, b) => String(b.event_date || "").localeCompare(String(a.event_date || "")))[0] || null;
     }
 
     const closed = stage === "closed" || stage === "completed" || stage === "past";
     const publicReview = stage === "public-review" || stage === "hearing"
-      || LAND_PUBLIC_PHASES.includes(phaseId);
+      || (!closed && LAND_PUBLIC_PHASES.includes(phaseId));
     const preReview = !closed && !publicReview;
 
-    // Prefer current-phase hearing logistics even when the hearing date has passed
-    // (still useful: venue maps + livestream channel) — but mark past honestly.
-    let logisticsHearing = nextHearing;
-    if (!logisticsHearing) {
-      logisticsHearing = hearings
-        .filter((h) => h.has_fields && (h.venue_address || h.livestream_url || h.participation_url || h.maps_url))
+    // Past hearing logistics (venue/maps) may still help on an open project, but
+    // they must not become Attend CTAs or "Next hearing" copy once dated past.
+    let pastLogistics = null;
+    if (!nextHearing && !closed) {
+      pastLogistics = hearings
+        .filter((h) => h.has_fields && h.past && (h.venue_address || h.livestream_url || h.participation_url || h.maps_url))
         .sort((a, b) => String(b.event_date || "").localeCompare(String(a.event_date || "")))[0] || null;
     }
 
@@ -1195,8 +1192,7 @@
     let labelKey = "view_comment_zap";
     let label = "View and comment on ZAP";
     let primaryType = "comment";
-    const activeHearing = logisticsHearing && !logisticsHearing.past ? logisticsHearing : null;
-    const showHearing = activeHearing || logisticsHearing;
+    const activeHearing = nextHearing && !nextHearing.past ? nextHearing : null;
     if (activeHearing && activeHearing.participation_url && activeHearing.join_kind === "join") {
       destination = activeHearing.participation_url;
       labelKey = "join_online";
@@ -1237,14 +1233,16 @@
     const hasFields = !!(
       projectUrl
       || nextHearing
-      || logisticsHearing
+      || pastLogistics
       || phaseId
       || publicStatus
       || m.deadline
       || hearings.length
     );
 
-    const hearingForGuide = showHearing || nextHearing;
+    // Guide facts: future hearing for "Next hearing"; otherwise no event_date.
+    const hearingForGuide = activeHearing || null;
+    const guideHeadingKey = String(m.guide_heading_key || "").trim() || "land_guide_heading";
     return {
       system: "zoning_extracted",
       mode: closed ? "closed" : publicReview ? "public_review" : preReview ? "pre_review" : "active",
@@ -1259,27 +1257,33 @@
       phase_id: phaseId,
       phase_label: phaseLabel,
       stage,
+      guide_heading_key: guideHeadingKey,
+      steps_missing_key: String(m.steps_missing_key || "").trim() || "next_action_land_steps_missing",
       deadline: m.deadline
-        || (nextHearing && !nextHearing.past ? nextHearing.event_date : null)
         || (activeHearing ? activeHearing.event_date : null),
       next_hearing: hearingForGuide,
       hearings: hearings.slice(0, 6),
+      hearing_is_past: false,
       // Flatten next-hearing participation for guide renderers shared with hearing rails.
       participation_url: hearingForGuide ? hearingForGuide.participation_url : null,
       join_kind: hearingForGuide ? hearingForGuide.join_kind : null,
       livestream_url: hearingForGuide ? (hearingForGuide.livestream_url || null) : null,
-      maps_url: hearingForGuide ? (hearingForGuide.maps_url || null) : null,
-      venue_address: hearingForGuide ? hearingForGuide.venue_address : null,
-      venue_building: hearingForGuide ? hearingForGuide.venue_building : null,
-      venue_mode: hearingForGuide ? hearingForGuide.venue_mode : null,
-      hearing_location_raw: hearingForGuide ? hearingForGuide.hearing_location_raw : null,
+      maps_url: hearingForGuide ? hearingForGuide.maps_url : (pastLogistics ? pastLogistics.maps_url : null),
+      venue_address: hearingForGuide ? hearingForGuide.venue_address : (pastLogistics ? pastLogistics.venue_address : null),
+      venue_building: hearingForGuide ? hearingForGuide.venue_building : (pastLogistics ? pastLogistics.venue_building : null),
+      venue_mode: hearingForGuide ? hearingForGuide.venue_mode : (pastLogistics ? pastLogistics.venue_mode : null),
+      hearing_location_raw: hearingForGuide
+        ? hearingForGuide.hearing_location_raw
+        : (pastLogistics ? pastLogistics.hearing_location_raw : null),
       event_date: hearingForGuide ? hearingForGuide.event_date : null,
       testimony_email: hearingForGuide ? hearingForGuide.testimony_email : null,
       testimony_until: hearingForGuide ? hearingForGuide.testimony_until : null,
       contact_name: hearingForGuide ? hearingForGuide.contact_name : null,
       email: hearingForGuide ? hearingForGuide.email : null,
       contact_phone: hearingForGuide ? hearingForGuide.contact_phone : null,
-      official_notice_url: hearingForGuide ? hearingForGuide.source_url : httpsUrl(m.official_notice_url),
+      official_notice_url: hearingForGuide
+        ? hearingForGuide.source_url
+        : httpsUrl(m.official_notice_url),
       has_fields: hasFields,
     };
   }
@@ -1904,7 +1908,12 @@
         if (actions.length < 3) actions.push(landWatch);
       } else {
         actions = [
-          unavailable("comment", "next_action_land_steps_missing", "No participation steps are published for this rezoning yet.", actionDeadline),
+          unavailable(
+            "comment",
+            handoff.steps_missing_key || "next_action_land_steps_missing",
+            "No participation steps are published for this land-use review yet.",
+            actionDeadline,
+          ),
           landWatch,
         ];
       }
