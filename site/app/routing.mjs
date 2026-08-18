@@ -313,6 +313,11 @@ function serializeState(){
     {...scope.facets.values,...activeRouteFacetValues},
     scope.topic.query,
   );
+  if(tab === "land"){
+    const regulatoryEffect=$("#leffect")?.value||"any";
+    if(regulatoryEffect!=="any") scope.facets.values.regulatoryEffect=regulatoryEffect;
+    else delete scope.facets.values.regulatoryEffect;
+  }
   if(tab === "rules" && rulesAgency){
     const ref=entityRouteRef("agency", rulesAgency);
     if(ref){
@@ -1088,6 +1093,7 @@ function applyHash(){
       const explicitFuture=q.get("future");
       const explicitProcedure=q.get("procedure");
       const explicitFamily=q.get("family");
+      const explicitRegulatoryEffect=activeRouteFacetValues.regulatoryEffect;
       const validStage=["any","active","public_review","pre_certification","community_board","borough_president","cpc","city_council","completed"].includes(explicitStage||"");
       const validFuture=["any","any_future","hearing","other","none"].includes(explicitFuture||"");
       const validProcedure=["review","ulurp","elurp","non_ulurp"].includes(explicitProcedure||"");
@@ -1097,6 +1103,7 @@ function applyHash(){
         "urban_renewal","landmark","follow_up","office_space","bid","franchise_consent",
         "housing_plan","pops","landfill",
       ].includes(explicitFamily||"");
+      const validRegulatoryEffect=["any","upzone","downzone","mixed","no_density_change"].includes(explicitRegulatoryEffect||"");
       const legacyExactStatus=/^(?:project|public):.{1,80}$/.test(landStatus||"");
       const legacyPublicReview=["public","In Public Review"].join(":");
       const legacyProjectActive=["project","Active"].join(":");
@@ -1124,6 +1131,7 @@ function applyHash(){
       $("#lfuture").value=adoptedFuture;
       if($("#lprocedure")) $("#lprocedure").value=validProcedure?explicitProcedure:"review";
       if($("#lfamily")) $("#lfamily").value=validFamily?explicitFamily:"any";
+      if($("#leffect")) $("#leffect").value=validRegulatoryEffect?explicitRegulatoryEffect:"any";
       const att=q.get("attendance");
       landAttendance=adoptedFuture==="hearing" && ["in_person","livestream","hybrid"].includes(att||"") ? att : "";
       landClosingWeek=adoptedFuture==="hearing" && q.get("closing")==="week";

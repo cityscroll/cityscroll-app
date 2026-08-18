@@ -13,6 +13,7 @@ import { join, dirname } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { catalogExists, getDataset, WAREHOUSE_DIR } from "./catalog.mjs";
 import { queryWarehouse } from "./query.mjs";
+import { stampLandRegulatoryEffect } from "../../ontology/land_regulatory_effect.mjs";
 
 export const ZAP_DATASET_KEY = "zap-projects";
 
@@ -44,6 +45,8 @@ export const ZAP_EXTRA_COLS = [
 ];
 
 export const ZAP_ALL_COLS = [...ZAP_SELECT_COLS, ...ZAP_EXTRA_COLS];
+/** Acquisition-only source fields; project_brief is replaced by a compact derived stamp. */
+export const ZAP_SOURCE_COLS = [...ZAP_ALL_COLS, "project_brief"];
 
 /** Sell-facing statuses prewarmed for Land detail (matches worker ZAP_PREWARM_STATUSES). */
 export const ZAP_SELL_FACING_STATUSES = Object.freeze([
@@ -57,7 +60,7 @@ export const ZAP_SELL_FACING_STATUSES = Object.freeze([
 export const LAND_DEFAULT_LIMIT = 40;
 
 export function sqlZapLandDefault(table = zapTableName(), limit = LAND_DEFAULT_LIMIT) {
-  const cols = ZAP_ALL_COLS.join(", ");
+  const cols = ZAP_SOURCE_COLS.join(", ");
   return (
     `SELECT ${cols} FROM ${table} ` +
     `WHERE CAST(project_status AS VARCHAR) = 'Active' ` +
@@ -93,12 +96,16 @@ export function rowToSodaShape(row) {
   }
   if (!out.project_id) return null;
   out.project_id = String(out.project_id).trim();
+  const stamped = stampLandRegulatoryEffect({ ...row, ...out });
+  out.regulatory_effect = stamped.regulatory_effect;
+  out.regulatory_effect_confidence = stamped.regulatory_effect_confidence;
+  out.regulatory_effect_basis = stamped.regulatory_effect_basis;
   return out;
 }
 
 export function sqlZapByProjectId(projectId, table = zapTableName()) {
   const id = sq(String(projectId).trim());
-  const cols = ZAP_ALL_COLS.join(", ");
+  const cols = ZAP_SOURCE_COLS.join(", ");
   return (
     `SELECT ${cols} FROM ${table} ` +
     `WHERE CAST(project_id AS VARCHAR) = '${id}' ` +
@@ -111,7 +118,7 @@ export function sqlZapByProjectId(projectId, table = zapTableName()) {
  * Full table is ~33k rows — too large for a committed Worker JSON twin.
  */
 export function sqlZapExportSellFacing(table = zapTableName(), limit = null) {
-  const cols = ZAP_ALL_COLS.join(", ");
+  const cols = ZAP_SOURCE_COLS.join(", ");
   const statuses = ZAP_SELL_FACING_STATUSES.map((s) => `'${sq(s)}'`).join(", ");
   const lim =
     limit != null && Number.isFinite(Number(limit)) && Number(limit) > 0
@@ -126,7 +133,7 @@ export function sqlZapExportSellFacing(table = zapTableName(), limit = null) {
 }
 
 export function sqlZapExportAll(table = zapTableName(), limit = null) {
-  const cols = ZAP_ALL_COLS.join(", ");
+  const cols = ZAP_SOURCE_COLS.join(", ");
   const lim =
     limit != null && Number.isFinite(Number(limit)) && Number(limit) > 0
       ? ` LIMIT ${Math.floor(Number(limit))}`

@@ -1984,7 +1984,7 @@
       </div>
     </div>
     <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" selected data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
-    <div class="land-primary-facets" aria-label="Zoning action type, procedure, stage, and next-opportunity filters" data-i18n-aria="land_filters_label">
+    <div class="land-primary-facets" aria-label="Zoning action type, regulatory effect, procedure, stage, and next-opportunity filters" data-i18n-aria="land_filters_label">
       <div class="field">
         <label for="lfamily" data-i18n="land_family_label">Action type</label>
         <select id="lfamily">
@@ -2010,6 +2010,16 @@
           <option value="housing_plan" data-i18n="land_use_family_housing_plan">Housing plan</option>
           <option value="pops" data-i18n="land_use_family_pops">Privately owned public space</option>
           <option value="landfill" data-i18n="land_use_family_landfill">Landfill</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="leffect"><span data-i18n="land_regulatory_effect_label">Regulatory effect</span> <span class="muted" data-i18n="land_regulatory_effect_derived">derived from the project brief</span></label>
+        <select id="leffect">
+          <option value="any" selected data-i18n="status_all">All</option>
+          <option value="upzone" data-i18n="land_regulatory_effect_upzone">Upzoning</option>
+          <option value="downzone" data-i18n="land_regulatory_effect_downzone">Downzoning</option>
+          <option value="mixed" data-i18n="land_regulatory_effect_mixed">Mixed density change</option>
+          <option value="no_density_change" data-i18n="land_regulatory_effect_no_density_change">No density change</option>
         </select>
       </div>
       <div class="field">

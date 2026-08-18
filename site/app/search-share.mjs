@@ -426,6 +426,7 @@ const NL = {
       if(f.status) $("#lstatus").value=f.status;
       if(f.procedure && $("#lprocedure")) $("#lprocedure").value=f.procedure;
       if(f.family && $("#lfamily")) $("#lfamily").value=f.family;
+      if(f.regulatoryEffect && $("#leffect")) $("#leffect").value=f.regulatoryEffect;
       landCommunityDistrict=f.communityDistrict||"";
       landCouncilDistrict=f.councilDistrict||"";
       $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" ");

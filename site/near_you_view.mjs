@@ -30,6 +30,10 @@ import {
   landRowMatchesFamily,
   normalizeLandFamily,
 } from "./land_status_facets.mjs";
+import {
+  landRowMatchesRegulatoryEffect,
+  normalizeLandRegulatoryEffect,
+} from "./land_regulatory_effect.mjs";
 
 const LENS_LABELS = Object.freeze({
   land: "Zoning",
@@ -129,6 +133,8 @@ function recordMatches(record, scope, builtAt) {
   }
   const family = normalizeLandFamily(scope.facets.values?.family);
   if (family !== "any" && landRecordHasFamilyEvidence(record) && !landRowMatchesFamily(record, family)) return false;
+  const regulatoryEffect = normalizeLandRegulatoryEffect(scope.facets.values?.regulatoryEffect);
+  if (regulatoryEffect !== "any" && !landRowMatchesRegulatoryEffect(record, regulatoryEffect)) return false;
   const { start, end } = effectiveTimeWindow(scope, builtAt);
   const date = record.date ? Date.parse(record.date) : NaN;
   if (Number.isFinite(start) && (!Number.isFinite(date) || date < start)) return false;
