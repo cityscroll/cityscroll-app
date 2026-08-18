@@ -26,6 +26,7 @@ const RESPONSE_SCHEMA = "cityscroll.keyword_search_response.v1";
 const LANE_ORDER = Object.freeze([
   "contracts",
   "people-organizations",
+  "community_boards",
   "land",
   "rules",
   "meetings",
@@ -41,6 +42,7 @@ const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
   people: "people",
   vendors: "vendors",
   parcels: "parcels",
+  community_boards: "community_boards",
 });
 // Collection lenses that are not already represented in the six presentation
 // lanes still contribute typed objects to the flat result list. People compose
@@ -478,7 +480,8 @@ function universalSearchCoverage(lanes, results, dynamicResults, federatedCovera
     people: federatedCoverage.by_lens.people,
     agencies: partialLens("agencies", "agencies", ["agency"]),
     vendors: federatedCoverage.by_lens.vendors,
-    committees: partialLens("committees", null, ["committee"]),    community_boards: partialLens("community_boards", null, ["community_board"]),
+    community_boards: federatedCoverage.by_lens.community_boards,
+    committees: partialLens("committees", null, ["committee"]),
     exams: {
       lens: "exams",
       participated: examsAvailable,
@@ -551,6 +554,7 @@ export async function handleSearch(request, env) {
   const peopleLane = federatedCollectionLane("people", collectionFederation, resolved);
   const vendorLane = federatedCollectionLane("vendors", collectionFederation, resolved);
   const parcelsLane = federatedCollectionLane("parcels", collectionFederation, resolved);
+  const communityBoardsLane = federatedCollectionLane("community_boards", collectionFederation, resolved);
   const agencyLane = staticSearchLane("people-organizations", resolved);
   const contractsMirror = dynamic.lanes.contracts;
   const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
@@ -567,6 +571,7 @@ export async function handleSearch(request, env) {
     ...dynamic.lanes,
     people: peopleLane,
     vendors: vendorLane,
+    community_boards: communityBoardsLane,
     agencies: agencyLane,
     contracts: contractsLane,
     parcels: parcelsLane,
