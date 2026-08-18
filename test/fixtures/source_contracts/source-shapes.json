@@ -370,7 +370,9 @@
       "asset_type": "Feature Layer",
       "sample_type": "FeatureCollection",
       "fields": [
-        "BBL"
+        "BBL",
+        "Latitude",
+        "Longitude"
       ]
     },
     {

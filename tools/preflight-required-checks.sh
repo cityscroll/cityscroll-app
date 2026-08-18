@@ -253,6 +253,7 @@ run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + jo
   "node tools/generate_source_docs.mjs --check"
 run_and_fail node tools/no_live_external_reads.mjs --check
 run_and_fail node tools/build_geocoder_address_index.mjs --check
+run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/data_source_graph.mjs
 run_and_fail node tools/data_source_graph.mjs --check

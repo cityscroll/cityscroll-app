@@ -1185,22 +1185,32 @@
       "id": "mappluto",
       "name": "MapPLUTO",
       "owner": "NYC Department of City Planning",
-      "status": "live",
-      "scope": "source-attribution",
+      "status": "build-time",
+      "scope": "source-attribution + bounded BBL centroid materialization for sell-facing Land pins",
       "kind": "arcgis",
       "endpoint": "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
       "required_fields": [
-        "BBL"
+        "BBL",
+        "Latitude",
+        "Longitude"
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic PLUTO releases",
-      "product_freshness": "Official source attribution only; resident Land maps use retained location evidence.",
-      "used_for": "Official attribution for tax-lot map context.",
+      "product_freshness": "Checked by tools/build_bbl_mappluto_centroids.mjs --check (age ≤120d, ≥95% sell-facing BBL coverage, canary 3012660036). Resident Land maps read the committed centroid lookup only — no live ArcGIS on the hot path.",
+      "used_for": "Official attribution for tax-lot map context and retained BBL→centroid pins for Land.",
       "code_references": [
         {
           "path": "site/app/land.mjs",
           "contains": "NYC MapPLUTO"
+        },
+        {
+          "path": "site/bbl_mappluto_centroids.mjs",
+          "contains": "bbl_mappluto_centroid"
+        },
+        {
+          "path": "tools/build_bbl_mappluto_centroids.mjs",
+          "contains": "MAPPLUTO"
         }
       ],
       "delivery_tier": "inline-at-build"
