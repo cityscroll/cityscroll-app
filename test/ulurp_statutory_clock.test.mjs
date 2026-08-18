@@ -21,6 +21,7 @@ import {
   normalizeLandOutcomeRecord,
   projectStatutoryDeadlines,
   resolveCertificationDate,
+  resolveUlurpNon,
 } from "../site/ulurp_statutory_clock.mjs";
 import {
   attachUlurpStatutoryPredictions,
@@ -181,6 +182,62 @@ test("uncertified projects do not invent statutory due dates", () => {
   };
   const clock = buildUlurpStatutoryClockView(record);
   assert.equal(clock.status, "ineligible");
+  assert.equal(clock.reason, "not_certified");
+  assert.equal(clock.phases.length, 0);
+  assert.deepEqual(emitUlurpStatutoryPredictions(record), []);
+});
+
+test("certified ELURP specimen does not receive Charter §197-c stages or predictions", () => {
+  const record = JSON.parse(
+    readFileSync(join(ROOT, "test/fixtures/ulurp_statutory_clock/certified_elurp_2024Q0419.json"), "utf8"),
+  );
+  assert.equal(record.ulurp_non, null, "publisher field rides on open_data, not top-level");
+  assert.equal(record.open_data.ulurp_non, "ELURP");
+  assert.equal(resolveUlurpNon(record), "ELURP");
+  assert.equal(resolveCertificationDate(record), "2026-03-16");
+
+  const clock = buildUlurpStatutoryClockView(record, {
+    generatedAt: "2026-06-18T12:00:00Z",
+  });
+  assert.equal(clock.status, "ineligible");
+  assert.equal(clock.reason, "wrong_procedure");
+  assert.notEqual(clock.reason, "not_certified");
+  assert.equal(clock.phases.length, 0);
+  assert.equal(clock.disposition, null);
+  assert.equal(clock.total_days, undefined);
+  assert.ok(
+    !clock.phases.some((p) => p.statute_ref === "NYC Charter §197-c"),
+    "ELURP must not project Charter §197-c stages",
+  );
+
+  const predictions = emitUlurpStatutoryPredictions(record, {
+    generatedAt: "2026-06-18T12:00:00Z",
+  });
+  assert.deepEqual(predictions, []);
+  assert.ok(
+    !predictions.some((p) => p.basis?.statute_ref === "NYC Charter §197-c"),
+    "attach path must not emit §197-c prediction rows for ELURP",
+  );
+
+  const attached = attachUlurpStatutoryPredictions(record, {
+    generatedAt: "2026-06-18T12:00:00Z",
+  });
+  assert.equal(attached.statutory_clock.status, "ineligible");
+  assert.equal(attached.statutory_clock.reason, "wrong_procedure");
+  assert.deepEqual(attached.predictions, []);
+});
+
+test("certified Non-ULURP is ineligible for the ULURP statutory clock", () => {
+  const record = {
+    project_id: "NONULURP001",
+    public_status: "In Public Review",
+    certified_referred: "2026-03-02",
+    ulurp_non: null,
+    open_data: { ulurp_non: "Non-ULURP" },
+  };
+  const clock = buildUlurpStatutoryClockView(record);
+  assert.equal(clock.status, "ineligible");
+  assert.equal(clock.reason, "wrong_procedure");
   assert.equal(clock.phases.length, 0);
   assert.deepEqual(emitUlurpStatutoryPredictions(record), []);
 });
