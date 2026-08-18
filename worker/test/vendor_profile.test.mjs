@@ -113,11 +113,14 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
     expiration_date: "2027-03-01",
   }];
   const store = kvStore({ "fc:CAMBA": JSON.stringify(forecast) });
+  let doingBusinessSodaPages = 0;
   const fetchImpl = async (url) => {
     const href = String(url);
     let body;
-    if (href.includes("72mk-a8z7")) body = CAMBA_DOING_BUSINESS;
-    else if (new URL(href).searchParams.get("$group")) body = CAMBA_ROWS;
+    if (href.includes("72mk-a8z7")) {
+      doingBusinessSodaPages += 1;
+      body = CAMBA_DOING_BUSINESS;
+    } else if (new URL(href).searchParams.get("$group")) body = CAMBA_ROWS;
     else body = CAMBA_NOTICES;
     return new Response(JSON.stringify(body), {
       status: 200,
@@ -132,9 +135,10 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(result.profiles, 1);
   assert.equal(result.buckets, 1);
   assert.equal(result.cronCost.socrataRequestsBefore, 1);
-  // An empty committed snapshot preserves the documented live SODA fallback.
-  assert.equal(result.cronCost.doingBusinessRequests, 1);
-  assert.equal(result.cronCost.socrataRequestsAfter, 3);
+  // Full-catalog WH-05 serve attaches from the committed warehouse lookup — no multi-page SODA.
+  assert.equal(result.cronCost.doingBusinessRequests, 0);
+  assert.equal(doingBusinessSodaPages, 0);
+  assert.equal(result.cronCost.socrataRequestsAfter, 2);
   assert.equal(result.included.recentNotices, 15);
   assert.equal(result.included.forecasts, 1);
   assert.equal(result.included.doingBusiness, 1);
@@ -150,9 +154,9 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(bucket.profiles.CAMBA.recentNotices[0].vendor_name, undefined);
   assert.deepEqual(bucket.profiles.CAMBA.forecasts, forecast);
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_name, "CAMBA  INC");
-  // The injected SODA response keeps its source-shaped phone value.
-  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "5550100");
-  assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
+  // Warehouse serve carries the publisher phone (normalized), not the old SODA fixture.
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "718-287-2600");
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-18");
   assert.equal(bucket.profiles.CAMBA.footprint.root.ref, "vendor:stem:CAMBA");
   assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.scope_count, 273);
   assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.confirmed_count, 273);
