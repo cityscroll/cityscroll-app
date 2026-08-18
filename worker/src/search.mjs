@@ -25,6 +25,8 @@ const CARD_LIMIT = 8;
 const RESPONSE_SCHEMA = "cityscroll.keyword_search_response.v1";
 const LANE_ORDER = Object.freeze([
   "contracts",
+  "people",
+  "agencies",
   "people-organizations",
   "community_boards",
   "land",
@@ -43,6 +45,7 @@ const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
   vendors: "vendors",
   parcels: "parcels",
   community_boards: "community_boards",
+  agencies: "agencies",
 });
 // Collection lenses that are not already represented in the six presentation
 // lanes still contribute typed objects to the flat result list. People compose
@@ -458,6 +461,25 @@ function universalSearchCoverage(lanes, results, dynamicResults, federatedCovera
       method: "bounded_keyword_family_v1",
     };
   };
+  const familiesMatchedLens = (lens, familyId, types) => {
+    const family = lanes[familyId];
+    const matchedCount = ["matched", "empty"].includes(family?.status) ? typeCount(types) : null;
+    return {
+      lens,
+      participated: ["matched", "empty"].includes(family?.status),
+      state: ["matched", "empty"].includes(family?.status)
+        ? (matchedCount ? "matched" : "empty")
+        : family?.status === "unknown" ? "provider_unavailable" : "not_indexed",
+      reason: ["matched", "empty"].includes(family?.status) ? "family_index_combines_multiple_universal_lenses" : family?.coverage?.reason || null,
+      matched_count: matchedCount,
+      candidate_count: matchedCount,
+      invalid_candidate_count: ["matched", "empty"].includes(family?.status) ? 0 : null,
+      indexed_count: family?.coverage?.indexed_count ?? null,
+      as_of: family?.as_of || null,
+      source: family?.source || "No bounded source configured",
+      method: "bounded_keyword_family_v1",
+    };
+  };
   const noticeFamilies = [lanes.contracts, lanes.rules];
   const noticeAvailable = noticeFamilies.every((family) => ["matched", "empty"].includes(family?.status));
   const noticeMatchedCount = noticeAvailable ? dynamicResults.length : null;
@@ -478,7 +500,8 @@ function universalSearchCoverage(lanes, results, dynamicResults, federatedCovera
       method: "bounded_keyword_family_v1",
     },
     people: federatedCoverage.by_lens.people,
-    agencies: partialLens("agencies", "agencies", ["agency"]),
+    agencies: familiesMatchedLens("agencies", "agencies", ["agency"]),
+    vendors: partialLens("vendors", null, ["vendor"]),
     vendors: federatedCoverage.by_lens.vendors,
     community_boards: federatedCoverage.by_lens.community_boards,
     committees: partialLens("committees", null, ["committee"]),
@@ -555,7 +578,7 @@ export async function handleSearch(request, env) {
   const vendorLane = federatedCollectionLane("vendors", collectionFederation, resolved);
   const parcelsLane = federatedCollectionLane("parcels", collectionFederation, resolved);
   const communityBoardsLane = federatedCollectionLane("community_boards", collectionFederation, resolved);
-  const agencyLane = staticSearchLane("people-organizations", resolved);
+  const agencyLane = federatedCollectionLane("agencies", collectionFederation, resolved);
   const contractsMirror = dynamic.lanes.contracts;
   const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
   // Keep an unavailable notice mirror honest as unknown unless a Vendor hit
@@ -567,6 +590,11 @@ export async function handleSearch(request, env) {
       [contractsMirror, vendorLane],
     )
     : contractsMirror;
+  const peopleOrganizationsLane = combinedStaticLane(
+    "people-organizations",
+    "NYC Council people and CityScroll agency profiles",
+    [peopleLane, agencyLane],
+  );
   const lanes = {
     ...dynamic.lanes,
     people: peopleLane,
@@ -575,11 +603,7 @@ export async function handleSearch(request, env) {
     agencies: agencyLane,
     contracts: contractsLane,
     parcels: parcelsLane,
-    "people-organizations": combinedStaticLane(
-      "people-organizations",
-      "NYC Council people and CityScroll agency profiles",
-      [agencyLane, peopleLane],
-    ),
+    "people-organizations": peopleOrganizationsLane,
     land: staticSearchLane("land", resolved),
     meetings: staticSearchLane("meetings", resolved),
     exams: staticSearchLane("exams", resolved),

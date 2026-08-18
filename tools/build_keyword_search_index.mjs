@@ -77,13 +77,14 @@ const agencies = json("site/data/agency_constellation_lookup.json");
 const vendors = json("site/data/entity_intelligence_lookup.json");
 const vendorAliases = json("entity_resolution/review/alias_registry.json");
 const communityBoards = json("site/data/community_board_constellation_lookup.json");
+const agencyIdentityReport = json("site/data/agency_route_identity_report.json");
 const land = json("site/data/zap_projects_warehouse_lookup.json");
 const meetings = json("site/data/shared_meeting_read_model.json");
 const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");
 const propertyResidents = json("site/data/property_resident_snapshot.json");
 const peopleCorpus = buildPeopleSearchDocuments(people);
-const agencyCorpus = buildAgencySearchDocuments(agencies);
+const agencyCorpus = buildAgencySearchDocuments(agencies, { identityReport: agencyIdentityReport });
 const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });
 // Production completeness is over currently eligible Vendor documents. Tentative
 // or unpublished roots stay outside the indexed family and are receipted below.
@@ -132,6 +133,11 @@ const output = {
       "NYC Council person profiles",
       people.retrieved_at,
       [peopleCorpus],
+    ),
+    agencies: family(
+      "CityScroll agency profiles",
+      agencies.generated_at,
+      [agencyCorpus],
     ),
     "people-organizations": family(
       "CityScroll agency profiles",

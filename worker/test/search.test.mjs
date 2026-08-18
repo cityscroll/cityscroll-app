@@ -109,6 +109,8 @@ test("GET /search returns ranked validated SearchDocument records from the FTS5 
     assert.equal(body.coverage.complete_count, null);
     assert.deepEqual(body.lanes.map((lane) => lane.id), [
       "contracts",
+      "people",
+      "agencies",
       "people-organizations",
       "community_boards",
       "land",
@@ -501,9 +503,36 @@ test("GET /search rejects a missing query and preserves empty result sets", asyn
     assert.equal(empty.status, 200);
     const body = await empty.json();
     assert.deepEqual(body.results, []);
-    assert.equal(body.lanes.length, 7);
+    assert.equal(body.lanes.length, 9);
     assert.ok(body.lanes.every((lane) => lane.status !== "matched"));
   } finally {
     sqlite.close();
   }
+});
+
+test("Agencies uses its dedicated production provider for worker recall and coverage", async () => {
+  const response = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=Department%20of%20Parks%20and%20Recreation"),
+    {},
+    {},
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.ok(body.results.some((result) => result.object_ref === "agency:id:parks-and-recreation"));
+
+  const lanes = Object.fromEntries(body.lanes.map((lane) => [lane.id, lane]));
+  assert.equal(lanes.agencies.status, "matched");
+  assert.equal(lanes.agencies.count, 1);
+  assert.equal(body.coverage.by_lens.agencies.state, "matched");
+  assert.equal(body.coverage.by_lens.agencies.participated, true);
+  assert.equal(typeof body.coverage.by_lens.agencies.indexed_count, "number");
+
+  const agenciesCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
+    .find((lane) => lane.lens === "agencies");
+  assert.equal(agenciesCoverage?.state_label, "indexed");
+
+  assert.match(
+    renderUniversalSearchCoverageHtml(body.coverage),
+    /data-coverage-lens="agencies" data-coverage-state="matched"><span>Agencies<\/span><strong>1 match · indexed<\/strong>/,
+  );
 });
