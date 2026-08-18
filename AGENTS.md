@@ -176,11 +176,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/mandate_graph_neighbors.test.mjs`.
 - **Land-use procedure nodes:** the closed `land_use_procedure_v2` vocabulary lives in
   `worker/src/lib/subject_registry.mjs` (`ulurp` | `elurp` | `non_ulurp`). Action
-  families (`acquisition`, `disposition`, `rezoning`, …) are a separate closed list;
-  PQ/PC are acquisition, not site selection. `site/mandate_land_use_bridge.mjs`
-  composes mandate → procedure ← project only when both evaluated edges are public;
-  the direct `mandate_land_use` identity-and-phase gate remains a family match and
-  must not be weakened.
+  families come from `LAND_USE_ACTION_CODE_FAMILY` in `site/land_use_action_type.mjs`
+  (`LD` is `legal_document`, not landmark; `PQ`/`PC` are acquisition, not site
+  selection). Graph `landActionKinds` and `LAND_USE_ACTION_FAMILY_KINDS` consume
+  that map — do not keep a parallel code→family table.
+  `site/mandate_land_use_bridge.mjs` composes mandate → procedure ← project only
+  when both evaluated edges are public; the direct `mandate_land_use`
+  identity-and-phase gate remains a family match and must not be weakened.
 - **Community-board meeting labels:** `site/non_council_outcome_panel.mjs` promotes a notice
   to an official board label only from the receipt-backed
   `cityscroll.community_board_source_join.v1` contract (`exact_board_date_publisher_identifier`);
