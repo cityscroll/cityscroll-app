@@ -29,6 +29,7 @@ import {
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
+import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -374,6 +375,19 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     if (!view) continue;
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;
+    // A denser PASSPort graph can light up unmatched route spellings. Public
+    // pages stay on identities the SearchDocument producer can admit.
+    const identity = reconcileAgencyIdentity(id, publisherRows);
+    const matched = (view.categories || []).filter((category) => category.status === "matched");
+    const onlyGraphContracts = matched.length > 0
+      && matched.every((category) => category.id === "contracts" && category.method === "passport_ei_graph_v1");
+    if (
+      !DEMO_IDS.includes(id)
+      && !ACCEPTED_IDENTITY_CLASSIFICATIONS.has(identity.route_classification)
+      && onlyGraphContracts
+    ) {
+      continue;
+    }
     byId[id] = {
       subject_ref: view.subject_ref,
       display_name: view.display_name,

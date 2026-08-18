@@ -16,7 +16,7 @@ import {
 export const AGENCY_SEARCH_PRODUCER = "agency_search_document.v1";
 export const AGENCY_READ_MODEL_SCHEMA = "cityscroll.agency_constellation.v1";
 
-const ACCEPTED_IDENTITY_CLASSIFICATIONS = new Set([
+export const ACCEPTED_IDENTITY_CLASSIFICATIONS = new Set([
   "canonical_read_model",
   "canonical_route",
   "publisher_crosswalk",
