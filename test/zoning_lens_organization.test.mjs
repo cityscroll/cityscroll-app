@@ -48,12 +48,14 @@ test("Zoning keeps review view visible while place controls stay in one disclosu
   assert.doesNotMatch(disclosure, /id="lhearingmode"/);
   assert.match(landSource, /boroughScopeLinksHTML/);
   assert.match(landSource, /renderLandBoroughScopeLinks/);
-  assert.doesNotMatch(disclosure, /id="lkw"|id="lstage"|id="lfuture"/);
+  assert.doesNotMatch(disclosure, /id="lkw"|id="lstage"|id="lfuture"|id="lfamily"/);
   assert.match(zoningSection, /id="lkw"[\s\S]*?id="land-more-filters"/);
   assert.match(zoningSection, /id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"/);
   assert.match(zoningSection, /id="lstatus"[^>]*><option value="all"/);
+  assert.match(zoningSection, /id="lfamily"[\s\S]*?value="any" selected/);
   assert.match(zoningSection, /id="lstage"[\s\S]*?value="active" selected/);
   assert.match(zoningSection, /id="lfuture"[\s\S]*?value="hearing"/);
+  assert.ok(zoningSection.indexOf('id="lfamily"') < zoningSection.indexOf('id="land-resultbar"'));
   assert.ok(zoningSection.indexOf('id="lstage"') < zoningSection.indexOf('id="land-resultbar"'));
 });
 

@@ -647,6 +647,7 @@
     land_hearings_mode_label: 'Attendance',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "مرشحات مرحلة تقسيم المناطق والإجراء وفرصة المشاركة التالية",
+    land_family_label: "نوع الإجراء",
     land_procedure_label: "إجراء المراجعة",
     land_procedure_review: "ULURP والمعجّل",
     land_procedure_ulurp: "ULURP فقط",

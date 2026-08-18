@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   landFacetOptionCounts,
   landFutureActionsByProject,
+  landRowMatchesFamily,
   landRowMatchesStage,
   landStageForRow,
   landStatusFacetOptions,
@@ -78,4 +79,23 @@ test("stage and future-action option counts expose empty intersections", () => {
   assert.equal(counts.stage.completed, 0);
   assert.equal(counts.future_action.hearing, 1);
   assert.equal(counts.future_action.none, 1);
+});
+
+test("action-family option counts stay orthogonal to stage and procedure", () => {
+  const projects = [
+    { project_id: "PQ", project_status: "Active", public_status: "In Public Review", actions: "PQ", ulurp_non: "ULURP" },
+    { project_id: "ZM", project_status: "Active", public_status: "In Public Review", actions: "ZM", ulurp_non: "ULURP" },
+  ];
+  const counts = landFacetOptionCounts(projects, [], {
+    today: "2026-08-17",
+    stage: "any",
+    futureAction: "any",
+    procedure: "review",
+    family: "any",
+  });
+  assert.equal(counts.family.acquisition, 1);
+  assert.equal(counts.family.rezoning, 1);
+  assert.equal(counts.family.any, 2);
+  assert.equal(landRowMatchesFamily(projects[0], "acquisition"), true);
+  assert.equal(landRowMatchesFamily(projects[1], "acquisition"), false);
 });

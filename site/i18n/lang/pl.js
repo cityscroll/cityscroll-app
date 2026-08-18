@@ -621,6 +621,7 @@
     land_pipeline_clock_window_only: '{n}-day statutory clock',
     land_status_upcoming_hearings: 'Upcoming hearings',
     land_filters_label: "Filtry etapu zagospodarowania, procedury i następnej możliwości",
+    land_family_label: "Rodzaj działania",
     land_procedure_label: "Procedura przeglądu",
     land_procedure_review: "ULURP i przyspieszona",
     land_procedure_ulurp: "Tylko ULURP",

@@ -420,6 +420,7 @@ const NL = {
       if(f.boro) landBorough=f.boro;
       if(f.status) $("#lstatus").value=f.status;
       if(f.procedure && $("#lprocedure")) $("#lprocedure").value=f.procedure;
+      if(f.family && $("#lfamily")) $("#lfamily").value=f.family;
       landCommunityDistrict=f.communityDistrict||"";
       landCouncilDistrict=f.councilDistrict||"";
       $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" ");

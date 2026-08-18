@@ -112,10 +112,14 @@ test("Zoning list state carries stage and future action into Following", () => {
     status: "all",
     stage: "public_review",
     futureAction: "hearing",
+    family: "acquisition",
+    boro: "Queens",
   });
   const parsed = parseAlertsEntryParams(alertsHref(scope));
   assert.equal(parsed.filter.stage, "public_review");
   assert.equal(parsed.filter.futureAction, "hearing");
+  assert.equal(parsed.filter.family, "acquisition");
+  assert.equal(parsed.filter.boro, "Queens");
 });
 
 test("lens list state preserves typed route facets in the standing watch", () => {
