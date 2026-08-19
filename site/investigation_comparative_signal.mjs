@@ -142,7 +142,14 @@ function evidenceReference(value) {
   const sourceRowId = text(value?.source_row_id, 200);
   const href = safeHttpsHref(value?.href);
   if (!kind || !sourceContractId || !sourceRowId || !href) return null;
-  return { kind, source_contract_id: sourceContractId, source_row_id: sourceRowId, href };
+  const result = { kind, source_contract_id: sourceContractId, source_row_id: sourceRowId, href };
+  const sourceVaultSha256 = text(value?.source_vault_sha256, 64).toLowerCase();
+  const sourceVaultRef = safeLocalHref(value?.source_vault_ref);
+  if (/^[a-f0-9]{64}$/.test(sourceVaultSha256) && sourceVaultRef === `/source-vault/${sourceVaultSha256}`) {
+    result.source_vault_sha256 = sourceVaultSha256;
+    result.source_vault_ref = sourceVaultRef;
+  }
+  return result;
 }
 
 function subject(value) {
