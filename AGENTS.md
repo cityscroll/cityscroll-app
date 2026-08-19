@@ -3429,12 +3429,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   second store. The resident `/data-health/` page is a materialize-first
   projection of that same public artifact (`site/data_health_page.mjs`;
   rebuild with `node tools/build_data_health_page.mjs`). It does not
-  evaluate clocks at request time. The page lists only sources with
-  dated acquisition or serve evidence (receipts, serve artifacts, or
-  clocks those receipts filled). `acquisition-status-unknown` is builder
-  blindness, not the omit test. ABO and Checkbook stay on the page once
-  their real receipts are wired. Declared-only contracts with no dated
-  evidence remain in `source_contracts.json`. Honesty-conformance (historical/pointer
+  evaluate clocks at request time. The page lists every source CityScroll
+  serves or copies. A served source is never dropped. ABO is observed via
+  the Worker weekly KV refresh (`refreshAboAwards`) and `GET /externalaward`
+  plus residual receipts; Checkbook contracts/spending use their population
+  receipts. `acquisition-status-unknown` is builder blindness, not an omit
+  test. Unused disabled sources with no dated clocks stay in
+  `source_contracts.json`. Remaining runtime caches without a committed
+  refresh receipt keep honest UNKNOWN clocks until that receipt exists.
+  Honesty-conformance (historical/pointer
   never delayed by age, daily delayed only after its own breach,
   failed-acquisition plus valid fallback is Degraded, unknown clocks stay
   null, no operator field on the public surface) lives in

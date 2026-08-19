@@ -26,6 +26,13 @@ const SERVE_ARTIFACTS = Object.freeze({
 // Receipts that already name a canonical contract without `source_contract_id`.
 const RECEIPT_SCHEMA_CONTRACTS = Object.freeze({
   "cityscroll.checkbook_contracts_population_receipt.v1": Object.freeze(["checkbook-contracts"]),
+  "cityscroll.checkbook_spending_population_receipt.v1": Object.freeze(["checkbook-spending"]),
+});
+
+const ABO_DATASET_CONTRACTS = Object.freeze({
+  "8w5p-k45m": "abo-local-authorities",
+  "d84c-dk28": "abo-local-development-corporations",
+  "ehig-g5x3": "abo-state-authorities",
 });
 
 const ADDITIONAL_SERVE_LOOKUPS = Object.freeze([
@@ -41,12 +48,25 @@ const ADDITIONAL_SERVE_LOOKUPS = Object.freeze([
   {
     path: "site/data/procurement_spine_sources.json",
     sourceIds(payload) {
-      return payload?.sources?.checkbook_contracts?.source_system === "checkbook-contracts"
-        ? ["checkbook-contracts"]
-        : [];
+      const ids = [];
+      if (payload?.sources?.checkbook_contracts?.source_system === "checkbook-contracts") {
+        ids.push("checkbook-contracts");
+      }
+      if (payload?.sources?.passport_contracts?.source_system === "passport-public-contracts") {
+        ids.push("passport-public-contracts");
+      }
+      return ids;
     },
-    at(payload) {
-      return payload?.sources?.checkbook_contracts?.pulled_at || payload?.generated_at;
+    at(payload, sourceId) {
+      if (sourceId === "checkbook-contracts") {
+        return payload?.sources?.checkbook_contracts?.pulled_at || null;
+      }
+      if (sourceId === "passport-public-contracts") {
+        return payload?.sources?.passport_contracts?.pulled_at
+          || payload?.sources?.passport_contracts?.population?.pulled_on
+          || null;
+      }
+      return null;
     },
   },
 ]);
@@ -533,9 +553,9 @@ function additionalServeObservations(root, registry) {
     if (!existsSync(path)) continue;
     let payload;
     try { payload = readJson(path); } catch { continue; }
-    const at = validAt(lookup.at(payload));
-    if (!at) continue;
     for (const sourceId of lookup.sourceIds(payload)) {
+      const at = validAt(lookup.at(payload, sourceId));
+      if (!at) continue;
       if (!contractIds.has(sourceId)) {
         throw new Error(`${sourceId}: serving receipt has no canonical contract`);
       }
@@ -552,6 +572,83 @@ function additionalServeObservations(root, registry) {
     }
   }
   return rows;
+}
+
+export function aboExternalAwardContractIds(registry) {
+  const ids = [];
+  for (const contract of registry?.contracts || []) {
+    if (ABO_DATASET_CONTRACTS[contract.dataset_id] === contract.id) ids.push(contract.id);
+  }
+  return ids;
+}
+
+export function workerExternalAwardServeIsLive(root) {
+  const workerPath = join(root, "worker/src/external_award.mjs");
+  const entryPath = join(root, "worker/src/worker.mjs");
+  if (!existsSync(workerPath) || !existsSync(entryPath)) return false;
+  const worker = readFileSync(workerPath, "utf8");
+  const entry = readFileSync(entryPath, "utf8");
+  return worker.includes("export async function refreshAboAwards")
+    && worker.includes("award:meta:last_refresh")
+    && entry.includes("/externalaward")
+    && entry.includes("refreshAboAwards");
+}
+
+function aboKvRefreshReceipt(root) {
+  const path = join(root, "warehouse/receipts/proof/abo_kv_refresh_latest.json");
+  if (!existsSync(path)) return null;
+  try { return { path: relative(root, path), payload: readJson(path) }; } catch { return null; }
+}
+
+export function aboExternalAwardObservations(root, registry) {
+  if (!workerExternalAwardServeIsLive(root)) return { acquisitions: [], serving: [] };
+  const sourceIds = aboExternalAwardContractIds(registry);
+  if (!sourceIds.length) return { acquisitions: [], serving: [] };
+  const receipt = aboKvRefreshReceipt(root);
+  const observedAt = validAt(
+    receipt?.payload?.last_refresh
+    || receipt?.payload?.observed_at
+    || receipt?.payload?.refreshed_at,
+  );
+  const publisherAt = validAt(receipt?.payload?.publisher_updated_at || receipt?.payload?.refreshed);
+  if (!observedAt) return { acquisitions: [], serving: [] };
+  const path = receipt?.path || "worker/src/external_award.mjs";
+  const acquisitions = sourceIds.map((sourceId) => ({
+    source_id: sourceId,
+    observed_at: observedAt,
+    publisher_updated_at: publisherAt,
+    publisher_clock_basis: publisherAt ? "publisher_receipt" : null,
+    status: "succeeded",
+    path,
+    adapter: "worker-externalaward-refresh",
+    run_id: receipt?.payload?.run_id || "award:meta:last_refresh",
+    exact_error: null,
+  }));
+  const serving = sourceIds.map((sourceId) => ({
+    source_id: sourceId,
+    at: observedAt,
+    status: "current",
+    fallback_valid: false,
+    max_age_days: registry.contracts.find((row) => row.id === sourceId)?.freshness_contract?.serving_max_age_days || null,
+    path,
+    basis: "worker_kv_externalaward",
+  }));
+  return { acquisitions, serving };
+}
+
+export function runtimeServedSourceIds(root, registry) {
+  const ids = new Set();
+  if (workerExternalAwardServeIsLive(root)) {
+    for (const id of aboExternalAwardContractIds(registry)) ids.add(id);
+  }
+  for (const contract of registry?.contracts || []) {
+    if (contract.status === "disabled") continue;
+    if (contract.health_policy?.public_visibility !== "public") continue;
+    if (["edge-materialized", "live-only", "inline-at-build"].includes(contract.delivery_tier)) {
+      ids.add(contract.id);
+    }
+  }
+  return ids;
 }
 
 export function sourceIdsWithAcquisitionOrServeEvidence(inputs = {}) {
@@ -636,10 +733,20 @@ function externalScheduleEvents(root, stateDir) {
 export function loadSourceHealthInputs(root, registry, options = {}) {
   const coveragePath = join(root, "entity_resolution/source_coverage.json");
   const events = externalScheduleEvents(root, options.externalScheduleStateDir);
+  const aboRuntime = aboExternalAwardObservations(root, registry);
   return {
-    warehouseReceipts: [...warehouseReceipts(root, registry), ...geographyReceipts(root)],
-    serveObservations: [...serveObservations(root, registry), ...additionalServeObservations(root, registry)],
+    warehouseReceipts: [
+      ...warehouseReceipts(root, registry),
+      ...geographyReceipts(root),
+      ...aboRuntime.acquisitions,
+    ],
+    serveObservations: [
+      ...serveObservations(root, registry),
+      ...additionalServeObservations(root, registry),
+      ...aboRuntime.serving,
+    ],
     scheduleObservations: externalScheduleObservations(events),
+    runtimeServedSourceIds: [...runtimeServedSourceIds(root, registry)],
     coverageCensus: existsSync(coveragePath) ? readJson(coveragePath) : null,
   };
 }

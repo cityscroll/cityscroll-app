@@ -1,12 +1,11 @@
 // Public Data health page: materialize-first projection of GET /source-health.
 // Renders only the committed public artifact. Does not evaluate clocks, query
 // internals, or invent healthy/zero values for missing observations.
-// The page lists sources with real acquisition or serve evidence: dated
-// clocks from receipts or serve artifacts. Observation reason codes such as
-// acquisition-status-unknown are not the omit test — that status can mean
-// the health builder was blind to a real receipt. Declared-only contracts
-// with no dated evidence stay in source_contracts.json and the public
-// artifact; they are omitted here.
+// The page lists every source CityScroll serves or copies. Observation reason
+// codes such as acquisition-status-unknown are builder blindness, not an omit
+// test. Disabled unused sources with no dated clocks stay in
+// source_contracts.json and the public artifact; they are omitted here.
+// A served source is never dropped, even when some clocks are still UNKNOWN.
 
 import {
   PUBLIC_SOURCE_HEALTH_SCHEMA,
@@ -273,7 +272,10 @@ export function dataHealthRowIsNeverAcquired(row, options = {}) {
   if (evidence && typeof evidence.has === "function" && evidence.has(row?.source_id)) {
     return false;
   }
-  return true;
+  const reasons = Array.isArray(row?.health?.reason_codes) ? row.health.reason_codes : [];
+  // Only unused disabled sources drop. Runtime-served or copied sources stay,
+  // including those whose clocks the builder has not yet wired.
+  return reasons.includes("source-disabled");
 }
 
 function sourceCard(row) {

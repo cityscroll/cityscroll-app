@@ -540,10 +540,8 @@
       "source_id": "checkbook-spending",
       "contract_fingerprint": "c415c4fb708d79c72f036b5f6ae0ccbf26dcc8557b57878150d4d40e091697d8",
       "health": {
-        "status": "Source-unavailable",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -551,9 +549,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-11T19:25:33.574Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "cityscroll_serving": {
             "at": null,
@@ -569,7 +567,26 @@
         "measured_at": "2026-08-11T19:25:33.574Z",
         "reason_codes": []
       },
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+          "at": "2026-08-11T19:25:33.574Z",
+          "status": "succeeded"
+        }
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-11T19:25:33.574Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/checkbook_spending_population_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "city-clerk-elobbyist",
@@ -2060,9 +2077,9 @@
       "source_id": "passport-public-contracts",
       "contract_fingerprint": "5b4f31730f406787d9ea08c969025567f7401f8a76100a9cffc032b19a8a667c",
       "health": {
-        "status": "Source-unavailable",
+        "status": "Degraded",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "serving-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
@@ -2076,9 +2093,9 @@
             "basis": null
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-06T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "warehouse_materialization"
           }
         }
       },
@@ -2089,7 +2106,14 @@
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
       },
-      "evidence": []
+      "evidence": [
+        {
+          "kind": "serving-receipt",
+          "path": "site/data/procurement_spine_sources.json",
+          "at": "2026-08-06T00:00:00.000Z",
+          "status": "current"
+        }
+      ]
     },
     {
       "source_id": "passport-public-rfx",

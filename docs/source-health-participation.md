@@ -82,7 +82,8 @@ Receipts must already name the canonical id. The current producers are:
 | --- | --- | --- |
 | `warehouse/receipts/proof/*.json` | `source_contract_id`, `source_contracts[]`, or a named receipt schema such as `cityscroll.checkbook_contracts_population_receipt.v1` | Acquisition attempt and optional publisher clock. Dated fields include `pulled_at` / `source.pulled_at`. |
 | `data/geography/receipts/**` | `source.contract_id` | Geography acquisition and publisher vintage. |
-| Serving artifacts | `freshness_contract.serve_contract_id` or `warehouse_snapshot.artifact`, plus named lookups that already cite the contract (`site/data/abo_award_residual_lookup.json`, Checkbook rows in `site/data/procurement_spine_sources.json`) | Serving clock, age, and canary findings. |
+| Serving artifacts | `freshness_contract.serve_contract_id` or `warehouse_snapshot.artifact`, plus named lookups that already cite the contract (`site/data/abo_award_residual_lookup.json`, Checkbook/PASSPort rows in `site/data/procurement_spine_sources.json`) | Serving clock, age, and canary findings. |
+| ABO Worker KV + `GET /externalaward` | `refreshAboAwards` weekly cache (`award:meta:last_refresh`, `award:<dataset>:<authority>`) mapped by dataset id onto `abo-local-authorities` / `abo-local-development-corporations` / `abo-state-authorities` | Acquisition and serving clocks when a dated KV-refresh receipt exists. Residual ABO receipts already fill clocks. Do not invent `last_refresh`. |
 | External `source-contracts-live` outbox | healthy / failure `id` | Live probe attempt. |
 | `entity_resolution/source_coverage.json` | coverage `id`, plus `COVERAGE_ALIASES` in `tools/source_health_observations.mjs` | Relationship coverage, never freshness. |
 
@@ -91,6 +92,13 @@ rely on filename or date matching. Warehouse datasets that feed this system
 carry the same id as `source_contract_id` in `warehouse/datasets.v0.json`.
 A missing `source_contract_id` is not proof the source was never acquired when
 the receipt names the contract another honest way.
+
+The resident `/data-health/` page lists every source CityScroll serves or
+copies. A served source is never omitted because clocks are still UNKNOWN.
+Follow-up: remaining runtime caches (PASSPort D1 ingest meta, Rules RSS,
+Legistar, live SODA lenses) still need dated receipts before their three
+clocks fill like City Record. Until then the page keeps those cards with
+honest UNKNOWN clocks. Do not invent `last_refresh` or publisher dates.
 
 The observation file is the private current-state read model. It is excluded
 from Pages in `site/_config.yml`. Rebuild it after contract or receipt changes;

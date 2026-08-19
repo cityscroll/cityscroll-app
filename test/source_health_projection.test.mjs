@@ -9,12 +9,16 @@ import {
   normalizeRelationshipCoverage,
 } from "../ontology/source_health.mjs";
 import {
+  aboExternalAwardContractIds,
+  aboExternalAwardObservations,
   buildSourceHealthObservations,
   externalScheduleObservations,
   loadSourceHealthInputs,
   receiptSourceIds,
   redactCredentialValues,
+  runtimeServedSourceIds,
   validateSourceHealthProjection,
+  workerExternalAwardServeIsLive,
 } from "../tools/source_health_observations.mjs";
 import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
 import { fileURLToPath } from "node:url";
@@ -424,6 +428,53 @@ test("committed ABO and checkbook-contracts observations carry real receipt cloc
   assert.equal(state.health.clocks.publisher_updated.at, null);
   const checkbook = projection.observations.find((row) => row.source_id === "checkbook-contracts");
   assert.equal(checkbook.health.clocks.cityscroll_checked_acquired.at, "2026-08-18T04:05:51.552Z");
+});
+
+test("ABO Worker KV weekly refresh and GET /externalaward are observed as the serve path", () => {
+  const registry = loadSourceContracts();
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  assert.equal(workerExternalAwardServeIsLive(root), true);
+  assert.deepEqual(aboExternalAwardContractIds(registry).sort(), [
+    "abo-local-authorities",
+    "abo-local-development-corporations",
+    "abo-state-authorities",
+  ]);
+  const served = runtimeServedSourceIds(root, registry);
+  for (const id of ["abo-local-authorities", "abo-local-development-corporations", "abo-state-authorities", "checkbook-contracts"]) {
+    assert.equal(served.has(id), true, id);
+  }
+  assert.equal(served.has("checkbook-nycha-contracts"), false);
+
+  const withReceipt = aboExternalAwardObservations(root, registry);
+  // Production KV last_refresh is not in git; do not invent it. A dated receipt fills clocks.
+  const projection = buildSourceHealthObservations(
+    { contracts: [contract({ id: "abo-local-authorities", dataset_id: "8w5p-k45m" })] },
+    {
+      asOf: NOW,
+      warehouseReceipts: [{
+        source_id: "abo-local-authorities",
+        observed_at: "2026-07-16T00:00:00.000Z",
+        publisher_updated_at: "2025-12-01T00:00:00.000Z",
+        publisher_clock_basis: "publisher_receipt",
+        status: "succeeded",
+        path: "worker/src/external_award.mjs",
+        adapter: "worker-externalaward-refresh",
+      }],
+      serveObservations: [{
+        source_id: "abo-local-authorities",
+        at: "2026-07-16T00:00:00.000Z",
+        status: "current",
+        path: "worker/src/external_award.mjs",
+        basis: "worker_kv_externalaward",
+      }],
+    },
+  );
+  const row = projection.observations[0];
+  assert.equal(row.health.clocks.publisher_updated.at, "2025-12-01T00:00:00.000Z");
+  assert.equal(row.health.clocks.cityscroll_checked_acquired.at, "2026-07-16T00:00:00.000Z");
+  assert.equal(row.health.clocks.cityscroll_serving.at, "2026-07-16T00:00:00.000Z");
+  assert.equal(withReceipt.acquisitions.length, 0);
+  assert.equal(withReceipt.serving.length, 0);
 });
 
 test("raw receipt observations remain backstage until a strict public projection exists", () => {

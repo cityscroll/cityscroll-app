@@ -404,10 +404,8 @@
       "expected_cadence": "Ongoing spending and payment updates",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -415,9 +413,9 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-11T19:25:33.574Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
             "at": null,
@@ -1658,9 +1656,9 @@
       "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
+        "status": "Degraded",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "serving-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
@@ -1674,9 +1672,9 @@
             "basis": null
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-06T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },
