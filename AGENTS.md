@@ -3553,6 +3553,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   project, and record identifiers out of observations. Refresh projections
   with `node tools/build_performance_observability.mjs`. Focused proof is
   `test/rum_maps_entities_async_instrumentation.test.mjs`.
+- Following owns its stateful shell and personal-watch settlement in
+  `site/rum_stateful_instrumentation.mjs` and `site/app/following.mjs`:
+  report the static create-flow shell separately from `/following/personal`
+  retrieval, and emit catalog terminals for populated, empty (including
+  unauthenticated), unavailable, and error. Keep watch, account, session,
+  location, and cross-page tokens out of observations; collection stays
+  disabled. Refresh projections with
+  `node tools/build_performance_observability.mjs`. Focused proof is
+  `test/rum_stateful_instrumentation.test.mjs`.
 - Field-performance intake is the separate `POST /performance-events` contract
   in `worker/src/performance_events.mjs`, backed only by `RUM_ANALYTICS` /
   `crol_rum_observations_v1`. Keep its normalized one-metric-per-point layout,
