@@ -3389,6 +3389,16 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `test/source_health_public_projection.test.mjs` and
   `worker/test/source_health.test.mjs`.
 
+## Performance observability registry
+
+- `architecture/performance-observability.v1.json` is the only human-edited
+  surface/component inventory for RUM classification, Worker validation, and
+  private operator labels. Regenerate all three projections with
+  `node tools/build_performance_observability.mjs`; verify drift and the
+  unknown-route fail-closed invariant with `--check` and
+  `test/performance_observability_registry.test.mjs`. Never add a consumer-side
+  fallback that maps an unknown route to Home or Browse.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

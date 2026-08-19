@@ -69,7 +69,23 @@ export function validatePerformanceMetricCatalog(catalog) {
   if (!catalog || typeof catalog !== "object" || Array.isArray(catalog)) fail("root must be an object");
   exactKeys(
     catalog,
-    ["$schema", "schema", "catalog_version", "observation_contract", "metrics", "phase_decompositions"],
+    [
+      "$schema",
+      "schema",
+      "catalog_version",
+      "registry_version",
+      "manifest_version",
+      "description",
+      "observation_contract",
+      "metrics",
+      "phase_decompositions",
+      "delivery_classes",
+      "lifecycle_states",
+      "projection_policy",
+      "semantic_readiness_contracts",
+      "surfaces",
+      "components",
+    ],
     "root",
   );
   if (catalog.$schema !== "./performance-observability.v1.schema.json") fail("unexpected $schema");

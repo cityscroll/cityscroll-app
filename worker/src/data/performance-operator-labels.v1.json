@@ -1,0 +1,1612 @@
+{
+  "schema": "cityscroll.performance.operator_inventory.v1",
+  "manifest_version": "rum-surfaces-v1",
+  "registry_version": "1.0.0",
+  "registry_hash": "8019c14f8b090c10400c01056fca646a9baa126f6da245491a8fb361d4747b06",
+  "surfaces": [
+    {
+      "surface_id": "about",
+      "operator_label": "About",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-about",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/about.html"
+    },
+    {
+      "surface_id": "agency",
+      "operator_label": "Agency profile",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-agency",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_agency_documents.mjs"
+    },
+    {
+      "surface_id": "api-guide",
+      "operator_label": "API guide",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-api",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/api.html"
+    },
+    {
+      "surface_id": "assertion",
+      "operator_label": "Assertion inspector",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-assertion",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/assertion_inspector.mjs"
+    },
+    {
+      "surface_id": "browse",
+      "operator_label": "Browse landing",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "browse",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_primary_documents.mjs"
+    },
+    {
+      "surface_id": "browse-contracts",
+      "operator_label": "Browse / Contracts",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-contracts",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [
+        {
+          "alias_id": "browse-money",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "Legacy lens name retained for historical observations."
+        }
+      ],
+      "supersedes": [
+        "browse-money"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs"
+    },
+    {
+      "surface_id": "browse-exams",
+      "operator_label": "Browse / Exams",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-exams",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/exams_surface.mjs"
+    },
+    {
+      "surface_id": "browse-meetings",
+      "operator_label": "Browse / Meetings",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-meetings",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs"
+    },
+    {
+      "surface_id": "browse-people",
+      "operator_label": "Browse / People + organizations",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-people",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/people_organizations_surface.mjs"
+    },
+    {
+      "surface_id": "browse-places",
+      "operator_label": "Browse / Places",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-places",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_concept_view.mjs"
+    },
+    {
+      "surface_id": "browse-property",
+      "operator_label": "Browse / Property",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-property",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs"
+    },
+    {
+      "surface_id": "browse-rules",
+      "operator_label": "Browse / Rules",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-rules",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs"
+    },
+    {
+      "surface_id": "browse-staffing",
+      "operator_label": "Browse / Staffing",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-staffing",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/staffing_surface.mjs"
+    },
+    {
+      "surface_id": "browse-zoning",
+      "operator_label": "Browse / Zoning",
+      "kind": "surface",
+      "parent": "surface:browse",
+      "route_family": "browse-zoning",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [
+        {
+          "alias_id": "browse-land",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "The public route family was renamed from Land to Zoning without erasing historical observations."
+        }
+      ],
+      "supersedes": [
+        "browse-land"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs"
+    },
+    {
+      "surface_id": "changelog",
+      "operator_label": "Changelog",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-changelog",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/changelog.html"
+    },
+    {
+      "surface_id": "committee",
+      "operator_label": "Committee document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-committee",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/committee_document.mjs"
+    },
+    {
+      "surface_id": "community-board",
+      "operator_label": "Community board profile",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-community-board",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_community_board_constellation_documents.mjs"
+    },
+    {
+      "surface_id": "data-guide",
+      "operator_label": "Data guide",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-data",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/data.html"
+    },
+    {
+      "surface_id": "district-digest",
+      "operator_label": "Council district digest",
+      "kind": "surface",
+      "parent": "surface:following",
+      "route_family": "district-digest",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_composed_object_documents.mjs"
+    },
+    {
+      "surface_id": "exam",
+      "operator_label": "Exam document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-exam",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_exam_documents.mjs"
+    },
+    {
+      "surface_id": "following",
+      "operator_label": "Following",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "stateful-following",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [
+        {
+          "alias_id": "alerts",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "Legacy hash-route name retained for historical observations."
+        }
+      ],
+      "supersedes": [
+        "alerts"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/following_view.mjs"
+    },
+    {
+      "surface_id": "following-pack",
+      "operator_label": "Following / monitor pack",
+      "kind": "surface",
+      "parent": "surface:following",
+      "route_family": "stateful-following-pack",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs"
+    },
+    {
+      "surface_id": "home",
+      "operator_label": "Home",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "home",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/index.html"
+    },
+    {
+      "surface_id": "mandate",
+      "operator_label": "Mandate document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-mandate",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/mandate_document.mjs"
+    },
+    {
+      "surface_id": "meeting",
+      "operator_label": "Meeting document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-meeting",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/meeting_document.mjs"
+    },
+    {
+      "surface_id": "near-you",
+      "operator_label": "Near You",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "place-near-you",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [
+        {
+          "alias_id": "map",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "Legacy hash-route name retained for historical observations."
+        }
+      ],
+      "supersedes": [
+        "map"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_view.mjs"
+    },
+    {
+      "surface_id": "notice",
+      "operator_label": "Notice document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-notice",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs"
+    },
+    {
+      "surface_id": "now",
+      "operator_label": "Now",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "task-now",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_primary_documents.mjs"
+    },
+    {
+      "surface_id": "official",
+      "operator_label": "Official profile",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-official",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs"
+    },
+    {
+      "surface_id": "parcel",
+      "operator_label": "Parcel document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-parcel",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "tools/build_composed_object_documents.mjs"
+    },
+    {
+      "surface_id": "procurement",
+      "operator_label": "Procurement document",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "record-procurement",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/procurement_document.mjs"
+    },
+    {
+      "surface_id": "public-stats",
+      "operator_label": "Public corpus statistics",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-stats",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/stats.html"
+    },
+    {
+      "surface_id": "search",
+      "operator_label": "Universal search",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "search",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "worker_backed",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/search/index.html"
+    },
+    {
+      "surface_id": "standards",
+      "operator_label": "Standards",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-standards",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/standards.html"
+    },
+    {
+      "surface_id": "vendor",
+      "operator_label": "Vendor profile",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "entity-vendor",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "page-content-ready-v1",
+        "metric_id": "content_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/pages_edge.mjs"
+    }
+  ],
+  "components": [
+    {
+      "component_id": "browse-filter-apply",
+      "operator_label": "Browse / filter application",
+      "kind": "interaction",
+      "parent": "component:browse-results",
+      "route_family": "browse",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "interaction-settled-v1",
+        "metric_id": "interaction_settled_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named action has produced visible feedback and reached its owner-defined terminal result; feedback and settled timestamps remain distinct."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/app/feed-actions.mjs"
+    },
+    {
+      "component_id": "browse-results",
+      "operator_label": "Browse / result list",
+      "kind": "component",
+      "parent": "surface:browse",
+      "route_family": "browse",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/browse_view.mjs"
+    },
+    {
+      "component_id": "following-watch-change",
+      "operator_label": "Following / watch change",
+      "kind": "interaction",
+      "parent": "component:following-watch-list",
+      "route_family": "stateful-following",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "interaction-settled-v1",
+        "metric_id": "interaction_settled_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named action has produced visible feedback and reached its owner-defined terminal result; feedback and settled timestamps remain distinct."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/following_view.mjs"
+    },
+    {
+      "component_id": "following-watch-list",
+      "operator_label": "Following / watch list",
+      "kind": "component",
+      "parent": "surface:following",
+      "route_family": "stateful-following",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/following_view.mjs"
+    },
+    {
+      "component_id": "home-search-submit",
+      "operator_label": "Home / search submit",
+      "kind": "interaction",
+      "parent": "component:home-topic-entry",
+      "route_family": "home",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "interaction-settled-v1",
+        "metric_id": "interaction_settled_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named action has produced visible feedback and reached its owner-defined terminal result; feedback and settled timestamps remain distinct."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/home_entry.mjs"
+    },
+    {
+      "component_id": "home-topic-entry",
+      "operator_label": "Home / topic entry",
+      "kind": "component",
+      "parent": "surface:home",
+      "route_family": "home",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/home_entry.mjs"
+    },
+    {
+      "component_id": "near-you-borough",
+      "operator_label": "Near You / borough scope",
+      "kind": "component",
+      "parent": "surface:near-you",
+      "route_family": "place-near-you",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_scope_runtime.mjs"
+    },
+    {
+      "component_id": "near-you-community-district",
+      "operator_label": "Near You / community district scope",
+      "kind": "component",
+      "parent": "surface:near-you",
+      "route_family": "place-near-you",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [
+        {
+          "alias_id": "near-you-cd",
+          "introduced_version": "0.1.0",
+          "retired_version": "1.0.0",
+          "reason": "Expanded abbreviation retained as identity history."
+        }
+      ],
+      "supersedes": [
+        "near-you-cd"
+      ],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_scope_runtime.mjs"
+    },
+    {
+      "component_id": "near-you-council-district",
+      "operator_label": "Near You / Council district scope",
+      "kind": "component",
+      "parent": "surface:near-you",
+      "route_family": "place-near-you",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_scope_runtime.mjs"
+    },
+    {
+      "component_id": "near-you-map",
+      "operator_label": "Near You / map and activity",
+      "kind": "component",
+      "parent": "surface:near-you",
+      "route_family": "place-near-you",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_view.mjs"
+    },
+    {
+      "component_id": "near-you-scope-change",
+      "operator_label": "Near You / scope change",
+      "kind": "interaction",
+      "parent": "component:near-you-map",
+      "route_family": "place-near-you",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "interaction-settled-v1",
+        "metric_id": "interaction_settled_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named action has produced visible feedback and reached its owner-defined terminal result; feedback and settled timestamps remain distinct."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/near_you_scope_runtime.mjs"
+    },
+    {
+      "component_id": "notice-context",
+      "operator_label": "Notice / contextual edges",
+      "kind": "component",
+      "parent": "surface:notice",
+      "route_family": "record-notice",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/app/notice-context.mjs"
+    },
+    {
+      "component_id": "search-results",
+      "operator_label": "Search / result union",
+      "kind": "component",
+      "parent": "surface:search",
+      "route_family": "search",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "worker_backed",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/search/index.html"
+    },
+    {
+      "component_id": "search-submit",
+      "operator_label": "Search / submit",
+      "kind": "interaction",
+      "parent": "component:search-results",
+      "route_family": "search",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "worker_backed",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "interaction-settled-v1",
+        "metric_id": "interaction_settled_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named action has produced visible feedback and reached its owner-defined terminal result; feedback and settled timestamps remain distinct."
+      },
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/search/index.html"
+    }
+  ]
+}
