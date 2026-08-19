@@ -36,6 +36,11 @@ import {
   resolveLandProcedure,
 } from "../land_status_facets.mjs";
 import { resolveLandPublicStatus } from "../land_detail_coherence.mjs";
+import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
+import {
+  landOutcomesOutcomeFromSnapshot,
+  landOutcomesReady,
+} from "../rum_maps_entities_async_instrumentation.mjs";
 import {
   LAND_REGULATORY_EFFECT_OPTIONS,
   landRegulatoryEffectChipHTML,
@@ -43,8 +48,6 @@ import {
 } from "../land_regulatory_effect.mjs";
 import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { zapActionDisplayLabels } from "../zap_action_labels.mjs";
-import { reportLandOutcomeReadiness } from "../rum_maps_entities_async.mjs";
-import { currentRumSemanticMilestones } from "../rum_semantic_runtime.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -1516,13 +1519,19 @@ function landOutcomesHTML(record, phaseTools, listRow){
 function landOutcomeAbsentHTML(record){
   return "";
 }
+function reportLandOutcomesReady(record, fetchState){
+  landOutcomesReady(runtimeRumSemanticMilestones(), {
+    resultState: landOutcomesOutcomeFromSnapshot(record, fetchState),
+  });
+}
+function landOutcomeRecordIsPresent(record){
+  return Boolean(record && (record.snapshot_state === "present" || (record.filled && record.snapshot_state !== "absent")));
+}
 
 function landOutcomeFirstPaintHTML(r){
   const hit=r?.project_id?zapOutcomesMemGet(r.project_id):null;
   const record=hit?.data?.record;
-  if(!record) return "";
-  reportLandOutcomeReadiness(currentRumSemanticMilestones(),{record});
-  if(record.snapshot_state==="absent") return "";
+  if(!record||record.snapshot_state==="absent") return "";
   return landOutcomeSnapshotHTML(record,null);
 }
 function landOutcomeSnapshotHTML(record,phaseTools,listRow){
@@ -1670,7 +1679,6 @@ async function loadZapOutcomes(r, el, selection){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
-    reportLandOutcomeReadiness(currentRumSemanticMilestones(),{record});
     el.innerHTML = warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
       : landOutcomesHTML(record,phaseTools,r);
@@ -1685,7 +1693,11 @@ async function loadZapOutcomes(r, el, selection){
       || Date.now()-generated>6*60*60*1000
       || connectionState!=="available"
     );
-    if(!staleStatic) return;
+    if(landOutcomeRecordIsPresent(record)) reportLandOutcomesReady(record);
+    if(!staleStatic){
+      if(!landOutcomeRecordIsPresent(record)) reportLandOutcomesReady(record);
+      return;
+    }
   }
   const [data, phaseTools] = await Promise.all([
     fetchZapOutcomesPayload(r.project_id,{allowStatic:false}),
@@ -1694,21 +1706,27 @@ async function loadZapOutcomes(r, el, selection){
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
-    reportLandOutcomeReadiness(currentRumSemanticMilestones(),{
-      requestState:data?.ok === false?"error":"unavailable"
-    });
     // Preserve a static first paint on transient freshness failures. An empty
     // region is allowed only when this project was outside the bounded snapshot.
+    // Private telemetry can still mark an honest terminal state.
+    reportLandOutcomesReady(data?.record, {
+      fetchFailed: !data,
+      responseOk: data ? data.ok !== false : false,
+    });
     return;
   }
   const record = normalizeLandRecord(data.record);
-  reportLandOutcomeReadiness(currentRumSemanticMilestones(),{record});
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
+  if(record.snapshot_state==="absent" || record.snapshot_state==="unavailable"){
+    reportLandOutcomesReady(record);
+    return;
+  }
   el.innerHTML = landOutcomesHTML(record, phaseTools, r);
   bindLandSpineUI(el);
   paintLandActionRail($("#land-actions"), r, record, phaseTools);
+  reportLandOutcomesReady(record);
 }
 
 /* ===================== NOTICE-LEVEL ZAP PROJECT SPINE =====================

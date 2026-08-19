@@ -19,11 +19,12 @@ import {
   sourceSystemReaderLabel,
 } from "./graph_edge_provenance.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import { runtimeRumSemanticMilestones } from "./rum_static_record_instrumentation.mjs";
 import {
-  agencyRelationshipResultState,
-  reportAgencyConstellationReadiness,
-} from "./rum_maps_entities_async.mjs";
-import { currentRumSemanticMilestones } from "./rum_semantic_runtime.mjs";
+  agencyIdentityReady,
+  agencyRelationshipsOutcomeFromView,
+  agencyRelationshipsReady,
+} from "./rum_maps_entities_async_instrumentation.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -273,31 +274,46 @@ function applyAsOf(root, nowView, day) {
   wireForm(root, nowView);
 }
 
+function reportAgencyDocumentReadiness(main, view, { relationshipsState } = {}) {
+  if (main?.dataset.civicObjectKind !== "agency-constellation") return;
+  const rum = runtimeRumSemanticMilestones();
+  agencyIdentityReady(rum, {
+    kind: "agency-constellation",
+    hasIdentityHeading: Boolean(main.querySelector(".agency-constellation-hero h1")?.textContent?.trim()),
+  });
+  agencyRelationshipsReady(rum, {
+    resultState: relationshipsState || agencyRelationshipsOutcomeFromView(view) || "unavailable",
+  });
+}
+
 export function mountAgencyCivicTimeLedger(root = document) {
   const main = root.querySelector?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']")
     || (root.matches?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']") ? root : null);
   if (!main) return null;
   const payloadEl = root.getElementById?.("civic-object-payload")
     || document.getElementById("civic-object-payload");
-  if (!payloadEl) return null;
+  if (!payloadEl) {
+    reportAgencyDocumentReadiness(main, null, { relationshipsState: "unavailable" });
+    return null;
+  }
   let nowView;
   try {
     nowView = JSON.parse(payloadEl.textContent || "null");
   } catch {
+    reportAgencyDocumentReadiness(main, null, { relationshipsState: "error" });
     return null;
   }
   if (!nowView || !["agency-constellation", "parcel"].includes(nowView.kind)) return null;
 
   const initial = parseAsOfFromSearch(location.search);
   applyAsOf(main, nowView, initial);
+  const displayView = asOfFilterCanNarrow(nowView)
+    ? (normalizeAsOfDay(initial)
+      ? projectAgencyConstellationAsOf(nowView, normalizeAsOfDay(initial), { axis: "valid" })
+      : nowView)
+    : nowView;
+  reportAgencyDocumentReadiness(main, displayView);
   wireCopy(main);
-
-  if (nowView.kind === "agency-constellation") {
-    reportAgencyConstellationReadiness(currentRumSemanticMilestones(), {
-      identityState: "content",
-      relationshipState: agencyRelationshipResultState(nowView.categories),
-    });
-  }
 
   main.querySelector("[data-object-print]")?.addEventListener("click", () => window.print());
   main.querySelector('[data-object-export="json"]')?.addEventListener("click", () => {
