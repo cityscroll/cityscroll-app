@@ -37,7 +37,12 @@ import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs"
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 import { currentAwardCandidates } from "./external_award.mjs";
-import { redactEmail, normalizeEmail, ensureSubscriptionIdentity } from "./lib/subscriptions.mjs";
+import {
+  redactEmail,
+  normalizeEmail,
+  ensureSubscriptionIdentity,
+  rowAfterDeliveryNotBefore,
+} from "./lib/subscriptions.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
@@ -901,6 +906,7 @@ export async function processOneSub(env, s, ctx) {
       rows = await fetchRows(q.url, q.params, q.transformRows, q.readRows);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter); // property needs the full parcel stream for stage transitions
     }
+    rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
     const seen = await getSeen(env, s.key);
     let propertyStageSeenIds = [];
     if (s.lens === "property") {
@@ -1357,6 +1363,7 @@ async function evaluateSubSection(env, s, ctx) {
       rows = await fetchRows(q.url, q.params, q.transformRows, q.readRows);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
     }
+    rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
     const seen = await getSeen(env, s.key);
     let propertyStageSeenIds = [];
     if (s.lens === "property") {
@@ -1819,6 +1826,8 @@ async function evaluateCatchUpSub(env, s, ctx) {
         };
       }
     }
+
+    rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
 
     // Property stage evaluation needs a set argument, but it must not read the legacy
     // seen:<watch> state. The outbox identity/tombstone is the only recovery correctness

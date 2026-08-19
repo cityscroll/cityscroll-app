@@ -32,8 +32,14 @@ const ACTION_SET = new Set(ACTION_TYPES);
 const OBJECT_SET = new Set(OBJECT_TYPES);
 const SLUG_PATTERN = /^[a-z][a-z0-9_-]{0,63}$/;
 const OBJECT_ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,159}$/;
-const LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "entity", "award"]);
-const SOURCES = new Set(["confirm", "pins", "prefs", "unsubscribe", "review_desk"]);
+const LENSES = new Set([
+  "money", "people", "land", "property", "rules", "meetings", "district", "entity", "award",
+  "mandates", "obligations",
+]);
+const SOURCES = new Set([
+  "confirm", "following", "top-of-site", "inbound_email", "mcp", "legacy-confirm",
+  "pins", "prefs", "unsubscribe", "review_desk",
+]);
 const FREQUENCIES = new Set(["daily", "weekly"]);
 const DECISIONS = new Set(["same", "different", "unresolved"]);
 

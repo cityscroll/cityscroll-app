@@ -5,13 +5,13 @@
 //   search_notices / get_notice  — the D1 notices mirror (no model call, cheap)
 //   retrieve_cited_passages      — typed source passages only (no model call, cheap)
 //   preview_watch                — plain English → lens filter → live results (LLM, metered)
-//   create_watch                 — plain English → DOUBLE-OPT-IN confirm email (LLM, metered)
+//   create_watch                 — plain English → immediate watch + welcome email (LLM, metered)
 // No list/delete tools: watch management stays behind the emailed unsubscribe links,
 // so knowing an address never reveals or controls its subscriptions (privacy first).
 //
 // Spend defenses (every paid path fails closed): optional MCP_BEARER_TOKEN; per-IP daily
 // request limit; shared daily LLM ceiling (NL_METER `m:mcp:<day>`, MCP_MAX_CALLS_PER_DAY);
-// per-sender confirm-email limit (same 5/day as /subscribe).
+// per-sender signup-email limit (same 5/day as /subscribe).
 
 import { noticeSearchTerms, searchNotices, toRecord } from "./lib/notices.mjs";
 import { parseLensFilter } from "./nl.mjs";
@@ -19,8 +19,7 @@ import { LENSES } from "./lib/filter.mjs";
 import { compileSub } from "./lib/compile.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
-import { signToken } from "optin-token";
-import { sendConfirm } from "./subscribe.mjs";
+import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
 import {
   CITED_RETRIEVAL_OUTPUT_SCHEMA,
@@ -29,7 +28,6 @@ import {
 import { SEMANTIC_SOURCE_FAMILIES } from "./semantic_candidates.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
-const CONFIRM_TTL = 24 * 3600;
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -97,7 +95,7 @@ const TOOLS = [
   },
   {
     name: "create_watch",
-    description: "Create a standing email watch from plain English. Sends a double-opt-in confirmation email — nothing is stored and no digests are sent until the address confirms.",
+    description: "Create a standing email watch from plain English. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
@@ -238,25 +236,22 @@ async function callTool(env, req, name, args) {
       return text(previewText(p));
     }
     case "create_watch": {
-      if (!env.TOKEN_SECRET || !env.RESEND_API_KEY) return toolError("Watch creation isn't configured on this deployment.");
+      if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) return toolError("Watch creation isn't configured on this deployment.");
       const email = String(args.email || "").trim();
       const lens = String(args.lens || "");
       if (!isValidEmail(email)) return toolError("A valid email address is required.");
       if (!SUBSCRIBABLE.has(lens)) return toolError("lens must be one of: " + [...SUBSCRIBABLE].join(", "));
-      // Same per-address ceiling as the web form — confirm emails cost sends.
+      // Same per-address ceiling as the web form — welcome emails cost sends.
       if (await overActorLimit(env.SUBS, "mcpsub", email, 5)) return toolError("Daily limit reached for that address — try tomorrow.");
       const p = await runPreview(env, lens, String(args.request || ""));
       if (p.error) return toolError(p.error);
       const sub = buildSubscription({ email, lens, filter: p.filter, freq: args.freq === "weekly" ? "weekly" : "daily" });
-      const token = await signToken(env.TOKEN_SECRET, { e: sub.email, l: lens, f: p.filter, c: "email", q: sub.freq }, { ttlSeconds: CONFIRM_TTL });
-      const base = env.CONFIRM_BASE || new URL(req.url).origin;
-      const confirmUrl = `${base}/confirm?token=${encodeURIComponent(token)}`;
       try {
-        await sendConfirm(env, sub.email, lens, p.filter, sub.freq, confirmUrl);
+        await enrollAndWelcome(env, sub, { source: "mcp" });
       } catch {
-        return toolError("The confirmation email couldn't be sent — try again later.");
+        return toolError("The watch could not be created — try again later.");
       }
-      return text(`Understood as: ${p.label} (${sub.freq}).\nA confirmation email was sent to ${sub.email} — the watch starts only after it's confirmed (double opt-in).\n\n${previewText(p)}`);
+      return text(`Understood as: ${p.label} (${sub.freq}).\nThe watch is active and a welcome email with manage and unsubscribe links was sent to ${sub.email}.\n\n${previewText(p)}`);
     }
     default:
       return toolError(`Unknown tool: ${name}`);

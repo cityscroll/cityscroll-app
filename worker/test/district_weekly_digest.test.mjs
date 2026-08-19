@@ -6,7 +6,6 @@ import { compileSub } from "../src/lib/compile.mjs";
 import { describeFilter } from "../src/lib/confirm_email.mjs";
 import { subDigestDecision, subDigestHtml } from "../src/alerts.mjs";
 import { handleSubscribe } from "../src/subscribe.mjs";
-import { handleConfirm } from "../src/confirm.mjs";
 import { dedupeFreshByContent } from "../src/lib/digest.mjs";
 
 class MockKV {
@@ -55,18 +54,18 @@ test("district compiler replays the same materialized list used by preview", () 
   assert.equal(describeFilter("district", { councilDistrict: "33" }), "Council District 33 weekly digest");
 });
 
-test("one district preset confirmation creates exactly one weekly watch record", async () => {
+test("one district preset submit immediately creates exactly one weekly watch record", async () => {
   const env = {
     TOKEN_SECRET: "your-secret-key-here",
     RESEND_API_KEY: "test",
     SUBS: new MockKV(),
     CONFIRM_BASE: "https://api.cityscroll.org",
   };
-  let confirmationHtml = "";
+  let welcomeHtml = "";
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (url, options) => {
     if (!String(url).includes("api.resend.com")) throw new Error(`unexpected fetch ${url}`);
-    confirmationHtml = JSON.parse(options.body).html;
+    welcomeHtml = JSON.parse(options.body).html;
     return new Response(JSON.stringify({ id: "sent" }), { status: 200 });
   };
   try {
@@ -85,17 +84,15 @@ test("one district preset confirmation creates exactly one weekly watch record",
       }),
     }), env);
     assert.equal(response.status, 200);
-    assert.equal([...env.SUBS.store.keys()].filter((key) => key.startsWith("sub:")).length, 0);
-    const confirmUrl = confirmationHtml.match(/href="(https:\/\/api\.cityscroll\.org\/confirm\?token=[^"]+)"/)?.[1];
-    assert.ok(confirmUrl);
-    const confirmed = await handleConfirm(new Request(confirmUrl), env);
-    assert.equal(confirmed.status, 200);
     const records = [...env.SUBS.store.entries()].filter(([key]) => key.startsWith("sub:"));
     assert.equal(records.length, 1);
     const record = JSON.parse(records[0][1]);
     assert.equal(record.lens, "district");
     assert.equal(record.freq, "weekly");
     assert.deepEqual(record.filter, { councilDistrict: "33" });
+    assert.match(welcomeHtml, /Council District 33 weekly digest \(weekly\)/);
+    assert.match(welcomeHtml, /Manage subscription/);
+    assert.match(welcomeHtml, /Unsubscribe/);
   } finally {
     globalThis.fetch = realFetch;
   }

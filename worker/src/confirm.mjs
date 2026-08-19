@@ -1,12 +1,19 @@
-// GET /confirm?token=… — the double-opt-in landing. Verifies the signed, unexpired token
-// (issued by /subscribe) and only THEN writes the ACTIVE subscription to KV. Replaying an
-// expired/forged token does nothing. Returns a small HTML page (it's clicked from an email).
+// GET /confirm?token=… — compatibility for signed confirmation links issued before the
+// single-opt-in cutover. A valid legacy link may create its watch once; an already-enrolled watch
+// is an idempotent no-op. New signups never depend on this endpoint.
 
 import { verifyToken } from "optin-token";
-import { buildSubscription, deriveSubscriberId, deriveWatchId, subCanonical } from "./lib/subscriptions.mjs";
+import {
+  buildSubscription,
+  deriveSubscriberId,
+  deriveWatchId,
+  isTopiclessIntent,
+  normalizeEmail,
+  subscriptionKey,
+} from "./lib/subscriptions.mjs";
 import { describeFilter, htmlPage } from "./lib/confirm_email.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
-import { appendActionLog } from "./lib/action_log.mjs";
+import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
 import { prefsLink } from "./prefs.mjs";
 
 export async function handleConfirm(req, env) {
@@ -16,46 +23,81 @@ export async function handleConfirm(req, env) {
   const res = await verifyToken(env.TOKEN_SECRET, token);
   if (!res.valid) {
     const msg = res.reason === "expired"
-      ? "This confirmation link has expired. Please subscribe again on cityscroll.org."
-      : "This confirmation link is invalid.";
+      ? "This older signup link has expired. Subscribe again on cityscroll.org."
+      : "This signup link is invalid.";
     return page("Link not valid", msg, 400);
   }
 
-  const p = res.payload; // { e, l, f, c, q, lng? }
-  const sub = buildSubscription({ email: p.e, lens: p.l, filter: p.f, channel: p.c, freq: p.q, lang: p.lng || "en" });
-  const key = `sub:${await subId(sub)}`;
-  sub.subscriber_id = await deriveSubscriberId(sub.email);
-  sub.watch_id = await deriveWatchId(key);
+  const payload = res.payload;
+  if (payload.nt === 1) return legacyTopiclessLanding(env, payload);
+
+  const sub = buildSubscription({
+    email: payload.e,
+    lens: payload.l,
+    filter: payload.f,
+    channel: payload.c,
+    freq: payload.q,
+    lang: payload.lng || "en",
+  });
+  const key = await subscriptionKey(sub);
+  let existing = null;
   try {
-    await env.SUBS.put(key, JSON.stringify(sub));
+    const raw = await env.SUBS.get(key);
+    existing = raw ? JSON.parse(raw) : null;
+    if (!existing) {
+      sub.source = "legacy-confirm";
+      sub.subscriber_id = await deriveSubscriberId(sub.email);
+      sub.watch_id = await deriveWatchId(key);
+      await env.SUBS.put(key, JSON.stringify(sub));
+      emitUsageEvent(env, { event: "alert_confirmed", lens: sub.lens, surface: "legacy-confirm" });
+      await appendWatchLog(env, {
+        action: "subscribe",
+        email: sub.email,
+        subKey: key,
+        lens: sub.lens,
+        label: watchLabel(sub),
+        freq: sub.freq,
+        source: "legacy-confirm",
+        at: sub.createdAt,
+      });
+    }
   } catch {
     return page("Something went wrong", "We couldn't save your subscription — please try again.", 500);
   }
-  emitUsageEvent(env, { event: "alert_confirmed", lens: sub.lens, surface: "email" });
-  await appendActionLog(env, {
-    action_type: "watch_confirmed",
-    object: { type: "watch", id: sub.lens },
-    method: { name: "double_opt_in", version: "v1" },
-    metadata: { lens: sub.lens, freq: sub.freq, source: "confirm" },
-  });
 
-  const desc = escHtml(describeFilter(sub.lens, sub.filter));
-  const manageUrl = await prefsLink(env, sub.email);
+  const active = existing || sub;
+  const desc = escHtml(describeFilter(active.lens, active.filter));
+  const manageUrl = await prefsLink(env, active.email);
   const manage = manageUrl
     ? `<br><br><a href="${escAttr(manageUrl)}">Manage or unsubscribe from this watch</a>`
     : "";
   return page(
     "You're subscribed ✅",
-    `You'll get <b>${desc}</b> the moment there's a new notice — and nothing on quiet days. Every email has a one-click unsubscribe.${manage}`,
-    200
+    `Your watch for <b>${desc}</b> is active. Every email has a one-click unsubscribe.${manage}`,
+    200,
   );
 }
 
-// Stable short id for a (email, lens, filter) so re-confirming is idempotent (same key).
-async function subId(sub) {
-  const data = new TextEncoder().encode(subCanonical(sub));
-  const buf = await crypto.subtle.digest("SHA-256", data);
-  return [...new Uint8Array(buf)].slice(0, 8).map((b) => b.toString(16).padStart(2, "0")).join("");
+async function legacyTopiclessLanding(env, payload) {
+  const key = typeof payload.k === "string" && payload.k.startsWith("sub:") ? payload.k : null;
+  if (!key || payload.s !== "top-of-site") return page("Link not valid", "This signup link is invalid.", 400);
+  let record = null;
+  try {
+    const raw = await env.SUBS.get(key);
+    record = raw ? JSON.parse(raw) : null;
+  } catch { /* handled below */ }
+  if (!isTopiclessIntent(record)
+      || normalizeEmail(record.email) !== normalizeEmail(payload.e)
+      || record.source !== payload.s) {
+    return page("Link not valid", "This signup is no longer active.", 400);
+  }
+  const manageUrl = await prefsLink(env, record.email);
+  const manage = manageUrl ? `<br><br><a href="${escAttr(manageUrl)}">Manage or remove this interest</a>` : "";
+  return page(
+    "You're subscribed ✅",
+    `Your weekly NYC contracts digest is active. It covers new contract solicitations, awards, and other procurement notices across the city. <a href="https://cityscroll.org/following/">Choose another topic in Following</a>.${manage}`,
+    200,
+  );
 }
 
 function escHtml(s) {

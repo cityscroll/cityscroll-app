@@ -1,4 +1,4 @@
-// worker/src/lib/i18n.mjs — email string translations for digest and confirm emails.
+// worker/src/lib/i18n.mjs — email string translations for digest emails.
 // Kept minimal: only the strings that appear in outbound email HTML.
 //
 // es: machine-translated, pending native review (Anna's CBO network, wave 6).
@@ -7,13 +7,6 @@
 
 const EMAIL_STRINGS = {
   en: {
-    confirm_subject:      "Confirm your CityScroll alert",
-    confirm_heading:      "Confirm your CityScroll alert",
-    confirm_someone_asked:"You (or someone using this address) asked CityScroll to send:",
-    confirm_expires:      "This link expires in 24 hours and can be used once.",
-    confirm_didnt_ask:    "Didn't ask for this? Just ignore this email — nothing will be sent, and your address is not stored.",
-    confirm_btn:          "Confirm my alert →",
-
     digest_new_item_singular: "item",
     digest_new_item_plural:   "items",
     // {n} = count, {item} = singular/plural word, {date} = short date string
@@ -78,13 +71,6 @@ const EMAIL_STRINGS = {
   },
 
   es: {
-    confirm_subject:      "Confirme su alerta de CityScroll",
-    confirm_heading:      "Confirme su alerta de CityScroll",
-    confirm_someone_asked:"Usted (o alguien usando esta dirección) pidió a CityScroll que enviara:",
-    confirm_expires:      "Este enlace expira en 24 horas y puede usarse una sola vez.",
-    confirm_didnt_ask:    "¿No solicitó esto? Solo ignore este correo — no se enviará nada y su dirección no se almacenará.",
-    confirm_btn:          "Confirmar mi alerta →",
-
     digest_new_item_singular: "aviso",
     digest_new_item_plural:   "avisos",
     digest_new_items:     "{n} {item} nuevo(s) desde {date}.",

@@ -2,8 +2,8 @@
 // Dev reported multi-subscription behavior "not working" vs his crol-alert; these tests
 // pin what the worker layer must guarantee before/after the crol-alert integration:
 //   1. one address can hold several distinct watches (different lens or filter)
-//   2. re-confirming the same watch is idempotent (no duplicates)
-//   3. re-confirming with a new freq UPDATES the watch in place (freq is not in the id hash)
+//   2. replaying a legacy link for the same watch is idempotent (no duplicates)
+//   3. replaying a legacy link with a new freq UPDATES the watch in place (freq is not in the id hash)
 //   4. unsubscribing one watch never touches the address's other watches
 //   5. the digest cron's KV listing sees every watch, not one-per-address
 //   6. (sharp edge, by design) /subscribe rate-limiting counts ATTEMPTS, not successes —
@@ -65,14 +65,14 @@ test("re-confirming the same watch is idempotent (no duplicates)", async () => {
   assert.equal(subKeys(env).length, 1, "same (email, lens, filter) must map to one stored watch");
 });
 
-test("re-confirming with a new freq updates in place (freq excluded from id hash)", async () => {
+test("replaying a legacy link cannot overwrite an already-active watch frequency", async () => {
   const env = { TOKEN_SECRET: SECRET, SUBS: new MockKV() };
   await confirmWatch(env, { email: "anna@example.com", lens: "money", filter: { q: "hvac" }, freq: "daily" });
   await confirmWatch(env, { email: "anna@example.com", lens: "money", filter: { q: "hvac" }, freq: "weekly" });
   const keys = subKeys(env);
   assert.equal(keys.length, 1, "freq change must not create a second watch");
   const stored = JSON.parse(env.SUBS.store.get(keys[0]));
-  assert.equal(stored.freq, "weekly", "the newer freq wins");
+  assert.equal(stored.freq, "daily", "the active single-opt-in record wins");
 });
 
 test("unsubscribing one watch leaves the email's other watches intact", async () => {
@@ -101,7 +101,7 @@ test("digest listing (prefix sub:) sees every watch for an address", async () =>
   assert.equal(records.filter((record) => record.email.split("@")[0] === "anna").length, 2);
 });
 
-test("changing language does NOT create a duplicate watch (lang excluded from id hash)", async () => {
+test("replaying a legacy link in another language does not duplicate or overwrite a watch", async () => {
   const env = { TOKEN_SECRET: SECRET, SUBS: new MockKV() };
   const watch = { email: "anna@example.com", lens: "money", filter: { q: "affordable housing" } };
   await confirmWatch(env, { ...watch, lang: "en" });
@@ -109,7 +109,7 @@ test("changing language does NOT create a duplicate watch (lang excluded from id
   const keys = subKeys(env);
   assert.equal(keys.length, 1, "en→es lang switch must not duplicate the watch; got: " + keys.join(", "));
   const stored = JSON.parse(env.SUBS.store.get(keys[0]));
-  assert.equal(stored.lang, "es", "the newer lang wins on re-confirm");
+  assert.equal(stored.lang, "en", "the active single-opt-in record wins");
 });
 
 test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address daily quota", async () => {
@@ -138,7 +138,7 @@ test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address 
       );
     // 5 failed sends (MAX_SUB_PER_ADDR_DAY) → each 502, each consuming quota…
     for (let i = 0; i < 5; i++) assert.equal((await post()).status, 502);
-    // …so the 6th attempt is rate-limited even though zero confirmations succeeded.
+    // …so the 6th attempt is rate-limited even though no welcome email succeeded.
     // Deliberate (spend guard runs first). Pinned so any future change is conscious.
     assert.equal((await post()).status, 429);
 

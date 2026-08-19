@@ -282,7 +282,7 @@ function packMembersMarkup(view) {
     <p class="following-pack-cost" data-pack-cost>${esc(attention.summary)}</p>
     <p class="muted node-muted" data-pack-sample-subject>Sample subject line: ${esc(attention.sampleSubject)}</p>
     <ul class="node-record-list">${items}</ul>
-    <p class="muted node-muted">Each watch needs its own confirm link. When you have more than one watch, we send one email with a part for each watch.</p>
+    <p class="muted node-muted">Each watch starts when you subscribe. When you have more than one watch, we send one email with a part for each watch.</p>
   </section>`;
 }
 
