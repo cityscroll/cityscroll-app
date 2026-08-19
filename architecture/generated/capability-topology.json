@@ -119,6 +119,70 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "entity.relationships.get@1",
+      "id": "entity.relationships.get",
+      "version": "1.0.0",
+      "owner": "entity-resolution",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none",
+        "redaction": "public relationship graph serializer allowlist"
+      },
+      "cost": {
+        "class": "bounded-d1-read",
+        "machineFanOut": "bounded-graph"
+      },
+      "input_schema": "cityscroll.capability.entity_relationships_get.input.v1",
+      "output_schema": "cityscroll.capability.entity_relationships_get.output.v1",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "entityIdentity": "graph.root.id",
+        "relationshipIdentity": "graph.edges[].id",
+        "sourceIdentity": "graph.edges[].provenance.source",
+        "observationClock": "graph.edges[].provenance.observed_at",
+        "evidenceFields": "graph.edges[].provenance.source_fields",
+        "confidence": "graph.edges[].confidence status and basis; no private score"
+      },
+      "freshness": {
+        "owner": "D1 entity-resolution read model plus committed public graph overlays",
+        "projection": "public serializer and adapter-owned representation"
+      },
+      "provider": {
+        "id": "worker-d1.entity-relationships",
+        "module": "worker/src/public_relationship_graph.mjs",
+        "export": "workerD1EntityRelationships",
+        "store": "Cloudflare D1 plus committed public graph overlay",
+        "readModel": "canonical entities plus accepted source-record and evaluated public edges"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.entity-relationships@1",
+          "module": "worker/src/public_relationship_graph.mjs",
+          "kind": "http-route",
+          "route": "GET /entity-relationships",
+          "surface": "Public relationship graph",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public relationship graph object"
+            },
+            {
+              "id": "html",
+              "mediaType": "text/html",
+              "projection": "existing evidence-bearing relationship document"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {

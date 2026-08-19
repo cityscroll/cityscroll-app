@@ -20,6 +20,7 @@ import {
 } from "../capabilities/mcp_tool_declarations.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import { ENTITY_DOSSIER_HTTP_ADAPTER } from "../worker/src/entity_dossier.mjs";
+import { ENTITY_RELATIONSHIPS_HTTP_ADAPTER } from "../worker/src/public_relationship_graph.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
@@ -56,6 +57,7 @@ export function validateRuntimeTopology() {
     SEARCH_NOTICE_ADAPTER,
     MCP_NOTICE_SEARCH_ADAPTER,
     ENTITY_DOSSIER_HTTP_ADAPTER,
+    ENTITY_RELATIONSHIPS_HTTP_ADAPTER,
   ];
   for (const runtimeAdapter of runtimeAdapters) {
     const registered = registeredAdapters.get(runtimeAdapter.id);

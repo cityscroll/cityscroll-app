@@ -4,7 +4,8 @@
   "endpoint": "POST https://api.cityscroll.org/mcp",
   "registered_capability_references": [
     "notice.search@1",
-    "entity.dossier.get@1"
+    "entity.dossier.get@1",
+    "entity.relationships.get@1"
   ],
   "tools": [
     {
