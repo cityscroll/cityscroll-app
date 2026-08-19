@@ -89,7 +89,9 @@ test("the committed private route is a byte-current static materialization", () 
   assert.match(html, /<main id="main"/);
   assert.match(html, /data-private-story-signal-projection="1"/);
   assert.match(html, /data-story-signal-card="1"/);
-  assert.doesNotMatch(html, /<script\b|fetch\s*\(|D1Database|\.prepare\s*\(|openai|anthropic/i);
+  assert.equal((html.match(/<script\b/g) || []).length, 1);
+  assert.match(html, /<script defer src="\/analytics\.js\?v=1\.3\.0"><\/script>/);
+  assert.doesNotMatch(html, /fetch\s*\(|D1Database|\.prepare\s*\(|openai|anthropic/i);
 });
 
 test("public builds omit the private experimental route", () => {

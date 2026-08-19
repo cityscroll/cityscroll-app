@@ -99,6 +99,10 @@ const EVENT_SPECS = Object.freeze({
     details: ["create", "copy", "add_signal"],
     surfaces: ["home", "api"],
   },
+  comparative_signal_shown: {
+    details: ["visible"],
+    surfaces: ["worth-a-look"],
+  },
   action_opened: {
     details: ["direct", "official-handoff"],
     surfaces: ["home"],

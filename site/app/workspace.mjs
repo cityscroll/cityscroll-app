@@ -363,8 +363,10 @@ async function showSignalInvestigation(signalId){
       if(item){
         const s=invStore(), inv=s.invs[s.current];
         added=addInvestigationComparativeSignal(inv.items,item,{added:new Date().toISOString().slice(0,10)});
-        if(added) invSave(s);
-        window.crolAnalytics?.record("investigation_share",{detail:"add_signal",surface:"home"});
+        if(added){
+          invSave(s);
+          window.crolAnalytics?.record("investigation_share",{detail:"add_signal",surface:"home"});
+        }
       }
     }
   }catch(e){ /* invalid, unavailable, and held signals fail closed */ }

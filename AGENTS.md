@@ -3473,6 +3473,14 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   compact object, evidence, receipt, vintage, and source-contract references—no
   copied datasets or model-authored analysis. Focused proof is
   `test/research_package.test.mjs` and `worker/test/inv.test.mjs`.
+- Comparative-pilot evaluation is reproduced with
+  `node tools/evaluate_comparative_signals.mjs --check` from the frozen review
+  ledger and committed read models. The machine artifact and written expansion
+  recommendation live in `docs/evidence/comparative-signal-evaluation.{json,md}`;
+  evaluation never enables another metric family. The single usage denominator
+  is aggregate `comparative_signal_shown:visible`, paired only in aggregate with
+  existing `investigation_share:add_signal`. Focused proof is
+  `test/comparative_signal_evaluation.test.mjs`.
 
 ## Remote MCP public adapter boundary
 

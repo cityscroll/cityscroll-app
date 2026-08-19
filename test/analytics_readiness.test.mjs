@@ -98,6 +98,7 @@ async function pageViewSurface(pathname) {
       body: {},
       addEventListener() {},
       querySelector() { return null; },
+      querySelectorAll() { return []; },
     },
   };
   context.window = {
@@ -140,6 +141,25 @@ test("event intake writes only bounded taxonomy dimensions", async () => {
     detail: "property-lawyer",
     surface: "home",
   }), null, "scenario values stay a bounded declared-interest enumeration");
+  assert.deepEqual(normalizeUsageEvent({
+    event: "comparative_signal_shown",
+    detail: "visible",
+    surface: "worth-a-look",
+    signal_id: "must-not-survive",
+  }), {
+    event: "comparative_signal_shown",
+    lens: "none",
+    detail: "visible",
+    geography: "none",
+    surface: "worth-a-look",
+    traffic_class: "production",
+    taxonomy_version: TAXONOMY_VERSION,
+  });
+  assert.equal(normalizeUsageEvent({
+    event: "comparative_signal_shown",
+    detail: "visible",
+    surface: "home",
+  }), null, "the denominator is scoped to the private pilot surface");
 });
 
 test("developer exclusion is authenticated, invisible, and fail-closed", async () => {
@@ -237,6 +257,7 @@ test("primary document routes classify before the legacy filename fallback", asy
     "/browse/property/": "browse",
     "/": "home",
     "/stats.html": "stats",
+    "/experimental/worth-a-look/": "worth-a-look",
   };
   for (const [pathname, expected] of Object.entries(routes)) {
     assert.equal(await pageViewSurface(pathname), expected, pathname);
