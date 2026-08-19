@@ -15,7 +15,7 @@
     "schema": "cityscroll.performance.operator_inventory.v1",
     "manifest_version": "rum-surfaces-v1",
     "registry_version": "1.0.0",
-    "registry_hash": "92d2c4d5adeffb71870daeecca8478a602bc37d6f9cf752e30cd4c09d0831997",
+    "registry_hash": "9676620bf9949a2b5a74b72a63991a1466aeef622ebb58e857b50e21cbde5023",
     "metrics": [
       {
         "metric_id": "cls_score",
@@ -877,7 +877,7 @@
           ],
           "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
         },
-        "lifecycle_state": "planned",
+        "lifecycle_state": "instrumented",
         "aliases": [],
         "supersedes": [],
         "introduced_version": "1.0.0",
@@ -1018,7 +1018,7 @@
           ],
           "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
         },
-        "lifecycle_state": "planned",
+        "lifecycle_state": "instrumented",
         "aliases": [],
         "supersedes": [],
         "introduced_version": "1.0.0",
@@ -1458,7 +1458,7 @@
           ],
           "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
         },
-        "lifecycle_state": "planned",
+        "lifecycle_state": "instrumented",
         "aliases": [],
         "supersedes": [],
         "introduced_version": "1.0.0",
@@ -1637,7 +1637,7 @@
           ],
           "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
         },
-        "lifecycle_state": "planned",
+        "lifecycle_state": "instrumented",
         "aliases": [],
         "supersedes": [],
         "introduced_version": "1.0.0",
@@ -1709,10 +1709,12 @@
       "surface_count": 35,
       "component_count": 14,
       "surfaces_by_state": {
-        "planned": 35
+        "instrumented": 2,
+        "planned": 33
       },
       "components_by_state": {
-        "planned": 14
+        "instrumented": 2,
+        "planned": 12
       }
     },
     "selection": {

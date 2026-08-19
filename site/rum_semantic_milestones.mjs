@@ -25,6 +25,26 @@ export const SEMANTIC_READINESS_MARKERS = Object.freeze({
     ready_value: "true",
     meaning: "The Home CTA and topic input are visible and usable.",
   }),
+  notice_primary: Object.freeze({
+    contract_id: "page-content-ready-v1",
+    ready_attribute: "data-edge-rendered",
+    result_states: Object.freeze({
+      notice: "content",
+      "notice-unavailable": "unavailable",
+    }),
+    meaning: "The notice has a meaningful primary body or an honest unavailable state.",
+  }),
+  notice_context: Object.freeze({
+    contract_id: "component-ready-v1",
+    component_id: "notice-context",
+    result_states: Object.freeze({
+      content: "content",
+      empty: "empty",
+      unavailable: "unavailable",
+      error: "error",
+    }),
+    meaning: "The asynchronous notice context has useful content or an honest terminal state.",
+  }),
   land_outcome_first_paint: Object.freeze({
     contract_id: "component-ready-v1",
     ready_attribute: "data-zap-outcomes-first-paint",

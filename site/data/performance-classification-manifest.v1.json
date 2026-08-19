@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "92d2c4d5adeffb71870daeecca8478a602bc37d6f9cf752e30cd4c09d0831997",
+  "registry_hash": "9676620bf9949a2b5a74b72a63991a1466aeef622ebb58e857b50e21cbde5023",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -671,7 +671,7 @@
         "ttfb_ms"
       ],
       "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "introduced_version": "1.0.0"
     },
@@ -789,7 +789,7 @@
         "ttfb_ms"
       ],
       "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "introduced_version": "1.0.0"
     },
@@ -1105,7 +1105,7 @@
         "component_ready_ms"
       ],
       "semantic_readiness_contract": "component-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "introduced_version": "1.0.0"
     },
@@ -1221,7 +1221,7 @@
         "component_ready_ms"
       ],
       "semantic_readiness_contract": "component-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "introduced_version": "1.0.0"
     },
