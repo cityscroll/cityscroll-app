@@ -147,6 +147,31 @@ test("an unmapped architecture-affecting search surface is drift, not healthy", 
   assert.deepEqual(report.outcomes.contradictions, []);
 });
 
+test("an unclassified performance candidate is advisory evidence, not architecture drift", () => {
+  const advisoryFacts = buildFacts({
+    generatedAt: "2026-08-16T00:00:00Z",
+    commit: "test-commit",
+    performanceCandidatePaths: ["/", "/future-civic-surface/"],
+  });
+  assert.deepEqual(advisoryFacts.observer_coverage.unmapped_surfaces, []);
+  assert.deepEqual(advisoryFacts.performance_observability.coverage.unclassified_candidates, [{
+    pathname: "/future-civic-surface/",
+    classification_state: "unclassified",
+    surface_id: null,
+  }]);
+
+  const report = reconcileArchitecture({
+    facts: advisoryFacts,
+    baselineFacts: buildWatermark(facts),
+    model: parseWorkspace(modelText),
+  });
+  assert.equal(report.status, "healthy");
+  assert.deepEqual(report.outcomes.unmapped, []);
+  assert.deepEqual(report.outcomes.additions, []);
+  assert.deepEqual(report.outcomes.removals, []);
+  assert.deepEqual(report.outcomes.contradictions, []);
+});
+
 test("parses stable C4 declarations and relationships", () => {
   const model = parseWorkspace(modelText);
   assert.ok(model.elements.some((element) => element.id === "worker_api" && element.type === "container"));

@@ -2,8 +2,9 @@
  * Compact architecture watermark: the reviewed baseline the reconciler diffs
  * against. Full facts.json stays ephemeral; this file is the committed
  * over-time snapshot (observer-coverage hash, canary fingerprints, ontology
- * version, binding topology). Advancement is an explicit reviewed write, never
- * a --check side effect.
+ * version, binding topology, and bounded performance-observability mechanism
+ * facts). Advisory performance candidates and measurements stay out.
+ * Advancement is an explicit reviewed write, never a --check side effect.
  */
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
@@ -88,6 +89,19 @@ const CANARY_SLICES = {
       exclude: facts.pages_edge?.routes?.exclude ?? [],
     },
   }),
+  "performance-observability-builder": (facts) => ({
+    count: Object.keys(facts.performance_observability?.registry?.projection_paths ?? {}).length,
+    payload: {
+      projection_builder_path: facts.performance_observability?.registry?.projection_builder_path ?? null,
+      projection_paths: facts.performance_observability?.registry?.projection_paths ?? {},
+      registry_hash: facts.performance_observability?.catalog?.registry_hash ?? null,
+    },
+  }),
+  "performance-observability-registry": (facts) => ({
+    count: (facts.performance_observability?.registry?.surface_count ?? 0)
+      + (facts.performance_observability?.registry?.component_count ?? 0),
+    payload: performanceObservabilityWatermark(facts),
+  }),
   "primary-document-materializer": (facts) => ({
     count: facts.materializers?.primary_documents?.builders?.length ?? 0,
     payload: {
@@ -164,6 +178,28 @@ export function bindingTopology(facts) {
   });
 }
 
+function performanceObservabilityWatermark(facts) {
+  const performance = facts?.performance_observability ?? {};
+  return {
+    catalog: {
+      schema: performance.catalog?.schema ?? null,
+      version: performance.catalog?.version ?? null,
+      metric_count: performance.catalog?.metric_count ?? 0,
+      registry_hash: performance.catalog?.registry_hash ?? null,
+    },
+    registry: {
+      version: performance.registry?.version ?? null,
+      manifest_version: performance.registry?.manifest_version ?? null,
+      surface_count: performance.registry?.surface_count ?? 0,
+      component_count: performance.registry?.component_count ?? 0,
+      classifications: performance.registry?.classifications ?? { surfaces: {}, components: {} },
+    },
+    topology: performance.topology ?? null,
+    coverage_policy: performance.coverage?.policy ?? null,
+    measurements_included: performance.measurements_included === true,
+  };
+}
+
 function canarySlice(facts, id) {
   const mapper = CANARY_SLICES[id];
   if (mapper) return mapper(facts);
@@ -209,6 +245,10 @@ export function buildWatermark(facts, { generatedAt, commit } = {}) {
     bindings: {
       topology: bindingTopology(facts),
     },
+    // Advisory candidate coverage is deliberately excluded: an unclassified
+    // future public surface must be visible in facts without turning the
+    // compact watermark diff into a merge gate.
+    performance_observability: performanceObservabilityWatermark(facts),
   };
 }
 

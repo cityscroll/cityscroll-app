@@ -14,6 +14,7 @@ workspace {
             materialization_tools = container "Build and materialization tooling" "Builders and pure seams that export compact read models for the site and Worker." "Node.js / repository tools"
             entity_resolution = container "Entity resolution" "In-process normalize, candidate, score, policy, review, and publication package; links sources without merging them." "JavaScript module"
             ontology_registry = container "Civic Graph ontology" "Backstage object, link, event, assertion, action, grounding, and improvement-flywheel catalog." "JavaScript module / JSON registry"
+            performance_registry = container "Performance observability registry" "Versioned metric, surface, component, lifecycle, and projection control plane for field performance coverage; contains no measurements." "JSON registry / deterministic Node.js projections"
 
             d1_notices = container "D1 notice mirror" "Recent City Record notices, full-text search, ingest cursors, and durable workflow tables." "Cloudflare D1" {
                 tags "Database"
@@ -34,6 +35,9 @@ workspace {
             analytics_engine = container "Usage analytics" "Bounded aggregate page, click, and search events without visitor identifiers." "Cloudflare Analytics Engine" {
                 tags "Database"
             }
+            rum_analytics = container "Field performance observations" "Planned normalized real-user performance observations, separate from usage analytics and disabled until the commissioned pilot." "Cloudflare Analytics Engine (planned / disabled)" {
+                tags "Database,Inactive"
+            }
             r2_source_vault = container "R2 source vault" "Reserved source-document custody seam; inactive because SOURCE_VAULT_ENABLED is false and its binding is commented out." "Cloudflare R2 (planned / disabled)" {
                 tags "Database,Inactive"
             }
@@ -44,6 +48,7 @@ workspace {
         passport = softwareSystem "PASSPort Public" "Public procurement contract and solicitation source used by the Worker ingest path."
         anthropic = softwareSystem "Anthropic" "External model provider for the metered natural-language route."
         resend = softwareSystem "Resend" "External email delivery provider for confirmed digest messages."
+        private_desk = softwareSystem "CityScroll private Desk" "Cross-repository, Cloudflare Access-protected operator dashboard at desk.cityscroll.org."
 
         visitor -> browser_site "Reads public records and record documents [ARCHITECTURE.md:21]" "HTTPS"
         site_operator -> worker_api "Uses keyed operator and spend routes [docs/architecture.md:142-146]" "HTTPS"
@@ -62,6 +67,10 @@ workspace {
         warehouse_factory -> materialization_tools "Supplies DuckDB and Parquet data to repository builders [ARCHITECTURE.md:37,40,50]" "Local module boundary"
         materialization_tools -> browser_site "Writes compact site read models and build-rendered documents [tools/build_primary_documents.mjs:22-45]" "Repository artifact"
         materialization_tools -> worker_api "Publishes Worker data twins consumed by edge routes [ARCHITECTURE.md:37,40,50]" "Repository artifact"
+        performance_registry -> browser_site "Projects the classification manifest for the planned fail-soft RUM collector [architecture/performance-observability.v1.json; site/data/performance-classification-manifest.v1.json]" "Repository artifact"
+        performance_registry -> worker_api "Projects planned intake validation and private operator inventories [worker/src/data/performance-validation-allowlist.v1.json; worker/src/data/performance-operator-labels.v1.json]" "Repository artifact"
+        browser_site -> worker_api "Planned RUM collector submits bounded observations only to /performance-events; collection remains disabled until pilot [architecture/performance-observability.v1.json]" "HTTPS (planned / disabled)"
+        private_desk -> worker_api "Will read the private /admin/performance model through a server-to-server authenticated proxy; no Analytics Engine credentials cross into Desk [architecture/performance-observability.v1.json]" "HTTPS (planned)"
 
         entity_resolution -> materialization_tools "Provides allowlisted, provenance-bearing links for public materialization [entity_resolution/README.md:87-100]" "JavaScript module import"
         ontology_registry -> materialization_tools "Evaluates catalog coverage and grounding for the improvement flywheel [ontology/README.md:1-13,20-27]" "JavaScript module import"
@@ -76,6 +85,7 @@ workspace {
         worker_api -> digest_queue "Enqueues per-subscription digest jobs [ARCHITECTURE.md:48; worker/wrangler.toml:94-100; worker/src/worker.mjs:179-183]" "Queue producer DIGEST_QUEUE"
         digest_queue -> worker_api "Delivers retryable digest jobs to the queue consumer [worker/wrangler.toml:102-108; worker/src/worker.mjs:352-363]" "Queue consumer"
         worker_api -> analytics_engine "Writes bounded aggregate usage events when the production binding is present [worker/wrangler.toml:89-92; worker/src/events.mjs:110-129]" "Analytics Engine binding USAGE_ANALYTICS"
+        worker_api -> rum_analytics "Will write normalized field-performance observations through the separate RUM_ANALYTICS binding; no live measurement is part of architecture facts [architecture/performance-observability.v1.json]" "Analytics Engine binding RUM_ANALYTICS (planned / disabled)"
         worker_api -> r2_source_vault "Would serve approved public documents only when the disabled source-vault seam is enabled [worker/src/source_vault.mjs:68-69; worker/wrangler.toml:80-87]" "Conditional R2 binding"
     }
 
