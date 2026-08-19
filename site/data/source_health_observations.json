@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
   "generated_at": "2026-08-18T20:15:50.276Z",
-  "contract_count": 54,
+  "contract_count": 58,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -212,6 +212,58 @@
         "reason_codes": []
       },
       "evidence": []
+    },
+    {
+      "source_id": "business-improvement-district-boundaries",
+      "contract_fingerprint": "4f2a8a14ef87a0503bebd98a20265a69392e2edd76efcbc5ea7ac1c7a69f549a",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2024-10-08T15:54:16.000Z",
+            "state": "KNOWN",
+            "basis": "geography_source_receipt"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T16:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "data/geography/receipts/business_improvement_district/2024-10-08.json",
+          "at": "2026-08-18T16:00:00.000Z",
+          "status": "succeeded"
+        }
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "civic-geography-acquisition-receipt",
+            "run_id": "business_improvement_district:2024-10-08",
+            "at": "2026-08-18T16:00:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "data/geography/receipts/business_improvement_district/2024-10-08.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "capital-projects",
@@ -918,6 +970,110 @@
       "evidence": []
     },
     {
+      "source_id": "dcp-nta2020-boundaries",
+      "contract_fingerprint": "97a1eb6a3969b51c8a642f63a093c351e72c083215b4f1b97e41959f6e336685",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2026-05-04T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "geography_source_receipt"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T16:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "data/geography/receipts/nta2020/26B.json",
+          "at": "2026-08-18T16:00:00.000Z",
+          "status": "succeeded"
+        }
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "civic-geography-acquisition-receipt",
+            "run_id": "nta2020:26B",
+            "at": "2026-08-18T16:00:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "data/geography/receipts/nta2020/26B.json",
+            "exact_error": null
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "dcp-police-precinct-boundaries",
+      "contract_fingerprint": "378eb4ad08dcc9796411ef35551b2aef00d5b217da6a2834b7e3a21e4d9c6c07",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2026-05-04T00:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "geography_source_receipt"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T16:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "data/geography/receipts/police_precinct/26B.json",
+          "at": "2026-08-18T16:00:00.000Z",
+          "status": "succeeded"
+        }
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "civic-geography-acquisition-receipt",
+            "run_id": "police_precinct:26B",
+            "at": "2026-08-18T16:00:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "data/geography/receipts/police_precinct/26B.json",
+            "exact_error": null
+          }
+        ]
+      }
+    },
+    {
       "source_id": "dob-certificate-of-occupancy",
       "contract_fingerprint": "e16f6eafff4f32324270c916d1a8ce4feebcb9c3db2c7a9bd5ec4b51c785ad36",
       "health": {
@@ -1106,6 +1262,60 @@
             "at": "2026-08-02T10:35:17.000Z",
             "status": "succeeded",
             "receipt_ref": "warehouse/receipts/proof/doing-business-entities_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
+    },
+    {
+      "source_id": "dsny-district-boundaries",
+      "contract_fingerprint": "9bfd4fede7f8a8dda68b2c62c8c61a9487d7fee2a6ec7759eb9ad9487dd5a18e",
+      "health": {
+        "status": "Delayed",
+        "reason_codes": [
+          "publisher-clock-stale"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2024-04-10T10:00:05.000Z",
+            "state": "KNOWN",
+            "basis": "geography_source_receipt"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-18T16:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "data/geography/receipts/sanitation_district/2024-04-10.json",
+          "at": "2026-08-18T16:00:00.000Z",
+          "status": "succeeded"
+        }
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "civic-geography-acquisition-receipt",
+            "run_id": "sanitation_district:2024-04-10",
+            "at": "2026-08-18T16:00:00.000Z",
+            "status": "succeeded",
+            "receipt_ref": "data/geography/receipts/sanitation_district/2024-04-10.json",
             "exact_error": null
           }
         ]

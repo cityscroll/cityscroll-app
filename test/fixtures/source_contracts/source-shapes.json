@@ -439,6 +439,36 @@
       ]
     },
     {
+      "id": "dcp-nta2020-boundaries",
+      "kind": "html",
+      "identifier": "neighborhood-tabulation",
+      "response_type": "text/html",
+      "fields": ["NTA2020", "NTAName", "NTAType"]
+    },
+    {
+      "id": "dcp-police-precinct-boundaries",
+      "kind": "html",
+      "identifier": "police-precincts",
+      "response_type": "text/html",
+      "fields": ["Precinct"]
+    },
+    {
+      "id": "dsny-district-boundaries",
+      "kind": "socrata",
+      "identifier": "i6mn-amj2",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["district", "districtcode", "objectid", "multipolygon"]
+    },
+    {
+      "id": "business-improvement-district-boundaries",
+      "kind": "socrata",
+      "identifier": "7jdm-inj8",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"]
+    },
+    {
       "id": "dob-now-job-filings",
       "kind": "socrata",
       "identifier": "w9ak-ipjd",

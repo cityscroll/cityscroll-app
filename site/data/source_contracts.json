@@ -1698,6 +1698,142 @@
       }
     },
     {
+      "id": "dcp-nta2020-boundaries",
+      "name": "2020 Neighborhood Tabulation Areas",
+      "owner": "NYC Department of City Planning",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "html",
+      "domain": "https://www.nyc.gov",
+      "dataset_id": "nynta2020_26b",
+      "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation",
+      "download_url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/neighborhood-tabulation-areas/nynta2020_26b.zip",
+      "required_fields": ["NTA2020", "NTAName", "NTAType"],
+      "max_stale_days": 180,
+      "publisher_cadence": "Quarterly DCP BYTES release",
+      "product_freshness": "Cycle-pinned 26B geometry is retained in independent full and simplified artifacts with an acquisition receipt and layer-specific vintage.",
+      "used_for": "Backstage-only NTA 2020 ingestion, point-resolution canaries, and crosswalk QA; it is not a canonical neighborhood identity or resident-facing filter.",
+      "code_references": [
+        { "path": "tools/build_civic_geography.mjs", "contains": "nynta2020_26b" },
+        { "path": "site/civic_geography_registry.mjs", "contains": "dcp-nta2020-boundaries" }
+      ],
+      "delivery_tier": "inline-at-build",
+      "landing_probe": "tolerate_bot_block",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 180,
+        "clock_basis": "publisher_updated",
+        "serving_max_age_days": 180,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
+      "id": "dcp-police-precinct-boundaries",
+      "name": "Police Precinct Boundaries",
+      "owner": "NYC Department of City Planning",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "html",
+      "domain": "https://www.nyc.gov",
+      "dataset_id": "nypp_26b",
+      "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/police-precincts",
+      "download_url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/police-precincts/nypp_26b.zip",
+      "required_fields": ["Precinct"],
+      "max_stale_days": 180,
+      "publisher_cadence": "Quarterly DCP BYTES release",
+      "product_freshness": "Cycle-pinned 26B geometry is retained in independent full and simplified artifacts with an acquisition receipt and layer-specific vintage.",
+      "used_for": "Backstage-only police-precinct ingestion, native-key QA, and point-resolution canaries; no resident-facing scope or filter is enabled.",
+      "code_references": [
+        { "path": "tools/build_civic_geography.mjs", "contains": "nypp_26b" },
+        { "path": "site/civic_geography_registry.mjs", "contains": "dcp-police-precinct-boundaries" }
+      ],
+      "delivery_tier": "inline-at-build",
+      "landing_probe": "tolerate_bot_block",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 180,
+        "clock_basis": "publisher_updated",
+        "serving_max_age_days": 180,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
+      "id": "dsny-district-boundaries",
+      "name": "DSNY Districts",
+      "owner": "NYC Department of Sanitation",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "i6mn-amj2",
+      "landing_page": "https://data.cityofnewyork.us/d/i6mn-amj2",
+      "required_fields": ["district", "districtcode", "objectid", "multipolygon"],
+      "max_stale_days": 730,
+      "publisher_cadence": "Publisher-managed; no fixed cadence is declared",
+      "product_freshness": "The 2024-04-10 geometry clock is retained independently from DCP Community Districts and checked as an equivalence/drift canary.",
+      "used_for": "Backstage-only sanitation-district ingestion, MapPLUTO QA, and DSNY-to-Community-District congruence drift measurement.",
+      "code_references": [
+        { "path": "tools/build_civic_geography.mjs", "contains": "i6mn-amj2" },
+        { "path": "site/civic_geography_registry.mjs", "contains": "dsny-district-boundaries" }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 730,
+        "clock_basis": "publisher_updated",
+        "serving_max_age_days": 730,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
+      "id": "business-improvement-district-boundaries",
+      "name": "Business Improvement Districts",
+      "owner": "NYC Department of Small Business Services",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "7jdm-inj8",
+      "landing_page": "https://data.cityofnewyork.us/d/7jdm-inj8",
+      "required_fields": ["the_geom", "objectid_2", "f_all_bids", "f_all_bi_2"],
+      "max_stale_days": 730,
+      "publisher_cadence": "Publisher-managed; no fixed cadence is declared",
+      "product_freshness": "The 2024-10-08 geometry clock is retained with reviewed slug bindings; rows with zero/duplicate source identity are rejected and receipted.",
+      "used_for": "Backstage-only BID ingestion and sparse/overlap QA. No resident-facing filter or institutional relationship is published.",
+      "code_references": [
+        { "path": "tools/build_civic_geography.mjs", "contains": "7jdm-inj8" },
+        { "path": "ontology/geography/bid_reviewed_ids.json", "contains": "reviewed_bid_identity_registry" }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 730,
+        "clock_basis": "publisher_updated",
+        "serving_max_age_days": 730,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      }
+    },
+    {
       "id": "dob-certificate-of-occupancy",
       "name": "DOB Certificate Of Occupancy",
       "owner": "NYC Department of Buildings",

@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.geography_pluto_cross_checks.v1",
+  "observed_at": "2026-08-18T16:00:00.000Z",
+  "source": {
+    "publisher": "NYC Department of City Planning",
+    "dataset": "MapPLUTO FeatureServer",
+    "endpoint": "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0/query",
+    "version": "26v1"
+  },
+  "applicability": {
+    "police_precinct": { "status": "applicable", "field": "PolicePrct" },
+    "sanitation_district": { "status": "applicable", "fields": ["Sanitboro", "SanitDistrict"] },
+    "nta2020": { "status": "not_applicable", "reason": "The current MapPLUTO FeatureServer does not publish an NTA2020 field." },
+    "business_improvement_district": { "status": "not_applicable", "reason": "MapPLUTO does not publish BID membership." }
+  },
+  "rows": [
+    { "bbl": "1000380001", "borough": "MN", "lat": 40.7052441, "lon": -74.0067554, "published": { "PolicePrct": "1", "Sanitboro": "1", "SanitDistrict": "01" }, "expected": { "police_precinct": "1", "sanitation_district": "101" } },
+    { "bbl": "2023230028", "borough": "BX", "lat": 40.8126921, "lon": -73.9321706, "published": { "PolicePrct": "40", "Sanitboro": "2", "SanitDistrict": "01" }, "expected": { "police_precinct": "40", "sanitation_district": "201" } },
+    { "bbl": "3000560007", "borough": "BK", "lat": 40.701768, "lon": -73.9817112, "published": { "PolicePrct": "84", "Sanitboro": "3", "SanitDistrict": "02" }, "expected": { "police_precinct": "84", "sanitation_district": "302" } },
+    { "bbl": "4000280012", "borough": "QN", "lat": 40.7459455, "lon": -73.9543541, "published": { "PolicePrct": "108", "Sanitboro": "4", "SanitDistrict": "02" }, "expected": { "police_precinct": "108", "sanitation_district": "402" } },
+    { "bbl": "5000090009", "borough": "SI", "lat": 40.6448026, "lon": -74.0780547, "published": { "PolicePrct": "120", "Sanitboro": "5", "SanitDistrict": "01" }, "expected": { "police_precinct": "120", "sanitation_district": "501" } }
+  ],
+  "result": { "status": "matched", "checked_rows": 5, "disagreements": 0 },
+  "policy": "QA evidence only. A MapPLUTO disagreement is recorded and never overrides authoritative layer geometry."
+}

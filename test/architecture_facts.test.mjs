@@ -69,6 +69,10 @@ test("generated facts identify warehouse, migrations, ER, and ontology evidence"
     "borough",
     "community_district",
     "council_district",
+    "nta2020",
+    "police_precinct",
+    "sanitation_district",
+    "business_improvement_district",
   ]);
   assert.ok(facts.civic_geography.layers.every((layer) => (
     layer.coverage_status === "complete"
