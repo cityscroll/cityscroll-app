@@ -960,6 +960,7 @@
     footer_api:        "API et flux",
     footer_changelog:  "Journal des modifications",
     footer_stats:      "Statistiques",
+    footer_data_health: "Santé des données",
 
     // Skip link
     site_tagline: "Abonnez-vous aux contrats, rezonages et auditions publiques de la Ville de New York qui vous intéressent.",
@@ -2310,6 +2311,7 @@
     stats_public_current_desc: "La date de publication la plus récente renvoyée par le jeu de données officiel du City Record.",
     stats_public_method_heading: "Ce que ces chiffres excluent",
     stats_public_method_html: "Il s’agit de données de couverture, pas d’analyse d’audience. Les visites, recherches, abonnements et volumes d’envoi d’e-mails sont des données opérationnelles et ne sont pas publiés ici. Consultez les <a href=\"api.html#upstream\">notes sur les sources de données</a> ou ouvrez le <a href=\"https://api.cityscroll.org/stats\">JSON public réduit</a>.",
+    stats_data_health_html: "Pour la fraîcheur et la couverture des sources, voir <a href=\"data-health/\">Santé des données</a>.",
     stats_public_asof: "Au {date}.",
     stats_public_corpus_unavailable: "Le nombre de sources et la couverture linguistique sont à jour. Le total en direct du City Record est temporairement indisponible.",
     stats_public_unreachable: "Les totaux de couverture sont actuellement inaccessibles — le JSON public se trouve sur api.cityscroll.org/stats.",
@@ -2359,7 +2361,7 @@
     stats_history_empty: "Pas encore d'historique jour par jour.",
     stats_h_technical: "Détails techniques",
     stats_p_technical: "Comment les chiffres ci-dessus sont calculés. Vous n'avez pas besoin de le savoir pour utiliser CityScroll.",
-    stats_foot_html: "JSON brut : <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (mis en cache ~15 min) · <a href=\"about.html\">À propos</a> · <a href=\"index.html\">Accueil</a>",
+    stats_foot_html: "JSON brut : <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (mis en cache ~15 min) · <a href=\"about.html\">À propos</a> · <a href=\"data-health/\">Santé des données</a> · <a href=\"index.html\">Accueil</a>",
     stats_asof: "En date du {date} (actualisé toutes les 15 minutes).",
     stats_unreachable: "Les compteurs en direct sont actuellement inaccessibles — le JSON brut se trouve sur api.cityscroll.org/stats.",
     stats_h_usage: "Comment les gens utilisent CityScroll",
