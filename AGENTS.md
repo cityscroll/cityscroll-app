@@ -1063,7 +1063,12 @@ list renders them as labeled rows at every level; district detail also notes
 citywide items that apply city-scale without counting them into polygons.
 
 **Typed civic-geography primitive:** `site/civic_geography_registry.mjs` is the
-closed control plane for borough, Community District, and Council District;
+closed control plane for borough, Community District, Council District, NTA 2020,
+Police Precinct, Sanitation District, and BID. The latter four are ingestion/QA
+only until a separate product card exposes them; keep their source contracts
+backstage-only and `public_relations` empty. `tools/build_civic_geography.mjs`
+owns their independent artifacts/receipts, reviewed BID identity, PIP/PLUTO QA,
+DSNY congruence drift, and the vintage-gated MODA oracle;
 `site/civic_geography.mjs` is the generic typed point resolver. The builder keeps
 source-native normalization in `tools/lib/district_boundary_source_adapters.mjs`,
 constructs independent full/simplified versioned artifacts, and projects the old
@@ -1073,6 +1078,7 @@ area/share overlays must use full-fidelity geometry through
 their compatibility semantics until a separate product migration. Per-layer
 freshness and coverage belong to the existing location-resolution Data Health
 dimension. Verify with `node tools/build_district_boundaries.mjs --check`,
+`node tools/build_civic_geography.mjs --check`,
 `node tools/benchmark_civic_geography.mjs --check`, and the civic-geography tests.
 
 **Geography subject graph:** `district_activity.geography_subjects` materializes

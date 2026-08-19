@@ -160,9 +160,14 @@ export function resolveCivicGeographyLayer(lat, lon, layerDoc) {
     const relation = pointRelationToCivicFeature(longitude, latitude, feature);
     if (relation !== "exterior") matches.push(matchForFeature(layer, feature, relation));
   }
+  const allowsOverlap = civicGeographyLayer(layer.type)?.cardinality === "zero_or_more_overlaps_allowed";
   return {
     matches,
-    status: matches.length > 1 ? "ambiguous_boundary" : matches.length ? "matched" : "not_covered",
+    status: matches.length > 1 && !allowsOverlap
+      ? "ambiguous_boundary"
+      : matches.length
+        ? "matched"
+        : "not_covered",
     vintage: layer.vintage.id,
   };
 }

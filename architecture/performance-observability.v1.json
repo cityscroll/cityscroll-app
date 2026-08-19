@@ -1,20 +1,450 @@
 {
-  "schema": "cityscroll.performance_observability.registry.v1",
+  "$schema": "./performance-observability.v1.schema.json",
+  "schema": "cityscroll.performance_observability.v1",
+  "catalog_version": "1.0.0",
+  "observation_contract": {
+    "schema": "cityscroll.performance_observation.v1",
+    "measured_state": "measured",
+    "non_measurement_states": [
+      "missing",
+      "unsupported",
+      "background",
+      "no_interaction"
+    ],
+    "zero_rule": "A numeric value, including 0, exists only for state=measured; every non-measurement state forbids value."
+  },
+  "metrics": [
+    {
+      "id": "ttfb_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": true,
+      "derived": false,
+      "description": "Elapsed navigation start to first response byte.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "navigation_start",
+        "end_landmark": "response_start",
+        "finalize_condition": "the lifecycle-aware field-vital callback reports a value",
+        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after response_start"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "exact",
+        "names": [
+          {
+            "name": "ttfbMs",
+            "fixture_scope": ["home.cold", "home.warm"],
+            "compatibility_condition": "responseStart - startTime with an available navigation entry"
+          }
+        ],
+        "incompatible_names": [],
+        "reason": "The field and synthetic landmarks match; their samples and reports remain separate."
+      }
+    },
+    {
+      "id": "fcp_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": true,
+      "derived": false,
+      "description": "Elapsed navigation start to first contentful paint.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "navigation_start",
+        "end_landmark": "first_contentful_paint",
+        "finalize_condition": "the lifecycle-aware field-vital callback reports a value",
+        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after first_contentful_paint"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "exact",
+        "names": [
+          {
+            "name": "fcpMs",
+            "fixture_scope": ["home.cold"],
+            "compatibility_condition": "first-contentful-paint startTime exists"
+          }
+        ],
+        "incompatible_names": [],
+        "reason": "Both contracts use the first-contentful-paint landmark."
+      }
+    },
+    {
+      "id": "lcp_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": true,
+      "derived": false,
+      "description": "Elapsed navigation start to the lifecycle-final largest contentful paint.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "navigation_start",
+        "end_landmark": "largest_contentful_paint",
+        "finalize_condition": "the lifecycle-aware field-vital callback finalizes the value",
+        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after largest_contentful_paint"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "conditional",
+        "names": [
+          {
+            "name": "lcpMs",
+            "fixture_scope": ["home.cold", "home.warm"],
+            "compatibility_condition": "a buffered LCP entry exists; the synthetic zero default is absence, not a measurement"
+          }
+        ],
+        "incompatible_names": [],
+        "reason": "The landmark matches only for produced values because the current harness substitutes zero when LCP is absent."
+      }
+    },
+    {
+      "id": "cls_score",
+      "version": "1.0.0",
+      "unit": "score",
+      "raw": true,
+      "derived": false,
+      "description": "Lifecycle-final cumulative layout shift score excluding shifts after recent input.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "navigation_start",
+        "end_landmark": "page_lifecycle_end",
+        "finalize_condition": "the lifecycle-aware field-vital callback finalizes the value",
+        "valid_when": ["layout-shift observation is supported", "only shifts without recent input contribute"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "exact",
+        "names": [
+          {
+            "name": "cls",
+            "fixture_scope": ["home.cold", "home.warm"],
+            "compatibility_condition": "the value accumulates layout shifts without recent input"
+          }
+        ],
+        "incompatible_names": [],
+        "reason": "Both contracts accumulate the same layout-shift entries."
+      }
+    },
+    {
+      "id": "inp_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": true,
+      "derived": false,
+      "description": "Lifecycle-final interaction to next paint value for the page.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "qualifying_interaction_start",
+        "end_landmark": "qualifying_interaction_next_paint",
+        "finalize_condition": "the lifecycle-aware field-vital callback finalizes the value",
+        "valid_when": ["Event Timing is supported", "at least one qualifying interaction occurred"],
+        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": ["eventDurationMs"],
+        "reason": "The synthetic maximum event duration is diagnostic evidence, not INP."
+      }
+    },
+    {
+      "id": "content_ready_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed navigation start until the surface presents meaningful content or an honest terminal empty, unavailable, or error state.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "navigation_start",
+        "end_landmark": "semantic_content_ready",
+        "finalize_condition": "the surface owner reports its first semantic terminal state",
+        "valid_when": ["both landmarks exist and are finite", "navigation_start is not after semantic_content_ready", "the terminal state is meaningful content or honest empty, unavailable, or error"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": [],
+        "reason": "The home fixture waits for compatible readiness markers but does not emit a named duration; no global DOM-ready alias exists."
+      }
+    },
+    {
+      "id": "component_ready_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed component activation until that component presents useful content or an honest terminal empty, unavailable, or error state.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "component",
+        "start_landmark": "component_activation",
+        "end_landmark": "semantic_component_ready",
+        "finalize_condition": "the component owner reports its first semantic terminal state",
+        "valid_when": ["both landmarks exist and are finite", "component_activation is not after semantic_component_ready", "the terminal state is useful content or honest empty, unavailable, or error"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "scoped",
+        "names": [
+          {
+            "name": "settledMs",
+            "fixture_scope": ["land.outcomes-first-paint:present"],
+            "compatibility_condition": "the named Land outcome component reaches its present first-paint marker"
+          }
+        ],
+        "incompatible_names": [],
+        "reason": "The Land fixture matches only its named present-state component contract; its absent marker is not currently produced."
+      }
+    },
+    {
+      "id": "interaction_feedback_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed interaction start until the first visible acknowledgement of that action.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "interaction",
+        "start_landmark": "interaction_start",
+        "end_landmark": "visible_feedback",
+        "finalize_condition": "the interaction owner reports its first visible feedback landmark",
+        "valid_when": ["both landmarks exist and are finite", "interaction_start is not after visible_feedback"],
+        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": ["visualResponseMs"],
+        "reason": "Synchronous click-handler duration is not a visible feedback landmark."
+      }
+    },
+    {
+      "id": "interaction_settled_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed interaction start until the resulting component reaches its semantic settled state.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "interaction",
+        "start_landmark": "interaction_start",
+        "end_landmark": "interaction_settled",
+        "finalize_condition": "the interaction owner reports the resulting semantic terminal state",
+        "valid_when": ["both landmarks exist and are finite", "interaction_start is not after interaction_settled", "the terminal state is useful content or honest empty, unavailable, or error"],
+        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+      },
+      "derived_from": [],
+      "synthetic_mapping": {
+        "status": "scoped",
+        "names": [
+          {
+            "name": "settledMs",
+            "fixture_scope": ["contracts.keyword-housing"],
+            "compatibility_condition": "input begins the action and canonical query plus row-or-empty result ends it"
+          }
+        ],
+        "incompatible_names": ["settledMs:land.outcomes-first-paint"],
+        "reason": "Only the Contracts keyword fixture has the same action-to-settled landmarks."
+      }
+    },
+    {
+      "id": "feedback_to_settled_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed first visible interaction feedback until the resulting component reaches its semantic settled state.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "interaction",
+        "start_landmark": "visible_feedback",
+        "end_landmark": "interaction_settled",
+        "finalize_condition": "both ordered interaction landmarks are available in the browser",
+        "valid_when": ["both landmarks exist and are finite", "visible_feedback is not after interaction_settled"],
+        "non_measurement_states": ["missing", "unsupported", "background", "no_interaction"]
+      },
+      "derived_from": ["interaction_feedback_ms", "interaction_settled_ms"],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": ["visualResponseMs", "settledMs"],
+        "reason": "The synthetic harness has no distinct visible-feedback timestamp paired with settlement."
+      }
+    },
+    {
+      "id": "response_to_first_render_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed first response byte to first contentful paint.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "response_start",
+        "end_landmark": "first_contentful_paint",
+        "finalize_condition": "all ordered load-decomposition landmarks are available in the browser",
+        "valid_when": ["all load landmarks exist and are finite", "navigation_start through semantic_content_ready are ordered"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": ["ttfb_ms", "fcp_ms"],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": [],
+        "reason": "The harness reports navigation metrics separately and has no named phase metric."
+      }
+    },
+    {
+      "id": "first_render_to_main_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed first contentful paint to largest contentful paint.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "first_contentful_paint",
+        "end_landmark": "largest_contentful_paint",
+        "finalize_condition": "all ordered load-decomposition landmarks are available in the browser",
+        "valid_when": ["all load landmarks exist and are finite", "navigation_start through semantic_content_ready are ordered"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": ["fcp_ms", "lcp_ms"],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": [],
+        "reason": "The harness reports navigation metrics separately and has no named phase metric."
+      }
+    },
+    {
+      "id": "main_to_useful_ms",
+      "version": "1.0.0",
+      "unit": "ms",
+      "raw": false,
+      "derived": true,
+      "description": "Elapsed largest contentful paint to semantic content readiness.",
+      "numeric_domain": { "finite": true, "minimum": 0, "measured_zero_valid": true },
+      "lifecycle": {
+        "scope": "page",
+        "start_landmark": "largest_contentful_paint",
+        "end_landmark": "semantic_content_ready",
+        "finalize_condition": "all ordered load-decomposition landmarks are available in the browser",
+        "valid_when": ["all load landmarks exist and are finite", "navigation_start through semantic_content_ready are ordered"],
+        "non_measurement_states": ["missing", "unsupported", "background"]
+      },
+      "derived_from": ["lcp_ms", "content_ready_ms"],
+      "synthetic_mapping": {
+        "status": "none",
+        "names": [],
+        "incompatible_names": [],
+        "reason": "The harness waits for readiness but emits no named readiness duration or phase metric."
+      }
+    }
+  ],
+  "phase_decompositions": [
+    {
+      "phase_id": "delivery",
+      "metric_id": "ttfb_ms",
+      "start_landmark": "navigation_start",
+      "end_landmark": "response_start",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    },
+    {
+      "phase_id": "response_to_first_render",
+      "metric_id": "response_to_first_render_ms",
+      "start_landmark": "response_start",
+      "end_landmark": "first_contentful_paint",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    },
+    {
+      "phase_id": "first_render_to_main",
+      "metric_id": "first_render_to_main_ms",
+      "start_landmark": "first_contentful_paint",
+      "end_landmark": "largest_contentful_paint",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    },
+    {
+      "phase_id": "main_to_useful",
+      "metric_id": "main_to_useful_ms",
+      "start_landmark": "largest_contentful_paint",
+      "end_landmark": "semantic_content_ready",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    },
+    {
+      "phase_id": "action_to_feedback",
+      "metric_id": "interaction_feedback_ms",
+      "start_landmark": "interaction_start",
+      "end_landmark": "visible_feedback",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    },
+    {
+      "phase_id": "feedback_to_settled",
+      "metric_id": "feedback_to_settled_ms",
+      "start_landmark": "visible_feedback",
+      "end_landmark": "interaction_settled",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    },
+    {
+      "phase_id": "action_to_settled",
+      "metric_id": "interaction_settled_ms",
+      "start_landmark": "interaction_start",
+      "end_landmark": "interaction_settled",
+      "operation": "end_minus_start",
+      "derive_in": "browser",
+      "preconditions": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"],
+      "invalid_result": "omit",
+      "negative_result": "omit_never_clamp"
+    }
+  ],
   "registry_version": "1.0.0",
   "manifest_version": "rum-surfaces-v1",
   "description": "Canonical human-edited registry for public-safe performance surface and component identity. Generated browser, Worker, and operator projections must never be edited as inventories.",
-  "metric_ids": [
-    "ttfb_ms",
-    "fcp_ms",
-    "lcp_ms",
-    "cls_score",
-    "inp_ms",
-    "content_ready_ms",
-    "component_ready_ms",
-    "interaction_feedback_ms",
-    "interaction_settled_ms",
-    "feedback_to_settled_ms"
-  ],
   "delivery_classes": [
     "static",
     "pages_edge",

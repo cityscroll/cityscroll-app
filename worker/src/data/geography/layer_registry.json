@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.geography_layer_registry.v1",
-  "generated_at": "2026-08-19T00:02:54.057Z",
+  "generated_at": "2026-08-18T16:00:00.000Z",
   "layers": [
     {
       "type": "borough",
@@ -163,6 +163,247 @@
           "worker_path": "worker/src/data/geography/layers/council_district/2026-05-26.json",
           "sha256": "175cd464f0af2b05d0487b6a7ffabf3662a094b405f77243288e96856b03d2b6",
           "bytes": 114996,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    },
+    {
+      "type": "nta2020",
+      "class": "statistical",
+      "namespace": "nyc-dcp:nta2020",
+      "canonical_id": {
+        "source_field": "NTA2020",
+        "pattern": "^(?:BK|BX|MN|QN|SI)\\d{4}$"
+      },
+      "label": {
+        "source_field": "NTAName",
+        "template": "{label}"
+      },
+      "source": {
+        "contract_id": "dcp-nta2020-boundaries",
+        "publisher": "NYC Department of City Planning",
+        "dataset_id": "nynta2020_26b",
+        "dataset_name": "2020 Neighborhood Tabulation Areas",
+        "url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/neighborhood-tabulation-areas/nynta2020_26b.zip",
+        "updated_at": "2026-05-04T00:00:00.000Z"
+      },
+      "boundary_vintage": "26B",
+      "cardinality": "exactly_one_on_covered_land_including_typed_special_areas",
+      "subtypes": {
+        "required": true,
+        "allowed": [
+          "residential",
+          "rikers_island",
+          "special_use",
+          "cemetery",
+          "airport",
+          "park"
+        ]
+      },
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 262,
+        "comparison": "exact",
+        "actual_feature_count": 262
+      },
+      "freshness": {
+        "max_stale_days": 180
+      },
+      "public_relations": [],
+      "declared_uses": [
+        "ingestion",
+        "resolver",
+        "qa"
+      ],
+      "receipt": {
+        "path": "data/geography/receipts/nta2020/26B.json",
+        "sha256": "e75991d522df25948bb945ffd16d6a743d9b62eebc72eff976327e7e966bb877"
+      },
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/nta2020/26B.full.json",
+          "sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+          "bytes": 4591965,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/nta2020/26B.json",
+          "worker_path": "worker/src/data/geography/layers/nta2020/26B.json",
+          "sha256": "d83096150f7f841de21cef87a4e19839ca57b70fcab10faa05487ba0af685075",
+          "bytes": 243122,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    },
+    {
+      "type": "police_precinct",
+      "class": "service_administrative",
+      "namespace": "nyc-dcp:police-precinct",
+      "canonical_id": {
+        "source_field": "Precinct",
+        "pattern": "^(?:[1-9]|[1-9]\\d|1[01]\\d|12[0-3])$"
+      },
+      "label": {
+        "source_field": "Precinct",
+        "template": "Police Precinct {id}"
+      },
+      "source": {
+        "contract_id": "dcp-police-precinct-boundaries",
+        "publisher": "NYC Department of City Planning",
+        "dataset_id": "nypp_26b",
+        "dataset_name": "Police Precincts",
+        "url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/police-precincts/nypp_26b.zip",
+        "updated_at": "2026-05-04T00:00:00.000Z"
+      },
+      "boundary_vintage": "26B",
+      "cardinality": "exactly_one_on_covered_land",
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 78,
+        "comparison": "exact",
+        "actual_feature_count": 78
+      },
+      "freshness": {
+        "max_stale_days": 180
+      },
+      "public_relations": [],
+      "declared_uses": [
+        "ingestion",
+        "resolver",
+        "native_join",
+        "qa"
+      ],
+      "receipt": {
+        "path": "data/geography/receipts/police_precinct/26B.json",
+        "sha256": "3b257669de023bcef2b816707f1ea064e7f2b5ad6c7ece080b09e215b23895ab"
+      },
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/police_precinct/26B.full.json",
+          "sha256": "3eafc22012253bb95f2dca62fe6e3e7ad378d7c10244b02a09f32ff2c37aa3b0",
+          "bytes": 3854277,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/police_precinct/26B.json",
+          "worker_path": "worker/src/data/geography/layers/police_precinct/26B.json",
+          "sha256": "71111aeb8c2c080c39547fa1354d121a7d7ef46ff64986984077154cc6cc03b0",
+          "bytes": 112082,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    },
+    {
+      "type": "sanitation_district",
+      "class": "service_administrative",
+      "namespace": "nyc-dsny:sanitation-district",
+      "canonical_id": {
+        "source_field": "districtcode",
+        "pattern": "^[1-5](?:0[1-9]|1[0-8])$"
+      },
+      "label": {
+        "source_field": "district",
+        "template": "{label}"
+      },
+      "source": {
+        "contract_id": "dsny-district-boundaries",
+        "publisher": "NYC Department of Sanitation",
+        "dataset_id": "i6mn-amj2",
+        "dataset_name": "DSNY Districts",
+        "url": "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
+        "updated_at": "2024-04-10T10:00:05.000Z"
+      },
+      "boundary_vintage": "2024-04-10",
+      "cardinality": "exactly_one_on_covered_land",
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 59,
+        "comparison": "exact",
+        "actual_feature_count": 59
+      },
+      "freshness": {
+        "max_stale_days": 730
+      },
+      "public_relations": [],
+      "declared_uses": [
+        "ingestion",
+        "resolver",
+        "community_district_equivalence_canary",
+        "qa"
+      ],
+      "receipt": {
+        "path": "data/geography/receipts/sanitation_district/2024-04-10.json",
+        "sha256": "eb706047ebb7b4b109954cb10c7f8d90b71df59aee15327cd47a3f8b3bda9b36"
+      },
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/sanitation_district/2024-04-10.full.json",
+          "sha256": "919b200e718d623c6c0662e6312081c33ce465ea36415373c60d762611ab86c5",
+          "bytes": 2054531,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/sanitation_district/2024-04-10.json",
+          "worker_path": "worker/src/data/geography/layers/sanitation_district/2024-04-10.json",
+          "sha256": "cac978bdb4c99091d6f109aa6f479e674311a91ea032d1233893fbd244be8d84",
+          "bytes": 87709,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    },
+    {
+      "type": "business_improvement_district",
+      "class": "economic_institutional",
+      "namespace": "nyc-sbs:business-improvement-district",
+      "canonical_id": {
+        "source_field": "reviewed_slug",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "label": {
+        "source_field": "f_all_bi_2",
+        "template": "{label}"
+      },
+      "source": {
+        "contract_id": "business-improvement-district-boundaries",
+        "publisher": "NYC Department of Small Business Services",
+        "dataset_id": "7jdm-inj8",
+        "dataset_name": "Business Improvement Districts",
+        "url": "https://data.cityofnewyork.us/resource/7jdm-inj8.geojson?$limit=500",
+        "updated_at": "2024-10-08T15:54:16.000Z"
+      },
+      "boundary_vintage": "2024-10-08",
+      "cardinality": "zero_or_more_overlaps_allowed",
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 74,
+        "comparison": "exact",
+        "actual_feature_count": 74
+      },
+      "freshness": {
+        "max_stale_days": 730
+      },
+      "public_relations": [],
+      "declared_uses": [
+        "ingestion",
+        "resolver",
+        "qa"
+      ],
+      "receipt": {
+        "path": "data/geography/receipts/business_improvement_district/2024-10-08.json",
+        "sha256": "8b3041f029390d5ee4e9c9c6acf382d975109068060a23b5de920a89bd875742"
+      },
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/business_improvement_district/2024-10-08.full.json",
+          "sha256": "b5e9c56add79c62448f28f2e8aa41158e61ac41c1f3f3ac6ff71310293c7fee8",
+          "bytes": 2193434,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/business_improvement_district/2024-10-08.json",
+          "worker_path": "worker/src/data/geography/layers/business_improvement_district/2024-10-08.json",
+          "sha256": "08068826530cf25cf0e3bbea40150c176d09dd23ccd0de69acb90939237fe64f",
+          "bytes": 232146,
           "geometry_fidelity": "simplified"
         }
       }

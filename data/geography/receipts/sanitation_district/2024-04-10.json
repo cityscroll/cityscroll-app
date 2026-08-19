@@ -1,0 +1,45 @@
+{
+  "schema": "cityscroll.geography_ingestion_receipt.v1",
+  "type": "sanitation_district",
+  "acquired_at": "2026-08-18T16:00:00.000Z",
+  "boundary_vintage": "2024-04-10",
+  "source": {
+    "contract_id": "dsny-district-boundaries",
+    "publisher": "NYC Department of Sanitation",
+    "dataset_id": "i6mn-amj2",
+    "url": "https://data.cityofnewyork.us/resource/i6mn-amj2.geojson?$limit=100",
+    "publisher_updated_at": "2024-04-10T10:00:05.000Z",
+    "sha256": "59239a66f41ede86a7bda9c7888e346a3d624a02d7afdbfbfb208b66eaca684e",
+    "bytes": 2047432,
+    "source_feature_count": 59
+  },
+  "normalized_input": {
+    "format": "GeoJSON",
+    "crs": "EPSG:4326",
+    "sha256": "59239a66f41ede86a7bda9c7888e346a3d624a02d7afdbfbfb208b66eaca684e",
+    "bytes": 2047432
+  },
+  "admission": {
+    "accepted_feature_count": 59,
+    "rejected_feature_count": 0,
+    "rejected_features": []
+  },
+  "artifacts": {
+    "full": {
+      "path": "data/geography/layers/sanitation_district/2024-04-10.full.json",
+      "sha256": "919b200e718d623c6c0662e6312081c33ce465ea36415373c60d762611ab86c5",
+      "geometry_fidelity": "full"
+    },
+    "simplified": {
+      "site_path": "site/data/geography/layers/sanitation_district/2024-04-10.json",
+      "worker_path": "worker/src/data/geography/layers/sanitation_district/2024-04-10.json",
+      "sha256": "cac978bdb4c99091d6f109aa6f479e674311a91ea032d1233893fbd244be8d84",
+      "geometry_fidelity": "simplified"
+    }
+  },
+  "qa": {
+    "point_canaries": "data/geography/qa/first_four_point_canaries.json",
+    "pluto_cross_checks": "data/geography/qa/first_four_pluto_cross_checks.json",
+    "moda_oracle": "data/geography/oracles/moda-v2025.09.29.json"
+  }
+}

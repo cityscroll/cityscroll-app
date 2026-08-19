@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.operator_inventory.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "7a772a931ce7bb9c46b38da9babeccd00e0ff0e239d707a90675ff1253138943",
+  "registry_hash": "8019c14f8b090c10400c01056fca646a9baa126f6da245491a8fb361d4747b06",
   "surfaces": [
     {
       "surface_id": "about",

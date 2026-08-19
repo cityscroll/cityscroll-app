@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/performance-observability.v1.schema.json",
+  "title": "CityScroll performance observability catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema",
+    "catalog_version",
+    "registry_version",
+    "manifest_version",
+    "description",
+    "observation_contract",
+    "metrics",
+    "phase_decompositions",
+    "delivery_classes",
+    "lifecycle_states",
+    "projection_policy",
+    "semantic_readiness_contracts",
+    "surfaces",
+    "components"
+  ],
+  "properties": {
+    "$schema": { "const": "./performance-observability.v1.schema.json" },
+    "schema": { "const": "cityscroll.performance_observability.v1" },
+    "catalog_version": { "$ref": "#/$defs/semver" },
+    "registry_version": { "$ref": "#/$defs/semver" },
+    "manifest_version": { "$ref": "#/$defs/stable_id" },
+    "description": { "type": "string", "minLength": 1 },
+    "observation_contract": { "$ref": "#/$defs/observation_contract" },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/metric" }
+    },
+    "phase_decompositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/phase_decomposition" }
+    },
+    "delivery_classes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "enum": ["static", "pages_edge", "worker_backed", "hybrid"] }
+    },
+    "lifecycle_states": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "instrumented",
+          "registered_no_data",
+          "planned",
+          "not_user_facing",
+          "not_performance_relevant",
+          "intentionally_unmeasured",
+          "retired"
+        ]
+      }
+    },
+    "projection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["browser", "worker", "operator"],
+      "properties": {
+        "browser": { "$ref": "#/$defs/projection_rule" },
+        "worker": { "$ref": "#/$defs/projection_rule" },
+        "operator": { "$ref": "#/$defs/projection_rule" }
+      }
+    },
+    "semantic_readiness_contracts": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/semantic_readiness_contract" }
+    },
+    "surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "object" }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "object" }
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "metric_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "stable_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "landmark_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$"
+    },
+    "non_measurement_state": {
+      "enum": ["missing", "unsupported", "background", "no_interaction"]
+    },
+    "observation_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "measured_state", "non_measurement_states", "zero_rule"],
+      "properties": {
+        "schema": { "const": "cityscroll.performance_observation.v1" },
+        "measured_state": { "const": "measured" },
+        "non_measurement_states": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 4,
+          "items": { "$ref": "#/$defs/non_measurement_state" }
+        },
+        "zero_rule": {
+          "const": "A numeric value, including 0, exists only for state=measured; every non-measurement state forbids value."
+        }
+      }
+    },
+    "projection_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audience", "rule"],
+      "properties": {
+        "audience": { "enum": ["public", "private_runtime", "private_operator"] },
+        "rule": { "type": "string", "minLength": 1 }
+      }
+    },
+    "semantic_readiness_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric_id", "terminal_result_states", "definition"],
+      "properties": {
+        "metric_id": { "$ref": "#/$defs/metric_id" },
+        "terminal_result_states": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["content", "empty", "unavailable", "error"] }
+        },
+        "definition": { "type": "string", "minLength": 1 }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "start_landmark",
+        "end_landmark",
+        "finalize_condition",
+        "valid_when",
+        "non_measurement_states"
+      ],
+      "properties": {
+        "scope": { "enum": ["page", "component", "interaction"] },
+        "start_landmark": { "$ref": "#/$defs/landmark_id" },
+        "end_landmark": { "$ref": "#/$defs/landmark_id" },
+        "finalize_condition": { "type": "string", "minLength": 1 },
+        "valid_when": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "non_measurement_states": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/non_measurement_state" }
+        }
+      }
+    },
+    "synthetic_name": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "fixture_scope", "compatibility_condition"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "fixture_scope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "compatibility_condition": { "type": "string", "minLength": 1 }
+      }
+    },
+    "synthetic_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "names", "incompatible_names", "reason"],
+      "properties": {
+        "status": { "enum": ["exact", "conditional", "scoped", "none"] },
+        "names": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/synthetic_name" }
+        },
+        "incompatible_names": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "unit",
+        "raw",
+        "derived",
+        "description",
+        "numeric_domain",
+        "lifecycle",
+        "derived_from",
+        "synthetic_mapping"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/metric_id" },
+        "version": { "$ref": "#/$defs/semver" },
+        "unit": { "enum": ["ms", "score"] },
+        "raw": { "type": "boolean" },
+        "derived": { "type": "boolean" },
+        "description": { "type": "string", "minLength": 1 },
+        "numeric_domain": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["finite", "minimum", "measured_zero_valid"],
+          "properties": {
+            "finite": { "const": true },
+            "minimum": { "const": 0 },
+            "measured_zero_valid": { "const": true }
+          }
+        },
+        "lifecycle": { "$ref": "#/$defs/lifecycle" },
+        "derived_from": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/metric_id" }
+        },
+        "synthetic_mapping": { "$ref": "#/$defs/synthetic_mapping" }
+      }
+    },
+    "phase_decomposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase_id",
+        "metric_id",
+        "start_landmark",
+        "end_landmark",
+        "operation",
+        "derive_in",
+        "preconditions",
+        "invalid_result",
+        "negative_result"
+      ],
+      "properties": {
+        "phase_id": { "$ref": "#/$defs/metric_id" },
+        "metric_id": { "$ref": "#/$defs/metric_id" },
+        "start_landmark": { "$ref": "#/$defs/landmark_id" },
+        "end_landmark": { "$ref": "#/$defs/landmark_id" },
+        "operation": { "const": "end_minus_start" },
+        "derive_in": { "const": "browser" },
+        "preconditions": {
+          "const": ["all_landmarks_present", "all_landmarks_finite", "landmarks_ordered"]
+        },
+        "invalid_result": { "const": "omit" },
+        "negative_result": { "const": "omit_never_clamp" }
+      }
+    },
+    "observation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["metric_id", "metric_version", "unit", "state", "value"],
+          "properties": {
+            "metric_id": { "$ref": "#/$defs/metric_id" },
+            "metric_version": { "$ref": "#/$defs/semver" },
+            "unit": { "enum": ["ms", "score"] },
+            "state": { "const": "measured" },
+            "value": { "type": "number", "minimum": 0 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["metric_id", "metric_version", "unit", "state"],
+          "properties": {
+            "metric_id": { "$ref": "#/$defs/metric_id" },
+            "metric_version": { "$ref": "#/$defs/semver" },
+            "unit": { "enum": ["ms", "score"] },
+            "state": { "$ref": "#/$defs/non_measurement_state" }
+          },
+          "not": { "required": ["value"] }
+        }
+      ]
+    }
+  }
+}

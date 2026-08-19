@@ -652,18 +652,23 @@ test("location-resolution measures corpora, districts, and boundary vintage with
   assert.equal(result.metrics.district_rates.community_resolution_rate, 1);
   assert.equal(result.metrics.district_rates.council_resolution_rate, 1);
   assert.equal(result.metrics.district_rates.district_resolution_rate, 1);
-  // Registered borough/CD/Council layers stamp independent current vintages
-  // and complete per-layer coverage on the existing Data Health dimension.
-  assert.equal(result.metrics.boundary_metrics.checked, 3);
-  assert.equal(result.metrics.boundary_metrics.stale, 0);
-  assert.equal(result.metrics.boundary_metrics.current, 3);
-  assert.equal(result.metrics.boundary_metrics.boundary_vintage_current_rate, 1);
-  assert.equal(result.metrics.boundary_metrics.coverage_complete, 3);
+  // All seven registered layers stamp independent vintages and complete
+  // per-layer coverage. DSNY's publisher clock is deliberately visible as
+  // stale rather than being collapsed into a citywide minimum date.
+  assert.equal(result.metrics.boundary_metrics.checked, 7);
+  assert.equal(result.metrics.boundary_metrics.stale, 1);
+  assert.equal(result.metrics.boundary_metrics.current, 6);
+  assert.equal(result.metrics.boundary_metrics.boundary_vintage_current_rate, 6 / 7);
+  assert.equal(result.metrics.boundary_metrics.coverage_complete, 7);
   assert.equal(result.metrics.boundary_metrics.coverage_incomplete, 0);
   assert.deepEqual(Object.keys(result.metrics.boundary_metrics.geography_layers), [
     "borough",
+    "business_improvement_district",
     "community_district",
     "council_district",
+    "nta2020",
+    "police_precinct",
+    "sanitation_district",
   ]);
   assert.ok(inventory.boundaries.every((b) => b.status === "contracted" && b.vintage_at));
   assert.ok(inventory.boundaries.every((b) => b.coverage_status === "complete"));

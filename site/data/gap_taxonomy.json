@@ -302,6 +302,16 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "business-improvement-district-boundaries",
+      "name": "Business Improvement Districts",
+      "source_contract_id": "business-improvement-district-boundaries",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/7jdm-inj8",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "capital-projects",
       "name": "Capital Projects",
       "source_contract_id": "capital-projects",
@@ -649,6 +659,26 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "dcp-nta2020-boundaries",
+      "name": "2020 Neighborhood Tabulation Areas",
+      "source_contract_id": "dcp-nta2020-boundaries",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/neighborhood-tabulation",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "dcp-police-precinct-boundaries",
+      "name": "Police Precinct Boundaries",
+      "source_contract_id": "dcp-police-precinct-boundaries",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/police-precincts",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "dob-certificate-of-occupancy",
       "name": "DOB Certificate Of Occupancy",
       "source_contract_id": "dob-certificate-of-occupancy",
@@ -712,6 +742,16 @@
       },
       "landing_page": "https://data.cityofnewyork.us/d/72mk-a8z7",
       "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "dsny-district-boundaries",
+      "name": "DSNY Districts",
+      "source_contract_id": "dsny-district-boundaries",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/i6mn-amj2",
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "expense-budget",
@@ -3538,8 +3578,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-18",
-    "source_contracts_fingerprint": "279241734d379ea1451f99e30fec53f01e53084b7807f94f7068dda35764a476",
+    "observed_on": "2026-08-19",
+    "source_contracts_fingerprint": "b0b18c7d2fce91a4a122178be2825e8bcd5ba8c19bc975ff9755e37b38fc6e4e",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 84,
     "class_changes": 0,
