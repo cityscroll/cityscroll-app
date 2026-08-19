@@ -1,0 +1,44 @@
+{
+  "schema": "cityscroll.rum.handoff.new_instrumentation.v1",
+  "canonical_edit": "architecture/performance-observability.v1.json",
+  "rebuild": "node tools/build_performance_observability.mjs",
+  "check": "node tools/build_performance_observability.mjs --check",
+  "focused_proof": [
+    "test/performance_observability_registry.test.mjs",
+    "test/performance_observability_architecture.test.mjs"
+  ],
+  "projections": [
+    "site/data/performance-classification-manifest.v1.json",
+    "worker/src/data/performance-validation-allowlist.v1.json",
+    "worker/src/data/performance-operator-labels.v1.json"
+  ],
+  "compatibility": [
+    "Unknown pathnames stay unclassified; never fold into home or browse.",
+    "Browser projection omits operator_label, owner_source_path, architecture_container_ref, definition, and reason.",
+    "Aliases and supersedes preserve renamed identity; do not reuse a retired ID as a new canonical ID.",
+    "Missing measurements stay omitted. Do not add a speed threshold, SLO, or usage-contract field."
+  ],
+  "example_component": {
+    "component_id": "handoff-example-panel",
+    "operator_label": "Handoff example panel",
+    "kind": "component",
+    "parent": "surface:about",
+    "route_family": "information-about",
+    "public_safe_matcher": { "kind": "semantic_marker", "marker": "handoff-example-panel" },
+    "architecture_container_ref": "browser_site",
+    "delivery_class": "static",
+    "applicable_metric_ids": ["component_ready_ms"],
+    "semantic_readiness_contract": "component-ready-v1",
+    "lifecycle_state": "instrumented",
+    "aliases": [],
+    "supersedes": [],
+    "introduced_version": "1.0.0",
+    "owner_source_path": "site/rum_semantic_milestones.mjs",
+    "projections": ["browser", "worker", "operator"]
+  },
+  "instrumentation_notes": [
+    "The owner module reports semantic milestones through site/rum_semantic_milestones.mjs.",
+    "Do not put DOM selectors, record IDs, URLs, or query text in the milestone record.",
+    "This fixture is in-memory only; it must not write the production registry."
+  ]
+}
