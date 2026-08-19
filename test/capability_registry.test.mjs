@@ -28,12 +28,20 @@ import {
   ENTITY_DOSSIER_CAPABILITY,
   ENTITY_DOSSIER_CAPABILITY_REFERENCE,
 } from "../capabilities/entity_dossier.mjs";
+import {
+  ENTITY_RELATIONSHIPS_CAPABILITY,
+  ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+} from "../capabilities/entity_relationships.mjs";
 import { workerD1NoticeSearch } from "../worker/src/lib/notices.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import {
   ENTITY_DOSSIER_HTTP_ADAPTER,
   workerD1EntityDossier,
 } from "../worker/src/entity_dossier.mjs";
+import {
+  ENTITY_RELATIONSHIPS_HTTP_ADAPTER,
+  workerD1EntityRelationships,
+} from "../worker/src/public_relationship_graph.mjs";
 import {
   buildCapabilityTopology,
   buildMcpToolCatalog,
@@ -46,22 +54,28 @@ const ROOT = new URL("../", import.meta.url);
 const TOPOLOGY = new URL("../architecture/generated/capability-topology.json", import.meta.url);
 const CATALOG = new URL("../site/data/mcp_tool_catalog.json", import.meta.url);
 
-test("the registry is frozen, versioned, owned, and contains the two ladder capabilities", () => {
+test("the registry is frozen, versioned, owned, and contains the three ladder capabilities", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 2);
+  assert.equal(CAPABILITY_REGISTRY.length, 3);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[1], ENTITY_DOSSIER_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[2], ENTITY_RELATIONSHIPS_CAPABILITY);
   assert.equal(NOTICE_SEARCH_CAPABILITY.reference, "notice.search@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(NOTICE_SEARCH_CAPABILITY.owner, "notices");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.reference, "entity.dossier.get@1");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.version, "1.0.0");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.owner, "entity-resolution");
+  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.reference, "entity.relationships.get@1");
+  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.version, "1.0.0");
+  assert.equal(ENTITY_RELATIONSHIPS_CAPABILITY.owner, "entity-resolution");
   assert.ok(Object.isFrozen(CAPABILITY_REGISTRY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY.adapters));
   assert.ok(Object.isFrozen(ENTITY_DOSSIER_CAPABILITY));
   assert.ok(Object.isFrozen(ENTITY_DOSSIER_CAPABILITY.adapters));
+  assert.ok(Object.isFrozen(ENTITY_RELATIONSHIPS_CAPABILITY));
+  assert.ok(Object.isFrozen(ENTITY_RELATIONSHIPS_CAPABILITY.adapters));
 });
 
 test("provider and both real adapters explicitly reference notice.search@1", () => {
@@ -104,6 +118,27 @@ test("provider and multi-representation HTTP adapter reference entity.dossier.ge
   assert.equal(validateRuntimeTopology(), true);
 });
 
+test("provider and multi-representation HTTP adapter reference entity.relationships.get@1", () => {
+  const provider = workerD1EntityRelationships({});
+  assert.equal(provider.capabilityReference, ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE);
+  assert.equal(provider.providerId, ENTITY_RELATIONSHIPS_CAPABILITY.provider.id);
+  assert.deepEqual(
+    {
+      id: ENTITY_RELATIONSHIPS_HTTP_ADAPTER.id,
+      capabilityReference: ENTITY_RELATIONSHIPS_HTTP_ADAPTER.capabilityReference,
+      providerId: ENTITY_RELATIONSHIPS_HTTP_ADAPTER.providerId,
+      representations: ENTITY_RELATIONSHIPS_HTTP_ADAPTER.representations,
+    },
+    {
+      id: ENTITY_RELATIONSHIPS_CAPABILITY.adapters[0].id,
+      capabilityReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+      providerId: ENTITY_RELATIONSHIPS_CAPABILITY.provider.id,
+      representations: ENTITY_RELATIONSHIPS_CAPABILITY.adapters[0].representations,
+    },
+  );
+  assert.equal(validateRuntimeTopology(), true);
+});
+
 test("every MCP tool has a capability, existing contract, or scoped pilot exception", () => {
   assert.deepEqual(MCP_TOOL_BINDINGS.map(({ name }) => name), MCP_TOOLS.map(({ name }) => name));
   const search = MCP_TOOL_BINDINGS.find(({ name }) => name === "search_notices");
@@ -120,6 +155,7 @@ test("core capability files contain no runtime or transport dependencies", () =>
   for (const path of [
     "capabilities/notice_search.mjs",
     "capabilities/entity_dossier.mjs",
+    "capabilities/entity_relationships.mjs",
     "capabilities/registry.mjs",
   ]) {
     const source = readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
@@ -138,6 +174,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
   assert.deepEqual(catalog.registered_capability_references, [
     "notice.search@1",
     "entity.dossier.get@1",
+    "entity.relationships.get@1",
   ]);
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
     "search_notices",

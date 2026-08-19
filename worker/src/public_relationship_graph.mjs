@@ -15,9 +15,23 @@ import {
 import crosswalk from "./data/agency_crosswalk.json" with { type: "json" };
 import communityBoardGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import { enrichAgency } from "./lib/agency_identity.mjs";
+import {
+  ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+  ENTITY_RELATIONSHIPS_PROVIDER_ID,
+  ENTITY_RELATIONSHIPS_REPRESENTATIONS,
+  executeEntityRelationships,
+} from "../../capabilities/entity_relationships.mjs";
 
 const GRAPH_CACHE = "public, max-age=300";
 export const GRAPH_RECORD_LIMIT = 250;
+
+export const ENTITY_RELATIONSHIPS_HTTP_ADAPTER = Object.freeze({
+  id: "worker-http.entity-relationships@1",
+  capabilityReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+  providerId: ENTITY_RELATIONSHIPS_PROVIDER_ID,
+  route: "GET /entity-relationships",
+  representations: ENTITY_RELATIONSHIPS_REPRESENTATIONS,
+});
 
 function staticGraphForId(id) {
   const nodes = communityBoardGeography.public_graph?.nodes || [];
@@ -205,6 +219,45 @@ export async function readPublicRelationshipGraph(db, canonicalEntityId, opts = 
   return serializePublicRelationshipGraph(rows, { ...opts, crossSpineEdges, crossSpineNodes });
 }
 
+/** Explicit provider for the transport-neutral entity.relationships.get@1 contract. */
+export function workerD1EntityRelationships(db) {
+  return Object.freeze({
+    capabilityReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+    providerId: ENTITY_RELATIONSHIPS_PROVIDER_ID,
+    async execute({ entityId, depth, fanOut, nodeTypes, edgeTypes }) {
+      try {
+        const graph = await readPublicRelationshipGraph(db, entityId, {
+          depth,
+          fanOut,
+          nodeTypes,
+          edgeTypes,
+        });
+        if (graph) {
+          return {
+            capability_reference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+            availability: "available",
+            graph,
+            error: null,
+          };
+        }
+        return {
+          capability_reference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+          availability: db ? "not_yet_public" : "unavailable",
+          graph: null,
+          error: db ? "not-found" : "no-store",
+        };
+      } catch {
+        return {
+          capability_reference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          graph: null,
+          error: "relationship-graph-unavailable",
+        };
+      }
+    },
+  });
+}
+
 export async function handlePublicRelationshipGraph(request, env) {
   if (request.method !== "GET") return json({ error: "method-not-allowed" }, 405);
   const url = new URL(request.url);
@@ -233,18 +286,24 @@ export async function handlePublicRelationshipGraph(request, env) {
     }, 400);
   }
 
-  let graph;
+  let result;
   try {
-    graph = await readPublicRelationshipGraph(env.DB, entityId, {
-      depth,
-      fanOut,
-      nodeTypes: nodeTypes.requested,
-      edgeTypes: edgeTypes.requested,
-    });
+    result = await executeEntityRelationships(
+      workerD1EntityRelationships(env.DB),
+      {
+        entityId,
+        depth,
+        fanOut,
+        nodeTypes: nodeTypes.requested,
+        edgeTypes: edgeTypes.requested,
+      },
+    );
   } catch {
     return json({ error: "relationship-graph-unavailable" }, 503);
   }
-  if (!graph) return notYetPublicResponse(request);
+  if (result.availability === "unavailable") return json({ error: result.error }, 503);
+  if (result.availability === "not_yet_public") return notYetPublicResponse(request);
+  const { graph } = result;
   if (url.searchParams.get("format") === "json"
       || (request.headers.get("accept") || "").includes("application/json")) {
     return json(graph);

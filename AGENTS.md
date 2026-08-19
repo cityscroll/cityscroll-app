@@ -2407,8 +2407,11 @@ canonical entity exists; otherwise **404** + `public_status: "not_yet_public"`.
 Do not market as live for subject-registry ids. When resolved: named edge types,
 publisher provenance, public-safe confidence; depth/fan-out caps. Pure model:
 `entity_resolution/publication/relationship_graph.mjs`; Worker:
-`worker/src/public_relationship_graph.mjs`. Verify:
-`node --test worker/test/public_relationship_graph.test.mjs`; captures:
+`worker/src/public_relationship_graph.mjs`. The separate transport-neutral direct
+operation is `entity.relationships.get@1` in
+`capabilities/entity_relationships.mjs`; its HTTP adapter preserves the existing
+JSON and HTML representations. Verify:
+`node --test worker/test/entity_relationships_capability.test.mjs worker/test/public_relationship_graph.test.mjs`; captures:
 `python3 tools/capture_public_relationship_graph.py`.
 
 **Clerical audit (er-12):** `tools/export_er_clerical_audit.mjs` emits a
