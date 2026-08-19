@@ -1,0 +1,58 @@
+{
+  "schema": "cityscroll.rum.handoff.deferred_governance.v1",
+  "status": "not_implemented",
+  "runtime_paths": [
+    "worker/src/performance_events.mjs",
+    "worker/src/lib/performance_query.mjs",
+    "worker/src/admin_performance.mjs",
+    "site/rum_collector.mjs",
+    "site/rum_bootstrap.mjs",
+    "site/rum_delivery.mjs",
+    "site/rum_semantic_milestones.mjs",
+    "site/contracts_rum.mjs"
+  ],
+  "forbidden_runtime_patterns": [
+    "\\bSLO\\b",
+    "speed_score",
+    "alert_threshold",
+    "page_on_percentile",
+    "fail_ci_on_percentile",
+    "auto_rollback",
+    "synthetic_rum_merge"
+  ],
+  "excluded_existing": {
+    "synthetic_p95_budgets": "test/performance and performance-budgets.json remain the CI fixture harness. They are not field-RUM enforcement."
+  },
+  "candidates": [
+    {
+      "id": "field-percentile-baselines",
+      "title": "Field percentile baselines",
+      "why_deferred": "Representative production samples do not yet exist as a reviewed baseline."
+    },
+    {
+      "id": "slos",
+      "title": "SLOs",
+      "why_deferred": "An SLO would turn observation into a target before the distribution is understood."
+    },
+    {
+      "id": "alerts-paging",
+      "title": "Alerts and paging",
+      "why_deferred": "This workstream is observability commissioning, not an on-call product."
+    },
+    {
+      "id": "synthetic-rum-compare",
+      "title": "Synthetic versus field RUM comparison",
+      "why_deferred": "Synthetic fixtures and field lifecycles answer different questions; merging them would hide missingness."
+    },
+    {
+      "id": "merge-enforcement",
+      "title": "Merge-queue field-RUM enforcement",
+      "why_deferred": "PR-fail-on-percentile would block product work on a still-filling sample."
+    },
+    {
+      "id": "automatic-rollback",
+      "title": "Automatic rollback on percentiles",
+      "why_deferred": "Rollback here is a manual independent switch, not a speed-triggered deploy revert."
+    }
+  ]
+}

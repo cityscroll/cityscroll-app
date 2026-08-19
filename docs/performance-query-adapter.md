@@ -5,6 +5,9 @@
 authenticated `/admin/performance` read model may call it; Desk must never query Analytics Engine,
 receive its credentials, or construct SQL.
 
+Maintainer and operator procedures — registry extension, privacy, troubleshooting, Desk, rollback,
+and deferred governance — live in [`docs/rum-observatory.md`](rum-observatory.md).
+
 ## Stored columns
 
 The adapter reads the normalized point written by `worker/src/performance_events.mjs`:

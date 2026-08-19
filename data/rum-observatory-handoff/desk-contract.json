@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.rum.handoff.desk_contract.v1",
+  "manifest": "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json",
+  "followup": "data/rum-09-desk-contract-fixtures/desk-followup.md",
+  "acceptance_test": "worker/test/admin_performance_consumer_contract.test.mjs",
+  "response_schema": "cityscroll.admin.performance.v1",
+  "endpoint": "/admin/performance",
+  "rules": [
+    "Desk discovers performance.endpoint from authenticated GET /admin/ops-contract.",
+    "Desk proxies bounded /admin/performance requests with the server-held admin credential.",
+    "The browser must not receive ADMIN_KEY, Analytics Engine credentials, account identifiers, or SQL.",
+    "The public repository does not contain a Desk UI; cityscroll-internal owns the dashboard.",
+    "Missing percentiles stay absent. Never display a synthetic numeric zero."
+  ]
+}
