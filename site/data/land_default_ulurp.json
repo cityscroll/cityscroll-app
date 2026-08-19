@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-08-18T12:06:09.937Z",
+  "generated_at": "2026-08-19T08:06:28.902Z",
   "source": {
     "name": "Zoning Application Portal projects (Open Data)",
     "dataset": "hgx4-8ukb",
     "url": "https://data.cityofnewyork.us/d/hgx4-8ukb"
   },
   "query": {
-    "$select": "project_id,project_name,primary_applicant,public_status,project_status,borough,community_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers",
-    "$where": "ulurp_non='ULURP' AND project_status='Active'",
+    "$select": "project_id,project_name,primary_applicant,public_status,project_status,borough,community_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers,ulurp_non,project_brief",
+    "$where": "ulurp_non IN ('ULURP','ELURP') AND project_status='Active'",
     "$order": "current_milestone_date DESC",
     "$limit": "40",
-    "note": "Default Land tab: Active ULURP, all boroughs, no keyword/geo. List fields only; brief hydrates on select."
+    "note": "Default Land tab: Active ULURP, all boroughs, no keyword/geo. The brief is reduced at build time to a cited regulatory-effect stamp."
   },
   "count": 40,
   "projects": [
@@ -26,7 +26,13 @@
       "community_district": "M05",
       "actions": "ZR; ZC; LD; ZC",
       "mih_flag": "false",
-      "current_milestone": "EAS - Final Letter Sent"
+      "current_milestone": "EAS - Final Letter Sent",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020K0444",
@@ -39,7 +45,13 @@
       "actions": "ZM; ZR; ZS; LD",
       "mih_flag": "false",
       "current_milestone": "EAS - Final Letter Sent",
-      "ulurp_numbers": "C240271ZMK; N240272ZRK; C240273ZSK; 260016LDK"
+      "ulurp_numbers": "C240271ZMK; N240272ZRK; C240273ZSK; 260016LDK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2024Q0135",
@@ -52,7 +64,13 @@
       "actions": "MM",
       "mih_flag": "false",
       "current_milestone": "MM - Final Letter Sent",
-      "ulurp_numbers": "240058MMQ"
+      "ulurp_numbers": "240058MMQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "P2012X0048",
@@ -62,7 +80,13 @@
       "project_status": "Active",
       "borough": "Bronx",
       "community_district": "X04",
-      "ulurp_numbers": "C090189MMX"
+      "ulurp_numbers": "C090189MMX",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2020Q0317",
@@ -75,7 +99,13 @@
       "actions": "ZM; ZR; ZS",
       "mih_flag": "false",
       "current_milestone": "EAS - Final Letter Sent",
-      "ulurp_numbers": "210317ZMQ; N210318ZRQ; 210319ZSQ"
+      "ulurp_numbers": "210317ZMQ; N210318ZRQ; 210319ZSQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023M0452",
@@ -88,7 +118,13 @@
       "actions": "MM; ZR",
       "mih_flag": "false",
       "current_milestone": "MM - Final Letter Sent",
-      "ulurp_numbers": "250306MMM; N250307ZRM"
+      "ulurp_numbers": "250306MMM; N250307ZRM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026R0127",
@@ -102,7 +138,13 @@
       "mih_flag": "false",
       "current_milestone": "PQ - Review Session - Post Hearing Follow-Up / Future Votes",
       "current_milestone_date": "2026-07-03T00:00:00.000",
-      "ulurp_numbers": "260330PQR"
+      "ulurp_numbers": "260330PQR",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0305",
@@ -116,7 +158,13 @@
       "mih_flag": "false",
       "current_milestone": "MM - Review Filed Land Use Application",
       "current_milestone_date": "2026-07-02T00:00:00.000",
-      "ulurp_numbers": "250308MMK"
+      "ulurp_numbers": "250308MMK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026K0123",
@@ -129,7 +177,59 @@
       "actions": "UK; ZM; ZR; EAS",
       "mih_flag": "false",
       "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-02T00:00:00.000"
+      "current_milestone_date": "2026-07-02T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C8-2",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R9A",
+              "kind": "base_district",
+              "max_far": 9.02,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 9.02,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024Q0325",
@@ -142,7 +242,49 @@
       "actions": "ZM; ZR",
       "mih_flag": "false",
       "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-02T00:00:00.000"
+      "current_milestone_date": "2026-07-02T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4-1",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7A",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0214",
@@ -155,7 +297,13 @@
       "actions": "ZM; ZR",
       "mih_flag": "true",
       "current_milestone": "Ad-hoc - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-01T00:00:00.000"
+      "current_milestone_date": "2026-07-01T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2024M0244",
@@ -169,7 +317,13 @@
       "mih_flag": "false",
       "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
       "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM"
+      "ulurp_numbers": "C260015ZSM; C260013ZMM; N260014ZRM; 260201LDM; 260202LDM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025M0338",
@@ -182,7 +336,13 @@
       "actions": "ZS; ZR; LD",
       "mih_flag": "false",
       "current_milestone": "ZS - Review Filed Land Use Application",
-      "current_milestone_date": "2026-07-01T00:00:00.000"
+      "current_milestone_date": "2026-07-01T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024K0358",
@@ -196,7 +356,13 @@
       "mih_flag": "false",
       "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
       "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "C260105ZMK; N260106ZRK; C260107ZSK; N260108ZCK; 260110LDK"
+      "ulurp_numbers": "C260105ZMK; N260106ZRK; C260107ZSK; N260108ZCK; 260110LDK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023M0213",
@@ -210,7 +376,13 @@
       "mih_flag": "true",
       "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
       "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "C260060ZMM; C260061ZSM; N260062ZRM; 260199LDM; 260200LDM"
+      "ulurp_numbers": "C260060ZMM; C260061ZSM; N260062ZRM; 260199LDM; 260200LDM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2019K0383",
@@ -224,7 +396,13 @@
       "mih_flag": "true",
       "current_milestone": "ZM - Prepare Filed Land Use Application",
       "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "210395ZMK; N210396ZRK"
+      "ulurp_numbers": "210395ZMK; N210396ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2025K0287",
@@ -238,7 +416,13 @@
       "mih_flag": "false",
       "current_milestone": "Ad-hoc - CPC Review of Modification Scope",
       "current_milestone_date": "2026-07-01T00:00:00.000",
-      "ulurp_numbers": "250326MMK"
+      "ulurp_numbers": "250326MMK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0252",
@@ -252,7 +436,13 @@
       "mih_flag": "false",
       "current_milestone": "MC - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260123MCM"
+      "ulurp_numbers": "260123MCM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024K0286",
@@ -266,7 +456,13 @@
       "mih_flag": "false",
       "current_milestone": "EAS - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260149ZMK; 260150ZRK"
+      "ulurp_numbers": "260149ZMK; 260150ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2023M0116",
@@ -280,7 +476,13 @@
       "mih_flag": "false",
       "current_milestone": "EAS - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "250336ZSM; 250337LDM"
+      "ulurp_numbers": "250336ZSM; 250337LDM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2024Q0219",
@@ -294,7 +496,49 @@
       "mih_flag": "false",
       "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "250329ZMQ; N250330ZRQ"
+      "ulurp_numbers": "250329ZMQ; N250330ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R4",
+              "kind": "base_district",
+              "max_far": 1.5,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1.5,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2026R0186",
@@ -308,7 +552,13 @@
       "mih_flag": "false",
       "current_milestone": "PC - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260248PCR"
+      "ulurp_numbers": "260248PCR",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025K0284",
@@ -322,7 +572,79 @@
       "mih_flag": "false",
       "current_milestone": "EAS - CPC Public Meeting - Public Hearing",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260238ZMK; 260239ZRK"
+      "ulurp_numbers": "260238ZMK; 260239ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            },
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023X0149",
@@ -336,7 +658,69 @@
       "mih_flag": "false",
       "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "240206ZMX; N240207ZRX"
+      "ulurp_numbers": "240206ZMX; N240207ZRX",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R7-1",
+              "kind": "base_district",
+              "max_far": 5.01,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.01,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R8",
+              "kind": "base_district",
+              "max_far": 8.64,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 8.64,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2022K0416",
@@ -350,7 +734,49 @@
       "mih_flag": "false",
       "current_milestone": "EAS - Project Readiness",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260315ZMK; N260316ZRK"
+      "ulurp_numbers": "260315ZMK; N260316ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "C4-4A",
+              "kind": "base_district",
+              "max_far": 4,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 4,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C6-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0142",
@@ -364,7 +790,59 @@
       "mih_flag": "false",
       "current_milestone": "EAS - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260147ZMQ; N260148ZRQ"
+      "ulurp_numbers": "260147ZMQ; N260148ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6B",
+              "kind": "base_district",
+              "max_far": 2.4,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 2.4,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025Q0247",
@@ -378,7 +856,59 @@
       "mih_flag": "false",
       "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260186ZMQ; 260187ZRQ"
+      "ulurp_numbers": "260186ZMQ; 260187ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R1-2A",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7D",
+              "kind": "base_district",
+              "max_far": 5.6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 5.6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025R0222",
@@ -392,7 +922,13 @@
       "mih_flag": "false",
       "current_milestone": "RS - Project Readiness",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260323RSR; 260324RCR; 260325RAR; 260389LDR"
+      "ulurp_numbers": "260323RSR; 260324RCR; 260325RAR; 260389LDR",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025R0137",
@@ -406,7 +942,13 @@
       "mih_flag": "false",
       "current_milestone": "PS - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "260227PSR"
+      "ulurp_numbers": "260227PSR",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025Q0316",
@@ -420,7 +962,13 @@
       "mih_flag": "false",
       "current_milestone": "PC - CPC Public Meeting - Vote",
       "current_milestone_date": "2026-06-30T00:00:00.000",
-      "ulurp_numbers": "C260089PCQ"
+      "ulurp_numbers": "C260089PCQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2026Q0210",
@@ -434,7 +982,13 @@
       "mih_flag": "false",
       "current_milestone": "MM - City Council Review",
       "current_milestone_date": "2026-06-27T00:00:00.000",
-      "ulurp_numbers": "260226MMQ"
+      "ulurp_numbers": "260226MMQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2025M0395",
@@ -448,7 +1002,13 @@
       "mih_flag": "false",
       "current_milestone": "EAS - Project Readiness",
       "current_milestone_date": "2026-06-26T00:00:00.000",
-      "ulurp_numbers": "260282ZSM; 260283ZRM"
+      "ulurp_numbers": "260282ZSM; 260283ZRM",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "not_map_amendment"
+      }
     },
     {
       "project_id": "2022K0430",
@@ -462,7 +1022,13 @@
       "mih_flag": "true",
       "current_milestone": "EIS - Review Session - Pre-Hearing Review / Post Referral",
       "current_milestone_date": "2026-06-26T00:00:00.000",
-      "ulurp_numbers": "240218ZMK; N240219ZRK"
+      "ulurp_numbers": "240218ZMK; N240219ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_not_in_far_table"
+      }
     },
     {
       "project_id": "2026K0233",
@@ -475,7 +1041,49 @@
       "actions": "ZM; ZR; ZS",
       "mih_flag": "true",
       "current_milestone": "ZM - Prepare Filed Land Use Fee Payment",
-      "current_milestone_date": "2026-06-26T00:00:00.000"
+      "current_milestone_date": "2026-06-26T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "high",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "C6-12",
+              "kind": "base_district",
+              "max_far": 15,
+              "citation": {
+                "section": "ZR 33-122",
+                "title": "Commercial buildings in all other Commercial Districts",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-122"
+              }
+            }
+          ],
+          "max_far": 15,
+          "has_overlay": false
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0196",
@@ -489,7 +1097,13 @@
       "mih_flag": "false",
       "current_milestone": "EAS - Review Session - Pre-Hearing Review / Post Referral",
       "current_milestone_date": "2026-06-26T00:00:00.000",
-      "ulurp_numbers": "260135ZMK; 260136ZRK"
+      "ulurp_numbers": "260135ZMK; 260136ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2023Q0303",
@@ -502,7 +1116,59 @@
       "actions": "ZM; ZR",
       "mih_flag": "true",
       "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-06-26T00:00:00.000"
+      "current_milestone_date": "2026-06-26T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R3-2",
+              "kind": "base_district",
+              "max_far": 1,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            }
+          ],
+          "max_far": 1,
+          "has_overlay": false
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-3",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2025K0154",
@@ -516,7 +1182,69 @@
       "mih_flag": "true",
       "current_milestone": "EAS - City Council Review",
       "current_milestone_date": "2026-06-25T00:00:00.000",
-      "ulurp_numbers": "260162ZMK; 260163ZRK"
+      "ulurp_numbers": "260162ZMK; 260163ZRK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R7X",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2024K0421",
@@ -529,7 +1257,13 @@
       "actions": "ZM; ZR",
       "mih_flag": "true",
       "current_milestone": "ZM - Review Filed Land Use Application",
-      "current_milestone_date": "2026-06-25T00:00:00.000"
+      "current_milestone_date": "2026-06-25T00:00:00.000",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "unknown",
+      "regulatory_effect_confidence": "unknown",
+      "regulatory_effect_basis": {
+        "reason": "district_pair_missing"
+      }
     },
     {
       "project_id": "2022Q0449",
@@ -543,7 +1277,69 @@
       "mih_flag": "true",
       "current_milestone": "EAS - City Council Review",
       "current_milestone_date": "2026-06-25T00:00:00.000",
-      "ulurp_numbers": "260155ZMQ; N260156ZRQ"
+      "ulurp_numbers": "260155ZMQ; N260156ZRQ",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R5B",
+              "kind": "base_district",
+              "max_far": 2,
+              "citation": {
+                "section": "ZR 23-21",
+                "title": "Floor Area Regulations for R1 Through R5 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21"
+              }
+            },
+            {
+              "id": "C1-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 2,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6A",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     },
     {
       "project_id": "2023K0183",
@@ -557,7 +1353,79 @@
       "mih_flag": "true",
       "current_milestone": "EAS - City Council Review",
       "current_milestone_date": "2026-06-25T00:00:00.000",
-      "ulurp_numbers": "250248ZMK; N250249ZRK; 250250ZSK; 250251LDK; 250215ZSK"
+      "ulurp_numbers": "250248ZMK; N250249ZRK; 250250ZSK; 250251LDK; 250215ZSK",
+      "ulurp_non": "ULURP",
+      "regulatory_effect": "upzone",
+      "regulatory_effect_confidence": "medium",
+      "regulatory_effect_basis": {
+        "existing": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C1-2",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 3.9,
+          "has_overlay": true
+        },
+        "proposed": {
+          "districts": [
+            {
+              "id": "R6",
+              "kind": "base_district",
+              "max_far": 3.9,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "R7-3",
+              "kind": "base_district",
+              "max_far": 6,
+              "citation": {
+                "section": "ZR 23-22",
+                "title": "Floor Area Regulations for R6 Through R12 Districts",
+                "url": "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22"
+              }
+            },
+            {
+              "id": "C2-4",
+              "kind": "commercial_overlay",
+              "max_far": null,
+              "citation": {
+                "section": "ZR 33-121",
+                "title": "Bulk governed by Residence District regulations",
+                "url": "https://zr.planning.nyc.gov/article-iii/chapter-3/33-121"
+              }
+            }
+          ],
+          "max_far": 6,
+          "has_overlay": true
+        },
+        "method": "project_brief_district_pair_max_far_v1",
+        "far_table": {
+          "schema": "cityscroll.zoning_max_far.v1",
+          "as_of": "2025-12-31"
+        }
+      }
     }
   ],
   "outcomes": {
