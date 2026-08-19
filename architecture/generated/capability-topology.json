@@ -57,6 +57,68 @@
           "surface": "MCP"
         }
       ]
+    },
+    {
+      "reference": "entity.dossier.get@1",
+      "id": "entity.dossier.get",
+      "version": "1.0.0",
+      "owner": "entity-resolution",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none",
+        "redaction": "public dossier serializer allowlist"
+      },
+      "cost": {
+        "class": "bounded-d1-read",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.entity_dossier_get.input.v1",
+      "output_schema": "cityscroll.capability.entity_dossier_get.output.v1",
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "entityIdentity": "entity.id",
+        "sourceIdentity": "linked_records[].source + assertions[].provenance.source",
+        "observationClock": "scope.observed_from + scope.observed_through",
+        "disagreementsPreserved": true
+      },
+      "freshness": {
+        "owner": "D1 entity-resolution read model",
+        "projection": "public serializer and adapter-owned representation"
+      },
+      "provider": {
+        "id": "worker-d1.entity-dossier",
+        "module": "worker/src/entity_dossier.mjs",
+        "export": "workerD1EntityDossier",
+        "store": "Cloudflare D1",
+        "readModel": "canonical entities plus accepted source-record links"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.entity-dossier@1",
+          "module": "worker/src/entity_dossier.mjs",
+          "kind": "http-route",
+          "route": "GET /entity-dossier",
+          "surface": "Entity dossier",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public dossier object"
+            },
+            {
+              "id": "html",
+              "mediaType": "text/html",
+              "projection": "existing attributed dossier document"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
