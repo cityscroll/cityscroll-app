@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.performance_observability.unknown_route_fixture.v1",
+  "cases": [
+    {
+      "pathname": "/future-civic-surface/",
+      "expected_state": "unclassified"
+    },
+    {
+      "pathname": "/browse/future-family/",
+      "expected_state": "unclassified"
+    }
+  ]
+}
