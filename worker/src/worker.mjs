@@ -202,6 +202,7 @@ export default {
       console.log("deprecated-opt-in recovery:", JSON.stringify({
         recovered: recovery.recovered,
         already_recovered: recovery.already_recovered,
+        already_enrolled: recovery.already_enrolled,
         developer_test: recovery.developer_test,
       }));
     } catch (error) {

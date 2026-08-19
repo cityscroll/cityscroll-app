@@ -82,6 +82,68 @@ async function markDeveloperTestAccount(env, row, recoveredAt) {
   return { status: prior ? "already-marked-developer-test" : "marked-developer-test", subscriber_id: subscriberId };
 }
 
+/** True when a stored filter has no narrowing signal ({} and sanitize() empties are equivalent). */
+export function isBroadMoneyAllNoticesFilter(filter) {
+  if (filter == null) return true;
+  if (typeof filter !== "object" || Array.isArray(filter)) return false;
+  for (const value of Object.values(filter)) {
+    if (Array.isArray(value)) {
+      if (value.length) return false;
+      continue;
+    }
+    if (value !== null && value !== undefined && value !== false && value !== "") return false;
+  }
+  return true;
+}
+
+export function isEquivalentBroadMoneyWatch(record, email) {
+  if (!record || typeof record !== "object") return false;
+  if (normalizeEmail(record.email) !== normalizeEmail(email)) return false;
+  if (record.lens !== "money") return false;
+  return isBroadMoneyAllNoticesFilter(record.filter);
+}
+
+function isAlreadyEnrolledWatch(record) {
+  if (!record || typeof record !== "object") return false;
+  if (isDeveloperTestEmail(record.email) || record.developer_test === true) return false;
+  return record.source !== DEPRECATED_OPT_IN_RECOVERY_SOURCE;
+}
+
+async function listEmailWatches(env, email) {
+  const wanted = normalizeEmail(email);
+  const out = [];
+  let cursor;
+  try {
+    do {
+      const page = await env.SUBS.list({ prefix: "sub:", cursor });
+      for (const entry of page.keys || []) {
+        const record = await readJson(env.SUBS, entry.name);
+        if (!record || normalizeEmail(record.email) !== wanted) continue;
+        out.push({ key: entry.name, ...record });
+      }
+      cursor = page.list_complete ? null : page.cursor;
+    } while (cursor);
+  } catch {
+    return out;
+  }
+  return out;
+}
+
+async function deleteWatch(env, key) {
+  if (!key) return;
+  try { await env.SUBS.delete(key); } catch { /* best-effort cleanup */ }
+  try { await env.ALERT_STATE.delete(`lastsent:${key}`); } catch { /* ignore */ }
+  try { await env.ALERT_STATE.delete(`seen:${key}`); } catch { /* ignore */ }
+}
+
+function pickKeptWatch(watches) {
+  return [...watches].sort((a, b) => String(a.createdAt || "").localeCompare(String(b.createdAt || "")))[0];
+}
+
+async function writeMarker(env, markerKey, body) {
+  await env.SUBS.put(markerKey, JSON.stringify(body));
+}
+
 async function recoverOne(env, row, recoveredAt) {
   validateRow(row);
   if (isDeveloperTestEmail(row.email)) return markDeveloperTestAccount(env, row, recoveredAt);
@@ -97,10 +159,31 @@ async function recoverOne(env, row, recoveredAt) {
   const key = await subscriptionKey(candidate);
   const subscriberId = await deriveSubscriberId(candidate.email);
   const markerKey = recoveryMarkerKey(subscriberId);
-  const completed = await readJson(env.SUBS, markerKey);
-  if (completed?.status === "recovered") return { status: "already-recovered", key, subscriber_id: subscriberId };
+  const equivalents = (await listEmailWatches(env, candidate.email))
+    .filter((watch) => isEquivalentBroadMoneyWatch(watch, candidate.email));
+  const enrolled = equivalents.filter(isAlreadyEnrolledWatch);
+  const recoveredDupes = equivalents.filter((watch) => watch.source === DEPRECATED_OPT_IN_RECOVERY_SOURCE);
 
-  const existing = await readJson(env.SUBS, key);
+  if (enrolled.length) {
+    const kept = pickKeptWatch(enrolled);
+    for (const extra of equivalents) {
+      if (extra.key !== kept.key) await deleteWatch(env, extra.key);
+    }
+    await writeMarker(env, markerKey, {
+      status: "already-enrolled",
+      sub_key: kept.key,
+      subscriber_id: subscriberId,
+      recovered_at: recoveredAt,
+    });
+    return { status: "already-enrolled", key: kept.key, subscriber_id: subscriberId };
+  }
+
+  const completed = await readJson(env.SUBS, markerKey);
+  if (completed?.status === "recovered" && recoveredDupes.some((watch) => watch.key === (completed.sub_key || key))) {
+    return { status: "already-recovered", key: completed.sub_key || key, subscriber_id: subscriberId };
+  }
+
+  const existing = recoveredDupes.find((watch) => watch.key === key) || await readJson(env.SUBS, key);
   const recoveryTime = existing?.source === DEPRECATED_OPT_IN_RECOVERY_SOURCE
     ? (existing?.recovered_at || recoveredAt)
     : recoveredAt;
@@ -118,27 +201,32 @@ async function recoverOne(env, row, recoveredAt) {
   };
   await env.SUBS.put(key, JSON.stringify(record));
   await env.ALERT_STATE.put(`lastsent:${key}`, recoveryTime.slice(0, 10));
-  const logged = await appendWatchLog(env, {
-    action: "subscribe",
-    email: record.email,
-    subKey: key,
-    lens: record.lens,
-    label: watchLabel(record),
-    freq: record.freq,
-    source: record.source,
-    detail: RECOVERY_EXPLANATION,
-    originalSignupAt: record.original_signup_at,
-    recoveredAt: record.recovered_at,
-    at: record.recovered_at,
-  });
-  if (!logged) throw new Error("recovery ops receipt could not be stored");
-  await env.SUBS.put(markerKey, JSON.stringify({
+  for (const extra of recoveredDupes) {
+    if (extra.key !== key) await deleteWatch(env, extra.key);
+  }
+  if (!existing || existing.source !== DEPRECATED_OPT_IN_RECOVERY_SOURCE) {
+    const logged = await appendWatchLog(env, {
+      action: "subscribe",
+      email: record.email,
+      subKey: key,
+      lens: record.lens,
+      label: watchLabel(record),
+      freq: record.freq,
+      source: record.source,
+      detail: RECOVERY_EXPLANATION,
+      originalSignupAt: record.original_signup_at,
+      recoveredAt: record.recovered_at,
+      at: record.recovered_at,
+    });
+    if (!logged) throw new Error("recovery ops receipt could not be stored");
+  }
+  await writeMarker(env, markerKey, {
     status: "recovered",
     sub_key: key,
     subscriber_id: subscriberId,
     recovered_at: recoveryTime,
-  }));
-  return { status: "recovered", key, subscriber_id: subscriberId };
+  });
+  return { status: existing?.source === DEPRECATED_OPT_IN_RECOVERY_SOURCE ? "already-recovered" : "recovered", key, subscriber_id: subscriberId };
 }
 
 export async function recoverDeprecatedDoubleOptIn(env, rowsOrOptions, maybeOptions = {}) {
@@ -162,6 +250,7 @@ export async function recoverDeprecatedDoubleOptIn(env, rowsOrOptions, maybeOpti
     results,
     recovered: results.filter((row) => row.status === "recovered").length,
     already_recovered: results.filter((row) => row.status === "already-recovered").length,
+    already_enrolled: results.filter((row) => row.status === "already-enrolled").length,
     developer_test: results.filter((row) =>
       row.status === "marked-developer-test" || row.status === "already-marked-developer-test").length,
     emails: [...VETTED_RECOVERED_SIGNUP_EMAILS],
