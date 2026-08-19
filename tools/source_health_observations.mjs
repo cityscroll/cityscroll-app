@@ -382,6 +382,37 @@ function warehouseReceipts(root) {
     });
 }
 
+function geographyReceipts(root) {
+  const directory = join(root, "data/geography/receipts");
+  if (!existsSync(directory)) return [];
+  const rows = [];
+  for (const layerEntry of readdirSync(directory, { withFileTypes: true })) {
+    if (!layerEntry.isDirectory()) continue;
+    const layerDirectory = join(directory, layerEntry.name);
+    for (const name of readdirSync(layerDirectory).filter((value) => value.endsWith(".json")).sort()) {
+      const path = join(layerDirectory, name);
+      let payload;
+      try { payload = readJson(path); } catch { continue; }
+      const sourceId = payload?.source?.contract_id;
+      const observedAt = validAt(payload?.acquired_at);
+      if (!sourceId || !observedAt) continue;
+      const accepted = Number(payload?.admission?.accepted_feature_count) || 0;
+      rows.push({
+        source_id: sourceId,
+        observed_at: observedAt,
+        publisher_updated_at: validAt(payload?.source?.publisher_updated_at),
+        publisher_clock_basis: payload?.source?.publisher_updated_at ? "geography_source_receipt" : null,
+        status: accepted > 0 ? "succeeded" : "failed",
+        path: relative(root, path),
+        adapter: "civic-geography-acquisition-receipt",
+        run_id: `${payload.type || layerEntry.name}:${payload.boundary_vintage || name.replace(/\.json$/, "")}`,
+        exact_error: accepted > 0 ? null : "geography receipt contains no accepted features",
+      });
+    }
+  }
+  return rows;
+}
+
 function serveObservations(root, registry) {
   const rows = [];
   const seenPaths = new Set();
@@ -484,7 +515,7 @@ export function loadSourceHealthInputs(root, registry, options = {}) {
   const coveragePath = join(root, "entity_resolution/source_coverage.json");
   const events = externalScheduleEvents(root, options.externalScheduleStateDir);
   return {
-    warehouseReceipts: warehouseReceipts(root),
+    warehouseReceipts: [...warehouseReceipts(root), ...geographyReceipts(root)],
     serveObservations: serveObservations(root, registry),
     scheduleObservations: externalScheduleObservations(events),
     coverageCensus: existsSync(coveragePath) ? readJson(coveragePath) : null,

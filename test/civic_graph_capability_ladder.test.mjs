@@ -231,7 +231,7 @@ test("mandate densify quiets when observed_count and backlinks clear", () => {
   );
 });
 
-test("ontology-enrichment + default flywheel rank open cg-v ladder first", () => {
+test("ontology-enrichment + default flywheel preserve open cg-v ladder rank order", () => {
   const ladder = loadJson("ontology/fixtures/dimensions/civic_graph_capability_ladder.json");
   const enrichment = evaluateOntologyEnrichment({
     civic_graph_capability_ladder: ladder,
@@ -278,11 +278,14 @@ test("ontology-enrichment + default flywheel rank open cg-v ladder first", () =>
     limit: 100,
   });
 
-  const topN = queue.cards.slice(0, OPEN_LADDER_RANKED.length).map((c) => c.id);
-  assert.deepEqual(topN, OPEN_LADDER_RANKED);
+  // Other dimensions can legitimately outrank the ladder (for example a stale
+  // authoritative boundary vintage), so assert the ladder's relative order
+  // instead of coupling this test to the global queue head.
+  const rankedLadder = queue.cards.filter((card) => OPEN_LADDER_RANKED.includes(card.id));
+  assert.deepEqual(rankedLadder.map((card) => card.id), OPEN_LADDER_RANKED);
   for (let i = 0; i < OPEN_LADDER_RANKED.length; i += 1) {
-    assert.equal(queue.cards[i].rank, i + 1);
-    assert.equal(queue.cards[i].evidence.kind, "civic-graph-capability");
+    assert.equal(rankedLadder[i].evidence.kind, "civic-graph-capability");
+    if (i > 0) assert.ok(rankedLadder[i - 1].rank < rankedLadder[i].rank);
   }
   assert.equal(
     queue.dimension_metrics["ontology-enrichment"]?.civic_graph_capability_cards,
@@ -301,7 +304,8 @@ test("ontology-enrichment + default flywheel rank open cg-v ladder first", () =>
     .map((c) => c.id);
   assert.deepEqual(ladderOnly, OPEN_LADDER_RANKED);
 
-  // Full-fail synthetic ladder still tops ranks 1–8 when seeded alone.
+  // Full-fail synthetic ladder keeps its internal rank order even when another
+  // dimension has a higher-priority open card.
   const fullInputs = {
     ...inputs,
     civic_graph_capability_ladder: fullFailLadder(ladder),
@@ -313,7 +317,9 @@ test("ontology-enrichment + default flywheel rank open cg-v ladder first", () =>
     limit: 100,
   });
   assert.deepEqual(
-    fullRun.queue.cards.slice(0, 8).map((c) => c.id),
+    fullRun.queue.cards
+      .filter((card) => FULL_LADDER_RANKED.includes(card.id))
+      .map((card) => card.id),
     FULL_LADDER_RANKED,
   );
 });

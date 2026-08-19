@@ -1,0 +1,46 @@
+{
+  "schema": "cityscroll.geography_ingestion_receipt.v1",
+  "type": "police_precinct",
+  "acquired_at": "2026-08-18T16:00:00.000Z",
+  "boundary_vintage": "26B",
+  "source": {
+    "contract_id": "dcp-police-precinct-boundaries",
+    "publisher": "NYC Department of City Planning",
+    "dataset_id": "nypp_26b",
+    "url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/police-precincts/nypp_26b.zip",
+    "publisher_updated_at": "2026-05-04T00:00:00.000Z",
+    "sha256": "e9daed368fb5da1fbc8053f37405f658ff0d6d4ecca8245d05b42c3e62fa9727",
+    "bytes": 870084,
+    "source_feature_count": 78
+  },
+  "normalized_input": {
+    "format": "GeoJSON",
+    "crs": "EPSG:4326",
+    "sha256": "f9a35d4ae0ebbed6b5710c3163763076e07b4f1ab6d148182fb70921b5f36dd3",
+    "bytes": 4011869,
+    "conversion": "ogr2ogr source EPSG:2263 to EPSG:4326"
+  },
+  "admission": {
+    "accepted_feature_count": 78,
+    "rejected_feature_count": 0,
+    "rejected_features": []
+  },
+  "artifacts": {
+    "full": {
+      "path": "data/geography/layers/police_precinct/26B.full.json",
+      "sha256": "3eafc22012253bb95f2dca62fe6e3e7ad378d7c10244b02a09f32ff2c37aa3b0",
+      "geometry_fidelity": "full"
+    },
+    "simplified": {
+      "site_path": "site/data/geography/layers/police_precinct/26B.json",
+      "worker_path": "worker/src/data/geography/layers/police_precinct/26B.json",
+      "sha256": "71111aeb8c2c080c39547fa1354d121a7d7ef46ff64986984077154cc6cc03b0",
+      "geometry_fidelity": "simplified"
+    }
+  },
+  "qa": {
+    "point_canaries": "data/geography/qa/first_four_point_canaries.json",
+    "pluto_cross_checks": "data/geography/qa/first_four_pluto_cross_checks.json",
+    "moda_oracle": "data/geography/oracles/moda-v2025.09.29.json"
+  }
+}

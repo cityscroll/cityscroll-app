@@ -1,0 +1,46 @@
+{
+  "schema": "cityscroll.geography_ingestion_receipt.v1",
+  "type": "nta2020",
+  "acquired_at": "2026-08-18T16:00:00.000Z",
+  "boundary_vintage": "26B",
+  "source": {
+    "contract_id": "dcp-nta2020-boundaries",
+    "publisher": "NYC Department of City Planning",
+    "dataset_id": "nynta2020_26b",
+    "url": "https://s-media.nyc.gov/agencies/dcp/assets/files/zip/data-tools/bytes/neighborhood-tabulation-areas/nynta2020_26b.zip",
+    "publisher_updated_at": "2026-05-04T00:00:00.000Z",
+    "sha256": "3b8839224cb2183f2716f57b01ab6ad9c6f1d679acf5640f3c91edd21d5157b1",
+    "bytes": 1011109,
+    "source_feature_count": 262
+  },
+  "normalized_input": {
+    "format": "GeoJSON",
+    "crs": "EPSG:4326",
+    "sha256": "e012411bda2fe6fdde1f803cce7ad3e3f5e1f1ae3886dde5a21959929dbdafbe",
+    "bytes": 4786587,
+    "conversion": "ogr2ogr source EPSG:2263 to EPSG:4326"
+  },
+  "admission": {
+    "accepted_feature_count": 262,
+    "rejected_feature_count": 0,
+    "rejected_features": []
+  },
+  "artifacts": {
+    "full": {
+      "path": "data/geography/layers/nta2020/26B.full.json",
+      "sha256": "cc45246a78753a1d46f7925e5269200406de230e4e1f8d4082e7bf07de280ac8",
+      "geometry_fidelity": "full"
+    },
+    "simplified": {
+      "site_path": "site/data/geography/layers/nta2020/26B.json",
+      "worker_path": "worker/src/data/geography/layers/nta2020/26B.json",
+      "sha256": "d83096150f7f841de21cef87a4e19839ca57b70fcab10faa05487ba0af685075",
+      "geometry_fidelity": "simplified"
+    }
+  },
+  "qa": {
+    "point_canaries": "data/geography/qa/first_four_point_canaries.json",
+    "pluto_cross_checks": "data/geography/qa/first_four_pluto_cross_checks.json",
+    "moda_oracle": "data/geography/oracles/moda-v2025.09.29.json"
+  }
+}

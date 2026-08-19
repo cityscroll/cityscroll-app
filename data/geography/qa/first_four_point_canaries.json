@@ -1,0 +1,117 @@
+{
+  "schema": "cityscroll.geography_point_canaries.v1",
+  "generated_at": "2026-08-18T16:00:00.000Z",
+  "well_inside": [
+    {
+      "id": "mappluto-manhattan",
+      "borough": "Manhattan",
+      "bbl": "1000380001",
+      "lat": 40.7052441,
+      "lon": -74.0067554,
+      "expected": {
+        "nta2020": ["MN0101"],
+        "police_precinct": ["1"],
+        "sanitation_district": ["101"],
+        "business_improvement_district": ["alliance-for-downtown-new-york"]
+      }
+    },
+    {
+      "id": "mappluto-bronx",
+      "borough": "Bronx",
+      "bbl": "2023230028",
+      "lat": 40.8126921,
+      "lon": -73.9321706,
+      "expected": {
+        "nta2020": ["BX0101"],
+        "police_precinct": ["40"],
+        "sanitation_district": ["201"],
+        "business_improvement_district": []
+      }
+    },
+    {
+      "id": "mappluto-brooklyn",
+      "borough": "Brooklyn",
+      "bbl": "3000560007",
+      "lat": 40.701768,
+      "lon": -73.9817112,
+      "expected": {
+        "nta2020": ["BK0202"],
+        "police_precinct": ["84"],
+        "sanitation_district": ["302"],
+        "business_improvement_district": []
+      }
+    },
+    {
+      "id": "mappluto-queens",
+      "borough": "Queens",
+      "bbl": "4000280012",
+      "lat": 40.7459455,
+      "lon": -73.9543541,
+      "expected": {
+        "nta2020": ["QN0201"],
+        "police_precinct": ["108"],
+        "sanitation_district": ["402"],
+        "business_improvement_district": []
+      }
+    },
+    {
+      "id": "mappluto-staten-island",
+      "borough": "Staten Island",
+      "bbl": "5000090009",
+      "lat": 40.6448026,
+      "lon": -74.0780547,
+      "expected": {
+        "nta2020": ["SI0101"],
+        "police_precinct": ["120"],
+        "sanitation_district": ["501"],
+        "business_improvement_district": []
+      }
+    }
+  ],
+  "near_boundary": [
+    {
+      "type": "nta2020",
+      "lat": 40.722308634245,
+      "lon": -73.94109406058601,
+      "geometry_fidelity": "full",
+      "expected_status": "ambiguous_boundary",
+      "expected_ids": ["BK0101", "BK0104"]
+    },
+    {
+      "type": "police_precinct",
+      "lat": 40.7291661,
+      "lon": -74.0114457,
+      "geometry_fidelity": "full",
+      "expected_status": "ambiguous_boundary",
+      "expected_ids": ["1", "6"]
+    },
+    {
+      "type": "sanitation_district",
+      "lat": 40.7258144751,
+      "lon": -74.0111435332,
+      "geometry_fidelity": "full",
+      "expected_status": "ambiguous_boundary",
+      "expected_ids": ["101", "102"]
+    }
+  ],
+  "hole": [
+    { "type": "nta2020", "feature_id": "MN0203", "lat": 40.74152874018296, "lon": -74.00981382016896, "expected_relation": "exterior" },
+    { "type": "police_precinct", "feature_id": "6", "lat": 40.74152874018296, "lon": -74.00981382016893, "expected_relation": "exterior" },
+    { "type": "sanitation_district", "feature_id": "210", "lat": 40.86528621694, "lon": -73.81909255642, "expected_relation": "exterior" },
+    { "type": "business_improvement_district", "feature_id": "castle-hill", "lat": 40.83371049168974, "lon": -73.85340961878322, "expected_relation": "exterior" }
+  ],
+  "multipart": [
+    { "type": "nta2020", "feature_id": "BK0261", "part_index": 1, "lat": 40.69877998060334, "lon": -73.97903148126538, "expected_relation": "interior" },
+    { "type": "police_precinct", "feature_id": "1", "part_index": 1, "lat": 40.68500185923199, "lon": -74.02514029122246, "expected_relation": "interior" },
+    { "type": "sanitation_district", "feature_id": "101", "part_index": 1, "lat": 40.68500222992, "lon": -74.02514040477, "expected_relation": "interior" },
+    { "type": "business_improvement_district", "feature_id": "125th-street", "part_index": 1, "lat": 40.80641889901093, "lon": -73.9418424233159, "expected_relation": "interior" }
+  ],
+  "allowed_overlap": [
+    {
+      "type": "business_improvement_district",
+      "lat": 40.75440991516778,
+      "lon": -73.98476240746201,
+      "expected_ids": ["bryant-park-corporation", "times-square-alliance"]
+    }
+  ]
+}

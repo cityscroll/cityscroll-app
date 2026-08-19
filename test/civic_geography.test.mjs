@@ -21,20 +21,32 @@ import {
   normalizeCouncilDistrictSource,
 } from "../tools/lib/district_boundary_source_adapters.mjs";
 
-test("the baseline registry is closed to borough, Community District, and Council District", () => {
+test("the registry is closed to the three baseline and four ingestion-only layers", () => {
   assert.deepEqual(
     CIVIC_GEOGRAPHY_LAYERS.map((layer) => layer.type),
-    ["borough", "community_district", "council_district"],
+    [
+      "borough",
+      "community_district",
+      "council_district",
+      "nta2020",
+      "police_precinct",
+      "sanitation_district",
+      "business_improvement_district",
+    ],
   );
   assert.deepEqual(CIVIC_GEOGRAPHY_LAYERS.map((layer) => layer.class), [
     "administrative",
     "community_administrative",
     "political",
+    "statistical",
+    "service_administrative",
+    "service_administrative",
+    "economic_institutional",
   ]);
   assert.equal(civicGeographyKey("borough", "4"), "geography:borough:4");
   assert.equal(civicGeographyKey("community_district", "Q04"), "geography:community_district:Q04");
   assert.equal(civicGeographyKey("council_district", "25"), "geography:council_district:25");
-  assert.equal(civicGeographyKey("police_precinct", "110"), null);
+  assert.equal(civicGeographyKey("police_precinct", "110"), "geography:police_precinct:110");
 });
 
 test("source-specific adapters stop source-native column names at the boundary", () => {
@@ -107,7 +119,7 @@ test("committed registry points to full and simplified artifacts for every layer
   const registry = JSON.parse(readFileSync(path, "utf8"));
   assert.equal(registry.schema, GEOGRAPHY_LAYER_REGISTRY_SCHEMA);
   assert.deepEqual(validateCivicGeographyRegistry(registry), []);
-  assert.equal(registry.layers.length, 3);
+  assert.equal(registry.layers.length, 7);
   for (const row of registry.layers) {
     const fullPath = new URL(`../${row.artifacts.full.path}`, import.meta.url);
     const simplifiedPath = new URL(`../${row.artifacts.simplified.site_path}`, import.meta.url);
