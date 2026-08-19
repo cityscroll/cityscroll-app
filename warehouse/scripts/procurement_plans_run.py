@@ -2,8 +2,10 @@
 """Host-side RC-1 collector for MOCS FY2027 plans and capital projects.
 
 The script stops at infrastructure: publisher files, normalized DuckDB tables,
-fixed-sample bridge measurements, receipts, and a versioned reader payload. It
-does not render or deploy the dependent Money surface.
+bridge measurements, receipts, and a versioned reader payload. Live runs gate
+on identifier-bearing plans with product passport prefix joins; --from-fixture
+keeps the legacy fixed-sorted sample so the framework proof stays comparable.
+It does not render or deploy the dependent Money surface.
 """
 
 from __future__ import annotations
@@ -603,6 +605,15 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--from-fixture", action="store_true")
     parser.add_argument("--fiscal-year", type=int, default=2027)
     parser.add_argument("--sample-size", type=int, default=100)
+    parser.add_argument(
+        "--sample-method",
+        choices=("fixed_sorted", "identifier_bearing", "both_report"),
+        default=None,
+        help=(
+            "Kill-sample construction. Live defaults to identifier_bearing "
+            "(PIN/EPIN-bearing plans). --from-fixture keeps fixed_sorted."
+        ),
+    )
     parser.add_argument("--polite-delay-ms", type=int, default=MINIMUM_DELAY_MS)
     parser.add_argument("--refresh", action="store_true", help="conditionally revalidate completed URLs")
     parser.add_argument("--force-headroom", action="store_true")
@@ -611,6 +622,8 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--receipt-date", default=datetime.now(timezone.utc).date().isoformat())
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args(argv)
+    if args.sample_method is None:
+        args.sample_method = "fixed_sorted" if args.from_fixture else "identifier_bearing"
     if not 1 <= args.sample_size <= 1000:
         raise SystemExit("--sample-size must be 1..1000")
     if not args.from_fixture and args.polite_delay_ms < MINIMUM_DELAY_MS:
@@ -647,6 +660,7 @@ def main(argv: list[str] | None = None) -> int:
             inputs["targets"],
             sample_size=args.sample_size,
             review_labels=review_labels,
+            sample_method=args.sample_method,
         )
         tables = materialize_warehouse(
             args.output_dir,
