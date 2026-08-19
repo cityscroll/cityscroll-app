@@ -35,6 +35,7 @@ test("cards use the required story anatomy and put the comparison basis in the h
   ]) {
     assert.match(html, new RegExp(action));
   }
+  assert.match(html, /href="\/#investigation\/signal\/story_signal%3Acomparative_fact%3A/);
   assert.match(html, /<article[^>]+aria-labelledby=/);
   assert.match(html, /<nav[^>]+aria-label="Next steps for/);
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);

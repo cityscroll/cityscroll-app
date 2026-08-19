@@ -12,6 +12,7 @@ export const STORY_SIGNAL_SCHEMA = "cityscroll.story_signal.v1";
 export const STORY_SIGNAL_READ_MODEL_SCHEMA = "cityscroll.story_signal_read_model.v1";
 export const SIGNAL_ADMISSION_METHOD = "comparative_signal_admission_v1";
 export const STORY_SIGNAL_READ_MODEL_METHOD = "published_comparative_story_signals_v1";
+export const COMPARATIVE_FACT_REFERENCE_SCHEMA = "cityscroll.comparative_fact_reference.v1";
 
 export const SIGNAL_STATES = Object.freeze([
   "eligible",
@@ -326,6 +327,25 @@ function storySignal(fact, sentence) {
       observed_count: fact.comparison.observed_count,
       window: { ...fact.comparison.window },
       rank: fact.comparison.rank,
+    },
+    comparison_receipt: {
+      schema: COMPARATIVE_FACT_REFERENCE_SCHEMA,
+      receipt_schema: fact.schema,
+      receipt_id: fact.fact_id,
+      metric_method: fact.metric.method,
+      peer_basis: {
+        class_id: fact.peer_class.class_id,
+        observability_basis: fact.peer_class.observability_equivalence.basis,
+        source_contract_versions: [...fact.peer_class.observability_equivalence.source_contract_versions],
+        source_vintages: fact.peer_class.observability_equivalence.source_vintages.map((item) => ({ ...item })),
+        inclusion_rule: fact.peer_class.observability_equivalence.inclusion_rule,
+        identity_gate: fact.peer_class.observability_equivalence.identity_gate,
+        observation_quality_class: fact.peer_class.observability_equivalence.observation_quality_class,
+        censoring_class: fact.peer_class.observability_equivalence.censoring_class,
+        selected_level: fact.peer_class.selected_level,
+        small_n_policy_id: fact.peer_class.small_n_policy_id,
+      },
+      generated_at: fact.generated_at,
     },
     evidence,
     generated_at: fact.generated_at,

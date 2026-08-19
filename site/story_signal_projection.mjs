@@ -8,6 +8,7 @@
  */
 
 import { alertsHref } from "./alerts_context_carry.mjs";
+import { storySignalInvestigationItem } from "./investigation_comparative_signal.mjs";
 import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
@@ -132,6 +133,8 @@ function cardFromSignal(signal) {
   }
 
   const peerAnchor = `peer-${subjectId.replace(/[^A-Za-z0-9_-]/g, "-")}`;
+  const peerSetHref = `/experimental/worth-a-look/#${peerAnchor}`;
+  if (!storySignalInvestigationItem(signal, { peerSetHref })) return null;
   const noticeHref = `/notices/${encodeURIComponent(subjectId)}/`;
   const followHref = alertsHref({
     lens: "money",
@@ -161,7 +164,12 @@ function cardFromSignal(signal) {
       { id: "process", label: "Inspect process", href: noticeHref, external: false },
       { id: "peers", label: "View peer group", href: `#${peerAnchor}`, external: false },
       { id: "follow", label: "Follow similar awards", href: followHref, external: false },
-      { id: "investigation", label: "Add to Investigation", href: `/#notice/${encodeURIComponent(subjectId)}`, external: false },
+      {
+        id: "investigation",
+        label: "Add to Investigation",
+        href: `/#investigation/signal/${encodeURIComponent(signalId)}`,
+        external: false,
+      },
     ],
   });
 }

@@ -596,6 +596,7 @@ function itemRouteFallbackHash(hash){
   if(/^land\/[^/]+$/.test(path)) return "#land";
   if(/^(?:vendor|agency|matter)\/[^/]+$/.test(path)) return "#money";
   if(/^investigation\/shared\/[^/]+$/.test(path)) return "#investigation";
+  if(/^investigation\/signal\/[^/]+$/.test(path)) return "#investigation";
   if(path==="investigation") return "#money";
   if(/^task\/can-i-bid\/[^/]+$/.test(path)) return "#task/can-i-bid";
   if(/^task\/what-will-change\/[^/]+$/.test(path)) return "#task/what-will-change";
@@ -987,6 +988,7 @@ function applyHash(){
     return true;
   }
   if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
+  if(raw.startsWith("investigation/signal/")){ showSignalInvestigation(decodeURIComponent(raw.slice(21))); return true; }
   if(raw.startsWith("investigation/shared/")){ showSharedInv(decodeURIComponent(raw.slice(21))); return true; }
   if(raw.startsWith("task/") || raw === "task"){
     const parsed = window.TaskFirst ? TaskFirst.parseTaskHash(raw) : null;

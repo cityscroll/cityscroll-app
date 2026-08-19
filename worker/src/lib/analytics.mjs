@@ -96,7 +96,7 @@ const EVENT_SPECS = Object.freeze({
     surfaces: ["api"],
   },
   investigation_share: {
-    details: ["create", "copy"],
+    details: ["create", "copy", "add_signal"],
     surfaces: ["home", "api"],
   },
   action_opened: {
