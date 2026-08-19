@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.worker_allowlist.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "6a9e83fa2e52dce1476619ae8b5be0703e4cd6b50c264604ef5935b1c1839187",
+  "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -179,6 +179,8 @@
   ],
   "component_ids": [
     "none",
+    "browse-contracts-filter-apply",
+    "browse-contracts-results",
     "browse-filter-apply",
     "browse-results",
     "following-watch-change",
@@ -238,6 +240,8 @@
   ],
   "accepted_component_ids": [
     "none",
+    "browse-contracts-filter-apply",
+    "browse-contracts-results",
     "browse-filter-apply",
     "browse-results",
     "following-watch-change",
@@ -349,10 +353,12 @@
         "ttfb_ms"
       ],
       "allowed_component_ids": [
+        "browse-contracts-filter-apply",
+        "browse-contracts-results",
         "browse-filter-apply",
         "browse-results"
       ],
-      "lifecycle_state": "planned"
+      "lifecycle_state": "instrumented"
     },
     "browse-exams": {
       "parent": "surface:browse",
@@ -823,6 +829,30 @@
     }
   },
   "components": {
+    "browse-contracts-filter-apply": {
+      "kind": "interaction",
+      "parent": "component:browse-contracts-results",
+      "applicable_surface_ids": [
+        "browse-contracts"
+      ],
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "lifecycle_state": "instrumented"
+    },
+    "browse-contracts-results": {
+      "kind": "component",
+      "parent": "surface:browse-contracts",
+      "applicable_surface_ids": [
+        "browse-contracts"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "instrumented"
+    },
     "browse-filter-apply": {
       "kind": "interaction",
       "parent": "component:browse-results",

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-19T05:43:08-04:00",
-  "commit": "fae82b1dd3831c57966536ed73926841ce54cc8c",
+  "generated_at": "2026-08-19T10:40:27Z",
+  "commit": "f7ae6e0c49c34bac6cde65215209a967ec81fe70",
   "observer_coverage_hash": "e091e23a1625abcfe6a3b0b3dd16f2b69586bee6f3253ccfeac0fdbdd26f4429",
   "canaries": {
     "agency-constellation-model": {
@@ -57,12 +57,12 @@
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "2810296d1b6937dfee0cf4e7619436a752846bc484a212d61dee90f21eeab03f"
+      "fingerprint": "f46296833320860944056d8a6280cf3a81437bed34ffd732dc48f3df515bde47"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
-      "count": 50,
-      "fingerprint": "1bb5f7a3372e9aa3c0ea1a2426eed37250c1b1d720f4cf5e8416d57e684e314f"
+      "count": 52,
+      "fingerprint": "aa7a319f872158641e0c4d75a196e50122b76243a8ebc9ecf2ede3eab7e0ce9e"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -140,25 +140,25 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "6a9e83fa2e52dce1476619ae8b5be0703e4cd6b50c264604ef5935b1c1839187"
+      "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889"
     },
     "registry": {
       "version": "1.0.0",
       "manifest_version": "rum-surfaces-v1",
       "surface_count": 36,
-      "component_count": 14,
+      "component_count": 16,
       "classifications": {
         "surfaces": {
-          "instrumented": 2,
+          "instrumented": 3,
           "registered_no_data": 0,
-          "planned": 34,
+          "planned": 33,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,
           "retired": 0
         },
         "components": {
-          "instrumented": 2,
+          "instrumented": 4,
           "registered_no_data": 0,
           "planned": 12,
           "not_user_facing": 0,
