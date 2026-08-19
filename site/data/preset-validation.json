@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T00:06:26.900Z",
+  "generatedAt": "2026-08-19T00:25:26.216Z",
   "dataDate": "2026-08-19",
   "scenarios": {
     "city-work-closing": {
@@ -225,8 +225,7 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it",
-            "consulting"
+            "it consulting"
           ],
           "agency": null,
           "minAmount": null,
@@ -351,8 +350,8 @@
         "text": "school food service contracts",
         "filter": {
           "keywords": [
-            "food service",
-            "school"
+            "school",
+            "food service"
           ],
           "agency": null,
           "minAmount": null,
@@ -371,7 +370,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=food+service+school",
+          "route": "/browse/contracts/?q=school+food+service",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -473,7 +472,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Parks and Recreation",
+          "agency": "Department of Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -500,7 +499,7 @@
           "lookupType": "role",
           "view": null,
           "interestArea": null,
-          "interestLabel": null,
+          "interestLabel": "<UNKNOWN>",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -515,7 +514,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": "Rodriguez",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -547,7 +546,7 @@
           "lookupType": "role",
           "view": "guide",
           "interestArea": null,
-          "interestLabel": null,
+          "interestLabel": "<UNKNOWN>",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -565,10 +564,10 @@
           "councilDistrict": null,
           "nearMe": false,
           "procedure": null,
-          "family": null,
+          "family": "rezoning",
           "regulatoryEffect": null
         },
-        "count": 57
+        "count": 43
       },
       {
         "lens": "land",
@@ -595,14 +594,14 @@
           "keywords": [],
           "boro": "Manhattan",
           "status": null,
-          "communityDistrict": null,
+          "communityDistrict": "M03",
           "councilDistrict": null,
           "nearMe": false,
           "procedure": null,
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 39
+        "count": 3
       },
       {
         "lens": "land",
@@ -644,7 +643,7 @@
         "text": "HPD property sales",
         "filter": {
           "keywords": [],
-          "agency": "Department of Housing Preservation and Development",
+          "agency": "Housing Preservation Department",
           "process": null,
           "stage": null,
           "asset": "realty",
@@ -671,7 +670,7 @@
           "agency": null,
           "process": null,
           "stage": null,
-          "asset": "realty",
+          "asset": null,
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -708,7 +707,7 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks Department",
           "process": null,
           "stage": null,
           "asset": null,
@@ -853,7 +852,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "scheduled",
           "nearMe": false
         },
         "count": 0
@@ -952,7 +951,7 @@
           "category": null,
           "months": 3,
           "noticeType": null,
-          "excludeSpecial": true,
+          "excludeSpecial": false,
           "closingWeek": false,
           "route": null,
           "name": null,
