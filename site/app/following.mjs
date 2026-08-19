@@ -1,8 +1,16 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
 import { composeWatchRuleSentence, followingCadenceLabel, requestedFollowingTab } from "../following_view.mjs";
+import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
+import {
+  createFollowingRumInstrumentation,
+  followingPersonalOutcomeFromHost,
+} from "../rum_stateful_instrumentation.mjs";
 
 const root = document.querySelector("[data-following-root]");
 const msg = (name) => root?.dataset[name] || "";
+const followingRum = createFollowingRumInstrumentation({
+  rum: runtimeRumSemanticMilestones(),
+});
 
 function canonical(value) {
   if (Array.isArray(value)) {
@@ -225,14 +233,22 @@ function promotePersonalWhenWatches() {
 async function loadPersonal() {
   const host = root?.querySelector("[data-personal-watch-list]");
   if (!host) return;
+  followingRum.retrievalStart();
   try {
     const response = await fetch(root.dataset.personalUrl, { credentials: "include", headers: { Accept: "text/html" } });
-    if (!response.ok) return;
+    if (!response.ok) {
+      followingRum.watchListReady({ resultState: "unavailable" });
+      return;
+    }
     host.innerHTML = await response.text();
+    followingRum.watchListReady({ resultState: followingPersonalOutcomeFromHost(host) });
     wirePersonalForms();
     duplicateWarning();
     promotePersonalWhenWatches();
-  } catch { /* public page and management link remain complete */ }
+  } catch {
+    followingRum.watchListReady({ resultState: "error" });
+    /* public page and management link remain complete */
+  }
 }
 
 function adoptFollowingDocument(html) {
@@ -353,5 +369,10 @@ if (root) {
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();
   wireRefineLive();
+  followingRum.shellReady({
+    hasRoot: true,
+    hasCreatePanel: Boolean(root.querySelector('[data-following-panel="create"]')),
+    hasPersonalHost: Boolean(root.querySelector("[data-personal-watch-list]")),
+  });
   loadPersonal();
 }
