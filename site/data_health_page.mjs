@@ -1,6 +1,11 @@
 // Public Data health page: materialize-first projection of GET /source-health.
 // Renders only the committed public artifact. Does not evaluate clocks, query
 // internals, or invent healthy/zero values for missing observations.
+// The page lists every source CityScroll serves or copies. Observation reason
+// codes such as acquisition-status-unknown are builder blindness, not an omit
+// test. Disabled unused sources with no dated clocks stay in
+// source_contracts.json and the public artifact; they are omitted here.
+// A served source is never dropped, even when some clocks are still UNKNOWN.
 
 import {
   PUBLIC_SOURCE_HEALTH_SCHEMA,
@@ -253,6 +258,26 @@ function clockView(clockName, clock, meta) {
   };
 }
 
+function rowHasAcquisitionOrServeEvidence(row) {
+  const clocks = row?.health?.clocks || {};
+  return CLOCKS.some((meta) => {
+    const clock = clocks[meta.id];
+    return clock?.state === "KNOWN" && publicInstant(clock.at);
+  });
+}
+
+export function dataHealthRowIsNeverAcquired(row, options = {}) {
+  if (rowHasAcquisitionOrServeEvidence(row)) return false;
+  const evidence = options.evidenceSourceIds;
+  if (evidence && typeof evidence.has === "function" && evidence.has(row?.source_id)) {
+    return false;
+  }
+  const reasons = Array.isArray(row?.health?.reason_codes) ? row.health.reason_codes : [];
+  // Only unused disabled sources drop. Runtime-served or copied sources stay,
+  // including those whose clocks the builder has not yet wired.
+  return reasons.includes("source-disabled");
+}
+
 function sourceCard(row) {
   const healthStatus = HEALTH_LABELS[row?.health?.status] ? row.health.status : "UNKNOWN";
   return {
@@ -276,7 +301,7 @@ function sourceCard(row) {
   };
 }
 
-export function buildDataHealthView(projection) {
+export function buildDataHealthView(projection, options = {}) {
   const unavailable = !projection
     || projection.available !== true
     || projection.schema !== PUBLIC_SOURCE_HEALTH_SCHEMA
@@ -290,7 +315,9 @@ export function buildDataHealthView(projection) {
       source_count: null,
     };
   }
-  const cards = projection.sources.map(sourceCard);
+  const cards = projection.sources
+    .filter((row) => !dataHealthRowIsNeverAcquired(row, options))
+    .map(sourceCard);
   const grouped = new Map(PRODUCT_AREAS.map((area) => [area.id, []]));
   for (const card of cards) {
     const areaId = grouped.has(card.area_id) ? card.area_id : "other";
@@ -338,17 +365,17 @@ function renderSourceCard(card) {
       ${cadence}
       ${official}
     </header>
-    <section class="data-health-condition" aria-label="Freshness">
+    <div class="data-health-condition">
       <p class="data-health-status">${esc(card.health_label)}</p>
       ${note}
       <dl class="data-health-clocks">${card.clocks.map(renderClock).join("")}</dl>
-    </section>
-    <section class="data-health-coverage" aria-label="Coverage">
-      <h4>Coverage</h4>
+    </div>
+    <div class="data-health-coverage">
+      <p class="data-health-coverage-heading">Coverage</p>
       <p class="data-health-coverage-status">${esc(card.coverage_label)}</p>
       ${coverageNote}
       ${coverageWhen}
-    </section>
+    </div>
   </article>`;
 }
 
@@ -406,5 +433,5 @@ ${renderDataHealthBody(view)}
 }
 
 export function renderDataHealthPage(projection, options = {}) {
-  return renderDataHealthDocument(buildDataHealthView(projection), options);
+  return renderDataHealthDocument(buildDataHealthView(projection, options), options);
 }

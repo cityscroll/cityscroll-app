@@ -77,7 +77,23 @@ def main():
             if not path:
                 for tab, selector in TABS:
                     page.click(selector)
-                    page.wait_for_timeout(400)
+                    page.wait_for_selector("main h1, h1", timeout=10000)
+                    page.wait_for_function(
+                        """() => {
+                          const h1 = [...document.querySelectorAll('h1')].find((el) => {
+                            if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
+                            const r = el.getBoundingClientRect();
+                            return r.width > 0 && r.height > 0;
+                          });
+                          const main = [...document.querySelectorAll('main')].find((el) => {
+                            if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') return false;
+                            const r = el.getBoundingClientRect();
+                            return r.width > 0 && r.height > 0;
+                          });
+                          return Boolean(h1 && main);
+                        }""",
+                        timeout=10000,
+                    )
                     check_state(page, f"{name} [tab:{tab}]", failures)
             ctx.close()
         browser.close()
