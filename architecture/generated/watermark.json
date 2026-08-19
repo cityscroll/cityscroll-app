@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-19T12:19:37-04:00",
-  "commit": "d50cf87d2de6775fdfe8deaa5fe93b708f4984c3",
+  "generated_at": "2026-08-19T14:12:33-04:00",
+  "commit": "045a0d1c05d7457ab73f8a69e0541af14752f35b",
   "observer_coverage_hash": "e091e23a1625abcfe6a3b0b3dd16f2b69586bee6f3253ccfeac0fdbdd26f4429",
   "canaries": {
     "agency-constellation-model": {
@@ -57,12 +57,12 @@
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "06621f74407191b1b18e78ddb15c1d82c2df534682aab94f09cbbe8d5d0041dc"
+      "fingerprint": "ff4e952a83e4d82d8f081f8db40c7c9a456ab815f7b508811f895be7e60157cd"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
       "count": 56,
-      "fingerprint": "d5476b790841e75c1c570669b20bfac2fae86c3bb1470455efc8d5981490ee30"
+      "fingerprint": "1c940d0caddb7178041f727e59d332db14454e4cb6f44a16c934c604da5da6a0"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -140,7 +140,7 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "f5617f450471b7e71293462ce037716b69d46747336289f42f54ea7f05331f1c"
+      "registry_hash": "c3fe984c8a4fa6446c4369a1e2eacf5c997d7f8227de274d81a9b7e591f10633"
     },
     "registry": {
       "version": "1.0.0",
@@ -149,9 +149,9 @@
       "component_count": 20,
       "classifications": {
         "surfaces": {
-          "instrumented": 3,
+          "instrumented": 5,
           "registered_no_data": 0,
-          "planned": 33,
+          "planned": 31,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,
