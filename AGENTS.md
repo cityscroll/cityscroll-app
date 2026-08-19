@@ -3399,6 +3399,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `test/performance_observability_registry.test.mjs`. Never add a consumer-side
   fallback that maps an unknown route to Home or Browse.
 
+## Comparative signal admission
+
+- `site/comparative_signal_admission.mjs` is the pure, closed-policy publication
+  boundary over CI-01 comparative facts. Held decisions stay backstage and the
+  public-only artifact is rebuilt with `node tools/build_comparative_story_signals.mjs`.
+  The successor-solicitation absence control must remain `held_mnar`; focused
+  proof is `test/comparative_signal_admission.test.mjs` plus
+  `test/comparative_negative_control.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
