@@ -80,6 +80,11 @@ QUEUE_DIGESTS = "true"
 ANALYTICS_ACCOUNT_ID = "8162581cb1d97e20a172031adb8a13af"
 ANALYTICS_DATASET = "crol_usage_events_v1"
 ANALYTICS_MEASURED_SINCE = "2026-07-27"
+# The RUM reader is separate from usage aggregation. Its sample floor applies to retained
+# Analytics Engine rows, never the sampling-weighted estimated population.
+RUM_ANALYTICS_DATASET = "crol_rum_observations_v1"
+RUM_MEASURED_SINCE = "2026-08-19"
+RUM_MIN_SAMPLED_ROWS = "30"
 # Wave 4 source custody is fail-closed. Set this to "true" only after the
 # content-policy fixtures and the automatically provisioned bucket are ready.
 SOURCE_VAULT_ENABLED = "false"
