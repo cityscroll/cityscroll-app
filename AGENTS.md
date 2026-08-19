@@ -2235,7 +2235,10 @@ Recovered stranded signups keep `source: recovered-from-deprecated-double-opt-in
 `worker/src/lib/deprecated_opt_in_recovery_manifest.mjs` (three real addresses plus
 the e2e test marker). Caller-supplied rows cannot shrink that set. The daily
 digest cron applies it fail-soft after `runAlerts`; `POST /admin/recover-deprecated-opt-in`
-uses the same path. `signupLifecycleFromRecord` projects `recovered` /
+uses the same path. Recovery is identity-preserving: an already-enrolled
+equivalent broad money watch (`{}` or a `sanitize()` empty filter, including
+`legacy-confirm` / topicless) is kept and any recovered pending duplicate for
+that address is deleted. `signupLifecycleFromRecord` projects `recovered` /
 `pending-enrollment` until a digest day after the recovery watermark, then
 `enrolled`. `summarizeSignupLifecycle` is the category view (`"3 recovered, pending"`
 then `"enrolled"`) rendered by `GET /admin/subs?view=html`. Topicless homepage intents
