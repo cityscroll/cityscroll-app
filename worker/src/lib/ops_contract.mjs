@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.6.0";
+export const OPS_CONTRACT_VERSION = "1.7.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -183,7 +183,7 @@ export const STATS_METRICS = Object.freeze([
     path: "subscriptions.active",
     source: "SUBS list scan",
     exclude_developer_traffic: true,
-    description: "Active (non-paused) confirmed watches.",
+    description: "Active (non-paused) watches, excluding developer/test accounts.",
   },
   {
     path: "subscriptions.accounts",
@@ -366,7 +366,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/subs",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Redacted confirmed subscriptions from SUBS.",
+    description: "Redacted signup roster with recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
   },
   {
     path: "/admin/watch-log",
@@ -614,6 +614,50 @@ export const TRAFFIC_CLASSES = Object.freeze({
 
 export const USAGE_TRAFFIC_CLASSES = Object.freeze(["production", "developer"]);
 
+/** Signup lifecycle states on the SL-01 ops-visibility surface (`GET /admin/subs`). */
+export const SIGNUP_LIFECYCLE_CONTRACT = Object.freeze({
+  contract: "cityscroll.signup_lifecycle.v1",
+  projector: "worker/src/lib/subscriptions.mjs#signupLifecycleFromRecord",
+  summary: "worker/src/lib/subscriptions.mjs#summarizeSignupLifecycle",
+  endpoint: "/admin/subs",
+  html_view: "?view=html",
+  states: [
+    {
+      id: "recovered",
+      status: "pending-enrollment",
+      category: "recovered_pending",
+      description: "Recovered from deprecated double opt-in; intermediate until a digest day after the recovery watermark.",
+    },
+    {
+      id: "enrolled",
+      status: "enrolled",
+      category: "enrolled",
+      description: "Recovered signup after a later digest day, or an ordinary watch.",
+    },
+    {
+      id: "confirmed",
+      status: "confirmed",
+      category: "confirmed",
+      description: "Topicless homepage intent or other confirmed-state record.",
+    },
+    {
+      id: "test",
+      status: "test",
+      category: "test",
+      description: "Developer/e2e account; excluded from real enrollment and digest delivery.",
+    },
+  ],
+  response_fields: [
+    "signup_lifecycle",
+    "recoveredPendingCount",
+    "enrolledCount",
+    "confirmedSubs",
+    "recoveredPending",
+    "enrolled",
+    "developerTestAccounts",
+  ],
+});
+
 /**
  * Build the v1 ops contract document (pure, no I/O, no secrets).
  * @param {{ generated_at?: string }} [opts]
@@ -638,6 +682,7 @@ export function buildOpsContract(opts = {}) {
     },
     stats_metrics: STATS_METRICS,
     performance: PERFORMANCE_CONTRACT,
+    signup_lifecycle: SIGNUP_LIFECYCLE_CONTRACT,
     admin_routes: ADMIN_ROUTES,
     auth_classes: AUTH_CLASSES,
     kv_namespaces: KV_NAMESPACES,

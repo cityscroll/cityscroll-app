@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -310,7 +310,7 @@
       "path": "subscriptions.active",
       "source": "SUBS list scan",
       "exclude_developer_traffic": true,
-      "description": "Active (non-paused) confirmed watches."
+      "description": "Active (non-paused) watches, excluding developer/test accounts."
     },
     {
       "path": "subscriptions.accounts",
@@ -473,6 +473,48 @@
       ]
     }
   },
+  "signup_lifecycle": {
+    "contract": "cityscroll.signup_lifecycle.v1",
+    "projector": "worker/src/lib/subscriptions.mjs#signupLifecycleFromRecord",
+    "summary": "worker/src/lib/subscriptions.mjs#summarizeSignupLifecycle",
+    "endpoint": "/admin/subs",
+    "html_view": "?view=html",
+    "states": [
+      {
+        "id": "recovered",
+        "status": "pending-enrollment",
+        "category": "recovered_pending",
+        "description": "Recovered from deprecated double opt-in; intermediate until a digest day after the recovery watermark."
+      },
+      {
+        "id": "enrolled",
+        "status": "enrolled",
+        "category": "enrolled",
+        "description": "Recovered signup after a later digest day, or an ordinary watch."
+      },
+      {
+        "id": "confirmed",
+        "status": "confirmed",
+        "category": "confirmed",
+        "description": "Topicless homepage intent or other confirmed-state record."
+      },
+      {
+        "id": "test",
+        "status": "test",
+        "category": "test",
+        "description": "Developer/e2e account; excluded from real enrollment and digest delivery."
+      }
+    ],
+    "response_fields": [
+      "signup_lifecycle",
+      "recoveredPendingCount",
+      "enrolledCount",
+      "confirmedSubs",
+      "recoveredPending",
+      "enrolled",
+      "developerTestAccounts"
+    ]
+  },
   "admin_routes": [
     {
       "path": "/admin/ops-contract",
@@ -528,7 +570,7 @@
         "GET"
       ],
       "auth": "ADMIN_KEY",
-      "description": "Redacted confirmed subscriptions from SUBS."
+      "description": "Redacted signup roster with recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html)."
     },
     {
       "path": "/admin/watch-log",
