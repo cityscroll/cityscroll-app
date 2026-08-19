@@ -444,6 +444,16 @@
   ],
   "registry_version": "1.0.0",
   "manifest_version": "rum-surfaces-v1",
+  "collector_contract": {
+    "collector_version": "rum-browser-v1",
+    "library_name": "web-vitals",
+    "library_version": "6.0.1",
+    "library_build": "standard",
+    "field_metric_ids": ["cls_score", "fcp_ms", "inp_ms", "lcp_ms", "ttfb_ms"],
+    "device_classes": ["desktop", "mobile", "tablet", "unknown"],
+    "navigation_types": ["back-forward", "back-forward-cache", "navigate", "prerender", "reload", "restore", "unknown"],
+    "production_enabled": false
+  },
   "description": "Canonical human-edited registry for public-safe performance surface and component identity. Generated browser, Worker, and operator projections must never be edited as inventories.",
   "delivery_classes": [
     "static",
@@ -463,11 +473,11 @@
   "projection_policy": {
     "browser": {
       "audience": "public",
-      "rule": "Emit stable IDs, route-family matchers, delivery classes, metric applicability, semantic contract IDs, lifecycle state, and identity aliases only. Never emit operator labels, readiness prose, architecture references, or owner paths."
+      "rule": "Emit the disabled collector contract, minimal field-metric versions and units, stable IDs, route-family matchers, delivery classes, metric applicability, semantic contract IDs, lifecycle state, and identity aliases only. Never emit operator labels, readiness prose, architecture references, or owner paths."
     },
     "worker": {
       "audience": "private_runtime",
-      "rule": "Emit closed validation allowlists, parent/application relationships, delivery classes, result states, and alias-to-canonical mappings."
+      "rule": "Emit closed collector dimension and metric validation allowlists, parent/application relationships, delivery classes, result states, and alias-to-canonical mappings."
     },
     "operator": {
       "audience": "private_operator",

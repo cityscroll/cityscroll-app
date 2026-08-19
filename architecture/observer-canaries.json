@@ -3,6 +3,11 @@
   "description": "Human-owned list of architecture-affecting surfaces. Register a surface here once; facts observer_coverage, the reconciliation workflow path-coverage check, and the watermark consume this list. Do not infer or auto-extend it.",
   "canaries": [
     {
+      "id": "browser-rum-collector",
+      "path": "site/rum_collector.mjs",
+      "why": "Disabled/test-only browser field-vitals foundation. Its lifecycle, privacy projection, and no-transport boundary are architecture-affecting even before pilot ingestion exists."
+    },
+    {
       "id": "agency-constellation-model",
       "path": "site/agency_constellation_model.mjs",
       "why": "Agency constellation and graph producer. PR 1076 raised the PASSPort constellation ceiling on this surface; graph-row ceilings are invisible to the observer's closed source set."

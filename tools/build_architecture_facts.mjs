@@ -31,11 +31,15 @@ const PERFORMANCE_REGISTRY_PATH = "architecture/performance-observability.v1.jso
 const PERFORMANCE_REGISTRY_SCHEMA_PATH = "architecture/performance-observability.v1.schema.json";
 const PERFORMANCE_BUILDER_PATH = "tools/build_performance_observability.mjs";
 const PERFORMANCE_CLASSIFIER_PATH = "site/performance_route_classifier.mjs";
+const PERFORMANCE_COLLECTOR_PATH = "site/rum_collector.mjs";
+const PERFORMANCE_BOOTSTRAP_PATH = "site/rum_bootstrap.mjs";
+const PERFORMANCE_LIBRARY_PATH = "site/vendor/web-vitals-6.0.1.mjs";
+const PERFORMANCE_OVERHEAD_PATH = "docs/evidence/rum-collector-foundation/overhead.json";
 const PERFORMANCE_BROWSER_MANIFEST_PATH = "site/data/performance-classification-manifest.v1.json";
 const PERFORMANCE_WORKER_ALLOWLIST_PATH = "worker/src/data/performance-validation-allowlist.v1.json";
 const PERFORMANCE_OPERATOR_LABELS_PATH = "worker/src/data/performance-operator-labels.v1.json";
 const PERFORMANCE_CANDIDATE_SOURCE_PATH = "site/sitemap.xml";
-const GENERATOR_VERSION = "1.5.0";
+const GENERATOR_VERSION = "1.6.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -598,6 +602,9 @@ function buildPerformanceObservabilityFacts({
       PERFORMANCE_REGISTRY_SCHEMA_PATH,
       PERFORMANCE_BUILDER_PATH,
       PERFORMANCE_CLASSIFIER_PATH,
+      PERFORMANCE_COLLECTOR_PATH,
+      PERFORMANCE_BOOTSTRAP_PATH,
+      PERFORMANCE_LIBRARY_PATH,
       PERFORMANCE_BROWSER_MANIFEST_PATH,
       PERFORMANCE_WORKER_ALLOWLIST_PATH,
       PERFORMANCE_OPERATOR_LABELS_PATH,
@@ -631,9 +638,19 @@ function buildPerformanceObservabilityFacts({
     },
     topology: {
       collector: {
-        state: "planned",
+        state: "disabled_test_only",
+        production_enabled: registry.collector_contract.production_enabled,
         classification_manifest_path: PERFORMANCE_BROWSER_MANIFEST_PATH,
-        implementation_path: null,
+        implementation_path: PERFORMANCE_COLLECTOR_PATH,
+        bootstrap_path: PERFORMANCE_BOOTSTRAP_PATH,
+        library: {
+          name: registry.collector_contract.library_name,
+          version: registry.collector_contract.library_version,
+          build: registry.collector_contract.library_build,
+          path: PERFORMANCE_LIBRARY_PATH,
+        },
+        overhead_evidence_path: PERFORMANCE_OVERHEAD_PATH,
+        network_transport_path: null,
       },
       intake: {
         state: "planned",
