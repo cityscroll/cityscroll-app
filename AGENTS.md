@@ -1030,12 +1030,15 @@ node tools/build_entity_intelligence.mjs
 Exact Land map pins use the committed BBL→centroid table
 `site/data/bbl_mappluto_centroids_lookup.json` (pure `site/bbl_mappluto_centroids.mjs`;
 `resolveLandMapLocation` precedence: authoritative point → BBL centroid → address
-geocode → unresolved). Rebuild offline from a PLUTO CSV or build-time ArcGIS
+geocode → unresolved). The resolver must read WH-06
+`site/data/zap_bbl_warehouse_lookup.json` via `collectProjectBbls` / `bblsForProject`;
+list rows and a missing `/zap-outcomes` KV hit must not starve the centroid path.
+Rebuild offline from a PLUTO CSV or build-time ArcGIS
 batch — never live ArcGIS on the resident hot path:
 `node tools/build_bbl_mappluto_centroids.mjs --from-pluto-csv <pluto.csv>` or
 `--from-arcgis`; gate with `--check` (age ≤120d, ≥95% sell-facing BBL coverage,
-canary `3012660036` / `2026K0123`). Focused proof:
-`node --test test/bbl_mappluto_centroids.test.mjs`.
+canaries `3012660036` / `2026K0123` and `5017800015` / `2025R0257`). Focused proof:
+`node --test test/bbl_mappluto_centroids.test.mjs test/land_map_resolution_model.test.mjs`.
 
 **WH-07 City Record PIN-chain serve (first history projection):** materialize
 procurement-with-pin siblings from the WH-07 `city_record` bulk into

@@ -215,6 +215,7 @@ test("serve gate accepts retained MapPLUTO extract with canary + coverage", () =
     mode: "mappluto_pluto_csv",
     byBbl: {
       "3012660036": { lat: 40.6696224, lon: -73.9557834 },
+      "5017800015": { lat: 40.6083294, lon: -74.1876383 },
       "1017670001": { lat: 40.8, lon: -73.95 },
       "1017670002": { lat: 40.801, lon: -73.951 },
     },
@@ -223,6 +224,7 @@ test("serve gate accepts retained MapPLUTO extract with canary + coverage", () =
   });
   assert.equal(doc.coverage.rate, 1);
   assert.equal(doc.coverage.canaries["3012660036"].status, "matched");
+  assert.equal(doc.coverage.canaries["5017800015"].status, "matched");
   assertBblMapplutoCentroidsServeGate(doc, { now: FIXTURE_NOW });
   assert.deepEqual(lookupBblCentroid(doc, ["3012660036"]), {
     bbl: "3012660036",
@@ -324,4 +326,6 @@ test("committed centroid lookup covers >=95% of sell-facing BBLs and keeps canar
   );
   assert.ok(doc.by_bbl["3012660036"]);
   assert.equal(doc.coverage.canaries["3012660036"].status, "matched");
+  assert.ok(doc.by_bbl["5017800015"], "2025R0257 MapPLUTO canary 5017800015 must stay in the centroid table");
+  assert.equal(doc.coverage.canaries["5017800015"].status, "matched");
 });
