@@ -1,5 +1,12 @@
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
+import {
+  INVESTIGATION_SIGNAL_TYPE,
+  addInvestigationComparativeSignal,
+  comparativeSignalCsvFields,
+  normalizeInvestigationComparativeSignal,
+  storySignalInvestigationItem,
+} from "../investigation_comparative_signal.mjs";
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local
@@ -95,7 +102,8 @@ async function invPullAndMerge(){
   }catch(e){ /* stay local */ }
 }
 const INV_HREF = {notice:"/notices/", matter:"#matter/"};
-const invItemHref = it => it.t==="agency" ? agencyHref(it.id) : it.t==="vendor" ? vendorHref(it.id) :
+const invItemHref = it => it.t===INVESTIGATION_SIGNAL_TYPE ? (normalizeInvestigationComparativeSignal(it)?.subject_href || "#investigation") :
+  it.t==="agency" ? agencyHref(it.id) : it.t==="vendor" ? vendorHref(it.id) :
   (INV_HREF[it.t]||"/notices/") + encodeURIComponent(it.id) + (it.t==="notice"?"/":"");
 function pinBtn(t, id, title, meta){
   const d = JSON.stringify({t, id, title:String(title).slice(0,300), meta:String(meta||"").slice(0,300)})
@@ -107,7 +115,9 @@ document.addEventListener("click", e=>{
   if(b){
     let p; try{ p = JSON.parse(b.dataset.pin); }catch(_){ return; }
     const s = invStore(), inv = s.invs[s.current];
-    if(!inv.items.some(i=>i.t===p.t && i.id===p.id)){
+    if(p.t===INVESTIGATION_SIGNAL_TYPE){
+      if(addInvestigationComparativeSignal(inv.items,p,{added:new Date().toISOString().slice(0,10)})) invSave(s);
+    } else if(!inv.items.some(i=>i.t===p.t && i.id===p.id)){
       inv.items.push({...p, note:"", added:new Date().toISOString().slice(0,10)});
       invSave(s);
     }
@@ -139,6 +149,11 @@ function invCsv(inv){
   const base = location.origin + location.pathname;
   return CrolExports.excelSafeCsv([
     ["Type",i=>i.t],["Title",i=>i.title],["Meta",i=>i.meta],
+    ["Claim",i=>comparativeSignalCsvFields(i).claim],
+    ["Subject",i=>comparativeSignalCsvFields(i).subject],
+    ["Peer set",i=>comparativeSignalCsvFields(i).peer_set],
+    ["Comparison receipt",i=>comparativeSignalCsvFields(i).comparison_receipt],
+    ["Evidence",i=>comparativeSignalCsvFields(i).evidence],
     ["Note",i=>i.note],["Added",i=>i.added],["Permalink",i=>base+invItemHref(i)]
   ],inv.items);
 }
@@ -148,13 +163,25 @@ function invDownload(name, content, type){
   a.download=name; document.body.appendChild(a); a.click(); a.remove();
 }
 const PINTYPE_KEY = {notice:"pintype_notice", vendor:"pintype_vendor", agency:"pintype_agency", matter:"pintype_matter"};
+const invEsc = value => String(value||"").replace(/[<>&\"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+function invSignalDetailsHtml(item){
+  const signal=normalizeInvestigationComparativeSignal(item);
+  if(!signal) return "";
+  const comparison=signal.comparison;
+  const population=comparison.population.agency_name||comparison.population.source_family;
+  const evidence=signal.evidence.map(entry=>`<a href="${invEsc(entry.href)}" target="_blank" rel="noopener noreferrer">Evidence ${invEsc(entry.source_row_id)}${extSR()}</a>`).join(" · ");
+  return `<span class="rmeta2 inv-signal-claim" style="display:block;margin-top:4px">${invEsc(signal.claim)}</span>
+    <span class="rmeta inv-signal-basis" style="display:block;margin-top:4px"><a href="${invEsc(signal.peer_set_href)}">Peer group</a> · ${comparison.observed_count} ${invEsc(population)} records · rank ${comparison.rank} · ${invEsc(comparison.window.start)}–${invEsc(comparison.window.end)}</span>
+    <span class="rmeta inv-signal-evidence" style="display:block;margin-top:4px;overflow-wrap:anywhere">${evidence} · Receipt <code>${invEsc(signal.comparison_receipt.receipt_id)}</code></span>`;
+}
 function invItemsHtml(items, readonly){
   const acc = new Date().toISOString().slice(0,10);
   return items.map((i,idx)=>`<div class="tl" data-idx="${idx}" style="align-items:flex-start">
-    <span class="pin" style="flex:0 0 auto">${t(PINTYPE_KEY[i.t]||"pintype_notice")}</span>
+    <span class="pin" style="flex:0 0 auto">${i.t===INVESTIGATION_SIGNAL_TYPE?"signal":t(PINTYPE_KEY[i.t]||"pintype_notice")}</span>
     <span style="flex:1 1 300px;min-width:220px">
       <b>${pivotA(invItemHref(i), i.title.replace(/[<>&]/g,""))}</b>
       <span class="rmeta" style="display:block;margin:2px 0 0">${(i.meta||"").replace(/[<>&]/g,"")} · ${t("inv_pinned_on",{date:i.added})}</span>
+      ${i.t===INVESTIGATION_SIGNAL_TYPE?invSignalDetailsHtml(i):""}
       ${readonly
         ? (i.note?`<span class="rmeta2" style="display:block">${i.note.replace(/[<>&]/g,"")}</span>`:"")
         : `<input type="text" class="invnote" data-idx="${idx}" aria-label="${t("invnote_aria")}" data-i18n-aria="invnote_aria" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="${t("inv_note_placeholder")}" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
@@ -236,11 +263,43 @@ async function showSharedInv(id){
     </div></div>`;
   $("#invimport").addEventListener("click", ()=>{
     const s=invStore(), inv=s.invs[s.current];
-    j.items.forEach(p=>{ if(!inv.items.some(i=>i.t===p.t&&i.id===p.id)) inv.items.push({...p, added:p.added||new Date().toISOString().slice(0,10)}); });
+    j.items.forEach(p=>{
+      if(p.t===INVESTIGATION_SIGNAL_TYPE){
+        addInvestigationComparativeSignal(inv.items,p,{added:p.added||new Date().toISOString().slice(0,10)});
+      } else if(!inv.items.some(i=>i.t===p.t&&i.id===p.id)){
+        inv.items.push({...p, added:p.added||new Date().toISOString().slice(0,10)});
+      }
+    });
     invSave(s); location.hash="#investigation";
   });
   focusItemRouteTarget(box.querySelector(".route-item"));
   applyActiveHistoryRouteScroll();
+}
+
+async function showSignalInvestigation(signalId){
+  let added=false;
+  try{
+    const response=await fetch("/data/comparative_story_signals.json",{headers:{Accept:"application/json"}});
+    if(response.ok){
+      const readModel=await response.json();
+      const signal=readModel?.schema==="cityscroll.story_signal_read_model.v1"
+        ? readModel.signals?.find(item=>item?.signal_id===signalId)
+        : null;
+      const subjectId=String(signal?.subject?.id||"");
+      const peerAnchor=`peer-${subjectId.replace(/[^A-Za-z0-9_-]/g,"-")}`;
+      const item=storySignalInvestigationItem(signal,{peerSetHref:`/experimental/worth-a-look/#${peerAnchor}`});
+      if(item){
+        const s=invStore(), inv=s.invs[s.current];
+        added=addInvestigationComparativeSignal(inv.items,item,{added:new Date().toISOString().slice(0,10)});
+        if(added) invSave(s);
+        window.crolAnalytics?.record("investigation_share",{detail:"add_signal",surface:"home"});
+      }
+    }
+  }catch(e){ /* invalid, unavailable, and held signals fail closed */ }
+  history.replaceState(history.state,"","#investigation");
+  await showInvestigation();
+  const msg=$("#invmsg");
+  if(msg&&added) msg.textContent=t("pinned_open_inv",{n:invStore().invs[invStore().current].items.length});
 }
 
 /* ===================== MATTER TIMELINE (#matter/<pin>) =====================
@@ -675,6 +734,7 @@ globalThis.pinBtn = pinBtn;
 globalThis.showInvestigation = showInvestigation;
 globalThis.showMatter = showMatter;
 globalThis.showSharedInv = showSharedInv;
+globalThis.showSignalInvestigation = showSignalInvestigation;
 Object.defineProperty(globalThis, "invServerHydrated", { configurable: true, get: () => invServerHydrated, set: value => { invServerHydrated = value; } });
 Object.defineProperty(globalThis, "invSessionRecognized", { configurable: true, get: () => invSessionRecognized, set: value => { invSessionRecognized = value; } });
 Object.defineProperty(globalThis, "invSyncTimer", { configurable: true, get: () => invSyncTimer, set: value => { invSyncTimer = value; } });

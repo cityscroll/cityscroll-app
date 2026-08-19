@@ -36,6 +36,35 @@
         },
         "rank": 4
       },
+      "comparison_receipt": {
+        "schema": "cityscroll.comparative_fact_reference.v1",
+        "receipt_schema": "cityscroll.comparative_fact.v1",
+        "receipt_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-05",
+        "metric_method": "source_bounded_award_amount_rank_v1",
+        "peer_basis": {
+          "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-08-05",
+          "observability_basis": "bounded_complete",
+          "source_contract_versions": [
+            "source_contracts.v1:ocp-recent-contract-awards"
+          ],
+          "source_vintages": [
+            {
+              "source_contract_id": "ocp-recent-contract-awards",
+              "source_contract_schema_version": 1,
+              "dataset_id": "qyyg-4tf5",
+              "materialized_at": "2026-08-05T10:40:50.286Z",
+              "row_count": 53245
+            }
+          ],
+          "inclusion_rule": "award row in the explicit window with unique request_id, canonical agency, and positive amount below the money-honesty cap",
+          "identity_gate": "unique_request_id_and_reviewed_agency_identity",
+          "observation_quality_class": "source_bounded_positive_observation",
+          "censoring_class": "historical_window_only",
+          "selected_level": "source_agency_window",
+          "small_n_policy_id": "award_amount_rank_small_n_v1"
+        },
+        "generated_at": "2026-08-05T10:40:50.286Z"
+      },
       "evidence": [
         {
           "kind": "source_row",
