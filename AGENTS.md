@@ -30,6 +30,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/architecture_watermark.test.mjs`, and
   `test/reconcile_architecture.test.mjs`.
 
+- **Near You generic geography spine:** `tools/lib/district_activity.mjs` materializes
+  the role-, basis-, source-, and vintage-preserving `place.geographies` envelope plus
+  the `geography_items` membership index consumed by Near You and geography-watch
+  replay. The public scope allowlist is borough, Community District, Council District,
+  NTA 2020, and Police Precinct; Sanitation District and BID remain ingestion-only.
+  Legacy `boro` / `cd` / `council` routes and watch fields remain compatibility wires.
+  Rebuild with `node tools/build_district_activity.mjs`; focused proof is
+  `test/near_you_geography_scope.test.mjs`, `test/scope_v0.test.mjs`, and
+  `worker/test/alerts_geography_scope.test.mjs`.
+
 - **Architecture doc invariant consistency:** `docs/architecture.md` is the canonical
   engineer register; its resident-read section carries the authoritative invariant from
   `architecture/resident-read-policy.json`. `tools/reconcile_architecture.mjs --check`

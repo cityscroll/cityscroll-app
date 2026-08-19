@@ -99,6 +99,7 @@
       <label>Neighborhood<input name="neighborhood" value="" placeholder="e.g. Elmhurst"></label>
       <label>Community district<input name="cd" value="" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
       <label>Council district<input name="council" value="" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
+      <label>Neighborhood or precinct<select name="geo"><option value="">All registered geographies</option><optgroup label="Neighborhood tabulation areas"><option value="geography:nta2020:MN0401">Chelsea-Hudson Yards</option><option value="geography:nta2020:MN0101">Financial District-Battery Park City</option><option value="geography:nta2020:QN1202">South Jamaica</option><option value="geography:nta2020:MN0102">Tribeca-Civic Center</option></optgroup><optgroup label="Police precincts"><option value="geography:police_precinct:1">Police Precinct 1</option><option value="geography:police_precinct:10">Police Precinct 10</option><option value="geography:police_precinct:103">Police Precinct 103</option><option value="geography:police_precinct:5">Police Precinct 5</option></optgroup></select></label>
 
       <button type="submit">Apply filters</button>
     </form>
