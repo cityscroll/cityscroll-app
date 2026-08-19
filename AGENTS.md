@@ -3391,6 +3391,10 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 ## Canonical source-health foundation
 
+- A new civic source joins health reporting through one
+  `site/data/source_contracts.json` contract. The onboarding fields, canonical-id
+  observation join, three-clock plus coverage evaluation, and public/backstage
+  split are in [`docs/source-health-participation.md`](docs/source-health-participation.md).
 - `site/data/source_contracts.json` owns durable freshness expectations and
   public/backstage policy; transient clocks never belong there. Build the
   receipt-derived sibling with `node tools/build_source_health_observations.mjs`
