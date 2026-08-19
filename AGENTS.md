@@ -3393,8 +3393,17 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   stays excluded from Pages. Build the strict allowlisted public sibling with
   `node tools/build_source_health_public_projection.mjs`; Worker `/source-health`
   serves that artifact with null-on-unavailable semantics. Public fields and
-  leak guards live in `site/source_health_public_projection.mjs`. Proof:
-  `test/source_health_public_projection.test.mjs` and
+  leak guards live in `site/source_health_public_projection.mjs`. The
+  desk graph is a second projection of the same observation model, not a
+  second store. Honesty-conformance (historical/pointer never delayed by
+  age, daily delayed only after its own breach, failed-acquisition plus
+  valid fallback is Degraded, unknown clocks stay null, no operator field
+  on the public surface) lives in `test/source_health_status.test.mjs` and
+  `test/source_health_partial_observations.test.mjs`. Proof:
+  `test/source_health_projection.test.mjs`,
+  `test/source_health_public_projection.test.mjs`,
+  `test/source_health_status.test.mjs`,
+  `test/source_health_partial_observations.test.mjs`, and
   `worker/test/source_health.test.mjs`.
 
 ## Performance observability registry

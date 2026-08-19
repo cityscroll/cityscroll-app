@@ -7,6 +7,7 @@ import {
   publicSourceHealthProjectionLeaks,
   validatePublicSourceHealthProjection,
 } from "../site/source_health_public_projection.mjs";
+import { buildDataSourceGraph } from "../tools/data_source_graph.mjs";
 
 const GENERATED_AT = "2026-08-18T12:00:00.000Z";
 
@@ -174,6 +175,79 @@ test("serializer deny-list catches secret-like and operator-only fixture fields"
   assert.ok(findings.some((finding) => finding.includes("contract_fingerprint")));
   assert.ok(findings.some((finding) => finding.includes("raw_error_body")));
   assert.ok(findings.some((finding) => finding.includes("exact_gate_threshold")));
+});
+
+test("frontstage and backstage derive from one canonical observation model", () => {
+  const registry = {
+    contracts: [
+      contract("public-source", {
+        auth_token_env: "SOURCE_API_TOKEN",
+        operator_runbook: "/ops/recover.md",
+      }),
+      contract("backstage-source", {
+        health_policy: { public_visibility: "backstage-only" },
+      }),
+    ],
+  };
+  const observations = {
+    generated_at: GENERATED_AT,
+    observations: [
+      observation("public-source", {
+        health: {
+          status: "Degraded",
+          reason_codes: ["acquisition-failed", "serving-valid-fallback"],
+          clocks: observation("public-source").health.clocks,
+        },
+        relationship_coverage: {
+          status: "held",
+          join_status: "held",
+          row_count: 12,
+          measured_at: "2026-08-18T08:00:00.000Z",
+          reason_codes: ["relationship-join-held"],
+        },
+        operator: {
+          runs: [{
+            adapter: "source-contracts-live",
+            run_id: "fixture-run",
+            at: GENERATED_AT,
+            status: "failed",
+            receipt_ref: "/operator/runbook.json",
+            exact_error: "HTTP 503 from publisher",
+          }],
+        },
+      }),
+      observation("backstage-source"),
+    ],
+  };
+  const publicProjection = buildPublicSourceHealthProjection(registry, observations);
+  const desk = buildDataSourceGraph({
+    registry: {
+      contracts: registry.contracts.map((row) => ({
+        ...row,
+        status: "live",
+        delivery_tier: "live-only",
+        code_references: [{ path: "worker/src/fixture.mjs", contains: "fixtureAdapter" }],
+      })),
+    },
+    healthObservations: observations,
+  });
+
+  assert.deepEqual(publicProjection.sources.map((row) => row.source_id), ["public-source"]);
+  const publicRow = publicProjection.sources[0];
+  const deskPublic = desk.sources.find((row) => row.id === "public-source");
+  const deskBackstage = desk.sources.find((row) => row.id === "backstage-source");
+  assert.equal(publicRow.health.status, "Degraded");
+  assert.equal(deskPublic.health.status, "Degraded");
+  assert.equal(deskPublic.serving_fallback.active, true);
+  assert.equal(deskPublic.join_gate.row_count, 12);
+  assert.equal(deskPublic.runs[0].exact_error, "HTTP 503 from publisher");
+  assert.equal(deskBackstage.health.status, "Healthy");
+  assert.equal("row_count" in publicRow.relationship_coverage, false);
+  assert.deepEqual(publicSourceHealthProjectionLeaks(publicProjection), []);
+  assert.doesNotMatch(
+    JSON.stringify(publicProjection),
+    /SOURCE_API_TOKEN|runbook|fingerprint|HTTP 503|exact_error|backstage-source/i,
+  );
 });
 
 test("committed public artifact is canonical, generated, and contains no backstage leaks", () => {
