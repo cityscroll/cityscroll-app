@@ -7,6 +7,12 @@ import {
   validatePublicSourceHealthProjection,
 } from "./source_health_public_projection.mjs";
 
+// Visibility gate, not a deletion. Keep the generator, lookup, and page.
+// Re-expose only after every served source on the page shows real clocks
+// (no UNKNOWN / Source-unavailable wall). Flip this one constant to true;
+// nav helpers, sitemap tests, and the public route all read it.
+export const DATA_HEALTH_PUBLIC = false;
+
 export const DATA_HEALTH_PATH = "/data-health/";
 export const STATS_PATH = "/stats.html";
 
@@ -43,7 +49,29 @@ export function navigationFromPublicSourceHealth(projection) {
   };
 }
 
+export function isDataHealthPath(pathname) {
+  return /^\/data-health(?:\/index\.html)?\/?$/.test(String(pathname || ""));
+}
+
+export function renderDataHealthUnavailableDocument() {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not available · CityScroll</title>
+</head>
+<body>
+<main id="main" tabindex="-1">
+  <h1>This page is not available</h1>
+  <p><a href="/">CityScroll home</a></p>
+</main>
+</body>
+</html>`;
+}
+
 export function renderStatsToDataHealthHtml() {
+  if (!DATA_HEALTH_PUBLIC) return "";
   return `<p class="stats-data-health-crosslink">${STATS_TO_DATA_HEALTH_HTML}</p>`;
 }
 
@@ -65,8 +93,12 @@ export function dataHealthNavigationFindings(html, surface) {
   if (DISCLAIMER_SLOP.test(text)) findings.push("disclaimer-slop");
   if (DEBUG_LEAK.test(text)) findings.push("debug-internals");
   if (surface === "stats") {
-    if (!hasDataHealthHref(text)) findings.push("missing-data-health-link");
-    if (!/source freshness and coverage/i.test(text)) findings.push("missing-stats-boundary");
+    if (DATA_HEALTH_PUBLIC) {
+      if (!hasDataHealthHref(text)) findings.push("missing-data-health-link");
+      if (!/source freshness and coverage/i.test(text)) findings.push("missing-stats-boundary");
+    } else if (hasDataHealthHref(text)) {
+      findings.push("gated-data-health-link");
+    }
     if (/\/source-health/.test(text)) findings.push("request-time-source-health");
   }
   if (surface === "data-health") {
@@ -74,9 +106,18 @@ export function dataHealthNavigationFindings(html, surface) {
     if (USAGE_LEAK.test(text)) findings.push("usage-stats-on-data-health");
   }
   if (surface === "nav") {
-    if (!hasDataHealthHref(text) || !/data-i18n="footer_data_health"/.test(text)) {
-      findings.push("missing-public-data-health-nav");
+    if (DATA_HEALTH_PUBLIC) {
+      if (!hasDataHealthHref(text) || !/data-i18n="footer_data_health"/.test(text)) {
+        findings.push("missing-public-data-health-nav");
+      }
+    } else if (hasDataHealthHref(text) || /data-i18n="footer_data_health"/.test(text)) {
+      findings.push("gated-data-health-link");
     }
+  }
+  if (surface === "sitemap") {
+    const listed = /https:\/\/cityscroll\.org\/data-health\//.test(text);
+    if (DATA_HEALTH_PUBLIC && !listed) findings.push("missing-data-health-sitemap");
+    if (!DATA_HEALTH_PUBLIC && listed) findings.push("gated-data-health-link");
   }
   return findings;
 }

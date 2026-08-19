@@ -20,7 +20,7 @@ sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html", "data-health/index.html"]  # Source: public site/ pages.
+PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html", "near-you/index.html", "following/index.html"]  # Source: public site/ pages.
 TABS = [
     ("people", '.tabbtn[data-tab="people"]'),
     ("land", '.tabbtn[data-tab="land"]'),

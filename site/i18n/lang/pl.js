@@ -2274,7 +2274,7 @@
     stats_history_empty: "Nie ma jeszcze historii dzień po dniu.",
     stats_h_technical: "Szczegóły techniczne",
     stats_p_technical: "Jak powstają powyższe liczby. Nie trzeba tego wiedzieć, żeby korzystać z CityScroll.",
-    stats_foot_html: "Surowy JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (buforowany ~15 min) · <a href=\"about.html\">O projekcie</a> · <a href=\"data-health/\">Stan danych</a> · <a href=\"index.html\">Strona główna</a>",
+    stats_foot_html: "Surowy JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (buforowany ~15 min) · <a href=\"about.html\">O projekcie</a> · <a href=\"index.html\">Strona główna</a>",
     stats_asof: "Stan na {date} (odświeżane co 15 minut).",
     stats_unreachable: "Aktualne liczniki są teraz niedostępne — surowy JSON znajduje się pod adresem api.cityscroll.org/stats.",
     stats_h_usage: "Jak ludzie korzystają z CityScroll",

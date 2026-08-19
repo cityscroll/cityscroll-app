@@ -33,6 +33,11 @@ import {
   hydratePublicAssertionInspector,
   renderAssertionInspectorDocument,
 } from "./assertion_inspector.mjs";
+import {
+  DATA_HEALTH_PUBLIC,
+  isDataHealthPath,
+  renderDataHealthUnavailableDocument,
+} from "./data_health_navigation.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -174,6 +179,7 @@ export function edgeRequestKind(urlValue) {
   if (safeCommittee(url.pathname)) return "committee";
   if (browseFacet(url.pathname) || browseConcept(url.pathname) || browseObject(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
+  if (isDataHealthPath(url.pathname)) return "data-health";
   return "asset";
 }
 
@@ -892,6 +898,25 @@ async function handleCommittee(request, env, id) {
     : new Response(html, { status: 200, headers });
 }
 
+function handleDataHealth(request, env) {
+  if (!DATA_HEALTH_PUBLIC) {
+    const headers = {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=60, s-maxage=60",
+      "X-Content-Type-Options": "nosniff",
+    };
+    return request.method === "HEAD"
+      ? new Response(null, { status: 404, headers })
+      : new Response(renderDataHealthUnavailableDocument(), { status: 404, headers });
+  }
+  const url = new URL(request.url);
+  if (url.pathname === "/data-health") {
+    url.pathname = "/data-health/";
+    return Response.redirect(url, 308);
+  }
+  return env.ASSETS.fetch(request);
+}
+
 export default {
   async fetch(request, env) {
     if (!env?.ASSETS) return new Response("Static asset binding unavailable", { status: 503 });
@@ -933,6 +958,7 @@ export default {
     }
     const entity = entityDocument(url.pathname);
     if (entity) return handleEntity(request, env, entity);
+    if (isDataHealthPath(url.pathname)) return handleDataHealth(request, env);
     return env.ASSETS.fetch(request);
   },
 };
