@@ -1,0 +1,27 @@
+{
+  "schema": "cityscroll.data_source_graph.desk_consumer_contract.v1",
+  "producer_schema_version": 4,
+  "supported_consumer_versions": [1, 2, 3, 4],
+  "compatibility": "additive_superset",
+  "producer": "tools/data_source_graph.mjs",
+  "acceptance_test": "test/data_source_graph.test.mjs",
+  "v4_additions": {
+    "graph_fields": ["research"],
+    "count_fields": ["candidate_sources"],
+    "source_fields": [
+      "contract_fingerprint",
+      "health",
+      "clocks",
+      "adapters",
+      "runs",
+      "exact_errors",
+      "receipts",
+      "serving_fallback",
+      "join_gate",
+      "operator_notes",
+      "research_state"
+    ],
+    "node_classes": ["candidate-source"],
+    "notes": "Version 4 keeps the version 3 topology and nullable current_as_of date. Health observations and uncontracted candidate research are additive. The authenticated desk must accept 4 without dropping those fields or requiring candidate rows to appear in source_contracts.json. Desk overlay must keep the version 4 maintainer-architecture lede in its known intro set."
+  }
+}
