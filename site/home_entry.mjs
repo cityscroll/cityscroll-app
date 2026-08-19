@@ -1,3 +1,8 @@
+import {
+  homeEntryReady,
+  runtimeRumSemanticMilestones,
+} from "./rum_static_record_instrumentation.mjs";
+
 const API_ORIGINS = Object.freeze([
   window.CROL_API_ORIGIN || "https://api.cityscroll.org",
   window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev",
@@ -79,6 +84,12 @@ function ensureApplicationForHash() {
 
 initLanguageSwitcher();
 initSubscription();
+homeEntryReady(runtimeRumSemanticMilestones(), {
+  primaryContext: document.body?.dataset.primaryContext,
+  homeReady: document.body?.dataset.homeReady,
+  primaryCtaVisible: Boolean(document.getElementById("homeCta")),
+  topicInputVisible: Boolean(document.getElementById("home-topic-query")),
+});
 window.addEventListener("hashchange", () => {
   ensureApplicationForHash().catch(() => {});
 });
