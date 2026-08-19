@@ -7,6 +7,11 @@ import {
   NOTICE_SEARCH_LIMITS,
   NOTICE_SEARCH_PROVIDER_ID,
 } from "./notice_search.mjs";
+import {
+  CITED_PASSAGES_CAPABILITY_REFERENCE,
+  CITED_PASSAGES_PROVIDER_ID,
+  CITED_PASSAGES_REPRESENTATIONS,
+} from "./cited_passages.mjs";
 import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
@@ -19,6 +24,16 @@ export const MCP_NOTICE_SEARCH_ADAPTER = Object.freeze({
   route: "POST /mcp",
   tool: "search_notices",
   surface: "MCP",
+});
+
+export const MCP_CITED_PASSAGES_ADAPTER = Object.freeze({
+  id: "mcp.retrieve_cited_passages@1",
+  capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
+  providerId: CITED_PASSAGES_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "retrieve_cited_passages",
+  surface: "MCP",
+  representations: CITED_PASSAGES_REPRESENTATIONS,
 });
 
 const SUBSCRIBABLE_LENSES = ["money", "people", "land", "property", "rules", "meetings"];
@@ -112,8 +127,9 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
   Object.freeze({
     name: "retrieve_cited_passages",
     operationClass: "read",
-    schemaReference: "cityscroll.semantic_retrieval.cited_passage_response.v1",
-    contractReference: "cityscroll.semantic_retrieval.cited_passage_response.v1",
+    schemaReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
+    capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
+    adapterId: MCP_CITED_PASSAGES_ADAPTER.id,
   }),
   Object.freeze({
     name: "preview_watch",

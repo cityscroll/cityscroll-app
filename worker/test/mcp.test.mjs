@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import {
   handleMcp,
+  MCP_CITED_PASSAGES_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
 } from "../src/mcp.mjs";
@@ -79,6 +80,11 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "notice.search@1",
   );
   assert.equal(MCP_NOTICE_SEARCH_ADAPTER.capabilityReference, "notice.search@1");
+  assert.equal(MCP_CITED_PASSAGES_ADAPTER.capabilityReference, "cited.passages.retrieve@1");
+  assert.equal(
+    MCP_TOOL_BINDINGS.find(({ name }) => name === "retrieve_cited_passages").capabilityReference,
+    "cited.passages.retrieve@1",
+  );
 });
 
 test("retrieve_cited_passages returns source-only structured citations", async () => {
