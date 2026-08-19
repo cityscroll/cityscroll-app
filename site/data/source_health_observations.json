@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
-  "generated_at": "2026-08-18T14:14:03.293Z",
+  "generated_at": "2026-08-18T20:15:50.276Z",
   "contract_count": 54,
   "observations": [
     {
@@ -616,7 +616,19 @@
           "at": "2026-08-05T10:41:44.000Z",
           "status": "succeeded"
         }
-      ]
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-05T10:41:44.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/city-record_bulk_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "citywide-payroll",
@@ -1013,7 +1025,19 @@
           "at": "2026-08-03T04:27:32.000Z",
           "status": "succeeded"
         }
-      ]
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-03T04:27:32.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "doing-business-entities",
@@ -1065,7 +1089,27 @@
           "at": "2026-08-02T10:35:17.000Z",
           "status": "succeeded"
         }
-      ]
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-18T02:18:18.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/doing-business-entities_bulk_latest.json",
+            "exact_error": null
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-02T10:35:17.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/doing-business-entities_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "expense-budget",
@@ -1684,7 +1728,27 @@
           "at": "2026-08-03T16:37:39.000Z",
           "status": "succeeded"
         }
-      ]
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-05T10:36:28.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+            "exact_error": null
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-03T16:37:39.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/ocp-recent-contract-awards_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "passport-public-contracts",
@@ -1946,7 +2010,27 @@
           "at": "2026-08-02T11:45:54.000Z",
           "status": "succeeded"
         }
-      ]
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-05T10:36:34.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+            "exact_error": null
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-02T11:45:54.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-bbl_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     },
     {
       "source_id": "zap-projects",
@@ -1966,7 +2050,7 @@
             "basis": "acquired_at"
           },
           "cityscroll_serving": {
-            "at": "2026-08-18T12:06:08.839Z",
+            "at": "2026-08-18T20:15:50.276Z",
             "state": "KNOWN",
             "basis": "serve_contract:zap_projects"
           }
@@ -1983,7 +2067,7 @@
         {
           "kind": "serving-receipt",
           "path": "site/data/zap_projects_warehouse_lookup.json",
-          "at": "2026-08-18T12:06:08.839Z",
+          "at": "2026-08-18T20:15:50.276Z",
           "status": "current"
         },
         {
@@ -1998,7 +2082,27 @@
           "at": "2026-08-02T10:16:52.000Z",
           "status": "succeeded"
         }
-      ]
+      ],
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-03T05:05:03.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+            "exact_error": null
+          },
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": null,
+            "at": "2026-08-02T10:16:52.000Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/zap-projects_latest.json",
+            "exact_error": null
+          }
+        ]
+      }
     }
   ]
 }
