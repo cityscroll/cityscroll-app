@@ -50,6 +50,57 @@ test("official profiles render exact graph member_of edges when the legacy looku
   assert.equal(local, "", "committee memberships are not repeated as local connections");
 });
 
+test("official 7811 diamond-marked committees are keyboard-native committee links", () => {
+  const person = { person_id: "7811", person_name: "Vickie Paladino" };
+  const committeeView = buildOfficialCommitteeView(person, graph);
+  const rows = committeeRowsFromGraph(graph, committeeView);
+  const reverseEdges = committeeReverseEdgesForId(graph, person.person_id);
+  const bag = {
+    ...person,
+    member_id: person.person_id,
+    rows,
+    graph_state: committeeView.state,
+    reverse_edges: reverseEdges,
+  };
+
+  assert.equal(committeeView.state, "matched");
+  assert.ok(rows.length > 0);
+  assert.ok(rows.every((row) => /^\d+$/.test(row.committee_id) && row.href === `/committees/${row.committee_id}/`));
+
+  const panel = renderCommitteeMembershipsHTML(bag, { escapeHtml: String });
+  const diamonds = [...panel.matchAll(/<span aria-hidden="true">◆<\/span>/g)];
+  const links = [...panel.matchAll(/<a class="ui-constellation-link"[^>]*href="(\/committees\/\d+\/)"[^>]*aria-label="([^"]+)"[^>]*>/g)];
+  assert.equal(diamonds.length, rows.length);
+  assert.equal(links.length, rows.length);
+  assert.doesNotMatch(panel, /<span class="[^"]*ui-constellation-link/);
+  assert.doesNotMatch(panel, /tabindex="-1"/);
+  for (const row of rows) {
+    const href = `/committees/${row.committee_id}/`;
+    assert.ok(links.some((match) => match[1] === href), `${row.committee} must link to ${href}`);
+    assert.match(panel, new RegExp(`<a class="ui-constellation-link"[^>]*href="${href.replaceAll("/", "\\/")}"[^>]*>\\s*<span aria-hidden="true">◆</span>`));
+    assert.ok(
+      links.some((match) => match[1] === href && match[2].includes(row.committee)),
+      `${row.committee} needs accessible link text`,
+    );
+  }
+});
+
+test("unverified official committee names stay ordinary text without diamond styling", () => {
+  const panel = renderCommitteeMembershipsHTML({
+    member_id: "7811",
+    person_name: "Vickie Paladino",
+    rows: [{ committee_id: "not-a-body-id", committee: "Unverified committee", appointment_type: "Member" }],
+  }, { escapeHtml: String });
+  assert.match(panel, /Unverified committee/);
+  assert.match(panel, /data-pivot-status="held"/);
+  assert.match(panel, /class="[^"]*ui-static-fact/);
+  assert.doesNotMatch(panel, /href=/);
+  assert.doesNotMatch(panel, /<a\b/);
+  assert.doesNotMatch(panel, /ui-constellation-link/);
+  assert.doesNotMatch(panel, /◆/);
+  assert.doesNotMatch(panel, /tabindex=/);
+});
+
 test("official profile committee composition preserves honest graph states", () => {
   const person = { person_id: "9999", person_name: "Unknown" };
   const committeeView = buildOfficialCommitteeView(person, { ...graph, publication: "published", public_edges: [], public_reverse_edges: [] });

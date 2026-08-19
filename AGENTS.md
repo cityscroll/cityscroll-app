@@ -111,7 +111,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Committee traversal exposes `public_reverse_edges` from the same accepted
   `member_of` observation in `site/committee_graph.mjs`; browse renders the
   exact-ID `has member` pivot, while held/empty/unknown graph states stay
-  non-linking. Exact published BodyIds resolve through the edge-rendered
+  non-linking. Official-profile committee names use a diamond constellation
+  link only for those exact BodyId routes; unverified names stay ordinary
+  `ui-static-fact` text. Exact published BodyIds resolve through the edge-rendered
   `/committees/<id>/` document in `site/committee_document.mjs`; official profiles and the
   People directory may link only to that closed route. Focused proof:
   `test/committee_graph.test.mjs`, `test/committee_memberships.test.mjs`,

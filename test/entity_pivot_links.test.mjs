@@ -110,8 +110,11 @@ test("materialized committee destinations are accepted and resident links stay f
   assert.equal(accepted.status, "accepted");
   assert.equal(accepted.canonical_href, "/committees/5261/");
   const html = renderEntityPivotLink(accepted);
-  assert.match(html, /href="\/committees\/5261\/"/);
+  assert.match(html, /^<a class="ui-constellation-link" href="\/committees\/5261\/"/);
   assert.match(html, /data-pivot-status="accepted"/);
+  assert.match(html, /<span aria-hidden="true">◆<\/span>Subcommittee on Land Use/);
+  assert.match(html, /aria-label="committee membership: committee · Subcommittee on Land Use; from Member"/);
+  assert.doesNotMatch(html, /tabindex=/);
   assert.doesNotMatch(html, /Provisional: destination not verified/);
   assert.equal(assertEntityPivotClosure([{ canonical_href: "/committees/5261/" }]), true);
 });
@@ -127,7 +130,14 @@ test("held destinations never expose internal verification copy to residents", (
   });
   assert.equal(held.status, "held");
   const html = renderEntityPivotLink(held);
+  assert.match(html, /^<span class="ui-static-fact entity-pivot-held/);
   assert.match(html, /data-pivot-status="held"/);
+  assert.match(html, /Unresolved committee/);
+  assert.doesNotMatch(html, /<a\b/);
+  assert.doesNotMatch(html, /href=/);
+  assert.doesNotMatch(html, /ui-constellation-link/);
+  assert.doesNotMatch(html, /◆/);
+  assert.doesNotMatch(html, /tabindex=/);
   assert.doesNotMatch(html, /destination not verified/i);
   assert.throws(
     () => assertEntityPivotClosure([{ canonical_href: "/made-up-route/unresolved" }]),
