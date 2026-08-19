@@ -1,0 +1,160 @@
+{
+  "schema": "cityscroll.capability_semantic_scout_fixture.v1",
+  "id": "cs-05-acme-constellation-v1",
+  "generated_at": "2026-08-19T00:00:00.000Z",
+  "cases": {
+    "notice_search": {
+      "id": "notice-search-acme",
+      "capability_reference": "notice.search@1",
+      "input": {
+        "termGroups": [["acme"], ["construction"]],
+        "agency": "Department of Design and Construction",
+        "limit": 10
+      },
+      "source_rows": [
+        {
+          "request_id": "20260730001",
+          "section": "Procurement",
+          "agency": "Department of Design and Construction",
+          "type_of_notice": "Award",
+          "category": "Services",
+          "short_title": "Bridge inspection services",
+          "vendor_name": "Acme Construction LLC",
+          "description": "Acme Construction will provide bridge inspection services.",
+          "contract_amount": 100,
+          "contract_amount_valid": 1,
+          "start_date": "2026-07-30",
+          "due_date": null,
+          "haystack": "bridge inspection services acme construction department of design and construction",
+          "raw": {"private_note": "not-public"},
+          "ingested_at": "2026-07-30T14:00:00.000Z"
+        },
+        {
+          "request_id": "20260730002",
+          "section": "Procurement",
+          "agency": "Department of Design and Construction",
+          "type_of_notice": "Solicitation",
+          "category": "Services",
+          "short_title": "Waterfront engineering services",
+          "vendor_name": "Acme Construction LLC",
+          "description": "Acme Construction waterfront engineering services.",
+          "contract_amount": null,
+          "contract_amount_valid": 0,
+          "start_date": "2026-08-01",
+          "due_date": "2026-09-01T16:00:00.000Z",
+          "haystack": "waterfront engineering services acme construction department of design and construction",
+          "raw": {"private_note": "not-public"},
+          "ingested_at": "2026-08-01T09:30:00.000Z"
+        }
+      ],
+      "expected_projection": {"availability":"complete","bounds":{"maximum_limit":100,"requested_limit":10,"returned":2},"capability_reference":"notice.search@1","counts":{"result_count":2,"total_matches":2},"evidence":{"fallback_reason":null,"retrieval_method":"fts5_bm25","rows_read":2,"terms_used":["acme","construction"]},"freshness":{"publication_dates":["2026-07-30","2026-08-01"]},"identity":{"request_ids":["20260730002","20260730001"]},"provenance":[{"match_provenance":"description","request_id":"20260730002"},{"match_provenance":"description","request_id":"20260730001"}],"public_redaction":{"forbidden_paths":[],"passed":true},"semantic_output_sha256":"fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a"}
+    },
+    "entity_dossier": {
+      "id": "entity-dossier-acme",
+      "capability_reference": "entity.dossier.get@1",
+      "input": {"entityId": "vendor:stem:ACME CONSTRUCTION"},
+      "source_rows": [
+        {
+          "entity_id": "vendor:stem:ACME CONSTRUCTION",
+          "entity_type": "vendor",
+          "display_name": "Acme Construction LLC",
+          "source_system": "checkbook",
+          "source_system_id": "CT-850-1",
+          "raw_snapshot": {
+            "vendor_name": "Acme Construction LLC",
+            "agency_name": "Department of Design and Construction",
+            "pin": "85026B0001001",
+            "prime_contract_current_amount": "125.00",
+            "prime_contract_start_date": "01/02/2026",
+            "source_url": "https://www.checkbooknyc.com/contract/CT-850-1",
+            "evidence_json": "private-evidence-marker"
+          },
+          "ingested_at": "2026-08-01T09:30:00.000Z",
+          "link_confidence_score": 0.84
+        },
+        {
+          "entity_id": "vendor:stem:ACME CONSTRUCTION",
+          "entity_type": "vendor",
+          "display_name": "Acme Construction LLC",
+          "source_system": "city_record",
+          "source_system_id": "20260730001",
+          "raw_snapshot": {
+            "vendor_name": "Acme Construction LLC",
+            "agency_name": "Department of Design and Construction",
+            "pin": "85026B0001001",
+            "contract_amount": "$100.00",
+            "start_date": "2026-01-01",
+            "reviewer": "private-reviewer-marker"
+          },
+          "ingested_at": "2026-07-30T14:00:00.000Z",
+          "link_confidence_score": 0.98
+        }
+      ],
+      "expected_projection": {"availability":"available","bounds":{"record_limit":250,"returned":2,"truncated":false},"capability_reference":"entity.dossier.get@1","counts":{"assertion_groups":10,"assertions":10,"derived_assertions":1,"linked_records":2},"evidence":{"assertion_statuses":[{"fact":"name","status":"observed"},{"fact":"agency","status":"observed"},{"fact":"pin","status":"observed"},{"fact":"epin","status":"not_observed"},{"fact":"contract_id","status":"not_observed"},{"fact":"contract_amount","status":"disagreement"},{"fact":"start_date","status":"disagreement"},{"fact":"end_date","status":"not_observed"},{"fact":"registration_date","status":"not_observed"},{"fact":"due_date","status":"not_observed"}],"disagreement_facts":["contract_amount","start_date"],"missingness":null},"freshness":{"observed_from":"2026-07-30T14:00:00.000Z","observed_through":"2026-08-01T09:30:00.000Z"},"identity":{"entity":{"id":"vendor:stem:ACME CONSTRUCTION","name":"Acme Construction LLC","type":"vendor"},"requested_entity_id":"vendor:stem:ACME CONSTRUCTION"},"provenance":{"assertion_sources":["checkbook:CT-850-1","checkbook:CT-850-1","checkbook:CT-850-1","checkbook:CT-850-1","checkbook:CT-850-1","city_record:20260730001","city_record:20260730001","city_record:20260730001","city_record:20260730001","city_record:20260730001"],"linked_sources":["checkbook:CT-850-1","city_record:20260730001"]},"public_redaction":{"forbidden_paths":[],"passed":true},"semantic_output_sha256":"f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590"}
+    },
+    "entity_relationships": {
+      "id": "entity-relationships-acme",
+      "capability_reference": "entity.relationships.get@1",
+      "input": {"entityId": "vendor:stem:ACME CONSTRUCTION", "depth": 2, "fanOut": 12},
+      "source_rows": [
+        {
+          "entity_id": "vendor:stem:ACME CONSTRUCTION",
+          "entity_type": "vendor",
+          "display_name": "Acme Construction LLC",
+          "source_system": "city_record",
+          "source_system_id": "20260730001",
+          "raw_snapshot": {
+            "type_of_notice_description": "Award",
+            "short_title": "Bridge inspection services",
+            "vendor_name": "Acme Construction LLC",
+            "agency_name": "Department of Design and Construction",
+            "contract_id": "CT-850-1",
+            "pin": "85026B0001001",
+            "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730001",
+            "reviewer": "private-reviewer-marker"
+          },
+          "ingested_at": "2026-07-30T14:00:00.000Z"
+        },
+        {
+          "entity_id": "vendor:stem:ACME CONSTRUCTION",
+          "entity_type": "vendor",
+          "display_name": "Acme Construction LLC",
+          "source_system": "city_record",
+          "source_system_id": "20260730002",
+          "raw_snapshot": {
+            "type_of_notice_description": "Solicitation",
+            "short_title": "Waterfront engineering services",
+            "vendor_name": "Acme Construction LLC",
+            "agency_name": "Department of Design and Construction",
+            "epin": "85026P0002001",
+            "evidence_json": "private-evidence-marker"
+          },
+          "ingested_at": "2026-08-01T09:30:00.000Z"
+        },
+        {
+          "entity_id": "vendor:stem:ACME CONSTRUCTION",
+          "entity_type": "vendor",
+          "display_name": "Acme Construction LLC",
+          "source_system": "city_record",
+          "source_system_id": "20260730003",
+          "raw_snapshot": {
+            "type_of_notice_description": "Public Hearing",
+            "vendor_name": "Acme Construction LLC"
+          },
+          "ingested_at": "2026-08-01T10:00:00.000Z"
+        }
+      ],
+      "expected_projection": {"availability":"available","bounds":{"applied_depth":2,"applied_fan_out":12,"boundary_reached":[],"max_depth":2,"max_fan_out":25,"note":"This graph is limited to the displayed linked public records; absence is not proof that no relationship exists.","requested_depth":2,"requested_fan_out":12,"truncated":false},"capability_reference":"entity.relationships.get@1","counts":{"edges":5,"nodes":5},"evidence":{"confidence":[{"basis":"publisher_record","id":"edge:named_vendor_on_award:vendor%3Astem%3AACME%20CONSTRUCTION:award%3Acity_record%3A20260730001:city_record:20260730001","status":"not_scored"},{"basis":"publisher_record","id":"edge:named_vendor_on_solicitation:vendor%3Astem%3AACME%20CONSTRUCTION:solicitation%3Acity_record%3A20260730002:city_record:20260730002","status":"not_scored"},{"basis":"publisher_record","id":"edge:published_by_agency:award%3Acity_record%3A20260730001:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730001","status":"not_scored"},{"basis":"publisher_record","id":"edge:references_contract:award%3Acity_record%3A20260730001:contract%3Aname%3Act-850-1:city_record:20260730001","status":"not_scored"},{"basis":"publisher_record","id":"edge:published_by_agency:solicitation%3Acity_record%3A20260730002:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730002","status":"not_scored"}],"edge_types":["named_vendor_on_award","named_vendor_on_solicitation","published_by_agency","references_contract","published_by_agency"]},"freshness":{"observed_at":["2026-07-30T14:00:00.000Z","2026-08-01T09:30:00.000Z"]},"identity":{"edge_ids":["edge:named_vendor_on_award:vendor%3Astem%3AACME%20CONSTRUCTION:award%3Acity_record%3A20260730001:city_record:20260730001","edge:named_vendor_on_solicitation:vendor%3Astem%3AACME%20CONSTRUCTION:solicitation%3Acity_record%3A20260730002:city_record:20260730002","edge:published_by_agency:award%3Acity_record%3A20260730001:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730001","edge:references_contract:award%3Acity_record%3A20260730001:contract%3Aname%3Act-850-1:city_record:20260730001","edge:published_by_agency:solicitation%3Acity_record%3A20260730002:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730002"],"node_ids":["agency:name:department%20of%20design%20and%20construction","award:city_record:20260730001","contract:name:ct-850-1","solicitation:city_record:20260730002","vendor:stem:ACME CONSTRUCTION"],"requested_entity_id":"vendor:stem:ACME CONSTRUCTION","root":{"id":"vendor:stem:ACME CONSTRUCTION","name":"Acme Construction LLC","type":"vendor"}},"provenance":[{"edge_id":"edge:named_vendor_on_award:vendor%3Astem%3AACME%20CONSTRUCTION:award%3Acity_record%3A20260730001:city_record:20260730001","observed_at":"2026-07-30T14:00:00.000Z","source":"city_record:20260730001","source_fields":["type_of_notice_description","vendor_name"]},{"edge_id":"edge:named_vendor_on_solicitation:vendor%3Astem%3AACME%20CONSTRUCTION:solicitation%3Acity_record%3A20260730002:city_record:20260730002","observed_at":"2026-08-01T09:30:00.000Z","source":"city_record:20260730002","source_fields":["type_of_notice_description","vendor_name"]},{"edge_id":"edge:published_by_agency:award%3Acity_record%3A20260730001:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730001","observed_at":"2026-07-30T14:00:00.000Z","source":"city_record:20260730001","source_fields":["agency_name","type_of_notice_description"]},{"edge_id":"edge:references_contract:award%3Acity_record%3A20260730001:contract%3Aname%3Act-850-1:city_record:20260730001","observed_at":"2026-07-30T14:00:00.000Z","source":"city_record:20260730001","source_fields":["contract_id","type_of_notice_description"]},{"edge_id":"edge:published_by_agency:solicitation%3Acity_record%3A20260730002:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730002","observed_at":"2026-08-01T09:30:00.000Z","source":"city_record:20260730002","source_fields":["agency_name","type_of_notice_description"]}],"public_redaction":{"forbidden_paths":[],"passed":true},"semantic_output_sha256":"9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4"}
+    },
+    "cited_passages": {
+      "id": "cited-passages-city-record",
+      "capability_reference": "cited.passages.retrieve@1",
+      "input": {
+        "query": "energy conservation",
+        "filters": {"source_family": "city_record_notice"},
+        "limit": 5
+      },
+      "expected_projection": {"availability":"partial","bounds":{"maximum_limit":20,"requested_limit":5,"returned":1},"capability_reference":"cited.passages.retrieve@1","counts":{"citations":1},"evidence":{"exact_joins":[{"candidate_id":"city_record_notice:20260715041:p0001","citation_id":"city_record_notice:20260715041:p0001","method":"candidate_source_passage_manifest_exact_id_v1","passage_id":"city_record_notice:20260715041:p0001","source_record_id":"city_record_notice:20260715041","state":"matched"}],"hard_scope":{"filters":{"source_family":"city_record_notice"},"state":"applied"},"passage_text_sha256":[{"citation_id":"city_record_notice:20260715041:p0001","sha256":"cc7553a257a230047dfd48e696ec3ec30df195f9db609f78b3db2a4e8d548f3f"}]},"freshness":[{"citation_id":"city_record_notice:20260715041:p0001","observed_on":"2026-08-04","source_published_at":"2026-07-23T00:00:00.000","state":"observed"}],"identity":{"citation_ids":["city_record_notice:20260715041:p0001"]},"provenance":{"citations":[{"citation_id":"city_record_notice:20260715041:p0001","passage_id":"city_record_notice:20260715041:p0001","source_id":"city_record_notice:20260715041","source_url":"https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"}],"corpus":{"content_sha256":"fc0c29536838a1521f95d55f603bfb2adb7de545db0ea9e9ac4790dad0e7cc81","manifest_sha256":"236a61160a3d2fd27c4d6010c4ccae824917b65bea27dddf2f8874293158c50f","manifest_version":1,"observed_on":"2026-08-04","schema":"cityscroll.semantic_retrieval.corpus_manifest.v1"},"index":{"corpus_sha256":"66c16c80898d20b79f27d376687039efffca1a7335a11f8fb2b69d1db15c1b0a","observed_on":"2026-08-04","schema":"cityscroll.semantic_retrieval.source_passage_map.v1","version":"acf9e6484f95ca814320e2ae8e2480dd9cd684e53d4764f8ce31e9530ef2028e"}},"public_redaction":{"forbidden_paths":[],"passed":true},"semantic_output_sha256":"a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68"}
+    }
+  }
+}
