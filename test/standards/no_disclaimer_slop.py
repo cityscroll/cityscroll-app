@@ -47,6 +47,14 @@ disclaimer_slop.PATTERNS += (
             re.IGNORECASE,
         ),
     ),
+    disclaimer_slop.Pattern(
+        "provisional_destination_disclaimer",
+        "provisional destination disclaimer",
+        re.compile(
+            r"\b(?:provisional:\s*)?destination not verified\b",
+            re.IGNORECASE,
+        ),
+    ),
 )
 
 
