@@ -40,6 +40,7 @@ import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
 import { handleSourceHealth } from "./source_health.mjs";
 import { handleEvent } from "./events.mjs";
+import { handlePerformanceEvents } from "./performance_events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
@@ -134,6 +135,7 @@ export default {
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/source-health") return handleSourceHealth(request);
     if (pathname === "/events") return handleEvent(request, env);
+    if (pathname === "/performance-events") return handlePerformanceEvents(request, env);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);

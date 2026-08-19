@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-19T03:52:02Z",
-  "commit": "73c03d792da343fe47148a153f6e329633363b7a",
+  "generated_at": "2026-08-19T05:30:50Z",
+  "commit": "e39845bb8dff676ef1138a11427c6254b898f37e",
   "observer_coverage_hash": "e091e23a1625abcfe6a3b0b3dd16f2b69586bee6f3253ccfeac0fdbdd26f4429",
   "canaries": {
     "agency-constellation-model": {
@@ -76,8 +76,8 @@
     },
     "worker-bindings": {
       "path": "worker/wrangler.toml",
-      "count": 7,
-      "fingerprint": "845453ca2cb12a447e8bd94f148e2c139084f931a0c3ae8d68ea7f13814d5ba9"
+      "count": 8,
+      "fingerprint": "c0ea41ec625b26a048e963f0a709f2a39196fa1cc988fecd419ca00dbe8b6c50"
     }
   },
   "ontology": {
@@ -93,6 +93,11 @@
   },
   "bindings": {
     "topology": [
+      {
+        "environment": "production",
+        "section": "analytics_engine_datasets",
+        "binding": "RUM_ANALYTICS"
+      },
       {
         "environment": "production",
         "section": "analytics_engine_datasets",

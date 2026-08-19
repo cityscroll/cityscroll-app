@@ -19,6 +19,7 @@ test("current generated facts cover the declared active C4 containers", () => {
   assert.deepEqual(report.removals, []);
   assert.deepEqual(report.contradictions, []);
   assert.ok(report.observed.includes("performance_registry"));
+  assert.ok(report.observed.includes("rum_analytics"));
 });
 
 test("drift reports additions, removals, and contradictions separately", () => {

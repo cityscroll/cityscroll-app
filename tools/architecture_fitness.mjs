@@ -148,6 +148,7 @@ function factContainerEvidence(facts) {
     digest_queue: Array.isArray(queues.producers) && queues.producers.some((item) => item.binding === "DIGEST_QUEUE") &&
       Array.isArray(queues.consumers) && queues.consumers.some((item) => item.queue === "crol-digests"),
     analytics_engine: Array.isArray(bindings.analytics_engine_datasets) && bindings.analytics_engine_datasets.some((item) => item.binding === "USAGE_ANALYTICS"),
+    rum_analytics: Array.isArray(bindings.analytics_engine_datasets) && bindings.analytics_engine_datasets.some((item) => item.binding === "RUM_ANALYTICS"),
     r2_source_vault: Array.isArray(bindings.r2_buckets) && bindings.r2_buckets.length > 0,
   };
 }
