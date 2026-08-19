@@ -18,6 +18,8 @@ with sync_playwright() as pw:
     page.goto(BASE + "stats.html", timeout=30000)
     page.wait_for_selector("#msg", timeout=15000)
     assert page.locator("h1").count() == 1
-    print("OK stats page remains available")
+    health = page.locator('a[href$="data-health/"], a[href="/data-health/"], a[href="data-health/"]')
+    assert health.count() >= 1
+    print("OK stats page remains available and links to Data health")
 
     browser.close()
