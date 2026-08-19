@@ -1,0 +1,48 @@
+{
+  "schema": "cityscroll.rum_collector_overhead.v1",
+  "collector_version": "rum-browser-v1",
+  "library": {
+    "name": "web-vitals",
+    "version": "6.0.1",
+    "build": "standard",
+    "self_hosted": true
+  },
+  "assets": {
+    "files": [
+      {
+        "path": "site/rum_bootstrap.mjs",
+        "raw_bytes": 2292,
+        "gzip_bytes": 947,
+        "brotli_bytes": 791,
+        "sha256": "cafe103051741bba12785988e0d3ebe9c7353f244ba01794df8d29dd38550584"
+      },
+      {
+        "path": "site/rum_collector.mjs",
+        "raw_bytes": 6394,
+        "gzip_bytes": 2106,
+        "brotli_bytes": 1804,
+        "sha256": "9335f46cc28018c8a5175cb9dd7ba8437f11d000997a1f66730febcccd762ba2"
+      },
+      {
+        "path": "site/vendor/web-vitals-6.0.1.mjs",
+        "raw_bytes": 8963,
+        "gzip_bytes": 3330,
+        "brotli_bytes": 3013,
+        "sha256": "c2b1011155c2a9800197d1f831019a281cba58cd6cee05cb99e9b925c75d34ac"
+      }
+    ],
+    "total_raw_bytes": 17649,
+    "total_gzip_bytes": 6383,
+    "total_brotli_bytes": 5608
+  },
+  "production_default": {
+    "collector_requested": false,
+    "production_reference_count": 0,
+    "network_write_implementation": false
+  },
+  "scheduling": {
+    "after_load": true,
+    "idle_task": true
+  },
+  "interpretation": "The complete test-only payload is measured for future activation. Production requests zero collector bytes because no production runtime source loads the bootstrap."
+}

@@ -10,6 +10,7 @@
     "catalog_version",
     "registry_version",
     "manifest_version",
+    "collector_contract",
     "description",
     "observation_contract",
     "metrics",
@@ -27,6 +28,7 @@
     "catalog_version": { "$ref": "#/$defs/semver" },
     "registry_version": { "$ref": "#/$defs/semver" },
     "manifest_version": { "$ref": "#/$defs/stable_id" },
+    "collector_contract": { "$ref": "#/$defs/collector_contract" },
     "description": { "type": "string", "minLength": 1 },
     "observation_contract": { "$ref": "#/$defs/observation_contract" },
     "metrics": {
@@ -123,6 +125,40 @@
         "zero_rule": {
           "const": "A numeric value, including 0, exists only for state=measured; every non-measurement state forbids value."
         }
+      }
+    },
+    "collector_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collector_version",
+        "library_name",
+        "library_version",
+        "library_build",
+        "field_metric_ids",
+        "device_classes",
+        "navigation_types",
+        "production_enabled"
+      ],
+      "properties": {
+        "collector_version": { "$ref": "#/$defs/stable_id" },
+        "library_name": { "const": "web-vitals" },
+        "library_version": { "$ref": "#/$defs/semver" },
+        "library_build": { "const": "standard" },
+        "field_metric_ids": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "enum": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms"] }
+        },
+        "device_classes": {
+          "const": ["desktop", "mobile", "tablet", "unknown"]
+        },
+        "navigation_types": {
+          "const": ["back-forward", "back-forward-cache", "navigate", "prerender", "reload", "restore", "unknown"]
+        },
+        "production_enabled": { "const": false }
       }
     },
     "projection_rule": {

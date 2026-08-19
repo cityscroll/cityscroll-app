@@ -3408,6 +3408,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   never enter the hard `observer_coverage.unmapped_surfaces` gate. The frozen
   proof is `architecture/backtests/rum-future-surface.json` plus
   `test/performance_observability_architecture.test.mjs`.
+- The browser foundation is deliberately a **capability seam**, not a flag:
+  production HTML does not load `site/rum_bootstrap.mjs`, and the bootstrap
+  requires `testOnly: true` before it defers the local standard web-vitals
+  bundle until load + idle. `site/rum_collector.mjs` has only an in-memory
+  debug sink and no network transport. Preserve missing metrics as absence,
+  keep per-page web-vitals ids private to deduplication, and refresh the byte
+  receipt with `node tools/measure_rum_collector_overhead.mjs --write`.
 
 ## Comparative signal admission
 

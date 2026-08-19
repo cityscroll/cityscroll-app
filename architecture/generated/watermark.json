@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-19T03:15:12Z",
-  "commit": "7943f33289d79e24a1892830817420a7eb1ec565",
-  "observer_coverage_hash": "9ef27ec585a1f4af2b1ef73be4130a66e432850e5dcb3c23cf934956bca6bb30",
+  "generated_at": "2026-08-19T03:52:02Z",
+  "commit": "73c03d792da343fe47148a153f6e329633363b7a",
+  "observer_coverage_hash": "e091e23a1625abcfe6a3b0b3dd16f2b69586bee6f3253ccfeac0fdbdd26f4429",
   "canaries": {
     "agency-constellation-model": {
       "path": "site/agency_constellation_model.mjs",
@@ -13,6 +13,11 @@
       "path": "site/agency_search_producer.mjs",
       "count": 1,
       "fingerprint": "50f4437efb1e5f0b563686969eee98a326a2c81f2bfdee4ae7448063c95503cf"
+    },
+    "browser-rum-collector": {
+      "path": "site/rum_collector.mjs",
+      "count": 1,
+      "fingerprint": "4162d8e1887c826aeb788534f0f02082bd494d3b436e7ccfd94ab01937da8520"
     },
     "civic-geography-registry": {
       "path": "site/civic_geography_registry.mjs",
@@ -52,12 +57,12 @@
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "dd622b17941ca42f8aa6f5ed0c257714f38adbf4283fe8f89e94c9598b6a3c4b"
+      "fingerprint": "03f20cb70280328cce6b696665a5be982f7ed458e6c197afaa67b1a09faf2487"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
       "count": 49,
-      "fingerprint": "4945ac84bcb60db3ea776e0ecd374f1443bba765632bb560007a04b9165049e0"
+      "fingerprint": "c6b4abae79b810571983f26f126625faa2aae4cc5dca7019e97b84562ba462e4"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -130,7 +135,7 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "8019c14f8b090c10400c01056fca646a9baa126f6da245491a8fb361d4747b06"
+      "registry_hash": "92d2c4d5adeffb71870daeecca8478a602bc37d6f9cf752e30cd4c09d0831997"
     },
     "registry": {
       "version": "1.0.0",
@@ -160,9 +165,19 @@
     },
     "topology": {
       "collector": {
-        "state": "planned",
+        "state": "disabled_test_only",
+        "production_enabled": false,
         "classification_manifest_path": "site/data/performance-classification-manifest.v1.json",
-        "implementation_path": null
+        "implementation_path": "site/rum_collector.mjs",
+        "bootstrap_path": "site/rum_bootstrap.mjs",
+        "library": {
+          "name": "web-vitals",
+          "version": "6.0.1",
+          "build": "standard",
+          "path": "site/vendor/web-vitals-6.0.1.mjs"
+        },
+        "overhead_evidence_path": "docs/evidence/rum-collector-foundation/overhead.json",
+        "network_transport_path": null
       },
       "intake": {
         "state": "planned",

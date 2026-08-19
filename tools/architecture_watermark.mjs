@@ -17,6 +17,10 @@ export const WATERMARK_SCHEMA = "cityscroll.architecture.watermark.v1";
 export const WATERMARK_RELATIVE = "architecture/generated/watermark.json";
 
 const CANARY_SLICES = {
+  "browser-rum-collector": (facts) => ({
+    count: facts.performance_observability?.topology?.collector?.implementation_path ? 1 : 0,
+    payload: facts.performance_observability?.topology?.collector ?? null,
+  }),
   "agency-constellation-model": (facts) => ({
     count: facts.constellation?.agency?.categories?.length ?? 0,
     payload: {
