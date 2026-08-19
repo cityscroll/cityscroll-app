@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "6a9e83fa2e52dce1476619ae8b5be0703e4cd6b50c264604ef5935b1c1839187",
+  "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -220,7 +220,7 @@
         "ttfb_ms"
       ],
       "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [
         {
           "alias_id": "browse-money",
@@ -1020,6 +1020,44 @@
     }
   ],
   "components": [
+    {
+      "component_id": "browse-contracts-filter-apply",
+      "kind": "interaction",
+      "parent": "component:browse-contracts-results",
+      "route_family": "browse-contracts",
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "browse-contracts-filter-apply"
+      },
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness_contract": "interaction-settled-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "component_id": "browse-contracts-results",
+      "kind": "component",
+      "parent": "surface:browse-contracts",
+      "route_family": "browse-contracts",
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "browse-contracts-results"
+      },
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness_contract": "component-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
     {
       "component_id": "browse-filter-apply",
       "kind": "interaction",

@@ -30,10 +30,12 @@ document.addEventListener("click",e=>{
 });
 let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
-$("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
+$("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter"){ beginContractsRumInteraction({reusePending:true}); search(); } });
+$("#kw").addEventListener("input", ()=>beginContractsRumInteraction());
 $("#kw").addEventListener("input", debounce(search, 500));
-["#mode","#agency","#sort","#minamt","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", search));
+["#mode","#agency","#sort","#minamt","#moneycd","#moneycouncil"].forEach(s=>$(s).addEventListener("change", ()=>{ beginContractsRumInteraction(); search(); }));
 $("#moneylocationbasis").addEventListener("change",async()=>{
+  beginContractsRumInteraction();
   if($("#moneylocationbasis").value) await initializeMoneyLocationFilters();
   search();
 });

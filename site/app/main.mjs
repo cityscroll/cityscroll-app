@@ -11,6 +11,7 @@ globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
 globalThis.CrolAgencyConnections = await import("../agency_connections.mjs");
 globalThis.CrolRouteMigration = await import("../route_migration.mjs");
 await import("./traversal.mjs");
+await import("./contracts-rum.mjs");
 await import("./money-list.mjs");
 let moneyHistoryPromise;
 globalThis.ensureMoneyHistory = () => moneyHistoryPromise ||= import("./money-history.mjs");
