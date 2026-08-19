@@ -1,7 +1,8 @@
 import { createContractsRumInstrumentation } from "../contracts_rum.mjs";
+import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 
 const contractsRum = createContractsRumInstrumentation({
-  rum: globalThis.CROL_RUM_SEMANTIC_MILESTONES,
+  getRum: () => runtimeRumSemanticMilestones(),
 });
 
 function beginContractsRumInteraction(options) {

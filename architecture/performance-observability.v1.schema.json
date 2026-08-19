@@ -158,7 +158,7 @@
         "navigation_types": {
           "const": ["back-forward", "back-forward-cache", "navigate", "prerender", "reload", "restore", "unknown"]
         },
-        "production_enabled": { "const": false }
+        "production_enabled": { "type": "boolean" }
       }
     },
     "projection_rule": {

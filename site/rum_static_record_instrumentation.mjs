@@ -3,21 +3,25 @@ import {
   boundedTerminalState,
   createRumSemanticMilestones,
 } from "./rum_semantic_milestones.mjs";
+import { createBufferedSemanticMilestones } from "./rum_production.mjs";
 
 const DISABLED_RUM = createRumSemanticMilestones();
 
 /**
- * The pilot card will install the page-local reporter. Until then this accessor
- * keeps owner instrumentation present while production collection stays off.
+ * Owner instrumentation reports through this accessor. When the production
+ * reporter is not yet installed, readiness calls buffer so first-paint
+ * milestones are not lost; interactions stay disabled until install.
  */
 export function runtimeRumSemanticMilestones(runtime = globalThis) {
-  const candidate = runtime?.CROLRumSemanticMilestones;
+  const candidate = runtime?.CROLRumSemanticMilestones || runtime?.CROL_RUM_SEMANTIC_MILESTONES;
   if (
     candidate
     && typeof candidate.surfaceReady === "function"
     && typeof candidate.componentReady === "function"
+    && candidate.state !== "buffering"
   ) return candidate;
-  return DISABLED_RUM;
+  if (runtime?.CROL_RUM_PRODUCTION === false) return DISABLED_RUM;
+  return createBufferedSemanticMilestones(runtime);
 }
 
 export function homeEntryReady(rum, state = {}) {

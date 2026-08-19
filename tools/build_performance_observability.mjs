@@ -211,7 +211,9 @@ export function validatePerformanceRegistry(registry, { root = ROOT } = {}) {
   if (collector?.library_name !== "web-vitals" || collector?.library_build !== "standard" || !VERSION_RE.test(collector?.library_version || "")) {
     fail(errors, "collector_contract requires a pinned standard web-vitals version");
   }
-  if (collector?.production_enabled !== false) fail(errors, "collector production_enabled must remain false until the pilot");
+  if (typeof collector?.production_enabled !== "boolean") {
+    fail(errors, "collector production_enabled must be an explicit boolean");
+  }
   const metricIds = registryMetricIds(registry);
   if (!metricIds.length) fail(errors, "metric catalog must contain at least one metric ID");
   if (new Set(metricIds).size !== metricIds.length) fail(errors, "metric IDs must be unique");
@@ -333,7 +335,6 @@ function componentApplications(registry) {
 }
 
 function browserProjection(registry, hash) {
-  const fieldMetricIds = new Set(registry.collector_contract.field_metric_ids);
   return {
     schema: "cityscroll.performance.browser_manifest.v1",
     manifest_version: registry.manifest_version,
@@ -344,7 +345,6 @@ function browserProjection(registry, hash) {
       field_metric_ids: sorted(registry.collector_contract.field_metric_ids),
     },
     metrics: registry.metrics
-      .filter((metric) => fieldMetricIds.has(metric.id))
       .map((metric) => ({
         metric_id: metric.id,
         metric_version: metric.version,

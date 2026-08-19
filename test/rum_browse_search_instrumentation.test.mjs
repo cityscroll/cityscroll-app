@@ -204,7 +204,7 @@ test("RUM registry and all projections mark the Contracts slice instrumented", (
   assert.ok(instrumentedSurfaces.includes(CONTRACTS_RUM_IDS.surface));
   assert.ok(instrumentedComponents.includes(CONTRACTS_RUM_IDS.filter));
   assert.ok(instrumentedComponents.includes(CONTRACTS_RUM_IDS.results));
-  assert.equal(browser.collector.production_enabled, false);
+  assert.equal(browser.collector.production_enabled, true);
   assert.equal(browser.surfaces.find((entry) => entry.surface_id === CONTRACTS_RUM_IDS.surface).lifecycle_state, "instrumented");
   assert.equal(worker.surfaces[CONTRACTS_RUM_IDS.surface].lifecycle_state, "instrumented");
   assert.equal(operator.surfaces.find((entry) => entry.surface_id === CONTRACTS_RUM_IDS.surface).lifecycle_state, "instrumented");

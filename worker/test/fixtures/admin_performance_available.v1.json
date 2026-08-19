@@ -15,7 +15,7 @@
     "schema": "cityscroll.performance.operator_inventory.v1",
     "manifest_version": "rum-surfaces-v1",
     "registry_version": "1.0.0",
-    "registry_hash": "595261f8f0dd5b453ac74244339c9bad5bae77b97f0f9754d8d3860e55f8e35c",
+    "registry_hash": "d92268d3bd023924ef5b8b1c53b7bff04885e614129c72c71e293f905dcc72f4",
     "metrics": [
       {
         "metric_id": "cls_score",
@@ -1907,7 +1907,7 @@
     ]
   },
   "coverage": {
-    "status": "uninstrumented",
+    "status": "available",
     "registered": {
       "surface_count": 36,
       "component_count": 20,

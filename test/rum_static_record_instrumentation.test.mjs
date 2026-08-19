@@ -71,7 +71,7 @@ test("canonical registry and every generated projection mark only the first stat
   assert.equal(worker.components["notice-context"].lifecycle_state, "instrumented");
   assert.equal(operator.surfaces.find((entry) => entry.surface_id === "home").lifecycle_state, "instrumented");
   assert.equal(operator.surfaces.find((entry) => entry.surface_id === "notice").lifecycle_state, "instrumented");
-  assert.equal(manifest.collector.production_enabled, false);
+  assert.equal(manifest.collector.production_enabled, true);
 });
 
 test("Home reports four finalized field vitals plus semantic content readiness at its existing boundary", async () => {
@@ -177,12 +177,12 @@ test("notice field classification and semantic records contain no route or recor
   }
 });
 
-test("production owners call the semantic seam while the collector remains disabled", () => {
+test("production owners call the semantic seam used by the production reporter", () => {
   const home = readFileSync(new URL("../site/home_entry.mjs", import.meta.url), "utf8");
   const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
   const context = readFileSync(new URL("../site/app/notice-context.mjs", import.meta.url), "utf8");
   assert.match(home, /homeEntryReady/);
   assert.match(routing, /noticePrimaryReady/);
   assert.match(context, /noticeContextReady/);
-  assert.equal(manifest.collector.production_enabled, false);
+  assert.equal(manifest.collector.production_enabled, true);
 });

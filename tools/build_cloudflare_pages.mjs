@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
-import { existsSync, appendFileSync } from "node:fs";
+import { existsSync, appendFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -116,6 +116,15 @@ for (const [kind, path, toolArgs] of standards) {
 }
 
 runNode(sourceDir, "build_public_site.mjs", ["--source-dir", sourceDir, "--site-dir", siteDir]);
+const releaseId = /^[a-f0-9]{40}$/.test(commitSha)
+  ? commitSha
+  : (process.env.GITHUB_SHA && /^[a-f0-9]{40}$/.test(process.env.GITHUB_SHA) ? process.env.GITHUB_SHA : "");
+if (releaseId) {
+  writeFileSync(join(siteDir, "data", "performance-release.json"), `${JSON.stringify({
+    schema: "cityscroll.performance.release.v1",
+    release_id: releaseId,
+  }, null, 2)}\n`);
+}
 runPython(sourceDir, "stamp_i18n_assets.py", ["--site-root", siteDir, "--stamp"]);
 runPython(sourceDir, "../test/standards/i18n_refs.py", ["--root", siteDir, "--built"]);
 
