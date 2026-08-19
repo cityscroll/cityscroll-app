@@ -402,6 +402,14 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   retrieval to turn a documented miss green; a reviewed expander may land only
   behind a fixture that turns that miss into a hit without flipping other gold
   identities.
+- **Shadow vector signal (SQ-08):** `warehouse/lib/vector_shadow_signal.mjs`
+  scores hashed n-gram TF-IDF against the named lexical-miss set in
+  `test/fixtures/vector_shadow_signal/lexical_miss_set.json`. Public ranking
+  weight stays 0 unless a captain-authorized evaluation clears the usefulness
+  gate without ranking harm; do not restore SR4 Vectorize or SR8 hybrid ranking.
+  Refresh `docs/evidence/vector-shadow-signal-evaluation.{json,md}` with
+  `node tools/evaluate_vector_shadow_signal.mjs`. Proof:
+  `test/vector_shadow_signal.test.mjs`.
 - **SearchIntent wrap projector:** `site/search_intent.mjs` is the read-only
   `cityscroll.search_intent.v1` projection over `scopeFromRouteHash` /
   `scopeFromLensState`, `resolveKeywordQuery`, and NL `sanitize`. It does not
@@ -3099,9 +3107,10 @@ The bounded MiniLM + `sqlite-vec` experiment in
 `warehouse/experiments/semantic-layer-trial/` concluded `not-worth-it`: hybrid retrieval
 added no successful query coverage over BM25, and the reviewed join-candidate yield stayed
 below the existing usefulness gate. Keep semantic output candidate-only and do not infer a
-production vector layer from the existing hashed TF-IDF T3 related-reading artifact. Source,
-failure analysis, costs, and rerun commands are in
-`docs/research/semantic-layer-trial-2026-08-04.md`.
+production vector layer from the existing hashed TF-IDF T3 related-reading artifact. SQ-08
+re-scored that hashed vector plus the frozen MiniLM receipt against the golden-suite
+lexical-miss set; public ranking weight remains 0. Source, failure analysis, costs, and
+rerun commands are in `docs/research/semantic-layer-trial-2026-08-04.md`.
 The corpus sanitizer runs at ingest, must be idempotent, and reports the exact record, rule,
 and matched substring on failure; do not replace that diagnostic with a generic validation error.
 

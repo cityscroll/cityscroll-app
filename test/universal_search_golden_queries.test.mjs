@@ -830,6 +830,29 @@ test("coverage-honesty twin cites the same LA7 search canaries", () => {
   assert.ok(byCategory.unindexed.some((query) => query.id === "gq-law-mandates-not-indexed"));
 });
 
+test("named lexical-miss set is scored as encoded golden-suite misses", () => {
+  const missSet = JSON.parse(readFileSync(
+    new URL("./fixtures/vector_shadow_signal/lexical_miss_set.json", import.meta.url),
+    "utf8",
+  ));
+  const byId = new Map(GOLD.queries.map((query) => [query.id, query]));
+  const missIds = missSet.queries
+    .filter((row) => row.golden_query_id)
+    .map((row) => row.golden_query_id);
+  assert.deepEqual(missIds, ["gq-mosquito-typo"]);
+  for (const id of missIds) {
+    const query = byId.get(id);
+    assert.ok(query, id);
+    assert.equal(query.expect.recall.expected, "miss", `${id} must remain an encoded miss`);
+    assert.equal(query.eval.includes("recall"), true, `${id} must keep a recall axis`);
+  }
+  const synonym = byId.get("gq-school-synonym");
+  assert.ok(synonym);
+  assert.notEqual(synonym.expect.recall?.expected, "miss");
+  assert.ok(synonym.expect.recall.must_include.includes("procurement:education-synonym-fixture"));
+  assert.ok(missSet.controls.some((row) => row.golden_query_id === "gq-school-synonym"));
+});
+
 test("golden-query suite stays offline and does not import the live Ask client", () => {
   const source = readFileSync(new URL(import.meta.url), "utf8");
   const forbidden = [
