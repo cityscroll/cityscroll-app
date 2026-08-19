@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.4.1";
+export const OPS_CONTRACT_VERSION = "1.5.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -271,6 +271,44 @@ export const STATS_METRICS = Object.freeze([
   },
 ]);
 
+/** Dedicated field-performance contract. This is separate from usage.* and /admin/stats. */
+export const PERFORMANCE_CONTRACT = Object.freeze({
+  contract: "cityscroll.admin.performance.v1",
+  version: "1.0.0",
+  endpoint: "/admin/performance",
+  method: "GET",
+  auth: "ADMIN_KEY",
+  cache_control: "private, no-store",
+  source: "RUM_ANALYTICS through the Worker-owned bounded query adapter",
+  credential_boundary: "Analytics Engine account and read credentials remain server-side and are never response fields.",
+  query: {
+    windows: ["24h", "7d", "30d", "90d"],
+    filters: ["surface", "component", "metric", "device", "nav", "delivery", "release"],
+    comparison: "current-vs-previous",
+    arbitrary_sql: false,
+    arbitrary_dimensions: false,
+    arbitrary_groupings: false,
+  },
+  states: [
+    "available",
+    "partial",
+    "insufficient_sample",
+    "no_data",
+    "uninstrumented",
+    "unclassified",
+    "unavailable",
+  ],
+  response: {
+    distributions: ["p50", "p75", "p95"],
+    distribution_rule: "Present only when retained sampled rows meet the configured floor; missing values are never encoded as zero.",
+    counts: ["sampled_count", "estimated_count"],
+    sampling: "Cloudflare weighted adaptive sampling; sampled_count determines sufficiency.",
+    comparison: "Equal-length previous window with absolute and relative changes when both distributions are sufficient.",
+    daily_series: "UTC-day rows bounded by the selected window and adapter limits.",
+    inventory: ["catalog", "coverage", "freshness", "data_health"],
+  },
+});
+
 /** Admin and operator-auth routes. */
 export const ADMIN_ROUTES = Object.freeze([
   {
@@ -278,6 +316,12 @@ export const ADMIN_ROUTES = Object.freeze([
     methods: ["GET"],
     auth: "ADMIN_KEY",
     description: "This contract document (versioned JSON).",
+  },
+  {
+    path: "/admin/performance",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Private versioned field-performance distributions, coverage, freshness, and data health.",
   },
   {
     path: "/admin/stats",
@@ -578,6 +622,7 @@ export function buildOpsContract(opts = {}) {
       traffic_class: TRAFFIC_CLASSES.daylog,
     },
     stats_metrics: STATS_METRICS,
+    performance: PERFORMANCE_CONTRACT,
     admin_routes: ADMIN_ROUTES,
     auth_classes: AUTH_CLASSES,
     kv_namespaces: KV_NAMESPACES,

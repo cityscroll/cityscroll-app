@@ -55,7 +55,8 @@ const GROUPABLE_DIMENSIONS = new Set([
 
 const metricIds = new Set(performanceAllowlist.metric_ids || []);
 const surfaceIds = new Set(Object.keys(performanceAllowlist.surfaces || {}));
-const componentIds = new Set(Object.keys(performanceAllowlist.components || {}));
+// Page-level observations use the canonical sentinel rather than a component record.
+const componentIds = new Set(["none", ...Object.keys(performanceAllowlist.components || {})]);
 const deviceClasses = new Set(performanceAllowlist.collector?.device_classes || []);
 const navigationTypes = new Set(performanceAllowlist.collector?.navigation_types || []);
 const deliveryClasses = new Set(performanceAllowlist.delivery_classes || []);
