@@ -25,7 +25,7 @@ const definitions = [
     coverage: { expected_feature_count: 5, comparison: "exact" },
     freshness: { max_stale_days: 730 },
     public_relations: ["located_in", "intersects"],
-    declared_uses: ["resolver"],
+    declared_uses: ["resolver", "near_you_scope", "watch_scope"],
   },
   {
     type: "community_district",
@@ -44,7 +44,7 @@ const definitions = [
     coverage: { expected_feature_count: 59, comparison: "at_least" },
     freshness: { max_stale_days: 730 },
     public_relations: ["located_in", "intersects"],
-    declared_uses: ["resolver", "compatibility_projection"],
+    declared_uses: ["resolver", "compatibility_projection", "near_you_scope", "watch_scope"],
   },
   {
     type: "council_district",
@@ -63,7 +63,7 @@ const definitions = [
     coverage: { expected_feature_count: 51, comparison: "exact" },
     freshness: { max_stale_days: 730 },
     public_relations: ["located_in", "intersects"],
-    declared_uses: ["resolver", "compatibility_projection"],
+    declared_uses: ["resolver", "compatibility_projection", "near_you_scope", "watch_scope"],
   },
   {
     type: "nta2020",
@@ -85,8 +85,8 @@ const definitions = [
     },
     coverage: { expected_feature_count: 262, comparison: "exact" },
     freshness: { max_stale_days: 180 },
-    public_relations: [],
-    declared_uses: ["ingestion", "resolver", "qa"],
+    public_relations: ["located_in"],
+    declared_uses: ["ingestion", "resolver", "near_you_scope", "watch_scope", "qa"],
   },
   {
     type: "police_precinct",
@@ -104,8 +104,8 @@ const definitions = [
     cardinality: "exactly_one_on_covered_land",
     coverage: { expected_feature_count: 78, comparison: "exact" },
     freshness: { max_stale_days: 180 },
-    public_relations: [],
-    declared_uses: ["ingestion", "resolver", "native_join", "qa"],
+    public_relations: ["located_in"],
+    declared_uses: ["ingestion", "resolver", "native_join", "near_you_scope", "watch_scope", "qa"],
   },
   {
     type: "sanitation_district",

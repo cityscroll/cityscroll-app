@@ -16,6 +16,19 @@ const LENS_LABEL = {
 };
 const usd = (n) => "$" + Number(n).toLocaleString("en-US");
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
+const BOROUGH_BY_ID = { 1: "Manhattan", 2: "Bronx", 3: "Brooklyn", 4: "Queens", 5: "Staten Island" };
+
+function geographyLabel(key) {
+  const match = String(key || "").match(/^geography:([^:]+):(.+)$/);
+  if (!match) return null;
+  const [, type, id] = match;
+  if (type === "borough") return BOROUGH_BY_ID[id] || null;
+  if (type === "community_district") return `Community District ${id}`;
+  if (type === "council_district") return `City Council District ${id}`;
+  if (type === "nta2020") return `Neighborhood tabulation area ${id}`;
+  if (type === "police_precinct") return `Police Precinct ${id}`;
+  return null;
+}
 
 // A stored lens filter → one human-readable line.
 export function describeFilter(lens, filter) {
@@ -66,6 +79,10 @@ export function describeFilter(lens, filter) {
   if (f.boro) parts.push(`in ${f.boro}`);
   if (f.borough) parts.push(`in ${f.borough}`);
   if (f.neighborhood) parts.push(`near ${f.neighborhood}`);
+  if (Array.isArray(f.geographies) && f.geographies.length) {
+    const labels = f.geographies.map(geographyLabel).filter(Boolean);
+    if (labels.length) parts.push(`in ${labels.join(" / ")}`);
+  }
   if (f.process) parts.push(`stage “${({ hearing: "hearing", auction_or_rfp: "auction / RFP", award_or_conveyance: "award / conveyance", unstaged: "unclassified" })[f.process] || String(f.process).replace(/_/g, " ")}”`);
   if (f.stage) parts.push(`when “${f.stage}”`);
   if (f.months) parts.push(`due within ${f.months} mo`);

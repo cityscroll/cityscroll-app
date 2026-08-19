@@ -31,6 +31,17 @@ test("describeFilter renders a land query with borough + status", () => {
   );
 });
 
+test("describeFilter renders geography watches in resident language", () => {
+  assert.equal(
+    describeFilter("property", { geographies: ["geography:nta2020:QN0201"] }),
+    "Property — in Neighborhood tabulation area QN0201",
+  );
+  assert.doesNotMatch(
+    describeFilter("meetings", { geographies: ["geography:police_precinct:110"] }),
+    /geography:/,
+  );
+});
+
 test("describeFilter falls back to 'all notices' when empty", () => {
   assert.equal(describeFilter("rules", {}), "Rules — all notices");
 });

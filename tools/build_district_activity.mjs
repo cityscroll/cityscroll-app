@@ -9,7 +9,11 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildDistrictActivity, DISTRICT_ACTIVITY_SCHEMA } from "./lib/district_activity.mjs";
+import {
+  buildDistrictActivity,
+  DISTRICT_ACTIVITY_SCHEMA,
+  NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES,
+} from "./lib/district_activity.mjs";
 import { buildDistrictWeeklyDigests } from "./lib/district_weekly_digest.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -20,6 +24,7 @@ const GEOGRAPHY_AUDIT_OUT = join(ROOT, "docs/evidence/geography-subjects/located
 
 const PATHS = {
   boundaries: join(ROOT, "site/data/district_boundaries.json"),
+  geographyRegistry: join(ROOT, "site/data/geography/layer_registry.json"),
   zap: join(ROOT, "site/data/zap_projects_warehouse_lookup.json"),
   property: join(ROOT, "site/data/property_domain_observations.json"),
   meetings: join(ROOT, "site/data/shared_meeting_read_model.json"),
@@ -45,6 +50,14 @@ function loadInputs() {
     throw new Error("missing site/data/district_boundaries.json with boundary_vintage");
   }
   const zap = loadJson(PATHS.zap);
+  const geographyRegistry = loadJson(PATHS.geographyRegistry);
+  const geographyLayers = (geographyRegistry?.layers || [])
+    .filter((row) => NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES.includes(row?.type))
+    .map((row) => loadJson(join(ROOT, row.artifacts?.simplified?.site_path || "")))
+    .filter(Boolean);
+  if (geographyLayers.length !== NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES.length) {
+    throw new Error("missing a public Near You geography layer");
+  }
   const property = loadJson(PATHS.property);
   const meetings = loadJson(PATHS.meetings);
   const meetingLocations = loadJson(PATHS.meetingLocations);
@@ -68,6 +81,7 @@ function loadInputs() {
 
   return {
     boundaries,
+    geographyLayers,
     zapRows: Array.isArray(zap?.rows) ? zap.rows : [],
     propertyRows: Array.isArray(property?.property_rows) ? property.property_rows : [],
     meetingsRows: meetingRows,
@@ -141,6 +155,26 @@ function check(doc) {
     || itemIndex.boundary_vintage !== doc.boundary_vintage
     || itemIndex.built_at !== doc.built_at
   ) throw new Error("district item index stamp mismatch");
+  const geographyItems = doc.geography_items;
+  if (
+    geographyItems?.schema !== "cityscroll.geography_items.v1"
+    || geographyItems.built_at !== doc.built_at
+    || !Array.isArray(geographyItems.public_types)
+    || geographyItems.public_types.includes("sanitation_district")
+    || geographyItems.public_types.includes("business_improvement_district")
+  ) throw new Error("generic geography item index contract mismatch");
+  for (const [key, definition] of Object.entries(geographyItems.definitions || {})) {
+    if (definition.key !== key || !geographyItems.public_types.includes(definition.type)) {
+      throw new Error(`invalid public geography definition ${key}`);
+    }
+    for (const lens of doc.lenses || []) {
+      for (const id of geographyItems.by_key?.[key]?.[lens] || []) {
+        const geography = doc.records?.[lens]?.[id]?.place?.geographies
+          ?.find((candidate) => candidate.key === key && candidate.visibility === "public");
+        if (!geography) throw new Error(`${lens}:${id} geography index drift for ${key}`);
+      }
+    }
+  }
   const geography = doc.geography_subjects;
   if (
     geography?.schema !== "cityscroll.geography_subjects.v1"
