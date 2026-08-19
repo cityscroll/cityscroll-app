@@ -19,6 +19,7 @@ import {
   MCP_TOOLS,
 } from "../capabilities/mcp_tool_declarations.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
+import { ENTITY_DOSSIER_HTTP_ADAPTER } from "../worker/src/entity_dossier.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
@@ -51,7 +52,11 @@ export function validateRuntimeTopology() {
   const registeredAdapters = new Map(CAPABILITY_REGISTRY.flatMap((capability) => (
     capability.adapters.map((adapter) => [adapter.id, { capability, adapter }])
   )));
-  const runtimeAdapters = [SEARCH_NOTICE_ADAPTER, MCP_NOTICE_SEARCH_ADAPTER];
+  const runtimeAdapters = [
+    SEARCH_NOTICE_ADAPTER,
+    MCP_NOTICE_SEARCH_ADAPTER,
+    ENTITY_DOSSIER_HTTP_ADAPTER,
+  ];
   for (const runtimeAdapter of runtimeAdapters) {
     const registered = registeredAdapters.get(runtimeAdapter.id);
     if (!registered) throw new Error(`runtime adapter is not registered: ${runtimeAdapter.id}`);
@@ -96,6 +101,7 @@ export function buildMcpToolCatalog() {
     schema: "cityscroll.mcp_tool_catalog.v1",
     generated_from: "worker/src/mcp.mjs + capabilities/registry.mjs",
     endpoint: "POST https://api.cityscroll.org/mcp",
+    registered_capability_references: CAPABILITY_REGISTRY.map(({ reference }) => reference),
     tools: MCP_TOOLS.map((tool) => {
       const binding = bindings.get(tool.name);
       return {

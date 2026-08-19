@@ -2,6 +2,7 @@
 // contracts and explicit providers directly; this file never resolves or invokes one.
 
 import { NOTICE_SEARCH_CAPABILITY } from "./notice_search.mjs";
+import { ENTITY_DOSSIER_CAPABILITY } from "./entity_dossier.mjs";
 
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 
@@ -30,12 +31,20 @@ export function validateCapabilityRegistry(registry) {
     if (!capability.provider?.id || providers.has(capability.provider.id)) {
       throw new TypeError(`duplicate or missing provider: ${capability.provider?.id}`);
     }
-    if (!Array.isArray(capability.adapters) || capability.adapters.length < 2) {
-      throw new TypeError(`pilot capability requires two real adapters: ${capability.reference}`);
+    if (!Array.isArray(capability.adapters) || !capability.adapters.length) {
+      throw new TypeError(`capability requires a real adapter: ${capability.reference}`);
     }
+    let adapterRepresentations = 0;
     for (const adapter of capability.adapters) {
       if (!adapter?.id || adapters.has(adapter.id)) throw new TypeError(`duplicate or missing adapter: ${adapter?.id}`);
+      const representations = Array.isArray(adapter.representations)
+        ? adapter.representations.length
+        : 1;
+      adapterRepresentations += Math.max(1, representations);
       adapters.add(adapter.id);
+    }
+    if (adapterRepresentations < 2) {
+      throw new TypeError(`capability requires two real adapter surfaces: ${capability.reference}`);
     }
     ids.add(capability.id);
     references.add(capability.reference);
@@ -46,6 +55,7 @@ export function validateCapabilityRegistry(registry) {
 
 export const CAPABILITY_REGISTRY = deepFreeze([
   NOTICE_SEARCH_CAPABILITY,
+  ENTITY_DOSSIER_CAPABILITY,
 ]);
 
 validateCapabilityRegistry(CAPABILITY_REGISTRY);

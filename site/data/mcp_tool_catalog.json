@@ -2,6 +2,10 @@
   "schema": "cityscroll.mcp_tool_catalog.v1",
   "generated_from": "worker/src/mcp.mjs + capabilities/registry.mjs",
   "endpoint": "POST https://api.cityscroll.org/mcp",
+  "registered_capability_references": [
+    "notice.search@1",
+    "entity.dossier.get@1"
+  ],
   "tools": [
     {
       "name": "search_notices",
