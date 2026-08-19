@@ -3418,6 +3418,11 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   debug sink and no network transport. Preserve missing metrics as absence,
   keep per-page web-vitals ids private to deduplication, and refresh the byte
   receipt with `node tools/measure_rum_collector_overhead.mjs --write`.
+- Component owners report readiness and interaction timing through
+  `site/rum_semantic_milestones.mjs`; keep the terminal-state vocabulary
+  closed, preserve feedback-before-settlement ordering, and never move DOM
+  selectors into the collector. Focused proof is
+  `test/rum_semantic_milestones.test.mjs`.
 
 ## Comparative signal admission
 
