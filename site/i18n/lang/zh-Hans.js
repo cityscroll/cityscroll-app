@@ -2202,7 +2202,7 @@
     stats_public_current_desc: "官方《City Record》数据集返回的最新发布日期。",
     stats_public_method_heading: "这些数字不包括什么",
     stats_public_method_html: "这些是覆盖范围信息，不是受众分析。访问、搜索、订阅和邮件发送量属于运营数据，不在这里公开。请阅读<a href=\"api.html#upstream\">数据来源说明</a>或打开<a href=\"https://api.cityscroll.org/stats\">精简后的公开 JSON</a>。",
-    stats_data_health_html: "来源的新鲜度和覆盖范围见<a href=\"data-health/\">数据健康</a>。",
+    stats_data_health_html: "见<a href=\"data-health/\">数据健康</a>。它说明来源有多新、包含哪些内容。",
     stats_public_asof: "截至 {date}。",
     stats_public_corpus_unavailable: "来源数量和语言覆盖范围是最新的。《City Record》实时总数暂时无法获取。",
     stats_public_unreachable: "目前无法获取覆盖范围总数 — 公开 JSON 位于 api.cityscroll.org/stats。",

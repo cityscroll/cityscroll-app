@@ -2218,7 +2218,7 @@
     stats_public_current_desc: "أحدث تاريخ نشر تعيده مجموعة بيانات City Record الرسمية.",
     stats_public_method_heading: "ما لا تشمله هذه الأرقام",
     stats_public_method_html: "هذه معلومات عن نطاق التغطية وليست تحليلات للجمهور. الزيارات وعمليات البحث والاشتراكات وأحجام إرسال البريد بيانات تشغيلية ولا تُنشر هنا. اقرأ <a href=\"api.html#upstream\">ملاحظات مصادر البيانات</a> أو افتح <a href=\"https://api.cityscroll.org/stats\">ملف JSON العام المختصر</a>.",
-    stats_data_health_html: "للاطلاع على حداثة المصادر وتغطيتها، راجع <a href=\"data-health/\">صحة البيانات</a>.",
+    stats_data_health_html: "راجع <a href=\"data-health/\">صحة البيانات</a>. يوضح مدى حداثة المصادر وما تتضمنه.",
     stats_public_asof: "اعتبارًا من {date}.",
     stats_public_corpus_unavailable: "عدد المصادر والتغطية اللغوية محدّثان. إجمالي City Record المباشر غير متاح مؤقتًا.",
     stats_public_unreachable: "إجماليات التغطية غير متاحة الآن — ملف JSON العام موجود في api.cityscroll.org/stats.",

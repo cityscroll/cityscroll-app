@@ -2204,7 +2204,7 @@
     stats_public_current_desc: "La fecha de publicación más reciente que devuelve el conjunto oficial del City Record.",
     stats_public_method_heading: "Lo que estas cifras no incluyen",
     stats_public_method_html: "Estos son datos de cobertura, no análisis de audiencia. Las visitas, búsquedas, suscripciones y entregas de correo son datos operativos y no se publican aquí. Lea las <a href=\"api.html#upstream\">notas sobre las fuentes de datos</a> o abra el <a href=\"https://api.cityscroll.org/stats\">JSON público reducido</a>.",
-    stats_data_health_html: "Para la actualidad y la cobertura de las fuentes, consulte <a href=\"data-health/\">Salud de los datos</a>.",
+    stats_data_health_html: "Vea <a href=\"data-health/\">Salud de los datos</a>. Muestra qué tan actuales están las fuentes y qué incluyen.",
     stats_public_asof: "Al {date}.",
     stats_public_corpus_unavailable: "El número de fuentes y la cobertura de idiomas están actualizados. El total en vivo del City Record no está disponible temporalmente.",
     stats_public_unreachable: "Los totales de cobertura no están disponibles ahora — el JSON público está en api.cityscroll.org/stats.",

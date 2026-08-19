@@ -11,9 +11,9 @@ export const DATA_HEALTH_PATH = "/data-health/";
 export const STATS_PATH = "/stats.html";
 
 export const STATS_TO_DATA_HEALTH_HTML =
-  'For source freshness and coverage, see <a href="data-health/">Data health</a>.';
+  'See <a href="data-health/">Data health</a>. It shows how current the sources are and what they include.';
 export const DATA_HEALTH_TO_STATS_HTML =
-  'For corpus size and date range, see <a href="/stats.html">Stats</a>.';
+  'See <a href="/stats.html">Stats</a>. It shows how many records there are and their dates.';
 
 const USAGE_LEAK = /\b(?:subscriptions|digests|nl_search|pageviews|watches_active|usage_analytics)\b/;
 const DISCLAIMER_SLOP = /all operational|all systems operational|data may be incomplete|may be incomplete/i;
@@ -66,7 +66,7 @@ export function dataHealthNavigationFindings(html, surface) {
   if (DEBUG_LEAK.test(text)) findings.push("debug-internals");
   if (surface === "stats") {
     if (!hasDataHealthHref(text)) findings.push("missing-data-health-link");
-    if (!/source freshness and coverage/i.test(text)) findings.push("missing-stats-boundary");
+    if (!/how current the sources are/i.test(text)) findings.push("missing-stats-boundary");
     if (/\/source-health/.test(text)) findings.push("request-time-source-health");
   }
   if (surface === "data-health") {
