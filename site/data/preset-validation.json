@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T00:43:01.151Z",
+  "generatedAt": "2026-08-19T01:00:14.660Z",
   "dataDate": "2026-08-19",
   "scenarios": {
     "city-work-closing": {
@@ -170,7 +170,6 @@
         4
       ],
       "meetings": [
-        2,
         4,
         5
       ],
@@ -236,8 +235,8 @@
           "category": null,
           "months": null,
           "noticeType": "solicitation",
-          "excludeSpecial": false,
-          "closingWeek": false,
+          "excludeSpecial": true,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,
@@ -247,7 +246,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=it+consulting",
+          "route": "/browse/contracts/?q=it+consulting&standard=1&closing=week",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -275,7 +274,7 @@
           "agency": null,
           "minAmount": null,
           "maxAmount": null,
-          "category": null,
+          "category": "Human Services/Client Services",
           "months": null,
           "noticeType": null,
           "excludeSpecial": false,
@@ -289,7 +288,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=shelter+services",
+          "route": "/browse/contracts/?q=shelter+services&category=Human+Services%2FClient+Services",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -517,7 +516,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": "Rodriguez",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -562,42 +561,6 @@
         "filter": {
           "keywords": [],
           "boro": "Brooklyn",
-          "status": "all",
-          "communityDistrict": null,
-          "councilDistrict": null,
-          "nearMe": false,
-          "procedure": null,
-          "family": null,
-          "regulatoryEffect": null
-        },
-        "count": 3390
-      },
-      {
-        "lens": "land",
-        "idx": 1,
-        "text": "rezonings in Queens",
-        "filter": {
-          "keywords": [],
-          "boro": "Queens",
-          "status": "all",
-          "communityDistrict": null,
-          "councilDistrict": null,
-          "nearMe": false,
-          "procedure": null,
-          "family": null,
-          "regulatoryEffect": null
-        },
-        "count": 2126
-      },
-      {
-        "lens": "land",
-        "idx": 2,
-        "text": "79 Rivington",
-        "filter": {
-          "keywords": [
-            "79 rivington"
-          ],
-          "boro": null,
           "status": null,
           "communityDistrict": null,
           "councilDistrict": null,
@@ -606,7 +569,41 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 2
+        "count": 57
+      },
+      {
+        "lens": "land",
+        "idx": 1,
+        "text": "rezonings in Queens",
+        "filter": {
+          "keywords": [],
+          "boro": "Queens",
+          "status": null,
+          "communityDistrict": null,
+          "councilDistrict": null,
+          "nearMe": false,
+          "procedure": null,
+          "family": null,
+          "regulatoryEffect": null
+        },
+        "count": 48
+      },
+      {
+        "lens": "land",
+        "idx": 2,
+        "text": "79 Rivington",
+        "filter": {
+          "keywords": [],
+          "boro": "Manhattan",
+          "status": null,
+          "communityDistrict": null,
+          "councilDistrict": null,
+          "nearMe": false,
+          "procedure": null,
+          "family": null,
+          "regulatoryEffect": null
+        },
+        "count": 39
       },
       {
         "lens": "land",
@@ -649,7 +646,7 @@
         "filter": {
           "keywords": [],
           "agency": "Department of Housing Preservation and Development",
-          "process": null,
+          "process": "award_or_conveyance",
           "stage": null,
           "asset": "realty",
           "saleMethod": null,
@@ -669,7 +666,7 @@
         "filter": {
           "keywords": [
             "environmental",
-            "protection"
+            "land"
           ],
           "agency": null,
           "process": null,
@@ -683,7 +680,7 @@
           "communityDistrict": null,
           "nearMe": false
         },
-        "count": 43
+        "count": 15
       },
       {
         "lens": "property",
@@ -713,7 +710,7 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks Department",
           "process": null,
           "stage": null,
           "asset": null,
@@ -781,10 +778,10 @@
           "keywords": [
             "taxi"
           ],
-          "agency": null,
+          "agency": "Taxi and Limousine Commission",
           "process": null
         },
-        "count": 230
+        "count": 221
       },
       {
         "lens": "rules",
@@ -851,10 +848,8 @@
         "idx": 2,
         "text": "recent community board meetings",
         "filter": {
-          "keywords": [
-            "community board"
-          ],
-          "agency": null,
+          "keywords": [],
+          "agency": "Community Board",
           "when": "past",
           "borough": null,
           "neighborhood": null,
@@ -863,7 +858,7 @@
           "process": "held",
           "nearMe": false
         },
-        "count": 29
+        "count": 0
       },
       {
         "lens": "meetings",
@@ -880,7 +875,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "hearing",
+          "process": "held",
           "nearMe": false
         },
         "count": 0
@@ -959,7 +954,7 @@
           "category": null,
           "months": 3,
           "noticeType": null,
-          "excludeSpecial": false,
+          "excludeSpecial": true,
           "closingWeek": false,
           "route": null,
           "name": null,
@@ -1009,8 +1004,8 @@
           "category": null,
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
