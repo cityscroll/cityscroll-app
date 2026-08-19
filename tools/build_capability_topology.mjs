@@ -17,7 +17,7 @@ import {
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
-} from "../worker/src/mcp.mjs";
+} from "../capabilities/mcp_tool_declarations.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");

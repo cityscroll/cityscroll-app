@@ -16,15 +16,15 @@ import {
   validateCapabilityRegistry,
 } from "../capabilities/registry.mjs";
 import {
+  MCP_NOTICE_SEARCH_ADAPTER,
+  MCP_TOOL_BINDINGS,
+  MCP_TOOLS,
+} from "../capabilities/mcp_tool_declarations.mjs";
+import {
   NOTICE_SEARCH_CAPABILITY,
   NOTICE_SEARCH_CAPABILITY_REFERENCE,
 } from "../capabilities/notice_search.mjs";
 import { workerD1NoticeSearch } from "../worker/src/lib/notices.mjs";
-import {
-  MCP_NOTICE_SEARCH_ADAPTER,
-  MCP_TOOL_BINDINGS,
-  MCP_TOOLS,
-} from "../worker/src/mcp.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import {
   buildCapabilityTopology,
