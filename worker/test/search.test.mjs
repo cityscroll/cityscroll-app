@@ -614,6 +614,30 @@ test("GET /search rejects a missing query and preserves empty result sets", asyn
   }
 });
 
+test("GET /search land canaries from the published family stay warehouse-fresh, not hybrid", async () => {
+  const { sqlite, DB } = database(ROWS);
+  try {
+    const response = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=2025Q0331", {
+        headers: { Origin: "https://cityscroll.org", Accept: "application/json" },
+      }),
+      { DB },
+      {},
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    const land = body.lanes.find((lane) => lane.id === "land");
+    assert.equal(land.status, "matched");
+    assert.ok(land.cards.some((card) => card.object_ref === "land_use_project:2025Q0331"));
+    assert.equal(land.coverage.freshness_state, "published");
+    assert.equal(land.coverage.soda_as_of, null);
+    assert.deepEqual(land.coverage.filled_project_ids, []);
+    assert.doesNotMatch(land.source, /live records/);
+  } finally {
+    sqlite.close();
+  }
+});
+
 test("Agencies uses its dedicated production provider for worker recall and coverage", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=Department%20of%20Parks%20and%20Recreation"),

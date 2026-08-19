@@ -8,19 +8,10 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { REPO_ROOT, WAREHOUSE_DIR } from "./catalog.mjs";
+import { LAND_ZAP_FRESHNESS_CANARIES } from "./land_zap_canaries.mjs";
 import { ZAP_SOURCE_COLS, ZAP_SELL_FACING_STATUSES } from "./zap_lookup.mjs";
 
-/** Field-case land projects that must stay in the sell-facing lookup + keyword index. */
-export const LAND_ZAP_FRESHNESS_CANARIES = Object.freeze([
-  Object.freeze({
-    project_id: "2025Q0331",
-    label: "44-17 Greenpoint Avenue Rezoning",
-  }),
-  Object.freeze({
-    project_id: "2026K0123",
-    label: "1550 Bedford Avenue Rezoning",
-  }),
-]);
+export { LAND_ZAP_FRESHNESS_CANARIES };
 
 /** Prefer-warehouse only when the DuckDB/export frontier is this fresh. */
 export const LAND_WAREHOUSE_MILESTONE_LAG_DAYS = 14;
