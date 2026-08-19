@@ -2365,7 +2365,7 @@
     stats_history_empty: "Pas encore d'historique jour par jour.",
     stats_h_technical: "Détails techniques",
     stats_p_technical: "Comment les chiffres ci-dessus sont calculés. Vous n'avez pas besoin de le savoir pour utiliser CityScroll.",
-    stats_foot_html: "JSON brut : <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (mis en cache ~15 min) · <a href=\"about.html\">À propos</a> · <a href=\"data-health/\">Santé des données</a> · <a href=\"index.html\">Accueil</a>",
+    stats_foot_html: "JSON brut : <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (mis en cache ~15 min) · <a href=\"about.html\">À propos</a> · <a href=\"index.html\">Accueil</a>",
     stats_asof: "En date du {date} (actualisé toutes les 15 minutes).",
     stats_unreachable: "Les compteurs en direct sont actuellement inaccessibles — le JSON brut se trouve sur api.cityscroll.org/stats.",
     stats_h_usage: "Comment les gens utilisent CityScroll",

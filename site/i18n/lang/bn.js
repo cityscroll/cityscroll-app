@@ -2255,7 +2255,7 @@
     stats_history_empty: "এখনও দিনভিত্তিক ইতিহাস নেই।",
     stats_h_technical: "কারিগরি বিবরণ",
     stats_p_technical: "উপরের সংখ্যাগুলো কীভাবে হিসাব করা হয়। সাইট ব্যবহার করতে এটি জানার প্রয়োজন নেই।",
-    stats_foot_html: "কাঁচা JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (~১৫ মিনিট ক্যাশড) · <a href=\"about.html\">সম্পর্কে</a> · <a href=\"data-health/\">ডেটা স্বাস্থ্য</a> · <a href=\"index.html\">হোম</a>",
+    stats_foot_html: "কাঁচা JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (~১৫ মিনিট ক্যাশড) · <a href=\"about.html\">সম্পর্কে</a> · <a href=\"index.html\">হোম</a>",
     stats_asof: "{date} অনুযায়ী (প্রতি ১৫ মিনিটে হালনাগাদ হয়)।",
     stats_unreachable: "লাইভ কাউন্টার এই মুহূর্তে পৌঁছানো যাচ্ছে না — কাঁচা JSON আছে api.cityscroll.org/stats-এ।",
     stats_h_usage: "মানুষ কীভাবে CityScroll ব্যবহার করেন",

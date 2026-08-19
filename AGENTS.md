@@ -3485,7 +3485,10 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   is freshness and coverage. Reciprocal one-sentence links and the public footer
   entry live in `site/data_health_navigation.mjs` plus `site/stats.html`. Consume
   the committed `source_health_public.json` artifact; do not copy health clocks
-  onto Stats or usage fields onto Data health. Proof:
+  onto Stats or usage fields onto Data health. Public visibility is gated by
+  `DATA_HEALTH_PUBLIC` in `site/data_health_navigation.mjs` (currently off):
+  flip that one constant only after every served source on the page shows real
+  clocks, not an UNKNOWN / Source-unavailable wall. Proof:
   `test/data_health_navigation.test.mjs`.
 
 ## Performance observability registry

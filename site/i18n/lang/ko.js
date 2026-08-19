@@ -2258,7 +2258,7 @@
     stats_history_empty: "아직 날짜별 기록이 없습니다.",
     stats_h_technical: "기술적 세부 사항",
     stats_p_technical: "위 수치가 어떻게 계산되는지입니다. 사이트를 사용하는 데 알 필요는 없습니다.",
-    stats_foot_html: "원본 JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a>(약 15분 캐시) · <a href=\"about.html\">소개</a> · <a href=\"data-health/\">데이터 상태</a> · <a href=\"index.html\">홈</a>",
+    stats_foot_html: "원본 JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a>(약 15분 캐시) · <a href=\"about.html\">소개</a> · <a href=\"index.html\">홈</a>",
     stats_asof: "{date} 기준(15분마다 갱신).",
     stats_unreachable: "지금은 실시간 카운터에 접속할 수 없습니다 — 원본 JSON은 api.cityscroll.org/stats에 있습니다.",
     stats_h_usage: "사람들이 CityScroll를 사용하는 방식",

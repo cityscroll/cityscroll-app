@@ -2268,7 +2268,7 @@
     stats_history_empty: "ابھی تک روزانہ کی تاریخ دستیاب نہیں۔",
     stats_h_technical: "تکنیکی تفصیلات",
     stats_p_technical: "اوپر دیے گئے اعداد کیسے شمار کیے جاتے ہیں۔ سائٹ استعمال کرنے کے لیے یہ جاننا ضروری نہیں۔",
-    stats_foot_html: "خام JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (تقریباً 15 منٹ کیش شدہ) · <a href=\"about.html\">تعارف</a> · <a href=\"data-health/\">ڈیٹا کی صحت</a> · <a href=\"index.html\">ہوم</a>",
+    stats_foot_html: "خام JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (تقریباً 15 منٹ کیش شدہ) · <a href=\"about.html\">تعارف</a> · <a href=\"index.html\">ہوم</a>",
     stats_asof: "{date} تک (ہر 15 منٹ میں تازہ ہوتا ہے)۔",
     stats_unreachable: "لائیو کاؤنٹرز ابھی ناقابلِ رسائی ہیں — خام JSON api.cityscroll.org/stats پر موجود ہے۔",
     stats_h_usage: "لوگ CityScroll کو کیسے استعمال کرتے ہیں",
