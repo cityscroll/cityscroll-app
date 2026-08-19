@@ -1,5 +1,10 @@
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
-import { searchNotices, toRecord } from "./lib/notices.mjs";
+import { workerD1NoticeSearch, toRecord } from "./lib/notices.mjs";
+import {
+  executeNoticeSearch,
+  NOTICE_SEARCH_CAPABILITY_REFERENCE,
+  NOTICE_SEARCH_PROVIDER_ID,
+} from "../../capabilities/notice_search.mjs";
 import rulesDomainObservations from "../../site/data/rules_domain_observations.json" with { type: "json" };
 import ocpAwardLookup from "./data/ocp_awards_warehouse_lookup.json" with { type: "json" };
 import keywordSearchIndex from "./data/keyword_search_index.json" with { type: "json" };
@@ -37,6 +42,13 @@ const LANE_ORDER = Object.freeze([
 const D1_LANES = Object.freeze({
   contracts: Object.freeze({ domain: "contracts", source: "City Record daily mirror" }),
   rules: Object.freeze({ domain: "rules", source: "City Record daily mirror and bounded Rules projection" }),
+});
+export const SEARCH_NOTICE_ADAPTER = Object.freeze({
+  id: "worker-http.search.notice-lane@1",
+  capabilityReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
+  providerId: NOTICE_SEARCH_PROVIDER_ID,
+  route: "GET /search",
+  surface: "Universal search",
 });
 // Production collection providers register here. Follow-on collection wiring
 // adds one lens-to-family entry without changing the federator contract.
@@ -201,6 +213,14 @@ async function noticeMirrorAsOf(db) {
   }
 }
 
+export function noticeSearchInputFromKeywordResolution(resolved) {
+  return {
+    termGroups: resolved.retrieval_groups,
+    agency: resolved.structured_filters.agency,
+    limit: RESULT_LIMIT,
+  };
+}
+
 async function noticeSearchLanes(env, resolved) {
   if (!env?.DB) {
     return {
@@ -213,11 +233,10 @@ async function noticeSearchLanes(env, resolved) {
   }
 
   try {
-    const result = await searchNotices(env.DB, {
-      termGroups: resolved.retrieval_groups,
-      agency: resolved.structured_filters.agency,
-      limit: RESULT_LIMIT,
-    });
+    const result = await executeNoticeSearch(
+      workerD1NoticeSearch(env.DB),
+      noticeSearchInputFromKeywordResolution(resolved),
+    );
     console.log("notice-search:", JSON.stringify({ route: "search", ...result.retrieval }));
     const asOf = await noticeMirrorAsOf(env.DB);
     const projected = result.results.map(publicSearchResult).filter(Boolean);

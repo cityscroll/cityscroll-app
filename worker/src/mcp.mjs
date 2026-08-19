@@ -13,7 +13,20 @@
 // request limit; shared daily LLM ceiling (NL_METER `m:mcp:<day>`, MCP_MAX_CALLS_PER_DAY);
 // per-sender signup-email limit (same 5/day as /subscribe).
 
-import { noticeSearchTerms, searchNotices, toRecord } from "./lib/notices.mjs";
+import { noticeSearchTerms, workerD1NoticeSearch, toRecord } from "./lib/notices.mjs";
+import {
+  executeNoticeSearch,
+  NOTICE_SEARCH_LIMITS,
+} from "../../capabilities/notice_search.mjs";
+import {
+  MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
+  MCP_TOOLS,
+} from "../../capabilities/mcp_tool_declarations.mjs";
+export {
+  MCP_NOTICE_SEARCH_ADAPTER,
+  MCP_TOOL_BINDINGS,
+  MCP_TOOLS,
+} from "../../capabilities/mcp_tool_declarations.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { LENSES } from "./lib/filter.mjs";
 import { compileSub } from "./lib/compile.mjs";
@@ -21,10 +34,7 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
-import {
-  CITED_RETRIEVAL_OUTPUT_SCHEMA,
-  retrieveCitedPassages,
-} from "./cited_retrieval.mjs";
+import { retrieveCitedPassages } from "./cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "./semantic_candidates.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
@@ -36,78 +46,6 @@ function validIsoDate(value) {
   const parsed = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
 }
-
-const TOOLS = [
-  {
-    name: "search_notices",
-    description: "Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched; add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded); rolling placeholder deadlines are labeled, never shown as dates.",
-    inputSchema: {
-      type: "object", additionalProperties: false,
-      properties: {
-        query: { type: "string", description: "Keyword terms, space-separated (e.g. 'affordable housing')." },
-        section: { type: "string", description: "Exact section, e.g. 'Procurement', 'Public Hearings and Meetings', 'Agency Rules'." },
-        agency: { type: "string", description: "Agency name substring." },
-        min_amount: { type: "number", description: "Minimum contract amount in dollars (Award notices only carry amounts)." },
-        max_amount: { type: "number", description: "Maximum contract amount in dollars." },
-        open_only: { type: "boolean", description: "Only notices whose due date hasn't passed." },
-        exclude_rolling: { type: "boolean", description: "Drop pre-qualified-list placeholders (year-2090 'deadlines')." },
-        limit: { type: "number", description: "Max results (default 15, cap 100)." },
-      },
-    },
-  },
-  {
-    name: "get_notice",
-    description: "Full detail for one City Record notice by its RequestID.",
-    inputSchema: {
-      type: "object", additionalProperties: false,
-      properties: { request_id: { type: "string" } },
-      required: ["request_id"],
-    },
-  },
-  {
-    name: "retrieve_cited_passages",
-    description: "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
-    inputSchema: {
-      type: "object", additionalProperties: false,
-      properties: {
-        query: { type: "string", minLength: 1, maxLength: 240, description: "The resident's original search terms." },
-        source_family: { type: "string", enum: SEMANTIC_SOURCE_FAMILIES },
-        body_id: { type: "string", maxLength: 120, description: "Exact civic body identifier." },
-        published_from: { type: "string", format: "date" },
-        published_to: { type: "string", format: "date" },
-        limit: { type: "integer", minimum: 1, maximum: 20, default: 10 },
-      },
-      required: ["query"],
-    },
-    outputSchema: CITED_RETRIEVAL_OUTPUT_SCHEMA,
-  },
-  {
-    name: "preview_watch",
-    description: "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
-    inputSchema: {
-      type: "object", additionalProperties: false,
-      properties: {
-        lens: { type: "string", enum: [...SUBSCRIBABLE] },
-        request: { type: "string", description: "Plain-English description, e.g. 'construction awards over $1M from Parks'." },
-      },
-      required: ["lens", "request"],
-    },
-  },
-  {
-    name: "create_watch",
-    description: "Create a standing email watch from plain English. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links.",
-    inputSchema: {
-      type: "object", additionalProperties: false,
-      properties: {
-        email: { type: "string" },
-        lens: { type: "string", enum: [...SUBSCRIBABLE] },
-        request: { type: "string", description: "Plain-English description of what to watch." },
-        freq: { type: "string", enum: ["daily", "weekly"], description: "Digest frequency (default daily)." },
-      },
-      required: ["email", "lens", "request"],
-    },
-  },
-];
 
 function text(t) {
   return { content: [{ type: "text", text: t }] };
@@ -125,6 +63,28 @@ function fmtRecord(r, i) {
   if (r.snippet) lines.push(`   ${r.snippet}`);
   lines.push(`   RequestID ${r.request_id} · https://cityscroll.org/notices/${encodeURIComponent(r.request_id)}`);
   return lines.join("\n");
+}
+
+export function mcpNoticeSearchInput(args = {}) {
+  const terms = noticeSearchTerms(args.query);
+  const requestedLimit = typeof args.limit === "number" ? args.limit : MCP_NOTICE_SEARCH_DEFAULT_LIMIT;
+  return {
+    termGroups: terms.length ? [terms] : [],
+    section: args.section || null,
+    agency: args.agency || null,
+    minAmount: typeof args.min_amount === "number" ? args.min_amount : null,
+    maxAmount: typeof args.max_amount === "number" ? args.max_amount : null,
+    openOnly: !!args.open_only,
+    excludeRollingDeadlines: !!args.exclude_rolling,
+    limit: Math.max(NOTICE_SEARCH_LIMITS.minimum, Math.min(requestedLimit, NOTICE_SEARCH_LIMITS.maximum)),
+  };
+}
+
+export function formatMcpNoticeSearchResult(result) {
+  if (!result.results.length) {
+    return "No matches in the mirror (it holds recent notices; the site searches the full record).";
+  }
+  return result.results.map(fmtRecord).join("\n\n");
 }
 
 async function fetchSodaRows(url, params) {
@@ -161,21 +121,13 @@ async function callTool(env, req, name, args) {
   switch (name) {
     case "search_notices": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
-      const terms = noticeSearchTerms(args.query);
-      const res = await searchNotices(env.DB, {
-        termGroups: terms.length ? [terms] : [],
-        section: args.section || null,
-        agency: args.agency || null,
-        minAmount: typeof args.min_amount === "number" ? args.min_amount : null,
-        maxAmount: typeof args.max_amount === "number" ? args.max_amount : null,
-        openOnly: !!args.open_only,
-        excludeRollingDeadlines: !!args.exclude_rolling,
-        limit: typeof args.limit === "number" ? args.limit : 15,
-      });
+      const res = await executeNoticeSearch(
+        workerD1NoticeSearch(env.DB),
+        mcpNoticeSearchInput(args),
+      );
       // Bounded operational telemetry only: no query text, IP, or notice identifiers.
       console.log("notice-search:", JSON.stringify({ route: "mcp.search_notices", ...res.retrieval }));
-      if (!res.results.length) return text("No matches in the mirror (it holds recent notices; the site searches the full record).");
-      return text(res.results.map(fmtRecord).join("\n\n"));
+      return text(formatMcpNoticeSearchResult(res));
     }
     case "get_notice": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
@@ -298,7 +250,7 @@ export async function handleMcp(req, env) {
       case "ping":
         return Response.json(rpc(id, {}));
       case "tools/list":
-        return Response.json(rpc(id, { tools: TOOLS }));
+        return Response.json(rpc(id, { tools: MCP_TOOLS }));
       case "tools/call": {
         const name = String(params?.name || "");
         const args = (params?.arguments) || {};
