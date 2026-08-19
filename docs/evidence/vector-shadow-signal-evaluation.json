@@ -15,8 +15,8 @@
     "captain_call": "withheld"
   },
   "input_fingerprints": {
-    "lexical_miss_set": "02a3dcac6499ab5d4a16da4eb92a80ba34e4aec653fa40f82f50f929462367ed",
-    "golden_queries": "9b792179c80887a85f978e21dae377f6035296e5dcc96c430f72a6c81c5865e3",
+    "lexical_miss_set": "87775c0074629d71da407f0cb22fc9e395e9fe210207ac9c7613fdbdaf0c914d",
+    "golden_queries": "39cc8225fea52a8285cd192d9c48f283b0ae14bb3a21918d57ae870ed749561d",
     "trial_corpus": "289c53501847271ea8cab2674781264f1e4e44106dc79d7a886b56ad811235d7",
     "retrieval_review": "14c6bc7d2b8be3e2f647782d6d7e42bc4c3cfe73d05a40984b3dc680b45c82f6"
   },
@@ -60,18 +60,22 @@
         "ranking_inversion": false,
         "method": "hashed_ngram_tfidf_v0",
         "public_ranking": false
-      },
+      }
+    ],
+    "golden_controls": [
       {
         "id": "gq-school-synonym",
-        "role": "lexical_miss",
+        "role": "lexical_hit_control",
         "source": "golden_suite",
         "golden_query_id": "gq-school-synonym",
         "trial_query_id": null,
         "category": "synonym",
         "text": "school",
-        "lexical_hit_ids": [],
-        "lexical_relevant": false,
-        "lexical_state": "miss",
+        "lexical_hit_ids": [
+          "procurement:education-synonym-fixture"
+        ],
+        "lexical_relevant": true,
+        "lexical_state": "hit",
         "vector_top": [
           {
             "id": "procurement:education-synonym-fixture",
@@ -85,15 +89,13 @@
         "relevant_rank": 1,
         "relevant_score": 0.0038,
         "relevant_in_top_k": true,
-        "recovered_at_k": true,
+        "recovered_at_k": false,
         "recovered_at_floor": false,
         "false_recovery": false,
         "ranking_inversion": false,
         "method": "hashed_ngram_tfidf_v0",
         "public_ranking": false
-      }
-    ],
-    "golden_controls": [
+      },
       {
         "id": "gq-mosquito-title",
         "role": "lexical_hit_control",
@@ -381,7 +383,7 @@
     "usefulness_gate": 0.3,
     "golden_miss_recovery_at_floor": {
       "numerator": 0,
-      "denominator": 2,
+      "denominator": 1,
       "rate": 0
     },
     "hashed_trial_miss_recovery_at_floor": {
@@ -395,7 +397,7 @@
     "restore_sr4_vectorize": false,
     "restore_sr8_hybrid": false,
     "reasons": [
-      "hashed n-gram recovered 0/2 golden-suite lexical misses at the product score floor",
+      "hashed n-gram recovered 0/1 golden-suite lexical misses at the product score floor",
       "hashed n-gram recovered 0/2 frozen-trial BM25 misses at the product score floor",
       "false recoveries=1; ranking inversions=1",
       "frozen MiniLM hybrid added 0 queries with a relevant top-five result versus BM25",

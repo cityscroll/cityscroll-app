@@ -5,7 +5,7 @@
   "k": 5,
   "product_min_score": 0.22,
   "usefulness_gate": 0.3,
-  "notes": "Named lexical-miss set for SQ-08. Golden-suite expected misses stay encoded as misses on the public keyword path. Trial paraphrase misses are the 2026-08-04 BM25 misses. Vector scoring of this set is a shadow measurement only.",
+  "notes": "Named lexical-miss set for SQ-08. Golden-suite expected misses stay encoded as misses on the public keyword path. The reviewed school→education expander is a lexical hit control, not a miss. Trial paraphrase misses are the 2026-08-04 BM25 misses. Vector scoring of this set is a shadow measurement only.",
   "queries": [
     {
       "id": "gq-mosquito-typo",
@@ -18,18 +18,6 @@
       "relevant": ["procurement:81626S0021001"],
       "harm_controls": ["procurement:decoy-vendor-mosquito"],
       "notes": "Golden-suite expected keyword miss. Typo expansion is not on the keyword core."
-    },
-    {
-      "id": "gq-school-synonym",
-      "role": "lexical_miss",
-      "source": "golden_suite",
-      "golden_query_id": "gq-school-synonym",
-      "category": "synonym",
-      "text": "school",
-      "corpus": "golden_education_fixture",
-      "relevant": ["procurement:education-synonym-fixture"],
-      "harm_controls": ["procurement:81626S0021001"],
-      "notes": "Golden-suite expected keyword miss. school does not expand to education."
     },
     {
       "id": "trial-q01-scaffolding",
@@ -57,6 +45,19 @@
     }
   ],
   "controls": [
+    {
+      "id": "gq-school-synonym",
+      "role": "lexical_hit_control",
+      "source": "golden_suite",
+      "golden_query_id": "gq-school-synonym",
+      "category": "synonym",
+      "text": "school",
+      "corpus": "golden_education_fixture",
+      "relevant": ["procurement:education-synonym-fixture"],
+      "preferred_first": "procurement:education-synonym-fixture",
+      "harm_controls": ["procurement:81626S0021001"],
+      "notes": "Reviewed school→education expander is a keyword hit. Hashed n-gram still does not recover it at the product score floor."
+    },
     {
       "id": "gq-mosquito-title",
       "role": "lexical_hit_control",

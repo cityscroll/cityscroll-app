@@ -69,7 +69,7 @@ test("the named lexical-miss set is labeled and points at golden-suite expected 
     .filter((row) => row.golden_query_id)
     .map((row) => row.golden_query_id)
     .sort();
-  assert.deepEqual(goldenIds, ["gq-mosquito-typo", "gq-school-synonym"]);
+  assert.deepEqual(goldenIds, ["gq-mosquito-typo"]);
   const byId = new Map(GOLD.queries.map((query) => [query.id, query]));
   for (const row of MISS_SET.queries.filter((query) => query.golden_query_id)) {
     const query = byId.get(row.golden_query_id);
@@ -92,7 +92,7 @@ test("public keyword retrieval still misses the named golden-suite cases", () =>
   );
   assert.deepEqual(
     searchKeywordDocuments([education], resolveKeywordQuery("school")).map((row) => row.object_ref),
-    [],
+    ["procurement:education-synonym-fixture"],
   );
   assert.deepEqual(
     searchKeywordDocuments([mosquito], resolveKeywordQuery("Pesticides and Mosquito Control Products"))
@@ -111,9 +111,9 @@ test("hashed n-gram is a shadow candidate signal and does not recover golden mis
     [],
   );
   const synonym = scoreShadowQuery(
-    MISS_SET.queries.find((row) => row.id === "gq-school-synonym"),
+    MISS_SET.controls.find((row) => row.id === "gq-school-synonym"),
     [education, mosquito],
-    [],
+    [education.object_ref],
   );
   const ranking = scoreShadowQuery(
     MISS_SET.controls.find((row) => row.id === "gq-mosquito-ranking"),
@@ -128,8 +128,9 @@ test("hashed n-gram is a shadow candidate signal and does not recover golden mis
   assert.equal(typo.vector_top[0].id, decoy.object_ref);
   assert.ok(typo.vector_top.every((row) => row.honest_label === VECTOR_SHADOW_HONEST_LABEL));
 
+  assert.equal(synonym.lexical_state, "hit");
   assert.equal(synonym.recovered_at_floor, false);
-  assert.equal(synonym.false_recovery, false);
+  assert.equal(synonym.ranking_inversion, false);
   assert.ok((synonym.relevant_score ?? 0) < MISS_SET.product_min_score);
 
   assert.equal(ranking.ranking_inversion, true);

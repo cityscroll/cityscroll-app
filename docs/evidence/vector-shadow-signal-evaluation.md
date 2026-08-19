@@ -15,7 +15,7 @@ This is a measurement for the captain, not a ranking change. Public search remai
 
 | Slice | Numerator / denominator | Result | Reading |
 | --- | ---: | ---: | --- |
-| Golden-suite miss recovery at score floor | 0 / 2 | 0.00% | Hashed n-gram did not recover the typo or synonym misses without ranking a distractor first. |
+| Golden-suite miss recovery at score floor | 0 / 1 | 0.00% | Hashed n-gram did not recover the remaining golden-suite typo miss without ranking a distractor first. |
 | Frozen-trial BM25-miss recovery at score floor | 0 / 2 | 0.00% | The production-safe hashed vector did not clear the 0.22 related-edge floor on either paraphrase miss. |
 | Ranking inversions on golden controls | 1 | harm | Query `mosquito` ranks the decoy above the exact title. |
 | False recoveries | 1 | harm | Query `mosqito` ranks the decoy ahead of the pesticide award. |
@@ -26,10 +26,10 @@ Usefulness gate for public ranking: 0.3. Captain call: withheld.
 ## Golden-suite lexical misses
 
 - **gq-mosquito-typo** (typo): keyword miss; recovered at floor false; false recovery true; relevant rank 2 score 0.1113.
-- **gq-school-synonym** (synonym): keyword miss; recovered at floor false; false recovery false; relevant rank 1 score 0.0038.
 
 ## Golden-suite ranking controls
 
+- **gq-school-synonym** (lexical_hit_control): keyword hit; ranking inversion false; relevant rank 1 score 0.0038.
 - **gq-mosquito-title** (lexical_hit_control): keyword hit; ranking inversion false; relevant rank 1 score 0.5431.
 - **gq-mosquito-ranking** (ranking_control): keyword hit; ranking inversion true; relevant rank 2 score 0.199.
 
@@ -44,7 +44,7 @@ Learned ranking recovered named misses 2/2 and hybrid recovered 1/2. Corpus quer
 
 ## Why public ranking stays at weight 0
 
-- hashed n-gram recovered 0/2 golden-suite lexical misses at the product score floor
+- hashed n-gram recovered 0/1 golden-suite lexical misses at the product score floor
 - hashed n-gram recovered 0/2 frozen-trial BM25 misses at the product score floor
 - false recoveries=1; ranking inversions=1
 - frozen MiniLM hybrid added 0 queries with a relevant top-five result versus BM25

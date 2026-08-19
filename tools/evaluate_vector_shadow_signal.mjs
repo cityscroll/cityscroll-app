@@ -124,7 +124,7 @@ This is a measurement for the captain, not a ranking change. Public search remai
 
 | Slice | Numerator / denominator | Result | Reading |
 | --- | ---: | ---: | --- |
-| Golden-suite miss recovery at score floor | ${d.golden_miss_recovery_at_floor.numerator} / ${d.golden_miss_recovery_at_floor.denominator} | ${percent(d.golden_miss_recovery_at_floor.rate)} | Hashed n-gram did not recover the typo or synonym misses without ranking a distractor first. |
+| Golden-suite miss recovery at score floor | ${d.golden_miss_recovery_at_floor.numerator} / ${d.golden_miss_recovery_at_floor.denominator} | ${percent(d.golden_miss_recovery_at_floor.rate)} | Hashed n-gram did not recover the remaining golden-suite typo miss without ranking a distractor first. |
 | Frozen-trial BM25-miss recovery at score floor | ${d.hashed_trial_miss_recovery_at_floor.numerator} / ${d.hashed_trial_miss_recovery_at_floor.denominator} | ${percent(d.hashed_trial_miss_recovery_at_floor.rate)} | The production-safe hashed vector did not clear the 0.22 related-edge floor on either paraphrase miss. |
 | Ranking inversions on golden controls | ${d.ranking_inversions} | harm | Query \`mosquito\` ranks the decoy above the exact title. |
 | False recoveries | ${d.false_recoveries} | harm | Query \`mosqito\` ranks the decoy ahead of the pesticide award. |
