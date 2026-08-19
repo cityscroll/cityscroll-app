@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-18T12:42:30.378Z",
+  "generated_at": "2026-08-19T08:58:10.942Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,7 +9,7 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-08-18",
+    "today": "2026-08-19",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
@@ -4522,7 +4522,7 @@
       "schema_version": 1,
       "source": "zap-api-milestones",
       "project_id": "2023K0203",
-      "project_name": "1 Water Street (Disposition)",
+      "project_name": "1 Water Street - River Cafe (Disposition)",
       "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2023K0203",
       "borough": "Brooklyn",
@@ -5852,7 +5852,7 @@
       "schema_version": 1,
       "source": "zap-api-milestones",
       "project_id": "2023K0203",
-      "project_name": "1 Water Street (Disposition)",
+      "project_name": "1 Water Street - River Cafe (Disposition)",
       "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2023K0203",
       "borough": "Brooklyn",
