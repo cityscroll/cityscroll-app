@@ -1,0 +1,888 @@
+{
+  "schema": "cityscroll.performance.worker_allowlist.v1",
+  "manifest_version": "rum-surfaces-v1",
+  "registry_version": "1.0.0",
+  "registry_hash": "8019c14f8b090c10400c01056fca646a9baa126f6da245491a8fb361d4747b06",
+  "metric_ids": [
+    "cls_score",
+    "component_ready_ms",
+    "content_ready_ms",
+    "fcp_ms",
+    "feedback_to_settled_ms",
+    "first_render_to_main_ms",
+    "inp_ms",
+    "interaction_feedback_ms",
+    "interaction_settled_ms",
+    "lcp_ms",
+    "main_to_useful_ms",
+    "response_to_first_render_ms",
+    "ttfb_ms"
+  ],
+  "delivery_classes": [
+    "hybrid",
+    "pages_edge",
+    "static",
+    "worker_backed"
+  ],
+  "result_states": [
+    "content",
+    "empty",
+    "error",
+    "unavailable"
+  ],
+  "surface_ids": [
+    "about",
+    "agency",
+    "api-guide",
+    "assertion",
+    "browse",
+    "browse-contracts",
+    "browse-exams",
+    "browse-meetings",
+    "browse-people",
+    "browse-places",
+    "browse-property",
+    "browse-rules",
+    "browse-staffing",
+    "browse-zoning",
+    "changelog",
+    "committee",
+    "community-board",
+    "data-guide",
+    "district-digest",
+    "exam",
+    "following",
+    "following-pack",
+    "home",
+    "mandate",
+    "meeting",
+    "near-you",
+    "notice",
+    "now",
+    "official",
+    "parcel",
+    "procurement",
+    "public-stats",
+    "search",
+    "standards",
+    "vendor"
+  ],
+  "component_ids": [
+    "none",
+    "browse-filter-apply",
+    "browse-results",
+    "following-watch-change",
+    "following-watch-list",
+    "home-search-submit",
+    "home-topic-entry",
+    "near-you-borough",
+    "near-you-community-district",
+    "near-you-council-district",
+    "near-you-map",
+    "near-you-scope-change",
+    "notice-context",
+    "search-results",
+    "search-submit"
+  ],
+  "accepted_surface_ids": [
+    "about",
+    "agency",
+    "alerts",
+    "api-guide",
+    "assertion",
+    "browse",
+    "browse-contracts",
+    "browse-exams",
+    "browse-land",
+    "browse-meetings",
+    "browse-money",
+    "browse-people",
+    "browse-places",
+    "browse-property",
+    "browse-rules",
+    "browse-staffing",
+    "browse-zoning",
+    "changelog",
+    "committee",
+    "community-board",
+    "data-guide",
+    "district-digest",
+    "exam",
+    "following",
+    "following-pack",
+    "home",
+    "mandate",
+    "map",
+    "meeting",
+    "near-you",
+    "notice",
+    "now",
+    "official",
+    "parcel",
+    "procurement",
+    "public-stats",
+    "search",
+    "standards",
+    "vendor"
+  ],
+  "accepted_component_ids": [
+    "none",
+    "browse-filter-apply",
+    "browse-results",
+    "following-watch-change",
+    "following-watch-list",
+    "home-search-submit",
+    "home-topic-entry",
+    "near-you-borough",
+    "near-you-cd",
+    "near-you-community-district",
+    "near-you-council-district",
+    "near-you-map",
+    "near-you-scope-change",
+    "notice-context",
+    "search-results",
+    "search-submit"
+  ],
+  "surface_aliases": {
+    "alerts": "following",
+    "browse-land": "browse-zoning",
+    "browse-money": "browse-contracts",
+    "map": "near-you"
+  },
+  "component_aliases": {
+    "near-you-cd": "near-you-community-district"
+  },
+  "surfaces": {
+    "about": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "agency": {
+      "parent": null,
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "api-guide": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "assertion": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "browse": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-contracts": {
+      "parent": "surface:browse",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-exams": {
+      "parent": "surface:browse",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-meetings": {
+      "parent": "surface:browse",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-people": {
+      "parent": "surface:browse",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-places": {
+      "parent": "surface:browse",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-property": {
+      "parent": "surface:browse",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-rules": {
+      "parent": "surface:browse",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-staffing": {
+      "parent": "surface:browse",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-zoning": {
+      "parent": "surface:browse",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "browse-filter-apply",
+        "browse-results"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "changelog": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "committee": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "community-board": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "data-guide": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "district-digest": {
+      "parent": "surface:following",
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "following-watch-change",
+        "following-watch-list"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "exam": {
+      "parent": null,
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "following": {
+      "parent": null,
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "following-watch-change",
+        "following-watch-list"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "following-pack": {
+      "parent": "surface:following",
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "following-watch-change",
+        "following-watch-list"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "home": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "home-search-submit",
+        "home-topic-entry"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "mandate": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "meeting": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "near-you": {
+      "parent": null,
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "near-you-borough",
+        "near-you-community-district",
+        "near-you-council-district",
+        "near-you-map",
+        "near-you-scope-change"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "notice": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "notice-context"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "now": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "official": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "parcel": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "procurement": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "public-stats": {
+      "parent": null,
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "search": {
+      "parent": null,
+      "delivery_class": "worker_backed",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [
+        "search-results",
+        "search-submit"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "standards": {
+      "parent": null,
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    },
+    "vendor": {
+      "parent": null,
+      "delivery_class": "pages_edge",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "allowed_component_ids": [],
+      "lifecycle_state": "planned"
+    }
+  },
+  "components": {
+    "browse-filter-apply": {
+      "kind": "interaction",
+      "parent": "component:browse-results",
+      "applicable_surface_ids": [
+        "browse",
+        "browse-contracts",
+        "browse-exams",
+        "browse-meetings",
+        "browse-people",
+        "browse-places",
+        "browse-property",
+        "browse-rules",
+        "browse-staffing",
+        "browse-zoning"
+      ],
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "browse-results": {
+      "kind": "component",
+      "parent": "surface:browse",
+      "applicable_surface_ids": [
+        "browse",
+        "browse-contracts",
+        "browse-exams",
+        "browse-meetings",
+        "browse-people",
+        "browse-places",
+        "browse-property",
+        "browse-rules",
+        "browse-staffing",
+        "browse-zoning"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "following-watch-change": {
+      "kind": "interaction",
+      "parent": "component:following-watch-list",
+      "applicable_surface_ids": [
+        "district-digest",
+        "following",
+        "following-pack"
+      ],
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "following-watch-list": {
+      "kind": "component",
+      "parent": "surface:following",
+      "applicable_surface_ids": [
+        "district-digest",
+        "following",
+        "following-pack"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "home-search-submit": {
+      "kind": "interaction",
+      "parent": "component:home-topic-entry",
+      "applicable_surface_ids": [
+        "home"
+      ],
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "home-topic-entry": {
+      "kind": "component",
+      "parent": "surface:home",
+      "applicable_surface_ids": [
+        "home"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "near-you-borough": {
+      "kind": "component",
+      "parent": "surface:near-you",
+      "applicable_surface_ids": [
+        "near-you"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "near-you-community-district": {
+      "kind": "component",
+      "parent": "surface:near-you",
+      "applicable_surface_ids": [
+        "near-you"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "near-you-council-district": {
+      "kind": "component",
+      "parent": "surface:near-you",
+      "applicable_surface_ids": [
+        "near-you"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "near-you-map": {
+      "kind": "component",
+      "parent": "surface:near-you",
+      "applicable_surface_ids": [
+        "near-you"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "near-you-scope-change": {
+      "kind": "interaction",
+      "parent": "component:near-you-map",
+      "applicable_surface_ids": [
+        "near-you"
+      ],
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "notice-context": {
+      "kind": "component",
+      "parent": "surface:notice",
+      "applicable_surface_ids": [
+        "notice"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "search-results": {
+      "kind": "component",
+      "parent": "surface:search",
+      "applicable_surface_ids": [
+        "search"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "planned"
+    },
+    "search-submit": {
+      "kind": "interaction",
+      "parent": "component:search-results",
+      "applicable_surface_ids": [
+        "search"
+      ],
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "lifecycle_state": "planned"
+    }
+  }
+}
