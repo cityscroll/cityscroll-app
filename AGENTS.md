@@ -3445,6 +3445,11 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   and no-store, and Analytics Engine credentials server-side. The RUM-07
   byte-level characterization in `worker/test/stats_routes_unchanged.test.mjs`
   protects both `/admin/stats` and public `/stats` from performance fields.
+- The cross-repository Desk handoff is pinned by
+  `data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json`; keep its
+  reference response, edge-state matrix, ops-contract discovery paths, and
+  `worker/test/admin_performance_consumer_contract.test.mjs` aligned. The actual
+  dashboard belongs only in `cityscroll-internal`, never under the public `site/`.
 
 ## Comparative signal admission
 
