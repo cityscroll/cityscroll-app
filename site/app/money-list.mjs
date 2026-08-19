@@ -20,6 +20,7 @@ import {
   vendorStemsFromEntityRefs,
 } from "../resident_snapshot_queries.mjs";
 import { mergeCanonicalProcurementBrowseRows, mergeContractSearchRows } from "../contract_search_bridge.mjs";
+import { renderProcurementRowCoverageHtml } from "../procurement_coverage_labels.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -524,6 +525,7 @@ function moneyRowHTML(r, i, terms){
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
       ${mwbeChips}
       ${actionLocationChip}
+      ${typeof renderProcurementRowCoverageHtml === "function" ? renderProcurementRowCoverageHtml(r, { translate: t }) : ""}
       ${digEvidenceHTML(ev)}
       </div>
     </article>`;

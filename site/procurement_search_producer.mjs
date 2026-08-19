@@ -1,6 +1,10 @@
 /** SearchDocument projection over the observation-fed procurement read model. */
 
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
+import {
+  coverageInputFromProcurement,
+  mapPublisherMethodFamily,
+} from "./procurement_coverage_labels.mjs";
 import { SHARED_PROCUREMENT_READ_MODEL_SCHEMA } from "./shared_procurement_read_model.mjs";
 import {
   SEARCH_DOCUMENT_SCHEMA,
@@ -87,6 +91,18 @@ function processRole(stages) {
   )).at(-1) || null;
 }
 
+function coverageFields(object, observations) {
+  const input = coverageInputFromProcurement(object, observations);
+  const methodFamily = input.method_family || mapPublisherMethodFamily(input.publisher_method);
+  return {
+    ...(methodFamily ? { method_family: methodFamily } : {}),
+    ...(input.procurement_category ? { procurement_category: input.procurement_category } : {}),
+    ...(input.coverage_state && input.coverage_state !== "not_checked"
+      ? { coverage_state: input.coverage_state }
+      : {}),
+  };
+}
+
 function browseRecord(object, observations, stages, evidence, facts) {
   const requestId = evidence.length === 1 ? evidence[0].request_id : null;
   return Object.freeze({
@@ -106,6 +122,7 @@ function browseRecord(object, observations, stages, evidence, facts) {
     selection_method_description: facts.method,
     notice_evidence: Object.freeze(evidence),
     source_systems: Object.freeze([...new Set(observations.map((entry) => entry.source_system))]),
+    ...coverageFields(object, observations),
   });
 }
 
