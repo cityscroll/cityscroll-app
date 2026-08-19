@@ -1,0 +1,235 @@
+{
+  "schema": "cityscroll.comparative_fact_read_model.v1",
+  "method": "materialized_award_rank_receipts_v1",
+  "generated_at": "2026-08-05T10:40:50.286Z",
+  "source_artifact": {
+    "dataset_id": "qyyg-4tf5",
+    "materialized_at": "2026-08-05T10:40:50.286Z",
+    "row_count": 53245
+  },
+  "materialization_scope": {
+    "kind": "subject_allowlist",
+    "subject_ids": [
+      "20240119104"
+    ]
+  },
+  "window": {
+    "start": "2024-01-01",
+    "end": "2026-08-05",
+    "end_inclusive": true
+  },
+  "small_n_policies": {
+    "award_amount_rank": {
+      "id": "award_amount_rank_small_n_v1",
+      "metric_family": "source_bounded_award_rank",
+      "minimum_rank_count": 10,
+      "minimum_percentile_count": 40,
+      "below_rank_minimum": "withhold_fact",
+      "below_percentile_minimum": "rank_only"
+    }
+  },
+  "coverage_receipt": {
+    "schema": "cityscroll.comparative_coverage_receipt.v1",
+    "state": "bounded_complete",
+    "reasons": [],
+    "source_count": 53245,
+    "eligible_count": 8395,
+    "observed_count": 8395,
+    "fact_count": 1,
+    "exclusions_by_reason": {
+      "outside_window": 44837,
+      "unresolved_agency_identity": 1,
+      "invalid_amount": 12
+    },
+    "derived_feature_rollup": {
+      "schema": "cityscroll.derived_feature_rollup.v1",
+      "method": "derived_feature_rollup_incremental_v1",
+      "version": 1,
+      "counts": {
+        "total": 8395,
+        "materialized": 8395,
+        "dated": 8395,
+        "undated": 0,
+        "by_state": {
+          "eligible": 8395
+        },
+        "by_relation": {
+          "comparative_peer": 8395
+        }
+      },
+      "spans": {
+        "valid": {
+          "start": "2024-01-02",
+          "end": "2026-08-04"
+        },
+        "observed": {
+          "start": "2026-08-05",
+          "end": "2026-08-05"
+        },
+        "valid_days": 945,
+        "observed_days": 0
+      },
+      "lifecycle": {
+        "by_bucket": {
+          "current": 0,
+          "historical": 0,
+          "unknown": 8395
+        },
+        "by_stage": {
+          "eligible": 8395
+        },
+        "complete": true
+      },
+      "freshness": {
+        "reference_day": "2026-08-05",
+        "snapshot_day": "2026-08-05",
+        "latest_day": "2026-08-05",
+        "latest_source": "observation",
+        "age_days": 0,
+        "max_age_days": null,
+        "status": "known"
+      }
+    }
+  },
+  "facts": [
+    {
+      "schema": "cityscroll.comparative_fact.v1",
+      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-05",
+      "subject": {
+        "type": "ocp_award",
+        "id": "20240119104",
+        "ref": "ocp_award:20240119104",
+        "label": "Immediate Response Cards and Related Services",
+        "agency_id": "housing-preservation-and-development",
+        "pin": "80624E0027001"
+      },
+      "metric": {
+        "id": "award_amount_rank",
+        "family": "distributional_position",
+        "unit": "USD",
+        "method": "source_bounded_award_amount_rank_v1"
+      },
+      "value": 53000000,
+      "peer_class": {
+        "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-08-05",
+        "metric_family": "source_bounded_award_rank",
+        "object_type": "award",
+        "source_family": "ocp-recent-contract-awards",
+        "peer_dimensions": {
+          "agency_id": "housing-preservation-and-development",
+          "agency_name": "Housing Preservation and Development",
+          "source_family": "ocp-recent-contract-awards",
+          "fiscal_window": null,
+          "method_family": null,
+          "category": null
+        },
+        "observability_equivalence": {
+          "basis": "bounded_complete",
+          "source_contract_versions": [
+            "source_contracts.v1:ocp-recent-contract-awards"
+          ],
+          "source_vintages": [
+            {
+              "source_contract_id": "ocp-recent-contract-awards",
+              "source_contract_schema_version": 1,
+              "dataset_id": "qyyg-4tf5",
+              "materialized_at": "2026-08-05T10:40:50.286Z",
+              "row_count": 53245
+            }
+          ],
+          "acquisition_mode": "bulk_warehouse",
+          "inclusion_rule": "award row in the explicit window with unique request_id, canonical agency, and positive amount below the money-honesty cap",
+          "identity_gate": "unique_request_id_and_reviewed_agency_identity",
+          "join_path": "not_applicable",
+          "observation_quality_class": "source_bounded_positive_observation",
+          "censoring_class": "historical_window_only",
+          "historical_start": "2024-01-01",
+          "historical_end": "2026-08-05"
+        },
+        "eligible_count": 264,
+        "observed_count": 264,
+        "exclusions_by_reason": {},
+        "selected_level": "source_agency_window",
+        "rejected_levels": [],
+        "small_n_policy_id": "award_amount_rank_small_n_v1"
+      },
+      "comparison": {
+        "population": {
+          "object_type": "award",
+          "source_family": "ocp-recent-contract-awards",
+          "agency_id": "housing-preservation-and-development",
+          "agency_name": "Housing Preservation and Development"
+        },
+        "eligible_count": 264,
+        "observed_count": 264,
+        "window": {
+          "start": "2024-01-01",
+          "end": "2026-08-05",
+          "end_inclusive": true
+        },
+        "rank": 4,
+        "tie_count": 1,
+        "percentile": 98.86,
+        "percentile_status": "available"
+      },
+      "observation": {
+        "basis": "bounded_complete",
+        "negative_inference": "forbidden",
+        "eligible_count": 264,
+        "observed_count": 264,
+        "eligible_population": {
+          "object_type": "award",
+          "source_family": "ocp-recent-contract-awards",
+          "agency_id": "housing-preservation-and-development",
+          "agency_name": "Housing Preservation and Development"
+        },
+        "observed_population": {
+          "object_type": "award",
+          "source_family": "ocp-recent-contract-awards",
+          "agency_id": "housing-preservation-and-development",
+          "agency_name": "Housing Preservation and Development"
+        },
+        "known_selection_factors": [
+          "OCP Recent Contract Awards source only",
+          "explicit historical window",
+          "resolved agency identities only",
+          "positive amounts below the money-honesty cap only",
+          "unique request identifiers only"
+        ],
+        "source_vintages": [
+          {
+            "source_contract_id": "ocp-recent-contract-awards",
+            "source_contract_schema_version": 1,
+            "dataset_id": "qyyg-4tf5",
+            "materialized_at": "2026-08-05T10:40:50.286Z",
+            "row_count": 53245
+          }
+        ]
+      },
+      "evidence": [
+        {
+          "kind": "source_row",
+          "source_contract_id": "ocp-recent-contract-awards",
+          "dataset_id": "qyyg-4tf5",
+          "source_row_id": "20240119104",
+          "source_row_date": "2024-01-25",
+          "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+          "materialized_at": "2026-08-05T10:40:50.286Z"
+        }
+      ],
+      "provenance": {
+        "compiler_method": "source_bounded_award_amount_rank_v1",
+        "source_contract": {
+          "id": "ocp-recent-contract-awards",
+          "schema_version": 1
+        },
+        "source_artifact": {
+          "dataset_id": "qyyg-4tf5",
+          "materialized_at": "2026-08-05T10:40:50.286Z",
+          "row_count": 53245
+        }
+      },
+      "generated_at": "2026-08-05T10:40:50.286Z"
+    }
+  ]
+}
