@@ -1,0 +1,171 @@
+{
+  "schema": "cityscroll.geography_layer_registry.v1",
+  "generated_at": "2026-08-19T00:02:54.057Z",
+  "layers": [
+    {
+      "type": "borough",
+      "class": "administrative",
+      "namespace": "nyc-dcp:borough",
+      "canonical_id": {
+        "source_field": "boro_code",
+        "pattern": "^[1-5]$"
+      },
+      "label": {
+        "source_field": "boro_name",
+        "template": "{label}"
+      },
+      "source": {
+        "contract_id": "community-district-boundaries",
+        "publisher": "NYC Department of City Planning",
+        "dataset_id": "5crt-au7u",
+        "dataset_name": "Community Districts",
+        "url": "https://data.cityofnewyork.us/d/5crt-au7u",
+        "updated_at": "2026-05-26T19:36:29.000Z",
+        "derivation": "borough_code_partition_from_community_district_boundaries"
+      },
+      "boundary_vintage": "2026-05-26",
+      "cardinality": "exactly_one_on_covered_land",
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 5,
+        "comparison": "exact",
+        "actual_feature_count": 5
+      },
+      "freshness": {
+        "max_stale_days": 730
+      },
+      "public_relations": [
+        "located_in",
+        "intersects"
+      ],
+      "declared_uses": [
+        "resolver"
+      ],
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/borough/2026-05-26.full.json",
+          "sha256": "b2e7e038a50fc7f8df27e7ef3005153d55fd5d0e56ffd579b1773315d075b137",
+          "bytes": 3784020,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/borough/2026-05-26.json",
+          "worker_path": "worker/src/data/geography/layers/borough/2026-05-26.json",
+          "sha256": "d7bb3d71c4e2eec5ea0822b6579f5007a005e3e44b63e6aa9177dd1062214ae4",
+          "bytes": 98592,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    },
+    {
+      "type": "community_district",
+      "class": "community_administrative",
+      "namespace": "nyc-dcp:community-district",
+      "canonical_id": {
+        "source_field": "boro_cd",
+        "pattern": "^(?:M|X|K|Q|R)\\d{2}$"
+      },
+      "label": {
+        "source_field": "boro_cd",
+        "template": "{borough} Community District {number}"
+      },
+      "source": {
+        "contract_id": "community-district-boundaries",
+        "publisher": "NYC Department of City Planning",
+        "dataset_id": "5crt-au7u",
+        "dataset_name": "Community Districts",
+        "url": "https://data.cityofnewyork.us/d/5crt-au7u",
+        "updated_at": "2026-05-26T19:36:29.000Z"
+      },
+      "boundary_vintage": "2026-05-26",
+      "cardinality": "exactly_one_regular_or_special_area_on_covered_land",
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 59,
+        "comparison": "at_least",
+        "actual_feature_count": 71
+      },
+      "freshness": {
+        "max_stale_days": 730
+      },
+      "public_relations": [
+        "located_in",
+        "intersects"
+      ],
+      "declared_uses": [
+        "resolver",
+        "compatibility_projection"
+      ],
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/community_district/2026-05-26.full.json",
+          "sha256": "07b00972e656fe9ef51e38510cabc42b10368fa1db87d24d5ff1f8c32b8b8ca8",
+          "bytes": 3805055,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/community_district/2026-05-26.json",
+          "worker_path": "worker/src/data/geography/layers/community_district/2026-05-26.json",
+          "sha256": "06834ec552cbd0c158a902c2298643beb3016d035f7e22b2bc6cfb923df536ed",
+          "bytes": 117203,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    },
+    {
+      "type": "council_district",
+      "class": "political",
+      "namespace": "nyc-dcp:city-council-district",
+      "canonical_id": {
+        "source_field": "coundist",
+        "pattern": "^(?:[1-9]|[1-4]\\d|5[01])$"
+      },
+      "label": {
+        "source_field": "coundist",
+        "template": "City Council District {id}"
+      },
+      "source": {
+        "contract_id": "city-council-district-boundaries",
+        "publisher": "NYC Department of City Planning",
+        "dataset_id": "872g-cjhh",
+        "dataset_name": "City Council Districts",
+        "url": "https://data.cityofnewyork.us/d/872g-cjhh",
+        "updated_at": "2026-05-26T19:35:31.000Z"
+      },
+      "boundary_vintage": "2026-05-26",
+      "cardinality": "exactly_one_on_covered_land",
+      "coverage": {
+        "status": "complete",
+        "expected_feature_count": 51,
+        "comparison": "exact",
+        "actual_feature_count": 51
+      },
+      "freshness": {
+        "max_stale_days": 730
+      },
+      "public_relations": [
+        "located_in",
+        "intersects"
+      ],
+      "declared_uses": [
+        "resolver",
+        "compatibility_projection"
+      ],
+      "artifacts": {
+        "full": {
+          "path": "data/geography/layers/council_district/2026-05-26.full.json",
+          "sha256": "207205e5c4c48f45869737793552ed6d8ab4c346b36512e67dcad25656d91242",
+          "bytes": 3832341,
+          "geometry_fidelity": "full"
+        },
+        "simplified": {
+          "site_path": "site/data/geography/layers/council_district/2026-05-26.json",
+          "worker_path": "worker/src/data/geography/layers/council_district/2026-05-26.json",
+          "sha256": "175cd464f0af2b05d0487b6a7ffabf3662a094b405f77243288e96856b03d2b6",
+          "bytes": 114996,
+          "geometry_fidelity": "simplified"
+        }
+      }
+    }
+  ]
+}
