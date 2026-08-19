@@ -14,6 +14,7 @@ import {
   validateCapabilityRegistry,
 } from "../capabilities/registry.mjs";
 import {
+  MCP_CITED_PASSAGES_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
@@ -58,6 +59,7 @@ export function validateRuntimeTopology() {
     MCP_NOTICE_SEARCH_ADAPTER,
     ENTITY_DOSSIER_HTTP_ADAPTER,
     ENTITY_RELATIONSHIPS_HTTP_ADAPTER,
+    MCP_CITED_PASSAGES_ADAPTER,
   ];
   for (const runtimeAdapter of runtimeAdapters) {
     const registered = registeredAdapters.get(runtimeAdapter.id);

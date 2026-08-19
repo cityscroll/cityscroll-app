@@ -19,10 +19,16 @@ import {
   NOTICE_SEARCH_LIMITS,
 } from "../../capabilities/notice_search.mjs";
 import {
+  executeCitedPassages,
+  CITED_PASSAGES_LIMITS,
+  CITED_PASSAGES_SOURCE_FAMILIES,
+} from "../../capabilities/cited_passages.mjs";
+import {
   MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
 export {
+  MCP_CITED_PASSAGES_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
@@ -34,8 +40,7 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
-import { retrieveCitedPassages } from "./cited_retrieval.mjs";
-import { SEMANTIC_SOURCE_FAMILIES } from "./semantic_candidates.mjs";
+import { workerCitedPassages } from "./cited_retrieval.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
@@ -85,6 +90,25 @@ export function formatMcpNoticeSearchResult(result) {
     return "No matches in the mirror (it holds recent notices; the site searches the full record).";
   }
   return result.results.map(fmtRecord).join("\n\n");
+}
+
+export function mcpCitedPassagesInput(args = {}) {
+  const query = String(args.query || "").trim();
+  const sourceFamily = String(args.source_family || "").trim() || null;
+  const bodyId = String(args.body_id || "").trim() || null;
+  const publishedFrom = String(args.published_from || "").trim() || null;
+  const publishedTo = String(args.published_to || "").trim() || null;
+  const limit = args.limit == null ? CITED_PASSAGES_LIMITS.defaultResults : Number(args.limit);
+  return {
+    query,
+    filters: {
+      source_family: sourceFamily,
+      body_id: bodyId,
+      published_from: publishedFrom,
+      published_to: publishedTo,
+    },
+    limit,
+  };
 }
 
 async function fetchSodaRows(url, params) {
@@ -143,13 +167,13 @@ async function callTool(env, req, name, args) {
       }
       const query = String(args.query || "").trim();
       if (!query) return toolError("query is required.");
-      if (query.length > 240) return toolError("query must be 240 characters or fewer.");
+      if (query.length > CITED_PASSAGES_LIMITS.queryMaximumLength) return toolError("query must be 240 characters or fewer.");
       const sourceFamily = String(args.source_family || "").trim() || null;
-      if (sourceFamily && !SEMANTIC_SOURCE_FAMILIES.includes(sourceFamily)) {
+      if (sourceFamily && !CITED_PASSAGES_SOURCE_FAMILIES.includes(sourceFamily)) {
         return toolError("source_family is not part of the cited retrieval corpus.");
       }
       const bodyId = String(args.body_id || "").trim() || null;
-      if (bodyId && bodyId.length > 120) return toolError("body_id must be 120 characters or fewer.");
+      if (bodyId && bodyId.length > CITED_PASSAGES_LIMITS.bodyIdMaximumLength) return toolError("body_id must be 120 characters or fewer.");
       const publishedFrom = String(args.published_from || "").trim() || null;
       const publishedTo = String(args.published_to || "").trim() || null;
       if (publishedFrom && !validIsoDate(publishedFrom)) return toolError("published_from must be a date.");
@@ -158,19 +182,13 @@ async function callTool(env, req, name, args) {
         return toolError("published_from must not be after published_to.");
       }
       const rawLimit = args.limit == null ? 10 : Number(args.limit);
-      if (!Number.isInteger(rawLimit) || rawLimit < 1 || rawLimit > 20) {
+      if (!Number.isInteger(rawLimit) || rawLimit < 1 || rawLimit > CITED_PASSAGES_LIMITS.maximumResults) {
         return toolError("limit must be a whole number from 1 through 20.");
       }
-      const result = retrieveCitedPassages({
-        query,
-        filters: {
-          source_family: sourceFamily,
-          body_id: bodyId,
-          published_from: publishedFrom,
-          published_to: publishedTo,
-        },
-        limit: rawLimit,
-      });
+      const result = await executeCitedPassages(
+        workerCitedPassages(),
+        mcpCitedPassagesInput(args),
+      );
       const count = result.citations.length;
       return {
         content: [{

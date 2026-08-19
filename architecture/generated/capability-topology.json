@@ -183,6 +183,71 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "cited.passages.retrieve@1",
+      "id": "cited.passages.retrieve",
+      "version": "1.0.0",
+      "owner": "semantic-retrieval",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none",
+        "semantics": "retrieval evidence only; no answer or inferred civic relationship"
+      },
+      "cost": {
+        "class": "bounded-committed-corpus-read",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.cited_passages_retrieve.input.v1",
+      "output_schema": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+      "availability": [
+        "partial",
+        "complete",
+        "unknown"
+      ],
+      "provenance": {
+        "citationIdentity": "citations[].citation_id",
+        "sourceIdentity": "citations[].source.id + citations[].source.url",
+        "passageIdentity": "citations[].passage.id",
+        "exactJoinEvidence": "citations[].exact_join_evidence",
+        "corpusReceipt": "retrieval.corpus.manifest_sha256 + retrieval.corpus.content_sha256",
+        "passageMapReceipt": "retrieval.index.version + retrieval.index.corpus_sha256"
+      },
+      "freshness": {
+        "owner": "committed semantic retrieval corpus manifest and source-passage map",
+        "projection": "citation freshness plus corpus and passage-map observation clocks"
+      },
+      "provider": {
+        "id": "worker-semantic.cited-passages",
+        "module": "worker/src/cited_retrieval.mjs",
+        "export": "workerCitedPassages",
+        "store": "committed semantic retrieval corpus",
+        "readModel": "typed candidates joined exactly to source passages and corpus manifest records"
+      },
+      "adapters": [
+        {
+          "id": "mcp.retrieve_cited_passages@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "retrieve_cited_passages",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "structured-content",
+              "mediaType": "application/json",
+              "projection": "byte-identical cited passage response"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "meaning-compatible bounded result count"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
@@ -210,10 +275,10 @@
       {
         "name": "retrieve_cited_passages",
         "operation_class": "read",
-        "schema_reference": "cityscroll.semantic_retrieval.cited_passage_response.v1",
-        "capability_reference": null,
-        "adapter_id": null,
-        "contract_reference": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+        "schema_reference": "cited.passages.retrieve@1",
+        "capability_reference": "cited.passages.retrieve@1",
+        "adapter_id": "mcp.retrieve_cited_passages@1",
+        "contract_reference": null,
         "pilot_exception": null
       },
       {

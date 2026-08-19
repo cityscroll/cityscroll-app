@@ -5,7 +5,8 @@
   "registered_capability_references": [
     "notice.search@1",
     "entity.dossier.get@1",
-    "entity.relationships.get@1"
+    "entity.relationships.get@1",
+    "cited.passages.retrieve@1"
   ],
   "tools": [
     {
@@ -26,8 +27,8 @@
       "name": "retrieve_cited_passages",
       "operation_class": "read",
       "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
-      "schema_reference": "cityscroll.semantic_retrieval.cited_passage_response.v1",
-      "capability_reference": null
+      "schema_reference": "cited.passages.retrieve@1",
+      "capability_reference": "cited.passages.retrieve@1"
     },
     {
       "name": "preview_watch",
