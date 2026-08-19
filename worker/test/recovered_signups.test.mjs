@@ -12,7 +12,11 @@ import {
   signupLifecycleFromRecord,
   subscriptionKey,
 } from "../src/lib/subscriptions.mjs";
-import { recoverDeprecatedDoubleOptIn } from "../src/recovered_signups.mjs";
+import {
+  recoverDeprecatedDoubleOptIn,
+  VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST,
+  VETTED_RECOVERED_SIGNUP_EMAILS,
+} from "../src/recovered_signups.mjs";
 import { isWatchActive } from "../src/lib/rollup.mjs";
 import { toRosterRow } from "../src/lib/digest_ops.mjs";
 
@@ -29,38 +33,22 @@ function environment() {
   return { ADMIN_KEY: "secret", SUBS: new KV(), ALERT_STATE: new KV() };
 }
 
-const RECOVERED_REAL = [
-  ["shelly.ronen@gmail.com", "2026-08-16T23:22:22.092Z"],
-  ["ninodepaola@gmail.com", "2026-08-18T15:58:35.654Z"],
-  ["devinbalkind@gmail.com", "2026-08-18T21:45:33.701Z"],
-];
 const TEST_EMAIL = "jamesca2ro+scope-watch-e2e-20260806@gmail.com";
-const ROWS = RECOVERED_REAL.map(([email, original_signup_at]) => ({
-  email, lens: "money", filter: {}, freq: "weekly", original_signup_at,
-}));
-ROWS.push({
-  email: TEST_EMAIL,
-  lens: "money",
-  filter: {
-    agency: "Housing Preservation and Development",
-    noticeType: "award",
-    entity_refs_all: ["agency:id:housing-preservation-and-development"],
-    connection_relation: "published_by_agency",
-  },
-  freq: "daily",
-  original_signup_at: "2026-08-06T01:48:49.718Z",
-});
 
 async function recover(env) {
-  return recoverDeprecatedDoubleOptIn(env, ROWS, { now: new Date("2026-08-18T23:00:00.000Z") });
+  return recoverDeprecatedDoubleOptIn(env, { now: new Date("2026-08-18T23:00:00.000Z") });
 }
 
-async function recoverThroughAdmin(env) {
-  return handleAdminDeprecatedOptInRecovery(new Request("https://worker/admin/recover-deprecated-opt-in?key=secret", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ rows: ROWS }),
-  }), env);
+async function recoverThroughAdmin(env, body) {
+  const init = { method: "POST" };
+  if (body !== undefined) {
+    init.headers = { "content-type": "application/json" };
+    init.body = JSON.stringify(body);
+  }
+  return handleAdminDeprecatedOptInRecovery(
+    new Request("https://worker/admin/recover-deprecated-opt-in?key=secret", init),
+    env,
+  );
 }
 
 test("recovery enrolls three broad watches, watermarks next-send state, and excludes the e2e account", async () => {
@@ -87,7 +75,7 @@ test("recovery enrolls three broad watches, watermarks next-send state, and excl
   }
   assert.deepEqual(
     subs.map(([, raw]) => JSON.parse(raw).email).sort(),
-    RECOVERED_REAL.map(([email]) => email).sort(),
+    [...VETTED_RECOVERED_SIGNUP_EMAILS].sort(),
   );
   assert.equal(subs.some(([, raw]) => JSON.parse(raw).email.includes("scope-watch")), false);
   const developer = [...env.SUBS.data.entries()].filter(([key]) => key.startsWith("developer-test-account:"));
@@ -212,24 +200,54 @@ test("signup lifecycle distinguishes recovered, pending-enrollment, enrolled, an
   assert.equal(roster.recovery_explanation, RECOVERY_EXPLANATION);
 });
 
-test("the authenticated admin endpoint accepts only the bounded four-row recovery manifest", async () => {
-  const env = environment();
+test("the authenticated admin endpoint applies the vetted manifest even with no or partial caller rows", async () => {
   const denied = await handleAdminDeprecatedOptInRecovery(new Request("https://worker/admin/recover-deprecated-opt-in?key=wrong", {
     method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ rows: ROWS }),
-  }), env);
+  }), environment());
   assert.equal(denied.status, 401);
 
-  const invalid = await handleAdminDeprecatedOptInRecovery(new Request("https://worker/admin/recover-deprecated-opt-in?key=secret", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ rows: ROWS.slice(0, 3) }),
-  }), env);
-  assert.equal(invalid.status, 400);
-
-  const accepted = await recoverThroughAdmin(environment());
+  const empty = environment();
+  const accepted = await recoverThroughAdmin(empty);
   assert.equal(accepted.status, 200);
+  const acceptedBody = await accepted.json();
+  assert.equal(acceptedBody.recovered, 3);
+  assert.deepEqual(acceptedBody.emails.sort(), [...VETTED_RECOVERED_SIGNUP_EMAILS].sort());
+
+  const partial = environment();
+  const ignoredCallerRows = await recoverThroughAdmin(partial, {
+    rows: VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST.filter((row) => row.email === "devinbalkind@gmail.com"),
+  });
+  assert.equal(ignoredCallerRows.status, 200);
+  const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), partial)).json();
+  assert.equal(ops.recoveredPendingCount, 3);
+  assert.deepEqual(
+    [...partial.SUBS.data.values()].filter((raw) => {
+      try { return JSON.parse(raw).source === DEPRECATED_OPT_IN_RECOVERY_SOURCE && JSON.parse(raw).email; }
+      catch { return false; }
+    }).map((raw) => JSON.parse(raw).email).filter((email) => !email.includes("+")).sort(),
+    [...VETTED_RECOVERED_SIGNUP_EMAILS].sort(),
+  );
+});
+
+test("recovery creates pending-enrollment records for all three vetted addresses from an empty store", async () => {
+  const env = environment();
+  const result = await recoverDeprecatedDoubleOptIn(env, { now: new Date("2026-08-18T23:00:00.000Z") });
+  assert.equal(result.recovered, 3);
+  assert.deepEqual(result.emails.sort(), [...VETTED_RECOVERED_SIGNUP_EMAILS].sort());
+  const recoveredEmails = [...env.SUBS.data.entries()]
+    .filter(([key]) => key.startsWith("sub:"))
+    .map(([, raw]) => JSON.parse(raw))
+    .filter((row) => row.status === SIGNUP_LIFECYCLE.PENDING_ENROLLMENT)
+    .map((row) => row.email)
+    .sort();
+  assert.deepEqual(recoveredEmails, [...VETTED_RECOVERED_SIGNUP_EMAILS].sort());
+  const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
+  assert.equal(ops.recoveredPendingCount, 3);
+  assert.deepEqual(ops.recoveredPending.map((row) => row.email).sort(), [
+    "de***@gmail.com",
+    "ni***@gmail.com",
+    "sh***@gmail.com",
+  ]);
 });
 
 test("the recovery entitlement watermark excludes backlog and admits only later notices", () => {

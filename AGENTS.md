@@ -2223,10 +2223,15 @@ sub record; deprecated-double-opt-in recovery writes a marker-only
 `developer-test-account:` row instead of a watch.
 
 Recovered stranded signups keep `source: recovered-from-deprecated-double-opt-in`.
-`signupLifecycleFromRecord` projects `recovered` / `pending-enrollment` until a
-digest day after the recovery watermark, then `enrolled`. Topicless homepage
-intents stay `confirmed`. Proof: `worker/test/recovered_signups.test.mjs`,
-`worker/test/subscriptions.test.mjs`, `worker/test/rollup.test.mjs`.
+`recoverDeprecatedDoubleOptIn` always applies the committed four-row manifest in
+`worker/src/lib/deprecated_opt_in_recovery_manifest.mjs` (three real addresses plus
+the e2e test marker). Caller-supplied rows cannot shrink that set. The daily
+digest cron applies it fail-soft after `runAlerts`; `POST /admin/recover-deprecated-opt-in`
+uses the same path. `signupLifecycleFromRecord` projects `recovered` /
+`pending-enrollment` until a digest day after the recovery watermark, then
+`enrolled`. Topicless homepage intents stay `confirmed`. Proof:
+`worker/test/recovered_signups.test.mjs`, `worker/test/subscriptions.test.mjs`,
+`worker/test/rollup.test.mjs`.
 
 ## Magic-link session + server pins
 

@@ -227,16 +227,15 @@ export async function handleAdminSubs(req, env) {
   }, 200);
 }
 
-// POST /admin/recover-deprecated-opt-in?key=… — bounded, idempotent recovery. The private
-// manifest stays outside the repository; this endpoint never sends email itself.
+// POST /admin/recover-deprecated-opt-in?key=… — bounded, idempotent recovery. Always applies
+// the committed four-row vetted reconstruction manifest. Caller rows cannot shrink the set
+// and the endpoint never sends email itself.
 export async function handleAdminDeprecatedOptInRecovery(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
-  let body;
-  try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
   try {
-    const result = await recoverDeprecatedDoubleOptIn(env, body?.rows);
+    const result = await recoverDeprecatedDoubleOptIn(env);
     return json({ ...result, explanation: RECOVERY_EXPLANATION }, 200);
   } catch (error) {
     return json({ error: "invalid-recovery", detail: String(error?.message || error) }, 400);
