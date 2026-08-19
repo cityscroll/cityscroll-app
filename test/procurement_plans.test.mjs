@@ -64,7 +64,7 @@ from procurement_plans import build_bridge_measurement, join_plan_id_to_target_i
 fixture = json.load(open("warehouse/fixtures/procurement-plans/collector.json"))
 measurement, edges = build_bridge_measurement(
     fixture["bridge_plans"], fixture["bridge_targets"],
-    sample_size=4, usefulness_threshold=0.30,
+    sample_size=4, sample_method="fixed_sorted", usefulness_threshold=0.30,
     review_labels=fixture["review_labels"],
 )
 ll1_city = measurement["paths"]["mocs_ll1_to_city_record"]
@@ -123,6 +123,158 @@ print("OK")
   assert.match(result.stdout, /OK/);
 });
 
+test("RC-1 accepts exact and bounded EPIN-prefix joins and samples PIN-bearing plans", () => {
+  const result = python(`
+import json, sys
+sys.path.insert(0, "warehouse/lib")
+sys.path.insert(0, "warehouse/scripts")
+from procurement_plans import (
+    build_bridge_measurement,
+    join_plan_id_to_target_ids,
+    rest_ok_for_prefix_join,
+)
+from procurement_plans_run import parse_args
+
+# Exact equality and bounded prefix (product passport rest_ok tails).
+exact = join_plan_id_to_target_ids("06823P0008001", {"06823P0008001"}, {})
+assert exact and exact[0] == ("deterministic_identifier", "06823P0008001")
+prefix = join_plan_id_to_target_ids(
+    "06823P0008",
+    {"06823P0008001"},
+    {"06823P0008": ["06823P0008001"]},
+)
+assert prefix and prefix[0] == ("pin_prefix_of_epin", "06823P0008001")
+assert rest_ok_for_prefix_join("001") is True
+assert rest_ok_for_prefix_join("HELLO") is False
+assert join_plan_id_to_target_ids(
+    "06823P0008",
+    {"06823P0008HELLO"},
+    {"06823P0008": ["06823P0008HELLO"]},
+) == []
+
+# Shared 8-char stem must not over-match a different EPIN serial.
+plans = [
+    {
+        "source_record_id": "mocs_ll63:FY27NDCAS1",
+        "source": "mocs_ll63",
+        "source_url": "https://example.test/ll63.xlsx",
+        "agency": "Administration for Children's Services",
+        "description": "New consulting",
+        "term_start": "2027-04-01",
+        "published_identifiers": [],
+    },
+    {
+        "source_record_id": "mocs_ll63:FY27NDCAS2",
+        "source": "mocs_ll63",
+        "source_url": "https://example.test/ll63.xlsx",
+        "agency": "Administration for Children's Services",
+        "description": "New facilities",
+        "term_start": "2027-04-01",
+        "published_identifiers": [],
+    },
+    {
+        "source_record_id": "mocs_ll63:FY27NDCAS3",
+        "source": "mocs_ll63",
+        "source_url": "https://example.test/ll63.xlsx",
+        "agency": "Administration for Children's Services",
+        "description": "New training",
+        "term_start": "2027-04-01",
+        "published_identifiers": [],
+    },
+    {
+        "source_record_id": "mocs_ll63:FY27NDCAS4",
+        "source": "mocs_ll63",
+        "source_url": "https://example.test/ll63.xlsx",
+        "agency": "Administration for Children's Services",
+        "description": "New security",
+        "term_start": "2027-04-01",
+        "published_identifiers": [],
+    },
+    {
+        "source_record_id": "mocs_ll63:FY27RNACS8",
+        "source": "mocs_ll63",
+        "source_url": "https://example.test/ll63.xlsx",
+        "agency": "Administration for Children's Services",
+        "description": "Renewal consulting",
+        "term_start": "2026-07-01",
+        "published_identifiers": ["06823P0008"],
+    },
+    {
+        "source_record_id": "mocs_ll63:FY27RNACS9",
+        "source": "mocs_ll63",
+        "source_url": "https://example.test/ll63.xlsx",
+        "agency": "Administration for Children's Services",
+        "description": "Exact registered EPIN",
+        "term_start": "2026-07-01",
+        "published_identifiers": ["06823P0008001"],
+    },
+]
+targets = [
+    {
+        "source": "passport_contract",
+        "target_id": "hit-prefix",
+        "source_url": "https://a0333-passportpublic.nyc.gov/",
+        "agency": "Administration for Children's Services",
+        "title": "KPMG LLP",
+        "date": "2026-08-01",
+        "identifiers": ["06823P0008001"],
+    },
+    {
+        "source": "passport_contract",
+        "target_id": "miss-sibling",
+        "source_url": "https://a0333-passportpublic.nyc.gov/",
+        "agency": "Administration for Children's Services",
+        "title": "Different serial",
+        "date": "2026-08-01",
+        "identifiers": ["06823P0099001"],
+    },
+    {
+        "source": "passport_contract",
+        "target_id": "miss-other",
+        "source_url": "https://a0333-passportpublic.nyc.gov/",
+        "agency": "Department of Transportation",
+        "title": "Unrelated EPIN",
+        "date": "2026-08-01",
+        "identifiers": ["84121B0051001"],
+    },
+]
+
+# Legacy first-N ASC sample is empty of PIN-bearing renewals, so it cannot join.
+m_fixed, e_fixed = build_bridge_measurement(
+    plans, targets, sample_size=4, sample_method="fixed_sorted",
+)
+ll63_fixed = m_fixed["paths"]["mocs_ll63_to_passport"]
+assert m_fixed["sample"]["method"] == "fixed_sorted_modern_sample"
+assert ll63_fixed["total"] == 4 and ll63_fixed["joined"] == 0
+assert ll63_fixed["materialize"] is False
+assert e_fixed == []
+
+# PIN-bearing sample is the production denominator.
+m_id, e_id = build_bridge_measurement(
+    plans, targets, sample_size=4, sample_method="identifier_bearing",
+    materialize_population=True,
+)
+ll63_id = m_id["paths"]["mocs_ll63_to_passport"]
+assert m_id["sample"]["method"] == "identifier_bearing_plan_sample"
+assert ll63_id["total"] == 2
+assert ll63_id["joined"] == 2
+assert ll63_id["materialize"] is True
+assert ll63_id["method_counts"].get("pin_prefix_of_epin", 0) >= 1
+assert ll63_id["method_counts"].get("deterministic_identifier", 0) >= 1
+ids = {edge["target_id"] for edge in e_id}
+assert "hit-prefix" in ids
+assert "miss-sibling" not in ids
+assert "miss-other" not in ids
+
+# Live collector defaults to the PIN-bearing sample; fixtures keep the old sort.
+assert parse_args([]).sample_method == "identifier_bearing"
+assert parse_args(["--from-fixture"]).sample_method == "fixed_sorted"
+print("OK")
+`);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stdout, /OK/);
+});
+
 test("RC-1 collector is checkpointed, polite, host-side, and creates the warehouse contract", () => {
   const runner = readFileSync(
     join(WAREHOUSE, "scripts", "procurement_plans_run.py"),
@@ -139,6 +291,7 @@ test("RC-1 collector is checkpointed, polite, host-side, and creates the warehou
   assert.match(runner, /procurement_plan_bridge_edges/);
   assert.match(runner, /procurement_planning_thread_lookup\.json/);
   assert.match(runner, /build_thread_lookup\(payload\)/);
+  assert.match(runner, /identifier_bearing/);
   assert.doesNotMatch(runner, /wrangler|document\.querySelector|innerHTML/);
 });
 

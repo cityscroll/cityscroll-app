@@ -650,14 +650,14 @@ def build_bridge_measurement(
     usefulness_threshold: float = USEFULNESS_THRESHOLD,
     precision_threshold: float = PRECISION_THRESHOLD,
     review_labels: dict[str, dict[str, Any]] | None = None,
-    sample_method: str = "fixed_sorted",
+    sample_method: str = "identifier_bearing",
     materialize_population: bool = False,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     """Measure, review, and gate each plan-source → target-source path.
 
     Usefulness denominators follow sample_method:
-      fixed_sorted — first N plans by source_record_id (legacy default)
-      identifier_bearing — only PIN/EPIN-bearing plans (correct RC-1 bridge denom)
+      identifier_bearing — only PIN/EPIN-bearing plans (production default)
+      fixed_sorted — first N plans by source_record_id (legacy contrast / fixtures)
 
     Prefer product passport identifier strategies (exact + prefix) over naive
     exact equality alone. Fuzzy agency+title+time still needs explicit labels.

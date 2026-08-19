@@ -16,6 +16,7 @@ import {
   cleanUrl,
 } from "../worker/src/lib/ulurp_recommendations_join.mjs";
 import { loadSourceContracts } from "../tools/source_contracts.mjs";
+import { evaluateUlurpRecommendationGate } from "../ontology/join_gate_policy.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const cases = JSON.parse(
@@ -141,6 +142,19 @@ test("historical 2026-07-30 receipt recorded ZAP-universe catalog coverage below
   assert.equal(receipt.curl_verified.pdfs.resource_sample_http, 200);
   assert.match(receipt.curl_verified.recommendations.metadata_sha256, /^[a-f0-9]{64}$/);
   assert.match(receipt.curl_verified.pdfs.sample_sha256, /^[a-f0-9]{64}$/);
+});
+
+test("usefulness gate counts recommendation rows, not the ZAP universe", () => {
+  const jm = receipt.join_measurement;
+  const gate = evaluateUlurpRecommendationGate(jm.rates);
+  assert.equal(gate.selected.id, "recommendation_rows_hit_zap");
+  assert.equal(gate.selected.joined, 80);
+  assert.equal(gate.selected.total, 91);
+  assert.notEqual(gate.selected.total, jm.rates.zap_ulurp_numbered_either.total);
+  assert.equal(jm.rates.zap_ulurp_numbered_either.total, 27971);
+  assert.ok(gate.selected.rate >= 0.3);
+  assert.equal(gate.materialize, true);
+  assert.ok(gate.contrast.some((row) => row.id === "zap_ulurp_numbered_either"));
 });
 
 test("source contracts are live after recommendation-row re-gate", () => {
