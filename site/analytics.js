@@ -16,6 +16,7 @@
   ]);
 
   function surface() {
+    if (/^\/experimental\/worth-a-look(?:\/|$)/.test(location.pathname)) return "worth-a-look";
     const documentRoute = location.pathname.match(/^\/(now|near-you|following|browse)(?:\/|$)/)?.[1];
     if (documentRoute) return documentRoute;
     const page = location.pathname.split("/").pop() || "index.html";
@@ -144,6 +145,9 @@
 
   window.crolAnalytics = Object.freeze({ record });
   record("page_view", { surface: surface() });
+  document.querySelectorAll("[data-story-signal-card]").forEach(() => {
+    record("comparative_signal_shown", { detail: "visible", surface: "worth-a-look" });
+  });
   recordDeepLink();
   window.addEventListener("hashchange", recordDeepLink);
 })();

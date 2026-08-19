@@ -127,7 +127,8 @@ test("the handoff routes through the existing workspace, shared import, exports,
   for (const heading of ["Claim", "Subject", "Peer set", "Comparison receipt", "Evidence"]) {
     assert.match(workspace, new RegExp(`\\["${heading}"`));
   }
-  assert.match(workspace, /record\("investigation_share",\{detail:"add_signal",surface:"home"\}\)/);
+  assert.match(workspace, /if\(added\)\{[\s\S]*record\("investigation_share",\{detail:"add_signal",surface:"home"\}\)/,
+    "the aggregate numerator counts successful adds, not duplicate attempts");
   assert.doesNotMatch(workspace, /crd_(?:story|signal|newsroom|research_package)/,
     "the handoff must not create a parallel local-storage subsystem");
 });

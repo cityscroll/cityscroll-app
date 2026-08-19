@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.comparative_signal_evaluation_cases.v1",
+  "evaluation_id": "comparative-pilots-2026-08-19",
+  "evaluated_at": "2026-08-19T16:00:00.000Z",
+  "reviews": [
+    {
+      "case_id": "award_amount_rank:20240119104",
+      "metric_family": "source_bounded_award_rank",
+      "inspection_verdict": "supported",
+      "expected": {
+        "subject_id": "20240119104",
+        "value": 53000000,
+        "rank": 4,
+        "observed_count": 264,
+        "agency": "Housing Preservation and Development"
+      },
+      "basis": "The committed comparative receipt reproduces the amount, ordinal rank, bounded peer count, agency, source, and observed window."
+    },
+    {
+      "case_id": "registered_amount_change:CT110220271400286",
+      "metric_family": "within_contract_registered_amount_change",
+      "inspection_verdict": "supported",
+      "expected": {
+        "subject_id": "CT110220271400286",
+        "original_amount": 76476,
+        "current_amount": 82191,
+        "delta": 5715,
+        "agency": "City Council"
+      },
+      "basis": "The committed Checkbook observation contains two positive amounts on the same exact contract and the lifecycle detector reproduces their difference."
+    },
+    {
+      "case_id": "registered_amount_change:CT183620278801170",
+      "metric_family": "within_contract_registered_amount_change",
+      "inspection_verdict": "supported",
+      "expected": {
+        "subject_id": "CT183620278801170",
+        "original_amount": 29400,
+        "current_amount": 30420,
+        "delta": 1020,
+        "agency": "Department of Finance"
+      },
+      "basis": "The committed Checkbook observation contains two positive amounts on the same exact contract and the lifecycle detector reproduces their difference."
+    }
+  ],
+  "aggregate_handoff_usage": {
+    "numerator_event": "investigation_share:add_signal",
+    "denominator_event": "comparative_signal_shown:visible",
+    "observation_window": {
+      "start": "2026-08-19",
+      "end": "2026-08-19"
+    },
+    "shown_signal_opportunities": 0,
+    "investigation_handoffs": 0,
+    "source": "The two aggregate, unlinked counters have no committed production observation window yet. Zero opportunities makes the rate unknown, not zero."
+  },
+  "recommendation": {
+    "status": "revise",
+    "metric_families_to_expand": [],
+    "summary": "Continue the two bounded pilots, put registered-amount change behind the same frozen receipt and admission boundary, and repeat this evaluation after a larger inspection sample and denominator-bearing handoff window exist.",
+    "human_expansion_decision": "pending",
+    "new_bounded_card_required": true
+  }
+}
