@@ -4,6 +4,7 @@
 import { NOTICE_SEARCH_CAPABILITY } from "./notice_search.mjs";
 import { ENTITY_DOSSIER_CAPABILITY } from "./entity_dossier.mjs";
 import { ENTITY_RELATIONSHIPS_CAPABILITY } from "./entity_relationships.mjs";
+import { CITED_PASSAGES_CAPABILITY } from "./cited_passages.mjs";
 
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 
@@ -58,6 +59,7 @@ export const CAPABILITY_REGISTRY = deepFreeze([
   NOTICE_SEARCH_CAPABILITY,
   ENTITY_DOSSIER_CAPABILITY,
   ENTITY_RELATIONSHIPS_CAPABILITY,
+  CITED_PASSAGES_CAPABILITY,
 ]);
 
 validateCapabilityRegistry(CAPABILITY_REGISTRY);
