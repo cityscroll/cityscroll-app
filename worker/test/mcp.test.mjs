@@ -4,7 +4,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
-import { handleMcp } from "../src/mcp.mjs";
+import {
+  handleMcp,
+  MCP_NOTICE_SEARCH_ADAPTER,
+  MCP_TOOL_BINDINGS,
+} from "../src/mcp.mjs";
 
 class MockKV {
   constructor() { this.store = new Map(); }
@@ -56,6 +60,25 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
   ]);
   const cited = list.result.tools.find(({ name }) => name === "retrieve_cited_passages");
   assert.equal(cited.outputSchema.properties.schema.const, "cityscroll.semantic_retrieval.cited_passage_response.v1");
+  const search = list.result.tools.find(({ name }) => name === "search_notices");
+  assert.deepEqual(search.inputSchema, {
+    type: "object", additionalProperties: false,
+    properties: {
+      query: { type: "string", description: "Keyword terms, space-separated (e.g. 'affordable housing')." },
+      section: { type: "string", description: "Exact section, e.g. 'Procurement', 'Public Hearings and Meetings', 'Agency Rules'." },
+      agency: { type: "string", description: "Agency name substring." },
+      min_amount: { type: "number", description: "Minimum contract amount in dollars (Award notices only carry amounts)." },
+      max_amount: { type: "number", description: "Maximum contract amount in dollars." },
+      open_only: { type: "boolean", description: "Only notices whose due date hasn't passed." },
+      exclude_rolling: { type: "boolean", description: "Drop pre-qualified-list placeholders (year-2090 'deadlines')." },
+      limit: { type: "number", description: "Max results (default 15, cap 100)." },
+    },
+  });
+  assert.equal(
+    MCP_TOOL_BINDINGS.find(({ name }) => name === "search_notices").capabilityReference,
+    "notice.search@1",
+  );
+  assert.equal(MCP_NOTICE_SEARCH_ADAPTER.capabilityReference, "notice.search@1");
 });
 
 test("retrieve_cited_passages returns source-only structured citations", async () => {

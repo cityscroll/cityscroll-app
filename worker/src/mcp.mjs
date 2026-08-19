@@ -13,7 +13,13 @@
 // request limit; shared daily LLM ceiling (NL_METER `m:mcp:<day>`, MCP_MAX_CALLS_PER_DAY);
 // per-sender signup-email limit (same 5/day as /subscribe).
 
-import { noticeSearchTerms, searchNotices, toRecord } from "./lib/notices.mjs";
+import { noticeSearchTerms, workerD1NoticeSearch, toRecord } from "./lib/notices.mjs";
+import {
+  executeNoticeSearch,
+  NOTICE_SEARCH_CAPABILITY_REFERENCE,
+  NOTICE_SEARCH_LIMITS,
+  NOTICE_SEARCH_PROVIDER_ID,
+} from "../../capabilities/notice_search.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { LENSES } from "./lib/filter.mjs";
 import { compileSub } from "./lib/compile.mjs";
@@ -30,6 +36,16 @@ import { SEMANTIC_SOURCE_FAMILIES } from "./semantic_candidates.mjs";
 const PROTOCOL_VERSION = "2025-06-18";
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const MCP_NOTICE_SEARCH_DEFAULT_LIMIT = 15;
+
+export const MCP_NOTICE_SEARCH_ADAPTER = Object.freeze({
+  id: "mcp.search_notices@1",
+  capabilityReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
+  providerId: NOTICE_SEARCH_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "search_notices",
+  surface: "MCP",
+});
 
 function validIsoDate(value) {
   if (!ISO_DATE.test(value)) return false;
@@ -37,7 +53,7 @@ function validIsoDate(value) {
   return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
 }
 
-const TOOLS = [
+export const MCP_TOOLS = [
   {
     name: "search_notices",
     description: "Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched; add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded); rolling placeholder deadlines are labeled, never shown as dates.",
@@ -51,7 +67,7 @@ const TOOLS = [
         max_amount: { type: "number", description: "Maximum contract amount in dollars." },
         open_only: { type: "boolean", description: "Only notices whose due date hasn't passed." },
         exclude_rolling: { type: "boolean", description: "Drop pre-qualified-list placeholders (year-2090 'deadlines')." },
-        limit: { type: "number", description: "Max results (default 15, cap 100)." },
+        limit: { type: "number", description: `Max results (default ${MCP_NOTICE_SEARCH_DEFAULT_LIMIT}, cap ${NOTICE_SEARCH_LIMITS.maximum}).` },
       },
     },
   },
@@ -109,6 +125,40 @@ const TOOLS = [
   },
 ];
 
+export const MCP_TOOL_BINDINGS = Object.freeze([
+  Object.freeze({
+    name: "search_notices",
+    operationClass: "read",
+    schemaReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
+    capabilityReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
+    adapterId: MCP_NOTICE_SEARCH_ADAPTER.id,
+  }),
+  Object.freeze({
+    name: "get_notice",
+    operationClass: "read",
+    schemaReference: "mcp.get_notice.inline@1",
+    pilotException: "notice.get is outside the notice.search@1 pilot",
+  }),
+  Object.freeze({
+    name: "retrieve_cited_passages",
+    operationClass: "read",
+    schemaReference: "cityscroll.semantic_retrieval.cited_passage_response.v1",
+    contractReference: "cityscroll.semantic_retrieval.cited_passage_response.v1",
+  }),
+  Object.freeze({
+    name: "preview_watch",
+    operationClass: "read",
+    schemaReference: "mcp.preview_watch.inline@1",
+    pilotException: "watch.preview is outside the notice.search@1 pilot",
+  }),
+  Object.freeze({
+    name: "create_watch",
+    operationClass: "mutation",
+    schemaReference: "mcp.create_watch.inline@1",
+    pilotException: "watch.create is an explicit mutation outside the notice.search@1 pilot",
+  }),
+]);
+
 function text(t) {
   return { content: [{ type: "text", text: t }] };
 }
@@ -125,6 +175,28 @@ function fmtRecord(r, i) {
   if (r.snippet) lines.push(`   ${r.snippet}`);
   lines.push(`   RequestID ${r.request_id} · https://cityscroll.org/notices/${encodeURIComponent(r.request_id)}`);
   return lines.join("\n");
+}
+
+export function mcpNoticeSearchInput(args = {}) {
+  const terms = noticeSearchTerms(args.query);
+  const requestedLimit = typeof args.limit === "number" ? args.limit : MCP_NOTICE_SEARCH_DEFAULT_LIMIT;
+  return {
+    termGroups: terms.length ? [terms] : [],
+    section: args.section || null,
+    agency: args.agency || null,
+    minAmount: typeof args.min_amount === "number" ? args.min_amount : null,
+    maxAmount: typeof args.max_amount === "number" ? args.max_amount : null,
+    openOnly: !!args.open_only,
+    excludeRollingDeadlines: !!args.exclude_rolling,
+    limit: Math.max(NOTICE_SEARCH_LIMITS.minimum, Math.min(requestedLimit, NOTICE_SEARCH_LIMITS.maximum)),
+  };
+}
+
+export function formatMcpNoticeSearchResult(result) {
+  if (!result.results.length) {
+    return "No matches in the mirror (it holds recent notices; the site searches the full record).";
+  }
+  return result.results.map(fmtRecord).join("\n\n");
 }
 
 async function fetchSodaRows(url, params) {
@@ -161,21 +233,13 @@ async function callTool(env, req, name, args) {
   switch (name) {
     case "search_notices": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
-      const terms = noticeSearchTerms(args.query);
-      const res = await searchNotices(env.DB, {
-        termGroups: terms.length ? [terms] : [],
-        section: args.section || null,
-        agency: args.agency || null,
-        minAmount: typeof args.min_amount === "number" ? args.min_amount : null,
-        maxAmount: typeof args.max_amount === "number" ? args.max_amount : null,
-        openOnly: !!args.open_only,
-        excludeRollingDeadlines: !!args.exclude_rolling,
-        limit: typeof args.limit === "number" ? args.limit : 15,
-      });
+      const res = await executeNoticeSearch(
+        workerD1NoticeSearch(env.DB),
+        mcpNoticeSearchInput(args),
+      );
       // Bounded operational telemetry only: no query text, IP, or notice identifiers.
       console.log("notice-search:", JSON.stringify({ route: "mcp.search_notices", ...res.retrieval }));
-      if (!res.results.length) return text("No matches in the mirror (it holds recent notices; the site searches the full record).");
-      return text(res.results.map(fmtRecord).join("\n\n"));
+      return text(formatMcpNoticeSearchResult(res));
     }
     case "get_notice": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
@@ -298,7 +362,7 @@ export async function handleMcp(req, env) {
       case "ping":
         return Response.json(rpc(id, {}));
       case "tools/list":
-        return Response.json(rpc(id, { tools: TOOLS }));
+        return Response.json(rpc(id, { tools: MCP_TOOLS }));
       case "tools/call": {
         const name = String(params?.name || "");
         const args = (params?.arguments) || {};

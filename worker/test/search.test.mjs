@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
 import worker from "../src/worker.mjs";
+import { SEARCH_NOTICE_ADAPTER } from "../src/search.mjs";
 import {
   buildUniversalSearchCoverageView,
   renderUniversalSearchCoverageHtml,
@@ -101,6 +102,16 @@ const ROWS = [
     date: "2026-08-18", haystack: "community rat management training rodent control award",
   },
 ];
+
+test("the /search notice lane declares notice.search@1", () => {
+  assert.deepEqual(SEARCH_NOTICE_ADAPTER, {
+    id: "worker-http.search.notice-lane@1",
+    capabilityReference: "notice.search@1",
+    providerId: "worker-d1.notice-search",
+    route: "GET /search",
+    surface: "Universal search",
+  });
+});
 
 test("GET /search returns ranked validated SearchDocument records from the FTS5 mirror", async () => {
   const { sqlite, DB } = database(ROWS);

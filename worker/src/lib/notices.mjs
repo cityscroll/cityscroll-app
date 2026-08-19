@@ -20,6 +20,10 @@ import {
   matchAttachmentTablesEvidence,
   TABLE_PROVENANCE,
 } from "./attachment_tables.mjs";
+import {
+  NOTICE_SEARCH_CAPABILITY_REFERENCE,
+  NOTICE_SEARCH_PROVIDER_ID,
+} from "../../../capabilities/notice_search.mjs";
 
 const ROLLING_YEAR = 2090;
 const FTS_UNAVAILABLE = [
@@ -287,4 +291,15 @@ export async function searchNotices(db, opts = {}) {
       return annotated;
     }),
   };
+}
+
+/** Explicit D1 provider for the transport-neutral notice.search@1 contract. */
+export function workerD1NoticeSearch(db) {
+  return Object.freeze({
+    capabilityReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
+    providerId: NOTICE_SEARCH_PROVIDER_ID,
+    execute(input) {
+      return searchNotices(db, input);
+    },
+  });
 }
