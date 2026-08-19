@@ -881,7 +881,7 @@ export async function processOneSub(env, s, ctx) {
     // land/ZAP lenses are NOT in the D1 mirror and always use the SODA path (explicit, not accidental).
     let rows;
     let usedD1 = false;
-    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens)) {
+    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
       try {
         const fresh = await isMirrorFresh(env.DB, ctx.today);
         if (fresh) {
@@ -1341,7 +1341,7 @@ async function evaluateSubSection(env, s, ctx) {
     const forecasts = await matchForecasts(env, s, ctx.today);
     let rows;
     let usedD1 = false;
-    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens)) {
+    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
       try {
         const fresh = await isMirrorFresh(env.DB, ctx.today);
         if (fresh) {
@@ -1795,7 +1795,7 @@ async function evaluateCatchUpSub(env, s, ctx) {
     const sourceParams = { ...q.params, "$limit": "100" };
     let rows;
     let mirrorError = null;
-    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens)) {
+    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens) && !s.filter?.geographies?.length) {
       try {
         const fresh = await isMirrorFresh(env.DB, ctx.today);
         if (fresh) {

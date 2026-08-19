@@ -9,14 +9,18 @@ import {
   lensStateFromScope,
   mapStateFromScope,
   normalizeScope,
+  nearYouUrlFromScope,
   routeHashFromScope,
+  scopeFromGeographyWatch,
   scopeFromLensState,
   scopeFromMapState,
   scopeFromRouteHash,
   scopeFromWatch,
   scopeHasConstraints,
+  scopeWithGeographies,
   scopeWithMapState,
   watchFromScope,
+  watchFromGeographyScope,
 } from "../site/scope_v0.mjs";
 import { nowItemMatchesScope } from "../site/scope_now_adapter.mjs";
 import {
@@ -309,6 +313,27 @@ test("watches and subscription metadata translate through scope without joining 
   });
   assert.equal("email" in scope, false);
   assert.equal("freq" in scope, false);
+});
+
+test("generic geography keys round-trip through Near You and watches without changing legacy wires", () => {
+  const key = "geography:nta2020:QN0201";
+  const legacy = scopeFromRouteHash("#property?boro=Queens&cd=Q04");
+  const scoped = scopeWithGeographies(legacy, [key, "geography:sanitation_district:404"]);
+  assert.deepEqual(scoped.place.geographies, [key]);
+  assert.equal(routeHashFromScope(scoped, { surface: "property" }), "#property?boro=Queens&cd=Q04");
+
+  const href = nearYouUrlFromScope(scoped);
+  assert.match(href, /geo=geography%3Anta2020%3AQN0201/);
+  const replayed = scopeFromNearYouUrl(href);
+  assert.deepEqual(replayed.place.geographies, [key]);
+  assert.deepEqual(replayed.place.boroughs, scoped.place.boroughs);
+  assert.deepEqual(replayed.place.community_districts, scoped.place.community_districts);
+
+  const watch = watchFromGeographyScope(scoped, { lens: "property" });
+  assert.deepEqual(watch.filter.geographies, [key]);
+  assert.deepEqual(scopeFromGeographyWatch(watch).place.geographies, [key]);
+  assert.equal(watch.filter.borough, "Queens");
+  assert.equal(watch.filter.communityDistrict, "Q04");
 });
 
 test("exact mandate_id free-watch filter round-trips through scope", () => {
