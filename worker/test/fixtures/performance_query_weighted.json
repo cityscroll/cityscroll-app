@@ -1,0 +1,110 @@
+{
+  "schema": "cityscroll.performance_query_fixture.v1",
+  "now": "2026-08-19T14:30:00.000Z",
+  "configured_since": "2026-05-01T00:00:00.000Z",
+  "sample_floor": 4,
+  "query": {
+    "window": "7d",
+    "filters": {
+      "metric_id": "ttfb_ms",
+      "device_class": "mobile"
+    },
+    "group_by": "surface_id"
+  },
+  "weighted_source_examples": {
+    "current_home": [
+      { "value": 120, "sample_interval": 2 },
+      { "value": 240, "sample_interval": 3 },
+      { "value": 360, "sample_interval": 3 },
+      { "value": 480, "sample_interval": 2 }
+    ],
+    "previous_home": [
+      { "value": 100, "sample_interval": 2 },
+      { "value": 200, "sample_interval": 3 },
+      { "value": 300, "sample_interval": 3 },
+      { "value": 400, "sample_interval": 2 }
+    ],
+    "current_browse": [
+      { "value": 200, "sample_interval": 50 },
+      { "value": 900, "sample_interval": 50 }
+    ]
+  },
+  "sql_results": {
+    "current": [
+      {
+        "surface_id": "home",
+        "sampled_count": 4,
+        "estimated_count": 10,
+        "p50": 240,
+        "p75": 360,
+        "p95": 480,
+        "first_observation_at": "2026-08-13T08:00:00Z",
+        "latest_observation_at": "2026-08-19T14:00:00Z"
+      },
+      {
+        "surface_id": "browse-contracts",
+        "sampled_count": 2,
+        "estimated_count": 100,
+        "p50": 200,
+        "p75": 900,
+        "p95": 900,
+        "first_observation_at": "2026-08-18T08:00:00Z",
+        "latest_observation_at": "2026-08-19T12:00:00Z"
+      }
+    ],
+    "previous": [
+      {
+        "surface_id": "home",
+        "sampled_count": 4,
+        "estimated_count": 10,
+        "p50": 200,
+        "p75": 300,
+        "p95": 400,
+        "first_observation_at": "2026-08-06T08:00:00Z",
+        "latest_observation_at": "2026-08-12T14:00:00Z"
+      },
+      {
+        "surface_id": "browse-contracts",
+        "sampled_count": 1,
+        "estimated_count": 1,
+        "p50": 300,
+        "p75": 300,
+        "p95": 300,
+        "first_observation_at": "2026-08-10T08:00:00Z",
+        "latest_observation_at": "2026-08-10T08:00:00Z"
+      }
+    ],
+    "trend": [
+      {
+        "day": "2026-08-13",
+        "surface_id": "home",
+        "sampled_count": 4,
+        "estimated_count": 8,
+        "p50": 210,
+        "p75": 300,
+        "p95": 430,
+        "latest_observation_at": "2026-08-13T18:00:00Z"
+      },
+      {
+        "day": "2026-08-19",
+        "surface_id": "home",
+        "sampled_count": 4,
+        "estimated_count": 10,
+        "p50": 240,
+        "p75": 360,
+        "p95": 480,
+        "latest_observation_at": "2026-08-19T14:00:00Z"
+      },
+      {
+        "day": "2026-08-19",
+        "surface_id": "browse-contracts",
+        "sampled_count": 2,
+        "estimated_count": 100,
+        "p50": 200,
+        "p75": 900,
+        "p95": 900,
+        "latest_observation_at": "2026-08-19T12:00:00Z"
+      }
+    ]
+  }
+}

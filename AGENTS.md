@@ -3431,6 +3431,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   remains fail-closed while `RUM_INGEST_ENABLED` and the public manifest flag
   are false. Focused proof: `worker/test/performance_events.test.mjs` and
   `test/rum_delivery.test.mjs`.
+- Field-performance distributions use only the bounded Worker adapter at
+  `worker/src/lib/performance_query.mjs`; Desk must consume the later private
+  read model rather than Analytics Engine. Sufficiency is based on retained
+  `count()` rows, while population counts and percentiles use each row's
+  `_sample_interval`. Honest state and retention semantics live in
+  `docs/performance-query-adapter.md`; focused proof is
+  `worker/test/performance_query.test.mjs`.
 
 ## Comparative signal admission
 
