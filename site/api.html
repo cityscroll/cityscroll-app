@@ -181,12 +181,25 @@ Daily ceilings apply.</p>
 
 <h2 data-i18n="api_h_mcp">MCP — for AI assistants</h2>
 <p class="src" data-i18n-html="api_p_mcp_html"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
-<code>https://api.cityscroll.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
-(the daily-refreshed notices mirror), <code>preview_watch</code> (plain English →
-what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English →
-an active watch plus a welcome email that states its scope). Watch management stays behind the emailed
-manage and unsubscribe links — knowing an address never reveals or controls its subscriptions.
-Per-IP and daily model-call ceilings apply.</p>
+<code>https://api.cityscroll.org/mcp</code>. The generated catalog below is the authoritative tool inventory.
+It distinguishes each tool's <code>name</code>, <code>read</code>, and <code>mutation</code> class.
+Created watches start immediately and send a welcome email stating their scope. Watch management stays behind
+the emailed manage and unsubscribe links — knowing an address never reveals or controls its subscriptions.
+Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON</code>.</p>
+
+<!-- BEGIN GENERATED MCP TOOL CATALOG -->
+<div class="src" aria-label="MCP tool catalog">
+<p><strong>Available tools</strong> (generated from the runtime declarations):</p>
+<ul>
+  <li><code>search_notices</code> <span aria-hidden="true">·</span> read — Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched. Add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded). Rolling placeholder deadlines are labeled, never shown as dates.</li>
+  <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Full detail for one City Record notice by its RequestID.</li>
+  <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Retrieve source passages with stable citations and exact source joins. Returns source text only. It does not generate an answer or infer civic relationships.</li>
+  <li><code>preview_watch</code> <span aria-hidden="true">·</span> read — Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.</li>
+  <li><code>create_watch</code> <span aria-hidden="true">·</span> mutation — Create a standing email watch from plain English. The watch starts immediately. The welcome email states its scope and includes manage and unsubscribe links.</li>
+</ul>
+<p>Machine-readable inventory: <a href="data/mcp_tool_catalog.json"><code>JSON catalog</code></a>.</p>
+</div>
+<!-- END GENERATED MCP TOOL CATALOG -->
 
 <h2 data-i18n="api_h_upstream">Upstream data</h2>
 <p class="src" data-i18n-html="api_p_upstream_html">CityScroll republishes and joins public datasets — for bulk work, go straight to the sources:

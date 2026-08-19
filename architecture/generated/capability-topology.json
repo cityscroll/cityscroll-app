@@ -1,0 +1,113 @@
+{
+  "schema": "cityscroll.capability_topology.v1",
+  "generated_from": "capabilities/registry.mjs",
+  "capabilities": [
+    {
+      "reference": "notice.search@1",
+      "id": "notice.search",
+      "version": "1.0.0",
+      "owner": "notices",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-d1-read",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.notice_search.input.v1",
+      "output_schema": "cityscroll.capability.notice_search.output.v1",
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "provenance": {
+        "recordIdentity": "request_id",
+        "matchEvidence": "match_provenance",
+        "rawQueryLogging": false
+      },
+      "freshness": {
+        "owner": "D1 notice-mirror read model",
+        "projection": "adapter-owned"
+      },
+      "provider": {
+        "id": "worker-d1.notice-search",
+        "module": "worker/src/lib/notices.mjs",
+        "export": "workerD1NoticeSearch",
+        "store": "Cloudflare D1",
+        "readModel": "recent notices mirror"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.search.notice-lane@1",
+          "module": "worker/src/search.mjs",
+          "kind": "http-lane",
+          "route": "GET /search",
+          "surface": "Universal search"
+        },
+        {
+          "id": "mcp.search_notices@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "search_notices",
+          "route": "POST /mcp",
+          "surface": "MCP"
+        }
+      ]
+    }
+  ],
+  "mcp": {
+    "route": "POST /mcp",
+    "catalog": "site/data/mcp_tool_catalog.json",
+    "tools": [
+      {
+        "name": "search_notices",
+        "operation_class": "read",
+        "schema_reference": "notice.search@1",
+        "capability_reference": "notice.search@1",
+        "adapter_id": "mcp.search_notices@1",
+        "contract_reference": null,
+        "pilot_exception": null
+      },
+      {
+        "name": "get_notice",
+        "operation_class": "read",
+        "schema_reference": "mcp.get_notice.inline@1",
+        "capability_reference": null,
+        "adapter_id": null,
+        "contract_reference": null,
+        "pilot_exception": "notice.get is outside the notice.search@1 pilot"
+      },
+      {
+        "name": "retrieve_cited_passages",
+        "operation_class": "read",
+        "schema_reference": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+        "capability_reference": null,
+        "adapter_id": null,
+        "contract_reference": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+        "pilot_exception": null
+      },
+      {
+        "name": "preview_watch",
+        "operation_class": "read",
+        "schema_reference": "mcp.preview_watch.inline@1",
+        "capability_reference": null,
+        "adapter_id": null,
+        "contract_reference": null,
+        "pilot_exception": "watch.preview is outside the notice.search@1 pilot"
+      },
+      {
+        "name": "create_watch",
+        "operation_class": "mutation",
+        "schema_reference": "mcp.create_watch.inline@1",
+        "capability_reference": null,
+        "adapter_id": null,
+        "contract_reference": null,
+        "pilot_exception": "watch.create is an explicit mutation outside the notice.search@1 pilot"
+      }
+    ]
+  }
+}
