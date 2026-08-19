@@ -395,12 +395,12 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
 // rather than break rendering.
 const DEEPLINK_LENSES = {
   // Keep field-for-field parity with worker/src/lib/filter.mjs LENSES (deeplink_watch.test).
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect"],
-  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
-  rules:    ["keywords", "agency", "process"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "geographies"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
+  rules:    ["keywords", "agency", "process", "geographies"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
@@ -414,6 +414,10 @@ const DEEPLINK_BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Isla
 function deeplinkClampField(name, v){
   switch(name){
     case "keywords": return Array.isArray(v) ? v.map(k=>String(k).toLowerCase().trim()).filter(Boolean).slice(0,4) : [];
+    case "geographies": {
+      const publicKey=/^geography:(?:borough:[1-5]|community_district:(?:M|X|K|Q|R)\d{2}|council_district:(?:[1-9]|[1-4]\d|5[01])|nta2020:(?:BK|BX|MN|QN|SI)\d{4}|police_precinct:(?:[1-9]|[1-9]\d|1[01]\d|12[0-3]))$/;
+      return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>item.length<=100&&publicKey.test(item)))].sort().slice(0,8) : [];
+    }
     case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
     case "mandate_id": {
@@ -504,6 +508,7 @@ function sanitizeDeepLinkFilter(lens, input){
   const f = input || {};
   const out = {};
   for(const name of fields) out[name] = deeplinkClampField(name, f[name]);
+  if(!out.geographies?.length) delete out.geographies;
   return out;
 }
 // raw is already percent-decoded (URLSearchParams.get()). null on anything malformed, truncated

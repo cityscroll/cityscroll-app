@@ -2,6 +2,7 @@
 // (works identically under Node tests and the Cloudflare Workers runtime).
 
 import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
+import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
@@ -38,12 +39,12 @@ export const LENSES = {
   // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect"],
-  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe"],
-  rules:    ["keywords", "agency", "process"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "geographies"],
+  property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
+  rules:    ["keywords", "agency", "process", "geographies"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
@@ -83,6 +84,10 @@ function clampField(name, v) {
   switch (name) {
     case "keywords":
       return Array.isArray(v) ? v.map((k) => String(k).toLowerCase().trim()).filter(Boolean).slice(0, 4) : [];
+    case "geographies":
+      return Array.isArray(v)
+        ? [...new Set(v.map(normalizeGeographyKey).filter(Boolean))].sort().slice(0, 8)
+        : [];
     case "agency":
       return typeof v === "string" && v.trim() ? v.trim() : null;
     case "agency_id": {
@@ -259,6 +264,9 @@ export function sanitize(lens, input) {
   const f = input || {};
   const out = {};
   for (const name of fields) out[name] = clampField(name, f[name]);
+  // The geography dimension is additive. Omit an empty value so legacy filters,
+  // subscription identities, and /nl response envelopes remain byte-compatible.
+  if (!out.geographies?.length) delete out.geographies;
   return out;
 }
 
