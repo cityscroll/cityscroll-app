@@ -16,36 +16,42 @@
     },
     {
       "name": "retained row floor is not met",
+      "consumer_state": "low_sample",
       "query_status": "insufficient_sample",
       "expected_status": "insufficient_sample",
-      "percentiles_present": false
+      "percentiles_present": false,
+      "missing_value_rule": "omit_percentiles_never_zero"
     },
     {
       "name": "instrumented selection has no observations",
       "query_status": "no_data",
       "coverage_state": "instrumented",
       "expected_status": "no_data",
-      "percentiles_present": false
+      "percentiles_present": false,
+      "missing_value_rule": "omit_percentiles_never_zero"
     },
     {
       "name": "registered selection is not yet instrumented",
       "query_status": "no_data",
       "coverage_state": "planned",
       "expected_status": "uninstrumented",
-      "percentiles_present": false
+      "percentiles_present": false,
+      "missing_value_rule": "omit_percentiles_never_zero"
     },
     {
       "name": "intake rejected an unknown surface or component",
       "coverage_state": "unclassified",
       "expected_coverage_status": "unclassified",
-      "percentiles_present": false
+      "percentiles_present": false,
+      "missing_value_rule": "omit_percentiles_never_zero"
     },
     {
       "name": "Analytics Engine read is unavailable",
       "query_status": "unavailable",
       "unavailable_reason": "not-configured",
       "expected_status": "unavailable",
-      "percentiles_present": false
+      "percentiles_present": false,
+      "missing_value_rule": "omit_percentiles_never_zero"
     }
   ]
 }
