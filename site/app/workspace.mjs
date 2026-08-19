@@ -7,6 +7,13 @@ import {
   normalizeInvestigationComparativeSignal,
   storySignalInvestigationItem,
 } from "../investigation_comparative_signal.mjs";
+import {
+  RESEARCH_PACKAGE_SCHEMA,
+  normalizeResearchPackage,
+  researchPackageJson,
+  researchPackageNewerData,
+  researchPackageRequestFromInvestigation,
+} from "../research_package.mjs";
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local
@@ -206,6 +213,7 @@ async function showInvestigation(){
       </div>
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" id="invshare">${t("inv_share_btn")}</button>
+        <button class="act" type="button" id="invpackage">${t("inv_package_btn")}</button>
         <button class="act" type="button" id="invcsv">${t("inv_export_csv")}</button>
         <button class="act" type="button" id="invjson">${t("inv_export_json")}</button>
         <button class="act" type="button" id="invprint">${t("inv_print_btn")}</button>
@@ -242,7 +250,70 @@ async function showInvestigation(){
       } else msg.textContent = j.reason==="rate-limited" ? t("inv_too_many_shares") : t("inv_share_failed");
     }catch(e){ msg.textContent=t("cant_reach_server"); }
   });
+  $("#invpackage").addEventListener("click", async ()=>{
+    const msg=$("#invmsg"), cur=invStore().invs[s.current];
+    if(!API){ msg.textContent=t("inv_share_needs_backend"); return; }
+    const question=window.prompt(t("inv_package_question_prompt"),cur.name);
+    if(question===null) return;
+    const request=researchPackageRequestFromInvestigation(cur,{question});
+    if(!request){ msg.textContent=t("inv_package_requires_signal"); return; }
+    msg.innerHTML=`<span class="loading"></span> ${t("inv_uploading")}`;
+    try{
+      const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(request)});
+      const j=await r.json();
+      if(j.ok&&j.kind==="research_package"){
+        const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
+        msg.innerHTML=`${t("inv_package_link",{n:j.ttlDays})} <a href="${invEsc(url)}">${invEsc(url)}</a>`;
+      } else msg.textContent=j.reason==="rate-limited"?t("inv_too_many_shares"):t("inv_package_failed");
+    }catch(e){ msg.textContent=t("cant_reach_server"); }
+  });
   announce(t("inv_ws_heading"));
+}
+
+async function showResearchPackage(j,box){
+  const researchPackage=normalizeResearchPackage(j);
+  if(!researchPackage){ box.innerHTML=`<div class="empty">${t("inv_shared_missing_html")} ${routeBackHTML("#investigation")}</div>`; return; }
+  let currentSignals=[];
+  try{
+    const response=await fetch("/data/comparative_story_signals.json",{headers:{Accept:"application/json"}});
+    if(response.ok){ const readModel=await response.json(); currentSignals=Array.isArray(readModel?.signals)?readModel.signals:[]; }
+  }catch(e){ /* frozen package remains readable without the live freshness projection */ }
+  const freshness=researchPackageNewerData(researchPackage,currentSignals);
+  const observations=researchPackage.observations.map((observation,index)=>{
+    const comparison=observation.comparison_basis;
+    const population=comparison.population.agency_name||comparison.population.source_family;
+    const evidence=observation.official_evidence.map(entry=>`<a href="${invEsc(entry.href)}" target="_blank" rel="noopener noreferrer">${t("inv_package_evidence_label")} ${invEsc(entry.source_row_id)}${extSR()}</a>`).join(" · ");
+    const vintages=observation.snapshot_vintages.map(vintage=>`${invEsc(vintage.dataset_id)} · ${invEsc(vintage.materialized_at)}`).join(" · ");
+    return `<div class="tl" style="align-items:flex-start">
+      <span class="pin" style="flex:0 0 auto">${t("inv_package_observation_label",{n:index+1})}</span>
+      <span style="flex:1 1 300px;min-width:220px">
+        <b>${invEsc(observation.exact_claim)}</b>
+        <span class="rmeta" style="display:block;margin-top:5px">${comparison.observed_count} ${invEsc(population)} · rank ${comparison.rank} · ${invEsc(comparison.window.start)}–${invEsc(comparison.window.end)}</span>
+        <span class="rmeta" style="display:block;margin-top:5px;overflow-wrap:anywhere">${evidence}</span>
+        <span class="rmeta" style="display:block;margin-top:5px;overflow-wrap:anywhere">${t("inv_package_receipt_label")}: <code>${invEsc(observation.comparison_receipt.receipt_id)}</code></span>
+        <span class="rmeta" style="display:block;margin-top:5px;overflow-wrap:anywhere">${t("inv_package_snapshot_label")}: ${vintages}</span>
+      </span>
+    </div>`;
+  }).join("");
+  const changes=researchPackage.version>1
+    ? `<h3>${t("inv_package_changes_label")}</h3><ul>${researchPackage.changes.map(change=>`<li>${invEsc(change.summary)}</li>`).join("")}</ul>`
+    : "";
+  box.innerHTML=`<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px">${routeBackHTML("#investigation")}</p>
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">${t("inv_package_heading",{v:researchPackage.version,date:researchPackage.generated_at.slice(0,10)})}</div>
+      <h2 class="rolename">${invEsc(researchPackage.title)}</h2>
+      <p><strong>${t("inv_package_question_label")}:</strong> ${invEsc(researchPackage.question)}</p>
+      ${freshness?.newer_data_available?`<div class="note">${t("inv_package_newer")}</div>`:""}
+      <div class="timeline" style="margin-top:14px">${observations}</div>
+      <h3>${t("inv_package_methods_label")}</h3>
+      <p class="rmeta2">${invEsc(researchPackage.methods.description)}</p>
+      ${changes}
+      <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invpackagejson">${t("inv_package_export")}</button></div>
+    </div></div>`;
+  $("#invpackagejson").addEventListener("click",()=>invDownload(`research-package-${researchPackage.package_id}-v${researchPackage.version}.json`,researchPackageJson(researchPackage),"application/json"));
+  focusItemRouteTarget(box.querySelector(".route-item"));
+  applyActiveHistoryRouteScroll();
 }
 
 async function showSharedInv(id){
@@ -252,6 +323,7 @@ async function showSharedInv(id){
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("inv_fetching_shared")}</div>`;
   let j=null;
   try{ const r=await workerFetch("/inv/"+encodeURIComponent(id), null, 12000); if(r.ok) j=await r.json(); }catch(e){}
+  if(j?.schema===RESEARCH_PACKAGE_SCHEMA){ await showResearchPackage(j,box); return; }
   if(!j || !j.items){ box.innerHTML=`<div class="empty">${t("inv_shared_missing_html")} ${routeBackHTML("#investigation")}</div>`; return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#investigation")}</p>

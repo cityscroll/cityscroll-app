@@ -3446,6 +3446,14 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   together; shared `/inv` validation imports the same narrow waist. Held or
   provenance-incomplete inputs fail closed. Focused proof is
   `test/investigation_comparative_signal.test.mjs` and `worker/test/inv.test.mjs`.
+- Frozen research packages use `site/research_package.mjs` as the pure projection
+  over admitted Investigation signals and the explicit `research_package`
+  discriminator in the existing `/inv` transport. Each version is a new `inv:`
+  record with explicit supersession/changes; live freshness is a separate
+  read-only projection and never rewrites frozen claims. Keep packages bounded to
+  compact object, evidence, receipt, vintage, and source-contract references—no
+  copied datasets or model-authored analysis. Focused proof is
+  `test/research_package.test.mjs` and `worker/test/inv.test.mjs`.
 
 ## Maintaining this file
 
