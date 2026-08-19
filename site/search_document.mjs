@@ -186,7 +186,9 @@ function appendFamilyReceipt(body, family) {
   receipt.className = "topic-search-lane-source";
   receipt.textContent = [
     clean(family.source, 240),
-    family.as_of ? `as of ${clean(family.as_of, 160)}` : null,
+    family.coverage?.freshness_state === "hybrid" && family.as_of
+      ? `as of ${clean(family.as_of, 160)} · published snapshot plus live records`
+      : family.as_of ? `as of ${clean(family.as_of, 160)}` : null,
     "Keyword search",
   ].filter(Boolean).join(" · ");
   body.append(receipt);

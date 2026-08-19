@@ -442,7 +442,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   typed-object index with
   `node tools/build_keyword_search_index.mjs`; the D1 notice mirror remains the Contracts/Rules
   source, while the client projects the flattened compatibility results through the registered
-  universal-search domain lanes.
+  universal-search domain lanes. Land keyword canaries `2025Q0331` / `2026K0123` miss-fill
+  from live SODA by exact `project_id` when the publish-loop family has holes, and the land
+  lane then reports a timestamped hybrid as-of (`published` snapshot clock plus live fetch)
+  instead of looking warehouse-fresh. Proof: `test/land_keyword_soda_missfill.test.mjs`.
 - **Production collection providers:** dedicated static collections enter the worker federator
   through `PRODUCTION_COLLECTION_FAMILIES` in `worker/src/search.mjs`; add each materialized family
   there rather than hand-building another coverage row. `tools/build_keyword_search_index.mjs`
@@ -967,7 +970,9 @@ keyword family from **current SODA** and opens a PR;
 `.github/workflows/land-upcoming-hearings.yml` commits/PRs the hearings artifact
 (not upload-artifact-only). `fetchLandDefaultProjects` prefers DuckDB only when
 the milestone frontier clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA.
-Canaries `2025Q0331` / `2026K0123` fail `--check`. WH-02 bulk lag:
+Canaries `2025Q0331` / `2026K0123` fail `--check`. Keyword search miss-fills those
+exact IDs from live SODA when the published land family has holes, with a hybrid as-of
+(`site/land_keyword_soda_missfill.mjs`). WH-02 bulk lag:
 `node tools/check_zap_bulk_freshness.mjs` (+ optional `--rematerialize-if-stale`).
 
 ```bash
