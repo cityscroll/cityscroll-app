@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.worker_allowlist.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "c3fe984c8a4fa6446c4369a1e2eacf5c997d7f8227de274d81a9b7e591f10633",
+  "registry_hash": "595261f8f0dd5b453ac74244339c9bad5bae77b97f0f9754d8d3860e55f8e35c",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -624,7 +624,7 @@
         "following-watch-change",
         "following-watch-list"
       ],
-      "lifecycle_state": "planned"
+      "lifecycle_state": "instrumented"
     },
     "following-pack": {
       "parent": "surface:following",
@@ -956,7 +956,7 @@
       "applicable_metric_ids": [
         "component_ready_ms"
       ],
-      "lifecycle_state": "planned"
+      "lifecycle_state": "instrumented"
     },
     "home-search-submit": {
       "kind": "interaction",

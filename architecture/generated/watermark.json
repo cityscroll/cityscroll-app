@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-19T14:12:33-04:00",
-  "commit": "045a0d1c05d7457ab73f8a69e0541af14752f35b",
+  "generated_at": "2026-08-19T18:42:59Z",
+  "commit": "e6c87247a000b3c239d95539a3052265133feba0",
   "observer_coverage_hash": "e091e23a1625abcfe6a3b0b3dd16f2b69586bee6f3253ccfeac0fdbdd26f4429",
   "canaries": {
     "agency-constellation-model": {
@@ -57,12 +57,12 @@
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "ff4e952a83e4d82d8f081f8db40c7c9a456ab815f7b508811f895be7e60157cd"
+      "fingerprint": "ae88fc1d0df141812485ba8239764121090f3644620b82f742c2f397165c65f7"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
       "count": 56,
-      "fingerprint": "1c940d0caddb7178041f727e59d332db14454e4cb6f44a16c934c604da5da6a0"
+      "fingerprint": "6c0a0e372b0842ecce785a2ebded8004c1228284cfd37a83b8e456b19dd3a847"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -140,7 +140,7 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "c3fe984c8a4fa6446c4369a1e2eacf5c997d7f8227de274d81a9b7e591f10633"
+      "registry_hash": "595261f8f0dd5b453ac74244339c9bad5bae77b97f0f9754d8d3860e55f8e35c"
     },
     "registry": {
       "version": "1.0.0",
@@ -149,18 +149,18 @@
       "component_count": 20,
       "classifications": {
         "surfaces": {
-          "instrumented": 5,
+          "instrumented": 6,
           "registered_no_data": 0,
-          "planned": 31,
+          "planned": 30,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,
           "retired": 0
         },
         "components": {
-          "instrumented": 9,
+          "instrumented": 10,
           "registered_no_data": 0,
-          "planned": 11,
+          "planned": 10,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,
