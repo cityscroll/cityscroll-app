@@ -3429,7 +3429,9 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   second store. The resident `/data-health/` page is a materialize-first
   projection of that same public artifact (`site/data_health_page.mjs`;
   rebuild with `node tools/build_data_health_page.mjs`). It does not
-  evaluate clocks at request time. Honesty-conformance (historical/pointer
+  evaluate clocks at request time. The page lists only sources with
+  acquisition or serve evidence; declared-only never-acquired contracts
+  remain in `source_contracts.json`. Honesty-conformance (historical/pointer
   never delayed by age, daily delayed only after its own breach,
   failed-acquisition plus valid fallback is Degraded, unknown clocks stay
   null, no operator field on the public surface) lives in

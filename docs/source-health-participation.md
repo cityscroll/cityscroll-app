@@ -178,6 +178,13 @@ UNKNOWN.
 inputs are current, degraded, or coverage-limited. Do not collapse either
 into an "all operational" roll-up.
 
+The resident `/data-health/` page further selects from the public artifact:
+it renders only sources with acquisition or serve evidence. Declared-only
+contracts that have never been acquired stay in
+`site/data/source_contracts.json` and in the public artifact; they do not
+appear on the page. A served source that is currently Degraded still
+renders with that honest state.
+
 ## Checklist for a new source
 
 1. Add one contract to `site/data/source_contracts.json` with a unique `id`,

@@ -1,6 +1,9 @@
 // Public Data health page: materialize-first projection of GET /source-health.
 // Renders only the committed public artifact. Does not evaluate clocks, query
 // internals, or invent healthy/zero values for missing observations.
+// The page lists sources CityScroll has acquired or served. Declared-only
+// contracts with no acquisition or serve evidence stay in source_contracts.json
+// and the public artifact; they are omitted here.
 
 import {
   PUBLIC_SOURCE_HEALTH_SCHEMA,
@@ -253,6 +256,26 @@ function clockView(clockName, clock, meta) {
   };
 }
 
+const NEVER_ACQUIRED_REASONS = Object.freeze([
+  "acquisition-status-unknown",
+  "observation-missing",
+]);
+
+function rowHasAcquisitionOrServeEvidence(row) {
+  const clocks = row?.health?.clocks || {};
+  return CLOCKS.some((meta) => {
+    const clock = clocks[meta.id];
+    return clock?.state === "KNOWN" && publicInstant(clock.at);
+  });
+}
+
+export function dataHealthRowIsNeverAcquired(row) {
+  if (rowHasAcquisitionOrServeEvidence(row)) return false;
+  const reasons = Array.isArray(row?.health?.reason_codes) ? row.health.reason_codes : [];
+  if (NEVER_ACQUIRED_REASONS.some((reason) => reasons.includes(reason))) return true;
+  return row?.health?.status === "UNKNOWN";
+}
+
 function sourceCard(row) {
   const healthStatus = HEALTH_LABELS[row?.health?.status] ? row.health.status : "UNKNOWN";
   return {
@@ -290,7 +313,7 @@ export function buildDataHealthView(projection) {
       source_count: null,
     };
   }
-  const cards = projection.sources.map(sourceCard);
+  const cards = projection.sources.filter((row) => !dataHealthRowIsNeverAcquired(row)).map(sourceCard);
   const grouped = new Map(PRODUCT_AREAS.map((area) => [area.id, []]));
   for (const card of cards) {
     const areaId = grouped.has(card.area_id) ? card.area_id : "other";

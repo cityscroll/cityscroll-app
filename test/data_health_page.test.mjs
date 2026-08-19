@@ -124,17 +124,57 @@ test("three clocks stay labeled, coverage stays beside health, and UNKNOWN never
   assert.equal(delayed.clocks[2].display, "August 18, 2026");
   assert.equal(delayed.clocks[2].basis_label, "from the copy CityScroll is serving");
   assert.equal(delayed.coverage_label, "Limited coverage");
-  assert.equal(missing.health_status, "UNKNOWN");
-  assert.ok(missing.clocks.every((clock) => clock.display === "UNKNOWN"));
-  assert.equal(missing.coverage_label, "UNKNOWN");
+  assert.equal(missing, undefined);
 
   assert.match(html, /data-health-status="Delayed"/);
-  assert.match(html, /data-health-status="UNKNOWN"/);
+  assert.doesNotMatch(html, /missing-obs|Source missing-obs/);
   assert.match(html, /The publisher&#39;s last update is older than this source&#39;s expected cadence/);
   assert.match(html, /Limited coverage/);
   assert.doesNotMatch(html, /1970|January 1, 1970|>0<|>—<|>-<\/dd>/);
   assert.doesNotMatch(html, /--color-success|#0f0|background:\s*green/i);
   assert.ok(html.indexOf("data-health-condition") < html.indexOf("data-health-coverage"));
+});
+
+test("never-acquired declared sources stay off the page; served sources including degraded stay on", () => {
+  const { view, html } = pageFrom(
+    [
+      contract("abo-local-authorities"),
+      contract("city-record"),
+      contract("checkbook-contracts"),
+    ],
+    [
+      observation("city-record", {
+        health: {
+          status: "Degraded",
+          reason_codes: ["acquisition-failed", "serving-valid-fallback"],
+          clocks: {
+            publisher_updated: { at: "2026-08-01T00:00:00.000Z", state: "KNOWN" },
+            cityscroll_checked_acquired: { at: "2026-08-18T10:00:00.000Z", state: "KNOWN" },
+            cityscroll_serving: { at: "2026-08-01T00:00:00.000Z", state: "KNOWN" },
+          },
+        },
+      }),
+    ],
+  );
+
+  const cards = view.groups.flatMap((group) => group.sources);
+  assert.deepEqual(cards.map((card) => card.source_id), ["city-record"]);
+  assert.equal(cards[0].health_status, "Degraded");
+  assert.match(html, /Source city-record/);
+  assert.match(html, /data-health-status="Degraded"/);
+  assert.doesNotMatch(html, /abo-local-authorities|Source abo-local-authorities|checkbook-contracts|Source checkbook-contracts/);
+
+  const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
+  const committedView = buildDataHealthView(committed);
+  const committedCards = committedView.groups.flatMap((group) => group.sources);
+  const committedIds = new Set(committedCards.map((card) => card.source_id));
+  assert.equal(committedIds.has("abo-local-authorities"), false);
+  assert.equal(committedIds.has("abo-local-development-corporations"), false);
+  assert.equal(committedIds.has("abo-state-authorities"), false);
+  assert.equal(committedIds.has("city-record"), true);
+  const rendered = renderDataHealthPage(committed);
+  assert.doesNotMatch(rendered, /NYS Authorities Budget Office/);
+  assert.match(rendered, /City Record Online/);
 });
 
 test("historical and manual composite states render, and degraded names the failure plus retained serving", () => {
