@@ -35,7 +35,7 @@ export const ANALYTICS_SCENARIOS = Object.freeze([
 
 const SURFACES = Object.freeze([
   "home", ...ANALYTICS_PRIMARY_DOCUMENT_SURFACES,
-  "stats", "about", "data", "api", "changelog", "standards",
+  "stats", "about", "data", "api", "changelog", "standards", "worth-a-look",
 ]);
 
 const ACTION_OUTCOMES = Object.freeze(["submitted", "attended", "bid", "won", "not-useful"]);
@@ -98,6 +98,10 @@ const EVENT_SPECS = Object.freeze({
   investigation_share: {
     details: ["create", "copy", "add_signal"],
     surfaces: ["home", "api"],
+  },
+  comparative_signal_shown: {
+    details: ["visible"],
+    surfaces: ["worth-a-look"],
   },
   action_opened: {
     details: ["direct", "official-handoff"],
