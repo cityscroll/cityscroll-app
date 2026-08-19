@@ -24,6 +24,16 @@ test("exact list search is primary and Ask CityScroll is a disclosed secondary m
   );
   assert.match(
     SITE_SOURCE,
+    /renderAskCitedQuotesHtml/,
+    "Ask should render quote-only cited passages when /nl returns them",
+  );
+  assert.match(
+    SITE_SOURCE,
+    /cited_quotes/,
+    "Ask should carry cited_quotes from /nl rather than inventing an answer",
+  );
+  assert.match(
+    SITE_SOURCE,
     /document\.createElement\("details"\)/,
     "dynamically mounted Ask controls should use the same disclosure hierarchy",
   );

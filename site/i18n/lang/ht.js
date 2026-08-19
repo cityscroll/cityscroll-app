@@ -239,6 +239,7 @@
     nl_placeholder_money: "dekri sa w ap chèche a…",
     ask_cityscroll_action: "Mande CityScroll",
     ask_cityscroll_context: "Li entèprete demann ou an",
+    ask_cited_quotes_heading: "Sitasyon nan dosye ofisyèl yo",
     query_conflict_prompt: "Filtè sa yo an konfli. Chwazi kiyès pou itilize.",
     query_conflict_keep: "Kenbe {value}",
     query_conflict_use: "Itilize {value}",

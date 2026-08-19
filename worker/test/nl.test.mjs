@@ -8,7 +8,7 @@
 // contract (empty text / bad lens / no key / non-ok response / missing tool_use) is unchanged.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { handleNl, parseLensFilter } from "../src/nl.mjs";
+import { citedQuotesForAsk, handleNl, parseLensFilter } from "../src/nl.mjs";
 import { filterConfidence } from "../src/lib/filter.mjs";
 
 function mockAnthropic(toolInput) {
@@ -92,9 +92,15 @@ test("handleNl: SearchIntent is a sibling and the legacy filter envelope stays b
       NL_METER: kvStore(),
     });
     const body = await response.json();
-    const { search_intent: searchIntent, ...legacyEnvelope } = body;
+    const { search_intent: searchIntent, cited_quotes: citedQuotes, ...legacyEnvelope } = body;
 
     assert.equal(JSON.stringify(legacyEnvelope), '{"filter":{"keywords":["education"],"agency":null,"minAmount":200000,"maxAmount":null,"category":null,"months":3,"noticeType":null,"excludeSpecial":false,"closingWeek":false,"route":null,"name":null,"tab":null,"entity_refs_all":[],"connection_relation":null},"lens":"money","model":"claude-haiku-4-5","confidence":"high"}');
+    assert.equal(citedQuotes.schema, "cityscroll.ask_cited_quotes.v1");
+    assert.equal(citedQuotes.query, "education contracts over 200k");
+    assert.doesNotMatch(
+      JSON.stringify(citedQuotes),
+      /(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)/i,
+    );
     assert.deepEqual(searchIntent, {
       schema: "cityscroll.search_intent.v1",
       text: "education",
@@ -116,7 +122,40 @@ test("handleNl: SearchIntent is a sibling and the legacy filter envelope stays b
       },
       compiler: "nl_sanitize",
     });
-    assert.deepEqual(Object.keys(body), ["filter", "lens", "model", "confidence", "search_intent"]);
+    assert.deepEqual(Object.keys(body), ["filter", "lens", "model", "confidence", "search_intent", "cited_quotes"]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleNl: cited_quotes quotes matched passages even when Haiku degrades", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: false, status: 529 });
+  try {
+    const response = await handleNl(new Request("https://api.cityscroll.org/nl", {
+      method: "POST",
+      headers: {
+        origin: "https://cityscroll.org",
+        "CF-Connecting-IP": "203.0.113.10",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ lens: "money", text: "energy conservation" }),
+    }), {
+      ANTHROPIC_API_KEY: "test-key",
+      NL_METER: kvStore(),
+    });
+    const body = await response.json();
+    assert.equal(body.degraded, true);
+    assert.equal(body.reason, "api-529");
+    assert.equal(body.search_intent, undefined);
+    assert.equal(body.cited_quotes.schema, "cityscroll.ask_cited_quotes.v1");
+    assert.ok(body.cited_quotes.quotes.some((quote) => (
+      quote.citation_id === "city_record_notice:20260715041:p0001"
+      && quote.exact_join_evidence.state === "matched"
+      && quote.source.url === "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"
+    )));
+    assert.deepEqual(citedQuotesForAsk("energy conservation").quotes.map((quote) => quote.citation_id),
+      body.cited_quotes.quotes.map((quote) => quote.citation_id));
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -189,7 +228,10 @@ test("handleNl: per-IP cap returns the existing graceful degradation", async () 
     const second = await handleNl(nlRequest(), env);
     assert.equal(first.status, 200);
     assert.equal((await first.json()).degraded, undefined);
-    assert.deepEqual(await second.json(), { degraded: true, reason: "ip-cap" });
+    const capped = await second.json();
+    assert.equal(capped.degraded, true);
+    assert.equal(capped.reason, "ip-cap");
+    assert.equal(capped.cited_quotes.schema, "cityscroll.ask_cited_quotes.v1");
     assert.equal(modelCalls, 1);
   } finally {
     globalThis.fetch = originalFetch;
@@ -211,7 +253,10 @@ test("handleNl: meter failure fails closed without a model call", async () => {
       NL_MAX_PER_IP_DAY: "1",
     });
     assert.equal(res.status, 200);
-    assert.deepEqual(await res.json(), { degraded: true, reason: "ip-cap" });
+    const body = await res.json();
+    assert.equal(body.degraded, true);
+    assert.equal(body.reason, "ip-cap");
+    assert.equal(body.cited_quotes.schema, "cityscroll.ask_cited_quotes.v1");
     assert.equal(modelCalls, 0);
   } finally {
     globalThis.fetch = originalFetch;

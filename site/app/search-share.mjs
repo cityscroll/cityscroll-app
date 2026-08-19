@@ -1,3 +1,4 @@
+import { renderAskCitedQuotesHtml } from "../ask_cited_synthesis.mjs";
 import { walkEntryHref } from "../walk_entry.mjs";
 import {
   parseSearchLensHandoff,
@@ -23,19 +24,34 @@ function loadNlParser(){
   ]).then(([ok])=>ok);
 }
 
+function attachCitedQuotes(filter, quotes){
+  if(quotes) filter.cited_quotes=quotes;
+  return filter;
+}
+function askCitedQuotesHTML(quotes){
+  return renderAskCitedQuotesHtml(quotes, { t, escape: nlqEscape });
+}
 async function nlResolve(text, lens){
   lens = lens || "money";
+  let quotes=null;
   // Prefer the model-backed worker when API is set; fall back to the on-device heuristic.
+  // Cited quotes are a sibling of the filter and survive Haiku degradation.
   if(API){
     try{
       const r=await workerFetch("/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})}, 12000);
-      if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return enrichNeighborhoodFilter(text,lens,{source:"model",...withPersonName(text, lens, j.filter)});}
+      if(r.ok){
+        const j=await r.json();
+        if(j&&j.cited_quotes) quotes=j.cited_quotes;
+        if(j&&j.filter&&!j.degraded){
+          return attachCitedQuotes(await enrichNeighborhoodFilter(text,lens,{source:"model",...withPersonName(text, lens, j.filter)}), quotes);
+        }
+      }
     }catch(e){}
   }
   if(typeof parseNL!=="function" && !await loadNlParser()){
-    return enrichNeighborhoodFilter(text,lens,{source:"device",keywords:[text]});
+    return attachCitedQuotes(await enrichNeighborhoodFilter(text,lens,{source:"device",keywords:[text]}), quotes);
   }
-  return enrichNeighborhoodFilter(text,lens,{source:"device",...deviceParse(text, lens)});
+  return attachCitedQuotes(await enrichNeighborhoodFilter(text,lens,{source:"device",...deviceParse(text, lens)}), quotes);
 }
 
 async function enrichNeighborhoodFilter(text,lens,filter){
@@ -173,7 +189,7 @@ async function nlTranslate(){
   $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
   await search();
   if(btn) btn.disabled=false;
-  $("#nltrans").innerHTML=nlqResolvedActionsHTML(deepLink);
+  $("#nltrans").innerHTML=askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
   bindNLQResolvedActions(text, deepLink);
   if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
 }
@@ -835,8 +851,9 @@ async function nlTranslateLens(lens, opts){
   const btn=$("#nlgo-"+lens); if(btn) btn.disabled=true;
   $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
   const f=await nlResolve(text, lens);
+  const quotesHtml=askCitedQuotesHTML(f.cited_quotes);
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
-  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, inpSel, chips.length===0);
+  $("#nltrans-"+lens).innerHTML=quotesHtml+nlTransHTML(chips, inpSel, chips.length===0);
   if(btn) btn.disabled=false;
   const context=globalThis.CrolPlaceContext;
   const inputFilter={...f};
@@ -857,7 +874,7 @@ async function nlTranslateLens(lens, opts){
   const deepLink=buildSearchDeepLink(lens, linkFilter);
   const carriedDeepLink=lens==="meetings"?deepLink:(contextual?.hash||deepLink);
   await NL[lens].apply(linkFilter);
-  if(chips.length) $("#nltrans-"+lens).innerHTML="";
+  $("#nltrans-"+lens).innerHTML=quotesHtml+(chips.length?"":nlTransHTML(chips, inpSel, chips.length===0));
   renderSearchComponents(lens, {hash:carriedDeepLink, label:text});
 }
 
