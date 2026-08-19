@@ -5,6 +5,13 @@
 // Accepts the unified v1 document (district_boundaries.json) and the
 // council-only v0 twin (council_district_boundaries.json).
 
+import { resolveCivicGeographyLayer } from "./civic_geography.mjs";
+import {
+  GEOGRAPHY_LAYER_SCHEMA,
+  civicGeographyKey,
+  civicGeographyLayer,
+} from "./civic_geography_registry.mjs";
+
 export const COUNCIL_DISTRICT_LAYER_SCHEMA = "cityscroll.district_boundaries.v0";
 export const DISTRICT_BOUNDARIES_SCHEMA_V1 = "cityscroll.district_boundaries.v1";
 export const COUNCIL_DISTRICT_ID_RE = /^(?:[1-9]|[1-4]\d|5[01])$/;
@@ -124,25 +131,94 @@ function communityList(layer) {
   return null;
 }
 
+const COMPATIBILITY_LAYER_CACHE = new WeakMap();
+
+function compatibilityFeatures(type, layer) {
+  const source = type === "community_district" ? communityList(layer) : councilList(layer);
+  if (!source) return [];
+  return source.map((feature) => ({
+    key: civicGeographyKey(type, type === "community_district"
+      ? normalizeCommunityDistrictId(feature?.id) || normalizeCommunityDistrictId(feature?.boro_cd)
+      : normalizeCouncilDistrictId(feature?.id)),
+    type,
+    id: type === "community_district"
+      ? normalizeCommunityDistrictId(feature?.id) || normalizeCommunityDistrictId(feature?.boro_cd)
+      : normalizeCouncilDistrictId(feature?.id),
+    label: feature?.label || String(feature?.id || ""),
+    subtype: null,
+    source_properties: type === "community_district" ? { boro_cd: feature?.boro_cd || null } : {},
+    bbox: feature?.bbox || null,
+    geometry: {
+      type: "MultiPolygon",
+      coordinates: (feature?.polygons || []).map((polygon) => polygon.rings),
+    },
+  })).filter((feature) => feature.key && feature.id && feature.geometry.coordinates.length);
+}
+
+function compatibilityCivicLayer(type, layer) {
+  if (!layer || typeof layer !== "object") return null;
+  let cached = COMPATIBILITY_LAYER_CACHE.get(layer);
+  if (!cached) {
+    cached = new Map();
+    COMPATIBILITY_LAYER_CACHE.set(layer, cached);
+  }
+  if (cached.has(type)) return cached.get(type);
+  const definition = civicGeographyLayer(type);
+  const features = compatibilityFeatures(type, layer);
+  if (!definition || !features.length) {
+    cached.set(type, null);
+    return null;
+  }
+  const source = layer.sources?.[type] || {};
+  const boundaryVintage = source.boundary_vintage || layer.boundary_vintage || null;
+  if (!boundaryVintage) {
+    cached.set(type, null);
+    return null;
+  }
+  const doc = {
+    schema: GEOGRAPHY_LAYER_SCHEMA,
+    type,
+    class: definition.class,
+    namespace: definition.namespace,
+    geometry_fidelity: "simplified",
+    source: {
+      contract_id: definition.source.contract_id,
+      publisher: definition.source.publisher,
+      dataset_id: source.dataset_id || layer.dataset_id || definition.source.dataset_id,
+      dataset_name: source.dataset_name || layer.dataset_name || null,
+      url: source.source_url || layer.source_url || definition.source.url,
+      updated_at: source.source_updated_at || layer.source_updated_at || null,
+    },
+    vintage: { id: String(boundaryVintage), published_at: source.source_updated_at || null },
+    crs: "EPSG:4326",
+    feature_count: features.length,
+    coverage: { status: "compatibility_projection", actual_feature_count: features.length },
+    features,
+  };
+  cached.set(type, doc);
+  return doc;
+}
+
+/** Adapt the historical combined/v0 documents at the anti-corruption boundary. */
+export function civicLayersFromDistrictCompatibility(layer) {
+  return [
+    compatibilityCivicLayer("community_district", layer),
+    compatibilityCivicLayer("council_district", layer),
+  ].filter(Boolean);
+}
+
+function resolveCompatibilityId(lat, lon, layer, type) {
+  const doc = compatibilityCivicLayer(type, layer);
+  return resolveCivicGeographyLayer(lat, lon, doc).matches[0]?.id || null;
+}
+
 /**
  * Resolve a WGS84 point against a committed council-district layer.
  * Returns the district id string ("1"…"51") or null when unresolved.
  * Accepts v0 council-only or v1 unified documents.
  */
 export function resolveCouncilDistrict(lat, lon, layer) {
-  const latitude = Number(lat);
-  const longitude = Number(lon);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
-  const districts = councilList(layer);
-  if (!districts) return null;
-
-  for (const district of districts) {
-    const id = normalizeCouncilDistrictId(district && district.id);
-    if (!id) continue;
-    if (!inBbox(longitude, latitude, district.bbox)) continue;
-    if (pointInDistrictPolygons(longitude, latitude, district.polygons)) return id;
-  }
-  return null;
+  return resolveCompatibilityId(lat, lon, layer, "council_district");
 }
 
 /**
@@ -151,20 +227,7 @@ export function resolveCouncilDistrict(lat, lon, layer) {
  * layer lists them before joint-interest areas.
  */
 export function resolveCommunityDistrict(lat, lon, layer) {
-  const latitude = Number(lat);
-  const longitude = Number(lon);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
-  const districts = communityList(layer);
-  if (!districts) return null;
-
-  for (const district of districts) {
-    const id = normalizeCommunityDistrictId(district && district.id)
-      || normalizeCommunityDistrictId(district && district.boro_cd);
-    if (!id) continue;
-    if (!inBbox(longitude, latitude, district.bbox)) continue;
-    if (pointInDistrictPolygons(longitude, latitude, district.polygons)) return id;
-  }
-  return null;
+  return resolveCompatibilityId(lat, lon, layer, "community_district");
 }
 
 /**
@@ -173,8 +236,8 @@ export function resolveCommunityDistrict(lat, lon, layer) {
  */
 export function resolveDistricts(lat, lon, layer) {
   return {
-    community_district: resolveCommunityDistrict(lat, lon, layer),
-    council_district: resolveCouncilDistrict(lat, lon, layer),
+    community_district: resolveCompatibilityId(lat, lon, layer, "community_district"),
+    council_district: resolveCompatibilityId(lat, lon, layer, "council_district"),
     boundary_vintage: layer && layer.boundary_vintage ? String(layer.boundary_vintage) : null,
   };
 }

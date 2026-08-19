@@ -35,6 +35,13 @@ const CANARY_SLICES = {
       payload: agency ? { producer_id: agency.producer_id ?? null, path: agency.path ?? null } : null,
     };
   },
+  "civic-geography-registry": (facts) => ({
+    count: facts.civic_geography?.layer_count ?? 0,
+    payload: {
+      schema: facts.civic_geography?.schema ?? null,
+      layers: facts.civic_geography?.layers ?? [],
+    },
+  }),
   "constellation-document-materializer": (facts) => ({
     count: facts.constellation?.materializer?.lookup ? 1 : 0,
     payload: {
