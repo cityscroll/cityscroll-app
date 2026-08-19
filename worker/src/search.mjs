@@ -644,6 +644,8 @@ export async function handleSearch(request, env) {
       canonical_tokens: resolved.canonical_tokens,
       structured_filters: resolved.structured_filters,
       alias_receipt: resolved.alias?.receipt || null,
+      expansion_tokens: resolved.expansion_tokens,
+      expansion_receipt: resolved.expansion?.receipt || null,
     },
     lanes: LANE_ORDER.map((id) => lanes[id]),
     results,

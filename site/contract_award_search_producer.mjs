@@ -240,9 +240,12 @@ export function searchContractAwardDocuments(lookup = {}, query = "", { limit = 
   const candidateLimit = Math.max(Number(limit) || 40, 1) * 4;
   const resolved = resolveKeywordQuery(query);
   const lexicalTerms = terms.filter((term) => !CONTRACT_CONCEPT_TERMS.has(term));
+  const mentionGroups = resolved.retrieval_groups?.length
+    ? resolved.retrieval_groups
+    : lexicalTerms.map((term) => [term]);
   const candidates = lexicalTerms.length
     ? searchableRows(lookup).filter(({ text }) => (
-      lexicalTerms.every((term) => text.includes(term))
+      mentionGroups.every((group) => group.some((term) => text.includes(term)))
       && keywordTextMatches(text, resolved)
     ))
     : searchableRows(lookup).slice(-candidateLimit);

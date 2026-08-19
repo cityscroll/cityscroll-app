@@ -386,8 +386,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - **Search-quality golden queries:** `queries[]` in
   `test/fixtures/universal_search_object_gold.json` plus
   `test/universal_search_golden_queries.test.mjs` score current keyword, coverage,
-  and offline Ask interpretation — including expected misses (typo, synonym).
-  Do not change retrieval to turn a documented miss green.
+  and offline Ask interpretation — including expected misses (typo) and the
+  reviewed synonym hit (`gq-school-synonym`, school→education). Do not change
+  retrieval to turn a documented miss green; a reviewed expander may land only
+  behind a fixture that turns that miss into a hit without flipping other gold
+  identities.
 - **SearchIntent wrap projector:** `site/search_intent.mjs` is the read-only
   `cityscroll.search_intent.v1` projection over `scopeFromRouteHash` /
   `scopeFromLensState`, `resolveKeywordQuery`, and NL `sanitize`. It does not
@@ -400,8 +403,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   status, count, source, and as-of receipts. `site/keyword_matcher.mjs` is the literal-resolution
   and offset-backed evidence narrow waist. Matching is exact whole-token (plus simple +s
   plural), never infix/substring or prefix — `rat` does not match `integrated` / `rate`.
-  A published keyword hit must carry markable evidence; evidence-less award recall is
-  fail-closed. Refresh the compact typed-object index with
+  Reviewed synonym expansions store `expansion_tokens[]` with a `reviewed_synonym_v1`
+  receipt and may OR into `retrieval_groups`; they do not rewrite `canonical_tokens`.
+  The closed table starts at school→education. Unreviewed synonyms and typos stay
+  unexpanded. A published keyword hit must carry markable evidence of the document
+  token that matched; evidence-less award recall is fail-closed. Refresh the compact
+  typed-object index with
   `node tools/build_keyword_search_index.mjs`; the D1 notice mirror remains the Contracts/Rules
   source, while the client projects the flattened compatibility results through the registered
   universal-search domain lanes.

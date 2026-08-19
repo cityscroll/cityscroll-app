@@ -3,8 +3,10 @@ import test from "node:test";
 
 import {
   KEYWORD_MATCH_SEMANTICS,
+  REVIEWED_SYNONYM_EXPANSIONS,
   matchKeywordDocument,
   resolveKeywordQuery,
+  searchKeywordDocuments,
 } from "../site/keyword_matcher.mjs";
 import { buildLandSearchDocuments } from "../site/land_search_producer.mjs";
 
@@ -131,8 +133,97 @@ test("rat matches whole tokens and simple plurals, not infixes or prefixes", () 
     prefix: false,
     simple_regular_plural: true,
     reviewed_aliases: true,
+    reviewed_synonym_expansion: true,
     evidence_required: true,
   });
+});
+
+test("reviewed school→education expansion ORs without rewriting query identity", () => {
+  const resolved = resolveKeywordQuery("school");
+  assert.deepEqual(resolved.canonical_tokens, ["school"]);
+  assert.deepEqual(resolved.expansion_tokens, ["education"]);
+  assert.equal(resolved.expansion.receipt, "reviewed_synonym_v1");
+  assert.deepEqual(resolved.expansion.pairs, [{
+    from: "school",
+    to: "education",
+    receipt: "reviewed_synonym_v1",
+  }]);
+  assert.deepEqual(resolved.retrieval_groups, [["school", "education"]]);
+  assert.deepEqual(REVIEWED_SYNONYM_EXPANSIONS.school.expansion_tokens, ["education"]);
+
+  const plural = resolveKeywordQuery("schools");
+  assert.deepEqual(plural.canonical_tokens, ["school"]);
+  assert.deepEqual(plural.expansion_tokens, ["education"]);
+  assert.deepEqual(plural.retrieval_groups, [["schools", "school", "education"]]);
+
+  const educationDoc = document({
+    object_ref: "procurement:education-synonym-fixture",
+    title: "Education Department professional development",
+    summary: "Education services award",
+    search_text: "Education Department professional development Education services award",
+  });
+  const schoolDoc = document({
+    title: "School construction bid",
+    search_text: "School construction bid",
+  });
+  const decoy = document({
+    title: "Catch basin maintenance",
+    search_text: "Catch basin maintenance Vendor mosquito supplies",
+  });
+
+  const educationHit = matchKeywordDocument(educationDoc, resolved);
+  assert.ok(educationHit);
+  assert.equal(educationHit.matched_normalized_term, "education");
+  assert.equal(
+    educationHit.snippet.text.slice(educationHit.snippet.mark_start, educationHit.snippet.mark_end),
+    "Education",
+  );
+
+  const schoolHit = matchKeywordDocument(schoolDoc, resolved);
+  assert.ok(schoolHit);
+  assert.equal(schoolHit.matched_normalized_term, "school");
+  assert.equal(
+    schoolHit.snippet.text.slice(schoolHit.snippet.mark_start, schoolHit.snippet.mark_end),
+    "School",
+  );
+  assert.equal(matchKeywordDocument(decoy, resolved), null);
+
+  const hits = searchKeywordDocuments([educationDoc, schoolDoc, decoy], resolved);
+  assert.deepEqual(hits.map((row) => row.object_ref), [
+    "procurement:education-synonym-fixture",
+    "procurement:81626S0021001",
+  ]);
+});
+
+test("unreviewed tokens and education itself do not silently merge identities", () => {
+  const typo = resolveKeywordQuery("mosqito");
+  assert.deepEqual(typo.canonical_tokens, ["mosqito"]);
+  assert.deepEqual(typo.expansion_tokens, []);
+  assert.equal(typo.expansion, null);
+
+  const academy = resolveKeywordQuery("academy");
+  assert.deepEqual(academy.canonical_tokens, ["academy"]);
+  assert.deepEqual(academy.expansion_tokens, []);
+  assert.equal(academy.expansion, null);
+  assert.equal(matchKeywordDocument(document({
+    title: "Education Department professional development",
+    search_text: "Education Department professional development",
+  }), academy), null);
+
+  const education = resolveKeywordQuery("education");
+  assert.deepEqual(education.canonical_tokens, ["education"]);
+  assert.deepEqual(education.expansion_tokens, []);
+  assert.equal(education.expansion, null);
+  assert.equal(matchKeywordDocument(document({
+    title: "School construction bid",
+    search_text: "School construction bid",
+  }), education), null);
+
+  const educational = resolveKeywordQuery("school");
+  assert.equal(matchKeywordDocument(document({
+    title: "Educational materials catalog",
+    search_text: "Educational materials catalog",
+  }), educational), null);
 });
 
 test("a multi-token contract phrase still requires adjacent whole tokens", () => {
