@@ -35,8 +35,8 @@ crons = [
 [vars]
 ALERTS_LIVE = "true"
 ANALYTICS_ENVIRONMENT = "production"
-# RUM intake is independently gated and stays OFF until the bounded pilot rollout.
-RUM_INGEST_ENABLED = "false"
+# RUM intake is independently gated. Production-only; beta/preview stay off.
+RUM_INGEST_ENABLED = "true"
 # Shadow-only identity capture. Public reads do not consume these tables.
 CITY_RECORD_SOURCE_RECORD_DUAL_WRITE = "true"
 PASSPORT_SOURCE_RECORD_DUAL_WRITE = "true"

@@ -114,7 +114,7 @@ test("registry and every generated projection mark the Following shell and watch
   assert.equal(worker.surfaces.following.lifecycle_state, "instrumented");
   assert.equal(worker.components["following-watch-list"].lifecycle_state, "instrumented");
   assert.equal(operator.surfaces.find((entry) => entry.surface_id === "following").lifecycle_state, "instrumented");
-  assert.equal(manifest.collector.production_enabled, false);
+  assert.equal(manifest.collector.production_enabled, true);
 });
 
 test("Following reports distinct shell and settled-state durations for populated, empty, unavailable, and error", () => {
@@ -321,7 +321,7 @@ test("registry additions propagate byte-deterministically with collection off", 
     projections.operator.surfaces.find((entry) => entry.surface_id === "following").lifecycle_state,
     "instrumented",
   );
-  assert.equal(projections.browser.collector.production_enabled, false);
+  assert.equal(projections.browser.collector.production_enabled, true);
   assert.equal(currentRumSemanticMilestones().state, "disabled");
   assert.equal(projections.browser.registry_hash, projections.worker.registry_hash);
   assert.equal(projections.worker.registry_hash, projections.operator.registry_hash);
@@ -342,7 +342,7 @@ test("production owners call the semantic seam while collection stays off", () =
   assert.doesNotMatch(following, /localStorage|sessionStorage|indexedDB|document\.cookie/);
   assert.doesNotMatch(instrumentation, /localStorage|sessionStorage|indexedDB|document\.cookie/);
   assert.doesNotMatch(following, /reportFollowingReadiness\(/);
-  assert.equal(manifest.collector.production_enabled, false);
+  assert.equal(manifest.collector.production_enabled, true);
 });
 
 test("disabled collector leaves Following fetch and public markup unchanged", () => {

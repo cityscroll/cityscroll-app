@@ -5,7 +5,7 @@
     {
       "id": "browser-rum-collector",
       "path": "site/rum_collector.mjs",
-      "why": "Disabled/test-only browser field-vitals foundation. Its lifecycle, privacy projection, and no-transport boundary are architecture-affecting even before pilot ingestion exists."
+      "why": "Browser field-vitals collector. Its lifecycle, privacy projection, host exclusion, and gated /performance-events transport are architecture-affecting."
     },
     {
       "id": "agency-constellation-model",

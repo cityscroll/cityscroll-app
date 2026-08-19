@@ -163,7 +163,7 @@ test("one canonical registration propagates to browser, Worker, and operator inv
 
 test("Worker allowlist carries metric, delivery, component, and inherited parent constraints", () => {
   const { worker } = buildPerformanceObservability(registry(), { root: ROOT });
-  assert.equal(worker.collector.production_enabled, false);
+  assert.equal(worker.collector.production_enabled, true);
   assert.equal(worker.collector.library_version, "6.0.1");
   assert.deepEqual(worker.collector.device_classes, ["desktop", "mobile", "tablet", "unknown"]);
   assert.ok(worker.collector.navigation_types.includes("back-forward-cache"));

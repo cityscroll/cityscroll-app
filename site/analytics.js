@@ -143,7 +143,34 @@
     });
   });
 
+  function scheduleProductionRum() {
+    try {
+      const host = location.hostname;
+      if (host !== "cityscroll.org" && host !== "www.cityscroll.org" && host !== "cityscroll.pages.dev") {
+        return;
+      }
+      const start = function startRum() {
+        const idle = window.requestIdleCallback || function idleFallback(callback) {
+          window.setTimeout(callback, 0);
+        };
+        idle(function loadRum() {
+          import("/rum_bootstrap.mjs").then(function boot(mod) {
+            if (typeof mod.scheduleProductionRumCollector === "function") {
+              return mod.scheduleProductionRumCollector();
+            }
+            return null;
+          }).catch(function () {});
+        });
+      };
+      if (document.readyState === "complete") start();
+      else window.addEventListener("load", start, { once: true });
+    } catch {
+      // RUM scheduling is observational and cannot become a page error.
+    }
+  }
+
   window.crolAnalytics = Object.freeze({ record });
+  scheduleProductionRum();
   record("page_view", { surface: surface() });
   document.querySelectorAll("[data-story-signal-card]").forEach(() => {
     record("comparative_signal_shown", { detail: "visible", surface: "worth-a-look" });

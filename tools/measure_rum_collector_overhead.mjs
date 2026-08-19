@@ -11,6 +11,8 @@ const EVIDENCE_PATH = join(ROOT, "docs/evidence/rum-collector-foundation/overhea
 const ASSET_PATHS = Object.freeze([
   "site/rum_bootstrap.mjs",
   "site/rum_collector.mjs",
+  "site/rum_delivery.mjs",
+  "site/rum_production.mjs",
   "site/vendor/web-vitals-6.0.1.mjs",
 ]);
 
@@ -43,7 +45,8 @@ export function buildRumCollectorOverheadEvidence() {
   const productionReferences = siteRuntimeSources().filter((path) => (
     readFileSync(path, "utf8").includes("rum_bootstrap.mjs")
   ));
-  const transportSource = ASSET_PATHS.slice(0, 2)
+  const transportSource = ASSET_PATHS
+    .filter((path) => path !== "site/vendor/web-vitals-6.0.1.mjs")
     .map((path) => readFileSync(join(ROOT, path), "utf8"))
     .join("\n");
   return {
@@ -70,7 +73,7 @@ export function buildRumCollectorOverheadEvidence() {
       after_load: /addEventListener(?:\?\.)?\("load"/.test(transportSource),
       idle_task: /requestIdleCallback/.test(transportSource),
     },
-    interpretation: "The complete test-only payload is measured for future activation. Production requests zero collector bytes because no production runtime source loads the bootstrap.",
+    interpretation: "The deferred production payload is measured after load and idle. Canonical production hosts request the bootstrap only when the generated collector contract is production_enabled; local, preview, and developer traffic stay excluded.",
   };
 }
 

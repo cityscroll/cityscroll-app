@@ -3529,12 +3529,11 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   never enter the hard `observer_coverage.unmapped_surfaces` gate. The frozen
   proof is `architecture/backtests/rum-future-surface.json` plus
   `test/performance_observability_architecture.test.mjs`.
-- The browser foundation is deliberately a **capability seam**, not a flag:
-  production HTML does not load `site/rum_bootstrap.mjs`, and the bootstrap
-  requires `testOnly: true` before it defers the local standard web-vitals
-  bundle until load + idle. `site/rum_collector.mjs` has only an in-memory
-  debug sink and no network transport. Preserve missing metrics as absence,
-  keep per-page web-vitals ids private to deduplication, and refresh the byte
+- The browser collector remains a **capability seam**: `site/analytics.js`
+  schedules `site/rum_bootstrap.mjs` only on canonical production hosts after
+  load + idle. Local, preview, and missing-release pages stay inert. Field
+  vitals still omit missing metrics, keep per-page web-vitals ids private to
+  deduplication, and deliver through `site/rum_delivery.mjs`. Refresh the byte
   receipt with `node tools/measure_rum_collector_overhead.mjs --write`.
 - Component owners report readiness and interaction timing through
   `site/rum_semantic_milestones.mjs`; keep the terminal-state vocabulary
@@ -3551,8 +3550,8 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   browser binding in `site/app/contracts-rum.mjs`: start at the native
   filter/input action, mark feedback only after a paint, and settle after
   `site/app/money-list.mjs` renders a row or honest empty/error terminal. It
-  must remain identifier-free and disabled with the production collector;
-  focused proof is `test/rum_browse_search_instrumentation.test.mjs`.
+  must remain identifier-free; focused proof is
+  `test/rum_browse_search_instrumentation.test.mjs`.
 - Map, entity, and async-panel instrumentation lives in
   `site/rum_maps_entities_async_instrumentation.mjs`. Near You reports usable
   frame readiness separately from relevant-data or honest absence; agency
@@ -3567,18 +3566,22 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   report the static create-flow shell separately from `/following/personal`
   retrieval, and emit catalog terminals for populated, empty (including
   unauthenticated), unavailable, and error. Keep watch, account, session,
-  location, and cross-page tokens out of observations; collection stays
-  disabled. Refresh projections with
-  `node tools/build_performance_observability.mjs`. Focused proof is
+  location, and cross-page tokens out of observations. Refresh projections
+  with `node tools/build_performance_observability.mjs`. Focused proof is
   `test/rum_stateful_instrumentation.test.mjs`.
 - Field-performance intake is the separate `POST /performance-events` contract
   in `worker/src/performance_events.mjs`, backed only by `RUM_ANALYTICS` /
   `crol_rum_observations_v1`. Keep its normalized one-metric-per-point layout,
   strict generated allowlist validation, and fixed health reasons independent
   from `/events`, `USAGE_ANALYTICS`, and the usage stats surfaces. Production
-  remains fail-closed while `RUM_INGEST_ENABLED` and the public manifest flag
-  are false. Focused proof: `worker/test/performance_events.test.mjs` and
-  `test/rum_delivery.test.mjs`.
+  is independently gated: production `[vars]` sets `RUM_INGEST_ENABLED=true`
+  and the public manifest sets `production_enabled: true`. Beta/preview stay
+  off. Either switch stops new writes. Local, numbered preview hosts, and
+  developer tokens remain excluded. Sampling is Cloudflare weighted adaptive
+  sampling, not an unsampled 100 percent of visitor rows. Operator protocol:
+  `docs/rum-production-pilot.md`. Focused proof:
+  `worker/test/performance_events.test.mjs`, `test/rum_delivery.test.mjs`,
+  `test/rum_pilot_rollout.test.mjs`, and `worker/test/rum_pilot_rollout.test.mjs`.
 - Field-performance distributions use only the bounded Worker adapter at
   `worker/src/lib/performance_query.mjs`; Desk must consume the later private
   read model rather than Analytics Engine. Sufficiency is based on retained

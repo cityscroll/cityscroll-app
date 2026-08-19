@@ -452,7 +452,7 @@
     "field_metric_ids": ["cls_score", "fcp_ms", "inp_ms", "lcp_ms", "ttfb_ms"],
     "device_classes": ["desktop", "mobile", "tablet", "unknown"],
     "navigation_types": ["back-forward", "back-forward-cache", "navigate", "prerender", "reload", "restore", "unknown"],
-    "production_enabled": false
+    "production_enabled": true
   },
   "description": "Canonical human-edited registry for public-safe performance surface and component identity. Generated browser, Worker, and operator projections must never be edited as inventories.",
   "delivery_classes": [
@@ -473,7 +473,7 @@
   "projection_policy": {
     "browser": {
       "audience": "public",
-      "rule": "Emit the disabled collector contract, minimal field-metric versions and units, stable IDs, route-family matchers, delivery classes, metric applicability, semantic contract IDs, lifecycle state, and identity aliases only. Never emit operator labels, readiness prose, architecture references, or owner paths."
+      "rule": "Emit the collector contract, metric versions and units, stable IDs, route-family matchers, delivery classes, metric applicability, semantic contract IDs, lifecycle state, and identity aliases only. Never emit operator labels, readiness prose, architecture references, or owner paths."
     },
     "worker": {
       "audience": "private_runtime",
