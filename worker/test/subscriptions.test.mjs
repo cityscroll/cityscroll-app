@@ -13,6 +13,8 @@ import {
   normalizeEmail,
   redactEmail,
   signupLifecycleFromRecord,
+  summarizeSignupLifecycle,
+  formatSignupLifecycleSummary,
   subCanonical,
   topiclessIntentKey,
 } from "../src/lib/subscriptions.mjs";
@@ -120,6 +122,31 @@ test("signupLifecycleFromRecord projects recovered pending-enrollment before fir
     signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
     status: SIGNUP_LIFECYCLE.ENROLLED,
   });
+});
+
+test("summarizeSignupLifecycle keeps recovered pending as the intermediate category before enrollment", () => {
+  const recovered = {
+    email: "de***@gmail.com",
+    signup_lifecycle: SIGNUP_LIFECYCLE.RECOVERED,
+    status: SIGNUP_LIFECYCLE.PENDING_ENROLLMENT,
+  };
+  const pending = summarizeSignupLifecycle([recovered, recovered, recovered]);
+  assert.equal(pending.recovered_pending, 3);
+  assert.equal(pending.enrolled, 0);
+  assert.equal(pending.summary, "3 recovered, pending");
+  assert.equal(pending.categories[0].id, "recovered_pending");
+  assert.equal(pending.categories[1].id, "enrolled");
+
+  const enrolledRow = {
+    email: "de***@gmail.com",
+    signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
+    status: SIGNUP_LIFECYCLE.ENROLLED,
+  };
+  const enrolled = summarizeSignupLifecycle([enrolledRow, enrolledRow, enrolledRow]);
+  assert.equal(enrolled.recovered_pending, 0);
+  assert.equal(enrolled.enrolled, 3);
+  assert.equal(enrolled.summary, "3 enrolled");
+  assert.equal(formatSignupLifecycleSummary({ recovered_pending: 3, enrolled: 12 }), "3 recovered, pending · 12 enrolled");
 });
 
 test("subCanonical excludes lang — changing language does not produce a different id", () => {

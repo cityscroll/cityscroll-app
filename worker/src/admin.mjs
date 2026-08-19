@@ -1,6 +1,7 @@
-// GET /admin/subs?key=… — operator read of active watches plus confirmed topicless homepage
-// subscriptions, straight from the worker's OWN SUBS binding. This answers "what does
-// the worker actually see" independent of any external CLI/dashboard view of the namespace.
+// GET /admin/subs?key=… — operator signup-lifecycle roster from the worker's OWN SUBS
+// binding (recovered / pending-enrollment / enrolled / confirmed / test). This answers
+// "what does the worker actually see" independent of any external CLI/dashboard view.
+// JSON by default; ?view=html (or Accept: text/html) renders the same categories.
 // FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only.
 //
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
@@ -10,6 +11,7 @@ import {
   isTopiclessIntent,
   isTestSubscriber,
   signupLifecycleFromRecord,
+  summarizeSignupLifecycle,
   SIGNUP_LIFECYCLE,
 } from "./lib/subscriptions.mjs";
 import { RECOVERY_EXPLANATION, recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
@@ -212,8 +214,10 @@ export async function handleAdminSubs(req, env) {
     cursor = res.list_complete ? null : res.cursor;
   } while (cursor);
 
-  return json({
-    confirmedSubs: subs.filter((row) => row.status === SIGNUP_LIFECYCLE.CONFIRMED).length,
+  const confirmedSubs = subs.filter((row) => row.status === SIGNUP_LIFECYCLE.CONFIRMED).length;
+  const signupLifecycle = summarizeSignupLifecycle([...subs, ...developerTestAccounts]);
+  const body = {
+    confirmedSubs,
     recoveredPendingCount: recoveredPending.length,
     enrolledCount: enrolled.length,
     topiclessIntentCount: topiclessIntents.length,
@@ -221,10 +225,79 @@ export async function handleAdminSubs(req, env) {
     developerTestAccounts,
     recoveredPending,
     enrolled,
+    signup_lifecycle: {
+      recovered_pending: signupLifecycle.recovered_pending,
+      enrolled: signupLifecycle.enrolled,
+      confirmed: signupLifecycle.confirmed,
+      test: signupLifecycle.test,
+      summary: signupLifecycle.summary,
+      categories: signupLifecycle.categories.map((category) => ({
+        id: category.id,
+        label: category.label,
+        count: category.count,
+      })),
+    },
     totalKeysInStore: totalKeys,
     subs,
     sampleKeys,
-  }, 200);
+  };
+  if (wantsHtml(req)) {
+    return new Response(renderSignupLifecyclePage(body), {
+      status: 200,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "private, no-store" },
+    });
+  }
+  return json(body, 200);
+}
+
+function wantsHtml(req) {
+  const url = new URL(req.url);
+  return url.searchParams.get("view") === "html"
+    || (req.headers.get("accept") || "").includes("text/html");
+}
+
+export function renderSignupLifecyclePage(body = {}) {
+  const lifecycle = body.signup_lifecycle || {};
+  const summary = lifecycle.summary || "No signups";
+  const categories = [
+    {
+      id: "recovered_pending",
+      label: "recovered / pending-enrollment",
+      count: lifecycle.recovered_pending ?? body.recoveredPendingCount ?? 0,
+      rows: body.recoveredPending || [],
+    },
+    {
+      id: "enrolled",
+      label: "enrolled",
+      count: lifecycle.enrolled ?? body.enrolledCount ?? 0,
+      rows: body.enrolled || [],
+    },
+    {
+      id: "confirmed",
+      label: "confirmed",
+      count: lifecycle.confirmed ?? body.confirmedSubs ?? 0,
+      rows: (body.subs || []).filter((row) => row.status === SIGNUP_LIFECYCLE.CONFIRMED),
+    },
+    {
+      id: "test",
+      label: "test",
+      count: lifecycle.test ?? (body.developerTestAccounts || []).length,
+      rows: body.developerTestAccounts || [],
+    },
+  ];
+  const sections = categories.map((category) => {
+    const rows = category.rows;
+    const table = rows.length
+      ? `<table><thead><tr><th>Address</th><th>Lifecycle</th><th>Status</th><th>Source</th><th>Original signup</th></tr></thead><tbody>${
+        rows.map((row) => `<tr><th scope="row">${escapeHtml(row.email || "—")}</th><td>${escapeHtml(row.signup_lifecycle || category.id)}</td><td>${escapeHtml(row.status || "—")}</td><td>${escapeHtml(row.source || "—")}</td><td>${escapeHtml(row.original_signup_at || row.createdAt || "—")}</td></tr>`).join("")
+      }</tbody></table>`
+      : "";
+    return `<article class="panel" data-signup-category="${escapeHtml(category.id)}"><h2>${escapeHtml(category.label)}</h2><p class="count">${deskNumber(category.count)}</p>${table}</article>`;
+  }).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Signup lifecycle · CityScroll desk</title><style>
+  :root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8;--green:#1f6b4f}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:28px 20px 64px}header{border-bottom:3px solid var(--ink);padding-bottom:18px}.eyebrow{margin:0 0 6px;color:var(--green);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2rem,5vw,3.6rem)/1.02 ui-serif,Georgia,serif;margin:0}.lede,.count{color:var(--muted)}.count{font:750 2rem/1 ui-serif,Georgia,serif;margin:0 0 12px}.panels{display:grid;gap:14px;margin:24px 0}.panel{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px}h2{margin:0 0 8px;font:700 1.15rem ui-serif,Georgia,serif}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:left}.stamp{color:var(--muted);font-size:.82rem}
+  </style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · signup lifecycle</p><h1>Signup lifecycle</h1><p class="lede">${escapeHtml(summary)}</p></header><section class="panels">${sections}</section><p class="stamp">Private response: no-store. Recovered signups stay pending-enrollment until a digest day after the recovery watermark.</p></main></body></html>`;
 }
 
 // POST /admin/recover-deprecated-opt-in?key=… — bounded, idempotent recovery. Always applies

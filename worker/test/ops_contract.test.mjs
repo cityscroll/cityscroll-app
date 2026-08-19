@@ -81,7 +81,19 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.6.0", "RUM-09 adds consumer discovery without changing existing fields");
+  assert.equal(doc.version, "1.7.0", "signup lifecycle is additive on the existing ops-contract");
+  assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
+  assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
+  assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [
+    "recovered",
+    "enrolled",
+    "confirmed",
+    "test",
+  ]);
+  assert.equal(
+    doc.admin_routes.find(({ path }) => path === "/admin/subs").description,
+    "Redacted signup roster with recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
+  );
   assert.equal(doc.min_compatible_version, "1.0.0");
   assert.equal(doc.performance.contract, "cityscroll.admin.performance.v1");
   assert.equal(doc.performance.version, "1.0.0", "the response schema remains unchanged");
