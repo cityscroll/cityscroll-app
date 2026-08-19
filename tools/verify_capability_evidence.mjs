@@ -36,6 +36,11 @@ import {
   CITED_PASSAGES_RESPONSE_SCHEMA,
   CITED_PASSAGES_SOURCE_FAMILIES,
 } from "../capabilities/cited_passages.mjs";
+import {
+  MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
+  MCP_PUBLIC_READ_ANNOTATIONS,
+} from "../capabilities/mcp_tool_declarations.mjs";
+import { CAPABILITY_REGISTRY } from "../capabilities/registry.mjs";
 
 const DOSSIER_REQUIRED_PARITY_FIELDS = [
   "version",
@@ -143,9 +148,20 @@ const CITED_PASSAGES_FIXTURES = Object.freeze({
     ],
   },
 });
+const SHA256 = /^[a-f0-9]{64}$/;
 
 function same(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function canonicalize(value) {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.keys(value).sort().map((key) => [key, canonicalize(value[key])]));
+}
+
+function sameCanonical(left, right) {
+  return JSON.stringify(canonicalize(left)) === JSON.stringify(canonicalize(right));
 }
 
 function verifyDossierEvidence(receipt) {
@@ -341,7 +357,94 @@ function verifyCitedPassagesEvidence(receipt) {
   return true;
 }
 
+function verifyRemoteMcpEvidence(receipt) {
+  if (receipt?.schema !== "cityscroll.remote_mcp_public_adapter_receipt.v1"
+      || receipt.card !== "cs-06-remote-mcp-public-adapter") {
+    throw new Error("remote MCP evidence identity is invalid");
+  }
+  if (receipt.protocol?.transport !== "Streamable HTTP"
+      || receipt.protocol?.negotiated_version !== "2025-06-18"
+      || receipt.protocol?.endpoint !== "POST /mcp"
+      || receipt.protocol?.stateless !== true) {
+    throw new Error("remote MCP transport evidence drifted");
+  }
+  const lock = JSON.parse(readFileSync(new URL("../worker/package-lock.json", import.meta.url), "utf8"));
+  const pinnedClientVersion = lock.packages?.["node_modules/@modelcontextprotocol/sdk"]?.version;
+  if (receipt.client?.package !== "@modelcontextprotocol/sdk"
+      || receipt.client?.version !== pinnedClientVersion
+      || receipt.client?.transport !== "StreamableHTTPClientTransport") {
+    throw new Error("remote MCP client evidence drifted");
+  }
+  if (!SHA256.test(receipt.fixture_sha256 || "")) {
+    throw new Error("remote MCP fixture hash is invalid");
+  }
+  const inventory = receipt.public_tool_inventory || [];
+  const registry = new Map(CAPABILITY_REGISTRY.map((capability) => [capability.reference, capability]));
+  if (inventory.length !== MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS.length) {
+    throw new Error("remote MCP public tool inventory is incomplete");
+  }
+  for (let index = 0; index < MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS.length; index += 1) {
+    const binding = MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS[index];
+    const tool = inventory[index];
+    const maximumRows = binding.bounds.maximum
+      ?? binding.bounds.recordLimit
+      ?? binding.bounds.maximumResults;
+    if (tool?.name !== binding.name
+        || tool.capability_reference !== binding.capabilityReference
+        || tool.adapter_id !== binding.adapterId
+        || tool.provider_id !== registry.get(binding.capabilityReference)?.provider.id
+        || tool.authority_class !== "public_read"
+        || tool.operation_class !== "read"
+        || tool.store_access !== "provider-only"
+        || !sameCanonical(tool.bounds, binding.bounds)
+        || !sameCanonical(tool.annotations, MCP_PUBLIC_READ_ANNOTATIONS)
+        || tool.calls !== 1
+        || !Number.isInteger(tool.store_read_operations)
+        || tool.store_read_operations < 0
+        || !Number.isInteger(tool.store_rows_read)
+        || tool.store_rows_read < 0
+        || tool.store_rows_read > maximumRows
+        || !SHA256.test(tool.direct_semantic_sha256 || "")
+        || tool.direct_semantic_sha256 !== tool.adapter_semantic_sha256
+        || tool.parity !== "pass") {
+      throw new Error(`remote MCP tool evidence drifted: ${binding.name}`);
+    }
+    const expectedOperations = binding.name === "retrieve_cited_passages" ? 0 : 1;
+    if (tool.store_read_operations !== expectedOperations) {
+      throw new Error(`remote MCP store-read bound drifted: ${binding.name}`);
+    }
+  }
+  if (receipt.request_counts?.initialize !== 1
+      || receipt.request_counts?.list_tools !== 1
+      || receipt.request_counts?.capability_calls !== 4
+      || receipt.request_counts?.post_requests !== 7
+      || receipt.request_counts?.optional_get_probe !== 1) {
+    throw new Error("remote MCP request counts drifted");
+  }
+  if (receipt.policy_boundary?.registered_public_tools !== 4
+      || receipt.policy_boundary?.mutation_capabilities !== 0
+      || receipt.policy_boundary?.raw_store_bindings_exposed !== 0
+      || receipt.policy_boundary?.unregistered_public_tools !== 0) {
+    throw new Error("remote MCP public-read policy boundary drifted");
+  }
+  if (!receipt.layers?.semantic_core?.includes("transport-neutral")
+      || !receipt.layers?.adapter_policy?.includes("worker/src/mcp.mjs")
+      || receipt.layers?.cloudflare_os_runtime !== "downstream and not built by cs-06") {
+    throw new Error("remote MCP layer separation drifted");
+  }
+  if (receipt.source_scan?.core_transport_imports !== 0
+      || receipt.source_scan?.core_cloudflare_agents_imports !== 0
+      || receipt.source_scan?.adapter_cloudflare_os_imports !== 0
+      || receipt.status !== "pass") {
+    throw new Error("remote MCP boundary scan did not pass");
+  }
+  return true;
+}
+
 export function verifyCapabilityEvidence(receipt) {
+  if (receipt?.card === "cs-06-remote-mcp-public-adapter") {
+    return verifyRemoteMcpEvidence(receipt);
+  }
   if (receipt?.schema !== "cityscroll.capability_evidence.v1") {
     throw new Error("capability evidence schema is invalid");
   }

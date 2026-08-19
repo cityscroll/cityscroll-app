@@ -83,12 +83,13 @@ export const CITED_RETRIEVAL_OUTPUT_SCHEMA = Object.freeze({
           source: {
             type: "object",
             additionalProperties: false,
-            required: ["id", "family", "native_id", "url", "title"],
+            required: ["id", "family", "native_id", "url", "canonical_href", "title"],
             properties: {
               id: { type: "string" },
               family: { type: "string", enum: SEMANTIC_SOURCE_FAMILIES },
               native_id: { type: "string" },
               url: { type: "string", format: "uri" },
+              canonical_href: { type: ["string", "null"] },
               title: { type: ["string", "null"] },
             },
           },
