@@ -35,7 +35,7 @@ export const ANALYTICS_SCENARIOS = Object.freeze([
 
 const SURFACES = Object.freeze([
   "home", ...ANALYTICS_PRIMARY_DOCUMENT_SURFACES,
-  "stats", "about", "data", "api", "changelog", "standards", "worth-a-look",
+  "stats", "about", "data", "api", "changelog", "standards",
 ]);
 
 const ACTION_OUTCOMES = Object.freeze(["submitted", "attended", "bid", "won", "not-useful"]);
