@@ -1,0 +1,42 @@
+{
+  "schema": "cityscroll.mcp_tool_catalog.v1",
+  "generated_from": "worker/src/mcp.mjs + capabilities/registry.mjs",
+  "endpoint": "POST https://api.cityscroll.org/mcp",
+  "tools": [
+    {
+      "name": "search_notices",
+      "operation_class": "read",
+      "description": "Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched; add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded); rolling placeholder deadlines are labeled, never shown as dates.",
+      "schema_reference": "notice.search@1",
+      "capability_reference": "notice.search@1"
+    },
+    {
+      "name": "get_notice",
+      "operation_class": "read",
+      "description": "Full detail for one City Record notice by its RequestID.",
+      "schema_reference": "mcp.get_notice.inline@1",
+      "capability_reference": null
+    },
+    {
+      "name": "retrieve_cited_passages",
+      "operation_class": "read",
+      "description": "Retrieve source passages with stable citations and exact source joins. Returns source text only; it does not generate an answer or infer civic relationships.",
+      "schema_reference": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+      "capability_reference": null
+    },
+    {
+      "name": "preview_watch",
+      "operation_class": "read",
+      "description": "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
+      "schema_reference": "mcp.preview_watch.inline@1",
+      "capability_reference": null
+    },
+    {
+      "name": "create_watch",
+      "operation_class": "mutation",
+      "description": "Create a standing email watch from plain English. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links.",
+      "schema_reference": "mcp.create_watch.inline@1",
+      "capability_reference": null
+    }
+  ]
+}

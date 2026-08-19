@@ -31,7 +31,7 @@ summary: >-
   A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
   and an owner-triggered pointer to one exact reviewed commit without changing
   the stable GitHub Pages host.
-updated: 2026-08-16
+updated: 2026-08-18
 sources:
   - README.md
   - site/index.html
@@ -136,10 +136,10 @@ Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
                       api.crol-list.org and workers.dev aliases kept alive for in-flight confirm links)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
         ├──  /search            ranked public notice search over the D1 FTS5 mirror
-        ├──  /mcp               MCP for AI assistants: BM25 notice search/get/preview_watch/create_watch (metered)
+        ├──  /mcp               MCP for AI assistants; inventory generated at site/data/mcp_tool_catalog.json
         ├──  /checkbook         typed materialized Checkbook projection reads
         ├──  /forecast          Checkbook contract-expiration estimate timeline
-        ├──  /subscribe /confirm /unsubscribe   double-opt-in email (rate-limited)
+        ├──  /subscribe /unsubscribe            immediate watch signup + management links (rate-limited)
         ├──  /feedback          operator feedback form (rate-limited, fails closed without Resend + FEEDBACK KV)
         ├──  /feed.xml /feed.json /feed.ics     standing feeds from any saved search
         ├──  /batch             watchlist cross-reference
@@ -158,7 +158,7 @@ Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
         └──  /admin/subs /admin/feedback        keyed operator views
 
 Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
-English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded).
+English → LLM-parsed immediate watch + welcome reply (metered, loop-guarded).
 Outbound worker email to users comes from `alerts@cityscroll.org` (set by `ALERTS_FROM`),
 with Reply-To `alerts@crol-list.org` (`ALERTS_REPLY_TO`) so human replies land on a
 mailbox that still has MX (cityscroll.org apex has none).
@@ -242,8 +242,8 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **Vendor profiles:** in response to user feedback, identity, top-agency chips, 15 recent notices, and forecasts now paint together from one daily precomputed KV projection. Full-text mentions stay behind an explicit disclosure because joining every vendor stem against the recent text corpus is disproportionate; missing projections render unavailable and stale records retain their explicit vintage.
 - **External awards:** 13 City Record agency aliases map to 12 distinct ABO authorities across local-authority, local-development-corporation, and state-authority filings (`8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`). Profiles show up to eight recent awards with source and lag labels. NYCHA solicitation details use exact-PIN Checkbook `Contracts_NYCHA` candidates only when the contract date is later than the solicitation date; matches remain separate from City Record rows.
 - **API:** `api.html` documents all worker routes and hosts the batch cross-reference tool; its publisher-backed legacy implementation is exact temporary debt until the public-API projection migration lands. `GET /agencies` publishes the City Record agency-name reconciliation as CORS-open JSON or CSV and is likewise registered migration debt until it reads the scheduled crosswalk. `/api` on the worker 302s to the documentation.
-- **MCP:** `POST /mcp` — `search_notices` / `get_notice` (D1 mirror) + `preview_watch` / `create_watch` (LLM, metered; double opt-in preserved). Optional bearer token; per-IP daily ceiling.
-- **Subscribe by email:** `subscribe@crol-list.org` (Email Routing → the worker's `email()` handler) — plain English → LLM-parsed watch → confirm reply. Metered + per-sender-limited + loop-guarded.
+- **MCP:** `POST /mcp` — the generated inventory at `site/data/mcp_tool_catalog.json` is authoritative. Optional bearer token; per-IP daily ceiling; read and mutation classes remain distinct.
+- **Subscribe by email:** `subscribe@crol-list.org` (Email Routing → the worker's `email()` handler) — plain English → an immediately active LLM-parsed watch + welcome reply. Metered + per-sender-limited + loop-guarded.
 - **The Data:** `site/data.html` — scheduled dataset aggregates (sections, monthly volume, procurement mix, top agencies/vendors by cleaned dollars) from a committed build artifact with honesty rules applied.
 - **Feeds:** `/feed.xml`, `/feed.json`, `/feed.ics` — any saved search as a standing feed.
 - **CLI:** none; the worker is deployed via `wrangler deploy`.
@@ -260,9 +260,9 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 1. A visitor loads `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs` at canonical `cityscroll.org`, mirrored from the static GitHub Pages origin — no application backend or build step required.
 2. Picking a lens consumes page-specific materialized read models and snapshot-only Worker projections. Publisher APIs are confined to scheduled/manual acquisition and non-required source-contract monitors; request-dependent search executes over retained indexes.
-3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, rate-limited, fails closed without token/send secrets), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback` (rate-limited; notifies `feedback@cityscroll.org`), keyed `/admin/*` and `/usage`.
+3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/unsubscribe` (immediate enrollment with welcome/manage links; rate-limited and fail-closed without token/send secrets), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback` (rate-limited; notifies `feedback@cityscroll.org`), keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC contract terms into estimated expirations (`fc:<stem>` in `ALERT_STATE`) and renders them in the profile timeline. Official procurement-plan rows are disabled; the cleanup job removes stale `plan:` keys.
-5. Subscriptions land in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the double-opted-in subscription email.
+5. Subscriptions land immediately in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the hearings, Property, and versioned whole-profile vendor projections in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
 7. Cloudflare Pages Git integration serves the static site from the `main` production branch, and Workers Builds deploys Worker changes from `main`. GitHub Pages remains an active fallback, while the Cloudflare deploy workflows are manual emergency paths.
 
@@ -275,4 +275,4 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 **A:** Static reader documents and their committed artifacts still work, including bounded lens search and the local workspace. Worker-backed snapshot reads and explicit transactions go unavailable; no browser path falls through to a publisher API.
 
 **Q:** What stops a hostile script from running up the bill on the paid routes?
-**A:** Layered ceilings that fail closed: `/nl` is metered per-day in KV `NL_METER`; email sends are hard-capped by `MAX_PER_RUN=25` / `MAX_SENDS_PER_DAY=50` (under Resend's free tier); `/subscribe` uses per-IP/per-address rate limits and double opt-in (no CAPTCHA; can return behind a config flag if abuse appears); `/feedback` uses the same rate-limit posture without CAPTCHA; both return 503 if their required secrets are missing.
+**A:** Layered ceilings that fail closed: `/nl` is metered per-day in KV `NL_METER`; email sends are hard-capped by `MAX_PER_RUN=25` / `MAX_SENDS_PER_DAY=50` (under Resend's free tier); immediate `/subscribe` enrollment uses per-IP/per-address rate limits (no CAPTCHA; one can return behind a config flag if abuse appears); `/feedback` uses the same rate-limit posture without CAPTCHA; both return 503 if their required secrets are missing.
