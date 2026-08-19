@@ -305,12 +305,12 @@ test("local debug sink snapshots are copies and never expose a network transport
   assert.equal("endpoint" in sink, false);
 });
 
-test("committed overhead receipt matches source bytes and proves zero production loading", () => {
+test("committed overhead receipt matches source bytes and records deferred production loading", () => {
   const measured = buildRumCollectorOverheadEvidence();
   const committed = loadRumCollectorOverheadEvidence();
   assert.deepEqual(committed, measured);
-  assert.equal(measured.production_default.collector_requested, false);
-  assert.equal(measured.production_default.network_write_implementation, false);
+  assert.equal(measured.production_default.collector_requested, true);
+  assert.equal(measured.production_default.network_write_implementation, true);
   assert.equal(measured.scheduling.after_load, true);
   assert.equal(measured.scheduling.idle_task, true);
   assert.ok(measured.assets.total_brotli_bytes > 0);

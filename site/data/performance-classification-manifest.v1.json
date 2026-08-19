@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "595261f8f0dd5b453ac74244339c9bad5bae77b97f0f9754d8d3860e55f8e35c",
+  "registry_hash": "d92268d3bd023924ef5b8b1c53b7bff04885e614129c72c71e293f905dcc72f4",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -30,7 +30,7 @@
       "restore",
       "unknown"
     ],
-    "production_enabled": false
+    "production_enabled": true
   },
   "metrics": [
     {
@@ -39,7 +39,27 @@
       "unit": "score"
     },
     {
+      "metric_id": "component_ready_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
+      "metric_id": "content_ready_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
       "metric_id": "fcp_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
+      "metric_id": "feedback_to_settled_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
+      "metric_id": "first_render_to_main_ms",
       "metric_version": "1.0.0",
       "unit": "ms"
     },
@@ -49,7 +69,27 @@
       "unit": "ms"
     },
     {
+      "metric_id": "interaction_feedback_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
+      "metric_id": "interaction_settled_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
       "metric_id": "lcp_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
+      "metric_id": "main_to_useful_ms",
+      "metric_version": "1.0.0",
+      "unit": "ms"
+    },
+    {
+      "metric_id": "response_to_first_render_ms",
       "metric_version": "1.0.0",
       "unit": "ms"
     },

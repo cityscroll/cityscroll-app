@@ -104,7 +104,7 @@ test("registry and every generated projection mark the map, entity, and async sl
   assert.equal(worker.components["land-outcomes"].lifecycle_state, "instrumented");
   assert.equal(operator.surfaces.find((entry) => entry.surface_id === "near-you").lifecycle_state, "instrumented");
   assert.equal(operator.surfaces.find((entry) => entry.surface_id === "agency").lifecycle_state, "instrumented");
-  assert.equal(manifest.collector.production_enabled, false);
+  assert.equal(manifest.collector.production_enabled, true);
 });
 
 test("Near You reports a usable shell separately from relevant map data or honest absence", () => {
@@ -380,7 +380,7 @@ test("registry additions propagate byte-deterministically with collection off", 
   }
   assert.equal(projections.browser.surfaces.find((entry) => entry.surface_id === "near-you")?.lifecycle_state, "instrumented");
   assert.equal(projections.browser.surfaces.find((entry) => entry.surface_id === "agency")?.lifecycle_state, "instrumented");
-  assert.equal(projections.browser.collector.production_enabled, false);
+  assert.equal(projections.browser.collector.production_enabled, true);
   assert.equal(currentRumSemanticMilestones().state, "disabled");
   assert.equal(projections.browser.registry_hash, projections.worker.registry_hash);
   assert.equal(projections.worker.registry_hash, projections.operator.registry_hash);
@@ -403,5 +403,5 @@ test("production owners call the semantic seam while collection stays off", () =
   assert.match(land, /landOutcomesReady/);
   assert.doesNotMatch(map, /reportNearYouMapReadiness\(/);
   assert.doesNotMatch(land, /reportLandOutcomeReadiness\(/);
-  assert.equal(manifest.collector.production_enabled, false);
+  assert.equal(manifest.collector.production_enabled, true);
 });

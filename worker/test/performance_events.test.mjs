@@ -288,7 +288,7 @@ test("developer-token validity is undisclosed and valid developer observations a
   assert.equal(productionPoints[0].blobs[9], "production");
 });
 
-test("Worker route and wrangler bindings are visibly separate while usage stays byte-shaped and both RUM switches stay off", async () => {
+test("Worker route and wrangler bindings are visibly separate while usage stays byte-shaped and only production ingest is on", async () => {
   const points = [];
   const response = await worker.fetch(new Request("https://api.cityscroll.org/performance-events", {
     method: "POST",
@@ -321,13 +321,13 @@ test("Worker route and wrangler bindings are visibly separate while usage stays 
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
   assert.match(wrangler, /binding = "USAGE_ANALYTICS"\s+dataset = "crol_usage_events_v1"/);
   assert.match(wrangler, /binding = "RUM_ANALYTICS"\s+dataset = "crol_rum_observations_v1"/);
-  assert.match(wrangler, /^RUM_INGEST_ENABLED = "false"$/m);
+  assert.match(wrangler, /^RUM_INGEST_ENABLED = "true"$/m);
   assert.match(wrangler, /^\[env\.beta\.vars\][\s\S]*?^RUM_INGEST_ENABLED = "false"$/m);
   const publicManifest = JSON.parse(readFileSync(
     new URL("../../site/data/performance-classification-manifest.v1.json", import.meta.url),
     "utf8",
   ));
-  assert.equal(publicManifest.collector.production_enabled, false);
+  assert.equal(publicManifest.collector.production_enabled, true);
   assert.ok(RUM_HEALTH_REASONS.includes("forbidden_key"));
   assert.ok(RUM_HEALTH_REASONS.includes("storage_unavailable"));
 });

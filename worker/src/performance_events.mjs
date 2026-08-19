@@ -3,6 +3,7 @@
 import performanceAllowlist from "./data/performance-validation-allowlist.v1.json" with { type: "json" };
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { bumpStat } from "./lib/stats.mjs";
+import { isRumProductionOrigin } from "../../site/rum_production.mjs";
 
 export const RUM_BATCH_SCHEMA = "cityscroll.rum.batch.v1";
 export const RUM_OBSERVATION_SCHEMA = "cityscroll.performance_observation.v1";
@@ -382,6 +383,10 @@ export async function handlePerformanceEvents(req, env, options = {}) {
     return acceptedResponse(cors);
   }
   if (env?.ANALYTICS_ENVIRONMENT !== "production") {
+    await recordHealth(env, "non_production", now);
+    return acceptedResponse(cors);
+  }
+  if (!isRumProductionOrigin(origin)) {
     await recordHealth(env, "non_production", now);
     return acceptedResponse(cors);
   }

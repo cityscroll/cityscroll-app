@@ -33,6 +33,7 @@ const PERFORMANCE_BUILDER_PATH = "tools/build_performance_observability.mjs";
 const PERFORMANCE_CLASSIFIER_PATH = "site/performance_route_classifier.mjs";
 const PERFORMANCE_COLLECTOR_PATH = "site/rum_collector.mjs";
 const PERFORMANCE_BOOTSTRAP_PATH = "site/rum_bootstrap.mjs";
+const PERFORMANCE_TRANSPORT_PATH = "site/rum_delivery.mjs";
 const PERFORMANCE_LIBRARY_PATH = "site/vendor/web-vitals-6.0.1.mjs";
 const PERFORMANCE_OVERHEAD_PATH = "docs/evidence/rum-collector-foundation/overhead.json";
 const PERFORMANCE_BROWSER_MANIFEST_PATH = "site/data/performance-classification-manifest.v1.json";
@@ -638,7 +639,9 @@ function buildPerformanceObservabilityFacts({
     },
     topology: {
       collector: {
-        state: "disabled_test_only",
+        state: registry.collector_contract.production_enabled === true
+          ? "production_pilot"
+          : "disabled_test_only",
         production_enabled: registry.collector_contract.production_enabled,
         classification_manifest_path: PERFORMANCE_BROWSER_MANIFEST_PATH,
         implementation_path: PERFORMANCE_COLLECTOR_PATH,
@@ -650,7 +653,9 @@ function buildPerformanceObservabilityFacts({
           path: PERFORMANCE_LIBRARY_PATH,
         },
         overhead_evidence_path: PERFORMANCE_OVERHEAD_PATH,
-        network_transport_path: null,
+        network_transport_path: registry.collector_contract.production_enabled === true
+          ? PERFORMANCE_TRANSPORT_PATH
+          : null,
       },
       intake: {
         state: "planned",

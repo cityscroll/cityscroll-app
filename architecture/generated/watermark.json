@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-19T18:42:59Z",
-  "commit": "e6c87247a000b3c239d95539a3052265133feba0",
+  "generated_at": "2026-08-19T19:28:01Z",
+  "commit": "36f3b8d0a79250ce2516ae13719c0f2122ad417a",
   "observer_coverage_hash": "e091e23a1625abcfe6a3b0b3dd16f2b69586bee6f3253ccfeac0fdbdd26f4429",
   "canaries": {
     "agency-constellation-model": {
@@ -17,7 +17,7 @@
     "browser-rum-collector": {
       "path": "site/rum_collector.mjs",
       "count": 1,
-      "fingerprint": "4162d8e1887c826aeb788534f0f02082bd494d3b436e7ccfd94ab01937da8520"
+      "fingerprint": "6e0e49e5fdddade3c3e2decc67903189c30e6af1f13dd76bd86b9979428b8a32"
     },
     "civic-geography-registry": {
       "path": "site/civic_geography_registry.mjs",
@@ -57,12 +57,12 @@
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "ae88fc1d0df141812485ba8239764121090f3644620b82f742c2f397165c65f7"
+      "fingerprint": "34b40fa7218102ab6d01232ee950f3b375ce7c537785d739bb86e2587363ae21"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
       "count": 56,
-      "fingerprint": "6c0a0e372b0842ecce785a2ebded8004c1228284cfd37a83b8e456b19dd3a847"
+      "fingerprint": "a184f909a46e516956aad47704c421e16769343c2ea24ae4f681841c10d5b858"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -140,7 +140,7 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "595261f8f0dd5b453ac74244339c9bad5bae77b97f0f9754d8d3860e55f8e35c"
+      "registry_hash": "d92268d3bd023924ef5b8b1c53b7bff04885e614129c72c71e293f905dcc72f4"
     },
     "registry": {
       "version": "1.0.0",
@@ -170,8 +170,8 @@
     },
     "topology": {
       "collector": {
-        "state": "disabled_test_only",
-        "production_enabled": false,
+        "state": "production_pilot",
+        "production_enabled": true,
         "classification_manifest_path": "site/data/performance-classification-manifest.v1.json",
         "implementation_path": "site/rum_collector.mjs",
         "bootstrap_path": "site/rum_bootstrap.mjs",
@@ -182,7 +182,7 @@
           "path": "site/vendor/web-vitals-6.0.1.mjs"
         },
         "overhead_evidence_path": "docs/evidence/rum-collector-foundation/overhead.json",
-        "network_transport_path": null
+        "network_transport_path": "site/rum_delivery.mjs"
       },
       "intake": {
         "state": "planned",
