@@ -86,6 +86,7 @@ const optionalBuilds = [
   ["build_district_activity.mjs", []],
   ["build_near_you_pages.mjs", []],
   ["build_following_page.mjs", []],
+  ["build_data_health_page.mjs", []],
   ["build_exam_documents.mjs", []],
   ["build_agency_documents.mjs", []],
   ["build_process_conformance.mjs", []],

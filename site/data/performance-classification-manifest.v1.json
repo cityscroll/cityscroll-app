@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "9676620bf9949a2b5a74b72a63991a1466aeef622ebb58e857b50e21cbde5023",
+  "registry_hash": "6a9e83fa2e52dce1476619ae8b5be0703e4cd6b50c264604ef5935b1c1839187",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -524,6 +524,31 @@
         {
           "kind": "exact",
           "pathname": "/data.html"
+        }
+      ],
+      "delivery_class": "static",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "surface_id": "data-health",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-data-health",
+      "public_safe_matcher": [
+        {
+          "kind": "exact",
+          "pathname": "/data-health"
         }
       ],
       "delivery_class": "static",
