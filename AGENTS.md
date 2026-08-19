@@ -3531,6 +3531,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `site/app/money-list.mjs` renders a row or honest empty/error terminal. It
   must remain identifier-free and disabled with the production collector;
   focused proof is `test/rum_browse_search_instrumentation.test.mjs`.
+- Map, entity, and async-panel instrumentation lives in
+  `site/rum_maps_entities_async_instrumentation.mjs`. Near You reports usable
+  frame readiness separately from relevant-data or honest absence; agency
+  constellation reports identity separately from related-record readiness or
+  honest no-relationships; Land outcomes emit private present/absent/unavailable/error
+  terminals without reader absence copy. Keep geography, entity, relationship,
+  project, and record identifiers out of observations. Refresh projections
+  with `node tools/build_performance_observability.mjs`. Focused proof is
+  `test/rum_maps_entities_async_instrumentation.test.mjs`.
 - Field-performance intake is the separate `POST /performance-events` contract
   in `worker/src/performance_events.mjs`, backed only by `RUM_ANALYTICS` /
   `crol_rum_observations_v1`. Keep its normalized one-metric-per-point layout,
