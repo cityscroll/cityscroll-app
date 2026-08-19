@@ -16,7 +16,7 @@
   },
   "input_fingerprints": {
     "lexical_miss_set": "87775c0074629d71da407f0cb22fc9e395e9fe210207ac9c7613fdbdaf0c914d",
-    "golden_queries": "39cc8225fea52a8285cd192d9c48f283b0ae14bb3a21918d57ae870ed749561d",
+    "golden_queries": "e4ae5e108c288169435144391d0d996180807ebb95591c28d11d3236e904b359",
     "trial_corpus": "289c53501847271ea8cab2674781264f1e4e44106dc79d7a886b56ad811235d7",
     "retrieval_review": "14c6bc7d2b8be3e2f647782d6d7e42bc4c3cfe73d05a40984b3dc680b45c82f6"
   },

@@ -193,7 +193,13 @@ export function buildCommittedVectorShadowEvaluation(inputs = loadVectorShadowSi
     frozenMinilm: replayFrozenMinilm(retrievalReview, missSet.queries),
     inputFingerprints: {
       lexical_miss_set: fingerprint(missSet),
-      golden_queries: fingerprint(gold.queries),
+      golden_queries: fingerprint(
+        [...missSet.queries, ...missSet.controls]
+          .map((row) => row.golden_query_id)
+          .filter(Boolean)
+          .sort()
+          .map((id) => gold.queries.find((query) => query.id === id) || { id, missing: true }),
+      ),
       trial_corpus: fingerprint(JSON.stringify({
         document_count: trialCorpus.document_count,
         documents: trialCorpus.documents?.length,
