@@ -3,9 +3,10 @@
 /**
  * Build the machine-owned architecture evidence artifact.
  *
- * This generator deliberately reads repository text and filenames only. It does
- * not import Worker code or interpret comments as active configuration. The
- * resulting document is evidence, not an architectural opinion.
+ * This generator reads repository text and filenames, plus deterministic
+ * build-time projectors. It does not import Worker runtime code or interpret
+ * comments as active configuration. The resulting document is evidence, not
+ * an architectural opinion.
  */
 import { execFileSync } from "node:child_process";
 import {
@@ -17,11 +18,24 @@ import {
 } from "node:fs";
 import { dirname, join, normalize, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import {
+  buildPerformanceObservability,
+  loadPerformanceRegistry,
+} from "./build_performance_observability.mjs";
+import { classifyPerformancePathname } from "../site/performance_route_classifier.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "architecture", "generated", "facts.json");
 const CANARY_LIST = "architecture/observer-canaries.json";
-const GENERATOR_VERSION = "1.4.0";
+const PERFORMANCE_REGISTRY_PATH = "architecture/performance-observability.v1.json";
+const PERFORMANCE_REGISTRY_SCHEMA_PATH = "architecture/performance-observability.v1.schema.json";
+const PERFORMANCE_BUILDER_PATH = "tools/build_performance_observability.mjs";
+const PERFORMANCE_CLASSIFIER_PATH = "site/performance_route_classifier.mjs";
+const PERFORMANCE_BROWSER_MANIFEST_PATH = "site/data/performance-classification-manifest.v1.json";
+const PERFORMANCE_WORKER_ALLOWLIST_PATH = "worker/src/data/performance-validation-allowlist.v1.json";
+const PERFORMANCE_OPERATOR_LABELS_PATH = "worker/src/data/performance-operator-labels.v1.json";
+const PERFORMANCE_CANDIDATE_SOURCE_PATH = "site/sitemap.xml";
+const GENERATOR_VERSION = "1.5.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -542,6 +556,118 @@ function buildCivicGeographyFacts() {
   };
 }
 
+function countLifecycleStates(entries, lifecycleStates) {
+  return Object.fromEntries((lifecycleStates || []).map((state) => [
+    state,
+    (entries || []).filter((entry) => entry.lifecycle_state === state).length,
+  ]));
+}
+
+function performanceCandidatePathnames(sitemap = text(PERFORMANCE_CANDIDATE_SOURCE_PATH)) {
+  return [...new Set([...sitemap.matchAll(/<loc>\s*https:\/\/cityscroll\.org([^<]*)<\/loc>/g)]
+    .map((match) => match[1] || "/"))].sort();
+}
+
+function buildPerformanceObservabilityFacts({
+  registry = loadPerformanceRegistry(absolute(PERFORMANCE_REGISTRY_PATH)),
+  candidatePathnames = performanceCandidatePathnames(),
+} = {}) {
+  const projections = buildPerformanceObservability(registry, { root: ROOT });
+  const candidateClassifications = [...new Set(candidatePathnames.map((value) => String(value)))]
+    .sort()
+    .map((pathname) => ({
+      pathname,
+      ...classifyPerformancePathname(projections.browser, pathname),
+    }));
+  const candidateStates = ["registered_no_data", "retired", "unclassified"];
+  const classificationCounts = Object.fromEntries(candidateStates.map((state) => [
+    state,
+    candidateClassifications.filter((entry) => entry.classification_state === state).length,
+  ]));
+  const unclassifiedCandidates = candidateClassifications
+    .filter((entry) => entry.classification_state === "unclassified")
+    .map(({ pathname, classification_state, surface_id }) => ({
+      pathname,
+      classification_state,
+      surface_id,
+    }));
+
+  return {
+    sources: [
+      PERFORMANCE_REGISTRY_PATH,
+      PERFORMANCE_REGISTRY_SCHEMA_PATH,
+      PERFORMANCE_BUILDER_PATH,
+      PERFORMANCE_CLASSIFIER_PATH,
+      PERFORMANCE_BROWSER_MANIFEST_PATH,
+      PERFORMANCE_WORKER_ALLOWLIST_PATH,
+      PERFORMANCE_OPERATOR_LABELS_PATH,
+      PERFORMANCE_CANDIDATE_SOURCE_PATH,
+    ],
+    catalog: {
+      schema: registry.schema,
+      version: registry.catalog_version,
+      metric_count: registry.metrics.length,
+      registry_hash: projections.browser.registry_hash,
+      path: PERFORMANCE_REGISTRY_PATH,
+      schema_path: PERFORMANCE_REGISTRY_SCHEMA_PATH,
+      source: source(PERFORMANCE_REGISTRY_PATH),
+    },
+    registry: {
+      version: registry.registry_version,
+      manifest_version: registry.manifest_version,
+      surface_count: registry.surfaces.length,
+      component_count: registry.components.length,
+      classifications: {
+        surfaces: countLifecycleStates(registry.surfaces, registry.lifecycle_states),
+        components: countLifecycleStates(registry.components, registry.lifecycle_states),
+      },
+      projection_builder_path: PERFORMANCE_BUILDER_PATH,
+      projection_paths: {
+        browser: PERFORMANCE_BROWSER_MANIFEST_PATH,
+        worker: PERFORMANCE_WORKER_ALLOWLIST_PATH,
+        operator: PERFORMANCE_OPERATOR_LABELS_PATH,
+      },
+      source: source(PERFORMANCE_REGISTRY_PATH),
+    },
+    topology: {
+      collector: {
+        state: "planned",
+        classification_manifest_path: PERFORMANCE_BROWSER_MANIFEST_PATH,
+        implementation_path: null,
+      },
+      intake: {
+        state: "planned",
+        route_path: "/performance-events",
+        implementation_path: null,
+      },
+      storage: {
+        state: "planned",
+        binding: "RUM_ANALYTICS",
+        dataset: "crol_rum_observations_v1",
+      },
+      private_read_model: {
+        state: "planned",
+        route_path: "/admin/performance",
+        visibility: "private",
+      },
+      desk: {
+        state: "cross_repo_planned",
+        system: "desk.cityscroll.org",
+        relationship: "private_server_to_server_consumer",
+      },
+    },
+    coverage: {
+      policy: "advisory",
+      merge_blocking: false,
+      candidate_source: source(PERFORMANCE_CANDIDATE_SOURCE_PATH),
+      candidate_count: candidateClassifications.length,
+      classification_counts: classificationCounts,
+      unclassified_candidates: unclassifiedCandidates,
+    },
+    measurements_included: false,
+  };
+}
+
 function normalizeRepoPath(value) {
   return String(value || "").trim().split("\\").join("/");
 }
@@ -629,7 +755,11 @@ function gitCommitTimestamp() {
   }
 }
 
-function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOString(), commit = gitCommit() } = {}) {
+function buildFacts({
+  generatedAt = gitCommitTimestamp() || new Date().toISOString(),
+  commit = gitCommit(),
+  performanceCandidatePaths,
+} = {}) {
   const wrangler = text("worker/wrangler.toml");
   const worker = text("worker/src/worker.mjs");
   const sources = new Set([
@@ -653,6 +783,9 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
   const pagesEdge = buildPagesEdgeFacts();
   const materializers = buildMaterializerFacts();
   const civicGeography = buildCivicGeographyFacts();
+  const performanceObservability = buildPerformanceObservabilityFacts({
+    ...(performanceCandidatePaths ? { candidatePathnames: performanceCandidatePaths } : {}),
+  });
   for (const path of [
     ...search.sources,
     ...constellation.sources,
@@ -660,6 +793,7 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
     ...pagesEdge.sources,
     ...materializers.sources,
     ...civicGeography.sources,
+    ...performanceObservability.sources,
   ]) {
     sources.add(path);
   }
@@ -712,6 +846,13 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
       primary_documents: materializers.primary_documents,
     },
     civic_geography: civicGeography.registry,
+    performance_observability: {
+      catalog: performanceObservability.catalog,
+      registry: performanceObservability.registry,
+      topology: performanceObservability.topology,
+      coverage: performanceObservability.coverage,
+      measurements_included: performanceObservability.measurements_included,
+    },
   };
 }
 
@@ -756,7 +897,9 @@ export {
   buildExamsFacts,
   buildPagesEdgeFacts,
   buildMaterializerFacts,
+  buildPerformanceObservabilityFacts,
   loadObserverCanaries,
+  performanceCandidatePathnames,
   parseBindings,
   parseCrons,
   parseRoutes,

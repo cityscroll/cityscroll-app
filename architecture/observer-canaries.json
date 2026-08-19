@@ -48,6 +48,16 @@
       "why": "Pages worker invocation boundary. A route family handled in the edge renderer but missing from this include list never reaches the worker."
     },
     {
+      "id": "performance-observability-builder",
+      "path": "tools/build_performance_observability.mjs",
+      "why": "Deterministically projects the canonical RUM registry into browser classification, Worker validation, and private operator inventories."
+    },
+    {
+      "id": "performance-observability-registry",
+      "path": "architecture/performance-observability.v1.json",
+      "why": "Canonical RUM metric, surface, component, lifecycle, and projection registry. Architecture facts and advisory coverage consume this source rather than maintaining another surface list."
+    },
+    {
       "id": "primary-document-materializer",
       "path": "tools/build_primary_documents.mjs",
       "why": "C4 materialization_tools cites this builder as the seam that writes compact site read models. The observer does not parse materializers."

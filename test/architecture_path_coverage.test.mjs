@@ -50,6 +50,22 @@ test("filter covers site search, constellation, and materialization canaries", (
   }
 });
 
+test("filter covers the canonical performance registry and its projection builder", () => {
+  for (const path of [
+    "architecture/performance-observability.v1.json",
+    "tools/build_performance_observability.mjs",
+  ]) {
+    assert.ok(pathMatchesTriggerFilter(path, patterns), path);
+    assert.ok(listed.some((entry) => entry.path === path), `${path} must be a registered canary`);
+    assert.ok(facts.observer_coverage.observed_paths.includes(path), `${path} must be observed by facts`);
+    assert.equal(
+      facts.observer_coverage.unmapped_surfaces.some((entry) => entry.path === path),
+      false,
+      `${path} must not enter hard unmapped coverage`,
+    );
+  }
+});
+
 test("trigger-path parser keeps comments between pull_request and paths", () => {
   const parsed = parseReconciliationTriggerPaths(`
 on:

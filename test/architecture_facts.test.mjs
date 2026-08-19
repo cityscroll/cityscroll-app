@@ -31,11 +31,12 @@ test("generated architecture facts contain every LA4 section", () => {
     "pages_edge",
     "materializers",
     "civic_geography",
+    "performance_observability",
   ]) {
     assert.ok(key in facts, key);
   }
   assert.equal(facts.schema, "cityscroll.architecture.facts.v1");
-  assert.equal(facts.generator.version, "1.4.0");
+  assert.equal(facts.generator.version, "1.5.0");
   assert.ok(facts.commit);
   assert.ok(facts.source_paths.includes("worker/wrangler.toml"));
 });
@@ -134,11 +135,42 @@ test("registered architecture canaries are first-class observed", () => {
     "tools/build_primary_documents.mjs",
     "ontology/registry.v0.json",
     "worker/wrangler.toml",
+    "architecture/performance-observability.v1.json",
+    "tools/build_performance_observability.mjs",
   ]) {
     assert.ok(observed.has(path), path);
     assert.equal(unmapped.has(path), false, path);
   }
   assert.deepEqual(facts.observer_coverage.unmapped_surfaces, []);
+});
+
+test("performance observability facts are bounded topology and advisory coverage, not measurements", () => {
+  const performance = facts.performance_observability;
+  assert.equal(performance.catalog.schema, "cityscroll.performance_observability.v1");
+  assert.equal(performance.catalog.version, "1.0.0");
+  assert.equal(performance.catalog.registry_hash.length, 64);
+  assert.equal(performance.catalog.metric_count, 13);
+  assert.equal(performance.registry.surface_count, 35);
+  assert.equal(performance.registry.component_count, 14);
+  assert.equal(performance.registry.classifications.surfaces.planned, 35);
+  assert.equal(performance.registry.classifications.components.planned, 14);
+  assert.equal(performance.topology.collector.classification_manifest_path, "site/data/performance-classification-manifest.v1.json");
+  assert.equal(performance.topology.intake.route_path, "/performance-events");
+  assert.equal(performance.topology.storage.binding, "RUM_ANALYTICS");
+  assert.equal(performance.topology.storage.dataset, "crol_rum_observations_v1");
+  assert.equal(performance.topology.private_read_model.route_path, "/admin/performance");
+  assert.equal(performance.topology.desk.system, "desk.cityscroll.org");
+  assert.equal(performance.coverage.policy, "advisory");
+  assert.equal(performance.coverage.merge_blocking, false);
+  assert.equal(performance.coverage.candidate_source.path, "site/sitemap.xml");
+  assert.ok(performance.coverage.candidate_count > 0);
+  assert.deepEqual(performance.coverage.unclassified_candidates, []);
+  assert.equal(performance.measurements_included, false);
+
+  const rendered = JSON.stringify(performance);
+  for (const forbidden of ["p50", "p75", "p95", "percentile", "history"]) {
+    assert.equal(rendered.toLowerCase().includes(forbidden), false, forbidden);
+  }
 });
 
 test("search facts record production families, keyword-index families, and producers", () => {
