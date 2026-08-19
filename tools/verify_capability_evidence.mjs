@@ -24,6 +24,18 @@ import {
   ENTITY_RELATIONSHIPS_PUBLIC_SCHEMA_VERSION,
   ENTITY_RELATIONSHIPS_REPRESENTATIONS,
 } from "../capabilities/entity_relationships.mjs";
+import {
+  CITED_PASSAGES_AVAILABILITY,
+  CITED_PASSAGES_CAPABILITY_REFERENCE,
+  CITED_PASSAGES_CAPABILITY_VERSION,
+  CITED_PASSAGES_CONTRACT_VERSION,
+  CITED_PASSAGES_EXACT_JOIN_METHOD,
+  CITED_PASSAGES_LIMITS,
+  CITED_PASSAGES_PROVIDER_ID,
+  CITED_PASSAGES_REPRESENTATIONS,
+  CITED_PASSAGES_RESPONSE_SCHEMA,
+  CITED_PASSAGES_SOURCE_FAMILIES,
+} from "../capabilities/cited_passages.mjs";
 
 const DOSSIER_REQUIRED_PARITY_FIELDS = [
   "version",
@@ -84,6 +96,53 @@ const RELATIONSHIPS_FIXTURE_EDGE_IDS = [
   "edge:references_contract:award%3Acity_record%3A20260730001:contract%3Aname%3Act-850-1:city_record:20260730001",
   "edge:published_by_agency:solicitation%3Acity_record%3A20260730002:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730002",
 ];
+const CITED_PASSAGES_REQUIRED_PARITY_FIELDS = [
+  "schema",
+  "contract_version",
+  "query",
+  "retrieval.method",
+  "retrieval.corpus",
+  "retrieval.index",
+  "hard_scope",
+  "coverage",
+  "citations[].citation_id",
+  "citations[].source",
+  "citations[].passage",
+  "citations[].freshness",
+  "citations[].exact_join_evidence",
+];
+const CITED_PASSAGES_REQUIRED_TESTS = [
+  "direct-provider",
+  "all-source-families",
+  "bounded-input-output",
+  "exact-join-provenance",
+  "score-answer-relationship-redaction",
+  "mcp-structured-byte-parity",
+  "mcp-text-meaning-parity",
+];
+const CITED_PASSAGES_FIXTURES = Object.freeze({
+  attachment_text: {
+    query: "forest management",
+    response_sha256: "794eac7cf702f530e83872cded589f970530d051222689416a92d52cc400d6ab",
+    citation_ids: [
+      "attachment_text:20240515016%23attachment-37470:p0001",
+      "attachment_text:20240515016%23attachment-37470:p0002",
+    ],
+  },
+  city_record_notice: {
+    query: "energy conservation",
+    response_sha256: "aecc3836d330a30ffdefdbba82237f5e8565fdc687333258036872d96c9eeb90",
+    citation_ids: ["city_record_notice:20260715041:p0001"],
+  },
+  community_board_minutes: {
+    query: "mountain bike trail",
+    response_sha256: "90605850ab818f020c4cf56d261dfe74b84458843374de276683e426ea905afb",
+    citation_ids: [
+      "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0003",
+      "community_board_minutes:queens-cb-08%3A2026-06-10%3Aminutes:p0002",
+    ],
+  },
+});
 
 function same(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
@@ -199,12 +258,96 @@ function verifyRelationshipsEvidence(receipt) {
   return true;
 }
 
+function verifyCitedPassagesEvidence(receipt) {
+  const capability = receipt.capability || {};
+  if (capability.reference !== CITED_PASSAGES_CAPABILITY_REFERENCE
+      || capability.version !== CITED_PASSAGES_CAPABILITY_VERSION
+      || capability.provider_id !== CITED_PASSAGES_PROVIDER_ID
+      || capability.response_schema !== CITED_PASSAGES_RESPONSE_SCHEMA
+      || capability.contract_version !== CITED_PASSAGES_CONTRACT_VERSION) {
+    throw new Error("cited passage capability evidence identity drifted");
+  }
+  if (!same(capability.availability, CITED_PASSAGES_AVAILABILITY)
+      || !same(capability.bounds, CITED_PASSAGES_LIMITS)
+      || !same(capability.source_families, CITED_PASSAGES_SOURCE_FAMILIES)) {
+    throw new Error("cited passage capability contract drifted");
+  }
+  if (!same(
+    capability.representations,
+    CITED_PASSAGES_REPRESENTATIONS.map(({ id, mediaType }) => ({ id, media_type: mediaType })),
+  )) {
+    throw new Error("cited passage capability representations drifted");
+  }
+  const corpusReceipt = receipt.retrieval_receipts?.corpus;
+  const passageMapReceipt = receipt.retrieval_receipts?.passage_map;
+  if (corpusReceipt?.schema !== "cityscroll.semantic_retrieval.corpus_manifest.v1"
+      || corpusReceipt?.manifest_version !== 1
+      || !/^[a-f0-9]{64}$/.test(corpusReceipt?.manifest_sha256 || "")
+      || !/^[a-f0-9]{64}$/.test(corpusReceipt?.content_sha256 || "")
+      || passageMapReceipt?.schema !== "cityscroll.semantic_retrieval.source_passage_map.v1"
+      || !/^[a-f0-9]{64}$/.test(passageMapReceipt?.version || "")
+      || !/^[a-f0-9]{64}$/.test(passageMapReceipt?.corpus_sha256 || "")) {
+    throw new Error("cited passage retrieval receipts drifted");
+  }
+  if (!same(receipt.parity_fields, CITED_PASSAGES_REQUIRED_PARITY_FIELDS)) {
+    throw new Error("cited passage capability parity fields drifted");
+  }
+  if (receipt.boundary?.maximum_results !== CITED_PASSAGES_LIMITS.maximumResults
+      || receipt.boundary?.matched_join_method !== CITED_PASSAGES_EXACT_JOIN_METHOD
+      || receipt.boundary?.unknown_join_infers_identifiers !== false
+      || receipt.boundary?.public_scores !== "forbidden"
+      || receipt.boundary?.generated_answers !== "forbidden"
+      || receipt.boundary?.civic_relationships !== "forbidden") {
+    throw new Error("cited passage capability boundary drifted");
+  }
+  const fixtures = new Map((receipt.fixtures || []).map((fixture) => [fixture.source_family, fixture]));
+  if (fixtures.size !== CITED_PASSAGES_SOURCE_FAMILIES.length) {
+    throw new Error("cited passage source-family fixtures are incomplete");
+  }
+  for (const [sourceFamily, expected] of Object.entries(CITED_PASSAGES_FIXTURES)) {
+    const fixture = fixtures.get(sourceFamily);
+    if (!fixture || fixture.query !== expected.query || fixture.limit !== 5
+        || fixture.coverage_state !== "partial"
+        || fixture.response_sha256 !== expected.response_sha256
+        || fixture.corpus_manifest_sha256 !== corpusReceipt.manifest_sha256
+        || fixture.corpus_content_sha256 !== corpusReceipt.content_sha256
+        || fixture.passage_map_sha256 !== passageMapReceipt.version
+        || !same((fixture.citations || []).map(({ citation_id: id }) => id), expected.citation_ids)) {
+      throw new Error(`cited passage fixture drifted: ${sourceFamily}`);
+    }
+    for (const citation of fixture.citations) {
+      const evidence = citation.exact_join_evidence;
+      if (!/^https:\/\//.test(citation.source_url || "")
+          || !/^[a-f0-9]{64}$/.test(citation.passage_text_sha256 || "")
+          || citation.coverage_state !== "partial"
+          || citation.freshness?.state !== "observed"
+          || !citation.freshness?.observed_on
+          || !citation.freshness?.source_published_at
+          || evidence?.state !== "matched"
+          || evidence?.method !== CITED_PASSAGES_EXACT_JOIN_METHOD
+          || evidence?.candidate_id !== citation.citation_id
+          || evidence?.source_record_id !== citation.source_id
+          || evidence?.passage_id !== citation.citation_id) {
+        throw new Error(`cited passage evidence drifted: ${citation.citation_id || sourceFamily}`);
+      }
+    }
+  }
+  const tests = new Map((receipt.test_results || []).map((entry) => [entry.id, entry]));
+  for (const id of CITED_PASSAGES_REQUIRED_TESTS) {
+    if (tests.get(id)?.status !== "pass") {
+      throw new Error(`cited passage capability evidence test is not passing: ${id}`);
+    }
+  }
+  return true;
+}
+
 export function verifyCapabilityEvidence(receipt) {
   if (receipt?.schema !== "cityscroll.capability_evidence.v1") {
     throw new Error("capability evidence schema is invalid");
   }
   if (receipt.card === "cs-02-entity-dossier-capability") return verifyDossierEvidence(receipt);
   if (receipt.card === "cs-03-entity-relationships-capability") return verifyRelationshipsEvidence(receipt);
+  if (receipt.card === "cs-04-cited-passages-capability") return verifyCitedPassagesEvidence(receipt);
   throw new Error("capability evidence card is invalid");
 }
 

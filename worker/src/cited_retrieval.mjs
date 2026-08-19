@@ -6,10 +6,17 @@ import {
   SEMANTIC_SOURCE_FAMILIES,
   retrieveTypedCandidates,
 } from "./semantic_candidates.mjs";
+import {
+  CITED_PASSAGES_CONTRACT_VERSION,
+  CITED_PASSAGES_EXACT_JOIN_METHOD,
+  CITED_PASSAGES_CAPABILITY_REFERENCE,
+  CITED_PASSAGES_PROVIDER_ID,
+  CITED_PASSAGES_RESPONSE_SCHEMA,
+} from "../../capabilities/cited_passages.mjs";
 
-export const CITED_RETRIEVAL_RESPONSE_SCHEMA = "cityscroll.semantic_retrieval.cited_passage_response.v1";
-export const CITED_RETRIEVAL_CONTRACT_VERSION = 1;
-export const CITED_RETRIEVAL_EXACT_JOIN_METHOD = "candidate_source_passage_manifest_exact_id_v1";
+export const CITED_RETRIEVAL_RESPONSE_SCHEMA = CITED_PASSAGES_RESPONSE_SCHEMA;
+export const CITED_RETRIEVAL_CONTRACT_VERSION = CITED_PASSAGES_CONTRACT_VERSION;
+export const CITED_RETRIEVAL_EXACT_JOIN_METHOD = CITED_PASSAGES_EXACT_JOIN_METHOD;
 
 const COVERAGE_STATES = new Set(["partial", "complete", "unknown"]);
 const JOIN_STATES = new Set(["matched", "unknown"]);
@@ -268,4 +275,15 @@ export function projectCitedRetrievalResponse(candidateResponse, {
 export function retrieveCitedPassages(input = {}, options = {}) {
   const retrieve = options.retrieve || retrieveTypedCandidates;
   return projectCitedRetrievalResponse(retrieve(input), options);
+}
+
+/** Explicit provider over the existing cited-retrieval projector. */
+export function workerCitedPassages(options = {}) {
+  return Object.freeze({
+    capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
+    providerId: CITED_PASSAGES_PROVIDER_ID,
+    execute(input) {
+      return retrieveCitedPassages(input, options);
+    },
+  });
 }
