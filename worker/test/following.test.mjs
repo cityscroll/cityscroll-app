@@ -3,7 +3,6 @@ import test from "node:test";
 
 import { handleFollowing } from "../src/following.mjs";
 import { handleSubscribe } from "../src/subscribe.mjs";
-import { handleConfirm } from "../src/confirm.mjs";
 import { handlePrefs } from "../src/prefs.mjs";
 import { signToken } from "optin-token";
 import { sessionPayload } from "../src/lib/session.mjs";
@@ -170,12 +169,12 @@ test("the recognized-session island shows a concise watch summary and management
   assert.doesNotMatch(html, new RegExp(token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 
-test("a no-JavaScript form can submit, confirm, then reach management and unsubscribe controls", async () => {
+test("a no-JavaScript form subscribes immediately and reaches management from the welcome", async () => {
   const originalFetch = globalThis.fetch;
-  let confirmationEmail = null;
+  let welcomeEmail = null;
   globalThis.fetch = async (url, options = {}) => {
     if (String(url) === "https://api.resend.com/emails") {
-      confirmationEmail = JSON.parse(options.body);
+      welcomeEmail = JSON.parse(options.body);
       return new Response(JSON.stringify({ id: "mail-1" }), { status: 200 });
     }
     throw new Error(`unexpected fetch ${url}`);
@@ -206,15 +205,11 @@ test("a no-JavaScript form can submit, confirm, then reach management and unsubs
     const submittedHtml = await submitted.text();
     assert.equal(submitted.status, 200);
     assert.match(submitted.headers.get("content-type") || "", /text\/html/);
-    assert.match(submittedHtml, /Check your inbox/);
+    assert.match(submittedHtml, /You're subscribed/);
 
-    const confirmUrl = confirmationEmail?.html.match(/https:\/\/api\.cityscroll\.org\/confirm\?[^"<]+/)?.[0].replaceAll("&amp;", "&");
-    assert.ok(confirmUrl, "confirmation email exposes its purpose-scoped link");
-    const confirmed = await handleConfirm(new Request(confirmUrl), env);
-    const confirmedHtml = await confirmed.text();
-    assert.equal(confirmed.status, 200);
-    const manageUrl = confirmedHtml.match(/https:\/\/cityscroll\.org\/prefs\?[^"<]+/)?.[0].replaceAll("&amp;", "&");
-    assert.ok(manageUrl, "confirmation landing links to watch management");
+    const manageUrl = welcomeEmail?.html.match(/https:\/\/cityscroll\.org\/prefs\?[^"<]+/)?.[0].replaceAll("&amp;", "&");
+    assert.ok(manageUrl, "welcome email links to watch management");
+    assert.match(welcomeEmail.headers["List-Unsubscribe"], /\/unsubscribe\?token=/);
 
     const managed = await handlePrefs(new Request(manageUrl), env);
     const managedHtml = await managed.text();

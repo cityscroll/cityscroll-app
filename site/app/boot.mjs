@@ -823,11 +823,11 @@ async function homeCtaSubscribeStatic(event){
     msg.textContent=t("enter_valid_email");dest.setAttribute("aria-invalid","true");dest.focus();return;
   }
   dest.removeAttribute("aria-invalid");btn.disabled=true;
-  msg.innerHTML='<span class="loading"></span> '+t("sending_confirm_link");
+  msg.innerHTML='<span class="loading"></span> '+t("subscribing_now");
   try{
-    const response=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens:"money",filter:{},freq:"weekly",lang:window.LANG||"en"})});
+    const response=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,no_topic:true,source:"top-of-site",lang:window.LANG||"en"})});
     const result=await response.json().catch(()=>({}));
-    if(result.ok){msg.innerHTML="<b>"+t("check_inbox")+"</b> "+t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")});dest.value="";}
+    if(result.ok){msg.innerHTML="<b>"+t("subscribed_now")+"</b> "+t("welcome_sent_to",{email:email.replace(/[<>&]/g," ")});dest.value="";}
     else msg.textContent=t("cant_reach_server");
   }catch{msg.textContent=t("cant_reach_server");}
   btn.disabled=false;
