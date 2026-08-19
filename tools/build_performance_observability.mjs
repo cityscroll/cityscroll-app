@@ -204,11 +204,35 @@ export function validatePerformanceRegistry(registry, { root = ROOT } = {}) {
   }
   if (!VERSION_RE.test(registryVersion(registry) || "")) fail(errors, "registry/catalog version must use semantic versioning");
   if (!ID_RE.test(registry?.manifest_version || "")) fail(errors, "manifest_version must be a stable ID");
+  const collector = registry?.collector_contract;
+  if (!collector || !ID_RE.test(collector.collector_version || "")) {
+    fail(errors, "collector_contract requires a stable collector_version");
+  }
+  if (collector?.library_name !== "web-vitals" || collector?.library_build !== "standard" || !VERSION_RE.test(collector?.library_version || "")) {
+    fail(errors, "collector_contract requires a pinned standard web-vitals version");
+  }
+  if (collector?.production_enabled !== false) fail(errors, "collector production_enabled must remain false until the pilot");
   const metricIds = registryMetricIds(registry);
   if (!metricIds.length) fail(errors, "metric catalog must contain at least one metric ID");
   if (new Set(metricIds).size !== metricIds.length) fail(errors, "metric IDs must be unique");
   for (const metricId of metricIds) {
     if (!/^[a-z][a-z0-9_]*$/.test(metricId)) fail(errors, `invalid metric_id ${metricId}`);
+  }
+  const fieldMetricIds = collector?.field_metric_ids || [];
+  const expectedFieldMetricIds = ["cls_score", "fcp_ms", "inp_ms", "lcp_ms", "ttfb_ms"];
+  if (canonicalJson(sorted(fieldMetricIds)) !== canonicalJson(expectedFieldMetricIds)) {
+    fail(errors, "collector_contract field_metric_ids must contain the five commissioned field vitals");
+  }
+  if (fieldMetricIds.some((metricId) => !metricIds.includes(metricId))) {
+    fail(errors, "collector_contract references a metric outside the catalog");
+  }
+  for (const [key, expected] of Object.entries({
+    device_classes: ["desktop", "mobile", "tablet", "unknown"],
+    navigation_types: ["back-forward", "back-forward-cache", "navigate", "prerender", "reload", "restore", "unknown"],
+  })) {
+    if (canonicalJson(collector?.[key]) !== canonicalJson(expected)) {
+      fail(errors, `collector_contract ${key} must stay a closed, ordered enumeration`);
+    }
   }
   if (!Array.isArray(registry?.surfaces) || !registry.surfaces.length) fail(errors, "surfaces must be a non-empty array");
   if (!Array.isArray(registry?.components) || !registry.components.length) fail(errors, "components must be a non-empty array");
@@ -309,11 +333,24 @@ function componentApplications(registry) {
 }
 
 function browserProjection(registry, hash) {
+  const fieldMetricIds = new Set(registry.collector_contract.field_metric_ids);
   return {
     schema: "cityscroll.performance.browser_manifest.v1",
     manifest_version: registry.manifest_version,
     registry_version: registryVersion(registry),
     registry_hash: hash,
+    collector: {
+      ...registry.collector_contract,
+      field_metric_ids: sorted(registry.collector_contract.field_metric_ids),
+    },
+    metrics: registry.metrics
+      .filter((metric) => fieldMetricIds.has(metric.id))
+      .map((metric) => ({
+        metric_id: metric.id,
+        metric_version: metric.version,
+        unit: metric.unit,
+      }))
+      .sort((left, right) => left.metric_id.localeCompare(right.metric_id)),
     unclassified: {
       classification_state: "unclassified",
       surface_id: null,
@@ -362,6 +399,10 @@ function workerProjection(registry, hash) {
     manifest_version: registry.manifest_version,
     registry_version: registryVersion(registry),
     registry_hash: hash,
+    collector: {
+      ...registry.collector_contract,
+      field_metric_ids: sorted(registry.collector_contract.field_metric_ids),
+    },
     metric_ids: sorted(registryMetricIds(registry)),
     delivery_classes: sorted(registry.delivery_classes),
     result_states: terminalStates,

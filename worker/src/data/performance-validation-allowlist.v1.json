@@ -2,7 +2,36 @@
   "schema": "cityscroll.performance.worker_allowlist.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "8019c14f8b090c10400c01056fca646a9baa126f6da245491a8fb361d4747b06",
+  "registry_hash": "92d2c4d5adeffb71870daeecca8478a602bc37d6f9cf752e30cd4c09d0831997",
+  "collector": {
+    "collector_version": "rum-browser-v1",
+    "library_name": "web-vitals",
+    "library_version": "6.0.1",
+    "library_build": "standard",
+    "field_metric_ids": [
+      "cls_score",
+      "fcp_ms",
+      "inp_ms",
+      "lcp_ms",
+      "ttfb_ms"
+    ],
+    "device_classes": [
+      "desktop",
+      "mobile",
+      "tablet",
+      "unknown"
+    ],
+    "navigation_types": [
+      "back-forward",
+      "back-forward-cache",
+      "navigate",
+      "prerender",
+      "reload",
+      "restore",
+      "unknown"
+    ],
+    "production_enabled": false
+  },
   "metric_ids": [
     "cls_score",
     "component_ready_ms",

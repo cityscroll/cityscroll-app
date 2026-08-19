@@ -67,9 +67,9 @@ workspace {
         warehouse_factory -> materialization_tools "Supplies DuckDB and Parquet data to repository builders [ARCHITECTURE.md:37,40,50]" "Local module boundary"
         materialization_tools -> browser_site "Writes compact site read models and build-rendered documents [tools/build_primary_documents.mjs:22-45]" "Repository artifact"
         materialization_tools -> worker_api "Publishes Worker data twins consumed by edge routes [ARCHITECTURE.md:37,40,50]" "Repository artifact"
-        performance_registry -> browser_site "Projects the classification manifest for the planned fail-soft RUM collector [architecture/performance-observability.v1.json; site/data/performance-classification-manifest.v1.json]" "Repository artifact"
+        performance_registry -> browser_site "Projects the classification manifest and closed collector contract for the disabled/test-only fail-soft RUM foundation [architecture/performance-observability.v1.json; site/data/performance-classification-manifest.v1.json; site/rum_collector.mjs]" "Repository artifact"
         performance_registry -> worker_api "Projects planned intake validation and private operator inventories [worker/src/data/performance-validation-allowlist.v1.json; worker/src/data/performance-operator-labels.v1.json]" "Repository artifact"
-        browser_site -> worker_api "Planned RUM collector submits bounded observations only to /performance-events; collection remains disabled until pilot [architecture/performance-observability.v1.json]" "HTTPS (planned / disabled)"
+        browser_site -> worker_api "A future pilot may submit bounded RUM observations only to /performance-events; the current disabled/test-only collector has no network transport [architecture/performance-observability.v1.json; site/rum_collector.mjs]" "HTTPS (planned / disabled)"
         private_desk -> worker_api "Will read the private /admin/performance model through a server-to-server authenticated proxy; no Analytics Engine credentials cross into Desk [architecture/performance-observability.v1.json]" "HTTPS (planned)"
 
         entity_resolution -> materialization_tools "Provides allowlisted, provenance-bearing links for public materialization [entity_resolution/README.md:87-100]" "JavaScript module import"

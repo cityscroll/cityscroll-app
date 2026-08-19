@@ -75,6 +75,7 @@ export function validatePerformanceMetricCatalog(catalog) {
       "catalog_version",
       "registry_version",
       "manifest_version",
+      "collector_contract",
       "description",
       "observation_contract",
       "metrics",
@@ -92,6 +93,31 @@ export function validatePerformanceMetricCatalog(catalog) {
   if (catalog.schema !== "cityscroll.performance_observability.v1") fail("unexpected schema id");
   if (!SEMVER.test(catalog.catalog_version)) fail("catalog_version must be semantic versioning");
   rejectPolicyKeys(catalog);
+
+  const collectorContract = catalog.collector_contract;
+  exactKeys(
+    collectorContract,
+    [
+      "collector_version",
+      "library_name",
+      "library_version",
+      "library_build",
+      "field_metric_ids",
+      "device_classes",
+      "navigation_types",
+      "production_enabled",
+    ],
+    "collector_contract",
+  );
+  if (collectorContract.collector_version !== "rum-browser-v1") fail("unexpected collector version");
+  if (collectorContract.library_name !== "web-vitals" || collectorContract.library_build !== "standard") {
+    fail("collector must use the standard web-vitals build");
+  }
+  if (!SEMVER.test(collectorContract.library_version)) fail("collector library_version must be semantic versioning");
+  if (collectorContract.production_enabled !== false) fail("collector must remain production-disabled before pilot");
+  assertUniqueStrings(collectorContract.field_metric_ids, "collector field_metric_ids");
+  assertUniqueStrings(collectorContract.device_classes, "collector device_classes");
+  assertUniqueStrings(collectorContract.navigation_types, "collector navigation_types");
 
   const observationContract = catalog.observation_contract;
   exactKeys(

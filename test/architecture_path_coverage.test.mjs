@@ -53,6 +53,7 @@ test("filter covers site search, constellation, and materialization canaries", (
 test("filter covers the canonical performance registry and its projection builder", () => {
   for (const path of [
     "architecture/performance-observability.v1.json",
+    "site/rum_collector.mjs",
     "tools/build_performance_observability.mjs",
   ]) {
     assert.ok(pathMatchesTriggerFilter(path, patterns), path);
