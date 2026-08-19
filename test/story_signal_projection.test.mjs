@@ -37,6 +37,14 @@ test("the private projection is bounded and contains admitted closed-template si
         ...admitted.signals[0].subject,
         id: `20240119${String(index).padStart(3, "0")}`,
       },
+      comparison_receipt: {
+        ...admitted.signals[0].comparison_receipt,
+        receipt_id: factId,
+      },
+      evidence: admitted.signals[0].evidence.map((item) => ({
+        ...item,
+        source_row_id: `20240119${String(index).padStart(3, "0")}`,
+      })),
     };
   });
   const projection = buildPrivateStorySignalProjection(repeated);

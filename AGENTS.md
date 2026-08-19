@@ -3432,6 +3432,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   The successor-solicitation absence control must remain `held_mnar`; focused
   proof is `test/comparative_signal_admission.test.mjs` plus
   `test/comparative_negative_control.test.mjs`.
+- Comparative story signals enter the existing local-first Investigation union
+  only through `site/investigation_comparative_signal.mjs`. Keep the exact claim,
+  subject, peer-set route, comparison receipt reference/basis, and evidence refs
+  together; shared `/inv` validation imports the same narrow waist. Held or
+  provenance-incomplete inputs fail closed. Focused proof is
+  `test/investigation_comparative_signal.test.mjs` and `worker/test/inv.test.mjs`.
 
 ## Maintaining this file
 
