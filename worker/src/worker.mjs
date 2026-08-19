@@ -23,6 +23,7 @@ import {
   handleAdminFeedback,
   handleAdminPossiblySame,
   handleAdminOpsContract,
+  handleAdminPerformance,
   handleAdminStats,
   handleAdminOwedBacklog,
   handleAdminNextDigestPreview,
@@ -145,6 +146,7 @@ export default {
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);
+    if (pathname === "/admin/performance") return handleAdminPerformance(request, env);
     if (pathname === "/admin/stats") return handleAdminStats(request, env);
     if (pathname === "/admin/owed-backlog") return handleAdminOwedBacklog(request, env);
     if (pathname === "/admin/next-digest-preview") return handleAdminNextDigestPreview(request, env);

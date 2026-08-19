@@ -33,6 +33,11 @@ import {
 import { commitCurationReviewCommand } from "./lib/curation_review_command.mjs";
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
+import { PerformanceQueryError } from "./lib/performance_query.mjs";
+import {
+  ADMIN_PERFORMANCE_SCHEMA,
+  readAdminPerformance,
+} from "./admin_performance.mjs";
 import { timingSafeEqualString } from "./lib/secret_compare.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
@@ -639,6 +644,29 @@ export async function handleAdminOpsContract(req, env) {
   return json(buildOpsContract(), 200);
 }
 
+/**
+ * GET /admin/performance?key=…
+ * Dedicated private field-performance read model. Query grammar is bounded in
+ * admin_performance.mjs; Analytics Engine credentials and SQL never enter the response.
+ */
+export async function handleAdminPerformance(req, env, options = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return privateJson({ error: "method not allowed" }, 405);
+  try {
+    return privateJson(await readAdminPerformance(env, req, options), 200);
+  } catch (error) {
+    if (error instanceof PerformanceQueryError) {
+      return privateJson({
+        schema: ADMIN_PERFORMANCE_SCHEMA,
+        status: "invalid_request",
+        error: error.message,
+      }, 400);
+    }
+    throw error;
+  }
+}
+
 /** GET /admin/owed-backlog?key=… — read-only D1 delivery obligations for the desk. */
 export async function handleAdminOwedBacklog(req, env, options = {}) {
   const auth = checkAdminKey(req, env);
@@ -1004,6 +1032,13 @@ function json(obj, status) {
   return new Response(JSON.stringify(obj, null, 2), {
     status,
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+  });
+}
+
+function privateJson(obj, status) {
+  return new Response(JSON.stringify(obj, null, 2), {
+    status,
+    headers: { "Content-Type": "application/json", "Cache-Control": "private, no-store" },
   });
 }
 

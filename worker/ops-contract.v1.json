@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -397,6 +397,67 @@
       "description": "First-party aggregate events; production traffic_class only."
     }
   ],
+  "performance": {
+    "contract": "cityscroll.admin.performance.v1",
+    "version": "1.0.0",
+    "endpoint": "/admin/performance",
+    "method": "GET",
+    "auth": "ADMIN_KEY",
+    "cache_control": "private, no-store",
+    "source": "RUM_ANALYTICS through the Worker-owned bounded query adapter",
+    "credential_boundary": "Analytics Engine account and read credentials remain server-side and are never response fields.",
+    "query": {
+      "windows": [
+        "24h",
+        "7d",
+        "30d",
+        "90d"
+      ],
+      "filters": [
+        "surface",
+        "component",
+        "metric",
+        "device",
+        "nav",
+        "delivery",
+        "release"
+      ],
+      "comparison": "current-vs-previous",
+      "arbitrary_sql": false,
+      "arbitrary_dimensions": false,
+      "arbitrary_groupings": false
+    },
+    "states": [
+      "available",
+      "partial",
+      "insufficient_sample",
+      "no_data",
+      "uninstrumented",
+      "unclassified",
+      "unavailable"
+    ],
+    "response": {
+      "distributions": [
+        "p50",
+        "p75",
+        "p95"
+      ],
+      "distribution_rule": "Present only when retained sampled rows meet the configured floor; missing values are never encoded as zero.",
+      "counts": [
+        "sampled_count",
+        "estimated_count"
+      ],
+      "sampling": "Cloudflare weighted adaptive sampling; sampled_count determines sufficiency.",
+      "comparison": "Equal-length previous window with absolute and relative changes when both distributions are sufficient.",
+      "daily_series": "UTC-day rows bounded by the selected window and adapter limits.",
+      "inventory": [
+        "catalog",
+        "coverage",
+        "freshness",
+        "data_health"
+      ]
+    }
+  },
   "admin_routes": [
     {
       "path": "/admin/ops-contract",
@@ -405,6 +466,14 @@
       ],
       "auth": "ADMIN_KEY",
       "description": "This contract document (versioned JSON)."
+    },
+    {
+      "path": "/admin/performance",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Private versioned field-performance distributions, coverage, freshness, and data health."
     },
     {
       "path": "/admin/stats",
