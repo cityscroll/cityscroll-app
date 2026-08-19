@@ -21,7 +21,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "architecture", "generated", "facts.json");
 const CANARY_LIST = "architecture/observer-canaries.json";
-const GENERATOR_VERSION = "1.3.0";
+const GENERATOR_VERSION = "1.4.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -518,6 +518,30 @@ function buildMaterializerFacts() {
   };
 }
 
+function buildCivicGeographyFacts() {
+  const registryModulePath = "site/civic_geography_registry.mjs";
+  const artifactPath = "site/data/geography/layer_registry.json";
+  const registry = json(artifactPath);
+  return {
+    sources: [registryModulePath, artifactPath],
+    registry: {
+      schema: registry.schema ?? null,
+      layer_count: Array.isArray(registry.layers) ? registry.layers.length : 0,
+      layers: (registry.layers || []).map((layer) => ({
+        type: layer.type ?? null,
+        class: layer.class ?? null,
+        boundary_vintage: layer.boundary_vintage ?? null,
+        source_contract_id: layer.source?.contract_id ?? null,
+        coverage_status: layer.coverage?.status ?? null,
+        full_fidelity: layer.artifacts?.full?.geometry_fidelity === "full",
+        simplified_delivery: layer.artifacts?.simplified?.geometry_fidelity === "simplified",
+        declared_uses: layer.declared_uses ?? [],
+      })),
+      source: source(artifactPath),
+    },
+  };
+}
+
 function normalizeRepoPath(value) {
   return String(value || "").trim().split("\\").join("/");
 }
@@ -628,12 +652,14 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
   const exams = buildExamsFacts();
   const pagesEdge = buildPagesEdgeFacts();
   const materializers = buildMaterializerFacts();
+  const civicGeography = buildCivicGeographyFacts();
   for (const path of [
     ...search.sources,
     ...constellation.sources,
     ...exams.sources,
     ...pagesEdge.sources,
     ...materializers.sources,
+    ...civicGeography.sources,
   ]) {
     sources.add(path);
   }
@@ -685,6 +711,7 @@ function buildFacts({ generatedAt = gitCommitTimestamp() || new Date().toISOStri
     materializers: {
       primary_documents: materializers.primary_documents,
     },
+    civic_geography: civicGeography.registry,
   };
 }
 

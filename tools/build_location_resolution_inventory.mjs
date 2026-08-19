@@ -67,7 +67,31 @@ function geocodedPins() {
 }
 
 function boundaryEntries() {
-  // Prefer the unified contracted layer; fall back to explicit not-contracted.
+  // The existing Data Health dimension consumes the geography registry directly:
+  // freshness and coverage stay per layer instead of inheriting the legacy
+  // combined artifact's conservative minimum clock.
+  const registryPath = "site/data/geography/layer_registry.json";
+  if (existsSync(join(ROOT, registryPath))) {
+    const registry = readJson(registryPath);
+    return (registry.layers || []).map((layer) => ({
+      id: `geography-layer-${String(layer.type || "unknown").replace(/_/g, "-")}`,
+      layer_type: layer.type || null,
+      layer_class: layer.class || null,
+      source_contract_id: layer.source?.contract_id || null,
+      dataset_id: layer.source?.dataset_id || null,
+      vintage_at: layer.boundary_vintage || null,
+      max_stale_days: Number(layer.freshness?.max_stale_days) || null,
+      status: layer.boundary_vintage ? "contracted" : "vintage-not-contracted",
+      coverage_status: layer.coverage?.status || "unknown",
+      feature_count: Number(layer.coverage?.actual_feature_count) || 0,
+      expected_feature_count: Number(layer.coverage?.expected_feature_count) || null,
+      coverage_comparison: layer.coverage?.comparison || null,
+      layer_path: layer.artifacts?.simplified?.site_path || null,
+      full_layer_path: layer.artifacts?.full?.path || null,
+    })).sort((left, right) => String(left.layer_type).localeCompare(String(right.layer_type)));
+  }
+
+  // Compatibility fallback for a checkout predating the typed registry.
   const path = "site/data/district_boundaries.json";
   if (!existsSync(join(ROOT, path))) {
     return [
@@ -150,7 +174,7 @@ function buildInventory() {
   return {
     schema: "cityscroll.location_resolution_inventory.v0",
     measured_at: measuredAtIsoDate(),
-    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources (located rates, unlocated_reasons, citywide/virtual bags) so zero-located and high no_place_signal map lenses emit flywheel cards.",
+    note: "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Registered geography layers report independent boundary vintages and coverage through this existing Data Health dimension; the legacy district_boundaries scalar is compatibility-only. map_aggregates mirrors district_activity sources (located rates, unlocated_reasons, citywide/virtual bags) so zero-located and high no_place_signal map lenses emit flywheel cards.",
     lenses: [
       measureLens({
         lens: "meetings-hearings",
@@ -204,6 +228,8 @@ if (gateIndex >= 0) {
       return Number.isFinite(vintageAt)
         && measuredAt - vintageAt <= Number(boundary.max_stale_days) * 86400000;
     });
+  } else if (gate === "geography-coverage") {
+    pass = inventory.boundaries.every((boundary) => boundary.coverage_status === "complete");
   } else {
     throw new Error(`unknown location-resolution gate: ${gate}`);
   }

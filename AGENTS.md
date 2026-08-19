@@ -1062,6 +1062,19 @@ phrase awards) and `virtual` (virtual-only meetings with no matter pin). The map
 list renders them as labeled rows at every level; district detail also notes
 citywide items that apply city-scale without counting them into polygons.
 
+**Typed civic-geography primitive:** `site/civic_geography_registry.mjs` is the
+closed control plane for borough, Community District, and Council District;
+`site/civic_geography.mjs` is the generic typed point resolver. The builder keeps
+source-native normalization in `tools/lib/district_boundary_source_adapters.mjs`,
+constructs independent full/simplified versioned artifacts, and projects the old
+combined JSON and named district resolvers only as compatibility wrappers. Exact
+area/share overlays must use full-fidelity geometry through
+`site/civic_geography_overlay.mjs`; the existing 237 public CD↔Council edges retain
+their compatibility semantics until a separate product migration. Per-layer
+freshness and coverage belong to the existing location-resolution Data Health
+dimension. Verify with `node tools/build_district_boundaries.mjs --check`,
+`node tools/benchmark_civic_geography.mjs --check`, and the civic-geography tests.
+
 **Geography subject graph:** `district_activity.geography_subjects` materializes
 canonical borough / regular community-district / council-district nodes and one
 routed `located_in` candidate per polygon membership. Publisher, structured-bag,

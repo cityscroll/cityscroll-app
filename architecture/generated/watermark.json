@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-18T20:06:48-04:00",
-  "commit": "81f603ee6ca3bc38afecbbefd62a625425462d58",
-  "observer_coverage_hash": "ce34d05aa93f34dbbc6109f811d8f15836bdeae49f9dd4956832ffbdeed8fb8e",
+  "generated_at": "2026-08-19T01:06:32Z",
+  "commit": "da5bab802492",
+  "observer_coverage_hash": "a46182fd66af4ce286171ecb37aaae904df82d031c74c0afcf763d7c4bf0fde0",
   "canaries": {
     "agency-constellation-model": {
       "path": "site/agency_constellation_model.mjs",
@@ -13,6 +13,11 @@
       "path": "site/agency_search_producer.mjs",
       "count": 1,
       "fingerprint": "50f4437efb1e5f0b563686969eee98a326a2c81f2bfdee4ae7448063c95503cf"
+    },
+    "civic-geography-registry": {
+      "path": "site/civic_geography_registry.mjs",
+      "count": 3,
+      "fingerprint": "b9ae6b8b13767f78675bf9c90bea14978286ee84b8d10b762e302df6c7b96be2"
     },
     "constellation-document-materializer": {
       "path": "tools/build_agency_constellation_documents.mjs",

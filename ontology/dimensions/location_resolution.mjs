@@ -1,6 +1,7 @@
 // Dimension: location-resolution
 // Measures whether lens records are located, geocoded pins resolve both
-// resident-facing district types, boundary data carries a current vintage,
+// resident-facing district types, each registered geography layer carries a
+// current vintage and complete coverage receipt,
 // and the map surface's per-district aggregates are not silently zero-located.
 
 import { makeDimensionCard } from "./shared.mjs";
@@ -292,17 +293,34 @@ export function evaluateLocationResolution(input = {}) {
 
   const measuredAt = parseDate(inventory.measured_at);
   const staleBoundaries = boundaries.filter((boundary) => boundaryIsStale(boundary, measuredAt));
+  const coverageGaps = boundaries.filter((boundary) => boundary.coverage_status !== "complete");
+  const geography_layers = Object.fromEntries(boundaries.map((boundary) => [
+    boundary.layer_type || boundary.id,
+    {
+      class: boundary.layer_class || null,
+      source_contract_id: boundary.source_contract_id || null,
+      dataset_id: boundary.dataset_id || null,
+      vintage_at: boundary.vintage_at || null,
+      vintage_current: !staleBoundaries.includes(boundary),
+      coverage_status: boundary.coverage_status || "unknown",
+      feature_count: Number(boundary.feature_count) || 0,
+      expected_feature_count: Number(boundary.expected_feature_count) || null,
+    },
+  ]));
   const boundary_metrics = {
     checked: boundaries.length,
     current: boundaries.length - staleBoundaries.length,
     stale: staleBoundaries.length,
     boundary_vintage_current_rate: rate(boundaries.length - staleBoundaries.length, boundaries.length),
+    coverage_complete: boundaries.length - coverageGaps.length,
+    coverage_incomplete: coverageGaps.length,
+    geography_layers,
   };
   if (staleBoundaries.length) {
     cards.push(makeDimensionCard({
       dimension: DIMENSION_ID,
       slug: "boundary-vintage",
-      title: "Contract district boundaries with a current labeled vintage",
+      title: "Contract civic geography layers with current labeled vintages",
       rank_score: 93,
       evidence: {
         kind: "boundary-vintage-staleness",
@@ -316,9 +334,30 @@ export function evaluateLocationResolution(input = {}) {
         })),
       },
       verify: "node tools/build_location_resolution_inventory.mjs --check --gate boundary-vintage",
-      demo_win: "District labels identify the authoritative boundary release used to resolve each resident-facing pin.",
-      context: ["site/data/source_contracts.json", "ontology/fixtures/dimensions/location_resolution.json"],
+      demo_win: "Each geography match identifies the authoritative layer release used to resolve it.",
+      context: ["site/data/geography/layer_registry.json", "ontology/fixtures/dimensions/location_resolution.json"],
       lesson_class: "spatial-boundary-vintage",
+    }));
+  }
+  if (coverageGaps.length) {
+    cards.push(makeDimensionCard({
+      dimension: DIMENSION_ID,
+      slug: "geography-layer-coverage",
+      title: "Restore complete coverage for registered civic geography layers",
+      rank_score: 93,
+      evidence: {
+        kind: "geography-layer-coverage",
+        incomplete_layers: coverageGaps.map((boundary) => ({
+          type: boundary.layer_type || null,
+          status: boundary.coverage_status || "unknown",
+          feature_count: Number(boundary.feature_count) || 0,
+          expected_feature_count: Number(boundary.expected_feature_count) || null,
+        })),
+      },
+      verify: "node tools/build_location_resolution_inventory.mjs --check --gate geography-coverage",
+      demo_win: "Every registered layer meets its declared feature-coverage contract before it serves matches.",
+      context: ["site/data/geography/layer_registry.json", "ontology/fixtures/dimensions/location_resolution.json"],
+      lesson_class: "spatial-layer-coverage",
     }));
   }
 

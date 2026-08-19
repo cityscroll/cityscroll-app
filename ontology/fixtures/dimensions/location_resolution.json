@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.location_resolution_inventory.v0",
-  "measured_at": "2026-08-18",
-  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Boundary vintages come from the contracted district_boundaries layer. map_aggregates mirrors district_activity sources (located rates, unlocated_reasons, citywide/virtual bags) so zero-located and high no_place_signal map lenses emit flywheel cards.",
+  "measured_at": "2026-08-19",
+  "note": "Located rates are rebuilt from the two pinned hand-labelled corpora. District rates use the existing geocoded civic-scope pins. Registered geography layers report independent boundary vintages and coverage through this existing Data Health dimension; the legacy district_boundaries scalar is compatibility-only. map_aggregates mirrors district_activity sources (located rates, unlocated_reasons, citywide/virtual bags) so zero-located and high no_place_signal map lenses emit flywheel cards.",
   "lenses": [
     {
       "lens": "meetings-hearings",
@@ -29,16 +29,17 @@
   "map_aggregates": {
     "schema": "cityscroll.district_activity.v1",
     "boundary_vintage": "2026-05-26",
-    "built_at": "2026-08-18T03:02:40.606Z",
+    "built_at": "2026-08-18T20:16:02.958Z",
     "path": "site/data/district_activity.json",
     "sources": {
       "land": {
         "corpus": "zap_projects_warehouse_lookup",
-        "counted": 231,
-        "located": 231,
+        "counted": 238,
+        "located": 238,
         "located_rate": 1,
         "by_method": {
-          "publisher_district": 226,
+          "publisher_council": 217,
+          "publisher_district": 16,
           "citywide": 3,
           "unknown": 2
         }
@@ -192,20 +193,52 @@
   ],
   "boundaries": [
     {
-      "id": "community-district-boundaries",
+      "id": "geography-layer-borough",
+      "layer_type": "borough",
+      "layer_class": "administrative",
+      "source_contract_id": "community-district-boundaries",
       "dataset_id": "5crt-au7u",
       "vintage_at": "2026-05-26",
       "max_stale_days": 730,
       "status": "contracted",
-      "layer_path": "site/data/district_boundaries.json"
+      "coverage_status": "complete",
+      "feature_count": 5,
+      "expected_feature_count": 5,
+      "coverage_comparison": "exact",
+      "layer_path": "site/data/geography/layers/borough/2026-05-26.json",
+      "full_layer_path": "data/geography/layers/borough/2026-05-26.full.json"
     },
     {
-      "id": "city-council-district-boundaries",
+      "id": "geography-layer-community-district",
+      "layer_type": "community_district",
+      "layer_class": "community_administrative",
+      "source_contract_id": "community-district-boundaries",
+      "dataset_id": "5crt-au7u",
+      "vintage_at": "2026-05-26",
+      "max_stale_days": 730,
+      "status": "contracted",
+      "coverage_status": "complete",
+      "feature_count": 71,
+      "expected_feature_count": 59,
+      "coverage_comparison": "at_least",
+      "layer_path": "site/data/geography/layers/community_district/2026-05-26.json",
+      "full_layer_path": "data/geography/layers/community_district/2026-05-26.full.json"
+    },
+    {
+      "id": "geography-layer-council-district",
+      "layer_type": "council_district",
+      "layer_class": "political",
+      "source_contract_id": "city-council-district-boundaries",
       "dataset_id": "872g-cjhh",
       "vintage_at": "2026-05-26",
       "max_stale_days": 730,
       "status": "contracted",
-      "layer_path": "site/data/district_boundaries.json"
+      "coverage_status": "complete",
+      "feature_count": 51,
+      "expected_feature_count": 51,
+      "coverage_comparison": "exact",
+      "layer_path": "site/data/geography/layers/council_district/2026-05-26.json",
+      "full_layer_path": "data/geography/layers/council_district/2026-05-26.full.json"
     }
   ]
 }

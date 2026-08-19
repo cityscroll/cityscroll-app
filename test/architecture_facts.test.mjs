@@ -30,11 +30,12 @@ test("generated architecture facts contain every LA4 section", () => {
     "exams",
     "pages_edge",
     "materializers",
+    "civic_geography",
   ]) {
     assert.ok(key in facts, key);
   }
   assert.equal(facts.schema, "cityscroll.architecture.facts.v1");
-  assert.equal(facts.generator.version, "1.3.0");
+  assert.equal(facts.generator.version, "1.4.0");
   assert.ok(facts.commit);
   assert.ok(facts.source_paths.includes("worker/wrangler.toml"));
 });
@@ -63,6 +64,18 @@ test("generated facts identify warehouse, migrations, ER, and ontology evidence"
   assert.ok(facts.entity_resolution.importers.some((item) => item.file === "worker/src/entity_intelligence.mjs"));
   assert.equal(facts.ontology.registry.schema, "cityscroll.ontology.registry.v0");
   assert.ok(facts.ontology.sources.some((item) => item.name === "public_graph"));
+  assert.equal(facts.civic_geography.schema, "cityscroll.geography_layer_registry.v1");
+  assert.deepEqual(facts.civic_geography.layers.map((layer) => layer.type), [
+    "borough",
+    "community_district",
+    "council_district",
+  ]);
+  assert.ok(facts.civic_geography.layers.every((layer) => (
+    layer.coverage_status === "complete"
+    && layer.full_fidelity
+    && layer.simplified_delivery
+    && layer.boundary_vintage
+  )));
 });
 
 test("observer_coverage lists known canaries and unmapped surfaces", () => {
@@ -108,6 +121,7 @@ test("registered architecture canaries are first-class observed", () => {
     "tools/build_keyword_search_index.mjs",
     "site/agency_search_producer.mjs",
     "site/agency_constellation_model.mjs",
+    "site/civic_geography_registry.mjs",
     "tools/build_agency_constellation_documents.mjs",
     "tools/lib/entity_intelligence_build.mjs",
     "site/exams_surface.mjs",
