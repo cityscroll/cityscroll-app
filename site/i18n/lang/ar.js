@@ -2268,7 +2268,7 @@
     stats_history_empty: "لا يوجد سجل يومي بعد.",
     stats_h_technical: "التفاصيل التقنية",
     stats_p_technical: "كيف تُحسب الأرقام أعلاه. لست بحاجة لمعرفة هذا لاستخدام CityScroll.",
-    stats_foot_html: "JSON الخام: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (مخزَّن مؤقتًا نحو 15 دقيقة) · <a href=\"about.html\">حول</a> · <a href=\"data-health/\">صحة البيانات</a> · <a href=\"index.html\">الرئيسية</a>",
+    stats_foot_html: "JSON الخام: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (مخزَّن مؤقتًا نحو 15 دقيقة) · <a href=\"about.html\">حول</a> · <a href=\"index.html\">الرئيسية</a>",
     stats_asof: "اعتبارًا من {date} (يتحدّث كل 15 دقيقة).",
     stats_unreachable: "العدّادات الحيّة غير متاحة الآن — يوجد JSON الخام في api.cityscroll.org/stats.",
     stats_h_usage: "كيف يستخدم الناس CityScroll",

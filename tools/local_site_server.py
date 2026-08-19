@@ -8,6 +8,7 @@ import errno
 import functools
 import math
 import os
+import re
 import threading
 import time
 import urllib.error
@@ -70,6 +71,18 @@ class QuietHandler(SimpleHTTPRequestHandler):
             return False
         return 'data-civic-object-kind="agency-constellation"' in probe
 
+    def _data_health_public(self) -> bool:
+        nav = Path(self.directory) / "data_health_navigation.mjs"
+        try:
+            text = nav.read_text(encoding="utf-8")
+        except OSError:
+            return False
+        return bool(re.search(r"^export const DATA_HEALTH_PUBLIC = true;", text, re.M))
+
+    def _is_data_health_route(self, route: str) -> bool:
+        stripped = (route or "").rstrip("/")
+        return stripped == "/data-health" or stripped.startswith("/data-health/")
+
     def do_GET(self):
         # Pages supplies the shared shell for edge-rendered notice documents. Local browser
         # gates exercise the enhancement island against that shell; response HTML is tested
@@ -77,6 +90,9 @@ class QuietHandler(SimpleHTTPRequestHandler):
         raw = self.path
         path_only, _, query = raw.partition("?")
         route = path_only.rstrip("/")
+        if self._is_data_health_route(route) and not self._data_health_public():
+            self.send_error(404, "Not Found")
+            return
         if self._static_document(route, query):
             return
         if self._static_agency_constellation(route, query):
@@ -96,6 +112,15 @@ class QuietHandler(SimpleHTTPRequestHandler):
         ):
             self.path = "/index.html"
         super().do_GET()
+
+    def do_HEAD(self):
+        raw = self.path
+        path_only, _, query = raw.partition("?")
+        route = path_only.rstrip("/")
+        if self._is_data_health_route(route) and not self._data_health_public():
+            self.send_error(404, "Not Found")
+            return
+        super().do_HEAD()
 
 
 def port_number(value: str) -> int:

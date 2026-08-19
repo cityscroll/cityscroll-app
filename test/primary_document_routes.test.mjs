@@ -850,6 +850,11 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.ok(routes.include.includes("/officials/*"));
   assert.ok(routes.include.includes("/committees/*"));
   assert.ok(routes.include.includes("/browse/*"));
+  // Without this include, Pages serves the static data-health file and the
+  // visibility gate in pages_edge never runs.
+  assert.ok(routes.include.includes("/data-health*"));
+  assert.equal(edgeRequestKind("https://cityscroll.org/data-health/"), "data-health");
+  assert.equal(edgeRequestKind("https://cityscroll.org/data-health"), "data-health");
 });
 
 test("notice-linked mandate route renders its real detail document at the edge", async () => {

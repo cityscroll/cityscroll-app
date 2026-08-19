@@ -2253,7 +2253,7 @@
     stats_history_empty: "Poko gen istwa chak jou.",
     stats_h_technical: "Detay teknik",
     stats_p_technical: "Kijan chif anwo yo fèt. Ou pa bezwen konnen sa pou itilize CityScroll.",
-    stats_foot_html: "JSON brit: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (an memwa tanporè ~15 min) · <a href=\"about.html\">Konsènan</a> · <a href=\"data-health/\">Sante done</a> · <a href=\"index.html\">Akèy</a>",
+    stats_foot_html: "JSON brit: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (an memwa tanporè ~15 min) · <a href=\"about.html\">Konsènan</a> · <a href=\"index.html\">Akèy</a>",
     stats_asof: "Depi {date} (mete ajou chak 15 minit).",
     stats_unreachable: "Konpta an dirèk yo pa disponib kounye a — JSON brit la ye nan api.cityscroll.org/stats.",
     stats_h_usage: "Kijan moun sèvi ak CityScroll",

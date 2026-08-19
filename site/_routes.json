@@ -2,6 +2,7 @@
   "version": 1,
   "include": [
     "/meeting.ics",
+    "/data-health*",
     "/notices/*",
     "/mandates/*",
     "/meetings/*",
