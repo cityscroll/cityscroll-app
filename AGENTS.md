@@ -2396,8 +2396,10 @@ fields mean only “not observed in linked records”; each linked record surfac
 `link_confidence` (`strong` / `tentative` / `not_scored`). Metric:
 `public_entity_link_confidence_rate`. Pure model:
 `entity_resolution/publication/dossier.mjs` + `link_confidence.mjs`; Worker:
-`worker/src/entity_dossier.mjs`. Verify:
-`node --test worker/test/entity_dossier.test.mjs worker/test/entity_resolution_publication.test.mjs`.
+`worker/src/entity_dossier.mjs`. The transport-neutral direct operation is
+`entity.dossier.get@1` in `capabilities/entity_dossier.mjs`; its one HTTP adapter
+preserves the existing JSON and HTML representations. Verify:
+`node --test worker/test/entity_dossier_capability.test.mjs worker/test/entity_dossier.test.mjs worker/test/entity_resolution_publication.test.mjs`.
 
 **Public relationship graph (er-16) — same gate as dossier:**
 `GET /entity-relationships?id=` projects linked procurement observations when a
