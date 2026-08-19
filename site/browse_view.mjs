@@ -42,6 +42,10 @@ import {
   rankCommunityBoardRows,
   rowMatchesCommunityBoardQuery,
 } from "./community_board_search.mjs";
+import {
+  renderProcurementCoverageHtml,
+  renderProcurementRowCoverageHtml,
+} from "./procurement_coverage_labels.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -1047,6 +1051,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     edgeInventory: edgeInventory.edgeInventory,
     edgePairs: edgeInventory.edgePairs,
     semanticLane,
+    procurementCoverage: facet === "contracts" ? payload.procurement_coverage || null : null,
   };
 }
 
@@ -1307,7 +1312,7 @@ export function renderBrowseView(view) {
       ${actionMarkup}
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[typedMetadata, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
-      ${detailMarkup}
+      ${detailMarkup}${view.facet === "contracts" ? renderProcurementRowCoverageHtml(row) : ""}
       ${assertionMarkup}
       ${meetingSourceDetails}
       ${calendarCoverageMarkup}
@@ -1320,6 +1325,13 @@ export function renderBrowseView(view) {
       </section>`).join("")
     : view.rows.map(renderCard).join("");
   const summary = `<p class="browse-static-summary" data-build-summary data-scope-count="${esc(view.total)}" data-as-of="${esc(view.asOf || "")}" data-requested-as-of="${esc(view.requestedAsOf || "")}">${esc(view.config.label)} · ${view.total} available ${view.total === 1 ? "record" : "records"}${view.asOf ? ` · updated ${esc(view.asOf)}` : ""}</p>`;
+  const procurementCoverage = view.facet === "contracts"
+    ? renderProcurementCoverageHtml({
+      observed_count: view.procurementCoverage?.observed_count,
+      publisher_count: view.procurementCoverage?.publisher_count,
+      facet_empty: view.total === 0,
+    })
+    : "";
   const asOfMismatch = view.asOfMismatch
     ? `<p class="note warn browse-as-of-mismatch" role="status">This agency link names the ${esc(view.requestedAsOf)} snapshot; the current Browse snapshot is ${esc(view.asOf)}.</p>`
     : "";
@@ -1338,7 +1350,7 @@ export function renderBrowseView(view) {
       })[key] || key,
     })
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${procurementCoverage}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {

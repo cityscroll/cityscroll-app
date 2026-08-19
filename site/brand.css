@@ -108,6 +108,7 @@
 .ui-object-card-copy:focus-visible{outline:2px solid var(--color-focus,var(--color-action,#1b3a8f));outline-offset:3px}
 .ui-object-card-action-rail{margin-top:8px}
 .ui-object-card-action-rail h3{margin:0 0 6px;font:700 12px/1.25 var(--font-interface,ui-sans-serif,system-ui,sans-serif);color:var(--color-text-soft,#3e4652)}
+.procurement-coverage{margin:6px 0 0;color:var(--color-text-soft,var(--muted,#5b6470));font:600 12.5px/1.4 var(--font-interface,ui-sans-serif,system-ui,sans-serif)}
 .money-row-card .ui-object-card-interactions{display:grid;gap:6px;margin:0 0 6px}
 .money-row-card .ui-object-card-title{font-weight:700;font-size:15px}
 .money-row-card .ui-object-card-action-rail{margin-top:2px}
