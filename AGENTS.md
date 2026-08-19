@@ -2211,6 +2211,28 @@ dry-run: `GET /admin/digest-rollup?key=&email=`. Design:
 [`docs/digest-rollup-prefs.md`](docs/digest-rollup-prefs.md). Tests:
 `cd worker && node --test test/rollup.test.mjs test/prefs_lib.test.mjs test/prefs.test.mjs test/digest_rollup.test.mjs`.
 
+## Developer / e2e test accounts and recovered signups
+
+Plus-tagged automation addresses (`+e2e`, `+scope-watch`, for example
+`name+scope-watch-e2e-20260806@gmail.com`) are recognized by `isDeveloperTestEmail`
+in `worker/src/lib/subscriptions.mjs`. They never count as real subscribers
+(`countSubscriptionMetrics`), never receive real digests (`isWatchActive` /
+`processOneSub`), and render as `test` on the ops-visibility surface
+(`handleAdminSubs` / `toRosterRow`). Live signups stamp `developer_test` on the
+sub record; deprecated-double-opt-in recovery writes a marker-only
+`developer-test-account:` row instead of a watch.
+
+Recovered stranded signups keep `source: recovered-from-deprecated-double-opt-in`.
+`recoverDeprecatedDoubleOptIn` always applies the committed four-row manifest in
+`worker/src/lib/deprecated_opt_in_recovery_manifest.mjs` (three real addresses plus
+the e2e test marker). Caller-supplied rows cannot shrink that set. The daily
+digest cron applies it fail-soft after `runAlerts`; `POST /admin/recover-deprecated-opt-in`
+uses the same path. `signupLifecycleFromRecord` projects `recovered` /
+`pending-enrollment` until a digest day after the recovery watermark, then
+`enrolled`. Topicless homepage intents stay `confirmed`. Proof:
+`worker/test/recovered_signups.test.mjs`, `worker/test/subscriptions.test.mjs`,
+`worker/test/rollup.test.mjs`.
+
 ## Magic-link session + server pins
 
 Digest notice links carry a pins-scoped optin-token (`sc: "pins"`, ~30d) as `?s=`

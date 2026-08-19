@@ -37,6 +37,81 @@ export function isDeveloperTestEmail(raw) {
   return /(?:^|[-_.])(?:scope-watch|e2e)(?:$|[-_.])/.test(tag);
 }
 
+export const SIGNUP_LIFECYCLE = Object.freeze({
+  RECOVERED: "recovered",
+  PENDING_ENROLLMENT: "pending-enrollment",
+  ENROLLED: "enrolled",
+  CONFIRMED: "confirmed",
+  TEST: "test",
+});
+
+export const RECOVERY_EXPLANATION = "signed up in the legacy pre-double-opt-in period, has not been sent an email yet, and will be emailed starting the next scheduled digest";
+
+/** Marker-only KV key for plus-tagged automation accounts that must not become watches. */
+export function developerTestAccountKey(subscriberId) {
+  return `developer-test-account:${subscriberId}`;
+}
+
+export function isTestSubscriber(record) {
+  if (!record || typeof record !== "object") return false;
+  return record.developer_test === true
+    || record.status === "developer/test"
+    || record.signup_lifecycle === SIGNUP_LIFECYCLE.TEST
+    || isDeveloperTestEmail(record.email);
+}
+
+export function isRealSubscriber(record) {
+  return !!record && typeof record === "object" && !isTestSubscriber(record);
+}
+
+function isoDay(value) {
+  const match = /^(\d{4}-\d{2}-\d{2})/.exec(String(value || ""));
+  return match ? match[1] : null;
+}
+
+/** True only after a send day later than the recovery watermark (same-day lastsent is the watermark). */
+export function recoveredSignupReceivedDigest(record, lastSent) {
+  const watermark = isoDay(record?.delivery_not_before || record?.recovered_at);
+  const sent = isoDay(lastSent);
+  return !!(watermark && sent && sent > watermark);
+}
+
+/**
+ * Ops-visibility projector: recovered / pending-enrollment / enrolled / confirmed / test.
+ * Recovered rows stay pending-enrollment until a digest day after the recovery watermark.
+ */
+export function signupLifecycleFromRecord(record, { lastSent = null } = {}) {
+  if (!record || typeof record !== "object") return null;
+  if (isTestSubscriber(record)) {
+    return {
+      signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
+      status: SIGNUP_LIFECYCLE.TEST,
+    };
+  }
+  if (record.source === DEPRECATED_OPT_IN_RECOVERY_SOURCE) {
+    if (recoveredSignupReceivedDigest(record, lastSent)) {
+      return {
+        signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
+        status: SIGNUP_LIFECYCLE.ENROLLED,
+      };
+    }
+    return {
+      signup_lifecycle: SIGNUP_LIFECYCLE.RECOVERED,
+      status: SIGNUP_LIFECYCLE.PENDING_ENROLLMENT,
+    };
+  }
+  if (isTopiclessIntent(record) || record.state === "confirmed") {
+    return {
+      signup_lifecycle: SIGNUP_LIFECYCLE.CONFIRMED,
+      status: SIGNUP_LIFECYCLE.CONFIRMED,
+    };
+  }
+  return {
+    signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
+    status: SIGNUP_LIFECYCLE.ENROLLED,
+  };
+}
+
 /**
  * Recovered watches start at recovery, not at the beginning of the query's open-result set.
  * Rows without a trustworthy source day fail closed on this one migration-only boundary.

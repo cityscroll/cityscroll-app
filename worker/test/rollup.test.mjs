@@ -35,6 +35,17 @@ test("isWatchActive: paused watches are inactive", () => {
   assert.equal(isWatchActive(null), false);
 });
 
+test("isWatchActive: developer and e2e plus-tag addresses never receive real digests", () => {
+  assert.equal(isWatchActive(sub("jamesca2ro+scope-watch-e2e-20260806@gmail.com", "sub:e2e")), false);
+  assert.equal(isWatchActive(sub("reader@example.com", "sub:flag", { developer_test: true })), false);
+  assert.equal(isWatchActive(sub("devinbalkind@gmail.com", "sub:real")), true);
+  const jobs = buildDigestJobs([
+    sub("jamesca2ro+scope-watch-e2e-20260806@gmail.com", "sub:e2e"),
+    sub("devinbalkind@gmail.com", "sub:real"),
+  ]);
+  assert.deepEqual(jobs.map((job) => job.email), ["devinbalkind@gmail.com"]);
+});
+
 test("groupSubsByEmail: normalizes case and groups", () => {
   const map = groupSubsByEmail([
     sub("Ada@Example.com", "sub:1"),

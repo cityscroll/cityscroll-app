@@ -1,21 +1,28 @@
-// Bounded, operator-authenticated recovery for delivered signup emails that were stranded by
-// the retired double-opt-in gate. It writes enrollment + delivery/ops watermarks but sends no
-// welcome and invokes no digest compiler. The caller supplies the private vetted manifest.
+// Bounded recovery for delivered signup emails stranded by the retired double-opt-in gate.
+// It writes enrollment + delivery/ops watermarks but sends no welcome and invokes no digest
+// compiler. The only input is the committed four-row vetted reconstruction manifest.
 
 import {
   DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+  RECOVERY_EXPLANATION,
+  SIGNUP_LIFECYCLE,
   buildSubscription,
   deriveSubscriberId,
   deriveWatchId,
+  developerTestAccountKey,
   isDeveloperTestEmail,
   isValidEmail,
   normalizeEmail,
   subscriptionKey,
 } from "./lib/subscriptions.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
+import {
+  VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST,
+  VETTED_RECOVERED_SIGNUP_EMAILS,
+} from "./lib/deprecated_opt_in_recovery_manifest.mjs";
 
-export const RECOVERY_EXPLANATION = "was stuck in the now-deprecated double opt-in; emails start next scheduled digest";
-const RECOVERY_MANIFEST_SIZE = 4;
+export { RECOVERY_EXPLANATION, VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST, VETTED_RECOVERED_SIGNUP_EMAILS };
+const RECOVERY_MANIFEST_SIZE = VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST.length;
 
 function validOriginalSignupAt(value) {
   if (typeof value !== "string" || !value.trim()) return false;
@@ -32,7 +39,7 @@ function recoveryMarkerKey(subscriberId) {
 }
 
 function developerMarkerKey(subscriberId) {
-  return `developer-test-account:${subscriberId}`;
+  return developerTestAccountKey(subscriberId);
 }
 
 async function readJson(store, key) {
@@ -64,6 +71,7 @@ async function markDeveloperTestAccount(env, row, recoveredAt) {
       email,
       subscriber_id: subscriberId,
       status: "developer/test",
+      signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
       developer_test: true,
       source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
       reason: "plus-tagged scope-watch/e2e account; excluded from real enrollment and digest delivery",
@@ -93,15 +101,16 @@ async function recoverOne(env, row, recoveredAt) {
   if (completed?.status === "recovered") return { status: "already-recovered", key, subscriber_id: subscriberId };
 
   const existing = await readJson(env.SUBS, key);
-  if (existing && existing.source !== DEPRECATED_OPT_IN_RECOVERY_SOURCE) {
-    return { status: "already-enrolled", key, subscriber_id: subscriberId };
-  }
-  const recoveryTime = existing?.recovered_at || recoveredAt;
+  const recoveryTime = existing?.source === DEPRECATED_OPT_IN_RECOVERY_SOURCE
+    ? (existing?.recovered_at || recoveredAt)
+    : recoveredAt;
   const record = {
     ...candidate,
     subscriber_id: existing?.subscriber_id || subscriberId,
     watch_id: existing?.watch_id || await deriveWatchId(key),
     source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+    signup_lifecycle: SIGNUP_LIFECYCLE.RECOVERED,
+    status: SIGNUP_LIFECYCLE.PENDING_ENROLLMENT,
     original_signup_at: row.original_signup_at,
     recovered_at: recoveryTime,
     delivery_not_before: recoveryTime,
@@ -132,9 +141,11 @@ async function recoverOne(env, row, recoveredAt) {
   return { status: "recovered", key, subscriber_id: subscriberId };
 }
 
-export async function recoverDeprecatedDoubleOptIn(env, rows, { now = new Date() } = {}) {
+export async function recoverDeprecatedDoubleOptIn(env, rowsOrOptions, maybeOptions = {}) {
   if (!env?.SUBS || !env?.ALERT_STATE) throw new TypeError("SUBS and ALERT_STATE are required");
-  if (!Array.isArray(rows) || rows.length !== RECOVERY_MANIFEST_SIZE) {
+  const options = Array.isArray(rowsOrOptions) ? maybeOptions : (rowsOrOptions || {});
+  const rows = VETTED_DEPRECATED_OPT_IN_RECOVERY_MANIFEST;
+  if (rows.length !== RECOVERY_MANIFEST_SIZE) {
     throw new TypeError(`recovery manifest must contain exactly ${RECOVERY_MANIFEST_SIZE} rows`);
   }
   rows.forEach(validateRow);
@@ -143,13 +154,16 @@ export async function recoverDeprecatedDoubleOptIn(env, rows, { now = new Date()
   if (rows.filter((row) => isDeveloperTestEmail(row.email)).length !== 1) {
     throw new TypeError("recovery manifest must contain exactly one scope-watch/e2e developer account");
   }
-  const recoveredAt = new Date(now).toISOString();
+  const recoveredAt = new Date(options.now || Date.now()).toISOString();
   const results = [];
   for (const row of rows) results.push(await recoverOne(env, row, recoveredAt));
   return {
     recovered_at: recoveredAt,
     results,
     recovered: results.filter((row) => row.status === "recovered").length,
-    developer_test: results.filter((row) => row.status === "marked-developer-test").length,
+    already_recovered: results.filter((row) => row.status === "already-recovered").length,
+    developer_test: results.filter((row) =>
+      row.status === "marked-developer-test" || row.status === "already-marked-developer-test").length,
+    emails: [...VETTED_RECOVERED_SIGNUP_EMAILS],
   };
 }
