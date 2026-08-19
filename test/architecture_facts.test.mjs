@@ -151,10 +151,10 @@ test("performance observability facts are bounded topology and advisory coverage
   assert.equal(performance.catalog.registry_hash.length, 64);
   assert.equal(performance.catalog.metric_count, 13);
   assert.equal(performance.registry.surface_count, 36);
-  assert.equal(performance.registry.component_count, 14);
-  assert.equal(performance.registry.classifications.surfaces.instrumented, 2);
-  assert.equal(performance.registry.classifications.surfaces.planned, 34);
-  assert.equal(performance.registry.classifications.components.instrumented, 2);
+  assert.equal(performance.registry.component_count, 16);
+  assert.equal(performance.registry.classifications.surfaces.instrumented, 3);
+  assert.equal(performance.registry.classifications.surfaces.planned, 33);
+  assert.equal(performance.registry.classifications.components.instrumented, 4);
   assert.equal(performance.registry.classifications.components.planned, 12);
   assert.equal(performance.topology.collector.classification_manifest_path, "site/data/performance-classification-manifest.v1.json");
   assert.equal(performance.topology.collector.state, "disabled_test_only");
