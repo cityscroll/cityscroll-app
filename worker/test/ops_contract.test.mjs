@@ -79,11 +79,27 @@ test("committed fixture matches builder (desk CI pin)", () => {
   assert.deepEqual(live, fixture, "worker/ops-contract.v1.json must match buildOpsContract()");
 });
 
-test("performance discovery is an additive compatible ops-contract minor bump", () => {
+test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.5.0", "RUM-08 adds discovery without changing existing fields");
+  assert.equal(doc.version, "1.6.0", "RUM-09 adds consumer discovery without changing existing fields");
   assert.equal(doc.min_compatible_version, "1.0.0");
   assert.equal(doc.performance.contract, "cityscroll.admin.performance.v1");
+  assert.equal(doc.performance.version, "1.0.0", "the response schema remains unchanged");
+  assert.deepEqual(doc.performance.consumer_handoff, {
+    owner_repository: "cityscroll-internal",
+    integration_status: "separate_cross_repository_deliverable",
+    manifest: "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json",
+    reference_response: "worker/test/fixtures/admin_performance_available.v1.json",
+    edge_states: "worker/test/fixtures/admin_performance_states.v1.json",
+    acceptance_test: "worker/test/admin_performance_consumer_contract.test.mjs",
+    views: [
+      "overview",
+      "surface_detail",
+      "phase_decomposition",
+      "architecture_coverage",
+      "telemetry_health",
+    ],
+  });
   assert.equal(doc.admin_routes.filter(({ path }) => path === "/admin/performance").length, 1);
   assert.equal(doc.admin_routes.find(({ path }) => path === "/admin/stats").description,
     "Private product activity, subscriptions, and delivery operations (JSON or ?view=html).");

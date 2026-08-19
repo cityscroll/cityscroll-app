@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.5.0";
+export const OPS_CONTRACT_VERSION = "1.6.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -306,6 +306,21 @@ export const PERFORMANCE_CONTRACT = Object.freeze({
     comparison: "Equal-length previous window with absolute and relative changes when both distributions are sufficient.",
     daily_series: "UTC-day rows bounded by the selected window and adapter limits.",
     inventory: ["catalog", "coverage", "freshness", "data_health"],
+  },
+  consumer_handoff: {
+    owner_repository: "cityscroll-internal",
+    integration_status: "separate_cross_repository_deliverable",
+    manifest: "data/rum-09-desk-contract-fixtures/desk-consumer-contract.v1.json",
+    reference_response: "worker/test/fixtures/admin_performance_available.v1.json",
+    edge_states: "worker/test/fixtures/admin_performance_states.v1.json",
+    acceptance_test: "worker/test/admin_performance_consumer_contract.test.mjs",
+    views: [
+      "overview",
+      "surface_detail",
+      "phase_decomposition",
+      "architecture_coverage",
+      "telemetry_health",
+    ],
   },
 });
 

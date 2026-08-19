@@ -1,0 +1,88 @@
+{
+  "schema": "cityscroll.admin.performance.desk_consumer_contract.v1",
+  "version": "1.0.0",
+  "response_schema": "cityscroll.admin.performance.v1",
+  "endpoint": "/admin/performance",
+  "ops_contract_path": "worker/ops-contract.v1.json",
+  "reference_response": {
+    "path": "worker/test/fixtures/admin_performance_available.v1.json",
+    "schema": "cityscroll.admin.performance.v1"
+  },
+  "edge_states": {
+    "path": "worker/test/fixtures/admin_performance_states.v1.json",
+    "schema": "cityscroll.admin.performance.fixture_matrix.v1"
+  },
+  "acceptance_test": "worker/test/admin_performance_consumer_contract.test.mjs",
+  "views": {
+    "overview": {
+      "query": "?window=7d",
+      "result_dimension": "metric_id",
+      "required_response_fields": [
+        "status",
+        "query",
+        "catalog.metrics",
+        "series.current",
+        "series.previous",
+        "series.comparison",
+        "series.trend"
+      ]
+    },
+    "surface_detail": {
+      "query": "?window=7d&surface=home",
+      "result_dimension": "metric_id",
+      "required_response_fields": [
+        "coverage.selection.surface",
+        "catalog.surfaces",
+        "catalog.components",
+        "series"
+      ]
+    },
+    "phase_decomposition": {
+      "query": "?window=7d&surface=home",
+      "result_dimension": "metric_id",
+      "metric_ids": [
+        "ttfb_ms",
+        "response_to_first_render_ms",
+        "first_render_to_main_ms",
+        "main_to_useful_ms",
+        "interaction_feedback_ms",
+        "feedback_to_settled_ms",
+        "interaction_settled_ms"
+      ],
+      "missing_phase_rule": "Omit a missing phase value; never synthesize zero or clamp an unordered phase."
+    },
+    "architecture_coverage": {
+      "required_response_fields": [
+        "catalog.registry_hash",
+        "catalog.surfaces.architecture_container_ref",
+        "catalog.components.architecture_container_ref",
+        "coverage.registered",
+        "coverage.unclassified_observations"
+      ]
+    },
+    "telemetry_health": {
+      "required_response_fields": [
+        "freshness",
+        "data_health",
+        "sampling",
+        "retention",
+        "sample_floor"
+      ]
+    }
+  },
+  "honest_states": {
+    "low_sample": "insufficient_sample",
+    "no_data": "no_data",
+    "uninstrumented": "uninstrumented",
+    "unclassified": "unclassified",
+    "unavailable": "unavailable",
+    "missing_never_zero": "Percentile and phase fields are absent when not measured; zero is a measured numeric value, never an absence sentinel."
+  },
+  "trust_boundary": {
+    "consumer_owner": "cityscroll-internal",
+    "integration": "Access-authenticated Desk browser to same-origin Desk Worker to authenticated CityScroll Worker",
+    "analytics_engine_credentials_in_consumer": false,
+    "copied_registry_in_consumer": false,
+    "public_site_ui_in_this_repository": false
+  }
+}
