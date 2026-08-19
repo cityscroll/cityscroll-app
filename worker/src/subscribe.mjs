@@ -14,7 +14,9 @@ import {
   buildTopiclessIntent,
   deriveSubscriberId,
   deriveWatchId,
+  isDeveloperTestEmail,
   isTopiclessIntent,
+  SIGNUP_LIFECYCLE,
   subscriptionKey,
   topiclessIntentKey,
 } from "./lib/subscriptions.mjs";
@@ -106,6 +108,11 @@ export async function enrollAndWelcome(env, candidate, { source = "following" } 
   if (candidate.source || existing?.source) record.source = candidate.source || existing.source;
   record.subscriber_id = existing?.subscriber_id || await deriveSubscriberId(record.email);
   record.watch_id = existing?.watch_id || await deriveWatchId(key);
+  if (isDeveloperTestEmail(record.email)) {
+    record.developer_test = true;
+    record.signup_lifecycle = SIGNUP_LIFECYCLE.TEST;
+    record.status = SIGNUP_LIFECYCLE.TEST;
+  }
   try {
     await env.SUBS.put(key, JSON.stringify(record));
   } catch {

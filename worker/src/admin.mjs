@@ -5,7 +5,13 @@
 //
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
-import { redactEmail, isTopiclessIntent } from "./lib/subscriptions.mjs";
+import {
+  redactEmail,
+  isTopiclessIntent,
+  isTestSubscriber,
+  signupLifecycleFromRecord,
+  SIGNUP_LIFECYCLE,
+} from "./lib/subscriptions.mjs";
 import { RECOVERY_EXPLANATION, recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import {
   WATCHLOG_LATEST_KEY,
@@ -125,6 +131,8 @@ export async function handleAdminSubs(req, env) {
   const subs = [];
   const topiclessIntents = [];
   const developerTestAccounts = [];
+  const recoveredPending = [];
+  const enrolled = [];
   const sampleKeys = [];
   let cursor, totalKeys = 0;
   do {
@@ -137,7 +145,14 @@ export async function handleAdminSubs(req, env) {
         try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
         if (v) {
           const topicless = isTopiclessIntent(v);
-          const status = "confirmed";
+          let lastSent = null;
+          if (env.ALERT_STATE) {
+            try { lastSent = await env.ALERT_STATE.get(`lastsent:${k.name}`); } catch { /* ignore */ }
+          }
+          const lifecycle = signupLifecycleFromRecord(v, { lastSent }) || {
+            signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
+            status: SIGNUP_LIFECYCLE.ENROLLED,
+          };
           const item = {
             email: redactEmail(v.email),
             lens: v.lens,
@@ -147,29 +162,46 @@ export async function handleAdminSubs(req, env) {
             createdAt: v.createdAt,
             no_topic: topicless || undefined,
             source: topicless ? v.source : (v.source || null),
-            status,
+            status: lifecycle.status,
+            signup_lifecycle: lifecycle.signup_lifecycle,
             intentState: topicless ? v.state : undefined,
             original_signup_at: v.original_signup_at,
             recovered_at: v.recovered_at,
             recovery_explanation: v.recovery_explanation,
+            developer_test: isTestSubscriber(v) || undefined,
           };
+          if (lifecycle.status === SIGNUP_LIFECYCLE.TEST) {
+            developerTestAccounts.push({
+              email: item.email,
+              status: SIGNUP_LIFECYCLE.TEST,
+              signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
+              source: item.source,
+              original_signup_at: v.original_signup_at,
+              marked_at: v.recovered_at || v.createdAt,
+              reason: v.reason || "plus-tagged scope-watch/e2e account; excluded from real enrollment and digest delivery",
+            });
+            continue;
+          }
           subs.push(item);
           if (topicless) {
             topiclessIntents.push({
               email: item.email,
-              status,
+              status: item.status,
               source: item.source,
               createdAt: item.createdAt,
               intentState: item.intentState,
             });
           }
+          if (lifecycle.signup_lifecycle === SIGNUP_LIFECYCLE.RECOVERED) recoveredPending.push(item);
+          if (lifecycle.status === SIGNUP_LIFECYCLE.ENROLLED) enrolled.push(item);
         }
       } else if (k.name.startsWith("developer-test-account:")) {
         let v = null;
         try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
         if (v) developerTestAccounts.push({
           email: redactEmail(v.email),
-          status: v.status,
+          status: SIGNUP_LIFECYCLE.TEST,
+          signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
           source: v.source,
           original_signup_at: v.original_signup_at,
           marked_at: v.marked_at,
@@ -181,10 +213,14 @@ export async function handleAdminSubs(req, env) {
   } while (cursor);
 
   return json({
-    confirmedSubs: subs.length,
+    confirmedSubs: subs.filter((row) => row.status === SIGNUP_LIFECYCLE.CONFIRMED).length,
+    recoveredPendingCount: recoveredPending.length,
+    enrolledCount: enrolled.length,
     topiclessIntentCount: topiclessIntents.length,
     topiclessIntents,
     developerTestAccounts,
+    recoveredPending,
+    enrolled,
     totalKeysInStore: totalKeys,
     subs,
     sampleKeys,

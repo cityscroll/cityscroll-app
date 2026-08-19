@@ -13,6 +13,7 @@ import {
   readUsageAnalytics,
   reconcileUsageWithDurableStores,
 } from "./lib/analytics.mjs";
+import { isTestSubscriber } from "./lib/subscriptions.mjs";
 
 // Same key as alerts.mjs DIGEST_RUN_LATEST_KEY — kept local so /stats does not import the
 // full alerts module (cron + Resend path) on every public read.
@@ -429,7 +430,7 @@ export async function countSubscriptionMetrics(env) {
         try {
           const raw = await env.SUBS.get(key.name);
           const sub = raw ? JSON.parse(raw) : null;
-          if (!sub || sub.paused) continue;
+          if (!sub || sub.paused || isTestSubscriber(sub)) continue;
           const email = typeof sub.email === "string" ? sub.email.trim().toLowerCase() : "";
           if (!email) continue;
           active++;

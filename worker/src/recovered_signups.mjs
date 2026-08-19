@@ -4,9 +4,12 @@
 
 import {
   DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+  RECOVERY_EXPLANATION,
+  SIGNUP_LIFECYCLE,
   buildSubscription,
   deriveSubscriberId,
   deriveWatchId,
+  developerTestAccountKey,
   isDeveloperTestEmail,
   isValidEmail,
   normalizeEmail,
@@ -14,7 +17,7 @@ import {
 } from "./lib/subscriptions.mjs";
 import { appendWatchLog, watchLabel } from "./lib/watchlog.mjs";
 
-export const RECOVERY_EXPLANATION = "was stuck in the now-deprecated double opt-in; emails start next scheduled digest";
+export { RECOVERY_EXPLANATION };
 const RECOVERY_MANIFEST_SIZE = 4;
 
 function validOriginalSignupAt(value) {
@@ -32,7 +35,7 @@ function recoveryMarkerKey(subscriberId) {
 }
 
 function developerMarkerKey(subscriberId) {
-  return `developer-test-account:${subscriberId}`;
+  return developerTestAccountKey(subscriberId);
 }
 
 async function readJson(store, key) {
@@ -64,6 +67,7 @@ async function markDeveloperTestAccount(env, row, recoveredAt) {
       email,
       subscriber_id: subscriberId,
       status: "developer/test",
+      signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
       developer_test: true,
       source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
       reason: "plus-tagged scope-watch/e2e account; excluded from real enrollment and digest delivery",
@@ -93,15 +97,16 @@ async function recoverOne(env, row, recoveredAt) {
   if (completed?.status === "recovered") return { status: "already-recovered", key, subscriber_id: subscriberId };
 
   const existing = await readJson(env.SUBS, key);
-  if (existing && existing.source !== DEPRECATED_OPT_IN_RECOVERY_SOURCE) {
-    return { status: "already-enrolled", key, subscriber_id: subscriberId };
-  }
-  const recoveryTime = existing?.recovered_at || recoveredAt;
+  const recoveryTime = existing?.source === DEPRECATED_OPT_IN_RECOVERY_SOURCE
+    ? (existing?.recovered_at || recoveredAt)
+    : recoveredAt;
   const record = {
     ...candidate,
     subscriber_id: existing?.subscriber_id || subscriberId,
     watch_id: existing?.watch_id || await deriveWatchId(key),
     source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+    signup_lifecycle: SIGNUP_LIFECYCLE.RECOVERED,
+    status: SIGNUP_LIFECYCLE.PENDING_ENROLLMENT,
     original_signup_at: row.original_signup_at,
     recovered_at: recoveryTime,
     delivery_not_before: recoveryTime,

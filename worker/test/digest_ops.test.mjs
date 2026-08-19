@@ -136,6 +136,8 @@ test("toRosterRow + searchInterestSignal", () => {
     createdAt: "2026-07-10T00:00:00.000Z",
   }, { lastSent: "2026-07-28" });
   assert.equal(a.confirmed, true);
+  assert.equal(a.status, "enrolled");
+  assert.equal(a.signup_lifecycle, "enrolled");
   assert.equal(a.email, "alice@example.com");
   assert.match(a.query, /education/i);
   const q = searchInterestSignal([a, b]);
