@@ -3423,6 +3423,14 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   closed, preserve feedback-before-settlement ordering, and never move DOM
   selectors into the collector. Focused proof is
   `test/rum_semantic_milestones.test.mjs`.
+- Field-performance intake is the separate `POST /performance-events` contract
+  in `worker/src/performance_events.mjs`, backed only by `RUM_ANALYTICS` /
+  `crol_rum_observations_v1`. Keep its normalized one-metric-per-point layout,
+  strict generated allowlist validation, and fixed health reasons independent
+  from `/events`, `USAGE_ANALYTICS`, and the usage stats surfaces. Production
+  remains fail-closed while `RUM_INGEST_ENABLED` and the public manifest flag
+  are false. Focused proof: `worker/test/performance_events.test.mjs` and
+  `test/rum_delivery.test.mjs`.
 
 ## Comparative signal admission
 

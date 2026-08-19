@@ -35,8 +35,8 @@ workspace {
             analytics_engine = container "Usage analytics" "Bounded aggregate page, click, and search events without visitor identifiers." "Cloudflare Analytics Engine" {
                 tags "Database"
             }
-            rum_analytics = container "Field performance observations" "Planned normalized real-user performance observations, separate from usage analytics and disabled until the commissioned pilot." "Cloudflare Analytics Engine (planned / disabled)" {
-                tags "Database,Inactive"
+            rum_analytics = container "Field performance observations" "Provisioned normalized real-user performance storage, separate from usage analytics; its independent ingestion and browser collection gates remain off until the commissioned pilot." "Cloudflare Analytics Engine" {
+                tags "Database"
             }
             r2_source_vault = container "R2 source vault" "Reserved source-document custody seam; inactive because SOURCE_VAULT_ENABLED is false and its binding is commented out." "Cloudflare R2 (planned / disabled)" {
                 tags "Database,Inactive"
@@ -68,8 +68,8 @@ workspace {
         materialization_tools -> browser_site "Writes compact site read models and build-rendered documents [tools/build_primary_documents.mjs:22-45]" "Repository artifact"
         materialization_tools -> worker_api "Publishes Worker data twins consumed by edge routes [ARCHITECTURE.md:37,40,50]" "Repository artifact"
         performance_registry -> browser_site "Projects the classification manifest and closed collector contract for the disabled/test-only fail-soft RUM foundation [architecture/performance-observability.v1.json; site/data/performance-classification-manifest.v1.json; site/rum_collector.mjs]" "Repository artifact"
-        performance_registry -> worker_api "Projects planned intake validation and private operator inventories [worker/src/data/performance-validation-allowlist.v1.json; worker/src/data/performance-operator-labels.v1.json]" "Repository artifact"
-        browser_site -> worker_api "A future pilot may submit bounded RUM observations only to /performance-events; the current disabled/test-only collector has no network transport [architecture/performance-observability.v1.json; site/rum_collector.mjs]" "HTTPS (planned / disabled)"
+        performance_registry -> worker_api "Projects strict intake validation and private operator inventories [worker/src/data/performance-validation-allowlist.v1.json; worker/src/data/performance-operator-labels.v1.json]" "Repository artifact"
+        browser_site -> worker_api "A future pilot may submit bounded RUM observations only to /performance-events; the current collector has no network transport and the separate fail-soft delivery capability remains default-off [architecture/performance-observability.v1.json; site/rum_collector.mjs; site/rum_delivery.mjs]" "HTTPS (gated off)"
         private_desk -> worker_api "Will read the private /admin/performance model through a server-to-server authenticated proxy; no Analytics Engine credentials cross into Desk [architecture/performance-observability.v1.json]" "HTTPS (planned)"
 
         entity_resolution -> materialization_tools "Provides allowlisted, provenance-bearing links for public materialization [entity_resolution/README.md:87-100]" "JavaScript module import"
@@ -85,7 +85,7 @@ workspace {
         worker_api -> digest_queue "Enqueues per-subscription digest jobs [ARCHITECTURE.md:48; worker/wrangler.toml:94-100; worker/src/worker.mjs:179-183]" "Queue producer DIGEST_QUEUE"
         digest_queue -> worker_api "Delivers retryable digest jobs to the queue consumer [worker/wrangler.toml:102-108; worker/src/worker.mjs:352-363]" "Queue consumer"
         worker_api -> analytics_engine "Writes bounded aggregate usage events when the production binding is present [worker/wrangler.toml:89-92; worker/src/events.mjs:110-129]" "Analytics Engine binding USAGE_ANALYTICS"
-        worker_api -> rum_analytics "Will write normalized field-performance observations through the separate RUM_ANALYTICS binding; no live measurement is part of architecture facts [architecture/performance-observability.v1.json]" "Analytics Engine binding RUM_ANALYTICS (planned / disabled)"
+        worker_api -> rum_analytics "Writes normalized field-performance observations through the separate RUM_ANALYTICS binding only when the production environment and RUM_INGEST_ENABLED gates are on [worker/src/performance_events.mjs; worker/wrangler.toml]" "Analytics Engine binding RUM_ANALYTICS"
         worker_api -> r2_source_vault "Would serve approved public documents only when the disabled source-vault seam is enabled [worker/src/source_vault.mjs:68-69; worker/wrangler.toml:80-87]" "Conditional R2 binding"
     }
 

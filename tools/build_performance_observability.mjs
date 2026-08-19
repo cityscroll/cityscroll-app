@@ -403,6 +403,12 @@ function workerProjection(registry, hash) {
       ...registry.collector_contract,
       field_metric_ids: sorted(registry.collector_contract.field_metric_ids),
     },
+    metrics: registry.metrics.map((metric) => ({
+      metric_id: metric.id,
+      metric_version: metric.version,
+      unit: metric.unit,
+      minimum: metric.numeric_domain.minimum,
+    })).sort((left, right) => left.metric_id.localeCompare(right.metric_id)),
     metric_ids: sorted(registryMetricIds(registry)),
     delivery_classes: sorted(registry.delivery_classes),
     result_states: terminalStates,
