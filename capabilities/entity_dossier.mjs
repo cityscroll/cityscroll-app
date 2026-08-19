@@ -102,6 +102,14 @@ export const ENTITY_DOSSIER_CAPABILITY = deepFreeze({
       surface: "Entity dossier",
       representations: ENTITY_DOSSIER_REPRESENTATIONS,
     },
+    {
+      id: "mcp.get_entity_dossier@1",
+      module: "worker/src/mcp.mjs",
+      kind: "mcp-tool",
+      tool: "get_entity_dossier",
+      route: "POST /mcp",
+      surface: "MCP",
+    },
   ],
 });
 

@@ -1,0 +1,150 @@
+{
+  "card": "cs-06-remote-mcp-public-adapter",
+  "client": {
+    "package": "@modelcontextprotocol/sdk",
+    "transport": "StreamableHTTPClientTransport",
+    "version": "1.30.0"
+  },
+  "fixture_sha256": "70bf37432c331e90ef37a3a92a9f4b9c722d30d41de909186ad8bf91c6996d3b",
+  "layers": {
+    "adapter_policy": "worker/src/mcp.mjs plus capabilities/mcp_tool_declarations.mjs",
+    "cloudflare_os_runtime": "downstream and not built by cs-06",
+    "semantic_core": "capabilities/*.mjs plus explicit providers; transport-neutral"
+  },
+  "observed_at": "2026-08-19T00:00:00.000Z",
+  "policy_boundary": {
+    "mutation_capabilities": 0,
+    "raw_store_bindings_exposed": 0,
+    "registered_public_tools": 4,
+    "unregistered_public_tools": 0
+  },
+  "protocol": {
+    "authentication": "optional bearer; public-read proof uses none",
+    "endpoint": "POST /mcp",
+    "negotiated_version": "2025-06-18",
+    "stateless": true,
+    "transport": "Streamable HTTP"
+  },
+  "public_tool_inventory": [
+    {
+      "adapter_id": "mcp.search_notices@1",
+      "adapter_semantic_sha256": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "notice.search@1",
+      "direct_semantic_sha256": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a",
+      "name": "search_notices",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-d1.notice-search",
+      "store_access": "provider-only",
+      "store_read_operations": 1,
+      "store_rows_read": 2
+    },
+    {
+      "adapter_id": "mcp.get_entity_dossier@1",
+      "adapter_semantic_sha256": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "entityIdMaximumLength": 300,
+        "recordLimit": 250
+      },
+      "calls": 1,
+      "capability_reference": "entity.dossier.get@1",
+      "direct_semantic_sha256": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "name": "get_entity_dossier",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-d1.entity-dossier",
+      "store_access": "provider-only",
+      "store_read_operations": 1,
+      "store_rows_read": 2
+    },
+    {
+      "adapter_id": "mcp.get_entity_relationships@1",
+      "adapter_semantic_sha256": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "defaultDepth": 2,
+        "defaultFanOut": 12,
+        "entityIdMaximumLength": 300,
+        "maximumDepth": 2,
+        "maximumFanOut": 25,
+        "recordLimit": 250
+      },
+      "calls": 1,
+      "capability_reference": "entity.relationships.get@1",
+      "direct_semantic_sha256": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
+      "name": "get_entity_relationships",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-d1.entity-relationships",
+      "store_access": "provider-only",
+      "store_read_operations": 1,
+      "store_rows_read": 3
+    },
+    {
+      "adapter_id": "mcp.retrieve_cited_passages@1",
+      "adapter_semantic_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "bodyIdMaximumLength": 120,
+        "defaultResults": 10,
+        "maximumResults": 20,
+        "queryMaximumLength": 240
+      },
+      "calls": 1,
+      "capability_reference": "cited.passages.retrieve@1",
+      "direct_semantic_sha256": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "name": "retrieve_cited_passages",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-semantic.cited-passages",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    }
+  ],
+  "request_counts": {
+    "capability_calls": 4,
+    "initialize": 1,
+    "list_tools": 1,
+    "optional_get_probe": 1,
+    "post_requests": 7
+  },
+  "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
+  "source_scan": {
+    "adapter_cloudflare_os_imports": 0,
+    "core_cloudflare_agents_imports": 0,
+    "core_transport_imports": 0
+  },
+  "status": "pass"
+}

@@ -126,6 +126,14 @@ export const ENTITY_RELATIONSHIPS_CAPABILITY = deepFreeze({
       surface: "Public relationship graph",
       representations: ENTITY_RELATIONSHIPS_REPRESENTATIONS,
     },
+    {
+      id: "mcp.get_entity_relationships@1",
+      module: "worker/src/mcp.mjs",
+      kind: "mcp-tool",
+      tool: "get_entity_relationships",
+      route: "POST /mcp",
+      surface: "MCP",
+    },
   ],
 });
 

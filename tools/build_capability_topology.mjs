@@ -15,6 +15,8 @@ import {
 } from "../capabilities/registry.mjs";
 import {
   MCP_CITED_PASSAGES_ADAPTER,
+  MCP_ENTITY_DOSSIER_ADAPTER,
+  MCP_ENTITY_RELATIONSHIPS_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
@@ -58,7 +60,9 @@ export function validateRuntimeTopology() {
     SEARCH_NOTICE_ADAPTER,
     MCP_NOTICE_SEARCH_ADAPTER,
     ENTITY_DOSSIER_HTTP_ADAPTER,
+    MCP_ENTITY_DOSSIER_ADAPTER,
     ENTITY_RELATIONSHIPS_HTTP_ADAPTER,
+    MCP_ENTITY_RELATIONSHIPS_ADAPTER,
     MCP_CITED_PASSAGES_ADAPTER,
   ];
   for (const runtimeAdapter of runtimeAdapters) {
@@ -111,9 +115,13 @@ export function buildMcpToolCatalog() {
       return {
         name: tool.name,
         operation_class: binding.operationClass,
+        authority_class: binding.authorityClass || null,
         description: tool.description,
         schema_reference: binding.schemaReference,
         capability_reference: binding.capabilityReference || null,
+        bounds: binding.bounds || null,
+        annotations: tool.annotations || null,
+        store_access: binding.storeAccess || null,
       };
     }),
   };
@@ -146,11 +154,15 @@ export function buildCapabilityTopology() {
       tools: MCP_TOOL_BINDINGS.map((binding) => ({
         name: binding.name,
         operation_class: binding.operationClass,
+        authority_class: binding.authorityClass || null,
         schema_reference: binding.schemaReference,
         capability_reference: binding.capabilityReference || null,
         adapter_id: binding.adapterId || null,
         contract_reference: binding.contractReference || null,
         pilot_exception: binding.pilotException || null,
+        bounds: binding.bounds || null,
+        annotations: binding.annotations || null,
+        store_access: binding.storeAccess || null,
       })),
     },
   };

@@ -55,6 +55,8 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
   assert.deepEqual(list.result.tools.map((t) => t.name), [
     "search_notices",
     "get_notice",
+    "get_entity_dossier",
+    "get_entity_relationships",
     "retrieve_cited_passages",
     "preview_watch",
     "create_watch",
