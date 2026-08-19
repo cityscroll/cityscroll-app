@@ -1,0 +1,35 @@
+{
+  "schema": "cityscroll.geography_crosswalk_oracle_pin.v1",
+  "project": "MODA-NYC/nyc-geography-crosswalks",
+  "release": {
+    "tag": "v2025.09.29",
+    "url": "https://github.com/MODA-NYC/nyc-geography-crosswalks/releases/tag/v2025.09.29",
+    "git_sha": "6265834b6effa924053a5be2eb942ec56a37a03b"
+  },
+  "artifacts": {
+    "crosswalks_zip": { "name": "crosswalks__2025-09-29_202718_UTC.zip", "sha256": "d74912afaee454dfc78e2672f02ffa3d2f56e608f353049d5cadc2ea07a791f0" },
+    "run_meta": { "name": "run_meta.json", "sha256": "1870e3509b8917d4064f42560be5200f9209b3a52ac259483c5c0c4b354a4aa7" },
+    "crosswalks_meta": { "name": "crosswalks_meta.json", "sha256": "751df051a52fade03c5d9838211c95832f0f86b19a168e21c4f6ff3cb92b84e0" }
+  },
+  "oracle_source_vintages": {
+    "nta2020": "25C",
+    "police_precinct": "25C",
+    "sanitation_district": null,
+    "business_improvement_district": null
+  },
+  "comparison_policy": "Compare overlap rows only when every required source vintage and identity policy matches the CityScroll inputs.",
+  "evaluation": {
+    "evaluated_at": "2026-08-18T16:00:00.000Z",
+    "status": "skipped",
+    "reason": "vintage_mismatch",
+    "mismatches": [
+      { "type": "nta2020", "oracle": "25C", "current": "26B" },
+      { "type": "police_precinct", "oracle": "25C", "current": "26B" }
+    ],
+    "uncomparable": [
+      { "type": "sanitation_district", "reason": "The oracle run metadata does not declare the DSNY boundary vintage." },
+      { "type": "business_improvement_district", "reason": "The oracle uses the rejected f_all_bids identity field rather than CityScroll's reviewed slug bindings." }
+    ]
+  },
+  "runtime_dependency": false
+}

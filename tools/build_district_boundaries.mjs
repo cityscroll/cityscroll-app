@@ -222,11 +222,19 @@ function artifactPaths(type, vintage) {
 }
 
 function registryForBundle(bundle) {
+  const existingRows = existsSync(SITE_REGISTRY)
+    ? new Map((JSON.parse(readFileSync(SITE_REGISTRY, "utf8")).layers || []).map((row) => [row.type, row]))
+    : new Map();
   return {
     schema: GEOGRAPHY_LAYER_REGISTRY_SCHEMA,
     generated_at: bundle.builtAt,
     layers: CIVIC_GEOGRAPHY_LAYERS.map((registered) => {
       const pair = bundle.layers[registered.type];
+      if (!pair) {
+        const existing = existingRows.get(registered.type);
+        if (!existing) throw new Error(`missing committed geography layer ${registered.type}`);
+        return existing;
+      }
       const paths = artifactPaths(registered.type, pair.full.vintage.id);
       const fullText = jsonText(pair.full);
       const simplifiedText = jsonText(pair.simplified);
@@ -288,6 +296,7 @@ export function writeGeographyBundle(bundle) {
   const registry = registryForBundle(bundle);
   for (const row of registry.layers) {
     const pair = bundle.layers[row.type];
+    if (!pair) continue;
     writeJson(join(ROOT, row.artifacts.full.path), pair.full);
     writeJson(join(ROOT, row.artifacts.simplified.site_path), pair.simplified);
     writeJson(join(ROOT, row.artifacts.simplified.worker_path), pair.simplified);

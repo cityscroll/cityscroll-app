@@ -68,7 +68,7 @@ function observation(overrides = {}) {
 
 test("canonical contracts declare structured freshness and public/backstage health policy", () => {
   const registry = loadSourceContracts();
-  assert.equal(registry.contracts.length, 54);
+  assert.equal(registry.contracts.length, 58);
   assert.deepEqual(validateSourceContracts(registry), []);
   for (const source of registry.contracts) {
     assert.ok(source.freshness_contract, source.id);
@@ -85,6 +85,25 @@ test("canonical contracts declare structured freshness and public/backstage heal
     assert.equal(source.health_policy.relationship_coverage, "separate", source.id);
     assert.match(source.health_policy.public_visibility, /^(public|backstage-only)$/, source.id);
     assert.equal("last_checked" in source, false, `${source.id} has transient last_checked in its contract`);
+  }
+});
+
+test("geography acquisition receipts feed backstage source health", () => {
+  const projection = JSON.parse(readFileSync(
+    new URL("../site/data/source_health_observations.json", import.meta.url),
+    "utf8",
+  ));
+  const expected = new Map([
+    ["dcp-nta2020-boundaries", "Healthy"],
+    ["dcp-police-precinct-boundaries", "Healthy"],
+    ["dsny-district-boundaries", "Delayed"],
+    ["business-improvement-district-boundaries", "Healthy"],
+  ]);
+  for (const [sourceId, status] of expected) {
+    const observation = projection.observations.find((row) => row.source_id === sourceId);
+    assert.equal(observation.health.status, status, sourceId);
+    assert.ok(observation.evidence.some((item) => item.path.startsWith("data/geography/receipts/")));
+    assert.equal(observation.operator.runs[0].adapter, "civic-geography-acquisition-receipt");
   }
 });
 
