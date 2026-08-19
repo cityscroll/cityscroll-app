@@ -1672,7 +1672,11 @@ person hub / lobby / CFB map to **Officials**, not Land (avoid bare `district` i
 rule). Coverage prefers `join_measurement.verdict` when present. Blocked-source nodes are
 declared only in `site/data/gap_taxonomy.json` under `partnership_blocked_sources`;
 downstream authenticated-desk consumers should regenerate from `data-source-graph-dir`
-after updating their crol-list revision. This repository does not deploy the desk.
+after updating their crol-list revision. `DATA_SOURCE_GRAPH_SCHEMA_VERSION` in
+`tools/data_source_graph.mjs` and `data/data-source-graph-desk-contract.v1.json`
+are the desk pin: bump both together, and do not ship a producer version the
+authenticated desk consumer has not added to its supported set. This repository
+does not deploy the desk.
 Public capability summary for third parties lives in root `README.md`; the desk
 `/capabilities` board is a separate private-team surface. Its ordered, public-link input is
 `site/demo/demo-links.json#capabilities`: downstream desk builds join those stable IDs to the
