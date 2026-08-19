@@ -112,6 +112,92 @@ export function signupLifecycleFromRecord(record, { lastSent = null } = {}) {
   };
 }
 
+/** Closed ops-visibility buckets: recovered stays intermediate until a later digest day. */
+export const SIGNUP_LIFECYCLE_CATEGORY = Object.freeze({
+  RECOVERED_PENDING: "recovered_pending",
+  ENROLLED: "enrolled",
+  CONFIRMED: "confirmed",
+  TEST: "test",
+});
+
+export const SIGNUP_LIFECYCLE_CATEGORY_ORDER = Object.freeze([
+  SIGNUP_LIFECYCLE_CATEGORY.RECOVERED_PENDING,
+  SIGNUP_LIFECYCLE_CATEGORY.ENROLLED,
+  SIGNUP_LIFECYCLE_CATEGORY.CONFIRMED,
+  SIGNUP_LIFECYCLE_CATEGORY.TEST,
+]);
+
+export const SIGNUP_LIFECYCLE_CATEGORY_LABELS = Object.freeze({
+  recovered_pending: "recovered / pending-enrollment",
+  enrolled: "enrolled",
+  confirmed: "confirmed",
+  test: "test",
+});
+
+export function signupLifecycleBucket(row) {
+  if (!row || typeof row !== "object") return null;
+  const status = row.status;
+  const life = row.signup_lifecycle;
+  if (status === SIGNUP_LIFECYCLE.TEST || life === SIGNUP_LIFECYCLE.TEST) {
+    return SIGNUP_LIFECYCLE_CATEGORY.TEST;
+  }
+  if (life === SIGNUP_LIFECYCLE.RECOVERED || status === SIGNUP_LIFECYCLE.PENDING_ENROLLMENT) {
+    return SIGNUP_LIFECYCLE_CATEGORY.RECOVERED_PENDING;
+  }
+  if (status === SIGNUP_LIFECYCLE.CONFIRMED || life === SIGNUP_LIFECYCLE.CONFIRMED) {
+    return SIGNUP_LIFECYCLE_CATEGORY.CONFIRMED;
+  }
+  if (status === SIGNUP_LIFECYCLE.ENROLLED || life === SIGNUP_LIFECYCLE.ENROLLED) {
+    return SIGNUP_LIFECYCLE_CATEGORY.ENROLLED;
+  }
+  return null;
+}
+
+export function formatSignupLifecycleSummary(counts = {}) {
+  const recoveredPending = Number(counts.recovered_pending) || 0;
+  const enrolled = Number(counts.enrolled) || 0;
+  const confirmed = Number(counts.confirmed) || 0;
+  const parts = [];
+  if (recoveredPending) parts.push(`${recoveredPending} recovered, pending`);
+  if (enrolled) parts.push(`${enrolled} enrolled`);
+  if (confirmed) parts.push(`${confirmed} confirmed`);
+  return parts.join(" · ") || "No signups";
+}
+
+/**
+ * Category view over already-projected ops rows (status + signup_lifecycle).
+ * Recovered rows stay in recovered_pending until a digest day after the watermark.
+ */
+export function summarizeSignupLifecycle(rows = []) {
+  const groups = {
+    recovered_pending: [],
+    enrolled: [],
+    confirmed: [],
+    test: [],
+  };
+  for (const row of rows) {
+    const bucket = signupLifecycleBucket(row);
+    if (bucket) groups[bucket].push(row);
+  }
+  const counts = {
+    recovered_pending: groups.recovered_pending.length,
+    enrolled: groups.enrolled.length,
+    confirmed: groups.confirmed.length,
+    test: groups.test.length,
+  };
+  return {
+    ...counts,
+    groups,
+    summary: formatSignupLifecycleSummary(counts),
+    categories: SIGNUP_LIFECYCLE_CATEGORY_ORDER.map((id) => ({
+      id,
+      label: SIGNUP_LIFECYCLE_CATEGORY_LABELS[id],
+      count: counts[id],
+      rows: groups[id],
+    })),
+  };
+}
+
 /**
  * Recovered watches start at recovery, not at the beginning of the query's open-result set.
  * Rows without a trustworthy source day fail closed on this one migration-only boundary.
