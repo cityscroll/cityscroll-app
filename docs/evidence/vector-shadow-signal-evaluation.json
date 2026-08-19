@@ -1,0 +1,407 @@
+{
+  "schema": "cityscroll.search_quality.vector_shadow_signal.v1",
+  "evaluation_id": "sq-08-vector-shadow-2026-08-19",
+  "evaluated_on": "2026-08-19",
+  "method": "hashed_ngram_tfidf_v0",
+  "named_set": "sq-08-lexical-misses-v1",
+  "k": 5,
+  "product_min_score": 0.22,
+  "authorization": {
+    "public_ranking": false,
+    "public_ranking_weight": 0,
+    "runtime_semantic_retrieval": false,
+    "restore_sr4_vectorize": false,
+    "restore_sr8_hybrid": false,
+    "captain_call": "withheld"
+  },
+  "input_fingerprints": {
+    "lexical_miss_set": "87775c0074629d71da407f0cb22fc9e395e9fe210207ac9c7613fdbdaf0c914d",
+    "golden_queries": "e4ae5e108c288169435144391d0d996180807ebb95591c28d11d3236e904b359",
+    "trial_corpus": "289c53501847271ea8cab2674781264f1e4e44106dc79d7a886b56ad811235d7",
+    "retrieval_review": "14c6bc7d2b8be3e2f647782d6d7e42bc4c3cfe73d05a40984b3dc680b45c82f6"
+  },
+  "cases": {
+    "golden_lexical_misses": [
+      {
+        "id": "gq-mosquito-typo",
+        "role": "lexical_miss",
+        "source": "golden_suite",
+        "golden_query_id": "gq-mosquito-typo",
+        "trial_query_id": null,
+        "category": "typo",
+        "text": "mosqito",
+        "lexical_hit_ids": [],
+        "lexical_relevant": false,
+        "lexical_state": "miss",
+        "vector_top": [
+          {
+            "id": "procurement:decoy-vendor-mosquito",
+            "rank": 1,
+            "score": 0.2166,
+            "relevant": false,
+            "harm_control": true,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "procurement:81626S0021001",
+            "rank": 2,
+            "score": 0.1113,
+            "relevant": true,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          }
+        ],
+        "relevant_rank": 2,
+        "relevant_score": 0.1113,
+        "relevant_in_top_k": true,
+        "recovered_at_k": true,
+        "recovered_at_floor": false,
+        "false_recovery": true,
+        "ranking_inversion": false,
+        "method": "hashed_ngram_tfidf_v0",
+        "public_ranking": false
+      }
+    ],
+    "golden_controls": [
+      {
+        "id": "gq-school-synonym",
+        "role": "lexical_hit_control",
+        "source": "golden_suite",
+        "golden_query_id": "gq-school-synonym",
+        "trial_query_id": null,
+        "category": "synonym",
+        "text": "school",
+        "lexical_hit_ids": [
+          "procurement:education-synonym-fixture"
+        ],
+        "lexical_relevant": true,
+        "lexical_state": "hit",
+        "vector_top": [
+          {
+            "id": "procurement:education-synonym-fixture",
+            "rank": 1,
+            "score": 0.0038,
+            "relevant": true,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          }
+        ],
+        "relevant_rank": 1,
+        "relevant_score": 0.0038,
+        "relevant_in_top_k": true,
+        "recovered_at_k": false,
+        "recovered_at_floor": false,
+        "false_recovery": false,
+        "ranking_inversion": false,
+        "method": "hashed_ngram_tfidf_v0",
+        "public_ranking": false
+      },
+      {
+        "id": "gq-mosquito-title",
+        "role": "lexical_hit_control",
+        "source": "golden_suite",
+        "golden_query_id": "gq-mosquito-title",
+        "trial_query_id": null,
+        "category": "exact_known_title",
+        "text": "Pesticides and Mosquito Control Products",
+        "lexical_hit_ids": [
+          "procurement:81626S0021001"
+        ],
+        "lexical_relevant": true,
+        "lexical_state": "hit",
+        "vector_top": [
+          {
+            "id": "procurement:81626S0021001",
+            "rank": 1,
+            "score": 0.5431,
+            "relevant": true,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "procurement:decoy-vendor-mosquito",
+            "rank": 2,
+            "score": 0.1554,
+            "relevant": false,
+            "harm_control": true,
+            "honest_label": "shadow_retrieval_candidate"
+          }
+        ],
+        "relevant_rank": 1,
+        "relevant_score": 0.5431,
+        "relevant_in_top_k": true,
+        "recovered_at_k": false,
+        "recovered_at_floor": false,
+        "false_recovery": false,
+        "ranking_inversion": false,
+        "method": "hashed_ngram_tfidf_v0",
+        "public_ranking": false
+      },
+      {
+        "id": "gq-mosquito-ranking",
+        "role": "ranking_control",
+        "source": "golden_suite",
+        "golden_query_id": "gq-mosquito-ranking",
+        "trial_query_id": null,
+        "category": "ranking_competition",
+        "text": "mosquito",
+        "lexical_hit_ids": [
+          "procurement:81626S0021001",
+          "procurement:decoy-vendor-mosquito"
+        ],
+        "lexical_relevant": true,
+        "lexical_state": "hit",
+        "vector_top": [
+          {
+            "id": "procurement:decoy-vendor-mosquito",
+            "rank": 1,
+            "score": 0.4074,
+            "relevant": false,
+            "harm_control": true,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "procurement:81626S0021001",
+            "rank": 2,
+            "score": 0.199,
+            "relevant": true,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          }
+        ],
+        "relevant_rank": 2,
+        "relevant_score": 0.199,
+        "relevant_in_top_k": true,
+        "recovered_at_k": false,
+        "recovered_at_floor": false,
+        "false_recovery": false,
+        "ranking_inversion": true,
+        "method": "hashed_ngram_tfidf_v0",
+        "public_ranking": false
+      }
+    ],
+    "hashed_trial_misses": [
+      {
+        "id": "trial-q01-scaffolding",
+        "role": "lexical_miss",
+        "source": "semantic_layer_trial_2026-08-04",
+        "golden_query_id": null,
+        "trial_query_id": "q01",
+        "category": "paraphrase",
+        "text": "rules for keeping pedestrians safe around construction scaffolding",
+        "lexical_hit_ids": [],
+        "lexical_relevant": false,
+        "lexical_state": "miss",
+        "vector_top": [
+          {
+            "id": "20260512047",
+            "rank": 1,
+            "score": 0.285,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260624035",
+            "rank": 2,
+            "score": 0.2389,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260707025",
+            "rank": 3,
+            "score": 0.2164,
+            "relevant": true,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260507003",
+            "rank": 4,
+            "score": 0.1978,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260506019",
+            "rank": 5,
+            "score": 0.166,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          }
+        ],
+        "relevant_rank": 3,
+        "relevant_score": 0.2164,
+        "relevant_in_top_k": true,
+        "recovered_at_k": true,
+        "recovered_at_floor": false,
+        "false_recovery": false,
+        "ranking_inversion": false,
+        "method": "hashed_ngram_tfidf_v0",
+        "public_ranking": false
+      },
+      {
+        "id": "trial-q03-auto-renew",
+        "role": "lexical_miss",
+        "source": "semantic_layer_trial_2026-08-04",
+        "golden_query_id": null,
+        "trial_query_id": "q03",
+        "category": "paraphrase",
+        "text": "how to end an automatically renewing service",
+        "lexical_hit_ids": [],
+        "lexical_relevant": false,
+        "lexical_state": "miss",
+        "vector_top": [
+          {
+            "id": "20260527036",
+            "rank": 1,
+            "score": 0.1676,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260612028",
+            "rank": 2,
+            "score": 0.1642,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260522007",
+            "rank": 3,
+            "score": 0.1614,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260512003",
+            "rank": 4,
+            "score": 0.157,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          },
+          {
+            "id": "20260602045",
+            "rank": 5,
+            "score": 0.1543,
+            "relevant": false,
+            "harm_control": false,
+            "honest_label": "shadow_retrieval_candidate"
+          }
+        ],
+        "relevant_rank": null,
+        "relevant_score": null,
+        "relevant_in_top_k": false,
+        "recovered_at_k": false,
+        "recovered_at_floor": false,
+        "false_recovery": false,
+        "ranking_inversion": false,
+        "method": "hashed_ngram_tfidf_v0",
+        "public_ranking": false
+      }
+    ],
+    "frozen_minilm": {
+      "method": "minilm_sqlite_vec_2026-08-04",
+      "public_ranking": false,
+      "named_misses": [
+        {
+          "id": "trial-q01-scaffolding",
+          "trial_query_id": "q01",
+          "text": "rules for keeping pedestrians safe around construction scaffolding",
+          "relevant": [
+            "20260707025"
+          ],
+          "bm25_relevant_at_k": [],
+          "semantic_relevant_at_k": [
+            "20260707025"
+          ],
+          "hybrid_relevant_at_k": [],
+          "lexical_miss": true,
+          "semantic_recovered": true,
+          "hybrid_recovered": false
+        },
+        {
+          "id": "trial-q03-auto-renew",
+          "trial_query_id": "q03",
+          "text": "how to end an automatically renewing service",
+          "relevant": [
+            "20260626035"
+          ],
+          "bm25_relevant_at_k": [],
+          "semantic_relevant_at_k": [
+            "20260626035"
+          ],
+          "hybrid_relevant_at_k": [
+            "20260626035"
+          ],
+          "lexical_miss": true,
+          "semantic_recovered": true,
+          "hybrid_recovered": true
+        }
+      ],
+      "recovered_named_misses": {
+        "numerator": 2,
+        "denominator": 2,
+        "rate": 1
+      },
+      "hybrid_recovered_named_misses": {
+        "numerator": 1,
+        "denominator": 2,
+        "rate": 0.5
+      },
+      "corpus_queries_with_relevant_at_k": {
+        "bm25": 28,
+        "semantic": 27,
+        "hybrid": 28,
+        "denominator": 30
+      },
+      "hybrid_additional_queries_vs_bm25": 0,
+      "semantic_harms": [
+        "q19",
+        "q23",
+        "q28"
+      ],
+      "semantic_recoveries": [
+        "q01",
+        "q03"
+      ]
+    }
+  },
+  "decision": {
+    "status": "shadow_only",
+    "public_ranking_weight": 0,
+    "public_ranking_eligible": false,
+    "captain_call": "withheld",
+    "usefulness_gate": 0.3,
+    "golden_miss_recovery_at_floor": {
+      "numerator": 0,
+      "denominator": 1,
+      "rate": 0
+    },
+    "hashed_trial_miss_recovery_at_floor": {
+      "numerator": 0,
+      "denominator": 2,
+      "rate": 0
+    },
+    "false_recoveries": 1,
+    "ranking_inversions": 1,
+    "frozen_hybrid_additional_queries_vs_bm25": 0,
+    "restore_sr4_vectorize": false,
+    "restore_sr8_hybrid": false,
+    "reasons": [
+      "hashed n-gram recovered 0/1 golden-suite lexical misses at the product score floor",
+      "hashed n-gram recovered 0/2 frozen-trial BM25 misses at the product score floor",
+      "false recoveries=1; ranking inversions=1",
+      "frozen MiniLM hybrid added 0 queries with a relevant top-five result versus BM25",
+      "public ranking remains a captain call and is withheld"
+    ]
+  }
+}
