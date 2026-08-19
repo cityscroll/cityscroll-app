@@ -9,8 +9,11 @@ import {
 } from "../map_exploration.mjs";
 import { resolveDistricts } from "../council_district_lookup.mjs";
 import { nearYouUrlFromMapHash } from "../near_you_scope_runtime.mjs";
-import { reportNearYouMapReadiness } from "../rum_maps_entities_async.mjs";
-import { currentRumSemanticMilestones } from "../rum_semantic_runtime.mjs";
+import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
+import {
+  nearYouFrameReady,
+  nearYouMapReady,
+} from "../rum_maps_entities_async_instrumentation.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
 const NEAR_YOU_STRING_DATASETS = Object.freeze({
@@ -313,6 +316,31 @@ function wireSurfaceSwitch() {
   });
 }
 
+function nearYouMapStateFromRoot(node) {
+  const mapped = MAP_LENSES.includes(node.dataset.lens) && node.dataset.lens !== "all";
+  const count = Number(node.querySelector("[data-results-count]")?.dataset.resultsCount);
+  const placeDataMissing = [...node.querySelectorAll(".near-coverage")].some((el) =>
+    /place data is not available/i.test(el.textContent || "")
+  );
+  if (!mapped || placeDataMissing) return "unavailable";
+  if (Number.isFinite(count) && count > 0) return "content";
+  if (Number.isFinite(count)) return "empty";
+  return "error";
+}
+
+function reportNearYouReadiness() {
+  if (!root) return;
+  const rum = runtimeRumSemanticMilestones();
+  nearYouFrameReady(rum, {
+    hasRoot: true,
+    hasMapSvg: Boolean(root.querySelector("#nearMapSvg")),
+    hasPlaceControls: Boolean(root.querySelector("#near-place-fields")),
+  });
+  nearYouMapReady(rum, {
+    resultState: nearYouMapStateFromRoot(root),
+  });
+}
+
 function wireIsland() {
   if (!root) return;
   root.dataset.enhanced = "true";
@@ -322,15 +350,7 @@ function wireIsland() {
   wireGeolocation();
   wireForms();
   wireSurfaceSwitch();
-  const mapped = MAP_LENSES.includes(root.dataset.lens) && root.dataset.lens !== "all";
-  const resultCount = Number(root.querySelector("[data-results-count]")?.dataset.resultsCount);
-  const dataState = mapped && Number.isFinite(resultCount)
-    ? (resultCount > 0 ? "content" : "empty")
-    : "unavailable";
-  reportNearYouMapReadiness(currentRumSemanticMilestones(), {
-    frameReady: Boolean(root.querySelector("#nearMapSvg") && root.querySelector("#near-area-list")),
-    dataState,
-  });
+  reportNearYouReadiness();
 }
 
 if (root) {

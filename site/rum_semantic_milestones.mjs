@@ -47,6 +47,8 @@ export const SEMANTIC_READINESS_MARKERS = Object.freeze({
   }),
   land_outcome_first_paint: Object.freeze({
     contract_id: "component-ready-v1",
+    component_id: "land-outcomes",
+    surface_id: "browse-zoning",
     ready_attribute: "data-zap-outcomes-first-paint",
     ready_value: "1",
     state_attribute: "data-zap-outcomes-state",
@@ -58,6 +60,54 @@ export const SEMANTIC_READINESS_MARKERS = Object.freeze({
     }),
     reader_absence: "empty-html",
     meaning: "The outcome owner has meaningful content or an honest terminal state.",
+  }),
+  near_you_frame: Object.freeze({
+    contract_id: "page-content-ready-v1",
+    surface_id: "near-you",
+    root_attribute: "data-near-you-root",
+    map_id: "nearMapSvg",
+    place_controls_id: "near-place-fields",
+    meaning: "The Near You shell has a usable map frame and place controls.",
+  }),
+  near_you_map: Object.freeze({
+    contract_id: "component-ready-v1",
+    component_id: "near-you-map",
+    surface_id: "near-you",
+    meaning: "The Near You usable map frame is present beside place controls.",
+  }),
+  near_you_map_data: Object.freeze({
+    contract_id: "component-ready-v1",
+    component_id: "near-you-map-data",
+    surface_id: "near-you",
+    state_attribute: "data-near-you-map-state",
+    result_states: Object.freeze({
+      content: "content",
+      empty: "empty",
+      unavailable: "unavailable",
+      error: "error",
+    }),
+    meaning: "The map has relevant place data or an honest empty, unavailable, or error state.",
+  }),
+  agency_identity: Object.freeze({
+    contract_id: "page-content-ready-v1",
+    component_id: "agency-identity",
+    surface_id: "agency",
+    kind_value: "agency-constellation",
+    identity_attribute: "data-export-class",
+    identity_value: "object_identity",
+    meaning: "The agency constellation has a usable published identity.",
+  }),
+  agency_relationships: Object.freeze({
+    contract_id: "component-ready-v1",
+    component_id: "agency-relationships",
+    surface_id: "agency",
+    result_states: Object.freeze({
+      content: "content",
+      empty: "empty",
+      unavailable: "unavailable",
+      error: "error",
+    }),
+    meaning: "Related records are ready, honestly empty, unavailable, or failed.",
   }),
 });
 

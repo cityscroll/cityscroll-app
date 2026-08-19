@@ -572,7 +572,7 @@
       "delivery_class": "hybrid",
       "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
       "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [
         {
           "alias_id": "map",
@@ -927,7 +927,7 @@
       "delivery_class": "hybrid",
       "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
       "semantic_readiness_contract": "page-content-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
