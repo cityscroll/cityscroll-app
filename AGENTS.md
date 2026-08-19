@@ -1587,8 +1587,13 @@ Every live failure line must name `source_id` and URL class. Never emit bare
 ### Generated source-topology view
 
 `node tools/data_source_graph.mjs` derives the desk-consumable topology at the ignored,
-untracked paths `docs/data-source-graph.{json,html}` from source contracts, warehouse
-configs/receipts, and Worker cron code. The site build runs generation followed by
+untracked paths `docs/data-source-graph.{json,html}` from source contracts, the shared
+`source_health_observations` projection, gap research, warehouse configs/receipts, and Worker
+cron code. Each contracted row carries the observation's contract fingerprint, three clocks,
+runs/receipts, fallback state, and separate join gate; credential values are redacted before
+exact errors enter the backstage artifact. Uncontracted `not_ingested` candidates and
+`partnership_blocked_sources` remain dashed research paths, never live-source claims. The site
+build runs generation followed by
 `--check`; the latter fails if any declared input changes without rebuilding the artifact.
 Do not commit the generated HTML or JSON: the broad receipt manifest makes either file a
 shared merge-conflict source. The HTML remains dependency-free and byte-stable for

@@ -11,11 +11,26 @@ import {
 import {
   buildSourceHealthObservations,
   externalScheduleObservations,
+  redactCredentialValues,
   validateSourceHealthProjection,
 } from "../tools/source_health_observations.mjs";
 import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
 
 const NOW = "2026-08-18T12:00:00.000Z";
+
+test("backstage errors preserve diagnostics while redacting credential values", () => {
+  const diagnostic = [
+    "HTTP 503 from publisher",
+    "token=start-secret",
+    "Authorization: Basic encoded-secret",
+    "{\"password\":\"json-secret\"}",
+    "https://user:password@example.test/path",
+  ].join("; ");
+  const redacted = redactCredentialValues(diagnostic);
+  assert.match(redacted, /HTTP 503 from publisher/);
+  assert.equal((redacted.match(/\[REDACTED\]/g) || []).length, 4);
+  assert.doesNotMatch(redacted, /start-secret|encoded-secret|json-secret|user:password/);
+});
 
 function contract(overrides = {}) {
   return {
@@ -248,17 +263,64 @@ test("external-schedule outbox results normalize to canonical acquisition observ
   const path = ".external-schedule-state/results/source-contracts-live/fixture.json";
   const rows = externalScheduleObservations([{
     path,
+    run_key: "2026-08-18-source-0",
     result: {
       observed_at: NOW,
       healthy: ["a-source"],
-      failures: [{ id: "z-source", detail: "operator-only detail" }],
+      failures: [{
+        id: "z-source",
+        detail: "operator-only detail; Authorization: Bearer credential-value; token=credential-value",
+      }],
     },
   }]);
   assert.deepEqual(rows, [
-    { source_id: "a-source", observed_at: NOW, status: "succeeded", path },
-    { source_id: "z-source", observed_at: NOW, status: "failed", path },
+    {
+      source_id: "a-source",
+      observed_at: NOW,
+      status: "succeeded",
+      path,
+      adapter: "source-contracts-live",
+      run_id: "2026-08-18-source-0",
+      exact_error: null,
+    },
+    {
+      source_id: "z-source",
+      observed_at: NOW,
+      status: "failed",
+      path,
+      adapter: "source-contracts-live",
+      run_id: "2026-08-18-source-0",
+      exact_error: "operator-only detail; Authorization: Bearer [REDACTED]; token=[REDACTED]",
+    },
   ]);
-  assert.doesNotMatch(JSON.stringify(rows), /operator-only detail/);
+  assert.match(JSON.stringify(rows), /operator-only detail/);
+  assert.doesNotMatch(JSON.stringify(rows), /credential-value/);
+});
+
+test("shared observations retain credential-safe backstage run detail", () => {
+  const projection = buildSourceHealthObservations(
+    { contracts: [contract()] },
+    {
+      asOf: NOW,
+      scheduleObservations: [{
+        source_id: "daily-source",
+        observed_at: NOW,
+        status: "failed",
+        path: ".external-schedule-state/results/source-contracts-live/fixture.json",
+        adapter: "source-contracts-live",
+        run_id: "fixture-run",
+        exact_error: "HTTP 503 from publisher",
+      }],
+    },
+  );
+  assert.deepEqual(projection.observations[0].operator.runs, [{
+    adapter: "source-contracts-live",
+    run_id: "fixture-run",
+    at: NOW,
+    status: "failed",
+    receipt_ref: ".external-schedule-state/results/source-contracts-live/fixture.json",
+    exact_error: "HTTP 503 from publisher",
+  }]);
 });
 
 test("committed observations are canonical, complete, and generated from receipts", () => {

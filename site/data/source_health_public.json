@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-08-18T14:14:03.293Z",
+  "generated_at": "2026-08-18T20:15:50.276Z",
   "available": true,
   "source_count": 54,
   "sources": [
@@ -1926,7 +1926,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-18T12:06:08.839Z",
+            "at": "2026-08-18T20:15:50.276Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }

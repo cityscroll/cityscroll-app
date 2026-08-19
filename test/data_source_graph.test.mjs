@@ -45,6 +45,7 @@ test("source graph declares topology inputs and derives outputs outside the comm
     "docs/data-sources.md",
     "site/data/gap_taxonomy.json",
     "site/data/source_contracts.json",
+    "site/data/source_health_observations.json",
     "warehouse/datasets.v0.json",
     "worker/wrangler.toml",
     "worker/src/worker.mjs",
@@ -155,6 +156,127 @@ test("a new source contract appears without hand-editing diagram markup", () => 
   const built = buildDataSourceGraph({ registry: { contracts: [...registry.contracts, synthetic] }, inputs: [] });
   assert.ok(built.sources.some((source) => source.id === synthetic.id));
   assert.match(renderGraphHtml(built), /New Source Fixture/);
+});
+
+test("authenticated graph joins source health, operator runs, receipts, clocks, fallback, and join gates", () => {
+  const synthetic = {
+    id: "desk-health-fixture",
+    name: "Desk Health Fixture",
+    owner: "NYC Test Department",
+    status: "live",
+    scope: "runtime",
+    kind: "socrata",
+    dataset_id: "desk-1234",
+    landing_page: "https://data.cityofnewyork.us/d/desk-1234",
+    delivery_tier: "edge-materialized",
+    publisher_cadence: "Daily",
+    product_freshness: "Serves a retained snapshot after acquisition failure.",
+    used_for: "A test contracts surface.",
+    code_references: [{ path: "worker/src/fixture.mjs", contains: "fixtureAdapter" }],
+  };
+  const health = {
+    schema: "cityscroll.source_health_observations.v1",
+    generated_at: "2026-08-18T12:00:00.000Z",
+    observations: [{
+      source_id: synthetic.id,
+      contract_fingerprint: "a".repeat(64),
+      health: {
+        status: "Degraded",
+        reason_codes: ["acquisition-failed", "serving-valid-fallback"],
+        clocks: {
+          publisher_updated: { at: "2026-08-17T00:00:00.000Z", state: "KNOWN", basis: "rowsUpdatedAt" },
+          cityscroll_checked_acquired: { at: "2026-08-18T10:00:00.000Z", state: "KNOWN", basis: "checked_at" },
+          cityscroll_serving: { at: "2026-08-18T09:00:00.000Z", state: "KNOWN", basis: "serve_contract:fixture" },
+        },
+      },
+      relationship_coverage: {
+        status: "held",
+        join_status: "held",
+        row_count: 12,
+        measured_at: "2026-08-18T08:00:00.000Z",
+        reason_codes: ["relationship-join-held"],
+      },
+      evidence: [{
+        kind: "external-schedule-receipt",
+        path: ".external-schedule-state/results/source-contracts-live/fixture.json",
+        at: "2026-08-18T10:00:00.000Z",
+        status: "failed",
+      }],
+      operator: {
+        runs: [{
+          adapter: "source-contracts-live",
+          run_id: "2026-08-18-source-0",
+          at: "2026-08-18T10:00:00.000Z",
+          status: "failed",
+          receipt_ref: ".external-schedule-state/results/source-contracts-live/fixture.json",
+          exact_error: "HTTP 503 from publisher",
+        }],
+      },
+    }],
+  };
+  const built = buildDataSourceGraph({ registry: { contracts: [synthetic] }, healthObservations: health, inputs: [] });
+  const source = built.sources.find((entry) => entry.id === synthetic.id);
+  assert.equal(source.contract_fingerprint, "a".repeat(64));
+  assert.equal(source.health.status, "Degraded");
+  assert.deepEqual(Object.keys(source.clocks).sort(), [
+    "cityscroll_checked_acquired",
+    "cityscroll_serving",
+    "publisher_updated",
+  ]);
+  assert.equal(source.serving_fallback.active, true);
+  assert.equal(source.join_gate.status, "held");
+  assert.equal(source.receipts[0].path, health.observations[0].evidence[0].path);
+  assert.equal(source.runs[0].exact_error, "HTTP 503 from publisher");
+  assert.ok(source.adapters.some((adapter) => /fixtureAdapter|source-contracts-live/.test(adapter)));
+
+  const html = renderGraphHtml(built);
+  for (const expected of [
+    "Publisher updated",
+    "CityScroll checked / acquired",
+    "CityScroll serving",
+    "Serving fallback",
+    "Join gate",
+    "HTTP 503 from publisher",
+    "external-schedule-receipt",
+  ]) assert.match(html, new RegExp(expected));
+});
+
+test("candidate and access-blocked research stay backstage as generated ghost paths", () => {
+  const built = buildDataSourceGraph({
+    registry: { contracts: [] },
+    gapTaxonomy: {
+      sources: [{
+        id: "candidate-fixture",
+        name: "Candidate Fixture",
+        source_contract_id: null,
+        status: "not_ingested",
+        join_keys: ["candidate_id"],
+        join_coverage: {},
+        landing_page: "https://example.test/candidate",
+        delivery_tier: "live-only",
+      }],
+      partnership_blocked_sources: [{
+        id: "blocked-fixture",
+        wishlist_gap_id: "blocked-gap",
+        name: "Blocked Fixture",
+        data_offered: "Restricted fixture rows",
+        collecting_body: "NYC Fixture Department",
+        platform: "Restricted platform",
+        status: "blocked",
+        status_note: "Access is not yet authorized.",
+        access_mechanisms: [{ id: "request", type: "request", label: "Request access", preferred: true, requirement: "Apply", citation_ids: ["policy"] }],
+        policy_citations: [{ id: "policy", title: "Access policy", url: "https://example.test/policy", section: "Access", date: "2026-08-18" }],
+        surfaces: ["Money"],
+      }],
+    },
+    inputs: [],
+  });
+  const candidate = built.sources.find((source) => source.id === "candidate-fixture");
+  assert.equal(candidate.node_class, "candidate-source");
+  assert.equal(candidate.research_state.status, "not_ingested");
+  assert.ok(built.edges.some((edge) => edge.from === "source:candidate-fixture" && edge.kind === "would-ingest"));
+  assert.deepEqual(built.research, { candidates: 1, blocked: 1 });
+  assert.match(renderGraphHtml(built), /Candidate research/);
 });
 
 test("current-as-of is the latest real registry or receipt date", () => {
