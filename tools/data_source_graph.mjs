@@ -11,6 +11,8 @@ export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 export const DEFAULT_OUTPUT_DIR = "docs";
 export const JSON_OUTPUT = "data-source-graph.json";
 export const HTML_OUTPUT = "data-source-graph.html";
+export const DATA_SOURCE_GRAPH_SCHEMA_VERSION = 4;
+export const DESK_CONSUMER_CONTRACT_PATH = "data/data-source-graph-desk-contract.v1.json";
 
 const CORE_INPUTS = [
   "docs/data-sources.md",
@@ -586,7 +588,7 @@ export function buildDataSourceGraph({
   const sourcesHash = sha256(inputs.map((input) => `${input.path}:${input.sha256}`).join("\n"));
   const evidence = [...receipts.values()].flat();
   return {
-    schema_version: 4,
+    schema_version: DATA_SOURCE_GRAPH_SCHEMA_VERSION,
     title: "CityScroll data-source topology",
     description: "Generated collecting-body → dataset → ingest → surface architecture for the authenticated desk.",
     current_as_of: latestFreshnessDate({ registry, healthObservations }, evidence),

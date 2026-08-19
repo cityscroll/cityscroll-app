@@ -3,7 +3,9 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "nod
 import { join, relative } from "node:path";
 import test from "node:test";
 import {
+  DATA_SOURCE_GRAPH_SCHEMA_VERSION,
   DEFAULT_OUTPUT_DIR,
+  DESK_CONSUMER_CONTRACT_PATH,
   HTML_OUTPUT,
   JSON_OUTPUT,
   ROOT,
@@ -37,6 +39,22 @@ test("generated topology covers every documented source with all four layers", (
     assert.ok(source.publisher_cadence, `${source.id} publisher cadence`);
     assert.ok(source.surfaces.length, `${source.id} surface`);
   }
+});
+
+test("producer schema version stays in lockstep with the desk consumer contract", () => {
+  const contract = JSON.parse(readFileSync(join(ROOT, DESK_CONSUMER_CONTRACT_PATH), "utf8"));
+  assert.equal(contract.schema, "cityscroll.data_source_graph.desk_consumer_contract.v1");
+  assert.equal(DATA_SOURCE_GRAPH_SCHEMA_VERSION, 4);
+  assert.equal(graph.schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
+  assert.equal(contract.producer_schema_version, DATA_SOURCE_GRAPH_SCHEMA_VERSION);
+  assert.ok(contract.supported_consumer_versions.includes(DATA_SOURCE_GRAPH_SCHEMA_VERSION));
+  assert.equal(graph.counts.candidate_sources, graph.research.candidates);
+  assert.ok(graph.sources.some((source) => source.node_class === "candidate-source"));
+  assert.ok(graph.sources.every((source) => source.health && source.clocks && source.join_gate));
+  assert.match(
+    generatedGraphFiles()[HTML_OUTPUT],
+    /Trace each collecting body through its endpoint, adapters and runs, receipt-backed three-clock health, join gates, and product surfaces/,
+  );
 });
 
 test("source graph declares topology inputs and derives outputs outside the committed tree", () => {
