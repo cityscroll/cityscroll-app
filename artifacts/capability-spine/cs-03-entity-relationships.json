@@ -1,0 +1,164 @@
+{
+  "schema": "cityscroll.capability_evidence.v1",
+  "card": "cs-03-entity-relationships-capability",
+  "capability": {
+    "reference": "entity.relationships.get@1",
+    "version": "1.0.0",
+    "provider_id": "worker-d1.entity-relationships",
+    "availability": [
+      "available",
+      "not_yet_public",
+      "unavailable"
+    ],
+    "bounds": {
+      "entityIdMaximumLength": 300,
+      "recordLimit": 250,
+      "defaultDepth": 2,
+      "maximumDepth": 2,
+      "defaultFanOut": 12,
+      "maximumFanOut": 25
+    },
+    "node_types": [
+      "vendor",
+      "agency",
+      "solicitation",
+      "contract",
+      "award",
+      "official",
+      "committee",
+      "community-board",
+      "person-leader",
+      "mandate",
+      "project",
+      "procedure",
+      "borough",
+      "community-district",
+      "council-district"
+    ],
+    "edge_types": [
+      "named_vendor_on_award",
+      "named_vendor_on_solicitation",
+      "published_by_agency",
+      "references_contract",
+      "votes_on",
+      "member_of",
+      "agency_led_by",
+      "mandate_governs_procedure",
+      "project_participates_in_procedure",
+      "located_in",
+      "covers",
+      "intersects"
+    ],
+    "representations": [
+      {
+        "id": "json",
+        "media_type": "application/json"
+      },
+      {
+        "id": "html",
+        "media_type": "text/html"
+      }
+    ]
+  },
+  "fixture": {
+    "entity_id": "vendor:stem:ACME CONSTRUCTION",
+    "source_ids": [
+      "city_record:20260730001",
+      "city_record:20260730002"
+    ],
+    "graph_version": "public_relationship_graph_v3",
+    "requested_bounds": {
+      "depth": 2,
+      "fan_out": 12
+    },
+    "applied_bounds": {
+      "depth": 2,
+      "fan_out": 12,
+      "max_depth": 2,
+      "max_fan_out": 25
+    },
+    "node_ids": [
+      "agency:name:department%20of%20design%20and%20construction",
+      "award:city_record:20260730001",
+      "contract:name:ct-850-1",
+      "solicitation:city_record:20260730002",
+      "vendor:stem:ACME CONSTRUCTION"
+    ],
+    "edge_ids": [
+      "edge:named_vendor_on_award:vendor%3Astem%3AACME%20CONSTRUCTION:award%3Acity_record%3A20260730001:city_record:20260730001",
+      "edge:named_vendor_on_solicitation:vendor%3Astem%3AACME%20CONSTRUCTION:solicitation%3Acity_record%3A20260730002:city_record:20260730002",
+      "edge:published_by_agency:award%3Acity_record%3A20260730001:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730001",
+      "edge:references_contract:award%3Acity_record%3A20260730001:contract%3Aname%3Act-850-1:city_record:20260730001",
+      "edge:published_by_agency:solicitation%3Acity_record%3A20260730002:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730002"
+    ],
+    "graph_sha256": "ef33517f3e3e373f16ba0b7adc798eb2e84962a5099830389c755361dbe11f89"
+  },
+  "parity_fields": [
+    "version",
+    "root.id",
+    "root.type",
+    "root.name",
+    "node_ids",
+    "edge_ids",
+    "bounds",
+    "scope",
+    "edge_routing",
+    "edges[].provenance",
+    "edges[].confidence",
+    "redaction"
+  ],
+  "edge_evidence": [
+    {
+      "id": "edge:named_vendor_on_award:vendor%3Astem%3AACME%20CONSTRUCTION:award%3Acity_record%3A20260730001:city_record:20260730001",
+      "source": "city_record:20260730001",
+      "source_fields": ["type_of_notice_description", "vendor_name"],
+      "observed_at": "2026-07-30T14:00:00.000Z",
+      "confidence": { "status": "not_scored", "basis": "publisher_record" }
+    },
+    {
+      "id": "edge:named_vendor_on_solicitation:vendor%3Astem%3AACME%20CONSTRUCTION:solicitation%3Acity_record%3A20260730002:city_record:20260730002",
+      "source": "city_record:20260730002",
+      "source_fields": ["type_of_notice_description", "vendor_name"],
+      "observed_at": "2026-08-01T09:30:00.000Z",
+      "confidence": { "status": "not_scored", "basis": "publisher_record" }
+    },
+    {
+      "id": "edge:published_by_agency:award%3Acity_record%3A20260730001:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730001",
+      "source": "city_record:20260730001",
+      "source_fields": ["agency_name", "type_of_notice_description"],
+      "observed_at": "2026-07-30T14:00:00.000Z",
+      "confidence": { "status": "not_scored", "basis": "publisher_record" }
+    },
+    {
+      "id": "edge:references_contract:award%3Acity_record%3A20260730001:contract%3Aname%3Act-850-1:city_record:20260730001",
+      "source": "city_record:20260730001",
+      "source_fields": ["contract_id", "type_of_notice_description"],
+      "observed_at": "2026-07-30T14:00:00.000Z",
+      "confidence": { "status": "not_scored", "basis": "publisher_record" }
+    },
+    {
+      "id": "edge:published_by_agency:solicitation%3Acity_record%3A20260730002:agency%3Aname%3Adepartment%2520of%2520design%2520and%2520construction:city_record:20260730002",
+      "source": "city_record:20260730002",
+      "source_fields": ["agency_name", "type_of_notice_description"],
+      "observed_at": "2026-08-01T09:30:00.000Z",
+      "confidence": { "status": "not_scored", "basis": "publisher_record" }
+    }
+  ],
+  "redaction": {
+    "authority": "entity_resolution/publication/relationship_graph.mjs",
+    "private_confidence_scores": "forbidden",
+    "raw_source_snapshots": "forbidden",
+    "review_markers": "forbidden",
+    "uncertain_edges": "absent"
+  },
+  "test_results": [
+    { "id": "direct-provider", "status": "pass" },
+    { "id": "availability-states", "status": "pass" },
+    { "id": "closed-vocabulary", "status": "pass" },
+    { "id": "bounded-input", "status": "pass" },
+    { "id": "depth-fan-out-ceilings", "status": "pass" },
+    { "id": "json-byte-parity", "status": "pass" },
+    { "id": "html-byte-parity", "status": "pass" },
+    { "id": "public-redaction", "status": "pass" }
+  ]
+}
