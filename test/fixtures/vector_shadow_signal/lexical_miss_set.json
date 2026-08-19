@@ -1,0 +1,87 @@
+{
+  "schema": "cityscroll.search_quality.lexical_miss_set.v1",
+  "named_set": "sq-08-lexical-misses-v1",
+  "observed_on": "2026-08-19",
+  "k": 5,
+  "product_min_score": 0.22,
+  "usefulness_gate": 0.3,
+  "notes": "Named lexical-miss set for SQ-08. Golden-suite expected misses stay encoded as misses on the public keyword path. Trial paraphrase misses are the 2026-08-04 BM25 misses. Vector scoring of this set is a shadow measurement only.",
+  "queries": [
+    {
+      "id": "gq-mosquito-typo",
+      "role": "lexical_miss",
+      "source": "golden_suite",
+      "golden_query_id": "gq-mosquito-typo",
+      "category": "typo",
+      "text": "mosqito",
+      "corpus": "golden_keyword_mosquito",
+      "relevant": ["procurement:81626S0021001"],
+      "harm_controls": ["procurement:decoy-vendor-mosquito"],
+      "notes": "Golden-suite expected keyword miss. Typo expansion is not on the keyword core."
+    },
+    {
+      "id": "gq-school-synonym",
+      "role": "lexical_miss",
+      "source": "golden_suite",
+      "golden_query_id": "gq-school-synonym",
+      "category": "synonym",
+      "text": "school",
+      "corpus": "golden_education_fixture",
+      "relevant": ["procurement:education-synonym-fixture"],
+      "harm_controls": ["procurement:81626S0021001"],
+      "notes": "Golden-suite expected keyword miss. school does not expand to education."
+    },
+    {
+      "id": "trial-q01-scaffolding",
+      "role": "lexical_miss",
+      "source": "semantic_layer_trial_2026-08-04",
+      "trial_query_id": "q01",
+      "category": "paraphrase",
+      "text": "rules for keeping pedestrians safe around construction scaffolding",
+      "corpus": "semantic_layer_trial",
+      "relevant": ["20260707025"],
+      "harm_controls": [],
+      "notes": "BM25 miss in the 2026-08-04 MiniLM trial. Learned ranking recovered the sidewalk-shed rule; hybrid did not."
+    },
+    {
+      "id": "trial-q03-auto-renew",
+      "role": "lexical_miss",
+      "source": "semantic_layer_trial_2026-08-04",
+      "trial_query_id": "q03",
+      "category": "paraphrase",
+      "text": "how to end an automatically renewing service",
+      "corpus": "semantic_layer_trial",
+      "relevant": ["20260626035"],
+      "harm_controls": [],
+      "notes": "BM25 miss in the 2026-08-04 MiniLM trial. Learned ranking and hybrid recovered the subscription-cancellation rule."
+    }
+  ],
+  "controls": [
+    {
+      "id": "gq-mosquito-title",
+      "role": "lexical_hit_control",
+      "source": "golden_suite",
+      "golden_query_id": "gq-mosquito-title",
+      "category": "exact_known_title",
+      "text": "Pesticides and Mosquito Control Products",
+      "corpus": "golden_keyword_mosquito",
+      "relevant": ["procurement:81626S0021001"],
+      "preferred_first": "procurement:81626S0021001",
+      "harm_controls": ["procurement:decoy-vendor-mosquito"],
+      "notes": "Exact-title lexical hit. Vector must not invert this control if it is to enter public ranking."
+    },
+    {
+      "id": "gq-mosquito-ranking",
+      "role": "ranking_control",
+      "source": "golden_suite",
+      "golden_query_id": "gq-mosquito-ranking",
+      "category": "ranking_competition",
+      "text": "mosquito",
+      "corpus": "golden_mosquito_ranking",
+      "relevant": ["procurement:81626S0021001"],
+      "preferred_first": "procurement:81626S0021001",
+      "harm_controls": ["procurement:decoy-vendor-mosquito"],
+      "notes": "Title should outrank a search_text decoy. A vector inversion here is ranking harm."
+    }
+  ]
+}
