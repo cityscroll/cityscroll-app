@@ -39,7 +39,9 @@ import {
   renderUniversalSearchCoverageHtml,
 } from "../site/universal_search_coverage_receipt.mjs";
 import { interpretEntityPhrase } from "../site/canonical_entity_interpretation.mjs";
+import { projectAskCitedQuotes } from "../site/ask_cited_synthesis.mjs";
 import { sanitize } from "../worker/src/lib/filter.mjs";
+import { retrieveCitedPassages } from "../worker/src/cited_retrieval.mjs";
 import {
   mergeUniversalSearchResults,
   publicSearchResult,
@@ -88,6 +90,7 @@ const REQUIRED_CATEGORIES = Object.freeze([
   "unindexed",
   "ranking_competition",
   "nl_ask",
+  "cited_synthesis",
 ]);
 const LA7_SEARCH_CANARY_PATHS = Object.freeze([
   "worker/src/search.mjs",
@@ -393,6 +396,18 @@ async function runCorpus(query) {
         merged,
       };
     }
+    case "cited_offline": {
+      const cited = retrieveCitedPassages({ query: text });
+      const citedQuotes = projectAskCitedQuotes(cited);
+      return {
+        resolved,
+        documents: [],
+        hits: [],
+        cited,
+        citedQuotes,
+        quotedCitations: citedQuotes.quotes,
+      };
+    }
     case "nl_offline": {
       const parsed = parseNL(text);
       const clamped = sanitize("money", parsed);
@@ -531,6 +546,35 @@ function assertRecall(query, world) {
   }
   if (expected.min_distinct) {
     assert.ok(new Set(hitRefs).size >= expected.min_distinct, `${query.id} distinct hits`);
+  }
+  if (expected.must_include_citations || expected.must_not_invent_citations || expected.quotes_only) {
+    const quotes = world.quotedCitations || [];
+    const citationIds = quotes.map((quote) => quote.citation_id);
+    for (const citationId of expected.must_include_citations || []) {
+      assert.ok(citationIds.includes(citationId), `${query.id} missing citation ${citationId}`);
+    }
+    if (expected.join_state) {
+      assert.ok(
+        quotes.every((quote) => quote.exact_join_evidence.state === expected.join_state),
+        `${query.id} unquoted or unmatched join`,
+      );
+    }
+    if (expected.source_url) {
+      assert.ok(
+        quotes.some((quote) => quote.source.url === expected.source_url),
+        `${query.id} missing official source URL`,
+      );
+    }
+    if (expected.must_not_invent_citations) {
+      assert.equal(quotes.length, (expected.must_include_citations || []).length, `${query.id} invented citations`);
+    }
+    if (expected.quotes_only) {
+      assert.doesNotMatch(
+        JSON.stringify(world.citedQuotes),
+        /(?:answer|synthesis|action|legal_conclusion|graph_edge|relationship)/i,
+        `${query.id} leaked synthesis`,
+      );
+    }
   }
 }
 
@@ -747,6 +791,11 @@ test("each golden query names only the axes it can fail", () => {
     if (query.category === "nl_ask") {
       assert.deepEqual(query.eval, ["interpretation"]);
       assert.equal(query.input.channel, "nl");
+    }
+    if (query.category === "cited_synthesis") {
+      assert.equal(query.input.channel, "nl");
+      assert.equal(query.eval.includes("recall"), true);
+      assert.equal(query.eval.includes("interpretation"), false);
     }
     if (query.category === "ranking_competition") {
       assert.equal(query.eval.includes("interpretation"), false);

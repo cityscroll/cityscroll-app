@@ -58,9 +58,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   must remain byte-compatible with the direct provider. A citation is
   `matched` only when candidate, source-passage map, and corpus-manifest IDs
   agree exactly; missing evidence remains `unknown`, and the contract never
-  emits answers or civic relationships. Focused proof:
+  emits answers or civic relationships. Ask CityScroll quotes those matched
+  citations through `site/ask_cited_synthesis.mjs`; `/nl` emits `cited_quotes`
+  as a sibling and the Ask card never generates answers, relationships, or
+  legal conclusions. Focused proof:
   `worker/test/cited_passages_capability.test.mjs`,
-  `worker/test/cited_retrieval.test.mjs`, and `worker/test/mcp.test.mjs`.
+  `worker/test/cited_retrieval.test.mjs`,
+  `worker/test/mcp.test.mjs`, and `test/ask_cited_synthesis.test.mjs`.
 
 - **Mandate category conformance:** `site/mandate_category_conformance.mjs` is the
   adapter from the meeting, contract, and land-use bridge read models into the

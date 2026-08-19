@@ -248,6 +248,7 @@
     nl_placeholder_money: "opisz, czego szukasz…",
     ask_cityscroll_action: "Zapytaj CityScroll",
     ask_cityscroll_context: "Interpretuje Twoje zapytanie",
+    ask_cited_quotes_heading: "Cytat z oficjalnych dokumentów",
     query_conflict_prompt: "Te filtry są sprzeczne. Wybierz, którego użyć.",
     query_conflict_keep: "Zachowaj {value}",
     query_conflict_use: "Użyj {value}",

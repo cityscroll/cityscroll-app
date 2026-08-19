@@ -240,6 +240,7 @@
     nl_placeholder_money: "描述您要查找的内容…",
     ask_cityscroll_action: "询问 CityScroll",
     ask_cityscroll_context: "解读您的请求",
+    ask_cited_quotes_heading: "引自官方记录",
     query_conflict_prompt: "这些筛选条件相互冲突。请选择要使用的一项。",
     query_conflict_keep: "保留 {value}",
     query_conflict_use: "使用 {value}",

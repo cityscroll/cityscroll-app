@@ -247,6 +247,7 @@
     nl_placeholder_money: "décrivez ce que vous recherchez…",
     ask_cityscroll_action: "Demander à CityScroll",
     ask_cityscroll_context: "Interprète votre demande",
+    ask_cited_quotes_heading: "Extrait des archives officielles",
     query_conflict_prompt: "Ces filtres sont incompatibles. Choisissez lequel utiliser.",
     query_conflict_keep: "Garder {value}",
     query_conflict_use: "Utiliser {value}",
