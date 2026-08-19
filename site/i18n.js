@@ -1409,6 +1409,7 @@ const STRINGS = {
     footer_api:        "API and feeds",
     footer_changelog:  "Changelog",
     footer_stats:      "Stats",
+    footer_data_health: "Data health",
 
     // Front-page masthead
     site_tagline: "Subscribe to NYC contracts, rezonings, and hearings that interest you.",
@@ -2807,6 +2808,7 @@ const STRINGS = {
     stats_public_current_desc: "The most recent date in the indexed notice data.",
     stats_public_method_heading: "What is private",
     stats_public_method_html: "These facts count records, not people. Visits, search, watches, and email totals stay private. Read the <a href=\"api.html#upstream\">source notes</a> or open the <a href=\"https://api.cityscroll.org/stats\">public JSON</a>.",
+    stats_data_health_html: "For source freshness and coverage, see <a href=\"data-health/\">Data health</a>.",
     stats_public_asof: "As of {date}.",
     stats_public_corpus_unavailable: "The source count and language coverage are current. The live City Record total is temporarily unavailable.",
     stats_public_unreachable: "Coverage totals are unreachable right now — the public JSON lives at api.cityscroll.org/stats.",
@@ -2856,7 +2858,7 @@ const STRINGS = {
     stats_history_empty: "No day-by-day history yet.",
     stats_h_technical: "Technical details",
     stats_p_technical: "How the numbers above are put together. You don't need to know this to use CityScroll.",
-    stats_foot_html: "Raw JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (cached ~15 min) · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",
+    stats_foot_html: "Raw JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (cached ~15 min) · <a href=\"about.html\">About</a> · <a href=\"data-health/\">Data health</a> · <a href=\"index.html\">Home</a>",
     stats_asof: "As of {date} (refreshes every 15 minutes).",
     stats_unreachable: "Live counters are unreachable right now — the raw JSON lives at api.cityscroll.org/stats.",
     stats_h_usage: "How people use CityScroll",

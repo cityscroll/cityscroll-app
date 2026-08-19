@@ -3441,6 +3441,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `test/source_health_partial_observations.test.mjs`,
   `test/data_health_page.test.mjs`, and
   `worker/test/source_health.test.mjs`.
+- **Stats ↔ Data health:** `/stats` remains the corpus-size surface; `/data-health/`
+  is freshness and coverage. Reciprocal one-sentence links and the public footer
+  entry live in `site/data_health_navigation.mjs` plus `site/stats.html`. Consume
+  the committed `source_health_public.json` artifact; do not copy health clocks
+  onto Stats or usage fields onto Data health. Proof:
+  `test/data_health_navigation.test.mjs`.
 
 ## Performance observability registry
 
