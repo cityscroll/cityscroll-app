@@ -6,10 +6,25 @@ import {
   INVESTIGATION_SIGNAL_TYPE,
   normalizeInvestigationComparativeSignal,
 } from "../../../site/investigation_comparative_signal.mjs";
+import {
+  finalizeResearchPackage,
+  normalizeResearchPackage,
+  normalizeResearchPackageRequest,
+} from "../../../site/research_package.mjs";
 
 export const MAX_INV_BYTES = 32768;
 export const MAX_INV_ITEMS = 100;
 export const INV_TTL = 90 * 24 * 3600; // shared links live 90 days
+
+export function validResearchPackageRequest(obj) {
+  return normalizeResearchPackageRequest(obj);
+}
+
+export function validStoredResearchPackage(obj) {
+  return normalizeResearchPackage(obj);
+}
+
+export { finalizeResearchPackage };
 
 export function validInvPayload(obj) {
   if (!obj || typeof obj !== "object") return null;

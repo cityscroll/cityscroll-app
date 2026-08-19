@@ -2,13 +2,25 @@
 // The snapshot is structured, clamped, byte-capped (lib/inv.mjs), TTL'd, and rate-limited,
 // so this can't become arbitrary file hosting. Stored in the SUBS KV under the inv: prefix.
 
-import { validInvPayload, INV_TTL } from "./lib/inv.mjs";
+import {
+  finalizeResearchPackage,
+  validInvPayload,
+  validResearchPackageRequest,
+  validStoredResearchPackage,
+  INV_TTL,
+} from "./lib/inv.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { vendorStem } from "./lib/compile.mjs";
 import { overActorLimit } from "./lib/meter.mjs";
 
 const MAX_SHARES_PER_IP_DAY = 10;
+
+function randomId() {
+  return [...crypto.getRandomValues(new Uint8Array(8))]
+    .map((byte) => (byte % 36).toString(36))
+    .join("");
+}
 
 const ALLOW = new Set([
   "https://cityscroll.org", "https://www.cityscroll.org",
@@ -73,10 +85,40 @@ export async function handleInv(req, env, pathname, ctx) {
 
   let body;
   try { body = await req.json(); } catch { return json({ ok: false, reason: "bad-json" }, 400, cors); }
+  const packageRequest = validResearchPackageRequest(body);
+  if (packageRequest) {
+    let previousPackage = null;
+    if (packageRequest.supersedes) {
+      const previousRaw = await env.SUBS.get(`inv:${packageRequest.supersedes.version_id}`);
+      if (!previousRaw) return json({ ok: false, reason: "missing-superseded-version" }, 409, cors);
+      try { previousPackage = validStoredResearchPackage(JSON.parse(previousRaw)); } catch { previousPackage = null; }
+      if (!previousPackage) return json({ ok: false, reason: "invalid-superseded-version" }, 409, cors);
+    }
+
+    const id = randomId();
+    const researchPackage = finalizeResearchPackage(packageRequest, {
+      packageId: previousPackage?.package_id || randomId(),
+      versionId: id,
+      generatedAt: new Date().toISOString(),
+      previousPackage,
+    });
+    if (!researchPackage) return json({ ok: false, reason: "bad-package-version" }, 400, cors);
+    await env.SUBS.put(`inv:${id}`, JSON.stringify(researchPackage), { expirationTtl: INV_TTL });
+    await bumpStat(env.ALERT_STATE, "share", new Date());
+    emitUsageEvent(env, { event: "investigation_share", detail: "create", surface: "api" });
+    return json({
+      ok: true,
+      kind: "research_package",
+      id,
+      packageId: researchPackage.package_id,
+      version: researchPackage.version,
+      ttlDays: Math.round(INV_TTL / 86400),
+    }, 200, cors);
+  }
   const snap = validInvPayload(body);
   if (!snap) return json({ ok: false, reason: "bad-payload" }, 400, cors);
 
-  const id = [...crypto.getRandomValues(new Uint8Array(8))].map(b => (b % 36).toString(36)).join("");
+  const id = randomId();
   await env.SUBS.put(`inv:${id}`, JSON.stringify(snap), { expirationTtl: INV_TTL });
   await bumpStat(env.ALERT_STATE, "share", new Date()); // outcome counter (R·B) — aggregate only
   emitUsageEvent(env, { event: "investigation_share", detail: "create", surface: "api" });
