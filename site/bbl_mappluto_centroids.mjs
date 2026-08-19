@@ -17,6 +17,10 @@ export const BBL_MAPPLUTO_CENTROIDS_MIN_COVERAGE = 0.95;
 /** Field canary from scout Gap 2 / PR #1057 upstream. */
 export const BBL_MAPPLUTO_CENTROID_CANARIES = Object.freeze({
   "3012660036": "2026K0123",
+  // Completed ELURP whose WH-06 lot is absent from the current sell-facing
+  // warehouse; keep the MapPLUTO pin so permalinks do not fall through to
+  // "Location not resolved" after /zap-outcomes KV drops the project.
+  "5017800015": "2025R0257",
 });
 export const BBL_MAPPLUTO_CENTROIDS_MODES = Object.freeze([
   "mappluto_pluto_csv",
