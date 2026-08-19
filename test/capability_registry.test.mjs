@@ -212,11 +212,13 @@ test("topology and public MCP catalog are deterministic and committed", () => {
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
     "search_notices",
     "get_notice",
+    "get_entity_dossier",
+    "get_entity_relationships",
     "retrieve_cited_passages",
     "preview_watch",
     "create_watch",
   ]);
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 5);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 7);
 });
 
 test("the deterministic CLI check passes and --stdout is stable", () => {

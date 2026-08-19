@@ -9,6 +9,8 @@
         "canonical_id",
         "canonical_name",
         "create_watch",
+        "get_entity_dossier",
+        "get_entity_relationships",
         "get_notice",
         "preview_watch",
         "raw_string",

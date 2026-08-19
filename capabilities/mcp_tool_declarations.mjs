@@ -8,7 +8,20 @@ import {
   NOTICE_SEARCH_PROVIDER_ID,
 } from "./notice_search.mjs";
 import {
+  ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+  ENTITY_DOSSIER_LIMITS,
+  ENTITY_DOSSIER_PROVIDER_ID,
+} from "./entity_dossier.mjs";
+import {
+  ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+  ENTITY_RELATIONSHIPS_EDGE_TYPES,
+  ENTITY_RELATIONSHIPS_LIMITS,
+  ENTITY_RELATIONSHIPS_NODE_TYPES,
+  ENTITY_RELATIONSHIPS_PROVIDER_ID,
+} from "./entity_relationships.mjs";
+import {
   CITED_PASSAGES_CAPABILITY_REFERENCE,
+  CITED_PASSAGES_LIMITS,
   CITED_PASSAGES_PROVIDER_ID,
   CITED_PASSAGES_REPRESENTATIONS,
 } from "./cited_passages.mjs";
@@ -16,6 +29,22 @@ import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
 export const MCP_NOTICE_SEARCH_DEFAULT_LIMIT = 15;
+export const MCP_PUBLIC_READ_ANNOTATIONS = Object.freeze({
+  readOnlyHint: true,
+  destructiveHint: false,
+  idempotentHint: true,
+  openWorldHint: false,
+});
+const MCP_OPEN_WORLD_READ_ANNOTATIONS = Object.freeze({
+  ...MCP_PUBLIC_READ_ANNOTATIONS,
+  openWorldHint: true,
+});
+const MCP_MUTATION_ANNOTATIONS = Object.freeze({
+  readOnlyHint: false,
+  destructiveHint: false,
+  idempotentHint: false,
+  openWorldHint: true,
+});
 
 export const MCP_NOTICE_SEARCH_ADAPTER = Object.freeze({
   id: "mcp.search_notices@1",
@@ -34,6 +63,69 @@ export const MCP_CITED_PASSAGES_ADAPTER = Object.freeze({
   tool: "retrieve_cited_passages",
   surface: "MCP",
   representations: CITED_PASSAGES_REPRESENTATIONS,
+});
+
+export const MCP_ENTITY_DOSSIER_ADAPTER = Object.freeze({
+  id: "mcp.get_entity_dossier@1",
+  capabilityReference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+  providerId: ENTITY_DOSSIER_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "get_entity_dossier",
+  surface: "MCP",
+});
+
+export const MCP_ENTITY_RELATIONSHIPS_ADAPTER = Object.freeze({
+  id: "mcp.get_entity_relationships@1",
+  capabilityReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+  providerId: ENTITY_RELATIONSHIPS_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "get_entity_relationships",
+  surface: "MCP",
+});
+
+const NOTICE_SEARCH_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["terms_used", "total_matches", "retrieval", "results"],
+  properties: {
+    terms_used: { type: "array", items: { type: "string" } },
+    total_matches: { type: "integer", minimum: 0 },
+    retrieval: {
+      type: "object",
+      additionalProperties: false,
+      required: ["method", "fallback_reason", "duration_ms", "rows_read", "result_count"],
+      properties: {
+        method: { type: "string" },
+        fallback_reason: { type: ["string", "null"] },
+        duration_ms: { type: "number", minimum: 0 },
+        rows_read: { type: ["number", "null"], minimum: 0 },
+        result_count: { type: "integer", minimum: 0 },
+      },
+    },
+    results: { type: "array", maxItems: NOTICE_SEARCH_LIMITS.maximum, items: { type: "object" } },
+  },
+});
+const ENTITY_DOSSIER_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["capability_reference", "availability", "dossier", "error"],
+  properties: {
+    capability_reference: { type: "string", const: ENTITY_DOSSIER_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+    dossier: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
+  },
+});
+const ENTITY_RELATIONSHIPS_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["capability_reference", "availability", "graph", "error"],
+  properties: {
+    capability_reference: { type: "string", const: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+    graph: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
+  },
 });
 
 const SUBSCRIBABLE_LENSES = ["money", "people", "land", "property", "rules", "meetings"];
@@ -55,6 +147,8 @@ export const MCP_TOOLS = [
         limit: { type: "number", description: `Max results (default ${MCP_NOTICE_SEARCH_DEFAULT_LIMIT}, cap ${NOTICE_SEARCH_LIMITS.maximum}).` },
       },
     },
+    outputSchema: NOTICE_SEARCH_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
     name: "get_notice",
@@ -64,6 +158,67 @@ export const MCP_TOOLS = [
       properties: { request_id: { type: "string" } },
       required: ["request_id"],
     },
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
+    name: "get_entity_dossier",
+    description: "Get the bounded public dossier for one exact canonical CityScroll entity. Preserves attributed disagreements, availability, provenance, and public redaction.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        entity_id: {
+          type: "string",
+          minLength: 1,
+          maxLength: ENTITY_DOSSIER_LIMITS.entityIdMaximumLength,
+          description: "Exact canonical CityScroll entity identifier.",
+        },
+      },
+      required: ["entity_id"],
+    },
+    outputSchema: ENTITY_DOSSIER_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
+    name: "get_entity_relationships",
+    description: "Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        entity_id: {
+          type: "string",
+          minLength: 1,
+          maxLength: ENTITY_RELATIONSHIPS_LIMITS.entityIdMaximumLength,
+          description: "Exact canonical CityScroll entity identifier.",
+        },
+        depth: {
+          type: "integer",
+          minimum: 1,
+          maximum: ENTITY_RELATIONSHIPS_LIMITS.maximumDepth,
+          default: ENTITY_RELATIONSHIPS_LIMITS.defaultDepth,
+        },
+        fan_out: {
+          type: "integer",
+          minimum: 1,
+          maximum: ENTITY_RELATIONSHIPS_LIMITS.maximumFanOut,
+          default: ENTITY_RELATIONSHIPS_LIMITS.defaultFanOut,
+        },
+        node_types: {
+          type: "array",
+          maxItems: ENTITY_RELATIONSHIPS_NODE_TYPES.length,
+          uniqueItems: true,
+          items: { type: "string", enum: ENTITY_RELATIONSHIPS_NODE_TYPES },
+        },
+        edge_types: {
+          type: "array",
+          maxItems: ENTITY_RELATIONSHIPS_EDGE_TYPES.length,
+          uniqueItems: true,
+          items: { type: "string", enum: ENTITY_RELATIONSHIPS_EDGE_TYPES },
+        },
+      },
+      required: ["entity_id"],
+    },
+    outputSchema: ENTITY_RELATIONSHIPS_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
     name: "retrieve_cited_passages",
@@ -81,6 +236,7 @@ export const MCP_TOOLS = [
       required: ["query"],
     },
     outputSchema: CITED_RETRIEVAL_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
     name: "preview_watch",
@@ -93,6 +249,7 @@ export const MCP_TOOLS = [
       },
       required: ["lens", "request"],
     },
+    annotations: MCP_OPEN_WORLD_READ_ANNOTATIONS,
   },
   {
     name: "create_watch",
@@ -107,6 +264,7 @@ export const MCP_TOOLS = [
       },
       required: ["email", "lens", "request"],
     },
+    annotations: MCP_MUTATION_ANNOTATIONS,
   },
 ];
 
@@ -117,6 +275,10 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
     schemaReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
     capabilityReference: NOTICE_SEARCH_CAPABILITY_REFERENCE,
     adapterId: MCP_NOTICE_SEARCH_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: NOTICE_SEARCH_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   }),
   Object.freeze({
     name: "get_notice",
@@ -125,11 +287,37 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
     pilotException: "notice.get is outside the notice.search@1 pilot",
   }),
   Object.freeze({
+    name: "get_entity_dossier",
+    operationClass: "read",
+    schemaReference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+    capabilityReference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+    adapterId: MCP_ENTITY_DOSSIER_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: ENTITY_DOSSIER_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  }),
+  Object.freeze({
+    name: "get_entity_relationships",
+    operationClass: "read",
+    schemaReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+    capabilityReference: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE,
+    adapterId: MCP_ENTITY_RELATIONSHIPS_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: ENTITY_RELATIONSHIPS_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  }),
+  Object.freeze({
     name: "retrieve_cited_passages",
     operationClass: "read",
     schemaReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
     capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
     adapterId: MCP_CITED_PASSAGES_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: CITED_PASSAGES_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   }),
   Object.freeze({
     name: "preview_watch",
@@ -144,3 +332,9 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
     pilotException: "watch.create is an explicit mutation outside the notice.search@1 pilot",
   }),
 ]);
+
+export const MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS = Object.freeze(
+  MCP_TOOL_BINDINGS.filter(({ capabilityReference, authorityClass }) => (
+    capabilityReference && authorityClass === "public_read"
+  )),
+);

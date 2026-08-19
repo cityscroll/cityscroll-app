@@ -22,6 +22,7 @@
     "usage:live": "node --test e2e/usage.mjs"
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
     "wrangler": "^4.0.0"
   }
 }

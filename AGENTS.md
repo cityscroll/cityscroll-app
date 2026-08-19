@@ -3462,6 +3462,17 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   copied datasets or model-authored analysis. Focused proof is
   `test/research_package.test.mjs` and `worker/test/inv.test.mjs`.
 
+## Remote MCP public adapter boundary
+
+- `capabilities/mcp_tool_declarations.mjs` is the thin policy inventory for the
+  four registered public-read capabilities; each binding is provider-only,
+  bounded, closed-world, and standard-annotated. The semantic capability files
+  must not import MCP, Agents, or Cloudflare runtime packages, and Cloudflare OS
+  remains a downstream composition layer. Rebuild the pinned current-client
+  receipt with `node worker/scripts/build_remote_mcp_evidence.mjs`; focused proof
+  is `worker/test/mcp_capability_adapter.test.mjs` and
+  `worker/test/mcp_streamable_http_interop.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
