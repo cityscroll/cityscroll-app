@@ -19,6 +19,11 @@ import {
   sourceSystemReaderLabel,
 } from "./graph_edge_provenance.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
+import {
+  agencyRelationshipResultState,
+  reportAgencyConstellationReadiness,
+} from "./rum_maps_entities_async.mjs";
+import { currentRumSemanticMilestones } from "./rum_semantic_runtime.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -286,6 +291,13 @@ export function mountAgencyCivicTimeLedger(root = document) {
   const initial = parseAsOfFromSearch(location.search);
   applyAsOf(main, nowView, initial);
   wireCopy(main);
+
+  if (nowView.kind === "agency-constellation") {
+    reportAgencyConstellationReadiness(currentRumSemanticMilestones(), {
+      identityState: "content",
+      relationshipState: agencyRelationshipResultState(nowView.categories),
+    });
+  }
 
   main.querySelector("[data-object-print]")?.addEventListener("click", () => window.print());
   main.querySelector('[data-object-export="json"]')?.addEventListener("click", () => {
