@@ -1,0 +1,51 @@
+{
+  "schema": "cityscroll.admin.performance.fixture_matrix.v1",
+  "response_schema": "cityscroll.admin.performance.v1",
+  "cases": [
+    {
+      "name": "sufficient weighted distribution",
+      "query_status": "available",
+      "expected_status": "available",
+      "percentiles_present": true
+    },
+    {
+      "name": "retention or health is partial",
+      "query_status": "retention_partial",
+      "expected_status": "partial",
+      "percentiles_present": false
+    },
+    {
+      "name": "retained row floor is not met",
+      "query_status": "insufficient_sample",
+      "expected_status": "insufficient_sample",
+      "percentiles_present": false
+    },
+    {
+      "name": "instrumented selection has no observations",
+      "query_status": "no_data",
+      "coverage_state": "instrumented",
+      "expected_status": "no_data",
+      "percentiles_present": false
+    },
+    {
+      "name": "registered selection is not yet instrumented",
+      "query_status": "no_data",
+      "coverage_state": "planned",
+      "expected_status": "uninstrumented",
+      "percentiles_present": false
+    },
+    {
+      "name": "intake rejected an unknown surface or component",
+      "coverage_state": "unclassified",
+      "expected_coverage_status": "unclassified",
+      "percentiles_present": false
+    },
+    {
+      "name": "Analytics Engine read is unavailable",
+      "query_status": "unavailable",
+      "unavailable_reason": "not-configured",
+      "expected_status": "unavailable",
+      "percentiles_present": false
+    }
+  ]
+}

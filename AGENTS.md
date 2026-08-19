@@ -3438,6 +3438,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `_sample_interval`. Honest state and retention semantics live in
   `docs/performance-query-adapter.md`; focused proof is
   `worker/test/performance_query.test.mjs`.
+- Desk discovers the separate `cityscroll.admin.performance.v1` read model
+  through the additive `performance` section of `worker/ops-contract.v1.json`
+  and reads it only from authenticated `GET /admin/performance`. Keep its URL
+  grammar in `worker/src/admin_performance.mjs` bounded, its responses private
+  and no-store, and Analytics Engine credentials server-side. The RUM-07
+  byte-level characterization in `worker/test/stats_routes_unchanged.test.mjs`
+  protects both `/admin/stats` and public `/stats` from performance fields.
 
 ## Comparative signal admission
 

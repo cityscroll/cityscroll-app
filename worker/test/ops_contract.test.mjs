@@ -15,6 +15,7 @@ import {
 import {
   OPS_CONTRACT_ID,
   OPS_CONTRACT_VERSION,
+  PERFORMANCE_CONTRACT,
   buildOpsContract,
   closedDaylogActionIds,
   normalizeUsageTrafficClass,
@@ -44,7 +45,13 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.daylog.actions.length >= 5);
   assert.ok(doc.stats_metrics.some((m) => m.exclude_developer_traffic === true));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/performance"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/stats"));
+  assert.equal(doc.performance.contract, "cityscroll.admin.performance.v1");
+  assert.equal(doc.performance.version, "1.0.0");
+  assert.equal(doc.performance.cache_control, "private, no-store");
+  assert.equal(doc.performance.query.arbitrary_sql, false);
+  assert.deepEqual(doc.performance.states, PERFORMANCE_CONTRACT.states);
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/next-digest-preview"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/digest-shadow"));
   assert.equal(doc.digest_shadow.contract, "digest-shadow.v1");
@@ -70,6 +77,16 @@ test("committed fixture matches builder (desk CI pin)", () => {
   const fixture = JSON.parse(readFileSync(FIXTURE, "utf8"));
   const live = buildOpsContract({ generated_at: fixture.generated_at });
   assert.deepEqual(live, fixture, "worker/ops-contract.v1.json must match buildOpsContract()");
+});
+
+test("performance discovery is an additive compatible ops-contract minor bump", () => {
+  const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
+  assert.equal(doc.version, "1.5.0", "RUM-08 adds discovery without changing existing fields");
+  assert.equal(doc.min_compatible_version, "1.0.0");
+  assert.equal(doc.performance.contract, "cityscroll.admin.performance.v1");
+  assert.equal(doc.admin_routes.filter(({ path }) => path === "/admin/performance").length, 1);
+  assert.equal(doc.admin_routes.find(({ path }) => path === "/admin/stats").description,
+    "Private product activity, subscriptions, and delivery operations (JSON or ?view=html).");
 });
 
 test("daylog actions the worker writes are covered by the contract", () => {
@@ -161,6 +178,8 @@ test("handleAdminOpsContract: fail closed + serves contract under ADMIN_KEY", as
   assert.equal(body.contract, OPS_CONTRACT_ID);
   assert.equal(body.version, OPS_CONTRACT_VERSION);
   assert.ok(body.admin_routes.some((r) => r.path === "/admin/ops-contract"));
+  assert.ok(body.admin_routes.some((r) => r.path === "/admin/performance"));
+  assert.equal(body.performance.contract, "cityscroll.admin.performance.v1");
   // Shared gate
   assert.equal(checkAdminKey(new Request("https://w/admin/ops-contract?key=secret"), { ADMIN_KEY: "secret" }).ok, true);
 });
