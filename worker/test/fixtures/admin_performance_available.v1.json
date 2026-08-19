@@ -15,7 +15,7 @@
     "schema": "cityscroll.performance.operator_inventory.v1",
     "manifest_version": "rum-surfaces-v1",
     "registry_version": "1.0.0",
-    "registry_hash": "9676620bf9949a2b5a74b72a63991a1466aeef622ebb58e857b50e21cbde5023",
+    "registry_hash": "6a9e83fa2e52dce1476619ae8b5be0703e4cd6b50c264604ef5935b1c1839187",
     "metrics": [
       {
         "metric_id": "cls_score",
@@ -708,6 +708,39 @@
         "supersedes": [],
         "introduced_version": "1.0.0",
         "owner_source_path": "site/data.html"
+      },
+      {
+        "surface_id": "data-health",
+        "operator_label": "Public data health",
+        "kind": "surface",
+        "parent": null,
+        "route_family": "information-data-health",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "static",
+        "applicable_metric_ids": [
+          "cls_score",
+          "content_ready_ms",
+          "fcp_ms",
+          "inp_ms",
+          "lcp_ms",
+          "ttfb_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "page-content-ready-v1",
+          "metric_id": "content_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+        },
+        "lifecycle_state": "planned",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/data_health_page.mjs"
       },
       {
         "surface_id": "district-digest",
@@ -1706,15 +1739,15 @@
   "coverage": {
     "status": "uninstrumented",
     "registered": {
-      "surface_count": 35,
+      "surface_count": 36,
       "component_count": 14,
       "surfaces_by_state": {
-        "instrumented": 2,
-        "planned": 33
+        "planned": 34,
+        "instrumented": 2
       },
       "components_by_state": {
-        "instrumented": 2,
-        "planned": 12
+        "planned": 12,
+        "instrumented": 2
       }
     },
     "selection": {
