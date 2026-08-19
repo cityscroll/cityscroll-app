@@ -17,6 +17,12 @@ import {
   focusOfficialProfileSection,
   officialProfileSectionRoute,
 } from "../official_profile_navigation.mjs";
+import {
+  noticeContextReady,
+  noticePrimaryOutcomeFromEdge,
+  noticePrimaryReady,
+  runtimeRumSemanticMilestones,
+} from "../rum_static_record_instrumentation.mjs";
 
 /* ===================== PERMALINKS & URL STATE =====================
    Document routes are canonical for Now, Browse facets, notices, and entity profiles. The same finite
@@ -1363,6 +1369,8 @@ async function showNotice(id, watch){
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
   const edgeNotice=box.querySelector(`[data-edge-rendered][data-notice-id="${CSS.escape(String(id))}"]`);
+  const edgePrimaryState=noticePrimaryOutcomeFromEdge(edgeNotice?.dataset.edgeRendered);
+  if(edgePrimaryState) noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:edgePrimaryState});
   const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
   if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
@@ -1380,6 +1388,7 @@ async function showNotice(id, watch){
   if(!r){
     lastNoticeContext = null;
     if(edgeNotice){
+      noticeContextReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
       applyActiveHistoryRouteScroll();
       if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
       return;
@@ -1389,6 +1398,8 @@ async function showNotice(id, watch){
       ? ` · ${officialSourceLink({ href: cityRecordUrl, label: t("try_city_record"), escape: taskEsc })}`
       : "";
     box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")}${cityRecordAction}</div>`;
+    noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
+    noticeContextReady(runtimeRumSemanticMilestones(),{resultState:"unavailable"});
     applyActiveHistoryRouteScroll();
     if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
     return;
@@ -1440,6 +1451,7 @@ async function showNotice(id, watch){
       <div id="nchain" data-export-class="paper_trail"></div>
       <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
   </div></div>`;
+  noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:"content"});
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
   bindQRShare($("#nqr"), link);
   $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));

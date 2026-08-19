@@ -3423,6 +3423,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   closed, preserve feedback-before-settlement ordering, and never move DOM
   selectors into the collector. Focused proof is
   `test/rum_semantic_milestones.test.mjs`.
+- The first owner instrumentation slice is
+  `site/rum_static_record_instrumentation.mjs`: Home reuses
+  `data-home-ready`, notice primary readiness reuses `data-edge-rendered`, and
+  `site/app/notice-context.mjs` owns async context settlement. Keep record IDs,
+  URLs, DOM text, and selectors out of milestone records. Focused proof is
+  `test/rum_static_record_instrumentation.test.mjs`.
 - Field-performance intake is the separate `POST /performance-events` contract
   in `worker/src/performance_events.mjs`, backed only by `RUM_ANALYTICS` /
   `crol_rum_observations_v1`. Keep its normalized one-metric-per-point layout,
