@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.worker_allowlist.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889",
+  "registry_hash": "f5617f450471b7e71293462ce037716b69d46747336289f42f54ea7f05331f1c",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -179,6 +179,8 @@
   ],
   "component_ids": [
     "none",
+    "agency-identity",
+    "agency-relationships",
     "browse-contracts-filter-apply",
     "browse-contracts-results",
     "browse-filter-apply",
@@ -187,10 +189,12 @@
     "following-watch-list",
     "home-search-submit",
     "home-topic-entry",
+    "land-outcomes",
     "near-you-borough",
     "near-you-community-district",
     "near-you-council-district",
     "near-you-map",
+    "near-you-map-data",
     "near-you-scope-change",
     "notice-context",
     "search-results",
@@ -240,6 +244,8 @@
   ],
   "accepted_component_ids": [
     "none",
+    "agency-identity",
+    "agency-relationships",
     "browse-contracts-filter-apply",
     "browse-contracts-results",
     "browse-filter-apply",
@@ -248,11 +254,13 @@
     "following-watch-list",
     "home-search-submit",
     "home-topic-entry",
+    "land-outcomes",
     "near-you-borough",
     "near-you-cd",
     "near-you-community-district",
     "near-you-council-district",
     "near-you-map",
+    "near-you-map-data",
     "near-you-scope-change",
     "notice-context",
     "search-results",
@@ -293,7 +301,10 @@
         "lcp_ms",
         "ttfb_ms"
       ],
-      "allowed_component_ids": [],
+      "allowed_component_ids": [
+        "agency-identity",
+        "agency-relationships"
+      ],
       "lifecycle_state": "planned"
     },
     "api-guide": {
@@ -492,7 +503,8 @@
       ],
       "allowed_component_ids": [
         "browse-filter-apply",
-        "browse-results"
+        "browse-results",
+        "land-outcomes"
       ],
       "lifecycle_state": "planned"
     },
@@ -692,6 +704,7 @@
         "near-you-community-district",
         "near-you-council-district",
         "near-you-map",
+        "near-you-map-data",
         "near-you-scope-change"
       ],
       "lifecycle_state": "planned"
@@ -829,6 +842,28 @@
     }
   },
   "components": {
+    "agency-identity": {
+      "kind": "component",
+      "parent": "surface:agency",
+      "applicable_surface_ids": [
+        "agency"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "instrumented"
+    },
+    "agency-relationships": {
+      "kind": "component",
+      "parent": "component:agency-identity",
+      "applicable_surface_ids": [
+        "agency"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "instrumented"
+    },
     "browse-contracts-filter-apply": {
       "kind": "interaction",
       "parent": "component:browse-contracts-results",
@@ -947,6 +982,17 @@
       ],
       "lifecycle_state": "instrumented"
     },
+    "land-outcomes": {
+      "kind": "component",
+      "parent": "surface:browse-zoning",
+      "applicable_surface_ids": [
+        "browse-zoning"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "instrumented"
+    },
     "near-you-borough": {
       "kind": "component",
       "parent": "surface:near-you",
@@ -989,7 +1035,18 @@
       "applicable_metric_ids": [
         "component_ready_ms"
       ],
-      "lifecycle_state": "planned"
+      "lifecycle_state": "instrumented"
+    },
+    "near-you-map-data": {
+      "kind": "component",
+      "parent": "component:near-you-map",
+      "applicable_surface_ids": [
+        "near-you"
+      ],
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "lifecycle_state": "instrumented"
     },
     "near-you-scope-change": {
       "kind": "interaction",

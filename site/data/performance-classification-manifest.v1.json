@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889",
+  "registry_hash": "f5617f450471b7e71293462ce037716b69d46747336289f42f54ea7f05331f1c",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -1021,6 +1021,42 @@
   ],
   "components": [
     {
+      "component_id": "agency-identity",
+      "kind": "component",
+      "parent": "surface:agency",
+      "route_family": "entity-agency",
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "agency-identity"
+      },
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness_contract": "component-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "component_id": "agency-relationships",
+      "kind": "component",
+      "parent": "component:agency-identity",
+      "route_family": "entity-agency",
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "agency-relationships"
+      },
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness_contract": "component-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
       "component_id": "browse-contracts-filter-apply",
       "kind": "interaction",
       "parent": "component:browse-contracts-results",
@@ -1173,6 +1209,24 @@
       "introduced_version": "1.0.0"
     },
     {
+      "component_id": "land-outcomes",
+      "kind": "component",
+      "parent": "surface:browse-zoning",
+      "route_family": "browse-zoning",
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "land-outcomes"
+      },
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness_contract": "component-ready-v1",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
       "component_id": "near-you-borough",
       "kind": "component",
       "parent": "surface:near-you",
@@ -1246,7 +1300,25 @@
         "component_ready_ms"
       ],
       "semantic_readiness_contract": "component-ready-v1",
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "component_id": "near-you-map-data",
+      "kind": "component",
+      "parent": "component:near-you-map",
+      "route_family": "place-near-you",
+      "public_safe_matcher": {
+        "kind": "semantic_marker",
+        "marker": "near-you-map-data"
+      },
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness_contract": "component-ready-v1",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "introduced_version": "1.0.0"
     },
