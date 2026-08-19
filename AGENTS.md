@@ -3049,7 +3049,9 @@ the checksum manifest `site/data/procurement_planning_payload.json` and
 LL63→PASSPort 92/121 (76.0%), LL1→PASSPort 1/3 (33.3%), precision 1.0 — 146
 bridge edges ship via `procurement_planning_thread_lookup.json`
 (`site/data/procurement_plan_sources/verification_receipts/procurement_plans_2026-08-11.json`).
-City Record and capital-dashboard paths remain stopped. Remeasure:
+City Record and capital-dashboard paths remain stopped. Live
+`procurement_plans_run.py` defaults to the identifier-bearing sample; `--from-fixture`
+keeps the legacy fixed-sorted sample. Remeasure:
 `python3 tools/remeasure_rc1_plan_passport_prefix.py --publish`. Verify with
 `node --test test/procurement_plans.test.mjs test/join_gate_policy.test.mjs`.
 
