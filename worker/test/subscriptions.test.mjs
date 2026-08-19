@@ -1,13 +1,18 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+  SIGNUP_LIFECYCLE,
   SUPPORTED_LANGS,
   buildSubscription,
   buildTopiclessIntent,
+  isDeveloperTestEmail,
+  isTestSubscriber,
   isTopiclessIntent,
   isValidEmail,
   normalizeEmail,
   redactEmail,
+  signupLifecycleFromRecord,
   subCanonical,
   topiclessIntentKey,
 } from "../src/lib/subscriptions.mjs";
@@ -88,6 +93,33 @@ test("buildSubscription stores valid lang and clamps unknown to en", () => {
   assert.equal(bad.lang, "en", "unknown lang must clamp to en");
   const def = buildSubscription({ email: "a@b.com", lens: "money", filter: {}, now: 0 });
   assert.equal(def.lang, "en", "default lang must be en");
+});
+
+test("isDeveloperTestEmail recognizes plus-tagged e2e and scope-watch addresses only", () => {
+  assert.equal(isDeveloperTestEmail("jamesca2ro+scope-watch-e2e-20260806@gmail.com"), true);
+  assert.equal(isDeveloperTestEmail("qa+e2e@example.com"), true);
+  assert.equal(isDeveloperTestEmail("ops+scope-watch@example.com"), true);
+  assert.equal(isDeveloperTestEmail("reader+newsletter@example.com"), false);
+  assert.equal(isDeveloperTestEmail("devinbalkind@gmail.com"), false);
+  assert.equal(isTestSubscriber({ email: "jamesca2ro+scope-watch-e2e-20260806@gmail.com" }), true);
+  assert.equal(isTestSubscriber({ email: "reader@example.com", developer_test: true }), true);
+  assert.equal(isTestSubscriber({ email: "reader@example.com" }), false);
+});
+
+test("signupLifecycleFromRecord projects recovered pending-enrollment before first digest", () => {
+  const recovered = {
+    email: "ninodepaola@gmail.com",
+    source: DEPRECATED_OPT_IN_RECOVERY_SOURCE,
+    delivery_not_before: "2026-08-18T23:00:00.000Z",
+  };
+  assert.deepEqual(signupLifecycleFromRecord(recovered, { lastSent: "2026-08-18" }), {
+    signup_lifecycle: SIGNUP_LIFECYCLE.RECOVERED,
+    status: SIGNUP_LIFECYCLE.PENDING_ENROLLMENT,
+  });
+  assert.deepEqual(signupLifecycleFromRecord(recovered, { lastSent: "2026-08-25" }), {
+    signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
+    status: SIGNUP_LIFECYCLE.ENROLLED,
+  });
 });
 
 test("subCanonical excludes lang — changing language does not produce a different id", () => {

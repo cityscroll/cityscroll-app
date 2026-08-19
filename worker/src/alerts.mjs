@@ -41,6 +41,7 @@ import {
   redactEmail,
   normalizeEmail,
   ensureSubscriptionIdentity,
+  isTestSubscriber,
   rowAfterDeliveryNotBefore,
 } from "./lib/subscriptions.mjs";
 import {
@@ -863,6 +864,7 @@ export async function processOneSub(env, s, ctx) {
     };
   }
   try {
+    if (isTestSubscriber(s)) return { sub: maskKey(s.key), skipped: "developer-test", kind: "subscription" };
     if (s.paused) return { sub: maskKey(s.key), skipped: "paused", kind: "subscription" };
     if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly", kind: "subscription" };
     // Award-arrival watches are one-notice, one-shot-per-award content, not a standing notices

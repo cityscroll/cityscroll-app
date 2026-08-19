@@ -45,6 +45,7 @@ import { handlePerformanceEvents } from "./performance_events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
+import { recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handleNotice, prewarmNotices } from "./notice.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
@@ -193,6 +194,19 @@ export default {
     console.log("digest delivery: starting");
     await runAlerts(env);
     console.log("digest delivery: complete");
+
+    // Idempotent recovery of the four vetted stranded signups. Fail-soft so a store error
+    // cannot undo a completed send. Does not send mail; next scheduled digest enrolls them.
+    try {
+      const recovery = await recoverDeprecatedDoubleOptIn(env);
+      console.log("deprecated-opt-in recovery:", JSON.stringify({
+        recovered: recovery.recovered,
+        already_recovered: recovery.already_recovered,
+        developer_test: recovery.developer_test,
+      }));
+    } catch (error) {
+      console.error("deprecated-opt-in recovery failed (digest continues):", String(error?.message || error));
+    }
 
     // Refresh the D1 notices mirror first (fail-soft: an ingest failure must never
     // block the digest run — alerts fall back to querying Socrata live anyway).

@@ -10,12 +10,14 @@
 // immediately on the SUBS record and take effect on the next daily cron
 // (~13:00 UTC / ~9am Eastern).
 
-import { normalizeEmail, redactEmail } from "./subscriptions.mjs";
+import { isTestSubscriber, normalizeEmail, redactEmail } from "./subscriptions.mjs";
 
-/** Active = not paused. Missing/false paused → active. */
+/** Active = not paused and not a developer/e2e test account. Missing/false paused → active. */
 export function isWatchActive(sub) {
   if (!sub || typeof sub !== "object") return false;
-  return !sub.paused;
+  if (sub.paused) return false;
+  if (isTestSubscriber(sub)) return false;
+  return true;
 }
 
 /**

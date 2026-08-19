@@ -160,3 +160,21 @@ test("signup rate limits still stop the sixth request for one address", async ()
   assert.equal(limited.status, 429);
   assert.equal((await limited.json()).reason, "rate-limited");
 });
+
+test("e2e plus-tag signups are marked test and stay out of real subscriber delivery", async () => {
+  const environment = configured();
+  const sent = [];
+  const response = await submit(environment, {
+    email: "jamesca2ro+scope-watch-e2e-20260806@gmail.com",
+    no_topic: true,
+    source: "top-of-site",
+  }, sent);
+  assert.equal(response.status, 200);
+  const subKeys = [...environment.SUBS.store.keys()].filter((key) => key.startsWith("sub:"));
+  assert.equal(subKeys.length, 1);
+  const record = JSON.parse(await environment.SUBS.get(subKeys[0]));
+  assert.equal(record.developer_test, true);
+  assert.equal(record.signup_lifecycle, "test");
+  assert.equal(record.status, "test");
+  assert.equal(sent.length, 1, "welcome still discloses the watch; real digests stay skipped");
+});
