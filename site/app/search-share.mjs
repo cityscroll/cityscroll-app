@@ -862,12 +862,12 @@ async function nlTranslateLens(lens, opts){
 }
 
 const NL_SUGGESTIONS_FALLBACK = {
-  money: [3, 4, 5, 6],
-  people: [1, 3],
+  money: [6],
+  people: [0, 2, 3],
   land: [0, 1, 2, 3, 4],
-  property: [0, 1, 2, 4],
-  rules: [0, 1, 2, 3, 4],
-  meetings: [0, 1, 2, 3, 4, 5],
+  property: [1, 2, 4],
+  rules: [0, 2, 4],
+  meetings: [4, 5],
   alerts: [0, 1, 2, 3],
 };
 let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
