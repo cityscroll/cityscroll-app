@@ -193,6 +193,8 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
 <ul>
   <li><code>search_notices</code> <span aria-hidden="true">·</span> read — Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched. Add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded). Rolling placeholder deadlines are labeled, never shown as dates.</li>
   <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Full detail for one City Record notice by its RequestID.</li>
+  <li><code>get_entity_dossier</code> <span aria-hidden="true">·</span> read — Get the bounded public dossier for one exact canonical CityScroll entity. Preserves attributed disagreements, availability, provenance, and public redaction.</li>
+  <li><code>get_entity_relationships</code> <span aria-hidden="true">·</span> read — Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned.</li>
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Retrieve source passages with stable citations and exact source joins. Returns source text only. It does not generate an answer or infer civic relationships.</li>
   <li><code>preview_watch</code> <span aria-hidden="true">·</span> read — Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.</li>
   <li><code>create_watch</code> <span aria-hidden="true">·</span> mutation — Create a standing email watch from plain English. The watch starts immediately. The welcome email states its scope and includes manage and unsubscribe links.</li>

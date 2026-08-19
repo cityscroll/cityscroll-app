@@ -117,6 +117,14 @@
               "projection": "existing attributed dossier document"
             }
           ]
+        },
+        {
+          "id": "mcp.get_entity_dossier@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_entity_dossier",
+          "route": "POST /mcp",
+          "surface": "MCP"
         }
       ]
     },
@@ -181,6 +189,14 @@
               "projection": "existing evidence-bearing relationship document"
             }
           ]
+        },
+        {
+          "id": "mcp.get_entity_relationships@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_entity_relationships",
+          "route": "POST /mcp",
+          "surface": "MCP"
         }
       ]
     },
@@ -257,47 +273,131 @@
       {
         "name": "search_notices",
         "operation_class": "read",
+        "authority_class": "public_read",
         "schema_reference": "notice.search@1",
         "capability_reference": "notice.search@1",
         "adapter_id": "mcp.search_notices@1",
         "contract_reference": null,
-        "pilot_exception": null
+        "pilot_exception": null,
+        "bounds": {
+          "minimum": 1,
+          "maximum": 100
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
       },
       {
         "name": "get_notice",
         "operation_class": "read",
+        "authority_class": null,
         "schema_reference": "mcp.get_notice.inline@1",
         "capability_reference": null,
         "adapter_id": null,
         "contract_reference": null,
-        "pilot_exception": "notice.get is outside the notice.search@1 pilot"
+        "pilot_exception": "notice.get is outside the notice.search@1 pilot",
+        "bounds": null,
+        "annotations": null,
+        "store_access": null
+      },
+      {
+        "name": "get_entity_dossier",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "entity.dossier.get@1",
+        "capability_reference": "entity.dossier.get@1",
+        "adapter_id": "mcp.get_entity_dossier@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "get_entity_relationships",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "entity.relationships.get@1",
+        "capability_reference": "entity.relationships.get@1",
+        "adapter_id": "mcp.get_entity_relationships@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250,
+          "defaultDepth": 2,
+          "maximumDepth": 2,
+          "defaultFanOut": 12,
+          "maximumFanOut": 25
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
       },
       {
         "name": "retrieve_cited_passages",
         "operation_class": "read",
+        "authority_class": "public_read",
         "schema_reference": "cited.passages.retrieve@1",
         "capability_reference": "cited.passages.retrieve@1",
         "adapter_id": "mcp.retrieve_cited_passages@1",
         "contract_reference": null,
-        "pilot_exception": null
+        "pilot_exception": null,
+        "bounds": {
+          "queryMaximumLength": 240,
+          "bodyIdMaximumLength": 120,
+          "defaultResults": 10,
+          "maximumResults": 20
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
       },
       {
         "name": "preview_watch",
         "operation_class": "read",
+        "authority_class": null,
         "schema_reference": "mcp.preview_watch.inline@1",
         "capability_reference": null,
         "adapter_id": null,
         "contract_reference": null,
-        "pilot_exception": "watch.preview is outside the notice.search@1 pilot"
+        "pilot_exception": "watch.preview is outside the notice.search@1 pilot",
+        "bounds": null,
+        "annotations": null,
+        "store_access": null
       },
       {
         "name": "create_watch",
         "operation_class": "mutation",
+        "authority_class": null,
         "schema_reference": "mcp.create_watch.inline@1",
         "capability_reference": null,
         "adapter_id": null,
         "contract_reference": null,
-        "pilot_exception": "watch.create is an explicit mutation outside the notice.search@1 pilot"
+        "pilot_exception": "watch.create is an explicit mutation outside the notice.search@1 pilot",
+        "bounds": null,
+        "annotations": null,
+        "store_access": null
       }
     ]
   }

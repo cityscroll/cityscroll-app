@@ -3,6 +3,8 @@
 //
 // Tools give AI assistants the same capabilities the site offers people:
 //   search_notices / get_notice  — the D1 notices mirror (no model call, cheap)
+//   get_entity_dossier           — one bounded, attributed public entity record
+//   get_entity_relationships     — one bounded, evidence-bearing public graph
 //   retrieve_cited_passages      — typed source passages only (no model call, cheap)
 //   preview_watch                — plain English → lens filter → live results (LLM, metered)
 //   create_watch                 — plain English → immediate watch + welcome email (LLM, metered)
@@ -24,12 +26,24 @@ import {
   CITED_PASSAGES_SOURCE_FAMILIES,
 } from "../../capabilities/cited_passages.mjs";
 import {
+  ENTITY_DOSSIER_LIMITS,
+  executeEntityDossier,
+} from "../../capabilities/entity_dossier.mjs";
+import {
+  ENTITY_RELATIONSHIPS_LIMITS,
+  executeEntityRelationships,
+} from "../../capabilities/entity_relationships.mjs";
+import {
   MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
 export {
   MCP_CITED_PASSAGES_ADAPTER,
+  MCP_ENTITY_DOSSIER_ADAPTER,
+  MCP_ENTITY_RELATIONSHIPS_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
+  MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
+  MCP_PUBLIC_READ_ANNOTATIONS,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
@@ -41,6 +55,8 @@ import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
 import { workerCitedPassages } from "./cited_retrieval.mjs";
+import { workerD1EntityDossier } from "./entity_dossier.mjs";
+import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
@@ -111,6 +127,27 @@ export function mcpCitedPassagesInput(args = {}) {
   };
 }
 
+export function mcpEntityDossierInput(args = {}) {
+  return { entityId: String(args.entity_id || "").trim() };
+}
+
+export function mcpEntityRelationshipsInput(args = {}) {
+  return {
+    entityId: String(args.entity_id || "").trim(),
+    depth: args.depth == null ? ENTITY_RELATIONSHIPS_LIMITS.defaultDepth : Number(args.depth),
+    fanOut: args.fan_out == null ? ENTITY_RELATIONSHIPS_LIMITS.defaultFanOut : Number(args.fan_out),
+    nodeTypes: args.node_types,
+    edgeTypes: args.edge_types,
+  };
+}
+
+function structuredResult(result, summary) {
+  return {
+    content: [{ type: "text", text: summary }],
+    structuredContent: result,
+  };
+}
+
 async function fetchSodaRows(url, params) {
   const r = await fetch(`${url}?${new URLSearchParams(params).toString()}`);
   if (!r.ok) throw new Error(`open-data ${r.status}`);
@@ -151,7 +188,7 @@ async function callTool(env, req, name, args) {
       );
       // Bounded operational telemetry only: no query text, IP, or notice identifiers.
       console.log("notice-search:", JSON.stringify({ route: "mcp.search_notices", ...res.retrieval }));
-      return text(formatMcpNoticeSearchResult(res));
+      return structuredResult(res, formatMcpNoticeSearchResult(res));
     }
     case "get_notice": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
@@ -160,6 +197,27 @@ async function callTool(env, req, name, args) {
       const row = await env.DB.prepare("SELECT * FROM notices WHERE request_id = ?").bind(id).first();
       if (!row) return text(`No notice ${id} in the mirror. Full record: https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`);
       return text(JSON.stringify(toRecord(row), null, 1));
+    }
+    case "get_entity_dossier": {
+      const input = mcpEntityDossierInput(args);
+      if (!input.entityId) return toolError("entity_id is required.");
+      if (input.entityId.length > ENTITY_DOSSIER_LIMITS.entityIdMaximumLength) {
+        return toolError(`entity_id must be ${ENTITY_DOSSIER_LIMITS.entityIdMaximumLength} characters or fewer.`);
+      }
+      const result = await executeEntityDossier(workerD1EntityDossier(env.DB), input);
+      const summary = result.availability === "available"
+        ? `Returned the public dossier for ${result.dossier.entity.name}. Use the structured result for attributed facts and provenance.`
+        : `Entity dossier is ${result.availability.replaceAll("_", " ")} (${result.error}).`;
+      return structuredResult(result, summary);
+    }
+    case "get_entity_relationships": {
+      const input = mcpEntityRelationshipsInput(args);
+      if (!input.entityId) return toolError("entity_id is required.");
+      const result = await executeEntityRelationships(workerD1EntityRelationships(env.DB), input);
+      const summary = result.availability === "available"
+        ? `Returned ${result.graph.edges.length} bounded public relationship${result.graph.edges.length === 1 ? "" : "s"}. Use the structured result for evidence and provenance.`
+        : `Entity relationships are ${result.availability.replaceAll("_", " ")} (${result.error}).`;
+      return structuredResult(result, summary);
     }
     case "retrieve_cited_passages": {
       if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {
