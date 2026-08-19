@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T01:35:44.865Z",
+  "generatedAt": "2026-08-19T12:50:30.092Z",
   "dataDate": "2026-08-19",
   "scenarios": {
     "city-work-closing": {
@@ -8,11 +8,11 @@
       "href": "#money?mode=open&closing=week",
       "labelKey": "closing_this_week",
       "label": "Closing this week",
-      "count": 24,
+      "count": 23,
       "counts": {
-        "week": 24,
-        "open": 198,
-        "past": 53409
+        "week": 23,
+        "open": 203,
+        "past": 53428
       }
     },
     "city-work-all": {
@@ -20,9 +20,9 @@
       "href": "#money?mode=open",
       "labelKey": "tab_money",
       "label": "Contracts",
-      "count": 198,
+      "count": 203,
       "counts": {
-        "open": 198
+        "open": 203
       }
     },
     "neighborhood-land": {
@@ -50,9 +50,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 22,
+      "count": 24,
       "counts": {
-        "upcoming": 22
+        "upcoming": 24
       }
     },
     "hearings-meetings": {
@@ -60,9 +60,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 22,
+      "count": 24,
       "counts": {
-        "upcoming": 22
+        "upcoming": 24
       }
     },
     "hearings-rules": {
@@ -70,9 +70,9 @@
       "href": "#rules",
       "labelKey": "tab_rules",
       "label": "Rules",
-      "count": 3072,
+      "count": 3073,
       "counts": {
-        "rules": 3072
+        "rules": 3073
       }
     },
     "city-career-people": {
@@ -124,9 +124,9 @@
       "href": "#rules",
       "labelKey": "tab_rules",
       "label": "Rules",
-      "count": 3072,
+      "count": 3073,
       "counts": {
-        "rules": 3072
+        "rules": 3073
       }
     },
     "legal-meetings": {
@@ -134,9 +134,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 22,
+      "count": 24,
       "counts": {
-        "upcoming": 22
+        "upcoming": 24
       }
     }
   },
