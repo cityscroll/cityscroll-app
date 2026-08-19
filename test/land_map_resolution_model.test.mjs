@@ -291,6 +291,142 @@ test("no usable resolution returns unresolved location, borough/local coarse doe
   assert.equal(result.reason, "no-resolution");
 });
 
+test("2025R0257-shaped record resolves from WH-06 BBLs when zap-outcomes is missing", async () => {
+  const record = {
+    project_id: "2025R0257",
+    project_name: "Saw Mill Creek Marsh Park Addition",
+    borough: "Staten Island",
+  };
+  const bblSnapshot = { rows: [{ project_id: "2025R0257", bbls: ["5017800015"] }] };
+  const centroidLookup = {
+    by_bbl: { "5017800015": { lat: 40.6083294, lon: -74.1876383 } },
+  };
+  let geocodeCalls = 0;
+  const withoutWarehouse = await resolveLandMapLocation(record, null, {
+    centroidLookup,
+    geocode: async () => {
+      geocodeCalls += 1;
+      return null;
+    },
+  });
+  assert.equal(withoutWarehouse.status, "unresolved");
+  assert.equal(geocodeCalls, 1);
+
+  const result = await resolveLandMapLocation(record, null, {
+    bblSnapshot,
+    centroidLookup,
+    geocode: async () => {
+      throw new Error("geocode must not run after a WH-06 centroid hit");
+    },
+  });
+  assert.equal(result.status, "exact");
+  assert.equal(result.method, "bbl_mappluto_centroid");
+  assert.equal(result.bbl, "5017800015");
+  assert.equal(result.lat, 40.6083294);
+  assert.equal(result.lon, -74.1876383);
+  assert.deepEqual(collectProjectBbls(record, null, bblSnapshot.rows), ["5017800015"]);
+});
+
+test("2025R0257 committed WH-06 lot pins from MapPLUTO canary without /zap-outcomes", async () => {
+  const bblDoc = JSON.parse(
+    readFileSync(new URL("../site/data/zap_bbl_warehouse_lookup.json", import.meta.url), "utf8"),
+  );
+  const centroidLookup = JSON.parse(
+    readFileSync(new URL("../site/data/bbl_mappluto_centroids_lookup.json", import.meta.url), "utf8"),
+  );
+  const record = {
+    project_id: "2025R0257",
+    project_name: "Saw Mill Creek Marsh Park Addition",
+    borough: "Staten Island",
+  };
+  const result = await resolveLandMapLocation(record, null, {
+    bblSnapshot: bblDoc,
+    centroidLookup,
+    geocode: async () => {
+      throw new Error("geocode must not run after a WH-06 centroid hit");
+    },
+  });
+  assert.equal(result.status, "exact");
+  assert.equal(result.method, "bbl_mappluto_centroid");
+  assert.equal(result.bbl, "5017800015");
+  assert.equal(result.lat, 40.6083294);
+  assert.equal(result.lon, -74.1876383);
+});
+
+test("2024Q0419 committed WH-06 lots pin without /zap-outcomes BBLs", async () => {
+  const bblDoc = JSON.parse(
+    readFileSync(new URL("../site/data/zap_bbl_warehouse_lookup.json", import.meta.url), "utf8"),
+  );
+  const centroidLookup = JSON.parse(
+    readFileSync(new URL("../site/data/bbl_mappluto_centroids_lookup.json", import.meta.url), "utf8"),
+  );
+  const record = {
+    project_id: "2024Q0419",
+    project_name: "189-10 Northern Boulevard Rezoning",
+    borough: "Queens",
+  };
+  const bbls = collectProjectBbls(record, null, bblDoc.rows);
+  assert.ok(bbls.includes("4055130005"));
+  const result = await resolveLandMapLocation(record, null, {
+    bblSnapshot: bblDoc,
+    centroidLookup,
+    geocode: async () => {
+      throw new Error("geocode must not run after a WH-06 centroid hit");
+    },
+  });
+  assert.equal(result.status, "exact");
+  assert.equal(result.method, "bbl_mappluto_centroid");
+  assert.ok(Number.isFinite(result.lat));
+  assert.ok(Number.isFinite(result.lon));
+});
+
+test("showLandEntry opens a WH-06-only completed ULURP permalink the sell-facing warehouse dropped", async () => {
+  const showLandSrc = extractFunction(landSrc, "showLandEntry");
+  const calls = { selected: [] };
+  const row = { dataset: { i: "0" } };
+  const elements = {
+    "#llist": { innerHTML: "", querySelector: () => row },
+    "#ldetail": { innerHTML: "" },
+    "#lreshead": { textContent: "" },
+    "#lrescount": { textContent: "" },
+    "#lkw": { value: "" },
+    "#lstatus": { value: "active" },
+  };
+  const { showLandEntry } = new Function(
+    "fixture",
+    `
+      let landLoaded=false, landBanner="", landBorough="", lRows=[], landSelectionSeq=0;
+      const t=key => key;
+      const $=selector => fixture.elements[selector];
+      const showTab=()=>{};
+      const syncLandLensControls=()=>{};
+      const setLandStatus=()=>{};
+      const setLandResultCount=()=>{};
+      const focusItemRouteTarget=()=>{};
+      const applyActiveHistoryRouteScroll=()=>{};
+      const busyList=()=>{};
+      const unbusy=()=>{};
+      const clearLandDetail=()=>{};
+      const listSkeleton=()=>"";
+      const staleGuard=()=>()=>false;
+      const renderLandEntryNotFound=id => fixture.notFound.push(id);
+      const loadLandProjectsSnapshot=async () => [];
+      const loadLandBblSnapshot=async () => ({ rows: [{ project_id: "2025R0257", bbls: ["5017800015"] }] });
+      const bblsForProject=(rows, id) => (rows||[]).find(item => item.project_id===id)?.bbls || [];
+      const landRenderList=()=>{};
+      const landSelect=async (i, el) => fixture.calls.selected.push({ i, el, rows: lRows });
+      ${showLandSrc}
+      return { showLandEntry };
+    `,
+  )({ elements, calls, notFound: [] });
+
+  await showLandEntry("2025R0257");
+  assert.equal(calls.selected.length, 1);
+  assert.equal(calls.selected[0].rows[0].project_id, "2025R0257");
+  assert.deepEqual(calls.selected[0].rows[0].bbls, ["5017800015"]);
+  assert.equal(calls.selected[0].rows[0].borough, "Staten Island");
+});
+
 test("project/address evidence extraction includes DOB filing and normalized project fallback candidates", ()=>{
   const outcome = {
     dob:{filings:[{house_no:"1550",street_name:"BEDFORD AVENUE",borough:"BROOKLYN"}]},

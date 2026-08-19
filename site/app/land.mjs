@@ -13,6 +13,7 @@ import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import { createPrecomputedAddressGeocoder } from "../precomputed_address_geocoder.mjs";
 import {
+  bblsForProject,
   filterLandSnapshot,
   mergeLandProjects,
   projectIdsForBlock,
@@ -195,7 +196,7 @@ function normalizeLandBbl(value){
   const normalized = bbl.replace(/\D/g, "");
   return normalized ? normalized : bbl;
 }
-function collectProjectBbls(record, outcomeRecord){
+function collectProjectBbls(record, outcomeRecord, bblRows){
   const out = new Set();
   const add=(value)=>{
     const b=normalizeLandBbl(value);
@@ -205,6 +206,11 @@ function collectProjectBbls(record, outcomeRecord){
   if(Array.isArray(record?.bbls_list)) for(const b of record.bbls_list) add(b);
   if(record?.bbl) add(record.bbl);
   if(Array.isArray(outcomeRecord?.bbls)) for(const b of outcomeRecord.bbls) add(b);
+  const id=String(record?.project_id || "").trim();
+  if(id && Array.isArray(bblRows)){
+    const hit=bblRows.find((item)=>String(item?.project_id || "").trim()===id);
+    if(Array.isArray(hit?.bbls)) for(const b of hit.bbls) add(b);
+  }
   for(const filing of outcomeRecord?.dob?.filings || []){
     add(filing?.bbl);
   }
@@ -245,13 +251,13 @@ function collectAddressCandidates(record, outcomeRecord){
   }
   return out.map((q)=>`${q}${boro?` ${boro}`:""} New York`).map((q)=>q.replace(/\s+,/g,",").replace(/\s+/g," ").trim());
 }
-async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, geocode, centroidLookup} = {}){
+async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, geocode, centroidLookup, bblSnapshot} = {}){
   const outcome = outcomeRecord || null;
   const geoPoint = toFinitePoint(record) || toFinitePoint(outcome);
   if(geoPoint){
     return {status:"exact", precision:"exact", lat:geoPoint[0], lon:geoPoint[1], label: cleanText(record?.project_name || record?.borough || outcome?.project_name || outcome?.borough || ""), method:"authoritative_point"};
   }
-  const bbls = collectProjectBbls(record, outcome).slice(0,25);
+  const bbls = collectProjectBbls(record, outcome, bblSnapshot?.rows).slice(0,25);
   // Precedence: authoritative point → committed MapPLUTO BBL centroid → property geometry → address geocode → unresolved.
   // MapPLUTO stays off the resident hot path; only the retained centroid table is consulted here.
   if(bbls.length && centroidLookup){
@@ -865,11 +871,15 @@ async function landSelect(i, el){
     const outcomePayload = await fetchZapOutcomesPayload(r.project_id,{allowStatic:true}).catch(()=>null);
     const outcomeRecord = outcomePayload?.record ? normalizeLandRecord(outcomePayload.record) : null;
     if(selection!==landSelectionSeq) return;
-    const propertyPayload=await loadLandPropertySnapshot().catch(()=>null);
-    const centroidLookup=await loadLandBblCentroidSnapshot();
+    const [propertyPayload, centroidLookup, bblSnapshot] = await Promise.all([
+      loadLandPropertySnapshot().catch(()=>null),
+      loadLandBblCentroidSnapshot(),
+      loadLandBblSnapshot().catch(()=>null),
+    ]);
     const resolution = await resolveLandMapLocation(r, outcomeRecord, {
       propertyPayload,
       centroidLookup,
+      bblSnapshot,
       geocode:(q)=>geocode(q),
     });
     if(selection!==landSelectionSeq) return;
@@ -923,6 +933,15 @@ async function showLandEntry(id){
   let rows;
   try{
     rows=(await loadLandProjectsSnapshot()).filter(row=>String(row.project_id)===String(id)).slice(0,1);
+    if(!rows.length && typeof loadLandBblSnapshot==="function" && typeof bblsForProject==="function"){
+      const bblSnapshot=await loadLandBblSnapshot().catch(()=>null);
+      const bbls=bblsForProject(bblSnapshot?.rows, id);
+      if(bbls.length){
+        const boroDigit=String(bbls[0]||"").replace(/\D/g,"").padStart(10,"0")[0];
+        const borough={1:"Manhattan",2:"Bronx",3:"Brooklyn",4:"Queens",5:"Staten Island"}[boroDigit]||"";
+        rows=[{project_id:String(id), bbls, borough}];
+      }
+    }
   }catch(e){
     if(!stale()){
       unbusy("#llist");
