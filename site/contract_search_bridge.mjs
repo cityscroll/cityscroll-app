@@ -71,6 +71,15 @@ export function contractSearchDocumentToMoneyRow(candidate = {}) {
     notice_evidence: Object.freeze(noticeEvidence),
     source_system: contractSearchBridgeClean(carried?.source_system, 120) || document.source_family,
     source_systems: Object.freeze(Array.isArray(carried?.source_systems) ? carried.source_systems : []),
+    ...(contractSearchBridgeClean(carried?.method_family, 80)
+      ? { method_family: contractSearchBridgeClean(carried.method_family, 80) }
+      : {}),
+    ...(contractSearchBridgeClean(carried?.procurement_category, 80)
+      ? { procurement_category: contractSearchBridgeClean(carried.procurement_category, 80) }
+      : {}),
+    ...(contractSearchBridgeClean(carried?.coverage_state, 80)
+      ? { coverage_state: contractSearchBridgeClean(carried.coverage_state, 80) }
+      : {}),
     search_document: document,
   });
 }

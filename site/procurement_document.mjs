@@ -8,6 +8,7 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
+import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -66,6 +67,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
+${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({ heading: "Observed stages", body: stageList(object) })}
 ${renderNodeProvenance({ heading: noticeLinks.length ? "Official records" : "", sourceItems: noticeLinks })}
 </main>${renderNodeFooter({})}</body></html>`;

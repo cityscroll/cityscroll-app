@@ -90,6 +90,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   resolver. A `not_required` obligation requires an exact method-family, category, amount, and
   effective-date match. Publisher-label ambiguity or source absence remains `unknown` coverage,
   never a legal exemption. Focused proof: `test/procurement_policy_registry.test.mjs`.
+- **Procurement coverage labels:** `site/procurement_coverage_labels.mjs` is the resident
+  projector. Ordinary matched small-purchase rows may say public solicitation is not required;
+  M/WBE award-notice absence renders only after `required` plus `source_checked_no_record`.
+  Put counts in the sentence (`N observed, publisher reports M`); empty facets stay silent
+  without a publisher figure; never emit an always-on incompleteness caveat or a compliance
+  verdict. Exact publisher labels only — variants stay unlabeled. Proof:
+  `test/procurement_coverage_labels.test.mjs`.
 
 - Committee traversal exposes `public_reverse_edges` from the same accepted
   `member_of` observation in `site/committee_graph.mjs`; browse renders the
