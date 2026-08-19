@@ -107,22 +107,28 @@ test("DSNY congruence remains an independent equivalence/drift canary", () => {
   assert.equal(receipt.comparison.status, "drift_observed");
 });
 
-test("gs-03 layer names do not enter resident scope, Browse, map, or Near You surfaces", () => {
-  const residentSurfaces = [
-    "site/scope_v0.mjs",
+test("the registry exposes NTA and precinct only through Near You while DSNY and BID stay backstage", () => {
+  const nonNearYouSurfaces = [
     "site/browse_view.mjs",
     "site/map_exploration.mjs",
-    "site/near_you_view.mjs",
     "site/app/feed-actions.mjs",
     "site/app/core.mjs",
   ];
-  const prohibited = ["nta2020", "police_precinct", "sanitation_district", "business_improvement_district"];
-  for (const path of residentSurfaces) {
+  for (const path of nonNearYouSurfaces) {
     const source = readFileSync(new URL(path, ROOT), "utf8");
-    for (const type of prohibited) assert.ok(!source.includes(type), `${path} exposes ${type}`);
+    for (const type of ["nta2020", "police_precinct", "sanitation_district", "business_improvement_district"]) {
+      assert.ok(!source.includes(type), `${path} exposes ${type}`);
+    }
+  }
+  for (const path of ["site/scope_v0.mjs", "site/near_you_view.mjs"]) {
+    const source = readFileSync(new URL(path, ROOT), "utf8");
+    for (const type of ["nta2020", "police_precinct"]) assert.ok(source.includes(type), `${path} omits ${type}`);
+    for (const type of ["sanitation_district", "business_improvement_district"]) {
+      assert.ok(!source.includes(type), `${path} exposes backstage-only ${type}`);
+    }
   }
   const contracts = readJson("site/data/source_contracts.json");
-  for (const type of prohibited) {
+  for (const type of ["nta2020", "police_precinct", "sanitation_district", "business_improvement_district"]) {
     const sourceId = row(type).source.contract_id;
     assert.equal(contracts.contracts.find((contract) => contract.id === sourceId).health_policy.public_visibility, "backstage-only");
   }

@@ -8,7 +8,7 @@ function nearYouSlug(value) {
 }
 /** Resolve common bounded scopes to their built documents; leave every uncommon scope to the edge. */
 export function commonNearYouPath(input) {
-  const scope = normalizeScope(input);
+  const scope = scopeWithGeographies(input);
   const lens = scope.facets.domains?.[0] || "meetings";
   const borough = scope.place.boroughs?.[0] || null;
   const viewport = scope.place.viewport;
@@ -20,6 +20,7 @@ export function commonNearYouPath(input) {
       : (!viewport.level || viewport.level === "borough") && !viewport.parent));
   const hasOtherPlace = scope.place.community_districts?.length
     || scope.place.council_districts?.length
+    || scope.place.geographies?.length
     || scope.place.location_scope
     || scope.place.neighborhood;
   const hasOtherScope = scope.facets.agencies?.length
@@ -41,7 +42,7 @@ export function commonNearYouPath(input) {
 
 /** Serialize one shared scope into the versioned Near-you GET contract. */
 export function nearYouUrlFromScope(input, { base = "/near-you/" } = {}) {
-  const scope = normalizeScope(input);
+  const scope = scopeWithGeographies(input);
   const absolute = /^[a-z][a-z\d+.-]*:\/\//i.test(base);
   const url = new URL(base, "https://cityscroll.invalid");
   const params = url.searchParams;
@@ -56,6 +57,7 @@ export function nearYouUrlFromScope(input, { base = "/near-you/" } = {}) {
   set("boro", first(scope.place.boroughs));
   set("cd", first(scope.place.community_districts));
   set("council", first(scope.place.council_districts));
+  for (const key of scope.place.geographies || []) params.append("geo", key);
   set("neighborhood", scope.place.neighborhood);
   set("scope", scope.place.location_scope);
   set("level", scope.place.viewport?.level && scope.place.viewport.level !== "borough"
@@ -78,6 +80,50 @@ export function nearYouUrlFromScope(input, { base = "/near-you/" } = {}) {
 
 const sortedUnique = (values) => [...new Set((values || []).map(String).filter(Boolean))].sort();
 const sameValue = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+
+const PUBLIC_GEOGRAPHY_KEY = /^geography:(?:borough:[1-5]|community_district:(?:M|X|K|Q|R)\d{2}|council_district:(?:[1-9]|[1-4]\d|5[01])|nta2020:(?:BK|BX|MN|QN|SI)\d{4}|police_precinct:(?:[1-9]|[1-9]\d|1[01]\d|12[0-3]))$/;
+
+/** Public, stable geography identity accepted by scope/watch adapters. */
+export function normalizeGeographyKey(value) {
+  const key = String(value || "").trim();
+  return key.length <= 100 && PUBLIC_GEOGRAPHY_KEY.test(key) ? key : null;
+}
+
+export function geographyKeysFromScope(input = {}) {
+  return sortedUnique(Array.isArray(input?.place?.geographies)
+    ? input.place.geographies.map(normalizeGeographyKey).filter(Boolean)
+    : []);
+}
+
+/** Add typed geography keys without changing the compact scope-v0 compatibility wire. */
+export function scopeWithGeographies(input, keys = geographyKeysFromScope(input)) {
+  const scope = normalizeScope(input);
+  const geographies = sortedUnique((Array.isArray(keys) ? keys : [keys])
+    .map(normalizeGeographyKey).filter(Boolean));
+  if (!geographies.length) return scope;
+  return {
+    ...scope,
+    place: {
+      ...scope.place,
+      geographies,
+    },
+  };
+}
+
+/** Preserve legacy watch fields while adding the generic geography-key axis. */
+export function watchFromGeographyScope(input, options = {}) {
+  const watch = watchFromScope(input, options);
+  const geographies = geographyKeysFromScope(input);
+  if (!geographies.length) return watch;
+  return { ...watch, filter: { ...watch.filter, geographies } };
+}
+
+export function scopeFromGeographyWatch(watch = {}, options = {}) {
+  return scopeWithGeographies(
+    scopeFromWatch(watch, options),
+    watch?.filter?.geographies || watch?.filter?.geography || [],
+  );
+}
 
 function routableEntityRef(value) {
   const ref = String(value || "").trim();

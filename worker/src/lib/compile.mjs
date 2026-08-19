@@ -19,12 +19,14 @@ import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
+import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
 const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
 const DISTRICT_WEEKLY_DIGESTS = "https://cityscroll.org/data/district_weekly_digests.json";
+const DISTRICT_ACTIVITY = "https://cityscroll.org/data/district_activity.json";
 const AGENCY_OBLIGATIONS = "https://cityscroll.org/data/agency_obligations_lookup.json";
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
@@ -87,6 +89,40 @@ export function examOpenWindowBand(exam, todayISO) {
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
+  const geographyKeys = [...new Set((Array.isArray(f.geographies) ? f.geographies : [f.geography])
+    .map(normalizeGeographyKey).filter(Boolean))].sort();
+
+  if (["land", "property", "rules", "meetings", "money"].includes(sub.lens)
+      && geographyKeys.length) {
+    return {
+      url: DISTRICT_ACTIVITY,
+      params: {},
+      idField: "geography_item_id",
+      kind: sub.lens === "land" ? "rezone" : sub.lens,
+      transformRows: (payload) => {
+        const membershipSets = geographyKeys.map((key) =>
+          new Set(payload?.geography_items?.by_key?.[key]?.[sub.lens] || []));
+        const ids = membershipSets.length
+          ? [...membershipSets[0]].filter((id) => membershipSets.slice(1).every((set) => set.has(id)))
+          : [];
+        return ids.map((id) => payload?.records?.[sub.lens]?.[id]).filter(Boolean)
+          .filter((record) => !f.agency || String(record.agency || "") === String(f.agency))
+          .filter((record) => !kws.length || kws.every((keyword) =>
+            `${record.title || ""} ${record.agency || ""} ${record.type || ""}`
+              .toLowerCase().includes(String(keyword).toLowerCase())))
+          .map((record) => ({
+            ...record,
+            geography_item_id: `${sub.lens}:${record.id}`,
+            request_id: sub.lens === "land" ? null : record.id,
+            project_id: sub.lens === "land" ? record.id : null,
+            short_title: record.title,
+            agency_name: record.agency,
+            start_date: record.date,
+            type_of_notice_description: record.type,
+          }));
+      },
+    };
+  }
 
   if (sub.lens === "district") {
     const council = typeof f.councilDistrict === "string" && /^(?:[1-9]|[1-4]\d|5[01])$/.test(f.councilDistrict)

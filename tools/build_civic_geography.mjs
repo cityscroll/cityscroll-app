@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Build/check the first four backstage-only geography-spine layers. Source
+// Build/check the four independently acquired geography-spine layers. Source
 // acquisition is explicit: DCP archives are converted to WGS84 GeoJSON by the
 // operator, while Socrata exports stay source-native. The committed receipt
 // preserves both the fetched bytes and normalized-input fingerprints.
@@ -318,7 +318,13 @@ function checkFirstFour(types = FIRST_FOUR) {
       errors.push(`${type}: missing registry projection`);
       continue;
     }
-    if ((row.public_relations || []).length) errors.push(`${type}: ingestion-only layer declares public relations`);
+    const nearYouPublic = (row.declared_uses || []).includes("near_you_scope");
+    if (nearYouPublic && !(row.public_relations || []).includes("located_in")) {
+      errors.push(`${type}: Near You layer omits its public located_in relation`);
+    }
+    if (!nearYouPublic && (row.public_relations || []).length) {
+      errors.push(`${type}: backstage-only layer declares public relations`);
+    }
     if (!row.receipt?.path || !existsSync(join(ROOT, row.receipt.path))) {
       errors.push(`${type}: missing acquisition receipt`);
       continue;
@@ -363,7 +369,7 @@ async function main(argv = process.argv.slice(2)) {
       process.exitCode = 1;
       return;
     }
-    console.log(`civic geography: OK (${options.layers.length} ingestion-only layers)`);
+    console.log(`civic geography: OK (${options.layers.length} independently acquired layers)`);
     return;
   }
   if (!options.sourceDir) throw new Error("pass --source-dir with nta.geojson, pp.geojson, dsny.geojson, bid.geojson, and DCP archives");

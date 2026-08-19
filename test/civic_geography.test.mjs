@@ -21,7 +21,7 @@ import {
   normalizeCouncilDistrictSource,
 } from "../tools/lib/district_boundary_source_adapters.mjs";
 
-test("the registry is closed to the three baseline and four ingestion-only layers", () => {
+test("the registry is closed to the three baseline and four independently acquired layers", () => {
   assert.deepEqual(
     CIVIC_GEOGRAPHY_LAYERS.map((layer) => layer.type),
     [
@@ -47,6 +47,13 @@ test("the registry is closed to the three baseline and four ingestion-only layer
   assert.equal(civicGeographyKey("community_district", "Q04"), "geography:community_district:Q04");
   assert.equal(civicGeographyKey("council_district", "25"), "geography:council_district:25");
   assert.equal(civicGeographyKey("police_precinct", "110"), "geography:police_precinct:110");
+  assert.deepEqual(
+    CIVIC_GEOGRAPHY_LAYERS.filter((layer) => layer.declared_uses.includes("near_you_scope")).map((layer) => layer.type),
+    ["borough", "community_district", "council_district", "nta2020", "police_precinct"],
+  );
+  assert.ok(CIVIC_GEOGRAPHY_LAYERS
+    .filter((layer) => layer.declared_uses.includes("near_you_scope"))
+    .every((layer) => layer.declared_uses.includes("watch_scope")));
 });
 
 test("source-specific adapters stop source-native column names at the boundary", () => {

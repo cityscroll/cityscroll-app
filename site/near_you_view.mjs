@@ -8,15 +8,20 @@ import {
 } from "./map_exploration.mjs";
 import {
   nearYouUrlFromScope,
+  geographyKeysFromScope,
   normalizeScope,
   routeHashFromScope,
+  scopeWithGeographies,
   watchFromScope,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_BASIS_LABELS } from "./contract_action_location.mjs";
 import { scopeWithPlace } from "./near_you_scope_runtime.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { migrateLegacyUrl } from "./route_migration.mjs";
-import { selectNearYouExplanationPath } from "./near_you_explanation_path.mjs";
+import {
+  selectNearYouExplanationPath,
+  selectNearYouGeographyEvidence,
+} from "./near_you_explanation_path.mjs";
 import {
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
@@ -148,6 +153,12 @@ function intersection(ids, allowed) {
 
 function itemIdsForPlace(activity, lens, scope) {
   const index = activity?.district_items;
+  const geographyKeys = scope.place.geographies || [];
+  if (geographyKeys.length) {
+    const sets = geographyKeys.map((key) => new Set(activity?.geography_items?.by_key?.[key]?.[lens] || []));
+    if (!sets.length) return [];
+    return [...sets[0]].filter((id) => sets.slice(1).every((set) => set.has(id))).sort();
+  }
   const locationScope = scope.place.location_scope;
   if (locationScope && index?.[locationScope]?.[lens]) return index[locationScope][lens];
   const council = first(scope.place.council_districts);
@@ -221,7 +232,7 @@ function scopeForFeature(scope, feature) {
   return normalizeScope(next);
 }
 
-function scopeSummary(scope, lens) {
+function scopeSummary(scope, lens, geographyDefinitions = {}) {
   const chips = [{ axis: "lens", label: LENS_LABELS[lens] || lens }];
   const values = [
     ["borough", first(scope.place.boroughs)],
@@ -238,6 +249,13 @@ function scopeSummary(scope, lens) {
       return family !== "any" ? family.replace(/_/g, " ") : null;
     })()],
   ];
+  for (const key of scope.place.geographies || []) {
+    const definition = geographyDefinitions[key];
+    if (!definition) continue;
+    const axis = definition.type === "nta2020" ? "neighborhood tabulation area"
+      : definition.type === "police_precinct" ? "police precinct" : "geography";
+    values.splice(1, 0, [axis, definition.label]);
+  }
   if (lens === "money" && (scope.place.viewport?.basis || scope.facets.values?.basis) === "contract_action_address") {
     values.push(["map basis", "Contract response address"]);
     const actionBasis = scope.facets.values?.actionBasis;
@@ -251,6 +269,8 @@ function scopeSummary(scope, lens) {
 
 function watchHref(scope, lens, matchCount) {
   const watch = watchFromScope(scope, { lens });
+  const geographies = geographyKeysFromScope(scope);
+  if (geographies.length) watch.filter.geographies = geographies;
   return followingUrlFromWatch(watch, { matchCount });
 }
 
@@ -261,7 +281,7 @@ function recordSort(a, b) {
 }
 
 export function buildNearYouViewModel(inputScope, activity, boundaries, options = {}) {
-  const scope = normalizeScope(inputScope);
+  const scope = scopeWithGeographies(inputScope);
   const requestedLens = first(scope.facets.domains) || "meetings";
   const lens = requestedLens;
   const mapped = MAP_LENSES.includes(lens) && lens !== "all";
@@ -305,7 +325,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
   }));
   const resultIds = mapped ? intersection(itemIdsForPlace(activityRoot, lens, scope), allowed) : [];
   const hasPlace = !!(scope.place.boroughs.length || scope.place.community_districts.length
-    || scope.place.council_districts.length || scope.place.neighborhood
+    || scope.place.council_districts.length || (scope.place.geographies || []).length || scope.place.neighborhood
     || scope.place.location_scope);
   const linkedRecord = (record, { explain = true } = {}) => {
     const whyHere = explain
@@ -317,6 +337,7 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
       why_here: whyHere
         ? { ...whyHere, notice_href: siteHref(whyHere.notice_href) }
         : null,
+      geography_evidence: selectNearYouGeographyEvidence(record, scope),
     };
   };
   const resultRecords = resultIds.map((id) => records[id]).filter(Boolean).sort(recordSort).map(linkedRecord);
@@ -341,7 +362,11 @@ export function buildNearYouViewModel(inputScope, activity, boundaries, options 
     basisLabel: basisLayer?.basis_label || "Affected area or place of performance",
     hasPlace,
     lensLabel: LENS_LABELS[lens] || lens,
-    scopeSummary: scopeSummary(scope, lens),
+    scopeSummary: scopeSummary(scope, lens, activity?.geography_items?.definitions),
+    geographyOptions: Object.values(activity?.geography_items?.definitions || {})
+      .filter((definition) => ["nta2020", "police_precinct"].includes(definition.type))
+      .filter((definition) => (activity?.geography_items?.by_key?.[definition.key]?.[lens] || []).length > 0)
+      .sort((left, right) => left.type.localeCompare(right.type) || left.label.localeCompare(right.label)),
     results: { ids: resultIds, count: resultIds.length, records: resultRecords },
     features,
     max: mappedFeatures.max,
@@ -379,6 +404,9 @@ function dateLabel(value) {
 function placeRoleLabel(role) {
   if (role === "venue") return "Meeting venue";
   if (role === "matter") return "Matter place";
+  if (role === "property_affected") return "Affected property";
+  if (role === "project_geometry") return "Project area";
+  if (role === "place_of_performance") return "Place of performance";
   return "Affected area";
 }
 
@@ -399,6 +427,21 @@ function whyHerePath(path) {
     <span class="near-record-why-separator" aria-hidden="true">·</span>
     <span class="near-record-why-step">Process: <a href="${esc(path.agency?.href)}">${esc(path.agency?.name)}</a> → <a href="${esc(path.notice_href)}" title="${esc(path.mandate?.duty_text)}">Mandate: ${esc(mandateLabel)}</a></span>
     <span class="near-record-why-source">Public location and civic-process links</span>
+  </div>`;
+}
+
+function geographyEvidence(evidence) {
+  if (!evidence) return "";
+  return `<div class="near-record-why" data-geography-evidence="1"
+    data-geography-key="${esc(evidence.key)}"
+    data-geography-source="${esc(evidence.source_id)}"
+    data-boundary-vintage="${esc(evidence.boundary_vintage)}"
+    aria-label="Why this geography matched">
+    <strong>Why this place matched</strong>
+    <span class="near-record-why-step">${esc(placeRoleLabel(evidence.location_role))}: ${esc(evidence.label)}</span>
+    <span class="near-record-why-separator" aria-hidden="true">·</span>
+    <span class="near-record-why-step">${esc(evidence.basis)}</span>
+    <span class="near-record-why-source">Publisher boundary ${esc(evidence.boundary_vintage)}</span>
   </div>`;
 }
 
@@ -426,7 +469,7 @@ function recordCard(record) {
       <span>${esc(dateLabel(record.date))}</span>
     </div>
     ${meetingSource}
-    <div class="near-record-basis"><strong>${esc(placement)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>${whyHerePath(record.why_here)}
+    <div class="near-record-basis"><strong>${esc(placement)}</strong>${record.confidence ? ` · ${esc(record.confidence)} basis` : ""}</div>${geographyEvidence(record.geography_evidence)}${whyHerePath(record.why_here)}
   </li>`;
 }
 
@@ -460,6 +503,19 @@ function basisOptions(current) {
     <option value="contract_action_address"${current === "contract_action_address" ? " selected" : ""}>Contract response address</option>`;
 }
 
+function geographyOptions(options, current) {
+  const groups = [
+    ["nta2020", "Neighborhood tabulation areas"],
+    ["police_precinct", "Police precincts"],
+  ];
+  return `<option value="">All registered geographies</option>${groups.map(([type, label]) => {
+    const rows = (options || []).filter((option) => option.type === type);
+    if (!rows.length) return "";
+    return `<optgroup label="${esc(label)}">${rows.map((option) =>
+      `<option value="${esc(option.key)}"${option.key === current ? " selected" : ""}>${esc(option.label)}</option>`).join("")}</optgroup>`;
+  }).join("")}`;
+}
+
 export function renderNearYouBody(view) {
   const scopeChips = view.scopeSummary
     .map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
@@ -485,6 +541,7 @@ export function renderNearYouBody(view) {
     ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match these filters.`)}
   </details>`).join("");
   const currentBorough = first(view.scope.place.boroughs);
+  const currentGeography = first(view.scope.place.geographies);
   const walkQuery = view.scope.topic?.query || first(view.scope.topic?.keywords);
   const walkFamilies = Object.entries(LENS_LABELS).map(([lens, label]) => {
     const nextScope = normalizeScope({
@@ -560,7 +617,7 @@ export function renderNearYouBody(view) {
       <p class="near-map-status" data-map-status aria-live="polite"></p>
     </section>
     <form class="near-form" id="near-place-fields" method="get" action="${esc(view.canonicalBase)}">
-      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "neighborhood", "scope", "id", "parent", "basis"]))}
+      ${hiddenScopeFields(view.scope, new Set(["lens", "agency", "type", "boro", "cd", "council", "geo", "neighborhood", "scope", "id", "parent", "basis"]))}
       <label>Lens<select name="lens">${lensOptions(view.lens)}</select></label>
       <label>Agency<input name="agency" value="${esc(first(view.scope.facets.agencies) || "")}" placeholder="Any agency"></label>
       <label>Type<input name="type" value="${esc(view.scope.facets.values?.type || "")}" placeholder="Any record type"></label>
@@ -568,6 +625,7 @@ export function renderNearYouBody(view) {
       <label>Neighborhood<input name="neighborhood" value="${esc(view.scope.place.neighborhood || "")}" placeholder="e.g. Elmhurst"></label>
       <label>Community district<input name="cd" value="${esc(first(view.scope.place.community_districts) || "")}" placeholder="e.g. Q04" pattern="[MXKQR][0-9]{2}"></label>
       <label>Council district<input name="council" value="${esc(first(view.scope.place.council_districts) || "")}" placeholder="1–51" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])"></label>
+      <label>Neighborhood or precinct<select name="geo">${geographyOptions(view.geographyOptions, currentGeography)}</select></label>
       ${view.lens === "money" ? `<label>Location basis<select name="basis">${basisOptions(view.basis)}</select></label>` : ""}
       <button type="submit">Apply filters</button>
     </form>

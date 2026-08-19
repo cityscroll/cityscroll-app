@@ -61,6 +61,12 @@ import {
   communityDistrictIdFromBoardOntology,
   councilDistrictsIntersectingCommunity,
 } from "../../site/community_board_geography.mjs";
+import { resolveCivicGeographies } from "../../site/civic_geography.mjs";
+import {
+  CIVIC_GEOGRAPHY_LAYERS,
+  civicGeographyKey,
+  civicGeographyLayer,
+} from "../../site/civic_geography_registry.mjs";
 
 export { DISTRICT_ACTIVITY_SCHEMA };
 
@@ -72,6 +78,95 @@ export const GEOGRAPHY_LOCATION_METHOD = "district_activity_placement_v1";
 export const GEOGRAPHY_LOCATION_METHOD_VERSION = "1.0.0";
 
 const LENSES = ["land", "property", "rules", "meetings", "money"];
+export const NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES = Object.freeze(CIVIC_GEOGRAPHY_LAYERS
+  .filter((definition) => definition.declared_uses.includes("near_you_scope"))
+  .map((definition) => definition.type));
+
+const BOROUGH_GEOGRAPHY_IDS = Object.freeze({
+  Manhattan: "1",
+  Bronx: "2",
+  Brooklyn: "3",
+  Queens: "4",
+  "Staten Island": "5",
+});
+
+function locationRoleForRecord(lens, basis) {
+  if (lens === "land") return "project_geometry";
+  if (lens === "property") return "property_affected";
+  if (lens === "money") return "place_of_performance";
+  if (lens === "meetings" && basis === "Venue / logistics") return "venue";
+  return "subject_affected_area";
+}
+
+function featureForMatch(layer, id) {
+  return layer?.features?.find((feature) => String(feature?.id) === String(id)) || null;
+}
+
+function genericMatchFromSlot(type, id, slot, layerByType, place) {
+  const key = civicGeographyKey(type, id);
+  if (!key) return null;
+  const layer = layerByType.get(type);
+  const feature = featureForMatch(layer, id);
+  const definition = civicGeographyLayer(type);
+  return {
+    key,
+    type,
+    id: String(id),
+    label: String(feature?.label || id),
+    class: definition?.class || null,
+    relation: "located_in",
+    method: slot.geography_method || slot.method || "structured_bag",
+    source_id: layer?.source?.contract_id || definition?.source?.contract_id || null,
+    boundary_vintage: layer?.vintage?.id || null,
+    location_role: place.location_role,
+    basis: place.basis,
+    confidence: place.confidence,
+  };
+}
+
+/** Project one domain placement into registry-declared geography identities. */
+function geographiesForSlots(lens, slots, geographyLayers) {
+  const placeBasis = compactRecordBasis(lens, slots);
+  const place = {
+    location_role: locationRoleForRecord(lens, placeBasis.basis),
+    basis: placeBasis.basis,
+    confidence: placeBasis.confidence,
+  };
+  const layerByType = new Map((geographyLayers || []).map((layer) => [layer?.type, layer]));
+  const matches = new Map();
+  for (const slot of slots || []) {
+    if (isCitywidePlacement(slot) || isVirtualPlacement(slot)) continue;
+    const route = geographyPlacementDecision(slot);
+    const add = (match) => {
+      if (!match?.key || matches.has(match.key)) return;
+      matches.set(match.key, { ...match, visibility: route.decision });
+    };
+    const point = slot.point;
+    if (Number.isFinite(Number(point?.lat)) && Number.isFinite(Number(point?.lon))) {
+      const resolved = resolveCivicGeographies(point.lat, point.lon, {
+        types: NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES,
+        layerData: geographyLayers,
+      });
+      for (const match of resolved.matches) {
+        add({
+          ...match,
+          relation: "located_in",
+          location_role: place.location_role,
+          basis: place.basis,
+          confidence: place.confidence,
+        });
+      }
+    }
+    const boroughId = BOROUGH_GEOGRAPHY_IDS[slot.borough];
+    add(genericMatchFromSlot("borough", boroughId, slot, layerByType, place));
+    add(genericMatchFromSlot("community_district", slot.community, slot, layerByType, place));
+    add(genericMatchFromSlot("council_district", slot.council, slot, layerByType, place));
+  }
+  return {
+    ...place,
+    geographies: [...matches.values()].sort((left, right) => left.key.localeCompare(right.key)),
+  };
+}
 
 function emptyItemLensSets() {
   return Object.fromEntries(LENSES.map((lens) => [lens, new Set()]));
@@ -370,7 +465,13 @@ export function propertyPlacementsFromRow(row, boundaries) {
     if (!borough && community) borough = boroughFromCommunityId(community);
   }
   return borough || community || council
-    ? [{ borough, community, council, method: coords ? "coordinates_pip" : null }]
+    ? [{
+        borough,
+        community,
+        council,
+        method: coords ? "coordinates_pip" : null,
+        ...(coords ? { point: coords } : {}),
+      }]
     : [];
 }
 
@@ -494,6 +595,7 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
       borough,
       community,
       council,
+      ...(slot.point ? { point: slot.point } : {}),
       ...(slot.method ? { method: slot.method } : {}),
       ...(councilMethod ? { council_method: councilMethod } : {}),
       ...(slot.source_method || sourceMethod
@@ -547,6 +649,7 @@ export function placementsFromLocatedArea(area, boundaries, opts = {}) {
       community,
       council,
       method: geocodeHit ? "civic_address_pip" : "coordinates_pip",
+      point: coords,
     });
   }
 
@@ -904,7 +1007,7 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
       ? boroughFromCommunityId(community)
       : canonBorough(row?.borough);
     if (community || council || borough) {
-      return annotate([{ borough, community, council }], "coordinates_pip", 0.95);
+      return annotate([{ borough, community, council, point: coords }], "coordinates_pip", 0.95);
     }
   }
 
@@ -922,6 +1025,7 @@ export function moneyPlacementsFromRow(row, boundaries, opts = {}) {
           borough,
           community,
           council,
+          point: { lat: geo.lat, lon: geo.lon },
           ...(stamped?.derivation?.role === "vendor" || row?.vendor_address
             ? { source_method: stamped?.derivation?.methods?.[0] || "vendor_address" }
             : {}),
@@ -1222,6 +1326,25 @@ export function buildDistrictActivity(opts = {}) {
     money: { corpus: "money_domain_observations", counted: 0, located: 0, by_method: Object.create(null) },
   };
   const geographyMemberships = new Map();
+  const geographyItemSets = new Map();
+  const geographyDefinitions = new Map();
+
+  function addGeographyItem(lens, itemId, geography) {
+    if (!itemId || geography?.visibility !== "public") return;
+    if (!geographyItemSets.has(geography.key)) geographyItemSets.set(geography.key, emptyItemLensSets());
+    geographyItemSets.get(geography.key)[lens].add(String(itemId));
+    if (!geographyDefinitions.has(geography.key)) {
+      geographyDefinitions.set(geography.key, {
+        key: geography.key,
+        type: geography.type,
+        id: geography.id,
+        label: geography.label,
+        class: geography.class,
+        source_id: geography.source_id,
+        boundary_vintage: geography.boundary_vintage,
+      });
+    }
+  }
 
   function itemSubjectRef(lens, itemId) {
     if (lens === "meetings" && String(itemId || "").startsWith("meeting:")) {
@@ -1467,7 +1590,11 @@ export function buildDistrictActivity(opts = {}) {
 
   function record(lens, row, slots) {
     const compact = compactDistrictRecord(lens, row, slots);
-    if (compact) records[lens][compact.id] = compact;
+    if (compact) {
+      compact.place = geographiesForSlots(lens, slots, opts.geographyLayers || []);
+      records[lens][compact.id] = compact;
+      for (const geography of compact.place.geographies) addGeographyItem(lens, compact.id, geography);
+    }
     return compact?.id || null;
   }
 
@@ -1583,6 +1710,19 @@ export function buildDistrictActivity(opts = {}) {
     virtual: Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(districtItemSets.virtual[lens])])),
     unlocated: Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(districtItemSets.unlocated[lens])])),
     note: "Exact list membership stamped by the same placement pass as map counts; no client-side place reinterpretation.",
+  };
+  const geographyItems = {
+    schema: "cityscroll.geography_items.v1",
+    built_at: builtAt,
+    lenses: LENSES.slice(),
+    public_types: NEAR_YOU_PUBLIC_GEOGRAPHY_TYPES.slice(),
+    definitions: Object.fromEntries([...geographyDefinitions.entries()].sort(([left], [right]) =>
+      left.localeCompare(right))),
+    by_key: Object.fromEntries([...geographyItemSets.entries()]
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, lenses]) => [key,
+        Object.fromEntries(LENSES.map((lens) => [lens, sortedIds(lenses[lens])]))])),
+    note: "Public typed geography membership from the same role- and basis-preserving placement pass as Near You. Sanitation districts and BIDs remain ingestion-only.",
   };
 
   // For indexed lenses, the set cardinality is the authoritative count. This
@@ -1714,6 +1854,7 @@ export function buildDistrictActivity(opts = {}) {
     unlocated_reasons: unlocatedReasons,
     sources,
     district_items: districtItems,
+    geography_items: geographyItems,
     geography_subjects: geographySubjects,
     explanation_paths: {
       schema: "cityscroll.near_you_explanation_paths.v1",

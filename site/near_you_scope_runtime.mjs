@@ -3,7 +3,7 @@ import {
   nearYouUrlFromScope,
   NEAR_YOU_COMMON_BOROUGHS,
   NEAR_YOU_COMMON_LENSES,
-  normalizeScope,
+  scopeWithGeographies,
   scopeFromRouteHash,
 } from "./scope_v0.mjs";
 import { ACTION_LOCATION_FACET_KEYS } from "./action_location_keys.mjs";
@@ -17,7 +17,7 @@ export {
 
 /** Add or replace only the place axis; every non-place scope axis survives. */
 export function scopeWithPlace(input, place = {}) {
-  const scope = normalizeScope(input);
+  const scope = scopeWithGeographies(input);
   const next = { ...scope, place: { ...scope.place } };
   const has = (name) => Object.prototype.hasOwnProperty.call(place || {}, name);
   const borough = place.borough ?? place.boro;
@@ -26,23 +26,27 @@ export function scopeWithPlace(input, place = {}) {
   const locationScope = place.location_scope ?? place.locationScope ?? place.scope;
 
   if (has("borough") || has("boro")) {
+    next.place.geographies = [];
     next.place.boroughs = borough ? [borough] : [];
     next.place.community_districts = [];
     next.place.council_districts = [];
     next.place.location_scope = null;
   }
   if (has("community_district") || has("communityDistrict") || has("cd")) {
+    next.place.geographies = [];
     next.place.community_districts = community ? [community] : [];
     next.place.council_districts = [];
     next.place.location_scope = null;
     if (borough) next.place.boroughs = [borough];
   }
   if (has("council_district") || has("councilDistrict") || has("council")) {
+    next.place.geographies = [];
     next.place.council_districts = council ? [council] : [];
     next.place.community_districts = [];
     next.place.location_scope = null;
   }
   if (has("location_scope") || has("locationScope") || has("scope")) {
+    next.place.geographies = [];
     next.place.location_scope = locationScope || null;
     next.place.boroughs = [];
     next.place.community_districts = [];
@@ -50,7 +54,7 @@ export function scopeWithPlace(input, place = {}) {
   }
   if (has("neighborhood")) next.place.neighborhood = place.neighborhood || null;
   next.place.viewport = has("viewport") ? place.viewport || null : null;
-  return normalizeScope(next);
+  return scopeWithGeographies(next, next.place.geographies);
 }
 
 /** Parse the inspectable GET representation used by build and edge Near-you documents. */
@@ -68,7 +72,7 @@ export function scopeFromNearYouUrl(input, { language = "en" } = {}) {
       scope.facets.values.actionBasis = "unknown";
     }
   }
-  return normalizeScope(scope, { language });
+  return scopeWithGeographies(scope, params.getAll("geo"));
 }
 
 /** Convert the legacy map hash into the canonical Near-you GET URL. */
