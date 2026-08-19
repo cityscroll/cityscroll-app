@@ -2142,8 +2142,11 @@ worker/test/rulemaking_siblings.test.mjs worker/test/legistar.test.mjs`.
 ## Ops contract (desk ↔ worker)
 
 Versioned machine-readable ops schema so private desk panels stay mechanically aligned
-with the public worker (digest modes, daylog actions/fields, stats metrics, admin routes
-+ auth classes, KV prefixes, feature flags). No secrets; never on public `/stats`.
+with the public worker (digest modes, daylog actions/fields, stats metrics, signup
+lifecycle, admin routes + auth classes, KV prefixes, feature flags). No secrets; never
+on public `/stats`. `signup_lifecycle` on `GET /admin/subs` (JSON or `?view=html`) is the
+SL-01 ops-visibility surface: recovered / pending-enrollment stays intermediate until a
+digest day after the recovery watermark, then enrolled.
 
 - Pure builder: `worker/src/lib/ops_contract.mjs` → committed fixture
   `worker/ops-contract.v1.json`
@@ -2229,7 +2232,9 @@ the e2e test marker). Caller-supplied rows cannot shrink that set. The daily
 digest cron applies it fail-soft after `runAlerts`; `POST /admin/recover-deprecated-opt-in`
 uses the same path. `signupLifecycleFromRecord` projects `recovered` /
 `pending-enrollment` until a digest day after the recovery watermark, then
-`enrolled`. Topicless homepage intents stay `confirmed`. Proof:
+`enrolled`. `summarizeSignupLifecycle` is the category view (`"3 recovered, pending"`
+then `"enrolled"`) rendered by `GET /admin/subs?view=html`. Topicless homepage intents
+stay `confirmed`. Proof:
 `worker/test/recovered_signups.test.mjs`, `worker/test/subscriptions.test.mjs`,
 `worker/test/rollup.test.mjs`.
 

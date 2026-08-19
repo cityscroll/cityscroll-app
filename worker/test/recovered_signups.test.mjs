@@ -1,7 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import { handleAdminDeprecatedOptInRecovery, handleAdminSubs, handleAdminWatchLog } from "../src/admin.mjs";
+import {
+  handleAdminDeprecatedOptInRecovery,
+  handleAdminSubs,
+  handleAdminWatchLog,
+  renderSignupLifecyclePage,
+} from "../src/admin.mjs";
 import {
   DEPRECATED_OPT_IN_RECOVERY_SOURCE,
   RECOVERY_EXPLANATION,
@@ -110,6 +115,9 @@ test("admin read surfaces show recovery timestamps, provenance, explanation, and
   assert.equal(subs.confirmedSubs, 0);
   assert.equal(subs.recoveredPendingCount, 3);
   assert.equal(subs.enrolledCount, 0);
+  assert.equal(subs.signup_lifecycle.recovered_pending, 3);
+  assert.equal(subs.signup_lifecycle.enrolled, 0);
+  assert.equal(subs.signup_lifecycle.summary, "3 recovered, pending");
   assert.equal(subs.developerTestAccounts.length, 1);
   assert.equal(subs.developerTestAccounts[0].status, SIGNUP_LIFECYCLE.TEST);
   assert.equal(subs.developerTestAccounts[0].signup_lifecycle, SIGNUP_LIFECYCLE.TEST);
@@ -140,6 +148,45 @@ test("admin read surfaces show recovery timestamps, provenance, explanation, and
     assert.equal(event.recovered_at, "2026-08-18T23:00:00.000Z");
     assert.equal(event.detail, RECOVERY_EXPLANATION);
   }
+});
+
+test("ops HTML renders recovered / pending-enrollment as the intermediate category before enrolled", async () => {
+  const env = environment();
+  await recover(env);
+  const pendingHtmlResponse = await handleAdminSubs(
+    new Request("https://worker/admin/subs?key=secret&view=html"),
+    env,
+  );
+  assert.equal(pendingHtmlResponse.status, 200);
+  assert.match(pendingHtmlResponse.headers.get("Content-Type"), /text\/html/);
+  const pendingHtml = await pendingHtmlResponse.text();
+  assert.match(pendingHtml, /3 recovered, pending/);
+  assert.match(pendingHtml, /recovered \/ pending-enrollment/);
+  assert.match(pendingHtml, /pending-enrollment/);
+  assert.match(pendingHtml, /data-signup-category="enrolled"/);
+  assert.doesNotMatch(pendingHtml, />3 enrolled</);
+
+  for (const key of [...env.ALERT_STATE.data.keys()].filter((name) => name.startsWith("lastsent:"))) {
+    await env.ALERT_STATE.put(key, "2026-08-24");
+  }
+  const enrolledHtml = await (await handleAdminSubs(
+    new Request("https://worker/admin/subs?key=secret&view=html"),
+    env,
+  )).text();
+  assert.match(enrolledHtml, /3 enrolled/);
+  assert.doesNotMatch(enrolledHtml, /3 recovered, pending/);
+  const enrolledJson = await (await handleAdminSubs(
+    new Request("https://worker/admin/subs?key=secret"),
+    env,
+  )).json();
+  assert.equal(enrolledJson.signup_lifecycle.recovered_pending, 0);
+  assert.equal(enrolledJson.signup_lifecycle.enrolled, 3);
+  assert.equal(enrolledJson.signup_lifecycle.summary, "3 enrolled");
+  for (const row of enrolledJson.subs) {
+    assert.equal(row.signup_lifecycle, SIGNUP_LIFECYCLE.ENROLLED);
+    assert.equal(row.status, SIGNUP_LIFECYCLE.ENROLLED);
+  }
+  assert.match(renderSignupLifecyclePage(enrolledJson), /3 enrolled/);
 });
 
 test("ops visibility is derived from recovered records, including a restamped manual insertion", async () => {
