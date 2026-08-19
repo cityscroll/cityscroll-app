@@ -478,9 +478,20 @@ function assertInterpretation(query, world) {
   if (Object.hasOwn(expected, "expansion")) {
     assert.equal(world.resolved.alias, expected.expansion, `${query.id} no expansion`);
   }
+  if (expected.expansion_tokens) {
+    assert.deepEqual(world.resolved.expansion_tokens, expected.expansion_tokens, `${query.id} expansion tokens`);
+  }
+  if (expected.expansion_receipt) {
+    assert.equal(world.resolved.expansion?.receipt, expected.expansion_receipt, `${query.id} expansion receipt`);
+  }
   if (expected.does_not_expand_to) {
     for (const token of expected.does_not_expand_to) {
       assert.equal(world.resolved.canonical_tokens.includes(token), false, `${query.id} expanded to ${token}`);
+      assert.equal(
+        (world.resolved.expansion_tokens || []).includes(token),
+        false,
+        `${query.id} synonym-expanded to ${token}`,
+      );
     }
   }
   if (expected.tidal_tokens) {

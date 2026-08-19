@@ -97,6 +97,31 @@ test("the committed complete award materialization makes mosquito findable", () 
   assert.ok(generic.documents.every((document) => document.domain === "contracts"));
 });
 
+test("reviewed school expansion recalls an education-only award without a school token", () => {
+  const lookup = {
+    ...LOOKUP,
+    rows: [
+      ...LOOKUP.rows,
+      {
+        request_id: "education-synonym-fixture",
+        start_date: "2026-08-01",
+        agency_name: "Education Department",
+        type_of_notice_description: "Award",
+        short_title: "Education Department professional development",
+        pin: "EDU26S0001001",
+        contract_amount: "120000",
+        vendor_name: "Fixture Vendor",
+      },
+    ],
+  };
+  const result = searchContractAwardDocuments(lookup, "school");
+  assert.deepEqual(result.documents.map((document) => document.object_ref), [
+    "procurement:EDU26S0001001",
+  ]);
+  const evidence = matchKeywordDocument(result.documents[0], resolveKeywordQuery("school"));
+  assert.equal(evidence.matched_normalized_term, "education");
+});
+
 test("rat does not retrieve infix award titles and keeps whole-token evidence", () => {
   const lookup = JSON.parse(readFileSync(
     new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url),

@@ -635,15 +635,20 @@
         "interpretation": {
           "via": "resolve_keyword_query",
           "canonical_tokens": ["school"],
-          "does_not_expand_to": ["education"]
+          "expansion_tokens": ["education"],
+          "expansion_receipt": "reviewed_synonym_v1"
         },
         "recall": {
-          "expected": "miss",
-          "must_not_include": ["procurement:education-synonym-fixture"]
-        }
+          "must_include": ["procurement:education-synonym-fixture"]
+        },
+        "type_domain": {
+          "object_type": "procurement",
+          "domain": "contracts"
+        },
+        "canonical_route": "/browse/contracts/?mode=award&q=education-synonym-fixture"
       },
-      "eval": ["interpretation", "recall"],
-      "notes": "Keyword /search does not expand school→education today. Device NL has separate education/schools dictionary entries, not a synonym expander. Encode the current miss rather than an aspiration."
+      "eval": ["interpretation", "recall", "type_domain", "canonical_route"],
+      "notes": "Reviewed synonym expansion ORs school→education behind this fixture. Canonical identity stays school; the education-only document is recalled via expansion_tokens with receipt reviewed_synonym_v1."
     },
     {
       "id": "gq-rodenticide-attachment",
