@@ -1,0 +1,72 @@
+{
+  "schema": "cityscroll.geography_ingestion_receipt.v1",
+  "type": "business_improvement_district",
+  "acquired_at": "2026-08-18T16:00:00.000Z",
+  "boundary_vintage": "2024-10-08",
+  "source": {
+    "contract_id": "business-improvement-district-boundaries",
+    "publisher": "NYC Department of Small Business Services",
+    "dataset_id": "7jdm-inj8",
+    "url": "https://data.cityofnewyork.us/resource/7jdm-inj8.geojson?$limit=500",
+    "publisher_updated_at": "2024-10-08T15:54:16.000Z",
+    "sha256": "034b0df5df044c87ac6d8e5e03c779e65157068738135cce828116d64541acc4",
+    "bytes": 2332920,
+    "source_feature_count": 76
+  },
+  "normalized_input": {
+    "format": "GeoJSON",
+    "crs": "EPSG:4326",
+    "sha256": "034b0df5df044c87ac6d8e5e03c779e65157068738135cce828116d64541acc4",
+    "bytes": 2332920
+  },
+  "admission": {
+    "accepted_feature_count": 74,
+    "rejected_feature_count": 2,
+    "rejected_features": [
+      {
+        "source_index": 0,
+        "source_row_id": "0",
+        "source_name": "Long Island City Partnership",
+        "reason": "zero_or_invalid_source_row_id"
+      },
+      {
+        "source_index": 1,
+        "source_row_id": "0",
+        "source_name": "Cypress Hills Fulton",
+        "reason": "zero_or_invalid_source_row_id"
+      }
+    ],
+    "rejected_identity_fields": [
+      {
+        "field": "id",
+        "reason": "publisher column is zero for every current row"
+      },
+      {
+        "field": "objectid_1",
+        "reason": "publisher column is zero for every current row"
+      },
+      {
+        "field": "f_all_bids",
+        "reason": "publisher column contains duplicate zero identifiers"
+      }
+    ]
+  },
+  "artifacts": {
+    "full": {
+      "path": "data/geography/layers/business_improvement_district/2024-10-08.full.json",
+      "sha256": "b5e9c56add79c62448f28f2e8aa41158e61ac41c1f3f3ac6ff71310293c7fee8",
+      "geometry_fidelity": "full"
+    },
+    "simplified": {
+      "site_path": "site/data/geography/layers/business_improvement_district/2024-10-08.json",
+      "worker_path": "worker/src/data/geography/layers/business_improvement_district/2024-10-08.json",
+      "sha256": "08068826530cf25cf0e3bbea40150c176d09dd23ccd0de69acb90939237fe64f",
+      "geometry_fidelity": "simplified"
+    }
+  },
+  "qa": {
+    "point_canaries": "data/geography/qa/first_four_point_canaries.json",
+    "pluto_cross_checks": "data/geography/qa/first_four_pluto_cross_checks.json",
+    "moda_oracle": "data/geography/oracles/moda-v2025.09.29.json"
+  }
+}

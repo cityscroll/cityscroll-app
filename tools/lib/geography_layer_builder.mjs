@@ -148,9 +148,23 @@ export function buildGeographyLayer({
   }
   if (!["full", "simplified"].includes(fidelity)) throw new Error(`unknown geometry fidelity ${fidelity}`);
   const features = [];
+  const seenIds = new Set();
+  const allowedSubtypes = definition.subtypes?.allowed
+    ? new Set(definition.subtypes.allowed)
+    : null;
   for (const row of normalizedFeatures || []) {
     const key = civicGeographyKey(definition.type, row.id);
     if (!key) throw new Error(`${definition.type}: invalid canonical id ${String(row.id)}`);
+    if (seenIds.has(String(row.id))) {
+      throw new Error(`${definition.type}: duplicate canonical id ${String(row.id)}`);
+    }
+    seenIds.add(String(row.id));
+    if (definition.subtypes?.required && !row.subtype) {
+      throw new Error(`${definition.type}:${row.id}: subtype is required`);
+    }
+    if (row.subtype && allowedSubtypes && !allowedSubtypes.has(row.subtype)) {
+      throw new Error(`${definition.type}:${row.id}: unknown subtype ${String(row.subtype)}`);
+    }
     const geometry = normalizeMultiPolygonGeometry(row.geometry, {
       fidelity,
       tolerance: deliveryTolerance,

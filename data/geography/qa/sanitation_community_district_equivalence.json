@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.geography_equivalence_canary.v1",
+  "generated_at": "2026-08-18T16:00:00.000Z",
+  "claim": "DSNY publishes sanitation districts as congruent with Community Districts.",
+  "from": { "type": "sanitation_district", "boundary_vintage": "2024-04-10", "feature_count": 59 },
+  "to": { "type": "community_district", "boundary_vintage": "2026-05-26", "regular_feature_count": 59 },
+  "mapping": "districtcode borough digit + district number to CityScroll M/X/K/Q/R Community District id",
+  "comparison": {
+    "method": "polygon_intersection_epsg2263",
+    "pair_count": 59,
+    "minimum_pct_from": 99.681375,
+    "minimum_pct_to": 96.665557,
+    "status": "drift_observed",
+    "reason": "The independent publisher vintages are not identical; retain both identities and report overlap drift instead of aliasing either layer."
+  },
+  "largest_observed_drifts": [
+    { "sanitation_district": "210", "community_district": "X10", "pct_from": 99.887322, "pct_to": 96.665557 },
+    { "sanitation_district": "101", "community_district": "M01", "pct_from": 99.699965, "pct_to": 97.342284 },
+    { "sanitation_district": "202", "community_district": "X02", "pct_from": 99.912003, "pct_to": 98.502778 }
+  ]
+}
