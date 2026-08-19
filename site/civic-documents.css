@@ -2603,7 +2603,7 @@ select {
   font-weight: 700;
 }
 
-.data-health-coverage h4 {
+.data-health-coverage-heading {
   margin: 0 0 var(--space-2);
   font: 700 0.75rem/1.2 var(--font-label, system-ui);
   letter-spacing: 0.08em;
