@@ -15,7 +15,7 @@
     "schema": "cityscroll.performance.operator_inventory.v1",
     "manifest_version": "rum-surfaces-v1",
     "registry_version": "1.0.0",
-    "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889",
+    "registry_hash": "f5617f450471b7e71293462ce037716b69d46747336289f42f54ea7f05331f1c",
     "metrics": [
       {
         "metric_id": "cls_score",
@@ -1324,6 +1324,62 @@
     ],
     "components": [
       {
+        "component_id": "agency-identity",
+        "operator_label": "Agency constellation / identity",
+        "kind": "component",
+        "parent": "surface:agency",
+        "route_family": "entity-agency",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "hybrid",
+        "applicable_metric_ids": [
+          "component_ready_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "component-ready-v1",
+          "metric_id": "component_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+        },
+        "lifecycle_state": "instrumented",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/civic_time_ledger_runtime.mjs"
+      },
+      {
+        "component_id": "agency-relationships",
+        "operator_label": "Agency constellation / related records",
+        "kind": "component",
+        "parent": "component:agency-identity",
+        "route_family": "entity-agency",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "hybrid",
+        "applicable_metric_ids": [
+          "component_ready_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "component-ready-v1",
+          "metric_id": "component_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+        },
+        "lifecycle_state": "instrumented",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/civic_time_ledger_runtime.mjs"
+      },
+      {
         "component_id": "browse-contracts-filter-apply",
         "operator_label": "Browse / Contracts / filter application",
         "kind": "interaction",
@@ -1556,6 +1612,34 @@
         "owner_source_path": "site/home_entry.mjs"
       },
       {
+        "component_id": "land-outcomes",
+        "operator_label": "Zoning / asynchronous outcomes",
+        "kind": "component",
+        "parent": "surface:browse-zoning",
+        "route_family": "browse-zoning",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "hybrid",
+        "applicable_metric_ids": [
+          "component_ready_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "component-ready-v1",
+          "metric_id": "component_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+        },
+        "lifecycle_state": "instrumented",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/app/land.mjs"
+      },
+      {
         "component_id": "near-you-borough",
         "operator_label": "Near You / borough scope",
         "kind": "component",
@@ -1650,7 +1734,7 @@
       },
       {
         "component_id": "near-you-map",
-        "operator_label": "Near You / map and activity",
+        "operator_label": "Near You / usable map frame",
         "kind": "component",
         "parent": "surface:near-you",
         "route_family": "place-near-you",
@@ -1670,11 +1754,39 @@
           ],
           "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
         },
-        "lifecycle_state": "planned",
+        "lifecycle_state": "instrumented",
         "aliases": [],
         "supersedes": [],
         "introduced_version": "1.0.0",
         "owner_source_path": "site/near_you_view.mjs"
+      },
+      {
+        "component_id": "near-you-map-data",
+        "operator_label": "Near You / relevant map data",
+        "kind": "component",
+        "parent": "component:near-you-map",
+        "route_family": "place-near-you",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "hybrid",
+        "applicable_metric_ids": [
+          "component_ready_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "component-ready-v1",
+          "metric_id": "component_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+        },
+        "lifecycle_state": "instrumented",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/app/map.mjs"
       },
       {
         "component_id": "near-you-scope-change",
@@ -1798,14 +1910,14 @@
     "status": "uninstrumented",
     "registered": {
       "surface_count": 36,
-      "component_count": 16,
+      "component_count": 20,
       "surfaces_by_state": {
         "planned": 33,
         "instrumented": 3
       },
       "components_by_state": {
-        "instrumented": 4,
-        "planned": 12
+        "instrumented": 9,
+        "planned": 11
       }
     },
     "selection": {

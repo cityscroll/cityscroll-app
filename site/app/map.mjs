@@ -2,12 +2,15 @@
    It never creates or clears the page root. Every interaction retains a link/form fallback. */
 
 import {
+  MAP_LENSES,
   defaultViewBox,
   panViewBox,
   zoomViewBox,
 } from "../map_exploration.mjs";
 import { resolveDistricts } from "../council_district_lookup.mjs";
 import { nearYouUrlFromMapHash } from "../near_you_scope_runtime.mjs";
+import { reportNearYouMapReadiness } from "../rum_maps_entities_async.mjs";
+import { currentRumSemanticMilestones } from "../rum_semantic_runtime.mjs";
 
 const root = document.querySelector("[data-near-you-root]");
 const NEAR_YOU_STRING_DATASETS = Object.freeze({
@@ -319,6 +322,15 @@ function wireIsland() {
   wireGeolocation();
   wireForms();
   wireSurfaceSwitch();
+  const mapped = MAP_LENSES.includes(root.dataset.lens) && root.dataset.lens !== "all";
+  const resultCount = Number(root.querySelector("[data-results-count]")?.dataset.resultsCount);
+  const dataState = mapped && Number.isFinite(resultCount)
+    ? (resultCount > 0 ? "content" : "empty")
+    : "unavailable";
+  reportNearYouMapReadiness(currentRumSemanticMilestones(), {
+    frameReady: Boolean(root.querySelector("#nearMapSvg") && root.querySelector("#near-area-list")),
+    dataState,
+  });
 }
 
 if (root) {

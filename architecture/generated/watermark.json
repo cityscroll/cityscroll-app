@@ -57,12 +57,12 @@
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "f46296833320860944056d8a6280cf3a81437bed34ffd732dc48f3df515bde47"
+      "fingerprint": "06621f74407191b1b18e78ddb15c1d82c2df534682aab94f09cbbe8d5d0041dc"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
-      "count": 52,
-      "fingerprint": "aa7a319f872158641e0c4d75a196e50122b76243a8ebc9ecf2ede3eab7e0ce9e"
+      "count": 56,
+      "fingerprint": "d5476b790841e75c1c570669b20bfac2fae86c3bb1470455efc8d5981490ee30"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -140,13 +140,13 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889"
+      "registry_hash": "f5617f450471b7e71293462ce037716b69d46747336289f42f54ea7f05331f1c"
     },
     "registry": {
       "version": "1.0.0",
       "manifest_version": "rum-surfaces-v1",
       "surface_count": 36,
-      "component_count": 16,
+      "component_count": 20,
       "classifications": {
         "surfaces": {
           "instrumented": 3,
@@ -158,9 +158,9 @@
           "retired": 0
         },
         "components": {
-          "instrumented": 4,
+          "instrumented": 9,
           "registered_no_data": 0,
-          "planned": 12,
+          "planned": 11,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,

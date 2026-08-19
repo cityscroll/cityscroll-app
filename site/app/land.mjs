@@ -43,6 +43,8 @@ import {
 } from "../land_regulatory_effect.mjs";
 import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { zapActionDisplayLabels } from "../zap_action_labels.mjs";
+import { reportLandOutcomeReadiness } from "../rum_maps_entities_async.mjs";
+import { currentRumSemanticMilestones } from "../rum_semantic_runtime.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -1518,7 +1520,9 @@ function landOutcomeAbsentHTML(record){
 function landOutcomeFirstPaintHTML(r){
   const hit=r?.project_id?zapOutcomesMemGet(r.project_id):null;
   const record=hit?.data?.record;
-  if(!record||record.snapshot_state==="absent") return "";
+  if(!record) return "";
+  reportLandOutcomeReadiness(currentRumSemanticMilestones(),{record});
+  if(record.snapshot_state==="absent") return "";
   return landOutcomeSnapshotHTML(record,null);
 }
 function landOutcomeSnapshotHTML(record,phaseTools,listRow){
@@ -1666,6 +1670,7 @@ async function loadZapOutcomes(r, el, selection){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
     const record = normalizeLandRecord(warm.data.record);
+    reportLandOutcomeReadiness(currentRumSemanticMilestones(),{record});
     el.innerHTML = warm.staticSnapshot
       ? landOutcomeSnapshotHTML(record,phaseTools,r)
       : landOutcomesHTML(record,phaseTools,r);
@@ -1689,11 +1694,15 @@ async function loadZapOutcomes(r, el, selection){
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
+    reportLandOutcomeReadiness(currentRumSemanticMilestones(),{
+      requestState:data?.ok === false?"error":"unavailable"
+    });
     // Preserve a static first paint on transient freshness failures. An empty
     // region is allowed only when this project was outside the bounded snapshot.
     return;
   }
   const record = normalizeLandRecord(data.record);
+  reportLandOutcomeReadiness(currentRumSemanticMilestones(),{record});
   await paintProjectConnections(record,selection);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
