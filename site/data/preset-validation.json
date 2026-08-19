@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T01:18:19.659Z",
+  "generatedAt": "2026-08-19T01:35:44.865Z",
   "dataDate": "2026-08-19",
   "scenarios": {
     "city-work-closing": {
@@ -165,12 +165,12 @@
       ],
       "rules": [
         0,
-        1,
         2,
         4
       ],
       "meetings": [
-        4
+        4,
+        5
       ],
       "alerts": [
         0,
@@ -192,7 +192,7 @@
           "category": "Construction/Construction Services",
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": false,
+          "excludeSpecial": true,
           "closingWeek": false,
           "route": null,
           "name": null,
@@ -203,7 +203,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?mode=award&min=500000&category=Construction%2FConstruction+Services",
+          "route": "/browse/contracts/?mode=award&min=500000&category=Construction%2FConstruction+Services&standard=1",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -225,8 +225,8 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it",
-            "consulting"
+            "consulting",
+            "information technology"
           ],
           "agency": null,
           "minAmount": null,
@@ -234,7 +234,7 @@
           "category": null,
           "months": null,
           "noticeType": "solicitation",
-          "excludeSpecial": true,
+          "excludeSpecial": false,
           "closingWeek": false,
           "route": null,
           "name": null,
@@ -245,7 +245,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=it+consulting&standard=1",
+          "route": "/browse/contracts/?q=consulting+information+technology",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -402,7 +402,7 @@
           "months": null,
           "noticeType": null,
           "excludeSpecial": true,
-          "closingWeek": false,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,
@@ -412,7 +412,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=senior+center&standard=1",
+          "route": "/browse/contracts/?q=senior+center&standard=1&closing=week",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -440,7 +440,7 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": true,
+          "excludeSpecial": false,
           "closingWeek": true,
           "route": null,
           "name": null,
@@ -451,7 +451,7 @@
         "count": 12,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?standard=1&closing=week",
+          "route": "/browse/contracts/?closing=week",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -473,7 +473,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -547,7 +547,7 @@
           "lookupType": "role",
           "view": "guide",
           "interestArea": null,
-          "interestLabel": null,
+          "interestLabel": "<UNKNOWN>",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -611,7 +611,7 @@
         "filter": {
           "keywords": [],
           "boro": "Bronx",
-          "status": null,
+          "status": "active",
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
@@ -644,7 +644,7 @@
         "text": "HPD property sales",
         "filter": {
           "keywords": [],
-          "agency": "Department of Housing Preservation and Development",
+          "agency": "Housing Preservation Department",
           "process": null,
           "stage": null,
           "asset": "realty",
@@ -687,9 +687,7 @@
         "idx": 2,
         "text": "police department property",
         "filter": {
-          "keywords": [
-            "police"
-          ],
+          "keywords": [],
           "agency": "Police Department",
           "process": null,
           "stage": null,
@@ -710,7 +708,7 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks Department",
           "process": null,
           "stage": null,
           "asset": null,
@@ -765,10 +763,10 @@
           "keywords": [
             "sanitation"
           ],
-          "agency": null,
+          "agency": "Department of Sanitation",
           "process": null
         },
-        "count": 140
+        "count": 0
       },
       {
         "lens": "rules",
@@ -855,7 +853,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "scheduled",
+          "process": "held",
           "nearMe": false
         },
         "count": 0
@@ -875,7 +873,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "hearing",
           "nearMe": false
         },
         "count": 0
@@ -906,13 +904,13 @@
           "agency": null,
           "when": "week",
           "borough": null,
-          "neighborhood": "<UNKNOWN>",
+          "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
           "process": "public_process",
           "nearMe": false
         },
-        "count": 0
+        "count": 12
       },
       {
         "lens": "alerts",
@@ -954,15 +952,15 @@
           "category": null,
           "months": 3,
           "noticeType": null,
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 2
+        "count": 1245
       },
       {
         "lens": "alerts",
@@ -1004,8 +1002,8 @@
           "category": null,
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
