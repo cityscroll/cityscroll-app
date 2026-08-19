@@ -1,5 +1,7 @@
 import { classifyPerformancePathname } from "./performance_route_classifier.mjs";
 
+export { classifyPerformancePathname };
+
 const WEB_VITAL_NAMES = Object.freeze({
   CLS: "cls_score",
   FCP: "fcp_ms",
@@ -33,7 +35,7 @@ function validManifest(manifest) {
     manifest
     && manifest.schema === "cityscroll.performance.browser_manifest.v1"
     && typeof manifest.manifest_version === "string"
-    && manifest.collector?.production_enabled === false
+    && typeof manifest.collector?.production_enabled === "boolean"
     && Array.isArray(manifest.collector?.field_metric_ids)
     && Array.isArray(manifest.metrics)
     && Array.isArray(manifest.surfaces),
@@ -103,13 +105,17 @@ function classificationRecord(classification, manifest) {
  */
 export async function startBrowserRumCollector({
   testOnly = false,
+  production = false,
   manifest,
   pathname,
   runtime = globalThis,
   sink,
   webVitals,
 } = {}) {
-  if (testOnly !== true) return { state: "disabled" };
+  if (testOnly !== true && production !== true) return { state: "disabled" };
+  if (production === true && manifest?.collector?.production_enabled !== true) {
+    return { state: "disabled" };
+  }
   if (!validManifest(manifest)) {
     safeRecord(sink, {
       record_type: "classification",
@@ -172,7 +178,7 @@ export async function startBrowserRumCollector({
           device_class: deviceClass,
           navigation_type: navType,
           delivery_class: classification.delivery_class,
-          traffic_class: "test",
+          traffic_class: production === true ? "production" : "test",
           collector_version: manifest.collector.collector_version,
           manifest_version: manifest.manifest_version,
         });

@@ -27,9 +27,14 @@ function browserAfterNextPaint(callback) {
  * used only to keep overlapping async renders from settling the wrong input.
  */
 export function createContractsRumInstrumentation({
-  rum = createRumSemanticMilestones(),
+  rum,
+  getRum,
   afterNextPaint = browserAfterNextPaint,
 } = {}) {
+  function activeRum() {
+    if (typeof getRum === "function") return getRum();
+    return rum || createRumSemanticMilestones();
+  }
   let active = null;
 
   function cancel(action) {
@@ -57,7 +62,7 @@ export function createContractsRumInstrumentation({
       feedbackReady: false,
       resultState: null,
       state: "active",
-      milestones: rum.interactionStart({
+      milestones: activeRum().interactionStart({
         surfaceId: CONTRACTS_RUM_IDS.surface,
         componentId: CONTRACTS_RUM_IDS.filter,
       }),
@@ -88,8 +93,8 @@ export function createContractsRumInstrumentation({
     const bounded = boundedTerminalState(resultState);
     if (!bounded) return { state: "invalid" };
 
-    rum.surfaceReady({ surfaceId: CONTRACTS_RUM_IDS.surface, resultState: bounded });
-    rum.componentReady({
+    activeRum().surfaceReady({ surfaceId: CONTRACTS_RUM_IDS.surface, resultState: bounded });
+    activeRum().componentReady({
       surfaceId: CONTRACTS_RUM_IDS.surface,
       componentId: CONTRACTS_RUM_IDS.results,
       resultState: bounded,

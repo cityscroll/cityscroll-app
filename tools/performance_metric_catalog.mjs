@@ -114,7 +114,9 @@ export function validatePerformanceMetricCatalog(catalog) {
     fail("collector must use the standard web-vitals build");
   }
   if (!SEMVER.test(collectorContract.library_version)) fail("collector library_version must be semantic versioning");
-  if (collectorContract.production_enabled !== false) fail("collector must remain production-disabled before pilot");
+  if (typeof collectorContract.production_enabled !== "boolean") {
+    fail("collector production_enabled must be an explicit boolean");
+  }
   assertUniqueStrings(collectorContract.field_metric_ids, "collector field_metric_ids");
   assertUniqueStrings(collectorContract.device_classes, "collector device_classes");
   assertUniqueStrings(collectorContract.navigation_types, "collector navigation_types");
