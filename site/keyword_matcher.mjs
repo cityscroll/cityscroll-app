@@ -11,9 +11,13 @@
  *   plural in either direction so "rat" ↔ "rats" without stemming "rate".
  * - Reviewed aliases (ida → Industrial Development Agency) stay agency
  *   filters, not token expansions.
+ * - Reviewed synonym expansions (school → education) store expansion_tokens[]
+ *   plus a receipt. Retrieval may OR those tokens; canonical identity stays
+ *   the literal query. Unreviewed synonyms and typos do not expand.
  * - A surfaced keyword hit must produce offset-backed evidence. If the
  *   matched token cannot be marked in a publisher field, the hit is
- *   unjustified and must not be published.
+ *   unjustified and must not be published. The marked term is the document
+ *   token that matched, including an expansion hit.
  *
  * Retrieval and explanation consume the same resolved term. Character offsets
  * are retained only so clients can render the exact publisher passage safely.
@@ -26,6 +30,7 @@ export const KEYWORD_MATCH_SEMANTICS = Object.freeze({
   prefix: false,
   simple_regular_plural: true,
   reviewed_aliases: true,
+  reviewed_synonym_expansion: true,
   evidence_required: true,
 });
 
@@ -45,6 +50,17 @@ const REVIEWED_ALIASES = Object.freeze({
     agency_id: "industrial-development-agency",
   }),
 });
+
+/** Closed reviewed synonym table. A pair lands only with a fixture that turns
+ *  a documented miss into a hit without flipping other gold identities. */
+export const REVIEWED_SYNONYM_EXPANSIONS = Object.freeze({
+  school: Object.freeze({
+    expansion_tokens: Object.freeze(["education"]),
+    receipt: "reviewed_synonym_v1",
+  }),
+});
+
+const MAX_EXPANSION_SEQUENCES = 8;
 
 function clean(value, max = MAX_QUERY_LENGTH) {
   return String(value ?? "")
@@ -99,7 +115,59 @@ export function keywordTokens(value) {
 }
 
 function retrievalVariants(token) {
-  return Object.freeze([...new Set([token.normalized, token.canonical])]);
+  const variants = [token.normalized, token.canonical];
+  const expansion = REVIEWED_SYNONYM_EXPANSIONS[token.canonical];
+  if (expansion) variants.push(...expansion.expansion_tokens);
+  return Object.freeze([...new Set(variants)]);
+}
+
+function reviewedExpansion(literalTokens, alias) {
+  if (alias) {
+    return Object.freeze({
+      tokens: Object.freeze([]),
+      receipt: null,
+      pairs: Object.freeze([]),
+    });
+  }
+  const tokens = [];
+  const pairs = [];
+  for (const token of literalTokens) {
+    const expansion = REVIEWED_SYNONYM_EXPANSIONS[token.canonical];
+    if (!expansion) continue;
+    for (const extra of expansion.expansion_tokens) {
+      if (extra === token.canonical || extra === token.normalized) continue;
+      if (!tokens.includes(extra)) tokens.push(extra);
+      pairs.push(Object.freeze({
+        from: token.canonical,
+        to: extra,
+        receipt: expansion.receipt,
+      }));
+    }
+  }
+  const receipts = [...new Set(pairs.map((pair) => pair.receipt))];
+  return Object.freeze({
+    tokens: Object.freeze(tokens),
+    receipt: receipts.length === 1 ? receipts[0] : null,
+    pairs: Object.freeze(pairs),
+  });
+}
+
+function matchSequences(canonicalTokens) {
+  if (!canonicalTokens.length) return Object.freeze([]);
+  const sequences = [Object.freeze([...canonicalTokens])];
+  for (let index = 0; index < canonicalTokens.length; index += 1) {
+    const expansion = REVIEWED_SYNONYM_EXPANSIONS[canonicalTokens[index]];
+    if (!expansion) continue;
+    for (const extra of expansion.expansion_tokens) {
+      if (sequences.length >= MAX_EXPANSION_SEQUENCES) break;
+      if (extra === canonicalTokens[index]) continue;
+      const next = canonicalTokens.slice();
+      next[index] = extra;
+      sequences.push(Object.freeze(next));
+    }
+    if (sequences.length >= MAX_EXPANSION_SEQUENCES) break;
+  }
+  return Object.freeze(sequences);
 }
 
 export function resolveKeywordQuery(value) {
@@ -108,6 +176,7 @@ export function resolveKeywordQuery(value) {
   const aliasKey = literalTokens.length === 1 ? literalTokens[0].normalized : null;
   const alias = REVIEWED_ALIASES[aliasKey] || null;
   const resolvedTokens = alias ? keywordTokens(alias.canonical) : literalTokens;
+  const expansion = reviewedExpansion(literalTokens, alias);
   return Object.freeze({
     raw_query: rawQuery,
     match_mode: "keyword",
@@ -123,6 +192,11 @@ export function resolveKeywordQuery(value) {
       input: aliasKey,
       canonical: alias.canonical,
       receipt: "reviewed_agency_alias_v1",
+    }) : null,
+    expansion_tokens: expansion.tokens,
+    expansion: expansion.receipt ? Object.freeze({
+      receipt: expansion.receipt,
+      pairs: expansion.pairs,
     }) : null,
   });
 }
@@ -160,15 +234,16 @@ function sequenceStart(tokens, canonicalTokens) {
 /** True when `value` contains the resolved query as an adjacent whole-token sequence. */
 export function keywordTextMatches(value, resolved = resolveKeywordQuery("")) {
   if (!resolved.canonical_tokens?.length) return false;
-  return sequenceStart(keywordTokens(value), resolved.canonical_tokens) >= 0;
+  const tokens = keywordTokens(value);
+  return matchSequences(resolved.canonical_tokens).some((sequence) => (
+    sequenceStart(tokens, sequence) >= 0
+  ));
 }
 
-function evidenceForField(field, value, resolved, sourceIdentifier) {
-  const text = clean(value, 8_000);
-  const tokens = keywordTokens(text);
-  const startToken = sequenceStart(tokens, resolved.canonical_tokens);
+function evidenceForSequence(field, text, tokens, sequence, sourceIdentifier) {
+  const startToken = sequenceStart(tokens, sequence);
   if (startToken < 0) return null;
-  const endToken = startToken + resolved.canonical_tokens.length;
+  const endToken = startToken + sequence.length;
   const charStart = tokens[startToken].start;
   const charEnd = tokens[endToken - 1].end;
   const snippetStart = Math.max(0, charStart - SNIPPET_RADIUS);
@@ -181,7 +256,7 @@ function evidenceForField(field, value, resolved, sourceIdentifier) {
     field,
     token_offsets: Object.freeze([startToken, endToken]),
     character_offsets: Object.freeze([charStart, charEnd]),
-    matched_normalized_term: resolved.canonical_tokens.join(" "),
+    matched_normalized_term: sequence.join(" "),
     source_identifier: sourceIdentifier,
     snippet: Object.freeze({
       text: passage,
@@ -189,6 +264,16 @@ function evidenceForField(field, value, resolved, sourceIdentifier) {
       mark_end: prefixLength + charEnd - snippetStart,
     }),
   });
+}
+
+function evidenceForField(field, value, resolved, sourceIdentifier) {
+  const text = clean(value, 8_000);
+  const tokens = keywordTokens(text);
+  for (const sequence of matchSequences(resolved.canonical_tokens)) {
+    const evidence = evidenceForSequence(field, text, tokens, sequence, sourceIdentifier);
+    if (evidence) return evidence;
+  }
+  return null;
 }
 
 export function matchKeywordDocument(document = {}, resolved = resolveKeywordQuery("")) {
