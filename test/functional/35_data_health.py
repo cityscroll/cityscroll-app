@@ -26,6 +26,9 @@ def test_data_health_page():
         assert "data may be incomplete" not in body.lower()
         assert "join_coverage" not in html
         assert "snapshot_sha" not in html
+        assert "date_reported_as_of" not in html
+        assert "Official source" not in html
+        assert "Source unavailable" not in html
         assert "1970" not in html
         assert page.locator(".data-health-condition").count() >= 1
         assert page.locator(".data-health-coverage").count() >= 1

@@ -115,7 +115,7 @@ const HEALTH_LABELS = Object.freeze({
   Healthy: "Healthy",
   Delayed: "Delayed",
   Degraded: "Degraded",
-  "Source-unavailable": "Source unavailable",
+  "Source-unavailable": "Not currently served",
   "Limited-coverage": "Limited coverage",
   Historical: "Historical",
   "Manual-refresh": "Manual refresh",
@@ -160,6 +160,11 @@ function esc(value) {
 
 function clean(value) {
   return typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
+}
+
+function publicCadence(value) {
+  const text = clean(value).replace(/\s*\([^)]*_[^)]*\)/g, "").trim();
+  return text.replace(/\b[a-z]+(?:_[a-z0-9]+)+\b/g, "").replace(/\s{2,}/g, " ").trim();
 }
 
 export function productAreaForSource(sourceId) {
@@ -255,7 +260,7 @@ function sourceCard(row) {
     name: clean(row?.name) || "Unnamed source",
     publisher: clean(row?.publisher),
     official_url: clean(row?.official_url) || null,
-    expected_cadence: clean(row?.expected_cadence),
+    expected_cadence: publicCadence(row?.expected_cadence),
     mode: clean(row?.mode) || "UNKNOWN",
     area_id: productAreaForSource(row?.source_id),
     health_status: healthStatus,
@@ -313,7 +318,7 @@ function renderClock(clock) {
 
 function renderSourceCard(card) {
   const official = card.official_url
-    ? `<a class="data-health-official" href="${esc(card.official_url)}" target="_blank" rel="noopener noreferrer">Official source ↗</a>`
+    ? `<a class="data-health-official" href="${esc(card.official_url)}" target="_blank" rel="noopener noreferrer">Official page ↗</a>`
     : "";
   const cadence = card.expected_cadence
     ? `<p class="data-health-meta">${esc([card.publisher, card.expected_cadence].filter(Boolean).join(" · "))}</p>`
