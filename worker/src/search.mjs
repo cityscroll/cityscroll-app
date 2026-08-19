@@ -23,6 +23,7 @@ import {
   resolveKeywordQuery,
   searchKeywordDocuments,
 } from "../../site/keyword_matcher.mjs";
+import { searchLandKeywordFamily } from "../../site/land_keyword_soda_missfill.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const RESULT_LIMIT = 100;
@@ -295,6 +296,43 @@ async function noticeSearchLanes(env, resolved) {
         unknownLane(id, config.source, "notice_search_failed"),
       ])),
     };
+  }
+}
+
+async function landSearchLane(resolved, { fetchImpl = fetch, now = new Date() } = {}) {
+  const family = keywordSearchIndex?.families?.land;
+  if (!family) return staticSearchLane("land", resolved);
+  try {
+    const result = await searchLandKeywordFamily(family, resolved, {
+      fetchImpl,
+      now,
+      limit: Number(family.indexed_count || family.documents?.length || 0) + 8,
+    });
+    return laneEnvelope("land", {
+      status: result.matches.length ? "matched" : "empty",
+      count: result.matches.length,
+      asOf: result.freshness.as_of,
+      source: result.source,
+      cards: result.matches.slice(0, CARD_LIMIT).map((document) => publicCard(
+        Object.fromEntries(Object.entries(document).filter(([key]) => key !== "match_evidence")),
+        document.match_evidence,
+      )),
+      coverage: Object.freeze({
+        bounded: true,
+        source_row_count: family.source_row_count,
+        indexed_count: family.indexed_count,
+        card_limit: CARD_LIMIT,
+        freshness_state: result.freshness.state,
+        warehouse_as_of: result.freshness.warehouse_as_of,
+        soda_as_of: result.freshness.soda_as_of,
+        filled_project_ids: result.freshness.filled_project_ids,
+      }),
+    });
+  } catch (error) {
+    console.error("land keyword search failed:", JSON.stringify({
+      error: String(error?.message || error),
+    }));
+    return unknownLane("land", family.source, "bounded_family_search_failed");
   }
 }
 
@@ -631,7 +669,7 @@ export async function handleSearch(request, env) {
     parcels: parcelsLane,
     committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,
-    land: staticSearchLane("land", resolved),
+    land: await landSearchLane(resolved),
     meetings: staticSearchLane("meetings", resolved),
     exams: staticSearchLane("exams", resolved),
   };
