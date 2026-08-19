@@ -273,7 +273,6 @@ export function renderEntityPivotLink(pivotInput = {}, {
   const accessible = showRelation
     ? `${pivot.relation_label}: ${targetDisplay(pivot)}; from ${sourceName}`
     : (pivot.target_name || pivot.target_id || "Related record");
-  const classes = ["ui-constellation-link", className].filter(Boolean).join(" ");
   const attrs = [
     `data-pivot-schema="${escape(ENTITY_PIVOT_SCHEMA)}"`,
     `data-pivot-status="${escape(pivot.status)}"`,
@@ -289,14 +288,18 @@ export function renderEntityPivotLink(pivotInput = {}, {
     ...(pivotInput.link_confidence ? [`data-link-confidence="${escape(pivotInput.link_confidence)}"`] : []),
     `data-cross-spine-confidence="${escape(crossSpineConfidence)}"`,
   ].join(" ");
-  const body = `<span aria-hidden="true">◆</span>${escape(pivot.target_name || pivot.target_id || "Related record")}${showRelation ? ` <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>` : ""}`;
+  const name = escape(pivot.target_name || pivot.target_id || "Related record");
+  const relationMarkup = showRelation ? ` <span class="entity-pivot-relation">${escape(pivot.relation_label)}</span>` : "";
   if (pivot.status !== "accepted" || crossSpineBlocksLink) {
     const reason = crossSpineBlocksLink ? crossSpineReaderLabel(crossSpineConfidence) : "";
     const accessibleReason = crossSpineBlocksLink ? `; ${reason}` : "";
     const reasonMarkup = reason ? `<span class="entity-pivot-provisional">${escape(reason)}</span>` : "";
-    return `<span class="${escape(classes)} entity-pivot-held entity-pivot-cross-spine-${escape(crossSpineConfidence)}" ${attrs} aria-label="${escape(`${accessible}${accessibleReason}`)}">${body}${reasonMarkup}</span>`;
+    const heldClasses = ["ui-static-fact", "entity-pivot-held", className, `entity-pivot-cross-spine-${crossSpineConfidence}`]
+      .filter(Boolean).join(" ");
+    return `<span class="${escape(heldClasses)}" ${attrs} aria-label="${escape(`${accessible}${accessibleReason}`)}">${name}${relationMarkup}${reasonMarkup}</span>`;
   }
-  return `<a class="${escape(classes)}" href="${escape(pivot.canonical_href)}" ${attrs} aria-label="${escape(accessible)}">${body}</a>`;
+  const classes = ["ui-constellation-link", className].filter(Boolean).join(" ");
+  return `<a class="${escape(classes)}" href="${escape(pivot.canonical_href)}" ${attrs} aria-label="${escape(accessible)}"><span aria-hidden="true">◆</span>${name}${relationMarkup}</a>`;
 }
 
 export function renderEntityPivotRail(records, options = {}) {
