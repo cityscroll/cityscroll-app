@@ -35,6 +35,8 @@ crons = [
 [vars]
 ALERTS_LIVE = "true"
 ANALYTICS_ENVIRONMENT = "production"
+# RUM intake is independently gated and stays OFF until the bounded pilot rollout.
+RUM_INGEST_ENABLED = "false"
 # Shadow-only identity capture. Public reads do not consume these tables.
 CITY_RECORD_SOURCE_RECORD_DUAL_WRITE = "true"
 PASSPORT_SOURCE_RECORD_DUAL_WRITE = "true"
@@ -94,6 +96,11 @@ SEMANTIC_CANDIDATES_ENABLED = "true"
 [[analytics_engine_datasets]]
 binding = "USAGE_ANALYTICS"
 dataset = "crol_usage_events_v1"
+
+# Normalized field-performance observations. This contract never shares usage rows or queries.
+[[analytics_engine_datasets]]
+binding = "RUM_ANALYTICS"
+dataset = "crol_rum_observations_v1"
 
 # Digest delivery queue. QUEUE_DIGESTS="true" switches the cron from the inline
 # send loop to one-job-per-account fan-out (type rollup | sub via buildDigestJobs):
@@ -170,6 +177,7 @@ ENTITY_LINK_DUAL_WRITE = "false"
 CIVIC_TIME_EVENT_WRITE = "false"
 QUEUE_DIGESTS = "false"
 ANALYTICS_ENVIRONMENT = "preview"
+RUM_INGEST_ENABLED = "false"
 SOURCE_VAULT_ENABLED = "false"
 SEMANTIC_CANDIDATES_ENABLED = "true"
 CONFIRM_BASE = "https://api-beta.cityscroll.org"
