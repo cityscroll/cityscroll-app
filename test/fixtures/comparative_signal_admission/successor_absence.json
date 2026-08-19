@@ -1,0 +1,111 @@
+{
+  "schema": "cityscroll.comparative_fact.v1",
+  "fact_id": "comparative_fact:successor_solicitation_absence:procurement:CTR-NEGATIVE-CONTROL:2024-01-01:2026-08-05",
+  "claim": "No successor solicitation exists",
+  "subject": {
+    "type": "procurement",
+    "id": "CTR-NEGATIVE-CONTROL",
+    "ref": "procurement:CTR-NEGATIVE-CONTROL",
+    "label": "Negative-control registered contract"
+  },
+  "metric": {
+    "id": "successor_solicitation_absence",
+    "family": "completeness_conformance",
+    "unit": "count",
+    "method": "successor_solicitation_absence_v1"
+  },
+  "value": 0,
+  "peer_class": {
+    "class_id": "successor_solicitation_absence:passport-current-solicitations:registered-contracts:2024-01-01:2026-08-05",
+    "metric_family": "successor_solicitation_absence",
+    "object_type": "procurement",
+    "source_family": "passport-current-solicitations",
+    "peer_dimensions": {
+      "agency_id": "department-of-transportation",
+      "source_family": "passport-current-solicitations",
+      "vehicle": "unknown"
+    },
+    "observability_equivalence": {
+      "basis": "derived_join",
+      "source_contract_versions": [
+        "source_contracts.v1:passport-current-solicitations"
+      ],
+      "source_vintages": [
+        {
+          "source_contract_id": "passport-current-solicitations",
+          "materialized_at": "2026-08-05T10:40:50.286Z"
+        }
+      ],
+      "acquisition_mode": "edge-materialized",
+      "identity_gate": "exact_contract_identity",
+      "join_path": "unmatched_current_solicitation",
+      "observation_quality_class": "selective_current_snapshot",
+      "censoring_class": "right_censored"
+    },
+    "eligible_count": 1,
+    "observed_count": 0,
+    "small_n_policy_id": "successor_absence_negative_control_v1"
+  },
+  "comparison": {
+    "population": {
+      "object_type": "procurement",
+      "source_family": "passport-current-solicitations",
+      "agency_id": "department-of-transportation"
+    },
+    "eligible_count": 1,
+    "observed_count": 0,
+    "window": {
+      "start": "2024-01-01",
+      "end": "2026-08-05",
+      "end_inclusive": true
+    },
+    "rank": 1
+  },
+  "observation": {
+    "basis": "derived_join",
+    "negative_inference": "forbidden",
+    "eligible_count": 1,
+    "observed_count": 0,
+    "source_vintages": [
+      {
+        "source_contract_id": "passport-current-solicitations",
+        "materialized_at": "2026-08-05T10:40:50.286Z"
+      }
+    ],
+    "negative_inference_contract": {
+      "vehicle_in_covered_sources": true,
+      "acquisition_current": true,
+      "historical_window_exhaustive": false,
+      "forward_window_exhaustive": false,
+      "window_mature": false,
+      "original_identity_exact": true,
+      "detector_precision_clears_gate": false,
+      "detector_recall_clears_gate": false,
+      "selection_factors_equivalent": false,
+      "alternative_paths_covered": false,
+      "source_complete": false,
+      "not_right_censored": false
+    },
+    "source_errors": [
+      "PASSPort RFX envelope contains zero materialized rows"
+    ]
+  },
+  "evidence": [
+    {
+      "kind": "source_row",
+      "source_contract_id": "passport-registered-contracts",
+      "source_row_id": "CTR-NEGATIVE-CONTROL",
+      "landing_page": "https://www.nyc.gov/site/mocs/passport/about-passport.page",
+      "materialized_at": "2026-08-05T10:40:50.286Z"
+    }
+  ],
+  "provenance": {
+    "compiler_method": "successor_solicitation_absence_v1",
+    "source_contract": {
+      "id": "passport-current-solicitations",
+      "schema_version": 1
+    },
+    "snapshot_sha": "negative-control-debug-only"
+  },
+  "generated_at": "2026-08-05T10:40:50.286Z"
+}
