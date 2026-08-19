@@ -2515,6 +2515,167 @@ select {
   }
 }
 
+.data-health-body {
+  background: var(--color-canvas);
+  color: var(--color-text);
+}
+
+.data-health-page,
+.data-health-footer {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: clamp(var(--space-4), 4vw, var(--space-7));
+}
+
+.data-health-hero {
+  padding-block: var(--space-7) var(--space-5);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.data-health-hero h1 {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.data-health-lede,
+.data-health-crosslink,
+.data-health-asof {
+  max-width: var(--measure);
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-soft);
+}
+
+.data-health-group {
+  padding-block: var(--space-6);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.data-health-group h2 {
+  margin: 0 0 var(--space-4);
+  font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+}
+
+.data-health-cards {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.data-health-card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-surface);
+}
+
+.data-health-card-head h3 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.data-health-meta,
+.data-health-note,
+.data-health-coverage-when,
+.data-health-clock-basis {
+  margin: 0;
+  color: var(--color-text-soft);
+  font-size: 0.95rem;
+}
+
+.data-health-official {
+  display: inline-block;
+  margin-top: var(--space-2);
+}
+
+.data-health-condition,
+.data-health-coverage {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.data-health-status,
+.data-health-coverage-status {
+  margin: 0 0 var(--space-2);
+  font-weight: 700;
+}
+
+.data-health-coverage h4 {
+  margin: 0 0 var(--space-2);
+  font: 700 0.75rem/1.2 var(--font-label, system-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.data-health-clocks {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+}
+
+.data-health-clock {
+  margin: 0;
+}
+
+.data-health-clock dt {
+  font: 700 0.75rem/1.2 var(--font-label, system-ui);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.data-health-clock dd {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0.15rem 0 0;
+}
+
+.data-health-clock-value {
+  font-weight: 700;
+}
+
+.data-health-card[data-health-status="Delayed"] .data-health-status,
+.data-health-card[data-health-status="Degraded"] .data-health-status,
+.data-health-card[data-health-status="Manual-refresh"] .data-health-status {
+  color: var(--color-caution);
+}
+
+.data-health-card[data-health-status="Source-unavailable"] .data-health-status {
+  color: var(--color-danger);
+}
+
+.data-health-card[data-health-status="UNKNOWN"] .data-health-status,
+.data-health-clock[data-clock-state="UNKNOWN"] dd,
+.data-health-coverage-status {
+  color: var(--color-text);
+}
+
+.data-health-clock[data-clock-state="UNKNOWN"] .data-health-clock-value,
+.data-health-card[data-health-status="UNKNOWN"] .data-health-status {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-canvas);
+  font-family: var(--font-interface, ui-sans-serif, system-ui, sans-serif);
+}
+
+.data-health-footer {
+  padding-block: var(--space-5) var(--space-8);
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+@media (min-width: 720px) {
+  .data-health-clocks {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     scroll-behavior: auto !important;

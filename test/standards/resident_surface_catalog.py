@@ -68,7 +68,7 @@ def classify_surface_family(source: str, state: str = "") -> str:
         return "following"
     if normalized in {"", "index.html"}:
         return "home"
-    if normalized in {"about.html", "api.html", "changelog.html", "data.html", "standards.html", "stats.html"}:
+    if normalized in {"about.html", "api.html", "changelog.html", "data.html", "standards.html", "stats.html", "data-health/index.html"}:
         return "reference"
     return FAMILY_BY_PREFIX.get(prefix, "other")
 

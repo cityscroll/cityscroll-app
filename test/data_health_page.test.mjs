@@ -1,0 +1,226 @@
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+import assert from "node:assert/strict";
+
+import {
+  buildPublicSourceHealthProjection,
+} from "../site/source_health_public_projection.mjs";
+import {
+  buildDataHealthView,
+  mappedProductAreaIds,
+  productAreaForSource,
+  renderDataHealthDocument,
+  renderDataHealthPage,
+} from "../site/data_health_page.mjs";
+import { dataHealthPageHtml } from "../tools/build_data_health_page.mjs";
+import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
+
+const GENERATED_AT = "2026-08-18T12:00:00.000Z";
+
+function contract(id, overrides = {}) {
+  return {
+    id,
+    name: `Source ${id}`,
+    owner: "Public publisher",
+    landing_page: `https://example.gov/${id}`,
+    publisher_cadence: "Daily",
+    used_for: "Public records",
+    freshness_contract: { mode: "continuous", max_stale_days: 7 },
+    health_policy: { public_visibility: "public" },
+    ...overrides,
+  };
+}
+
+function observation(id, overrides = {}) {
+  return {
+    source_id: id,
+    health: {
+      status: "Healthy",
+      reason_codes: [],
+      clocks: {
+        publisher_updated: { at: "2026-08-18T09:00:00.000Z", state: "KNOWN", basis: "warehouse_source_summary" },
+        cityscroll_checked_acquired: { at: "2026-08-18T10:00:00.000Z", state: "KNOWN", basis: "acquired_at" },
+        cityscroll_serving: { at: "2026-08-18T11:00:00.000Z", state: "KNOWN", basis: "serve_contract:private-gate-id" },
+      },
+    },
+    relationship_coverage: {
+      status: "complete",
+      join_status: "accepted",
+      measured_at: "2026-08-18T08:00:00.000Z",
+      reason_codes: [],
+    },
+    ...overrides,
+  };
+}
+
+function pageFrom(contracts, observations) {
+  const projection = buildPublicSourceHealthProjection(
+    { contracts },
+    { generated_at: GENERATED_AT, observations },
+  );
+  const view = buildDataHealthView(projection);
+  const html = renderDataHealthDocument(view);
+  return { projection, view, html };
+}
+
+test("data health page materializes the committed public artifact without request-time compute", () => {
+  const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
+  const html = renderDataHealthPage(committed);
+  const built = readFileSync(new URL("../site/data-health/index.html", import.meta.url), "utf8");
+
+  assert.equal(committed.schema, "cityscroll.public_source_health.v1");
+  assert.equal(html, dataHealthPageHtml());
+  assert.equal(built, html);
+  assert.match(html, /<h1>Data health<\/h1>/);
+  assert.match(html, /Publisher updated/);
+  assert.match(html, /CityScroll last checked/);
+  assert.match(html, /CityScroll serving copy/);
+  assert.match(html, /<h4>Coverage<\/h4>/);
+  assert.match(html, /For how many records CityScroll holds, see <a href="\/stats.html">Stats<\/a>/);
+  assert.doesNotMatch(html, /all operational|all systems operational|data may be incomplete|may be incomplete/i);
+  assert.doesNotMatch(html, /join_coverage|snapshot_sha|contract_fingerprint|row_count|auth_token|runbook|reason_codes|source_id=|date_reported_as_of|Official source/);
+  assert.equal(detectNodePageCruft(html).length, 0);
+});
+
+test("every committed public source is grouped by a closed product area", () => {
+  const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
+  const map = mappedProductAreaIds();
+  for (const row of committed.sources) {
+    assert.ok(map[row.source_id], `${row.source_id} needs a public product area`);
+    assert.notEqual(productAreaForSource(row.source_id), "other", row.source_id);
+  }
+  const view = buildDataHealthView(committed);
+  assert.ok(view.groups.length >= 6);
+  assert.ok(view.groups.every((group) => group.sources.length));
+  assert.ok(!view.groups.some((group) => group.id === "other"));
+});
+
+test("three clocks stay labeled, coverage stays beside health, and UNKNOWN never becomes 1970 or zero", () => {
+  const { view, html } = pageFrom(
+    [contract("city-record"), contract("missing-obs")],
+    [observation("city-record", {
+      health: {
+        status: "Delayed",
+        reason_codes: ["publisher-clock-stale"],
+        clocks: {
+          publisher_updated: { at: "1970-01-01T00:00:00.000Z", state: "KNOWN" },
+          cityscroll_checked_acquired: { at: "not-a-date" },
+          cityscroll_serving: { at: "2026-08-18T11:00:00.000Z", state: "KNOWN" },
+        },
+      },
+      relationship_coverage: {
+        status: "partial",
+        join_status: "accepted",
+        measured_at: "2026-08-02T17:02:36.000Z",
+      },
+    })],
+  );
+
+  const delayed = view.groups.flatMap((group) => group.sources).find((card) => card.source_id === "city-record");
+  const missing = view.groups.flatMap((group) => group.sources).find((card) => card.source_id === "missing-obs");
+  assert.equal(delayed.health_status, "Delayed");
+  assert.equal(delayed.clocks[0].display, "UNKNOWN");
+  assert.equal(delayed.clocks[1].display, "UNKNOWN");
+  assert.equal(delayed.clocks[2].display, "August 18, 2026");
+  assert.equal(delayed.clocks[2].basis_label, "from the copy CityScroll is serving");
+  assert.equal(delayed.coverage_label, "Limited coverage");
+  assert.equal(missing.health_status, "UNKNOWN");
+  assert.ok(missing.clocks.every((clock) => clock.display === "UNKNOWN"));
+  assert.equal(missing.coverage_label, "UNKNOWN");
+
+  assert.match(html, /data-health-status="Delayed"/);
+  assert.match(html, /data-health-status="UNKNOWN"/);
+  assert.match(html, /The publisher&#39;s last update is older than this source&#39;s expected cadence/);
+  assert.match(html, /Limited coverage/);
+  assert.doesNotMatch(html, /1970|January 1, 1970|>0<|>—<|>-<\/dd>/);
+  assert.doesNotMatch(html, /--color-success|#0f0|background:\s*green/i);
+  assert.ok(html.indexOf("data-health-condition") < html.indexOf("data-health-coverage"));
+});
+
+test("historical and manual composite states render, and degraded names the failure plus retained serving", () => {
+  const { view, html } = pageFrom(
+    [
+      contract("bid-tabulations-historical", { freshness_contract: { mode: "historical" } }),
+      contract("dcas-exam-notices", { freshness_contract: { mode: "manual-conditional" } }),
+      contract("nycida-build-nyc-projects", { freshness_contract: { mode: "periodic" } }),
+    ],
+    [
+      observation("bid-tabulations-historical", {
+        health: {
+          status: "Historical",
+          reason_codes: ["historical-source"],
+          clocks: {
+            publisher_updated: { at: "2024-12-19T00:00:00.000Z", state: "KNOWN" },
+            cityscroll_checked_acquired: { at: "2026-08-18T10:00:00.000Z", state: "KNOWN" },
+            cityscroll_serving: { at: "2026-08-18T11:00:00.000Z", state: "KNOWN" },
+          },
+        },
+      }),
+      observation("dcas-exam-notices", {
+        health: {
+          status: "Healthy",
+          reason_codes: [],
+          clocks: {
+            publisher_updated: { at: "2026-08-01T00:00:00.000Z", state: "KNOWN" },
+            cityscroll_checked_acquired: { at: "2026-08-18T10:00:00.000Z", state: "KNOWN" },
+            cityscroll_serving: { at: "2026-08-18T11:00:00.000Z", state: "KNOWN" },
+          },
+        },
+      }),
+      observation("nycida-build-nyc-projects", {
+        health: {
+          status: "Degraded",
+          reason_codes: ["acquisition-failed", "serving-valid-fallback"],
+          clocks: {
+            publisher_updated: { at: "2026-07-01T00:00:00.000Z", state: "KNOWN" },
+            cityscroll_checked_acquired: { at: "2026-08-18T10:00:00.000Z", state: "KNOWN" },
+            cityscroll_serving: { at: "2026-08-01T00:00:00.000Z", state: "KNOWN" },
+          },
+        },
+        relationship_coverage: {
+          status: "held",
+          join_status: "held",
+          reason_codes: ["relationship-join-held"],
+        },
+      }),
+    ],
+  );
+
+  const cards = Object.fromEntries(view.groups.flatMap((group) => group.sources).map((card) => [card.source_id, card]));
+  assert.equal(cards["bid-tabulations-historical"].health_label, "Historical");
+  assert.match(cards["bid-tabulations-historical"].health_note, /no longer receives new updates/);
+  assert.equal(cards["dcas-exam-notices"].health_label, "Manual refresh · on schedule");
+  assert.equal(cards["nycida-build-nyc-projects"].health_status, "Degraded");
+  assert.match(cards["nycida-build-nyc-projects"].health_note, /latest automated check did not succeed/);
+  assert.match(cards["nycida-build-nyc-projects"].health_note, /previously verified copy is still being served/);
+  assert.equal(cards["nycida-build-nyc-projects"].coverage_label, "Held or failed relationship match");
+
+  assert.match(html, /Historical/);
+  assert.match(html, /Manual refresh · on schedule/);
+  assert.match(html, /The latest automated check did not succeed/);
+  assert.match(html, /A previously verified copy is still being served/);
+  assert.match(html, /Held or failed relationship match/);
+  assert.doesNotMatch(html, /bot-blocked|403|RequestDetail|dataJs|join_measurement/i);
+});
+
+test("an unavailable or unsafe artifact stays explicit and does not fabricate a healthy empty page", () => {
+  const html = renderDataHealthPage({
+    schema: "cityscroll.public_source_health.v1",
+    generated_at: null,
+    available: false,
+    source_count: null,
+    sources: null,
+  });
+  const unsafe = renderDataHealthPage({
+    schema: "cityscroll.public_source_health.v1",
+    generated_at: GENERATED_AT,
+    available: true,
+    source_count: 1,
+    sources: [{ source_id: "unsafe", raw_error_body: "secret" }],
+  });
+
+  assert.match(html, /Source freshness is unavailable right now/);
+  assert.doesNotMatch(html, /data-health-status="Healthy"|0 sources|0<\/|Healthy/);
+  assert.match(unsafe, /Source freshness is unavailable right now/);
+  assert.doesNotMatch(unsafe, /secret|raw_error/);
+});
