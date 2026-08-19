@@ -1,0 +1,62 @@
+{
+  "schema": "cityscroll.rum.handoff.query_troubleshooting.v1",
+  "semantics_doc": "docs/performance-query-adapter.md",
+  "query_fixture": "worker/test/fixtures/performance_query_weighted.json",
+  "state_matrix": "worker/test/fixtures/admin_performance_states.v1.json",
+  "sampling": {
+    "method": "cloudflare_weighted_adaptive_sampling",
+    "sampled_count": "count() of retained rows; this is the sufficiency floor",
+    "estimated_count": "sum(_sample_interval); never used to satisfy the sample floor",
+    "percentiles": "quantileExactWeighted(q)(double1, _sample_interval)",
+    "caveat": "sampled_count and estimated_count are estimates with different meanings; neither is a unique visitor count. No confidence interval is claimed."
+  },
+  "retention": {
+    "provider": "Analytics Engine retains about three months",
+    "adapter_bound": 90,
+    "partial_rule": "A requested interval that starts before availability is retention_partial and omits percentiles."
+  },
+  "diagnoses": [
+    {
+      "id": "available",
+      "reader_state": "available",
+      "percentiles": true,
+      "how": "Weighted current window meets the retained-row floor. Read p50/p75/p95 beside sampled_count."
+    },
+    {
+      "id": "insufficient_sample",
+      "reader_state": "insufficient_sample",
+      "percentiles": false,
+      "how": "Retained count() is below RUM_MIN_SAMPLED_ROWS. A large estimated_count does not rescue the distribution. Wait for more retained rows."
+    },
+    {
+      "id": "no_data",
+      "reader_state": "no_data",
+      "percentiles": false,
+      "how": "Instrumented selection has zero observations in the window. This is not a numeric zero and not a coverage gap."
+    },
+    {
+      "id": "uninstrumented",
+      "reader_state": "uninstrumented",
+      "percentiles": false,
+      "how": "The registered surface or component is not yet instrumented. Register and instrument it; do not treat this as no_data."
+    },
+    {
+      "id": "unclassified",
+      "reader_state": "unclassified",
+      "percentiles": false,
+      "how": "Intake rejected unknown_surface or unknown_component. Add the route to the canonical registry; never map it to home."
+    },
+    {
+      "id": "retention_partial",
+      "reader_state": "partial",
+      "percentiles": false,
+      "how": "The requested window starts before RUM_MEASURED_SINCE or exceeds the 90-day bound. Shorten the window."
+    },
+    {
+      "id": "unavailable",
+      "reader_state": "unavailable",
+      "percentiles": false,
+      "how": "Missing Analytics Engine credentials, SQL failure, or overflow. Check Worker bindings; do not display zeros."
+    }
+  ]
+}

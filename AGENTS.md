@@ -3517,6 +3517,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 ## Performance observability registry
 
+- Maintainer/operator handoff: `docs/rum-observatory.md`. Registry extension,
+  privacy, sampling, retention, query troubleshooting, Desk contract,
+  independent-switch rollback, and deferred-governance candidates are
+  fixture-backed (`node tools/rum_observatory_handoff.mjs --check`). The live
+  pilot protocol is `docs/rum-production-pilot.md` when present. Proof:
+  `test/rum_observatory_handoff.test.mjs`.
 - `architecture/performance-observability.v1.json` is the only human-edited
   surface/component inventory for RUM classification, Worker validation, and
   private operator labels. Regenerate all three projections with
