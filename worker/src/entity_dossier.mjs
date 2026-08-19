@@ -8,9 +8,23 @@ import {
 import {
   readerLabelForLinkConfidence,
 } from "../../entity_resolution/publication/link_confidence.mjs";
+import {
+  ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+  ENTITY_DOSSIER_PROVIDER_ID,
+  ENTITY_DOSSIER_REPRESENTATIONS,
+  executeEntityDossier,
+} from "../../capabilities/entity_dossier.mjs";
 
 const DOSSIER_CACHE = "public, max-age=300";
 export const DOSSIER_RECORD_LIMIT = 250;
+
+export const ENTITY_DOSSIER_HTTP_ADAPTER = Object.freeze({
+  id: "worker-http.entity-dossier@1",
+  capabilityReference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+  providerId: ENTITY_DOSSIER_PROVIDER_ID,
+  route: "GET /entity-dossier",
+  representations: ENTITY_DOSSIER_REPRESENTATIONS,
+});
 
 /** Public-facing status when no canonical entity is published for this id. */
 export const DOSSIER_NOT_YET_PUBLIC = {
@@ -203,19 +217,65 @@ export async function readEntityDossier(db, canonicalEntityId) {
   });
 }
 
+/** Explicit D1 provider for the transport-neutral entity.dossier.get@1 contract. */
+export function workerD1EntityDossier(db) {
+  return Object.freeze({
+    capabilityReference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+    providerId: ENTITY_DOSSIER_PROVIDER_ID,
+    async execute({ entityId }) {
+      if (!db) {
+        return {
+          capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          dossier: null,
+          error: "no-store",
+        };
+      }
+      try {
+        const dossier = await readEntityDossier(db, entityId);
+        return dossier ? {
+          capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+          availability: "available",
+          dossier,
+          error: null,
+        } : {
+          capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+          availability: "not_yet_public",
+          dossier: null,
+          error: "not-found",
+        };
+      } catch {
+        return {
+          capability_reference: ENTITY_DOSSIER_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          dossier: null,
+          error: "dossier-unavailable",
+        };
+      }
+    },
+  });
+}
+
 export async function handleEntityDossier(request, env) {
   if (request.method !== "GET") return json({ error: "method not allowed" }, 405);
   if (!env?.DB) return json({ error: "no-store" }, 503);
   const url = new URL(request.url);
   const entityId = clean(url.searchParams.get("id"));
   if (!entityId || entityId.length > 300) return json({ error: "id-required" }, 400);
-  let dossier;
+  let result;
   try {
-    dossier = await readEntityDossier(env.DB, entityId);
+    result = await executeEntityDossier(
+      workerD1EntityDossier(env.DB),
+      { entityId },
+    );
   } catch {
     return json({ error: "dossier-unavailable" }, 503);
   }
-  if (!dossier) return notYetPublicResponse(request);
+  if (result.availability === "unavailable") {
+    return json({ error: result.error }, 503);
+  }
+  if (result.availability === "not_yet_public") return notYetPublicResponse(request);
+  const { dossier } = result;
   if (url.searchParams.get("format") === "json"
       || (request.headers.get("accept") || "").includes("application/json")) {
     return json(dossier);
