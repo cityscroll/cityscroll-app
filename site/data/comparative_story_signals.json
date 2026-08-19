@@ -1,0 +1,50 @@
+{
+  "schema": "cityscroll.story_signal_read_model.v1",
+  "method": "published_comparative_story_signals_v1",
+  "generated_at": "2026-08-05T10:40:50.286Z",
+  "signals": [
+    {
+      "schema": "cityscroll.story_signal.v1",
+      "signal_id": "story_signal:comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-05",
+      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-05",
+      "subject": {
+        "type": "ocp_award",
+        "id": "20240119104",
+        "ref": "ocp_award:20240119104",
+        "label": "Immediate Response Cards and Related Services"
+      },
+      "metric": {
+        "id": "award_amount_rank",
+        "family": "distributional_position",
+        "unit": "USD"
+      },
+      "value": 53000000,
+      "basis_sentence": "This $53.0M award is 4th-largest among 264 Housing Preservation and Development award rows observed in the OCP snapshot from Jan. 1, 2024 through Aug. 5, 2026.",
+      "comparison": {
+        "population": {
+          "object_type": "award",
+          "source_family": "ocp-recent-contract-awards",
+          "agency_id": "housing-preservation-and-development",
+          "agency_name": "Housing Preservation and Development"
+        },
+        "eligible_count": 264,
+        "observed_count": 264,
+        "window": {
+          "start": "2024-01-01",
+          "end": "2026-08-05",
+          "end_inclusive": true
+        },
+        "rank": 4
+      },
+      "evidence": [
+        {
+          "kind": "source_row",
+          "source_contract_id": "ocp-recent-contract-awards",
+          "source_row_id": "20240119104",
+          "href": "https://data.cityofnewyork.us/d/qyyg-4tf5"
+        }
+      ],
+      "generated_at": "2026-08-05T10:40:50.286Z"
+    }
+  ]
+}
