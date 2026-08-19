@@ -278,6 +278,7 @@ export function renderPrivateStorySignalPage(projection) {
     </header>
     <section class="story-signal-feed" aria-label="Worth-a-look signals">${cards}</section>
   </main>
+  <script defer src="/analytics.js?v=1.3.0"></script>
 </body>
 </html>`;
 }

@@ -20,7 +20,7 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `blob2` | lens | `money`, `people`, `land`, `property`, `rules`, `meetings`, `alerts`, or `none` |
 | `blob3` | detail | Event-specific small enumeration below, or `none` |
 | `blob4` | geography of interest | NYC borough selected in a search, or `none`; never inferred visitor location |
-| `blob5` | surface | `home`, `now`, `near-you`, `following`, `browse`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `digest`, or `email` as allowed per event |
+| `blob5` | surface | `home`, `now`, `near-you`, `following`, `browse`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `worth-a-look`, `digest`, or `email` as allowed per event |
 | `blob6` | taxonomy version | `1.3.0` (the reader also accepts compatible `1.0.0`, `1.1.0`, and `1.2.0` rows) |
 | `blob7` | traffic class | `production` (default) or `developer`; omitted on pre-traffic_class rows |
 | `double1` | count | Always `1` |
@@ -43,7 +43,8 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `digest_link_open` | One notice link in a digest was followed. | optional `lens`; `detail=notice`; `surface=digest` |
 | `feed_fetch` | One origin request for a feed completed the event-counting path. | `detail=atom\|json\|ics`; `surface=api` |
 | `saved_search_check` | One accepted batch saved-search check. | `surface=api` |
-| `investigation_share` | One read-only investigation link was created or copied. | `detail=create\|copy`; `surface=home\|api` |
+| `investigation_share` | One read-only investigation link was created or copied, or one admitted comparative signal was added locally. | `detail=create\|copy\|add_signal`; `surface=home\|api` |
+| `comparative_signal_shown` | One admitted comparative signal card was present in the private Worth-a-look projection. This is the aggregate denominator for the existing `investigation_share:add_signal` handoff count. | `detail=visible`; `surface=worth-a-look` |
 | `action_opened` | One matter action was opened. | `detail=direct\|official-handoff`; `surface=home` |
 | `outcome_prompted` | One optional self-report prompt was shown after an official handoff or a passed source-grounded action. | `detail=official-handoff\|passed-action`; `surface=home` |
 | `outcome_dismissed` | One optional self-report prompt was explicitly dismissed without an outcome choice. | `detail=official-handoff\|passed-action`; `surface=home` |
@@ -74,6 +75,10 @@ Outcome-loop completion is characterized only in aggregate: `outcome_recorded` d
 `outcome_prompted` for the same rolling window. Aggregate abandonment is prompted minus recorded;
 `outcome_dismissed` identifies the explicit “Not now” subset. These are unlinked counts, not a
 funnel keyed to a visitor or notice, so they cannot attribute a response to an official record.
+
+Comparative-signal handoff is also an unlinked aggregate ratio:
+`investigation_share:add_signal` divided by `comparative_signal_shown:visible` for the same rolling
+window. Neither point carries a signal, subject, investigation, visitor, or session identifier.
 
 The reader self-report prompt is retired as of 2026-08-06. The event definitions and aggregate
 fields remain dormant for a future purposeful re-enable. Re-enable only when current traffic makes
