@@ -6,7 +6,7 @@
     "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
     "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
     "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-    "fetched_at": "2026-08-18",
+    "fetched_at": "2026-08-19",
     "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
     "stale_after_days": 3,
     "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
