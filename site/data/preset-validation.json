@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T00:25:26.216Z",
+  "generatedAt": "2026-08-19T00:43:01.151Z",
   "dataDate": "2026-08-19",
   "scenarios": {
     "city-work-closing": {
@@ -165,10 +165,12 @@
       ],
       "rules": [
         0,
+        1,
         2,
         4
       ],
       "meetings": [
+        2,
         4,
         5
       ],
@@ -225,7 +227,8 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it consulting"
+            "it",
+            "consulting"
           ],
           "agency": null,
           "minAmount": null,
@@ -472,7 +475,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -499,7 +502,7 @@
           "lookupType": "role",
           "view": null,
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": null,
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -514,7 +517,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "Rodriguez",
+          "interestLabel": "<UNKNOWN>",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -546,7 +549,7 @@
           "lookupType": "role",
           "view": "guide",
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": null,
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -559,15 +562,15 @@
         "filter": {
           "keywords": [],
           "boro": "Brooklyn",
-          "status": null,
+          "status": "all",
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
           "procedure": null,
-          "family": "rezoning",
+          "family": null,
           "regulatoryEffect": null
         },
-        "count": 43
+        "count": 3390
       },
       {
         "lens": "land",
@@ -576,6 +579,25 @@
         "filter": {
           "keywords": [],
           "boro": "Queens",
+          "status": "all",
+          "communityDistrict": null,
+          "councilDistrict": null,
+          "nearMe": false,
+          "procedure": null,
+          "family": null,
+          "regulatoryEffect": null
+        },
+        "count": 2126
+      },
+      {
+        "lens": "land",
+        "idx": 2,
+        "text": "79 Rivington",
+        "filter": {
+          "keywords": [
+            "79 rivington"
+          ],
+          "boro": null,
           "status": null,
           "communityDistrict": null,
           "councilDistrict": null,
@@ -584,24 +606,7 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 48
-      },
-      {
-        "lens": "land",
-        "idx": 2,
-        "text": "79 Rivington",
-        "filter": {
-          "keywords": [],
-          "boro": "Manhattan",
-          "status": null,
-          "communityDistrict": "M03",
-          "councilDistrict": null,
-          "nearMe": false,
-          "procedure": null,
-          "family": null,
-          "regulatoryEffect": null
-        },
-        "count": 3
+        "count": 2
       },
       {
         "lens": "land",
@@ -643,7 +648,7 @@
         "text": "HPD property sales",
         "filter": {
           "keywords": [],
-          "agency": "Housing Preservation Department",
+          "agency": "Department of Housing Preservation and Development",
           "process": null,
           "stage": null,
           "asset": "realty",
@@ -664,13 +669,12 @@
         "filter": {
           "keywords": [
             "environmental",
-            "protection",
-            "land"
+            "protection"
           ],
           "agency": null,
           "process": null,
           "stage": null,
-          "asset": null,
+          "asset": "realty",
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -679,18 +683,20 @@
           "communityDistrict": null,
           "nearMe": false
         },
-        "count": 15
+        "count": 43
       },
       {
         "lens": "property",
         "idx": 2,
         "text": "police department property",
         "filter": {
-          "keywords": [],
+          "keywords": [
+            "police"
+          ],
           "agency": "Police Department",
           "process": null,
           "stage": null,
-          "asset": null,
+          "asset": "realty",
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -707,7 +713,7 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Parks Department",
+          "agency": "Department of Parks and Recreation",
           "process": null,
           "stage": null,
           "asset": null,
@@ -762,10 +768,10 @@
           "keywords": [
             "sanitation"
           ],
-          "agency": "Department of Sanitation",
+          "agency": null,
           "process": null
         },
-        "count": 0
+        "count": 140
       },
       {
         "lens": "rules",
@@ -845,17 +851,19 @@
         "idx": 2,
         "text": "recent community board meetings",
         "filter": {
-          "keywords": [],
-          "agency": "Community Board",
+          "keywords": [
+            "community board"
+          ],
+          "agency": null,
           "when": "past",
           "borough": null,
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "scheduled",
+          "process": "held",
           "nearMe": false
         },
-        "count": 0
+        "count": 29
       },
       {
         "lens": "meetings",
@@ -872,7 +880,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "hearing",
           "nearMe": false
         },
         "count": 0
