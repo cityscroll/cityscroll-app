@@ -2252,7 +2252,7 @@
     stats_history_empty: "目前还没有按天的历史记录。",
     stats_h_technical: "技术细节",
     stats_p_technical: "上面这些数字是如何统计出来的。使用本站无需了解这些。",
-    stats_foot_html: "原始 JSON： <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a>（缓存约 15 分钟）· <a href=\"about.html\">关于</a> · <a href=\"data-health/\">数据健康</a> · <a href=\"index.html\">首页</a>",
+    stats_foot_html: "原始 JSON： <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a>（缓存约 15 分钟）· <a href=\"about.html\">关于</a> · <a href=\"index.html\">首页</a>",
     stats_asof: "截至 {date}（每 15 分钟刷新一次）。",
     stats_unreachable: "实时计数器目前无法访问 — 原始 JSON 位于 api.cityscroll.org/stats。",
     stats_h_usage: "人们如何使用 CityScroll",

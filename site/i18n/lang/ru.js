@@ -2264,7 +2264,7 @@
     stats_history_empty: "Пока нет истории по дням.",
     stats_h_technical: "Технические подробности",
     stats_p_technical: "Как устроены цифры выше. Знать это не обязательно, чтобы пользоваться CityScroll.",
-    stats_foot_html: "Исходный JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (кэш ~15 мин) · <a href=\"about.html\">О проекте</a> · <a href=\"data-health/\">Состояние данных</a> · <a href=\"index.html\">Главная</a>",
+    stats_foot_html: "Исходный JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (кэш ~15 мин) · <a href=\"about.html\">О проекте</a> · <a href=\"index.html\">Главная</a>",
     stats_asof: "По состоянию на {date} (обновляется каждые 15 минут).",
     stats_unreachable: "Актуальные счётчики сейчас недоступны — исходный JSON находится по адресу api.cityscroll.org/stats.",
     stats_h_usage: "Как люди используют CityScroll",

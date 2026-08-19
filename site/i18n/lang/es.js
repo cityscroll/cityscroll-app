@@ -2254,7 +2254,7 @@
     stats_history_empty: "Todavía no hay historial día por día.",
     stats_h_technical: "Detalles técnicos",
     stats_p_technical: "Cómo funcionan las cifras de arriba. No necesita saber esto para usar CityScroll.",
-    stats_foot_html: "JSON sin procesar: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (en caché ~15 min) · <a href=\"about.html\">Acerca de</a> · <a href=\"data-health/\">Salud de los datos</a> · <a href=\"index.html\">Inicio</a>",
+    stats_foot_html: "JSON sin procesar: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (en caché ~15 min) · <a href=\"about.html\">Acerca de</a> · <a href=\"index.html\">Inicio</a>",
     stats_asof: "Al {date} (se actualiza cada 15 minutos).",
     stats_unreachable: "Los contadores en vivo no están disponibles en este momento — el JSON sin procesar está en api.cityscroll.org/stats.",
     stats_h_usage: "Cómo usa la gente CityScroll",

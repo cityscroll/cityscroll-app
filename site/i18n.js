@@ -2858,7 +2858,7 @@ const STRINGS = {
     stats_history_empty: "No day-by-day history yet.",
     stats_h_technical: "Technical details",
     stats_p_technical: "How the numbers above are put together. You don't need to know this to use CityScroll.",
-    stats_foot_html: "Raw JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (cached ~15 min) · <a href=\"about.html\">About</a> · <a href=\"data-health/\">Data health</a> · <a href=\"index.html\">Home</a>",
+    stats_foot_html: "Raw JSON: <a href=\"https://api.cityscroll.org/stats\">api.cityscroll.org/stats</a> (cached ~15 min) · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",
     stats_asof: "As of {date} (refreshes every 15 minutes).",
     stats_unreachable: "Live counters are unreachable right now — the raw JSON lives at api.cityscroll.org/stats.",
     stats_h_usage: "How people use CityScroll",
