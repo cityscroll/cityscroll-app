@@ -76,7 +76,8 @@ test("data health page materializes the committed public artifact without reques
   assert.match(html, /Publisher updated/);
   assert.match(html, /CityScroll last checked/);
   assert.match(html, /CityScroll serving copy/);
-  assert.match(html, /<h4>Coverage<\/h4>/);
+  assert.match(html, /class="data-health-coverage-heading">Coverage<\/p>/);
+  assert.doesNotMatch(html, /<h4>|aria-label="Freshness"|aria-label="Coverage"/);
   assert.match(html, /For how many records CityScroll holds, see <a href="\/stats.html">Stats<\/a>/);
   assert.doesNotMatch(html, /all operational|all systems operational|data may be incomplete|may be incomplete/i);
   assert.doesNotMatch(html, /join_coverage|snapshot_sha|contract_fingerprint|row_count|auth_token|runbook|reason_codes|source_id=|date_reported_as_of|Official source/);

@@ -365,17 +365,17 @@ function renderSourceCard(card) {
       ${cadence}
       ${official}
     </header>
-    <section class="data-health-condition" aria-label="Freshness">
+    <div class="data-health-condition">
       <p class="data-health-status">${esc(card.health_label)}</p>
       ${note}
       <dl class="data-health-clocks">${card.clocks.map(renderClock).join("")}</dl>
-    </section>
-    <section class="data-health-coverage" aria-label="Coverage">
-      <h4>Coverage</h4>
+    </div>
+    <div class="data-health-coverage">
+      <p class="data-health-coverage-heading">Coverage</p>
       <p class="data-health-coverage-status">${esc(card.coverage_label)}</p>
       ${coverageNote}
       ${coverageWhen}
-    </section>
+    </div>
   </article>`;
 }
 
