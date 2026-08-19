@@ -109,6 +109,29 @@ export const SEMANTIC_READINESS_MARKERS = Object.freeze({
     }),
     meaning: "Related records are ready, honestly empty, unavailable, or failed.",
   }),
+  following_shell: Object.freeze({
+    contract_id: "page-content-ready-v1",
+    surface_id: "following",
+    root_attribute: "data-following-root",
+    create_panel_attribute: "data-following-panel",
+    create_panel_value: "create",
+    personal_host_attribute: "data-personal-watch-list",
+    meaning: "The Following shell has a usable create flow and a host for personal watches.",
+  }),
+  following_watch_list: Object.freeze({
+    contract_id: "component-ready-v1",
+    component_id: "following-watch-list",
+    surface_id: "following",
+    result_states: Object.freeze({
+      populated: "content",
+      content: "content",
+      empty: "empty",
+      unauthenticated: "empty",
+      unavailable: "unavailable",
+      error: "error",
+    }),
+    meaning: "Personal watches have settled as populated, empty, unauthenticated, unavailable, or error.",
+  }),
 });
 
 export function boundedTerminalState(value) {

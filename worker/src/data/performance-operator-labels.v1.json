@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.operator_inventory.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "c3fe984c8a4fa6446c4369a1e2eacf5c997d7f8227de274d81a9b7e591f10633",
+  "registry_hash": "595261f8f0dd5b453ac74244339c9bad5bae77b97f0f9754d8d3860e55f8e35c",
   "surfaces": [
     {
       "surface_id": "about",
@@ -742,7 +742,7 @@
         ],
         "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
       },
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [
         {
           "alias_id": "alerts",
@@ -1454,7 +1454,7 @@
         ],
         "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
       },
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [],
       "supersedes": [],
       "introduced_version": "1.0.0",
