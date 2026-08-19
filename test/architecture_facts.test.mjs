@@ -36,7 +36,7 @@ test("generated architecture facts contain every LA4 section", () => {
     assert.ok(key in facts, key);
   }
   assert.equal(facts.schema, "cityscroll.architecture.facts.v1");
-  assert.equal(facts.generator.version, "1.5.0");
+  assert.equal(facts.generator.version, "1.6.0");
   assert.ok(facts.commit);
   assert.ok(facts.source_paths.includes("worker/wrangler.toml"));
 });
@@ -155,6 +155,13 @@ test("performance observability facts are bounded topology and advisory coverage
   assert.equal(performance.registry.classifications.surfaces.planned, 35);
   assert.equal(performance.registry.classifications.components.planned, 14);
   assert.equal(performance.topology.collector.classification_manifest_path, "site/data/performance-classification-manifest.v1.json");
+  assert.equal(performance.topology.collector.state, "disabled_test_only");
+  assert.equal(performance.topology.collector.production_enabled, false);
+  assert.equal(performance.topology.collector.implementation_path, "site/rum_collector.mjs");
+  assert.equal(performance.topology.collector.bootstrap_path, "site/rum_bootstrap.mjs");
+  assert.equal(performance.topology.collector.library.version, "6.0.1");
+  assert.equal(performance.topology.collector.overhead_evidence_path, "docs/evidence/rum-collector-foundation/overhead.json");
+  assert.equal(performance.topology.collector.network_transport_path, null);
   assert.equal(performance.topology.intake.route_path, "/performance-events");
   assert.equal(performance.topology.storage.binding, "RUM_ANALYTICS");
   assert.equal(performance.topology.storage.dataset, "crol_rum_observations_v1");

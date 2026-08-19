@@ -82,6 +82,7 @@ test("C4 names the separate registry, collector path, intake, store, private end
     entry.source === "browser_site"
     && entry.target === "worker_api"
     && entry.description.includes("/performance-events")
+    && entry.description.includes("no network transport")
   )));
   assert.ok(model.relationships.some((entry) => (
     entry.source === "private_desk"
