@@ -50,7 +50,7 @@ test("stats page points at Data health with one semantic-boundary sentence", () 
   assert.deepEqual(dataHealthNavigationFindings(statsHtml, "stats"), []);
   assert.match(statsHtml, /stats-data-health-crosslink/);
   assert.match(statsHtml, /data-i18n-html="stats_data_health_html"/);
-  assert.match(statsHtml, /For source freshness and coverage, see <a href="data-health\/">Data health<\/a>\./);
+  assert.match(statsHtml, /See <a href="data-health\/">Data health<\/a>\. It shows how current the sources are and what they include\./);
   assert.match(statsHtml, /href="data-health\/"/);
   assert.doesNotMatch(statsHtml, /Publisher updated|CityScroll last checked|all operational|all systems operational/i);
   assert.doesNotMatch(statsHtml, /\/source-health/);

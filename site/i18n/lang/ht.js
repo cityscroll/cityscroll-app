@@ -2203,7 +2203,7 @@
     stats_public_current_desc: "Dènye dat piblikasyon seri done ofisyèl City Record la bay.",
     stats_public_method_heading: "Sa chif sa yo pa gen ladan",
     stats_public_method_html: "Sa yo se enfòmasyon sou kouvèti, se pa analiz odyans. Vizit, rechèch, abònman ak kantite imèl voye se done operasyonèl epi yo pa pibliye isit la. Li <a href=\"api.html#upstream\">nòt sou sous done yo</a> oswa ouvri <a href=\"https://api.cityscroll.org/stats\">JSON piblik ki redui a</a>.",
-    stats_data_health_html: "Pou fraichè ak kouvèti sous yo, gade <a href=\"data-health/\">Sante done</a>.",
+    stats_data_health_html: "Gade <a href=\"data-health/\">Sante done</a>. Li montre konbyen sous yo aktyèl epi kisa yo genyen.",
     stats_public_asof: "Apati {date}.",
     stats_public_corpus_unavailable: "Kantite sous ak kouvèti lang yo ajou. Total City Record an dirèk la pa disponib pou kounye a.",
     stats_public_unreachable: "Total kouvèti yo pa disponib kounye a — JSON piblik la nan api.cityscroll.org/stats.",

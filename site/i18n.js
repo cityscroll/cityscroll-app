@@ -2808,7 +2808,7 @@ const STRINGS = {
     stats_public_current_desc: "The most recent date in the indexed notice data.",
     stats_public_method_heading: "What is private",
     stats_public_method_html: "These facts count records, not people. Visits, search, watches, and email totals stay private. Read the <a href=\"api.html#upstream\">source notes</a> or open the <a href=\"https://api.cityscroll.org/stats\">public JSON</a>.",
-    stats_data_health_html: "For source freshness and coverage, see <a href=\"data-health/\">Data health</a>.",
+    stats_data_health_html: "See <a href=\"data-health/\">Data health</a>. It shows how current the sources are and what they include.",
     stats_public_asof: "As of {date}.",
     stats_public_corpus_unavailable: "The source count and language coverage are current. The live City Record total is temporarily unavailable.",
     stats_public_unreachable: "Coverage totals are unreachable right now — the public JSON lives at api.cityscroll.org/stats.",

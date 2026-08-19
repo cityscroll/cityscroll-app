@@ -2208,7 +2208,7 @@
     stats_public_current_desc: "공식 City Record 데이터셋이 반환한 가장 최근 게시 날짜입니다.",
     stats_public_method_heading: "이 수치에 포함되지 않는 것",
     stats_public_method_html: "이것은 데이터 범위 정보이며 이용자 분석이 아닙니다. 방문, 검색, 구독, 이메일 발송량은 운영 데이터이므로 여기에 공개하지 않습니다. <a href=\"api.html#upstream\">데이터 출처 안내</a>를 읽거나 <a href=\"https://api.cityscroll.org/stats\">축소된 공개 JSON</a>을 여세요.",
-    stats_data_health_html: "출처의 최신 상태와 범위는 <a href=\"data-health/\">데이터 상태</a>를 보세요.",
+    stats_data_health_html: "<a href=\"data-health/\">데이터 상태</a>를 보세요. 출처가 얼마나 최신인지, 무엇이 들어 있는지 보여 줍니다.",
     stats_public_asof: "{date} 기준.",
     stats_public_corpus_unavailable: "출처 수와 언어 지원 범위는 최신입니다. 실시간 City Record 총계는 일시적으로 사용할 수 없습니다.",
     stats_public_unreachable: "지금은 데이터 범위 총계에 접속할 수 없습니다 — 공개 JSON은 api.cityscroll.org/stats에 있습니다.",
