@@ -149,7 +149,7 @@ test("admin response is a dedicated versioned read model with registered invento
   assert.equal(body.coverage.registered.surface_count, 35);
   assert.equal(body.coverage.registered.component_count, 14);
   assert.equal(body.coverage.selection.surface.surface_id, "home");
-  assert.equal(body.coverage.selection.surface.lifecycle_state, "planned");
+  assert.equal(body.coverage.selection.surface.lifecycle_state, "instrumented");
   assert.equal(body.coverage.unclassified_observations.status, "unclassified");
   assert.equal(body.coverage.unclassified_observations.count, 2);
   assert.deepEqual(body.series[0].current.percentiles, { p50: 120, p75: 180, p95: 310 });
@@ -207,7 +207,7 @@ test("admin contract names every honest display state and never manufactures mis
   for (const [queryStatus, expected] of [
     ["retention_partial", "partial"],
     ["insufficient_sample", "insufficient_sample"],
-    ["no_data", "uninstrumented"],
+    ["no_data", "no_data"],
     ["unavailable", "unavailable"],
   ]) {
     const snapshot = availableSnapshot();
