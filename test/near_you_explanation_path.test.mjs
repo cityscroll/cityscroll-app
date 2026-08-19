@@ -3,8 +3,45 @@ import test from "node:test";
 
 import {
   buildNearYouExplanationCandidates,
+  selectNearYouGeographyEvidence,
   selectNearYouExplanationPath,
 } from "../site/near_you_explanation_path.mjs";
+
+test("generic geography evidence requires the exact selected public match and complete provenance", () => {
+  const key = "geography:police_precinct:110";
+  const scope = { place: { geographies: [key] } };
+  const complete = {
+    key,
+    type: "police_precinct",
+    label: "Police Precinct 110",
+    visibility: "public",
+    location_role: "property_affected",
+    basis: "Affected area",
+    confidence: "strong",
+    method: "point_in_polygon",
+    source_id: "dcp-police-precinct-boundaries",
+    boundary_vintage: "26B",
+  };
+  assert.deepEqual(selectNearYouGeographyEvidence({ place: { geographies: [complete] } }, scope), {
+    schema: "cityscroll.near_you_geography_evidence.v1",
+    key,
+    type: "police_precinct",
+    label: "Police Precinct 110",
+    relation: "located_in",
+    location_role: "property_affected",
+    basis: "Affected area",
+    confidence: "strong",
+    method: "point_in_polygon",
+    source_id: "dcp-police-precinct-boundaries",
+    boundary_vintage: "26B",
+  });
+  assert.equal(selectNearYouGeographyEvidence({
+    place: { geographies: [{ ...complete, visibility: "evidence_only" }] },
+  }, scope), null);
+  assert.equal(selectNearYouGeographyEvidence({
+    place: { geographies: [{ ...complete, boundary_vintage: null }] },
+  }, scope), null);
+});
 
 const nodes = [
   { subject_ref: "borough:queens", kind: "borough", label: "Queens" },

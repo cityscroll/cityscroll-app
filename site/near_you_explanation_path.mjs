@@ -7,6 +7,7 @@
  */
 
 export const NEAR_YOU_EXPLANATION_PATH_SCHEMA = "cityscroll.near_you_explanation_path.v1";
+export const NEAR_YOU_GEOGRAPHY_EVIDENCE_SCHEMA = "cityscroll.near_you_geography_evidence.v1";
 
 const PUBLIC_TIERS = new Set(["deterministic", "public_inferred"]);
 const DISTRICT_KINDS = new Set(["borough", "community-district", "council-district"]);
@@ -174,4 +175,27 @@ export function selectNearYouExplanationPath(candidates = [], scope = {}) {
   return eligible.slice().sort((left, right) =>
     candidateStrength(right) - candidateStrength(left)
       || left.location.subject_ref.localeCompare(right.location.subject_ref))[0] || null;
+}
+
+/** Select the exact registry-backed evidence for a generic geography scope. */
+export function selectNearYouGeographyEvidence(record = {}, scope = {}) {
+  const key = Array.isArray(scope?.place?.geographies) ? scope.place.geographies[0] : null;
+  if (!key) return null;
+  const match = record?.place?.geographies?.find((candidate) =>
+    candidate?.key === key && candidate.visibility === "public");
+  if (!match?.source_id || !match?.boundary_vintage || !match?.method
+      || !match?.location_role || !match?.basis) return null;
+  return {
+    schema: NEAR_YOU_GEOGRAPHY_EVIDENCE_SCHEMA,
+    key: match.key,
+    type: match.type,
+    label: clean(match.label, 160),
+    relation: "located_in",
+    location_role: clean(match.location_role, 80),
+    basis: clean(match.basis, 160),
+    confidence: clean(match.confidence, 40) || null,
+    method: clean(match.method, 100),
+    source_id: clean(match.source_id, 160),
+    boundary_vintage: clean(match.boundary_vintage, 80),
+  };
 }

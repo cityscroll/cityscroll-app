@@ -27,7 +27,7 @@ function square(x = 0, y = 0) {
   return [[x, y], [x + 0.01, y], [x + 0.01, y + 0.01], [x, y + 0.01], [x, y]];
 }
 
-test("registry adds four ingestion-only layer identities with independent clocks", () => {
+test("registry adds four independently clocked layer identities with an explicit publication boundary", () => {
   assert.deepEqual(CIVIC_GEOGRAPHY_LAYERS.map((layer) => layer.type), [
     "borough",
     "community_district",
@@ -44,7 +44,11 @@ test("registry adds four ingestion-only layer identities with independent clocks
 
   const rows = firstFour.map((type) => registry.layers.find((row) => row.type === type));
   assert.deepEqual(rows.map((row) => row.boundary_vintage), ["26B", "26B", "2024-04-10", "2024-10-08"]);
-  assert.ok(rows.every((row) => row.public_relations.length === 0));
+  assert.deepEqual(rows.map((row) => row.public_relations), [["located_in"], ["located_in"], [], []]);
+  assert.deepEqual(
+    rows.map((row) => row.declared_uses.includes("near_you_scope")),
+    [true, true, false, false],
+  );
   assert.ok(rows.every((row) => !row.declared_uses.includes("filter")));
 });
 

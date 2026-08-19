@@ -39,7 +39,9 @@
         "intersects"
       ],
       "declared_uses": [
-        "resolver"
+        "resolver",
+        "near_you_scope",
+        "watch_scope"
       ],
       "artifacts": {
         "full": {
@@ -94,7 +96,9 @@
       ],
       "declared_uses": [
         "resolver",
-        "compatibility_projection"
+        "compatibility_projection",
+        "near_you_scope",
+        "watch_scope"
       ],
       "artifacts": {
         "full": {
@@ -149,7 +153,9 @@
       ],
       "declared_uses": [
         "resolver",
-        "compatibility_projection"
+        "compatibility_projection",
+        "near_you_scope",
+        "watch_scope"
       ],
       "artifacts": {
         "full": {
@@ -209,10 +215,14 @@
       "freshness": {
         "max_stale_days": 180
       },
-      "public_relations": [],
+      "public_relations": [
+        "located_in"
+      ],
       "declared_uses": [
         "ingestion",
         "resolver",
+        "near_you_scope",
+        "watch_scope",
         "qa"
       ],
       "receipt": {
@@ -266,11 +276,15 @@
       "freshness": {
         "max_stale_days": 180
       },
-      "public_relations": [],
+      "public_relations": [
+        "located_in"
+      ],
       "declared_uses": [
         "ingestion",
         "resolver",
         "native_join",
+        "near_you_scope",
+        "watch_scope",
         "qa"
       ],
       "receipt": {
