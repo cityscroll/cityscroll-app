@@ -402,6 +402,7 @@ const STRINGS = {
     nl_placeholder_money: "describe what you're looking for…",
     ask_cityscroll_action: "Ask CityScroll",
     ask_cityscroll_context: "Interprets your request",
+    ask_cited_quotes_heading: "Quoted from official records",
     query_conflict_prompt: "These filters conflict. Choose which one to use.",
     query_conflict_keep: "Keep {value}",
     query_conflict_use: "Use {value}",

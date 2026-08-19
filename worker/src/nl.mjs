@@ -16,10 +16,33 @@ import { bumpStat, bumpStatAllTime, bumpCategoryStat, bumpCategoryDayStat, bumpH
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { overActorLimit, overSurfaceCap } from "./lib/meter.mjs";
+import { projectAskCitedQuotes } from "../../site/ask_cited_synthesis.mjs";
 import { searchIntentFromNlFilter } from "../../site/search_intent.mjs";
+import { retrieveCitedPassages } from "./cited_retrieval.mjs";
 
 const MODEL = "claude-haiku-4-5";
 const DEFAULT_MAX_PER_IP_DAY = 60;
+const CITED_QUERY_MAX = 240;
+
+/** Quote-only Ask sibling. Retrieval is local and does not spend the Haiku meter. */
+export function citedQuotesForAsk(text) {
+  const query = String(text || "")
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, CITED_QUERY_MAX);
+  if (!query) return null;
+  try {
+    return projectAskCitedQuotes(retrieveCitedPassages({ query }));
+  } catch {
+    return null;
+  }
+}
+
+function withCitedQuotes(payload, text) {
+  const cited_quotes = citedQuotesForAsk(text);
+  return cited_quotes ? { ...payload, cited_quotes } : payload;
+}
 
 // Field catalogue — the schema for each lens is assembled from its LENSES[] field list.
 const FIELD_DEFS = {
@@ -137,10 +160,10 @@ export async function handleNl(req, env) {
   const ip = req.headers.get("CF-Connecting-IP") || "";
   const ipCap = Number(env.NL_MAX_PER_IP_DAY) || DEFAULT_MAX_PER_IP_DAY;
   if (await overActorLimit(env.NL_METER, "nl", ip, ipCap, { failClosed: true })) {
-    return json({ degraded: true, reason: "ip-cap" }, 200, cors);
+    return json(withCitedQuotes({ degraded: true, reason: "ip-cap" }, text), 200, cors);
   }
   if (await overSurfaceCap(env.NL_METER, "nl", MAX_CALLS_PER_DAY, { failClosed: true })) {
-    return json({ degraded: true, reason: "daily-cap" }, 200, cors);
+    return json(withCitedQuotes({ degraded: true, reason: "daily-cap" }, text), 200, cors);
   }
 
   const now = new Date();
@@ -161,10 +184,11 @@ export async function handleNl(req, env) {
     surface: "api",
   });
   // Graceful degradation either way: the browser falls back to its on-device parser.
+  // Cited quotes stay a sibling even when Haiku degrades — retrieval does not need the model.
   const response = res.filter
     ? { ...res, search_intent: searchIntentFromNlFilter(lens, res.filter) }
     : res;
-  return json(response, 200, cors);
+  return json(withCitedQuotes(response, text), 200, cors);
 }
 
 function json(obj, status, cors) {
