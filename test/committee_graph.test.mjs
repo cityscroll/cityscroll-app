@@ -10,6 +10,7 @@ import {
   reciprocalCommitteeEdge,
   sourceRowHash,
 } from "../site/committee_graph.mjs";
+import { committeeRecordHref } from "../site/committee_memberships.mjs";
 
 const people = { by_person_id: {
   "7801": { person_id: "7801", person_name: "Christopher Marte" },
@@ -80,6 +81,20 @@ test("reciprocal edges use exact source ids, preserve null provenance, and never
   assert.deepEqual(buildCommitteeReciprocalEdges([edge], people), [inverse]);
   assert.equal(reciprocalCommitteeEdge({ ...edge, from: "official:unknown" }, people), null);
   assert.equal(reciprocalCommitteeEdge({ ...edge, from: "official:9999" }, people), null);
+});
+
+test("committee record hrefs bind only exact BodyIds, never a display name", () => {
+  assert.equal(committeeRecordHref("5261"), "/committees/5261/");
+  assert.equal(committeeRecordHref("committee:5261"), "/committees/5261/");
+  assert.equal(committeeRecordHref("Subcommittee on Landmarks"), null);
+  assert.equal(committeeRecordHref(""), null);
+  const nameless = buildCommitteeGraph([{
+    OfficeRecordPersonId: 7801,
+    OfficeRecordBodyName: "Subcommittee on Landmarks",
+  }], people, { gate: { publication_allowed: true } });
+  assert.equal(nameless.nodes.length, 0);
+  assert.equal(nameless.edge_observations.length, 0);
+  assert.equal(nameless.rejected.missing_identity_fields, 1);
 });
 
 test("committee graph never falls back to a name-only official join", () => {
