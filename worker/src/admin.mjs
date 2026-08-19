@@ -1,10 +1,12 @@
-// GET /admin/subs?key=… — operator read of confirmed subscriptions, straight from the worker's
-// OWN SUBS binding. This answers "what does the worker actually see" independent of any external
-// CLI/dashboard view of the namespace. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only.
+// GET /admin/subs?key=… — operator read of active watches plus confirmed topicless homepage
+// subscriptions, straight from the worker's OWN SUBS binding. This answers "what does
+// the worker actually see" independent of any external CLI/dashboard view of the namespace.
+// FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only.
 //
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
-import { redactEmail } from "./lib/subscriptions.mjs";
+import { redactEmail, isTopiclessIntent } from "./lib/subscriptions.mjs";
+import { RECOVERY_EXPLANATION, recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import {
   WATCHLOG_LATEST_KEY,
   enrichWatchLogEvents,
@@ -116,6 +118,8 @@ export async function handleAdminSubs(req, env) {
   if (!env.SUBS) return json({ error: "no-store" }, 503);
 
   const subs = [];
+  const topiclessIntents = [];
+  const developerTestAccounts = [];
   const sampleKeys = [];
   let cursor, totalKeys = 0;
   do {
@@ -126,22 +130,85 @@ export async function handleAdminSubs(req, env) {
       if (k.name.startsWith("sub:")) {
         let v = null;
         try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
-        if (v) subs.push({ email: redactEmail(v.email), lens: v.lens, filter: v.filter, freq: v.freq, paused: !!v.paused, createdAt: v.createdAt });
+        if (v) {
+          const topicless = isTopiclessIntent(v);
+          const status = "confirmed";
+          const item = {
+            email: redactEmail(v.email),
+            lens: v.lens,
+            filter: v.filter,
+            freq: v.freq,
+            paused: !!v.paused,
+            createdAt: v.createdAt,
+            no_topic: topicless || undefined,
+            source: topicless ? v.source : (v.source || null),
+            status,
+            intentState: topicless ? v.state : undefined,
+            original_signup_at: v.original_signup_at,
+            recovered_at: v.recovered_at,
+            recovery_explanation: v.recovery_explanation,
+          };
+          subs.push(item);
+          if (topicless) {
+            topiclessIntents.push({
+              email: item.email,
+              status,
+              source: item.source,
+              createdAt: item.createdAt,
+              intentState: item.intentState,
+            });
+          }
+        }
+      } else if (k.name.startsWith("developer-test-account:")) {
+        let v = null;
+        try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
+        if (v) developerTestAccounts.push({
+          email: redactEmail(v.email),
+          status: v.status,
+          source: v.source,
+          original_signup_at: v.original_signup_at,
+          marked_at: v.marked_at,
+          reason: v.reason,
+        });
       }
     }
     cursor = res.list_complete ? null : res.cursor;
   } while (cursor);
 
-  return json({ confirmedSubs: subs.length, totalKeysInStore: totalKeys, subs, sampleKeys }, 200);
+  return json({
+    confirmedSubs: subs.length,
+    topiclessIntentCount: topiclessIntents.length,
+    topiclessIntents,
+    developerTestAccounts,
+    totalKeysInStore: totalKeys,
+    subs,
+    sampleKeys,
+  }, 200);
+}
+
+// POST /admin/recover-deprecated-opt-in?key=… — bounded, idempotent recovery. The private
+// manifest stays outside the repository; this endpoint never sends email itself.
+export async function handleAdminDeprecatedOptInRecovery(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  let body;
+  try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
+  try {
+    const result = await recoverDeprecatedDoubleOptIn(env, body?.rows);
+    return json({ ...result, explanation: RECOVERY_EXPLANATION }, 200);
+  } catch (error) {
+    return json({ error: "invalid-recovery", detail: String(error?.message || error) }, 400);
+  }
 }
 
 // GET /admin/watch-log?key=…&days=7 — operator read of watch lifecycle changes.
-export async function handleAdminWatchLog(req, env) {
+export async function handleAdminWatchLog(req, env, { now = new Date() } = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
   if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
   const days = new URL(req.url).searchParams.get("days") || "7";
-  const events = await readWatchLog(env, days);
+  const events = await readWatchLog(env, days, now);
   return json({ days: Math.max(1, Math.min(31, Number(days) || 7)), events }, 200);
 }
 

@@ -1,7 +1,5 @@
-// Inbound email signup: a person emails SUBSCRIBE_ADDRESS in plain English; we parse
-// it into a lens filter, reply with a double-opt-in confirm link + a preview of recent
-// matches. Adapted from Dev Doshi's crol-alert inbound.ts onto crol-list's stateless
-// token flow (nothing stored until /confirm is clicked).
+// Inbound email signup: a person emails SUBSCRIBE_ADDRESS in plain English; we parse it into a
+// lens filter, enroll it immediately, and send the same transactional welcome as the web form.
 //
 // Spend defenses (this handler triggers an LLM call per email — the classic
 // denial-of-wallet hole): daily surface ceiling (NL_METER `m:inbound:<day>`,
@@ -13,11 +11,9 @@ import { parseLensFilter } from "./nl.mjs";
 import { isValidEmail, buildSubscription, redactEmail } from "./lib/subscriptions.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { compileSub } from "./lib/compile.mjs";
-import { signToken } from "optin-token";
-import { sendConfirm } from "./subscribe.mjs";
+import { enrollAndWelcome } from "./subscribe.mjs";
 import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
 
-const CONFIRM_TTL = 24 * 3600;
 const MAX_BODY = 2000; // characters of email text we look at
 
 // Cheap lens router — the LLM parses fields WITHIN a lens, so pick the lens first.
@@ -42,8 +38,8 @@ export function shouldIgnore(from, headers = new Map()) {
 }
 
 export async function handleInboundEmail(message, env) {
-  // Fail closed: without these, we can neither confirm nor reply safely.
-  if (!env.TOKEN_SECRET || !env.RESEND_API_KEY) return;
+  // Fail closed: without these, we can neither enroll nor reply safely.
+  if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) return;
 
   const parsed = await PostalMime.parse(message.raw);
   const headers = new Map((parsed.headers || []).map((h) => [String(h.key).toLowerCase(), String(h.value)]));
@@ -80,23 +76,17 @@ export async function handleInboundEmail(message, env) {
 
   const filter = parsedFilter.filter;
   const sub = buildSubscription({ email: from, lens, filter, freq: "daily" });
-  const token = await signToken(env.TOKEN_SECRET, { e: sub.email, l: lens, f: filter, c: "email", q: sub.freq }, { ttlSeconds: CONFIRM_TTL });
-  const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
-  const confirmUrl = `${base}/confirm?token=${encodeURIComponent(token)}`;
-
-  // The confirm email itself carries the "we understood you as…" description
-  // (confirmEmailHtml renders lens + filter + freq), completing double opt-in.
   try {
-    await sendConfirm(env, sub.email, lens, filter, sub.freq, confirmUrl);
-    console.log(`inbound: confirm sent to ${redactEmail(from)} — ${describeFilter(lens, filter)}`);
+    await enrollAndWelcome(env, sub, { source: "inbound_email" });
+    console.log(`inbound: subscribed ${redactEmail(from)} — ${describeFilter(lens, filter)}`);
   } catch (e) {
-    console.error("inbound: confirm send failed:", String(e?.message || e));
+    console.error("inbound: signup failed:", String(e?.message || e));
   }
 }
 
 // Plain-text reply from the app's own identity (never as a person — MISSION identity
-// discipline). Preview of matches is intentionally omitted here: the confirm email
-// describes the watch, and /confirm's landing shows what it covers.
+// discipline). Preview of matches is intentionally omitted here: the welcome email describes
+// the active watch and carries manage/unsubscribe controls.
 async function reply(env, to, subject, text) {
   const fromHdr = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
   const r = await fetch("https://api.resend.com/emails", {

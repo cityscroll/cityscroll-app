@@ -43,7 +43,7 @@ test("language control is a top-right labelled select with all shipping locales"
   assert.match(index, /inset-inline-end/);
 });
 
-test("homepage CTA wires into /subscribe with empty money filter + weekly cadence", () => {
+test("homepage CTA wires an explicit no-topic intent into /subscribe", () => {
   assert.match(index, /id="homeCta"/);
   assert.match(index, /data-i18n="home_cta_prompt"/);
   assert.match(index, /id="homeCtaEmail"/);
@@ -51,9 +51,8 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
   assert.match(index, /href="\/following\/"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
   assert.match(index, /homeCtaSubscribeStatic[\s\S]*workerFetch\("\/subscribe"/);
-  assert.match(index, /lens:\s*"money"/);
-  assert.match(index, /filter:\s*\{\}/);
-  assert.match(index, /freq:\s*"weekly"/);
+  assert.match(index, /no_topic:\s*true/);
+  assert.match(index, /source:\s*"top-of-site"/);
   assert.match(index, /id="homeCtaManage"/);
   assert.doesNotMatch(index, /We'll email a link to confirm\./);
   assert.doesNotMatch(index, /data-i18n="subscribe_confirm_note"/);
@@ -81,11 +80,13 @@ test("about feedback form has no Turnstile and exposes public feedback inbox", (
   assert.match(index, /data-i18n="footer_feedback"/);
 });
 
-test("subscribe confirmation copy is short (no double-opt-in ceremony on the form)", () => {
+test("signup copy describes immediate enrollment without confirmation language", () => {
   assert.doesNotMatch(i18n, /subscribe_confirm_note:/);
   assert.doesNotMatch(index, /We'll email a link to confirm\./);
-  assert.match(i18n, /check_inbox:\s*"Check your inbox to confirm\."/);
-  assert.match(i18n, /sent_confirm_to:\s*"Sent to \{email\}\."/);
+  assert.match(i18n, /subscribed_now:\s*"You're subscribed — we'll email you\."/);
+  assert.match(i18n, /welcome_sent_to:\s*"Welcome sent to \{email\}\."/);
+  assert.doesNotMatch(i18n, /check_inbox:/);
+  assert.doesNotMatch(i18n, /sent_confirm_to:/);
   assert.doesNotMatch(i18n, /no one can sign you up but you/);
   assert.doesNotMatch(index, /no one can sign you up but you/);
 });

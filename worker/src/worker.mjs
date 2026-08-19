@@ -19,6 +19,7 @@ import {
   handleAdminSubs,
   handleAdminWatchLog,
   handleAdminWatchLogEnrich,
+  handleAdminDeprecatedOptInRecovery,
   handleAdminFeedback,
   handleAdminPossiblySame,
   handleAdminOpsContract,
@@ -138,6 +139,7 @@ export default {
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/watch-log") return handleAdminWatchLog(request, env);
     if (pathname === "/admin/watch-log/enrich") return handleAdminWatchLogEnrich(request, env);
+    if (pathname === "/admin/recover-deprecated-opt-in") return handleAdminDeprecatedOptInRecovery(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);

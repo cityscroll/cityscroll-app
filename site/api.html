@@ -175,17 +175,17 @@ matching permalink, and records a per-day count.</p>
 <h2 data-i18n="api_h_subscribe">Subscribe by email</h2>
 <p class="src" data-i18n-html="api_p_subscribe_html">Email <a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>
 describing what you want in plain English — for example, "construction contract awards over $500k" or
-"rezoning notices in Brooklyn". You'll get back a confirmation link describing how we understood
-your request. The watch starts only after you click it (double opt-in). Daily ceilings apply, and nothing is
-stored until you confirm.</p>
+"rezoning notices in Brooklyn". The watch starts as soon as the request is processed. A welcome email
+states exactly what it follows and includes manage and one-click unsubscribe links.
+Daily ceilings apply.</p>
 
 <h2 data-i18n="api_h_mcp">MCP — for AI assistants</h2>
 <p class="src" data-i18n-html="api_p_mcp_html"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
 <code>https://api.cityscroll.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
 (the daily-refreshed notices mirror), <code>preview_watch</code> (plain English →
 what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English →
-a double-opt-in confirmation email — digests start only after the address confirms). Watch management stays
-behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions.
+an active watch plus a welcome email that states its scope). Watch management stays behind the emailed
+manage and unsubscribe links — knowing an address never reveals or controls its subscriptions.
 Per-IP and daily model-call ceilings apply.</p>
 
 <h2 data-i18n="api_h_upstream">Upstream data</h2>

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { confirmEmailHtml, describeFilter, describeFilterChips } from "../src/lib/confirm_email.mjs";
+import { describeFilter, welcomeEmailHtml } from "../src/lib/confirm_email.mjs";
 import { subCanonical } from "../src/lib/subscriptions.mjs";
 
 test("describeFilter renders a money threshold query", () => {
@@ -85,21 +85,20 @@ test("describeFilter: noticeType alone (no amount) still renders — closes the 
   );
 });
 
-test("confirm email is a brand-first single-CTA first touch with scope chips", () => {
-  const html = confirmEmailHtml({
-    confirmUrl: "https://api.cityscroll.org/confirm?t=demo",
+test("topicless welcome discloses the weekly contracts default and both control links", () => {
+  const html = welcomeEmailHtml({
+    manageUrl: "https://cityscroll.org/prefs?token=manage",
+    unsubscribeUrl: "https://api.cityscroll.org/unsubscribe?token=remove",
     lens: "money",
-    filter: { keywords: ["housing"], agency: "Parks", borough: "Brooklyn" },
-    freq: "daily",
+    filter: {},
+    freq: "weekly",
+    noTopicDefault: true,
   });
-  assert.match(html, /letter-spacing:\.16em;text-transform:uppercase;color:#1a44e0/);
-  assert.match(html, /background:#1a44e0;color:#ffffff/);
-  assert.match(html, /padding:16px 28px/);
-  assert.match(html, /housing/);
-  assert.match(html, /Parks|Brooklyn/);
-  assert.match(html, /border-radius:999px;background:#eef2ff/);
-  assert.doesNotMatch(html, /font-family:Georgia,serif;max-width:560px/);
-  assert.equal(describeFilterChips("money", { keywords: ["housing"], agency: "Parks" }).length >= 2, true);
+  assert.match(html, /weekly NYC contracts digest/);
+  assert.match(html, /solicitations, awards, and other procurement notices/);
+  assert.match(html, /prefs\?token=manage/);
+  assert.match(html, /unsubscribe\?token=remove/);
+  assert.doesNotMatch(html, /confirm/i);
 });
 
 test("describeFilter names a typed agency scope carried by the watch", () => {

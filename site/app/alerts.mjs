@@ -982,7 +982,7 @@ async function aSubscribe(){
       if(result){
         const safeEmail=email.replace(/[<>&]/g," ");
         if(result.fail===0){
-          msg.innerHTML=`<b>${escUiHtml(t("check_inbox"))}</b> ${escUiHtml(t("watch_tpl_sent_ok",{ok:String(result.ok),n:String(result.n),email:safeEmail}))}`;
+          msg.innerHTML=`<b>${escUiHtml(t("subscribed_now"))}</b> ${escUiHtml(t("watch_tpl_sent_ok",{ok:String(result.ok),n:String(result.n),email:safeEmail}))}`;
         }else if(result.ok>0){
           msg.innerHTML=`⚠️ ${escUiHtml(t("watch_tpl_sent_partial",{ok:String(result.ok),n:String(result.n),fail:String(result.fail)}))}`;
         }else{
@@ -993,18 +993,18 @@ async function aSubscribe(){
       }
     }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); btn.disabled=false; return; }
   }
-  msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
+  msg.innerHTML='<span class="loading"></span> ' + t("subscribing_now");
   const {lens,filter}=aLensFilter();
   try{
     const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en"})});
     const j=await r.json().catch(()=>({}));
-    if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); }
+    if(j.ok){ msg.innerHTML="<b>" + t("subscribed_now") + "</b> " + t("welcome_sent_to",{email:email.replace(/[<>&]/g," ")}); }
     else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); }
   }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
   btn.disabled=false;
 }
-// Homepage general-interest CTA — same /subscribe double-opt-in path as Alerts.
-// Empty money filter = open solicitations (describeFilter: "contract money — all notices").
+// Homepage general-interest CTA — same immediate /subscribe path as Following, with an explicit
+// no-topic marker so the disclosed weekly contracts default can later become a chosen topic.
 async function homeCtaSubscribe(e){
   if(e && e.preventDefault) e.preventDefault();
   const msg=$("#homeCtaMsg"), dest=$("#homeCtaEmail"), btn=$("#homeCtaSubmit");
@@ -1014,17 +1014,16 @@ async function homeCtaSubscribe(e){
   dest.removeAttribute("aria-invalid");
   if(!API){ msg.textContent=t("subs_need_backend") || t("not_configured"); return; }
   btn.disabled=true;
-  msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
+  msg.innerHTML='<span class="loading"></span> ' + t("subscribing_now");
   try{
     const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
       email,
-      lens:"money",
-      filter:{},
-      freq:"weekly",
+      no_topic:true,
+      source:"top-of-site",
       lang:window.LANG||"en"
     })});
     const j=await r.json().catch(()=>({}));
-    if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); dest.value=""; }
+    if(j.ok){ msg.innerHTML="<b>" + t("subscribed_now") + "</b> " + t("welcome_sent_to",{email:email.replace(/[<>&]/g," ")}); dest.value=""; }
     else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); }
   }catch(err){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
   btn.disabled=false;
