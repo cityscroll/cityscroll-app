@@ -1103,6 +1103,24 @@
       "projections": ["browser", "worker", "operator"]
     },
     {
+      "surface_id": "data-health",
+      "operator_label": "Public data health",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "information-data-health",
+      "public_safe_matcher": [{ "kind": "exact", "pathname": "/data-health" }],
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "static",
+      "applicable_metric_ids": ["ttfb_ms", "fcp_ms", "lcp_ms", "cls_score", "inp_ms", "content_ready_ms"],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/data_health_page.mjs",
+      "projections": ["browser", "worker", "operator"]
+    },
+    {
       "surface_id": "about",
       "operator_label": "About",
       "kind": "surface",

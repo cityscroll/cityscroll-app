@@ -40,6 +40,7 @@ export const ROUTE_INVENTORY = Object.freeze([
   { path: "/data.html", id: "data-redirect", kind: "html", marker: CONTENT_MARKER, retired: true },
   { path: "/standards.html", id: "standards-redirect", kind: "html", marker: CONTENT_MARKER, retired: true },
   { path: "/stats.html", id: "stats", kind: "html", marker: CONTENT_MARKER },
+  { path: "/data-health/", id: "data-health", kind: "html", marker: CONTENT_MARKER },
   { path: "/robots.txt", id: "robots", kind: "text", marker: /Sitemap:\s*https:\/\/cityscroll\.org\/sitemap\.xml/i },
   { path: "/sitemap.xml", id: "sitemap", kind: "xml", marker: /<urlset\b/i },
 ]);
