@@ -75,7 +75,7 @@ export const FALLBACK_INDICES = {
   land: [0, 1, 2, 3, 4],
   property: [1, 2, 4],
   rules: [0, 1, 2, 4],
-  meetings: [4, 5],
+  meetings: [4],
   alerts: [0, 1, 2, 3],
 };
 

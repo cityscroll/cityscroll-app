@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T01:00:14.660Z",
+  "generatedAt": "2026-08-19T01:18:19.659Z",
   "dataDate": "2026-08-19",
   "scenarios": {
     "city-work-closing": {
@@ -170,8 +170,7 @@
         4
       ],
       "meetings": [
-        4,
-        5
+        4
       ],
       "alerts": [
         0,
@@ -236,7 +235,7 @@
           "months": null,
           "noticeType": "solicitation",
           "excludeSpecial": true,
-          "closingWeek": true,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
@@ -246,7 +245,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=it+consulting&standard=1&closing=week",
+          "route": "/browse/contracts/?q=it+consulting&standard=1",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -402,7 +401,7 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false,
+          "excludeSpecial": true,
           "closingWeek": false,
           "route": null,
           "name": null,
@@ -413,7 +412,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=senior+center",
+          "route": "/browse/contracts/?q=senior+center&standard=1",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -441,7 +440,7 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false,
+          "excludeSpecial": true,
           "closingWeek": true,
           "route": null,
           "name": null,
@@ -452,7 +451,7 @@
         "count": 12,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?closing=week",
+          "route": "/browse/contracts/?standard=1&closing=week",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -474,7 +473,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Parks and Recreation",
+          "agency": "Department of Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -516,7 +515,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "Rodriguez",
+          "interestLabel": "<UNKNOWN>",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -561,7 +560,7 @@
         "filter": {
           "keywords": [],
           "boro": "Brooklyn",
-          "status": null,
+          "status": "all",
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
@@ -569,7 +568,7 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 57
+        "count": 3390
       },
       {
         "lens": "land",
@@ -646,7 +645,7 @@
         "filter": {
           "keywords": [],
           "agency": "Department of Housing Preservation and Development",
-          "process": "award_or_conveyance",
+          "process": null,
           "stage": null,
           "asset": "realty",
           "saleMethod": null,
@@ -666,6 +665,7 @@
         "filter": {
           "keywords": [
             "environmental",
+            "protection",
             "land"
           ],
           "agency": null,
@@ -693,7 +693,7 @@
           "agency": "Police Department",
           "process": null,
           "stage": null,
-          "asset": "realty",
+          "asset": null,
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -710,7 +710,7 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Parks Department",
+          "agency": "Department of Parks and Recreation",
           "process": null,
           "stage": null,
           "asset": null,
@@ -778,10 +778,10 @@
           "keywords": [
             "taxi"
           ],
-          "agency": "Taxi and Limousine Commission",
+          "agency": null,
           "process": null
         },
-        "count": 221
+        "count": 230
       },
       {
         "lens": "rules",
@@ -855,7 +855,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "scheduled",
           "nearMe": false
         },
         "count": 0
@@ -906,13 +906,13 @@
           "agency": null,
           "when": "week",
           "borough": null,
-          "neighborhood": null,
+          "neighborhood": "<UNKNOWN>",
           "locationScope": null,
           "dateWindow": null,
           "process": "public_process",
           "nearMe": false
         },
-        "count": 12
+        "count": 0
       },
       {
         "lens": "alerts",
@@ -955,14 +955,14 @@
           "months": 3,
           "noticeType": null,
           "excludeSpecial": true,
-          "closingWeek": false,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 1245
+        "count": 2
       },
       {
         "lens": "alerts",
@@ -1004,8 +1004,8 @@
           "category": null,
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": false,
-          "closingWeek": false,
+          "excludeSpecial": true,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,

@@ -867,7 +867,7 @@ const NL_SUGGESTIONS_FALLBACK = {
   land: [0, 1, 2, 3, 4],
   property: [1, 2, 4],
   rules: [0, 1, 2, 4],
-  meetings: [4, 5],
+  meetings: [4],
   alerts: [0, 1, 2, 3],
 };
 let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
