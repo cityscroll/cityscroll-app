@@ -422,6 +422,15 @@ test("topicless weekly-contracts defaults count as active watches and digest acc
   assert.deepEqual(await countSubscriptionMetrics({ SUBS: subs }), { active: 2, accounts: 2 });
 });
 
+test("developer and e2e plus-tag addresses are excluded from real subscriber counts", async () => {
+  const subs = fakeKV({
+    "sub:real": JSON.stringify({ email: "devinbalkind@gmail.com", lens: "money" }),
+    "sub:e2e": JSON.stringify({ email: "jamesca2ro+scope-watch-e2e-20260806@gmail.com", lens: "money" }),
+    "sub:flagged": JSON.stringify({ email: "reader@example.com", developer_test: true, lens: "money" }),
+  });
+  assert.deepEqual(await countSubscriptionMetrics({ SUBS: subs }), { active: 1, accounts: 1 });
+});
+
 // ---- w12-16: daily gauge snapshots (active watches has no discrete "event") -------------
 
 test("snapshotHistDay writes today's gauge reading directly — not an increment — and a second call the same day overwrites rather than accumulates", async () => {

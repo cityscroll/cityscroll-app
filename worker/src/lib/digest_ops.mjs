@@ -1,7 +1,12 @@
 // Pure helpers for the operator digest dashboard: day-by-day send logs, roster
 // shaping, and the "is it correct?" recount check. No I/O — unit-testable.
 
-import { redactEmail } from "./subscriptions.mjs";
+import {
+  isTestSubscriber,
+  redactEmail,
+  signupLifecycleFromRecord,
+  SIGNUP_LIFECYCLE,
+} from "./subscriptions.mjs";
 import { describeFilter } from "./confirm_email.mjs";
 import { toRollupDayLogEntry } from "./rollup.mjs";
 
@@ -267,6 +272,11 @@ export function toRosterRow(sub, { lastSent = null, key = null } = {}) {
   if (!sub || typeof sub !== "object") return null;
   const lens = sub.lens || null;
   const filter = sub.filter || {};
+  const lifecycle = signupLifecycleFromRecord(sub, { lastSent }) || {
+    signup_lifecycle: SIGNUP_LIFECYCLE.ENROLLED,
+    status: SIGNUP_LIFECYCLE.ENROLLED,
+  };
+  const testAccount = isTestSubscriber(sub);
   return {
     key: key || sub.key || null,
     email: sub.email || null,
@@ -277,8 +287,13 @@ export function toRosterRow(sub, { lastSent = null, key = null } = {}) {
     freq: sub.freq || "daily",
     channel: sub.channel || "email",
     lang: sub.lang || "en",
-    // SUBS only holds confirmed watches (pending tokens never land here).
-    confirmed: true,
+    confirmed: lifecycle.status === SIGNUP_LIFECYCLE.CONFIRMED || lifecycle.status === SIGNUP_LIFECYCLE.ENROLLED,
+    status: lifecycle.status,
+    signup_lifecycle: lifecycle.signup_lifecycle,
+    original_signup_at: sub.original_signup_at || null,
+    recovered_at: sub.recovered_at || null,
+    recovery_explanation: sub.recovery_explanation || null,
+    developer_test: testAccount,
     createdAt: sub.createdAt || null,
     lastSent: lastSent || null,
     health: sub.health || null,
@@ -291,7 +306,7 @@ export function toRosterRow(sub, { lastSent = null, key = null } = {}) {
 export function searchInterestSignal(roster = []) {
   const byQuery = new Map();
   for (const r of roster) {
-    if (!r) continue;
+    if (!r || r.developer_test || r.status === SIGNUP_LIFECYCLE.TEST) continue;
     const qKey = JSON.stringify({ lens: r.lens, filter: r.filter || {} });
     let row = byQuery.get(qKey);
     if (!row) {
