@@ -141,6 +141,25 @@ test("matched edges link with typed accessible metadata while names never mint r
   assert.match(html, /data-edge-state="matched"/);
 });
 
+test("held destinations stay unlinked without destination-verification disclaimer slop", () => {
+  const html = renderEdgeSummaryRail([{
+    edge_type: "related_committee",
+    relation_label: "committee membership",
+    target_kind: "committee",
+    target_id: "unresolved",
+    target_name: "Unresolved committee",
+    count: 1,
+    state: "matched",
+    href: "/made-up-route/unresolved",
+  }]);
+  assert.match(html, /entity-pivot-held/);
+  assert.match(html, /Unresolved committee/);
+  assert.doesNotMatch(html, /<a class="edge-summary-link"/);
+  assert.doesNotMatch(html, /href="\/made-up-route\/unresolved"/);
+  assert.doesNotMatch(html, /Provisional: destination not verified/i);
+  assert.doesNotMatch(html, /destination not verified/i);
+});
+
 test("agency category totals produce the same typed records used by the rail", () => {
   const records = buildAgencyEdgeSummary({
     canonical_id: "parks-and-recreation",

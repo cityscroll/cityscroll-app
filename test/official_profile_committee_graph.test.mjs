@@ -74,6 +74,8 @@ test("official 7811 diamond-marked committees are keyboard-native committee link
   assert.equal(links.length, rows.length);
   assert.doesNotMatch(panel, /<span class="[^"]*ui-constellation-link/);
   assert.doesNotMatch(panel, /tabindex="-1"/);
+  assert.doesNotMatch(panel, /Provisional: destination not verified/i);
+  assert.doesNotMatch(panel, /destination not verified/i);
   for (const row of rows) {
     const href = `/committees/${row.committee_id}/`;
     assert.ok(links.some((match) => match[1] === href), `${row.committee} must link to ${href}`);
@@ -99,6 +101,22 @@ test("unverified official committee names stay ordinary text without diamond sty
   assert.doesNotMatch(panel, /ui-constellation-link/);
   assert.doesNotMatch(panel, /◆/);
   assert.doesNotMatch(panel, /tabindex=/);
+  assert.doesNotMatch(panel, /destination not verified/i);
+
+  const held = renderCommitteeMembershipsHTML({
+    member_id: "7811",
+    person_name: "Vickie Paladino",
+    rows: [{
+      committee_id: "unresolved",
+      committee: "Unresolved committee",
+      appointment_type: "Membership",
+      href: "/made-up-route/unresolved",
+    }],
+  }, { escapeHtml: String });
+  assert.match(held, /Unresolved committee/);
+  assert.match(held, /data-pivot-status="held"/);
+  assert.doesNotMatch(held, /href=/);
+  assert.doesNotMatch(held, /destination not verified/i);
 });
 
 test("official profile committee composition preserves honest graph states", () => {

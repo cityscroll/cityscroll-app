@@ -473,6 +473,28 @@ test("no_disclaimer_slop: repository wrapper blocks standing search debug copy",
   }
 });
 
+test("no_disclaimer_slop: repository wrapper blocks provisional destination disclaimer slop", () => {
+  const dir = mkdtempSync(join(tmpdir(), "ccg-provisional-destination-slop-"));
+  try {
+    writeFileSync(
+      join(dir, "index.html"),
+      `<!doctype html><html><body><main>` +
+        `<p>Provisional: destination not verified</p>` +
+        `<p>Destination not verified</p>` +
+        `</main></body></html>\n`,
+    );
+    const blocked = runPython([
+      join(STANDARDS, "no_disclaimer_slop.py"),
+      "--root", dir,
+      "--mode", "block",
+    ]);
+    assert.notEqual(blocked.status, 0, "provisional destination disclaimer must fail the repository gate");
+    assert.match(blocked.stdout, /provisional_destination_disclaimer/);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("no_disclaimer_slop: CI defaults the rendered census to blocking enforcement", () => {
   const workflow = readFileSync(join(ROOT, ".github", "workflows", "ci.yml"), "utf8");
   const a11yShard = workflow.slice(
