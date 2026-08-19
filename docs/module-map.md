@@ -37,6 +37,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/property_plain_summary.mjs` | Receipt-gated Property plain-language templates, faithful jargon definitions, honest original-text fallback, and progressive-disclosure summary markup. |
 | `site/solicitation_procurement_method.mjs` | Pure solicitation method extract (§6-129 / NCSP / accelerated / response floor). |
 | `site/mwbe_goal_surface.mjs` | Pure solicitation M/WBE / method chips over procurement_method (list + notice detail). |
+| `site/procurement_coverage_labels.mjs` | Record-varying procurement coverage copy: policy-matched small-purchase labels, M/WBE award-notice absence after a checked miss, and in-sentence observed-vs-publisher counts. Unknown methods and empty facets without a publisher figure stay silent. |
 | `site/app/rules.mjs` | Rules explorer, rulemaking phase spine, rule actions, generic feed-card rendering, and the related-language pilot. The pure `site/rules_semantic_lane.mjs` validates and projects the precomputed, partial-coverage artifact built by `tools/build_rules_semantic_lane.mjs`; lexical cards retain ownership of duplicates and every Rules filter remains hard. |
 | `site/map_exploration.mjs` | Pure map geometry, canonical scope drill hashes, and exact all-lens request-ID membership from `district_activity.district_items`. |
 | `site/parcel_scope.mjs` | Pure exact-BBL typed scope composition and bounded observed parcel biography over committed disposition, ZAP, and tax-lien materializations. |
