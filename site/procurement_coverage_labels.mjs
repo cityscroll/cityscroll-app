@@ -86,7 +86,7 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-function interpolate(template, variables = {}) {
+function fillCopyTemplate(template, variables = {}) {
   return Object.entries(variables).reduce(
     (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
     template,
@@ -354,7 +354,7 @@ export function formatProcurementCoverageCopy(item, options = {}) {
     const translated = translate(item.i18n_key, item.variables);
     if (translated && translated !== item.i18n_key) return translated;
   }
-  return interpolate(item.fallback, item.variables);
+  return fillCopyTemplate(item.fallback, item.variables);
 }
 
 function renderItem(item, options = {}) {
