@@ -3399,7 +3399,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `node tools/build_performance_observability.mjs`; verify drift and the
   unknown-route fail-closed invariant with `--check` and
   `test/performance_observability_registry.test.mjs`. Never add a consumer-side
-  fallback that maps an unknown route to Home or Browse.
+  fallback that maps an unknown route to Home or Browse. Architecture facts
+  project its bounded topology and sitemap-derived coverage; unclassified
+  candidates stay advisory under `performance_observability.coverage` and must
+  never enter the hard `observer_coverage.unmapped_surfaces` gate. The frozen
+  proof is `architecture/backtests/rum-future-surface.json` plus
+  `test/performance_observability_architecture.test.mjs`.
 
 ## Maintaining this file
 

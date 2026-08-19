@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.performance_observability.future_surface_backtest.v1",
+  "frozen_at": "2026-08-18",
+  "description": "A hypothetical public sitemap addition must remain an advisory unclassified RUM candidate until it is added to the canonical registry.",
+  "candidates": [
+    {
+      "pathname": "/",
+      "expected_classification_state": "registered_no_data",
+      "expected_surface_id": "home"
+    },
+    {
+      "pathname": "/future-civic-surface/",
+      "expected_classification_state": "unclassified",
+      "expected_surface_id": null
+    }
+  ]
+}
