@@ -147,7 +147,7 @@ test("admin response is a dedicated versioned read model with registered invento
   assert.equal(body.query.comparison, "current-vs-previous");
   assert.equal(body.catalog.metrics.length, 13);
   assert.equal(body.coverage.registered.surface_count, 36);
-  assert.equal(body.coverage.registered.component_count, 14);
+  assert.equal(body.coverage.registered.component_count, 16);
   assert.equal(body.coverage.selection.surface.surface_id, "home");
   assert.equal(body.coverage.selection.surface.lifecycle_state, "instrumented");
   assert.equal(body.coverage.unclassified_observations.status, "unclassified");

@@ -3480,6 +3480,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `site/app/notice-context.mjs` owns async context settlement. Keep record IDs,
   URLs, DOM text, and selectors out of milestone records. Focused proof is
   `test/rum_static_record_instrumentation.test.mjs`.
+- Contracts owns its one-surface contract in `site/contracts_rum.mjs` and its
+  browser binding in `site/app/contracts-rum.mjs`: start at the native
+  filter/input action, mark feedback only after a paint, and settle after
+  `site/app/money-list.mjs` renders a row or honest empty/error terminal. It
+  must remain identifier-free and disabled with the production collector;
+  focused proof is `test/rum_browse_search_instrumentation.test.mjs`.
 - Field-performance intake is the separate `POST /performance-events` contract
   in `worker/src/performance_events.mjs`, backed only by `RUM_ANALYTICS` /
   `crol_rum_observations_v1`. Keep its normalized one-metric-per-point layout,

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 export const SITE_MODULES = [
   "core.mjs",
   "traversal.mjs",
+  "contracts-rum.mjs",
   "money-list.mjs",
   "money-history.mjs",
   "search-share.mjs",

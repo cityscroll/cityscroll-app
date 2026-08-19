@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.operator_inventory.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "6a9e83fa2e52dce1476619ae8b5be0703e4cd6b50c264604ef5935b1c1839187",
+  "registry_hash": "5a9c37bcf2d040636b23e6725d1cf41bff77f8b8e43cb8ed72838ea1a0e94889",
   "surfaces": [
     {
       "surface_id": "about",
@@ -196,7 +196,7 @@
         ],
         "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
       },
-      "lifecycle_state": "planned",
+      "lifecycle_state": "instrumented",
       "aliases": [
         {
           "alias_id": "browse-money",
@@ -1230,6 +1230,64 @@
     }
   ],
   "components": [
+    {
+      "component_id": "browse-contracts-filter-apply",
+      "operator_label": "Browse / Contracts / filter application",
+      "kind": "interaction",
+      "parent": "component:browse-contracts-results",
+      "route_family": "browse-contracts",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "feedback_to_settled_ms",
+        "interaction_feedback_ms",
+        "interaction_settled_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "interaction-settled-v1",
+        "metric_id": "interaction_settled_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named action has produced visible feedback and reached its owner-defined terminal result; feedback and settled timestamps remain distinct."
+      },
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/app/money-list.mjs"
+    },
+    {
+      "component_id": "browse-contracts-results",
+      "operator_label": "Browse / Contracts / result list",
+      "kind": "component",
+      "parent": "surface:browse-contracts",
+      "route_family": "browse-contracts",
+      "architecture_container_ref": "browser_site",
+      "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "component_ready_ms"
+      ],
+      "semantic_readiness": {
+        "contract_id": "component-ready-v1",
+        "metric_id": "component_ready_ms",
+        "terminal_result_states": [
+          "content",
+          "empty",
+          "unavailable",
+          "error"
+        ],
+        "definition": "The named component has meaningful content or an honest terminal empty, unavailable, or error state, reported by its owner."
+      },
+      "lifecycle_state": "instrumented",
+      "aliases": [],
+      "supersedes": [],
+      "introduced_version": "1.0.0",
+      "owner_source_path": "site/app/money-list.mjs"
+    },
     {
       "component_id": "browse-filter-apply",
       "operator_label": "Browse / filter application",

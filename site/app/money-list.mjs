@@ -286,6 +286,7 @@ function bindFullHistorySearch(){
   });
 }
 async function search(){
+  const rumInteraction=claimContractsRumInteraction();
   const forceFullHistory = forceFullHistorySearch;
   forceFullHistorySearch = false;
   moneyLoaded = true;
@@ -313,7 +314,8 @@ async function search(){
     updateHash();
     syncProcurementFacetRails();
     await locationTools.paintMoneyActionLocationResults(locationFilter,{
-      t,agency:$("#agency").value,query:$("#kw").value,paintMoneyRows,
+      t,agency:$("#agency").value,query:$("#kw").value,
+      paintMoneyRows:(rows,options)=>paintMoneyRows(rows,{...options,rumInteraction}),
     });
     return;
   }
@@ -368,16 +370,18 @@ async function search(){
       autoSelect:true,
       narrowed:false,
       lineageRows:snapshotRows,
+      rumInteraction,
     });
   }catch(e){
     if(stale()) return;
     unbusy("#list");
     $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>';
     $("#detail").innerHTML = "";
+    reportContractsRumResults(rumInteraction,"unavailable");
     return;
   }
 }
-function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null}={}){
+function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null,rumInteraction=null}={}){
   currentRows = rows;
   currentMoneyNarrowed = narrowed;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
@@ -397,6 +401,7 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null
     $("#list").insertAdjacentHTML("afterbegin",
       `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
   }
+  reportContractsRumResults(rumInteraction,currentRows.length?"content":"empty");
 }
 
 function loadMethodFacet(rows){
