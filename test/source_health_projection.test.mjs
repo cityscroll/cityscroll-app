@@ -11,10 +11,13 @@ import {
 import {
   buildSourceHealthObservations,
   externalScheduleObservations,
+  loadSourceHealthInputs,
+  receiptSourceIds,
   redactCredentialValues,
   validateSourceHealthProjection,
 } from "../tools/source_health_observations.mjs";
 import { loadSourceContracts, validateSourceContracts } from "../tools/source_contracts.mjs";
+import { fileURLToPath } from "node:url";
 
 const NOW = "2026-08-18T12:00:00.000Z";
 
@@ -355,6 +358,72 @@ test("committed observations are canonical, complete, and generated from receipt
     [...registry.contracts.map((source) => source.id)].sort(),
   );
   assert.ok(projection.observations.some((row) => row.evidence.length > 0));
+});
+
+test("receipt join reads source_contracts arrays and schema-named Checkbook receipts", () => {
+  assert.deepEqual(receiptSourceIds({
+    source_contracts: [
+      "abo-local-authorities",
+      "abo-local-development-corporations",
+      "abo-state-authorities",
+    ],
+  }), [
+    "abo-local-authorities",
+    "abo-local-development-corporations",
+    "abo-state-authorities",
+  ]);
+  assert.deepEqual(receiptSourceIds({
+    schema: "cityscroll.checkbook_contracts_population_receipt.v1",
+    source: { pulled_at: "2026-08-18T04:05:51.552Z" },
+  }), ["checkbook-contracts"]);
+  assert.deepEqual(receiptSourceIds({
+    source_contract_id: "city-record",
+    source_contracts: ["city-record"],
+  }), ["city-record"]);
+});
+
+test("committed ABO and checkbook-contracts observations carry real receipt clocks", () => {
+  const registry = loadSourceContracts();
+  const root = fileURLToPath(new URL("../", import.meta.url));
+  const inputs = loadSourceHealthInputs(root, registry);
+  const projection = JSON.parse(readFileSync(
+    new URL("../site/data/source_health_observations.json", import.meta.url),
+    "utf8",
+  ));
+  const required = [
+    "abo-local-authorities",
+    "abo-local-development-corporations",
+    "abo-state-authorities",
+    "checkbook-contracts",
+  ];
+  for (const id of required) {
+    assert.ok(
+      inputs.warehouseReceipts.some((row) => row.source_id === id && row.observed_at),
+      `${id} must have a dated warehouse receipt`,
+    );
+    const row = projection.observations.find((item) => item.source_id === id);
+    assert.ok(row, id);
+    const clocks = row.health.clocks;
+    assert.equal(clocks.cityscroll_checked_acquired.state, "KNOWN", id);
+    assert.ok(clocks.cityscroll_checked_acquired.at, id);
+    assert.doesNotMatch(clocks.cityscroll_checked_acquired.at, /^1970-/);
+    assert.equal(clocks.cityscroll_serving.state, "KNOWN", id);
+    assert.ok(clocks.cityscroll_serving.at, id);
+    assert.notEqual(row.health.status, "Source-unavailable", id);
+    assert.ok(!row.health.reason_codes.includes("acquisition-status-unknown"), id);
+    assert.ok(row.evidence.some((item) => item.at), id);
+  }
+  const local = projection.observations.find((row) => row.source_id === "abo-local-authorities");
+  assert.equal(local.health.clocks.publisher_updated.state, "KNOWN");
+  assert.match(local.health.clocks.publisher_updated.at, /^2024-05-06/);
+  const ldc = projection.observations.find((row) => row.source_id === "abo-local-development-corporations");
+  assert.equal(ldc.health.clocks.publisher_updated.state, "KNOWN");
+  assert.match(ldc.health.clocks.publisher_updated.at, /^2024-06-26/);
+  const state = projection.observations.find((row) => row.source_id === "abo-state-authorities");
+  assert.equal(state.health.clocks.publisher_updated.state, "UNKNOWN");
+  assert.equal(state.health.clocks.publisher_updated.at, null);
+  const checkbook = projection.observations.find((row) => row.source_id === "checkbook-contracts");
+  assert.equal(checkbook.health.clocks.cityscroll_checked_acquired.at, "2026-08-18T04:05:51.552Z");
 });
 
 test("raw receipt observations remain backstage until a strict public projection exists", () => {

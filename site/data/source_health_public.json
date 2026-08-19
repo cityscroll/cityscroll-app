@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.public_source_health.v1",
-  "generated_at": "2026-08-18T20:15:50.276Z",
+  "generated_at": "2026-08-19T08:06:24.864Z",
   "available": true,
   "source_count": 54,
   "sources": [
@@ -12,25 +12,25 @@
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
       "mode": "periodic",
       "health": {
-        "status": "UNKNOWN",
+        "status": "Delayed",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "publisher-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2024-05-06T04:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },
@@ -48,25 +48,25 @@
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
       "mode": "periodic",
       "health": {
-        "status": "UNKNOWN",
+        "status": "Delayed",
         "reason_codes": [
-          "acquisition-status-unknown"
+          "publisher-clock-stale"
         ],
         "clocks": {
           "publisher_updated": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2024-06-26T04:00:00.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },
@@ -84,10 +84,8 @@
       "expected_cadence": "Publisher cadence not stated in dataset metadata",
       "mode": "periodic",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -95,14 +93,14 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-04T11:26:00.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },
@@ -336,10 +334,8 @@
       "expected_cadence": "Ongoing registrations and spending updates",
       "mode": "continuous",
       "health": {
-        "status": "UNKNOWN",
-        "reason_codes": [
-          "acquisition-status-unknown"
-        ],
+        "status": "Healthy",
+        "reason_codes": [],
         "clocks": {
           "publisher_updated": {
             "at": null,
@@ -347,14 +343,14 @@
             "basis": null
           },
           "cityscroll_checked_acquired": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-18T04:05:51.552Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": null,
-            "state": "UNKNOWN",
-            "basis": null
+            "at": "2026-08-18T04:05:51.552Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_materialization"
           }
         }
       },
@@ -1926,7 +1922,7 @@
             "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
-            "at": "2026-08-18T20:15:50.276Z",
+            "at": "2026-08-19T08:06:24.864Z",
             "state": "KNOWN",
             "basis": "cityscroll_materialization"
           }

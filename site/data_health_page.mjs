@@ -1,9 +1,12 @@
 // Public Data health page: materialize-first projection of GET /source-health.
 // Renders only the committed public artifact. Does not evaluate clocks, query
 // internals, or invent healthy/zero values for missing observations.
-// The page lists sources CityScroll has acquired or served. Declared-only
-// contracts with no acquisition or serve evidence stay in source_contracts.json
-// and the public artifact; they are omitted here.
+// The page lists sources with real acquisition or serve evidence: dated
+// clocks from receipts or serve artifacts. Observation reason codes such as
+// acquisition-status-unknown are not the omit test — that status can mean
+// the health builder was blind to a real receipt. Declared-only contracts
+// with no dated evidence stay in source_contracts.json and the public
+// artifact; they are omitted here.
 
 import {
   PUBLIC_SOURCE_HEALTH_SCHEMA,
@@ -256,11 +259,6 @@ function clockView(clockName, clock, meta) {
   };
 }
 
-const NEVER_ACQUIRED_REASONS = Object.freeze([
-  "acquisition-status-unknown",
-  "observation-missing",
-]);
-
 function rowHasAcquisitionOrServeEvidence(row) {
   const clocks = row?.health?.clocks || {};
   return CLOCKS.some((meta) => {
@@ -269,11 +267,13 @@ function rowHasAcquisitionOrServeEvidence(row) {
   });
 }
 
-export function dataHealthRowIsNeverAcquired(row) {
+export function dataHealthRowIsNeverAcquired(row, options = {}) {
   if (rowHasAcquisitionOrServeEvidence(row)) return false;
-  const reasons = Array.isArray(row?.health?.reason_codes) ? row.health.reason_codes : [];
-  if (NEVER_ACQUIRED_REASONS.some((reason) => reasons.includes(reason))) return true;
-  return row?.health?.status === "UNKNOWN";
+  const evidence = options.evidenceSourceIds;
+  if (evidence && typeof evidence.has === "function" && evidence.has(row?.source_id)) {
+    return false;
+  }
+  return true;
 }
 
 function sourceCard(row) {
@@ -299,7 +299,7 @@ function sourceCard(row) {
   };
 }
 
-export function buildDataHealthView(projection) {
+export function buildDataHealthView(projection, options = {}) {
   const unavailable = !projection
     || projection.available !== true
     || projection.schema !== PUBLIC_SOURCE_HEALTH_SCHEMA
@@ -313,7 +313,9 @@ export function buildDataHealthView(projection) {
       source_count: null,
     };
   }
-  const cards = projection.sources.filter((row) => !dataHealthRowIsNeverAcquired(row)).map(sourceCard);
+  const cards = projection.sources
+    .filter((row) => !dataHealthRowIsNeverAcquired(row, options))
+    .map(sourceCard);
   const grouped = new Map(PRODUCT_AREAS.map((area) => [area.id, []]));
   for (const card of cards) {
     const areaId = grouped.has(card.area_id) ? card.area_id : "other";
@@ -429,5 +431,5 @@ ${renderDataHealthBody(view)}
 }
 
 export function renderDataHealthPage(projection, options = {}) {
-  return renderDataHealthDocument(buildDataHealthView(projection), options);
+  return renderDataHealthDocument(buildDataHealthView(projection, options), options);
 }

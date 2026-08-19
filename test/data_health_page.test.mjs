@@ -7,6 +7,7 @@ import {
 } from "../site/source_health_public_projection.mjs";
 import {
   buildDataHealthView,
+  dataHealthRowIsNeverAcquired,
   mappedProductAreaIds,
   productAreaForSource,
   renderDataHealthDocument,
@@ -135,12 +136,21 @@ test("three clocks stay labeled, coverage stays beside health, and UNKNOWN never
   assert.ok(html.indexOf("data-health-condition") < html.indexOf("data-health-coverage"));
 });
 
-test("never-acquired declared sources stay off the page; served sources including degraded stay on", () => {
+test("omit uses dated clocks, not acquisition-status-unknown; genuine zero-evidence rows stay off", () => {
+  const unknownReasons = {
+    status: "UNKNOWN",
+    reason_codes: ["acquisition-status-unknown"],
+    clocks: {
+      publisher_updated: { at: null, state: "UNKNOWN" },
+      cityscroll_checked_acquired: { at: null, state: "UNKNOWN" },
+      cityscroll_serving: { at: null, state: "UNKNOWN" },
+    },
+  };
   const { view, html } = pageFrom(
     [
-      contract("abo-local-authorities"),
+      contract("declared-only-source"),
       contract("city-record"),
-      contract("checkbook-contracts"),
+      contract("abo-local-authorities"),
     ],
     [
       observation("city-record", {
@@ -154,26 +164,62 @@ test("never-acquired declared sources stay off the page; served sources includin
           },
         },
       }),
+      observation("abo-local-authorities", {
+        health: {
+          ...unknownReasons,
+          clocks: {
+            publisher_updated: { at: "2024-06-26T00:00:00.000Z", state: "KNOWN" },
+            cityscroll_checked_acquired: { at: "2026-08-04T11:26:00.000Z", state: "KNOWN" },
+            cityscroll_serving: { at: "2026-08-04T11:26:00.000Z", state: "KNOWN" },
+          },
+        },
+      }),
+      observation("declared-only-source", { health: unknownReasons }),
     ],
   );
 
   const cards = view.groups.flatMap((group) => group.sources);
-  assert.deepEqual(cards.map((card) => card.source_id), ["city-record"]);
-  assert.equal(cards[0].health_status, "Degraded");
+  assert.deepEqual(cards.map((card) => card.source_id).sort(), ["abo-local-authorities", "city-record"]);
+  assert.equal(cards.find((card) => card.source_id === "city-record").health_status, "Degraded");
+  assert.equal(dataHealthRowIsNeverAcquired({
+    source_id: "abo-local-authorities",
+    health: { status: "UNKNOWN", reason_codes: ["acquisition-status-unknown"], clocks: {
+      publisher_updated: { at: "2024-06-26T00:00:00.000Z", state: "KNOWN" },
+    } },
+  }), false);
   assert.match(html, /Source city-record/);
+  assert.match(html, /Source abo-local-authorities/);
   assert.match(html, /data-health-status="Degraded"/);
-  assert.doesNotMatch(html, /abo-local-authorities|Source abo-local-authorities|checkbook-contracts|Source checkbook-contracts/);
+  assert.doesNotMatch(html, /declared-only-source|Source declared-only-source/);
+});
 
+test("committed ABO family and checkbook-contracts stay on the page with real clocks", () => {
   const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
   const committedView = buildDataHealthView(committed);
   const committedCards = committedView.groups.flatMap((group) => group.sources);
-  const committedIds = new Set(committedCards.map((card) => card.source_id));
-  assert.equal(committedIds.has("abo-local-authorities"), false);
-  assert.equal(committedIds.has("abo-local-development-corporations"), false);
-  assert.equal(committedIds.has("abo-state-authorities"), false);
-  assert.equal(committedIds.has("city-record"), true);
+  const byId = Object.fromEntries(committedCards.map((card) => [card.source_id, card]));
+  const required = [
+    "abo-local-authorities",
+    "abo-local-development-corporations",
+    "abo-state-authorities",
+    "checkbook-contracts",
+    "city-record",
+  ];
+  for (const id of required) {
+    const card = byId[id];
+    assert.ok(card, `${id} must stay on the Data health page`);
+    assert.ok(
+      card.clocks.some((clock) => clock.state === "KNOWN" && clock.display !== "UNKNOWN"),
+      `${id} must carry at least one real clock`,
+    );
+    assert.ok(
+      card.clocks.every((clock) => clock.display !== "January 1, 1970"),
+      `${id} must not fabricate an epoch date`,
+    );
+  }
   const rendered = renderDataHealthPage(committed);
-  assert.doesNotMatch(rendered, /NYS Authorities Budget Office/);
+  assert.match(rendered, /NYS Authorities Budget Office/);
+  assert.match(rendered, /Checkbook NYC registered contracts/);
   assert.match(rendered, /City Record Online/);
 });
 
