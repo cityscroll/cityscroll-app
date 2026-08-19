@@ -240,6 +240,7 @@
     nl_placeholder_money: "আপনি কী খুঁজছেন তা বর্ণনা করুন…",
     ask_cityscroll_action: "CityScroll-কে জিজ্ঞাসা করুন",
     ask_cityscroll_context: "আপনার অনুরোধ ব্যাখ্যা করে",
+    ask_cited_quotes_heading: "সরকারি নথি থেকে উদ্ধৃত",
     query_conflict_prompt: "এই ফিল্টারগুলো পরস্পরবিরোধী। কোনটি ব্যবহার করবেন তা বেছে নিন।",
     query_conflict_keep: "{value} রাখুন",
     query_conflict_use: "{value} ব্যবহার করুন",

@@ -240,6 +240,7 @@
     nl_placeholder_money: "опишите, что вы ищете…",
     ask_cityscroll_action: "Спросить CityScroll",
     ask_cityscroll_context: "Интерпретирует ваш запрос",
+    ask_cited_quotes_heading: "Цитата из официальных записей",
     query_conflict_prompt: "Эти фильтры конфликтуют. Выберите один из них.",
     query_conflict_keep: "Оставить {value}",
     query_conflict_use: "Использовать {value}",

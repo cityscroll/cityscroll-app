@@ -240,6 +240,7 @@
     nl_placeholder_money: "찾으시는 내용을 설명해 주세요…",
     ask_cityscroll_action: "CityScroll에 질문하기",
     ask_cityscroll_context: "요청을 해석합니다",
+    ask_cited_quotes_heading: "공식 기록에서 인용",
     query_conflict_prompt: "이 필터들은 서로 충돌합니다. 사용할 항목을 선택하세요.",
     query_conflict_keep: "{value} 유지",
     query_conflict_use: "{value} 사용",

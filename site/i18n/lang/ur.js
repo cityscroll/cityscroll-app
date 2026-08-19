@@ -242,6 +242,7 @@
     nl_placeholder_money: "بیان کریں کہ آپ کیا تلاش کر رہے ہیں…",
     ask_cityscroll_action: "CityScroll سے پوچھیں",
     ask_cityscroll_context: "آپ کی درخواست کی تشریح کرتا ہے",
+    ask_cited_quotes_heading: "سرکاری ریکارڈ سے اقتباس",
     query_conflict_prompt: "یہ فلٹرز متصادم ہیں۔ منتخب کریں کہ کون سا استعمال کرنا ہے۔",
     query_conflict_keep: "{value} برقرار رکھیں",
     query_conflict_use: "{value} استعمال کریں",

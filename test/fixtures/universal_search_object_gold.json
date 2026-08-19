@@ -911,6 +911,43 @@
       "notes": "Interpretation only. Offline via parseNL plus sanitize. Live Haiku stays in worker/e2e/nl.mjs and is not a required check."
     },
     {
+      "id": "gq-ask-cited-energy-conservation",
+      "category": "cited_synthesis",
+      "corpus": "cited_offline",
+      "input": {
+        "channel": "nl",
+        "text": "energy conservation"
+      },
+      "expect": {
+        "recall": {
+          "must_include_citations": ["city_record_notice:20260715041:p0001"],
+          "join_state": "matched",
+          "quotes_only": true,
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"
+        }
+      },
+      "eval": ["recall"],
+      "notes": "Ask quotes only exact-join matched passages. No generated answer or invented citation."
+    },
+    {
+      "id": "gq-ask-cited-no-invented",
+      "category": "cited_synthesis",
+      "corpus": "cited_offline",
+      "input": {
+        "channel": "nl",
+        "text": "zzzz-not-a-real-civic-topic-xyzzy"
+      },
+      "expect": {
+        "recall": {
+          "must_include_citations": [],
+          "must_not_invent_citations": true,
+          "quotes_only": true
+        }
+      },
+      "eval": ["recall"],
+      "notes": "A miss stays empty. The Ask card does not invent citations or an ungrounded answer."
+    },
+    {
       "id": "gq-dot-agency-alias",
       "category": "canonical_entity_alias",
       "corpus": "canonical_entity",

@@ -242,6 +242,7 @@
     nl_placeholder_money: "صف ما تبحث عنه…",
     ask_cityscroll_action: "اسأل CityScroll",
     ask_cityscroll_context: "يفسّر طلبك",
+    ask_cited_quotes_heading: "مقتبس من السجلات الرسمية",
     query_conflict_prompt: "هذه عوامل تصفية متعارضة. اختر أيها تريد استخدامه.",
     query_conflict_keep: "الاحتفاظ بـ {value}",
     query_conflict_use: "استخدام {value}",

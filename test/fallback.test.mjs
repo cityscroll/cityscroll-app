@@ -44,7 +44,7 @@ const make = (API, fetchImpl) =>
     ["const API_FALLBACK = API; let apiBase = API;", // fallback base mirrors the injected one in tests
      nlParseSrc,
      extractFn("workerFetch"), extractFn("personName"), extractFn("withPersonName"),
-     extractFn("deviceParse"), extractFn("enrichNeighborhoodFilter"), extractFn("nlResolve"),
+     extractFn("deviceParse"), extractFn("enrichNeighborhoodFilter"), extractFn("attachCitedQuotes"), extractFn("nlResolve"),
      "return { parseNL, deviceParse, nlResolve };"].join("\n")
   )(API, fetchImpl);
 
@@ -124,6 +124,20 @@ test("nlResolve: worker returns degraded -> device parse", async () => {
     async () => ({ ok: true, json: async () => ({ degraded: true }) }));
   const f = await nlResolve("sanitation rules", "rules");
   assert.equal(f.source, "device");
+});
+
+test("nlResolve: degraded /nl still keeps cited quotes from the worker", async () => {
+  const quotes = {
+    schema: "cityscroll.ask_cited_quotes.v1",
+    query: "energy conservation",
+    coverage: { state: "partial", quoted_count: 1, omitted_unknown_count: 0 },
+    quotes: [{ citation_id: "city_record_notice:20260715041:p0001" }],
+  };
+  const { nlResolve } = make("https://worker.example",
+    async () => ({ ok: true, json: async () => ({ degraded: true, reason: "api-529", cited_quotes: quotes }) }));
+  const f = await nlResolve("energy conservation", "money");
+  assert.equal(f.source, "device");
+  assert.equal(f.cited_quotes.quotes[0].citation_id, "city_record_notice:20260715041:p0001");
 });
 
 test("nlResolve: worker succeeds -> model result is used", async () => {
