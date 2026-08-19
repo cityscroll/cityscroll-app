@@ -27,6 +27,7 @@ test("committed watermark is compact, schema-stamped, and not a facts dump", () 
   assert.ok(committed.ontology);
   assert.ok(Array.isArray(committed.bindings.topology));
   assert.ok(committed.bindings.topology.length > 0);
+  assert.ok(committed.performance_observability);
   for (const key of [
     "routes",
     "crons",
@@ -62,11 +63,21 @@ test("watermark projection is structurally valid and regenerable from current fa
   assert.equal(watermark.ontology.version, facts.ontology.registry.version);
   assert.ok(Array.isArray(watermark.bindings.topology));
   assert.ok(watermark.bindings.topology.length > 0);
+  assert.equal(watermark.performance_observability.catalog.registry_hash, facts.performance_observability.catalog.registry_hash);
+  assert.equal(watermark.performance_observability.registry.surface_count, facts.performance_observability.registry.surface_count);
+  assert.equal(watermark.performance_observability.coverage_policy, "advisory");
+  assert.equal(watermark.performance_observability.measurements_included, false);
+  assert.equal("coverage" in watermark.performance_observability, false);
+  const rendered = JSON.stringify(watermark.performance_observability).toLowerCase();
+  for (const forbidden of ["p50", "p75", "p95", "percentile", "history", "unclassified_candidates"]) {
+    assert.equal(rendered.includes(forbidden), false, forbidden);
+  }
   const again = buildWatermark(facts);
   assert.deepEqual(again.canaries, watermark.canaries);
   assert.equal(again.observer_coverage_hash, watermark.observer_coverage_hash);
   assert.deepEqual(again.ontology, watermark.ontology);
   assert.deepEqual(again.bindings, watermark.bindings);
+  assert.deepEqual(again.performance_observability, watermark.performance_observability);
   const loaded = loadWatermark();
   assert.equal(loaded.schema, WATERMARK_SCHEMA);
   assert.equal(isWatermark(loaded), true);

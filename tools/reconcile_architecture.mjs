@@ -47,6 +47,7 @@ const RESOURCE_TARGETS = [
   { modelId: "kv_feedback", section: "kv_namespaces", binding: "FEEDBACK" },
   { modelId: "digest_queue", section: "queues.producers", binding: "DIGEST_QUEUE" },
   { modelId: "analytics_engine", section: "analytics_engine_datasets", binding: "USAGE_ANALYTICS" },
+  { modelId: "rum_analytics", section: "analytics_engine_datasets", binding: "RUM_ANALYTICS" },
   { modelId: "r2_source_vault", section: "r2_buckets", binding: "SOURCE_VAULT" },
 ];
 
@@ -77,6 +78,14 @@ const DOMAIN_TARGETS = [
     modelId: "ontology_registry",
     name: "Civic Graph ontology",
     observed: (facts) => Boolean(facts.ontology?.registry?.schema),
+  },
+  {
+    modelId: "performance_registry",
+    name: "Performance observability registry",
+    observed: (facts) => Boolean(
+      facts.performance_observability?.catalog?.registry_hash
+      && facts.performance_observability?.registry?.surface_count,
+    ),
   },
 ];
 
@@ -593,6 +602,10 @@ function buildReport({
       source: "generated_in_memory",
       regenerated_commit: facts.commit,
       baseline: baselineLabel(resolvedBaseline),
+      performance_observability: {
+        coverage: facts.performance_observability?.coverage ?? null,
+        measurements_included: facts.performance_observability?.measurements_included === true,
+      },
     },
   };
 }

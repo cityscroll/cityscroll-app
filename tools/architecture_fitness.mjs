@@ -136,6 +136,10 @@ function factContainerEvidence(facts) {
     materialization_tools: hasPath(facts, "tools"),
     entity_resolution: Boolean(facts.entity_resolution?.package?.exists) && facts.entity_resolution.module_count > 0,
     ontology_registry: facts.ontology?.registry?.schema === "cityscroll.ontology.registry.v0",
+    performance_registry: Boolean(
+      facts.performance_observability?.catalog?.registry_hash
+      && facts.performance_observability?.registry?.surface_count,
+    ),
     d1_notices: Array.isArray(bindings.d1_databases) && bindings.d1_databases.some((item) => item.binding === "DB"),
     kv_nl_meter: Array.isArray(bindings.kv_namespaces) && bindings.kv_namespaces.some((item) => item.binding === "NL_METER"),
     kv_alert_state: Array.isArray(bindings.kv_namespaces) && bindings.kv_namespaces.some((item) => item.binding === "ALERT_STATE"),
@@ -161,7 +165,7 @@ export function checkDeclaredModelDrift({ facts, modelText }) {
     .map((container) => container.id));
   const evidence = factContainerEvidence(facts);
   const observed = new Set(Object.entries(evidence).filter(([, present]) => present).map(([id]) => id));
-  const knownRoots = new Set(["entity_resolution", "ontology", "site", "tools", "warehouse", "worker"]);
+  const knownRoots = new Set(["architecture", "entity_resolution", "ontology", "site", "tools", "warehouse", "worker"]);
   const additions = [...sourceRootSet(facts)]
     .filter((root) => root !== "test" && !knownRoots.has(root))
     .map((root) => `source-root:${root}`);
