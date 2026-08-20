@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T08:51:42.834Z",
+  "generatedAt": "2026-08-20T09:24:57.067Z",
   "dataDate": "2026-08-20",
   "scenarios": {
     "city-work-closing": {
@@ -159,6 +159,7 @@
         4
       ],
       "property": [
+        0,
         1,
         2,
         4
@@ -226,8 +227,7 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it",
-            "consulting"
+            "it consulting"
           ],
           "agency": null,
           "minAmount": null,
@@ -474,7 +474,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -576,11 +576,9 @@
         "idx": 1,
         "text": "rezonings in Queens",
         "filter": {
-          "keywords": [
-            "rezoning"
-          ],
+          "keywords": [],
           "boro": "Queens",
-          "status": "all",
+          "status": null,
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
@@ -588,7 +586,7 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 336
+        "count": 48
       },
       {
         "lens": "land",
@@ -647,7 +645,7 @@
         "text": "HPD property sales",
         "filter": {
           "keywords": [],
-          "agency": "Department of Housing Preservation and Development",
+          "agency": "Housing Preservation and Development",
           "process": null,
           "stage": null,
           "asset": "realty",
@@ -659,7 +657,7 @@
           "communityDistrict": null,
           "nearMe": false
         },
-        "count": 0
+        "count": 142
       },
       {
         "lens": "property",
@@ -711,10 +709,10 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Parks Department",
+          "agency": "Department of Parks and Recreation",
           "process": null,
           "stage": null,
-          "asset": "realty",
+          "asset": null,
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -876,7 +874,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "hearing",
           "nearMe": false
         },
         "count": 0
