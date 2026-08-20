@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T09:42:40.323Z",
+  "generatedAt": "2026-08-20T10:00:57.379Z",
   "dataDate": "2026-08-20",
   "scenarios": {
     "city-work-closing": {
@@ -165,7 +165,6 @@
       ],
       "rules": [
         0,
-        1,
         2,
         4
       ],
@@ -226,7 +225,8 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it consulting"
+            "it",
+            "consulting"
           ],
           "agency": null,
           "minAmount": null,
@@ -473,7 +473,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -482,12 +482,12 @@
           "excludeSpecial": false,
           "closingWeek": false,
           "route": "agency",
-          "name": "Department of Parks and Recreation",
+          "name": "Parks and Recreation",
           "tab": "forecast",
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 0
+        "count": 8041
       },
       {
         "lens": "people",
@@ -515,7 +515,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": "Rodriguez",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -577,7 +577,7 @@
         "filter": {
           "keywords": [],
           "boro": "Queens",
-          "status": null,
+          "status": "all",
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
@@ -585,7 +585,7 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 48
+        "count": 2126
       },
       {
         "lens": "land",
@@ -763,10 +763,10 @@
           "keywords": [
             "sanitation"
           ],
-          "agency": null,
+          "agency": "Department of Sanitation",
           "process": null
         },
-        "count": 141
+        "count": 0
       },
       {
         "lens": "rules",
@@ -848,7 +848,7 @@
         "filter": {
           "keywords": [],
           "agency": "Community Board",
-          "when": "week",
+          "when": "month",
           "borough": null,
           "neighborhood": null,
           "locationScope": null,
@@ -873,7 +873,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "hearing",
           "nearMe": false
         },
         "count": 0
@@ -952,15 +952,15 @@
           "category": null,
           "months": 3,
           "noticeType": null,
-          "excludeSpecial": false,
-          "closingWeek": false,
+          "excludeSpecial": true,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 1250
+        "count": 1
       },
       {
         "lens": "alerts",
