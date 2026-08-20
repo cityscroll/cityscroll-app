@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T12:50:30.092Z",
-  "dataDate": "2026-08-19",
+  "generatedAt": "2026-08-20T08:51:42.834Z",
+  "dataDate": "2026-08-20",
   "scenarios": {
     "city-work-closing": {
       "id": "week",
       "href": "#money?mode=open&closing=week",
       "labelKey": "closing_this_week",
       "label": "Closing this week",
-      "count": 23,
+      "count": 16,
       "counts": {
-        "week": 23,
-        "open": 203,
+        "week": 16,
+        "open": 192,
         "past": 53428
       }
     },
@@ -20,9 +20,9 @@
       "href": "#money?mode=open",
       "labelKey": "tab_money",
       "label": "Contracts",
-      "count": 203,
+      "count": 192,
       "counts": {
-        "open": 203
+        "open": 192
       }
     },
     "neighborhood-land": {
@@ -50,9 +50,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 24,
+      "count": 20,
       "counts": {
-        "upcoming": 24
+        "upcoming": 20
       }
     },
     "hearings-meetings": {
@@ -60,9 +60,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 24,
+      "count": 20,
       "counts": {
-        "upcoming": 24
+        "upcoming": 20
       }
     },
     "hearings-rules": {
@@ -134,9 +134,9 @@
       "href": "#meetings?when=upcoming",
       "labelKey": "tab_meetings",
       "label": "Meetings",
-      "count": 24,
+      "count": 20,
       "counts": {
-        "upcoming": 24
+        "upcoming": 20
       }
     }
   },
@@ -165,6 +165,7 @@
       ],
       "rules": [
         0,
+        1,
         2,
         4
       ],
@@ -192,7 +193,7 @@
           "category": "Construction/Construction Services",
           "months": null,
           "noticeType": "award",
-          "excludeSpecial": true,
+          "excludeSpecial": false,
           "closingWeek": false,
           "route": null,
           "name": null,
@@ -203,7 +204,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?mode=award&min=500000&category=Construction%2FConstruction+Services&standard=1",
+          "route": "/browse/contracts/?mode=award&min=500000&category=Construction%2FConstruction+Services",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -225,8 +226,8 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "consulting",
-            "information technology"
+            "it",
+            "consulting"
           ],
           "agency": null,
           "minAmount": null,
@@ -245,7 +246,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=consulting+information+technology",
+          "route": "/browse/contracts/?q=it+consulting",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -401,8 +402,8 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
@@ -412,7 +413,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=senior+center&standard=1&closing=week",
+          "route": "/browse/contracts/?q=senior+center",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -448,7 +449,7 @@
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 12,
+        "count": 13,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
           "route": "/browse/contracts/?closing=week",
@@ -464,7 +465,7 @@
               "asOf": null
             }
           },
-          "finalCount": 12
+          "finalCount": 13
         }
       },
       {
@@ -473,7 +474,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Parks and Recreation",
+          "agency": "Department of Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -487,7 +488,7 @@
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 8040
+        "count": 8041
       },
       {
         "lens": "people",
@@ -515,7 +516,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": "Rodriguez",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -547,7 +548,7 @@
           "lookupType": "role",
           "view": "guide",
           "interestArea": null,
-          "interestLabel": "<UNKNOWN>",
+          "interestLabel": null,
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -560,23 +561,6 @@
         "filter": {
           "keywords": [],
           "boro": "Brooklyn",
-          "status": "all",
-          "communityDistrict": null,
-          "councilDistrict": null,
-          "nearMe": false,
-          "procedure": null,
-          "family": null,
-          "regulatoryEffect": null
-        },
-        "count": 3390
-      },
-      {
-        "lens": "land",
-        "idx": 1,
-        "text": "rezonings in Queens",
-        "filter": {
-          "keywords": [],
-          "boro": "Queens",
           "status": null,
           "communityDistrict": null,
           "councilDistrict": null,
@@ -585,7 +569,26 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 48
+        "count": 57
+      },
+      {
+        "lens": "land",
+        "idx": 1,
+        "text": "rezonings in Queens",
+        "filter": {
+          "keywords": [
+            "rezoning"
+          ],
+          "boro": "Queens",
+          "status": "all",
+          "communityDistrict": null,
+          "councilDistrict": null,
+          "nearMe": false,
+          "procedure": null,
+          "family": null,
+          "regulatoryEffect": null
+        },
+        "count": 336
       },
       {
         "lens": "land",
@@ -611,7 +614,7 @@
         "filter": {
           "keywords": [],
           "boro": "Bronx",
-          "status": "active",
+          "status": null,
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
@@ -644,7 +647,7 @@
         "text": "HPD property sales",
         "filter": {
           "keywords": [],
-          "agency": "Housing Preservation Department",
+          "agency": "Department of Housing Preservation and Development",
           "process": null,
           "stage": null,
           "asset": "realty",
@@ -671,7 +674,7 @@
           "agency": null,
           "process": null,
           "stage": null,
-          "asset": "realty",
+          "asset": null,
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -711,7 +714,7 @@
           "agency": "Parks Department",
           "process": null,
           "stage": null,
-          "asset": null,
+          "asset": "realty",
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -763,10 +766,10 @@
           "keywords": [
             "sanitation"
           ],
-          "agency": "Department of Sanitation",
+          "agency": null,
           "process": null
         },
-        "count": 0
+        "count": 141
       },
       {
         "lens": "rules",
@@ -803,7 +806,7 @@
           "agency": null,
           "process": "public_process"
         },
-        "count": 3072
+        "count": 3073
       },
       {
         "lens": "meetings",
@@ -873,7 +876,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "hearing",
+          "process": "held",
           "nearMe": false
         },
         "count": 0
@@ -893,7 +896,7 @@
           "process": "hearing",
           "nearMe": false
         },
-        "count": 12
+        "count": 11
       },
       {
         "lens": "meetings",
@@ -910,7 +913,7 @@
           "process": "public_process",
           "nearMe": false
         },
-        "count": 12
+        "count": 11
       },
       {
         "lens": "alerts",
@@ -934,7 +937,7 @@
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 22115
+        "count": 22127
       },
       {
         "lens": "alerts",
@@ -960,7 +963,7 @@
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 1245
+        "count": 1250
       },
       {
         "lens": "alerts",
