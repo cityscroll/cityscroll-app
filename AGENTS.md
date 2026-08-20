@@ -970,7 +970,11 @@ keyword family from **current SODA** and opens a PR;
 `.github/workflows/land-upcoming-hearings.yml` commits/PRs the hearings artifact
 (not upload-artifact-only). `fetchLandDefaultProjects` prefers DuckDB only when
 the milestone frontier clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA.
-Canaries `2025Q0331` / `2026K0123` fail `--check`. Keyword search miss-fills those
+Canaries `2025Q0331` / `2026K0123` fail `--check`. The unit test
+`test/warehouse_serve_publish_contract.test.mjs` derives its reference now from
+committed twin `materialized_at` stamps — do not freeze a calendar `now`, or
+daily land-freshness PRs fail with a false "in the future" finding. Build
+`--check` still ages against wall clock. Keyword search miss-fills those
 exact IDs from live SODA when the published land family has holes, with a hybrid as-of
 (`site/land_keyword_soda_missfill.mjs`). WH-02 bulk lag:
 `node tools/check_zap_bulk_freshness.mjs` (+ optional `--rematerialize-if-stale`).
