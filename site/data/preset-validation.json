@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T09:24:57.067Z",
+  "generatedAt": "2026-08-20T09:42:40.323Z",
   "dataDate": "2026-08-20",
   "scenarios": {
     "city-work-closing": {
@@ -159,7 +159,6 @@
         4
       ],
       "property": [
-        0,
         1,
         2,
         4
@@ -235,8 +234,8 @@
           "category": null,
           "months": null,
           "noticeType": "solicitation",
-          "excludeSpecial": false,
-          "closingWeek": false,
+          "excludeSpecial": true,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,
@@ -246,7 +245,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=it+consulting",
+          "route": "/browse/contracts/?q=it+consulting&standard=1&closing=week",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -274,7 +273,7 @@
           "agency": null,
           "minAmount": null,
           "maxAmount": null,
-          "category": "Human Services/Client Services",
+          "category": null,
           "months": null,
           "noticeType": null,
           "excludeSpecial": false,
@@ -288,7 +287,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=shelter+services&category=Human+Services%2FClient+Services",
+          "route": "/browse/contracts/?q=shelter+services",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -474,7 +473,7 @@
         "text": "Parks contract forecast",
         "filter": {
           "keywords": [],
-          "agency": "Parks and Recreation",
+          "agency": "Department of Parks and Recreation",
           "minAmount": null,
           "maxAmount": null,
           "category": null,
@@ -483,12 +482,12 @@
           "excludeSpecial": false,
           "closingWeek": false,
           "route": "agency",
-          "name": "Parks and Recreation",
+          "name": "Department of Parks and Recreation",
           "tab": "forecast",
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 8041
+        "count": 0
       },
       {
         "lens": "people",
@@ -516,7 +515,7 @@
           "lookupType": "person",
           "view": null,
           "interestArea": null,
-          "interestLabel": "Rodriguez",
+          "interestLabel": "<UNKNOWN>",
           "examNumber": null,
           "subject_refs_all": []
         },
@@ -645,7 +644,7 @@
         "text": "HPD property sales",
         "filter": {
           "keywords": [],
-          "agency": "Housing Preservation and Development",
+          "agency": "Housing Preservation Department",
           "process": null,
           "stage": null,
           "asset": "realty",
@@ -657,7 +656,7 @@
           "communityDistrict": null,
           "nearMe": false
         },
-        "count": 142
+        "count": 0
       },
       {
         "lens": "property",
@@ -849,12 +848,12 @@
         "filter": {
           "keywords": [],
           "agency": "Community Board",
-          "when": "past",
+          "when": "week",
           "borough": null,
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "held",
+          "process": "scheduled",
           "nearMe": false
         },
         "count": 0
@@ -874,7 +873,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "hearing",
+          "process": "held",
           "nearMe": false
         },
         "count": 0
