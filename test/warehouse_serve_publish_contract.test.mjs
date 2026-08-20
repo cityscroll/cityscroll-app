@@ -29,6 +29,24 @@ function canaryDoc(contract, stamped = "2026-08-18T00:00:00.000Z") {
   };
 }
 
+function timestampMs(doc, field = "materialized_at") {
+  return Date.parse(String(doc?.[field] || ""));
+}
+
+/**
+ * Reference clock for the committed-twin gate: the newest site/worker stamp.
+ * A same-day refresh is in-window by construction, so this case cannot rot
+ * against a frozen calendar day. Age and future guards are proven separately
+ * against this derived now with synthetic docs.
+ */
+function referenceNowFromTwins(siteDoc, workerDoc, timestampField = "materialized_at") {
+  const stamps = [timestampMs(siteDoc, timestampField), timestampMs(workerDoc, timestampField)].filter(
+    Number.isFinite,
+  );
+  assert.ok(stamps.length, "serve twins have no parseable materialized_at");
+  return new Date(Math.max(...stamps)).toISOString();
+}
+
 describe("warehouse serve publish contract", () => {
   it("declares an age window and named canaries for every committed serve", () => {
     assert.deepEqual(
@@ -78,9 +96,37 @@ describe("warehouse serve publish contract", () => {
       const worker = JSON.parse(
         readFileSync(join(ROOT, "worker/src/data", filename), "utf8"),
       );
-      assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS[id], {
-        now: "2026-08-18T12:00:00.000Z",
-      });
+      const contract = SERVE_LOOKUP_CONTRACTS[id];
+      const now = referenceNowFromTwins(site, worker, contract.timestamp_field);
+      assertServePublishTwins(site, worker, contract, { now });
+    }
+  });
+
+  it("fails a twin stamped truly in the future or older than max_age_days relative to derived now", () => {
+    for (const contract of Object.values(SERVE_LOOKUP_CONTRACTS)) {
+      const current = canaryDoc(contract, "2026-08-20T08:00:00.000Z");
+      const now = referenceNowFromTwins(current, current, contract.timestamp_field);
+      assert.equal(servePublishFindings(current, contract, { now }).length, 0);
+
+      const future = canaryDoc(
+        contract,
+        new Date(Date.parse(now) + 2 * 86_400_000).toISOString(),
+      );
+      assert.throws(
+        () => assertServePublishTwins(future, future, contract, { now }),
+        /in the future/,
+        `${contract.id} future`,
+      );
+
+      const stale = canaryDoc(
+        contract,
+        new Date(Date.parse(now) - (contract.max_age_days + 1) * 86_400_000).toISOString(),
+      );
+      assert.throws(
+        () => assertServePublishTwins(stale, stale, contract, { now }),
+        /exceeds max/,
+        `${contract.id} over-age`,
+      );
     }
   });
 });
