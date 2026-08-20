@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T10:18:45.525Z",
+  "generatedAt": "2026-08-20T10:35:03.559Z",
   "dataDate": "2026-08-20",
   "scenarios": {
     "city-work-closing": {
@@ -225,13 +225,12 @@
         "text": "IT consulting RFPs",
         "filter": {
           "keywords": [
-            "it",
-            "consulting"
+            "it consulting"
           ],
           "agency": null,
           "minAmount": null,
           "maxAmount": null,
-          "category": null,
+          "category": "Services (other than human services)",
           "months": null,
           "noticeType": "solicitation",
           "excludeSpecial": false,
@@ -245,7 +244,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=it+consulting",
+          "route": "/browse/contracts/?q=it+consulting&category=Services+%28other+than+human+services%29",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -276,8 +275,8 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
@@ -287,7 +286,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=shelter+services&standard=1&closing=week",
+          "route": "/browse/contracts/?q=shelter+services",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
