@@ -878,6 +878,8 @@ async function nlTranslateLens(lens, opts){
   renderSearchComponents(lens, {hash:carriedDeepLink, label:text});
 }
 
+// Offline last-resort when GET /suggestions fails. Live-derived indices come from
+// the Worker KV record; keep this table in lockstep with worker FALLBACK_INDICES.
 const NL_SUGGESTIONS_FALLBACK = {
   money: [6],
   people: [0, 2, 3],

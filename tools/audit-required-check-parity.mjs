@@ -75,7 +75,6 @@ function isValidationCommand(command) {
   if (/^(?:if|then|else|fi|set|echo|sleep|gh|git)\b/.test(command)) return false;
   if (/^(?:python3|python)\s+-m\s+(?:pip|playwright)\b/.test(command)) return false;
   if (/^python3\s+tools\/local_site_server\.py\b/.test(command)) return false;
-  if (/^node tools\/validate_presets\.mjs --write\b/.test(command)) return false;
   return /^(?:python3\s+test\/|node\s+(?:--test|tools\/)|npm\s+ci\b)/.test(command);
 }
 
@@ -117,10 +116,6 @@ function localCommands(source) {
       command = `${command.slice(0, -1).trim()} ${lines[++index].trim()}`;
     }
     command = normalize(command.replace(/[)]+$/, ""));
-    if (command === "preset_gate") {
-      commands.push("node tools/validate_presets.mjs --check");
-      continue;
-    }
     if (isValidationCommand(command)) commands.push(command);
   }
   return commands;

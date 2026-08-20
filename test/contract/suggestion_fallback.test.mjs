@@ -1,6 +1,6 @@
-// Contract test: index.html's NL_SUGGESTIONS_FALLBACK idx lists must equal the worker's
-// FALLBACK_INDICES (see docs/drift-inventory.md #12). Both are generated from the same
-// live-data validation receipt, but this test keeps a hand edit from introducing drift.
+// Contract test: site NL_SUGGESTIONS_FALLBACK idx lists must equal the worker's
+// FALLBACK_INDICES (see docs/drift-inventory.md #12). Both are last-resort floors
+// for when Worker KV is unavailable; this test keeps a hand edit from introducing drift.
 //
 //   node --test test/contract/suggestion_fallback.test.mjs   (from the crol-list/ dir)
 
