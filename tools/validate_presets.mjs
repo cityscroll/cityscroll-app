@@ -1,13 +1,11 @@
 #!/usr/bin/env node
-// Validate task shortcuts and rotating suggestions. `--write` refreshes the committed receipt
-// and rotating-suggestion fallbacks from publisher data; `--check` validates only that committed
-// snapshot and its checked-in consumers, so required checks never depend on publisher uptime.
-//
-// Homepage scenario-route anchors were removed (owner noise cut). Scenario hashes still live
-// in the receipt and demo-links catalog for deep-link validation; this tool no longer rewrites
-// or requires `<a class="scenario-route">` markup in index.html.
+// Optional diagnostic for rotating-suggestion floors and live publisher counts.
+// Live-derived fallbacks are stored in Worker KV by the daily cron; this tool does
+// not write repository fallbacks and is not a required merge check.
+// `--check` is offline: site and worker in-code floors must match and name pool ids.
+// `--write` fetches live counts and prints them against that floor.
 
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -25,14 +23,11 @@ import moneyResidentSnapshot from "../site/data/money_resident_snapshot.json" wi
 import { certifyMoneySuggestionDestination } from "../site/suggestion_destination.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const INDEX = join(ROOT, "site", "index.html");
 const SITE_SUGGESTIONS = join(ROOT, "site", "app", "search-share.mjs");
 const RECEIPT = join(ROOT, "site", "data", "preset-validation.json");
-const WORKER_SUGGESTIONS = join(ROOT, "worker", "src", "lib", "suggestions.mjs");
 const WRITE = process.argv.includes("--write");
 const CHECK = process.argv.includes("--check");
 const OFFLINE_FLAG = process.argv.includes("--offline");
-const SNAPSHOT_ONLY = CHECK;
 const NL_BASE = (process.env.CROL_WORKER_URL || "https://api.cityscroll.org").replace(/\/+$/, "");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -470,49 +465,6 @@ async function validateSuggestions(previousSuggestions, snapshotDate) {
   }
 }
 
-function htmlHref(value) {
-  return value.replace(/&/g, "&amp;");
-}
-
-function routeFromHTML(html, id) {
-  // Optional: homepage no longer ships scenario-route anchors. When present (legacy / branch),
-  // return them so write mode can still rewrite; when absent, callers use the receipt only.
-  const pattern = new RegExp(`<a class="scenario-route" href="([^"]+)" data-preset-id="${id}"[^>]* data-i18n="([^"]+)">([^<]*)</a>`);
-  const match = html.match(pattern);
-  if (!match) return null;
-  return { href: match[1].replace(/&amp;/g, "&"), labelKey: match[2], label: match[3] };
-}
-
-function replaceRoute(html, id, selected) {
-  const pattern = new RegExp(`(<a class="scenario-route" )href="[^"]+"( data-preset-id="${id}"[^>]* data-i18n=")[^"]+(">)[^<]*(</a>)`);
-  if (!pattern.test(html)) return html; // no homepage scenario markup to rewrite
-  return html.replace(
-    pattern,
-    `$1href="${htmlHref(selected.href)}"$2${selected.labelKey}$3${selected.label}$4`,
-  );
-}
-
-function fallbackBlock(byLens) {
-  const order = ["money", "people", "land", "property", "rules", "meetings", "alerts"];
-  return `const NL_SUGGESTIONS_FALLBACK = {\n${order.map((lens) => `  ${lens}: [${(byLens[lens] || []).join(", ")}],`).join("\n")}\n};`;
-}
-
-function workerFallbackBlock(byLens) {
-  return `export const FALLBACK_INDICES = {\n${Object.entries(byLens).map(([lens, indices]) => `  ${lens}: [${indices.join(", ")}],`).join("\n")}\n};`;
-}
-
-function replaceSiteFallback(source, byLens) {
-  const pattern = /const NL_SUGGESTIONS_FALLBACK = \{[\s\S]*?\n\};/;
-  if (!pattern.test(source)) throw new Error("search-share.mjs is missing NL_SUGGESTIONS_FALLBACK");
-  return source.replace(pattern, fallbackBlock(byLens));
-}
-
-function replaceWorkerFallback(source, byLens) {
-  const pattern = /export const FALLBACK_INDICES = \{[\s\S]*?\n\};/;
-  if (!pattern.test(source)) throw new Error("worker suggestions module is missing FALLBACK_INDICES");
-  return source.replace(pattern, workerFallbackBlock(byLens));
-}
-
 function fallbackFromSiteSource(source) {
   const match = source.match(/const NL_SUGGESTIONS_FALLBACK = \{([\s\S]*?)\n\};/);
   if (!match) throw new Error("search-share.mjs is missing NL_SUGGESTIONS_FALLBACK");
@@ -524,70 +476,37 @@ function fallbackFromSiteSource(source) {
 }
 
 async function main() {
-  const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => null);
-  // Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
-  // upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
-  // fail-closed gate into a flaky one.
   if (OFFLINE_FLAG && !CHECK) throw new Error("--offline requires --check");
-  if (SNAPSHOT_ONLY && !validScenarioSnapshot(previous?.scenarios)) {
-    throw new Error("committed preset scenario receipt is missing or malformed");
+  const siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
+  const actualFallback = fallbackFromSiteSource(siteSuggestions);
+  if (JSON.stringify(actualFallback) !== JSON.stringify(FALLBACK_INDICES)) {
+    throw new Error("site and worker rotating suggestion floors disagree");
   }
-  if (SNAPSHOT_ONLY && !validSuggestionSnapshot(previous?.suggestions)) {
-    throw new Error("committed preset suggestion receipt is missing or malformed");
-  }
-  const scenarios = SNAPSHOT_ONLY ? previous.scenarios : await validateScenarios(previous);
-  const suggestions = SNAPSHOT_ONLY
-    ? previous.suggestions
-    : await validateSuggestions(previous?.suggestions, previous?.dataDate);
-  let html = await readFile(INDEX, "utf8");
-  let siteSuggestions = await readFile(SITE_SUGGESTIONS, "utf8");
-  let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
-
-  if (CHECK) {
-    // When homepage still has scenario-route anchors, they must match the live-validated
-    // receipt. When they are absent (current product surface), only receipt + fallbacks gate.
-    for (const [id, selected] of Object.entries(scenarios)) {
-      const actual = routeFromHTML(html, id);
-      if (!actual) continue;
-      if (actual.href !== selected.href || actual.labelKey !== selected.labelKey) {
-        throw new Error(`${id} is stale: expected ${selected.href} (${selected.labelKey})`);
+  for (const [lens, indices] of Object.entries(FALLBACK_INDICES)) {
+    if (!Array.isArray(indices) || !indices.length) {
+      throw new Error(`in-code suggestion floor is empty for ${lens}`);
+    }
+    for (const idx of indices) {
+      if (!SUGGESTION_POOL.some((candidate) => candidate.lens === lens && candidate.idx === idx)) {
+        throw new Error(`in-code suggestion floor ${lens}:${idx} is not in SUGGESTION_POOL`);
       }
     }
-    const actualFallback = fallbackFromSiteSource(siteSuggestions);
-    if (JSON.stringify(actualFallback) !== JSON.stringify(suggestions.byLens)) {
-      throw new Error("rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
-    }
-    if (JSON.stringify(FALLBACK_INDICES) !== JSON.stringify(suggestions.byLens)) {
-      throw new Error("worker rotating suggestion fallback is stale; run node tools/validate_presets.mjs --write");
-    }
-    console.log(
-      `preset validation green for ${Object.keys(scenarios).length} shortcuts and ` +
-        `${suggestions.candidates.length} suggestions (${SNAPSHOT_ONLY ? `snapshot ${previous.dataDate}` : TODAY})`,
-    );
-  } else {
-    for (const [id, selected] of Object.entries(scenarios)) html = replaceRoute(html, id, selected);
-    siteSuggestions = replaceSiteFallback(siteSuggestions, suggestions.byLens);
-    workerSource = replaceWorkerFallback(workerSource, suggestions.byLens);
-    await writeFile(INDEX, html);
-    await writeFile(SITE_SUGGESTIONS, siteSuggestions);
-    await writeFile(WORKER_SUGGESTIONS, workerSource);
-    const receipt = {
-      schemaVersion: 1,
-      generatedAt: new Date().toISOString(),
-      dataDate: TODAY,
-      scenarios,
-      suggestions,
-    };
-    // Keep --write idempotent when the live result is unchanged. This lets the scheduled
-    // refresh run without creating a commit solely because generatedAt moved.
-    const receiptToWrite =
-      previous &&
-      JSON.stringify({ ...receipt, generatedAt: previous.generatedAt }) === JSON.stringify(previous)
-        ? previous
-        : receipt;
-    await writeFile(RECEIPT, `${JSON.stringify(receiptToWrite, null, 2)}\n`);
-    console.log(`wrote ${RECEIPT.slice(ROOT.length + 1)} and refreshed ${Object.keys(scenarios).length} shortcuts`);
   }
+  if (CHECK) {
+    console.log(`preset floor green for ${Object.keys(FALLBACK_INDICES).length} lenses`);
+    return;
+  }
+  const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => null);
+  const scenarios = await validateScenarios(previous);
+  const suggestions = await validateSuggestions(previous?.suggestions, previous?.dataDate);
+  console.log(JSON.stringify({
+    dataDate: TODAY,
+    liveByLens: suggestions.byLens,
+    codeFloor: FALLBACK_INDICES,
+    scenarios: Object.fromEntries(
+      Object.entries(scenarios || {}).map(([id, selected]) => [id, { id: selected.id, href: selected.href, count: selected.count }]),
+    ),
+  }, null, 2));
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

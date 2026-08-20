@@ -8,7 +8,14 @@
 // overwrites yesterday's validated set with an empty one just because today's run failed.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SUGGESTION_POOL, MIN_SUGGESTION_RESULTS, suggestionCountParams } from "../src/lib/suggestions.mjs";
+import { FALLBACK_INDICES, SUGGESTION_POOL, MIN_SUGGESTION_RESULTS, suggestionCountParams } from "../src/lib/suggestions.mjs";
+import {
+  codeFloorSuggestionRecord,
+  parsePresetFallbackRecord,
+  parseValidatedSuggestionRecord,
+  PRESET_FALLBACK_KV_KEY,
+  PRESET_FALLBACK_SCHEMA,
+} from "../src/lib/preset_fallback_kv.mjs";
 import { runSuggestionValidation, handleSuggestions, SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 
 const TODAY = "2026-07-15";
@@ -324,19 +331,127 @@ test("runSuggestionValidation: enrichment failure (bad sample fetch) never block
 
 // ---- GET /suggestions route --------------------------------------------------------------
 
+const FRESH_AT = "2026-08-20T13:00:00.000Z";
+const FRESH_NOW = Date.parse(FRESH_AT);
+
 test("handleSuggestions: serves the stored validated set", async () => {
-  const stored = { generatedAt: "2026-07-15T13:00:00.000Z", minResults: 3, byLens: { money: [{ idx: 0, count: 42 }] } };
+  const stored = { generatedAt: FRESH_AT, minResults: 3, byLens: { money: [{ idx: 0, count: 42 }] } };
   const env = { ALERT_STATE: { get: async () => JSON.stringify(stored) } };
   const req = new Request("https://crol-worker.example/suggestions", { headers: { origin: "https://cityscroll.org" } });
-  const res = await handleSuggestions(req, env);
+  const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
   assert.deepEqual(body, stored);
 });
 
-test("handleSuggestions: 404s when the cron hasn't populated KV yet (client should fall back to static)", async () => {
+test("handleSuggestions: empty KV uses the in-code floor", async () => {
   const env = { ALERT_STATE: { get: async () => null } };
   const req = new Request("https://crol-worker.example/suggestions");
-  const res = await handleSuggestions(req, env);
-  assert.equal(res.status, 404);
+  const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.source, "code_floor");
+  assert.deepEqual(body, codeFloorSuggestionRecord({ nowMs: FRESH_NOW }));
+  assert.deepEqual(body.byLens.money.map((row) => row.idx), FALLBACK_INDICES.money);
+});
+
+test("handleSuggestions: unparseable KV uses the in-code floor", async () => {
+  const env = { ALERT_STATE: { get: async () => "{not-json" } };
+  const req = new Request("https://crol-worker.example/suggestions");
+  const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.source, "code_floor");
+  assert.deepEqual(body.byLens.people.map((row) => row.idx), FALLBACK_INDICES.people);
+});
+
+test("handleSuggestions: KV read failure uses the in-code floor", async () => {
+  const env = { ALERT_STATE: { get: async () => { throw new Error("kv unavailable"); } } };
+  const req = new Request("https://crol-worker.example/suggestions");
+  const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.source, "code_floor");
+});
+
+test("handleSuggestions: missing ALERT_STATE uses the in-code floor", async () => {
+  const req = new Request("https://crol-worker.example/suggestions");
+  const res = await handleSuggestions(req, {}, undefined, { nowMs: FRESH_NOW });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.source, "code_floor");
+});
+
+test("handleSuggestions: stale KV uses the in-code floor", async () => {
+  const stored = { generatedAt: "2026-08-17T12:00:00.000Z", minResults: 3, byLens: { money: [{ idx: 0, count: 42 }] } };
+  const env = { ALERT_STATE: { get: async () => JSON.stringify(stored) } };
+  const req = new Request("https://crol-worker.example/suggestions");
+  const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.equal(body.source, "code_floor");
+});
+
+test("handleSuggestions: slim preset:fallback payload matches the read path shape", async () => {
+  const slim = {
+    schema: PRESET_FALLBACK_SCHEMA,
+    generatedAt: FRESH_AT,
+    minResults: 3,
+    byLens: { money: [6], people: [0, 2, 3] },
+  };
+  const env = {
+    ALERT_STATE: {
+      async get(key) {
+        if (key === SUGGESTIONS_KV_KEY) return null;
+        if (key === PRESET_FALLBACK_KV_KEY) return JSON.stringify(slim);
+        return null;
+      },
+    },
+  };
+  const req = new Request("https://crol-worker.example/suggestions");
+  const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.deepEqual(body.byLens.money, [{ idx: 6, count: 3 }]);
+  assert.deepEqual(body.byLens.people.map((row) => row.idx), [0, 2, 3]);
+  assert.equal(parsePresetFallbackRecord(JSON.stringify(slim), { nowMs: FRESH_NOW }).minResults, 3);
+});
+
+test("runSuggestionValidation: KV payload has the shape the read path expects", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    const s = String(url);
+    if (s.includes("api.anthropic.com")) {
+      const body = JSON.parse((opts && opts.body) || "{}");
+      const input = { keywords: ["construction"], minAmount: 500000, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
+    }
+    const u = new URL(s);
+    if ((u.searchParams.get("$select") || "") === "count(1) as n") {
+      return { ok: true, json: async () => [{ n: "42" }] };
+    }
+    return { ok: true, json: async () => [] };
+  };
+  const kvStore = {};
+  const env = {
+    ANTHROPIC_API_KEY: "test-key",
+    ALERT_STATE: { get: async (k) => kvStore[k], put: async (k, v) => { kvStore[k] = v; } },
+  };
+  try {
+    const res = await runSuggestionValidation(env, {
+      moneyDestination: async () => ({ finalCount: 42, route: "/browse/contracts/" }),
+    });
+    assert.equal(res.status, "success");
+    const written = JSON.parse(kvStore[SUGGESTIONS_KV_KEY]);
+    const nowMs = Date.parse(written.generatedAt);
+    const parsed = parseValidatedSuggestionRecord(kvStore[SUGGESTIONS_KV_KEY], { nowMs });
+    assert.ok(parsed, "written suggestions:validated must parse");
+    assert.equal(parsed.minResults, MIN_SUGGESTION_RESULTS);
+    assert.ok(parsed.byLens.money.some((row) => row.idx === 0 && row.count === 42));
+    const slim = parsePresetFallbackRecord(kvStore[PRESET_FALLBACK_KV_KEY], { nowMs });
+    assert.ok(slim, "written preset:fallback must parse");
+    assert.ok(slim.byLens.money.some((row) => row.idx === 0));
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });

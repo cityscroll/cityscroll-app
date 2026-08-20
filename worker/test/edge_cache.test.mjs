@@ -157,7 +157,8 @@ test("cacheable route classes serve the second identical request from caches.def
       },
     };
     const req = new Request("https://api.cityscroll.org/suggestions");
-    await assertSecondHit(() => handleSuggestions(req, env), () => reads);
+    const nowMs = Date.parse("2026-07-27T13:00:00.000Z");
+    await assertSecondHit(() => handleSuggestions(req, env, undefined, { nowMs }), () => reads);
   });
 });
 
