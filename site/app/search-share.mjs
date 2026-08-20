@@ -883,7 +883,7 @@ const NL_SUGGESTIONS_FALLBACK = {
   people: [0, 2, 3],
   land: [0, 1, 2, 3, 4],
   property: [1, 2, 4],
-  rules: [0, 1, 2, 4],
+  rules: [0, 2, 4],
   meetings: [4, 5],
   alerts: [0, 1, 2, 3],
 };
