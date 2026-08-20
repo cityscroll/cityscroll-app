@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T10:00:57.379Z",
+  "generatedAt": "2026-08-20T10:18:45.525Z",
   "dataDate": "2026-08-20",
   "scenarios": {
     "city-work-closing": {
@@ -234,8 +234,8 @@
           "category": null,
           "months": null,
           "noticeType": "solicitation",
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
@@ -245,7 +245,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=it+consulting&standard=1&closing=week",
+          "route": "/browse/contracts/?q=it+consulting",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -276,8 +276,8 @@
           "category": null,
           "months": null,
           "noticeType": null,
-          "excludeSpecial": false,
-          "closingWeek": false,
+          "excludeSpecial": true,
+          "closingWeek": true,
           "route": null,
           "name": null,
           "tab": null,
@@ -287,7 +287,7 @@
         "count": 0,
         "destination": {
           "schema": "cityscroll.money_suggestion_destination.v1",
-          "route": "/browse/contracts/?q=shelter+services",
+          "route": "/browse/contracts/?q=shelter+services&standard=1&closing=week",
           "readModel": "money_resident_snapshot",
           "corpus": {
             "residentSnapshot": {
@@ -577,7 +577,7 @@
         "filter": {
           "keywords": [],
           "boro": "Queens",
-          "status": "all",
+          "status": null,
           "communityDistrict": null,
           "councilDistrict": null,
           "nearMe": false,
@@ -585,7 +585,7 @@
           "family": null,
           "regulatoryEffect": null
         },
-        "count": 2126
+        "count": 48
       },
       {
         "lens": "land",
@@ -665,13 +665,12 @@
         "filter": {
           "keywords": [
             "environmental",
-            "protection",
-            "land"
+            "protection"
           ],
           "agency": null,
           "process": null,
           "stage": null,
-          "asset": null,
+          "asset": "realty",
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -680,7 +679,7 @@
           "communityDistrict": null,
           "nearMe": false
         },
-        "count": 15
+        "count": 43
       },
       {
         "lens": "property",
@@ -708,10 +707,10 @@
         "text": "parks department property",
         "filter": {
           "keywords": [],
-          "agency": "Department of Parks and Recreation",
+          "agency": "Parks Department",
           "process": null,
           "stage": null,
-          "asset": null,
+          "asset": "realty",
           "saleMethod": null,
           "priceBand": null,
           "sort": null,
@@ -848,12 +847,12 @@
         "filter": {
           "keywords": [],
           "agency": "Community Board",
-          "when": "month",
+          "when": "past",
           "borough": null,
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "scheduled",
+          "process": "held",
           "nearMe": false
         },
         "count": 0
@@ -873,7 +872,7 @@
           "neighborhood": null,
           "locationScope": null,
           "dateWindow": null,
-          "process": "hearing",
+          "process": "held",
           "nearMe": false
         },
         "count": 0
@@ -952,15 +951,15 @@
           "category": null,
           "months": 3,
           "noticeType": null,
-          "excludeSpecial": true,
-          "closingWeek": true,
+          "excludeSpecial": false,
+          "closingWeek": false,
           "route": null,
           "name": null,
           "tab": null,
           "entity_refs_all": [],
           "connection_relation": null
         },
-        "count": 1
+        "count": 1250
       },
       {
         "lens": "alerts",
