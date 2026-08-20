@@ -8,8 +8,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // excluding them. These tests pin: pickSuggestions() rotates deterministically (same day ->
 // same picks, different day -> different picks, per the day-seed contract), currentSuggestionIndices()
 // prefers a daily-validated set over the static fallback when one exists for the lens, falls
-// back cleanly when it doesn't (or is empty), and the generated fallback contains only
-// candidates with a non-zero count in data/preset-validation.json.
+// back cleanly when it doesn't (or is empty), and the in-code floor names pool candidates.
 //
 // w12-17 (owner directive: make lineage/forecast "much more discoverable" through the
 // suggestions themselves): before this card, a validated suggestion carried no hint at all
@@ -25,13 +24,9 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { SUGGESTION_POOL } from "../worker/src/lib/suggestions.mjs";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = SITE_SOURCE;
-const receipt = JSON.parse(readFileSync(join(ROOT, "site", "data", "preset-validation.json"), "utf8"));
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");
@@ -106,11 +101,11 @@ test("pickSuggestions: empty pool -> nothing to show, not a crash", () => {
 
 // ---- currentSuggestionIndices: validated set wins, fallback otherwise ------------------
 
-test("currentSuggestionIndices: before the worker responds, money uses the build-validated subset", () => {
+test("currentSuggestionIndices: before the worker responds, money uses the in-code floor", () => {
   setValidated(null);
   const idxs = currentSuggestionIndices("money");
   assert.deepEqual(idxs, NL_SUGGESTIONS_FALLBACK.money);
-  assert.deepEqual(idxs, receipt.suggestions.byLens.money);
+  assert.ok(idxs.length > 0);
 });
 
 test("currentSuggestionIndices: once the worker's validated set arrives, it wins over the static fallback", () => {
@@ -142,13 +137,14 @@ test("NL_SUGGESTIONS_FALLBACK: every validatable lens has a non-empty static sub
   }
 });
 
-test("NL_SUGGESTIONS_FALLBACK: every selected candidate had results at generation time", () => {
-  const countByKey = new Map(receipt.suggestions.candidates.map((candidate) => [
-    `${candidate.lens}:${candidate.idx}`, candidate.count,
-  ]));
+test("NL_SUGGESTIONS_FALLBACK: every selected candidate names a pool idx", () => {
   for (const [lens, indices] of Object.entries(NL_SUGGESTIONS_FALLBACK)) {
-    assert.deepEqual(indices, receipt.suggestions.byLens[lens]);
-    for (const idx of indices) assert.ok(countByKey.get(`${lens}:${idx}`) > 0, `${lens}:${idx} was empty`);
+    for (const idx of indices) {
+      assert.ok(
+        SUGGESTION_POOL.some((candidate) => candidate.lens === lens && candidate.idx === idx),
+        `${lens}:${idx} has no matching SUGGESTION_POOL candidate`,
+      );
+    }
   }
 });
 

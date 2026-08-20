@@ -308,7 +308,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Daily refresh PR publish loop:** the data-refresh workflows
   (`doing-business-warehouse-lookup`, `geocoder-address-index`,
   `land-upcoming-hearings`, `land-zap-freshness-refresh`,
-  `payroll-title-warehouse-lookup`, `refresh-preset-fallback`,
+  `payroll-title-warehouse-lookup`,
   `staffing-exams-refresh`) must open PRs with repo
   secret `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests
   R/W), not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from
@@ -726,9 +726,12 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree;
   elder reservation thresholds for that seater are `elder_slot` / `tools/elder_merge_slot.mjs`.
-- Preset fallback refreshes run `node tools/validate_presets.mjs --write` only when CI detects
-  inherited fallback drift; transiently unresolved live suggestions retain their inherited
-  filter/count, while `--check` still compares generated fallbacks against live counts.
+- Live-derived suggestion fallback lives in Worker `ALERT_STATE` KV (`suggestions:validated`
+  plus `preset:fallback`) from the daily cron in `worker/src/suggest.mjs`. In-code
+  `FALLBACK_INDICES` / `NL_SUGGESTIONS_FALLBACK` are last-resort floors when KV is missing,
+  empty, unparseable, or stale. `tools/validate_presets.mjs` is an optional diagnostic, not
+  a merge gate. Proof: `worker/test/suggestions.test.mjs` and
+  `test/contract/suggestion_fallback.test.mjs`.
 
 ## Cross-domain entity intelligence
 
@@ -3467,7 +3470,7 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 ## Suggested-query destination certification
 
-- Contracts “Try asking” candidates are certified through `site/suggestion_destination.mjs`, which replays the canonical route over the same resident snapshot, keyword SearchDocuments, and final Money filters as `site/app/money-list.mjs`. Both the daily worker receipt and `tools/validate_presets.mjs` fallback must carry the destination route, corpus clocks, and final count; proxy-only Money counts are not display-eligible. Focused proof: `test/suggestion_destination.test.mjs` and `worker/test/suggestions.test.mjs`.
+- Contracts “Try asking” candidates are certified through `site/suggestion_destination.mjs`, which replays the canonical route over the same resident snapshot, keyword SearchDocuments, and final Money filters as `site/app/money-list.mjs`. The daily Worker KV record must carry the destination route, corpus clocks, and final count; proxy-only Money counts are not display-eligible. Focused proof: `test/suggestion_destination.test.mjs` and `worker/test/suggestions.test.mjs`.
 
 ## Canonical source-health foundation
 

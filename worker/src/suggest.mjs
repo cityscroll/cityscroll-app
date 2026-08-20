@@ -7,8 +7,8 @@
 // exact resident snapshot + keyword-search merge + final route filters; other lens adapters
 // retain their own counters. Candidates clearing MIN_SUGGESTION_RESULTS are stored, grouped
 // by lens, in ALERT_STATE KV alongside the other cron products under
-// SUGGESTIONS_KV_KEY, so index.html's suggestion chips only ever render a query proven to
-// return real results today.
+// SUGGESTIONS_KV_KEY and PRESET_FALLBACK_KV_KEY. GET /suggestions serves that
+// record, or the in-code FALLBACK_INDICES floor when KV is missing or unusable.
 //
 // Fail-soft, two layers: one candidate's resolve/count failure is caught and skipped (logged),
 // not fatal to the run; and if the WHOLE run comes back with nothing validated at all (a source
@@ -20,6 +20,13 @@
 // enrichCandidate() below — computed here, once a day, so the client never issues an extra
 // request to learn them (the acceptance criterion is "all computed at validation time").
 import { SUGGESTION_POOL, suggestionCountParams, suggestionSampleParams, MIN_SUGGESTION_RESULTS } from "./lib/suggestions.mjs";
+import {
+  PRESET_FALLBACK_KV_KEY,
+  PRESET_FALLBACK_TTL_SECONDS,
+  SUGGESTIONS_KV_KEY,
+  loadSuggestionRecord,
+  toPresetFallbackPayload,
+} from "./lib/preset_fallback_kv.mjs";
 import { computeLineageSignal, lineageChainKey, lineageDedupeKey, lineageBatchClauses } from "./lib/lineage.mjs";
 import { vendorStem } from "./lib/compile.mjs";
 import { parseLensFilter } from "./nl.mjs";
@@ -28,7 +35,7 @@ import { handleSearch } from "./search.mjs";
 import moneyResidentSnapshot from "../../site/data/money_resident_snapshot.json" with { type: "json" };
 import { certifyMoneySuggestionDestination } from "../../site/suggestion_destination.mjs";
 
-export const SUGGESTIONS_KV_KEY = "suggestions:validated";
+export { PRESET_FALLBACK_KV_KEY, SUGGESTIONS_KV_KEY };
 
 // How many of a fruitful candidate's own live rows to sample when judging lineage/forecast —
 // the same 25-row cap compileSub()'s money branch already applies to a real search, so this
@@ -178,7 +185,13 @@ export async function runSuggestionValidation(env, options = {}) {
   }
 
   const record = { generatedAt: new Date().toISOString(), minResults: MIN_SUGGESTION_RESULTS, byLens };
-  if (env.ALERT_STATE) await env.ALERT_STATE.put(SUGGESTIONS_KV_KEY, JSON.stringify(record));
+  if (env.ALERT_STATE) {
+    const body = JSON.stringify(record);
+    const slim = JSON.stringify(toPresetFallbackPayload(record));
+    const ttl = { expirationTtl: PRESET_FALLBACK_TTL_SECONDS };
+    await env.ALERT_STATE.put(SUGGESTIONS_KV_KEY, body, ttl);
+    await env.ALERT_STATE.put(PRESET_FALLBACK_KV_KEY, slim, ttl);
+  }
   return { status: "success", byLens };
 }
 
@@ -203,23 +216,31 @@ function json(obj, status, cors) {
   return new Response(JSON.stringify(obj), { status, headers: { ...cors, "Content-Type": "application/json" } });
 }
 
-// GET /suggestions — the client's validated-set read. 404 (not just an empty body) when the
-// cron hasn't populated KV yet (a fresh deploy) so index.html's fetch-failure fallback path
-// treats "never validated" the same as "worker absent": static suggestions either way.
-export async function handleSuggestions(req, env, ctx) {
+// GET /suggestions — the client's validated-set read. Live KV from the daily cron wins.
+// Missing, empty, unparseable, or stale KV (and a missing ALERT_STATE binding) serve the
+// in-code FALLBACK_INDICES floor so a fresh deploy or KV outage cannot blank the chips.
+export async function handleSuggestions(req, env, ctx, options = {}) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
-  if (!env.ALERT_STATE) return json({ ok: false, reason: "not-configured" }, 503, cors);
   const cache = typeof caches !== "undefined" ? caches.default : null;
   if (cache) {
     const hit = await cache.match(req).catch(() => null);
     if (hit) return withCors(hit, cors);
   }
-  const raw = await env.ALERT_STATE.get(SUGGESTIONS_KV_KEY);
-  if (!raw) return json({ ok: false, reason: "not-found" }, 404, cors);
-  const res = new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=1800" } });
-  if (cache) {
+  const loaded = await loadSuggestionRecord(env, {
+    nowMs: options.nowMs ?? Date.now(),
+  });
+  const cacheLive = loaded.source === "kv";
+  const res = new Response(JSON.stringify(loaded.record), {
+    status: 200,
+    headers: {
+      ...cors,
+      "Content-Type": "application/json",
+      "Cache-Control": cacheLive ? "public, max-age=1800" : "public, max-age=60",
+    },
+  });
+  if (cache && cacheLive) {
     const put = cache.put(req, res.clone());
     if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
   }
