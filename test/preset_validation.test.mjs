@@ -7,55 +7,18 @@ import {
   firstNonEmptyVariant,
   fruitfulSuggestionIndices,
 } from "../site/preset_validation.mjs";
-import { canRefreshGeneratedFallback } from "../tools/preset_fallback_ci.mjs";
 import { SUGGESTION_POOL } from "../worker/src/lib/suggestions.mjs";
 import { validateLiveSuggestions } from "../tools/validate_presets.mjs";
 
 const validatorSource = readFileSync(new URL("../tools/validate_presets.mjs", import.meta.url), "utf8");
 const ciSource = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
+const preflightSource = readFileSync(new URL("../tools/preflight-required-checks.sh", import.meta.url), "utf8");
 
-test("preset validation reads and rewrites the modular site suggestion source", () => {
+test("preset validation reads the modular site suggestion source and does not rewrite it", () => {
   assert.match(validatorSource, /site[^\n]+app[^\n]+search-share\.mjs/);
   assert.match(validatorSource, /fallbackFromSiteSource\(siteSuggestions\)/);
-  assert.match(validatorSource, /writeFile\(SITE_SUGGESTIONS, siteSuggestions\)/);
+  assert.doesNotMatch(validatorSource, /writeFile\(/);
   assert.doesNotMatch(validatorSource, /fallbackFromHTML\(html\)/);
-});
-
-test("CI refresh is allowed only for inherited fallback drift", () => {
-  const site = "prefix\nconst NL_SUGGESTIONS_FALLBACK = {\n  money: [1],\n};\nsuffix";
-  const changedOutsideFallback = `${site}\nother UI code`;
-  const baseSources = {
-    "site/app/search-share.mjs": site,
-    "worker/src/lib/suggestions.mjs": "worker source",
-    "site/data/preset-validation.json": "receipt",
-    "tools/validate_presets.mjs": "validator",
-    "site/preset_validation.mjs": "helpers",
-  };
-  assert.equal(
-    canRefreshGeneratedFallback(baseSources, {
-      ...baseSources,
-      "site/app/search-share.mjs": changedOutsideFallback,
-    }),
-    true,
-  );
-  assert.equal(
-    canRefreshGeneratedFallback(baseSources, {
-      ...baseSources,
-      "site/app/search-share.mjs": site.replace("[1]", "[2]"),
-    }),
-    false,
-  );
-  assert.equal(
-    canRefreshGeneratedFallback(baseSources, {
-      ...baseSources,
-      "worker/src/lib/suggestions.mjs": "hand-edited worker source",
-    }),
-    false,
-  );
-  assert.equal(
-    canRefreshGeneratedFallback({ ...baseSources, "worker/src/lib/suggestions.mjs": null }, baseSources),
-    true,
-  );
 });
 
 test("refresh retains an inherited Money filter but route-faithfully recounts it when resolution is unavailable", async () => {
@@ -148,27 +111,11 @@ test("a broad resolver outage retains the inherited fallback wholesale", async (
   assert.match(warnings.at(-1), /retaining inherited filters with route-faithful recounts/);
 });
 
-test("a hand-edited fallback remains ineligible for CI refresh", () => {
-  const site = "prefix\nconst NL_SUGGESTIONS_FALLBACK = {\n  money: [1],\n};\nsuffix";
-  const baseSources = {
-    "site/app/search-share.mjs": site,
-    "worker/src/lib/suggestions.mjs": "worker source",
-    "site/data/preset-validation.json": "receipt",
-  };
-  assert.equal(
-    canRefreshGeneratedFallback(baseSources, {
-      ...baseSources,
-      "site/app/search-share.mjs": site.replace("[1]", "[2]"),
-    }),
-    false,
-  );
-});
-
-test("required CI validates the committed preset receipt without publisher access", () => {
-  assert.match(ciSource, /node tools\/validate_presets\.mjs --check/);
-  assert.doesNotMatch(ciSource, /PRESET_BASE_SHA|validate_presets\.mjs --write/);
-  assert.match(validatorSource, /const SNAPSHOT_ONLY = CHECK/);
-  assert.match(validatorSource, /const scenarios = SNAPSHOT_ONLY \? previous\.scenarios/);
+test("required CI does not gate on a committed preset receipt", () => {
+  assert.doesNotMatch(ciSource, /validate_presets\.mjs/);
+  assert.doesNotMatch(preflightSource, /validate_presets\.mjs/);
+  assert.doesNotMatch(ciSource, /preset-validation\.json/);
+  assert.doesNotMatch(ciSource, /refresh-preset-fallback/);
 });
 
 test("live SODA fetch retries with exponential backoff on transient timeouts", () => {
