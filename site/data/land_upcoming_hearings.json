@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-19T08:58:10.942Z",
+  "generated_at": "2026-08-20T09:00:02.017Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,14 +9,14 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-08-19",
+    "today": "2026-08-20",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
     "hearings_extracted": 402,
     "disposition_hearings_extracted": 72,
     "milestone_hearings_extracted": 330,
-    "disposition_upcoming_count": 1,
+    "disposition_upcoming_count": 0,
     "milestone_upcoming_count": 182,
     "incremental_milestone_count": 182,
     "accepted_milestone_classes": {
@@ -25,7 +25,7 @@
     },
     "published_meeting_dates_evaluated": 898,
     "hearing_shaped_candidates_reviewed": 856,
-    "upcoming_count": 183,
+    "upcoming_count": 182,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -35,43 +35,6 @@
     "polite_delay_ms": 350
   },
   "hearings": [
-    {
-      "schema_version": 1,
-      "source": "zap-api-dispositions",
-      "project_id": "2025M0473",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0473",
-      "borough": "Manhattan",
-      "disposition_id": "a5f95c75-3964-f111-a824-001dd8006beb",
-      "disposition_name": "2025M0473_ZC_MN CB6",
-      "representing": "Community Board",
-      "phase_id": "community_board",
-      "hearing_date": "2026-08-19",
-      "hearing_at": "2026-08-19T22:30:00.000Z",
-      "hearing_location_raw": "https://www.zoomgov.com/webinar/register/WN_o106vm8bQdqnm7-kjEBFVQ#/registration",
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "raw_only",
-      "provenance": {
-        "field": "dcp-publichearinglocation",
-        "source": "zap-api-dispositions",
-        "derived": [],
-        "hearing_at": {
-          "field": "dcp-dateofpublichearing",
-          "source": "zap-api-dispositions",
-          "value": "2026-08-19T22:30:00.000Z"
-        },
-        "representing": {
-          "field": "dcp-representing",
-          "source": "zap-api-dispositions",
-          "value": "Community Board"
-        }
-      },
-      "project_name": "1059-1061 Second Avenue - TA Certification",
-      "public_status": "In Public Review"
-    },
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
@@ -803,44 +766,6 @@
       "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0214",
       "borough": "Queens",
       "milestone_id": "7169340d-cb11-ed11-82e3-001dd8068d73",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-09-09",
-      "hearing_at": "2026-09-09T04:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-09-09T04:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2024K0369",
-      "project_name": "364 Coney Island Avenue Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0369",
-      "borough": "Brooklyn",
-      "milestone_id": "ee341986-ffa8-ef11-8a6a-001dd805533f",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -3419,6 +3344,44 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
+      "project_id": "2025M0360",
+      "project_name": "515 West 57th Street Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0360",
+      "borough": "Manhattan",
+      "milestone_id": "bb39aa37-c831-f011-8c4e-001dd80c29f4",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-11-30",
+      "hearing_at": "2026-11-30T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-11-30T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
       "project_id": "2025Q0314",
       "project_name": "Queens CD 4 Walk to Park Site Selection/Acq.",
       "public_status": "Noticed",
@@ -3957,6 +3920,44 @@
       "portal_url": "https://zap.planning.nyc.gov/projects/2025K0306",
       "borough": "Brooklyn",
       "milestone_id": "04673498-f3f9-ef11-9341-001dd80644b1",
+      "milestone_title": "City Planning Commission Review",
+      "milestone_source_title": "CPC Public Meeting - Public Hearing",
+      "event_class": "cpc_public_hearing",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-02",
+      "hearing_at": "2026-12-02T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-02T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "CPC Public Meeting - Public Hearing"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_public_hearing"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2025M0360",
+      "project_name": "515 West 57th Street Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0360",
+      "borough": "Manhattan",
+      "milestone_id": "e439aa37-c831-f011-8c4e-001dd80c29f4",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -4863,6 +4864,44 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
+      "project_id": "2024K0369",
+      "project_name": "364 Coney Island Avenue Rezoning",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0369",
+      "borough": "Brooklyn",
+      "milestone_id": "ee341986-ffa8-ef11-8a6a-001dd805533f",
+      "milestone_title": "City Planning Commission Review",
+      "milestone_source_title": "CPC Public Meeting - Public Hearing",
+      "event_class": "cpc_public_hearing",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-12-12",
+      "hearing_at": "2026-12-12T05:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-12-12T05:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "CPC Public Meeting - Public Hearing"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_public_hearing"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
       "project_id": "2024K0421",
       "project_name": "2233 Flatbush Avenue Rezoning",
       "public_status": "Noticed",
@@ -5211,44 +5250,6 @@
       "portal_url": "https://zap.planning.nyc.gov/projects/2025M0338",
       "borough": "Manhattan",
       "milestone_id": "72c89b39-4642-f011-877a-001dd806295a",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-12",
-      "hearing_at": "2026-12-12T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-12T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025M0360",
-      "project_name": "515 West 57th Street Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0360",
-      "borough": "Manhattan",
-      "milestone_id": "e439aa37-c831-f011-8c4e-001dd80c29f4",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -6617,44 +6618,6 @@
       "portal_url": "https://zap.planning.nyc.gov/projects/2025M0338",
       "borough": "Manhattan",
       "milestone_id": "55c89b39-4642-f011-877a-001dd806295a",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-14",
-      "hearing_at": "2026-12-14T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-14T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2025M0360",
-      "project_name": "515 West 57th Street Rezoning",
-      "public_status": "In Public Review",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0360",
-      "borough": "Manhattan",
-      "milestone_id": "bb39aa37-c831-f011-8c4e-001dd80c29f4",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
