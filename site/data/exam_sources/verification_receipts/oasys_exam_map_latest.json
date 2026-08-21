@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "source_id": "oasys-active-exams",
-  "verified_at": "2026-08-20",
-  "verified_at_utc": "2026-08-20T09:00:28.562Z",
+  "verified_at": "2026-08-21",
+  "verified_at_utc": "2026-08-21T09:02:49.589Z",
   "http_status": 200,
   "api_url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
   "summary": {
