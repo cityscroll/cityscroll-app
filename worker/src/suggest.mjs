@@ -7,8 +7,10 @@
 // exact resident snapshot + keyword-search merge + final route filters; other lens adapters
 // retain their own counters. Candidates clearing MIN_SUGGESTION_RESULTS are stored, grouped
 // by lens, in ALERT_STATE KV alongside the other cron products under
-// SUGGESTIONS_KV_KEY and PRESET_FALLBACK_KV_KEY. GET /suggestions serves that
-// record, or the in-code FALLBACK_INDICES floor when KV is missing or unusable.
+// SUGGESTIONS_KV_KEY and PRESET_FALLBACK_KV_KEY. byLens always includes every
+// SUGGESTION_LENSES key (`[]` when empty) so a snapshot miss cannot omit a key
+// and throw. GET /suggestions serves that record, or the in-code
+// FALLBACK_INDICES floor when KV is missing or unusable.
 //
 // Fail-soft, two layers: one candidate's resolve/count failure is caught and skipped (logged),
 // not fatal to the run; and if the WHOLE run comes back with nothing validated at all (a source
@@ -23,7 +25,9 @@ import { SUGGESTION_POOL, suggestionCountParams, suggestionSampleParams, MIN_SUG
 import {
   PRESET_FALLBACK_KV_KEY,
   PRESET_FALLBACK_TTL_SECONDS,
+  SUGGESTION_LENSES,
   SUGGESTIONS_KV_KEY,
+  emptySuggestionByLens,
   loadSuggestionRecord,
   toPresetFallbackPayload,
 } from "./lib/preset_fallback_kv.mjs";
@@ -159,7 +163,11 @@ async function validateCandidate(env, candidate, todayISO, { moneyDestination = 
 
 export async function runSuggestionValidation(env, options = {}) {
   const todayISO = new Date().toISOString().slice(0, 10);
-  const byLens = {};
+  // Always emit every known lens, including an empty array when the snapshot
+  // or live count has no surviving candidates. Omitting a key made admin
+  // refresh / cron readers throw on real data drift (open-mode money chips
+  // aging out of money_resident_snapshot is the field case).
+  const byLens = emptySuggestionByLens();
 
   for (const candidate of SUGGESTION_POOL) {
     let result;
@@ -180,7 +188,7 @@ export async function runSuggestionValidation(env, options = {}) {
     });
   }
 
-  if (!Object.keys(byLens).length) {
+  if (!SUGGESTION_LENSES.some((lens) => byLens[lens]?.length)) {
     return { status: "skipped", reason: "no-fruitful-candidates" };
   }
 
