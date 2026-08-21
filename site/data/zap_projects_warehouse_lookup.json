@@ -5,7 +5,7 @@
   "dataset_id": "hgx4-8ukb",
   "table_name": "zap_projects",
   "mode": "soda_sell_facing",
-  "materialized_at": "2026-08-20T08:08:40.725Z",
+  "materialized_at": "2026-08-21T08:09:40.143Z",
   "row_count": 238,
   "replaces_live_fetch": {
     "worker": "worker/src/zap_outcomes.mjs#fetchOpenDataRow",

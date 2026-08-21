@@ -37,6 +37,9 @@ NOTICE = {
     "type_of_notice_description": "Solicitation",
     "section_name": "Procurement",
     "additional_description_1": "Submit a response for the playground reconstruction at 1 Centre Street.",
+    # Keep the stub open as this clock-independent fixture ages. A past due_date
+    # drops the action-guide disclosure (closed solicitations have no bid-guide).
+    "due_date": "2099-08-20T00:00:00.000",
 }
 PROPERTY_NOTICE = {
     **PROPERTY_SOURCE,
