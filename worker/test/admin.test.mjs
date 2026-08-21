@@ -14,6 +14,7 @@ import {
 } from "../src/admin.mjs";
 import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
+import { SUGGESTION_LENSES } from "../src/lib/preset_fallback_kv.mjs";
 import { handleAdminMeetingOutcomesRefresh } from "../src/meeting_outcomes.mjs";
 import { handleAdminZapOutcomesRefresh } from "../src/zap_outcomes.mjs";
 import worker from "../src/worker.mjs";
@@ -200,15 +201,23 @@ test("handleAdminSuggestRefresh: 405 on a non-POST method even with a valid key"
   assert.equal(r.status, 405);
 });
 
-test("handleAdminSuggestRefresh: success returns runSuggestionValidation()'s summary JSON plus a timestamp", async () => {
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = async (url, opts) => {
+function mockSuggestionFetch(filter) {
+  return async (url) => {
     if (String(url).includes("api.anthropic.com")) {
-      const input = { keywords: ["maintenance"], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
-      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
+      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input: filter }] }) };
     }
     return { ok: true, json: async () => [{ n: "42" }] };
   };
+}
+
+test("handleAdminSuggestRefresh: success returns runSuggestionValidation()'s summary JSON plus a timestamp", async () => {
+  const originalFetch = globalThis.fetch;
+  // Award-shaped construction is resident-snapshot fruitful without depending on
+  // today's open-RFP clock (the field case that dropped money from byLens).
+  globalThis.fetch = mockSuggestionFetch({
+    keywords: ["construction"], minAmount: 500000, maxAmount: null, category: null,
+    agency: null, months: null, noticeType: null, excludeSpecial: false,
+  });
   const kvStore = {};
   const env = { ADMIN_KEY: "s3cr3t", ANTHROPIC_API_KEY: "test-key", ALERT_STATE: kv(kvStore) };
   try {
@@ -216,13 +225,45 @@ test("handleAdminSuggestRefresh: success returns runSuggestionValidation()'s sum
     assert.equal(r.status, 200);
     const body = await r.json();
     assert.equal(body.status, "success");
+    for (const lens of SUGGESTION_LENSES) {
+      assert.ok(Array.isArray(body.byLens[lens]), `${lens} must be present as an array even when empty`);
+    }
     const money = body.byLens.money.find((candidate) => candidate.count >= 3);
     assert.ok(money);
     assert.equal(money.destination.schema, "cityscroll.money_suggestion_destination.v1");
     assert.equal(money.destination.finalCount, money.count);
     assert.match(money.destination.route, /^\/browse\/contracts\//);
     assert.ok(body.triggeredAt, "should carry a triggeredAt timestamp");
-    assert.ok(JSON.parse(kvStore[SUGGESTIONS_KV_KEY]).byLens.money.length, "should write the validated set to KV, same as the cron path");
+    const written = JSON.parse(kvStore[SUGGESTIONS_KV_KEY]);
+    assert.ok(written.byLens.money.length, "should write the validated set to KV, same as the cron path");
+    assert.ok(Array.isArray(written.byLens.money));
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleAdminSuggestRefresh: an empty money lens is [] not missing, and the route does not throw", async () => {
+  const originalFetch = globalThis.fetch;
+  // A keyword with no resident-snapshot hits keeps money empty while SODA n=42
+  // still fruits the other lenses — the shape that used to omit byLens.money.
+  globalThis.fetch = mockSuggestionFetch({
+    keywords: ["zzzxnotarealtopiczzzz"], minAmount: null, maxAmount: null, category: null,
+    agency: null, months: null, noticeType: null, excludeSpecial: false,
+  });
+  const kvStore = {};
+  const env = { ADMIN_KEY: "s3cr3t", ANTHROPIC_API_KEY: "test-key", ALERT_STATE: kv(kvStore) };
+  try {
+    const r = await handleAdminSuggestRefresh(post("https://w/admin/suggest-refresh?key=s3cr3t"), env);
+    assert.equal(r.status, 200);
+    const body = await r.json();
+    assert.equal(body.status, "success");
+    for (const lens of SUGGESTION_LENSES) {
+      assert.ok(Array.isArray(body.byLens[lens]), `${lens} must stay an array`);
+    }
+    const money = body.byLens.money.find((candidate) => candidate.count >= 3);
+    assert.equal(money, undefined);
+    assert.ok(SUGGESTION_LENSES.some((lens) => body.byLens[lens].length), "other lenses still write");
+    assert.deepEqual(JSON.parse(kvStore[SUGGESTIONS_KV_KEY]).byLens.money, []);
   } finally {
     globalThis.fetch = originalFetch;
   }

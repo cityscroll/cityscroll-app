@@ -49,8 +49,16 @@ function isFresh(generatedAt, nowMs, maxAgeMs) {
   return nowMs - ms <= maxAgeMs;
 }
 
+export function emptySuggestionByLens() {
+  return Object.fromEntries(SUGGESTION_LENSES.map((lens) => [lens, []]));
+}
+
 function normalizeRichLens(rows) {
-  if (!Array.isArray(rows) || !rows.length) return null;
+  // Empty arrays are a valid "this lens had no fruitful candidates" shape.
+  // Rejecting them used to invalidate the whole KV record whenever one lens
+  // aged out of the snapshot, sending every lens to the code floor.
+  if (!Array.isArray(rows)) return null;
+  if (!rows.length) return [];
   const out = [];
   for (const row of rows) {
     const idx = Number(row?.idx);
@@ -69,7 +77,8 @@ function normalizeRichLens(rows) {
 }
 
 function normalizeSlimLens(rows) {
-  if (!Array.isArray(rows) || !rows.length) return null;
+  if (!Array.isArray(rows)) return null;
+  if (!rows.length) return [];
   const out = [];
   for (const value of rows) {
     const idx = Number(value);
