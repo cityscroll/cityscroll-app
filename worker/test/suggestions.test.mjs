@@ -15,8 +15,9 @@ import {
   parseValidatedSuggestionRecord,
   PRESET_FALLBACK_KV_KEY,
   PRESET_FALLBACK_SCHEMA,
+  SUGGESTION_LENSES,
 } from "../src/lib/preset_fallback_kv.mjs";
-import { runSuggestionValidation, handleSuggestions, SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
+import { runSuggestionValidation, handleAdminSuggestRefresh, handleSuggestions, SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 
 const TODAY = "2026-07-15";
 
@@ -451,6 +452,97 @@ test("runSuggestionValidation: KV payload has the shape the read path expects", 
     const slim = parsePresetFallbackRecord(kvStore[PRESET_FALLBACK_KV_KEY], { nowMs });
     assert.ok(slim, "written preset:fallback must parse");
     assert.ok(slim.byLens.money.some((row) => row.idx === 0));
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("parseValidatedSuggestionRecord: an empty lens array does not invalidate the rest of the record", () => {
+  const raw = JSON.stringify({
+    generatedAt: FRESH_AT,
+    minResults: 3,
+    byLens: { money: [], land: [{ idx: 0, count: 12 }] },
+  });
+  const parsed = parseValidatedSuggestionRecord(raw, { nowMs: FRESH_NOW });
+  assert.ok(parsed, "empty money must not fail-closed the whole KV blob");
+  assert.deepEqual(parsed.byLens.money, []);
+  assert.deepEqual(parsed.byLens.land, [{ idx: 0, count: 12 }]);
+});
+
+test("parsePresetFallbackRecord: an empty lens array does not invalidate the rest of the record", () => {
+  const raw = JSON.stringify({
+    schema: PRESET_FALLBACK_SCHEMA,
+    generatedAt: FRESH_AT,
+    minResults: 3,
+    byLens: { money: [], people: [0, 2] },
+  });
+  const parsed = parsePresetFallbackRecord(raw, { nowMs: FRESH_NOW });
+  assert.ok(parsed);
+  assert.deepEqual(parsed.byLens.money, []);
+  assert.deepEqual(parsed.byLens.people.map((row) => row.idx), [0, 2]);
+});
+
+test("runSuggestionValidation: an empty money lens stays [] and does not throw or skip the run", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    const s = String(url);
+    if (s.includes("api.anthropic.com")) {
+      const input = { keywords: ["zzzxnotarealtopiczzzz"], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
+    }
+    const u = new URL(s);
+    if ((u.searchParams.get("$select") || "") === "count(1) as n") {
+      return { ok: true, json: async () => [{ n: "42" }] };
+    }
+    return { ok: true, json: async () => [] };
+  };
+  const kvStore = {};
+  const env = {
+    ANTHROPIC_API_KEY: "test-key",
+    ALERT_STATE: { get: async (k) => kvStore[k], put: async (k, v) => { kvStore[k] = v; } },
+  };
+  try {
+    const res = await runSuggestionValidation(env, {
+      moneyDestination: async () => ({ finalCount: 0, route: "/browse/contracts/?q=maintenance" }),
+    });
+    assert.equal(res.status, "success");
+    for (const lens of SUGGESTION_LENSES) {
+      assert.ok(Array.isArray(res.byLens[lens]), `${lens} must be present`);
+    }
+    assert.deepEqual(res.byLens.money, []);
+    assert.ok(res.byLens.land.length, "other lenses still validate");
+    const nowMs = Date.parse(JSON.parse(kvStore[SUGGESTIONS_KV_KEY]).generatedAt);
+    const parsed = parseValidatedSuggestionRecord(kvStore[SUGGESTIONS_KV_KEY], { nowMs });
+    assert.ok(parsed, "KV with empty money must still parse");
+    assert.deepEqual(parsed.byLens.money, []);
+    const slim = parsePresetFallbackRecord(kvStore[PRESET_FALLBACK_KV_KEY], { nowMs });
+    assert.ok(slim);
+    assert.deepEqual(slim.byLens.money, []);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleAdminSuggestRefresh: an empty source lens does not throw", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    if (String(url).includes("api.anthropic.com")) {
+      const input = { keywords: ["zzzxnotarealtopiczzzz"], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
+    }
+    return { ok: true, json: async () => [{ n: "42" }] };
+  };
+  const env = { ADMIN_KEY: "s3cr3t", ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async () => null, put: async () => {} } };
+  try {
+    const r = await handleAdminSuggestRefresh(
+      new Request("https://w/admin/suggest-refresh?key=s3cr3t", { method: "POST" }),
+      env,
+    );
+    assert.equal(r.status, 200);
+    const body = await r.json();
+    assert.equal(body.status, "success");
+    assert.deepEqual(body.byLens.money, []);
+    assert.equal(typeof body.byLens.money.find, "function");
   } finally {
     globalThis.fetch = originalFetch;
   }

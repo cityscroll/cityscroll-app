@@ -729,9 +729,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Live-derived suggestion fallback lives in Worker `ALERT_STATE` KV (`suggestions:validated`
   plus `preset:fallback`) from the daily cron in `worker/src/suggest.mjs`. In-code
   `FALLBACK_INDICES` / `NL_SUGGESTIONS_FALLBACK` are last-resort floors when KV is missing,
-  empty, unparseable, or stale. `tools/validate_presets.mjs` is an optional diagnostic, not
-  a merge gate. Proof: `worker/test/suggestions.test.mjs` and
-  `test/contract/suggestion_fallback.test.mjs`.
+  empty, unparseable, or stale. `runSuggestionValidation` always emits every
+  `SUGGESTION_LENSES` key (`[]` when a lens has no surviving candidates) so a snapshot-clock
+  miss on Contracts cannot omit `byLens.money` and throw on admin refresh; the KV parsers
+  accept those empty arrays without invalidating the rest of the record. A wholly empty run
+  still skips the KV write. `tools/validate_presets.mjs` is an optional diagnostic, not
+  a merge gate. Proof: `worker/test/suggestions.test.mjs`,
+  `worker/test/admin.test.mjs`, and `test/contract/suggestion_fallback.test.mjs`.
 
 ## Cross-domain entity intelligence
 
