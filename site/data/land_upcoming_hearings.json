@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-20T09:00:02.017Z",
+  "generated_at": "2026-08-21T09:01:44.363Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,23 +9,23 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-08-20",
+    "today": "2026-08-21",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
-    "hearings_extracted": 402,
+    "hearings_extracted": 403,
     "disposition_hearings_extracted": 72,
-    "milestone_hearings_extracted": 330,
+    "milestone_hearings_extracted": 331,
     "disposition_upcoming_count": 0,
-    "milestone_upcoming_count": 182,
-    "incremental_milestone_count": 182,
+    "milestone_upcoming_count": 183,
+    "incremental_milestone_count": 183,
     "accepted_milestone_classes": {
-      "cpc_pre_hearing_review_session": 93,
+      "cpc_pre_hearing_review_session": 94,
       "cpc_public_hearing": 89
     },
-    "published_meeting_dates_evaluated": 898,
-    "hearing_shaped_candidates_reviewed": 856,
-    "upcoming_count": 182,
+    "published_meeting_dates_evaluated": 901,
+    "hearing_shaped_candidates_reviewed": 857,
+    "upcoming_count": 183,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -728,6 +728,44 @@
       "portal_url": "https://zap.planning.nyc.gov/projects/2025M0265",
       "borough": "Manhattan",
       "milestone_id": "72401673-0df6-ef11-be20-001dd808b02e",
+      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
+      "event_class": "cpc_pre_hearing_review_session",
+      "representing": "City Planning Commission",
+      "phase_id": "cpc",
+      "hearing_date": "2026-09-08",
+      "hearing_at": "2026-09-08T04:00:00.000Z",
+      "hearing_location_raw": null,
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "published_date_only",
+      "provenance": {
+        "field": "dcp-reviewmeetingdate",
+        "source": "zap-api-milestones",
+        "value": "2026-09-08T04:00:00.000Z",
+        "title": {
+          "field": "milestonename",
+          "value": "Review Session - Pre-Hearing Review / Post Referral"
+        },
+        "classification": {
+          "method": "exact_published_title_v1",
+          "event_class": "cpc_pre_hearing_review_session"
+        },
+        "derived": []
+      }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-milestones",
+      "project_id": "2025M0473",
+      "project_name": "1059-1061 Second Avenue - TA Certification",
+      "public_status": "In Public Review",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025M0473",
+      "borough": "Manhattan",
+      "milestone_id": "bd70affa-0795-f111-ab0f-001dd80e798c",
       "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
       "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
       "event_class": "cpc_pre_hearing_review_session",
@@ -3421,7 +3459,7 @@
       "schema_version": 1,
       "source": "zap-api-milestones",
       "project_id": "2025R0222",
-      "project_name": "St. Joseph by the Sea Special Permit",
+      "project_name": "St Joseph by the Sea - ballfield",
       "public_status": "In Public Review",
       "portal_url": "https://zap.planning.nyc.gov/projects/2025R0222",
       "borough": "Staten Island",
@@ -4029,7 +4067,7 @@
       "schema_version": 1,
       "source": "zap-api-milestones",
       "project_id": "2025R0222",
-      "project_name": "St. Joseph by the Sea Special Permit",
+      "project_name": "St Joseph by the Sea - ballfield",
       "public_status": "In Public Review",
       "portal_url": "https://zap.planning.nyc.gov/projects/2025R0222",
       "borough": "Staten Island",
