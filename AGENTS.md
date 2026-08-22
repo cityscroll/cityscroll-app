@@ -333,6 +333,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   auto-merge. After `peter-evans/create-pull-request`, each workflow enables
   auto-merge via `gh pr merge "$REFRESH_PR" --auto --match-head-commit
   "$REFRESH_HEAD"` with the same PAT as `GH_TOKEN`.
+  **Intended destination is Worker-cron self-update, not this PR loop.**
+  PR 1188 moved preset fallback into `ALERT_STATE` (`suggestions:validated` /
+  `preset:fallback`). The six workflows above are the remaining legacy
+  publishers. Inventory + migration design:
+  `docs/evidence/automation-pr-to-worker-cron-inventory.md`. Reuse
+  `ALERT_STATE` key prefixes; do not create a new KV namespace. Do not add a
+  seventh GH PR loop (City Record PIN-chain is the known temptation).
 - Shared browser artifacts use `tools/site_artifact_identity.mjs` plus
   `.github/actions/use-site-artifact`: the run/attempt artifact and exact-input
   cache are trusted only after `_site.sha256`, commit/tree, lockfile, Node
