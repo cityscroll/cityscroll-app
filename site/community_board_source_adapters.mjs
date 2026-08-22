@@ -30,7 +30,7 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
     formats: Object.freeze(["ics", "google_calendar"]),
     record_kinds: Object.freeze(["event"]),
     max_bytes: 1_000_000,
-    contract: "explicit iCalendar feed; UID, DTSTART, and board evidence are required for a usable event",
+    contract: "explicit iCalendar feed or a public Google Calendar embed whose calendar id yields /public/basic.ics; UID, DTSTART, and board evidence are required for a usable event",
   }),
   airtable_v1: Object.freeze({
     id: "airtable_v1",
@@ -629,6 +629,86 @@ function icsInstanceId(uid, date) {
   return id && date ? `${id}::${date}` : id || null;
 }
 
+function decodeHtmlEntities(value) {
+  return String(value || "")
+    .replace(/&#038;/g, "&")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">");
+}
+
+function decodeBase64(value) {
+  const raw = String(value || "").replace(/-/g, "+").replace(/_/g, "/");
+  if (!raw) return null;
+  const padded = raw + "=".repeat((4 - (raw.length % 4)) % 4);
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(padded)) return null;
+  try {
+    const binary = typeof atob === "function"
+      ? atob(padded)
+      : Buffer.from(padded, "base64").toString("latin1");
+    return binary || null;
+  } catch {
+    return null;
+  }
+}
+
+function isGoogleCalendarId(value) {
+  return /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(clean(value, 300));
+}
+
+export function normalizeGoogleCalendarId(value) {
+  const raw = clean(decodeHtmlEntities(value), 500);
+  if (!raw) return null;
+  let candidate = raw;
+  try { candidate = decodeURIComponent(raw); } catch { candidate = raw; }
+  if (isGoogleCalendarId(candidate)) return candidate;
+  const decoded = decodeBase64(candidate);
+  return isGoogleCalendarId(decoded) ? decoded : null;
+}
+
+export function googleCalendarPublicIcsUrl(calendarId) {
+  const id = normalizeGoogleCalendarId(calendarId);
+  return id ? `https://calendar.google.com/calendar/ical/${encodeURIComponent(id)}/public/basic.ics` : null;
+}
+
+export function googleCalendarIdsFromHtml(html) {
+  const text = decodeHtmlEntities(html);
+  const ids = new Set();
+  const snippets = text.match(/https?:\/\/(?:www\.)?calendar\.google\.com\/[^"'<\s]+/gi) || [];
+  for (const snippet of snippets) {
+    let url;
+    try { url = new URL(snippet); } catch { continue; }
+    for (const key of ["src", "cid"]) {
+      for (const value of url.searchParams.getAll(key)) {
+        const id = normalizeGoogleCalendarId(value);
+        if (id) ids.add(id);
+      }
+    }
+    const ical = url.pathname.match(/\/calendar\/ical\/([^/]+)\/public\/basic\.ics/i);
+    if (ical) {
+      const id = normalizeGoogleCalendarId(decodeURIComponent(ical[1]));
+      if (id) ids.add(id);
+    }
+  }
+  return [...ids];
+}
+
+function looksLikeIcalendar(text, contentType) {
+  return /BEGIN:VCALENDAR/i.test(String(text || "")) || /text\/calendar/i.test(String(contentType || ""));
+}
+
+function dedupeSourceRecords(records) {
+  const seen = new Set();
+  return records.filter((row) => {
+    const key = `${row.record_kind}:${row.record_id}`;
+    if (!row.record_id || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function upcomingCalendarFloor(source, options = {}) {
   const role = clean(source?.role || source?.source_role || source?.source_type, 80).toLowerCase();
   if (role !== "upcoming_meetings") return null;
@@ -767,6 +847,31 @@ export function parseCommunityBoardSource(payload, source = {}, options = {}) {
   return [];
 }
 
+async function harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit } = {}) {
+  if (looksLikeIcalendar(text, contentType)) {
+    return parseGoogleCalendarSource(text, source, { observedAt, receipt });
+  }
+  const records = [];
+  for (const calendarId of googleCalendarIdsFromHtml(text)) {
+    const icsUrl = googleCalendarPublicIcsUrl(calendarId);
+    if (!icsUrl || typeof fetchImpl !== "function") continue;
+    try {
+      const response = await fetchImpl(icsUrl, { method: "GET", credentials: "omit", redirect: "follow" });
+      if (!response?.ok || Number(response.status) === 404) continue;
+      const bytes = response.arrayBuffer
+        ? await response.arrayBuffer()
+        : new TextEncoder().encode(await response.text()).buffer;
+      if (bytes.byteLength > (limit || 1_000_000)) continue;
+      const icsText = new TextDecoder().decode(bytes);
+      if (!looksLikeIcalendar(icsText, response?.headers?.get?.("content-type"))) continue;
+      records.push(...parseGoogleCalendarSource(icsText, { ...source, record_url: icsUrl }, { observedAt, receipt }));
+    } catch {
+      continue;
+    }
+  }
+  return dedupeSourceRecords(records);
+}
+
 export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null } = {}) {
   const contract = sourceAdapterContract(source);
   const url = explicitUrl(source);
@@ -800,7 +905,10 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
       }, source);
       lastReceipt = receipt;
       if (!response.ok || length > limit || accessDenied) continue;
-      return { records: parseCommunityBoardSource(text, source, { observedAt, receipt }), receipt };
+      const records = adapterId(source) === "google_calendar_v1"
+        ? await harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit })
+        : parseCommunityBoardSource(text, source, { observedAt, receipt });
+      return { records, receipt };
     } catch (error) {
       lastReceipt = normalizeObservedReceipt({ ...baseReceipt, reason: clean(error?.name || "fetch_error", 80) }, source);
     }

@@ -2775,10 +2775,11 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "google_calendar_v1",
           "publisher": "Manhattan Community Board 6",
           "publisher_kind": "board_owned_official",
           "url": "https://cbsix.org/meetings-calendar/",
-          "format": "explicit board calendar",
+          "format": "board-owned HTML + Google Calendar/iCalendar",
           "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
@@ -3393,10 +3394,11 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "google_calendar_v1",
           "publisher": "NYC Community Boards",
           "publisher_kind": "nyc_official",
           "url": "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
-          "format": "NYC HTML",
+          "format": "NYC HTML + Google Calendar iframe",
           "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
@@ -3701,10 +3703,11 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "google_calendar_v1",
           "publisher": "NYC Community Boards",
           "publisher_kind": "nyc_official",
           "url": "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
-          "format": "NYC HTML",
+          "format": "NYC HTML + Google Calendar iframe",
           "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
