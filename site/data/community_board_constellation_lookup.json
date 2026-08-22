@@ -11,7 +11,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -242,7 +242,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -473,7 +473,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -704,7 +704,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -935,7 +935,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1166,7 +1166,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1391,7 +1391,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1622,7 +1622,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1847,7 +1847,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2076,9 +2076,9 @@
       "display_name": "Bronx Community Board 10",
       "path": "/community-boards/bronx-cb-10/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2176,12 +2176,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:bronx-cb-10:2026-09-14:executive-board",
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 6,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-09-14%3Aexecutive-board",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-09-14%3Aexecutive-board",
           "scope": {
             "board": "bronx-cb-10"
           },
@@ -2194,17 +2194,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:bronx-cb-10:2026-09-14:executive-board",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/assets/bronxcb10/downloads/pdf/calendar/september_2026.pdf",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2307,9 +2301,9 @@
       "display_name": "Bronx Community Board 11",
       "path": "/community-boards/bronx-cb-11/",
       "summary": {
-        "matched_categories": 2,
+        "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2407,12 +2401,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board",
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 3,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-09-24%3Apublic-hearing-and-full-board",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-09-24%3Apublic-hearing-and-full-board",
           "scope": {
             "board": "bronx-cb-11"
           },
@@ -2425,17 +2419,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://www.nyc.gov/assets/bronxcb11/downloads/pdf/calendar/2026-09.pdf",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -2540,7 +2528,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2771,7 +2759,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3002,7 +2990,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3233,7 +3221,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3464,7 +3452,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3695,7 +3683,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3926,7 +3914,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4157,7 +4145,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4382,7 +4370,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4613,7 +4601,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4844,7 +4832,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5069,7 +5057,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5294,7 +5282,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5525,7 +5513,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5756,7 +5744,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5981,7 +5969,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6212,7 +6200,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6443,7 +6431,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6668,7 +6656,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6892,7 +6880,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7117,7 +7105,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7342,7 +7330,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7566,7 +7554,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7791,7 +7779,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8022,7 +8010,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8253,7 +8241,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8478,7 +8466,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8709,7 +8697,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8940,7 +8928,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9165,7 +9153,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9396,7 +9384,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9621,7 +9609,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9845,7 +9833,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10076,7 +10064,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10307,7 +10295,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10538,7 +10526,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10769,7 +10757,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11000,7 +10988,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11231,7 +11219,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11462,7 +11450,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11693,7 +11681,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11924,7 +11912,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12155,7 +12143,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12386,7 +12374,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12617,7 +12605,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12848,7 +12836,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -13079,7 +13067,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -13310,7 +13298,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T03:34:27.924Z",
+        "generated_at": "2026-08-22T05:26:31.992Z",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [

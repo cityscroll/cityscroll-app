@@ -32,6 +32,13 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
     max_bytes: 1_000_000,
     contract: "explicit iCalendar feed or a public Google Calendar embed whose calendar id yields /public/basic.ics; UID, DTSTART, and board evidence are required for a usable event",
   }),
+  pdf_calendar_v1: Object.freeze({
+    id: "pdf_calendar_v1",
+    formats: Object.freeze(["pdf", "pdf_calendar"]),
+    record_kinds: Object.freeze(["event"]),
+    max_bytes: 3_000_000,
+    contract: "official agenda or calendar PDF whose text carries an explicit meeting date and clock time; identity is date plus title from the PDF, never inferred from a month label or 'usually 6pm' copy",
+  }),
   airtable_v1: Object.freeze({
     id: "airtable_v1",
     formats: Object.freeze(["airtable", "json"]),
@@ -51,6 +58,7 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
 const ADAPTER_ALIASES = Object.freeze({
   html_document_index_v1: "html_pdf_v1",
   google_calendar: "google_calendar_v1",
+  pdf_calendar: "pdf_calendar_v1",
   airtable: "airtable_v1",
   video: "video_record_v1",
 });
@@ -761,6 +769,312 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
   });
 }
 
+const PDF_MONTHS = Object.freeze([
+  "january", "february", "march", "april", "may", "june",
+  "july", "august", "september", "october", "november", "december",
+]);
+const PDF_WEEKDAYS = Object.freeze(["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]);
+const PDF_MEETING_IDENTITY = /\b(?:full board|general board|public hearing|executive board|executive committee|board meeting)\b/i;
+const PDF_TIME_QUALIFIER = /\b(?:usually|generally|typically|unless otherwise|if necessary)\b/i;
+const PDF_NON_MEETING = /\b(?:office closed|labor day|columbus day|election day|veterans['’]? day|thanksgiving|yom kippur|rosh hashanah|nypd|precinct council|book exchange|pantry)\b/i;
+const MAX_PDF_CALENDARS = 8;
+
+function pdfNewYorkDate(value) {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return dateFromText(value);
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(parsed);
+}
+
+function pdfUpcomingFloor(source, options = {}) {
+  const role = clean(source?.role || source?.source_role || source?.source_type, 80).toLowerCase();
+  if (role !== "upcoming_meetings") return null;
+  return pdfNewYorkDate(options.observedAt || options.receipt?.observed_at || source?.observed_receipt?.observed_at || "");
+}
+
+function pdfMonthIndex(value) {
+  const month = PDF_MONTHS.indexOf(clean(value, 40).toLowerCase());
+  return month >= 0 ? month + 1 : null;
+}
+
+function pdfMonthYear(text) {
+  const titled = String(text || "").match(/\b(?:tentative\s+)?(january|february|march|april|may|june|july|august|september|october|november|december)\s+(20\d{2})\s*(?:calendar)?\b/i)
+    || String(text || "").match(/\b(20\d{2})\s+board meeting schedule\b/i);
+  if (!titled) return null;
+  if (titled[1] && /^20\d{2}$/.test(titled[1]) && !titled[2]) return { year: Number(titled[1]), month: null };
+  const month = pdfMonthIndex(titled[1]);
+  const year = Number(titled[2]);
+  return month && year ? { month, year } : (year ? { month: null, year } : null);
+}
+
+function pdfMeetingTitle(value) {
+  const text = clean(value, 400);
+  if (!text || PDF_NON_MEETING.test(text)) return null;
+  const match = text.match(PDF_MEETING_IDENTITY);
+  if (!match) return null;
+  const start = Math.max(0, text.toLowerCase().indexOf(match[0].toLowerCase()) - 24);
+  const slice = text.slice(start, start + 160)
+    .replace(/\bclick here\b/ig, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const named = slice.match(/\b((?:full board|general board|public hearing|executive board|executive committee|board meeting)(?:\s*(?:and|&)\s*(?:full board|public hearing))?)\b/i);
+  const title = clean(named?.[1] || match[0], 160);
+  return title || null;
+}
+
+function pdfRecordId(source, date, title) {
+  const slug = clean(title, 300).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 120);
+  const boardId = clean(source?.board_id || source?.body_id, 100);
+  return boardId && date && slug ? `pdf-calendar:${boardId}:${date}:${slug}` : null;
+}
+
+function pdfCivilWeekday(date) {
+  const match = String(date || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  return new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]))).getUTCDay();
+}
+
+function pdfIsoDate(year, month, day) {
+  if (!year || !month || !day || day < 1 || day > 31) return null;
+  return iso(`${year}-${month}-${day}`);
+}
+
+function decodePdfString(value) {
+  return String(value || "")
+    .replace(/\\n/g, "\n")
+    .replace(/\\r/g, "\r")
+    .replace(/\\t/g, "\t")
+    .replace(/\\([0-7]{1,3})/g, (_, oct) => String.fromCharCode(Number.parseInt(oct, 8)))
+    .replace(/\\([()\\])/g, "$1");
+}
+
+export function extractPdfTextFromBytes(bytes) {
+  const raw = bytes instanceof ArrayBuffer
+    ? new Uint8Array(bytes)
+    : bytes instanceof Uint8Array
+      ? bytes
+      : new TextEncoder().encode(String(bytes || ""));
+  if (raw.length < 5) return "";
+  const latin = new TextDecoder("latin1").decode(raw);
+  if (!latin.startsWith("%PDF")) return "";
+  const strings = [];
+  for (const token of latin.matchAll(/\((?:\\.|[^\\)])*\)\s*Tj|\[(?:\s*\((?:\\.|[^\\)])*\)\s*-?\d*)+\]\s*TJ/g)) {
+    for (const part of token[0].matchAll(/\((?:\\.|[^\\)])*\)/g)) {
+      strings.push(decodePdfString(part[0].slice(1, -1)));
+    }
+  }
+  return strings.join("\n").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+export function pdfCalendarLinksFromHtml(html, sourceUrl) {
+  const found = [];
+  const anchor = /<a\b[^>]*\bhref\s*=\s*(["'])([^"']+)\1[^>]*>([\s\S]*?)<\/a>/gi;
+  for (const match of String(html || "").matchAll(anchor)) {
+    const url = safeUrl(decode(match[2]), sourceUrl);
+    const label = plain(match[3], 200);
+    if (!url || !/\.pdf(?:$|[?#])/i.test(url)) continue;
+    const blob = `${label} ${url}`.toLowerCase();
+    if (/\bminutes?\b|memorandum of meeting/.test(blob)) continue;
+    const score = pdfCalendarLinkScore(blob);
+    if (score <= 0) continue;
+    found.push({ url, label, score });
+  }
+  return [...new Map(found.sort((left, right) => right.score - left.score || left.url.localeCompare(right.url)).map((row) => [row.url, row])).values()]
+    .slice(0, MAX_PDF_CALENDARS);
+}
+
+function pdfCalendarLinkScore(blob) {
+  const text = String(blob || "");
+  if (/\bminutes?\b|memorandum of meeting/.test(text)) return -10;
+  let score = 0;
+  if (/calendar|schedule/.test(text)) score += 5;
+  if (/agenda/.test(text)) score += 3;
+  if (/full.?board|monthly|meeting/.test(text)) score += 2;
+  const year = text.match(/\b(202[6-9]|203\d)\b/);
+  if (year) score += 4;
+  const month = PDF_MONTHS.findIndex((name) => new RegExp(`\\b${name}\\b`).test(text));
+  if (month >= 0) score += month >= 7 ? 8 + month : 2 + month;
+  if (!score && /\.pdf(?:$|[?#])/.test(text)) score = 1;
+  return score;
+}
+
+function pdfWeekdayColumns(line) {
+  const lower = String(line || "").toLowerCase();
+  const cols = [];
+  let cursor = 0;
+  for (const name of PDF_WEEKDAYS) {
+    const index = lower.indexOf(name, cursor);
+    if (index < 0) return null;
+    cols.push({ name, index, weekday: cols.length });
+    cursor = index + name.length;
+  }
+  return cols.length === 7 ? cols : null;
+}
+
+function pdfColumnBounds(cols, width) {
+  return cols.map((col, index) => {
+    const start = index === 0 ? 0 : Math.floor((cols[index - 1].index + col.index) / 2);
+    const end = index === cols.length - 1 ? Math.max(width, col.index + 12) : Math.floor((col.index + cols[index + 1].index) / 2);
+    return { ...col, start, end };
+  });
+}
+
+function pdfDayNumberLine(cells) {
+  const days = cells.filter((cell) => /^\s*(?:[1-9]|[12]\d|3[01])\s*$/.test(cell) || /^\s*(?:[1-9]|[12]\d|3[01])\b/.test(cell));
+  const times = cells.filter((cell) => /\b\d{1,2}:\d{2}\b|\b\d{1,2}\s*[ap]\.?m\.?\b/i.test(cell));
+  return days.length >= 3 && times.length === 0;
+}
+
+function pdfCellDay(cell) {
+  const match = String(cell || "").match(/^\s*([1-9]|[12]\d|3[01])\b/);
+  return match ? Number(match[1]) : null;
+}
+
+function pdfGridMeetings(text, monthYear) {
+  if (!monthYear?.month || !monthYear?.year) return [];
+  const lines = String(text || "").split(/\n/);
+  let bounds = null;
+  const weeks = [];
+  let current = null;
+  const flush = () => {
+    if (current) weeks.push(current);
+    current = null;
+  };
+  for (const line of lines) {
+    const cols = pdfWeekdayColumns(line);
+    if (cols) {
+      flush();
+      bounds = pdfColumnBounds(cols, Math.max(line.length, 120));
+      continue;
+    }
+    if (!bounds) continue;
+    const padded = line.padEnd(bounds[bounds.length - 1].end, " ");
+    const cells = bounds.map((col) => padded.slice(col.start, col.end));
+    if (pdfDayNumberLine(cells)) {
+      flush();
+      current = cells.map((cell, index) => ({ weekday: index, parts: [cell] }));
+      continue;
+    }
+    if (current) current.forEach((column, index) => column.parts.push(cells[index]));
+  }
+  flush();
+  const found = [];
+  for (const week of weeks) {
+    for (const column of week) {
+      const body = column.parts.join("\n");
+      const day = pdfCellDay(column.parts[0]) || pdfCellDay(body);
+      const date = pdfIsoDate(monthYear.year, monthYear.month, day);
+      if (!date || pdfCivilWeekday(date) !== column.weekday) continue;
+      const title = pdfMeetingTitle(body);
+      const startAt = calendarStartAt(date, body);
+      if (!title || !startAt || PDF_TIME_QUALIFIER.test(body)) continue;
+      found.push({ date, startAt, title, address: calendarVenue(body.split(/\n/).map((line) => clean(line, 200)).filter(Boolean)) });
+    }
+  }
+  return found;
+}
+
+function pdfLinearMeetings(text, monthYear) {
+  const lines = String(text || "").split(/\n/);
+  const found = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const window = lines.slice(index, index + 8).join("\n");
+    if (PDF_TIME_QUALIFIER.test(window)) continue;
+    const date = monthDate(window) || (monthYear?.year ? explicitCalendarDate(window, String(monthYear.year)) : null);
+    const title = pdfMeetingTitle(window);
+    const startAt = calendarStartAt(date, window);
+    if (!date || !title || !startAt) continue;
+    found.push({
+      date,
+      startAt,
+      title,
+      address: calendarVenue(window.split(/\n/).map((line) => clean(line, 200)).filter(Boolean)),
+    });
+  }
+  return found;
+}
+
+function looksLikePdfBytes(payload, contentType) {
+  if (/application\/pdf/i.test(String(contentType || ""))) return true;
+  const head = typeof payload === "string"
+    ? payload.slice(0, 5)
+    : new TextDecoder("latin1").decode((payload instanceof ArrayBuffer ? new Uint8Array(payload) : payload).slice(0, 5));
+  return head === "%PDF-";
+}
+
+export function parsePdfCalendarSource(text, source = {}, options = {}) {
+  const descriptor = { ...source, adapter: "pdf_calendar_v1" };
+  const sourceUrl = explicitUrl(descriptor);
+  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, {
+    parser: "pdf_calendar_v1",
+    observed_at: options.observedAt,
+  });
+  if (!sourceUrl || !clean(descriptor.board_id || descriptor.body_id, 100) || !String(text || "").trim()) return [];
+  const monthYear = pdfMonthYear(text);
+  const floor = pdfUpcomingFloor(descriptor, { ...options, receipt });
+  const candidates = [
+    ...pdfLinearMeetings(text, monthYear),
+    ...pdfGridMeetings(text, monthYear),
+  ];
+  const found = [];
+  const seen = new Set();
+  for (const candidate of candidates) {
+    if (floor && candidate.date < floor) continue;
+    const recordId = pdfRecordId(descriptor, candidate.date, candidate.title);
+    if (!recordId || seen.has(recordId)) continue;
+    seen.add(recordId);
+    found.push(record(descriptor, {
+      record_kind: "event",
+      record_id: recordId,
+      event_id: recordId,
+      board_id: descriptor.board_id || descriptor.body_id,
+      date: candidate.date,
+      start_at: candidate.startAt,
+      category: descriptor.role || descriptor.source_role || "upcoming_meetings",
+      title: candidate.title,
+      address: candidate.address,
+      format: "pdf",
+      publisher_identifier: recordId,
+      publisher_event_id: recordId,
+      record_url: descriptor.record_url || sourceUrl,
+    }, receipt));
+  }
+  return found;
+}
+
+async function harvestPdfCalendarRecords(payload, contentType, source, { fetchImpl, observedAt, receipt, limit, extractPdfText } = {}) {
+  const extract = typeof extractPdfText === "function" ? extractPdfText : extractPdfTextFromBytes;
+  const records = [];
+  const ingest = async (bytes, recordUrl) => {
+    const text = await extract(bytes);
+    if (!clean(text, 80)) return;
+    records.push(...parsePdfCalendarSource(text, { ...source, record_url: recordUrl }, { observedAt, receipt }));
+  };
+  if (looksLikePdfBytes(payload, contentType)) {
+    const bytes = typeof payload === "string" ? new TextEncoder().encode(payload) : payload;
+    await ingest(bytes, source.record_url || source.url);
+    return dedupeSourceRecords(records);
+  }
+  const html = typeof payload === "string" ? payload : new TextDecoder().decode(payload);
+  for (const link of pdfCalendarLinksFromHtml(html, explicitUrl(source))) {
+    if (typeof fetchImpl !== "function") continue;
+    try {
+      const response = await fetchImpl(link.url, { method: "GET", credentials: "omit", redirect: "follow" });
+      if (!response?.ok) continue;
+      const bytes = response.arrayBuffer ? await response.arrayBuffer() : new TextEncoder().encode(await response.text()).buffer;
+      if (bytes.byteLength > (limit || 3_000_000)) continue;
+      await ingest(bytes, link.url);
+    } catch {
+      continue;
+    }
+  }
+  return dedupeSourceRecords(records);
+}
+
 function jsonInput(value) {
   if (typeof value === "string") {
     try { return JSON.parse(value); } catch { return null; }
@@ -842,6 +1156,7 @@ export function parseCommunityBoardSource(payload, source = {}, options = {}) {
   if (adapter === "html_pdf_v1") return parseHtmlPdfSource(payload, source, options);
   if (adapter === "nyc_official_calendar_v1") return parseNycOfficialCalendarSource(payload, source, options);
   if (adapter === "google_calendar_v1") return parseGoogleCalendarSource(payload, source, options);
+  if (adapter === "pdf_calendar_v1") return parsePdfCalendarSource(payload, source, options);
   if (adapter === "airtable_v1") return parseAirtableSource(payload, source, options);
   if (adapter === "video_record_v1") return parseVideoRecordSource(payload, source, options);
   return [];
@@ -872,7 +1187,7 @@ async function harvestGoogleCalendarRecords(text, contentType, source, { fetchIm
   return dedupeSourceRecords(records);
 }
 
-export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null } = {}) {
+export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null, extractPdfText = null } = {}) {
   const contract = sourceAdapterContract(source);
   const url = explicitUrl(source);
   const limit = Math.min(Number(maxBytes) || contract?.max_bytes || 1_000_000, contract?.max_bytes || 1_000_000);
@@ -881,7 +1196,7 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
     return { records: [], receipt: normalizeObservedReceipt({ ...baseReceipt, reason: "source_contract_unavailable" }, source) };
   }
   const fetchUrls = [url];
-  if (adapterId(source) === "nyc_official_calendar_v1" && /^https:\/\/www\.nyc\.gov\//i.test(url)) {
+  if ((adapterId(source) === "nyc_official_calendar_v1" || adapterId(source) === "pdf_calendar_v1") && /^https:\/\/www\.nyc\.gov\//i.test(url)) {
     fetchUrls.push(url.replace(/^https:\/\/www\.nyc\.gov\//i, "https://www1.nyc.gov/"));
   }
   let lastReceipt = null;
@@ -905,8 +1220,13 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
       }, source);
       lastReceipt = receipt;
       if (!response.ok || length > limit || accessDenied) continue;
-      const records = adapterId(source) === "google_calendar_v1"
+      const adapter = adapterId(source);
+      const records = adapter === "google_calendar_v1"
         ? await harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit })
+        : adapter === "pdf_calendar_v1"
+          ? await harvestPdfCalendarRecords(looksLikePdfBytes(bytes, contentType) ? bytes : text, contentType, source, {
+            fetchImpl, observedAt, receipt, limit, extractPdfText,
+          })
         : parseCommunityBoardSource(text, source, { observedAt, receipt });
       return { records, receipt };
     } catch (error) {
@@ -931,5 +1251,6 @@ export const normalizeSourceRecord = record;
 export const parseHtmlPdfIndex = parseHtmlPdfSource;
 export const parseNycOfficialCalendarRecords = parseNycOfficialCalendarSource;
 export const parseGoogleCalendarRecords = parseGoogleCalendarSource;
+export const parsePdfCalendarRecords = parsePdfCalendarSource;
 export const parseAirtableRecords = parseAirtableSource;
 export const parseVideoRecords = parseVideoRecordSource;
