@@ -82,6 +82,23 @@ test("adapter-gap boards keep machine-fetchable upcoming sources on the inventor
   assert.equal(bx11.adapter, "pdf_calendar_v1");
   const qn08 = byId.get("queens-cb-08").upcoming;
   assert.equal(qn08.adapter, "pdf_calendar_v1");
+
+  const mn11 = byId.get("manhattan-cb-11").upcoming;
+  assert.equal(mn11.adapter, "airtable_v1");
+  assert.equal(mn11.url, "https://www.cb11m.org/calendar/");
+  assert.match(mn11.format, /airtable/i);
+  assert.equal(mn11.verification.fetchability, "machine_fetchable");
+
+  const mn05 = byId.get("manhattan-cb-05");
+  assert.equal(mn05.upcoming.verification.fetchability, "browser_required");
+  assert.equal(mn05.upcoming.verification.access_note, "browser_protected");
+  assert.equal(mn05.minutes.verification.fetchability, "browser_required");
+  const mn08 = byId.get("manhattan-cb-08");
+  assert.equal(mn08.upcoming.verification.fetchability, "browser_required");
+  assert.equal(mn08.upcoming.verification.access_note, "browser_protected");
+  const qn03 = byId.get("queens-cb-03");
+  assert.equal(qn03.upcoming.verification.fetchability, "browser_required");
+  assert.equal(qn03.upcoming.verification.access_note, "browser_protected");
 });
 
 test("calendar and minutes are separate receipt-backed source roles", () => {
