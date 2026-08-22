@@ -2153,8 +2153,8 @@
         "publisher_kind": "board_owned_official",
         "url": "https://cb5.org/events/",
         "format": "explicit board calendar",
-        "fetch_mode": "machine-fetchable",
-        "access_constraint": null,
+        "fetch_mode": "browser-required",
+        "access_constraint": "browser_required",
         "seen_on": "2026-08-13",
         "archive_depth": {
           "status": "unknown",
@@ -2168,8 +2168,8 @@
         "verification": {
           "status": "observed",
           "seen_on": "2026-08-13",
-          "fetchability": "machine_fetchable",
-          "access_note": null,
+          "fetchability": "browser_required",
+          "access_note": "browser_protected",
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
         }
@@ -2180,8 +2180,8 @@
         "publisher_kind": "board_owned_official",
         "url": "https://cb5.org/board-actions/",
         "format": "explicit board minutes/archive",
-        "fetch_mode": "machine-fetchable",
-        "access_constraint": null,
+        "fetch_mode": "browser-required",
+        "access_constraint": "browser_required",
         "seen_on": "2026-08-13",
         "archive_depth": {
           "status": "unknown",
@@ -2195,8 +2195,8 @@
         "verification": {
           "status": "observed",
           "seen_on": "2026-08-13",
-          "fetchability": "machine_fetchable",
-          "access_note": null,
+          "fetchability": "browser_required",
+          "access_note": "browser_protected",
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
         }
@@ -2342,8 +2342,8 @@
         "publisher_kind": "board_owned_official",
         "url": "https://www.cb8m.com/calendar/",
         "format": "explicit board calendar",
-        "fetch_mode": "machine-fetchable",
-        "access_constraint": null,
+        "fetch_mode": "browser-required",
+        "access_constraint": "browser_required",
         "seen_on": "2026-08-13",
         "archive_depth": {
           "status": "unknown",
@@ -2357,8 +2357,8 @@
         "verification": {
           "status": "observed",
           "seen_on": "2026-08-13",
-          "fetchability": "machine_fetchable",
-          "access_note": null,
+          "fetchability": "browser_required",
+          "access_note": "browser_protected",
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
         }
@@ -2369,8 +2369,8 @@
         "publisher_kind": "board_owned_official",
         "url": "https://www.cb8m.com/full-board-archive/",
         "format": "explicit board minutes/archive",
-        "fetch_mode": "machine-fetchable",
-        "access_constraint": null,
+        "fetch_mode": "browser-required",
+        "access_constraint": "browser_required",
         "seen_on": "2026-08-13",
         "archive_depth": {
           "status": "unknown",
@@ -2384,8 +2384,8 @@
         "verification": {
           "status": "observed",
           "seen_on": "2026-08-13",
-          "fetchability": "machine_fetchable",
-          "access_note": null,
+          "fetchability": "browser_required",
+          "access_note": "browser_protected",
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
         }
@@ -2527,7 +2527,7 @@
         "publisher": "Manhattan Community Board 11",
         "publisher_kind": "board_owned_official",
         "url": "https://www.cb11m.org/calendar/",
-        "format": "explicit board calendar",
+        "format": "board-owned HTML + public Airtable shared view",
         "fetch_mode": "machine-fetchable",
         "access_constraint": null,
         "seen_on": "2026-08-13",
@@ -2547,7 +2547,8 @@
           "access_note": null,
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
-        }
+        },
+        "adapter": "airtable_v1"
       },
       "minutes": {
         "source_type": "minutes",
@@ -2793,7 +2794,7 @@
           "status": "observed",
           "seen_on": "2026-08-13",
           "fetchability": "browser_required",
-          "access_note": "browser_required",
+          "access_note": "browser_protected",
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
         }
@@ -2820,7 +2821,7 @@
           "status": "observed",
           "seen_on": "2026-08-13",
           "fetchability": "browser_required",
-          "access_note": "browser_required",
+          "access_note": "browser_protected",
           "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
           "reason": null
         }

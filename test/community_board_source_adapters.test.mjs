@@ -8,6 +8,8 @@ import {
   fetchCommunityBoardSource,
   googleCalendarIdsFromHtml,
   googleCalendarPublicIcsUrl,
+  airtableShareIdsFromHtml,
+  airtableSharedViewRequestFromEmbed,
   parseNycOfficialCalendarSource,
   parseAirtableSource,
   parseGoogleCalendarSource,
@@ -372,6 +374,157 @@ test("a private Google Calendar ICS stays empty instead of inventing events", as
         return { ok: false, status: 404, headers: { get: () => "text/html" }, arrayBuffer: async () => new ArrayBuffer(0) };
       }
       const bytes = new TextEncoder().encode(html);
+      return { ok: true, status: 200, headers: { get: () => "text/html" }, arrayBuffer: async () => bytes.buffer };
+    },
+  });
+  assert.equal(result.records.length, 0);
+  assert.equal(result.receipt.status, "ok");
+});
+
+test("Airtable discovery reads a public embed share id and signed shared-view URL", () => {
+  assert.deepEqual(airtableShareIdsFromHtml(`
+    <iframe class="airtable-embed" src="https://airtable.com/embed/shrEZxc5vi8McZNFb?backgroundColor=blue"></iframe>
+  `), ["shrEZxc5vi8McZNFb"]);
+  const request = airtableSharedViewRequestFromEmbed(`
+    <script>
+    var headers = {"x-airtable-application-id":"appedcOCWGdk7kppK"};
+    window.__stashedPrefetch = {
+      urlWithParams: "\\u002Fv0.3\\u002Fview\\u002Fviw9Uu3M3qvVBKKTF\\u002FreadSharedViewData?accessPolicy=%7B%22shareId%22%3A%22shrEZxc5vi8McZNFb%22%2C%22applicationId%22%3A%22appedcOCWGdk7kppK%22%7D"
+    };
+    </script>
+  `);
+  assert.equal(request.shareId, "shrEZxc5vi8McZNFb");
+  assert.equal(request.applicationId, "appedcOCWGdk7kppK");
+  assert.match(request.url, /https:\/\/airtable\.com\/v0\.3\/view\/viw9Uu3M3qvVBKKTF\/readSharedViewData/);
+});
+
+test("Airtable shared-view JSON maps date/title/record fields and drops office closures", () => {
+  const payload = {
+    msg: "SUCCESS",
+    data: {
+      table: {
+        columns: [
+          { id: "fldName", name: "Name" },
+          { id: "fldDate", name: "Date" },
+          { id: "fldLoc", name: "Location" },
+          { id: "fldReg", name: "Register to Attend" },
+        ],
+        rows: [
+          {
+            id: "recFullBoard",
+            cellValuesByColumnId: {
+              fldName: "Full Board",
+              fldDate: "2026-09-16T00:00:00.000Z",
+              fldLoc: [{ foreignRowId: "recHall", foreignRowDisplayName: "1664 Park Avenue, New York, NY 10035" }],
+              fldReg: "https://www.zoomgov.com/webinar/register/WN_example",
+            },
+          },
+          {
+            id: "recClosed",
+            cellValuesByColumnId: {
+              fldName: "Labor Day - CLOSED",
+              fldDate: "2026-09-07T00:00:00.000Z",
+            },
+          },
+          {
+            id: "recRfp",
+            cellValuesByColumnId: {
+              fldName: "RFP for the Renovation of a Sports Facility",
+              fldDate: "2026-09-16T00:00:00.000Z",
+            },
+          },
+          {
+            id: "recPast",
+            cellValuesByColumnId: {
+              fldName: "Full Board",
+              fldDate: "2025-01-01T00:00:00.000Z",
+            },
+          },
+        ],
+      },
+    },
+  };
+  const records = parseAirtableSource(payload, {
+    adapter: "airtable_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-11",
+    url: "https://www.cb11m.org/calendar/",
+    airtable_share_id: "shrEZxc5vi8McZNFb",
+  }, { receipt: { status: "ok", observed_at: "2026-08-22T12:00:00Z" }, observedAt: "2026-08-22T12:00:00Z" });
+  assert.equal(records.length, 1);
+  assert.equal(records[0].record_kind, "event");
+  assert.equal(records[0].record_id, "recFullBoard");
+  assert.equal(records[0].date, "2026-09-16");
+  assert.equal(records[0].title, "Full Board");
+  assert.equal(records[0].address, "1664 Park Avenue, New York, NY 10035");
+  assert.equal(records[0].publisher_identifier, "recFullBoard");
+  assert.equal(records[0].participation.remote_join_url, "https://www.zoomgov.com/webinar/register/WN_example");
+});
+
+test("Airtable fetch follows a public embed to shared-view JSON and keeps record identity", async () => {
+  const html = `<iframe class="airtable-embed" src="https://airtable.com/embed/shrEZxc5vi8McZNFb"></iframe>`;
+  const embed = `
+    <script>
+    var headers = {"x-airtable-application-id":"appedcOCWGdk7kppK"};
+    window.__stashedPrefetch = {
+      urlWithParams: "\\u002Fv0.3\\u002Fview\\u002Fviw9Uu3M3qvVBKKTF\\u002FreadSharedViewData?accessPolicy=%7B%22shareId%22%3A%22shrEZxc5vi8McZNFb%22%7D"
+    };
+    </script>`;
+  const view = {
+    data: {
+      table: {
+        columns: [{ id: "fldName", name: "Name" }, { id: "fldDate", name: "Date" }],
+        rows: [{ id: "recLicenses", cellValuesByColumnId: { fldName: "Licenses & Permits", fldDate: "2026-09-02T00:00:00.000Z" } }],
+      },
+    },
+  };
+  const calls = [];
+  const result = await fetchCommunityBoardSource({
+    adapter: "airtable_v1",
+    role: "upcoming_meetings",
+    format: "board-owned HTML + public Airtable shared view",
+    board_id: "manhattan-cb-11",
+    url: "https://www.cb11m.org/calendar/",
+  }, {
+    observedAt: "2026-08-22T12:00:00Z",
+    fetchImpl: async (url) => {
+      calls.push(url);
+      const body = /readSharedViewData/.test(url) ? JSON.stringify(view) : /airtable\.com\/embed\//.test(url) ? embed : html;
+      const bytes = new TextEncoder().encode(body);
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => (/readSharedViewData/.test(url) ? "application/json" : "text/html") },
+        arrayBuffer: async () => bytes.buffer,
+      };
+    },
+  });
+  assert.equal(calls[0], "https://www.cb11m.org/calendar/");
+  assert.equal(calls[1], "https://airtable.com/embed/shrEZxc5vi8McZNFb");
+  assert.match(calls[2], /readSharedViewData/);
+  assert.equal(result.records.length, 1);
+  assert.equal(result.records[0].record_id, "recLicenses");
+  assert.equal(result.records[0].date, "2026-09-02");
+  assert.equal(result.receipt.status, "ok");
+});
+
+test("an auth-gated Airtable shared view stays empty instead of inventing events", async () => {
+  const html = `<iframe src="https://airtable.com/embed/shrPrivateView"></iframe>`;
+  const result = await fetchCommunityBoardSource({
+    adapter: "airtable_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-06",
+    url: "https://cbsix.org/minutes/",
+  }, {
+    observedAt: "2026-08-22T12:00:00Z",
+    fetchImpl: async (url) => {
+      if (/readSharedViewData/.test(url)) {
+        return { ok: false, status: 403, headers: { get: () => "text/html" }, arrayBuffer: async () => new ArrayBuffer(0) };
+      }
+      const body = /airtable\.com\/embed\//.test(url)
+        ? `<script>window.__stashedPrefetch = { urlWithParams: "\\u002Fv0.3\\u002Fview\\u002FviwPrivate\\u002FreadSharedViewData" };</script>`
+        : html;
+      const bytes = new TextEncoder().encode(body);
       return { ok: true, status: 200, headers: { get: () => "text/html" }, arrayBuffer: async () => bytes.buffer };
     },
   });
