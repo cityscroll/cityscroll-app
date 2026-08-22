@@ -4,17 +4,17 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-08-21",
+  "verified_at": "2026-08-22",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
     "distinct_schedule_exams": 1271,
-    "distinct_list_aggregate_exams": 851,
+    "distinct_list_aggregate_exams": 852,
     "matched_pairs": 437,
     "misses": {
-      "no_list_aggregate": 778,
+      "no_list_aggregate": 777,
       "missing_application_close": 6,
-      "missing_established_date": 50,
+      "missing_established_date": 51,
       "established_before_application_close": 0
     },
     "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
