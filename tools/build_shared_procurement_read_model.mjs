@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 import { readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
+import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 
@@ -63,7 +65,7 @@ function checkbookRecord(row, generatedAt) {
 
 function passportRecord(row, generatedAt) {
   const epin = norm(row.epin_norm || row.epin);
-  const snapshot = { ...row, epin_norm: epin };
+  const snapshot = attachPassportPublicFields({ ...row, epin_norm: epin }, row);
   return record(
     "passport_public_contracts",
     `contract:${epin}:${String(row.ctr_id || epin).trim()}`,
@@ -131,17 +133,23 @@ function serialized(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
-const { model, browse } = buildProcurementArtifacts(json(SPINE), json(AWARDS));
-const outputs = [[MODEL_OUT, serialized(model)], [BROWSE_OUT, serialized(browse)]];
-if (process.argv.includes("--check")) {
-  for (const [path, content] of outputs) {
-    if (readFileSync(path, "utf8") !== content) {
-      console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
-      process.exitCode = 1;
+function main() {
+  const { model, browse } = buildProcurementArtifacts(json(SPINE), json(AWARDS));
+  const outputs = [[MODEL_OUT, serialized(model)], [BROWSE_OUT, serialized(browse)]];
+  if (process.argv.includes("--check")) {
+    for (const [path, content] of outputs) {
+      if (readFileSync(path, "utf8") !== content) {
+        console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
+        process.exitCode = 1;
+      }
     }
+    if (!process.exitCode) console.log(`procurement artifacts current (${model.rows.length} objects)`);
+    return;
   }
-  if (!process.exitCode) console.log(`procurement artifacts current (${model.rows.length} objects)`);
-} else {
   for (const [path, content] of outputs) writeFileSync(path, content);
   console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows)`);
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main();
 }
