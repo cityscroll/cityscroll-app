@@ -1,0 +1,126 @@
+{
+  "schema": "cityscroll.scout.passport_not_cityrecord.v1",
+  "observed_on": "2026-08-21",
+  "live_probed_at": "2026-08-21T22:40:00Z",
+  "live_origin": "https://cityscroll.org",
+  "artifacts": {
+    "small_purchase_coverage": "warehouse/evaluation/small_purchase_coverage.json",
+    "small_purchase_generated_at": "2026-08-18T20:21:08.040Z",
+    "procurement_spine": "site/data/procurement_spine_sources.json",
+    "spine_generated_at": "2026-08-18T04:05:51.552Z",
+    "shared_read_model": "site/data/shared_procurement_read_model.json",
+    "browse_rows": "site/data/procurement_browse_rows.json",
+    "crosswalk": "site/data/passport_checkbook_crosswalk.json"
+  },
+  "census": {
+    "passport_public_parsed_rows": 61240,
+    "passport_small_like_rows": 8303,
+    "passport_small_like_crol_negative": 5616,
+    "passport_le_100k": 5740,
+    "passport_le_100k_crol_negative": 4553,
+    "checkbook_le_100k": 11746,
+    "checkbook_le_100k_crol_negative": 11043,
+    "passport_small_purchase_public_opportunity_join_rate": 0
+  },
+  "spine": {
+    "passport_census_rows": 12782,
+    "passport_source_population": 61054,
+    "checkbook_unique_contracts": 26038,
+    "checkbook_graph_slice": 2000,
+    "overlap_before_selection": {
+      "passport_and_city_record": 3941,
+      "passport_only": 1745,
+      "city_record_only": 683,
+      "new_unique": 19669
+    },
+    "selected_buckets": {
+      "passport_and_city_record": 695,
+      "passport_only": 9,
+      "city_record_only": 296,
+      "new_unique": 1000
+    },
+    "passport_spine_fields": [
+      "ctr_id",
+      "epin",
+      "contract_id",
+      "agency",
+      "vendor",
+      "status",
+      "award_amount",
+      "current_amount",
+      "encumbered_amount",
+      "paid_amount",
+      "start_date",
+      "end_date",
+      "registration_date"
+    ],
+    "passport_public_dump_fields_dropped_from_spine": [
+      "title",
+      "program",
+      "procurement_method",
+      "contract_type",
+      "industry"
+    ]
+  },
+  "resident_objects": {
+    "total": 2218,
+    "with_city_record": 1184,
+    "without_city_record": 1034,
+    "passport_only": 21,
+    "checkbook_only": 1013,
+    "passport_and_city_record": 1182,
+    "synthetic_contract_id_titles": 1034,
+    "method_family_labeled": 0,
+    "le_100k": {
+      "passport_only": 2,
+      "checkbook_only": 427,
+      "passport_and_city_record": 213
+    }
+  },
+  "crosswalk": {
+    "checkbook_rows": 2000,
+    "matched": 731,
+    "unmatched": 1269,
+    "ambiguous": 0,
+    "coverage_rate": 0.3655,
+    "join_methods_matched": {
+      "contract_id_exact": 689,
+      "pin_strip_suffix": 19,
+      "pin_epin_exact": 15,
+      "pin_prefix_of_epin": 8
+    },
+    "matched_with_different_contract_id_strings": 42
+  },
+  "kraken_cards": [
+    {
+      "id": "p0-policy-registry",
+      "status": "implemented",
+      "pr": "https://github.com/cityscroll/cityscroll-app/pull/1102"
+    },
+    {
+      "id": "p1-coverage-census",
+      "status": "implemented",
+      "pr": "https://github.com/cityscroll/cityscroll-app/pull/1103"
+    },
+    {
+      "id": "p2-promote-observations",
+      "status": "implemented",
+      "pr": "https://github.com/cityscroll/cityscroll-app/pull/1106"
+    },
+    {
+      "id": "p3-canonical-procurement-object",
+      "status": "implemented",
+      "pr": "https://github.com/cityscroll/cityscroll-app/pull/1111"
+    },
+    {
+      "id": "p4-search-browse-follow",
+      "status": "implemented",
+      "pr": "https://github.com/cityscroll/cityscroll-app/pull/1114"
+    },
+    {
+      "id": "p5-varying-honest-gap-ux",
+      "status": "implemented",
+      "pr": "https://github.com/cityscroll/cityscroll-app/pull/1158"
+    }
+  ]
+}

@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PASSPort contracts not in the City Record — CityScroll scout</title>
+<style>
+:root {
+  --ink: #1b2430;
+  --muted: #5b6573;
+  --paper: #f7f4ee;
+  --card: #fff;
+  --line: #d8d1c4;
+  --navy: #1b3a8f;
+  --built: #176334;
+  --built-bg: #d8f1df;
+  --dev: #765500;
+  --dev-bg: #fff0bd;
+  --not: #8b241b;
+  --not-bg: #f9d7d2;
+  --partial: #3d4a8a;
+  --partial-bg: #e4e8fb;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font: 17px/1.5 "Noto Sans", "Segoe UI", system-ui, sans-serif;
+}
+.wrap { max-width: 52rem; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+header.mast { border-bottom: 1px solid var(--line); padding-bottom: 1.2rem; margin-bottom: 1.5rem; }
+.eyebrow { letter-spacing: .08em; text-transform: uppercase; font-size: .72rem; color: var(--muted); font-weight: 700; }
+h1 { font-family: "Space Grotesk", "Noto Sans", sans-serif; font-size: 2rem; line-height: 1.15; margin: .35rem 0 .6rem; }
+.dek { font-size: 1.05rem; color: var(--muted); margin: 0; }
+nav.toc { display: flex; flex-wrap: wrap; gap: .45rem .8rem; margin: 1.1rem 0 0; font-size: .88rem; }
+nav.toc a { color: var(--navy); }
+.verdict {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .7rem;
+  margin: 1.4rem 0 1.6rem;
+}
+.verdict article {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: .9rem 1rem;
+}
+.verdict h2 { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; margin: 0 0 .35rem; }
+.pill { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; padding: .15rem .45rem; border-radius: 999px; }
+.pill.built { background: var(--built-bg); color: var(--built); }
+.pill.dev { background: var(--dev-bg); color: var(--dev); }
+.pill.not { background: var(--not-bg); color: var(--not); }
+.pill.partial { background: var(--partial-bg); color: var(--partial); }
+.callout { background: var(--card); border-left: 4px solid var(--navy); padding: .9rem 1.1rem; margin: 1.2rem 0; }
+.callout strong { display: block; margin-bottom: .25rem; }
+h2 { font-family: "Space Grotesk", "Noto Sans", sans-serif; font-size: 1.35rem; margin: 2rem 0 .6rem; }
+h3 { font-size: 1.05rem; margin: 1.3rem 0 .4rem; }
+p, li { max-width: 46rem; }
+table { width: 100%; border-collapse: collapse; background: var(--card); font-size: .92rem; }
+th, td { text-align: left; vertical-align: top; padding: .55rem .5rem; border-top: 1px solid var(--line); }
+th { font-size: .74rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
+figure { margin: 1rem 0 1.4rem; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .6rem; }
+figure img { display: block; width: 100%; height: auto; border-radius: 6px; }
+figcaption { font-size: .85rem; color: var(--muted); padding: .45rem .2rem 0; }
+a { color: var(--navy); }
+.meta { color: var(--muted); font-size: .88rem; }
+.cards { display: grid; gap: .7rem; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: .85rem 1rem; }
+.card h3 { margin-top: 0; }
+code { font-size: .86em; background: #efeae0; padding: .05em .28em; border-radius: 4px; }
+.num { font-variant-numeric: tabular-nums; }
+footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .88rem; }
+@media (max-width: 720px) {
+  .verdict { grid-template-columns: 1fr; }
+  h1 { font-size: 1.55rem; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="mast">
+  <div class="eyebrow">CityScroll scout · 21 August 2026 · for a stakeholder briefing</div>
+  <h1>Does CityScroll already show NYC contracts that are in PASSPort but not in the City Record?</h1>
+  <p class="dek">Short answer: <strong>a bounded slice is live, and it is not yet at product parity.</strong> Search and Browse can open some of those contracts today. Email alerts still follow City Record notices. The richer PASSPort detail (scope, pricing lines, deliverables, place of performance) is not on the public page.</p>
+  <nav class="toc" aria-label="On this page">
+    <a href="#verdict">Verdict</a>
+    <a href="#anna">What to tell Anna</a>
+    <a href="#examples">Live examples</a>
+    <a href="#parity">Parity matrix</a>
+    <a href="#funnel">How much is covered</a>
+    <a href="#crosswalk">Crosswalk</a>
+    <a href="#kraken">Existing workstream</a>
+    <a href="#tests">Tests</a>
+    <a href="#cards">Recommended cards</a>
+  </nav>
+</header>
+
+<section class="verdict" id="verdict" aria-label="Built, in development, not yet">
+  <article>
+    <h2><span class="pill built">Built</span></h2>
+    <p>CityScroll can construct a contract object from PASSPort Public and Checkbook without a City Record notice. Canonical pages exist at <code>/procurements/…</code>. Recent Awards on Contracts Browse and keyword Search include those objects. Six kraken cards in this workstream are marked implemented.</p>
+  </article>
+  <article>
+    <h2><span class="pill dev">In development</span></h2>
+    <p>The public surface is a sample, not the citywide PASSPort dump. Titles and procurement method are stripped from the committed census, so most non–City Record rows show as “Contract CT…”. Join accuracy for PIN-only matches still needs human review. Coverage labels that would say “small purchase — no City Record notice required” are silent on live rows.</p>
+  </article>
+  <article>
+    <h2><span class="pill not">Not yet</span></h2>
+    <p>Scope, line-item pricing, deliverables, and performance location are not in the public PASSPort dump CityScroll ingests, and they are not on the resident page. Daily email still says it sends City Record updates. Procurement documents have no “Watch this contract” control. Most sub-$100k PASSPort rows are not in the live product.</p>
+  </article>
+</section>
+
+<section id="anna">
+  <h2>What we could tell Anna</h2>
+  <div class="callout">
+    <strong>Feasible, already partly shipping, not a finished selling point.</strong>
+    CityScroll already shows some contracts that never appeared as a City Record award notice — including contracts below the usual $100k notice threshold. A resident can search a vendor such as TAMEER and see a $26,113 registered contract next to a $1.44M City Record award. That is real. It is also thin: the PASSPort-only card is identity plus dollars plus dates, not the full contract file, and following that vendor by email would still watch City Record notices rather than the PASSPort registration itself. Closing the gap is mostly verification, field restoration, and digest wiring — not a greenfield build.
+  </div>
+</section>
+
+<section id="q">
+  <h2>The five questions, with evidence</h2>
+
+  <h3>1. Is there a data path that ingests PASSPort contracts not present in the City Record?</h3>
+  <p><span class="pill built">Built</span> for ingest; <span class="pill partial">partial</span> for completeness.</p>
+  <p>PASSPort Public has no Socrata table. CityScroll downloads the portal dumps (<code>contractData.js</code> / <code>rfxData.js</code>), parses them, and writes Worker tables plus dual-write observations. City Record is not an insert prerequisite. A later census then asks, by exact PIN/EPIN or contract id only, whether a City Record Procurement row exists.</p>
+  <ul>
+    <li>On 18 August 2026 the census parsed <strong class="num">61,240</strong> PASSPort contracts. <strong class="num">8,303</strong> had a small-purchase or micropurchase publisher method. <strong class="num">5,616</strong> of those were not found in City Record by an exact key (67.6%).</li>
+    <li>Checkbook contracts at or under $100k: <strong class="num">11,746</strong> rows, <strong class="num">11,043</strong> not found in City Record (94%).</li>
+    <li>The resident product does not use that full census. The committed spine keeps <strong class="num">12,782</strong> award-corroborated PASSPort rows and a <strong class="num">2,000</strong>-row Checkbook graph slice. Only <strong class="num">9</strong> of <strong class="num">1,745</strong> Checkbook “PASSPort-only” contracts were selected into that slice.</li>
+    <li>The public dump has title, program, procurement method, contract type, and industry. The committed spine drops those fields and keeps identity, vendor, agency, amounts, and dates. Scope, deliverables, and location are not columns on the public dump at all.</li>
+  </ul>
+
+  <h3>2. Do those contracts appear in the live product?</h3>
+  <p><span class="pill built">Yes, in a bounded Awards list</span> — not in the default Open RFPs view.</p>
+  <p>Live <a href="https://cityscroll.org/browse/contracts/?mode=award">/browse/contracts/?mode=award</a> (Recent Awards) currently leads with synthetic-title Checkbook/PASSPort rows such as “Contract CT101520271400806”. Keyword “TAMEER” on that list returns two rows: a City Record award and a PASSPort-only $26k registration. Canonical documents resolve at <code>/procurements/procurement%3Acontract%3A…</code> (HTTP 200 on 21 August 2026).</p>
+  <p>Of <strong class="num">2,218</strong> live procurement objects: 1,184 have a City Record notice, 1,034 do not (21 PASSPort-only, 1,013 Checkbook-only). Under $100k in that bounded set: 2 PASSPort-only, 427 Checkbook-only, 213 PASSPort+City Record.</p>
+
+  <h3>3. Parity with the rest of the product?</h3>
+  <p><span class="pill partial">Partial.</span> See the matrix below. Search and Browse work for the sample. Following/email and rich detail do not.</p>
+
+  <h3>4. Is the “tie award detail back to the original City Record RFP/award” crosswalk working?</h3>
+  <p><span class="pill partial">Identity join works; detail join is thin; PIN-only matches need review.</span></p>
+  <p>On the 2,000-row Checkbook slice, 731 rows match PASSPort (36.6%): 689 by exact contract id, 42 by PIN-family methods. Those 42 include different contract ids sharing a PIN (for example Checkbook <code>CTA184120277200151</code> ↔ PASSPort <code>MMA1-841-20248803767</code>). That is the class that still needs a person to say “same contract” versus “related instrument.” When a City Record notice does join, the procurement page gets a human title and a City Record link — not PASSPort scope or pricing lines. Award→registration dwell is a separate Human Services strip on notices, not this object.</p>
+
+  <h3>5. What tests cover this, and what did the census measure?</h3>
+  <p>Focused unit tests cover object identity without <code>request_id</code>, Browse merge, Search producer, Following <em>counts</em>, coverage labels, and the census classifier. The census receipt is committed. There is no live browser test that a PASSPort-only row is watchable by email, and coverage labels currently label <strong>0 of 2,218</strong> live rows because method was stripped upstream.</p>
+</section>
+
+<section id="examples">
+  <h2>Live examples (captured 21 August 2026 from cityscroll.org)</h2>
+
+  <h3>PASSPort-only, under $100k — Firematic $49,689.78</h3>
+  <p>No City Record notice on the page. Title is the contract id. Vendor, agency, amount, PIN, and “registered” are present. No method, scope, or Watch control.</p>
+  <p><a href="https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365">https://cityscroll.org/procurements/procurement%3Acontract%3ACT185720228800365</a></p>
+  <figure>
+    <img src="screenshots/01-passport-only-firematic.png" alt="CityScroll procurement page titled Contract CT185720228800365 for FIREMATIC SUPPLY CO. INC, amount 49689.78, stage registered.">
+    <figcaption>PASSPort-only registered contract. City Record link is absent. Observed 21 August 2026.</figcaption>
+  </figure>
+
+  <h3>PASSPort-only, under $100k — Tameer $26,112.93</h3>
+  <p><a href="https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305">https://cityscroll.org/procurements/procurement%3Acontract%3ACT185020228802305</a></p>
+  <figure>
+    <img src="screenshots/02-passport-only-tameer.png" alt="CityScroll procurement page for Contract CT185020228802305, vendor TAMEER INC, Department of Design and Construction, amount 26112.93.">
+    <figcaption>Same thin fact list. This row is findable in Search and in Contracts → Recent Awards for “TAMEER”.</figcaption>
+  </figure>
+
+  <h3>Crosswalk-tied, under $100k — Moving Services $47,341.46</h3>
+  <p>PASSPort registration plus a City Record award notice. Title comes from City Record, not PASSPort. Official records link to the notice. Still no PASSPort scope/pricing.</p>
+  <p>
+    Procurement: <a href="https://cityscroll.org/procurements/procurement%3Acontract%3ACT100220218800028">/procurements/…CT100220218800028</a><br>
+    Notice: <a href="https://cityscroll.org/notices/20201019109">/notices/20201019109</a>
+  </p>
+  <figure>
+    <img src="screenshots/03-crosswalk-moving-services.png" alt="Procurement page titled Moving Services with City Record notice link under Official records.">
+    <figcaption>This is the “tie back to City Record” shape that works today: identity + notice href, not a merged full-text contract.</figcaption>
+  </figure>
+
+  <h3>Crosswalk-tied, under $100k — ASL interpretation $99,999 (M/WBE small purchase)</h3>
+  <p>
+    Procurement: <a href="https://cityscroll.org/procurements/procurement%3Acontract%3ACT100220278801039">/procurements/…CT100220278801039</a><br>
+    Notice: <a href="https://cityscroll.org/notices/20260625057">/notices/20260625057</a>
+  </p>
+  <figure>
+    <img src="screenshots/04-crosswalk-asl.png" alt="Procurement page titled American Sign Language (ASL) and Deaf Interpretation (DI) with award and registered stages and a City Record notice link.">
+    <figcaption>Canonical object with City Record title and notice link.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/06-city-record-notice-asl.png" alt="City Record notice page for the same ASL award, showing selection method M/WBE Noncompetitive Small Purchase, vendor LC Interpreting Services LLC, PIN 00226W0012001.">
+    <figcaption>The City Record notice for the same matter is richer: selection method “M/WBE Noncompetitive Small Purchase,” agency/vendor chips, Watch-adjacent actions. That method does not appear on the procurement object because the PASSPort spine dropped <code>procurement_method</code>.</figcaption>
+  </figure>
+
+  <h3>Checkbook-only, under $100k — Guardian $24,000</h3>
+  <p>Not PASSPort and not City Record in the current object. Still a live /procurements document. Shows the same thin template.</p>
+  <p><a href="https://cityscroll.org/procurements/procurement%3Acontract%3ACT100820271401006">https://cityscroll.org/procurements/procurement%3Acontract%3ACT100820271401006</a></p>
+  <figure>
+    <img src="screenshots/05-checkbook-only-guardian.png" alt="Procurement page for Contract CT100820271401006, Office of the Actuary, GUARDIAN SERVICE INDUSTRIES INC, amount 24000.">
+    <figcaption>Checkbook-only registered contract, $24k, no City Record provenance block.</figcaption>
+  </figure>
+
+  <h3>Contracts Browse — Recent Awards already mixes non–City Record rows</h3>
+  <p>Default Contracts is Open RFPs (City Record solicitations). Switching to Recent Awards loads the canonical snapshot. The first live rows on 21 August 2026 are synthetic “Contract CT…” titles — including the Comptroller small-purchase legal-services example used in tests.</p>
+  <figure>
+    <img src="screenshots/07-browse-contracts-awards.png" alt="Recent Awards list leading with Contract CT101520271400806 BILLIG LAW PC 1.79 million dollars.">
+    <figcaption>Live Recent Awards. Lead row is a CROL-negative canonical object, not a City Record award title.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/08-browse-awards-tameer.png" alt="Recent Awards filtered to TAMEER showing a 1.44 million dollar City Record award and a 26 thousand dollar PASSPort-only contract.">
+    <figcaption>Same vendor, two identities: City Record award ($1.44M, PIN 85021B0087) and PASSPort-only registration ($26k, EPIN 85021B0087001C011). The product currently lists both rather than merging them.</figcaption>
+  </figure>
+
+  <h3>Search</h3>
+  <p>Keyword Search on 21 August 2026:</p>
+  <ul>
+    <li><a href="https://cityscroll.org/search/?q=TAMEER">TAMEER</a> — 2 Contracts hits, including the PASSPort-only $26k object.</li>
+    <li><a href="https://cityscroll.org/search/?q=CT185720228800365">CT185720228800365</a> — 1 hit, the Firematic PASSPort-only object.</li>
+    <li>Vendor token FIREMATIC — 21 City Record/OCP firefighting awards; the $49k PASSPort-only Firematic row was <strong>not</strong> among those 21 live results, even though it is in the committed keyword index. Vendor-name recall is therefore not reliable when City Record already owns the token.</li>
+  </ul>
+  <figure>
+    <img src="screenshots/09-search-tameer.png" alt="Search results for TAMEER with two Contracts matches, including Contract CT185020228802305.">
+    <figcaption>Search surfaces the PASSPort-only Tameer contract as a first-class Contracts hit.</figcaption>
+  </figure>
+  <figure>
+    <img src="screenshots/10-search-contract-id.png" alt="Search results for contract id CT185720228800365 showing one Contracts match for FIREMATIC SUPPLY CO. INC 49689.78.">
+    <figcaption>Exact contract-id search is the reliable way to retrieve a PASSPort-only row today.</figcaption>
+  </figure>
+
+  <h3>Following</h3>
+  <figure>
+    <img src="screenshots/11-following.png" alt="Following create-a-watch page. Delivery copy says we send matching City Record updates.">
+    <figcaption>Create-a-watch copy on 21 August 2026: “We send matching City Record updates.” Digest compile for money still queries City Record SODA by <code>request_id</code>. Client Following <em>counts</em> can include CROL-negative rows in tests; email delivery cannot yet.</figcaption>
+  </figure>
+</section>
+
+<section id="parity">
+  <h2>Parity matrix</h2>
+  <p>Compared with an ordinary City Record award notice (vendor, amount, one-line purpose, Watch, lifecycle, digest).</p>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>City Record award</th>
+          <th>PASSPort-enriched (has notice)</th>
+          <th>PASSPort-only / Checkbook-only</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Appears in Contracts → Recent Awards</td>
+          <td><span class="pill built">Yes</span></td>
+          <td><span class="pill built">Yes, in the sample</span></td>
+          <td><span class="pill built">Yes, in the sample</span></td>
+        </tr>
+        <tr>
+          <td>Default Open RFPs list</td>
+          <td>Solicitations only</td>
+          <td><span class="pill not">No</span> (registered, not an open RFP)</td>
+          <td><span class="pill not">No</span></td>
+        </tr>
+        <tr>
+          <td>Keyword Search</td>
+          <td><span class="pill built">Yes</span></td>
+          <td><span class="pill partial">Yes when City Record title tokens match</span></td>
+          <td><span class="pill partial">Yes for unique vendor / exact id; can lose to City Record token competition</span></td>
+        </tr>
+        <tr>
+          <td>Canonical document</td>
+          <td><code>/notices/&lt;id&gt;</code></td>
+          <td><code>/procurements/…</code> plus notice link</td>
+          <td><code>/procurements/…</code> only</td>
+        </tr>
+        <tr>
+          <td>Human title / purpose</td>
+          <td><span class="pill built">City Record short title</span></td>
+          <td><span class="pill built">From the notice</span></td>
+          <td><span class="pill not">Synthetic “Contract CT…” — PASSPort title is parsed but not published</span></td>
+        </tr>
+        <tr>
+          <td>Scope / pricing lines / deliverables / location</td>
+          <td><span class="pill not">One-line purpose only</span></td>
+          <td><span class="pill not">Not added from PASSPort</span></td>
+          <td><span class="pill not">Not in the public dump CityScroll reads</span></td>
+        </tr>
+        <tr>
+          <td>Procurement method / small-purchase label</td>
+          <td>On the notice when published</td>
+          <td><span class="pill not">Dropped on the object (0/2218 labeled)</span></td>
+          <td><span class="pill not">Dropped</span></td>
+        </tr>
+        <tr>
+          <td>Watch / Follow this record</td>
+          <td><span class="pill built">Watch this notice</span></td>
+          <td><span class="pill not">No control on /procurements; notice still watchable</span></td>
+          <td><span class="pill not">No Watch control</span></td>
+        </tr>
+        <tr>
+          <td>Email digest</td>
+          <td><span class="pill built">City Record SODA / D1</span></td>
+          <td><span class="pill partial">Only if a notice exists</span></td>
+          <td><span class="pill not">Not compiled — money watches still query City Record</span></td>
+        </tr>
+        <tr>
+          <td>Provenance</td>
+          <td>Notice + official City Record link</td>
+          <td>City Record notice href on the object</td>
+          <td>Facts only; no PASSPort portal handoff, no notice</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="funnel">
+  <h2>How much of the world is on the page</h2>
+  <p>Source-row census is not the same as canonical procurements. Counts below are acquired rows or exact-key derivations, 18 August 2026 unless noted.</p>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>Layer</th><th>What it is</th><th class="num">Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>PASSPort Public dump</td><td>Parsed non-test contracts</td><td class="num">61,240</td></tr>
+        <tr><td>Small-purchase-like PASSPort</td><td>Publisher method contains Small Purch / Micropurchase</td><td class="num">8,303</td></tr>
+        <tr><td>Those not found in City Record</td><td>Exact request_id / PIN / contract id</td><td class="num">5,616</td></tr>
+        <tr><td>PASSPort ≤ $100k not found in City Record</td><td>Same exact-key rule</td><td class="num">4,553</td></tr>
+        <tr><td>Checkbook ≤ $100k not found in City Record</td><td>FY2025–2027 registered expense</td><td class="num">11,043</td></tr>
+        <tr><td>PASSPort small-purchase with a public RFx or City Record solicitation</td><td>Exact opportunity join</td><td class="num">0</td></tr>
+        <tr><td>Committed PASSPort spine</td><td>Award-corroborated census, not the full dump</td><td class="num">12,782</td></tr>
+        <tr><td>Committed Checkbook graph slice</td><td>Cap 2,000; 9 PASSPort-only of 1,745 measured</td><td class="num">2,000</td></tr>
+        <tr><td>Live procurement objects</td><td>Shared read model / Browse / keyword family</td><td class="num">2,218</td></tr>
+        <tr><td>Live objects with no City Record notice</td><td>PASSPort-only 21 + Checkbook-only 1,013</td><td class="num">1,034</td></tr>
+        <tr><td>Live PASSPort-only ≤ $100k</td><td>Firematic $49,690 and Tameer $26,113</td><td class="num">2</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Purchase-order / direct-order population is explicitly <strong>UNKNOWN</strong> in the census. A later “we show all small purchases” claim would be false.</p>
+</section>
+
+<section id="crosswalk">
+  <h2>The City Record ↔ PASSPort tie</h2>
+  <p>Two different joins exist, and they should not be sold as one:</p>
+  <ol>
+    <li><strong>Identity stitch (built).</strong> Exact contract id, or strict PIN↔EPIN (including prefix/suffix variants). Names never join. On the 2,000-row Checkbook slice: 731 matched, 0 ambiguous, 1,269 unmatched. 689 of the matches are exact contract id. 42 matches have different contract-id strings — typical of requirement-contract vs master-agreement / related instrument sharing a PIN. That set is the human-verification queue.</li>
+    <li><strong>Detail stitch (not built).</strong> PASSPort title, method, industry, program are parsed on ingest (and stored on Worker reseed) but omitted from the spine that feeds the public object. Scope, deliverables, unit prices, and performance location are not in the public dump. City Record remains a one-line award notice. The “hackily tie award detail back to the original RFP/award” plan is still that: a plan, plus a notice href when the identity join hits.</li>
+  </ol>
+  <p>Award→registration dwell is a different, notice-mounted Human Services measurement. Contract response-address geography is logistics (submission / pre-bid / pickup), never performance place. Neither fills PASSPort scope.</p>
+</section>
+
+<section id="kraken">
+  <h2>Kraken workstream: cityscroll-procurement-observability</h2>
+  <p>All six cards are <span class="pill built">implemented</span> on the praxis board. That is “the seam shipped,” not “Anna’s use case is done.”</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Card</th><th>PR</th><th>What actually landed</th></tr></thead>
+      <tbody>
+        <tr><td>p0 · Versioned publication / access policy</td><td><a href="https://github.com/cityscroll/cityscroll-app/pull/1102">#1102</a></td><td>PPB method registry. <code>not_required</code> is legal-policy data, never inferred from source absence.</td></tr>
+        <tr><td>p1 · Repeatable non-CROL small-purchase census</td><td><a href="https://github.com/cityscroll/cityscroll-app/pull/1103">#1103</a></td><td><code>tools/measure_small_purchase_coverage.mjs --check</code> plus committed receipt. Reproduces 5,616 / 11,043 / 0 CROL-negative source rows.</td></tr>
+        <tr><td>p2 · Promote PASSPort + Checkbook observations without a CROL seed</td><td><a href="https://github.com/cityscroll/cityscroll-app/pull/1106">#1106</a></td><td>Dual-write observations. No product read required at the time.</td></tr>
+        <tr><td>p3 · Canonical procurement object + shared read model</td><td><a href="https://github.com/cityscroll/cityscroll-app/pull/1111">#1111</a></td><td>Observation-fed object, <code>/procurements/*</code> edge route, 2,218-row artifact.</td></tr>
+        <tr><td>p4 · Search, Browse, Follow</td><td><a href="https://github.com/cityscroll/cityscroll-app/pull/1114">#1114</a></td><td>Keyword family + Awards merge + Following <em>counts</em>. Digest compile was not switched off City Record.</td></tr>
+        <tr><td>p5 · Record-varying coverage labels</td><td><a href="https://github.com/cityscroll/cityscroll-app/pull/1158">#1158</a></td><td>Projector exists and refuses disclaimer slop. Live rows have no method, so the sentence never renders.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="tests">
+  <h2>Test coverage</h2>
+  <ul>
+    <li><code>test/procurement_object_contract.test.mjs</code> — CROL-negative observations construct one object.</li>
+    <li><code>test/shared_procurement_read_model.test.mjs</code> — CROL-negative remains canonical without a City Record lifecycle.</li>
+    <li><code>test/procurement_browse_parity.test.mjs</code> — Browse rows without <code>request_id</code>.</li>
+    <li><code>test/universal_search_procurement_producer.test.mjs</code> — indexed without <code>request_id</code>; production corpus ≥1,000 CROL-negative Browse rows.</li>
+    <li><code>test/procurement_route.test.mjs</code> — edge document without <code>request_id</code>.</li>
+    <li><code>test/procurement_following.test.mjs</code> — Following <em>counts</em> a CROL-negative id once. Does not prove email send.</li>
+    <li><code>test/procurement_coverage_labels.test.mjs</code> — labels for exact policy matches.</li>
+    <li><code>test/small_purchase_coverage.test.mjs</code> plus <code>node tools/measure_small_purchase_coverage.mjs --check</code>.</li>
+    <li><code>test/procurement_policy_registry.test.mjs</code>.</li>
+  </ul>
+  <p>Gaps the tests do not close: live Watch/digest for PASSPort-only ids; human precision on the 42 PIN-family id mismatches; restoring dropped PASSPort title/method onto public rows; browser proof that Recent Awards is the discovery path.</p>
+</section>
+
+<section id="cards">
+  <h2>Recommended next cards</h2>
+  <p>These are recommendations only. This scout does not authorize product changes.</p>
+  <div class="cards">
+    <div class="card">
+      <h3>p6 · Restore PASSPort public title, method, program, and industry on the resident object</h3>
+      <p>Scope: stop dropping fields the public dump already parses. Synthetic “Contract CT…” titles go away; coverage labels can fire; Search vendor recall improves. Does not claim scope/deliverables.</p>
+    </div>
+    <div class="card">
+      <h3>p7 · Human-verify PIN-family crosswalk mismatches before selling “same contract”</h3>
+      <p>Scope: review the 42 matched rows whose Checkbook and PASSPort contract ids differ (CTA↔MMA1 and similar). Keep exact contract-id matches public; hold or relabel PIN-only related instruments.</p>
+    </div>
+    <div class="card">
+      <h3>p8 · Digest and Watch parity for procurement_id without a City Record notice</h3>
+      <p>Scope: compile money watches against the shared procurement read model (or an equivalent bounded snapshot), not only City Record SODA. Add Watch on <code>/procurements/…</code>. Change Following copy so it does not say City Record-only if PASSPort-only rows can notify.</p>
+    </div>
+    <div class="card">
+      <h3>p9 · Honest expansion of the CROL-negative sample past the 2,000-row Checkbook cap</h3>
+      <p>Scope: the census found 5,616 PASSPort and 11,043 Checkbook CROL-negative small-purchase rows; the live object list has 2 PASSPort-only ≤$100k. Decide a publication cap, selection rule, and freshness clock. Do not imply citywide coverage until that ships.</p>
+    </div>
+    <div class="card">
+      <h3>p10 · PASSPort award-detail enrichment (scope / pricing / deliverables / location)</h3>
+      <p>Scope: measure whether those facts exist anywhere public (authenticated PASSPort, attachments, OCP). Current public dump does not have them. Fail closed if usefulness/precision bars are not met. This is the stakeholder “full contract file” ask; it is not started.</p>
+    </div>
+    <div class="card">
+      <h3>p11 · Discovery UX: Recent Awards as the small-purchase path, plus PIN-sibling grouping</h3>
+      <p>Scope: Open RFPs hides registered PASSPort-only rows by design. Document or retarget that path, and stop listing TAMEER’s $1.44M award and $26k registration as unrelated accidents without an explicit related-instrument treatment after p7.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Scout only. No product code was changed. Live captures from <a href="https://cityscroll.org">cityscroll.org</a> on 21 August 2026. Machine numbers: <a href="measured.json">measured.json</a>. Pointer: <a href="report.md">report.md</a>.</p>
+  <p>Primary sources: <code>warehouse/evaluation/small_purchase_coverage.json</code>, <code>site/data/shared_procurement_read_model.json</code>, <code>site/data/procurement_browse_rows.json</code>, <code>site/data/procurement_spine_sources.json</code>, <code>site/data/passport_checkbook_crosswalk.json</code>, kraken cards in cityscroll-procurement-observability, and HTTP 200 fetches of the linked pages.</p>
+</footer>
+</div>
+</body>
+</html>

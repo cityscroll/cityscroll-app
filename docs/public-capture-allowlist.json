@@ -1,3 +1,17 @@
 {
-  "captures": {}
+  "captures": {
+    "data/passport-not-cityrecord-contracts-report/screenshots/01-passport-only-firematic.png": "Public procurement document for a PASSPort-only contract, used in the stakeholder scout report.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/02-passport-only-tameer.png": "Public procurement document for a PASSPort-only sub-$100k contract.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/03-crosswalk-moving-services.png": "Public procurement document tying PASSPort registration to a City Record award notice.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/04-crosswalk-asl.png": "Public procurement document for a sub-$100k M/WBE small-purchase with a City Record notice link.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/05-checkbook-only-guardian.png": "Public procurement document for a Checkbook-only sub-$100k contract.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/06-city-record-notice-asl.png": "Public City Record notice for the same ASL award, showing method and watch-adjacent actions.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/07-browse-contracts-awards.png": "Public Contracts Recent Awards list including canonical non-City Record rows.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/07b-browse-awards-list.png": "Crop of the public Recent Awards list used in the scout report.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/08-browse-awards-tameer.png": "Public Contracts Recent Awards filtered to TAMEER, showing City Record and PASSPort-only rows together.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/08b-browse-tameer-list.png": "Crop of the TAMEER Recent Awards list used in the scout report.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/09-search-tameer.png": "Public Search results for TAMEER including a PASSPort-only contract.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/10-search-contract-id.png": "Public Search results for an exact PASSPort-only contract id.",
+    "data/passport-not-cityrecord-contracts-report/screenshots/11-following.png": "Public Following create-watch page whose delivery copy still names City Record updates."
+  }
 }
