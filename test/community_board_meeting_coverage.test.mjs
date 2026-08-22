@@ -5,6 +5,7 @@ import { communityBoardScopeHref } from "../site/community_board_scope_links.mjs
 import { followingUrlFromWatch } from "../site/following_view.mjs";
 import {
   communityBoardSourceAdapterId,
+  parseAirtableSource,
   parseGoogleCalendarSource,
   parseHtmlPdfSource,
   parseNycOfficialCalendarSource,
@@ -35,6 +36,27 @@ trailer<</Root 1 0 R>>
 
 function responseFor(url, { duplicate = false } = {}) {
   const id = duplicate ? "same-publisher-id" : `${url}#publisher-event`;
+  if (/airtable\.com\/v0\.3\/view\/.+\/readSharedViewData/i.test(url)) {
+    const body = JSON.stringify({
+      data: {
+        table: {
+          columns: [{ id: "fldName", name: "Name" }, { id: "fldDate", name: "Date" }],
+          rows: [{
+            id: `${url}#airtable-event`,
+            cellValuesByColumnId: { fldName: "Full Board", fldDate: "2026-09-16T00:00:00.000Z" },
+          }],
+        },
+      },
+    });
+    const bytes = new TextEncoder().encode(body);
+    return { ok: true, status: 200, headers: { get: () => "application/json" }, arrayBuffer: async () => bytes.buffer };
+  }
+  if (/airtable\.com/i.test(url)) {
+    const share = String(url).match(/shr[A-Za-z0-9]+/)?.[0] || "shrEZxc5vi8McZNFb";
+    const html = `<script>var headers = {"x-airtable-application-id":"appedcOCWGdk7kppK"}; window.__stashedPrefetch = { urlWithParams: "\\u002Fv0.3\\u002Fview\\u002Fviw9Uu3M3qvVBKKTF\\u002FreadSharedViewData?accessPolicy=%7B%22shareId%22%3A%22${share}%22%7D" };</script>`;
+    const bytes = new TextEncoder().encode(html);
+    return { ok: true, status: 200, headers: { get: () => "text/html" }, arrayBuffer: async () => bytes.buffer };
+  }
   if (/\.pdf(?:$|[?#])/i.test(url)) {
     const bytes = miniCalendarPdf();
     return { ok: true, status: 200, headers: { get: () => "application/pdf" }, arrayBuffer: async () => bytes.buffer };
@@ -47,7 +69,7 @@ function responseFor(url, { duplicate = false } = {}) {
   const duplicateDocuments = duplicate
     ? `<a data-record-id="${id}" data-date="2026-09-11" href="${url}#minutes-1.pdf">Minutes one</a><a data-record-id="${id}" data-date="2026-09-12" href="${url}#minutes-2.pdf">Minutes two</a>`
     : `<a data-record-id="${duplicate ? id : `${url}#document`}" data-date="2026-09-11" href="${url}#minutes.pdf">Minutes</a>`;
-  const html = `<iframe src="https://calendar.google.com/calendar/embed?src=board%40group.calendar.google.com"></iframe><script type="application/ld+json">${JSON.stringify([{
+  const html = `<iframe class="airtable-embed" src="https://airtable.com/embed/shrEZxc5vi8McZNFb"></iframe><iframe src="https://calendar.google.com/calendar/embed?src=board%40group.calendar.google.com"></iframe><script type="application/ld+json">${JSON.stringify([{
     "@type": "Event",
     identifier: id,
     name: "Board meeting",
@@ -73,7 +95,7 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 49, "checked-empty": 49, unavailable: 4, "not-yet-checked": 16 },
+    { indexed: 45, "checked-empty": 49, unavailable: 8, "not-yet-checked": 16 },
   );
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
@@ -439,5 +461,41 @@ October 14th
   });
   assertFollowableBoardMeeting(bronx11[0], {
     id: "bronx-cb-11", name: "Bronx Community Board 11", borough: "Bronx",
+  });
+});
+
+test("public Airtable shared views index followable upcoming meetings", () => {
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    adapter: "airtable_v1",
+    format: "board-owned HTML + public Airtable shared view",
+    url: "https://www.cb11m.org/calendar/",
+  }), "airtable_v1");
+
+  const manhattan11 = parseAirtableSource({
+    data: {
+      table: {
+        columns: [{ id: "fldName", name: "Name" }, { id: "fldDate", name: "Date" }],
+        rows: [{
+          id: "recD1pmn0v5IY9mpU",
+          cellValuesByColumnId: { fldName: "Full Board", fldDate: "2026-09-16T00:00:00.000Z" },
+        }],
+      },
+    },
+  }, {
+    adapter: "airtable_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-11",
+    body_name: "Manhattan Community Board 11",
+    url: "https://www.cb11m.org/calendar/",
+    format: "board-owned HTML + public Airtable shared view",
+    airtable_share_id: "shrEZxc5vi8McZNFb",
+  }, { receipt: { status: "ok", observed_at: "2026-08-22T12:00:00Z" }, observedAt: "2026-08-22T12:00:00Z" });
+
+  assert.equal(manhattan11.length, 1);
+  assert.equal(manhattan11[0].event_id, "recD1pmn0v5IY9mpU");
+  assert.equal(manhattan11[0].date, "2026-09-16");
+  assertFollowableBoardMeeting(manhattan11[0], {
+    id: "manhattan-cb-11", name: "Manhattan Community Board 11", borough: "Manhattan",
   });
 });
