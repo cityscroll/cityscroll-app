@@ -38,6 +38,8 @@ function factsFor(object, observations) {
     vendor: first("vendor_name", "vendor", "prime_vendor", "payee_name"),
     amount: first("contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"),
     method: first("selection_method_description", "procurement_method"),
+    program: first("program"),
+    industry: first("industry"),
   };
 }
 
@@ -54,6 +56,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
   const facts = factsFor(object, observations);
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Method", facts.method],
+    ["Program", facts.program], ["Industry", facts.industry],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
   ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
   const noticeLinks = (object?.compatibility?.city_record_notice_hrefs || []).map((href) => ({
