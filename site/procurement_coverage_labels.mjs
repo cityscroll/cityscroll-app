@@ -104,8 +104,14 @@ function validDate(value) {
 }
 
 function isoDay(value) {
-  const text = clean(value, 40);
-  return /^\d{4}-\d{2}-\d{2}/.test(text) ? text.slice(0, 10) : null;
+  const raw = clean(value, 40);
+  if (/^\d{4}-\d{2}-\d{2}/.test(raw)) return raw.slice(0, 10);
+  const us = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!us) return null;
+  const month = Number(us[1]);
+  const day = Number(us[2]);
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  return `${us[3]}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
 function amountOf(value) {

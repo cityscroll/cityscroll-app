@@ -144,11 +144,13 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
     amount: numeric(rows, ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"]),
     startDate: first(rows, ["start_date", "registered", "registration_date", "issue_date", "date"], 40),
     method: first(rows, ["selection_method_description", "procurement_method"], 240),
+    program: first(rows, ["program"], 240),
+    industry: first(rows, ["industry"], 120),
   };
   const summary = [facts.agency, facts.vendor, facts.amount == null ? null : `$${facts.amount.toLocaleString("en-US")}`]
     .filter(Boolean).join(" · ") || null;
   const searchText = clean([
-    facts.title, summary, contractId, epin, facts.method, ...stages,
+    facts.title, summary, contractId, epin, facts.method, facts.program, facts.industry, ...stages,
     ...evidence.map((entry) => entry.additional_description_1),
   ].filter(Boolean).join(" "), SEARCH_TEXT_MAX_LENGTH);
   const admitted = admitSearchDocument({
