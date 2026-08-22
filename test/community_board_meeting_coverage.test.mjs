@@ -4,6 +4,7 @@ import { test } from "node:test";
 import { communityBoardScopeHref } from "../site/community_board_scope_links.mjs";
 import { followingUrlFromWatch } from "../site/following_view.mjs";
 import {
+  communityBoardSourceAdapterId,
   parseGoogleCalendarSource,
   parseHtmlPdfSource,
   parseNycOfficialCalendarSource,
@@ -52,7 +53,7 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 63, "checked-empty": 33, unavailable: 5, "not-yet-checked": 17 },
+    { indexed: 66, "checked-empty": 32, unavailable: 4, "not-yet-checked": 16 },
   );
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
@@ -157,4 +158,127 @@ END:VCALENDAR`, {
     assert.equal(row.source_provenance.observed_receipt.status, "ok");
     assert.ok(row.entity_refs_all.includes(`community-board:${row.board_id}`));
   }
+});
+
+function assertFollowableBoardMeeting(record, board) {
+  const row = materializeCommunityBoardMeetingRow(record, board, "2026-08-21T12:00:00Z");
+  const href = meetingCanonicalHref(row);
+  const scopeHref = communityBoardScopeHref("meetings", row.board_id);
+  const followHref = followingUrlFromWatch({
+    lens: "meetings",
+    filter: { geographies: [`community-board:${row.board_id}`], borough: row.affected_area.boroughs[0] },
+  });
+  assert.match(href, /^\/meetings\/meeting%3Acommunity_board%3A/);
+  assert.match(scopeHref, new RegExp(row.board_id));
+  assert.match(followHref, /\/following\?/);
+  assert.match(followHref, /lens=meetings/);
+  assert.equal(row.source_provenance.observed_receipt.status, "ok");
+  assert.ok(row.entity_refs_all.includes(`community-board:${row.board_id}`));
+  assert.ok(row.source_record_id);
+  assert.match(row.source_url, /^https:\/\//);
+  return row;
+}
+
+test("adapter-gap boards index followable upcoming meetings from explicit sources", () => {
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    format: "board-owned HTML/event calendar",
+    url: "https://cb14brooklyn.com/meetings/",
+  }), "html_pdf_v1");
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    url: "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
+  }), "nyc_official_calendar_v1");
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    url: "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
+  }), "nyc_official_calendar_v1");
+  assert.notEqual(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    format: "board-owned HTML + Google Calendar/iCalendar",
+    url: "https://cb14brooklyn.com/meetings/",
+  }), "html_pdf_v1");
+
+  const brooklyn14 = parseHtmlPdfSource(`<script type="application/ld+json">${JSON.stringify([{
+    "@type": "Event",
+    name: "September 2026 Board Meeting",
+    url: "https://cb14brooklyn.com/meeting/september-2026-board-meeting/",
+    startDate: "2026-09-14T18:45:00-04:00",
+  }])}</script>`, {
+    adapter: "html_pdf_v1",
+    role: "upcoming_meetings",
+    board_id: "brooklyn-cb-14",
+    body_name: "Brooklyn Community Board 14",
+    url: "https://cb14brooklyn.com/meetings/",
+    format: "board-owned HTML/event calendar",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const bronx08 = parseHtmlPdfSource(`<script type="application/ld+json">${JSON.stringify([{
+    "@type": "Event",
+    name: "Full Board",
+    url: "https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-09-08/",
+    startDate: "2026-09-08T19:00:00+00:00",
+  }])}</script>`, {
+    adapter: "html_pdf_v1",
+    role: "upcoming_meetings",
+    board_id: "bronx-cb-08",
+    body_name: "Bronx Community Board 8",
+    url: "https://cbbronx.cityofnewyork.us/cb8/events/list/",
+    format: "board-owned WordPress HTML/event calendar",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const brooklyn10 = parseHtmlPdfSource(`<script type="application/ld+json">${JSON.stringify([{
+    "@type": "Event",
+    name: "Monthly Board Meeting",
+    url: "https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-11/",
+    startDate: "2026-09-17T19:00:00-04:00",
+  }])}</script>`, {
+    adapter: "html_pdf_v1",
+    role: "upcoming_meetings",
+    board_id: "brooklyn-cb-10",
+    body_name: "Brooklyn Community Board 10",
+    url: "https://cbbrooklyn.cityofnewyork.us/cb10/events/list/",
+    format: "board-owned WordPress HTML/event calendar",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const queens01 = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <h3>Full Board / Public Hearing Meetings</h3>
+      <p>September 22, 2026 - 6:00 PM<br />October 20, 2026</p>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "queens-cb-01",
+    body_name: "Queens Community Board 1",
+    url: "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const brooklyn18 = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <p><strong><u>REGULAR MONTHLY BOARD MEETING – JUNE 17, 2026, 7 PM</u></strong></p>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "brooklyn-cb-18",
+    body_name: "Brooklyn Community Board 18",
+    url: "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+
+  assert.equal(brooklyn14.length, 1);
+  assert.equal(bronx08.length, 1);
+  assert.equal(brooklyn10.length, 1);
+  assert.equal(queens01.length, 1);
+  assert.equal(brooklyn18.length, 1);
+
+  assertFollowableBoardMeeting(brooklyn14[0], { id: "brooklyn-cb-14", name: "Brooklyn Community Board 14", borough: "Brooklyn" });
+  assertFollowableBoardMeeting(bronx08[0], { id: "bronx-cb-08", name: "Bronx Community Board 8", borough: "Bronx" });
+  assertFollowableBoardMeeting(brooklyn10[0], { id: "brooklyn-cb-10", name: "Brooklyn Community Board 10", borough: "Brooklyn" });
+  assertFollowableBoardMeeting(queens01[0], { id: "queens-cb-01", name: "Queens Community Board 1", borough: "Queens" });
+  assertFollowableBoardMeeting(brooklyn18[0], { id: "brooklyn-cb-18", name: "Brooklyn Community Board 18", borough: "Brooklyn" });
 });

@@ -29,7 +29,35 @@ test("known dead or unsafe board homepages stay out of the public inventory", ()
   const byId = new Map(inventory.boards.map((row) => [row.id, row.home]));
   assert.equal(byId.get("brooklyn-cb-05"), "https://www.nyc.gov/site/brooklyncb5/index.page");
   assert.equal(byId.get("brooklyn-cb-17"), "https://cbbrooklyn.cityofnewyork.us/cb17/");
+  assert.equal(byId.get("bronx-cb-08"), "https://cbbronx.cityofnewyork.us/cb8/");
   assert.equal([...byId.values()].some((url) => /brooklyncb5\.org/i.test(url)), false);
+});
+
+test("adapter-gap boards keep machine-fetchable upcoming sources on the inventory", () => {
+  const byId = new Map(inventory.boards.map((row) => [row.id, row]));
+  const bk14 = byId.get("brooklyn-cb-14").upcoming;
+  assert.equal(bk14.url, "https://cb14brooklyn.com/meetings/");
+  assert.match(bk14.format, /html\/event calendar/i);
+  assert.doesNotMatch(bk14.format, /google calendar|icalendar/i);
+  assert.equal(bk14.verification.fetchability, "machine_fetchable");
+
+  const bx08 = byId.get("bronx-cb-08").upcoming;
+  assert.equal(bx08.url, "https://cbbronx.cityofnewyork.us/cb8/events/list/");
+  assert.equal(bx08.verification.fetchability, "machine_fetchable");
+
+  const bk10 = byId.get("brooklyn-cb-10").upcoming;
+  assert.equal(bk10.url, "https://cbbrooklyn.cityofnewyork.us/cb10/events/list/");
+  assert.equal(bk10.verification.fetchability, "machine_fetchable");
+
+  const q01 = byId.get("queens-cb-01").upcoming;
+  assert.equal(q01.url, "https://www.nyc.gov/site/queenscb1/calendar/calendar.page");
+  assert.equal(q01.format, "explicit board calendar");
+  assert.equal(q01.verification.fetchability, "machine_fetchable");
+  assert.equal(q01.access_constraint, null);
+
+  const bk18 = byId.get("brooklyn-cb-18").upcoming;
+  assert.equal(bk18.url, "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page");
+  assert.equal(bk18.format, "explicit board calendar");
 });
 
 test("calendar and minutes are separate receipt-backed source roles", () => {
