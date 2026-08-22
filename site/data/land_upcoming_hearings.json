@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-08-21T09:01:44.363Z",
+  "generated_at": "2026-08-22T08:50:54.691Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,23 +9,23 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-08-21",
+    "today": "2026-08-22",
     "projects_listed": 235,
     "projects_fetched": 234,
     "projects_failed": 1,
-    "hearings_extracted": 403,
-    "disposition_hearings_extracted": 72,
-    "milestone_hearings_extracted": 331,
-    "disposition_upcoming_count": 0,
-    "milestone_upcoming_count": 183,
-    "incremental_milestone_count": 183,
+    "hearings_extracted": 402,
+    "disposition_hearings_extracted": 73,
+    "milestone_hearings_extracted": 329,
+    "disposition_upcoming_count": 1,
+    "milestone_upcoming_count": 181,
+    "incremental_milestone_count": 181,
     "accepted_milestone_classes": {
-      "cpc_pre_hearing_review_session": 94,
-      "cpc_public_hearing": 89
+      "cpc_pre_hearing_review_session": 93,
+      "cpc_public_hearing": 88
     },
-    "published_meeting_dates_evaluated": 901,
-    "hearing_shaped_candidates_reviewed": 857,
-    "upcoming_count": 183,
+    "published_meeting_dates_evaluated": 899,
+    "hearing_shaped_candidates_reviewed": 855,
+    "upcoming_count": 182,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -78,7 +78,7 @@
       "source": "zap-api-milestones",
       "project_id": "2022Q0160",
       "project_name": "10-86 Cypress Avenue Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0160",
       "borough": "Queens",
       "milestone_id": "53035f43-9098-ef11-ac21-001dd8055a8b",
@@ -344,7 +344,7 @@
       "source": "zap-api-milestones",
       "project_id": "2022Q0160",
       "project_name": "10-86 Cypress Avenue Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2022Q0160",
       "borough": "Queens",
       "milestone_id": "77035f43-9098-ef11-ac21-001dd8055a8b",
@@ -496,7 +496,7 @@
       "source": "zap-api-milestones",
       "project_id": "2024Q0324",
       "project_name": "32-02 Linden Place Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2024Q0324",
       "borough": "Queens",
       "milestone_id": "4e531217-7135-ef11-840a-001dd8306c80",
@@ -832,6 +832,51 @@
         },
         "derived": []
       }
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-dispositions",
+      "project_id": "2024K0369",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2024K0369",
+      "borough": "Brooklyn",
+      "disposition_id": "ed5b82aa-86ba-f011-bbd2-001dd800cbe7",
+      "disposition_name": "2024K0369_ZM_BK CB7",
+      "representing": "Community Board",
+      "phase_id": "community_board",
+      "hearing_date": "2026-09-09",
+      "hearing_at": "2026-09-09T22:30:00.000Z",
+      "hearing_location_raw": "4201 4th Avenue, Brooklyn NY 11232 (43rd Street Entrance)",
+      "venue_address": "4201 4th Avenue, Brooklyn NY 11232 (43rd Street Entrance)",
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [
+        "in_person"
+      ],
+      "maps_url": "https://www.google.com/maps/search/?api=1&query=4201%204th%20Avenue%2C%20Brooklyn%20NY%2011232%20(43rd%20Street%20Entrance)%2C%20New%20York%2C%20NY",
+      "parse_status": "partial",
+      "provenance": {
+        "field": "dcp-publichearinglocation",
+        "source": "zap-api-dispositions",
+        "derived": [
+          {
+            "field": "venue_address",
+            "method": "address_shaped_raw",
+            "excerpt": "4201 4th Avenue, Brooklyn NY 11232 (43rd Street Entrance)"
+          }
+        ],
+        "hearing_at": {
+          "field": "dcp-dateofpublichearing",
+          "source": "zap-api-dispositions",
+          "value": "2026-09-09T22:30:00.000Z"
+        },
+        "representing": {
+          "field": "dcp-representing",
+          "source": "zap-api-dispositions",
+          "value": "Community Board"
+        }
+      },
+      "project_name": "364 Coney Island Avenue Rezoning",
+      "public_status": "In Public Review"
     },
     {
       "schema_version": 1,
@@ -3610,44 +3655,6 @@
     {
       "schema_version": 1,
       "source": "zap-api-milestones",
-      "project_id": "2026X0282",
-      "project_name": "4675 Dodgewood Road - SNAD",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026X0282",
-      "borough": "Bronx",
-      "milestone_id": "ae857338-2a1e-f111-8342-001dd80bcb64",
-      "milestone_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "milestone_source_title": "Review Session - Pre-Hearing Review / Post Referral",
-      "event_class": "cpc_pre_hearing_review_session",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-11-30",
-      "hearing_at": "2026-11-30T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-11-30T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "Review Session - Pre-Hearing Review / Post Referral"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_pre_hearing_review_session"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
       "project_id": "2021Q0439",
       "project_name": "LGA Marriott Restrictive Declaration Modification",
       "public_status": "Filed",
@@ -4186,44 +4193,6 @@
       "portal_url": "https://zap.planning.nyc.gov/projects/2026M0136",
       "borough": "Manhattan",
       "milestone_id": "9b6e7b34-4bd1-f011-8544-001dd806295a",
-      "milestone_title": "City Planning Commission Review",
-      "milestone_source_title": "CPC Public Meeting - Public Hearing",
-      "event_class": "cpc_public_hearing",
-      "representing": "City Planning Commission",
-      "phase_id": "cpc",
-      "hearing_date": "2026-12-02",
-      "hearing_at": "2026-12-02T05:00:00.000Z",
-      "hearing_location_raw": null,
-      "venue_address": null,
-      "livestream_url": null,
-      "vote_location": null,
-      "attendance_modes": [],
-      "maps_url": null,
-      "parse_status": "published_date_only",
-      "provenance": {
-        "field": "dcp-reviewmeetingdate",
-        "source": "zap-api-milestones",
-        "value": "2026-12-02T05:00:00.000Z",
-        "title": {
-          "field": "milestonename",
-          "value": "CPC Public Meeting - Public Hearing"
-        },
-        "classification": {
-          "method": "exact_published_title_v1",
-          "event_class": "cpc_public_hearing"
-        },
-        "derived": []
-      }
-    },
-    {
-      "schema_version": 1,
-      "source": "zap-api-milestones",
-      "project_id": "2026X0282",
-      "project_name": "4675 Dodgewood Road - SNAD",
-      "public_status": "Filed",
-      "portal_url": "https://zap.planning.nyc.gov/projects/2026X0282",
-      "borough": "Bronx",
-      "milestone_id": "c1857338-2a1e-f111-8342-001dd80bcb64",
       "milestone_title": "City Planning Commission Review",
       "milestone_source_title": "CPC Public Meeting - Public Hearing",
       "event_class": "cpc_public_hearing",
@@ -5132,7 +5101,7 @@
       "source": "zap-api-milestones",
       "project_id": "2025K0232",
       "project_name": "900 60th Street Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2025K0232",
       "borough": "Brooklyn",
       "milestone_id": "8f644060-d20f-f011-bae2-001dd80db62a",
@@ -6500,7 +6469,7 @@
       "source": "zap-api-milestones",
       "project_id": "2025K0232",
       "project_name": "900 60th Street Rezoning",
-      "public_status": "Filed",
+      "public_status": "Noticed",
       "portal_url": "https://zap.planning.nyc.gov/projects/2025K0232",
       "borough": "Brooklyn",
       "milestone_id": "7e644060-d20f-f011-bae2-001dd80db62a",
