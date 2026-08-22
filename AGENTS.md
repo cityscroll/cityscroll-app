@@ -249,7 +249,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   Google Calendar embed: it reads `src`/`cid` calendar ids from the page (URL-encoded or
   base64) and fetches `https://calendar.google.com/calendar/ical/<id>/public/basic.ics`.
   Recurring VEVENTs keep `UID::date` identity; a private ICS 404 or a feed with no upcoming
-  instances stays honestly empty. Direct `.ics` URLs (Manhattan CB7) still parse in place. When the page has no publisher event ID, retain the
+  instances stays honestly empty. Direct `.ics` URLs (Manhattan CB7) still parse in place.
+  `pdf_calendar_v1` follows official agenda/calendar PDFs linked from those pages and emits
+  a meeting only when the PDF text has a real date AND clock time plus a full-board /
+  general-board / public-hearing / executive-board identity. Bare agendas, past-only
+  schedules, image-only PDFs, and "usually 6pm" copy stay documents, not events. When the page has no publisher event ID, retain the
   meeting card but keep its `hosts_meeting` graph edge held. Every row carries a source receipt and
   an unjoined `cityscroll.community_board_source_join.v1` result. Static Browse builds merge the
   rows in `tools/build_primary_documents.mjs`; the Meetings client appends the same artifact in

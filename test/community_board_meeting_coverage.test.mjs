@@ -8,6 +8,7 @@ import {
   parseGoogleCalendarSource,
   parseHtmlPdfSource,
   parseNycOfficialCalendarSource,
+  parsePdfCalendarSource,
 } from "../site/community_board_source_adapters.mjs";
 import { meetingCanonicalHref } from "../site/meeting_object_contract.mjs";
 import {
@@ -17,8 +18,27 @@ import {
   materializeCommunityBoardMeetingRow,
 } from "../tools/build_community_board_meeting_index.mjs";
 
+function miniCalendarPdf() {
+  const stream = "BT /F1 12 Tf 72 720 Td (Full Board Meeting, September 9, 2026, 6:30 PM) Tj ET";
+  return new TextEncoder().encode(`%PDF-1.1
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R>>endobj
+4 0 obj<</Length ${stream.length}>>stream
+${stream}
+endstream
+endobj
+trailer<</Root 1 0 R>>
+%%EOF
+`);
+}
+
 function responseFor(url, { duplicate = false } = {}) {
   const id = duplicate ? "same-publisher-id" : `${url}#publisher-event`;
+  if (/\.pdf(?:$|[?#])/i.test(url)) {
+    const bytes = miniCalendarPdf();
+    return { ok: true, status: 200, headers: { get: () => "application/pdf" }, arrayBuffer: async () => bytes.buffer };
+  }
   if (/\.ics(?:$|[?#])/i.test(url) || /\/calendar\/ical\//i.test(url)) {
     const ics = `BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:${id}\nDTSTART:20260910T220000Z\nSUMMARY:Board meeting\nEND:VEVENT\nEND:VCALENDAR`;
     const bytes = new TextEncoder().encode(ics);
@@ -53,7 +73,7 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 66, "checked-empty": 32, unavailable: 4, "not-yet-checked": 16 },
+    { indexed: 49, "checked-empty": 49, unavailable: 4, "not-yet-checked": 16 },
   );
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
@@ -357,4 +377,67 @@ END:VCALENDAR`, {
   assertFollowableBoardMeeting(manhattan06[0], { id: "manhattan-cb-06", name: "Manhattan Community Board 6", borough: "Manhattan" });
   assertFollowableBoardMeeting(queens02[0], { id: "queens-cb-02", name: "Queens Community Board 2", borough: "Queens" });
   assertFollowableBoardMeeting(queens06[0], { id: "queens-cb-06", name: "Queens Community Board 6", borough: "Queens" });
+});
+
+test("official PDF calendars index followable full-board meetings and drop ambiguous PDFs", () => {
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    adapter: "pdf_calendar_v1",
+    format: "NYC HTML + calendar/agenda PDFs",
+    url: "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+  }), "pdf_calendar_v1");
+
+  const bronx10 = parsePdfCalendarSource(`TENTATIVE SEPTEMBER 2026
+SUNDAY            MONDAY             TUESDAY          WEDNESDAY               THURSDAY              FRIDAY      SATURDAY
+13           14                 15                   16                  17                     18              19
+
+             Executive                                                   CB#10 Full Board &
+                                                                         Public Hearing
+             Board
+             7:00 p.m.                                                   7:00 p.m.
+`, {
+    adapter: "pdf_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "bronx-cb-10",
+    body_name: "Bronx Community Board 10",
+    url: "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+    format: "NYC HTML + calendar/agenda PDFs",
+  }, { receipt: { status: "ok", observed_at: "2026-08-22T12:00:00Z" }, observedAt: "2026-08-22T12:00:00Z" });
+  const bronx11 = parsePdfCalendarSource(`Bronx CB11's September 2026 Calendar
+      Sunday               Monday                   Tuesday               Wednesday               Thursday                       Friday                   Saturday
+20                   21                      22                      23                      24                          25                       26
+                           Yom Kippur                                                            6:45 PM Public
+                                                                                                 Hearing and Full
+                                                                                                  Board (Click
+                                                                                                      here)
+`, {
+    adapter: "pdf_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "bronx-cb-11",
+    body_name: "Bronx Community Board 11",
+    url: "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
+    format: "NYC HTML + linked PDF calendar",
+  }, { receipt: { status: "ok", observed_at: "2026-08-22T12:00:00Z" }, observedAt: "2026-08-22T12:00:00Z" });
+  const queens08 = parsePdfCalendarSource(`2026 BOARD MEETING SCHEDULE
+September 9th
+October 14th
+`, {
+    adapter: "pdf_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "queens-cb-08",
+    url: "https://www.nyc.gov/site/queenscb8/calendar/calendar.page",
+  }, { receipt: { status: "ok", observed_at: "2026-08-22T12:00:00Z" }, observedAt: "2026-08-22T12:00:00Z" });
+
+  assert.equal(bronx10.filter((row) => /full board/i.test(row.title)).length, 1);
+  assert.equal(bronx10.find((row) => /full board/i.test(row.title)).date, "2026-09-17");
+  assert.equal(bronx11.length, 1);
+  assert.equal(bronx11[0].date, "2026-09-24");
+  assert.equal(queens08.length, 0);
+
+  assertFollowableBoardMeeting(bronx10.find((row) => /full board/i.test(row.title)), {
+    id: "bronx-cb-10", name: "Bronx Community Board 10", borough: "Bronx",
+  });
+  assertFollowableBoardMeeting(bronx11[0], {
+    id: "bronx-cb-11", name: "Bronx Community Board 11", borough: "Bronx",
+  });
 });

@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { readFileSync } from "node:fs";
 import {
   COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS,
+  extractPdfTextFromBytes,
   fetchCommunityBoardSource,
   googleCalendarIdsFromHtml,
   googleCalendarPublicIcsUrl,
@@ -10,7 +12,9 @@ import {
   parseAirtableSource,
   parseGoogleCalendarSource,
   parseHtmlPdfSource,
+  parsePdfCalendarSource,
   parseVideoRecordSource,
+  pdfCalendarLinksFromHtml,
   sourceRecordStatus,
 } from "../site/community_board_source_adapters.mjs";
 import { meetingSourceFieldNames } from "../site/meeting_source_completeness.mjs";
@@ -19,7 +23,7 @@ const receipt = { status: "ok", observed_at: "2026-08-14T12:00:00Z" };
 
 test("each heterogeneous source has a bounded explicit adapter contract", () => {
   assert.deepEqual(Object.keys(COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS).sort(), [
-    "airtable_v1", "google_calendar_v1", "html_pdf_v1", "nyc_official_calendar_v1", "video_record_v1",
+    "airtable_v1", "google_calendar_v1", "html_pdf_v1", "nyc_official_calendar_v1", "pdf_calendar_v1", "video_record_v1",
   ]);
   for (const contract of Object.values(COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS)) {
     assert.ok(contract.max_bytes > 0);
@@ -427,4 +431,120 @@ test("Queens CB1 official calendar keeps the dated full-board heading", () => {
   assert.equal(records[0].date, "2026-09-22");
   assert.equal(records[0].start_at, "2026-09-22T18:00:00-04:00");
   assert.equal(records[0].title, "Full Board / Public Hearing Meetings");
+});
+
+function pdfFixture(name) {
+  return readFileSync(new URL(`./fixtures/community_board_pdf_calendars/${name}`, import.meta.url), "utf8");
+}
+
+function pdfSource(boardId, url) {
+  return {
+    adapter: "pdf_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: boardId,
+    url,
+    format: "NYC HTML + linked PDF calendar",
+  };
+}
+
+function miniPdf(text) {
+  const stream = `BT /F1 12 Tf 72 720 Td (${text}) Tj ET`;
+  const body = `%PDF-1.1
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj
+3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj
+4 0 obj<</Length ${stream.length}>>stream
+${stream}
+endstream
+endobj
+5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+trailer<</Root 1 0 R>>
+%%EOF
+`;
+  return new TextEncoder().encode(body);
+}
+
+test("PDF calendar adapter harvests explicit dated full-board meetings and drops ambiguous PDFs", () => {
+  const observed = { receipt: { status: "ok", observed_at: "2026-08-22T12:00:00Z" }, observedAt: "2026-08-22T12:00:00Z" };
+  const bronx10 = parsePdfCalendarSource(pdfFixture("bronx-cb-10-september-2026.txt"), pdfSource(
+    "bronx-cb-10",
+    "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+  ), observed);
+  const fullBoard = bronx10.find((row) => /full board/i.test(row.title));
+  assert.ok(fullBoard);
+  assert.equal(fullBoard.date, "2026-09-17");
+  assert.equal(fullBoard.start_at, "2026-09-17T19:00:00-04:00");
+  assert.equal(fullBoard.record_kind, "event");
+  assert.match(fullBoard.record_id, /^pdf-calendar:bronx-cb-10:2026-09-17:/);
+  assert.equal(fullBoard.observed_receipt.parser, "pdf_calendar_v1");
+
+  const bronx11 = parsePdfCalendarSource(pdfFixture("bronx-cb-11-september-2026.txt"), pdfSource(
+    "bronx-cb-11",
+    "https://www.nyc.gov/site/bronxcb11/meetings/calendar.page",
+  ), observed);
+  const hearing = bronx11.find((row) => /full board|public hearing/i.test(row.title));
+  assert.ok(hearing);
+  assert.equal(hearing.date, "2026-09-24");
+  assert.equal(hearing.start_at, "2026-09-24T18:45:00-04:00");
+
+  const october = parsePdfCalendarSource(pdfFixture("bronx-cb-10-october-2026.txt"), pdfSource(
+    "bronx-cb-10",
+    "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+  ), observed);
+  assert.equal(october.find((row) => /full board/i.test(row.title))?.date, "2026-10-15");
+
+  assert.equal(parsePdfCalendarSource(pdfFixture("queens-cb-08-2026-schedule.txt"), pdfSource(
+    "queens-cb-08",
+    "https://www.nyc.gov/site/queenscb8/calendar/calendar.page",
+  ), observed).length, 0, "date-only year schedule without clock times stays unindexed");
+  assert.equal(parsePdfCalendarSource(pdfFixture("brooklyn-cb-01-press-release.txt"), pdfSource(
+    "brooklyn-cb-01",
+    "https://www.nyc.gov/site/brooklyncb1/calendar/calendar.page",
+  ), observed).length, 0, "usually-6pm copy is not a per-meeting time");
+  assert.equal(parsePdfCalendarSource(pdfFixture("queens-cb-14-june-agenda.txt"), pdfSource(
+    "queens-cb-14",
+    "https://www.nyc.gov/site/queenscb14/calendar/calendar.page",
+  ), observed).length, 0, "past agenda-only PDFs stay documents, not events");
+  assert.equal(parsePdfCalendarSource(pdfFixture("queens-cb-09-2021-memo.txt"), pdfSource(
+    "queens-cb-09",
+    "https://www.nyc.gov/site/queenscb9/calendar/calendar.page",
+  ), observed).length, 0);
+  assert.equal(parsePdfCalendarSource(pdfFixture("image-only.txt"), pdfSource(
+    "staten-island-cb-01",
+    "https://www.nyc.gov/site/statenislandcb1/meetings/meetings.page",
+  ), observed).length, 0);
+});
+
+test("PDF calendar fetch follows official calendar PDFs and keeps PDF links as documents when text is empty", async () => {
+  const pdf = miniPdf("Full Board Meeting, September 9, 2026, 6:30 PM");
+  assert.match(extractPdfTextFromBytes(pdf), /Full Board Meeting, September 9, 2026, 6:30 PM/);
+  const html = `<a href="https://www.nyc.gov/assets/example/September-2026-Calendar.pdf">September 2026 Calendar</a>
+    <a href="https://www.nyc.gov/assets/example/minutes-2026-06.pdf">June 2026 minutes</a>`;
+  assert.deepEqual(pdfCalendarLinksFromHtml(html, "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page").map((row) => row.url), [
+    "https://www.nyc.gov/assets/example/September-2026-Calendar.pdf",
+  ]);
+  const calls = [];
+  const result = await fetchCommunityBoardSource({
+    adapter: "pdf_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "bronx-cb-10",
+    url: "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+    format: "NYC HTML + calendar/agenda PDFs",
+  }, {
+    observedAt: "2026-08-22T12:00:00Z",
+    fetchImpl: async (url) => {
+      calls.push(url);
+      if (/\.pdf(?:$|[?#])/i.test(url)) {
+        return { ok: true, status: 200, headers: { get: () => "application/pdf" }, arrayBuffer: async () => pdf.buffer };
+      }
+      const bytes = new TextEncoder().encode(html);
+      return { ok: true, status: 200, headers: { get: () => "text/html" }, arrayBuffer: async () => bytes.buffer };
+    },
+  });
+  assert.equal(calls[0], "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page");
+  assert.ok(calls.includes("https://www.nyc.gov/assets/example/September-2026-Calendar.pdf"));
+  assert.equal(result.records.length, 1);
+  assert.equal(result.records[0].date, "2026-09-09");
+  assert.equal(result.records[0].start_at, "2026-09-09T18:30:00-04:00");
+  assert.equal(result.receipt.status, "ok");
 });
