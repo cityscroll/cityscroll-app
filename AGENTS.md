@@ -278,8 +278,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   vendor, agency, and dates never create identity. City Record may add stage refs and compatibility
   links to an existing object but is never a constructor. Source failures belong only to the
   envelopes in `site/shared_procurement_read_model.mjs`; retained objects and nested lifecycle
-  detail stay unchanged. Focused proof: `test/procurement_object_contract.test.mjs` and
-  `test/shared_procurement_read_model.test.mjs`.
+  detail stay unchanged. PASSPort Public `title`, `procurement_method`, `program`, and `industry`
+  stay on spine snapshots via `site/passport_public_fields.mjs` after a quality gate; PIN-only
+  or identity-echo titles stay absent and the synthetic “Contract CT…” fallback remains. Do not
+  invent scope, line-item pricing, deliverables, or performance location. Densify with
+  `node tools/densify_passport_public_fields.mjs --from-dump <contractData.js> --write` then
+  rebuild the shared model. Focused proof: `test/procurement_object_contract.test.mjs`,
+  `test/shared_procurement_read_model.test.mjs`, and `test/passport_public_fields.test.mjs`.
 - **Canonical procurement product projection:** `site/procurement_search_producer.mjs` and
   `site/contract_search_bridge.mjs` project the shared procurement read model into source-independent
   SearchDocuments and typed Browse rows. Canonical identity is `procurement_id`; `request_id` is

@@ -1,0 +1,11 @@
+{
+  "schema": "cityscroll.passport_public_fields_restore.v1",
+  "generated_at": "2026-08-22T03:08:20.724Z",
+  "spine_observed_on": "2026-08-18",
+  "dump_rows": 61329,
+  "spine_rows": 12782,
+  "matched": 12782,
+  "titled": 12017,
+  "method": 12782,
+  "omitted_scope_pricing_deliverables_location": true
+}
