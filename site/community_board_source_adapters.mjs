@@ -538,33 +538,80 @@ function unfoldIcs(value) {
   return String(value || "").replace(/\r?\n[ \t]/g, "");
 }
 
-function icsDate(value) {
+function icsDateParts(value) {
   const raw = clean(value, 80).replace(/^.*:/, "");
-  const match = raw.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2}))?/);
+  return raw.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2}))?(Z)?$/);
+}
+
+function icsDate(value) {
+  const match = icsDateParts(value);
   return match ? iso(`${match[1]}-${match[2]}-${match[3]}`) : null;
+}
+
+function icsStartAt(value) {
+  const match = icsDateParts(value);
+  if (!match || !match[4]) return null;
+  const date = iso(`${match[1]}-${match[2]}-${match[3]}`);
+  const clock = `${match[4]}:${match[5]}:${match[6]}`;
+  if (match[7]) return `${date}T${clock}Z`;
+  const zone = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    timeZoneName: "longOffset",
+    hour: "2-digit",
+  }).formatToParts(new Date(`${date}T12:00:00Z`)).find((part) => part.type === "timeZoneName")?.value;
+  const offset = String(zone || "").match(/^GMT([+-]\d{2}:\d{2})$/)?.[1];
+  return offset ? `${date}T${clock}${offset}` : `${date}T${clock}`;
+}
+
+function icsValue(line) {
+  const text = String(line || "");
+  const colon = text.indexOf(":");
+  return colon >= 0 ? decode(text.slice(colon + 1).replace(/\\n/g, "\n").replace(/\\,/g, ",")) : null;
 }
 
 function icsField(block, name) {
   const line = block.split(/\r?\n/).find((entry) => entry.toUpperCase().startsWith(`${name.toUpperCase()}:`) || entry.toUpperCase().startsWith(`${name.toUpperCase()};`));
-  return line ? decode(line.slice(line.indexOf(":") + 1).replace(/\\n/g, "\n").replace(/\\,/g, ",")) : null;
+  return line ? icsValue(line) : null;
+}
+
+function icsInstanceId(uid, date) {
+  const id = clean(uid, 240);
+  return id && date ? `${id}::${date}` : id || null;
+}
+
+function upcomingCalendarFloor(source, options = {}) {
+  const role = clean(source?.role || source?.source_role || source?.source_type, 80).toLowerCase();
+  if (role !== "upcoming_meetings") return null;
+  const asOf = dateFromText(options.observedAt || options.receipt?.observed_at || source?.observed_receipt?.observed_at);
+  if (!asOf) return null;
+  const floor = new Date(`${asOf}T00:00:00Z`);
+  if (Number.isNaN(floor.getTime())) return null;
+  floor.setUTCDate(floor.getUTCDate() - 90);
+  return floor.toISOString().slice(0, 10);
 }
 
 export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, source, { parser: "google_calendar_v1", observed_at: options.observedAt });
+  const floor = upcomingCalendarFloor(source, { ...options, receipt });
+  const seen = new Set();
   return unfoldIcs(ics).split(/BEGIN:VEVENT/i).slice(1).flatMap((chunk) => {
     const block = chunk.split(/END:VEVENT/i)[0];
     const uid = icsField(block, "UID");
     const date = icsDate(icsField(block, "DTSTART"));
-    if (!uid || !date) return [];
+    const instanceId = icsInstanceId(uid, date);
+    if (!uid || !date || !instanceId) return [];
+    if (floor && date < floor) return [];
+    if (seen.has(instanceId)) return [];
+    seen.add(instanceId);
     const bodyId = icsField(block, "X-BOARD-ID") || icsField(block, "X-BODY-ID") || source.board_id || source.body_id;
     return [record(source, {
       record_kind: "event",
-      record_id: uid,
-      event_id: uid,
+      record_id: instanceId,
+      event_id: instanceId,
       board_id: bodyId,
       body_evidence: bodyId ? { board_id: bodyId, basis: icsField(block, "X-BOARD-ID") || icsField(block, "X-BODY-ID") ? "publisher_record" : "explicit_source_descriptor" } : null,
       date,
-      start_at: icsField(block, "DTSTART"),
+      start_at: icsStartAt(icsField(block, "DTSTART")),
       category: icsField(block, "CATEGORIES"),
       title: icsField(block, "SUMMARY"),
       address: icsField(block, "LOCATION"),
@@ -577,7 +624,8 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
         source_url: source.record_url || source.url || source.source_url,
       },
       format: "ics",
-      publisher_identifier: uid,
+      publisher_identifier: instanceId,
+      publisher_event_id: uid,
       record_url: source.record_url || source.url || source.source_url,
     }, receipt)];
   });

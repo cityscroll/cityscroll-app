@@ -20,7 +20,7 @@ function isUrl(value) { return typeof value === "string" && /^https:\/\//.test(v
 function sourceOrigin(url) {
   if (!url) return null;
   if (/cityrecord\.nyc\.gov|a856-cityrecord\.nyc\.gov/i.test(url)) return "city_record";
-  if (/airtable|drive\.google|dropbox|vimeo|youtube/i.test(url)) return "third_party_storage";
+  if (/airtable|drive\.google|calendar\.google|dropbox|vimeo|youtube/i.test(url)) return "third_party_storage";
   if (/nyc\.gov/i.test(url)) return "nyc_official";
   return "board_owned_official";
 }
