@@ -1,9 +1,9 @@
 {
   "schema_version": 6,
-  "generated_at": "2026-08-21",
+  "generated_at": "2026-08-22",
   "data_current_as_of": "2026-08-19",
   "list_current_as_of": "2026-08-19",
-  "open_window_as_of": "2026-08-21",
+  "open_window_as_of": "2026-08-22",
   "annual_schedule_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -634,7 +634,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-08-21",
+      "fetched_at": "2026-08-22",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 95
@@ -644,7 +644,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-08-21",
+      "fetched_at": "2026-08-22",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -655,7 +655,7 @@
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "fetched_at": "2026-08-21",
+      "fetched_at": "2026-08-22",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -720,7 +720,7 @@
       "url": "https://a856-exams.nyc.gov/OASysWeb/api/Exam/GetActiveExams",
       "listing_page": "https://a856-exams.nyc.gov/OASysWeb/exams",
       "noe_url_pattern": "https://a856-exams.nyc.gov/OASysWeb/noe?examId=:examId",
-      "fetched_at": "2026-08-21",
+      "fetched_at": "2026-08-22",
       "refresh_cadence": "Rebuild with staffing exams while application windows are open.",
       "stale_after_days": 3,
       "note": "OASys examId is not the DCAS exam number; join on examNumber from this listing."
@@ -739,8 +739,8 @@
   ],
   "source_checks": {
     "active_list": {
-      "candidate_rows": "403291",
-      "distinct_exams": "851",
+      "candidate_rows": "403793",
+      "distinct_exams": "852",
       "distinct_titles": "431",
       "latest_established": "2026-08-19T00:00:00.000",
       "latest_extension": "2027-09-28T00:00:00.000"
@@ -751,8 +751,8 @@
       "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
     },
     "list_aggregates": {
-      "distinct_exams": 851,
-      "total_list_rows_sum": 403291,
+      "distinct_exams": 852,
+      "total_list_rows_sum": 403793,
       "latest_established": "2026-08-19"
     },
     "list_depth_closed": {
@@ -921,12 +921,12 @@
       "name": "Civil Service List (Active) — exam-level aggregates only",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "fetched_at": "2026-08-21",
+      "fetched_at": "2026-08-22",
       "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
     },
     "summary": {
-      "distinct_exams": 851,
-      "total_list_rows_sum": 403291,
+      "distinct_exams": 852,
+      "total_list_rows_sum": 403793,
       "latest_established": "2026-08-19",
       "exams_with_list_aggregate": 77
     }
@@ -937,12 +937,12 @@
       "method": "exact_exam_number_zero_pad",
       "schedule_rows": 1271,
       "distinct_schedule_exams": 1271,
-      "distinct_list_aggregate_exams": 851,
+      "distinct_list_aggregate_exams": 852,
       "matched_pairs": 437,
       "misses": {
-        "no_list_aggregate": 778,
+        "no_list_aggregate": 777,
         "missing_application_close": 6,
-        "missing_established_date": 50,
+        "missing_established_date": 51,
         "established_before_application_close": 0
       },
       "privacy": "Exam-level aggregates only; no applicant rows, names, scores, or ranks."
