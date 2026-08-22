@@ -58,6 +58,22 @@ test("adapter-gap boards keep machine-fetchable upcoming sources on the inventor
   const bk18 = byId.get("brooklyn-cb-18").upcoming;
   assert.equal(bk18.url, "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page");
   assert.equal(bk18.format, "explicit board calendar");
+
+  const mn06 = byId.get("manhattan-cb-06").upcoming;
+  assert.equal(mn06.url, "https://cbsix.org/meetings-calendar/");
+  assert.equal(mn06.adapter, "google_calendar_v1");
+  assert.match(mn06.format, /google calendar/i);
+  assert.equal(mn06.verification.fetchability, "machine_fetchable");
+
+  const qn02 = byId.get("queens-cb-02").upcoming;
+  assert.equal(qn02.url, "https://www.nyc.gov/site/queenscb2/calendar/calendar.page");
+  assert.equal(qn02.adapter, "google_calendar_v1");
+  assert.match(qn02.format, /google calendar/i);
+
+  const qn06 = byId.get("queens-cb-06").upcoming;
+  assert.equal(qn06.url, "https://www.nyc.gov/site/queenscb6/calendar/calendar.page");
+  assert.equal(qn06.adapter, "google_calendar_v1");
+  assert.match(qn06.format, /google calendar/i);
 });
 
 test("calendar and minutes are separate receipt-backed source roles", () => {

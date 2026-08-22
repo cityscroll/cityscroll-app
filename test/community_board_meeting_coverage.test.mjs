@@ -27,7 +27,7 @@ function responseFor(url, { duplicate = false } = {}) {
   const duplicateDocuments = duplicate
     ? `<a data-record-id="${id}" data-date="2026-09-11" href="${url}#minutes-1.pdf">Minutes one</a><a data-record-id="${id}" data-date="2026-09-12" href="${url}#minutes-2.pdf">Minutes two</a>`
     : `<a data-record-id="${duplicate ? id : `${url}#document`}" data-date="2026-09-11" href="${url}#minutes.pdf">Minutes</a>`;
-  const html = `<script type="application/ld+json">${JSON.stringify([{
+  const html = `<iframe src="https://calendar.google.com/calendar/embed?src=board%40group.calendar.google.com"></iframe><script type="application/ld+json">${JSON.stringify([{
     "@type": "Event",
     identifier: id,
     name: "Board meeting",
@@ -281,4 +281,80 @@ test("adapter-gap boards index followable upcoming meetings from explicit source
   assertFollowableBoardMeeting(brooklyn10[0], { id: "brooklyn-cb-10", name: "Brooklyn Community Board 10", borough: "Brooklyn" });
   assertFollowableBoardMeeting(queens01[0], { id: "queens-cb-01", name: "Queens Community Board 1", borough: "Queens" });
   assertFollowableBoardMeeting(brooklyn18[0], { id: "brooklyn-cb-18", name: "Brooklyn Community Board 18", borough: "Brooklyn" });
+});
+
+test("public Google Calendar embeds index followable upcoming meetings", () => {
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    adapter: "google_calendar_v1",
+    format: "board-owned HTML + Google Calendar/iCalendar",
+    url: "https://cbsix.org/meetings-calendar/",
+  }), "google_calendar_v1");
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "NYC HTML + Google Calendar iframe",
+    url: "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
+  }), "google_calendar_v1");
+  assert.equal(communityBoardSourceAdapterId({
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "NYC HTML + Google Calendar iframe",
+    url: "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
+  }), "google_calendar_v1");
+
+  const manhattan06 = parseGoogleCalendarSource(`BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:mn6-full-board
+DTSTART;TZID=America/New_York:20261118T190000
+SUMMARY:Full Board Meeting
+LOCATION:211 East 43rd Street
+END:VEVENT
+END:VCALENDAR`, {
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-06",
+    body_name: "Manhattan Community Board 6",
+    url: "https://cbsix.org/meetings-calendar/",
+    format: "board-owned HTML + Google Calendar/iCalendar",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const queens02 = parseGoogleCalendarSource(`BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:qn2-budget
+DTSTART;TZID=America/New_York:20260917T183000
+SUMMARY:Capital & Expense Budget Committee Meeting
+END:VEVENT
+END:VCALENDAR`, {
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "queens-cb-02",
+    body_name: "Queens Community Board 2",
+    url: "https://www.nyc.gov/site/queenscb2/calendar/calendar.page",
+    format: "NYC HTML + Google Calendar iframe",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const queens06 = parseGoogleCalendarSource(`BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:qn6-board
+DTSTART;TZID=America/New_York:20260917T183000
+SUMMARY:Community Board 6 Meeting
+END:VEVENT
+END:VCALENDAR`, {
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "queens-cb-06",
+    body_name: "Queens Community Board 6",
+    url: "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
+    format: "NYC HTML + Google Calendar iframe",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+
+  assert.equal(manhattan06.length, 1);
+  assert.equal(queens02.length, 1);
+  assert.equal(queens06.length, 1);
+  assert.equal(manhattan06[0].event_id, "mn6-full-board::2026-11-18");
+  assert.equal(queens02[0].event_id, "qn2-budget::2026-09-17");
+  assert.equal(queens06[0].event_id, "qn6-board::2026-09-17");
+
+  assertFollowableBoardMeeting(manhattan06[0], { id: "manhattan-cb-06", name: "Manhattan Community Board 6", borough: "Manhattan" });
+  assertFollowableBoardMeeting(queens02[0], { id: "queens-cb-02", name: "Queens Community Board 2", borough: "Queens" });
+  assertFollowableBoardMeeting(queens06[0], { id: "queens-cb-06", name: "Queens Community Board 6", borough: "Queens" });
 });
