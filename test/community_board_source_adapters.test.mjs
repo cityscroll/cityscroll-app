@@ -193,9 +193,40 @@ test("Google Calendar, Airtable, and video adapters use native record IDs", () =
   const calendar = parseGoogleCalendarSource(`BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:event-1\nDTSTART;VALUE=DATE:20260820\nSUMMARY:Full board meeting\nX-BOARD-ID:bronx-cb-01\nEND:VEVENT\nEND:VCALENDAR`, {
     adapter: "google_calendar_v1", board_id: "bronx-cb-01", url: "https://calendar.example/board.ics",
   }, { receipt });
-  assert.equal(calendar[0].event_id, "event-1");
+  assert.equal(calendar[0].event_id, "event-1::2026-08-20");
+  assert.equal(calendar[0].publisher_identifier, "event-1::2026-08-20");
+  assert.equal(calendar[0].start_at, null);
   assert.equal(calendar[0].date, "2026-08-20");
   assert.equal(calendar[0].body_evidence.basis, "publisher_record");
+
+  const recurring = parseGoogleCalendarSource(`BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:series-1
+DTSTART;TZID=America/New_York:20260901T183000
+SUMMARY:Full Board Meeting
+END:VEVENT
+BEGIN:VEVENT
+UID:series-1
+DTSTART;TZID=America/New_York:20261103T183000
+RECURRENCE-ID;TZID=America/New_York:20261103T183000
+SUMMARY:Full Board Meeting
+END:VEVENT
+BEGIN:VEVENT
+UID:series-1
+DTSTART;TZID=America/New_York:20240102T183000
+SUMMARY:Full Board Meeting
+END:VEVENT
+END:VCALENDAR`, {
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-07",
+    url: "https://calendar.google.com/calendar/ical/example/public/basic.ics",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  assert.deepEqual(recurring.map((row) => [row.date, row.record_id, row.start_at]), [
+    ["2026-09-01", "series-1::2026-09-01", "2026-09-01T18:30:00-04:00"],
+    ["2026-11-03", "series-1::2026-11-03", "2026-11-03T18:30:00-05:00"],
+  ]);
+  assert.equal(recurring.every((row) => row.record_kind === "event"), true);
 
   const airtable = parseAirtableSource({ records: [{ id: "rec-1", fields: {
     when: "2026-08-21", board: "manhattan-cb-11", title: "Minutes", matter: ["C260001ZSM"],
