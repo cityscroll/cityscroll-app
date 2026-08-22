@@ -9,6 +9,7 @@ import {
   sourceAdapterContract,
   communityBoardSourceAdapterId,
 } from "../site/community_board_source_adapters.mjs";
+import { extractPdfCalendarText } from "./lib/pdf_calendar_text.mjs";
 import { normalizeCommunityBoardMeeting } from "../site/meeting_object_contract.mjs";
 import {
   attachMeetingDocuments,
@@ -275,7 +276,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       && Boolean(contract)
       && descriptor.verification?.fetchability !== "browser_required";
     const result = shouldFetch
-      ? await fetchCommunityBoardSource(descriptor, { fetchImpl, observedAt })
+      ? await fetchCommunityBoardSource(descriptor, { fetchImpl, observedAt, extractPdfText: extractPdfCalendarText })
       : { records: [], receipt: sourceReceipt(descriptor, observedAt) };
     if (shouldFetch) fetched += 1;
     let records = result.records.map((record) => ({
@@ -328,7 +329,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     policy: {
       source_inventory: "site/data/non_council_outcome_sources/board_source_inventory.json",
       source_urls_are_explicit: true,
-      adapter_scope: "Explicit Schema.org Event records and NYC-hosted community-board calendar entries",
+      adapter_scope: "Explicit Schema.org Event records, NYC-hosted community-board calendar entries, public Google Calendar feeds, and official agenda/calendar PDFs with a dated meeting identity",
       no_title_or_date_inference: true,
       unjoined_records_are_not_official: true,
       exact_join_method: JOIN_METHOD,
