@@ -569,11 +569,11 @@
         },
         "minutes": {
           "source_type": "minutes",
-          "publisher": null,
-          "publisher_kind": null,
-          "url": null,
-          "format": null,
-          "fetch_mode": null,
+          "publisher": "NYC Community Boards",
+          "publisher_kind": "nyc_official",
+          "url": "https://www.nyc.gov/site/bronxcb7/committees/general-board.page",
+          "format": "NYC HTML + PDF",
+          "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
           "archive_depth": {
@@ -581,17 +581,17 @@
             "earliest_year": null,
             "latest_year": null
           },
-          "stable_key": null,
+          "stable_key": "publisher_document_id|document_url",
           "stable_event_key": null,
-          "stable_document_key": null,
-          "status": "absent_in_pass",
+          "stable_document_key": "publisher_document_id|document_url",
+          "status": "verified",
           "verification": {
-            "status": "not_observed",
+            "status": "observed",
             "seen_on": "2026-08-13",
-            "fetchability": "unknown",
+            "fetchability": "machine_fetchable",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
-            "reason": "not_observed_in_pass"
+            "reason": null
           }
         }
       }
@@ -1450,7 +1450,7 @@
       "district": 7,
       "name": "Brooklyn Community Board 7",
       "directory_url": "https://www.nyc.gov/site/communityboards/about/brooklyn-boards.page",
-      "homepage_url": "https://www.nyc.gov/site/brooklyncb7/index.page",
+      "homepage_url": "https://cbbrooklyn.cityofnewyork.us/cb7/",
       "source_url": null,
       "format": "unknown",
       "update_cadence": "unknown",
@@ -1466,11 +1466,11 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
-          "publisher": null,
-          "publisher_kind": null,
-          "url": null,
-          "format": null,
-          "fetch_mode": null,
+          "publisher": "Brooklyn Community Board 7",
+          "publisher_kind": "board_owned_official",
+          "url": "https://cbbrooklyn.cityofnewyork.us/cb7/events/list/",
+          "format": "board-owned WordPress HTML/event calendar",
+          "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
           "archive_depth": {
@@ -1478,26 +1478,26 @@
             "earliest_year": null,
             "latest_year": null
           },
-          "stable_key": null,
-          "stable_event_key": null,
+          "stable_key": "publisher_event_id|start_at",
+          "stable_event_key": "publisher_event_id|start_at",
           "stable_document_key": null,
-          "status": "absent_in_pass",
+          "status": "verified",
           "verification": {
-            "status": "not_observed",
+            "status": "observed",
             "seen_on": "2026-08-13",
-            "fetchability": "unknown",
+            "fetchability": "machine_fetchable",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
-            "reason": "not_observed_in_pass"
+            "reason": null
           }
         },
         "minutes": {
           "source_type": "minutes",
-          "publisher": null,
-          "publisher_kind": null,
-          "url": null,
-          "format": null,
-          "fetch_mode": null,
+          "publisher": "Brooklyn Community Board 7",
+          "publisher_kind": "board_owned_official",
+          "url": "https://cbbrooklyn.cityofnewyork.us/cb7/meetings/board-meeting-minutes/",
+          "format": "board-owned HTML + PDF/DOCX",
+          "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
           "archive_depth": {
@@ -1505,17 +1505,17 @@
             "earliest_year": null,
             "latest_year": null
           },
-          "stable_key": null,
+          "stable_key": "publisher_document_id|document_url",
           "stable_event_key": null,
-          "stable_document_key": null,
-          "status": "absent_in_pass",
+          "stable_document_key": "publisher_document_id|document_url",
+          "status": "verified",
           "verification": {
-            "status": "not_observed",
+            "status": "observed",
             "seen_on": "2026-08-13",
-            "fetchability": "unknown",
+            "fetchability": "machine_fetchable",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
-            "reason": "not_observed_in_pass"
+            "reason": null
           }
         }
       }
@@ -2853,10 +2853,11 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "google_calendar_v1",
           "publisher": "Manhattan Community Board 7",
-          "publisher_kind": "board_owned_official",
-          "url": "https://www.mcb7.org/quick-links",
-          "format": "explicit board calendar",
+          "publisher_kind": "third_party_storage",
+          "url": "https://calendar.google.com/calendar/ical/2423cfeea1b6a6edeb8dcb3c1b25e7563b8371b026f0707ff433621c1765198e%40group.calendar.google.com/public/basic.ics",
+          "format": "google calendar",
           "fetch_mode": "machine-fetchable",
           "access_constraint": null,
           "seen_on": "2026-08-13",
