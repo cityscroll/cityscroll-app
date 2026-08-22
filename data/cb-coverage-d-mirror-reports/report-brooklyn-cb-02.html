@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brooklyn Community Board 2 — unofficial-source scout</title>
+<style>
+:root {
+  --ink: #1b1b1b;
+  --muted: #4a4a4a;
+  --navy: #1a2a4a;
+  --cream: #f7f1e4;
+  --paper: #fffdf8;
+  --line: #d8d0c0;
+  --official: #1d5a3a;
+  --official-bg: #e7f3ec;
+  --unofficial: #8b1e3f;
+  --unofficial-bg: #f8e8ec;
+  --empty: #6b5a2a;
+  --empty-bg: #f4ecd4;
+  --rec: #1a2a4a;
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body {
+  margin: 0; color: var(--ink); background: var(--cream);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.45;
+}
+.wrap { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+header.hero {
+  background: var(--navy); color: var(--cream); padding: 1.5rem 1.25rem;
+}
+header.hero .kicker { letter-spacing: .12em; text-transform: uppercase; font-size: .72rem; opacity: .8; font-family: ui-sans-serif, system-ui, sans-serif; }
+header.hero h1 { margin: .35rem 0 .5rem; font-size: 1.7rem; font-weight: 600; }
+header.hero p { margin: 0; max-width: 44rem; }
+.meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; margin-top: 1rem; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .8rem; }
+.pill { background: rgba(255,255,255,.12); padding: .2rem .55rem; border-radius: 999px; }
+nav.toc { background: var(--paper); border: 1px solid var(--line); padding: .75rem 1rem; margin: 1.25rem 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .9rem; }
+nav.toc a { color: var(--navy); }
+.rec {
+  border: 3px solid var(--navy); background: var(--paper); padding: 1rem 1.1rem; margin: 1.25rem 0;
+}
+.rec h2 { margin: 0 0 .5rem; font-size: 1.1rem; }
+.rec p { margin: 0; }
+.tag {
+  display: inline-block; font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: .72rem; letter-spacing: .04em; text-transform: uppercase;
+  padding: .12rem .45rem; border-radius: 3px; font-weight: 700;
+}
+.tag.official { background: var(--official-bg); color: var(--official); }
+.tag.unofficial { background: var(--unofficial-bg); color: var(--unofficial); }
+.tag.empty { background: var(--empty-bg); color: var(--empty); }
+.tag.miss { background: #eee; color: #555; }
+h2 { font-size: 1.25rem; margin: 2rem 0 .6rem; color: var(--navy); }
+h3 { font-size: 1.02rem; margin: 1.3rem 0 .4rem; }
+p, li { color: var(--ink); }
+.muted { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; background: var(--paper); }
+th, td { border: 1px solid var(--line); padding: .45rem .5rem; vertical-align: top; text-align: left; }
+th { background: var(--navy); color: var(--cream); font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-size: .78rem; letter-spacing: .03em; }
+tr:nth-child(even) td { background: #fbf7ee; }
+code, .url { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; word-break: break-all; }
+.card { border: 1px solid var(--line); background: var(--paper); padding: .85rem 1rem; margin: .75rem 0; }
+.card h3 { margin-top: 0; }
+ul.tight li { margin: .25rem 0; }
+footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+a { color: #123a7a; }
+.warn { background: var(--unofficial-bg); border-left: 4px solid var(--unofficial); padding: .7rem .9rem; margin: 1rem 0; }
+.note { background: var(--official-bg); border-left: 4px solid var(--official); padding: .7rem .9rem; margin: 1rem 0; }
+@media print {
+  header.hero { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Bucket D · CB meeting coverage · scout only</div>
+    <h1>Brooklyn Community Board 2 — unofficial-source scout</h1>
+    <p>nyc.gov stub is empty. The board publishes a live Google Calendar and public Drive on a cityofnewyork.us WordPress site the 2026-08-13 pass never opened.</p>
+    <div class="meta"><span class="pill">brooklyn-cb-02</span><span class="pill">scouted 2026-08-22</span><span class="pill">no product code change</span></div>
+  </div>
+</header>
+<div class="wrap">
+<nav class="toc">
+  Scout reports (self-contained HTML). This is a recommendation, not an inventory write or adapter change.
+  · <a href="report.md">Index</a>
+  · <a href="report-brooklyn-cb-02.html">CB2</a>
+  · <a href="report-brooklyn-cb-06.html">CB6</a>
+  · <a href="report-brooklyn-cb-13.html">CB13</a>
+  · <a href="report-brooklyn-cb-16.html">CB16</a>
+  
+</nav>
+<div class="rec">
+  <h2>Recommendation</h2>
+  
+<p><strong>A future adapter could use the board-owned Google Calendar ICS
+<code>bk02public@gmail.com</code> (official, not unofficial).</strong>
+Caveats: the 3.08&nbsp;MB feed exceeds <code>google_calendar_v1</code>’s 1&nbsp;MB cap;
+the calendar mixes BKCB2 meetings with historical FAB events, newsletters, and community happenings
+and must be filtered by title prefix; The Events Calendar REST on the WordPress site is empty;
+minutes/agendas sit on Google Drive rather than an HTML index.
+Facebook / Instagram / YouTube are unofficial mirrors of that calendar and must stay labeled unofficial.
+No nyc.gov calendar URL should be inferred (the conventional path 404s).
+This report does not authorize inventory or adapter code changes.</p>
+
+</div>
+
+<h2 id="baseline">Inventory baseline (2026-08-13)</h2>
+<p>Both <code>upcoming_meetings</code> and <code>minutes</code> are <code>absent_in_pass</code> / <code>not_observed_in_pass</code>. Homepage recorded as the nyc.gov stub. Probe of <code>/minutes/minutes.page</code> was empty with reason <code>no_known_url</code>.</p>
+<table>
+  <tr><th>Field</th><th>Value</th></tr>
+  <tr><td>Inventory home</td><td><span class="url">https://www.nyc.gov/site/brooklyncb2/index.page</span></td></tr>
+  <tr><td>Upcoming URL</td><td>null</td></tr>
+  <tr><td>Minutes URL</td><td>null</td></tr>
+  <tr><td>City directory “Visit website”</td><td>points at the same nyc.gov stub, not the WordPress site</td></tr>
+  <tr><td>Cadence (directory)</td><td>Full board second Wednesday, 6:00pm. Chair Lenny H. Singletary III. District Manager listed as Taya Mueller on the directory (WordPress board-members page lists 2026 officers with Chair Lenue H. Singletary III).</td></tr>
+</table>
+
+<h2 id="lenses">Every lens tried</h2>
+<table>
+  <tr><th>Lens</th><th>URL / handle</th><th>HTTP</th><th>Result</th><th>Class</th></tr>
+  <tr><td>nyc.gov index stub</td><td>nyc.gov/site/brooklyncb2/index.page</td><td>200, 6.5 KB</td><td>Title only. No calendar, minutes, or outbound board site.</td><td><span class="tag empty">empty stub</span></td></tr>
+  <tr><td>Inferred nyc.gov calendar</td><td>nyc.gov/site/brooklyncb2/calendar/calendar.page</td><td>404 “outdated or non-existing page”</td><td>Do not infer this URL into inventory.</td><td><span class="tag miss">404</span></td></tr>
+  <tr><td>Inferred nyc.gov minutes</td><td>nyc.gov/site/brooklyncb2/minutes/minutes.page</td><td>404</td><td>Same.</td><td><span class="tag miss">404</span></td></tr>
+  <tr><td>Board-owned WordPress</td><td>cbbrooklyn.cityofnewyork.us/cb2/</td><td>200, 41 KB</td><td>Live official district site. Neighborhoods: Downtown Brooklyn, Boerum Hill, Brooklyn Heights, Fulton Ferry, DUMBO, Vinegar Hill, Fort Greene, Clinton Hill, Brooklyn Navy Yard. Email bk02@cb.nyc.gov. Newsletter signup present.</td><td><span class="tag official">official</span></td></tr>
+  <tr><td>WordPress calendar page</td><td>cbbrooklyn.cityofnewyork.us/cb2/calendar/</td><td>200</td><td>Embeds Google Calendar <code>bk02public@gmail.com</code>. Subscribe copy + Open Meetings Law notice. tiny.cc/bk02calendar redirects here.</td><td><span class="tag official">official</span></td></tr>
+  <tr><td>The Events Calendar REST</td><td>…/cb2/wp-json/tribe/events/v1/events</td><td>200</td><td><code>total: 0</code>. TEC is installed but unused. Calendar is the Google embed, not Tribe events.</td><td><span class="tag empty">empty API</span></td></tr>
+  <tr><td>Tribe ICS</td><td>…/cb2/events/?ical=1</td><td>200, 0 bytes</td><td>Empty. Do not point an ICS adapter here.</td><td><span class="tag empty">empty</span></td></tr>
+  <tr><td>Google Calendar public ICS</td><td>calendar.google.com/calendar/ical/bk02public%40gmail.com/public/basic.ics</td><td>200, 3.08 MB, text/calendar</td><td>1,006 VEVENTs. CALNAME bk02public@gmail.com. Live through December 2026.</td><td><span class="tag official">official ICS</span></td></tr>
+  <tr><td>Public Drive (agendas)</td><td>tiny.cc/bk02public → drive.google.com/drive/folders/1vP5RRdeO7Hq4skAh3kF3caUOAseeP27w</td><td>200</td><td>Folder title “BKCD2 PUBLIC DRIVE”. Contains “BKCD2 Board &amp; Committee Meetings” and BKCD2 101.pdf. Linked from the official committees page as the public drive.</td><td><span class="tag official">official (Drive)</span></td></tr>
+  <tr><td>Public comments PDF</td><td>tiny.cc/bk02pulse → Drive file BKCD2_Record of Public Comments.pdf</td><td>200</td><td>Comment record, not a meeting calendar.</td><td><span class="tag official">official</span></td></tr>
+  <tr><td>Comment form</td><td>tiny.cc/bk02comment → Google Form</td><td>200</td><td>Intake, not a source of meetings.</td><td><span class="tag official">official</span></td></tr>
+  <tr><td>WordPress /minutes/</td><td>cbbrooklyn.cityofnewyork.us/cb2/minutes/</td><td>404</td><td>No HTML minutes index on the WP site.</td><td><span class="tag miss">404</span></td></tr>
+  <tr><td>Facebook</td><td>facebook.com/bkcb02</td><td>public posts exist</td><td>June 2026 monthly poster with committee + full-board dates; points at tiny.cc/bk02calendar. Unstructured, login-walled.</td><td><span class="tag unofficial">unofficial mirror</span></td></tr>
+  <tr><td>Instagram</td><td>instagram.com/bkcb02</td><td>200</td><td>Same monthly posters (e.g. June 2026). Unstructured.</td><td><span class="tag unofficial">unofficial mirror</span></td></tr>
+  <tr><td>YouTube</td><td>youtube.com/bkcb02 · channel UCcQ_OayNaOsqLAr1RRDHtsw</td><td>200, ~30 video IDs on /videos</td><td>Official recordings, not a calendar. Atom RSS returned 500 from this scout host.</td><td><span class="tag unofficial">unofficial / recordings</span></td></tr>
+  <tr><td>City Record / CROL</td><td>a856-cityrecord.nyc.gov</td><td>search</td><td>CPC/ULURP notices that mention “Community District 2” are citywide land-use notices, not this board’s meeting calendar. No board-authored recurring meeting series found.</td><td><span class="tag miss">not a calendar</span></td></tr>
+  <tr><td>Council newsletters</td><td>Lincoln Restler (D33) lincolnrestler.nyc/signup</td><td>signup page</td><td>District newsletter exists. It is not a CB2 meeting feed. CB2 covers several council districts; Restler does not republish the board calendar as a machine source.</td><td><span class="tag unofficial">not a source</span></td></tr>
+  <tr><td>Neighborhood press</td><td>Brooklyn Eagle directory, BK Reader 2023 article</td><td>—</td><td>Eagle copies the city directory (second Wednesday). BK Reader (Oct 2023) pointed readers “to the calendar” but is not a live feed.</td><td><span class="tag unofficial">stale / not a feed</span></td></tr>
+  <tr><td>NYC-wide aggregators</td><td>311, nyc.gov/main/events, citymeetings.nyc</td><td>—</td><td>No CB2 meeting series. citymeetings.nyc is City Council.</td><td><span class="tag miss">none</span></td></tr>
+</table>
+
+<h2 id="official">Official sources found (missed by the nyc.gov-stub pass)</h2>
+<div class="note">These are board-owned official sources on cityofnewyork.us / Google properties the board publishes itself. They are not unofficial mirrors. The 2026-08-13 pass never left the nyc.gov stub, so they were recorded as absent.</div>
+<div class="card">
+  <h3>Upcoming meetings — Google Calendar <code>bk02public@gmail.com</code></h3>
+  <p><span class="tag official">board_owned_official</span> Format: iCalendar. Fetchable without login.</p>
+  <ul class="tight">
+    <li>Embed: <span class="url">https://calendar.google.com/calendar/embed?src=bk02public@gmail.com&amp;ctz=America/New_York</span></li>
+    <li>ICS: <span class="url">https://calendar.google.com/calendar/ical/bk02public%40gmail.com/public/basic.ics</span> (3.08 MB, 1,006 events)</li>
+    <li>HTML host: <span class="url">https://cbbrooklyn.cityofnewyork.us/cb2/calendar/</span></li>
+    <li>2026 full-board VEVENTs titled <code>BKCB2: FULL BOARD MEETING</code> on 21 Jan, 18 Feb, 18 Mar, 22 Apr, 20 May, 17 Jun, 23 Sep, 21 Oct, 18 Nov, 16 Dec (UTC timestamps; local evening).</li>
+    <li>September 2026 committee series is fully populated (Health 1 Sep, Land Use 2 Sep, Transportation 3 Sep, Economic Development 8 Sep, Executive 9 Sep, Parks 10 Sep, Youth 15 Sep, ULURP 240 Nassau 16 Sep, Finance 22 Sep, Full Board 23 Sep).</li>
+  </ul>
+  <p>Adapter fit: existing <code>google_calendar_v1</code> in <code>site/community_board_source_adapters.mjs</code>. <strong>Caveat:</strong> that contract caps feeds at 1,000,000 bytes; this ICS is ~3.08 MB and would be rejected until the adapter windows the feed or the cap is raised. The calendar is mixed: 455 BKCB2* events, older “CB2 - …” titles, 142 newsletter placeholders, 36 historical FAB (not this board) events, holidays, and neighborhood happenings. A future adapter must keep only board/committee events (SUMMARY prefix <code>BKCB2:</code> or current <code>CB2 -</code>), not the whole calendar.</p>
+</div>
+<div class="card">
+  <h3>Agendas / packets — BKCD2 Public Drive</h3>
+  <p><span class="tag official">third_party_storage</span> Google Drive folder published by the board and linked from the official committees page (“Visit the BKCD2 Public Drive”). Folder id <code>1vP5RRdeO7Hq4skAh3kF3caUOAseeP27w</code>. Not an HTML minutes index. Listing requires Drive HTML/JSON, not a stable per-document HTML page. Airtable/Drive adapters in this repo never invent API URLs from folder links.</p>
+</div>
+
+<h2 id="unofficial">Unofficial mirrors</h2>
+<table>
+  <tr><th>Mirror</th><th>Format</th><th>Freshness</th><th>Trust</th></tr>
+  <tr><td>Facebook bkcb02</td><td>Image posters + tiny.cc links</td><td>June 2026 poster observed; not a complete 2026-08 snapshot of every month</td><td>Board-operated social, but login-walled and unstructured. Mirrors the official calendar. Never inventory as a source.</td></tr>
+  <tr><td>Instagram @bkcb02</td><td>Image posters</td><td>Same June 2026 poster</td><td>Same. Unofficial.</td></tr>
+  <tr><td>YouTube bkcb02</td><td>Video recordings</td><td>Channel live; RSS blocked from this host</td><td>Recordings after the fact. <code>video_record_v1</code> would need an explicit JSON feed the board does not publish.</td></tr>
+</table>
+<p>No neighborhood blog, Patch, Brownstoner, or NYC-wide aggregator publishes a followable CB2 meeting series.</p>
+
+<h2 id="consistency">Publishing consistency</h2>
+<ul>
+  <li>The board has abandoned nyc.gov as a working site (6.5 KB stub) and publishes on the shared Brooklyn WordPress network used by CB7 / CB10 / CB17.</li>
+  <li>Meetings are advertised on a live Google Calendar that already has fall 2026 committee and full-board rows. Summer 2026 has newsletter placeholders rather than meetings (typical July/August recess).</li>
+  <li>Agendas live on Drive, not as dated HTML. Minutes do not have a WordPress or nyc.gov index.</li>
+  <li>Social posts are a human-readable overlay of the same calendar, not an independent dataset.</li>
+</ul>
+
+<h2 id="rec-detail">What a future adapter could use</h2>
+<p>Official path, with caveats — not an unofficial insertion:</p>
+<ul>
+  <li>Upcoming: Google Calendar ICS <code>bk02public@gmail.com</code>, filtered to BKCB2/CB2 meeting titles, after solving the 1 MB cap.</li>
+  <li>Packets: Drive folder only if a Drive/HTML-index adapter is explicitly registered as <code>third_party_storage</code>.</li>
+  <li>Do not use Tribe REST/ICS (empty). Do not invent nyc.gov calendar/minutes paths. Do not inventory Facebook/Instagram/YouTube.</li>
+</ul>
+
+<footer>
+  <p>Bucket D unofficial-source scout. Observed 2026-08-22 from an isolated crol-list worktree. Product inventory and adapters were not modified. Do not infer nyc.gov calendar URLs into the product.</p>
+  <p>Baseline inventory: <code>site/data/non_council_outcome_sources/board_source_inventory.json</code> (observed 2026-08-13). Publisher-kind allowlist: <code>nyc_official</code>, <code>board_owned_official</code>, <code>city_record</code>, <code>third_party_storage</code>. Facebook / Instagram / YouTube / civic apps are outside that allowlist.</p>
+</footer>
+</div>
+</body>
+</html>

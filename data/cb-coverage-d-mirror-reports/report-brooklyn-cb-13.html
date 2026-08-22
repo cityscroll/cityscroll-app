@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brooklyn Community Board 13 — unofficial-source scout</title>
+<style>
+:root {
+  --ink: #1b1b1b;
+  --muted: #4a4a4a;
+  --navy: #1a2a4a;
+  --cream: #f7f1e4;
+  --paper: #fffdf8;
+  --line: #d8d0c0;
+  --official: #1d5a3a;
+  --official-bg: #e7f3ec;
+  --unofficial: #8b1e3f;
+  --unofficial-bg: #f8e8ec;
+  --empty: #6b5a2a;
+  --empty-bg: #f4ecd4;
+  --rec: #1a2a4a;
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body {
+  margin: 0; color: var(--ink); background: var(--cream);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.45;
+}
+.wrap { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+header.hero {
+  background: var(--navy); color: var(--cream); padding: 1.5rem 1.25rem;
+}
+header.hero .kicker { letter-spacing: .12em; text-transform: uppercase; font-size: .72rem; opacity: .8; font-family: ui-sans-serif, system-ui, sans-serif; }
+header.hero h1 { margin: .35rem 0 .5rem; font-size: 1.7rem; font-weight: 600; }
+header.hero p { margin: 0; max-width: 44rem; }
+.meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; margin-top: 1rem; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .8rem; }
+.pill { background: rgba(255,255,255,.12); padding: .2rem .55rem; border-radius: 999px; }
+nav.toc { background: var(--paper); border: 1px solid var(--line); padding: .75rem 1rem; margin: 1.25rem 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .9rem; }
+nav.toc a { color: var(--navy); }
+.rec {
+  border: 3px solid var(--navy); background: var(--paper); padding: 1rem 1.1rem; margin: 1.25rem 0;
+}
+.rec h2 { margin: 0 0 .5rem; font-size: 1.1rem; }
+.rec p { margin: 0; }
+.tag {
+  display: inline-block; font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: .72rem; letter-spacing: .04em; text-transform: uppercase;
+  padding: .12rem .45rem; border-radius: 3px; font-weight: 700;
+}
+.tag.official { background: var(--official-bg); color: var(--official); }
+.tag.unofficial { background: var(--unofficial-bg); color: var(--unofficial); }
+.tag.empty { background: var(--empty-bg); color: var(--empty); }
+.tag.miss { background: #eee; color: #555; }
+h2 { font-size: 1.25rem; margin: 2rem 0 .6rem; color: var(--navy); }
+h3 { font-size: 1.02rem; margin: 1.3rem 0 .4rem; }
+p, li { color: var(--ink); }
+.muted { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; background: var(--paper); }
+th, td { border: 1px solid var(--line); padding: .45rem .5rem; vertical-align: top; text-align: left; }
+th { background: var(--navy); color: var(--cream); font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-size: .78rem; letter-spacing: .03em; }
+tr:nth-child(even) td { background: #fbf7ee; }
+code, .url { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; word-break: break-all; }
+.card { border: 1px solid var(--line); background: var(--paper); padding: .85rem 1rem; margin: .75rem 0; }
+.card h3 { margin-top: 0; }
+ul.tight li { margin: .25rem 0; }
+footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+a { color: #123a7a; }
+.warn { background: var(--unofficial-bg); border-left: 4px solid var(--unofficial); padding: .7rem .9rem; margin: 1rem 0; }
+.note { background: var(--official-bg); border-left: 4px solid var(--official); padding: .7rem .9rem; margin: 1rem 0; }
+@media print {
+  header.hero { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Bucket D · CB meeting coverage · scout only</div>
+    <h1>Brooklyn Community Board 13 — unofficial-source scout</h1>
+    <p>calendar.page 404s. Minutes already official. Homepage lists three fall 2026 dates. Facebook/YouTube are unofficial and unstructured.</p>
+    <div class="meta"><span class="pill">brooklyn-cb-13</span><span class="pill">scouted 2026-08-22</span><span class="pill">no product code change</span></div>
+  </div>
+</header>
+<div class="wrap">
+<nav class="toc">
+  Scout reports (self-contained HTML). This is a recommendation, not an inventory write or adapter change.
+  · <a href="report.md">Index</a>
+  · <a href="report-brooklyn-cb-02.html">CB2</a>
+  · <a href="report-brooklyn-cb-06.html">CB6</a>
+  · <a href="report-brooklyn-cb-13.html">CB13</a>
+  · <a href="report-brooklyn-cb-16.html">CB16</a>
+  
+</nav>
+<div class="rec">
+  <h2>Recommendation</h2>
+  
+<p><strong>No followable unofficial structured source exists.</strong>
+Facebook and YouTube are unofficial, unstructured, and must not be inventoried.
+Minutes are already official on nyc.gov and do not need a records request.
+A future adapter could use the official homepage date list
+(three tentative 2026 full-board evenings) plus the existing minutes HTML+PDF index —
+that is official nyc.gov HTML, not an unofficial mirror —
+with the caveats that calendar.page 404s and must not be inferred, the homepage list is not an ICS,
+and committee meetings appear only on Facebook.
+This report does not authorize inventory or adapter code changes.</p>
+
+</div>
+
+<h2 id="baseline">Inventory baseline (2026-08-13)</h2>
+<p>Upcoming meetings <code>absent_in_pass</code>. Minutes already <code>verified</code> as nyc.gov HTML + PDF at <span class="url">https://www.nyc.gov/site/brooklyncb13/minutes/minutes.page</span>. Campaign brief: calendar.page 404s; minutes exist.</p>
+<table>
+  <tr><th>Field</th><th>Value</th></tr>
+  <tr><td>Inventory home</td><td><span class="url">https://www.nyc.gov/site/brooklyncb13/index.page</span></td></tr>
+  <tr><td>City directory website</td><td>Same nyc.gov site (this one is not a 6 KB husk)</td></tr>
+  <tr><td>Cadence (directory)</td><td>Full board fourth Wednesday, 7:00pm. Chair Jeffrey Sanoff. District Manager Eddie Mark. Office 1201 Surf Avenue, 3rd floor.</td></tr>
+</table>
+
+<h2 id="lenses">Every lens tried</h2>
+<table>
+  <tr><th>Lens</th><th>URL</th><th>HTTP</th><th>Result</th><th>Class</th></tr>
+  <tr><td>nyc.gov homepage</td><td>nyc.gov/site/brooklyncb13/index.page</td><td>200, 33 KB</td><td>Working page: contacts, office address, and a 2026 meeting date list in the body (not a calendar widget).</td><td><span class="tag official">official HTML dates</span></td></tr>
+  <tr><td>nyc.gov calendar.page</td><td>nyc.gov/site/brooklyncb13/calendar/calendar.page</td><td>404 “outdated or non-existing page”</td><td>Confirmed. Do not infer this URL.</td><td><span class="tag miss">404</span></td></tr>
+  <tr><td>nyc.gov minutes</td><td>nyc.gov/site/brooklyncb13/minutes/minutes.page</td><td>200, 29 KB, 73 PDF hrefs</td><td>Already inventoried. Live 2026 PDFs on the page.</td><td><span class="tag official">official (already in inventory)</span></td></tr>
+  <tr><td>Committees page</td><td>nyc.gov/site/brooklyncb13/committees/committees.page</td><td>200</td><td>Committee assignment PDFs through 21 Aug 2026. Not a meeting calendar.</td><td><span class="tag official">rosters only</span></td></tr>
+  <tr><td>Independent website</td><td>cbbrooklyn.cityofnewyork.us/cb13, cb13brooklyn.com, etc.</td><td>—</td><td>No board-owned WordPress or .org site found.</td><td><span class="tag miss">none</span></td></tr>
+  <tr><td>Facebook</td><td>facebook.com/BKCB13</td><td>public posts</td><td>Board page (~1,045 likes). Posts committee meetings with Zoom IDs (Housing 21 Jan 2026; Health 2 Jun 2026 at 1201 Surf). Unstructured, login-walled. Chair/officers listed on the page match the official site.</td><td><span class="tag unofficial">unofficial social</span></td></tr>
+  <tr><td>YouTube</td><td>youtube.com/@communityboard13brooklyn43 · UCkN86M5HNa-zNRbx2AbW46g</td><td>200</td><td>“Community Board 13 Brooklyn”, 76 subscribers. Livestreams: General Board Meeting 19 Nov 2025; 20 May 2026 (1h25m, 55 views). Useful recordings, not a calendar. Chair report on 20 May said last meeting before summer break is 24 Jun 2026.</td><td><span class="tag unofficial">recordings</span></td></tr>
+  <tr><td>ICS / Google Calendar / Tribe</td><td>—</td><td>—</td><td>None. No public calendar ID, no WordPress events.</td><td><span class="tag miss">none</span></td></tr>
+  <tr><td>City Record</td><td>—</td><td>—</td><td>No board-authored recurring meeting series. ULURP/CPC items for CD 13 are not this board’s calendar.</td><td><span class="tag miss">not a calendar</span></td></tr>
+  <tr><td>Council newsletters</td><td>Inna Vernikov / overlapping districts</td><td>—</td><td>No structured CB13 meeting feed.</td><td><span class="tag unofficial">not a source</span></td></tr>
+  <tr><td>Neighborhood press / aggregators</td><td>—</td><td>—</td><td>No live Coney Island / Brighton Beach civic calendar of board meetings.</td><td><span class="tag miss">none</span></td></tr>
+</table>
+
+<h2 id="official">Official sources</h2>
+<div class="card">
+  <h3>Upcoming — homepage date list (not calendar.page)</h3>
+  <p><span class="tag official">nyc_official</span> The homepage currently prints:</p>
+  <ul>
+    <li>Wednesday, 23 September 2026, 7 PM — 2601 Ocean Parkway, South Brooklyn Hospital, 2nd floor auditorium</li>
+    <li>Wednesday, 28 October 2026, 7 PM — same</li>
+    <li>Wednesday, 18 November 2026, 7 PM — same</li>
+  </ul>
+  <p>Copy says dates are tentative. Speaker registration is by email to HGLIKMAN@CB.NYC.GOV. This is a human-maintained list of three fall dates, not an ICS and not the <code>nyc_official_calendar_v1</code> “explicit board calendar” shape (no month grid, no per-event heading/year widget). A future HTML adapter would have to treat this as labeled date lines, and it will go stale if staff stop editing the homepage.</p>
+  <p>YouTube 20 May 2026 recording additionally named 24 June 2026 as the last meeting before summer break — that date is not on the homepage list (the homepage has jumped to fall 2026).</p>
+</div>
+<div class="card">
+  <h3>Minutes — already inventoried</h3>
+  <p><span class="tag official">nyc_official</span> HTML index with PDFs under <code>/assets/brooklyncb13/downloads/pdf/</code>. 2026 files on the page include 28 Jan, 25 Mar, 22 Apr, 20 May 2026. A file named <code>Gen_Brd_Meeting_Minutes_Nov_19_2026.pdf</code> sits next to 2025 November materials and is likely a 2025 filename typo; do not treat the filename year as a meeting date without opening the PDF. Archive runs back through 2022 on the same page.</p>
+</div>
+
+<h2 id="unofficial">Unofficial mirrors</h2>
+<table>
+  <tr><th>Mirror</th><th>Format</th><th>Freshness</th><th>Trust</th></tr>
+  <tr><td>Facebook BKCB13</td><td>Prose posts + Zoom URLs + flyers</td><td>Committee posts in Jan and Jun 2026</td><td>Board-operated, but not a structured feed. Zoom URLs rotate. Never inventory. Useful only as a human hint that committee meetings exist off the homepage list.</td></tr>
+  <tr><td>YouTube Community Board 13 Brooklyn</td><td>Livestream recordings</td><td>May 2026 general meeting online</td><td>After-the-fact evidence that a meeting occurred. Cannot be a calendar. No JSON video feed.</td></tr>
+</table>
+<p>No unofficial structured mirror (ICS, HTML event list, civic aggregator) was found.</p>
+
+<h2 id="consistency">Publishing consistency</h2>
+<ul>
+  <li>This is not an empty stub. Staff still update the nyc.gov homepage, minutes PDFs, committee assignment PDFs (21 Aug 2026), Facebook, and YouTube.</li>
+  <li>What they do not publish is a machine calendar. calendar.page was never replaced after it 404’d.</li>
+  <li>Full board is roughly fourth Wednesday at 7 PM (directory + 2026 minutes dates: 28 Jan, 25 Mar, 22 Apr, 20 May all Wednesday evenings). Homepage fall dates skip December and do not list committees.</li>
+  <li>Summer recess is observed (homepage jumps from spring minutes to September dates).</li>
+</ul>
+
+<footer>
+  <p>Bucket D unofficial-source scout. Observed 2026-08-22 from an isolated crol-list worktree. Product inventory and adapters were not modified. Do not infer nyc.gov calendar URLs into the product.</p>
+  <p>Baseline inventory: <code>site/data/non_council_outcome_sources/board_source_inventory.json</code> (observed 2026-08-13). Publisher-kind allowlist: <code>nyc_official</code>, <code>board_owned_official</code>, <code>city_record</code>, <code>third_party_storage</code>. Facebook / Instagram / YouTube / civic apps are outside that allowlist.</p>
+</footer>
+</div>
+</body>
+</html>

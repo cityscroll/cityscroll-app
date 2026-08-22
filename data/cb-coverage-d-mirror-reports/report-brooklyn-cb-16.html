@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brooklyn Community Board 16 — unofficial-source scout</title>
+<style>
+:root {
+  --ink: #1b1b1b;
+  --muted: #4a4a4a;
+  --navy: #1a2a4a;
+  --cream: #f7f1e4;
+  --paper: #fffdf8;
+  --line: #d8d0c0;
+  --official: #1d5a3a;
+  --official-bg: #e7f3ec;
+  --unofficial: #8b1e3f;
+  --unofficial-bg: #f8e8ec;
+  --empty: #6b5a2a;
+  --empty-bg: #f4ecd4;
+  --rec: #1a2a4a;
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body {
+  margin: 0; color: var(--ink); background: var(--cream);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.45;
+}
+.wrap { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+header.hero {
+  background: var(--navy); color: var(--cream); padding: 1.5rem 1.25rem;
+}
+header.hero .kicker { letter-spacing: .12em; text-transform: uppercase; font-size: .72rem; opacity: .8; font-family: ui-sans-serif, system-ui, sans-serif; }
+header.hero h1 { margin: .35rem 0 .5rem; font-size: 1.7rem; font-weight: 600; }
+header.hero p { margin: 0; max-width: 44rem; }
+.meta { display: flex; flex-wrap: wrap; gap: .4rem .8rem; margin-top: 1rem; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .8rem; }
+.pill { background: rgba(255,255,255,.12); padding: .2rem .55rem; border-radius: 999px; }
+nav.toc { background: var(--paper); border: 1px solid var(--line); padding: .75rem 1rem; margin: 1.25rem 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: .9rem; }
+nav.toc a { color: var(--navy); }
+.rec {
+  border: 3px solid var(--navy); background: var(--paper); padding: 1rem 1.1rem; margin: 1.25rem 0;
+}
+.rec h2 { margin: 0 0 .5rem; font-size: 1.1rem; }
+.rec p { margin: 0; }
+.tag {
+  display: inline-block; font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: .72rem; letter-spacing: .04em; text-transform: uppercase;
+  padding: .12rem .45rem; border-radius: 3px; font-weight: 700;
+}
+.tag.official { background: var(--official-bg); color: var(--official); }
+.tag.unofficial { background: var(--unofficial-bg); color: var(--unofficial); }
+.tag.empty { background: var(--empty-bg); color: var(--empty); }
+.tag.miss { background: #eee; color: #555; }
+h2 { font-size: 1.25rem; margin: 2rem 0 .6rem; color: var(--navy); }
+h3 { font-size: 1.02rem; margin: 1.3rem 0 .4rem; }
+p, li { color: var(--ink); }
+.muted { color: var(--muted); }
+table { width: 100%; border-collapse: collapse; font-size: .88rem; background: var(--paper); }
+th, td { border: 1px solid var(--line); padding: .45rem .5rem; vertical-align: top; text-align: left; }
+th { background: var(--navy); color: var(--cream); font-family: ui-sans-serif, system-ui, sans-serif; font-weight: 600; font-size: .78rem; letter-spacing: .03em; }
+tr:nth-child(even) td { background: #fbf7ee; }
+code, .url { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; word-break: break-all; }
+.card { border: 1px solid var(--line); background: var(--paper); padding: .85rem 1rem; margin: .75rem 0; }
+.card h3 { margin-top: 0; }
+ul.tight li { margin: .25rem 0; }
+footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+a { color: #123a7a; }
+.warn { background: var(--unofficial-bg); border-left: 4px solid var(--unofficial); padding: .7rem .9rem; margin: 1rem 0; }
+.note { background: var(--official-bg); border-left: 4px solid var(--official); padding: .7rem .9rem; margin: 1rem 0; }
+@media print {
+  header.hero { background: #000; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Bucket D · CB meeting coverage · scout only</div>
+    <h1>Brooklyn Community Board 16 — unofficial-source scout</h1>
+    <p>Homepage is thin. Minutes are official at /about/board-meeting-minutes.page (190 PDFs). Calendar.page is a monthly table, empty in August. No unofficial structured mirror.</p>
+    <div class="meta"><span class="pill">brooklyn-cb-16</span><span class="pill">scouted 2026-08-22</span><span class="pill">no product code change</span></div>
+  </div>
+</header>
+<div class="wrap">
+<nav class="toc">
+  Scout reports (self-contained HTML). This is a recommendation, not an inventory write or adapter change.
+  · <a href="report.md">Index</a>
+  · <a href="report-brooklyn-cb-02.html">CB2</a>
+  · <a href="report-brooklyn-cb-06.html">CB6</a>
+  · <a href="report-brooklyn-cb-13.html">CB13</a>
+  · <a href="report-brooklyn-cb-16.html">CB16</a>
+  
+</nav>
+<div class="rec">
+  <h2>Recommendation</h2>
+  
+<p><strong>No followable unofficial structured source exists; a records request is not needed for minutes.</strong>
+A future adapter could use the official minutes HTML+PDF index at
+<code>/about/board-meeting-minutes.page</code> and the official calendar.page
+when staff refill it after summer (official, not unofficial).
+Caveats: do not infer <code>/minutes/minutes.page</code> or <code>/calendar/calendar.page</code>
+(those 404; the real paths are under <code>/about/</code>); the calendar is empty every summer;
+Facebook is not currently a meeting mirror; Brooklyn Eagle’s directory is stale.
+This report does not authorize inventory or adapter code changes.</p>
+
+</div>
+
+<h2 id="baseline">Inventory baseline (2026-08-13)</h2>
+<p>Both roles <code>absent_in_pass</code>. Homepage recorded as the nyc.gov stub. The 2026-08-13 pass did not record a minutes URL. Conventional probe path <code>/minutes/minutes.page</code> 404s — but that is the wrong path.</p>
+<table>
+  <tr><th>Field</th><th>Value</th></tr>
+  <tr><td>Inventory home</td><td><span class="url">https://www.nyc.gov/site/brooklyncb16/index.page</span></td></tr>
+  <tr><td>City directory</td><td>Same nyc.gov site. Chair Margaret Brewer. District Manager Sydone Thompson. Board meeting fourth Tuesday, 7:00pm. Address listed TBA on the directory (office at 444 Thomas Boyland Street is under construction per the FY27 needs statement).</td></tr>
+</table>
+
+<h2 id="lenses">Every lens tried</h2>
+<table>
+  <tr><th>Lens</th><th>URL</th><th>HTTP</th><th>Result</th><th>Class</th></tr>
+  <tr><td>nyc.gov index</td><td>nyc.gov/site/brooklyncb16/index.page</td><td>200, 28 KB</td><td>Generic NYC program tiles. No meeting list. Nav includes About / Announcements / Committees / Resources / Contact.</td><td><span class="tag empty">thin homepage</span></td></tr>
+  <tr><td>Overview</td><td>nyc.gov/site/brooklyncb16/about/overview.page</td><td>200</td><td>Subnav: Overview, Neighborhoods, Maps, Calendar. Sidebar: Members, <strong>Board Meeting Minutes</strong>, FAQ.</td><td><span class="tag official">nav exists</span></td></tr>
+  <tr><td>Calendar</td><td>nyc.gov/site/brooklyncb16/about/calendar.page</td><td>200, 20 KB</td><td>Heading “COMMUNITY BOARD #16 MEETING SCHEDULE”. Table headers DAY/DATE/TIME, MEETING/SUBJECT, LOCATION. Body: <em>No info at this time</em>. This is the live page on 2026-08-22 (summer recess).</td><td><span class="tag empty">official, currently empty</span></td></tr>
+  <tr><td>Calendar (Google cache / June)</td><td>same URL, indexed snapshot</td><td>—</td><td>Indexed copy titled “MEETING SCHEDULE – JUNE 2026” with work groups 8–11 Jun, public meeting 16 Jun 7pm hybrid at Mt. Ollie Baptist Church + Webex password BK16bd, Veterans 17 Jun on Zoom. Proves the page is overwritten monthly, not permanently vacant.</td><td><span class="tag official">official when staffed</span></td></tr>
+  <tr><td>Wrong minutes path</td><td>nyc.gov/site/brooklyncb16/minutes/minutes.page</td><td>404</td><td>The path the inventory generation assumed. Do not infer it.</td><td><span class="tag miss">404</span></td></tr>
+  <tr><td>Actual minutes path</td><td>nyc.gov/site/brooklyncb16/about/board-meeting-minutes.page</td><td>200, 45 KB, 190 PDF links</td><td>HTML index, yearly headings 2026 back to 2006. This is the missed official minutes source.</td><td><span class="tag official">official HTML+PDF</span></td></tr>
+  <tr><td>Unlinked asset PDFs</td><td>nyc.gov/assets/brooklyncb16/downloads/pdf/minutes/ and /public-meeting-notice/</td><td>200 on individual files</td><td>Same PDFs plus public-meeting-notice/10-28-25.pdf (agenda). Directory listing is not browseable; the HTML index is the way in.</td><td><span class="tag official">official PDFs</span></td></tr>
+  <tr><td>Committees page</td><td>nyc.gov/site/brooklyncb16/committees/committees.page</td><td>200, 33 KB</td><td>Standing Webex join URLs (MTID=…) for work groups, plus SLA/cannabis/street co-naming PDFs. Join links without dates are not a calendar.</td><td><span class="tag official">join links, not events</span></td></tr>
+  <tr><td>Announcements</td><td>nyc.gov/site/brooklyncb16/announcements/announcements.page</td><td>200</td><td>No current meeting flyers in the fetched HTML.</td><td><span class="tag empty">empty this pass</span></td></tr>
+  <tr><td>Independent website</td><td>—</td><td>—</td><td>No cityofnewyork.us or .org board site.</td><td><span class="tag miss">none</span></td></tr>
+  <tr><td>Facebook</td><td>facebook.com/communityboard16</td><td>public page</td><td>About text matches the board (Brownsville / Ocean Hill, bk16@cb.nyc.gov, nyc.gov homepage). Recent posts (27 Apr, 28 Apr, 4 May) are entrepreneurship/livestream content that does not look like board meeting notices. Not a usable meeting feed.</td><td><span class="tag unofficial">unofficial, not meetings</span></td></tr>
+  <tr><td>Brooklyn Eagle directory</td><td>brooklyneagle.com/brooklyn-community-board-16/</td><td>200, dated 2026-04-30</td><td>Still lists Chair Genese T. Morgan and District Manager Viola D. Greene-Walker. Official minutes and directory use Margaret Brewer / Sydone Thompson. Stale unofficial copy of an old roster. “Latest Board 16 Updates” are crime stories, not meetings.</td><td><span class="tag unofficial">stale / wrong</span></td></tr>
+  <tr><td>Brownstoner / Patch / Brooklyn Paper</td><td>—</td><td>—</td><td>Occasional 2015–2022 mentions of a CB16 meeting. No live calendar.</td><td><span class="tag unofficial">not a feed</span></td></tr>
+  <tr><td>Council newsletters</td><td>Sandy Nurse (D37) and overlapping members</td><td>—</td><td>Nurse’s office appears in CB16 minutes as a guest. No structured CB16 meeting republish.</td><td><span class="tag unofficial">not a source</span></td></tr>
+  <tr><td>ICS / Google Calendar / YouTube</td><td>—</td><td>—</td><td>None found for this board.</td><td><span class="tag miss">none</span></td></tr>
+</table>
+
+<h2 id="official">Official sources found (path mismatch, not absence)</h2>
+<div class="note">CB16 is the opposite of “the city does not publish.” Minutes have been posted as PDFs since 2006. The 2026-08-13 pass looked at the wrong URL shape (<code>/minutes/minutes.page</code> instead of <code>/about/board-meeting-minutes.page</code>) and treated a summer-empty calendar as no calendar.</div>
+<div class="card">
+  <h3>Minutes — HTML index + PDFs</h3>
+  <p><span class="tag official">nyc_official</span> <span class="url">https://www.nyc.gov/site/brooklyncb16/about/board-meeting-minutes.page</span></p>
+  <p>190 PDF hrefs. 2026 general-board / public-hearing files on the page:</p>
+  <ul class="tight">
+    <li>27 Jan 2026 public hearing</li>
+    <li>24 Feb 2026 general board</li>
+    <li>24 Mar 2026 general board (plus March work-group reports)</li>
+    <li>28 Apr 2026 general board (plus April work-group minutes)</li>
+    <li>May 2026 work-group reports (11–13 May committee meetings; next Equity Planning work group named as 9 Jun 2026)</li>
+  </ul>
+  <p>2025 general/public-hearing files: 28 Jan, 25 Feb, 25 Mar, 22 Apr, 20 May, 24 Jun, 23 Sep, 28 Oct, 18 Nov, 16 Dec. Summer gap June→September is the recess, also visible in older years.</p>
+  <p>Adapter fit: <code>html_pdf_v1</code> (explicit HTML index with linked PDFs). Labels are dates; some 2014–2018 filename/label mismatches exist in the deep archive (e.g. a “12-23-2014” label pointing at an October file). Recent years are date-named and usable. One March 2016 file is stored as <code>03-22-2015.pdf</code> under the 2016 folder — fail closed on filename/year disagreement.</p>
+</div>
+<div class="card">
+  <h3>Upcoming — calendar.page, currently blank</h3>
+  <p><span class="tag official">nyc_official</span> <span class="url">https://www.nyc.gov/site/brooklyncb16/about/calendar.page</span></p>
+  <p>When staffed, this is an HTML table of the current month (work groups + fourth-Tuesday public meeting + Webex passwords). On 2026-08-22 it is honestly empty. An <code>nyc_official_calendar_v1</code> adapter that requires an explicit heading, publisher date, and page-declared year would correctly yield zero events today and should not be treated as “source missing.” Re-check after Labor Day; June 2026 cache shows the expected shape.</p>
+  <p>Public-meeting-notice PDFs under <code>/assets/brooklyncb16/downloads/pdf/public-meeting-notice/</code> (example 28 Oct 2025 agenda) are official but not linked from the homepage. They are easier to reach from the minutes index / search than from a directory listing.</p>
+</div>
+
+<h2 id="unofficial">Unofficial mirrors</h2>
+<table>
+  <tr><th>Mirror</th><th>Format</th><th>Freshness</th><th>Trust</th></tr>
+  <tr><td>Facebook communityboard16</td><td>Page posts</td><td>Active in 2026, but not posting the board calendar</td><td>Identity matches the board; content currently is not meeting notices. Do not treat as a mirror of the calendar.</td></tr>
+  <tr><td>Brooklyn Eagle</td><td>Directory scrape</td><td>Page stamped 2026-04-30 with a prior chair</td><td>Wrong officers. Not trustworthy for meetings.</td></tr>
+  <tr><td>Brownstoner / Patch</td><td>Occasional articles</td><td>Years old</td><td>Not a feed.</td></tr>
+</table>
+<p>No unofficial structured meeting source exists. A records request is not required to obtain minutes — they are already on nyc.gov at the About path.</p>
+
+<h2 id="consistency">Publishing consistency</h2>
+<ul>
+  <li>Homepage is a generic nyc.gov skin; the working documents live one click down under About.</li>
+  <li>Calendar is a monthly overwrite, blank in August. That is a publishing habit, not a missing site.</li>
+  <li>Minutes are the durable record (2006–2026) and are updated through April/May 2026.</li>
+  <li>Hybrid public meetings at Mt. Ollie Baptist Church, 1698 St. Marks Avenue, plus standing Webex MTIDs on the committees page.</li>
+  <li>Fourth Tuesday 7pm cadence holds in 2025–2026 minutes (with December 2025 held virtual-only).</li>
+</ul>
+
+<footer>
+  <p>Bucket D unofficial-source scout. Observed 2026-08-22 from an isolated crol-list worktree. Product inventory and adapters were not modified. Do not infer nyc.gov calendar URLs into the product.</p>
+  <p>Baseline inventory: <code>site/data/non_council_outcome_sources/board_source_inventory.json</code> (observed 2026-08-13). Publisher-kind allowlist: <code>nyc_official</code>, <code>board_owned_official</code>, <code>city_record</code>, <code>third_party_storage</code>. Facebook / Instagram / YouTube / civic apps are outside that allowlist.</p>
+</footer>
+</div>
+</body>
+</html>
