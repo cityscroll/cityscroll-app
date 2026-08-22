@@ -287,3 +287,57 @@ test("NYC calendar fetch retries the official www1 alias after an edge denial", 
   assert.equal(result.records[0].date, "2026-09-29");
   assert.equal(result.receipt.source_url, "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page");
 });
+
+test("NYC official-calendar adapter accepts a dated meeting paragraph without an h3", () => {
+  const records = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <h1>Calendar</h1>
+      <p>All NYC Community Board meetings are open to the public.</p>
+      <p><strong><u>REGULAR MONTHLY BOARD MEETING &ndash; JUNE 17, 2026, 7 PM</u></strong></p>
+      <p>Join from PC, Mac, iPad, or Android:<br>
+        <a href="https://us02web.zoom.us/j/81929515972">https://us02web.zoom.us/j/81929515972</a>
+      </p>
+      <p><strong>September 17, 2025</strong></p>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "brooklyn-cb-18",
+    body_name: "Brooklyn Community Board 18",
+    url: "https://www.nyc.gov/site/brooklyncb18/meetings/calendar.page",
+  }, { receipt });
+
+  assert.equal(records.length, 1);
+  assert.equal(records[0].date, "2026-06-17");
+  assert.equal(records[0].start_at, "2026-06-17T19:00:00-04:00");
+  assert.equal(records[0].title, "REGULAR MONTHLY BOARD MEETING");
+  assert.equal(records[0].record_id, "nyc-calendar:brooklyn-cb-18:2026-06-17:regular-monthly-board-meeting");
+  assert.equal(records[0].participation.remote_join_url, "https://us02web.zoom.us/j/81929515972");
+});
+
+test("Queens CB1 official calendar keeps the dated full-board heading", () => {
+  const records = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      <h2>Board Meetings</h2>
+      <p>The following are a listing of the dates from <strong>September 2026 through June 2027</strong>:</p>
+      <h3>Full Board / Public Hearing Meetings</h3>
+      <div class="row"><div class="span6">
+        <p>September 22, 2026 - <strong>6:00 PM</strong><br />October 20, 2026<br />November 17, 2026</p>
+      </div></div>
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "queens-cb-01",
+    url: "https://www.nyc.gov/site/queenscb1/calendar/calendar.page",
+  }, { receipt });
+
+  assert.equal(records.length, 1);
+  assert.equal(records[0].date, "2026-09-22");
+  assert.equal(records[0].start_at, "2026-09-22T18:00:00-04:00");
+  assert.equal(records[0].title, "Full Board / Public Hearing Meetings");
+});
