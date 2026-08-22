@@ -1,14 +1,28 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
+import { communityBoardScopeHref } from "../site/community_board_scope_links.mjs";
+import { followingUrlFromWatch } from "../site/following_view.mjs";
+import {
+  parseGoogleCalendarSource,
+  parseHtmlPdfSource,
+  parseNycOfficialCalendarSource,
+} from "../site/community_board_source_adapters.mjs";
+import { meetingCanonicalHref } from "../site/meeting_object_contract.mjs";
 import {
   buildCommunityBoardMeetingIndex,
   classifyCommunityBoardSourceRole,
   COMMUNITY_BOARD_SOURCE_STATES,
+  materializeCommunityBoardMeetingRow,
 } from "../tools/build_community_board_meeting_index.mjs";
 
 function responseFor(url, { duplicate = false } = {}) {
   const id = duplicate ? "same-publisher-id" : `${url}#publisher-event`;
+  if (/\.ics(?:$|[?#])/i.test(url) || /\/calendar\/ical\//i.test(url)) {
+    const ics = `BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:${id}\nDTSTART:20260910T220000Z\nSUMMARY:Board meeting\nEND:VEVENT\nEND:VCALENDAR`;
+    const bytes = new TextEncoder().encode(ics);
+    return { ok: true, status: 200, headers: { get: () => "text/calendar" }, arrayBuffer: async () => bytes.buffer };
+  }
   const duplicateDocuments = duplicate
     ? `<a data-record-id="${id}" data-date="2026-09-11" href="${url}#minutes-1.pdf">Minutes one</a><a data-record-id="${id}" data-date="2026-09-12" href="${url}#minutes-2.pdf">Minutes two</a>`
     : `<a data-record-id="${duplicate ? id : `${url}#document`}" data-date="2026-09-11" href="${url}#minutes.pdf">Minutes</a>`;
@@ -38,7 +52,7 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 61, "checked-empty": 32, unavailable: 5, "not-yet-checked": 20 },
+    { indexed: 63, "checked-empty": 33, unavailable: 5, "not-yet-checked": 17 },
   );
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
@@ -67,4 +81,80 @@ test("duplicate publisher identifiers within a board fail the build", async () =
     }),
     /duplicate publisher identifier within board/,
   );
+});
+
+test("previously missing CB7 meetings index from explicit sources and are followable", () => {
+  const brooklyn = parseHtmlPdfSource(`<script type="application/ld+json">${JSON.stringify([{
+    "@type": "Event",
+    name: "CB7 Monthly Board Meeting – September 16",
+    url: "https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-september-16/",
+    startDate: "2026-09-16T18:30:00-04:00",
+  }])}</script>`, {
+    adapter: "html_pdf_v1",
+    role: "upcoming_meetings",
+    board_id: "brooklyn-cb-07",
+    body_name: "Brooklyn Community Board 7",
+    url: "https://cbbrooklyn.cityofnewyork.us/cb7/events/list/",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const manhattan = parseGoogleCalendarSource(`BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:63opnsm7n7f5d8rpk76mftnpfa@google.com
+DTSTART;TZID=America/New_York:20260901T183000
+SUMMARY:Full Board Meeting
+LOCATION:10 Lincoln Center Plaza
+END:VEVENT
+END:VCALENDAR`, {
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "manhattan-cb-07",
+    body_name: "Manhattan Community Board 7",
+    url: "https://calendar.google.com/calendar/ical/example/public/basic.ics",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const queens = parseNycOfficialCalendarSource(`
+    <div class="span6 about-description">
+      Meetings The Community Board meets on the 2nd Monday of each month.
+      The next scheduled Regular &amp; Public Hearing meeting will be September 14, 2026
+      St. Luke-Msgr. Tosi Pastoral Center 16-34 Clintonville Street Whitestone, NY 11357
+      There are no scheduled Committee meetings at this time.
+    </div>
+  `, {
+    adapter: "nyc_official_calendar_v1",
+    role: "upcoming_meetings",
+    publisher_kind: "nyc_official",
+    format: "explicit board calendar",
+    board_id: "queens-cb-07",
+    body_name: "Queens Community Board 7",
+    url: "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+
+  assert.equal(brooklyn.length, 1);
+  assert.equal(manhattan.length, 1);
+  assert.equal(queens.length, 0, "Queens CB7 prose without a publisher event identity stays unindexed");
+
+  const observedAt = "2026-08-21T12:00:00Z";
+  const brooklynRow = materializeCommunityBoardMeetingRow(brooklyn[0], {
+    id: "brooklyn-cb-07",
+    name: "Brooklyn Community Board 7",
+    borough: "Brooklyn",
+  }, observedAt);
+  const manhattanRow = materializeCommunityBoardMeetingRow(manhattan[0], {
+    id: "manhattan-cb-07",
+    name: "Manhattan Community Board 7",
+    borough: "Manhattan",
+  }, observedAt);
+
+  for (const row of [brooklynRow, manhattanRow]) {
+    const href = meetingCanonicalHref(row);
+    const scopeHref = communityBoardScopeHref("meetings", row.board_id);
+    const followHref = followingUrlFromWatch({
+      lens: "meetings",
+      filter: { geographies: [`community-board:${row.board_id}`], borough: row.affected_area.boroughs[0] },
+    });
+    assert.match(href, /^\/meetings\/meeting%3Acommunity_board%3A/);
+    assert.match(scopeHref, new RegExp(row.board_id));
+    assert.match(followHref, /\/following\?/);
+    assert.match(followHref, /lens=meetings/);
+    assert.equal(row.source_provenance.observed_receipt.status, "ok");
+    assert.ok(row.entity_refs_all.includes(`community-board:${row.board_id}`));
+  }
 });
