@@ -4,6 +4,8 @@ import { test } from "node:test";
 import {
   COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS,
   fetchCommunityBoardSource,
+  googleCalendarIdsFromHtml,
+  googleCalendarPublicIcsUrl,
   parseNycOfficialCalendarSource,
   parseAirtableSource,
   parseGoogleCalendarSource,
@@ -286,6 +288,91 @@ test("NYC calendar fetch retries the official www1 alias after an edge denial", 
   assert.equal(result.records.length, 1);
   assert.equal(result.records[0].date, "2026-09-29");
   assert.equal(result.receipt.source_url, "https://www.nyc.gov/site/manhattancb3/calendar/calendar.page");
+});
+
+test("Google Calendar discovery reads embed src, base64 src, cid links, and public ICS URLs", () => {
+  assert.deepEqual(googleCalendarIdsFromHtml(`
+    <iframe src="https://calendar.google.com/calendar/embed?src=g4b54u7hbpp1b6p63gp0n97448%40group.calendar.google.com&#038;ctz=America/New_York"></iframe>
+    <iframe src="https://calendar.google.com/calendar/embed?src=YmswM0BjYi5ueWMuZ292&amp;color=%23039BE5"></iframe>
+    <a href="https://calendar.google.com/calendar/r?cid=cbsix.org_coj3atji6ll3sjsn5cupptc27g@group.calendar.google.com">Subscribe</a>
+    <iframe src="https://calendar.google.com/calendar/embed?src=NTFscWRoY2UzM2w5YzY3azFpNjQ1ZGVqcXNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=ZzdvY25sbmkyMTlubHQ3Z29iOHRjNDcwb2NAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ"></iframe>
+  `).sort(), [
+    "51lqdhce33l9c67k1i645dejqs@group.calendar.google.com",
+    "bk03@cb.nyc.gov",
+    "cbsix.org_coj3atji6ll3sjsn5cupptc27g@group.calendar.google.com",
+    "g4b54u7hbpp1b6p63gp0n97448@group.calendar.google.com",
+    "g7ocnlni219nlt7gob8tc470oc@group.calendar.google.com",
+  ]);
+  assert.equal(
+    googleCalendarPublicIcsUrl("bk03@cb.nyc.gov"),
+    "https://calendar.google.com/calendar/ical/bk03%40cb.nyc.gov/public/basic.ics",
+  );
+});
+
+test("Google Calendar fetch follows a public embed to ICS and keeps UID plus date identity", async () => {
+  const html = `<iframe src="https://calendar.google.com/calendar/embed?src=queenscb6secretary%40gmail.com&ctz=America/New_York"></iframe>`;
+  const ics = `BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:qn6-board
+DTSTART;TZID=America/New_York:20260917T183000
+SUMMARY:Community Board 6 Meeting
+END:VEVENT
+BEGIN:VEVENT
+UID:qn6-board
+DTSTART;TZID=America/New_York:20261014T183000
+RECURRENCE-ID;TZID=America/New_York:20261014T183000
+SUMMARY:Community Board 6 Meeting
+END:VEVENT
+END:VCALENDAR`;
+  const calls = [];
+  const result = await fetchCommunityBoardSource({
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    format: "NYC HTML + Google Calendar iframe",
+    board_id: "queens-cb-06",
+    url: "https://www.nyc.gov/site/queenscb6/calendar/calendar.page",
+  }, {
+    observedAt: "2026-08-21T12:00:00Z",
+    fetchImpl: async (url) => {
+      calls.push(url);
+      const body = /\/calendar\/ical\//.test(url) ? ics : html;
+      const bytes = new TextEncoder().encode(body);
+      return {
+        ok: true,
+        status: 200,
+        headers: { get: () => (/\/calendar\/ical\//.test(url) ? "text/calendar" : "text/html") },
+        arrayBuffer: async () => bytes.buffer,
+      };
+    },
+  });
+  assert.equal(calls[0], "https://www.nyc.gov/site/queenscb6/calendar/calendar.page");
+  assert.equal(calls[1], "https://calendar.google.com/calendar/ical/queenscb6secretary%40gmail.com/public/basic.ics");
+  assert.deepEqual(result.records.map((row) => row.event_id), ["qn6-board::2026-09-17", "qn6-board::2026-10-14"]);
+  assert.equal(result.receipt.status, "ok");
+  assert.equal(result.receipt.source_url, "https://www.nyc.gov/site/queenscb6/calendar/calendar.page");
+  assert.equal(result.records[0].source_url, "https://www.nyc.gov/site/queenscb6/calendar/calendar.page");
+});
+
+test("a private Google Calendar ICS stays empty instead of inventing events", async () => {
+  const html = `<iframe src="https://calendar.google.com/calendar/embed?src=private-board%40group.calendar.google.com"></iframe>`;
+  const result = await fetchCommunityBoardSource({
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    format: "NYC HTML + Google Calendar iframe",
+    board_id: "brooklyn-cb-03",
+    url: "https://www.nyc.gov/site/brooklyncb3/calendar/calendar.page",
+  }, {
+    observedAt: "2026-08-21T12:00:00Z",
+    fetchImpl: async (url) => {
+      if (/\/calendar\/ical\//.test(url)) {
+        return { ok: false, status: 404, headers: { get: () => "text/html" }, arrayBuffer: async () => new ArrayBuffer(0) };
+      }
+      const bytes = new TextEncoder().encode(html);
+      return { ok: true, status: 200, headers: { get: () => "text/html" }, arrayBuffer: async () => bytes.buffer };
+    },
+  });
+  assert.equal(result.records.length, 0);
+  assert.equal(result.receipt.status, "ok");
 });
 
 test("NYC official-calendar adapter accepts a dated meeting paragraph without an h3", () => {
