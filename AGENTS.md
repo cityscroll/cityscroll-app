@@ -253,7 +253,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `pdf_calendar_v1` follows official agenda/calendar PDFs linked from those pages and emits
   a meeting only when the PDF text has a real date AND clock time plus a full-board /
   general-board / public-hearing / executive-board identity. Bare agendas, past-only
-  schedules, image-only PDFs, and "usually 6pm" copy stay documents, not events. When the page has no publisher event ID, retain the
+  schedules, image-only PDFs, and "usually 6pm" copy stay documents, not events.
+  `airtable_v1` reads a public shared-view id from an embed, fetches the signed
+  `readSharedViewData` payload, and maps Date/Name/record fields; auth-gated views
+  and office-closure rows stay empty. Cloudflare Turnstile calendars stay
+  browser-protected honest states rather than a live-browser build dependency. When the page has no publisher event ID, retain the
   meeting card but keep its `hosts_meeting` graph edge held. Every row carries a source receipt and
   an unjoined `cityscroll.community_board_source_join.v1` result. Static Browse builds merge the
   rows in `tools/build_primary_documents.mjs`; the Meetings client appends the same artifact in

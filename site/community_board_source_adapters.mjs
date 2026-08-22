@@ -43,8 +43,8 @@ export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
     id: "airtable_v1",
     formats: Object.freeze(["airtable", "json"]),
     record_kinds: Object.freeze(["document", "event"]),
-    max_bytes: 2_000_000,
-    contract: "explicit JSON records and field map; Airtable URLs are never converted into API URLs",
+    max_bytes: 5_000_000,
+    contract: "explicit JSON records and field map, or a public shared-view embed whose signed readSharedViewData payload maps date/title/record fields; Airtable API tokens are never invented",
   }),
   video_record_v1: Object.freeze({
     id: "video_record_v1",
@@ -1082,41 +1082,161 @@ function jsonInput(value) {
   return value && typeof value === "object" ? value : null;
 }
 
+const AIRTABLE_FIELD_ALIASES = Object.freeze({
+  date: Object.freeze(["Date", "when", "Start", "Start Date", "Meeting Date"]),
+  meeting_date: Object.freeze(["Date", "Meeting Date"]),
+  title: Object.freeze(["Name", "Title", "Meeting", "Event"]),
+  address: Object.freeze(["Location", "Address", "Venue"]),
+  venue_name: Object.freeze(["Location", "Venue", "Venue Name"]),
+  description: Object.freeze(["Description", "Notes"]),
+  register_url: Object.freeze(["Register to Attend", "Registration", "Zoom", "URL"]),
+});
+
+function unescapeJsString(value) {
+  return String(value || "").replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(Number.parseInt(hex, 16)));
+}
+
+function airtableScalar(value) {
+  if (value == null || value === "") return null;
+  if (Array.isArray(value)) {
+    const parts = value.map((entry) => airtableScalar(entry)).filter(Boolean);
+    return parts.length ? parts.join(", ") : null;
+  }
+  if (typeof value === "object") {
+    return airtableScalar(value.foreignRowDisplayName || value.filename || value.url || value.name || value.text);
+  }
+  return value;
+}
+
+export function airtableShareIdFromUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    if (!/(?:^|\.)airtable\.com$/i.test(url.hostname)) return null;
+    const match = url.pathname.match(/\/(?:embed\/)?(shr[A-Za-z0-9]+)/);
+    return match?.[1] || null;
+  } catch {
+    return null;
+  }
+}
+
+export function airtableShareIdsFromHtml(html) {
+  const ids = new Set();
+  const text = decodeHtmlEntities(html);
+  const snippets = text.match(/https?:\/\/(?:www\.)?airtable\.com\/[^"'<\s]+/gi) || [];
+  for (const snippet of snippets) {
+    const id = airtableShareIdFromUrl(snippet.replace(/&amp;/g, "&"));
+    if (id) ids.add(id);
+  }
+  return [...ids];
+}
+
+export function airtableEmbedUrl(shareId) {
+  const id = clean(shareId, 80);
+  return /^shr[A-Za-z0-9]+$/.test(id) ? `https://airtable.com/embed/${id}` : null;
+}
+
+export function airtableSharedViewRequestFromEmbed(html) {
+  const text = String(html || "");
+  const encoded = text.match(/urlWithParams:\s*"((?:\\.|[^"\\])*)"/)?.[1];
+  if (!encoded) return null;
+  const pathAndQuery = unescapeJsString(encoded);
+  if (!/\/v0\.3\/view\/viw[A-Za-z0-9]+\/readSharedViewData/i.test(pathAndQuery)) return null;
+  const url = pathAndQuery.startsWith("https://") ? pathAndQuery : `https://airtable.com${pathAndQuery}`;
+  const applicationId = text.match(/x-airtable-application-id"\s*:\s*"([^"]+)"/)?.[1]
+    || decodeURIComponent(pathAndQuery).match(/"applicationId":"(app[A-Za-z0-9]+)"/)?.[1]
+    || null;
+  const shareId = decodeURIComponent(pathAndQuery).match(/"shareId":"(shr[A-Za-z0-9]+)"/)?.[1] || null;
+  return { url, applicationId, shareId };
+}
+
+export function airtableRecordsFromSharedView(payload) {
+  const input = jsonInput(payload);
+  if (!input || typeof input !== "object") return [];
+  if (Array.isArray(input)) return input;
+  if (Array.isArray(input.records)) return input.records;
+  const table = input.data?.table;
+  const columns = Array.isArray(table?.columns) ? table.columns : [];
+  const rows = Array.isArray(table?.rows) ? table.rows : [];
+  if (!columns.length || !rows.length) return [];
+  const names = Object.fromEntries(columns.map((column) => [column.id, column.name || column.id]));
+  return rows.map((row) => {
+    const cells = row?.cellValuesByColumnId && typeof row.cellValuesByColumnId === "object" ? row.cellValuesByColumnId : {};
+    const fields = {};
+    for (const [columnId, value] of Object.entries(cells)) {
+      const name = names[columnId] || columnId;
+      fields[name] = airtableScalar(value) ?? value;
+    }
+    return { id: row.id, fields };
+  });
+}
+
+function isAirtableCalendarMeeting(title) {
+  const text = String(title || "");
+  if (!clean(text, 80) || /\bclosed\b/i.test(text)) return false;
+  if (/\b(full board|executive|committee|hearing|meeting|task\s*-?\s*force|licenses?\s*(?:and|&)\s*permits|land use|human services|youth(?:\s*&\s*|\s+and\s+)education|public safety|open space|economic development|board oversight|district needs)\b/i.test(text)) {
+    return true;
+  }
+  return /^(Housing|Licenses|Land Use|Human Services|Youth|Public Safety|Environment|Economic|Board Oversight|District Needs)\b/i.test(text);
+}
+
 function fieldValue(fields, map, key) {
-  const field = map?.[key] || key;
-  return fields?.[field];
+  const mapped = map?.[key];
+  if (mapped && fields?.[mapped] != null && fields?.[mapped] !== "") return fields[mapped];
+  if (fields?.[key] != null && fields?.[key] !== "") return fields[key];
+  for (const alias of AIRTABLE_FIELD_ALIASES[key] || []) {
+    if (fields?.[alias] != null && fields?.[alias] !== "") return fields[alias];
+  }
+  return undefined;
 }
 
 export function parseAirtableSource(payload, source = {}, options = {}) {
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, source, { parser: "airtable_v1", observed_at: options.observedAt });
-  const input = jsonInput(payload);
-  const records = Array.isArray(input) ? input : Array.isArray(input?.records) ? input.records : [];
+  const records = airtableRecordsFromSharedView(payload);
   const map = source.field_map || source.fieldMap || {};
+  const role = clean(source.role || source.source_role || source.source_type, 80).toLowerCase();
+  const defaultKind = role === "upcoming_meetings" || role === "calendar" ? "event" : "document";
+  const floor = upcomingCalendarFloor(source, { ...options, receipt });
+  const shareId = clean(source.airtable_share_id, 80) || airtableShareIdFromUrl(source.record_url || source.url);
   return records.flatMap((entry) => {
     const fields = entry?.fields && typeof entry.fields === "object" ? entry.fields : entry;
     const id = clean(entry?.id || fieldValue(fields, map, "record_id"), 240);
-    const date = dateFromText(fieldValue(fields, map, "date") || fieldValue(fields, map, "meeting_date"));
+    const date = dateFromText(fieldValue(fields, map, "date") || fieldValue(fields, map, "meeting_date") || airtableScalar(fieldValue(fields, map, "date")));
     if (!id || !date) return [];
+    if (floor && date < floor) return [];
+    const title = airtableScalar(fieldValue(fields, map, "title")) || clean(fieldValue(fields, map, "title"), 500);
+    const kind = clean(fieldValue(fields, map, "record_kind") || source.record_kind, 40) || defaultKind;
+    if (kind === "event" && !isAirtableCalendarMeeting(title)) return [];
     const bodyId = clean(fieldValue(fields, map, "board_id") || source.board_id || source.body_id, 100) || null;
+    const registerUrl = safeUrl(airtableScalar(fieldValue(fields, map, "register_url")));
+    const address = airtableScalar(fieldValue(fields, map, "address"));
+    const recordUrl = fieldValue(fields, map, "record_url")
+      || (shareId ? `https://airtable.com/${shareId}/${id}` : null)
+      || source.record_url
+      || source.url
+      || source.source_url;
     return [record(source, {
-      record_kind: clean(fieldValue(fields, map, "record_kind") || source.record_kind, 40) || "document",
+      record_kind: kind,
       record_id: id,
       board_id: bodyId,
       body_evidence: bodyId ? { board_id: bodyId, basis: fieldValue(fields, map, "board_id") ? "publisher_record" : "explicit_source_descriptor" } : null,
       date,
       category: fieldValue(fields, map, "category"),
-      title: fieldValue(fields, map, "title"),
-      address: fieldValue(fields, map, "address"),
-      venue_name: fieldValue(fields, map, "venue_name"),
+      title,
+      address,
+      venue_name: airtableScalar(fieldValue(fields, map, "venue_name")) || address,
       description: fieldValue(fields, map, "description"),
       end_at: fieldValue(fields, map, "end_at"),
       committee: fieldValue(fields, map, "committee"),
-      publisher_identifier: fieldValue(fields, map, "publisher_identifier"),
-      publisher_event_id: fieldValue(fields, map, "publisher_event_id"),
-      meeting_key: fieldValue(fields, map, "meeting_id") || fieldValue(fields, map, "meeting_key"),
+      publisher_identifier: fieldValue(fields, map, "publisher_identifier") || id,
+      publisher_event_id: fieldValue(fields, map, "publisher_event_id") || id,
+      meeting_key: fieldValue(fields, map, "meeting_id") || fieldValue(fields, map, "meeting_key") || id,
       publisher_matter_ids: Array.isArray(fieldValue(fields, map, "publisher_matter_ids")) ? fieldValue(fields, map, "publisher_matter_ids") : [],
       format: "airtable",
-      record_url: fieldValue(fields, map, "record_url") || source.url || source.source_url,
+      record_url: recordUrl,
+      participation: registerUrl ? {
+        links: [{ label: "Register to attend", url: registerUrl }],
+        remote_join_url: /zoom|webinar|join/i.test(registerUrl) ? registerUrl : null,
+      } : undefined,
     }, receipt)];
   });
 }
@@ -1160,6 +1280,62 @@ export function parseCommunityBoardSource(payload, source = {}, options = {}) {
   if (adapter === "airtable_v1") return parseAirtableSource(payload, source, options);
   if (adapter === "video_record_v1") return parseVideoRecordSource(payload, source, options);
   return [];
+}
+
+async function harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit } = {}) {
+  const parsed = jsonInput(text);
+  if (parsed && (Array.isArray(parsed) || Array.isArray(parsed.records) || Array.isArray(parsed.data?.table?.rows))) {
+    return parseAirtableSource(parsed, source, { observedAt, receipt });
+  }
+  if (/json/i.test(String(contentType || "")) && parsed) {
+    return parseAirtableSource(parsed, source, { observedAt, receipt });
+  }
+  const records = [];
+  const shareIds = [...new Set([
+    airtableShareIdFromUrl(source.record_url || explicitUrl(source)),
+    ...airtableShareIdsFromHtml(text),
+  ].filter(Boolean))];
+  for (const shareId of shareIds) {
+    const embedUrl = airtableEmbedUrl(shareId);
+    if (!embedUrl || typeof fetchImpl !== "function") continue;
+    try {
+      const embedResponse = await fetchImpl(embedUrl, { method: "GET", credentials: "omit", redirect: "follow" });
+      if (!embedResponse?.ok) continue;
+      const embedBytes = embedResponse.arrayBuffer
+        ? await embedResponse.arrayBuffer()
+        : new TextEncoder().encode(await embedResponse.text()).buffer;
+      if (embedBytes.byteLength > (limit || 5_000_000)) continue;
+      const embedHtml = new TextDecoder().decode(embedBytes);
+      const request = airtableSharedViewRequestFromEmbed(embedHtml);
+      if (!request?.url) continue;
+      const dataResponse = await fetchImpl(request.url, {
+        method: "GET",
+        credentials: "omit",
+        redirect: "follow",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "x-airtable-application-id": request.applicationId || "",
+          "x-airtable-accept-msgpack": "false",
+          "x-time-zone": "America/New_York",
+          "x-user-locale": "en",
+        },
+      });
+      if (!dataResponse?.ok) continue;
+      const dataBytes = dataResponse.arrayBuffer
+        ? await dataResponse.arrayBuffer()
+        : new TextEncoder().encode(await dataResponse.text()).buffer;
+      if (dataBytes.byteLength > (limit || 5_000_000)) continue;
+      const dataText = new TextDecoder().decode(dataBytes);
+      records.push(...parseAirtableSource(dataText, {
+        ...source,
+        record_url: embedUrl,
+        airtable_share_id: shareId,
+      }, { observedAt, receipt }));
+    } catch {
+      continue;
+    }
+  }
+  return dedupeSourceRecords(records);
 }
 
 async function harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit } = {}) {
@@ -1227,6 +1403,8 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
           ? await harvestPdfCalendarRecords(looksLikePdfBytes(bytes, contentType) ? bytes : text, contentType, source, {
             fetchImpl, observedAt, receipt, limit, extractPdfText,
           })
+        : adapter === "airtable_v1"
+          ? await harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit })
         : parseCommunityBoardSource(text, source, { observedAt, receipt });
       return { records, receipt };
     } catch (error) {
