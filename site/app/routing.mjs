@@ -8,6 +8,7 @@ import { officialSourceLink } from "../affordance_grammar.mjs";
 import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.mjs";
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
+import { normalizeCommunityBoardRef } from "../community_board_watch.mjs";
 import {
   EXAMS_SURFACE,
   STAFFING_SURFACE,
@@ -400,7 +401,7 @@ const DEEPLINK_LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
   rules:    ["keywords", "agency", "process", "geographies"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
@@ -419,6 +420,7 @@ function deeplinkClampField(name, v){
       return Array.isArray(v) ? [...new Set(v.map(item=>String(item||"").trim()).filter(item=>item.length<=100&&publicKey.test(item)))].sort().slice(0,8) : [];
     }
     case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
+    case "communityBoard": return normalizeCommunityBoardRef(v);
     case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
     case "mandate_id": {
       // Exact statutory duty id — bare id or legacy mandate:/obligation: subject ref.

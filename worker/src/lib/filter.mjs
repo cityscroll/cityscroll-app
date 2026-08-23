@@ -3,6 +3,7 @@
 
 import { canonicalMandateId } from "../../../site/mandate_subject_ref.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
+import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 
 export const MAX_INPUT = 600;          // characters of NL we accept (a paragraph, not a novel)
 export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
@@ -44,7 +45,7 @@ export const LENSES = {
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
   rules:    ["keywords", "agency", "process", "geographies"],
-  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
@@ -88,6 +89,8 @@ function clampField(name, v) {
       return Array.isArray(v)
         ? [...new Set(v.map(normalizeGeographyKey).filter(Boolean))].sort().slice(0, 8)
         : [];
+    case "communityBoard":
+      return normalizeCommunityBoardRef(v);
     case "agency":
       return typeof v === "string" && v.trim() ? v.trim() : null;
     case "agency_id": {

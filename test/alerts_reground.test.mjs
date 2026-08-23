@@ -39,6 +39,15 @@ test("advanced options are progressive disclosure, not a second form", () => {
   assert.doesNotMatch(html, /id="quizgo"/);
 });
 
+test("More ways to watch offers a borough-qualified Community Board control", () => {
+  const tab = html.slice(html.indexOf('id="tab-alerts"'), html.indexOf('id="tab-notice"'));
+  assert.match(tab, /value="communityboard"[^>]*data-i18n="watch_community_board"/);
+  assert.match(tab, /id="acommunityboardbox" hidden/);
+  assert.match(tab, /id="acommunityboardboro"/);
+  assert.match(tab, /id="acommunityboardnumber"/);
+  assert.match(i18n, /watch_community_board:\s*"Follow a Community Board"/);
+});
+
 test("multi-watch rollup is demoted behind disclosure", () => {
   assert.match(html, /<details[^>]*id="alerts-rollup-prefs"/);
   assert.ok(!/id="alerts-rollup-prefs"[^>]*\sopen/.test(html), "rollup starts closed");

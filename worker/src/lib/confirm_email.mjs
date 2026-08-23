@@ -2,6 +2,8 @@
 // describeFilter() renders a stored lens filter back into plain English. No I/O, so these
 // templates are unit-tested on their own.
 
+import { communityBoardLabel, normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+
 const LENS_LABEL = {
   money: "Contracts and RFPs",
   people: "Staffing and exams",
@@ -33,6 +35,9 @@ function geographyLabel(key) {
 // A stored lens filter → one human-readable line.
 export function describeFilter(lens, filter) {
   const f = filter || {};
+  if (lens === "meetings" && normalizeCommunityBoardRef(f.communityBoard)) {
+    return `${communityBoardLabel(f.communityBoard)} meetings`;
+  }
   if (lens === "district") {
     return `City Council District ${f.councilDistrict || "?"} weekly digest`;
   }

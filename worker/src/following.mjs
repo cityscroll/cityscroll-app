@@ -77,6 +77,7 @@ function watchFacts(context) {
   const rows = [
     ["Topic", context.topicLabel || context.lens || "Contracts"],
     ["Place", context.placeLabel || "Citywide"],
+    ["Community Board", context.communityBoardLabel || null],
     ["Keyword", context.keywordLabel || null],
     ["Agency", context.agencyLabel || null],
     ["District", context.districtLabel || null],
