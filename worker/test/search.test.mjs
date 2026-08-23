@@ -544,6 +544,48 @@ test("the ranked City Record shape projects an exact contract award before prese
   }
 });
 
+test("FIREMATIC vendor search retains the served PASSPort-only contract after family merge", async () => {
+  const { sqlite, DB } = database([]);
+  try {
+    const response = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=FIREMATIC"),
+      { DB },
+      {},
+    );
+    assert.equal(response.status, 200);
+    const body = await response.json();
+    const contracts = body.lanes.find((lane) => lane.id === "contracts");
+    const passport = body.results.find((result) => (
+      result.object_ref === "procurement:contract:CT185720228800365"
+    ));
+    assert.ok(passport);
+    assert.equal(passport.canonical_href, "/procurements/procurement%3Acontract%3ACT185720228800365");
+    assert.equal(passport.summary, "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE · FIREMATIC SUPPLY CO. INC · $49,689.78");
+    assert.equal(body.results.filter((result) => result.provenance?.producer === "contract_award_search_document.v1").length, 21);
+    assert.deepEqual(contracts.coverage.pre_merge_candidate_counts, {
+      city_record: 0,
+      contract_award: 21,
+      shared_procurement: 4,
+      pre_merge: 25,
+      post_merge: 25,
+    });
+
+    const exact = await worker.fetch(new Request(
+      "https://api.cityscroll.org/search?object_ref=procurement%3Acontract%3ACT185720228800365&source_ref=passport_public_contracts%3Acontract%3A85721B0111001A001%3A4618449",
+    ), { DB }, {});
+    assert.equal(exact.status, 200);
+    assert.deepEqual((await exact.json()).results.map((result) => ({
+      object_ref: result.object_ref,
+      canonical_href: result.canonical_href,
+    })), [{
+      object_ref: "procurement:contract:CT185720228800365",
+      canonical_href: "/procurements/procurement%3Acontract%3ACT185720228800365",
+    }]);
+  } finally {
+    sqlite.close();
+  }
+});
+
 test("current contract PINs remain findable through D1 even before the award warehouse refreshes", async () => {
   const { sqlite, DB } = database(ROWS);
   try {

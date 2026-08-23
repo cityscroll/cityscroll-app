@@ -1,0 +1,33 @@
+{
+  "query": "FIREMATIC",
+  "ocp_rows": [
+    {"request_id":"20030226001","start_date":"2003-03-05","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"CHAIN SAW KIT","pin":"857300335","contract_amount":"43715.36","vendor_name":"Firematic Supply Co.,Inc."},
+    {"request_id":"20030929024","start_date":"2003-10-06","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"GENUINE HURST RESCUE TOOLS AND ACCESSORIES","pin":"857300897","contract_amount":"1470000","vendor_name":"Firematic Supply Co.,Inc."},
+    {"request_id":"20031021015","start_date":"2003-10-28","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"FIREFIGHTING FITTINGS:ADAPTERS, NOZZLES & MISC.","pin":"857300126","contract_amount":"615628.24","vendor_name":"Firematic Supply Co.,Inc."},
+    {"request_id":"20041028016","start_date":"2004-11-04","agency_name":"Fire Department","type_of_notice_description":"Award","short_title":"Repair and Maintenance of Hurst Rescue Systems and Rabbit Tool Systems","pin":"057040001238","contract_amount":"1357200","vendor_name":"Firematic Supply Co Inc"},
+    {"request_id":"20050523009","start_date":"2005-05-31","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"CHAIN SAW KIT","pin":"857500188","contract_amount":"160057.1","vendor_name":"Firematic Supply Co. Inc."},
+    {"request_id":"20051007003","start_date":"2005-10-17","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"FIREFIGHTING FITTINGS","pin":"857501261","contract_amount":"1825396.74","vendor_name":"Firematic Supply Co, Inc."},
+    {"request_id":"20061011004","start_date":"2006-10-18","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"GENUINE HURST RESCUE TOOLS AND ACCESSORIES","pin":"857601404","contract_amount":"2548000","vendor_name":"Firematic Supply Co, Inc."},
+    {"request_id":"20090511018","start_date":"2009-05-18","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"FIREFIGHTING FITTINGS","pin":"857801273","contract_amount":"1497511.86","vendor_name":"Firematic Supply Co. Inc."},
+    {"request_id":"20100826004","start_date":"2010-09-02","agency_name":"Fire Department","type_of_notice_description":"Award","short_title":"REPAIR AND SERVICE FOR THE HURST HEAVY DUTY RESCUE SYSTEMS AND HURST RABBIT TOOL SYSTEMS","pin":"057100002258","contract_amount":"1187800","vendor_name":"Firematic Supply Co, Inc."},
+    {"request_id":"20101005012","start_date":"2010-10-13","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"SAW, RESCUE, FIRE (BRAND SPECIFIC)","pin":"8571000870","contract_amount":"525000","vendor_name":"Firematic Supply Company Inc."},
+    {"request_id":"20120720003","start_date":"2012-07-27","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"FIREFIGHTING FITTINGS","pin":"8571200238","contract_amount":"3349095.03","vendor_name":"FIREMATIC SUPPLY CO INC."},
+    {"request_id":"20121113006","start_date":"2012-11-20","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"GENUINE HURST RESCUE TOOLS AND ACCESSORIES","pin":"8571200628","contract_amount":"5880000","vendor_name":"FIREMATIC SUPPLY CO, INC"},
+    {"request_id":"20151005005","start_date":"2015-10-13","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"FIREFIGHTING FITTINGS","pin":"8571500218","contract_amount":"2468366.61","vendor_name":"Firematic Supply Co Inc"},
+    {"request_id":"20151224022","start_date":"2016-01-04","agency_name":"Fire Department","type_of_notice_description":"Award","short_title":"INSPECTION MAINTENANCE AND REPAIR OF HURST HEAVY DUTY RESCUE SYSTEM AND HURST RABBIT TOOL","pin":"057150001114","contract_amount":"934500","vendor_name":"Firematic Supply Co. Inc."},
+    {"request_id":"20181011007","start_date":"2018-10-18","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"GENUINE HURST RESCUE TOOLS AND ACCESSORIES","pin":"8571800010","contract_amount":"2097950","vendor_name":"Firematic Supply Co Inc"},
+    {"request_id":"20190708018","start_date":"2019-07-15","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"FIREFIGHTING FITTINGS - FDNY","pin":"8571900051","contract_amount":"2276446.5","vendor_name":"Firematic Supply Co. Inc."},
+    {"request_id":"20201217101","start_date":"2020-12-24","agency_name":"Fire Department","type_of_notice_description":"Award","short_title":"INSPECTION, MAINTENANCE AND REPAIR OF HURST HEAVY DUTY RESCUE SYSTEMS AND HURST RABBIT TOOLS","pin":"057200001279","contract_amount":"962000","vendor_name":"Firematic Supply Co, Inc."},
+    {"request_id":"20210723111","start_date":"2021-07-30","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"nozzles, highrise and cockloft (brand specific)","pin":"85721B0111","contract_amount":"158997.84","vendor_name":"Firematic Supply Co Inc"},
+    {"request_id":"20250219009","start_date":"2025-02-25","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"B2400092 - Genuine Hurst Rescue Tools & Accessories - FDNY","pin":"05724S0007001","contract_amount":"6168009","vendor_name":"Firematic Supply Co. Inc."},
+    {"request_id":"20250911004","start_date":"2025-09-17","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"EMERGENCY LARGE RESCUE VEHICLE FOR THE CITY OF NEW YORK","pin":"85725B0051001","contract_amount":"27410000","vendor_name":"Firematic Supply Co. Inc."},
+    {"request_id":"20260205004","start_date":"2026-02-11","agency_name":"Citywide Administrative Services","type_of_notice_description":"Award","short_title":"Bid 2600003 - Firefighting Fittings - FDNY (Class 1, 3, 4)","pin":"85726B0006001","contract_amount":"12059528","vendor_name":"Firematic Supply Co., Inc."}
+  ],
+  "passport_only": {
+    "object_ref": "procurement:contract:CT185720228800365",
+    "source_observation_ref": "passport_public_contracts:contract:85721B0111001A001:4618449",
+    "vendor_name": "FIREMATIC SUPPLY CO. INC",
+    "contract_amount": 49689.78,
+    "canonical_href": "/procurements/procurement%3Acontract%3ACT185720228800365"
+  }
+}
