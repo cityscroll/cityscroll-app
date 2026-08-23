@@ -47,6 +47,7 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/ops-contract"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/performance"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/stats"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/pin-family-verify"));
   assert.equal(doc.performance.contract, "cityscroll.admin.performance.v1");
   assert.equal(doc.performance.version, "1.0.0");
   assert.equal(doc.performance.cache_control, "private, no-store");
@@ -81,7 +82,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.7.0", "signup lifecycle is additive on the existing ops-contract");
+  assert.equal(doc.version, "1.8.0", "PIN-family verify route is additive on the existing ops-contract");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [

@@ -22,6 +22,7 @@ import {
   handleAdminDeprecatedOptInRecovery,
   handleAdminFeedback,
   handleAdminPossiblySame,
+  handleAdminPinFamilyVerify,
   handleAdminOpsContract,
   handleAdminPerformance,
   handleAdminStats,
@@ -154,6 +155,7 @@ export default {
     if (pathname === "/admin/recover-deprecated-opt-in") return handleAdminDeprecatedOptInRecovery(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
+    if (pathname === "/admin/pin-family-verify") return handleAdminPinFamilyVerify(request, env);
     if (pathname === "/admin/ops-contract") return handleAdminOpsContract(request, env);
     if (pathname === "/admin/performance") return handleAdminPerformance(request, env);
     if (pathname === "/admin/stats") return handleAdminStats(request, env);

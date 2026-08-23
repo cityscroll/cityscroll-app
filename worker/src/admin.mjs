@@ -40,6 +40,14 @@ import {
 } from "./lib/false_split_evidence.mjs";
 import { commitCurationReviewCommand } from "./lib/curation_review_command.mjs";
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
+import {
+  appendPinFamilyVerdict,
+  findReviewPair,
+  loadPinFamilyReview,
+  pinFamilyReviewPayload,
+  readPinFamilyVerdicts,
+  renderPinFamilyVerifyPage,
+} from "./lib/pin_family_verify.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
 import { PerformanceQueryError } from "./lib/performance_query.mjs";
 import {
@@ -560,6 +568,68 @@ export async function handleAdminPossiblySame(req, env) {
     status: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
   });
+}
+
+// GET/POST /admin/pin-family-verify?key=… — desk evidence for PIN-family
+// Checkbook ↔ PASSPort contract-id mismatches. POST writes an append-only
+// same-contract / related-instrument verdict; it never rewrites the crosswalk.
+export async function handleAdminPinFamilyVerify(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
+  const review = loadPinFamilyReview();
+  const includeAuto = new URL(req.url).searchParams.get("view") === "auto";
+  if (req.method === "POST") {
+    if (!env.DB) return json({ error: "no-store" }, 503);
+    let body;
+    try {
+      body = (req.headers.get("content-type") || "").includes("application/json")
+        ? await req.json()
+        : Object.fromEntries(await req.formData());
+    } catch {
+      return json({ error: "invalid-body" }, 400);
+    }
+    const pair = findReviewPair(review, body?.pair_id);
+    if (!pair) return json({ error: "pair-not-found" }, 404);
+    let result;
+    try {
+      result = await appendPinFamilyVerdict(env.DB, pair, body);
+    } catch {
+      return json({ error: "pin-family-verdict-write-failed" }, 503);
+    }
+    if (result.error) {
+      const status = result.error === "pair-not-found" ? 404 : 400;
+      return json({ error: result.error }, status);
+    }
+    if ((req.headers.get("accept") || "").includes("application/json")) {
+      return json(result, 201);
+    }
+    const target = new URL(req.url);
+    target.searchParams.set("saved", result.id);
+    return new Response(null, { status: 303, headers: { Location: target.toString(), "Cache-Control": "no-store" } });
+  }
+
+  let events = [];
+  if (env.DB) {
+    try {
+      const ids = reviewQueuePairsForRead(review, includeAuto).map((pair) => pair.pair_id);
+      events = await readPinFamilyVerdicts(env.DB, ids);
+    } catch {
+      return json({ error: "review-data-unavailable" }, 503);
+    }
+  }
+  if ((req.headers.get("accept") || "").includes("application/json")) {
+    return json(pinFamilyReviewPayload(review, events, { includeAuto }), 200);
+  }
+  const eventsByPair = Object.groupBy(events, (event) => event.pair_id);
+  return new Response(renderPinFamilyVerifyPage(review, eventsByPair, req.url), {
+    status: 200,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+  });
+}
+
+function reviewQueuePairsForRead(review, includeAuto) {
+  return (review?.pairs || []).filter((pair) => includeAuto || pair.identity_class === "needs_review");
 }
 
 function escapeHtml(value) {
