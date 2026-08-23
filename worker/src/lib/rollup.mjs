@@ -10,7 +10,7 @@
 // immediately on the SUBS record and take effect on the next daily cron
 // (~13:00 UTC / ~9am Eastern).
 
-import { isTestSubscriber, normalizeEmail, redactEmail } from "./subscriptions.mjs";
+import { isTestSubscriber, normalizeEmail } from "./subscriptions.mjs";
 
 /** Active = not paused and not a developer/e2e test account. Missing/false paused → active. */
 export function isWatchActive(sub) {
@@ -229,7 +229,7 @@ export function quietRollupSectionLine(label, statusLabel = "no new matches") {
 
 /**
  * Day-log entry for an account-level rollup send (or dry-run).
- * Never stores a raw email — redacted only.
+ * Operator daylog stores the full account identity.
  */
 export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
   if (!result || typeof result !== "object") return null;
@@ -260,7 +260,7 @@ export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
     id: result.sub || result.accountId || null,
     lens: "account",
     query: result.queryLabel || (sections.length ? `${sections.length} watches` : "account rollup"),
-    email: result.emailRedacted || (result.email ? redactEmail(result.email) : null),
+    email: result.email || result.emailRedacted || null,
     found: Number.isFinite(result.found) ? Number(result.found) : null,
     noticeCount,
     noticeIds,
@@ -278,11 +278,9 @@ export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
   };
 }
 
-/** Opaque short account id for daylog / results (no PII). */
+/** Account id for operator daylog / results. Full address so accounts cannot collide. */
 export function accountLogId(email) {
   const e = normalizeEmail(email);
-  if (!e) return "account:***";
-  const at = e.indexOf("@");
-  const u = at > 0 ? e.slice(0, Math.min(2, at)) : e.slice(0, 2);
-  return `account:${u}***`;
+  if (!e) return "account:unknown";
+  return `account:${e}`;
 }

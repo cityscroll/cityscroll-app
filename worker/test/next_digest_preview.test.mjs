@@ -116,7 +116,7 @@ test("next digest preview shares the drain renderer and does not send or mutate 
     assert.equal(response.status, 200);
     const body = await response.json();
     assert.equal(body.next_scheduled_at, "2026-08-10T13:00:00.000Z");
-    assert.equal(body.subscriber_label, "pe***@example.com");
+    assert.equal(body.subscriber_label, "person@example.com");
     assert.equal(body.owed_item_count, 1);
     assert.equal(body.empty, false);
     assert.match(body.digest_html, /Owed harbor project/);
@@ -151,7 +151,7 @@ test("next digest preview shares the drain renderer and does not send or mutate 
   }
 });
 
-test("next digest preview fails closed, supports the redacted label, and has an empty state", async () => {
+test("next digest preview fails closed, supports the address label, and has an empty state", async () => {
   const fixture = makeEnv({ owed: false });
   assert.equal((await handleAdminNextDigestPreview(new Request("https://w/admin/next-digest-preview"), fixture.env)).status, 401);
   assert.equal((await handleAdminNextDigestPreview(new Request("https://w/admin/next-digest-preview?key=secret", { method: "POST" }), fixture.env)).status, 405);
@@ -163,13 +163,13 @@ test("next digest preview fails closed, supports the redacted label, and has an 
   const indexBody = await index.json();
   assert.equal(indexBody.subscribers.length, 1);
   assert.match(indexBody.subscribers[0].preview_url, /subscriber=subscriber%3Atest/);
-  assert.doesNotMatch(JSON.stringify(indexBody), /person@example\.com/);
+  assert.match(JSON.stringify(indexBody), /person@example\.com/);
 
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async () => ({ ok: true, json: async () => [] });
   try {
     const empty = await handleAdminNextDigestPreview(
-      new Request("https://w/admin/next-digest-preview?key=secret&subscriber=pe%2A%2A%2A%40example.com"),
+      new Request("https://w/admin/next-digest-preview?key=secret&subscriber=person%40example.com"),
       fixture.env,
       { now: NOW },
     );
@@ -181,7 +181,7 @@ test("next digest preview fails closed, supports the redacted label, and has an 
     assert.equal(body.owed_item_count, 0);
 
     const emptyHtml = await handleAdminNextDigestPreview(
-      new Request("https://w/admin/next-digest-preview?key=secret&subscriber=pe%2A%2A%2A%40example.com&view=html"),
+      new Request("https://w/admin/next-digest-preview?key=secret&subscriber=person%40example.com&view=html"),
       fixture.env,
       { now: NOW },
     );
