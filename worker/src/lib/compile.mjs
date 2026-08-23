@@ -21,6 +21,9 @@ import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
+import communityBoardGeography from "../../../site/data/community_board_geography_lookup.json" with { type: "json" };
+import { communityDistrictIdFromBoardOntology } from "../../../site/community_board_geography.mjs";
+import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 export { vendorStem };
 
@@ -121,8 +124,24 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
-  const geographyKeys = [...new Set((Array.isArray(f.geographies) ? f.geographies : [f.geography])
+  const requestedBoard = f.communityBoard;
+  const hasRequestedBoard = requestedBoard !== undefined && requestedBoard !== null
+    && String(requestedBoard).trim() !== "";
+  const communityBoard = requestedBoard
+    ? normalizeCommunityBoardRef(requestedBoard)
+    : null;
+  if (hasRequestedBoard && (sub.lens !== "meetings" || !communityBoard)) return null;
+  const boardCommunityDistrict = communityBoard
+    ? communityDistrictIdFromBoardOntology(communityBoard, communityBoardGeography)
+    : null;
+  if (communityBoard && !boardCommunityDistrict) return null;
+  let geographyKeys = [...new Set((Array.isArray(f.geographies) ? f.geographies : [f.geography])
     .map(normalizeGeographyKey).filter(Boolean))].sort();
+  if (communityBoard) {
+    const coveringKey = `geography:community_district:${boardCommunityDistrict}`;
+    if (geographyKeys.length && (geographyKeys.length !== 1 || geographyKeys[0] !== coveringKey)) return null;
+    geographyKeys = [coveringKey];
+  }
 
   if (["land", "property", "rules", "meetings", "money"].includes(sub.lens)
       && geographyKeys.length) {
@@ -131,13 +150,24 @@ export function compileSub(sub, todayISO) {
       params: {},
       idField: "geography_item_id",
       kind: sub.lens === "land" ? "rezone" : sub.lens,
+      communityBoard,
+      coveringCommunityDistrict: boardCommunityDistrict,
       transformRows: (payload) => {
         const membershipSets = geographyKeys.map((key) =>
           new Set(payload?.geography_items?.by_key?.[key]?.[sub.lens] || []));
         const ids = membershipSets.length
           ? [...membershipSets[0]].filter((id) => membershipSets.slice(1).every((set) => set.has(id)))
           : [];
+        const boardMeetingIds = communityBoard
+          ? new Set((sharedMeetingSnapshot?.rows || [])
+            .filter((row) => normalizeCommunityBoardRef(
+              row?.institution_refs?.board_ref || (row?.board_id ? `community-board:${row.board_id}` : ""),
+            ) === communityBoard)
+            .map((row) => row.meeting_id)
+            .filter(Boolean))
+          : null;
         return ids.map((id) => payload?.records?.[sub.lens]?.[id]).filter(Boolean)
+          .filter((record) => !boardMeetingIds || boardMeetingIds.has(record.id))
           .filter((record) => !f.agency || String(record.agency || "") === String(f.agency))
           .filter((record) => !kws.length || kws.every((keyword) =>
             `${record.title || ""} ${record.agency || ""} ${record.type || ""}`

@@ -1,5 +1,10 @@
 import { installFilterChipNavigation } from "../affordance_grammar.mjs";
-import { composeWatchRuleSentence, followingCadenceLabel, requestedFollowingTab } from "../following_view.mjs";
+import {
+  composeWatchRuleSentence,
+  followingCadenceLabel,
+  requestedFollowingTab,
+} from "../following_view.mjs";
+import { communityBoardIdFromSelection } from "../community_board_watch.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
   createFollowingRumInstrumentation,
@@ -75,6 +80,15 @@ function readRefineFilter() {
   const council = String(form.elements.council?.value || "").trim();
   if (council) filter.councilDistrict = council;
   else delete filter.councilDistrict;
+  const boardBorough = String(form.elements.boardBorough?.value || "").trim();
+  const boardNumber = String(form.elements.boardNumber?.value || "").trim();
+  if (form.elements.lens?.value === "meetings") {
+    const communityBoard = communityBoardIdFromSelection(boardBorough, boardNumber);
+    if (communityBoard) filter.communityBoard = communityBoard;
+    else delete filter.communityBoard;
+  } else {
+    delete filter.communityBoard;
+  }
   const boro = String(form.elements.boro?.value || "").trim();
   if (boro) {
     const lens = form.elements.lens?.value || "money";
@@ -102,7 +116,17 @@ function syncCouncilFieldVisibility(form) {
   field.hidden = lens !== "district";
 }
 
+function syncCommunityBoardFieldVisibility(form) {
+  const field = form?.querySelector("[data-following-community-board-field]");
+  if (!field) return;
+  const lens = form.elements.lens?.value || root?.dataset.followingLens || "money";
+  field.hidden = lens !== "meetings";
+}
+
 function updateRuleLine() {
+  const form = root?.querySelector("[data-following-preview-form]");
+  syncCouncilFieldVisibility(form);
+  syncCommunityBoardFieldVisibility(form);
   const { lens, filter, frequency } = readRefineFilter();
   const sentence = composeWatchRuleSentence(lens, filter);
   for (const line of root.querySelectorAll("[data-following-rule-line]")) {
@@ -131,6 +155,7 @@ function wireRefineLive() {
   form.addEventListener("input", updateRuleLine);
   form.addEventListener("change", updateRuleLine);
   syncCouncilFieldVisibility(form);
+  syncCommunityBoardFieldVisibility(form);
   updateRuleLine();
 }
 
