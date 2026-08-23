@@ -37,6 +37,7 @@ import {
   buildPassportCheckbookCrosswalk,
   PROCUREMENT_CROSSWALK_METHOD,
 } from "./procurement_crosswalk.mjs";
+import { isPublicSameContractCrosswalkRow } from "./pin_family_mismatch.mjs";
 // Franchise/concession party + eligibility (pure; only depends on vendorStem).
 import {
   extractCounterparties as extractFranchiseCounterparties,
@@ -2366,12 +2367,11 @@ export function procurementContractLinksForObservations(observations = []) {
     checkbookContracts,
   });
   const contractBySourceId = new Map(contracts.map((contract) => [contract.source_record_id, contract]));
-  // The exact-key reintegration tier admits only literal contract-id or
-  // literal PIN↔EPIN equality. Prefix/suffix recovery remains outside this
-  // tier until a separate relation policy authorizes it.
-  for (const row of crosswalk.rows.filter((candidate) =>
-    candidate.status === "matched"
-      && ["contract_id_exact", "pin_epin_exact"].includes(candidate.join_method))) {
+  // Public same-contract corroboration admits exact FMS contract-id matches
+  // only. PIN-family joins that disagree on contract id are related instruments
+  // (or a human-review queue), not a same-contract edge. Prefix/suffix recovery
+  // stays outside this tier.
+  for (const row of crosswalk.rows.filter(isPublicSameContractCrosswalkRow)) {
     const checkbook = contractBySourceId.get(row.checkbook_source_record_id);
     const passport = contractBySourceId.get(row.passport_source_record_id);
     if (!checkbook?.subject_ref || !passport?.subject_ref) continue;

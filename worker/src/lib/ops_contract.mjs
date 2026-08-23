@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.7.0";
+export const OPS_CONTRACT_VERSION = "1.8.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -391,6 +391,12 @@ export const ADMIN_ROUTES = Object.freeze([
     methods: ["GET", "POST"],
     auth: "ADMIN_KEY",
     description: "False-split desk review (entity resolution).",
+  },
+  {
+    path: "/admin/pin-family-verify",
+    methods: ["GET", "POST"],
+    auth: "ADMIN_KEY",
+    description: "PIN-family Checkbook ↔ PASSPort contract-id review; GET lists genuinely-ambiguous pairs with evidence, POST writes a same-contract or related-instrument verdict.",
   },
   {
     path: "/admin/digest-rollup",

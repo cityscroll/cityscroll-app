@@ -297,6 +297,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `node tools/densify_passport_public_fields.mjs --from-dump <contractData.js> --write` then
   rebuild the shared model. Focused proof: `test/procurement_object_contract.test.mjs`,
   `test/shared_procurement_read_model.test.mjs`, and `test/passport_public_fields.test.mjs`.
+- **PIN-family Checkbook ↔ PASSPort identity:** sharing a PIN while FMS contract-id
+  strings differ is not public same-contract. `entity_resolution/cross_domain/pin_family_mismatch.mjs`
+  auto-labels document-type mismatch (CTA1 vs MMA1) and same-vendor successor / later-term
+  renewals as `related_instrument`. Distinct-vendor shared-PIN pairs stay on
+  authenticated `GET/POST /admin/pin-family-verify`. Rebuild
+  `site/data/pin_family_mismatch_review.json` with `node tools/build_pin_family_review.mjs`.
+  Public `corroborates_contract` edges remain `contract_id_exact` only. Proof:
+  `test/pin_family_mismatch.test.mjs` and `worker/test/pin_family_verify.test.mjs`.
 - **Canonical procurement product projection:** `site/procurement_search_producer.mjs` and
   `site/contract_search_bridge.mjs` project the shared procurement read model into source-independent
   SearchDocuments and typed Browse rows. Canonical identity is `procurement_id`; `request_id` is
