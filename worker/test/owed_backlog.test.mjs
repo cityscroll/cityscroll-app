@@ -73,7 +73,7 @@ test("readOwedBacklog returns per-subscriber counts, oldest item, and latest del
   assert.equal(body.subscriber_metadata_available, true);
   assert.deepEqual(body.subscribers[0], {
     subscriber_id: "subscriber:one",
-    subscriber_label: "pe***@example.com",
+    subscriber_label: "person@example.com",
     active_watch_count: 1,
     owed_count: 2,
     oldest_owed_at: "2026-08-09T12:00:00Z",
@@ -89,18 +89,18 @@ test("readOwedBacklog returns per-subscriber counts, oldest item, and latest del
   assert.equal(body.subscribers[1].subscriber_label, "subscriber:two");
   assert.equal(body.subscribers[1].active_watch_count, 0);
   assert.equal(body.subscribers[1].overdue, true);
-  assert.equal(JSON.stringify(body).includes("person@example.com"), false);
+  assert.equal(JSON.stringify(body).includes("person@example.com"), true);
   sqlite.close();
 });
 
-test("legacy SUBS records receive an in-memory identity for the redacted desk label", async () => {
+test("legacy SUBS records receive an in-memory identity for the desk address label", async () => {
   const metadata = await scanSubscriberMetadata(new MockKV({
     "sub:legacy-owner": JSON.stringify({ email: "owner@example.com", lens: "rules", paused: false }),
   }));
   const subscriberId = await deriveSubscriberId("owner@example.com");
   assert.equal(metadata.available, true);
   assert.deepEqual(metadata.bySubscriber.get(subscriberId), {
-    subscriber_label: "ow***@example.com",
+    subscriber_label: "owner@example.com",
     active_watch_count: 1,
   });
 });
@@ -145,7 +145,6 @@ test("worker registers the route and the stats HTML card renders the overdue bad
   assert.match(html, /Owed delivery backlog/);
   assert.match(html, /OVERDUE/);
   assert.match(html, /href="\/admin\/owed-backlog\?key=secret"/);
-  assert.match(html, /pe\*\*\*@example\.com/);
-  assert.doesNotMatch(html, /person@example\.com/);
+  assert.match(html, /person@example\.com/);
   sqlite.close();
 });

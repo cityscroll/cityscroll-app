@@ -92,7 +92,7 @@ test("performance discovery advertises the cross-repository Desk consumer handof
   ]);
   assert.equal(
     doc.admin_routes.find(({ path }) => path === "/admin/subs").description,
-    "Redacted signup roster with recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
+    "Signup roster with full address and sub key; recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
   );
   assert.equal(doc.min_compatible_version, "1.0.0");
   assert.equal(doc.performance.contract, "cityscroll.admin.performance.v1");

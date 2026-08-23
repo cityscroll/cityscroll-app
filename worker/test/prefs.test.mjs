@@ -218,8 +218,10 @@ test("POST pause then unpause", async () => {
   const day = new Date().toISOString().slice(0, 10);
   const events = JSON.parse(await env.ALERT_STATE.get(`watchlog:${day}`));
   assert.deepEqual(events.map((event) => event.action), ["pause", "unpause"]);
-  assert.equal(events[0].emailRedacted, REDACTED_EMAIL);
-  assert.equal(events[0].subKeyMasked, "sub:w1***");
+  assert.equal(events[0].email, TEST_EMAIL);
+  assert.equal(events[0].emailRedacted, TEST_EMAIL);
+  assert.equal(events[0].subKey, "sub:w1");
+  assert.equal(events[0].subKeyMasked, "sub:w1");
   assert.equal(events[0].lens, "money");
   assert.equal(events[0].label, "Contracts and RFPs — about “schools”");
   assert.equal(events[0].freq, "daily");

@@ -217,7 +217,8 @@ test("buildDayLog includes rollup entries via toDayLogEntry fallback shape", () 
   assert.equal(log.entries.filter((x) => x.kind === "subscription").length, 1);
 });
 
-test("accountLogId redacts", () => {
-  assert.equal(accountLogId("alice@example.com"), "account:al***");
+test("accountLogId uses the full address so accounts cannot collide", () => {
+  assert.equal(accountLogId("alice@example.com"), "account:alice@example.com");
+  assert.equal(accountLogId("alicia@example.com"), "account:alicia@example.com");
   assert.match(accountLogId(""), /account:/);
 });

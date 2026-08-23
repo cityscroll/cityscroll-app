@@ -1,4 +1,4 @@
-import { ensureSubscriptionIdentity, redactEmail } from "./lib/subscriptions.mjs";
+import { ensureSubscriptionIdentity } from "./lib/subscriptions.mjs";
 
 export const OWED_BACKLOG_SCHEMA = "owed-backlog.v1";
 export const DIGEST_SCHEDULE_HOUR_UTC = 13;
@@ -107,15 +107,15 @@ export async function scanSubscriberMetadata(subs) {
         try { record = JSON.parse(await subs.get(key.name)); } catch { continue; }
         // Legacy SUBS records may predate the immutable identity migration.
         // Derive the same opaque identity in memory so the private desk can
-        // still show its redacted owner label without mutating SUBS.
+        // still show the owner address without mutating SUBS.
         const { record: resolved } = await ensureSubscriptionIdentity(record, key.name);
         if (!resolved?.subscriber_id) continue;
         const current = bySubscriber.get(resolved.subscriber_id) || {
-          subscriber_label: resolved.email ? redactEmail(resolved.email) : resolved.subscriber_id,
+          subscriber_label: resolved.email || resolved.subscriber_id,
           active_watch_count: 0,
         };
         if (resolved.email && current.subscriber_label === resolved.subscriber_id) {
-          current.subscriber_label = redactEmail(resolved.email);
+          current.subscriber_label = resolved.email;
         }
         if (!resolved.paused) current.active_watch_count += 1;
         bySubscriber.set(resolved.subscriber_id, current);

@@ -17,7 +17,8 @@ export function digestDayLogKey(day) {
 
 /**
  * Collapse one processOneSub / config-watch result into a day-log entry.
- * Never stores a raw email — redacted only. Notice ids are public City Record ids.
+ * Operator daylog stores the full sub key and address so colliding 2-hex
+ * masks cannot alias two watches. Notice ids are public City Record ids.
  */
 export function toDayLogEntry(result = {}, { day = null } = {}) {
   if (!result || typeof result !== "object") return null;
@@ -55,7 +56,7 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
     id: result.watch || result.sub || result.subKey || null,
     lens: result.lens || result.type || null,
     query: result.queryLabel || result.query || result.label || null,
-    email: result.emailRedacted || (result.email ? redactEmail(result.email) : null),
+    email: result.email || result.emailRedacted || null,
     found,
     noticeCount,
     noticeIds,
@@ -266,7 +267,7 @@ export function classifyDigestDeliveryState({ receipt = null, sendcount = null, 
 
 /**
  * Roster row from a SUBS record + optional lastsent.
- * Full email is allowed only on admin-gated responses (caller responsibility).
+ * Authenticated operator responses carry the full address and key.
  */
 export function toRosterRow(sub, { lastSent = null, key = null } = {}) {
   if (!sub || typeof sub !== "object") return null;
@@ -315,6 +316,7 @@ export function searchInterestSignal(roster = []) {
         filter: r.filter || {},
         query: r.query,
         subscriberCount: 0,
+        emails: [],
         emailsRedacted: [],
         lastSentAny: null,
         createdAtEarliest: r.createdAt || null,
@@ -322,6 +324,7 @@ export function searchInterestSignal(roster = []) {
       byQuery.set(qKey, row);
     }
     row.subscriberCount++;
+    if (r.email) row.emails.push(r.email);
     if (r.emailRedacted) row.emailsRedacted.push(r.emailRedacted);
     if (r.lastSent && (!row.lastSentAny || r.lastSent > row.lastSentAny)) {
       row.lastSentAny = r.lastSent;
