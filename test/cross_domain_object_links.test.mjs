@@ -167,11 +167,32 @@ describe("observation → links with provenance", () => {
 
     const links = procurementContractLinksForObservations([checkbook, passport]);
     const crosswalkLinks = links.get(checkbook.source_record_id) || [];
+    assert.equal(crosswalkLinks.length, 0, "PIN-family id mismatch is not public same-contract");
+  });
+
+  it("corroborates Checkbook and PASSPort contracts on exact contract id only", () => {
+    const checkbook = observationFromCheckbookContractRow({
+      prime_contract_id: "CT181620278801775",
+      prime_vendor: "MAKE IT ZESTY LLC",
+      agency: "Health and Mental Hygiene",
+    });
+    const passport = observationFromPassportContractRow({
+      ctr_id: "5755276",
+      contract_id: "CT1-816-20278801775",
+      vendor: "MAKE IT ZESTY LLC",
+      agency: "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+    });
+    const result = buildPassportCheckbookCrosswalk({
+      checkbookContracts: [checkbook],
+      passportContracts: [passport],
+    });
+    assert.equal(result.rows[0].join_method, "contract_id_exact");
+    const links = procurementContractLinksForObservations([checkbook, passport]);
+    const crosswalkLinks = links.get(checkbook.source_record_id) || [];
     assert.equal(crosswalkLinks.length, 1);
     assert.equal(crosswalkLinks[0].type, "corroborates_contract");
-    assert.equal(crosswalkLinks[0].from, "contract:CT81626W0043001");
+    assert.equal(crosswalkLinks[0].from, "contract:CT181620278801775");
     assert.equal(crosswalkLinks[0].to, "contract:CT1-816-20278801775");
-    assert.equal(crosswalkLinks[0].provenance.source_fields[0], "pin");
   });
 
   it("does not reintegrate non-exact PIN suffix or prefix candidates", () => {

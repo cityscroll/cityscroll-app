@@ -75,6 +75,22 @@ export {
   buildPassportCheckbookCrosswalk,
 } from "./procurement_crosswalk.mjs";
 
+export {
+  PIN_FAMILY_REVIEW_VERSION,
+  PIN_FAMILY_IDENTITY_CLASSES,
+  PIN_FAMILY_RULES,
+  PIN_FAMILY_DECISIONS,
+  FMS_DOCUMENT_TYPES,
+  parseFmsContractId,
+  isPinFamilyIdMismatch,
+  isPublicSameContractCrosswalkRow,
+  classifyPinFamilyEvidence,
+  classifyPinFamilyRow,
+  buildPinFamilyReview,
+  reviewQueuePairs,
+  findReviewPair,
+} from "./pin_family_mismatch.mjs";
+
 // Property-domain helpers (normalizeBbl / observationFromZapBblRow live on object_links
 // to avoid duplicate package exports; property_links keeps local copies for its joins).
 export {

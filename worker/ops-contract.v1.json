@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -604,6 +604,15 @@
       ],
       "auth": "ADMIN_KEY",
       "description": "False-split desk review (entity resolution)."
+    },
+    {
+      "path": "/admin/pin-family-verify",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "PIN-family Checkbook ↔ PASSPort contract-id review; GET lists genuinely-ambiguous pairs with evidence, POST writes a same-contract or related-instrument verdict."
     },
     {
       "path": "/admin/digest-rollup",
