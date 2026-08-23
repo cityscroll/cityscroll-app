@@ -264,6 +264,9 @@ jobs:
       - name: Public payload integrity
         if: matrix.family == 'static-standards'
         run: node tools/check_public_payload_integrity.mjs
+      - name: Procurement search-index coherence
+        if: matrix.family == 'static-standards'
+        run: node tools/check_procurement_index_coherence.mjs
       - name: Descriptive collapsed-group labels
         if: matrix.family == 'static-standards'
         run: node tools/check-collapsed-group-labels.mjs

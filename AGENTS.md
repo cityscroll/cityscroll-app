@@ -331,10 +331,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/data/procurement_browse_rows.json`, `site/data/procurement_digest_snapshot.json`, and the
   keyword family with
   `node tools/build_shared_procurement_read_model.mjs && node tools/build_keyword_search_index.mjs`.
+  Those two bundles stamp the same `coherence_receipt` (source-model fingerprint,
+  `generated_at`, selected-row count, artifact hashes).
+  `node tools/check_procurement_index_coherence.mjs` fails when the keyword family
+  advertises a canonical object absent from the served detail model; a suppressed
+  object stays out of the index with its coverage receipt.
   Focused proof: `test/crol_notice_publication_policy.test.mjs`,
   `test/universal_search_procurement_producer.test.mjs`,
   `test/procurement_browse_parity.test.mjs`, `test/procurement_following.test.mjs`,
-  `test/procurement_route.test.mjs`, and `worker/test/procurement_digest_parity.test.mjs`.
+  `test/procurement_route.test.mjs`, `test/procurement_served_index_parity.test.mjs`,
+  `test/procurement_index_coherence.test.mjs`, and
+  `worker/test/procurement_digest_parity.test.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
   model and derives a source-qualified board meeting's community district from the published
   `community-board → covers → community-district` edge in
