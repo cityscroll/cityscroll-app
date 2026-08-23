@@ -597,6 +597,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
     onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
     onDryRun: options.simulateDryRunCounters ? async () => { sentThisRun++; sentToday++; } : null,
     capturePreviews: options.capturePreviews === true,
+    previewOnly: options.previewOnly === true,
     advanceState: options.advanceState,
     heldDigestIds,
     holdAllDigests,
