@@ -1,5 +1,10 @@
 import { landProjectDisplayTitle } from "../display_title.mjs";
 import { officialSourceLink } from "../affordance_grammar.mjs";
+import {
+  communityBoardIdFromSelection,
+  communityBoardLabel,
+  normalizeCommunityBoardRef,
+} from "../community_board_watch.mjs";
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
@@ -89,8 +94,9 @@ function aWatchChange(skipQuizSync){
     paintAlertContextLead(null);
   }
   lastWatch = w;
-  $("#aparambox").style.display = ["district","moneynl","awardwatch","examarea"].includes(w) ? "none" : "";
+  $("#aparambox").style.display = ["district","communityboard","moneynl","awardwatch","examarea"].includes(w) ? "none" : "";
   $("#adistrictbox").hidden = w!=="district";
+  $("#acommunityboardbox").hidden = w!=="communityboard";
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
   syncAlertConditionalFields();
   if(w==="district"){
@@ -99,7 +105,7 @@ function aWatchChange(skipQuizSync){
   }
   if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
-  else if(w==="awardwatch" || w==="examarea"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
+  else if(w==="communityboard" || w==="awardwatch" || w==="examarea"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
     if(w==="rfpkw"){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=t("param_placeholder_rfpkw"); }
@@ -117,6 +123,11 @@ function aWatchChange(skipQuizSync){
 function aDescribe(){
   const w=$("#awatch").value;
   const freq=t($("#afreq").value.toLowerCase()==="weekly" ? "freq_weekly_lc" : "freq_daily_lc");
+  if(w==="communityboard"){
+    const ref=communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value);
+    const board=communityBoardLabel(ref)||`${t("community_board_pick_label")} …`;
+    return t("desc_section",{freq,what:`${board} — ${t("watch_meetings")}`,bits:""});
+  }
   if(w==="district") return t("desc_district",{district:$("#adistrict").value||"…"});
   if(w==="bigaward") return t("desc_bigaward",{freq, amt:money($("#athresh").value)});
   if(w==="rfpkw") return t("desc_rfpkw",{freq, kw:$("#aparam").value||"…"});
@@ -163,6 +174,27 @@ function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText();
 
 async function aFetch(){
   const w=$("#awatch").value;
+  if(w==="communityboard"){
+    const ref=communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value);
+    if(!ref) return {kind:"notice",rows:[]};
+    const response=await fetch("data/shared_meeting_read_model.json",{cache:"no-cache"});
+    if(!response.ok) throw new Error(String(response.status));
+    const payload=await response.json();
+    const end=hearingDateWindowEnd(todayISO(),meetingWatchExtra.dateWindow);
+    const rows=(payload.rows||[]).filter(row=>normalizeCommunityBoardRef(
+      row?.institution_refs?.board_ref || (row?.board_id ? `community-board:${row.board_id}` : ""),
+    )===ref).filter(row=>row.event_date&&String(row.event_date).slice(0,10)>todayISO())
+      .filter(row=>!end||String(row.event_date).slice(0,10)<=end)
+      .map(row=>({
+        ...row,
+        request_id: row.meeting_id,
+        short_title: row.title||row.short_title,
+        agency_name: row.board_name||"Community Board",
+        section_name: t("watch_meetings"),
+        type_of_notice_description: t("community_board_pick_label"),
+      })).slice(0,5);
+    return {kind:"notice",rows};
+  }
   if(w==="district"){
     const [tools,payload]=await Promise.all([districtDigestTools(),loadDistrictDigestPayload()]);
     const rows=tools&&payload?tools.districtDigestRows(payload,$("#adistrict").value):[];
@@ -781,7 +813,7 @@ function syncAlertsAdvDisclosure(){
   if(!adv) return;
   const w = $("#awatch") && $("#awatch").value;
   // Quiz chips cover the common topics; entity / moneynl / awardwatch live in the disclosure.
-  const needsAdv = w === "entityagency" || w === "entityvendor" || w === "awardwatch";
+  const needsAdv = w === "entityagency" || w === "entityvendor" || w === "awardwatch" || w === "communityboard";
   if(needsAdv) adv.open = true;
 }
 
@@ -801,6 +833,9 @@ function aLensFilter(){
   if(w==="awardwatch") return {lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}};
   if(w==="examarea") return {lens:"people", filter:{view:"guide",interestArea:examAreaWatchTarget?.id||null,interestLabel:examAreaWatchTarget?.label||null}};
   if(w==="district") return {lens:"district", filter:{councilDistrict:$("#adistrict").value||null}};
+  if(w==="communityboard") return {lens:"meetings", filter:{
+    communityBoard: communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value),
+  }};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{
     keywords:p?[p]:[], agency:$("#aagency").value.trim()||null,
     ...(w==="meetings"?meetingWatchExtra:{}),
@@ -968,6 +1003,9 @@ async function aSubscribe(){
   if($("#awatch").value==="examarea" && !examAreaWatchTarget?.id){ msg.textContent=t("generic_error"); return; }
   if($("#awatch").value==="district" && !/^(?:[1-9]|[1-4]\d|5[01])$/.test($("#adistrict").value)){
     msg.textContent=t("district_pick_required"); $("#adistrict").focus(); return;
+  }
+  if($("#awatch").value==="communityboard" && !communityBoardIdFromSelection($("#acommunityboardboro").value,$("#acommunityboardnumber").value)){
+    msg.textContent=t("community_board_pick_required"); $("#acommunityboardboro").focus(); return;
   }
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }

@@ -135,6 +135,30 @@ test("Following names and guards the City Council District control", () => {
   assert.match(districtHtml, /Notify me for City Council District 3, weekly digest\./);
 });
 
+test("Following keeps Community Board selection distinct and names the board", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({
+    lens: "meetings",
+    filter: { communityBoard: "community-board:manhattan-cb-07" },
+  }, templates));
+  assert.match(html, /data-following-community-board-field>/);
+  assert.match(html, /Community Board/);
+  assert.match(html, /Manhattan Community Board 7/);
+  assert.match(html, /Notify me when meetings for Manhattan Community Board 7 are published\./);
+  assert.match(html, /\/near-you\/#map\?level=community_district[^" ]*id=M07/);
+  assert.match(html, /data-following-lens="meetings"/);
+});
+
+test("Following board picker requires borough and serializes the exact board identity", () => {
+  const parsed = watchFromFollowingParams(new URLSearchParams(
+    "lens=meetings&boardBorough=Manhattan&boardNumber=7",
+  ));
+  assert.equal(parsed.filter.communityBoard, "community-board:manhattan-cb-07");
+  const bare = watchFromFollowingParams(new URLSearchParams(
+    "lens=meetings&boardNumber=7",
+  ));
+  assert.equal(bare.filter.communityBoard, undefined);
+});
+
 test("Following has a useful server-rendered empty state before personalization", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
 
