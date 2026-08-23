@@ -6,7 +6,9 @@ import {
   contractSearchDocumentToMoneyRow,
   mergeContractSearchRows,
 } from "../site/contract_search_bridge.mjs";
+import { buildBrowseView, contractsDiscoveryHtml, renderBrowseView } from "../site/browse_view.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import { groupPinSiblingRows } from "../site/pin_sibling_grouping.mjs";
 import { filterMoneySnapshot } from "../site/resident_snapshot_queries.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 
@@ -52,4 +54,25 @@ test("Browse filters canonical rows by typed stage", () => {
     stages: ["solicitation"],
     limit: 20,
   }), []);
+});
+
+test("Open RFPs discovery copy points at Recent Awards without merging PIN siblings", () => {
+  const openView = buildBrowseView("contracts", { notices: [] }, new URLSearchParams());
+  const awardView = buildBrowseView("contracts", { notices: [] }, new URLSearchParams("mode=award"));
+  const openHtml = contractsDiscoveryHtml(openView);
+  const awardHtml = contractsDiscoveryHtml(awardView);
+  assert.match(openHtml, /This list is open solicitations/);
+  assert.match(openHtml, /href="\/browse\/contracts\/\?mode=award"/);
+  assert.match(openHtml, /PASSPort-only registrations/);
+  assert.match(awardHtml, /Recent Awards lists registered contracts/);
+  assert.doesNotMatch(openHtml, /incomplete|disclaimer|may be/i);
+  assert.doesNotMatch(awardHtml, /incomplete|disclaimer|may be/i);
+  const rendered = renderBrowseView(awardView);
+  assert.match(rendered, /Loading Recent Awards — registered contracts/);
+  const sibling = groupPinSiblingRows([
+    { procurement_id: "procurement:contract:A", contract_id: "CTA1", pin: "07219P8149KXLR002", vendor_name: "THE GORDIAN GROUP, INC." },
+    { procurement_id: "procurement:contract:B", contract_id: "MMA1", pin: "07219P8149KXLR002", vendor_name: "THE GORDIAN GROUP, INC." },
+  ]);
+  assert.equal(sibling[0].kind, "related_instrument");
+  assert.equal(sibling[0].procurement_ids.length, 2);
 });

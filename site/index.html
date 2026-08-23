@@ -274,6 +274,14 @@
   .money-award-cluster .money-cluster-details>summary{cursor:pointer;font:650 12px/1.3 var(--font-interface);color:var(--color-action)}
   .money-award-cluster .money-cluster-members{margin-top:8px;border-top:1px solid var(--rule);padding-top:4px}
   .money-award-cluster .money-cluster-members .money-row-card{border-bottom:1px dashed var(--rule)}
+  .money-pin-sibling{padding:10px 0 4px;border-bottom:1px solid var(--rule)}
+  .money-pin-sibling-kicker{margin:0 16px 2px;font:700 12px/1.35 var(--font-interface);color:var(--ink)}
+  .money-pin-sibling-note{margin:0 16px 8px;font:12px/1.4 var(--font-interface);color:var(--muted)}
+  .money-pin-sibling-members{border-top:1px solid var(--rule)}
+  .money-pin-sibling-members .money-row-card{border-bottom:1px dashed var(--rule)}
+  .money-pin-candidate{display:inline-block;margin:4px 0 0;font:650 11px/1.35 var(--font-interface);color:var(--muted)}
+  .lens-intro-signpost{margin:0 0 var(--space-3);font:14px/1.45 var(--font-interface)}
+  .lens-intro-signpost a{font-weight:700}
   .money-row-card>.money-row-action{position:absolute;z-index:1;inset-block-start:13px;inset-inline-end:16px;justify-content:center;max-width:132px;padding:8px 10px;font-size:12px;line-height:1.2;text-align:center}
   .money-row-card>.money-row-action~.row .rtitle{min-height:36px}
   .money-row-card>.money-row-action[data-money-row-action="solicitation"]~.row .rtitle{padding-inline-end:92px}
@@ -1664,9 +1672,11 @@
   <div class="wrap">
     <div class="money-domain-intro lens-intro" id="money-domain-intro">
       <h2 class="lens-intro-heading lens-entry-heading" tabindex="-1" data-i18n="tab_money">Contracts</h2>
-      <p class="lens-intro-deck" data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</p>
+      <p class="lens-intro-deck" id="money-intro-deck" data-i18n="money_intro_open">Solicitations still accepting responses. Registered contracts, including small purchases and PASSPort-only registrations, are in Recent Awards.</p>
+      <p class="lens-intro-signpost" id="money-awards-signpost"><a href="/browse/contracts/?mode=award" data-i18n="money_intro_awards_cta">See registered contracts in Recent Awards</a></p>
       <details class="lens-method money-method">
         <summary class="lens-method-summary" data-i18n="property_how_it_works">How this list works</summary>
+        <p class="money-how-modes" data-i18n="money_how_modes">Open RFPs lists solicitations still accepting responses. Recent Awards lists awarded and registered contracts, including small purchases and PASSPort-only registrations.</p>
         <div class="contract-example-list">
           <div class="contract-example">
             <a href="#matter/84124P0003001"><span lang="en" dir="ltr">21st Avenue bridge engineering</span><code>84124P0003001</code></a>
@@ -1740,7 +1750,7 @@
         <nav class="chiprow lens-primary-rail" id="money-mode-rail" aria-labelledby="money-mode-label">
           <button type="button" class="ui-filter-chip" data-money-mode="open" data-scope-edge="money.mode.open" data-filter-href="/browse/contracts/?mode=open" aria-pressed="true"><span data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</span></button>
           <button type="button" class="ui-filter-chip" data-money-mode="allrfp" data-scope-edge="money.mode.allrfp" data-filter-href="/browse/contracts/?mode=allrfp" aria-pressed="false"><span data-i18n="mode_allrfp">All RFPs</span></button>
-          <button type="button" class="ui-filter-chip" data-money-mode="award" data-scope-edge="money.mode.award" data-filter-href="/browse/contracts/?mode=award" aria-pressed="false"><span data-i18n="mode_award">Recent Awards ($)</span></button>
+          <button type="button" class="ui-filter-chip" data-money-mode="award" data-scope-edge="money.mode.award" data-filter-href="/browse/contracts/?mode=award" aria-pressed="false"><span data-i18n="mode_award">Recent Awards — registered contracts</span></button>
           <button type="button" class="ui-filter-chip" data-money-mode="archive" data-scope-edge="money.mode.archive" aria-pressed="false"><span data-i18n="head_archive">Archived awards and contracts</span></button>
         </nav>
       </div>

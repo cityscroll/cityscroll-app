@@ -26,7 +26,8 @@ const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
 const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
 const MONEY_PROCUREMENT_SNAPSHOT_URL="data/procurement_browse_rows.json";
-let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyProcurementSnapshotPromise=null,moneyActionLocationToolsPromise=null;
+const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
+let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyProcurementSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
@@ -88,6 +89,20 @@ function syncProcurementFacetRails(){
     setClosingWeekState(closingWeek);
   }
   installFilterChipNavigation(document);
+  syncMoneyDiscoveryCopy();
+}
+function moneyIntroKey(modeKey){
+  if(modeKey==="award") return "money_intro_award";
+  if(modeKey==="allrfp") return "money_intro_allrfp";
+  if(modeKey==="archive") return "money_intro_archive";
+  return "money_intro_open";
+}
+function syncMoneyDiscoveryCopy(){
+  const modeKey=String($("#mode")?.value||"open");
+  const deck=document.getElementById("money-intro-deck");
+  if(deck) deck.textContent=t(moneyIntroKey(modeKey));
+  const signpost=document.getElementById("money-awards-signpost");
+  if(signpost) signpost.hidden=modeKey==="award";
 }
 async function initializeMoneyLocationFilters(){
   const tools=await moneyActionLocationTools();
@@ -326,6 +341,7 @@ async function search(){
   const heads = {
     open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award"), archive:t("head_archive"),
   };
+  syncMoneyDiscoveryCopy();
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? t("head_closing_this_week") : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   busyList("#list");
@@ -527,7 +543,7 @@ function moneyRowHTML(r, i, terms){
       ${interactions||`<p class="rtitle">${digTitleHTML(title,ev)}</p>`}
       <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${agencyMention}</span>${vendorMention?` · ${vendorMention}`:""}${projectMention?` · ${projectMention}`:""} · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
-        ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
+        ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}${typeof moneyPinCandidateChipHTML==="function"?moneyPinCandidateChipHTML(r):""}</p>
       ${mwbeChips}
       ${actionLocationChip}
       ${typeof renderProcurementRowCoverageHtml === "function" ? renderProcurementRowCoverageHtml(r, { translate: t }) : ""}
@@ -554,6 +570,36 @@ function partitionMoneyRows(rows, today=todayISO()){
 let moneySameConsolidationPromise=null;
 function moneySameConsolidation(){
   return moneySameConsolidationPromise||=import("../same_consolidation.mjs").catch(()=>null);
+}
+function moneyPinSiblingGrouping(){
+  return moneyPinSiblingPromise||=import("../pin_sibling_grouping.mjs").catch(()=>null);
+}
+function loadPinFamilyReview(){
+  if(!pinFamilyReviewPromise){
+    pinFamilyReviewPromise=fetch(PIN_FAMILY_REVIEW_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return pinFamilyReviewPromise;
+}
+const moneyPinCandidateByRow=new WeakMap();
+function moneyPinCandidateChipHTML(row){
+  const candidate=moneyPinCandidateByRow.get(row);
+  if(!candidate) return "";
+  return `<br><span class="money-pin-candidate">${escUiHtml(t("pin_sibling_candidate"))}</span>`;
+}
+function moneyPinSiblingGroupHTML(entry, terms){
+  const members=Array.isArray(entry.members)?entry.members:[];
+  if(!members.length) return "";
+  const memberRows=members.map((row,idx)=>{
+    const i=currentRows.indexOf(row);
+    return moneyRowHTML(row, i>=0?i:idx, terms);
+  }).join("");
+  return `<article class="money-row-card money-pin-sibling" data-pin-sibling="related_instrument">
+    <p class="money-pin-sibling-kicker">${escUiHtml(t("pin_sibling_related_summary",{pin:entry.pin||"",n:fmtNumber(entry.count||members.length)}))}</p>
+    <p class="money-pin-sibling-note">${escUiHtml(t("pin_sibling_related_note"))}</p>
+    <div class="money-pin-sibling-members">${memberRows}</div>
+  </article>`;
 }
 function moneyAwardTitleStem(row){
   return String(noticeDisplayTitle(row)||"")
@@ -607,6 +653,59 @@ async function consolidateMoneyAwardRows(rows){
     },
   });
 }
+function bindMoneyListRowClicks(lineageRows=null){
+  document.querySelectorAll("#list .row").forEach(el=>{
+    el.addEventListener("click",event=>{
+      if(event.target.closest?.("a,button")) return;
+      const row=currentRows[+el.dataset.i];
+      if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
+      select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:lineageRows);
+    });
+  });
+}
+async function enhanceMoneyAwardList(rows, terms){
+  if(mode!=="award" || !rows.length) return;
+  const grouping=await moneyPinSiblingGrouping();
+  const review=await loadPinFamilyReview();
+  const siblingEntries=grouping?.groupPinSiblingRows?.(rows,{review})
+    || rows.map(item=>({kind:"item",item}));
+  for(const entry of siblingEntries){
+    if(entry.kind==="item" && entry.candidate) moneyPinCandidateByRow.set(entry.item, entry.candidate);
+  }
+  const leftover=siblingEntries.filter(entry=>entry.kind==="item").map(entry=>entry.item);
+  const sameExcept=await consolidateMoneyAwardRows(leftover);
+  const leftoverEntries=sameExcept || leftover.map(item=>({kind:"same-except-item",item}));
+  const sameExceptByRow=new Map();
+  for(const entry of leftoverEntries){
+    if(entry.kind==="same-except-group"){
+      for(const member of entry.members||[]) sameExceptByRow.set(member, entry);
+    }else if(entry.item){
+      sameExceptByRow.set(entry.item, entry);
+    }
+  }
+  const emitted=new Set();
+  const parts=[];
+  for(const entry of siblingEntries){
+    if(entry.kind==="related_instrument"){
+      parts.push(moneyPinSiblingGroupHTML(entry, terms));
+      continue;
+    }
+    const same=sameExceptByRow.get(entry.item);
+    if(same?.kind==="same-except-group"){
+      if(emitted.has(same)) continue;
+      emitted.add(same);
+      parts.push(moneyAwardGroupHTML(same, terms));
+      continue;
+    }
+    const i=currentRows.indexOf(entry.item);
+    parts.push(moneyRowHTML(entry.item, i>=0?i:0, terms));
+  }
+  const changed=siblingEntries.some(entry=>entry.kind==="related_instrument"||entry.candidate)
+    || leftoverEntries.some(entry=>entry.kind==="same-except-group");
+  if(!changed || !document.querySelector("#list")) return;
+  $("#list").innerHTML=parts.join("");
+  bindMoneyListRowClicks();
+}
 function renderList(autoSelect,lineageRows=null){
   if(!currentRows.length){
     $("#list").innerHTML = scopedHistoryGap(currentRows)
@@ -629,17 +728,7 @@ function renderList(autoSelect,lineageRows=null){
     $("#list").innerHTML=parts.join("");
   }else if(mode==="award"){
     $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
-    consolidateMoneyAwardRows(currentRows).then((entries)=>{
-      if(!entries || !document.querySelector("#list")) return;
-      if(!entries.some((entry)=>entry.kind==="same-except-group")) return;
-      const parts=entries.map((entry)=>{
-        if(entry.kind==="same-except-group") return moneyAwardGroupHTML(entry, terms);
-        const row=entry.item||entry;
-        const i=currentRows.indexOf(row);
-        return moneyRowHTML(row, i>=0?i:0, terms);
-      });
-      $("#list").innerHTML=parts.join("");
-    }).catch(()=>{});
+    enhanceMoneyAwardList(currentRows, terms).catch(()=>{});
   }else{
     $("#list").innerHTML = indexed.map(item=>moneyRowHTML(item.row,item.index,terms)).join("");
   }

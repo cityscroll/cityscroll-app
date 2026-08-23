@@ -303,8 +303,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   renewals as `related_instrument`. Distinct-vendor shared-PIN pairs stay on
   authenticated `GET/POST /admin/pin-family-verify`. Rebuild
   `site/data/pin_family_mismatch_review.json` with `node tools/build_pin_family_review.mjs`.
-  Public `corroborates_contract` edges remain `contract_id_exact` only. Proof:
-  `test/pin_family_mismatch.test.mjs` and `worker/test/pin_family_verify.test.mjs`.
+  Public `corroborates_contract` edges remain `contract_id_exact` only. Browse
+  Recent Awards groups verified PIN-family siblings through
+  `site/pin_sibling_grouping.mjs` as related instruments without merging
+  `procurement_id`s; `needs_review` / distinct-vendor pairs stay separate
+  related-candidates. Open RFPs remains solicitation-only — registered
+  PASSPort-only rows live under Recent Awards. Proof:
+  `test/pin_family_mismatch.test.mjs`, `worker/test/pin_family_verify.test.mjs`,
+  and `test/pin_sibling_grouping.test.mjs`.
 - **Canonical procurement product projection:** `site/procurement_search_producer.mjs` and
   `site/contract_search_bridge.mjs` project the shared procurement read model into source-independent
   SearchDocuments and typed Browse rows. Canonical identity is `procurement_id`; `request_id` is
