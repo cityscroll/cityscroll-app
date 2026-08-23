@@ -32,7 +32,7 @@ const LENS_LABELS = Object.freeze({
   property: "Property",
   rules: "Rules",
   meetings: "Hearings and meetings",
-  district: "Council district weekly",
+  district: "City Council District weekly",
   entity: "Agency or vendor",
   mandates: "Mandates",
 });
@@ -49,7 +49,7 @@ const LENS_SUMMARY_SUBJECT = Object.freeze({
   rules: "new rules",
   meetings: "new hearings and meetings",
   mandates: "new mandates",
-  district: "council district activity",
+  district: "City Council District activity",
   entity: "new entity mentions",
 });
 
@@ -251,8 +251,8 @@ export function buildFollowingGraphContext(watch = {}, options = {}) {
       ? filter.keywords.join(" ") : null,
     agencyLabel: filter.agency || null,
     districtLabel: filter.councilDistrict
-      ? `Council District ${filter.councilDistrict}`
-      : filter.communityDistrict || null,
+      ? `City Council District ${filter.councilDistrict}`
+      : filter.communityDistrict ? `Community District ${filter.communityDistrict}` : null,
     followingHref: followingUrlFromWatch(normalized, { frequency }),
     backToEntity: !!options.backToEntity,
   };
@@ -286,8 +286,8 @@ function quoteTerm(value) {
 
 function placeClause(filter = {}) {
   const f = filter && typeof filter === "object" ? filter : {};
-  if (f.communityDistrict) return `in community district ${f.communityDistrict}`;
-  if (f.councilDistrict) return `in Council District ${f.councilDistrict}`;
+  if (f.communityDistrict) return `in Community District ${f.communityDistrict}`;
+  if (f.councilDistrict) return `in City Council District ${f.councilDistrict}`;
   const place = f.borough || f.boro || f.neighborhood || "citywide";
   return place || "citywide";
 }
@@ -321,7 +321,7 @@ function watchIdentityRows(context) {
     ["Place", context.placeLabel, null],
     ["Keyword", context.keywordLabel, null],
     ["Agency", context.agencyLabel, null],
-    ["District", context.districtLabel, null],
+    ["Geography", context.districtLabel, null],
   ].filter(([, value]) => value);
   if (context.entity) {
     rows.push(["Entity", graphLink({
@@ -398,8 +398,8 @@ function scopeSummary(lens, filter) {
     ["agency", filter.agency],
     ["borough", filter.borough || filter.boro],
     ["neighborhood", filter.neighborhood],
-    ["community district", filter.communityDistrict],
-    ["council district", filter.councilDistrict],
+    ["Community District", filter.communityDistrict],
+    ["City Council District", filter.councilDistrict],
     ["record type", filter.noticeType],
     ["stage", filter.process || filter.stage],
     ["time", filter.dateWindow || filter.when],
@@ -431,7 +431,7 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
 
   if (wanted === "district") {
     const n = f.councilDistrict || "?";
-    return `Notify me for Council District ${n}, weekly digest.`;
+    return `Notify me for City Council District ${n}, weekly digest.`;
   }
   if (wanted === "mandates" || wanted === "obligations") {
     const who = f.agency || f.agency_id || "this agency";
@@ -607,7 +607,7 @@ function topicPlacePickersHtml(view) {
     <section class="following-scope-block">
       <p class="following-scope-title">Where?</p>
       <div class="following-scope-rail" role="group" aria-label="Place">
-        <p class="following-scope-rail-label">Any place / borough / district</p>
+        <p class="following-scope-rail-label">Any place / borough</p>
         <div class="following-scope-links" data-following-place-scope>${place}</div>
       </div>
     </section>
@@ -731,6 +731,7 @@ function controlsHtml(view) {
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
   const borough = placeBorough(view.filter);
   const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict ? " open" : "";
+  const councilFieldHidden = view.lens !== "district" ? " hidden" : "";
   return `${topicPlacePickersHtml(view)}
   <form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
     <input type="hidden" name="lens" value="${esc(view.lens)}">
@@ -741,7 +742,10 @@ function controlsHtml(view) {
       <div class="following-refinement-grid">
         <label>Keyword<input name="q" value="${esc(query)}" placeholder="housing, school buses, curb…" data-following-refine="keywords"></label>
         <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency" data-following-refine="agency"></label>
-        <label>Council district<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" data-following-refine="council"></label>
+        <div data-following-council-field${councilFieldHidden}>
+          <label>City Council District (1–51)<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" aria-describedby="following-council-help" data-following-refine="council"></label>
+          <p id="following-council-help">Not a Community Board. Boards are 1–18 in each borough; City Council Districts are 1–51 citywide.</p>
+        </div>
       </div>
     </details>
     ${cadenceCardsHtml(view)}
@@ -830,7 +834,7 @@ export function renderFollowingDocument(view, options = {}) {
   const siteBase = String(options.siteBase || "").replace(/\/$/, "");
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches and district updates.">
+<title>Following · CityScroll</title><meta name="description" content="Preview, create, and manage CityScroll watches and City Council District updates.">
 <link rel="canonical" href="https://cityscroll.org/following/">${renderCivicDocumentAssets(assetPrefix)}</head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "following", siteBase, surfaceClass: "following-mast" })}

@@ -101,7 +101,7 @@ test("unified alerts retain district watches while Near you watches its shared s
   const nearView = readFileSync(join(ROOT, "site/near_you_view.mjs"), "utf8");
   const nearPage = readFileSync(join(ROOT, "site/near-you/index.html"), "utf8");
   const boot = readFileSync(join(ROOT, "site/app/boot.mjs"), "utf8");
-  assert.match(index, /data-w="district"[^>]*>Follow a district</);
+  assert.match(index, /data-w="district"[^>]*>Follow City Council District</);
   assert.match(index, /id="adistrict"/);
   assert.match(boot, /targetLens==="district"/);
   assert.match(nearView, /watchFromScope/);

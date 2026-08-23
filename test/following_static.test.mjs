@@ -116,9 +116,23 @@ test("Following topic-place scope is shown as explicit one-line sections", () =>
 
   assert.match(html, /What do you want to follow\?/);
   assert.match(html, /Where\?/);
-  assert.match(html, /Any place \/ borough \/ district/);
+  assert.match(html, /Any place \/ borough/);
   assert.match(html, /<p class="following-scope-rail-label">Topic<\/p>/);
-  assert.match(html, /<p class="following-scope-rail-label">Any place \/ borough \/ district<\/p>/);
+  assert.match(html, /<p class="following-scope-rail-label">Any place \/ borough<\/p>/);
+});
+
+test("Following names and guards the City Council District control", () => {
+  const moneyHtml = renderFollowingDocument(buildFollowingViewModel({ lens: "money", filter: {} }, templates));
+  assert.match(moneyHtml, /data-following-council-field hidden/);
+
+  const districtHtml = renderFollowingDocument(buildFollowingViewModel({
+    lens: "district",
+    filter: { councilDistrict: "3" },
+  }, templates));
+  assert.match(districtHtml, /data-following-council-field>/);
+  assert.match(districtHtml, /City Council District \(1–51\)/);
+  assert.match(districtHtml, /Not a Community Board\. Boards are 1–18 in each borough; City Council Districts are 1–51 citywide\./);
+  assert.match(districtHtml, /Notify me for City Council District 3, weekly digest\./);
 });
 
 test("Following has a useful server-rendered empty state before personalization", () => {
