@@ -9,6 +9,11 @@ import {
   runDigestShadow,
 } from "../src/digest_shadow.mjs";
 import { handleAdminDigestShadow } from "../src/admin.mjs";
+import { rollupDigestHtml } from "../src/alerts.mjs";
+import {
+  buildDigestShadowHoldState,
+  isDigestHeld,
+} from "../src/digest_shadow_hold.mjs";
 import { ONTOLOGY_DELTA_EVENT_SCHEMA } from "../src/lib/ontology_delta_alert.mjs";
 
 const NOW = new Date("2026-08-04T10:00:00.000Z");
@@ -130,6 +135,72 @@ test("missing or malformed unsubscribe/context links redline", () => {
   assert.equal(warning.evidence.context_present, false);
 });
 
+test("rollup TOC #watch-N fragment anchors are valid in-email jump links and do not hold", () => {
+  const html = rollupDigestHtml({
+    sections: [
+      {
+        label: "Rules — all notices",
+        kind: "rules",
+        new: 1,
+        freshRows: [{
+          request_id: "20260716009",
+          short_title: "Fixture street materials",
+          agency_name: "Department of Transportation",
+          type_of_notice_description: "Solicitation",
+          section_name: "Procurement",
+          due_date: "2026-08-10",
+          additional_description_1: "Vendors must download documents at https://example.com/rfps.",
+        }],
+        keywords: ["education"],
+        action: "match",
+      },
+      {
+        label: "Hearings and meetings",
+        kind: "meetings",
+        new: 0,
+        freshRows: [],
+        action: "none",
+      },
+    ],
+    wantingCount: 1,
+    watchCount: 2,
+    unsubAllUrl: "https://api.cityscroll.org/unsubscribe?token=all",
+    manageUrl: "https://cityscroll.org/prefs?token=m",
+    lang: "en",
+    today: "2026-08-04",
+    totalNew: 1,
+    since: "2026-07-20",
+  });
+  assert.match(html, /href="#watch-0-rules-all-notices"/);
+  assert.match(html, /id="watch-0-rules-all-notices"/);
+
+  const out = summary([result({
+    id: "acct:owner",
+    previewId: "digest:owner-rollup",
+    count: 1,
+    html,
+  })]);
+  assert.equal(out.redlines.find((item) => item.code === "broken_digest_link"), undefined);
+  assert.deepEqual(out.affected_digest_ids, []);
+  assert.equal(out.status, DIGEST_SHADOW_READY);
+
+  const hold = buildDigestShadowHoldState({
+    summary: out,
+    now: "2026-08-04T13:00:00.000Z",
+  });
+  assert.equal(hold.delivery_policy, "ALL_DIGESTS_ELIGIBLE");
+  assert.equal(isDigestHeld(hold, "digest:owner-rollup"), false);
+});
+
+test("malformed, javascript, empty-host, and dangling fragment hrefs still redline", () => {
+  for (const badHref of ["not-a-url", "javascript:void(0)", "ftp://example.com/x", "http://", "#watch-9-missing"]) {
+    const out = summary([result({ count: 1, html: itemHtml(1, { badHref }) })]);
+    const warning = out.redlines.find((item) => item.code === "broken_digest_link");
+    assert.ok(warning, `expected broken_digest_link for href=${badHref}`);
+    assert.equal(warning.evidence.invalid_hrefs.includes(badHref), true, `invalid_hrefs should include ${badHref}`);
+  }
+});
+
 test("clean summary exposes counts, prior-send deltas, and repair contract", () => {
   const history = [{ day: "2026-08-03", totalNotices: 1, sentCount: 1, entries: [] }];
   const out = summary([result()], history);
@@ -214,6 +285,7 @@ test("shadow invocation uses the shared runAlerts path inline and cannot deliver
     forceInline: true,
     queueCapSemantics: true,
     capturePreviews: true,
+    previewOnly: true,
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
