@@ -18,6 +18,7 @@ import {
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
+import { loadZapProjectsLookup } from "./lib/zap_projects_lookup_kv.mjs";
 import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
@@ -295,8 +296,13 @@ export async function refreshZapOutcomes(env, opts = {}) {
     projectIds = projectIds.slice(0, max);
     listed = projectIds.length;
   }
+  let build = opts.build;
+  if (!build) {
+    const lookupDoc = opts.lookupDoc || (await loadZapProjectsLookup(env)).record;
+    build = (id) => buildZapOutcomeRecord(id, { lookupDoc });
+  }
   const summary = await prewarmZapOutcomes(env, projectIds, {
-    build: opts.build || buildZapOutcomeRecord,
+    build,
     concurrency: opts.concurrency || ZAP_PREWARM_CONCURRENCY,
     force,
     nowMs: opts.nowMs || Date.now(),
@@ -366,10 +372,10 @@ async function fetchJson(url, timeoutMs = 12000) {
  * ZAP Open Data project row: warehouse materialization first (WH-05), then live SODA.
  * Returns the SODA-shaped row (always includes project_id). Attaches lookup_path when known.
  */
-export async function fetchOpenDataRow(projectId) {
+export async function fetchOpenDataRow(projectId, { lookupDoc } = {}) {
   const id = String(projectId || "").trim();
-  // WH-05: instant hit from warehouse materialization index (no network).
-  const wh = lookupZapFromWarehouseMaterialization(id);
+  // WH-05: instant hit from live KV lookup (or committed twin) before live SODA.
+  const wh = lookupZapFromWarehouseMaterialization(id, lookupDoc);
   if (wh.hit && wh.row) {
     return { ...wh.row, lookup_path: "warehouse" };
   }
@@ -483,7 +489,7 @@ async function fetchDobForBbls(bbls) {
 /**
  * Build one outcome record for a project_id (Open Data + ZAP API + optional DOB).
  */
-export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {}) {
+export async function buildZapOutcomeRecord(projectId, { fetchBbl = true, lookupDoc } = {}) {
   const id = String(projectId || "").trim();
   if (!id) {
     return {
@@ -494,7 +500,7 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
     };
   }
 
-  const openData = await fetchOpenDataRow(id);
+  const openData = await fetchOpenDataRow(id, { lookupDoc });
   let apiPayload = null;
   try {
     apiPayload = await fetchJson(

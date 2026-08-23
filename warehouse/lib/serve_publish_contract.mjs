@@ -19,7 +19,9 @@ export const SERVE_LOOKUP_CONTRACTS = Object.freeze({
     id: "zap_projects",
     label: "ZAP projects",
     timestamp_field: "materialized_at",
-    max_age_days: 7,
+    // Committed twin is the last-resort floor. Live freshness is ALERT_STATE
+    // land:zap-lookup:v1 (36h KV clock) — do not force a daily git PR.
+    max_age_days: 180,
     canaries: Object.freeze([
       Object.freeze({ field: "project_id", value: "2025Q0331" }),
       Object.freeze({ field: "project_id", value: "2026K0123" }),

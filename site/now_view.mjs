@@ -52,7 +52,7 @@ function loadNowSources() {
   if (nowSourcesPromise) return nowSourcesPromise;
   nowSourcesPromise = Promise.all([
     localJson("data/money_default_open.json", "notices"),
-    localJson("data/staffing_exams.json", "exams"),
+    workerThenLocal("/staffing-exams", "data/staffing_exams.json", "exams"),
     workerJson("/rules", "rules"),
     workerJson("/property-locations", "properties"),
     workerJson("/hearings", "hearings"),

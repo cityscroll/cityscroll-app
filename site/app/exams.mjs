@@ -1063,11 +1063,22 @@ function validCareerData(data){
 }
 async function fetchCareerData(){
   let lastError=null;
+  const loaders=[
+    async ()=>{
+      if(typeof workerFetch!=="function") throw new Error("worker-unavailable");
+      const response=await workerFetch("/staffing-exams",{},8000);
+      if(!response.ok) throw new Error(`staffing exams HTTP ${response.status}`);
+      return response.json();
+    },
+    async (reload)=>{
+      const response=await fetch(CAREER_DATA_URL,reload?{cache:"reload"}:undefined);
+      if(!response.ok) throw new Error(`staffing exams HTTP ${response.status}`);
+      return response.json();
+    },
+  ];
   for(let attempt=0; attempt<CAREER_LOAD_ATTEMPTS; attempt+=1){
     try{
-      const response=await fetch(CAREER_DATA_URL,attempt?{cache:"reload"}:undefined);
-      if(!response.ok) throw new Error(`staffing exams HTTP ${response.status}`);
-      const data=await response.json();
+      const data=await (attempt?loaders[1](true):loaders[0]().catch(()=>loaders[1](false)));
       if(!validCareerData(data)) throw new Error("staffing exams schema mismatch");
       return data;
     }catch(error){

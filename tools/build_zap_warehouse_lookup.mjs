@@ -395,7 +395,9 @@ function checkCommittedCanariesAndTwins() {
   assert.ok(existsSync(OUT_WORKER), `missing ${path.relative(ROOT, OUT_WORKER)}`);
   const site = JSON.parse(readFileSync(OUT_SITE, "utf8"));
   const worker = JSON.parse(readFileSync(OUT_WORKER, "utf8"));
-  assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.zap_projects);
+  assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.zap_projects, {
+    now: site.materialized_at,
+  });
   return site;
 }
 

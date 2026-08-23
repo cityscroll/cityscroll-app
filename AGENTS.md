@@ -323,17 +323,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## PR and CI preflight
 
 - **Daily refresh PR publish loop:** remaining git-backed data-refresh
-  workflows (`doing-business-warehouse-lookup`, `geocoder-address-index`,
-  `land-zap-freshness-refresh`, `staffing-exams-refresh`) must open PRs with repo
-  secret `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests
-  R/W), not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from
-  triggering required checks (anti-recursion), which stalls merge-queue
-  auto-merge. After `peter-evans/create-pull-request`, each workflow enables
-  auto-merge via `gh pr merge "$REFRESH_PR" --auto --match-head-commit
-  "$REFRESH_HEAD"` with the same PAT as `GH_TOKEN`.
-  Payroll titles and land upcoming hearings live in Worker cron / `ALERT_STATE`
-  (`payroll:title-mart:v1`, `land:upcoming-hearings:v1`); they must not grow a
-  refresh PR.
+  workflows (`doing-business-warehouse-lookup`, `geocoder-address-index`)
+  must open PRs with repo secret `REFRESH_PR_TOKEN` (fine-grained PAT:
+  Actions/Contents/Pull requests R/W), not `secrets.GITHUB_TOKEN`. GitHub
+  blocks default-token PRs from triggering required checks (anti-recursion),
+  which stalls merge-queue auto-merge. After `peter-evans/create-pull-request`,
+  each workflow enables auto-merge via `gh pr merge "$REFRESH_PR" --auto
+  --match-head-commit "$REFRESH_HEAD"` with the same PAT as `GH_TOKEN`.
+  Payroll titles, land upcoming hearings, the sell-facing ZAP lookup, and
+  staffing exams live in Worker cron / `ALERT_STATE` (`payroll:title-mart:v1`,
+  `land:upcoming-hearings:v1`, `land:zap-lookup:v1`, `staffing:exams:v1`); they
+  must not grow a refresh PR. Doing Business is weekly; the geocoder and exam
+  HTML stay committed.
 - Shared browser artifacts use `tools/site_artifact_identity.mjs` plus
   `.github/actions/use-site-artifact`: the run/attempt artifact and exact-input
   cache are trusted only after `_site.sha256`, commit/tree, lockfile, Node
@@ -995,26 +996,25 @@ node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
 # receipt: warehouse/receipts/proof/wh03_ocp_lookup_speed.json
 ```
 
-**WH-05 ZAP serve + land freshness publish loop:** materialize sell-facing ZAP
-projects (+ demo `2022M0258`) into `site/data/zap_projects_warehouse_lookup.json`
-(+ Worker twin). Replaces live SODA in `fetchOpenDataRow` (`/zap-outcomes`) for
-materialization hits; live SODA remains the miss fallback. Resident land
-list/search/hearings must not freeze on a stale bulk CSV: daily
-`.github/workflows/land-zap-freshness-refresh.yml` rebuilds the lookup + land
-keyword family from **current SODA** and opens a PR.
-Upcoming hearings are derived at `0 8 * * *` from `zap-outcome:v1:{id}` plus the
-SODA sell-facing id list into `ALERT_STATE` `land:upcoming-hearings:v1`
-(`GET /land-upcoming-hearings`); `site/data/land_upcoming_hearings.json` is the
-last-resort floor. `fetchLandDefaultProjects` prefers DuckDB only when
-the milestone frontier clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA.
-Canaries `2025Q0331` / `2026K0123` fail `--check`. The unit test
+**WH-05 ZAP serve + land freshness:** materialize sell-facing ZAP projects
+(+ demo `2022M0258`) into `site/data/zap_projects_warehouse_lookup.json`
+(+ Worker twin) as the last-resort floor. The 08:00 Worker cron writes live
+SODA `hgx4-8ukb` into `ALERT_STATE` `land:zap-lookup:v1`; `GET /zap-projects-lookup`
+and `fetchOpenDataRow` read KV first. Live SODA remains the miss fallback.
+Do not rewrite the 10.6 MB keyword index or the 40-row default ULURP snapshot
+on a daily loop — land keyword miss-fills canaries from live SODA
+(`site/land_keyword_soda_missfill.mjs`). The 36-hour freshness gate is the KV
+clock (`land:zap-lookup:v1`), not git age. Upcoming hearings are derived at
+`0 8 * * *` from `zap-outcome:v1:{id}` plus the SODA sell-facing id list into
+`ALERT_STATE` `land:upcoming-hearings:v1` (`GET /land-upcoming-hearings`);
+`site/data/land_upcoming_hearings.json` is the last-resort floor.
+`fetchLandDefaultProjects` prefers DuckDB only when the milestone frontier
+clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA. Canaries `2025Q0331`
+/ `2026K0123` fail `--check`. The unit test
 `test/warehouse_serve_publish_contract.test.mjs` derives its reference now from
-committed twin `materialized_at` stamps — do not freeze a calendar `now`, or
-daily land-freshness PRs fail with a false "in the future" finding. Build
-`--check` still ages against wall clock. Keyword search miss-fills those
-exact IDs from live SODA when the published land family has holes, with a hybrid as-of
-(`site/land_keyword_soda_missfill.mjs`). WH-02 bulk lag:
-`node tools/check_zap_bulk_freshness.mjs` (+ optional `--rematerialize-if-stale`).
+committed twin `materialized_at` stamps — do not freeze a calendar `now`.
+WH-02 bulk lag: `node tools/check_zap_bulk_freshness.mjs`
+(+ optional `--rematerialize-if-stale`).
 
 ```bash
 node tools/build_zap_warehouse_lookup.mjs --from-soda
@@ -1937,16 +1937,19 @@ Closed-exam exam_no overlap **44.54%** (494/1,109) — ship post-list depth;
 open-exam overlap 0%. Artifact:
 `site/data/exam_sources/civil_service_list_aggregates.json` joined at build via
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
-`--refresh` re-pages the SODA group-by (never roster rows). Daily
-refresh→publish: `.github/workflows/staffing-exams-refresh.yml` (`REFRESH_PR_TOKEN`
-+ `gh pr merge --auto`); serve-age gate `STAFFING_EXAMS_MAX_AGE_DAYS` (7) fails
-closed on `open_window_as_of` / active-list `fetched_at`. Artifact stamps
-`list_current_as_of`, `open_window_as_of`, and freshest-source
-`data_current_as_of`. Closed exams that leave the current FY annual snapshot stay
-joinable through `list_depth_closed_exams.json` (open 7xxx series has 0% list
-presence). UI: `list_joined` when list depth attaches; empty aggregate slots use
-class-(a) `not_yet_ingested` (`career_outcomes_not_yet_ingested_html`) — never
-class-(b) city-withhold for aggregates. Individual scores remain class-(b).
+`--refresh` re-pages the SODA group-by (never roster rows). The 08:00 Worker
+cron overlays SODA schedule + exam-level list group-by + OASys `GetActiveExams`
+onto `ALERT_STATE` `staffing:exams:v1`; `GET /staffing-exams` and people/guide
+digest replay read KV first, committed `staffing_exams.json` as floor. Exam HTML
+under `site/exams/**` stays committed. Hash exams (ids, windows, fees) so a
+quiet day does not invent a content change; the 7-day serve gate is the KV
+clock. Artifact stamps `list_current_as_of`, `open_window_as_of`, and
+freshest-source `data_current_as_of`. Closed exams that leave the current FY
+annual snapshot stay joinable through `list_depth_closed_exams.json` (open 7xxx
+series has 0% list presence). UI: `list_joined` when list depth attaches; empty
+aggregate slots use class-(a) `not_yet_ingested`
+(`career_outcomes_not_yet_ingested_html`) — never class-(b) city-withhold for
+aggregates. Individual scores remain class-(b).
 
 ## Staffing list-establishment predictions
 

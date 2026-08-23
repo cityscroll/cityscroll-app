@@ -19,8 +19,9 @@ routes = [
 workers_dev = true
 
 # Daily alerts digest at 13:00 UTC (09:00 ET) plus a delivery-free rehearsal at
-# 10:00 UTC (06:00 ET). Morning 08:00 UTC refreshes land upcoming hearings from
-# zap-outcome KV so that list is not stuck behind the digest chain.
+# 10:00 UTC (06:00 ET). Morning 08:00 UTC refreshes the sell-facing ZAP lookup,
+# land upcoming hearings, and staffing exams so those lists are not stuck
+# behind the digest chain.
 [triggers]
 crons = [
   "0 8 * * *",

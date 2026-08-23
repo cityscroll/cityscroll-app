@@ -163,15 +163,8 @@ describe("committed land freshness publish loop", () => {
     }
   });
 
-  it("does not open a land upcoming-hearings refresh pull request", () => {
+  it("does not open a land upcoming-hearings or ZAP-freshness refresh pull request", () => {
     assert.equal(existsSync(WORKFLOW_HEARINGS), false);
-  });
-
-  it("schedules WH-05 + keyword refresh from SODA with a publish PR", () => {
-    const yml = readFileSync(WORKFLOW_FRESHNESS, "utf8");
-    assert.match(yml, /refresh_land_zap_freshness\.mjs/);
-    assert.match(yml, /create-pull-request/);
-    assert.match(yml, /automation\/land-zap-freshness-refresh/);
-    assert.match(yml, /--against-live/);
+    assert.equal(existsSync(WORKFLOW_FRESHNESS), false);
   });
 });

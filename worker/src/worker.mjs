@@ -59,6 +59,8 @@ import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
 import { handleLandUpcomingHearings, refreshLandUpcomingHearings } from "./land_upcoming_hearings.mjs";
+import { handleZapProjectsLookup, refreshZapProjectsLookup } from "./zap_projects_lookup.mjs";
+import { handleStaffingExams, refreshStaffingExams } from "./staffing_exams.mjs";
 import { refreshPayrollTitleMart } from "./lib/payroll_title_mart_kv.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleFranchiseConcessions, refreshFranchiseConcessions } from "./franchise_concession.mjs";
@@ -128,6 +130,8 @@ export default {
     if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/land-upcoming-hearings") return handleLandUpcomingHearings(request, env);
+    if (pathname === "/zap-projects-lookup") return handleZapProjectsLookup(request, env);
+    if (pathname === "/staffing-exams") return handleStaffingExams(request, env);
     if (pathname === "/meeting.ics") return handleMeetingICS(request, env);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
     if (pathname === "/franchise-concessions") return handleFranchiseConcessions(request, env, ctx);
@@ -172,14 +176,26 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
-    // Morning land upcoming-hearings: derive from zap-outcome KV + SODA sell-facing
-    // ids so the list is not stuck behind the 13:00 digest chain. Public SODA only.
+    // Morning live-derived caches: sell-facing ZAP lookup, upcoming hearings, and
+    // staffing exams. Public SODA / OASys only — keep these off the 13:00 digest chain.
     if (event.cron === "0 8 * * *") {
+      try {
+        const r = await refreshZapProjectsLookup(env);
+        console.log("land zap lookup:", JSON.stringify(r));
+      } catch (error) {
+        console.error("land zap lookup refresh failed:", String(error?.message || error));
+      }
       try {
         const r = await refreshLandUpcomingHearings(env);
         console.log("land upcoming hearings:", JSON.stringify(r));
       } catch (error) {
         console.error("land upcoming hearings refresh failed:", String(error?.message || error));
+      }
+      try {
+        const r = await refreshStaffingExams(env);
+        console.log("staffing exams:", JSON.stringify(r));
+      } catch (error) {
+        console.error("staffing exams refresh failed:", String(error?.message || error));
       }
       return;
     }
