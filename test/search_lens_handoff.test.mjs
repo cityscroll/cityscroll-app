@@ -11,6 +11,9 @@ import {
   searchFamilyForResult,
   searchReturnHref,
 } from "../site/search_lens_handoff.mjs";
+import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
+import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
+import { contractIdentityFromFacetValues, filterMoneySnapshot } from "../site/resident_snapshot_queries.mjs";
 
 const meeting = {
   object_ref: "meeting:city_record:20260816001",
@@ -52,6 +55,24 @@ const proposedContract = {
       text: "Maintenance, support services, software assurance",
       mark_start: 30,
       mark_end: 38,
+    },
+  },
+};
+
+const passportOnlyContract = {
+  object_ref: "procurement:contract:CT185020228802305",
+  object_type: "procurement",
+  domain: "contracts",
+  process_role: "registered",
+  source_observation_refs: ["passport_public_contracts:contract:CT185020228802305:5500518"],
+  match_evidence: {
+    field: "summary",
+    matched_normalized_term: "tameer",
+    source_identifier: "passport_public_contracts:contract:CT185020228802305:5500518",
+    snippet: {
+      text: "DEPARTMENT OF DESIGN AND CONSTRUCTION · TAMEER INC · \u002426,112.93",
+      mark_start: 40,
+      mark_end: 46,
     },
   },
 };
@@ -122,6 +143,68 @@ test("a contract handoff selects the clicked object by identity in the mixed arc
     source_observation_ref: "notice:20260730029",
   });
   assert.equal(facet.search_handoff.record_ref, "procurement:05626S0013001");
+});
+
+test("a PASSPort-only contract handoff pins the proven object through Money and canonical linking", () => {
+  const href = buildSearchLensHandoffHref(
+    passportOnlyContract,
+    { ...response, query: "TAMEER", resolved_term: { ...response.resolved_term, canonical_tokens: ["tameer"] } },
+    "?q=TAMEER",
+  );
+  const url = new URL(href, "https://cityscroll.org");
+  const facet = JSON.parse(url.searchParams.get("facet"));
+
+  assert.equal(url.searchParams.get("mode"), "archive");
+  assert.equal(url.searchParams.get("q"), "TAMEER");
+  assert.deepEqual(facet.contract_identity, {
+    object_ref: passportOnlyContract.object_ref,
+    source_observation_ref: passportOnlyContract.source_observation_refs[0],
+  });
+  assert.equal(facet.search_handoff.record_ref, passportOnlyContract.object_ref);
+
+  const roundTripped = routeHashFromScope(
+    scopeFromRouteHash(`#money${url.search}`, { language: "en" }),
+    { surface: "money" },
+  );
+  const roundTrippedParams = new URLSearchParams(roundTripped.split("?", 2)[1]);
+  assert.equal(roundTrippedParams.get("mode"), "archive");
+  assert.deepEqual(JSON.parse(roundTrippedParams.get("facet")).contract_identity, facet.contract_identity);
+
+  const identity = contractIdentityFromFacetValues(facet);
+  const target = contractSearchDocumentToMoneyRow({
+    schema: "cityscroll.search_document.v1",
+    object_ref: passportOnlyContract.object_ref,
+    object_type: "procurement",
+    domain: "contracts",
+    canonical_href: "/procurements/CT185020228802305/",
+    title: "Contract CT185020228802305",
+    summary: "DEPARTMENT OF DESIGN AND CONSTRUCTION · TAMEER INC",
+    search_text: "DEPARTMENT OF DESIGN AND CONSTRUCTION · TAMEER INC",
+    source_family: "passport_public_contracts",
+    source_observation_refs: passportOnlyContract.source_observation_refs,
+    process_role: "registered",
+    classification: { method: "canonical_procurement_projection", basis: "stable identifier" },
+    provenance: { producer: "passport_public_contracts_search_document.v1" },
+    outcome: "indexed",
+    coverage_state: "matched",
+  });
+  const distractor = { ...target, procurement_id: "procurement:contract:OTHER", canonical_href: "/procurements/OTHER/", short_title: "TAMEER unrelated record" };
+  const rows = filterMoneySnapshot([target, distractor], {
+    mode: "archive",
+    keyword: "TAMEER",
+    contractObjectRef: identity.object_ref,
+    limit: 20,
+  });
+  assert.deepEqual(rows.map((row) => row.procurement_id), [passportOnlyContract.object_ref]);
+  assert.equal(rows[0].canonical_href, "/procurements/CT185020228802305/");
+
+  const oldBrokenFacet = { search_handoff: { record_ref: passportOnlyContract.object_ref } };
+  assert.equal(contractIdentityFromFacetValues(oldBrokenFacet), null);
+  assert.deepEqual(filterMoneySnapshot([target], {
+    mode: "open",
+    keyword: "TAMEER",
+    limit: 20,
+  }), []);
 });
 
 test("a reviewed agency resolution becomes a typed entity constraint", () => {
