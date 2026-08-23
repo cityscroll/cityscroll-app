@@ -19,7 +19,7 @@ import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
-import { compileSub, vendorStem } from "./lib/compile.mjs";
+import { compileSub, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
@@ -912,7 +912,7 @@ export async function processOneSub(env, s, ctx) {
       }
     }
     if (!usedD1) {
-      rows = await fetchRows(q.url, q.params, q.transformRows, q.readRows);
+      rows = await rowsForCompiledQuery(q, env);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter); // property needs the full parcel stream for stage transitions
     }
     rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
@@ -1372,7 +1372,7 @@ async function evaluateSubSection(env, s, ctx) {
       }
     }
     if (!usedD1) {
-      rows = await fetchRows(q.url, q.params, q.transformRows, q.readRows);
+      rows = await rowsForCompiledQuery(q, env);
       if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
     }
     rows = rows.filter((row) => rowAfterDeliveryNotBefore(s, row));
@@ -1828,7 +1828,7 @@ async function evaluateCatchUpSub(env, s, ctx) {
     }
     if (!rows) {
       try {
-        rows = await fetchRows(q.url, sourceParams, q.transformRows, q.readRows);
+        rows = await rowsForCompiledQuery({ ...q, params: sourceParams }, env);
         if (q.postFilter && s.lens !== "property") rows = rows.filter(q.postFilter);
       } catch (error) {
         return {
@@ -2517,14 +2517,6 @@ async function subWatches(env, { readOnly = false } = {}) {
     } while (cursor);
   } catch { /* SUBS unavailable → no self-serve sends this run */ }
   return out;
-}
-
-async function fetchRows(url, params, transformRows, readRows) {
-  if (typeof readRows === "function") return readRows();
-  const r = await fetch(`${url}?${new URLSearchParams(params).toString()}`);
-  if (!r.ok) throw new Error(`open-data ${r.status}`);
-  const payload = await r.json();
-  return typeof transformRows === "function" ? transformRows(payload) : payload;
 }
 
 // Check whether the D1 notices mirror is fresh enough to trust for digest matching.

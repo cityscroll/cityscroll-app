@@ -1,10 +1,9 @@
 /**
  * WH-05 edge lookup over the warehouse-materialized ZAP projects snapshot.
  *
- * Pure / no network. The materialization is produced by
- * `tools/build_zap_warehouse_lookup.mjs` (DuckDB query over warehouse tables)
- * and committed as JSON imported here. Live SODA remains the miss fallback in
- * `fetchOpenDataRow`.
+ * Pure / no network. Live rows come from ALERT_STATE `land:zap-lookup:v1`
+ * when the caller passes that document; this committed JSON is the last-resort
+ * floor. Live SODA remains the miss fallback in `fetchOpenDataRow`.
  */
 
 import materialization from "../data/zap_projects_warehouse_lookup.json" with { type: "json" };

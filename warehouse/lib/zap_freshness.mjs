@@ -16,7 +16,7 @@ export { LAND_ZAP_FRESHNESS_CANARIES };
 /** Prefer-warehouse only when the DuckDB/export frontier is this fresh. */
 export const LAND_WAREHOUSE_MILESTONE_LAG_DAYS = 14;
 
-/** Align with land-upcoming-hearings publish freshness expectation (~36h). */
+/** Live lookup freshness lives on ALERT_STATE land:zap-lookup:v1, not git. */
 export const LAND_LOOKUP_MAX_AGE_MS = 36 * 60 * 60 * 1000;
 
 /**

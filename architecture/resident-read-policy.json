@@ -36,9 +36,11 @@
       "/property-locations",
       "/rules",
       "/search",
+      "/staffing-exams",
       "/suggestions",
       "/vendor-profile",
-      "/zap-outcomes"
+      "/zap-outcomes",
+      "/zap-projects-lookup"
     ],
     "explicit_transaction": [
       "/feedback",
