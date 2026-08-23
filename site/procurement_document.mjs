@@ -9,6 +9,10 @@ import {
 } from "./civic_document_chrome.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
+import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
+
+const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
+const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
 
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
@@ -50,6 +54,84 @@ function stageList(object) {
     : "";
 }
 
+function observationRows(object, observations) {
+  const index = new Map((Array.isArray(observations) ? observations : [])
+    .map((entry) => [entry?.source_observation_ref, entry]));
+  return (object?.source_observation_refs || []).map((ref) => index.get(ref)).filter(Boolean);
+}
+
+function checkbookOfficialSource(object, rows) {
+  const snapshots = rows.map((entry) => entry?.snapshot).filter(Boolean);
+  const first = (...fields) => {
+    for (const row of snapshots) for (const field of fields) {
+      const value = clean(row?.[field], 80);
+      if (value) return value;
+    }
+    return null;
+  };
+  const agid = first("agid", "original_agreement_id");
+  const contractId = object?.identity_keys?.contract_ids?.[0] || first("id", "contract_id", "contractId", "prime_contract_id");
+  const vendor = first("vendor", "vendor_name", "prime_vendor", "payee_name");
+  if (/^\d+$/.test(agid || "")) {
+    const codeMatch = String(contractId || "").trim().match(/^([A-Za-z]+)(\d)/);
+    const code = codeMatch ? `${codeMatch[1]}${codeMatch[2]}`.toUpperCase() : "CT1";
+    return {
+      href: `https://www.checkbooknyc.com/contract_details/agid/${encodeURIComponent(agid)}/doctype/${encodeURIComponent(code)}`,
+      label: "Checkbook NYC",
+    };
+  }
+  const term = contractId || vendor;
+  if (term) {
+    return {
+      href: `${CHECKBOOK_SMART_SEARCH}?search_term=${encodeURIComponent(term)}`,
+      label: "Search Checkbook NYC",
+    };
+  }
+  return { href: CHECKBOOK_CONTRACT_SEARCH, label: "Checkbook NYC" };
+}
+
+/**
+ * Resident official-source links for a procurement object.
+ * PASSPort Public has no per-contract page; the contracts browse portal is
+ * the public source. Checkbook search is labeled as search unless a
+ * contract-detail agid is present.
+ */
+export function procurementOfficialSourceItems(object = {}, observations = []) {
+  const rows = observationRows(object, observations);
+  const systems = new Set(rows.map((entry) => String(entry.source_system || "").toLowerCase()));
+  for (const ref of object?.source_observation_refs || []) {
+    const system = String(ref).split(":")[0]?.toLowerCase();
+    if (system) systems.add(system);
+  }
+  const items = [];
+  const seen = new Set();
+  const add = (item) => {
+    const href = clean(item?.href, 500);
+    const label = clean(item?.label, 80);
+    if (!href || !label) return;
+    const key = `${href}\0${label}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    items.push({ href, label });
+  };
+
+  for (const href of object?.compatibility?.city_record_notice_hrefs || []) {
+    add({ href, label: "City Record notice" });
+  }
+  if (systems.has("passport_public_contracts")) {
+    add(passportPublicOfficialSource("contract"));
+  }
+  if (systems.has("passport_public_rfx")) {
+    const rfx = rows.find((entry) => entry.source_system === "passport_public_rfx");
+    add(passportPublicOfficialSource("rfx", rfx?.snapshot || {}));
+  }
+  if (systems.has("checkbook_contracts") || systems.has("checkbook_spending")) {
+    add(checkbookOfficialSource(object, rows.filter((entry) =>
+      entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_spending")));
+  }
+  return items;
+}
+
 export function renderProcurementDocument(object = {}, observations = [], { currentHref = "" } = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
@@ -59,9 +141,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
     ["Program", facts.program], ["Industry", facts.industry],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
   ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
-  const noticeLinks = (object?.compatibility?.city_record_notice_hrefs || []).map((href) => ({
-    href, label: "City Record notice",
-  }));
+  const sourceItems = procurementOfficialSourceItems(object, observations);
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -72,7 +152,7 @@ ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contra
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({ heading: "Observed stages", body: stageList(object) })}
-${renderNodeProvenance({ heading: noticeLinks.length ? "Official records" : "", sourceItems: noticeLinks })}
+${renderNodeProvenance({ heading: sourceItems.length ? "Official records" : "", sourceItems })}
 </main>${renderNodeFooter({})}</body></html>`;
   return gateNodePageRender(html);
 }

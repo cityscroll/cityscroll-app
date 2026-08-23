@@ -51,10 +51,20 @@ export const CONTRACT_DATA_URL = "https://a0333-passportpublic.nyc.gov/dataJs/co
 export const RFX_DATA_URL = "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js";
 export const CONTRACTS_PORTAL = "https://a0333-passportpublic.nyc.gov/contracts.html";
 export const RFX_PORTAL = "https://a0333-passportpublic.nyc.gov/rfx.html";
+export const VENDOR_PORTAL = "https://a0333-passportpublic.nyc.gov/vendor.html";
 // Same authenticated extranet path the PASSPort Public RFx table uses for procurement names.
 // Scripted GETs land on login with ReturnUrl to this path; after login the vendor opens that RFx.
 export const PASSPORT_RFX_EXTRANET_BASE =
   "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet";
+
+/**
+ * PASSPort Public contracts and vendors are DataTables browse pages. Filters
+ * (Contract ID, EPIN, vendor name) live in the DOM only — no URLSearchParams,
+ * hash, or per-row href. The dump columns have no URL field. Do not mint a
+ * per-contract or per-vendor public page.
+ */
+export const PASSPORT_PUBLIC_HAS_PER_CONTRACT_PAGE = false;
+export const PASSPORT_PUBLIC_HAS_PER_VENDOR_PAGE = false;
 
 /**
  * Normalize a PASSPort Public rfp_id (strip BOM/whitespace). Numeric ids only.
@@ -77,6 +87,47 @@ export function passportRfxHandoffUrl(rfpId, browseFallback = RFX_PORTAL) {
   const id = cleanPassportRfpId(rfpId);
   if (id) return `${PASSPORT_RFX_EXTRANET_BASE}/${encodeURIComponent(id)}`;
   return browseFallback || RFX_PORTAL;
+}
+
+/**
+ * Resident official-source URL for a PASSPort Public observation.
+ * Contracts and vendors have no per-item public page; RFx may deep-link a
+ * numeric rfp_id on the authenticated extranet, which is not a public
+ * per-contract page.
+ *
+ * @param {"contract"|"rfx"|"vendor"|string} kind
+ * @param {object} [row]
+ * @returns {{ href: string, label: string, per_item: boolean }}
+ */
+export function passportPublicOfficialSource(kind, row = {}) {
+  const system = String(kind || "").toLowerCase();
+  if (system === "rfx" || system === "passport_public_rfx") {
+    const id = cleanPassportRfpId(row.rfp_id);
+    if (id) {
+      return {
+        href: passportRfxHandoffUrl(id),
+        label: "PASSPort solicitation",
+        per_item: true,
+      };
+    }
+    return {
+      href: RFX_PORTAL,
+      label: "PASSPort Public solicitations",
+      per_item: false,
+    };
+  }
+  if (system === "vendor") {
+    return {
+      href: VENDOR_PORTAL,
+      label: "PASSPort Public vendors",
+      per_item: false,
+    };
+  }
+  return {
+    href: CONTRACTS_PORTAL,
+    label: "PASSPort Public contracts",
+    per_item: false,
+  };
 }
 
 function cleanCell(value) {
