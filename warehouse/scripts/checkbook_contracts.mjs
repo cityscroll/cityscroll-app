@@ -27,8 +27,6 @@ const MAX_PAGE_SIZE = 999;
 const MAX_FISCAL_YEARS = 5;
 const MAX_RAW_ROWS = 100_000;
 const MAX_RESUME_AGE_HOURS = 6;
-const DEFAULT_GRAPH_CAP = 2_000;
-const MAX_GRAPH_CAP = 2_000;
 const HISTORICAL_GRAPH_CAP = 500;
 const DEFAULT_YEARS = [2025, 2026, 2027];
 const DEFAULT_STAGE = join(ROOT, "warehouse/raw/checkbook-contracts");
@@ -54,7 +52,7 @@ function parseArgs(argv) {
     fiscalYears: DEFAULT_YEARS,
     pageSize: 500,
     delayMs: MIN_DELAY_MS,
-    graphCap: DEFAULT_GRAPH_CAP,
+    graphCap: null,
     stageDir: DEFAULT_STAGE,
     receipt: DEFAULT_RECEIPT,
     snapshot: DEFAULT_SNAPSHOT,
@@ -89,8 +87,8 @@ function parseArgs(argv) {
   if (!args.fromFixture && args.delayMs < MIN_DELAY_MS) {
     throw new Error(`live collection delay must be at least ${MIN_DELAY_MS} ms`);
   }
-  if (!Number.isInteger(args.graphCap) || args.graphCap < 1 || args.graphCap > MAX_GRAPH_CAP) {
-    throw new Error(`--graph-cap must be 1..${MAX_GRAPH_CAP}`);
+  if (args.graphCap != null && (!Number.isInteger(args.graphCap) || args.graphCap < 1)) {
+    throw new Error("--graph-cap is an optional test bound and must be a positive integer when set");
   }
   if (args.publish && args.fromFixture) throw new Error("fixture collection cannot publish");
   if (args.resume && args.refresh) throw new Error("--resume and --refresh are mutually exclusive");
@@ -429,7 +427,7 @@ export async function runCheckbookContractsCollector(args) {
     normalized.rows,
     inputs.passportRows,
     inputs.cityRecordRows,
-    { cap: args.graphCap },
+    { cap: args.graphCap, now: collection.checkpoint.completed_at },
   );
   const receipt = publicReceipt(args, collection, normalized, selection);
   writeJson(args.snapshot, {

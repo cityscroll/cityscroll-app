@@ -301,10 +301,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/contract_search_bridge.mjs` project the shared procurement read model into source-independent
   SearchDocuments and typed Browse rows. Canonical identity is `procurement_id`; `request_id` is
   optional City Record evidence and must never gate Search, Browse, lifecycle, Following, or
-  `/procurements/<id>`. Refresh `site/data/shared_procurement_read_model.json`,
+  `/procurements/<id>`. CROL-negative PASSPort/Checkbook rows enter that live set through
+  `site/crol_notice_publication_policy.mjs` — the same valid-amount (`0 < x < $10B`) and
+  365-day Award window that already publishes City Record notices. Do not add a separate
+  numeric publication cap, and do not label the window citywide. Refresh
+  `site/data/shared_procurement_read_model.json`,
   `site/data/procurement_browse_rows.json`, and the keyword family with
   `node tools/build_shared_procurement_read_model.mjs && node tools/build_keyword_search_index.mjs`.
-  Focused proof: `test/universal_search_procurement_producer.test.mjs`,
+  Focused proof: `test/crol_notice_publication_policy.test.mjs`,
+  `test/universal_search_procurement_producer.test.mjs`,
   `test/procurement_browse_parity.test.mjs`, `test/procurement_following.test.mjs`, and
   `test/procurement_route.test.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
@@ -874,11 +879,12 @@ Verify: `node --test test/procurement_spine_ei_densify.test.mjs`.
 partitions with count-drift failure, checksummed resumable checkpoints, and a
 100,000-row hard ceiling. It collapses prime/subvendor slices to one exact
 `prime_contract_id`, measures PASSPort and modern City Record overlap before
-selection, and publishes only the bounded slice in
-`site/data/procurement_spine_sources.json`. Refresh with
+selection, and publishes CROL-eligible rows through
+`site/crol_notice_publication_policy.mjs` (City Record Award amount + 365-day
+window; no separate numeric cap). Refresh with
 `node warehouse/scripts/checkbook_contracts.mjs --publish --refresh --fiscal-years
-2025,2026,2027 --page-size 999 --graph-cap 500`; verify with `--check` and
-`node --test test/checkbook_contracts_collector.test.mjs`.
+2025,2026,2027 --page-size 999`; verify with `--check` and
+`node --test test/checkbook_contracts_collector.test.mjs test/crol_notice_publication_policy.test.mjs`.
 
 ## DuckDB + parquet warehouse (WH-01…WH-06)
 

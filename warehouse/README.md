@@ -213,16 +213,20 @@ node warehouse/scripts/checkbook_contracts.mjs --from-fixture \
   --receipt .generated/checkbook-contracts-fixture/receipt.json \
   --snapshot .generated/checkbook-contracts-fixture/normalized.json
 
-# Population refresh and bounded graph publication.
+# Population refresh. Graph publication uses the City Record Award window
+# (valid amount, last 365 days) rather than a separate numeric cap.
 node warehouse/scripts/checkbook_contracts.mjs --publish \
-  --refresh --fiscal-years 2025,2026,2027 --page-size 999 --graph-cap 2000
+  --refresh --fiscal-years 2025,2026,2027 --page-size 999
 node warehouse/scripts/checkbook_contracts.mjs --check
 ```
 
 The committed denominator and overlap receipt is
-`warehouse/receipts/proof/checkbook_contracts_population_latest.json`; only the
-2,000-row stratified graph slice is stored in
-`site/data/procurement_spine_sources.json`.
+`warehouse/receipts/proof/checkbook_contracts_population_latest.json`.
+Live Checkbook/PASSPort objects are admitted by
+`site/crol_notice_publication_policy.mjs` — the same valid-amount and 365-day
+rule that already publishes City Record Award notices — and stored in
+`site/data/procurement_spine_sources.json`. That window is not citywide
+coverage. `--graph-cap` remains a tests-only bound.
 
 
 ## Checkbook Spending payment retention
