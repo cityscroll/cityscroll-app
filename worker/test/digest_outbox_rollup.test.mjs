@@ -282,3 +282,42 @@ test("money awards rollup renders real vendor_name, never blanket vendor unliste
     sqlite.close();
   }
 });
+
+test("previewOnly rehearsal does not enqueue owed rows; dry-run without it still does", async () => {
+  const awards = [{
+    request_id: "20260811001",
+    start_date: "2026-08-11T00:00:00.000",
+    agency_name: "Transportation",
+    short_title: "Landscape maintenance Bronx Area 1",
+    vendor_name: "Adkins Cleaning & Landscaping LLC",
+    contract_amount: "1000000",
+    type_of_notice_description: "Award",
+    pin: "PIN-A",
+    section_name: "Procurement",
+  }];
+
+  async function enqueueCount(previewOnly) {
+    const { sqlite, DB } = makeDb();
+    const first = sub("one", "money", { keywords: ["Landscape"] });
+    const second = sub("two", "money", { keywords: ["maintenance"] });
+    const runCtx = {
+      ...ctx().ctx,
+      LIVE: false,
+      previewOnly,
+      capturePreviews: true,
+      advanceState: false,
+    };
+    try {
+      await withFetch({ rows: awards, fn: async (sent) => {
+        assert.equal(sent.length, 0);
+        await processAccountRollup(env(DB), [first, second], runCtx);
+      } });
+      return sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_items").get().n;
+    } finally {
+      sqlite.close();
+    }
+  }
+
+  assert.equal(await enqueueCount(true), 0);
+  assert.ok((await enqueueCount(false)) > 0, "dry-run without previewOnly must still write digest_outbox_items");
+});

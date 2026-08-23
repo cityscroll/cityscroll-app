@@ -40,12 +40,31 @@ export function extractHrefValues(html) {
   return values;
 }
 
+function isSameDocumentFragmentHref(href) {
+  if (typeof href !== "string" || !href.startsWith("#")) return false;
+  const id = href.slice(1);
+  return id.length > 0 && !/[\s#]/.test(id);
+}
+
+function htmlDeclaresElementId(html, id) {
+  const source = String(html || "");
+  return source.includes(`id="${id}"`) || source.includes(`id='${id}'`);
+}
+
 function linkProblems(preview) {
   const hrefs = extractHrefValues(preview.html);
   const invalid = [];
   for (const href of hrefs) {
     if (!href || href === "#") {
       invalid.push(href || "(empty)");
+      continue;
+    }
+    // Rollup TOC jump links are valid in-email anchors (href="#watch-N-slug").
+    // new URL("#fragment") throws, which previously false-redlined every
+    // multi-watch digest and named-held those accounts at 13:00.
+    if (isSameDocumentFragmentHref(href)) {
+      const id = href.slice(1);
+      if (!htmlDeclaresElementId(preview.html, id)) invalid.push(href);
       continue;
     }
     if (/^(mailto:|tel:)/i.test(href) || href.startsWith("/")) continue;
@@ -357,6 +376,7 @@ export async function runDigestShadow(env, {
     forceInline: true,
     queueCapSemantics: env.QUEUE_DIGESTS === "true" && !!env.DIGEST_QUEUE,
     capturePreviews: true,
+    previewOnly: true,
     advanceState: false,
     persist: false,
     simulateDryRunCounters: true,
