@@ -4,7 +4,7 @@
     "annual-examination-schedule",
     "active-civil-service-list"
   ],
-  "verified_at": "2026-08-22",
+  "verified_at": "2026-08-23",
   "join": {
     "method": "exact_exam_number_zero_pad",
     "schedule_rows": 1271,
