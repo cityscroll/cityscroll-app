@@ -18,6 +18,7 @@ import {
   mergeLandProjects,
   projectIdsForBlock,
 } from "../resident_snapshot_queries.mjs";
+import { loadJsonPreferWorker } from "../json_prefer_worker.mjs";
 import {
   DEFAULT_LAND_FAMILY,
   DEFAULT_LAND_PROCEDURE,
@@ -145,7 +146,7 @@ function loadLandProjectsSnapshot(){
   if(!landProjectsSnapshotPromise){
     landProjectsSnapshotPromise=Promise.all([
       loadLandDefaultSnapshot(),
-      fetch(LAND_PROJECTS_SNAPSHOT_URL,{cache:"force-cache",credentials:"omit"}).then(r=>r.ok?r.json():Promise.reject(new Error("snapshot-unavailable"))),
+      loadJsonPreferWorker("/zap-projects-lookup",LAND_PROJECTS_SNAPSHOT_URL,d=>d?.rows?.length),
     ]).then(([defaults,warehouse])=>mergeLandProjects(warehouse,defaults));
   }
   return landProjectsSnapshotPromise;
@@ -1776,9 +1777,7 @@ function loadZapProjectJoinIndex(){
     const tools=await ensureNoticeLandSpineTools();
     if(!tools || typeof tools.buildZapProjectJoinIndex!=="function") return null;
     try{
-      const res=await fetch("data/zap_projects_warehouse_lookup.json",{cache:"force-cache",credentials:"omit"});
-      if(!res || !res.ok) return null;
-      const doc=await res.json();
+      const doc=await loadJsonPreferWorker("/zap-projects-lookup",LAND_PROJECTS_SNAPSHOT_URL,d=>d?.rows?.length);
       return tools.buildZapProjectJoinIndex(doc);
     }catch(_e){ return null; }
   })();

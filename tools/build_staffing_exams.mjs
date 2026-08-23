@@ -64,9 +64,8 @@ const INTEREST_TAXONOMY_FILE = "interest_area_taxonomy.json";
 export const STAFFING_EXAMS_SCHEMA_VERSION = 6;
 
 /**
- * Fail-closed refresh→publish age window for the committed staffing exams artifact.
- * Daily workflow refreshes SODA schedule + exam-level list aggregates; seven days
- * leaves weekend/Actions slack without letting the card freeze for weeks.
+ * Fail-closed age window for the live KV exams payload (`staffing:exams:v1`).
+ * Committed JSON is the last-resort floor; seven days is the Worker KV clock.
  */
 export const STAFFING_EXAMS_MAX_AGE_DAYS = 7;
 
