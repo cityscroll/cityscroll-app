@@ -148,7 +148,7 @@ test("shared-read-model builder keeps restored fields on PASSPort snapshots", ()
         vendor: "GLO STUDIO INC",
         status: "Registered",
         award_amount: 8000,
-        registration_date: "01/15/2024",
+        registration_date: "08/01/2026",
         title: "Furnish and install pre-cut vinyl Sign",
         procurement_method: "Micropurchase",
         program: "Citywide Sign Shop",
