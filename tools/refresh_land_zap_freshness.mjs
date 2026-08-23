@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Closed land freshness refresh→publish helper (host / Actions).
+ * Host helper to rebuild the committed WH-05 floor (not a daily PR).
+ * Live sell-facing freshness is Worker cron → ALERT_STATE `land:zap-lookup:v1`.
  *
  * 1. Materialize sell-facing WH-05 lookup from current SODA
  * 2. Rebuild the keyword search index (land family consumes the lookup)

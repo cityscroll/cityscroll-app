@@ -59,6 +59,8 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/agencies` | GET | Public City Record agency-name crosswalk: one row per distinct source string → site id, preferred name, and full variant group. JSON by default; `?format=csv` for CSV; CORS-open and edge-cached one day | none |
 | `/property-locations` | GET | Daily Property Disposition projection with extracted site addresses, boroughs, tax lots, BBLs, and resolved map geometry; CORS-open and edge-cached 30 minutes | none |
 | `/land-upcoming-hearings` | GET | Land → Upcoming hearings snapshot from `ALERT_STATE` `land:upcoming-hearings:v1` (08:00 UTC cron, derived from `zap-outcome:v1:{id}` plus the SODA sell-facing id list). Cold, empty, or failed KV falls back to the committed `land_upcoming_hearings.json` floor | none |
+| `/zap-projects-lookup` | GET | Sell-facing WH-05 ZAP project table from `ALERT_STATE` `land:zap-lookup:v1` (08:00 UTC cron, SODA `hgx4-8ukb`). Cold, empty, or failed KV falls back to the committed `zap_projects_warehouse_lookup.json` floor. Does not rewrite the keyword index | none |
+| `/staffing-exams` | GET | Civil-service exams JSON from `ALERT_STATE` `staffing:exams:v1` (08:00 UTC cron, SODA schedule + exam-level list group-by + OASys GetActiveExams). Cold, empty, or failed KV falls back to committed `staffing_exams.json`. Exam HTML stays committed | none |
 | `/meeting.ics?id=<request_id>` | GET | One meeting calendar event served from the daily `/hearings` materialization; includes the published New York venue, remote join URL, dial-in details, and timezone-aware event time when available | none |
 | `/entity-dossier?id=` | GET | **Foundation surface (not yet live for demo subject ids):** read-only dossier when a published `canonical_entity` exists; otherwise **404** with `public_status: "not_yet_public"` (subject-registry on lifecycles remains live). Linked assertions, disagreement/missingness, link-confidence bands when resolved; HTML default / JSON via `Accept` or `?format=json`; edge-cached 5 minutes on 200 | none; `DB` |
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
@@ -84,7 +86,7 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
 | `/` `/health` | GET | liveness | none |
 
-## The daily digest (land hearings `0 8 * * *`; shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
+## The daily digest (ZAP lookup + hearings + exams `0 8 * * *`; shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
 
 The 06:00 ET shadow run forces the real account digest builders inline against live data with
 delivery, queue fan-out, watermarks, send counters, and search-health state advancement disabled.

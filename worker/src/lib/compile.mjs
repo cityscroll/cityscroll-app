@@ -20,11 +20,12 @@ import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
+import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
-const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
+export const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
 const DISTRICT_WEEKLY_DIGESTS = "https://cityscroll.org/data/district_weekly_digests.json";
 const DISTRICT_ACTIVITY = "https://cityscroll.org/data/district_activity.json";
 const AGENCY_OBLIGATIONS = "https://cityscroll.org/data/agency_obligations_lookup.json";
@@ -86,6 +87,19 @@ export function examOpenWindowBand(exam, todayISO) {
 // sub: { lens, filter }. todayISO: "YYYY-MM-DD" (for the RFP due-date floor). Returns
 // { url, params, idField, kind, postFilter? } or null for a lens the cron can't replay yet.
 // postFilter (when present) refines fetched rows — the caller applies it after fetching.
+export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
+  if (!q) return [];
+  if (typeof q.readRows === "function") return await Promise.resolve(q.readRows());
+  if (q.url === STAFFING_EXAMS) {
+    const { record } = await loadStaffingExams(env);
+    return typeof q.transformRows === "function" ? q.transformRows(record) : (record.exams || []);
+  }
+  const r = await fetchImpl(`${q.url}?${new URLSearchParams(q.params || {}).toString()}`);
+  if (!r.ok) throw new Error(`open-data ${r.status}`);
+  const payload = await r.json();
+  return typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
+}
+
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);

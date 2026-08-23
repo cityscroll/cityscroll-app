@@ -563,7 +563,7 @@ edges; unmatched notice IDs are absent, so the notice page stays unchanged.
 | **WH-06** | ZAP BBL materialization (`fetchBbls`) + parcel cross-domain edges |
 | **WH-07 serve (first)** | City Record **PIN-chain** history lookup → `fetchRelatedProcurementNotices` precompute-first |
 | **Payroll title mart** | FY `k397-673e` **group-by** → title/{count, min/max/avg base}; not a 6.8M employee pack |
-| **Next** | City Record 90d/365d Money-archive index + agency rollups; keep WH-05 Doing Business on the weekly refresh→publish loop |
+| **Next** | City Record 90d/365d Money-archive index + agency rollups; keep WH-05 Doing Business on the weekly refresh→publish loop. Sell-facing ZAP lookup freshness is Worker cron `land:zap-lookup:v1`, not a daily git PR |
 
 ## Payroll title mart (bounded optional-pack projection)
 

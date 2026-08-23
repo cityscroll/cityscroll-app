@@ -6,6 +6,16 @@ import { handleContractLifecycle } from "../src/checkbook_lifecycle.mjs";
 import { handleHearings } from "../src/hearings.mjs";
 import { handleLandUpcomingHearings } from "../src/land_upcoming_hearings.mjs";
 import { LAND_UPCOMING_HEARINGS_KV_KEY } from "../src/lib/land_upcoming_hearings_kv.mjs";
+import { handleZapProjectsLookup } from "../src/zap_projects_lookup.mjs";
+import {
+  committedZapProjectsLookupFloor,
+  ZAP_PROJECTS_LOOKUP_KV_KEY,
+} from "../src/lib/zap_projects_lookup_kv.mjs";
+import { handleStaffingExams } from "../src/staffing_exams.mjs";
+import {
+  committedStaffingExamsFloor,
+  STAFFING_EXAMS_KV_KEY,
+} from "../src/lib/staffing_exams_kv.mjs";
 import { handleMeetingOutcomes } from "../src/meeting_outcomes.mjs";
 import { handleProperties } from "../src/property.mjs";
 import { handleRules } from "../src/rules.mjs";
@@ -42,6 +52,29 @@ const handlers = [
     key: LAND_UPCOMING_HEARINGS_KV_KEY,
     handle: handleLandUpcomingHearings,
     payload: { schema_version: 2, generated_at: "2099-01-01T00:00:00.000Z", hearings: [] },
+    missingStatus: 200,
+  },
+  {
+    name: "ZAP projects lookup",
+    url: "https://api.cityscroll.org/zap-projects-lookup",
+    key: ZAP_PROJECTS_LOOKUP_KV_KEY,
+    handle: handleZapProjectsLookup,
+    payload: {
+      ...committedZapProjectsLookupFloor(),
+      materialized_at: "2099-01-01T00:00:00.000Z",
+    },
+    missingStatus: 200,
+  },
+  {
+    name: "staffing exams",
+    url: "https://api.cityscroll.org/staffing-exams",
+    key: STAFFING_EXAMS_KV_KEY,
+    handle: handleStaffingExams,
+    payload: {
+      ...committedStaffingExamsFloor(),
+      generated_at: "2099-01-01",
+      kv_refreshed_at: "2099-01-01T00:00:00.000Z",
+    },
     missingStatus: 200,
   },
   {
@@ -90,7 +123,13 @@ test("snapshot-only handlers make zero publisher requests for fresh, stale, and 
       const fresh = await item.handle(new Request(item.url), { ALERT_STATE: kvWith({ [item.key]: JSON.stringify(item.payload) }) });
       assert.equal(fresh.status, 200, `${item.name} fresh snapshot`);
 
-      const stalePayload = { ...item.payload, generated_at: "2000-01-01T00:00:00.000Z" };
+      const stalePayload = {
+        ...item.payload,
+        generated_at: "2000-01-01T00:00:00.000Z",
+        materialized_at: "2000-01-01T00:00:00.000Z",
+        kv_refreshed_at: "2000-01-01T00:00:00.000Z",
+        open_window_as_of: "2000-01-01",
+      };
       const stale = await item.handle(new Request(item.url), { ALERT_STATE: kvWith({ [item.key]: JSON.stringify(stalePayload) }) });
       assert.equal(stale.status, 200, `${item.name} stale snapshot`);
       assert.equal((await stale.json()).stale, true, `${item.name} reports stale vintage`);

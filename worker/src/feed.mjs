@@ -5,7 +5,7 @@
 // so repeated pulls of a popular feed cost one SODA query per window.
 
 import { sanitize } from "./lib/filter.mjs";
-import { compileSub } from "./lib/compile.mjs";
+import { compileSub, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
@@ -47,12 +47,7 @@ export async function handleFeed(request, env, ctx) {
 
   let rows;
   try {
-    if (typeof q.readRows === "function") rows = q.readRows();
-    else {
-      const r = await fetch(`${q.url}?${new URLSearchParams(q.params).toString()}`);
-      if (!r.ok) throw new Error(`open-data ${r.status}`);
-      rows = await r.json();
-    }
+    rows = await rowsForCompiledQuery(q, env);
     if (q.postFilter) rows = rows.filter(q.postFilter);
   } catch {
     return plain("upstream data source unavailable — retry shortly", 502);

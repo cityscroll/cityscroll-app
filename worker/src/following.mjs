@@ -14,7 +14,7 @@ import {
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
 import { buildResultsBackedWatchTemplateRegistry } from "../../site/following_suggestions.mjs";
-import { compileSub } from "./lib/compile.mjs";
+import { compileSub, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { resolveLens, sanitize } from "./lib/filter.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
@@ -46,19 +46,11 @@ function publicHeaders() {
   };
 }
 
-async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10)) {
+async function previewFor(watch, fetchImpl, todayISO = new Date().toISOString().slice(0, 10), env = {}) {
   const query = compileSub(watch, todayISO);
   if (!query) return { items: [], error: "This scope cannot be previewed yet. You can still manage existing watches below." };
   try {
-    let rows;
-    if (typeof query.readRows === "function") {
-      rows = query.readRows();
-    } else {
-      const response = await fetchImpl(`${query.url}?${new URLSearchParams(query.params)}`);
-      if (!response.ok) throw new Error(`open-data ${response.status}`);
-      const payload = await response.json();
-      rows = query.transformRows ? query.transformRows(payload) : payload;
-    }
+    let rows = await rowsForCompiledQuery(query, env, fetchImpl);
     if (!Array.isArray(rows)) rows = [];
     if (query.postFilter) rows = rows.filter(query.postFilter);
     return { items: feedItems(query.kind, rows).slice(0, 5), count: rows.length, error: null };
@@ -170,7 +162,7 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
   const parsed = watchFromFollowingParams(url.searchParams);
   const watch = { lens: parsed.lens, filter: sanitize(parsed.lens, parsed.filter) };
   const preview = parsed.requested
-    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO)
+    ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env)
     : { items: [], count: null, error: null };
   const view = buildFollowingViewModel({
     ...parsed,
