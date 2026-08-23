@@ -129,7 +129,8 @@ export function buildDigestShadowSummary({
   const results = Array.isArray(run?.results) ? run.results : [];
   const previews = results.filter((result) => result?.preview).map((result) => ({
     digest_id: result.previewId || result.sub || result.watch || "unknown",
-    recipient_redacted: result.emailRedacted || null,
+    recipient: result.email || null,
+    recipient_redacted: result.email || result.emailRedacted || null,
     subject: result.preview.subject || "",
     html: result.preview.html || "",
     list_unsubscribe: result.preview.listUnsubscribe || null,
@@ -232,6 +233,7 @@ export function buildDigestShadowSummary({
   const yesterday = history.find((log) => log?.day === dayOffset(day, -1)) || null;
   const metadata = previews.map((preview) => ({
     digest_id: preview.digest_id,
+    recipient: preview.recipient || preview.recipient_redacted || null,
     recipient_redacted: preview.recipient_redacted,
     subject: preview.subject,
     item_count: preview.item_count,
@@ -393,6 +395,7 @@ export async function readDigestShadow(db, { day = null, digestId = null } = {})
     preview: {
       run_day: preview.run_day,
       digest_id: preview.digest_id,
+      recipient: preview.recipient_redacted || null,
       recipient_redacted: preview.recipient_redacted,
       subject: preview.subject,
       html: preview.html,

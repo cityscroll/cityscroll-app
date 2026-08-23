@@ -90,7 +90,7 @@ test("admin and ops expose the immediate topicless-default enrollment", async ()
   const body = await response.json();
   assert.equal(body.topiclessIntentCount, 1);
   assert.deepEqual(body.topiclessIntents, [{
-    email: "re***@example.com",
+    email: "reader@example.com",
     status: "confirmed",
     source: "top-of-site",
     createdAt: record.createdAt,

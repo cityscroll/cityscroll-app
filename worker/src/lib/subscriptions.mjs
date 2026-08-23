@@ -311,11 +311,35 @@ async function digestHex(value) {
   return [...new Uint8Array(buf)].slice(0, 12).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// For logs: never print a full subscriber address.
+// For shared/less-trusted logs only (Cloudflare console, inbound traces).
+// Authenticated operator surfaces must store and display the full address.
 export function redactEmail(email) {
   const e = normalizeEmail(email);
   const at = e.indexOf("@");
   if (at < 1) return "***";
   const u = e.slice(0, at);
   return (u.length <= 2 ? u[0] : u.slice(0, 2)) + "***" + e.slice(at);
+}
+
+/**
+ * Truncate sub:/rl:addr:/account: keys for shared logs.
+ * Two hex chars are only 256-way and collide on the live roster — never use this
+ * on authenticated desk/admin/ops responses.
+ */
+export function maskKeyForLog(key) {
+  if (typeof key !== "string" || !key) return key;
+  return key.replace(/^(sub:|rl:addr:|account:)([^@:]{0,2})[^@:]*/, "$1$2***");
+}
+
+/** Mask subscription identity on a digest result before it hits a shared log sink. */
+export function maskDigestResultForLog(result) {
+  if (!result || typeof result !== "object") return result;
+  const out = { ...result };
+  for (const field of ["sub", "key", "subKey", "watch"]) {
+    if (typeof out[field] === "string") out[field] = maskKeyForLog(out[field]);
+  }
+  if (typeof out.email === "string") out.email = redactEmail(out.email);
+  if (Array.isArray(out.sections)) out.sections = out.sections.map(maskDigestResultForLog);
+  if (Array.isArray(out.results)) out.results = out.results.map(maskDigestResultForLog);
+  return out;
 }

@@ -354,7 +354,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/next-digest-preview",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Read-only exact next scheduled digest preview, indexed by subscriber or redacted label; no send or state advancement.",
+    description: "Read-only exact next scheduled digest preview, indexed by subscriber id or address; no send or state advancement.",
   },
   {
     path: "/admin/digest-backfill",
@@ -366,7 +366,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/subs",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Redacted signup roster with recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
+    description: "Signup roster with full address and sub key; recovered / pending-enrollment / enrolled / confirmed / test lifecycle (JSON or ?view=html).",
   },
   {
     path: "/admin/watch-log",

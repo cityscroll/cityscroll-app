@@ -39,6 +39,8 @@ import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtm
 import { currentAwardCandidates } from "./external_award.mjs";
 import {
   redactEmail,
+  maskDigestResultForLog,
+  maskKeyForLog,
   normalizeEmail,
   ensureSubscriptionIdentity,
   isTestSubscriber,
@@ -556,6 +558,7 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
         ...(options.capturePreviews ? { previewId: `watch:${w.id}` } : {}),
         lens: w.type || null,
         queryLabel: w.label || w.id,
+        email: w.email || null,
         emailRedacted: w.email ? redactEmail(w.email) : null,
         found: rows.length,
         new: fresh.length,
@@ -704,7 +707,10 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
   const logSummary = options.capturePreviews
     ? { ...summary, results: results.map(({ preview: _preview, ...result }) => result) }
     : summary;
-  console.log("alerts run:", JSON.stringify(logSummary));
+  console.log("alerts run:", JSON.stringify({
+    ...logSummary,
+    results: (logSummary.results || []).map(maskDigestResultForLog),
+  }));
   return summary;
 }
 
@@ -855,7 +861,7 @@ export async function processOneSub(env, s, ctx) {
   const previewId = ctx.capturePreviews ? digestId : null;
   if (ctx.holdAllDigests || ctx.heldDigestIds?.has(digestId)) {
     return {
-      sub: maskKey(s.key),
+      sub: s.key,
       kind: "subscription",
       skipped: "shadow-hold",
       action: "none",
@@ -864,16 +870,16 @@ export async function processOneSub(env, s, ctx) {
     };
   }
   try {
-    if (isTestSubscriber(s)) return { sub: maskKey(s.key), skipped: "developer-test", kind: "subscription" };
-    if (s.paused) return { sub: maskKey(s.key), skipped: "paused", kind: "subscription" };
-    if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly", kind: "subscription" };
+    if (isTestSubscriber(s)) return { sub: s.key, skipped: "developer-test", kind: "subscription" };
+    if (s.paused) return { sub: s.key, skipped: "paused", kind: "subscription" };
+    if (s.freq === "weekly" && !ctx.isMonday) return { sub: s.key, skipped: "weekly", kind: "subscription" };
     // Award-arrival watches are one-notice, one-shot-per-award content, not a standing notices
     // query — they never run through compileSub()/digestDecision()'s heartbeat/weekly-empty
     // logic (a "still nothing" ping would contradict the whole point of a silent watch). See
     // processAwardSub() below.
     if (s.lens === "award") return processAwardSub(env, s, ctx);
     const q = compileSub(s, ctx.today);
-    if (!q) return { sub: maskKey(s.key), skipped: `lens:${s.lens}` };
+    if (!q) return { sub: s.key, skipped: `lens:${s.lens}` };
 
     const forecasts = await matchForecasts(env, s, ctx.today);
 
@@ -929,7 +935,7 @@ export async function processOneSub(env, s, ctx) {
     let fresh = dedupeFreshByContent(reconciled.fresh);
 
     const outboxSection = {
-      sub: maskKey(s.key),
+      sub: s.key,
       subKey: s.key,
       lens: s.lens,
       queryLabel: describeFilter(s.lens, s.filter),
@@ -1063,11 +1069,12 @@ export async function processOneSub(env, s, ctx) {
     // Email copy stays the normal daily subject/body (not catch-up branded).
     const lagRecovery = isMultiDayLagRecovery(since, ctx.today, fresh.length);
     return {
-      sub: maskKey(s.key),
+      sub: s.key,
       ...(previewId ? { previewId } : {}),
       kind: "subscription",
       lens: s.lens,
       queryLabel: describeFilter(s.lens, s.filter),
+      email: s.email || null,
       emailRedacted: redactEmail(s.email),
       found: rows.length,
       new: fresh.length,
@@ -1087,7 +1094,7 @@ export async function processOneSub(env, s, ctx) {
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
-    return { sub: maskKey(s.key), ...(previewId ? { previewId } : {}), kind: "subscription", error: String(e?.message || e) };
+    return { sub: s.key, ...(previewId ? { previewId } : {}), kind: "subscription", error: String(e?.message || e) };
   }
 }
 
@@ -1109,6 +1116,7 @@ export async function processAccountRollup(env, subs, ctx) {
     return {
       sub: accountId,
       kind: "rollup",
+      email: email || null,
       emailRedacted: redactEmail(email),
       skipped: "shadow-hold",
       action: "none",
@@ -1117,7 +1125,7 @@ export async function processAccountRollup(env, subs, ctx) {
     };
   }
   if (!email || !subs?.length) {
-    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", skipped: "empty", emailRedacted: redactEmail(email) };
+    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", skipped: "empty", email: email || null, emailRedacted: redactEmail(email) };
   }
 
   try {
@@ -1127,7 +1135,7 @@ export async function processAccountRollup(env, subs, ctx) {
     for (const s of subs) {
       if (!isWatchActive(s)) {
         sections.push({
-          sub: maskKey(s.key),
+          sub: s.key,
           subKey: s.key,
           lens: s.lens,
           queryLabel: describeFilter(s.lens, s.filter),
@@ -1271,6 +1279,7 @@ export async function processAccountRollup(env, subs, ctx) {
       sub: accountId,
       ...(previewId ? { previewId } : {}),
       kind: "rollup",
+      email: email || null,
       emailRedacted: redactEmail(email),
       queryLabel: `${sections.length} watches`,
       found: totalFound,
@@ -1307,7 +1316,7 @@ export async function processAccountRollup(env, subs, ctx) {
     };
     return result;
   } catch (e) {
-    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", emailRedacted: redactEmail(email), error: String(e?.message || e) };
+    return { sub: accountId, ...(previewId ? { previewId } : {}), kind: "rollup", email: email || null, emailRedacted: redactEmail(email), error: String(e?.message || e) };
   }
 }
 
@@ -1317,7 +1326,7 @@ export async function processAccountRollup(env, subs, ctx) {
  */
 async function evaluateSubSection(env, s, ctx) {
   const base = {
-    sub: maskKey(s.key),
+    sub: s.key,
     ...((ctx.capturePreviews && s.key) ? { previewId: await digestShadowId("watch", s.key) } : {}),
     subKey: s.key,
     lens: s.lens,
@@ -1476,11 +1485,11 @@ export async function processAwardSub(env, s, ctx) {
   try {
     const filter = s.filter || {};
     if (typeof filter.requestId !== "string" || !filter.requestId) {
-      return { sub: maskKey(s.key), skipped: "malformed-award-watch" };
+      return { sub: s.key, skipped: "malformed-award-watch" };
     }
 
     const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency, ctx.nowMs);
-    if (!ok) return { sub: maskKey(s.key), skipped: "award-lookup-failed" };
+    if (!ok) return { sub: s.key, skipped: "award-lookup-failed" };
 
     const seenId = `award:${s.key}`;
     const seen = await getSeen(env, seenId);
@@ -1520,10 +1529,11 @@ export async function processAwardSub(env, s, ctx) {
     if (send && candidates.length) await markSeen(env, seenId, candidates.map((c) => c.key).filter(Boolean));
 
     return {
-      sub: maskKey(s.key),
+      sub: s.key,
       ...(previewId ? { previewId } : {}),
       lens: "award",
       queryLabel: describeFilter("award", filter),
+      email: s.email || null,
       emailRedacted: redactEmail(s.email),
       found: candidates.length,
       new: fresh.length,
@@ -1536,7 +1546,7 @@ export async function processAwardSub(env, s, ctx) {
       ...(preview ? { preview } : {}),
     };
   } catch (e) {
-    return { sub: maskKey(s.key), ...(previewId ? { previewId } : {}), error: String(e?.message || e) };
+    return { sub: s.key, ...(previewId ? { previewId } : {}), error: String(e?.message || e) };
   }
 }
 
@@ -1635,14 +1645,14 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     } else {
       const s = await loadSub(env, key);
       if (!s) {
-        r = { sub: maskKey(key), kind: "subscription", skipped: "gone" };
+        r = { sub: key, kind: "subscription", skipped: "gone" };
       } else {
         r = await processOneSub(env, s, ctx);
       }
     }
   }
 
-  console.log("digest job:", JSON.stringify(r));
+  console.log("digest job:", JSON.stringify(maskDigestResultForLog(r)));
   await recordQueueJobOutcome(env, day, r);
   const daylogWrite = await appendQueueDayLogEntry(env, day, r);
   await stampQueueDeliveryObservation(env, day, r, daylogWrite);
@@ -1654,7 +1664,7 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
     });
   }
   if (r?.error) {
-    throw new Error(`digest job error for ${r.sub || "?"}: ${r.error}`);
+    throw new Error(`digest job error for ${maskKeyForLog(r.sub) || "?"}: ${r.error}`);
   }
   return r;
 }
@@ -1760,10 +1770,11 @@ async function enqueueCatchUpRows(env, s, section, rows, ctx) {
 
 async function evaluateCatchUpSub(env, s, ctx) {
   const base = {
-    sub: maskKey(s.key),
+    sub: s.key,
     subKey: s.key,
     lens: s.lens,
     queryLabel: describeFilter(s.lens, s.filter),
+    email: s.email || null,
     emailRedacted: redactEmail(s.email),
     action: "catch_up",
     sent: false,
@@ -1914,6 +1925,7 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, n
       results.push({
         sub: accountLogId(subs[0]?.email),
         kind: "rollup",
+        email: normalizeEmail(subs[0]?.email || "") || null,
         emailRedacted: redactEmail(normalizeEmail(subs[0]?.email || "")),
         queryLabel: `${sections.length} watches`,
         found,
@@ -2020,6 +2032,7 @@ export async function dryRunRollupForEmail(env, email) {
   if (!active.length) {
     return {
       ok: true,
+      email: want,
       emailRedacted: redactEmail(want),
       watchCount: list.length,
       activeCount: 0,
@@ -2027,7 +2040,7 @@ export async function dryRunRollupForEmail(env, email) {
       mode: list.length ? "all_paused" : "no_watches",
       manageUrlPresent: false,
       sections: list.map((s) => ({
-        key: maskKey(s.key),
+        key: s.key,
         lens: s.lens,
         query: describeFilter(s.lens, s.filter),
         paused: !!s.paused,
@@ -2054,6 +2067,7 @@ export async function dryRunRollupForEmail(env, email) {
   }
   return {
     ok: true,
+    email: want,
     emailRedacted: redactEmail(want),
     watchCount: list.length,
     activeCount: active.length,
@@ -2131,13 +2145,14 @@ export async function digestSendTestForEmail(env, email, { live = false, advance
   if (!active.length) {
     return {
       ok: true,
+      email: want,
       emailRedacted: redactEmail(want),
       watchCount: list.length,
       activeCount: 0,
       wouldSend: false,
       mode: list.length ? "all_paused" : "no_watches",
       manageUrlPresent: false,
-      sections: list.map((s) => ({ key: maskKey(s.key), lens: s.lens, query: describeFilter(s.lens, s.filter), paused: !!s.paused })),
+      sections: list.map((s) => ({ key: s.key, lens: s.lens, query: describeFilter(s.lens, s.filter), paused: !!s.paused })),
     };
   }
   const day = new Date().toISOString().slice(0, 10);
@@ -2159,6 +2174,7 @@ export async function digestSendTestForEmail(env, email, { live = false, advance
     ok: true,
     live: !!live,
     advanceState: !!advanceState,
+    email: want,
     emailRedacted: redactEmail(want),
     watchCount: list.length,
     activeCount: active.length,
@@ -2544,10 +2560,6 @@ async function unsubAllLink(env, email) {
     { ttlSeconds: 60 * 24 * 3600 },
   );
   return `${base}/unsubscribe?token=${encodeURIComponent(token)}`;
-}
-
-function maskKey(n) {
-  return String(n).replace(/^(sub:)([^@:]{0,2})[^@:]*/, "$1$2***");
 }
 
 function districtGroupedListHtml(rows, renderItem, esc) {
