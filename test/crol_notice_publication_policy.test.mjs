@@ -30,7 +30,7 @@ test("CROL award publication reuses the Money honesty cap and 365-day floor", ()
   assert.equal(crolNoticeAmountIsValid(0), false);
 });
 
-test("CROL-negative PASSPort and Checkbook rows use the Award window, not a row cap", () => {
+test("PASSPort contracts are served by identity while CROL remains a notice policy", () => {
   const passport = {
     contract_id: "CT1-NEG-1",
     epin: "85025M0001001",
@@ -64,7 +64,10 @@ test("CROL-negative PASSPort and Checkbook rows use the Award window, not a row 
   const snapshots = records
     .filter((row) => row.source_system === "passport_public_contracts")
     .map((row) => JSON.parse(row.normalized_snapshot));
-  assert.deepEqual(snapshots.map((row) => row.contract_id), ["CT1-NEG-1"]);
+  assert.deepEqual(
+    snapshots.map((row) => row.contract_id).sort(),
+    ["CT1-CAP-1", "CT1-NEG-1", "CT1-OLD-1"],
+  );
   assert.equal(describeCrolAwardPublication({ now: NOW }).row_cap, null);
   assert.equal(describeCrolAwardPublication({ now: NOW }).policy, CROL_AWARD_PUBLICATION_POLICY);
   assert.match(describeCrolAwardPublication({ now: NOW }).coverage, /not a citywide inventory/i);
@@ -93,7 +96,7 @@ test("production spine admits CROL-window PASSPort rows that the 500-row prefix 
   const spine = JSON.parse(readFileSync(new URL("../site/data/procurement_spine_sources.json", import.meta.url)));
   const records = procurementSourceRecordsFromMaterializations(spine, { rows: [] });
   const passport = records.filter((row) => row.source_system === "passport_public_contracts");
-  assert.ok(passport.length > 1_200, `expected CROL-window PASSPort expansion, got ${passport.length}`);
+  assert.equal(passport.length, spine.rows.passport_contracts.length);
   const under100k = passport.filter((row) => {
     const snapshot = JSON.parse(row.normalized_snapshot);
     const amount = Number(snapshot.current_amount || snapshot.award_amount || 0);

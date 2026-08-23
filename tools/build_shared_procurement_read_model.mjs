@@ -7,7 +7,6 @@ import { fileURLToPath } from "node:url";
 import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
 import {
   describeCrolAwardPublication,
-  matchesCrolAwardPublication,
 } from "../site/crol_notice_publication_policy.mjs";
 import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
 import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compile.mjs";
@@ -86,21 +85,20 @@ function cityRecord(row, generatedAt) {
 
 export function procurementSourceRecordsFromMaterializations(spine, awards) {
   const generatedAt = spine?.generated_at || spine?.observed_on || null;
-  const now = generatedAt || new Date().toISOString();
   const checkbookRows = Array.isArray(spine?.rows?.checkbook_contracts)
     ? spine.rows.checkbook_contracts.filter((row) => (
       row.selection_bucket === "new_unique"
       || row.selection_bucket === "passport_only"
       || row.selection_bucket === "passport_and_city_record"
     )) : [];
-  const selectedContracts = new Set(checkbookRows.map((row) => norm(row.contract_id || row.prime_contract_id)).filter(Boolean));
   const selectedPins = new Set(checkbookRows.map((row) => norm(row.pin)).filter(Boolean));
-  const passportRows = (Array.isArray(spine?.rows?.passport_contracts) ? spine.rows.passport_contracts : [])
-    .filter((row) => (
-      selectedContracts.has(norm(row.contract_id))
-      || selectedPins.has(norm(row.epin_norm || row.epin))
-      || matchesCrolAwardPublication(row, { now })
-    ));
+  // PASSPort Public is the publisher-backed contract corpus advertised by the
+  // contracts search lane. Keep every row with its stable contract identity in
+  // the served model; the rolling CROL predicate is only the publication rule
+  // for notice-shaped rows, not a coverage filter for canonical contracts.
+  const passportRows = Array.isArray(spine?.rows?.passport_contracts)
+    ? spine.rows.passport_contracts
+    : [];
   for (const row of passportRows) {
     const pin = norm(row.epin_norm || row.epin);
     if (pin) selectedPins.add(pin);
