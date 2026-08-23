@@ -11,6 +11,7 @@ import {
   SEARCH_TEXT_MAX_LENGTH,
   admitSearchDocument,
 } from "./search_document_contract.mjs";
+import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 
 export const PROCUREMENT_SEARCH_PRODUCER_SCHEMA = "cityscroll.procurement_search_producer.v1";
 
@@ -141,7 +142,10 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
       || `Contract ${contractId || epin || object.procurement_id}`,
     agency: first(rows, ["agency_name", "agency"], 240),
     vendor: first(rows, ["vendor_name", "vendor", "prime_vendor", "payee_name"], 240),
-    amount: numeric(rows, ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"]),
+    amount: numeric(
+      snapshotsForPublicAmount(object, observations),
+      ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"],
+    ),
     startDate: first(rows, ["start_date", "registered", "registration_date", "issue_date", "date"], 40),
     method: first(rows, ["selection_method_description", "procurement_method"], 240),
     program: first(rows, ["program"], 240),

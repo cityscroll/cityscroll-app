@@ -6,8 +6,11 @@
  * stage only when it identifies at most one contract; a PIN shared by multiple
  * contracts is deliberately ambiguous. City Record can add stage evidence and
  * compatibility links to an already-constructed object, but never constructs
- * one or changes its identity.
+ * one or changes its identity. PASSPort-only objects may carry a Checkbook
+ * corroboration sidecar; that lookup is evidence only and never a constructor.
  */
+
+import { attachCheckbookPassportCorroboration } from "./checkbook_passport_corroboration.mjs";
 
 export const PROCUREMENT_OBJECT_SCHEMA = "cityscroll.procurement_object.v1";
 export const PROCUREMENT_IDENTITY_EDGE_SCHEMA = "cityscroll.procurement_identity_edge.v1";
@@ -472,7 +475,12 @@ function attachLifecycles(objects, lifecycles) {
 }
 
 /** Build canonical objects exclusively from accepted exact observation edges. */
-export function buildProcurementObjects({ sourceRecords = [], lifecycleRows = [] } = {}) {
+export function buildProcurementObjects({
+  sourceRecords = [],
+  lifecycleRows = [],
+  checkbookLookupRows = null,
+  includeUnknownCheckbookCorroboration = false,
+} = {}) {
   const gate = auditProcurementIdentityGate(sourceRecords);
   if (!gate.ok) {
     throw new Error(
@@ -500,6 +508,11 @@ export function buildProcurementObjects({ sourceRecords = [], lifecycleRows = []
     latest.filter((record) => CITY_RECORD_SOURCES.has(sourceSystem(record))),
   );
   attachLifecycles(objects, lifecycleRows);
+  attachCheckbookPassportCorroboration(objects, {
+    sourceRecords: latest,
+    checkbookLookupRows,
+    includeUnknown: includeUnknownCheckbookCorroboration,
+  });
   objects.sort((left, right) => left.procurement_id.localeCompare(right.procurement_id));
   edges.sort((left, right) => left.source_observation_ref.localeCompare(right.source_observation_ref));
 
@@ -517,7 +530,7 @@ export function procurementCanonicalHref(recordOrId) {
   return id ? `/procurements/${encodeURIComponent(String(id))}` : null;
 }
 
-export function resolveProcurementRoute(value, objects = []) {
+export function resolveProcurementRoute(value, objects = [], _options = {}) {
   let url;
   try {
     url = new URL(String(value || ""), "https://cityscroll.org");
