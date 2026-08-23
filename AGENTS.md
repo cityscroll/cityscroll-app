@@ -322,17 +322,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## PR and CI preflight
 
-- **Daily refresh PR publish loop:** the data-refresh workflows
-  (`doing-business-warehouse-lookup`, `geocoder-address-index`,
-  `land-upcoming-hearings`, `land-zap-freshness-refresh`,
-  `payroll-title-warehouse-lookup`,
-  `staffing-exams-refresh`) must open PRs with repo
+- **Daily refresh PR publish loop:** remaining git-backed data-refresh
+  workflows (`doing-business-warehouse-lookup`, `geocoder-address-index`,
+  `land-zap-freshness-refresh`, `staffing-exams-refresh`) must open PRs with repo
   secret `REFRESH_PR_TOKEN` (fine-grained PAT: Actions/Contents/Pull requests
   R/W), not `secrets.GITHUB_TOKEN`. GitHub blocks default-token PRs from
   triggering required checks (anti-recursion), which stalls merge-queue
   auto-merge. After `peter-evans/create-pull-request`, each workflow enables
   auto-merge via `gh pr merge "$REFRESH_PR" --auto --match-head-commit
   "$REFRESH_HEAD"` with the same PAT as `GH_TOKEN`.
+  Payroll titles and land upcoming hearings live in Worker cron / `ALERT_STATE`
+  (`payroll:title-mart:v1`, `land:upcoming-hearings:v1`); they must not grow a
+  refresh PR.
 - Shared browser artifacts use `tools/site_artifact_identity.mjs` plus
   `.github/actions/use-site-artifact`: the run/attempt artifact and exact-input
   cache are trusted only after `_site.sha256`, commit/tree, lockfile, Node
@@ -612,8 +613,8 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `test/land_stage_action_filters.test.mjs` and
   `test/land_procedure_facet.test.mjs`. The stage-action file asserts the public-review ∩
   upcoming-hearing join invariant with a frozen fixture plus a dynamic live pick from
-  `site/data/land_upcoming_hearings.json` — never pin a rolling project id (it ages out of the
-  daily refresh and blocks the land-upcoming-hearings publish loop).
+  `site/data/land_upcoming_hearings.json` — never pin a rolling project id (the
+  committed snapshot is a last-resort floor; live rows come from Worker KV).
 - Hydrated Meetings borough/location scopes must filter the current hearing rows through
   `filterMeetingRowsByAffectedArea` before any stamped district-bag materialization. The map
   artifact is a read model and can lag newly published or multi-borough hearings; community-
@@ -1000,9 +1001,11 @@ projects (+ demo `2022M0258`) into `site/data/zap_projects_warehouse_lookup.json
 materialization hits; live SODA remains the miss fallback. Resident land
 list/search/hearings must not freeze on a stale bulk CSV: daily
 `.github/workflows/land-zap-freshness-refresh.yml` rebuilds the lookup + land
-keyword family from **current SODA** and opens a PR;
-`.github/workflows/land-upcoming-hearings.yml` commits/PRs the hearings artifact
-(not upload-artifact-only). `fetchLandDefaultProjects` prefers DuckDB only when
+keyword family from **current SODA** and opens a PR.
+Upcoming hearings are derived at `0 8 * * *` from `zap-outcome:v1:{id}` plus the
+SODA sell-facing id list into `ALERT_STATE` `land:upcoming-hearings:v1`
+(`GET /land-upcoming-hearings`); `site/data/land_upcoming_hearings.json` is the
+last-resort floor. `fetchLandDefaultProjects` prefers DuckDB only when
 the milestone frontier clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA.
 Canaries `2025Q0331` / `2026K0123` fail `--check`. The unit test
 `test/warehouse_serve_publish_contract.test.mjs` derives its reference now from
@@ -1047,15 +1050,15 @@ node --test test/warehouse_wh05_lookups.test.mjs worker/test/wh05_warehouse_look
 ```
 
 **Payroll title mart (optional-pack projection, not a 6.8M bulk):** SODA
-`k397-673e` group-by → `site/data/payroll_title_warehouse_lookup.json` (+ Worker
-twin). One FY title → `{count, min/max/avg base}` row; no employee PII. People
-title/payroll suggestion counts prefer the mart before live SODA. Age/canary
-gate + last-known-good; weekly
-`.github/workflows/payroll-title-warehouse-lookup.yml`. Follow-ons: agency ×
-title, median bands, multi-FY, optional raw pack. Rebuild:
+`k397-673e` group-by. The 13:00 Worker cron writes `ALERT_STATE`
+`payroll:title-mart:v1`; People title/payroll suggestion counts read KV first
+and fall back to the committed twin
+`site/data/payroll_title_warehouse_lookup.json` / Worker copy. One FY title →
+`{count, min/max/avg base}` row; no employee PII. Follow-ons: agency ×
+title, median bands, multi-FY, optional raw pack. Rebuild the floor with
 `node tools/build_payroll_title_warehouse_lookup.mjs --from-soda --bench`;
 `--check` + `node --test test/payroll_title_mart.test.mjs
-worker/test/suggestions.test.mjs`.
+worker/test/payroll_title_mart_kv.test.mjs worker/test/suggestions.test.mjs`.
 
 **WH-06 ZAP BBL serve:** materialize project→BBL groups (+ demo `2022M0258`)
 into `site/data/zap_bbl_warehouse_lookup.json` (+ Worker twin). Replaces live
@@ -1530,9 +1533,10 @@ node tools/measure_zap_hearing_logistics.mjs --live --limit 50 \
 node --test test/zap_hearing_logistics.test.mjs test/land_upcoming_hearings.test.mjs
 ```
 
-Scheduled: `.github/workflows/land-upcoming-hearings.yml` (daily). Receipt:
-`warehouse/receipts/proof/land_upcoming_hearings_latest.json`. Field case:
-`#land/2024Q0292`. Capture: `python3 tools/capture_zap_hearing_logistics.py`.
+Scheduled: Worker cron `0 8 * * *` → `ALERT_STATE` `land:upcoming-hearings:v1`
+(`GET /land-upcoming-hearings`). The committed JSON remains the cold-KV floor;
+`--check` still forbids synthetic rows. Field case: `#land/2024Q0292`. Capture:
+`python3 tools/capture_zap_hearing_logistics.py`.
 
 **Contract renewal forecasts (cs-pred-09):** Checkbook `fc:*` rows keep product
 fields for `/forecast`, vendor profiles, and digests, and also carry

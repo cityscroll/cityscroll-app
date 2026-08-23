@@ -4,6 +4,8 @@ import test from "node:test";
 import { handleFranchiseConcessions } from "../src/franchise_concession.mjs";
 import { handleContractLifecycle } from "../src/checkbook_lifecycle.mjs";
 import { handleHearings } from "../src/hearings.mjs";
+import { handleLandUpcomingHearings } from "../src/land_upcoming_hearings.mjs";
+import { LAND_UPCOMING_HEARINGS_KV_KEY } from "../src/lib/land_upcoming_hearings_kv.mjs";
 import { handleMeetingOutcomes } from "../src/meeting_outcomes.mjs";
 import { handleProperties } from "../src/property.mjs";
 import { handleRules } from "../src/rules.mjs";
@@ -33,6 +35,14 @@ const handlers = [
     handle: handleHearings,
     payload: { generated_at: "2099-01-01T00:00:00.000Z", source_extraction_version: 2, hearings: [] },
     missingStatus: 503,
+  },
+  {
+    name: "land upcoming hearings",
+    url: "https://api.cityscroll.org/land-upcoming-hearings",
+    key: LAND_UPCOMING_HEARINGS_KV_KEY,
+    handle: handleLandUpcomingHearings,
+    payload: { schema_version: 2, generated_at: "2099-01-01T00:00:00.000Z", hearings: [] },
+    missingStatus: 200,
   },
   {
     name: "property",

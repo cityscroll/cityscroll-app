@@ -342,9 +342,18 @@ function seedLandOutcomeSnapshot(snapshot){
 }
 function loadLandUpcomingHearings(){
   if(!landUpcomingHearingsPromise){
-    landUpcomingHearingsPromise=fetch(LAND_UPCOMING_HEARINGS_URL)
+    const floor=()=>fetch(LAND_UPCOMING_HEARINGS_URL)
       .then(r=>r.ok?r.json():null)
       .catch(()=>null);
+    const live=typeof workerFetch==="function"
+      ? workerFetch("/land-upcoming-hearings",{},8000)
+        .then(r=>r.ok?r.json():null)
+        .catch(()=>null)
+      : Promise.resolve(null);
+    landUpcomingHearingsPromise=live.then(payload=>{
+      if(payload && Array.isArray(payload.hearings)) return payload;
+      return floor();
+    }).catch(()=>floor());
   }
   return landUpcomingHearingsPromise;
 }
