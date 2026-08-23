@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
   "generated_at": "2026-08-18T04:05:51.552Z",
-  "row_count": 1034,
+  "row_count": 1027,
   "rows": [
     {
       "procurement_id": "procurement:contract:CT100220270001246",
@@ -260,26 +260,6 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT101720228801536",
-      "digest_id": "procurement:contract:CT101720228801536",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT101720228801536",
-      "short_title": "VIDEOGRAPHER SERVICES Renewal #2",
-      "agency_name": "OFFICE OF EMERGENCY MANAGEMENT",
-      "vendor_name": "SPLASH STUDIOS INC",
-      "contract_amount": 200000,
-      "start_date": "2021-02-19",
-      "pin": "01718P0191001R001R001",
-      "contract_id": "CT101720228801536",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -4244,26 +4224,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT105620218801098",
-      "digest_id": "procurement:contract:CT105620218801098",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620218801098",
-      "short_title": "Multi-Yr Repairs Maint of Roofs & Waterproofing #2",
-      "agency_name": "NEW YORK CITY POLICE DEPARTMENT",
-      "vendor_name": "SKYVIEW CONSTRUCTION GROUP INC",
-      "contract_amount": 1634267,
-      "start_date": "2021-01-17",
-      "pin": "05617B0220001R001R001",
-      "contract_id": "CT105620218801098",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT105620261415333",
       "digest_id": "procurement:contract:CT105620261415333",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620261415333",
@@ -4760,26 +4720,6 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT106820218801917",
-      "digest_id": "procurement:contract:CT106820218801917",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820218801917",
-      "short_title": "Renewal of Alert Media for Smart Phone Safety APP Renewal #1",
-      "agency_name": "ADMINISTRATION FOR CHILDREN'S SERVICES",
-      "vendor_name": "ALERT MEDIA INC",
-      "contract_amount": 156749.48,
-      "start_date": "2021-01-01",
-      "pin": "06820F8006KXLR001",
-      "contract_id": "CT106820218801917",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -15764,46 +15704,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT185020228802080",
-      "digest_id": "procurement:contract:CT185020228802080",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228802080",
-      "short_title": "BBJ-QTWM, CO03",
-      "agency_name": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-      "vendor_name": "TRIUMPH CONSTRUCTION CORP",
-      "contract_amount": 318116.81,
-      "start_date": "2022-02-28",
-      "pin": "85021B0138001C003",
-      "contract_id": "CT185020228802080",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT185020228802305",
-      "digest_id": "procurement:contract:CT185020228802305",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228802305",
-      "short_title": "Contract CT185020228802305",
-      "agency_name": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
-      "vendor_name": "TAMEER INC",
-      "contract_amount": 26112.93,
-      "start_date": "2022-03-21",
-      "pin": "85021B0087001C011",
-      "contract_id": "CT185020228802305",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT185020261417836",
       "digest_id": "procurement:contract:CT185020261417836",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020261417836",
@@ -16600,26 +16500,6 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT185720228800365",
-      "digest_id": "procurement:contract:CT185720228800365",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185720228800365",
-      "short_title": "Bid 2100089 Nozzles (Brand Specific) Amendment #1",
-      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
-      "vendor_name": "FIREMATIC SUPPLY CO. INC",
-      "contract_amount": 49689.78,
-      "start_date": "2021-08-01",
-      "pin": "85721B0111001A001",
-      "contract_id": "CT185720228800365",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -19940,26 +19820,6 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:MA185720211201997",
-      "digest_id": "procurement:contract:MA185720211201997",
-      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720211201997",
-      "short_title": "HEATING OIL: BIO-BLEND & BIO-HEAT, BULK DELIVERY",
-      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
-      "vendor_name": "APPROVED OIL COMPANY OF BROOKLYN INC",
-      "contract_amount": 5852000,
-      "start_date": "2021-06-01",
-      "pin": "85721B0093002",
-      "contract_id": "MA185720211201997",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
