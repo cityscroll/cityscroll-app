@@ -123,6 +123,21 @@ test("rollupSubject: multi-watch with matches", () => {
   );
 });
 
+test("rollupSubject: catch-up names the last digest date on a multi-watch send", () => {
+  const subject = rollupSubject({
+    totalNew: 12,
+    totalForecasts: 0,
+    labels: ["a", "b"],
+    watchCount: 2,
+    catchUp: true,
+    sinceDate: "Aug 5",
+  });
+  assert.match(subject, /catching up/i);
+  assert.match(subject, /12 new/);
+  assert.match(subject, /since your last digest on Aug 5/);
+  assert.match(subject, /2 watches/);
+});
+
 test("rollupSubject: multi-watch account with only one wanting label still says N watches", () => {
   // Production incident shape: 4 active watches, only shelter matched → labels.length === 1.
   // Subject must not collapse to the single-watch form naming only that label.

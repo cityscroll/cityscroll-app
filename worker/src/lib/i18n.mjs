@@ -64,10 +64,10 @@ const EMAIL_STRINGS = {
     award_watch_vendor_unlisted:"vendor unlisted",
     award_watch_view_notice:    "View the notice on CityScroll →",
 
-    // catch_up: watermark-recovery digest sent after a delivery outage. Not a normal daily
-    // drip — the subscriber should understand why they're getting a batch.
-    catch_up_subject: "CityScroll: {n} items you may have missed — {label}",
-    catch_up_intro:   "Delivery was interrupted — here are {n} items since {date} that were missed.",
+    // catch_up: next regular digest after a stall. The owed backlog since last
+    // successful delivery folds in; name the coverage range so it is not "since yesterday."
+    catch_up_subject: "CityScroll: catching up — {n} new since your last digest on {date} — {label}",
+    catch_up_intro:   "Catching up: {n} items since your last digest on {date}.",
   },
 
   es: {
@@ -118,8 +118,8 @@ const EMAIL_STRINGS = {
     award_watch_vendor_unlisted:"proveedor no indicado",
     award_watch_view_notice:    "Ver el aviso en CityScroll →",
 
-    catch_up_subject: "CityScroll: {n} avisos que podría haber perdido — {label}",
-    catch_up_intro:   "La entrega fue interrumpida — aquí hay {n} avisos desde {date} que se perdieron.",
+    catch_up_subject: "CityScroll: puesta al día — {n} nuevos desde su último resumen del {date} — {label}",
+    catch_up_intro:   "Puesta al día: {n} avisos desde su último resumen del {date}.",
   },
 };
 

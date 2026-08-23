@@ -3,7 +3,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { digestDecision, daysBetween, shortDate, dedupeFreshByContent, matchEvidence } from "../src/lib/digest.mjs";
+import { digestDecision, digestCoversBacklogWindow, daysBetween, shortDate, dedupeFreshByContent, matchEvidence } from "../src/lib/digest.mjs";
 
 test("shortDate: ISO date and full timestamp both -> 'Mon D'", () => {
   assert.equal(shortDate("2026-06-30"), "Jun 30");
@@ -59,6 +59,18 @@ test("daily + no fresh, never sent (null lastSent) -> heartbeat is due", () => {
 test("heartbeat window is tunable via heartbeatDays", () => {
   assert.equal(digestDecision({ ...base, lastSentDate: "2026-06-24", heartbeatDays: 7 }).action, "heartbeat"); // 7
   assert.equal(digestDecision({ ...base, lastSentDate: "2026-06-26", heartbeatDays: 7 }).action, "none");      // 5
+});
+
+test("digestCoversBacklogWindow: daily lastsent older than yesterday is a gap fill", () => {
+  assert.equal(digestCoversBacklogWindow({ lastSentDate: "2026-08-09", today: "2026-08-10", freq: "daily" }), false);
+  assert.equal(digestCoversBacklogWindow({ lastSentDate: "2026-08-08", today: "2026-08-10", freq: "daily" }), true);
+  assert.equal(digestCoversBacklogWindow({ lastSentDate: "2026-08-05", today: "2026-08-10", freq: "daily" }), true);
+  assert.equal(digestCoversBacklogWindow({ lastSentDate: null, today: "2026-08-10", freq: "daily" }), false);
+});
+
+test("digestCoversBacklogWindow: weekly lastsent of one week is the normal period", () => {
+  assert.equal(digestCoversBacklogWindow({ lastSentDate: "2026-08-03", today: "2026-08-10", freq: "weekly" }), false);
+  assert.equal(digestCoversBacklogWindow({ lastSentDate: "2026-07-27", today: "2026-08-10", freq: "weekly" }), true);
 });
 
 // dedupeFreshByContent: a measured identifier audit found 24 groups of Award notices, out of

@@ -2072,11 +2072,22 @@ ONLY after a real send (`if (send && rows.length)`), never on observe. The old
 fresh notices so the next run treated them as already-seen — the watermark-poisoning
 bug. Applies to all three paths: config watches, `processOneSub`, `processAwardSub`.
 
-**Catch-up mode** (`runCatchUpDigests`): when delivery was broken for days, recovery
-sends the **missed stream since the lastsent watermark**, not a single post-unclog drip.
-Procedure: detect lag (≥ `minLagDays`) → clear seen → recompute query with raised limit
-+ `start_date >= watermark` floor → send one clearly-labeled catch-up email → advance
-watermark only on success. Tracks `digest_catchup` stats separately from normal volume.
+**Watermark-backlog fold-in (regular 13:00 digest):** when delivery was stalled or
+held, the next regularly-scheduled send covers everything owed since that
+subscriber's last successful delivery (`lastsent`, else `createdAt`) — not just
+the last 24 hours. `attachOwedRows` folds the durable outbox into matching
+watch sections on both `processOneSub` and `processAccountRollup`.
+`owedForSubscriber` pages the full owed set (`listAllOwedItems`); a 500-row
+SELECT must not drop the tail. No separate manual drain. When lastsent is older
+than one scheduled period (daily: >1 UTC day; weekly: >7), the subject and
+header say `Catching up: N items since your last digest on <date>`. Desk
+`traffic_class: catch_up` stays on `isMultiDayLagRecovery` (lag >1 with fresh
+rows). Proof: `worker/test/watermark_backlog_digest.test.mjs`.
+
+**Catch-up evaluation** (`runCatchUpDigests`) is evaluation-only: it enqueues
+owed identities into the outbox and does not send. The next regular digest is
+the drain. Admin `POST /admin/digest-catchup` and `DIGEST_CATCH_UP=1` still
+select lagging watches; they must not be used as a second send path.
 
 **Triggers:**
 - Admin: `POST /admin/digest-catchup` (ADMIN_KEY, body `{ minLagDays?, subKeys? }`)
