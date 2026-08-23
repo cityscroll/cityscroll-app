@@ -708,6 +708,16 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   identity. Verify with `node --test worker/test/digest_shadow_hold.test.mjs
   worker/test/digest_shadow.test.mjs worker/test/digest_catchup.test.mjs
   worker/test/digest_rollup.test.mjs`.
+- Shadow `linkProblems` accepts well-formed same-document `#fragment` hrefs whose
+  target `id` is present in the rendered HTML (rollup TOC `href="#watch-N-slug"`).
+  Empty / `#`-only / dangling fragments stay `broken_digest_link`. A false positive
+  on those TOC anchors names the digest in `affected_digest_ids` and becomes
+  `AFFECTED_DIGESTS_HELD` at 12:45, so 13:00 omits every multi-watch rollup.
+- The 10:00 rehearsal (`runDigestShadow`) must pass `previewOnly: true` into
+  `runAlerts`. Rehearsal is `live: false` / `persist: false` but still shares
+  `env.DB`; without `previewOnly`, `enqueueNormalSection` writes
+  `digest_outbox_items` that never drain while the account is held. The 13:00
+  live path is unchanged.
 - Ontology inventory additions enter only the private digest rehearsal through
   `worker/src/lib/ontology_delta_alert.mjs`. Stable `absent-to-present` transition keys reconcile
   through `ontology_delta_shadow_events`; only the winning insert is exposed as a candidate, while
