@@ -293,7 +293,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   detail stay unchanged. PASSPort Public `title`, `procurement_method`, `program`, and `industry`
   stay on spine snapshots via `site/passport_public_fields.mjs` after a quality gate; PIN-only
   or identity-echo titles stay absent and the synthetic “Contract CT…” fallback remains. Do not
-  invent scope, line-item pricing, deliverables, or performance location. Densify with
+  invent scope, line-item pricing, deliverables, or performance location — those fields are not
+  in PASSPort Public `contractData.js`, Checkbook XML, or OCP awards. Executed contract files
+  stay on authenticated PASSPort / Comptroller FOIL. Released RFx HTML can list public bid-book
+  PDFs at `webserver-mocs-prd.lfr.cloud/c/public_document/download`; `public_rfx_data` still has
+  no document URL columns (scout: `docs/evidence/passport-p10-full-contract-file-scout/`). Densify with
   `node tools/densify_passport_public_fields.mjs --from-dump <contractData.js> --write` then
   rebuild the shared model. Focused proof: `test/procurement_object_contract.test.mjs`,
   `test/shared_procurement_read_model.test.mjs`, and `test/passport_public_fields.test.mjs`.

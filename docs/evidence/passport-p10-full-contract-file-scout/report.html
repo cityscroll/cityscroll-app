@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>p10 scout: full NYC contract-file detail</title>
+  <style>
+    :root { color-scheme: light; --ink: #1a1a1a; --muted: #555; --line: #d8d8d8; --ok: #0b6b3a; --part: #8a5a00; --no: #8b1e1e; --bg: #f6f4ef; }
+    body { font: 16px/1.45 "Iowan Old Style", "Palatino Linotype", Palatino, serif; color: var(--ink); background: var(--bg); margin: 0; }
+    main { max-width: 46rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; background: #fff; }
+    h1 { font-size: 1.6rem; line-height: 1.25; margin: 0 0 .4rem; }
+    h2 { font-size: 1.15rem; margin: 2rem 0 .6rem; border-top: 1px solid var(--line); padding-top: 1.1rem; }
+    p, li { color: var(--ink); }
+    .muted { color: var(--muted); font-size: .95rem; }
+    .verdict { border: 2px solid var(--part); background: #fff8e8; padding: 1rem 1.1rem; margin: 1rem 0 1.4rem; }
+    .verdict strong { color: var(--part); }
+    table { border-collapse: collapse; width: 100%; font-size: .92rem; margin: .6rem 0 1.1rem; }
+    th, td { border: 1px solid var(--line); padding: .4rem .5rem; vertical-align: top; text-align: left; }
+    th { background: #f3f1eb; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .86em; }
+    a { color: #1a4a8a; }
+    ul { padding-left: 1.2rem; }
+    .next { background: #eef6ee; border: 1px solid #b7d4b7; padding: 1rem 1.1rem; }
+  </style>
+</head>
+<body>
+<main>
+  <p class="muted">CityScroll scout · observed 2026-08-23 · no product-code change</p>
+  <h1>Full NYC contract-file detail (scope, line items, deliverables, performance location)</h1>
+
+  <div class="verdict">
+    <p><strong>Verdict: partly.</strong></p>
+    <ul>
+      <li><strong>Executed / registered contract file</strong> — records-request-only (authenticated PASSPort + Comptroller FOIL). No citywide public dump or document browser.</li>
+      <li><strong>Released-RFx bid books</strong> — public PDFs on PASSPort Ivalua pages, not in the summary dump CityScroll already reads. Pre-award packages, not the registered file.</li>
+      <li><strong>Structured open data</strong> — titles, ~45-character FMS purpose, notice paragraphs. None of the four fields as a citywide table.</li>
+    </ul>
+  </div>
+
+  <div class="next">
+    <p><strong>Recommended next step.</strong> Do not ingest executed contract files. Do not treat Checkbook purpose or City Record notice prose as the contract file. If product still wants more than title, open a separate bounded recon of released-RFx <code>public_document</code> PDFs (solicitation packages only). p10’s awarded-file ask stays FOIL / Comptroller / agency.</p>
+  </div>
+
+  <h2>What CityScroll already reads</h2>
+  <p>PASSPort Public is a static S3 site. Machine dumps:</p>
+  <ul>
+    <li><code>dataJs/contractData.js</code> (<code>public_ctr_data</code>)</li>
+    <li><code>dataJs/rfxData.js</code> (<code>public_rfx_data</code>)</li>
+    <li>plus chart and vendor dumps</li>
+  </ul>
+  <p>Contract columns stop at identity, title, agency, vendor, program, method, type, status, four money fields, three dates, industry, and certification. Live sample 2026-08-23: 315 rows × 22 columns, <strong>0 URL-bearing cells</strong>. Guessed extra dumps (<code>contractDocs.js</code>, <code>attachments.js</code>, <code>lineItems.js</code>, <code>locations.js</code>) return HTTP 403.</p>
+  <p><code>site/passport_public_fields.mjs</code> already refuses to invent scope, line-item pricing, deliverables, or place of performance. The 2026-07-30 recon remains correct for the <em>dump</em>: 0% RFx document-URL join.</p>
+
+  <h2>PASSPort Ivalua (new finding)</h2>
+  <p>Public RFx browse is open. Unauthenticated RFx detail pages can list a Documents table. Participate still requires login.</p>
+  <p>Field case EPIN <code>07126B0002</code> (DHS travel reservation, rfp_id <code>38077</code>): Bid Books I–VII, specifications, itemized bid page, addenda. Downloads at <code>https://webserver-mocs-prd.lfr.cloud/c/public_document/download?documentId=…</code> returned HTTP 200 PDFs without login (e.g. Bid Book II, 252 KB; Addendum 3, 1.4 MB). Second case rfp_id <code>37965</code> (DDC Wakefield Library): 15 public_document URLs.</p>
+  <p>Awarded-<em>contract</em> Ivalua paths (<code>/ctr/contract_browse_public</code>, <code>/ctr/contract_manage_extranet/{id}</code>) redirect to login. Vault / contract Documents tab is vendor/agency, not public.</p>
+
+  <h2>Other public sources</h2>
+  <table>
+    <thead>
+      <tr><th>Source</th><th>Structured?</th><th>What you actually get</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>OCP / City Record awards <code>qyyg-4tf5</code></td><td>Yes, notices</td><td>Title + optional prose (0–604 chars in an 8-row sample). Not a file.</td></tr>
+      <tr><td>Current solicitations <code>3khw-qi8f</code></td><td>Yes</td><td>Modern <code>document_links</code> 0/1550 (existing receipt).</td></tr>
+      <tr><td>Checkbook Contracts XML</td><td>Yes</td><td><code>prime_contract_purpose</code> mean 45.7 chars; 8/25 “See PSR Attachment”. No document URL, no SOW, no place of performance. Spending “expense category” is FMS object class.</td></tr>
+      <tr><td>Bid tabulations <code>9k82-ys7w</code></td><td>Yes, historical</td><td>Bidder line prices, openings through 2021-03-24, 0% modern PIN join. Disabled.</td></tr>
+      <tr><td>LL63 plans</td><td>Yes, planned</td><td>One-line description. Not awarded scope.</td></tr>
+      <tr><td>Capital projects <code>fb86-vt7u</code></td><td>Yes</td><td>Project borough/CB, not contract performance location.</td></tr>
+      <tr><td>Open Data catalog</td><td>—</td><td>No citywide contract-PDF dataset.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The four fields</h2>
+  <table>
+    <thead>
+      <tr><th>Field</th><th>Structured public</th><th>Unstructured public</th><th>Records-request</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Scope</td><td>Title, short FMS purpose, notice paragraph</td><td>Released-RFx specification PDFs</td><td>Executed SOW</td></tr>
+      <tr><td>Line-item pricing</td><td>Historical CSB bidder prices only</td><td>RFx itemized bid <em>form</em></td><td>Awarded pricing exhibit</td></tr>
+      <tr><td>Deliverables</td><td>None as a table</td><td>Sometimes in spec PDFs</td><td>Contract exhibits</td></tr>
+      <tr><td>Performance location</td><td>Not a contract field</td><td>Sometimes named in specs/notices</td><td>Place-of-performance clause</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Records-request path</h2>
+  <p>The file exists. Agencies keep the contract file; PASSPort carries it for mayoral agencies; Comptroller BCA receives the registration package. The Comptroller’s FOIL unit has released hundreds of contracts on request (e.g. H+H HERRC). There is no bulk public dump of those PDFs.</p>
+  <ul>
+    <li>Agency: OpenRecords / FOIL to the contracting agency</li>
+    <li>Comptroller: <a href="https://comptroller.nyc.gov/services/for-the-public/freedom-of-information-law-foil-requests/">FOIL instructions</a></li>
+  </ul>
+
+  <h2>Do not</h2>
+  <ul>
+    <li>Parse <code>contractData.js</code> for attachments — there are none</li>
+    <li>Sell Checkbook purpose or notice prose as the contract file</li>
+    <li>Scrape authenticated PASSPort / Vault</li>
+    <li>Re-enable 2021 bid tabulations as modern awarded prices</li>
+    <li>Treat contract-response addresses as place of performance</li>
+  </ul>
+
+  <h2>Follow-on (solicitation packages only)</h2>
+  <p>If product wants bid-book depth, that is a different card from p10: sample released RFx HTML → PDF hit rate; measure closed/awarded survival; exclude micropurchase/negotiated/emergency; polite collector; keep official-source handoffs until extraction clears usefulness and precision gates. Until then, keep the dump stop rule.</p>
+
+  <p class="muted">Canonical markdown: <code>docs/evidence/passport-p10-full-contract-file-scout/report.md</code></p>
+</main>
+</body>
+</html>
