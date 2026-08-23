@@ -123,13 +123,20 @@ async function exactContractDocuments(env, refs) {
     : [];
 }
 
-/** Prefer richer current City Record objects, then add retained award recall and notice evidence. */
-export function mergeUniversalSearchResults(cityRecordDocuments = [], contractAwardDocuments = [], limit = RESULT_LIMIT) {
+/** Prefer current City Record objects, then retained awards, then served canonical procurements. */
+export function mergeUniversalSearchCandidates({
+  cityRecordDocuments = [],
+  contractAwardDocuments = [],
+  procurementDocuments = [],
+  limit = RESULT_LIMIT,
+} = {}) {
   const city = Array.isArray(cityRecordDocuments) ? cityRecordDocuments.filter(Boolean) : [];
   const awards = Array.isArray(contractAwardDocuments) ? contractAwardDocuments.filter(Boolean) : [];
+  const procurements = Array.isArray(procurementDocuments) ? procurementDocuments.filter(Boolean) : [];
   const ordered = [
     ...city.filter((document) => document.outcome === "indexed"),
     ...awards.filter((document) => document.outcome === "indexed"),
+    ...procurements.filter((document) => document.outcome === "indexed"),
     ...city.filter((document) => document.outcome !== "indexed"),
   ];
   const seen = new Set();
@@ -139,9 +146,33 @@ export function mergeUniversalSearchResults(cityRecordDocuments = [], contractAw
     if (seen.has(key)) continue;
     seen.add(key);
     merged.push(document);
-    if (merged.length >= limit) break;
+    if (merged.length >= Math.max(0, Number(limit) || 0)) break;
   }
-  return merged;
+  return {
+    documents: merged,
+    candidate_counts: Object.freeze({
+      city_record: city.length,
+      contract_award: awards.length,
+      shared_procurement: procurements.length,
+      pre_merge: city.length + awards.length + procurements.length,
+      post_merge: merged.length,
+    }),
+  };
+}
+
+/** Preserve the historical array-returning helper for callers without extra family inputs. */
+export function mergeUniversalSearchResults(
+  cityRecordDocuments = [],
+  contractAwardDocuments = [],
+  limit = RESULT_LIMIT,
+  procurementDocuments = [],
+) {
+  return mergeUniversalSearchCandidates({
+    cityRecordDocuments,
+    contractAwardDocuments,
+    procurementDocuments,
+    limit,
+  }).documents;
 }
 
 function json(body, status, cors, cacheControl = "no-store") {
@@ -252,20 +283,42 @@ async function noticeSearchLanes(env, resolved) {
         resolved.canonical_tokens.join(" "),
         { limit: RESULT_LIMIT },
       ).documents;
-    const matched = mergeUniversalSearchResults(
-      cityMatches.map(({ document }) => document),
-      awardDocuments,
-    ).map((document) => ({
+    const procurementFamily = keywordSearchIndex?.families?.procurements;
+    const procurementDocuments = resolved.alias || !procurementFamily
+      ? []
+      : searchKeywordDocuments(
+        procurementFamily.documents,
+        resolved,
+        { limit: procurementFamily.documents.length },
+      ).map(({ match_evidence: _evidence, ...document }) => document);
+    const noticeMerged = mergeUniversalSearchCandidates({
+      cityRecordDocuments: cityMatches.map(({ document }) => document),
+      contractAwardDocuments: awardDocuments,
+      limit: RESULT_LIMIT,
+    });
+    const merged = mergeUniversalSearchCandidates({
+      cityRecordDocuments: cityMatches.map(({ document }) => document),
+      contractAwardDocuments: awardDocuments,
+      procurementDocuments,
+      limit: RESULT_LIMIT,
+    });
+    const matched = merged.documents.map((document) => ({
+      document,
+      evidence: matchKeywordDocument(document, resolved),
+    })).filter(({ evidence }) => evidence || resolved.alias);
+    const noticeMatched = noticeMerged.documents.map((document) => ({
       document,
       evidence: matchKeywordDocument(document, resolved),
     })).filter(({ evidence }) => evidence || resolved.alias);
     console.log("notice-search-documents:", JSON.stringify({
       city_record_document_count: cityMatches.length,
       contract_award_document_count: awardDocuments.length,
+      shared_procurement_document_count: procurementDocuments.length,
+      pre_merge_candidate_count: merged.candidate_counts.pre_merge,
     }));
     const lanes = {};
     for (const [id, config] of Object.entries(D1_LANES)) {
-      const familyMatches = matched.filter(({ document }) => document.domain === config.domain);
+      const familyMatches = noticeMatched.filter(({ document }) => document.domain === config.domain);
       const cards = familyMatches.slice(0, CARD_LIMIT).map(({ document, evidence }) => (
         publicCard(document, evidence)
       ));
@@ -278,6 +331,9 @@ async function noticeSearchLanes(env, resolved) {
         coverage: Object.freeze({
           bounded: true,
           result_limit: RESULT_LIMIT,
+          candidate_count: merged.candidate_counts.post_merge,
+          pre_merge_candidate_count: merged.candidate_counts.pre_merge,
+          pre_merge_candidate_counts: merged.candidate_counts,
           retrieval_method: result.retrieval.method,
           rows_read: result.retrieval.rows_read,
         }),
@@ -469,6 +525,9 @@ function combinedStaticLane(id, source, members) {
     const value = lane.coverage?.[key];
     return Number.isInteger(value) ? sum + value : sum;
   }, 0);
+  const familyCandidateCoverage = members
+    .map((lane) => lane.coverage)
+    .find((coverage) => coverage?.pre_merge_candidate_counts);
   return laneEnvelope(id, {
     status: cards.length
       ? "matched"
@@ -482,6 +541,11 @@ function combinedStaticLane(id, source, members) {
       source_row_count: sumCoverageCount("source_row_count"),
       indexed_count: sumCoverageCount("indexed_count"),
       card_limit: CARD_LIMIT,
+      ...(familyCandidateCoverage ? {
+        candidate_count: familyCandidateCoverage.candidate_count,
+        pre_merge_candidate_count: familyCandidateCoverage.pre_merge_candidate_count,
+        pre_merge_candidate_counts: familyCandidateCoverage.pre_merge_candidate_counts,
+      } : {}),
     }),
   });
 }

@@ -5,10 +5,22 @@ import test from "node:test";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 import { searchContractAwardDocuments } from "../site/contract_award_search_producer.mjs";
-import { mergeUniversalSearchResults } from "../worker/src/search.mjs";
+import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
+import {
+  mergeUniversalSearchCandidates,
+  mergeUniversalSearchResults,
+} from "../worker/src/search.mjs";
 
 const cohort = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_search/golden_cohort.json", import.meta.url),
+  "utf8",
+));
+const productionShared = JSON.parse(readFileSync(
+  new URL("../site/data/shared_procurement_read_model.json", import.meta.url),
+  "utf8",
+));
+const FIREMATIC_FIXTURE = JSON.parse(readFileSync(
+  new URL("./fixtures/procurement_search/firematic_vendor.json", import.meta.url),
   "utf8",
 ));
 
@@ -80,4 +92,42 @@ test("production corpus adds material CROL-negative recall without reducing CROL
   assert.ok(canonical.length >= 2_000);
   assert.ok(canonical.some((document) => document.provenance.notice_evidence.length));
   assert.ok(mergeUniversalSearchResults([], [...crol, ...canonical], 100).length >= crol.length);
+});
+
+test("FIREMATIC merges all 21 retained awards with the served PASSPort-only contract", () => {
+  assert.equal(FIREMATIC_FIXTURE.ocp_rows.length, 21);
+  const awards = searchContractAwardDocuments({
+    schema_version: 1,
+    source: "ocp-recent-contract-awards",
+    rows: FIREMATIC_FIXTURE.ocp_rows,
+  }, FIREMATIC_FIXTURE.query, { limit: 100 }).documents;
+  const canonical = buildProcurementSearchDocuments(productionShared).documents
+    .filter((document) => document.object_ref === FIREMATIC_FIXTURE.passport_only.object_ref);
+  assert.equal(awards.length, 21);
+  assert.equal(canonical.length, 1);
+
+  const merged = mergeUniversalSearchCandidates({
+    cityRecordDocuments: [],
+    contractAwardDocuments: awards,
+    procurementDocuments: canonical,
+    limit: 100,
+  });
+  assert.deepEqual(merged.candidate_counts, {
+    city_record: 0,
+    contract_award: 21,
+    shared_procurement: 1,
+    pre_merge: 22,
+    post_merge: 22,
+  });
+  const passport = merged.documents.find((document) => (
+    document.object_ref === FIREMATIC_FIXTURE.passport_only.object_ref
+  ));
+  assert.ok(passport);
+  assert.equal(passport.canonical_href, FIREMATIC_FIXTURE.passport_only.canonical_href);
+  assert.equal(passport.provenance.browse_record.vendor_name, FIREMATIC_FIXTURE.passport_only.vendor_name);
+  assert.equal(passport.provenance.browse_record.contract_amount, FIREMATIC_FIXTURE.passport_only.contract_amount);
+  const bridged = contractSearchDocumentToMoneyRow(passport);
+  assert.equal(bridged.procurement_id, FIREMATIC_FIXTURE.passport_only.object_ref);
+  assert.equal(bridged.canonical_href, passport.canonical_href);
+  assert.equal(bridged.contract_id, "CT185720228800365");
 });
