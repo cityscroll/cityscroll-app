@@ -1411,6 +1411,8 @@
   #quizpanel .alerts-finish{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
   #quizpanel .alerts-finish #asubscribe{order:1}
   #quizpanel .alerts-finish #apreview{order:2}
+  #quizpanel .community-board-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:6px}
+  #quizpanel .community-board-picker select{min-width:0}
   #quizpanel #advopts{margin:4px 0 14px;border:1px solid var(--rule);border-radius:8px;background:var(--paper-2)}
   #quizpanel #advopts > summary{cursor:pointer;padding:10px 14px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);list-style:none}
   #quizpanel #advopts > summary::-webkit-details-marker{display:none}
@@ -2398,6 +2400,32 @@
         </select>
         <p id="districtpresetnote" class="muted" data-i18n="district_preset_note" style="font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;margin:6px 0 0">One weekly email groups awards, hearings, land use actions, and property dispositions for this City Council District.</p>
       </div>
+      <div class="afield" id="acommunityboardbox" hidden>
+        <label for="acommunityboardboro"><span class="qstep">2</span> <span data-i18n="community_board_pick_label">Community Board</span></label>
+        <div class="community-board-picker">
+          <select id="acommunityboardboro" aria-label="Community Board" data-i18n-aria="community_board_pick_label">
+            <option value="" data-i18n="community_board_borough_placeholder">Choose a borough</option>
+            <option value="Manhattan">Manhattan</option>
+            <option value="Bronx">Bronx</option>
+            <option value="Brooklyn">Brooklyn</option>
+            <option value="Queens">Queens</option>
+            <option value="Staten Island">Staten Island</option>
+          </select>
+          <select id="acommunityboardnumber" aria-label="Community Board number">
+            <option value="" data-i18n="community_board_number_placeholder">Choose a Community Board</option>
+            <option value="1">Community Board 1</option><option value="2">Community Board 2</option>
+            <option value="3">Community Board 3</option><option value="4">Community Board 4</option>
+            <option value="5">Community Board 5</option><option value="6">Community Board 6</option>
+            <option value="7">Community Board 7</option><option value="8">Community Board 8</option>
+            <option value="9">Community Board 9</option><option value="10">Community Board 10</option>
+            <option value="11">Community Board 11</option><option value="12">Community Board 12</option>
+            <option value="13">Community Board 13</option><option value="14">Community Board 14</option>
+            <option value="15">Community Board 15</option><option value="16">Community Board 16</option>
+            <option value="17">Community Board 17</option><option value="18">Community Board 18</option>
+          </select>
+        </div>
+        <p id="communityboardnote" class="muted" style="font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif;margin:6px 0 0">Choose a borough and board number. This follows that Community Board’s meetings.</p>
+      </div>
       <div id="amoneyfields" hidden>
         <div class="afield" id="amoneyminbox" hidden>
           <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum $ (optional)</label>
@@ -2432,6 +2460,7 @@
               <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
               <option value="meetings" data-i18n="watch_meetings">Public hearings and meetings</option>
               <option value="district" data-i18n="watch_district">Follow a City Council District</option>
+              <option value="communityboard" data-i18n="watch_community_board">Follow a Community Board</option>
               <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
               <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
               <option value="awardwatch" data-i18n="watch_awardwatch">The award on a notice I'm viewing</option>

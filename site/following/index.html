@@ -68,6 +68,14 @@
           <label>City Council District (1–51)<input name="council" value="" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" aria-describedby="following-council-help" data-following-refine="council"></label>
           <p id="following-council-help">Not a Community Board. Boards are 1–18 in each borough; City Council Districts are 1–51 citywide.</p>
         </div>
+        <div data-following-community-board-field hidden>
+          <fieldset class="following-community-board-picker">
+            <legend>Community Board</legend>
+            <label>Borough<select name="boardBorough" data-following-refine="board-borough"><option value="">Choose a borough</option><option value="Manhattan">Manhattan</option><option value="Bronx">Bronx</option><option value="Brooklyn">Brooklyn</option><option value="Queens">Queens</option><option value="Staten Island">Staten Island</option></select></label>
+            <label>Board number<select name="boardNumber" data-following-refine="board-number"><option value="">Choose a board</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option></select></label>
+          </fieldset>
+          <p id="following-community-board-help">Choose a borough and board (1–18). We’ll email its meetings.</p>
+        </div>
       </div>
     </details>
     <fieldset class="following-cadence" data-following-cadence>

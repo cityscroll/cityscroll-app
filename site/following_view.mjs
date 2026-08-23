@@ -13,6 +13,14 @@ import {
   renderCivicDocumentMast,
 } from "./civic_document_chrome.mjs";
 import { constellationLink, filterChip } from "./affordance_grammar.mjs";
+import {
+  communityBoardIdFromSelection,
+  communityBoardLabel,
+  communityBoardSelectionFromRef,
+  COMMUNITY_BOARD_PICKER_BOROUGHS,
+  COMMUNITY_BOARD_PICKER_NUMBERS,
+} from "./community_board_watch.mjs";
+import { communityBoardPlaceHref } from "./community_board_links.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -115,7 +123,7 @@ function normalizedWatch(lens, filter) {
 export function watchFromFollowingParams(input) {
   const params = input instanceof URLSearchParams ? input : new URL(input, "https://cityscroll.invalid").searchParams;
   const requested = params.has("lens") || params.has("filter") || params.has("q") || params.has("agency")
-    || params.has("boro") || params.has("council");
+    || params.has("boro") || params.has("council") || params.has("boardBorough") || params.has("boardNumber");
   let filter = {};
   try {
     const parsed = JSON.parse(params.get("filter") || "{}");
@@ -130,6 +138,11 @@ export function watchFromFollowingParams(input) {
   if (params.has("agency")) setOrDelete("agency", params.get("agency")?.trim());
   if (params.has("boro")) setOrDelete(lens === "land" ? "boro" : "borough", params.get("boro"));
   if (params.has("council")) setOrDelete("councilDistrict", params.get("council"));
+  if (params.has("boardBorough") || params.has("boardNumber")) {
+    setOrDelete("communityBoard", communityBoardIdFromSelection(
+      params.get("boardBorough"), params.get("boardNumber"),
+    ));
+  }
   if (params.has("when")) {
     setOrDelete("when", params.get("when"));
     setOrDelete("dateWindow", params.get("when"));
@@ -213,6 +226,9 @@ function entityPivotForWatch(watch) {
 
 export function currentMatchesHref(watch) {
   const normalized = normalizedWatch(watch?.lens || "money", watch?.filter || {});
+  if (normalized.lens === "meetings" && normalized.filter.communityBoard) {
+    return communityBoardPlaceHref(normalized.filter.communityBoard) || "/near-you/";
+  }
   const entity = entityPivotForWatch(normalized);
   let scope = scopeFromWatch(normalized);
   if (entity) scope = scopeWithEntity(scope, entity.ref);
@@ -235,6 +251,7 @@ export function buildFollowingGraphContext(watch = {}, options = {}) {
   const normalized = normalizedWatch(watch.lens || "money", watch.filter || {});
   const frequency = cleanFrequency(options.frequency || watch.frequency || watch.freq);
   const filter = normalized.filter;
+  const boardLabel = communityBoardLabel(filter.communityBoard);
   const entity = entityPivotForWatch(normalized);
   return {
     schema: "cityscroll.following_graph_context.v1",
@@ -246,13 +263,14 @@ export function buildFollowingGraphContext(watch = {}, options = {}) {
     currentMatchesHref: currentMatchesHref({ ...normalized, frequency }),
     entity,
     topicLabel: LENS_LABELS[normalized.lens] || normalized.lens,
-    placeLabel: filter.borough || filter.boro || filter.neighborhood || "Citywide",
+    placeLabel: boardLabel || filter.borough || filter.boro || filter.neighborhood || "Citywide",
     keywordLabel: Array.isArray(filter.keywords) && filter.keywords.length
       ? filter.keywords.join(" ") : null,
     agencyLabel: filter.agency || null,
     districtLabel: filter.councilDistrict
       ? `City Council District ${filter.councilDistrict}`
       : filter.communityDistrict ? `Community District ${filter.communityDistrict}` : null,
+    communityBoardLabel: boardLabel,
     followingHref: followingUrlFromWatch(normalized, { frequency }),
     backToEntity: !!options.backToEntity,
   };
@@ -319,6 +337,7 @@ function watchIdentityRows(context) {
   const rows = [
     ["Topic", context.topicLabel, null],
     ["Place", context.placeLabel, null],
+    ["Community Board", context.communityBoardLabel, null],
     ["Keyword", context.keywordLabel, null],
     ["Agency", context.agencyLabel, null],
     ["Geography", context.districtLabel, null],
@@ -398,6 +417,7 @@ function scopeSummary(lens, filter) {
     ["agency", filter.agency],
     ["borough", filter.borough || filter.boro],
     ["neighborhood", filter.neighborhood],
+    ["Community Board", communityBoardLabel(filter.communityBoard)],
     ["Community District", filter.communityDistrict],
     ["City Council District", filter.councilDistrict],
     ["record type", filter.noticeType],
@@ -429,6 +449,9 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     ? "citywide"
     : location.startsWith("in ") ? location : `in ${location}`;
 
+  if (wanted === "meetings" && communityBoardLabel(f.communityBoard)) {
+    return `Notify me when meetings for ${communityBoardLabel(f.communityBoard)} are published.`;
+  }
   if (wanted === "district") {
     const n = f.councilDistrict || "?";
     return `Notify me for City Council District ${n}, weekly digest.`;
@@ -730,8 +753,18 @@ function templateHtml(template) {
 function controlsHtml(view) {
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
   const borough = placeBorough(view.filter);
-  const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict ? " open" : "";
+  const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard ? " open" : "";
   const councilFieldHidden = view.lens !== "district" ? " hidden" : "";
+  const boardFieldHidden = view.lens !== "meetings" ? " hidden" : "";
+  const boardSelection = communityBoardSelectionFromRef(view.filter.communityBoard);
+  const boardBoroughOptions = [
+    `<option value="">Choose a borough</option>`,
+    ...COMMUNITY_BOARD_PICKER_BOROUGHS.map((borough) => `<option value="${esc(borough)}"${boardSelection.borough === borough ? " selected" : ""}>${esc(borough)}</option>`),
+  ].join("");
+  const boardNumberOptions = [
+    `<option value="">Choose a board</option>`,
+    ...COMMUNITY_BOARD_PICKER_NUMBERS.map((number) => `<option value="${number}"${boardSelection.number === number ? " selected" : ""}>${number}</option>`),
+  ].join("");
   return `${topicPlacePickersHtml(view)}
   <form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
     <input type="hidden" name="lens" value="${esc(view.lens)}">
@@ -745,6 +778,14 @@ function controlsHtml(view) {
         <div data-following-council-field${councilFieldHidden}>
           <label>City Council District (1–51)<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" aria-describedby="following-council-help" data-following-refine="council"></label>
           <p id="following-council-help">Not a Community Board. Boards are 1–18 in each borough; City Council Districts are 1–51 citywide.</p>
+        </div>
+        <div data-following-community-board-field${boardFieldHidden}>
+          <fieldset class="following-community-board-picker">
+            <legend>Community Board</legend>
+            <label>Borough<select name="boardBorough" data-following-refine="board-borough">${boardBoroughOptions}</select></label>
+            <label>Board number<select name="boardNumber" data-following-refine="board-number">${boardNumberOptions}</select></label>
+          </fieldset>
+          <p id="following-community-board-help">Choose a borough and board (1–18). We’ll email its meetings.</p>
         </div>
       </div>
     </details>
