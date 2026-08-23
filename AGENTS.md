@@ -308,9 +308,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/pin_sibling_grouping.mjs` as related instruments without merging
   `procurement_id`s; `needs_review` / distinct-vendor pairs stay separate
   related-candidates. Open RFPs remains solicitation-only — registered
-  PASSPort-only rows live under Recent Awards. Proof:
-  `test/pin_family_mismatch.test.mjs`, `worker/test/pin_family_verify.test.mjs`,
-  and `test/pin_sibling_grouping.test.mjs`.
+  PASSPort-only rows live under Recent Awards. PASSPort-only objects may take a
+  guarded Checkbook lookup (`site/checkbook_passport_corroboration.mjs`): an
+  exact contract-id/PIN hit is evidence and must not replace the PASSPort amount;
+  PIN-family or amount disagreement stays related-instrument or needs-review; a
+  miss is unknown and a Checkbook hit never mints a `/procurements/<id>` route.
+  Proof: `test/pin_family_mismatch.test.mjs`, `worker/test/pin_family_verify.test.mjs`,
+  `test/pin_sibling_grouping.test.mjs`, and
+  `test/checkbook_passport_corroboration.test.mjs`.
 - **Canonical procurement product projection:** `site/procurement_search_producer.mjs` and
   `site/contract_search_bridge.mjs` project the shared procurement read model into source-independent
   SearchDocuments and typed Browse rows. Canonical identity is `procurement_id`; `request_id` is
