@@ -64,10 +64,10 @@ test("describeFilter names a single-mandate exact-id watch", () => {
   );
 });
 
-test("describeFilter uses plain-language district and report-mandate labels", () => {
+test("describeFilter uses explicit City Council District and report-mandate labels", () => {
   assert.equal(
     describeFilter("district", { councilDistrict: "33" }),
-    "Council District 33 weekly digest",
+    "City Council District 33 weekly digest",
   );
   assert.equal(
     describeFilter("mandates", {

@@ -95,6 +95,13 @@ function readRefineFilter() {
   };
 }
 
+function syncCouncilFieldVisibility(form) {
+  const field = form?.querySelector("[data-following-council-field]");
+  if (!field) return;
+  const lens = form.elements.lens?.value || root?.dataset.followingLens || "money";
+  field.hidden = lens !== "district";
+}
+
 function updateRuleLine() {
   const { lens, filter, frequency } = readRefineFilter();
   const sentence = composeWatchRuleSentence(lens, filter);
@@ -123,6 +130,7 @@ function wireRefineLive() {
   form.dataset.ruleLive = "true";
   form.addEventListener("input", updateRuleLine);
   form.addEventListener("change", updateRuleLine);
+  syncCouncilFieldVisibility(form);
   updateRuleLine();
 }
 

@@ -99,6 +99,34 @@
       "ur": "کمیونٹی بورڈ",
       "source": "no official City translation found for the non-es shipping languages — chose the standard civic-body term in each language (ur transliterates rather than translates, a common register choice for this specific civic term in South Asian Urdu), mirroring es's \"Junta Comunitaria\"."
     },
+    "city_council_district": {
+      "en": "City Council District",
+      "es": "Distrito del Concejo",
+      "zh-Hans": "市议会选区",
+      "ru": "Округ городского совета",
+      "bn": "সিটি কাউন্সিল জেলা",
+      "ht": "Distri Konsèy Minisipal",
+      "ko": "시의회 지역구",
+      "fr": "District du conseil municipal",
+      "pl": "Okręg Rady Miasta",
+      "ar": "دائرة مجلس المدينة",
+      "ur": "سٹی کونسل ضلع",
+      "source": "No official City translation was supplied for this glossary entry; each shipping language uses the same distinct legislative-district term already used by its dictionary."
+    },
+    "community_district": {
+      "en": "Community District",
+      "es": "Distrito Comunitario",
+      "zh-Hans": "社区行政区",
+      "ru": "Общественный округ",
+      "bn": "কমিউনিটি জেলা",
+      "ht": "Distri Kominotè",
+      "ko": "커뮤니티 지구",
+      "fr": "District communautaire",
+      "pl": "Okręg społeczności",
+      "ar": "المنطقة المجتمعية",
+      "ur": "کمیونٹی ضلع",
+      "source": "No official City translation was supplied for this glossary entry; each shipping language keeps Community District distinct from its City Council District term."
+    },
     "upset_price": {
       "en": "upset price",
       "es": "precio mínimo",

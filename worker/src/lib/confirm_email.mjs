@@ -9,7 +9,7 @@ const LENS_LABEL = {
   property: "Property",
   rules: "Rules",
   meetings: "Hearings and meetings",
-  district: "Council district weekly",
+  district: "City Council District weekly",
   mandates: "Mandates",
   obligations: "Mandates",
   entity: "Agency or vendor",
@@ -34,7 +34,7 @@ function geographyLabel(key) {
 export function describeFilter(lens, filter) {
   const f = filter || {};
   if (lens === "district") {
-    return `Council District ${f.councilDistrict || "?"} weekly digest`;
+    return `City Council District ${f.councilDistrict || "?"} weekly digest`;
   }
   if (lens === "mandates" || lens === "obligations") {
     const who = f.agency || f.agency_id || "?";
