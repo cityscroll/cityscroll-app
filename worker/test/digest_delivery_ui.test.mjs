@@ -206,3 +206,60 @@ test("matchEvidence still skips evidence when the title already shows the hit", 
   const ev = matchEvidence("Education grant", "body without hit", ["education"]);
   assert.equal(ev.field, "title");
 });
+
+test("subDigestHtml catch-up coverage names the last digest date, not a one-day window", () => {
+  const html = subDigestHtml(
+    "construction",
+    "rfp",
+    [solicitation],
+    "https://api.cityscroll.org/unsubscribe?token=x",
+    "2026-08-05",
+    "https://api.cityscroll.org",
+    [],
+    "en",
+    ["education"],
+    null,
+    "",
+    null,
+    null,
+    TODAY,
+    true,
+  );
+  assert.match(html, /data-digest-coverage="catch-up"/);
+  assert.match(html, /Catching up: 1 items since your last digest on Aug 5/);
+  assert.doesNotMatch(html, /subscriber:|watch:/);
+});
+
+test("rollupDigestHtml catch-up coverage names the last digest date", () => {
+  const html = rollupDigestHtml({
+    sections: [
+      {
+        label: "Construction",
+        kind: "rfp",
+        new: 1,
+        freshRows: [solicitation],
+        keywords: ["education"],
+        action: "match",
+      },
+      {
+        label: "Hearings",
+        kind: "meetings",
+        new: 0,
+        freshRows: [],
+        action: "none",
+      },
+    ],
+    wantingCount: 1,
+    watchCount: 2,
+    unsubAllUrl: "https://api.cityscroll.org/unsubscribe?token=all",
+    manageUrl: "https://cityscroll.org/prefs?token=m",
+    lang: "en",
+    today: TODAY,
+    totalNew: 1,
+    since: "2026-08-05",
+    catchUp: true,
+  });
+  assert.match(html, /data-digest-coverage="catch-up"/);
+  assert.match(html, /Catching up: 1 items since your last digest on Aug 5/);
+  assert.match(html, /1 of 2 watches with updates/);
+});

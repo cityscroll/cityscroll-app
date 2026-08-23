@@ -37,7 +37,7 @@ const SELECT_OWED_ITEMS = `
     FROM digest_outbox_items
    WHERE subscriber_id = ? AND status = 'owed'
    ORDER BY first_owed_at ASC, watch_id ASC, item_id ASC
-   LIMIT ?
+   LIMIT ? OFFSET ?
 `;
 
 const MARK_ATTEMPT = `
@@ -266,14 +266,35 @@ export async function reserveDeliveryOccasion(db, subscriberId, scheduledDay, re
   return { reserved: changesFrom(result) !== 0, deliveryId: id };
 }
 
-/** Read the durable owed set; source dates and lastsent are intentionally absent. */
-export async function listOwedItems(db, subscriberId, limit = 500) {
+/** Read one page of the durable owed set; source dates and lastsent are intentionally absent. */
+export async function listOwedItems(db, subscriberId, limit = 500, offset = 0) {
   if (!db?.prepare) throw new TypeError("owed lookup requires a D1 database");
   const statement = db.prepare(SELECT_OWED_ITEMS);
+  const cap = Math.max(1, Number(limit) || 500);
+  const skip = Math.max(0, Number(offset) || 0);
   const result = typeof statement.bind === "function"
-    ? await statement.bind(subscriberId, Math.max(1, Number(limit) || 500)).all()
-    : await statement.all(subscriberId, Math.max(1, Number(limit) || 500));
+    ? await statement.bind(subscriberId, cap, skip).all()
+    : await statement.all(subscriberId, cap, skip);
   return Array.isArray(result?.results) ? result.results : (Array.isArray(result) ? result : []);
+}
+
+/**
+ * The full owed set for one subscriber. Pages past the 500-row SELECT so a
+ * multi-day stall cannot silently drop the tail of the backlog.
+ */
+export async function listAllOwedItems(db, subscriberId, { pageSize = 500, maxItems = 20000 } = {}) {
+  const all = [];
+  let offset = 0;
+  const size = Math.max(1, Number(pageSize) || 500);
+  const cap = Math.max(size, Number(maxItems) || 20000);
+  while (all.length < cap) {
+    const take = Math.min(size, cap - all.length);
+    const page = await listOwedItems(db, subscriberId, take, offset);
+    all.push(...page);
+    if (page.length < take) break;
+    offset += page.length;
+  }
+  return all;
 }
 
 /** Mark the exact provider-attributed items delivered and close the occasion. */

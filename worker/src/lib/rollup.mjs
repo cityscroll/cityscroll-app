@@ -115,7 +115,7 @@ export function rollupSendDecision(sections = []) {
  * multi-watch form — even if only one section had matches. Naming the single wanting
  * label made a real account-level rollup look like a single-watch notification.
  */
-export function rollupSubject({ totalNew, totalForecasts, labels = [], quiet = false, watchCount = null } = {}) {
+export function rollupSubject({ totalNew, totalForecasts, labels = [], quiet = false, watchCount = null, catchUp = false, sinceDate = null } = {}) {
   const nWatches = Number(watchCount);
   const multi = (Number.isFinite(nWatches) && nWatches > 1) || labels.length > 1;
   const multiN = (Number.isFinite(nWatches) && nWatches > 1) ? nWatches : (labels.length || 1);
@@ -128,6 +128,12 @@ export function rollupSubject({ totalNew, totalForecasts, labels = [], quiet = f
   if (totalNew > 0) parts.push(`${totalNew} new`);
   if (totalForecasts > 0) parts.push(`${totalForecasts} forecast(s)`);
   const head = parts.join(" & ") || "update";
+  if (catchUp && sinceDate) {
+    const range = `catching up — ${head} since your last digest on ${sinceDate}`;
+    if (multi) return `CityScroll: ${range} — ${multiN} watches`;
+    if (labels.length === 1) return `CityScroll: ${range} — ${labels[0]}`;
+    return `CityScroll: ${range}`;
+  }
   if (multi) return `CityScroll: ${head} — ${multiN} watches`;
   if (labels.length === 1) return `CityScroll: ${head} — ${labels[0]}`;
   return `CityScroll: ${head}`;
