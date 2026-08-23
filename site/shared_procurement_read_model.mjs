@@ -67,9 +67,16 @@ export function buildSharedProcurementReadModel({
   sourceStatus = {},
   generatedAt = null,
   now = generatedAt || new Date().toISOString(),
+  checkbookLookupRows = null,
+  includeUnknownCheckbookCorroboration = false,
 } = {}) {
   const records = Array.isArray(sourceRecords) ? sourceRecords.filter(Boolean) : [];
-  const built = buildProcurementObjects({ sourceRecords: records, lifecycleRows });
+  const built = buildProcurementObjects({
+    sourceRecords: records,
+    lifecycleRows,
+    checkbookLookupRows,
+    includeUnknownCheckbookCorroboration,
+  });
   const sources = Object.fromEntries(PROCUREMENT_SOURCE_SYSTEMS.map((source) => [
     source,
     sourceEnvelope(source, records, sourceStatus?.[source], generatedAt),

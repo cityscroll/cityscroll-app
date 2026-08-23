@@ -12,6 +12,7 @@ import { followingUrlFromWatch } from "./following_view.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
 import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
+import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -29,7 +30,8 @@ function clean(value, max = 500) {
 function factsFor(object, observations) {
   const index = new Map((Array.isArray(observations) ? observations : [])
     .map((entry) => [entry?.source_observation_ref, entry]));
-  const rows = (object?.source_observation_refs || []).map((ref) => index.get(ref)?.snapshot).filter(Boolean);
+  const observed = (object?.source_observation_refs || []).map((ref) => index.get(ref)).filter(Boolean);
+  const rows = snapshotsForPublicAmount(object, observed);
   const first = (...fields) => {
     for (const row of rows) for (const field of fields) {
       const value = clean(row?.[field]);

@@ -124,9 +124,13 @@ export function buildProcurementArtifacts(spine, awards) {
       checkbook_contracts: Array.isArray(spine?.rows?.checkbook_contracts) ? spine.rows.checkbook_contracts.length : 0,
     },
   });
+  const checkbookLookupRows = Array.isArray(spine?.rows?.checkbook_contracts)
+    ? spine.rows.checkbook_contracts
+    : [];
   const model = {
     ...buildSharedProcurementReadModel({
       sourceRecords,
+      checkbookLookupRows,
       generatedAt: spine?.generated_at || null,
       now: spine?.generated_at || null,
     }),
