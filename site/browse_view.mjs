@@ -53,7 +53,7 @@ export const BROWSE_FACETS = Object.freeze({
     label: "Contracts",
     route: "/browse/contracts/",
     countLabel: "open opportunities",
-    description: "Open solicitations, awards, procurement plans, registration, and payment trails.",
+    description: "Open solicitations by default. Recent Awards lists registered contracts, including small purchases and PASSPort-only registrations.",
     sources: "City Record · PASSPort · Checkbook NYC · MOCS plans",
     container: "list",
     dataPath: "/data/money_default_open.json",
@@ -1164,10 +1164,25 @@ function renderedDate(value) {
   return `<time datetime="${esc(day)}">${esc(day)}</time>`;
 }
 
+function contractsMode(view) {
+  return String(new URLSearchParams(view?.scopeSearch || "").get("mode") || "open").toLowerCase();
+}
+
+export function contractsDiscoveryHtml(view) {
+  if (view?.facet !== "contracts") return "";
+  if (contractsMode(view) === "award") {
+    return `<p class="browse-contracts-discovery">Recent Awards lists registered contracts, including small purchases and PASSPort-only registrations. Open RFPs is the solicitation list.</p>`;
+  }
+  return `<p class="browse-contracts-discovery">This list is open solicitations. <a href="/browse/contracts/?mode=award">Recent Awards</a> lists registered contracts, including small purchases and PASSPort-only registrations.</p>`;
+}
+
 export function renderBrowseView(view) {
   if (!view) return "";
+  const requestedMode = contractsMode(view);
   const disclosure = view.liveOnlyFilters.length
-    ? `<p class="note warn browse-filter-disclosure" role="status" aria-label="Loading requested filters"><span class="loading" aria-hidden="true"></span></p>`
+    ? requestedMode === "award" && view.liveOnlyFilters.includes("mode")
+      ? `<p class="note warn browse-filter-disclosure" role="status">Loading Recent Awards — registered contracts, including small purchases and PASSPort-only registrations.</p>`
+      : `<p class="note warn browse-filter-disclosure" role="status" aria-label="Loading requested filters"><span class="loading" aria-hidden="true"></span></p>`
     : "";
   const scopeChip = renderScopeChip(view.scope, view.config, view.scopeSearch);
   const contextualSuggestions = renderContextualSuggestions(view.contextualSuggestions);
@@ -1350,7 +1365,7 @@ export function renderBrowseView(view) {
       })[key] || key,
     })
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${procurementCoverage}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {
