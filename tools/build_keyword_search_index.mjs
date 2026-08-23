@@ -13,6 +13,11 @@ import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
 import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import {
+  attachKeywordCoherenceReceipt,
+  checkProcurementIndexCoherence,
+  formatCoherenceFindings,
+} from "./lib/procurement_index_coherence.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const OUTPUT = new URL("../worker/src/data/keyword_search_index.json", import.meta.url);
@@ -220,7 +225,19 @@ const output = {
     },
   },
 };
-const serialized = `${JSON.stringify(output, null, 2)}\n`;
+const stamped = attachKeywordCoherenceReceipt({
+  readModel: procurements,
+  keywordIndex: output,
+});
+const coherence = checkProcurementIndexCoherence({
+  readModel: procurements,
+  keywordIndex: stamped,
+});
+if (!coherence.ok) {
+  console.error(formatCoherenceFindings(coherence.findings));
+  process.exit(1);
+}
+const serialized = `${JSON.stringify(stamped, null, 2)}\n`;
 if (process.argv.includes("--check")) {
   if (readFileSync(OUTPUT, "utf8") !== serialized) {
     console.error(`stale keyword search index: ${fileURLToPath(OUTPUT)}`);

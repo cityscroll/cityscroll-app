@@ -232,6 +232,7 @@ run_and_fail python3 test/standards/no_disclaimer_slop.py \
 run_and_fail python3 test/standards/public_surface_vocab.py --gate
 run_and_fail python3 test/standards/claim_first_prediction.py
 run_and_fail node tools/check_public_payload_integrity.mjs
+run_and_fail node tools/check_procurement_index_coherence.mjs
 run_and_fail node tools/check-collapsed-group-labels.mjs
 run_and_fail python3 test/standards/page_metadata.py
 run_and_fail python3 test/standards/brand_identity.py

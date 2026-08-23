@@ -1,0 +1,37 @@
+{
+  "read_model": {
+    "schema": "cityscroll.shared_procurement_read_model.v1",
+    "generated_at": "2026-08-18T04:05:51.552Z",
+    "publication": {
+      "selected_rows": 1
+    },
+    "counts": {
+      "source_observations": 1,
+      "total": 1
+    },
+    "rows": [
+      {
+        "procurement_id": "procurement:contract:CT1001",
+        "object_type": "procurement"
+      }
+    ]
+  },
+  "keyword_documents": [
+    {
+      "object_ref": "procurement:contract:CT1001",
+      "object_type": "procurement",
+      "outcome": "indexed",
+      "coverage_state": "matched"
+    }
+  ],
+  "index_only_document": {
+    "object_ref": "procurement:contract:CT-ABSENT",
+    "object_type": "procurement",
+    "outcome": "indexed",
+    "coverage_state": "matched"
+  },
+  "suppressed_row": {
+    "procurement_id": "procurement:contract:CT-SUPPRESSED",
+    "object_type": "procurement"
+  }
+}
