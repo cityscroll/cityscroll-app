@@ -40,6 +40,20 @@ export function digestDecision({ freshCount, freq, lastSentDate, today, heartbea
   return quiet >= heartbeatDays ? { action: "heartbeat" } : { action: "none" };
 }
 
+/**
+ * True when this digest covers more than one scheduled period: last successful
+ * delivery (lastsent / createdAt fallback) is older than the previous run.
+ * Daily period is 1 UTC day; weekly is 7. Used to label a watermark-backlog
+ * fold-in; it does not decide whether owed rows attach.
+ */
+export function digestCoversBacklogWindow({ lastSentDate, today, freq = "daily" } = {}) {
+  if (!lastSentDate || !today) return false;
+  const lag = daysBetween(lastSentDate, today);
+  if (!Number.isFinite(lag) || lag === Infinity) return false;
+  const period = String(freq) === "weekly" ? 7 : 1;
+  return lag > period;
+}
+
 // A handful of Award notices are republished by City Record itself, byte-identical, under a
 // second request_id — the `seen`-set (keyed on request_id alone) can't catch that, so a
 // watching subscriber would see the same notice twice in one digest. Collapse rows that share

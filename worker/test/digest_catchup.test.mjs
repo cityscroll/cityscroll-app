@@ -298,10 +298,14 @@ test("processOneSub lag recovery: stamps traffic_class catch_up; email stays mat
     { request_id: "20260730001", start_date: "2026-07-30T00:00:00.000", agency_name: "DDC", short_title: "Backlog B construction", contract_amount: "800000", section_name: "Procurement" },
   ];
   const realFetch = globalThis.fetch;
-  globalThis.fetch = async (url) => {
+  const sent = [];
+  globalThis.fetch = async (url, options) => {
     const u = String(url);
     if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
-    if (u.includes("api.resend.com")) return Response.json({ id: "lag_1" });
+    if (u.includes("api.resend.com")) {
+      sent.push(JSON.parse(options.body));
+      return Response.json({ id: "lag_1" });
+    }
     throw new Error("unexpected fetch: " + u);
   };
   try {
@@ -329,8 +333,11 @@ test("processOneSub lag recovery: stamps traffic_class catch_up; email stays mat
       },
     );
     assert.equal(r.sent, true);
-    assert.equal(r.action, "match", "daily path keeps match action (not catch_up branded)");
+    assert.equal(r.action, "match", "daily path keeps match action");
     assert.equal(r.traffic_class, "catch_up");
+    assert.equal(sent.length, 1);
+    assert.match(sent[0].subject, /catching up/i);
+    assert.match(sent[0].html, /Catching up: 2 items since your last digest on Jul 28/);
     const entry = toDayLogEntry(r, { day: "2026-07-31" });
     assert.equal(entry.traffic_class, "catch_up");
     assert.equal(entry.action, "match");
