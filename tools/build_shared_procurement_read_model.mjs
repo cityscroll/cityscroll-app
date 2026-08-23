@@ -5,6 +5,10 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
+import {
+  describeCrolAwardPublication,
+  matchesCrolAwardPublication,
+} from "../site/crol_notice_publication_policy.mjs";
 import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
@@ -80,6 +84,7 @@ function cityRecord(row, generatedAt) {
 
 export function procurementSourceRecordsFromMaterializations(spine, awards) {
   const generatedAt = spine?.generated_at || spine?.observed_on || null;
+  const now = generatedAt || new Date().toISOString();
   const checkbookRows = Array.isArray(spine?.rows?.checkbook_contracts)
     ? spine.rows.checkbook_contracts.filter((row) => (
       row.selection_bucket === "new_unique"
@@ -89,10 +94,10 @@ export function procurementSourceRecordsFromMaterializations(spine, awards) {
   const selectedContracts = new Set(checkbookRows.map((row) => norm(row.contract_id || row.prime_contract_id)).filter(Boolean));
   const selectedPins = new Set(checkbookRows.map((row) => norm(row.pin)).filter(Boolean));
   const passportRows = (Array.isArray(spine?.rows?.passport_contracts) ? spine.rows.passport_contracts : [])
-    .filter((row, index) => (
-      index < 500
-      || selectedContracts.has(norm(row.contract_id))
+    .filter((row) => (
+      selectedContracts.has(norm(row.contract_id))
       || selectedPins.has(norm(row.epin_norm || row.epin))
+      || matchesCrolAwardPublication(row, { now })
     ));
   for (const row of passportRows) {
     const pin = norm(row.epin_norm || row.epin);
@@ -109,11 +114,22 @@ export function procurementSourceRecordsFromMaterializations(spine, awards) {
 
 export function buildProcurementArtifacts(spine, awards) {
   const sourceRecords = procurementSourceRecordsFromMaterializations(spine, awards);
-  const model = buildSharedProcurementReadModel({
-    sourceRecords,
-    generatedAt: spine?.generated_at || null,
+  const publication = describeCrolAwardPublication({
     now: spine?.generated_at || null,
+    selected: sourceRecords.length,
+    census: {
+      passport_contracts: Array.isArray(spine?.rows?.passport_contracts) ? spine.rows.passport_contracts.length : 0,
+      checkbook_contracts: Array.isArray(spine?.rows?.checkbook_contracts) ? spine.rows.checkbook_contracts.length : 0,
+    },
   });
+  const model = {
+    ...buildSharedProcurementReadModel({
+      sourceRecords,
+      generatedAt: spine?.generated_at || null,
+      now: spine?.generated_at || null,
+    }),
+    publication,
+  };
   const corpus = buildProcurementSearchDocuments(model);
   const browse = {
     schema: "cityscroll.procurement_browse_rows.v1",
@@ -121,6 +137,7 @@ export function buildProcurementArtifacts(spine, awards) {
     source_model_schema: model.schema,
     row_count: corpus.documents.length,
     coverage: corpus.coverage,
+    publication,
     rows: corpus.documents.map(contractSearchDocumentToMoneyRow).filter(Boolean).map((row) => {
       const { search_document: _searchDocument, ...publicRow } = row;
       return publicRow;

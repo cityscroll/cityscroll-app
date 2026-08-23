@@ -1,6 +1,7 @@
 /** Pure normalization, overlap measurement, and graph-slice selection for Checkbook Contracts. */
 
 import { createHash } from "node:crypto";
+import { matchesCrolAwardPublication } from "../../site/crol_notice_publication_policy.mjs";
 import { normId } from "../../worker/src/lib/passport_join.mjs";
 
 const clean = (value) => String(value ?? "")
@@ -237,20 +238,13 @@ function rowSort(a, b) {
   return date || clean(a.contract_id).localeCompare(clean(b.contract_id));
 }
 
-/** Keep both corroborating and novel contracts inside the public graph budget. */
-export function selectCheckbookContractsForGraph(rows, passportRows, cityRecordRows, opts = {}) {
-  const cap = Math.max(1, Number(opts.cap) || 500);
-  const overlap = measureCheckbookOverlap(rows, passportRows, cityRecordRows);
-  const linked = [];
-  const novel = [];
-  for (const row of Array.isArray(rows) ? rows : []) {
-    const classification = classifyCheckbookContract(row, overlap._sets);
-    const stamped = { ...row, selection_bucket: classification.bucket };
-    if (classification.bucket === "new_unique") novel.push(stamped);
-    else linked.push(stamped);
-  }
-  linked.sort(rowSort);
-  novel.sort(rowSort);
+const CROL_GRAPH_STRATEGY = "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap";
+
+function stampCheckbookRow(row, classification) {
+  return { ...row, selection_bucket: classification.bucket };
+}
+
+function applyOptionalCap(linked, novel, cap) {
   const linkedTarget = Math.ceil(cap / 2);
   const novelTarget = Math.floor(cap / 2);
   const selected = [...linked.slice(0, linkedTarget), ...novel.slice(0, novelTarget)];
@@ -264,6 +258,28 @@ export function selectCheckbookContractsForGraph(rows, passportRows, cityRecordR
       if (selected.length >= cap) break;
     }
   }
+  return selected;
+}
+
+/** Admit Checkbook rows by the City Record Award window; optional cap is tests-only. */
+export function selectCheckbookContractsForGraph(rows, passportRows, cityRecordRows, opts = {}) {
+  const cap = opts.cap == null || opts.cap === "" ? null : Math.max(1, Number(opts.cap));
+  if (cap != null && !Number.isInteger(cap)) {
+    throw new Error("Checkbook graph cap must be a positive integer when set");
+  }
+  const overlap = measureCheckbookOverlap(rows, passportRows, cityRecordRows);
+  const linked = [];
+  const novel = [];
+  for (const row of Array.isArray(rows) ? rows : []) {
+    if (!matchesCrolAwardPublication(row, { now: opts.now })) continue;
+    const classification = classifyCheckbookContract(row, overlap._sets);
+    const stamped = stampCheckbookRow(row, classification);
+    if (classification.bucket === "new_unique") novel.push(stamped);
+    else linked.push(stamped);
+  }
+  linked.sort(rowSort);
+  novel.sort(rowSort);
+  const selected = cap == null ? [...linked, ...novel].sort(rowSort) : applyOptionalCap(linked, novel, cap);
   const selectedBuckets = Object.fromEntries(
     Object.keys(overlap.exact_overlap_buckets).map((key) => [key, selected.filter((row) => row.selection_bucket === key).length]),
   );
@@ -273,7 +289,9 @@ export function selectCheckbookContractsForGraph(rows, passportRows, cityRecordR
     cap,
     selected_rows: selected.length,
     selected_buckets: selectedBuckets,
-    strategy: "reserve half the cap for exact PASSPort/City Record overlap and half for new unique contract ids; fill unused capacity deterministically newest-first",
+    strategy: cap == null
+      ? CROL_GRAPH_STRATEGY
+      : `${CROL_GRAPH_STRATEGY}; optional test cap ${cap} still reserves half for overlap and half for new unique ids`,
     measurement,
   };
 }
