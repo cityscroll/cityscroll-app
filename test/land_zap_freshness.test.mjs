@@ -163,14 +163,8 @@ describe("committed land freshness publish loop", () => {
     }
   });
 
-  it("publishes land upcoming hearings through verified auto-merge (not artifact-only)", () => {
-    const yml = readFileSync(WORKFLOW_HEARINGS, "utf8");
-    assert.match(yml, /contents:\s*write/);
-    assert.match(yml, /create-pull-request/);
-    assert.match(yml, /automation\/land-upcoming-hearings/);
-    assert.match(yml, /upload-artifact/);
-    assert.match(yml, /generated_at did not advance/);
-    assert.match(yml, /gh pr merge[\s\S]*--auto[\s\S]*--match-head-commit/);
+  it("does not open a land upcoming-hearings refresh pull request", () => {
+    assert.equal(existsSync(WORKFLOW_HEARINGS), false);
   });
 
   it("schedules WH-05 + keyword refresh from SODA with a publish PR", () => {

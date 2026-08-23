@@ -580,9 +580,10 @@ node --test test/payroll_title_mart.test.mjs worker/test/suggestions.test.mjs
 # receipt: warehouse/receipts/proof/payroll_title_lookup_speed.json
 ```
 
-Weekly workflow `.github/workflows/payroll-title-warehouse-lookup.yml` uses
-`REFRESH_PR_TOKEN` + `gh pr merge --auto`. A failed rebuild keeps the
-last-known-good twins.
+The Worker 13:00 cron refreshes `ALERT_STATE` `payroll:title-mart:v1` from the
+same SODA group-by. A failed KV write keeps yesterday's key or the committed
+twin. Rebuild the floor with `--from-soda` only when the committed snapshot
+itself should move.
 
 ## WH-05: Doing Business + ZAP live fetches → warehouse materialization
 

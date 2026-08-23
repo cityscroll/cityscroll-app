@@ -58,6 +58,8 @@ import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, handleMeetingICS, refreshHearings } from "./hearings.mjs";
+import { handleLandUpcomingHearings, refreshLandUpcomingHearings } from "./land_upcoming_hearings.mjs";
+import { refreshPayrollTitleMart } from "./lib/payroll_title_mart_kv.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleFranchiseConcessions, refreshFranchiseConcessions } from "./franchise_concession.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
@@ -125,6 +127,7 @@ export default {
     if (pathname === "/contract-lifecycle") return handleContractLifecycle(request, env, ctx);
     if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
+    if (pathname === "/land-upcoming-hearings") return handleLandUpcomingHearings(request, env);
     if (pathname === "/meeting.ics") return handleMeetingICS(request, env);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
     if (pathname === "/franchise-concessions") return handleFranchiseConcessions(request, env, ctx);
@@ -169,6 +172,17 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    // Morning land upcoming-hearings: derive from zap-outcome KV + SODA sell-facing
+    // ids so the list is not stuck behind the 13:00 digest chain. Public SODA only.
+    if (event.cron === "0 8 * * *") {
+      try {
+        const r = await refreshLandUpcomingHearings(env);
+        console.log("land upcoming hearings:", JSON.stringify(r));
+      } catch (error) {
+        console.error("land upcoming hearings refresh failed:", String(error?.message || error));
+      }
+      return;
+    }
     // 06:00 ET rehearsal: the real digest builders run inline against live data, but delivery,
     // watermarks, send counters, and the 09:00 queue path remain untouched.
     if (event.cron === "0 10 * * *") {
@@ -296,6 +310,15 @@ export default {
       }
     } catch (e) {
       console.error("subsidy lifecycle prewarm failed (digest continues):", String(e?.message || e));
+    }
+    // FY payroll title mart: SODA group-by into ALERT_STATE so People/Staffing
+    // suggestion counts are not a request-time 6.8M employee fetch. Fail-soft —
+    // a bad write leaves yesterday's KV (or the committed twin) in place.
+    try {
+      const r = await refreshPayrollTitleMart(env);
+      console.log("payroll title mart:", JSON.stringify(r));
+    } catch (e) {
+      console.error("payroll title mart refresh failed (digest continues):", String(e?.message || e));
     }
     // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
     // runSuggestionValidation itself; this outer catch is only for something the pipeline

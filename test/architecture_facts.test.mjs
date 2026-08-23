@@ -46,7 +46,8 @@ test("extractor records active config and dispatch evidence", () => {
   const dispatch = dispatchRoutes(worker);
   assert.ok(routes.some((route) => route.pattern === "api.cityscroll.org" && route.custom_domain === true));
   assert.ok(dispatch.some((route) => route.path === "/hearings" && route.handler === "handleHearings"));
-  assert.deepEqual(parseCrons(wrangler).map((cron) => cron.schedule), ["0 10 * * *", "0 13 * * *"]);
+  assert.ok(dispatch.some((route) => route.path === "/land-upcoming-hearings" && route.handler === "handleLandUpcomingHearings"));
+  assert.deepEqual(parseCrons(wrangler).map((cron) => cron.schedule), ["0 8 * * *", "0 10 * * *", "0 13 * * *"]);
 });
 
 test("absent bindings remain explicit nulls", () => {
