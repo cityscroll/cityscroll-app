@@ -483,7 +483,7 @@ test("Worker cron, D1 migration, and independent scheduled wake monitor are wire
   const ontologyMigration = readFileSync(new URL("../migrations/0020_ontology_delta_shadow.sql", import.meta.url), "utf8");
   const workflow = readFileSync(new URL("../../.github/workflows/digest-shadow-monitor.yml", import.meta.url), "utf8");
   const runner = readFileSync(new URL("../../tools/external_schedule_runner.mjs", import.meta.url), "utf8");
-  assert.match(wrangler, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
+  assert.match(wrangler, /crons\s*=\s*\[\s*"0 8 \* \* \*",\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_runs/);
   assert.match(migration, /CREATE TABLE IF NOT EXISTS digest_shadow_previews/);
   assert.match(holdMigration, /CREATE TABLE IF NOT EXISTS digest_shadow_hold_states/);

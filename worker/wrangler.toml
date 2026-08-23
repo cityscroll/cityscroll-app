@@ -19,9 +19,11 @@ routes = [
 workers_dev = true
 
 # Daily alerts digest at 13:00 UTC (09:00 ET) plus a delivery-free rehearsal at
-# 10:00 UTC (06:00 ET). The rehearsal renders inline and persists private D1 previews.
+# 10:00 UTC (06:00 ET). Morning 08:00 UTC refreshes land upcoming hearings from
+# zap-outcome KV so that list is not stuck behind the digest chain.
 [triggers]
 crons = [
+  "0 8 * * *",
   "0 10 * * *",
   "0 13 * * *",
 ]

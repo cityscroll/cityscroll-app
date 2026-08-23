@@ -51,7 +51,7 @@ test("production Worker routes carry API domains and bounded canonical document 
   assert.match(production, /pattern = "cityscroll\.org\/prefs\*"/);
   assert.doesNotMatch(production, /pattern = "cityscroll\.org"\s*,\s*custom_domain/);
   assert.doesNotMatch(production, /pattern = "www\.cityscroll\.org"/);
-  assert.match(production, /crons\s*=\s*\[\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
+  assert.match(production, /crons\s*=\s*\[\s*"0 8 \* \* \*",\s*"0 10 \* \* \*",\s*"0 13 \* \* \*",?\s*\]/);
   // Production analytics writes must not depend on a secret that can be forgotten —
   // ANALYTICS_ENVIRONMENT=production is a vars gate (field case 2026-07-30: silent drops).
   assert.match(production, /^ANALYTICS_ENVIRONMENT = "production"$/m);

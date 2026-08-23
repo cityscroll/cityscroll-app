@@ -66,8 +66,8 @@ export const ZAP_PREWARM_STATUSES = Object.freeze([
 ]);
 /** Always pin the demo-frame project so #land/2022M0258 never cold-misses. */
 export const ZAP_PREWARM_DEMO_IDS = Object.freeze(["2022M0258"]);
-/** Cap per cron/admin run — ~200 × multi-source build stays inside a daily cron budget. */
-export const ZAP_PREWARM_MAX = 200;
+/** Cap per cron/admin run. Sell-facing Open Data is ~235 ids; stay under the hard 500. */
+export const ZAP_PREWARM_MAX = 300;
 /** Concurrent builds per wave (ZAP API + SODA fan-out is the cost). */
 export const ZAP_PREWARM_CONCURRENCY = 4;
 /** Refresh before the public freshness objective while retaining older rows. */
@@ -112,7 +112,7 @@ export function outcomeCacheIsPrewarmFresh(record, nowMs = Date.now()) {
   return cacheAgeMs(record, nowMs) < ZAP_PREWARM_REFRESH_AGE_MS;
 }
 
-async function kvGetRecord(env, projectId) {
+export async function readZapOutcomeRecord(env, projectId) {
   if (!env?.ALERT_STATE) return null;
   try {
     const raw = await env.ALERT_STATE.get(kvKey(projectId));
@@ -120,6 +120,10 @@ async function kvGetRecord(env, projectId) {
   } catch {
     return null;
   }
+}
+
+async function kvGetRecord(env, projectId) {
+  return readZapOutcomeRecord(env, projectId);
 }
 
 async function kvPutRecord(env, record) {
@@ -236,9 +240,11 @@ export async function prewarmZapOutcomes(env, projectIds, {
   concurrency = ZAP_PREWARM_CONCURRENCY,
   force = false,
   nowMs = Date.now(),
+  max = ZAP_PREWARM_MAX,
 } = {}) {
+  const cap = Math.max(1, Math.min(Number(max) || ZAP_PREWARM_MAX, 500));
   const ids = Array.isArray(projectIds)
-    ? [...new Set(projectIds.map((id) => String(id || "").trim()).filter(Boolean))].slice(0, ZAP_PREWARM_MAX)
+    ? [...new Set(projectIds.map((id) => String(id || "").trim()).filter(Boolean))].slice(0, cap)
     : [];
   let computed = 0;
   let skipped = 0;
@@ -294,6 +300,7 @@ export async function refreshZapOutcomes(env, opts = {}) {
     concurrency: opts.concurrency || ZAP_PREWARM_CONCURRENCY,
     force,
     nowMs: opts.nowMs || Date.now(),
+    max,
   });
   return {
     status: "ok",
