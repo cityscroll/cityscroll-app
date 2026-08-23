@@ -24,7 +24,7 @@ import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
-import { digestDecision, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
+import { digestDecision, digestCoversBacklogWindow, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
 import { itemAwarenessHtml } from "./lib/digest_item_awareness.mjs";
 import {
   groupDigestRowsByActionBand,
@@ -77,7 +77,7 @@ import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 import {
   SECTION_STATUS,
   enqueueEvaluatedSection,
-  listOwedItems,
+  listAllOwedItems,
   reserveDeliveryOccasion,
   finalizeAcceptedDelivery,
   failDelivery,
@@ -752,7 +752,7 @@ async function enqueueNormalSection(env, s, section, rows, ctx, kind) {
 
 async function owedForSubscriber(env, subscriberId) {
   if (!env.DB || !subscriberId) return [];
-  try { return await listOwedItems(env.DB, subscriberId); } catch { return []; }
+  try { return await listAllOwedItems(env.DB, subscriberId); } catch { return []; }
 }
 
 function payloadRow(item) {
@@ -1004,7 +1004,10 @@ export async function processOneSub(env, s, ctx) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
-        subject = `CityScroll: ${parts} — ${label}`;
+        const catchUp = digestCoversBacklogWindow({ lastSentDate: since, today: ctx.today, freq: s.freq });
+        subject = catchUp
+          ? emailT(lang, "catch_up_subject", { n: fresh.length, date: shortDate(since), label })
+          : `CityScroll: ${parts} — ${label}`;
         const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
         // w12-12: carry this watch's own {lens, filter} into every notice link so the site can
         // re-render the same Matched-evidence + interpretation-echo the subscriber would see
@@ -1013,7 +1016,7 @@ export async function processOneSub(env, s, ctx) {
         // encodeWatchFilter()) or a lens deep-links don't cover (rezone links straight to ZAP
         // below, never through here).
         const w = encodeWatchFilter(s.lens, s.filter);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, base, forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, base, forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl, ctx.today, catchUp);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
@@ -1067,7 +1070,7 @@ export async function processOneSub(env, s, ctx) {
     }
     // Multi-day lag after a delivery outage: stamp traffic_class so desk ops can exempt
     // day-scoped phantom_send without treating a normal daily match as recovery.
-    // Email copy stays the normal daily subject/body (not catch-up branded).
+    // Resident copy names the coverage range when lastsent is older than one period.
     const lagRecovery = isMultiDayLagRecovery(since, ctx.today, fresh.length);
     return {
       sub: s.key,
@@ -1191,18 +1194,35 @@ export async function processAccountRollup(env, subs, ctx) {
       // multi-watch subject form even when only one section wanted send.
       const watchCount = sections.length;
       const bodySections = rollupBodySections(sections);
-      const subject = rollupSubject({
-        totalNew: decision.totalNew,
-        totalForecasts: decision.totalForecasts,
-        labels: decision.labels,
-        quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
-        watchCount,
-      });
       const sinceDates = (bodySections.length ? bodySections : wanting)
         .map((sec) => sec.since)
         .filter((d) => /^\d{4}-\d{2}-\d{2}/.test(String(d || "")))
         .map((d) => String(d).slice(0, 10))
         .sort();
+      const freqs = sections.map((sec) => sec.freq).filter(Boolean);
+      const allWeekly = freqs.length > 0 && freqs.every((freq) => freq === "weekly");
+      const catchUp = (decision.totalNew > 0 || decision.totalForecasts > 0)
+        && digestCoversBacklogWindow({
+          lastSentDate: sinceDates[0] || null,
+          today: ctx.today,
+          freq: allWeekly ? "weekly" : "daily",
+        });
+      const catchUpLabel = (Number.isFinite(Number(watchCount)) && Number(watchCount) > 1)
+        ? `${watchCount} watches`
+        : (decision.labels[0] || "your watches");
+      const subject = catchUp
+        ? emailT(lang, "catch_up_subject", {
+          n: decision.totalNew,
+          date: shortDate(sinceDates[0]),
+          label: catchUpLabel,
+        })
+        : rollupSubject({
+          totalNew: decision.totalNew,
+          totalForecasts: decision.totalForecasts,
+          labels: decision.labels,
+          quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
+          watchCount,
+        });
       const html = rollupDigestHtml({
         sections: bodySections.length ? bodySections : wanting,
         wantingCount: wanting.length,
@@ -1215,6 +1235,7 @@ export async function processAccountRollup(env, subs, ctx) {
         today: ctx.today,
         totalNew: decision.totalNew,
         since: sinceDates[0] || null,
+        catchUp,
       });
       const payload = emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubAllUrl}>` };
@@ -1272,7 +1293,8 @@ export async function processAccountRollup(env, subs, ctx) {
     }
 
     // Stamp account rollup when any section with fresh notices lagged >1 day (same
-    // desk-exemption path as single-sub lag recovery; email stays normal daily copy).
+    // desk-exemption path as single-sub lag recovery). Resident copy names the
+    // coverage range when lastsent is older than one scheduled period.
     const lagRecovery = sections.some(
       (sec) => isMultiDayLagRecovery(sec.since, ctx.today, Number(sec.new) || 0),
     );
@@ -1331,6 +1353,7 @@ async function evaluateSubSection(env, s, ctx) {
     ...((ctx.capturePreviews && s.key) ? { previewId: await digestShadowId("watch", s.key) } : {}),
     subKey: s.key,
     lens: s.lens,
+    freq: s.freq || "daily",
     queryLabel: describeFilter(s.lens, s.filter),
     lang: s.lang || "en",
     email: s.email,
@@ -1453,6 +1476,7 @@ async function evaluateAwardSection(env, s, ctx, base) {
   const seenId = `award:${s.key}`;
   const seen = await getSeen(env, seenId);
   const fresh = candidates.filter((c) => c.key && !seen.has(c.key));
+  const since = (await getLastSent(env, s.key)) || s.createdAt || null;
   const section = {
     ...base,
     status: SECTION_STATUS.SUCCESS,
@@ -1461,6 +1485,8 @@ async function evaluateAwardSection(env, s, ctx, base) {
     new: fresh.length,
     noticeIds: fresh.length ? [filter.requestId].filter(Boolean) : [],
     action: fresh.length > 0 ? "match" : "none",
+    since,
+    freq: s.freq || "daily",
     kind: "award",
     awardCandidates: fresh,
     awardFilter: filter,
@@ -2569,7 +2595,7 @@ function districtGroupedListHtml(rows, renderItem, esc) {
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
 // straight to ZAP below and never touches CityScroll's own notice view.
-export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null, todayOverride = null) {
+export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null, todayOverride = null, catchUp = false) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -2760,16 +2786,19 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
   const itemWord = rows.length === 1
     ? emailT(lang, "digest_new_item_singular")
     : emailT(lang, "digest_new_item_plural");
-  const countLine = since
-    ? emailT(lang, "digest_new_items", { n: rows.length, item: itemWord, date: shortDate(since) })
-    : emailT(lang, "digest_no_date", { n: rows.length, item: itemWord });
+  const gapFill = !!catchUp && !!since;
+  const countLine = gapFill
+    ? emailT(lang, "catch_up_intro", { n: rows.length, date: shortDate(since) })
+    : since
+      ? emailT(lang, "digest_new_items", { n: rows.length, item: itemWord, date: shortDate(since) })
+      : emailT(lang, "digest_no_date", { n: rows.length, item: itemWord });
 
   const manageLine = manageUrl
     ? ` · <a href="${esc(manageUrl)}">${esc(emailT(lang, "digest_manage"))}</a>`
     : "";
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll — ${esc(label)}</h2>
-    <p style="color:#555">${esc(countLine)}</p>
+    <p data-digest-coverage="${gapFill ? "catch-up" : "current"}" style="color:#555">${esc(countLine)}</p>
     ${listHtml}
     ${forecastsHtml}
     ${healthNote}
@@ -2819,6 +2848,7 @@ export function rollupDigestHtml({
   today: todayOverride = null,
   totalNew: totalNewOverride = null,
   since = null,
+  catchUp = false,
 } = {}) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
@@ -2830,10 +2860,14 @@ export function rollupDigestHtml({
   const totalNew = Number.isFinite(Number(totalNewOverride))
     ? Number(totalNewOverride)
     : sections.reduce((n, s) => n + (Number(s.new) || (Array.isArray(s.freshRows) ? s.freshRows.length : 0)), 0);
+  const gapFill = !!catchUp && !!since;
   const sinceBit = since ? ` · since ${shortDate(since)}` : "";
-  const summaryLine = nTotal > 1
-    ? `${totalNew} new · ${nWant} of ${nTotal} watches with updates${sinceBit}`
-    : `${totalNew} new · ${nWant} watch${nWant === 1 ? "" : "es"} with updates${sinceBit}`;
+  const watchBit = nTotal > 1
+    ? `${nWant} of ${nTotal} watches with updates`
+    : `${nWant} watch${nWant === 1 ? "" : "es"} with updates`;
+  const summaryLine = gapFill
+    ? `${emailT(lang, "catch_up_intro", { n: totalNew, date: shortDate(since) })} · ${watchBit}`
+    : `${totalNew} new · ${watchBit}${sinceBit}`;
   const today = /^\d{4}-\d{2}-\d{2}/.test(String(todayOverride || ""))
     ? String(todayOverride).slice(0, 10)
     : new Date().toISOString().slice(0, 10);
@@ -2955,7 +2989,7 @@ export function rollupDigestHtml({
   const unsubImmediate = emailT(lang, "digest_unsub_immediate") || UNSUB_IMMEDIATE_COPY;
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll — your daily digest</h2>
-    <p data-rollup-summary="1" style="color:#555;font-size:14px">${esc(summaryLine)}</p>
+    <p data-rollup-summary="1" data-digest-coverage="${gapFill ? "catch-up" : "current"}" style="color:#555;font-size:14px">${esc(summaryLine)}</p>
     ${tocHtml}
     ${sectionHtml}
     <p style="color:#999;font-size:12px;margin-top:20px">

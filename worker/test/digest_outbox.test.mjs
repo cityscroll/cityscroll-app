@@ -11,6 +11,7 @@ import {
   sectionResultStatus,
   reserveDeliveryOccasion,
   listOwedItems,
+  listAllOwedItems,
   finalizeAcceptedDelivery,
   failDelivery,
 } from "../src/lib/digest_outbox.mjs";
@@ -225,5 +226,25 @@ test("provider failure records failed occasion and leaves every item owed", asyn
   });
   assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_items WHERE item_id = 'notice:one'").get().status, "owed");
   assert.equal(sqlite.prepare("SELECT status FROM digest_outbox_deliveries").get().status, "failed");
+  sqlite.close();
+});
+
+test("listAllOwedItems pages past the 500-row SELECT so a stall cannot drop the tail", async () => {
+  const { sqlite, db } = makeDb();
+  const insert = sqlite.prepare(`INSERT INTO digest_outbox_items
+    (watch_id, subscriber_id, item_id, lens, item_kind, payload_json, source_observed_at, first_owed_at, owed_origin)
+    VALUES ('watch:one', 'subscriber:one', ?, 'money', 'rfp', ?, '2026-08-01', ?, 'test')`);
+  for (let i = 0; i < 520; i++) {
+    const id = `notice:${String(i).padStart(4, "0")}`;
+    insert.run(id, JSON.stringify({ request_id: id, short_title: `Owed ${i}` }), `2026-08-01T12:${String(i % 60).padStart(2, "0")}:00Z`);
+  }
+  const page = await listOwedItems(db, "subscriber:one", 500);
+  assert.equal(page.length, 500, "one SELECT page still caps at 500");
+  const all = await listAllOwedItems(db, "subscriber:one");
+  assert.equal(all.length, 520);
+  const ids = new Set(all.map((row) => row.item_id));
+  for (let i = 0; i < 520; i++) {
+    assert.equal(ids.has(`notice:${String(i).padStart(4, "0")}`), true);
+  }
   sqlite.close();
 });
