@@ -141,7 +141,7 @@ export async function handleAdminSubs(req, env) {
     const res = await env.SUBS.list({ cursor });
     totalKeys += res.keys.length;
     for (const k of res.keys) {
-      if (sampleKeys.length < 12) sampleKeys.push(maskKey(k.name));
+      if (sampleKeys.length < 12) sampleKeys.push(k.name);
       if (k.name.startsWith("sub:")) {
         let v = null;
         try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
@@ -156,7 +156,8 @@ export async function handleAdminSubs(req, env) {
             status: SIGNUP_LIFECYCLE.ENROLLED,
           };
           const item = {
-            email: redactEmail(v.email),
+            key: k.name,
+            email: v.email || null,
             lens: v.lens,
             filter: v.filter,
             freq: v.freq,
@@ -174,6 +175,7 @@ export async function handleAdminSubs(req, env) {
           };
           if (lifecycle.status === SIGNUP_LIFECYCLE.TEST) {
             developerTestAccounts.push({
+              key: item.key,
               email: item.email,
               status: SIGNUP_LIFECYCLE.TEST,
               signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
@@ -201,7 +203,8 @@ export async function handleAdminSubs(req, env) {
         let v = null;
         try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
         if (v) developerTestAccounts.push({
-          email: redactEmail(v.email),
+          key: k.name,
+          email: v.email || null,
           status: SIGNUP_LIFECYCLE.TEST,
           signup_lifecycle: SIGNUP_LIFECYCLE.TEST,
           source: v.source,
@@ -288,8 +291,8 @@ export function renderSignupLifecyclePage(body = {}) {
   const sections = categories.map((category) => {
     const rows = category.rows;
     const table = rows.length
-      ? `<table><thead><tr><th>Address</th><th>Lifecycle</th><th>Status</th><th>Source</th><th>Original signup</th></tr></thead><tbody>${
-        rows.map((row) => `<tr><th scope="row">${escapeHtml(row.email || "—")}</th><td>${escapeHtml(row.signup_lifecycle || category.id)}</td><td>${escapeHtml(row.status || "—")}</td><td>${escapeHtml(row.source || "—")}</td><td>${escapeHtml(row.original_signup_at || row.createdAt || "—")}</td></tr>`).join("")
+      ? `<table><thead><tr><th>Address</th><th>Key</th><th>Lifecycle</th><th>Status</th><th>Source</th><th>Original signup</th></tr></thead><tbody>${
+        rows.map((row) => `<tr><th scope="row">${escapeHtml(row.email || "—")}</th><td><code>${escapeHtml(row.key || "—")}</code></td><td>${escapeHtml(row.signup_lifecycle || category.id)}</td><td>${escapeHtml(row.status || "—")}</td><td>${escapeHtml(row.source || "—")}</td><td>${escapeHtml(row.original_signup_at || row.createdAt || "—")}</td></tr>`).join("")
       }</tbody></table>`
       : "";
     return `<article class="panel" data-signup-category="${escapeHtml(category.id)}"><h2>${escapeHtml(category.label)}</h2><p class="count">${deskNumber(category.count)}</p>${table}</article>`;
@@ -392,13 +395,17 @@ async function liveWatchRecordsByMask(store) {
     do {
       const page = await store.list({ prefix: "sub:", cursor });
       for (const key of page.keys) {
-        const masked = watchLogMaskKey(key.name);
-        if (!masked) continue;
         let record;
         try { record = JSON.parse(await store.get(key.name)); } catch { continue; }
-        // The mask deliberately hides most of the key. Do not guess when two live keys collide.
-        if (records.has(masked)) records.set(masked, null);
-        else if (record) records.set(masked, record);
+        if (!record) continue;
+        records.set(key.name, record);
+        const masked = watchLogMaskKey(key.name);
+        // Historical watchlog rows still carry the 2-hex mask. Join those when unique;
+        // colliding masks stay null so we never guess across two live watches.
+        if (masked && masked !== key.name) {
+          if (records.has(masked)) records.set(masked, null);
+          else records.set(masked, record);
+        }
       }
       cursor = page.list_complete ? null : page.cursor;
     } while (cursor);
@@ -838,7 +845,7 @@ function renderNextDigestPreviewPage(body) {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${heading} · CityScroll desk</title><style>:root{color-scheme:light;--ink:#172031;--muted:#5f6875;--paper:#f2f0e9;--card:#fffdf7;--rule:#cbc6b8}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,sans-serif}.wrap{max-width:900px;margin:auto;padding:28px 20px 64px}.card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:20px}header{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:20px}.eyebrow{margin:0 0 6px;color:#1f6b4f;font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:.75rem}h1,h2{font-family:ui-serif,Georgia,serif}h1{margin:0;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05}.lede,.empty{color:var(--muted)}.ops{display:grid;grid-template-columns:1fr auto;gap:8px 14px;margin:0 0 20px}.ops dt{color:var(--muted)}.ops dd{margin:0;text-align:right;overflow-wrap:anywhere}table{width:100%;border-collapse:collapse}th,td{padding:9px 6px;border-bottom:1px solid var(--rule);text-align:right}th:first-child{text-align:left}small{color:var(--muted);font-weight:400}.digest-body{border-top:1px solid var(--rule);padding-top:18px;overflow-wrap:anywhere}@media(max-width:600px){.wrap{padding-inline:14px}.ops{grid-template-columns:1fr}.ops dd{text-align:left}}</style></head><body><main class="wrap"><header><p class="eyebrow">Authenticated desk · read-only preview</p><h1>${heading}</h1><p class="lede">A dry-run of the body the next scheduled drain would send. This surface sends nothing and advances no delivery state.</p></header><section class="card">${content}</section></main></body></html>`;
 }
 
-/** GET /admin/next-digest-preview?key=…[&subscriber=<opaque id|redacted label>] — read-only. */
+/** GET /admin/next-digest-preview?key=…[&subscriber=<opaque id|address>] — read-only. */
 export async function handleAdminNextDigestPreview(req, env, options = {}) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
@@ -1133,9 +1140,6 @@ export async function handleAdminDigestSendTest(req, env) {
   }
 }
 
-function maskKey(n) {
-  return n.replace(/^(sub:|rl:addr:)([^@:]{0,2})[^@:]*/, "$1$2***");
-}
 function json(obj, status) {
   return new Response(JSON.stringify(obj, null, 2), {
     status,

@@ -136,8 +136,10 @@ test("admin read surfaces show recovery timestamps, provenance, explanation, and
   }
   assert.deepEqual(
     subs.recoveredPending.map((row) => row.email).sort(),
-    ["de***@gmail.com", "ni***@gmail.com", "sh***@gmail.com"],
+    [...VETTED_RECOVERED_SIGNUP_EMAILS].sort(),
   );
+  assert.equal(subs.recoveredPending.every((row) => typeof row.key === "string" && row.key.startsWith("sub:")), true);
+  assert.equal(new Set(subs.recoveredPending.map((row) => row.key)).size, 3);
 
   const opsResponse = await handleAdminWatchLog(
     new Request("https://worker/admin/watch-log?key=secret&days=1"),
@@ -212,10 +214,10 @@ test("recovery keeps an already-enrolled equivalent watch and does not mint a pe
   assert.equal(stored.source, "manual-ops-insert");
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
   const lifecycleRows = [...ops.subs, ...ops.developerTestAccounts]
-    .filter((row) => row.email === "de***@gmail.com");
+    .filter((row) => row.email === "devinbalkind@gmail.com");
   assert.equal(lifecycleRows.length, 1, "one address must not produce two lifecycle rows");
   assert.equal(lifecycleRows[0].status, SIGNUP_LIFECYCLE.ENROLLED);
-  assert.equal(ops.recoveredPending.filter((row) => row.email === "de***@gmail.com").length, 0);
+  assert.equal(ops.recoveredPending.filter((row) => row.email === "devinbalkind@gmail.com").length, 0);
 });
 
 test("signup lifecycle distinguishes recovered, pending-enrollment, enrolled, and test", () => {
@@ -300,10 +302,8 @@ test("recovery creates pending-enrollment records for all three vetted addresses
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
   assert.equal(ops.recoveredPendingCount, 3);
   assert.deepEqual(ops.recoveredPending.map((row) => row.email).sort(), [
-    "de***@gmail.com",
-    "ni***@gmail.com",
-    "sh***@gmail.com",
-  ]);
+    ...VETTED_RECOVERED_SIGNUP_EMAILS,
+  ].sort());
 });
 
 test("the recovery entitlement watermark excludes backlog and admits only later notices", () => {
@@ -366,10 +366,10 @@ test("recovery drops a recovered pending duplicate when a sanitized legacy-confi
   assert.equal(JSON.parse(await env.SUBS.get(confirmKey)).source, "legacy-confirm");
 
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
-  const lifecycleRows = ops.subs.filter((row) => row.email === "de***@gmail.com");
+  const lifecycleRows = ops.subs.filter((row) => row.email === "devinbalkind@gmail.com");
   assert.equal(lifecycleRows.length, 1);
   assert.equal(lifecycleRows[0].status, SIGNUP_LIFECYCLE.ENROLLED);
-  assert.equal(ops.recoveredPending.filter((row) => row.email === "de***@gmail.com").length, 0);
+  assert.equal(ops.recoveredPending.filter((row) => row.email === "devinbalkind@gmail.com").length, 0);
 });
 
 test("a recovered pending watch becomes enrolled when a later digest send processes it", async () => {
@@ -415,8 +415,8 @@ test("a recovered pending watch becomes enrolled when a later digest send proces
 
   assert.equal(await env.ALERT_STATE.get(`lastsent:${key}`), "2026-08-24");
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
-  const row = ops.subs.find((item) => item.email === "ni***@gmail.com");
+  const row = ops.subs.find((item) => item.email === "ninodepaola@gmail.com");
   assert.equal(row.status, SIGNUP_LIFECYCLE.ENROLLED);
   assert.equal(row.signup_lifecycle, SIGNUP_LIFECYCLE.ENROLLED);
-  assert.equal(ops.recoveredPending.filter((item) => item.email === "ni***@gmail.com").length, 0);
+  assert.equal(ops.recoveredPending.filter((item) => item.email === "ninodepaola@gmail.com").length, 0);
 });

@@ -1,7 +1,7 @@
 // Operational audit trail for watch lifecycle changes.
 // Stored in ALERT_STATE as one UTC-day array plus a bounded latest view.
 
-import { redactEmail } from "./subscriptions.mjs";
+import { maskKeyForLog } from "./subscriptions.mjs";
 import { describeFilter } from "./confirm_email.mjs";
 import { appendActionLog } from "./action_log.mjs";
 
@@ -12,9 +12,10 @@ function dayFor(at) {
   return String(at).slice(0, 10);
 }
 
+/** Historical 2-hex mask, kept so enrich can still join pre-unmask watchlog rows. */
 export function maskKey(key) {
   if (typeof key !== "string") return undefined;
-  return key.replace(/^(sub:)([^@:]{0,2})[^@:]*/, "$1$2***");
+  return maskKeyForLog(key);
 }
 
 export function watchLabel(record) {
@@ -57,7 +58,8 @@ export function enrichWatchLogEvents(events, liveSubsByMask, overrides = []) {
   const output = (Array.isArray(events) ? events : []).map((event) => {
     if (!event || nonEmptyString(event.label)) return event;
     const override = matchingOverride(event, overrides);
-    const record = liveSubsByMask?.get?.(event.subKeyMasked);
+    const record = liveSubsByMask?.get?.(event.subKey)
+      || liveSubsByMask?.get?.(event.subKeyMasked);
     const label = nonEmptyString(override?.label) || watchLabel(record);
     if (!label) return event;
     const next = { ...event, label };
@@ -94,7 +96,7 @@ function nonEmptyString(value) {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
 }
 
-/** Append one redacted lifecycle event; logging is fail-soft when the binding is absent. */
+/** Append one operator-readable lifecycle event; logging is fail-soft when the binding is absent. */
 export async function appendWatchLog(env, {
   action, email, subKey, lens, label, freq, detail, before, after, source,
   originalSignupAt, recoveredAt,
@@ -129,11 +131,14 @@ export async function appendWatchLog(env, {
   const event = {
     at,
     action,
-    emailRedacted: redactEmail(email),
+    email,
+    emailRedacted: email,
     source,
   };
-  const masked = maskKey(subKey);
-  if (masked) event.subKeyMasked = masked;
+  if (typeof subKey === "string" && subKey) {
+    event.subKey = subKey;
+    event.subKeyMasked = subKey;
+  }
   if (lens) event.lens = lens;
   const cleanLabel = nonEmptyString(label);
   const cleanFreq = nonEmptyString(freq);

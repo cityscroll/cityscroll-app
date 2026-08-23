@@ -45,6 +45,7 @@ import { handlePerformanceEvents } from "./performance_events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
+import { redactEmail } from "./lib/subscriptions.mjs";
 import { recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handleNotice, prewarmNotices } from "./notice.mjs";
@@ -183,7 +184,12 @@ export default {
           console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
         }
         const summary = await runDigestShadow(env);
-        console.log("digest shadow:", JSON.stringify(summary));
+        console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
+          if (typeof value !== "string") return value;
+          if (key === "recipient") return redactEmail(value);
+          if (key === "recipient_redacted" && value.includes("@") && !value.includes("***")) return redactEmail(value);
+          return value;
+        }));
       } catch (error) {
         console.error("digest shadow failed:", String(error?.message || error));
       }

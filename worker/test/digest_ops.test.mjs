@@ -24,9 +24,9 @@ test("noticeDeepLink: public notice document route", () => {
   assert.equal(noticeDeepLink("20260730001"), "https://cityscroll.org/notices/20260730001");
 });
 
-test("toDayLogEntry: redacts email, keeps notice ids, marks zero match", () => {
+test("toDayLogEntry: keeps the full address and notice ids, marks zero match", () => {
   const e = toDayLogEntry({
-    sub: "sub:ab***",
+    sub: "sub:36abcdef01234567",
     lens: "money",
     queryLabel: "contract money — about \u201ceducation\u201d",
     email: "owner@example.com",
@@ -39,7 +39,8 @@ test("toDayLogEntry: redacts email, keeps notice ids, marks zero match", () => {
     sent: false,
   }, { day: "2026-07-30" });
   assert.equal(e.day, "2026-07-30");
-  assert.equal(e.email, "ow***@example.com");
+  assert.equal(e.id, "sub:36abcdef01234567");
+  assert.equal(e.email, "owner@example.com");
   assert.equal(e.zeroMatch, true);
   assert.equal(e.noticeCount, 0);
   assert.deepEqual(e.noticeIds, []);

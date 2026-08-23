@@ -12,6 +12,8 @@ import {
   isValidEmail,
   normalizeEmail,
   redactEmail,
+  maskKeyForLog,
+  maskDigestResultForLog,
   signupLifecycleFromRecord,
   summarizeSignupLifecycle,
   formatSignupLifecycleSummary,
@@ -80,6 +82,27 @@ test("topicless default has a stable distinct key and a disclosed weekly contrac
 test("redactEmail hides the local part for logs", () => {
   assert.equal(redactEmail("janedoe@example.com"), "ja***@example.com");
   assert.equal(redactEmail("ab@x.co"), "a***@x.co");
+});
+
+test("maskKeyForLog is 256-way and only for shared logs", () => {
+  assert.equal(maskKeyForLog("sub:36abcdef01234567"), "sub:36***");
+  assert.equal(maskKeyForLog("sub:36fedcba76543210"), "sub:36***");
+  assert.equal(maskKeyForLog("account:alice@example.com"), "account:al***@example.com");
+  assert.equal(maskKeyForLog("rl:addr:owner@example.com"), "rl:addr:ow***@example.com");
+});
+
+test("maskDigestResultForLog masks identity on nested digest results", () => {
+  const masked = maskDigestResultForLog({
+    sub: "sub:36abcdef01234567",
+    email: "owner@example.com",
+    emailRedacted: "ow***@example.com",
+    sections: [{ sub: "sub:36fedcba76543210", key: "sub:36fedcba76543210", new: 1 }],
+  });
+  assert.equal(masked.sub, "sub:36***");
+  assert.equal(masked.email, "ow***@example.com");
+  assert.equal(masked.emailRedacted, "ow***@example.com");
+  assert.equal(masked.sections[0].sub, "sub:36***");
+  assert.equal(masked.sections[0].key, "sub:36***");
 });
 
 test("SUPPORTED_LANGS exports at least en and es", () => {

@@ -2188,7 +2188,11 @@ with the public worker (digest modes, daylog actions/fields, stats metrics, sign
 lifecycle, admin routes + auth classes, KV prefixes, feature flags). No secrets; never
 on public `/stats`. `signup_lifecycle` on `GET /admin/subs` (JSON or `?view=html`) is the
 SL-01 ops-visibility surface: recovered / pending-enrollment stays intermediate until a
-digest day after the recovery watermark, then enrolled.
+digest day after the recovery watermark, then enrolled. Authenticated desk/admin/ops
+views show the full `sub:` key and address — the 2-hex `maskKey` form collides
+(`sub:36***` named two live watches). `maskKeyForLog` / `redactEmail` stay on
+shared Cloudflare logs only (`console.log("alerts run")`, `digest job`, inbound).
+Proof: `worker/test/admin_ops_identity.test.mjs`.
 
 - Pure builder: `worker/src/lib/ops_contract.mjs` → committed fixture
   `worker/ops-contract.v1.json`
