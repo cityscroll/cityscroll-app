@@ -50,6 +50,8 @@ export function subToD1Opts(sub, todayISO) {
     return opts;
   }
 
+  if (lens === "money" && f.procurement_id) return null;
+
   if (lens === "money") {
     // Mirrors compile.mjs's SODA money branch field-for-field (same schema, same
     // award-vs-solicitation rule) — the D1 fast path and the SODA fallback must agree, since

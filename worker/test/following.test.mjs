@@ -46,7 +46,7 @@ test("the edge Following renderer keeps the create-first empty state on a fresh 
   assert.equal(response.status, 200);
   assert.match(html, /data-following-preview-form/);
   assert.match(html, /data-following-subscribe-panel/);
-  assert.match(html, /Save a topic, place, agency, or keyword\. We send matching City Record updates\./);
+  assert.match(html, /Save a topic, place, agency, or keyword\. We email matching public records when they appear\./);
   assert.match(html, /data-personal-watch-list/);
 });
 

@@ -2,11 +2,13 @@ import {
   gateNodePageRender,
   renderCivicDocumentAssets,
   renderCivicDocumentMast,
+  renderNodeActions,
   renderNodeBack,
   renderNodeFooter,
   renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import { followingUrlFromWatch } from "./following_view.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
 import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
@@ -45,6 +47,52 @@ function factsFor(object, observations) {
     program: first("program"),
     industry: first("industry"),
   };
+}
+
+export function procurementContractWatchHref(procurementId) {
+  const id = clean(procurementId, 320);
+  if (!id.startsWith("procurement:")) return null;
+  return followingUrlFromWatch({
+    lens: "money",
+    filter: { procurement_id: id, noticeType: "award" },
+    freq: "daily",
+  }, { base: "/following" });
+}
+
+export function procurementVendorFollowHref(vendor) {
+  const name = clean(vendor, 120);
+  if (!name) return null;
+  return followingUrlFromWatch({
+    lens: "entity",
+    filter: { kind: "vendor", name },
+    freq: "daily",
+  }, { base: "/following" });
+}
+
+function procurementActions(object, facts) {
+  const watchHref = procurementContractWatchHref(object?.procurement_id);
+  const vendorHref = procurementVendorFollowHref(facts.vendor);
+  const items = [];
+  if (watchHref) {
+    items.push({
+      kind: "link",
+      label: "Watch this contract",
+      href: watchHref,
+      primary: true,
+      className: "civic-object-action",
+      attrs: { "data-procurement-watch": object.procurement_id },
+    });
+  }
+  if (vendorHref) {
+    items.push({
+      kind: "link",
+      label: "Follow this vendor",
+      href: vendorHref,
+      className: "civic-object-action",
+      attrs: { "data-follow": "vendor", "data-name": facts.vendor },
+    });
+  }
+  return items.length ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" }) : "";
 }
 
 function stageList(object) {
@@ -149,6 +197,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
+${procurementActions(object, facts)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({ heading: "Observed stages", body: stageList(object) })}

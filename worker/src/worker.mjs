@@ -5,6 +5,7 @@
 // Deployed with `wrangler deploy` (free — no per-deploy charge, unlike Netlify).
 // Secrets via `wrangler secret put` (ANTHROPIC_API_KEY, RESEND_API_KEY); see README.
 
+import "./lib/install_procurement_digest_snapshot.mjs";
 import { handleNl } from "./nl.mjs";
 import { handleCheckbook, handleForecast, handleForecastAccuracy } from "./checkbook.mjs";
 import { handleUsage } from "./usage.mjs";

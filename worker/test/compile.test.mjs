@@ -5,7 +5,7 @@ import { compileSub, examOpenWindowBand } from "../src/lib/compile.mjs";
 test("money + minAmount → City Record award query (request_id diff)", () => {
   const q = compileSub({ lens: "money", filter: { minAmount: 1000000 } }, "2026-06-30");
   assert.equal(q.kind, "award");
-  assert.equal(q.idField, "request_id");
+  assert.equal(q.idField, "digest_id");
   assert.match(q.params["$where"], /type_of_notice_description='Award'/);
   assert.match(q.params["$where"], /contract_amount >= 1000000/);
 });
@@ -13,7 +13,7 @@ test("money + minAmount → City Record award query (request_id diff)", () => {
 test("money + keywords → City Record solicitation/RFP query with $q", () => {
   const q = compileSub({ lens: "money", filter: { keywords: ["construction"] } }, "2026-06-30");
   assert.equal(q.kind, "rfp");
-  assert.equal(q.idField, "request_id");
+  assert.equal(q.idField, "digest_id");
   assert.match(q.params["$where"], /type_of_notice_description='Solicitation'/);
   assert.match(q.params["$where"], /due_date > '2026-06-30'/);
   assert.equal(q.params["$q"], "construction");
@@ -164,12 +164,24 @@ test("exam interest-area watch replays the staffing artifact and keys NOE-posted
 test("entity/vendor → full-text stem query + exact-stem postFilter", () => {
   const q = compileSub({ lens: "entity", filter: { kind: "vendor", name: "Sinergia Inc" } }, "2026-07-02");
   assert.equal(q.kind, "entity");
-  assert.equal(q.idField, "request_id");
+  assert.equal(q.idField, "digest_id");
   assert.equal(q.params["$q"], "SINERGIA"); // $q not LIKE: punctuated vendor_names must still match
   assert.equal(typeof q.postFilter, "function");
   assert.ok(q.postFilter({ vendor_name: "Sinergia Incorporated" }), "variant matches stem");
   assert.ok(q.postFilter({ vendor_name: "SINERGIA, INC." }), "punctuation variant matches");
   assert.ok(!q.postFilter({ vendor_name: "Sinergia Partners LLC" }), "different stem rejected");
+});
+
+test("money + procurement_id compiles the shared snapshot, not City Record SODA", () => {
+  const q = compileSub({
+    lens: "money",
+    filter: { procurement_id: "procurement:contract:CT101520271400806", noticeType: "award" },
+  }, "2026-08-18");
+  assert.equal(q.kind, "award");
+  assert.equal(q.idField, "digest_id");
+  assert.equal(q.url, null);
+  assert.equal(typeof q.readRows, "function");
+  assert.equal(typeof q.mergeRows, "function");
 });
 
 test("entity/agency → exact agency query, all sections", () => {

@@ -19,7 +19,7 @@ import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { issueEmailSessionToken } from "./session.mjs";
-import { compileSub, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
+import { compileSub, mergeCompiledRows, rowsForCompiledQuery, vendorStem } from "./lib/compile.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
@@ -765,6 +765,7 @@ function payloadRow(item) {
 function sameRenderedItem(a, b) {
   if (!a || !b) return false;
   if (a.request_id && b.request_id) return String(a.request_id) === String(b.request_id);
+  if (a.procurement_id && b.procurement_id) return String(a.procurement_id) === String(b.procurement_id);
   if (a.project_id && b.project_id) return String(a.project_id) === String(b.project_id);
   if (a.alert_id && b.alert_id) return String(a.alert_id) === String(b.alert_id);
   return false;
@@ -806,7 +807,7 @@ function attachOwedRows(sections, owed) {
     section.new = (isAwardWatchSection(section) ? section.awardCandidates : section.freshRows).length;
     section.noticeIds = [...new Set([
       ...(Array.isArray(section.noticeIds) ? section.noticeIds : []),
-      ...carried.map((row) => row.request_id).filter(Boolean),
+      ...carried.map((row) => row.request_id || row.procurement_id).filter(Boolean),
     ])].slice(0, 100);
     section.action = "match";
   }
@@ -903,7 +904,7 @@ export async function processOneSub(env, s, ctx) {
             })();
             let mapped = (d1Rows ?? []).map(toDigestRow);
             if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
-            rows = mapped;
+            rows = mergeCompiledRows(q, mapped);
             usedD1 = true;
           }
         }
@@ -1386,7 +1387,7 @@ async function evaluateSubSection(env, s, ctx) {
             const res = await env.DB.prepare(sql).bind(...params).all();
             let mapped = (res.results ?? []).map(toDigestRow);
             if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
-            rows = mapped;
+            rows = mergeCompiledRows(q, mapped);
             usedD1 = true;
           }
         }
@@ -1845,6 +1846,7 @@ async function evaluateCatchUpSub(env, s, ctx) {
             const res = await env.DB.prepare(sql).bind(...params).all();
             rows = (res.results ?? []).map(toDigestRow);
             if (d1.postFilter) rows = rows.filter(d1.postFilter);
+            rows = mergeCompiledRows(q, rows);
           }
         }
       } catch (error) {
@@ -2680,6 +2682,15 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
         ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
     }
+    if (r.procurement_id && !r.request_id) {
+      const link = `https://cityscroll.org/procurements/${encodeURIComponent(r.procurement_id)}`;
+      const stage = r.primary_stage || (Array.isArray(r.procurement_stages) ? r.procurement_stages.at(-1) : "");
+      const meta = [r.agency_name, r.vendor_name, usd(r.contract_amount), stage ? String(stage).replaceAll("_", " ") : ""]
+        .filter(Boolean).map(esc).join(" · ");
+      return `<li data-digest-item="1" data-procurement-id="${esc(r.procurement_id)}"${itemClass} style="margin:0 0 14px"><b><a href="${link}">${esc(r.short_title || "Contract")}</a></b><br>
+        <span style="color:#555;font-size:13px">${meta}</span><br>
+        <span style="font-size:13px"><a href="${link}">↗ View contract on CityScroll</a></span></li>`;
+    }
     const titleText = r.short_title || "Notice";
     const ev = matchEvidence(titleText, r.additional_description_1, keywords);
     const acts = [];
@@ -2940,6 +2951,15 @@ export function rollupDigestHtml({
         return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(landProjectDisplayTitle(r))}</a></b><br>
           <span style="color:#555;font-size:13px">${meta}</span><br>
           ${temporalActionHtml(r, esc, lang, { kind: "rezone", today })}</li>`;
+      }
+      if (r.procurement_id && !r.request_id) {
+        const link = `https://cityscroll.org/procurements/${encodeURIComponent(r.procurement_id)}`;
+        const stage = r.primary_stage || (Array.isArray(r.procurement_stages) ? r.procurement_stages.at(-1) : "");
+        const meta = [r.agency_name, r.vendor_name, usd(r.contract_amount), stage ? String(stage).replaceAll("_", " ") : ""]
+          .filter(Boolean).map(esc).join(" · ");
+        return `<li data-digest-item="1" data-procurement-id="${esc(r.procurement_id)}"${itemClass} style="margin:0 0 12px"><b><a href="${link}">${esc(r.short_title || "Contract")}</a></b><br>
+          <span style="color:#555;font-size:13px">${meta}</span><br>
+          <span style="font-size:13px"><a href="${link}">↗ View contract on CityScroll</a></span></li>`;
       }
       const titleText = r.short_title || "Notice";
       const ev = matchEvidence(titleText, r.additional_description_1, keywords);
