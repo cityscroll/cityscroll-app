@@ -26,6 +26,15 @@ const moneySection = html.slice(
   html.indexOf("<!-- ============ PEOPLE"),
 );
 
+test("Contracts intro signposts Recent Awards as the registered-contract path", () => {
+  assert.match(moneySection, /id="money-intro-deck"[^>]*data-i18n="money_intro_open"/);
+  assert.match(moneySection, /id="money-awards-signpost"[\s\S]*?data-i18n="money_intro_awards_cta"/);
+  assert.match(moneySection, /href="\/browse\/contracts\/\?mode=award"/);
+  assert.match(moneySection, /data-i18n="money_how_modes"/);
+  assert.match(moneySection, /data-i18n="mode_award">Recent Awards — registered contracts/);
+  assert.doesNotMatch(moneySection, /Recent Awards \(\$\)/);
+});
+
 test("Contracts follows the shared lens hierarchy with exact search and its primary facet first", () => {
   const intro = moneySection.indexOf('id="money-domain-intro"');
   const naturalLanguage = moneySection.indexOf('class="nlbox ask-cityscroll"');
@@ -115,6 +124,13 @@ test("All RFPs keeps current deadlines first and preserves every counted row", (
     [...sections.current, ...sections.closed].map((item) => item.index).sort((a, b) => a - b),
     [0, 1, 2, 3],
   );
+});
+
+test("award mode groups PIN-family siblings before same-except clustering", () => {
+  assert.match(moneySource, /groupPinSiblingRows/);
+  assert.match(moneySource, /data-pin-sibling="related_instrument"/);
+  assert.match(moneySource, /pin_sibling_candidate/);
+  assert.match(moneySource, /function enhanceMoneyAwardList/);
 });
 
 test("secondary-filter badge names active state and hides at the default", () => {
