@@ -29,6 +29,25 @@ function workerJson(path, shape) {
   }), shape);
 }
 
+function workerThenLocal(workerPath, localPath, shape) {
+  return safeJson(async () => {
+    try {
+      if (typeof workerFetch === "function") {
+        const response = await workerFetch(workerPath, {}, NOW_SOURCE_TIMEOUT_MS);
+        if (response.ok) {
+          const payload = await response.json();
+          if (payload && Array.isArray(payload[shape])) return payload;
+        }
+      }
+    } catch {
+      // Worker miss or timeout falls through to the committed snapshot.
+    }
+    const response = await fetch(localPath, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.json();
+  }, shape);
+}
+
 function loadNowSources() {
   if (nowSourcesPromise) return nowSourcesPromise;
   nowSourcesPromise = Promise.all([
@@ -37,7 +56,7 @@ function loadNowSources() {
     workerJson("/rules", "rules"),
     workerJson("/property-locations", "properties"),
     workerJson("/hearings", "hearings"),
-    localJson("data/land_upcoming_hearings.json", "hearings"),
+    workerThenLocal("/land-upcoming-hearings", "data/land_upcoming_hearings.json", "hearings"),
   ]).then(([money, staffing, rules, property, meetings, land]) => ({
     money, staffing, rules, property, meetings, land,
   }));

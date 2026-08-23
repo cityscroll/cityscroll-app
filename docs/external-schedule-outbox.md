@@ -13,4 +13,4 @@ node --test test/external_schedule_outbox.test.mjs
 node tools/audit_scheduler_ownership.mjs --check
 ```
 
-The remaining daily data-freshness jobs (`attachment-metadata`, `land-upcoming-hearings`, `surface-load-live`, and `multi-flywheel`) remain listed as follow-ups in the job manifest.
+The remaining daily data-freshness jobs (`attachment-metadata`, `surface-load-live`, and `multi-flywheel`) remain listed as follow-ups in the job manifest.

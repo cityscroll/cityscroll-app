@@ -22,6 +22,7 @@
 // enrichCandidate() below — computed here, once a day, so the client never issues an extra
 // request to learn them (the acceptance criterion is "all computed at validation time").
 import { SUGGESTION_POOL, suggestionCountParams, suggestionSampleParams, MIN_SUGGESTION_RESULTS } from "./lib/suggestions.mjs";
+import { loadPayrollTitleMart } from "./lib/payroll_title_mart_kv.mjs";
 import {
   PRESET_FALLBACK_KV_KEY,
   PRESET_FALLBACK_TTL_SECONDS,
@@ -124,7 +125,10 @@ async function defaultMoneyDestination(env, filter, todayISO) {
   });
 }
 
-async function validateCandidate(env, candidate, todayISO, { moneyDestination = defaultMoneyDestination } = {}) {
+async function validateCandidate(env, candidate, todayISO, {
+  moneyDestination = defaultMoneyDestination,
+  payrollTitleMart,
+} = {}) {
   const resolved = await parseLensFilter(env, candidate.lens, candidate.text);
   if (resolved.degraded) return null;
   if (candidate.lens === "money") {
@@ -138,7 +142,9 @@ async function validateCandidate(env, candidate, todayISO, { moneyDestination = 
     } catch (e) { /* base destination result still stands */ }
     return { lens: candidate.lens, idx: candidate.idx, count: n, destination, ...enrichment };
   }
-  const q = suggestionCountParams(candidate.lens, resolved.filter, todayISO);
+  const q = suggestionCountParams(candidate.lens, resolved.filter, todayISO, {
+    payrollTitleMart,
+  });
   if (!q) return null;
   let n;
   if (Number.isFinite(Number(q.count))) {
@@ -168,11 +174,17 @@ export async function runSuggestionValidation(env, options = {}) {
   // refresh / cron readers throw on real data drift (open-mode money chips
   // aging out of money_resident_snapshot is the field case).
   const byLens = emptySuggestionByLens();
+  const payrollTitleMart = options.payrollTitleMart !== undefined
+    ? options.payrollTitleMart
+    : (await loadPayrollTitleMart(env)).record;
 
   for (const candidate of SUGGESTION_POOL) {
     let result;
     try {
-      result = await validateCandidate(env, candidate, todayISO, options);
+      result = await validateCandidate(env, candidate, todayISO, {
+        ...options,
+        payrollTitleMart,
+      });
     } catch (e) {
       console.error("suggestion validation error:", candidate.lens, candidate.idx, String(e?.message || e));
       continue;

@@ -302,6 +302,46 @@ export function reviewZapHearingMilestones(record, meta = {}) {
   };
 }
 
+/**
+ * Extract disposition + accepted milestone hearings from an already-materialized
+ * zap-outcome:v1 record (hearing_logistics stamp + milestones), not a live API payload.
+ */
+export function hearingsFromZapOutcomeRecord(record) {
+  if (!record || typeof record !== "object") {
+    return {
+      hearings: [],
+      milestone_review: reviewZapHearingMilestones(null),
+    };
+  }
+  const projectId = String(record.project_id || "").trim();
+  if (!projectId) {
+    return {
+      hearings: [],
+      milestone_review: reviewZapHearingMilestones(null),
+    };
+  }
+  const meta = {
+    project_id: projectId,
+    project_name: record.project_name || record.open_data?.project_name || null,
+    public_status: record.public_status || record.open_data?.public_status || null,
+    portal_url: record.portal_url
+      || `https://zap.planning.nyc.gov/projects/${encodeURIComponent(projectId)}`,
+    borough: record.open_data?.borough
+      || (Array.isArray(record.hearing_logistics) && record.hearing_logistics[0]?.borough)
+      || null,
+  };
+  const stamped = Array.isArray(record.hearing_logistics) ? record.hearing_logistics : [];
+  const dispositionRows = enrichHearingRows(
+    stamped.length ? stamped : extractZapHearingLogistics(record, meta),
+    meta,
+  );
+  const milestoneReview = reviewZapHearingMilestones(record, meta);
+  return {
+    hearings: [...dispositionRows, ...milestoneReview.hearings],
+    milestone_review: milestoneReview,
+  };
+}
+
 /** Parse one ZAP API payload once and return disposition + accepted milestone rows. */
 export function materializationRowsFromZapApiPayload(apiPayload, meta = {}) {
   const record = parseZapApiProject(apiPayload);
