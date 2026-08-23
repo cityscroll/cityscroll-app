@@ -82,7 +82,7 @@ export function demoRollupWatches() {
       key: "sub:demo-dot-agency",
       lens: "entity",
       filter: { kind: "agency", name: "Department of Transportation" },
-      query: 'agency "Department of Transportation" — every new City Record notice naming them',
+      query: 'agency "Department of Transportation" — every new public record naming them',
       freq: "weekly",
       paused: false,
       sampleRows: [

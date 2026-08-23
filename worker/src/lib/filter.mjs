@@ -39,7 +39,7 @@ export const LENSES = {
   // Discovery parity (2026-08): district/process/deadline/entity fields are first-class so
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
@@ -194,6 +194,10 @@ function clampField(name, v) {
     case "requestId":
       // Same shape handleExternalAward() already validates request ids against.
       return typeof v === "string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
+    case "procurement_id": {
+      const s = typeof v === "string" ? v.trim() : "";
+      return /^procurement:[a-z0-9-]+:[A-Za-z0-9._:-]{3,120}$/.test(s) ? s : null;
+    }
     case "closingWeek":
       return !!v;
     case "route":
@@ -267,6 +271,7 @@ export function sanitize(lens, input) {
   // The geography dimension is additive. Omit an empty value so legacy filters,
   // subscription identities, and /nl response envelopes remain byte-compatible.
   if (!out.geographies?.length) delete out.geographies;
+  if (!out.procurement_id) delete out.procurement_id;
   return out;
 }
 

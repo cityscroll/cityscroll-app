@@ -16,12 +16,27 @@ import {
   mergeObligationDigestWithPredictions,
 } from "../../../site/mandate_prediction_alerts.mjs";
 import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.json" with { type: "json" };
+import { mergeProcurementDigestMatches } from "../../../site/procurement_digest_compile.mjs";
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 export { vendorStem };
+
+const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });
+let digestSnapshot = EMPTY_PROCUREMENT_DIGEST;
+
+/** Install the CROL-negative procurement snapshot (Worker entry) or a test fixture. */
+export function useProcurementDigestSnapshot(snapshot) {
+  const previous = digestSnapshot;
+  digestSnapshot = snapshot && typeof snapshot === "object" ? snapshot : EMPTY_PROCUREMENT_DIGEST;
+  return () => { digestSnapshot = previous; };
+}
+
+export function mergeCompiledRows(q, rows) {
+  return typeof q?.mergeRows === "function" ? q.mergeRows(rows) : rows;
+}
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
@@ -89,15 +104,18 @@ export function examOpenWindowBand(exam, todayISO) {
 // postFilter (when present) refines fetched rows — the caller applies it after fetching.
 export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
   if (!q) return [];
-  if (typeof q.readRows === "function") return await Promise.resolve(q.readRows());
-  if (q.url === STAFFING_EXAMS) {
+  let rows;
+  if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
+  else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);
-    return typeof q.transformRows === "function" ? q.transformRows(record) : (record.exams || []);
+    rows = typeof q.transformRows === "function" ? q.transformRows(record) : (record.exams || []);
+  } else {
+    const r = await fetchImpl(`${q.url}?${new URLSearchParams(q.params || {}).toString()}`);
+    if (!r.ok) throw new Error(`open-data ${r.status}`);
+    const payload = await r.json();
+    rows = typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
   }
-  const r = await fetchImpl(`${q.url}?${new URLSearchParams(q.params || {}).toString()}`);
-  if (!r.ok) throw new Error(`open-data ${r.status}`);
-  const payload = await r.json();
-  return typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
+  return mergeCompiledRows(q, rows);
 }
 
 export function compileSub(sub, todayISO) {
@@ -262,6 +280,20 @@ export function compileSub(sub, todayISO) {
   }
 
   if (sub.lens === "money") {
+    const mergeRows = (rows) => mergeProcurementDigestMatches(sub, rows, digestSnapshot, todayISO);
+    const procurementId = typeof f.procurement_id === "string" && f.procurement_id.trim()
+      ? f.procurement_id.trim()
+      : null;
+    if (procurementId) {
+      return {
+        url: null,
+        params: {},
+        idField: "digest_id",
+        kind: "award",
+        readRows: () => mergeRows([]),
+        mergeRows,
+      };
+    }
     // Verbatim dataset values; single-quote-escaped for SODA. These two clauses are shared
     // by both branches below — an alert can name a category and/or an agency regardless of
     // whether it's watching awards or open solicitations.
@@ -290,7 +322,7 @@ export function compileSub(sub, todayISO) {
       // Keywords apply to awards too (w6-16) — the D1 path always filtered by them;
       // without this, the SODA fallback delivered ALL awards over the threshold.
       if (kws.length) awardParams["$q"] = kws.join(" ");
-      return { url: SODA, idField: "request_id", kind: "award", params: awardParams };
+      return { url: SODA, idField: "digest_id", kind: "award", params: awardParams, mergeRows };
     }
     let where = `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`;
     if (f.closingWeek) {
@@ -307,19 +339,22 @@ export function compileSub(sub, todayISO) {
       "$order": "due_date ASC", "$limit": "25",
     };
     if (kws.length) params["$q"] = kws.join(" ");
-    return { url: SODA, idField: "request_id", kind: "rfp", params };
+    return { url: SODA, idField: "digest_id", kind: "rfp", params, mergeRows };
   }
 
   if (sub.lens === "entity") {
     // Follow-an-entity: every new City Record notice naming a vendor (any variant of the
-    // name stem) or published by an agency (across ALL sections).
+    // name stem) or published by an agency (across ALL sections), plus CROL-negative
+    // registered contracts from the shared procurement snapshot.
     const name = typeof f.name === "string" ? f.name.trim() : "";
     const kind = f.kind === "agency" ? "agency" : "vendor";
     if (!name) return null;
+    const mergeRows = (rows) => mergeProcurementDigestMatches(sub, rows, digestSnapshot, todayISO);
     if (kind === "agency") {
       return {
-        url: SODA, idField: "request_id", kind: "entity",
+        url: SODA, idField: "digest_id", kind: "entity",
         params: { "$select": CR_SELECT_EV, "$where": `agency_name='${name.replace(/'/g, "''")}'`, "$order": "start_date DESC", "$limit": "25" },
+        mergeRows,
       };
     }
     const stem = vendorStem(name);
@@ -329,9 +364,10 @@ export function compileSub(sub, todayISO) {
     // matched nothing for punctuated vendors. $q tokenizes punctuation away on both sides;
     // the exact-stem postFilter keeps precision.
     return {
-      url: SODA, idField: "request_id", kind: "entity",
+      url: SODA, idField: "digest_id", kind: "entity",
       params: { "$select": CR_SELECT_EV, "$where": "vendor_name IS NOT NULL", "$q": stem, "$order": "start_date DESC", "$limit": "25" },
       postFilter: (row) => vendorStem(row.vendor_name) === stem,
+      mergeRows,
     };
   }
 

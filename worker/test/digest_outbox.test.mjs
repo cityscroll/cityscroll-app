@@ -67,6 +67,15 @@ test("lens identity policies keep land projects distinct and use request_id for 
   assert.deepEqual(extractLensIdentity("meetings", { request_id: "20260810001", short_title: "same" }), {
     identityField: "request_id", identityValue: "20260810001", itemId: "notice:20260810001", itemKind: "meetings",
   });
+  assert.deepEqual(extractLensIdentity("money", {
+    procurement_id: "procurement:contract:CT101520271400806",
+    short_title: "Small purchase legal services",
+  }), {
+    identityField: "procurement_id",
+    identityValue: "procurement:contract:CT101520271400806",
+    itemId: "procurement:contract:CT101520271400806",
+    itemKind: "procurement",
+  });
 });
 test("rules identity is the semantic action key, not the notice content or request id", () => {
   const row = {

@@ -110,6 +110,7 @@ function isOpenRow(row, lens, asOf) {
 
 function rowMatchesWatch(row, watch) {
   const filter = watch?.filter && typeof watch.filter === "object" ? watch.filter : {};
+  if (filter.procurement_id && String(row?.procurement_id || "") !== String(filter.procurement_id)) return false;
   if (filter.agency && String(row?.agency_name || "") !== String(filter.agency)) return false;
   if (filter.noticeType) {
     const wanted = String(filter.noticeType).toLowerCase();

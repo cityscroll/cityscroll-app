@@ -89,6 +89,15 @@ test("unknown lens falls back to money shape", () => {
     ["agency", "category", "closingWeek", "connection_relation", "entity_refs_all", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "name", "noticeType", "route", "tab"]);
 });
 
+test("money: procurement_id is exact canonical identity only", () => {
+  assert.equal(
+    sanitize("money", { procurement_id: "procurement:contract:CT101520271400806" }).procurement_id,
+    "procurement:contract:CT101520271400806",
+  );
+  assert.equal(Object.hasOwn(sanitize("money", {}), "procurement_id"), false);
+  assert.equal(Object.hasOwn(sanitize("money", { procurement_id: "notice:20260810001" }), "procurement_id"), false);
+});
+
 test("money: noticeType constrained to award|solicitation|null", () => {
   assert.equal(sanitize("money", { noticeType: "award" }).noticeType, "award");
   assert.equal(sanitize("money", { noticeType: "solicitation" }).noticeType, "solicitation");

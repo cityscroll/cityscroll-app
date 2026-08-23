@@ -143,9 +143,15 @@ export function extractLensIdentity(input, maybeRow) {
   }
 
   if (NOTICE_LENSES.has(lens)) {
-    const value = firstText(row.request_id);
-    if (!value) throw new TypeError(`${lens} outbox item requires request_id`);
-    return { identityField: "request_id", identityValue: value, itemId: `notice:${value}`, itemKind: text(kind) || lens };
+    const requestId = firstText(row.request_id);
+    if (requestId) {
+      return { identityField: "request_id", identityValue: requestId, itemId: `notice:${requestId}`, itemKind: text(kind) || lens };
+    }
+    const procurementId = firstText(row.procurement_id);
+    if (procurementId) {
+      return { identityField: "procurement_id", identityValue: procurementId, itemId: procurementId, itemKind: text(kind) || "procurement" };
+    }
+    throw new TypeError(`${lens} outbox item requires request_id or procurement_id`);
   }
 
   if (lens === "district") {

@@ -40,6 +40,22 @@ export function feedItems(kind, rows) {
         nextStep: r.event_date ? `Event ${d10(r.event_date)}` : null,
       };
     }
+    if (r.procurement_id && !r.request_id) {
+      const href = r.canonical_href
+        ? `https://cityscroll.org${r.canonical_href}`
+        : `https://cityscroll.org/procurements/${encodeURIComponent(r.procurement_id)}`;
+      return {
+        id: String(r.procurement_id),
+        url: href,
+        title: r.short_title || "Contract",
+        date: r.start_date || null,
+        summary: [r.agency_name, usd(r.contract_amount), r.vendor_name ? "→ " + stripHtml(r.vendor_name) : ""]
+          .filter(Boolean).join(" · "),
+        eventDate: null,
+        phase: r.primary_stage || "Registered contract",
+        nextStep: r.start_date ? `Registered ${d10(r.start_date)}` : null,
+      };
+    }
     if (kind === "rezone") {
       return {
         id: String(r.project_id || ""),
