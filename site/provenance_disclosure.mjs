@@ -2,6 +2,7 @@ import { readerLabel, readerValue } from "./reader_surface_labels.mjs";
 
 const PROVENANCE_DISCLOSURE_NONFINITE_COPY = /^(?:nan|[+-]?infinity)(?:\s|$)/i;
 const PROVENANCE_DISCLOSURE_OFFICIAL_HOSTS = new Set([
+  "a0333-passportpublic.nyc.gov",
   "a856-cityrecord.nyc.gov",
   "data.cityofnewyork.us",
   "nyc.legistar.com",
@@ -15,8 +16,12 @@ const PROVENANCE_DISCLOSURE_SOURCE_DEFAULTS = Object.freeze({
   socrata: Object.freeze({ label: "NYC Open Data", href: "https://data.cityofnewyork.us/" }),
   legistar: Object.freeze({ label: "NYC Council Legistar", href: "https://nyc.legistar.com/" }),
   enacted_local_law: Object.freeze({ label: "Source law", href: "https://nyc.legistar.com/" }),
-  passport: Object.freeze({ label: "PASSPort Public", href: "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public" }),
+  passport: Object.freeze({ label: "PASSPort Public contracts", href: "https://a0333-passportpublic.nyc.gov/contracts.html" }),
+  passport_public_contracts: Object.freeze({ label: "PASSPort Public contracts", href: "https://a0333-passportpublic.nyc.gov/contracts.html" }),
+  passport_public_rfx: Object.freeze({ label: "PASSPort Public solicitations", href: "https://a0333-passportpublic.nyc.gov/rfx.html" }),
   checkbook: Object.freeze({ label: "Checkbook NYC", href: "https://www.checkbooknyc.com/" }),
+  checkbook_contracts: Object.freeze({ label: "Checkbook NYC", href: "https://www.checkbooknyc.com/" }),
+  checkbook_spending: Object.freeze({ label: "Checkbook NYC", href: "https://www.checkbooknyc.com/" }),
   "zap-bbl": Object.freeze({ label: "Official project", href: "https://zap.planning.nyc.gov/" }),
 });
 

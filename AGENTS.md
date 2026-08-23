@@ -1346,6 +1346,15 @@ PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dum
 - `https://a0333-passportpublic.nyc.gov/dataJs/contractData.js` (`public_ctr_data`)
 - `https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js` (`public_rfx_data`)
 
+**No per-contract public page.** `contracts.html` / `vendor.html` are client-side
+DataTables browse pages (Contract ID / EPIN / vendor filters are DOM-only; no
+query or hash deep-link). Dump columns have no URL field. Resident official-source
+for a PASSPort-only procurement is that contracts browse portal, labeled
+"PASSPort Public contracts" (`passportPublicOfficialSource` in
+`worker/src/lib/passport_parse.mjs`; rendered by
+`procurementOfficialSourceItems` in `site/procurement_document.mjs`). Numeric
+`rfp_id` still deep-links the authenticated RFx extranet for solicitations.
+
 Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`
 (+ dual-write `source_records` when `PASSPORT_SOURCE_RECORD_DUAL_WRITE=true`).
 Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live in
