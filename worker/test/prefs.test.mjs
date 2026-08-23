@@ -366,7 +366,7 @@ test("admin watch-log enrich uses live watches and explicit deleted-watch overri
   const enriched = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
   assert.equal(enriched[0].label, "Contracts and RFPs — awards only · ≥ $100,000,000");
   assert.equal(enriched[0].detail, "deleted");
-  assert.equal(enriched[1].label, "vendor “Acacia” — every new City Record notice naming them");
+  assert.equal(enriched[1].label, "vendor “Acacia” — every new public record naming them");
   assert.equal(enriched[1].freq, "weekly");
   assert.equal(enriched[2].label, undefined);
 });

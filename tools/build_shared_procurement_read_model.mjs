@@ -10,6 +10,7 @@ import {
   matchesCrolAwardPublication,
 } from "../site/crol_notice_publication_policy.mjs";
 import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
+import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compile.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 
@@ -17,6 +18,7 @@ const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
+const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 
 function json(url) {
   return JSON.parse(readFileSync(url, "utf8"));
@@ -143,7 +145,8 @@ export function buildProcurementArtifacts(spine, awards) {
       return publicRow;
     }),
   };
-  return { model, browse };
+  const digest = buildProcurementDigestSnapshot(model);
+  return { model, browse, digest };
 }
 
 function serialized(value) {
@@ -151,8 +154,12 @@ function serialized(value) {
 }
 
 function main() {
-  const { model, browse } = buildProcurementArtifacts(json(SPINE), json(AWARDS));
-  const outputs = [[MODEL_OUT, serialized(model)], [BROWSE_OUT, serialized(browse)]];
+  const { model, browse, digest } = buildProcurementArtifacts(json(SPINE), json(AWARDS));
+  const outputs = [
+    [MODEL_OUT, serialized(model)],
+    [BROWSE_OUT, serialized(browse)],
+    [DIGEST_OUT, serialized(digest)],
+  ];
   if (process.argv.includes("--check")) {
     for (const [path, content] of outputs) {
       if (readFileSync(path, "utf8") !== content) {
@@ -164,7 +171,7 @@ function main() {
     return;
   }
   for (const [path, content] of outputs) writeFileSync(path, content);
-  console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows)`);
+  console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows, ${digest.row_count} CROL-negative digest rows)`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

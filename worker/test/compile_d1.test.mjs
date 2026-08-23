@@ -36,6 +36,13 @@ test("money/maxAmount only → Award (any amount bound implies Award branch per 
   assert.equal(opts.maxAmount, 1000000);
 });
 
+test("money/procurement_id is off-mirror", () => {
+  assert.equal(subToD1Opts({
+    lens: "money",
+    filter: { procurement_id: "procurement:contract:CT101520271400806", noticeType: "award" },
+  }, "2026-08-18"), null);
+});
+
 test("money/no-amount → Solicitation (RFP), openOnly=true", () => {
   const opts = subToD1Opts({ lens: "money", filter: {} }, "2026-07-10");
   assert.equal(opts.noticeType, "Solicitation");

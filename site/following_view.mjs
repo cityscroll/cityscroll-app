@@ -445,7 +445,10 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
   if (wanted === "entity") {
     const kind = f.kind === "agency" ? "agency" : "vendor";
     const name = f.name || "this name";
-    return `Notify me when City Record mentions the ${kind} ${name}.`;
+    return `Notify me when public records name the ${kind} ${name}.`;
+  }
+  if (wanted === "money" && f.procurement_id) {
+    return "Notify me when this contract has a new public record.";
   }
   const subject = LENS_SUMMARY_SUBJECT[wanted] || `new ${topic.toLowerCase()}`;
   if (!clauses.length) {
@@ -674,7 +677,7 @@ function subscribeHtml(view) {
   if (!view.requested) {
     return `<section class="following-subscribe" data-following-subscribe-panel>
     <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
-      <p>Follow what you care about. Save a topic, place, agency, or keyword. We send matching City Record updates.</p>
+      <p>Follow what you care about. Save a topic, place, agency, or keyword. We email matching public records when they appear.</p>
       <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly emails are sent on Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
     </section>`;
   }

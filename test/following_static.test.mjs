@@ -128,7 +128,7 @@ test("Following has a useful server-rendered empty state before personalization"
   assert.match(html, /Open a CityScroll email to see your watches/);
   assert.match(
     html,
-    /Save a topic, place, agency, or keyword\. We send matching City Record updates\./,
+    /Save a topic, place, agency, or keyword\. We email matching public records when they appear\./,
   );
   assert.doesNotMatch(html, /Pick a topic or place to see matches|Pick a topic or place/);
   assert.doesNotMatch(html, /Choose a topic or place|Preview your filters first|Monday note even when nothing is new/);
@@ -278,6 +278,14 @@ test("composeWatchRuleSentence makes refine conjunction visible", () => {
   assert.equal(
     composeWatchRuleSentence("money", {}),
     "Notify me when new contracts are published citywide.",
+  );
+  assert.equal(
+    composeWatchRuleSentence("money", { procurement_id: "procurement:contract:CT101520271400806" }),
+    "Notify me when this contract has a new public record.",
+  );
+  assert.equal(
+    composeWatchRuleSentence("entity", { kind: "vendor", name: "BILLIG LAW PC" }),
+    "Notify me when public records name the vendor BILLIG LAW PC.",
   );
   assert.equal(isCitywideWatchScope({ keywords: ["housing"] }), true);
   assert.equal(isCitywideWatchScope({ borough: "Queens" }), false);

@@ -312,14 +312,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `/procurements/<id>`. CROL-negative PASSPort/Checkbook rows enter that live set through
   `site/crol_notice_publication_policy.mjs` — the same valid-amount (`0 < x < $10B`) and
   365-day Award window that already publishes City Record notices. Do not add a separate
-  numeric publication cap, and do not label the window citywide. Refresh
-  `site/data/shared_procurement_read_model.json`,
-  `site/data/procurement_browse_rows.json`, and the keyword family with
+  numeric publication cap, and do not label the window citywide. Money-lens digest compile
+  unions City Record notices with CROL-negative rows from
+  `site/data/procurement_digest_snapshot.json` (`site/procurement_digest_compile.mjs`); those
+  rows keep `procurement_id` delivery identity and must not pretend to be notices.
+  Refresh `site/data/shared_procurement_read_model.json`,
+  `site/data/procurement_browse_rows.json`, `site/data/procurement_digest_snapshot.json`, and the
+  keyword family with
   `node tools/build_shared_procurement_read_model.mjs && node tools/build_keyword_search_index.mjs`.
   Focused proof: `test/crol_notice_publication_policy.test.mjs`,
   `test/universal_search_procurement_producer.test.mjs`,
-  `test/procurement_browse_parity.test.mjs`, `test/procurement_following.test.mjs`, and
-  `test/procurement_route.test.mjs`.
+  `test/procurement_browse_parity.test.mjs`, `test/procurement_following.test.mjs`,
+  `test/procurement_route.test.mjs`, and `worker/test/procurement_digest_parity.test.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
   model and derives a source-qualified board meeting's community district from the published
   `community-board → covers → community-district` edge in

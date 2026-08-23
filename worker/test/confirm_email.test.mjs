@@ -89,6 +89,13 @@ test("describeFilter: agency + notice type + category + amount ceiling — the m
   );
 });
 
+test("describeFilter names an exact procurement watch", () => {
+  assert.equal(
+    describeFilter("money", { procurement_id: "procurement:contract:CT101520271400806", noticeType: "award" }),
+    "Contracts — exact contract procurement:contract:CT101520271400806",
+  );
+});
+
 test("describeFilter: noticeType alone (no amount) still renders — closes the old amount-implies-type gap", () => {
   assert.equal(
     describeFilter("money", { noticeType: "solicitation", agency: "Sanitation" }),

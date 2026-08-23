@@ -62,7 +62,10 @@ export function describeFilter(lens, filter) {
   }
   if (lens === "entity") {
     const k = f.kind === "agency" ? "agency" : "vendor";
-    return `${k} “${f.name || "?"}” — every new City Record notice naming them`;
+    return `${k} “${f.name || "?"}” — every new public record naming them`;
+  }
+  if (lens === "money" && f.procurement_id) {
+    return `Contracts — exact contract ${f.procurement_id}`;
   }
   const kws = Array.isArray(f.keywords) ? f.keywords.filter(Boolean) : [];
   const parts = [];
