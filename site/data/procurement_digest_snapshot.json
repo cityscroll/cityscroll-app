@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
   "generated_at": "2026-08-18T04:05:51.552Z",
-  "row_count": 1027,
+  "row_count": 1078,
   "rows": [
     {
       "procurement_id": "procurement:contract:CT100220270001246",
@@ -264,6 +264,26 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT101720228801536",
+      "digest_id": "procurement:contract:CT101720228801536",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT101720228801536",
+      "short_title": "VIDEOGRAPHER SERVICES Renewal #2",
+      "agency_name": "OFFICE OF EMERGENCY MANAGEMENT",
+      "vendor_name": "SPLASH STUDIOS INC",
+      "contract_amount": 200000,
+      "start_date": "2021-02-19",
+      "pin": "01718P0191001R001R001",
+      "contract_id": "CT101720228801536",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT101720261414447",
       "digest_id": "procurement:contract:CT101720261414447",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT101720261414447",
@@ -440,6 +460,26 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT102520228803601",
+      "digest_id": "procurement:contract:CT102520228803601",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT102520228803601",
+      "short_title": "Ricoh USA Scanning, Coding Related Svc PIN 02521X001395",
+      "agency_name": "LAW DEPARTMENT",
+      "vendor_name": "RICOH USA INC",
+      "contract_amount": 2000000,
+      "start_date": "2019-12-01",
+      "pin": "02521P0006001R001",
+      "contract_id": "CT102520228803601",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -800,6 +840,46 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020238802105",
+      "digest_id": "procurement:contract:CT104020238802105",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020238802105",
+      "short_title": "FY21 Discretionary Award - Ifetayo",
+      "agency_name": "DEPARTMENT OF EDUCATION",
+      "vendor_name": "IFETAYO CULTURAL ARTS ACADEMY INC",
+      "contract_amount": 40000,
+      "start_date": "2020-07-01",
+      "pin": "04021L1607001",
+      "contract_id": "CT104020238802105",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT104020238805872",
+      "digest_id": "procurement:contract:CT104020238805872",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT104020238805872",
+      "short_title": "FY22 Discretionary Contract - New York City PFLAG",
+      "agency_name": "DEPARTMENT OF EDUCATION",
+      "vendor_name": "NEW YORK CITY PARENTS OF LESBIANS AND GAY MEN INC",
+      "contract_amount": 400000,
+      "start_date": "2021-07-01",
+      "pin": "04022L1098001",
+      "contract_id": "CT104020238805872",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -4224,6 +4304,46 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT105620218801098",
+      "digest_id": "procurement:contract:CT105620218801098",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620218801098",
+      "short_title": "Multi-Yr Repairs Maint of Roofs & Waterproofing #2",
+      "agency_name": "NEW YORK CITY POLICE DEPARTMENT",
+      "vendor_name": "SKYVIEW CONSTRUCTION GROUP INC",
+      "contract_amount": 1634267,
+      "start_date": "2021-01-17",
+      "pin": "05617B0220001R001R001",
+      "contract_id": "CT105620218801098",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT105620228802254",
+      "digest_id": "procurement:contract:CT105620228802254",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620228802254",
+      "short_title": "Microsoft Consulting Service- MCS Assignment #1",
+      "agency_name": "NEW YORK CITY POLICE DEPARTMENT",
+      "vendor_name": "ECS FEDERAL LLC",
+      "contract_amount": 758059.65,
+      "start_date": "2021-04-01",
+      "pin": "05622X8002KXL",
+      "contract_id": "CT105620228802254",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT105620261415333",
       "digest_id": "procurement:contract:CT105620261415333",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620261415333",
@@ -4724,6 +4844,106 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT106820218801917",
+      "digest_id": "procurement:contract:CT106820218801917",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820218801917",
+      "short_title": "Renewal of Alert Media for Smart Phone Safety APP Renewal #1",
+      "agency_name": "ADMINISTRATION FOR CHILDREN'S SERVICES",
+      "vendor_name": "ALERT MEDIA INC",
+      "contract_amount": 156749.48,
+      "start_date": "2021-01-01",
+      "pin": "06820F8006KXLR001",
+      "contract_id": "CT106820218801917",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106820228804240",
+      "digest_id": "procurement:contract:CT106820228804240",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820228804240",
+      "short_title": "Social Security Advocacy Services Renewal #2",
+      "agency_name": "ADMINISTRATION FOR CHILDREN'S SERVICES",
+      "vendor_name": "PUBLIC CONSULTING GROUP LLC",
+      "contract_amount": 1392000,
+      "start_date": "2021-01-01",
+      "pin": "06820N8155KXLR001R001",
+      "contract_id": "CT106820228804240",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106820238800134",
+      "digest_id": "procurement:contract:CT106820238800134",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820238800134",
+      "short_title": "Allowance Amendment",
+      "agency_name": "ADMINISTRATION FOR CHILDREN'S SERVICES",
+      "vendor_name": "ST VINCENT'S SERVICES INC",
+      "contract_amount": 471331.8,
+      "start_date": "2022-07-01",
+      "pin": "06816P0189001A002",
+      "contract_id": "CT106820238800134",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106820238803550",
+      "digest_id": "procurement:contract:CT106820238803550",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820238803550",
+      "short_title": "JJI - Alternative to Placement & Aftercare Ren #2 Amend #2",
+      "agency_name": "ADMINISTRATION FOR CHILDREN'S SERVICES",
+      "vendor_name": "JEWISH BOARD OF FAMILY AND CHILDREN'S SERVICES INC",
+      "contract_amount": 806861.59,
+      "start_date": "2022-11-15",
+      "pin": "06816P0187001A003",
+      "contract_id": "CT106820238803550",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106820248800121",
+      "digest_id": "procurement:contract:CT106820248800121",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106820248800121",
+      "short_title": "Alternative to Placement Services Renewal",
+      "agency_name": "ADMINISTRATION FOR CHILDREN'S SERVICES",
+      "vendor_name": "THE CHILDREN'S VILLAGE",
+      "contract_amount": 4872044.11,
+      "start_date": "2023-08-01",
+      "pin": "06818P8228KXLR001",
+      "contract_id": "CT106820248800121",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT106820268805101",
       "digest_id": "procurement:contract:CT106820268805101",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT106820268805101",
@@ -4920,6 +5140,226 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920211405251",
+      "digest_id": "procurement:contract:CT106920211405251",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920211405251",
+      "short_title": "PSI INTERNATIONAL INC Amendment #1",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "PSI INTERNATIONAL INC",
+      "contract_amount": 213408,
+      "start_date": "2020-02-01",
+      "pin": "06921G8010KXLA001",
+      "contract_id": "CT106920211405251",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920211412934",
+      "digest_id": "procurement:contract:CT106920211412934",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920211412934",
+      "short_title": "RCI TECHNOLOGIES INC Amendment #1",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "RCI TECHNOLOGIES INC",
+      "contract_amount": 25544,
+      "start_date": "2020-02-01",
+      "pin": "06921G8019KXLA001",
+      "contract_id": "CT106920211412934",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920211421061",
+      "digest_id": "procurement:contract:CT106920211421061",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920211421061",
+      "short_title": "CURRIER MCCABE & ASSOCIATES INC Amendment #1",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "CURRIER MCCABE & ASSOCIATES INC",
+      "contract_amount": 817800,
+      "start_date": "2019-12-01",
+      "pin": "06921G8039KXLA002",
+      "contract_id": "CT106920211421061",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920211422171",
+      "digest_id": "procurement:contract:CT106920211422171",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920211422171",
+      "short_title": "Enterprise People, Inc. Amendment #1",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "ENTERPRISE PEOPLE INC",
+      "contract_amount": 1667062,
+      "start_date": "2019-10-01",
+      "pin": "06921G8043KXLA001",
+      "contract_id": "CT106920211422171",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920211424143",
+      "digest_id": "procurement:contract:CT106920211424143",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920211424143",
+      "short_title": "CURRIER MCCABE & ASSOCIATES INC Amendment #2",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "CURRIER MCCABE & ASSOCIATES INC",
+      "contract_amount": 167160,
+      "start_date": "2020-02-01",
+      "pin": "06921G8078KXLA002",
+      "contract_id": "CT106920211424143",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920211424302",
+      "digest_id": "procurement:contract:CT106920211424302",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920211424302",
+      "short_title": "CNC CONSULTING INC Amendment #1",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "CNC CONSULTING INC",
+      "contract_amount": 219360,
+      "start_date": "2020-02-01",
+      "pin": "06921G8077KXLA001",
+      "contract_id": "CT106920211424302",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920228801538",
+      "digest_id": "procurement:contract:CT106920228801538",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920228801538",
+      "short_title": "IT Consultant Services - Planned Systems International, Inc.",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "Planned Systems International, Inc.",
+      "contract_amount": 6888000,
+      "start_date": "2020-04-01",
+      "pin": "06921G0031001R001",
+      "contract_id": "CT106920228801538",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920228802949",
+      "digest_id": "procurement:contract:CT106920228802949",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920228802949",
+      "short_title": "IT Consultant Services - Prutech",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "PRUTECH SOLUTIONS, INC",
+      "contract_amount": 5585280,
+      "start_date": "2020-05-01",
+      "pin": "06921G0034001R001",
+      "contract_id": "CT106920228802949",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920228803342",
+      "digest_id": "procurement:contract:CT106920228803342",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920228803342",
+      "short_title": "IT Services for SVAM Amendment #2",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "SVAM INTERNATIONAL INC",
+      "contract_amount": 216000,
+      "start_date": "2020-05-01",
+      "pin": "06921G0051001A002",
+      "contract_id": "CT106920228803342",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920228807638",
+      "digest_id": "procurement:contract:CT106920228807638",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920228807638",
+      "short_title": "Manpower Group Public Sector, Inc. Amendment #1",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "ManpowerGroup Public Sector, Inc.",
+      "contract_amount": 0,
+      "start_date": "2020-05-01",
+      "pin": "06922G0029001A001",
+      "contract_id": "CT106920228807638",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT106920238803019",
+      "digest_id": "procurement:contract:CT106920238803019",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT106920238803019",
+      "short_title": "Enterprise People IT Services",
+      "agency_name": "DEPARTMENT OF SOCIAL SERVICES",
+      "vendor_name": "ENTERPRISE PEOPLE INC",
+      "contract_amount": 4583640,
+      "start_date": "2022-01-01",
+      "pin": "06922G0056001",
+      "contract_id": "CT106920238803019",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -5640,6 +6080,46 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT107120201418709",
+      "digest_id": "procurement:contract:CT107120201418709",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107120201418709",
+      "short_title": "IT SERVICES MANPOWER GROUP Amendment #1",
+      "agency_name": "DEPARTMENT OF HOMELESS SERVICES",
+      "vendor_name": "ManpowerGroup Public Sector, Inc.",
+      "contract_amount": 198900.8,
+      "start_date": "2019-10-01",
+      "pin": "07120G8167KXLA001",
+      "contract_id": "CT107120201418709",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT107120238805271",
+      "digest_id": "procurement:contract:CT107120238805271",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107120238805271",
+      "short_title": "Hyper-localized outreach svcs in Times Square Area-Extension",
+      "agency_name": "DEPARTMENT OF HOMELESS SERVICES",
+      "vendor_name": "TIMES SQUARE DISTRICT MANAGEMENT ASSOCIATION INC",
+      "contract_amount": 75000,
+      "start_date": "2022-07-01",
+      "pin": "07121D0001001A001",
+      "contract_id": "CT107120238805271",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -6684,6 +7164,46 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT107220238806869",
+      "digest_id": "procurement:contract:CT107220238806869",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107220238806869",
+      "short_title": "SHEET METAL AND STEEL TUBING",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "vendor_name": "MOOR METALS INC",
+      "contract_amount": 200000,
+      "start_date": "2023-04-18",
+      "pin": "07223W0041001",
+      "contract_id": "CT107220238806869",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT107220241409871",
+      "digest_id": "procurement:contract:CT107220241409871",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT107220241409871",
+      "short_title": "Project Administration Support Services for BBJ Amend #1",
+      "agency_name": "DEPARTMENT OF CORRECTION",
+      "vendor_name": "LALAND BAPTISTE LLC",
+      "contract_amount": 500000,
+      "start_date": "2023-12-12",
+      "pin": "07224W8021KXLA002",
+      "contract_id": "CT107220241409871",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT107220271401308",
       "digest_id": "procurement:contract:CT107220271401308",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT107220271401308",
@@ -7540,6 +8060,66 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT115620228802137",
+      "digest_id": "procurement:contract:CT115620228802137",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT115620228802137",
+      "short_title": "Medallion Relief Program - NA Amendment #1",
+      "agency_name": "NYC TAXI AND LIMOUSINE COMMISSION",
+      "vendor_name": "NEW YORK BUSINESS DEVELOPMENT CORPORATION",
+      "contract_amount": 50000000,
+      "start_date": "2021-07-01",
+      "pin": "15621N0001001A002",
+      "contract_id": "CT115620228802137",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT126020228803703",
+      "digest_id": "procurement:contract:CT126020228803703",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT126020228803703",
+      "short_title": "Nonprofit Talent Development and Employee Engagement",
+      "agency_name": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+      "vendor_name": "L WHITE CONSULTING LLC",
+      "contract_amount": 100000,
+      "start_date": "2021-07-01",
+      "pin": "26022W8007KXL",
+      "contract_id": "CT126020228803703",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT126020258809307",
+      "digest_id": "procurement:contract:CT126020258809307",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT126020258809307",
+      "short_title": "Subject7 Enterprise Subscription - PO202500096",
+      "agency_name": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+      "vendor_name": "RAJ SOMAS",
+      "contract_amount": 91225,
+      "start_date": "2025-03-01",
+      "pin": "26025W0012001",
+      "contract_id": "CT126020258809307",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -10624,6 +11204,26 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT180120238803931",
+      "digest_id": "procurement:contract:CT180120238803931",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT180120238803931",
+      "short_title": "Senior CRM Business Analyst",
+      "agency_name": "DEPARTMENT OF SMALL BUSINESS SERVICES",
+      "vendor_name": "PEER CONSULTING RESOURCES INC",
+      "contract_amount": 254800,
+      "start_date": "2022-09-29",
+      "pin": "80123W0005001",
+      "contract_id": "CT180120238803931",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT180120261417416",
       "digest_id": "procurement:contract:CT180120261417416",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT180120261417416",
@@ -10940,6 +11540,66 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620228806188",
+      "digest_id": "procurement:contract:CT181620228806188",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620228806188",
+      "short_title": "Contract CT181620228806188",
+      "agency_name": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+      "vendor_name": "NORTHWELL HEALTH INC",
+      "contract_amount": 955895.55,
+      "start_date": "2021-01-01",
+      "pin": "81621O0003001A001",
+      "contract_id": "CT181620228806188",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620238803956",
+      "digest_id": "procurement:contract:CT181620238803956",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620238803956",
+      "short_title": "X-Ray Equipment Service Renewal #1 Amendment #3",
+      "agency_name": "OFFICE OF THE CHIEF MEDICAL EXAMINER",
+      "vendor_name": "ALPHA MEDICAL EQUIPMENT OF N.Y INC",
+      "contract_amount": 142831.64,
+      "start_date": "2022-11-10",
+      "pin": "81621OC005001A003",
+      "contract_id": "CT181620238803956",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT181620248801419",
+      "digest_id": "procurement:contract:CT181620248801419",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT181620248801419",
+      "short_title": "WESTPRIME SYSTEMS INC - 2nd Renewal Renewal #2",
+      "agency_name": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+      "vendor_name": "WESTPRIME SYSTEMS INC",
+      "contract_amount": 99982.25,
+      "start_date": "2023-07-01",
+      "pin": "81621S0013001R002",
+      "contract_id": "CT181620248801419",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -13204,6 +13864,26 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT182020248804458",
+      "digest_id": "procurement:contract:CT182020248804458",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT182020248804458",
+      "short_title": "Telephone and Video Conferencing Extension",
+      "agency_name": "OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS",
+      "vendor_name": "COURTCALL LLC",
+      "contract_amount": 523800,
+      "start_date": "2024-01-01",
+      "pin": "82021N0001001A001",
+      "contract_id": "CT182020248804458",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT182620268807457",
       "digest_id": "procurement:contract:CT182620268807457",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT182620268807457",
@@ -13680,6 +14360,26 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT183620238805610",
+      "digest_id": "procurement:contract:CT183620238805610",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT183620238805610",
+      "short_title": "Payment Card Industry (PCI) Compliance Amendment #1",
+      "agency_name": "DEPARTMENT OF FINANCE",
+      "vendor_name": "TRUE NORTH CONSULTING GROUP LLC",
+      "contract_amount": 58312.5,
+      "start_date": "2022-12-14",
+      "pin": "83621P0006001A002",
+      "contract_id": "CT183620238805610",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -15704,6 +16404,26 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT185020228802305",
+      "digest_id": "procurement:contract:CT185020228802305",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020228802305",
+      "short_title": "Contract CT185020228802305",
+      "agency_name": "DEPARTMENT OF DESIGN AND CONSTRUCTION",
+      "vendor_name": "TAMEER INC",
+      "contract_amount": 26112.93,
+      "start_date": "2022-03-21",
+      "pin": "85021B0087001C011",
+      "contract_id": "CT185020228802305",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT185020261417836",
       "digest_id": "procurement:contract:CT185020261417836",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185020261417836",
@@ -16504,6 +17224,66 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:CT185720228800365",
+      "digest_id": "procurement:contract:CT185720228800365",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185720228800365",
+      "short_title": "Bid 2100089 Nozzles (Brand Specific) Amendment #1",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "FIREMATIC SUPPLY CO. INC",
+      "contract_amount": 49689.78,
+      "start_date": "2021-08-01",
+      "pin": "85721B0111001A001",
+      "contract_id": "CT185720228800365",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT185720228805240",
+      "digest_id": "procurement:contract:CT185720228805240",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185720228805240",
+      "short_title": "Spot Explorer Robotics - FDNY",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "FLYMOTION LLC",
+      "contract_amount": 235000,
+      "start_date": "2022-02-19",
+      "pin": "85721B0192001",
+      "contract_id": "CT185720228805240",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT185720265400017",
+      "digest_id": "procurement:contract:CT185720265400017",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185720265400017",
+      "short_title": "Fleet Fuel (Delaware County) - DEP-OGS 5090032X Amendment #1",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "BUELL FUEL LLC",
+      "contract_amount": 0,
+      "start_date": "2026-01-01",
+      "pin": "85726G8001KXLA001",
+      "contract_id": "CT185720265400017",
+      "procurement_stages": [
+        "contract"
+      ],
+      "primary_stage": "contract",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:CT185720278801381",
       "digest_id": "procurement:contract:CT185720278801381",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT185720278801381",
@@ -16520,6 +17300,26 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:CT185820228801231",
+      "digest_id": "procurement:contract:CT185820228801231",
+      "canonical_href": "/procurements/procurement%3Acontract%3ACT185820228801231",
+      "short_title": "IBM FIVE-YEAR MAINTENANCE SUPPORT CONTRACT",
+      "agency_name": "DEPARTMENT OF INFORMATION TECHNOLOGY AND TELECOMMUNICATIONS",
+      "vendor_name": "INTERNATIONAL BUSINESS MACHINES CORP",
+      "contract_amount": 86804714.34,
+      "start_date": "2021-01-01",
+      "pin": "85822X0003001",
+      "contract_id": "CT185820228801231",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
@@ -19824,6 +20624,206 @@
       "type_of_notice_description": null
     },
     {
+      "procurement_id": "procurement:contract:MA185720211201997",
+      "digest_id": "procurement:contract:MA185720211201997",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720211201997",
+      "short_title": "HEATING OIL: BIO-BLEND & BIO-HEAT, BULK DELIVERY",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "APPROVED OIL COMPANY OF BROOKLYN INC",
+      "contract_amount": 5852000,
+      "start_date": "2021-06-01",
+      "pin": "85721B0093002",
+      "contract_id": "MA185720211201997",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228804507",
+      "digest_id": "procurement:contract:MA185720228804507",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228804507",
+      "short_title": "2200039 - ASPHALT, LIQUID - RC 70 (DOT)",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "DOSCH-KING COMPANY INC",
+      "contract_amount": 1355750,
+      "start_date": "2022-02-06",
+      "pin": "85722B0085001",
+      "contract_id": "MA185720228804507",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228804942",
+      "digest_id": "procurement:contract:MA185720228804942",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228804942",
+      "short_title": "2200043 - Fine Aggregates",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "D F STONE CONTRACTING LTD",
+      "contract_amount": 888464,
+      "start_date": "2022-03-01",
+      "pin": "85722B0088001",
+      "contract_id": "MA185720228804942",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228805126",
+      "digest_id": "procurement:contract:MA185720228805126",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228805126",
+      "short_title": "Helmets, Disorder Control/Scooter, NYPD",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "SUPER SEER CORPORATION",
+      "contract_amount": 3419550,
+      "start_date": "2022-05-01",
+      "pin": "85722B0028001",
+      "contract_id": "MA185720228805126",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228805183",
+      "digest_id": "procurement:contract:MA185720228805183",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228805183",
+      "short_title": "IFB 2200045: ROLLER ASSEMBLY SERPENTIX CONVEYORS (DEP) RE-AD",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "EDSAL MACHINE PRODUCTS INC.",
+      "contract_amount": 1335250,
+      "start_date": "2022-03-01",
+      "pin": "85722B0089001",
+      "contract_id": "MA185720228805183",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228806190",
+      "digest_id": "procurement:contract:MA185720228806190",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228806190",
+      "short_title": "Bid 2200051 SUBDUCT AND COUPLERS",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "ANIXTER INC",
+      "contract_amount": 1295390.7,
+      "start_date": "2022-04-01",
+      "pin": "85722B0091001",
+      "contract_id": "MA185720228806190",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228806364",
+      "digest_id": "procurement:contract:MA185720228806364",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228806364",
+      "short_title": "2200012 - GRP: FORD",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "ROUTE 23 AUTOMALL LLC",
+      "contract_amount": 4504000,
+      "start_date": "2022-04-01",
+      "pin": "85722B0046001",
+      "contract_id": "MA185720228806364",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228807059",
+      "digest_id": "procurement:contract:MA185720228807059",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228807059",
+      "short_title": "2200069 SELF CONTAINED COMPACTOR",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "COOPER TANK AND WELDING CORP",
+      "contract_amount": 141676,
+      "start_date": "2022-05-15",
+      "pin": "85722B0112001",
+      "contract_id": "MA185720228807059",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720228807062",
+      "digest_id": "procurement:contract:MA185720228807062",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720228807062",
+      "short_title": "AVIATION JET A FUEL, BULK DELIVERY",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "SPRAGUE OPERATING RESOURCES LLC",
+      "contract_amount": 1837500,
+      "start_date": "2022-05-01",
+      "pin": "85722B0094001",
+      "contract_id": "MA185720228807062",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MA185720238807759",
+      "digest_id": "procurement:contract:MA185720238807759",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMA185720238807759",
+      "short_title": "Emergency Water for OEM",
+      "agency_name": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+      "vendor_name": "READY AMERICA INC",
+      "contract_amount": 813600,
+      "start_date": "2023-06-01",
+      "pin": "85723B0081001",
+      "contract_id": "MA185720238807759",
+      "procurement_stages": [
+        "registered"
+      ],
+      "primary_stage": "registered",
+      "source_systems": [
+        "passport_public_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
       "procurement_id": "procurement:contract:MA185720278800840",
       "digest_id": "procurement:contract:MA185720278800840",
       "canonical_href": "/procurements/procurement%3Acontract%3AMA185720278800840",
@@ -20180,6 +21180,26 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:MMA182620248801473",
+      "digest_id": "procurement:contract:MMA182620248801473",
+      "canonical_href": "/procurements/procurement%3Acontract%3AMMA182620248801473",
+      "short_title": "OCEC Temp Restoration of Housing Rnwl - Amdnt #1",
+      "agency_name": "DEPARTMENT OF ENVIRONMENTAL PROTECTION",
+      "vendor_name": "SLSCO LP",
+      "contract_amount": 0,
+      "start_date": "2023-04-01",
+      "pin": "82621P0051001A001",
+      "contract_id": "MMA182620248801473",
+      "procurement_stages": [
+        "pending"
+      ],
+      "primary_stage": "pending",
+      "source_systems": [
+        "passport_public_contracts"
       ],
       "type_of_notice_description": null
     },
