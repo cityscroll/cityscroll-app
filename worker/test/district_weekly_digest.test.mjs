@@ -51,7 +51,7 @@ test("district compiler replays the same materialized list used by preview", () 
   assert.match(q.url, /district_weekly_digests\.json$/);
   const payload = { by_council_district: { 33: { total: rows.length, items: rows } } };
   assert.deepEqual(q.transformRows(payload), rows);
-  assert.equal(describeFilter("district", { councilDistrict: "33" }), "Council District 33 weekly digest");
+  assert.equal(describeFilter("district", { councilDistrict: "33" }), "City Council District 33 weekly digest");
 });
 
 test("one district preset submit immediately creates exactly one weekly watch record", async () => {
@@ -90,7 +90,7 @@ test("one district preset submit immediately creates exactly one weekly watch re
     assert.equal(record.lens, "district");
     assert.equal(record.freq, "weekly");
     assert.deepEqual(record.filter, { councilDistrict: "33" });
-    assert.match(welcomeHtml, /Council District 33 weekly digest \(weekly\)/);
+    assert.match(welcomeHtml, /City Council District 33 weekly digest \(weekly\)/);
     assert.match(welcomeHtml, /Manage subscription/);
     assert.match(welcomeHtml, /Unsubscribe/);
   } finally {
@@ -100,7 +100,7 @@ test("one district preset submit immediately creates exactly one weekly watch re
 
 test("district digest uses positive action bands and omits empty sections", () => {
   const html = subDigestHtml(
-    "Council District 33 weekly digest",
+    "City Council District 33 weekly digest",
     "district",
     rows,
     "https://api.cityscroll.org/unsubscribe?token=x",
