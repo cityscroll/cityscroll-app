@@ -177,11 +177,11 @@ function contractIdentity(record = {}) {
     return null;
   }
   const objectRef = clean(record?.object_ref, 320);
-  if (!/^procurement:[A-Za-z0-9][A-Za-z0-9._/-]{4,159}$/.test(objectRef)) return null;
+  if (!/^procurement:[A-Za-z0-9][A-Za-z0-9:._/-]{4,318}$/.test(objectRef)) return null;
   const sourceObservationRef = (Array.isArray(record?.source_observation_refs)
     ? record.source_observation_refs : [])
     .map((ref) => clean(ref, 240))
-    .find((ref) => /^(?:notice|ocp_award):[A-Za-z0-9_-]{1,80}$/.test(ref));
+    .find((ref) => /^(?:(?:notice|ocp_award):[A-Za-z0-9_-]{1,80}|passport_public_contracts:[A-Za-z0-9][A-Za-z0-9:._/-]{0,219})$/.test(ref));
   if (!sourceObservationRef) return null;
   return Object.freeze({ object_ref: objectRef, source_observation_ref: sourceObservationRef });
 }
