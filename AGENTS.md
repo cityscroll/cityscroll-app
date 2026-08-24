@@ -853,6 +853,13 @@ Serve: `GET /entity-intelligence?demo=1` (prefers multi-domain with people when
 live — City Council field case) or `?kind=agency&name=…`. Agency profile UI mounts
 `#entity-intelligence`. People is matched when person-level Legistar votes are
 retained (`by_person`); Parks remains multi-domain without inventing officials.
+The Worker looks up one keyed D1 row (`worker/src/lib/entity_intelligence_read_model.mjs`,
+migration `0026_entity_intelligence_read_model.sql`) published from the committed
+lookup by `node tools/build_worker_d1_read_models.mjs`. Do not import
+`entity_intelligence_lookup.json` into the Worker bundle; a D1 miss or failure
+is the existing empty/unavailable state, never a whole-corpus fallback. Proof:
+`worker/test/entity_intelligence.test.mjs`,
+`worker/test/d1_read_models_canary.test.mjs`.
 ADR: `docs/adr/cross-domain-object-links.md`. Warehouse SQL shape:
 `warehouse/sql/examples/entity_intelligence_index.sql`; proof receipt:
 `warehouse/receipts/proof/wh_entity_intelligence_index_latest.json`.

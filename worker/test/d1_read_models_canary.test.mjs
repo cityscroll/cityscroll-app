@@ -6,6 +6,11 @@ import { readFileSync } from "node:fs";
 import { resolveKeywordQuery } from "../../site/keyword_matcher.mjs";
 import { searchKeywordFamilyFromD1 } from "../src/lib/search_read_model.mjs";
 import { lookupOcpFromD1 } from "../src/lib/ocp_warehouse_lookup.mjs";
+import {
+  lookupEntityIntelligenceFromD1,
+  resetEntityIntelligenceReadModelCache,
+} from "../src/lib/entity_intelligence_read_model.mjs";
+import { entityIntelligenceD1 } from "./helpers/entity_intelligence_d1.mjs";
 
 const SCHEMA = readFileSync(new URL("../migrations/0025_search_and_ocp_read_models.sql", import.meta.url), "utf8");
 const keyword = JSON.parse(readFileSync(new URL("../src/data/keyword_search_index.json", import.meta.url), "utf8"));
@@ -75,5 +80,25 @@ test("production-like D1 OCP canary resolves by request_id and pin", async () =>
     assert.equal(byPin.rows[0].request_id, "20260723031");
   } finally {
     sqlite.close();
+  }
+});
+
+test("production-like D1 entity-intelligence canary returns the Parks keyed dossier", async () => {
+  resetEntityIntelligenceReadModelCache();
+  const { sqlite, DB } = entityIntelligenceD1();
+  try {
+    const view = await lookupEntityIntelligenceFromD1(DB, {
+      kind: "agency",
+      id: "parks-and-recreation",
+    });
+    assert.equal(view.ok, true);
+    assert.equal(view.serve, "materialization");
+    assert.equal(view.root.ref, "agency:id:parks-and-recreation");
+    assert.ok(view.metrics.domains_matched >= 3);
+    assert.equal(view.domains.money.status, "matched");
+    assert.equal(view.domains.people.status, "empty");
+  } finally {
+    sqlite.close();
+    resetEntityIntelligenceReadModelCache();
   }
 });

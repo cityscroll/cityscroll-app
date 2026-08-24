@@ -69,15 +69,16 @@ jobs:
           workingDirectory: worker
           wranglerVersion: "4.110.0"
           command: d1 migrations apply crol-notices --remote
-      - name: Build D1 search and OCP read models
+      - name: Build D1 search, OCP, and entity-intelligence read models
         run: node tools/build_worker_d1_read_models.mjs --output-dir worker/.d1-read-models
-      - name: Publish D1 search and OCP read models
+      - name: Publish D1 search, OCP, and entity-intelligence read models
         working-directory: worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           npx wrangler@4.110.0 d1 execute crol-notices --remote --yes --file .d1-read-models/keyword_search_read_model.sql
           npx wrangler@4.110.0 d1 execute crol-notices --remote --yes --file .d1-read-models/ocp_awards_read_model.sql
+          npx wrangler@4.110.0 d1 execute crol-notices --remote --yes --file .d1-read-models/entity_intelligence_read_model.sql
       # Wrangler rewrites Cron Trigger configuration on every deploy. Cloudflare says
       # trigger changes can take up to 15 minutes to propagate, so a deploy immediately
       # before 13:00 UTC can suppress that day's digest invocation.

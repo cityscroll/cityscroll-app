@@ -373,7 +373,11 @@ export async function refreshVendorProfiles(env, options = {}) {
   const buckets = new Map();
 
   for (const profile of Object.values(profiles)) {
-    profile.footprint = precomputedVendorFootprint(profile.stem, profile.display);
+    profile.footprint = await precomputedVendorFootprint(
+      profile.stem,
+      profile.display,
+      env.DB,
+    );
     const bucket = vendorProfileBucket(profile.stem);
     if (!buckets.has(bucket)) buckets.set(bucket, {});
     buckets.get(bucket)[profile.stem] = profile;

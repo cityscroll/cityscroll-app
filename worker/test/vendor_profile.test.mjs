@@ -8,6 +8,11 @@ import {
   vendorProfileBucket,
   vendorProfileBucketKey,
 } from "../src/vendor_profile.mjs";
+import { resetEntityIntelligenceReadModelCache } from "../src/lib/entity_intelligence_read_model.mjs";
+import { entityIntelligenceD1 } from "./helpers/entity_intelligence_d1.mjs";
+
+const { env: entityEnv } = entityIntelligenceD1();
+resetEntityIntelligenceReadModelCache();
 
 const CAMBA_ROWS = [
   ["CAMBA", 3, 11800080, "2008-03-10", "2011-05-02"],
@@ -128,7 +133,7 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
     });
   };
   const result = await refreshVendorProfiles(
-    { ALERT_STATE: store },
+    { ALERT_STATE: store, DB: entityEnv.DB },
     { fetchImpl, now: new Date("2026-07-27T13:00:00.000Z") },
   );
 
