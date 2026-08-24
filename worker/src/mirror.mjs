@@ -76,6 +76,15 @@ function fallbackContentType(pathname) {
   return FALLBACK_CONTENT_TYPES.get(pathname.slice(dot).toLowerCase()) || null;
 }
 
+// Static document routes use the extension as a compatibility wire, while
+// directory routes use a trailing slash as part of their canonical identity.
+// Remove only the slash after an .html path component before asking either
+// origin to resolve the route; this preserves directory indexes such as
+// /browse/ and /agencies/.
+export function normalizeDocumentTrailingSlash(pathname) {
+  return /\.html\/$/i.test(pathname) ? pathname.slice(0, -1) : pathname;
+}
+
 function relay(response, fallbackPathname = null) {
   if (fallbackPathname === null) return new Response(response.body, response);
 
@@ -123,7 +132,8 @@ export async function handleMirror(request) {
   }
 
   const incoming = new URL(request.url);
-  const originUrl = new URL(incoming.pathname + incoming.search, ORIGIN);
+  const normalizedPathname = normalizeDocumentTrailingSlash(incoming.pathname);
+  const originUrl = new URL(normalizedPathname + incoming.search, ORIGIN);
 
   const headers = new Headers();
   for (const name of FORWARD_REQUEST_HEADERS) {
