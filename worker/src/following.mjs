@@ -1,9 +1,4 @@
-import templates from "../../site/data/watch_templates.json" with { type: "json" };
-import moneyOpen from "../../site/data/money_default_open.json" with { type: "json" };
-import rulesOpen from "../../site/data/rules_domain_observations.json" with { type: "json" };
-import meetingsOpen from "../../site/data/meetings_domain_observations.json" with { type: "json" };
-import procurementBrowse from "../../site/data/following_procurement_suggestions.json" with { type: "json" };
-import { mergeCanonicalProcurementBrowseRows } from "../../site/contract_search_bridge.mjs";
+import suggestedTemplates from "../../site/data/following_procurement_suggestions.json" with { type: "json" };
 import {
   followingCadenceLabel,
   buildFollowingViewModel,
@@ -13,7 +8,6 @@ import {
   followingWatchScopeLinksHtml,
   watchFromFollowingParams,
 } from "../../site/following_view.mjs";
-import { buildResultsBackedWatchTemplateRegistry } from "../../site/following_suggestions.mjs";
 import { compileSub, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { feedItems } from "./lib/feed.mjs";
 import { resolveLens, sanitize } from "./lib/filter.mjs";
@@ -23,12 +17,6 @@ import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
-const suggestedTemplates = buildResultsBackedWatchTemplateRegistry(templates, {
-  money: { ...moneyOpen, notices: mergeCanonicalProcurementBrowseRows(moneyOpen.notices, procurementBrowse.rows) },
-  rules: rulesOpen,
-  meetings: meetingsOpen,
-});
-
 function esc(value) {
   return String(value ?? "").replace(/[<>&"']/g, (char) => ({
     "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
