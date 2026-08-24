@@ -43,6 +43,7 @@ import {
 function fakeDB(seed = {}) {
   const notices = seed.notices || {};
   const cache = seed.cache || {};
+  const ocpAwards = seed.ocpAwards || [];
   return {
     _cache: cache,
     prepare(sql) {
@@ -65,6 +66,16 @@ function fakeDB(seed = {}) {
           }
           if (/FROM contract_lifecycle/.test(this._sql)) return cache[this._args[0]] || null;
           return null;
+        },
+        async all() {
+          if (/FROM ocp_awards_warehouse/.test(this._sql)) {
+            if (/request_id = \?/.test(this._sql)) {
+              return { results: ocpAwards.filter((row) => String(row.request_id) === String(this._args[0])).slice(0, 5) };
+            }
+            const pins = this._args.slice(0, 3).map((value) => String(value));
+            return { results: ocpAwards.filter((row) => pins.includes(String(row.pin))).slice(0, 10) };
+          }
+          return { results: [] };
         },
         async run() {
           if (/INSERT OR REPLACE INTO contract_lifecycle/.test(this._sql)) {
@@ -493,6 +504,15 @@ test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkboo
           type_of_notice: "Solicitation", short_title: "Services", pin: "N/A",
         },
       },
+      ocpAwards: [{
+        request_id: "20250110005",
+        start_date: "2025-01-10",
+        type_of_notice_description: "Solicitation",
+        short_title: "Services",
+        pin: null,
+        contract_amount: null,
+        vendor_name: null,
+      }],
     });
     const res = await acquisitionResponse(req("?id=20250110005"), { DB: db });
     const body = await res.json();
@@ -1200,6 +1220,16 @@ test("OCP side-car: matched by request_id with amount/date agreement", withMocke
         contract_amount: "250000", vendor_name: "Make it Zesty LLC",
       },
     },
+    ocpAwards: [{
+      request_id: "20260723031",
+      start_date: "2026-07-30T00:00:00.000",
+      agency_name: "Health and Mental Hygiene",
+      type_of_notice_description: "Award",
+      short_title: "Catering Services",
+      pin: "81626W0043001",
+      contract_amount: "250000",
+      vendor_name: "Make it Zesty LLC",
+    }],
   });
   const res = await acquisitionResponse(req("?id=20260723031"), { DB: db });
   const body = await res.json();
@@ -1238,6 +1268,15 @@ test("OCP side-car: City Record / OCP amount disagreement keeps both values", wi
         contract_amount: "999999", vendor_name: "Make it Zesty LLC",
       },
     },
+    ocpAwards: [{
+      request_id: "20260723031",
+      start_date: "2026-07-30T00:00:00.000",
+      type_of_notice_description: "Award",
+      short_title: "Catering Services",
+      pin: "81626W0043001",
+      contract_amount: "250000",
+      vendor_name: "Make it Zesty LLC",
+    }],
   });
   const res = await acquisitionResponse(req("?id=20260723031"), { DB: db });
   const body = await res.json();

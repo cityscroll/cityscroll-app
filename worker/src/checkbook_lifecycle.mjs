@@ -37,7 +37,7 @@ import {
   attachOcpAward,
   OCP_DATASET_ID,
 } from "./lib/ocp_awards.mjs";
-import { lookupOcpFromWarehouseMaterialization } from "./lib/ocp_warehouse_lookup.mjs";
+import { lookupOcpFromD1 } from "./lib/ocp_warehouse_lookup.mjs";
 import { lookupPinChainFromWarehouseMaterialization } from "./lib/city_record_pin_chain_warehouse_lookup.mjs";
 import { attachMoneyCivicEvents } from "./lib/civic_time.mjs";
 import { writeLifecycleCivicEvents } from "./lib/civic_time_writer.mjs";
@@ -369,14 +369,16 @@ export function relatedPinCandidates(pin) {
 // Fetch OCP award rows for a notice: warehouse materialization first (WH-03),
 // then live SODA on miss. Bounded, fail-soft.
 // Returns { ok, rows, lookup_path?: "warehouse"|"soda" }.
-export async function fetchOcpAwardRows(noticeRow) {
+export async function fetchOcpAwardRows(noticeRow, { db = null } = {}) {
   const r = noticeRow || {};
 
-  // WH-03: instant hit from warehouse materialization index (no network).
-  const wh = lookupOcpFromWarehouseMaterialization(r);
-  if (wh.hit) {
+  // D1 read model: exact-key lookup only; a read failure is honest and never
+  // falls back to importing or scanning the whole warehouse corpus.
+  const wh = await lookupOcpFromD1(db, r);
+  if (wh.status === "ok" && wh.hit && (wh.join_key || (!r.request_id && !r.pin))) {
     return { ok: true, rows: wh.rows, lookup_path: "warehouse" };
   }
+  if (wh.status !== "ok") return { ok: false, rows: [], lookup_path: "warehouse" };
 
   // Live SODA fallback when the materialization lacks this request_id/pin.
   const rows = [];
@@ -499,7 +501,7 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   // Kick off Open Data enrichments + PIN-sibling City Record notices in parallel
   // with Checkbook work. Related notices fill intermediate stages (Intent to Award…).
   const csPromise = fetchCurrentSolicitationRows(r);
-  const ocpPromise = fetchOcpAwardRows(r);
+  const ocpPromise = fetchOcpAwardRows(r, { db: env?.DB });
   const relatedPromise = fetchRelatedProcurementNotices(env, r);
 
   const { pins, strategy } = pinMatchStrategy(r.pin);
