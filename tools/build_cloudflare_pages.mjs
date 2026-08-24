@@ -58,6 +58,13 @@ runNode(sourceDir, "no_live_external_reads.mjs", ["--check"]);
 runNode(sourceDir, "build_geocoder_address_index.mjs", ["--check"]);
 runNode(sourceDir, "build_bbl_mappluto_centroids.mjs", ["--check"]);
 
+// Rebuild the shared freshness seam before the desk graph. The external
+// scheduler state directory is optional in local/Pages builds; when absent the
+// generated watchdog records the missing heartbeat instead of silently serving
+// yesterday's committed health clock.
+runNode(sourceDir, "build_source_health_observations.mjs");
+runNode(sourceDir, "build_source_health_observations.mjs", ["--check"]);
+
 if (refresh) {
   runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--land-only"]);
   runNode(sourceDir, "build_meeting_outcomes_snapshot.mjs");

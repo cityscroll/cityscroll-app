@@ -29,6 +29,85 @@ const RECEIPT_SCHEMA_CONTRACTS = Object.freeze({
   "cityscroll.checkbook_spending_population_receipt.v1": Object.freeze(["checkbook-spending"]),
 });
 
+export const ACQUISITION_RECEIPT_SCHEMA = "cityscroll.source_acquisition_receipt.v1";
+export const ACQUISITION_RECEIPT_STATUSES = Object.freeze([
+  "succeeded",
+  "failed",
+  "partial",
+  "held",
+]);
+
+/**
+ * The source-health narrow waist. A materialization or benchmark timestamp is
+ * not an acquisition receipt: it has no source identity or observation clock.
+ * Keep this validator small so build tools, Worker adapters, and the external
+ * scheduler can all use the same contract without importing desk code.
+ */
+export function validateAcquisitionReceipt(receipt, options = {}) {
+  const errors = [];
+  const required = [
+    "source_contract_id",
+    "observed_at",
+    "status",
+    "run_id",
+    "publisher_clock_basis",
+    "publisher_updated_at",
+  ];
+  for (const field of required) {
+    if (!Object.hasOwn(receipt || {}, field)) errors.push(`missing ${field}`);
+  }
+  if (typeof receipt?.source_contract_id !== "string" || !receipt.source_contract_id.trim()) {
+    errors.push("source_contract_id must be a non-empty string");
+  }
+  if (!validAt(receipt?.observed_at)) errors.push("observed_at must be a valid timestamp");
+  if (!ACQUISITION_RECEIPT_STATUSES.includes(receipt?.status)) {
+    errors.push(`status must be one of ${ACQUISITION_RECEIPT_STATUSES.join(", ")}`);
+  }
+  if (typeof receipt?.run_id !== "string" || !receipt.run_id.trim()) {
+    errors.push("run_id must be a non-empty string");
+  }
+  if (receipt?.publisher_clock_basis !== null && typeof receipt?.publisher_clock_basis !== "string") {
+    errors.push("publisher_clock_basis must be a string or null");
+  }
+  if (receipt?.publisher_updated_at !== null && !validAt(receipt?.publisher_updated_at)) {
+    errors.push("publisher_updated_at must be a valid timestamp or null");
+  }
+  if (validAt(receipt?.publisher_updated_at) && validAt(receipt?.observed_at)
+    && Date.parse(receipt.publisher_updated_at) > Date.parse(receipt.observed_at)) {
+    errors.push("publisher_updated_at cannot be after observed_at");
+  }
+  if (options.sourceIds && !options.sourceIds.has(receipt?.source_contract_id)) {
+    errors.push(`${receipt?.source_contract_id || "<missing>"}: source health receipt has no canonical contract`);
+  }
+  if (receipt?.schema && receipt.schema !== ACQUISITION_RECEIPT_SCHEMA) {
+    errors.push(`schema must be ${ACQUISITION_RECEIPT_SCHEMA}`);
+  }
+  return errors.sort();
+}
+
+export function assertAcquisitionReceipt(receipt, options = {}) {
+  const errors = validateAcquisitionReceipt(receipt, options);
+  if (errors.length) throw new Error(`invalid source acquisition receipt:\n${errors.join("\n")}`);
+  return receipt;
+}
+
+function normalizedReceipt(input, sourceId, fallbackPath = null, clockKind = "acquisition") {
+  const observedAt = validAt(input?.observed_at);
+  const status = ACQUISITION_RECEIPT_STATUSES.includes(input?.status) ? input.status : "succeeded";
+  const receipt = {
+    schema: ACQUISITION_RECEIPT_SCHEMA,
+    source_contract_id: sourceId,
+    observed_at: observedAt,
+    status,
+    run_id: String(input?.run_id || input?.receipt_id || fallbackPath || `${sourceId}:${observedAt || "unknown"}`),
+    publisher_clock_basis: input?.publisher_clock_basis || null,
+    publisher_updated_at: notAfter(input?.publisher_updated_at, observedAt),
+    clock_kind: clockKind,
+  };
+  assertAcquisitionReceipt(receipt);
+  return receipt;
+}
+
 const ABO_DATASET_CONTRACTS = Object.freeze({
   "8w5p-k45m": "abo-local-authorities",
   "d84c-dk28": "abo-local-development-corporations",
@@ -279,6 +358,7 @@ function baseObservation(contract) {
     publisher_updated_at: null,
     publisher_clock_basis: null,
     checked_at: null,
+    check_status: "unknown",
     acquired_at: null,
     acquisition_status: "unknown",
     manual_refresh: null,
@@ -290,6 +370,7 @@ function baseObservation(contract) {
       max_age_days: null,
     },
     evidence: [],
+    acquisition_receipts: [],
     runs: [],
   };
 }
@@ -297,16 +378,26 @@ function baseObservation(contract) {
 function applyAcquisition(target, input, kind) {
   const at = validAt(input.observed_at);
   if (!at) return;
+  const clockKind = input.clock_kind || "acquisition";
   if (!target.checked_at || Date.parse(at) >= Date.parse(target.checked_at)) {
     target.checked_at = at;
+    target.check_status = input.status || "succeeded";
+  }
+  if (clockKind === "acquisition" && (!target.acquired_at || Date.parse(at) >= Date.parse(target.acquired_at))) {
     target.acquisition_status = input.status || "succeeded";
     target.acquired_at = target.acquisition_status === "succeeded" ? at : target.acquired_at;
     if (input.publisher_updated_at) {
       target.publisher_updated_at = validAt(input.publisher_updated_at);
       target.publisher_clock_basis = input.publisher_clock_basis || "publisher_receipt";
     }
+  } else if (target.acquisition_status === "unknown") {
+    // Preserve the established health evaluator's check-success semantics while
+    // keeping the actual acquired_at clock separate for the watchdog.
+    target.acquisition_status = input.status || "succeeded";
   }
   target.evidence.push(evidenceItem(kind, input.path, at, input.status || "succeeded"));
+  const receipt = normalizedReceipt(input, target.source_id, input.path, clockKind);
+  target.acquisition_receipts.push(receipt);
   target.runs.push({
     adapter: input.adapter || kind,
     run_id: input.run_id || null,
@@ -332,6 +423,78 @@ function sortedRuns(items) {
       seen.add(key);
       return true;
     });
+}
+
+function cadenceDays(contract) {
+  const explicit = Number(
+    contract?.freshness_contract?.acquisition_cadence_days
+    ?? contract?.acquisition_cadence_days,
+  );
+  if (Number.isFinite(explicit) && explicit > 0) return explicit;
+  const text = String(contract?.acquisition_cadence || contract?.publisher_cadence || "").toLowerCase();
+  if (/daily|each day|every day/.test(text)) return 1;
+  if (/weekly|each week|every week/.test(text)) return 7;
+  const every = text.match(/every\s+(\d+)\s+days?/);
+  if (every) return Number(every[1]);
+  return null;
+}
+
+function missingRunId(sourceId, at) {
+  return `missing:${sourceId}:${at.slice(0, 16).replace(/:/g, "-")}`;
+}
+
+/**
+ * Daily scheduler liveness is deliberately independent from source cadence.
+ * A source can be weekly and still require the daily monitor heartbeat to
+ * prove that its next acquisition is intentionally not due.
+ */
+export function evaluateFreshnessWatchdog(contract, observation = {}, options = {}) {
+  const now = validAt(options.now);
+  if (!now) throw new Error("freshness watchdog requires a valid now timestamp");
+  const heartbeat = options.schedulerHeartbeat || null;
+  const heartbeatAt = validAt(heartbeat?.observed_at);
+  const heartbeatAgeDays = heartbeatAt ? (Date.parse(now) - Date.parse(heartbeatAt)) / 86_400_000 : Infinity;
+  const reasons = [];
+  if (!heartbeatAt || heartbeatAgeDays > (Number(options.expectedSchedulerSlots) || 2)) {
+    reasons.push("monitor-missing");
+  }
+
+  const dueDays = cadenceDays(contract);
+  const acquiredAt = validAt(observation?.acquired_at);
+  const acquisitionAgeDays = acquiredAt ? (Date.parse(now) - Date.parse(acquiredAt)) / 86_400_000 : Infinity;
+  if (dueDays != null && acquisitionAgeDays > dueDays) reasons.push("acquisition-missing");
+
+  const status = reasons.length ? "STALE" : "CURRENT";
+  const missingReceipts = reasons.map((reason) => ({
+    schema: ACQUISITION_RECEIPT_SCHEMA,
+    source_contract_id: contract.id,
+    observed_at: now,
+    status: reason === "monitor-missing" ? "failed" : "held",
+    run_id: missingRunId(contract.id, now),
+    publisher_clock_basis: null,
+    publisher_updated_at: null,
+    event_kind: reason === "monitor-missing" ? "scheduler-heartbeat" : "acquisition-cadence",
+    state: reason,
+  }));
+  return {
+    status,
+    reason_codes: reasons,
+    source_contract_id: contract.id,
+    observed_at: now,
+    scheduler_heartbeat: {
+      observed_at: heartbeatAt,
+      status: heartbeatAt ? (heartbeat?.status || "succeeded") : "monitor-missing",
+      run_id: heartbeat?.run_id || null,
+      age_days: Number.isFinite(heartbeatAgeDays) ? heartbeatAgeDays : null,
+      expected_slots: Number(options.expectedSchedulerSlots) || 2,
+    },
+    acquisition: {
+      observed_at: acquiredAt,
+      cadence_days: dueDays,
+      age_days: Number.isFinite(acquisitionAgeDays) ? acquisitionAgeDays : null,
+    },
+    receipts: missingReceipts,
+  };
 }
 
 function applyServing(target, input) {
@@ -364,6 +527,14 @@ export function validateSourceHealthProjection(registry, projection) {
     if (!contractIds.has(id)) errors.push(`${id}: source health observation has no canonical contract`);
     if (row?.health?.status && !HEALTH_STATUSES.includes(row.health.status)) {
       errors.push(`${id}: invalid health status ${row.health.status}`);
+    }
+    if (row?.freshness_watchdog && row.freshness_watchdog.source_contract_id !== id) {
+      errors.push(`${id}: freshness watchdog source_contract_id does not match observation`);
+    }
+    for (const receipt of row?.operator?.acquisition_receipts || []) {
+      for (const error of validateAcquisitionReceipt(receipt, { sourceIds: contractIds })) {
+        errors.push(`${id}: ${error}`);
+      }
     }
   }
   return errors.sort();
@@ -410,6 +581,16 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
   ];
   const asOf = validAt(inputs.asOf) || newestAt(allDates);
   if (!asOf) throw new Error("source health projection has no valid evaluation timestamp");
+  const schedulerHeartbeat = [...(inputs.schedulerHeartbeats || [])]
+    .filter((row) => validAt(row?.observed_at))
+    .sort((left, right) => Date.parse(right.observed_at) - Date.parse(left.observed_at))[0]
+    // Fixture callers historically supplied only per-source schedule rows. A
+    // successful check is still a heartbeat, even before the explicit heartbeat
+    // field is available from the external runner.
+    || acquisitions
+      .filter((row) => row.clock_kind === "check" || row.evidence_kind === "external-schedule-receipt")
+      .sort((left, right) => Date.parse(right.observed_at) - Date.parse(left.observed_at))[0]
+      || null;
   const coverage = coverageByContract(registry, inputs.coverageCensus);
 
   const observations = contracts.map((contract) => {
@@ -419,16 +600,34 @@ export function buildSourceHealthObservations(registry, inputs = {}) {
       normalized.serving.fallback_valid = true;
     }
     normalized.evidence = sortedEvidence(normalized.evidence);
+    normalized.acquisition_receipts = normalized.acquisition_receipts
+      .sort((left, right) => Date.parse(right.observed_at) - Date.parse(left.observed_at));
     normalized.runs = sortedRuns(normalized.runs);
     const health = evaluateSourceHealth(contract, normalized, { now: asOf });
+    const watchdog = evaluateFreshnessWatchdog(contract, normalized, {
+      now: asOf,
+      schedulerHeartbeat,
+      expectedSchedulerSlots: inputs.expectedSchedulerSlots || 2,
+    });
     const row = {
       source_id: contract.id,
       contract_fingerprint: fingerprint(contract),
       health,
       relationship_coverage: coverage.get(contract.id) || normalizeRelationshipCoverage(),
       evidence: normalized.evidence,
+      freshness_watchdog: watchdog,
     };
-    if (normalized.runs.length) row.operator = { runs: normalized.runs };
+    if (normalized.runs.length || normalized.acquisition_receipts.length || watchdog) {
+      row.operator = {
+        ...(normalized.runs.length ? { runs: normalized.runs } : {}),
+        ...(normalized.acquisition_receipts.length ? { acquisition_receipts: normalized.acquisition_receipts } : {}),
+        clocks: {
+          checked: normalizeClock(normalized.checked_at, "checked_at"),
+          acquired: normalizeClock(normalized.acquired_at, "acquired_at"),
+          scheduler_heartbeat: normalizeClock(schedulerHeartbeat?.observed_at, "scheduler_heartbeat"),
+        },
+      };
+    }
     return row;
   });
 
@@ -699,6 +898,83 @@ export function externalScheduleObservations(events = []) {
   return rows;
 }
 
+/** Normalize the external probe's per-source result into the same receipt shape
+ * used by acquisitions. The legacy array projection above remains available to
+ * callers that only need the old check rows. */
+export function externalScheduleReceiptRows(events = []) {
+  const rows = [];
+  for (const event of events) {
+    const result = event?.result || event;
+    const observedAt = validAt(result?.observed_at || event?.observed_at);
+    if (!observedAt) continue;
+    const runKey = event?.run_key || result?.run_key || event?.event_id || `source-contracts-live:${observedAt}`;
+    const explicit = Array.isArray(result?.receipts) ? result.receipts : [];
+    if (explicit.length) {
+      for (const receipt of explicit) {
+        const normalized = {
+          ...receipt,
+          schema: receipt?.schema || ACQUISITION_RECEIPT_SCHEMA,
+          source_contract_id: receipt?.source_contract_id,
+          observed_at: receipt?.observed_at || observedAt,
+          run_id: receipt?.run_id || runKey,
+          publisher_clock_basis: Object.hasOwn(receipt || {}, "publisher_clock_basis")
+            ? receipt.publisher_clock_basis : null,
+          publisher_updated_at: Object.hasOwn(receipt || {}, "publisher_updated_at")
+            ? receipt.publisher_updated_at : null,
+          clock_kind: "check",
+          path: event?.path || null,
+          adapter: "source-contracts-live",
+        };
+        assertAcquisitionReceipt(normalized);
+        rows.push(normalized);
+      }
+      continue;
+    }
+    for (const id of result?.healthy || []) {
+      rows.push(normalizedReceipt({
+        observed_at: observedAt,
+        status: "succeeded",
+        run_id: `${runKey}:${id}`,
+      }, id, event?.path, "check"));
+    }
+    for (const failure of result?.failures || []) {
+      if (!failure?.id) continue;
+      rows.push({ ...normalizedReceipt({
+        observed_at: observedAt,
+        status: "failed",
+        run_id: `${runKey}:${failure.id}`,
+      }, failure.id, event?.path, "check"), exact_error: redactCredentialValues(failure.detail || "source contract check failed") });
+    }
+  }
+  return rows;
+}
+
+export function externalScheduleHeartbeats(events = []) {
+  return events
+    .map((event) => {
+      const result = event?.result || event;
+      const observedAt = validAt(result?.scheduler_heartbeat?.observed_at || result?.observed_at || event?.observed_at);
+      if (!observedAt) return null;
+      const runId = result?.scheduler_heartbeat?.run_id
+        || event?.run_key
+        || result?.run_key
+        || event?.event_id
+        || `source-contracts-live:${observedAt}`;
+      return {
+        source_contract_id: "source-contracts-live",
+        observed_at: observedAt,
+        status: result?.scheduler_heartbeat?.status || "succeeded",
+        run_id: runId,
+        publisher_clock_basis: null,
+        publisher_updated_at: null,
+        path: event?.path || null,
+        adapter: "source-contracts-live",
+      };
+    })
+    .filter(Boolean)
+    .sort((left, right) => Date.parse(right.observed_at) - Date.parse(left.observed_at));
+}
+
 function externalScheduleEvents(root, stateDir) {
   if (!stateDir) return [];
   const outboxDir = join(stateDir, "outbox");
@@ -745,7 +1021,8 @@ export function loadSourceHealthInputs(root, registry, options = {}) {
       ...additionalServeObservations(root, registry),
       ...aboRuntime.serving,
     ],
-    scheduleObservations: externalScheduleObservations(events),
+    scheduleObservations: externalScheduleReceiptRows(events),
+    schedulerHeartbeats: externalScheduleHeartbeats(events),
     runtimeServedSourceIds: [...runtimeServedSourceIds(root, registry)],
     coverageCensus: existsSync(coveragePath) ? readJson(coveragePath) : null,
   };

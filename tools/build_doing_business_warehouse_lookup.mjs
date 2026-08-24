@@ -195,10 +195,21 @@ async function collectRows({ fixture, fromSoda, limit }) {
       "Doing Business SODA materialization",
     );
     const rows = dedupeRows(sodaRows);
+    const observedAt = new Date().toISOString();
     return {
       rows,
       mode: rows.length > 1000 ? "bulk_soda" : rows.length ? "warehouse" : "live_fallback",
       publisherRowCount: await fetchPublisherRowCount(),
+      acquisitionReceipt: {
+        schema: "cityscroll.source_acquisition_receipt.v1",
+        source_contract_id: "doing-business-entities",
+        observed_at: observedAt,
+        status: "succeeded",
+        run_id: `doing-business-entities:${observedAt}`,
+        publisher_clock_basis: "soda_resource_last_modified",
+        publisher_updated_at: null,
+        acquisition: { mode: rows.length > 1000 ? "bulk_soda" : rows.length ? "warehouse" : "live_fallback", row_count: rows.length },
+      },
     };
   }
 
@@ -258,7 +269,7 @@ function statsMs(samples, digits = 3) {
   };
 }
 
-async function bench(rows) {
+async function bench(rows, acquisitionReceipt = null) {
   const { buildDoingBusinessIndex, joinVendorToDoingBusiness } = await import(
     "../worker/src/lib/doing_business_join.mjs"
   );
@@ -279,6 +290,7 @@ async function bench(rows) {
   const sodaCatalogMsFloor = sodaPageMsFloor * sodaPages;
 
   const receipt = {
+    ...acquisitionReceipt,
     phase: "WH-05",
     measured_at: new Date().toISOString(),
     replaces_live_fetch: {
@@ -355,7 +367,7 @@ async function main() {
     console.log("ok serve-publish contract for Doing Business twins");
   }
 
-  const { rows, mode, publisherRowCount } = await collectRows(args);
+  const { rows, mode, publisherRowCount, acquisitionReceipt } = await collectRows(args);
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_WORKER)) {
     try {
@@ -401,8 +413,12 @@ async function main() {
     }
   }
   if (args.bench) {
-    const receipt = await bench(rows.length ? rows : readCommittedDoc(OUT_WORKER).rows || []);
+    const receipt = await bench(rows.length ? rows : readCommittedDoc(OUT_WORKER).rows || [], acquisitionReceipt);
     console.log(receipt.summary);
+    console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
+  } else if (!args.check && acquisitionReceipt) {
+    mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+    writeFileSync(BENCH_RECEIPT, stableStringify(acquisitionReceipt));
     console.log("receipt:", path.relative(ROOT, BENCH_RECEIPT));
   }
 }
