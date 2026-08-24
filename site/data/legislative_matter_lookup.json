@@ -1,0 +1,216 @@
+{
+  "schema": "cityscroll.legislative_matter_lookup.v1",
+  "generated_at": "2026-08-10T13:08:13.019Z",
+  "source": {
+    "system": "legistar",
+    "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+    "identity": "matter:{legistar_matter_id}",
+    "exact_key_only": true
+  },
+  "matters": {
+    "78605": {
+      "matter_id": "78605",
+      "matter_file": "LU 0056-2026",
+      "title": "Zoning, 147-14 Northern Boulevard Rezoning, Queens (C 220415 ZMQ).",
+      "matter_type": null,
+      "matter_status": null,
+      "matter_href": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=78605",
+      "appearances": [
+        {
+          "request_id": "20260408025",
+          "event": {
+            "event_id": "22342",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-04-22",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22342&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/4/22342_A_Subcommittee_on_Zoning_and_Franchises_26-04-22_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/4/22342_M_Subcommittee_on_Zoning_and_Franchises_26-04-22_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "78605",
+          "matter_file": "LU 0056-2026",
+          "actions": [
+            "Hearing Held by Committee",
+            "Laid Over by Subcommittee"
+          ],
+          "outcome": "Laid Over by Subcommittee",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          },
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260408025",
+            "event_id": "22342",
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22342&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-08-10T13:08:13.019Z"
+          }
+        },
+        {
+          "request_id": "20260428021",
+          "event": {
+            "event_id": "22375",
+            "name": "Subcommittee on Zoning and Franchises",
+            "date": "2026-05-19",
+            "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "body_id": null,
+            "documents": [
+              {
+                "name": "Agenda",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22375_A_Subcommittee_on_Zoning_and_Franchises_26-05-19_Committee_Agenda.pdf"
+              },
+              {
+                "name": "Minutes",
+                "url": "https://nyc.legistar1.com/nyc/meetings/2026/5/22375_M_Subcommittee_on_Zoning_and_Franchises_26-05-19_Meeting_Minutes.pdf"
+              }
+            ]
+          },
+          "committee": {
+            "label": "Subcommittee on Zoning and Franchises",
+            "body_id": null,
+            "join_state": "unresolved_no_explicit_body_id"
+          },
+          "matter_id": "78605",
+          "matter_file": "LU 0056-2026",
+          "actions": [
+            "Hearing Held by Committee",
+            "Approved by Subcommittee"
+          ],
+          "outcome": "Approved by Subcommittee",
+          "matter_type": null,
+          "matter_status": null,
+          "votes": {
+            "result": "Passed",
+            "yes": 8,
+            "no": 0,
+            "abstain": 1,
+            "vote_identity": "roll_call",
+            "person_count": 9,
+            "by_person": [
+              {
+                "person_id": "7785",
+                "person_name": "Farah N. Louis",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7833",
+                "person_name": "David M. Carr",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7895",
+                "person_name": "Elsie Encarnación",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7810",
+                "person_name": "Amanda C. Farías",
+                "vote_bucket": "abstain"
+              },
+              {
+                "person_id": "5289",
+                "person_name": "Simcha Felder",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7866",
+                "person_name": "Yusef Salaam",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7897",
+                "person_name": "Justin E. Sanchez",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7818",
+                "person_name": "Lynn C. Schulman",
+                "vote_bucket": "aye"
+              },
+              {
+                "person_id": "7898",
+                "person_name": "Shanel Thomas-Henry",
+                "vote_bucket": "aye"
+              }
+            ]
+          },
+          "source_receipt": {
+            "source_system": "legistar",
+            "request_id": "20260428021",
+            "event_id": "22375",
+            "source_url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22375&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+            "input_artifact": "site/data/meeting_outcomes_snapshot.json",
+            "snapshot_generated_at": "2026-08-10T13:08:13.019Z"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -537,9 +537,14 @@ function meetingOutcomesHTML(record, notice, phaseTools){
       : "meeting_outcomes_badge_other";
     const shortTitle = meetingMatterShortTitle(entry);
     const fileLine = entry.matter_file || entry.matter_id || "";
-    const matterHref = entry.matter_url || matterDetailUrl(entry.matter_id) || "";
+    // Increment B publishes one exact static matter route; other matter IDs
+    // retain their existing Legistar destination until a read model exists.
+    const publishedMatterHref = String(entry.matter_id == null ? "" : entry.matter_id).trim() === "78605"
+      ? "/matters/78605/" : null;
+    const matterHref = publishedMatterHref || entry.matter_url || matterDetailUrl(entry.matter_id) || "";
+    const matterExternal = !publishedMatterHref;
     const fileHTML = matterHref&&fileLine
-      ? `<a class="meeting-file meeting-matter-link" lang="en" dir="ltr" href="${escUiHtml(matterHref)}" ${EXT_ATTRS} data-matter-id="${escUiHtml(entry.matter_id || "")}">${escUiHtml(fileLine)}${extSR()}</a>`
+      ? `<a class="meeting-file meeting-matter-link${matterExternal ? "" : " ui-constellation-link"}" lang="en" dir="ltr" href="${escUiHtml(matterHref)}"${matterExternal ? ` ${EXT_ATTRS}` : ""} data-matter-id="${escUiHtml(entry.matter_id || "")}">${escUiHtml(fileLine)}${matterExternal ? extSR() : ""}</a>`
       : (fileLine?`<div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>`:"");
     const subBits = [];
     if(entry.agendaNumber) subBits.push("#" + entry.agendaNumber);

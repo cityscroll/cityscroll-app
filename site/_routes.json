@@ -5,6 +5,7 @@
     "/data-health*",
     "/notices/*",
     "/mandates/*",
+    "/matters/*",
     "/meetings/*",
     "/procurements/*",
     "/agencies/*",

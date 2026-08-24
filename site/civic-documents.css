@@ -563,6 +563,48 @@ select {
   margin-block-start: var(--space-1);
 }
 
+.legislative-matter-document .matter-appearance {
+  margin-block: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-surface);
+}
+
+.legislative-matter-document .matter-appearance-head h3 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+  line-height: 1.15;
+}
+
+.legislative-matter-document .matter-appearance-links,
+.legislative-matter-document .matter-committee,
+.legislative-matter-document .matter-vote-tally,
+.legislative-matter-document .matter-vote-count {
+  margin-block: var(--space-2) 0;
+  color: var(--color-text-soft);
+}
+
+.legislative-matter-document .matter-committee-note {
+  display: block;
+  margin-block-start: var(--space-1);
+}
+
+.legislative-matter-document .matter-appearance .node-section {
+  margin-block: var(--space-4) 0;
+  padding-block: var(--space-4) 0;
+  border-block-end: 0;
+}
+
+.legislative-matter-document .matter-appearance .node-section h2 {
+  margin-block-end: var(--space-3);
+  font-size: 1.2rem;
+}
+
+.legislative-matter-document .matter-vote-list {
+  margin-block-start: var(--space-3);
+}
+
 /* Notice bitemporal history: keep the two clocks visually parallel and explicit. */
 .civic-time-history-lede {
   margin: 0 0 var(--space-4);
