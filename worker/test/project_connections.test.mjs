@@ -7,16 +7,21 @@ import {
   PROJECT_CONNECTION_COVERAGE,
 } from "../src/project_connections.mjs";
 import { handleZapOutcomes } from "../src/zap_outcomes.mjs";
+import { resetEntityIntelligenceReadModelCache } from "../src/lib/entity_intelligence_read_model.mjs";
+import { entityIntelligenceD1 } from "./helpers/entity_intelligence_d1.mjs";
 
-test("server adapter attaches current-cohort and fixed-sample coverage to Timbale Terrace", () => {
-  const record = attachProjectConnections({
+const { env } = entityIntelligenceD1();
+resetEntityIntelligenceReadModelCache();
+
+test("server adapter attaches current-cohort and fixed-sample coverage to Timbale Terrace", async () => {
+  const record = await attachProjectConnections({
     project_id: "2022M0258",
     generated_at: "2026-08-05T17:00:00.000Z",
     dispositions: [{ representing: "Community Board", community_board: "Favorable" }],
     documents: [{ name: "Recommendation", url: "https://example.test/recommendation" }],
     city_record_notices: [],
     spine: { gaps: [{ slot: "city_record_notices", class: "not_published" }] },
-  });
+  }, { db: env.DB });
   const view = record.project_connections;
   assert.equal(view.project_ref, "project:2022M0258");
   assert.equal(view.groups.find((group) => group.id === "applicant").items[0].confidence, "tentative");
@@ -38,8 +43,8 @@ test("server adapter attaches current-cohort and fixed-sample coverage to Timbal
   assert.equal(PROJECT_CONNECTION_COVERAGE.meetings.eligible, null);
 });
 
-test("unknown project titles do not borrow exact-key parcel evidence", () => {
-  const record = attachProjectConnections({
+test("unknown project titles do not borrow exact-key parcel evidence", async () => {
+  const record = await attachProjectConnections({
     project_id: "2099X9999",
     project_name: "Timbale Terrace",
     generated_at: "2026-08-05T17:00:00.000Z",
@@ -47,7 +52,7 @@ test("unknown project titles do not borrow exact-key parcel evidence", () => {
     documents: [],
     city_record_notices: [],
     spine: { gaps: [] },
-  });
+  }, { db: env.DB });
   assert.equal(record.project_connections.project_ref, "project:2099X9999");
   assert.equal(
     record.project_connections.groups.find((group) => group.id === "parcels").items.length,
@@ -55,8 +60,8 @@ test("unknown project titles do not borrow exact-key parcel evidence", () => {
   );
 });
 
-test("a SODA fallback applicant survives serve-time connection decoration", () => {
-  const record = attachProjectConnections({
+test("a SODA fallback applicant survives serve-time connection decoration", async () => {
+  const record = await attachProjectConnections({
     project_id: "2024Q0135",
     project_name: "Willets Point Phase II Mapping Actions",
     open_data: {
@@ -64,7 +69,7 @@ test("a SODA fallback applicant survives serve-time connection decoration", () =
       project_name: "Willets Point Phase II Mapping Actions",
       primary_applicant: "EDC - Economic Development Corporation for NYC",
     },
-  });
+  }, { db: env.DB });
   const applicant = record.project_connections.groups.find((group) => group.id === "applicant");
   assert.equal(applicant.status, "matched");
   assert.equal(applicant.items[0].ref, "agency:id:edc-economic-development-corporation-for-nyc");
@@ -79,10 +84,10 @@ test("cached outcome responses receive current project connections at serve time
     city_record_notices: [],
     spine: { gaps: [] },
   };
-  const env = { ALERT_STATE: { get: async () => JSON.stringify(cached) } };
+  const zapEnv = { ...env, ALERT_STATE: { get: async () => JSON.stringify(cached) } };
   const response = await handleZapOutcomes(
     new Request("https://api.test/zap-outcomes?id=2022M0258"),
-    env,
+    zapEnv,
     {},
   );
   assert.equal(response.status, 200);
@@ -96,8 +101,8 @@ test("cached outcome responses receive current project connections at serve time
   });
 });
 
-test("read-model decoration failures become an honest unavailable section", () => {
-  const result = attachProjectConnectionsSection(
+test("read-model decoration failures become an honest unavailable section", async () => {
+  const result = await attachProjectConnectionsSection(
     { project_id: "2022M0258" },
     { attach: () => { throw new Error("fixture read model failed"); } },
   );

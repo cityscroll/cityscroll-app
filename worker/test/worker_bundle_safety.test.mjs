@@ -37,6 +37,30 @@ function nodeBuiltinImports(entry) {
   return violations;
 }
 
+function jsonImports(entry) {
+  const seen = new Set();
+  const jsons = [];
+  const visit = (file) => {
+    if (seen.has(file)) return;
+    seen.add(file);
+    const source = readFileSync(file, "utf8");
+    for (const match of source.matchAll(IMPORT_RE)) {
+      const specifier = match[1];
+      const dependency = resolveLocal(file, specifier);
+      if (!dependency) continue;
+      if (dependency.endsWith(".json")) jsons.push(dependency);
+      if (dependency.endsWith(".mjs")) visit(dependency);
+    }
+  };
+  visit(entry);
+  return jsons;
+}
+
 test("Worker entrypoint graph is Web-API-safe without nodejs_compat", () => {
   assert.deepEqual(nodeBuiltinImports(ENTRY), [], "Node built-ins must stay outside the Worker bundle");
+});
+
+test("Worker graph does not import the entity-intelligence corpus", () => {
+  const imported = jsonImports(ENTRY).filter((path) => path.endsWith("entity_intelligence_lookup.json"));
+  assert.deepEqual(imported, []);
 });

@@ -383,7 +383,7 @@ export async function runDigestShadow(env, {
   });
   const history = await readHistory(env, at.toISOString().slice(0, 10));
   const candidates = ontologyDeltaCandidates == null
-    ? buildDefaultOntologyDeltaCandidates()
+    ? await buildDefaultOntologyDeltaCandidates(env.DB)
     : ontologyDeltaCandidates;
   const ontologyDelta = await reconcileOntologyDeltaCandidates(env.DB, candidates, {
     observedAt: at,

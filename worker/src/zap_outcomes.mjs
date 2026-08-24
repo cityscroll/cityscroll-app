@@ -640,8 +640,8 @@ export async function handleZapOutcomes(request, env, _ctx) {
 
   const cached = await kvGetRecord(env, projectId);
 
-  const successResponse = (record, metadata = {}) => {
-    const connections = attachProjectConnectionsSection(record);
+  const successResponse = async (record, metadata = {}) => {
+    const connections = await attachProjectConnectionsSection(record, { db: env?.DB });
     if (connections.section.status === "unavailable") {
       console.warn(JSON.stringify({
         event: "project-connections-unavailable",
@@ -658,7 +658,7 @@ export async function handleZapOutcomes(request, env, _ctx) {
   };
 
   if (cached) {
-    return successResponse(cached, {
+    return await successResponse(cached, {
       cached: true,
       stale: !outcomeCacheIsFresh(cached),
       generated_at: cached.generated_at,
