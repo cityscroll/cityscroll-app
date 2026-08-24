@@ -844,6 +844,7 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   // Without this include, Pages never invokes the worker for mandate documents
   // and the route falls back to the blank SPA shell (live defect 64116-001).
   assert.ok(routes.include.includes("/mandates/*"));
+  assert.ok(routes.include.includes("/matters/*"));
   assert.ok(routes.include.includes("/procurements/*"));
   assert.ok(routes.include.includes("/agencies/*"));
   assert.ok(routes.include.includes("/vendors/*"));

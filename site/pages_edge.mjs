@@ -27,6 +27,7 @@ import {
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
 import { buildCommitteeDocumentView, renderCommitteeDocument } from "./committee_document.mjs";
+import { buildLegislativeMatterDocument, renderLegislativeMatterDocument } from "./legislative_matter_document.mjs";
 import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
 import {
   buildPublicAssertionGraph,
@@ -77,6 +78,11 @@ function safeId(pathname) {
 
 function safeMeeting(pathname) {
   const match = pathname.match(/^\/meetings\/([^/?#]{1,320})\/?$/);
+  return match ? match[1] : null;
+}
+
+function safeMatter(pathname) {
+  const match = pathname.match(/^\/matters\/(\d+)\/?$/);
   return match ? match[1] : null;
 }
 
@@ -170,6 +176,7 @@ export function edgeRequestKind(urlValue) {
   if (assertionTarget(url)) return "assertion";
   if (safeId(url.pathname)) return "notice";
   if (safeMandate(url.pathname)) return "mandate";
+  if (safeMatter(url.pathname)) return "matter";
   if (safeMeeting(url.pathname)) return "meeting";
   if (safeProcurement(url.pathname)) return "procurement";
   if (safeExamNumber(url.pathname)) return "exam";
@@ -252,6 +259,42 @@ async function handleMeeting(request, env, meetingId) {
     `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meeting · CityScroll</title></head><body><main><h1>Meeting</h1><p>This meeting is not in the current Meetings view.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`,
     { status: 404, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" } },
   );
+}
+
+function matterUnavailableResponse(matterId) {
+  const body = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Matter record not found · CityScroll</title></head><body><main><h1>Matter record not found</h1><p>This legislative matter is not in the current CityScroll materialization.</p><p><a href="/browse/meetings/">Browse meetings</a></p></main></body></html>`;
+  return new Response(body, {
+    status: 404,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "public, max-age=60, s-maxage=60",
+      "X-Content-Type-Options": "nosniff",
+      "X-Matter-Id": String(matterId || ""),
+    },
+  });
+}
+
+async function handleMatter(request, env, matterId) {
+  const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const snapshot = await staticAsset(env, snapshotRequest, "/data/legislative_matter_lookup.json");
+  if (!snapshot.ok) return matterUnavailableResponse(matterId);
+  let view = null;
+  try {
+    view = buildLegislativeMatterDocument(await snapshot.json(), matterId);
+  } catch (_error) {
+    view = null;
+  }
+  if (!view) return matterUnavailableResponse(matterId);
+  const html = renderLegislativeMatterDocument(view, { currentHref: request.url });
+  if (!html) return matterUnavailableResponse(matterId);
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD"
+    ? new Response(null, { status: 200, headers })
+    : new Response(html, { status: 200, headers });
 }
 
 function meetingRows(payload) {
@@ -928,6 +971,8 @@ export default {
     if (id) return handleNotice(request, env, id);
     const mandateId = safeMandate(url.pathname);
     if (mandateId) return handleMandate(request, env, mandateId);
+    const matterId = safeMatter(url.pathname);
+    if (matterId) return handleMatter(request, env, matterId);
     if (url.pathname === "/meeting.ics") return handleMeetingICS(request, env);
     const meetingId = safeMeeting(url.pathname);
     if (meetingId) return handleMeeting(request, env, meetingId);
