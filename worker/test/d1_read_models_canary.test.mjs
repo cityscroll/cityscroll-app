@@ -53,6 +53,43 @@ function d1() {
   };
 }
 
+function boundedKeywordD1(rows) {
+  const sqlite = new DatabaseSync(":memory:");
+  const queries = [];
+  sqlite.exec(SCHEMA);
+  sqlite.prepare("INSERT INTO keyword_search_families VALUES (?, ?, ?, ?, ?, ?)").run(
+    "awards", "fixture", "2026-08-23", rows.length, rows.length, "[]",
+  );
+  const documentInsert = sqlite.prepare("INSERT INTO keyword_search_documents VALUES (?, ?, ?, ?, ?, ?, ?)");
+  const ftsInsert = sqlite.prepare("INSERT INTO keyword_search_fts VALUES (?, ?, ?)");
+  rows.forEach((document, ordinal) => {
+    const documentId = `awards:${ordinal}`;
+    const searchText = [document.title, document.summary, document.search_text].filter(Boolean).join(" ");
+    documentInsert.run(
+      documentId, "awards", ordinal, document.object_ref,
+      JSON.stringify(document.source_observation_refs || []), JSON.stringify(document), searchText,
+    );
+    ftsInsert.run(documentId, "awards", searchText);
+  });
+  return {
+    sqlite,
+    queries,
+    DB: {
+      prepare(sql) {
+        queries.push(sql);
+        const statement = sqlite.prepare(sql);
+        let args = [];
+        const wrapper = {
+          bind(...values) { args = values; return wrapper; },
+          async all() { return { results: statement.all(...args) }; },
+          async first() { return statement.get(...args) || null; },
+        };
+        return wrapper;
+      },
+    },
+  };
+}
+
 test("production-like D1 keyword canary preserves exact-token evidence", async () => {
   const { sqlite, DB } = d1();
   try {
@@ -62,6 +99,30 @@ test("production-like D1 keyword canary preserves exact-token evidence", async (
     assert.equal(result.matches[0].object_ref, "person:7801");
     assert.deepEqual(result.matches[0].match_evidence.token_offsets, [0, 2]);
     assert.ok(result.matches[0].match_evidence.character_offsets[1] > 0);
+  } finally {
+    sqlite.close();
+  }
+});
+
+test("D1 family retrieval is ranked and hard-bounded before JSON materialization", async () => {
+  const rows = [
+    { object_ref: "award:best", title: "award award award", source_observation_refs: ["source:best"] },
+    ...Array.from({ length: 104 }, (_, index) => ({
+      object_ref: `award:${index}`,
+      title: "award",
+      source_observation_refs: [`source:${index}`],
+    })),
+  ];
+  const { sqlite, queries, DB } = boundedKeywordD1(rows);
+  try {
+    const result = await searchKeywordFamilyFromD1(DB, "awards", resolveKeywordQuery("award"), { limit: 20_000 });
+    const candidateQuery = queries.find((sql) => sql.includes("keyword_search_fts MATCH"));
+    assert.match(candidateQuery, /bm25\(keyword_search_fts\)/);
+    assert.match(candidateQuery, /ORDER BY bm25\(keyword_search_fts\) ASC/);
+    assert.match(candidateQuery, /LIMIT \?/);
+    assert.equal(result.matches.length, 100);
+    assert.equal(result.matches[0].object_ref, "award:best");
+    assert.equal(result.matches[0].match_evidence.matched_normalized_term, "award");
   } finally {
     sqlite.close();
   }
