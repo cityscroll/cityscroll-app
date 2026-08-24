@@ -7,21 +7,14 @@ import { applyGeocode, normalizeHearing } from "./lib/hearings.mjs";
 import { withDistricts } from "./lib/council_district.mjs";
 import { meetingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
-import sharedMeetingSnapshot from "../../site/data/shared_meeting_read_model.json" with { type: "json" };
 import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
+import { loadMeetingRecord, loadMeetingRows } from "./lib/route_read_model_kv.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
 export const HEARINGS_SOURCE_EXTRACTION_VERSION = 2;
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
-const COMMUNITY_BOARD_SNAPSHOT = {
-  generated_at: sharedMeetingSnapshot?.sources?.community_board?.generated_at || null,
-  coverage: sharedMeetingSnapshot?.sources?.community_board?.coverage || null,
-  rows: Array.isArray(sharedMeetingSnapshot?.rows)
-    ? sharedMeetingSnapshot.rows.filter((row) => row?.source_system === "community_board")
-    : [],
-};
 export const CITY_RECORD_MEETING_SOURCE_FIELDS = Object.freeze([
   "request_id", "start_date", "agency_name", "type_of_notice_description", "section_name",
   "short_title", "event_date", "building_name", "street_address_1", "street_address_2",
@@ -160,10 +153,17 @@ export async function buildHearingView(fetchImpl = fetch, now = new Date(), opti
 
 export async function refreshHearings(env, fetchImpl = fetch, now = new Date(), options = {}) {
   if (!env.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
+  let communityBoardIndex = options.communityBoardIndex || null;
+  if (!communityBoardIndex && options.includeCommunityBoard === true) {
+    const rows = await loadMeetingRows(env, { todayISO: todayISO(now) });
+    communityBoardIndex = {
+      generated_at: rows.find((row) => row?.source_system === "community_board")?.source_receipt?.observed_at || null,
+      coverage: { source: "route-read-model", row_count: rows.length },
+      rows: rows.filter((row) => row?.source_system === "community_board"),
+    };
+  }
   const view = await buildHearingView(fetchImpl, now, {
-    communityBoardIndex: options.includeCommunityBoard === true || options.communityBoardIndex
-      ? (options.communityBoardIndex || COMMUNITY_BOARD_SNAPSHOT)
-      : null,
+    communityBoardIndex,
   });
   await env.ALERT_STATE.put(HEARINGS_KV_KEY, JSON.stringify(view));
   return { status: "success", ...view.counts };
@@ -228,10 +228,10 @@ export async function handleMeetingICS(request, env) {
     const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
     parsed = raw ? JSON.parse(raw) : null;
   } catch { parsed = null; }
-  const record = materializedMeetingForId([
-    ...materializedRows(parsed),
-    ...materializedRows(sharedMeetingSnapshot),
-  ], id);
+  let record = materializedMeetingForId(materializedRows(parsed), id);
+  if (!record) {
+    try { record = await loadMeetingRecord(env, id); } catch { record = null; }
+  }
   if (!record) return new Response("meeting not found", { status: 404 });
   const ics = meetingCalendarICS({
     ...record,

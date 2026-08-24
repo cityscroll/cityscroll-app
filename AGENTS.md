@@ -3762,6 +3762,17 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   is `worker/test/mcp_capability_adapter.test.mjs` and
   `worker/test/mcp_streamable_http_interop.test.mjs`.
 
+## Worker route read models
+
+- Near You and meeting corpora are not Worker imports. Build immutable keyed
+  slices with `node tools/build_worker_route_read_models.mjs --check`; CI publishes
+  slices before the versioned manifests to the existing `ALERT_STATE` KV namespace.
+  Request-path loading and isolate caching live in `worker/src/lib/route_read_model_kv.mjs`.
+  The deploy guard is `tools/worker_deploy_guard.mjs`: it enforces the 52 MiB
+  uncompressed Wrangler budget, prints the five largest inputs, and rejects empty
+  route-model canaries. Focused proof is `worker/test/route_read_model_kv.test.mjs`
+  and `test/worker_deploy_guard.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

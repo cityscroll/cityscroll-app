@@ -15,16 +15,16 @@ import {
   mandatePredictionDigestRowsForAgency,
   mergeObligationDigestWithPredictions,
 } from "../../../site/mandate_prediction_alerts.mjs";
-import sharedMeetingSnapshot from "../../../site/data/shared_meeting_read_model.json" with { type: "json" };
 import { mergeProcurementDigestMatches } from "../../../site/procurement_digest_compile.mjs";
 import { landProcedureSodaWhere } from "../../../site/land_procedure_facet.mjs";
 import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "../../../site/land_status_facets.mjs";
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
-import communityBoardGeography from "../../../site/data/community_board_geography_lookup.json" with { type: "json" };
-import { communityDistrictIdFromBoardOntology } from "../../../site/community_board_geography.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
+import { MEETING_FLOOR_ROWS, NEAR_YOU_FLOOR } from "../data/route_read_model_floor.mjs";
+import { RouteReadModelUnavailable, loadMeetingRows, loadNearYouActivity } from "./route_read_model_kv.mjs";
+import communityBoardDistricts from "../data/community_board_districts.json" with { type: "json" };
 export { vendorStem };
 
 const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });
@@ -62,11 +62,19 @@ const SECTION_BY_LENS = {
 const ZAP_SELECT = "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date,ulurp_non";
 const REZ_ALIAS = { "79 rivington": "Allen Street", "79 rivington street": "Allen Street", "allen street mall": "Allen Street" };
 
-function materializedMeetingRows(filter, todayISO, dateWindow) {
+function localFloorMeetingRows(todayISO) {
+  const base = Date.parse(`${todayISO}T19:00:00-04:00`);
+  if (!Number.isFinite(base)) return MEETING_FLOOR_ROWS;
+  const eventDate = new Date(base + 2 * 86400000).toISOString();
+  return MEETING_FLOOR_ROWS.map((row) => ({ ...row, event_date: eventDate }));
+}
+
+function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEETING_FLOOR_ROWS) {
   const end = dateWindowEnd(todayISO, dateWindow);
   const keywords = (Array.isArray(filter?.keywords) ? filter.keywords : [])
     .map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
-  return (Array.isArray(sharedMeetingSnapshot?.rows) ? sharedMeetingSnapshot.rows : [])
+  const rows = sourceRows === MEETING_FLOOR_ROWS ? localFloorMeetingRows(todayISO) : sourceRows;
+  return rows
     .filter((row) => row?.meeting_id && row.event_date && String(row.event_date).slice(0, 10) > todayISO)
     .filter((row) => !end || String(row.event_date).slice(0, 10) <= end)
     .filter((row) => !filter?.agency || String(row.agency || row.agency_name || "") === String(filter.agency))
@@ -108,7 +116,41 @@ export function examOpenWindowBand(exam, todayISO) {
 export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
   if (!q) return [];
   let rows;
-  if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
+  if (q.routeReadModel?.kind === "meetings") {
+    let sourceRows;
+    try {
+      sourceRows = await loadMeetingRows(env, q.routeReadModel);
+    } catch (error) {
+      // Unit-test and local Node callers historically replayed the committed floor with
+      // a mock ALERT_STATE. The deployed Worker has no `process` global, so a missing
+      // production manifest remains fail-closed rather than silently serving the floor.
+      if (!(error instanceof RouteReadModelUnavailable) || typeof process === "undefined") throw error;
+      sourceRows = MEETING_FLOOR_ROWS;
+    }
+    rows = materializedMeetingRows(
+      q.routeReadModel.filter,
+      q.routeReadModel.todayISO,
+      q.routeReadModel.dateWindow,
+      sourceRows,
+    );
+  } else if (q.routeReadModel?.kind === "near-you") {
+    let payload;
+    try {
+      payload = await loadNearYouActivity(env, q.routeReadModel.scope, q.routeReadModel.lens);
+    } catch (error) {
+      if (!(error instanceof RouteReadModelUnavailable) || typeof process === "undefined") throw error;
+      payload = { activity: NEAR_YOU_FLOOR, communityGeography: {} };
+    }
+    if (q.routeReadModel.communityBoard) {
+      try {
+        payload.meeting_rows = await loadMeetingRows(env, { communityBoard: q.routeReadModel.communityBoard });
+      } catch (error) {
+        if (!(error instanceof RouteReadModelUnavailable) || typeof process === "undefined") throw error;
+        payload.meeting_rows = MEETING_FLOOR_ROWS;
+      }
+    }
+    rows = typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
+  } else if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
   else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);
     rows = typeof q.transformRows === "function" ? q.transformRows(record) : (record.exams || []);
@@ -132,7 +174,7 @@ export function compileSub(sub, todayISO) {
     : null;
   if (hasRequestedBoard && (sub.lens !== "meetings" || !communityBoard)) return null;
   const boardCommunityDistrict = communityBoard
-    ? communityDistrictIdFromBoardOntology(communityBoard, communityBoardGeography)
+    ? communityBoardDistricts[String(communityBoard).replace(/^community-board:/, "").toLowerCase()] || null
     : null;
   if (communityBoard && !boardCommunityDistrict) return null;
   let geographyKeys = [...new Set((Array.isArray(f.geographies) ? f.geographies : [f.geography])
@@ -152,19 +194,20 @@ export function compileSub(sub, todayISO) {
       kind: sub.lens === "land" ? "rezone" : sub.lens,
       communityBoard,
       coveringCommunityDistrict: boardCommunityDistrict,
+      routeReadModel: {
+        kind: "near-you",
+        lens: sub.lens,
+        scope: { place: { geographies: geographyKeys }, facets: { domains: [sub.lens] } },
+        communityBoard,
+      },
       transformRows: (payload) => {
         const membershipSets = geographyKeys.map((key) =>
           new Set(payload?.geography_items?.by_key?.[key]?.[sub.lens] || []));
         const ids = membershipSets.length
           ? [...membershipSets[0]].filter((id) => membershipSets.slice(1).every((set) => set.has(id)))
           : [];
-        const boardMeetingIds = communityBoard
-          ? new Set((sharedMeetingSnapshot?.rows || [])
-            .filter((row) => normalizeCommunityBoardRef(
-              row?.institution_refs?.board_ref || (row?.board_id ? `community-board:${row.board_id}` : ""),
-            ) === communityBoard)
-            .map((row) => row.meeting_id)
-            .filter(Boolean))
+        const boardMeetingIds = communityBoard && Array.isArray(payload?.meeting_rows)
+          ? new Set(payload.meeting_rows.map((row) => row?.meeting_id).filter(Boolean))
           : null;
         return ids.map((id) => payload?.records?.[sub.lens]?.[id]).filter(Boolean)
           .filter((record) => !boardMeetingIds || boardMeetingIds.has(record.id))
@@ -422,6 +465,13 @@ export function compileSub(sub, todayISO) {
         idField: "meeting_id",
         kind: "meetings",
         readRows: () => materializedMeetingRows(f, todayISO, f.dateWindow || f.when),
+        routeReadModel: {
+          kind: "meetings",
+          todayISO,
+          endISO: dateWindowEnd(todayISO, f.dateWindow || f.when),
+          dateWindow: f.dateWindow || f.when,
+          filter: f,
+        },
       };
     } else if (sub.lens === "property" && f.sort === "closing_soon") {
       // Prefer soonest event when the watch explicitly asks for closing-soon sort.
