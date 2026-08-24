@@ -44,6 +44,25 @@ test("Worker deploy uses the pinned dry-run budget and read-model canary guard",
   assert.match(workflow, /route-read-model:meetings:manifest:v1/);
 });
 
+test("route read-model publishing resolves ALERT_STATE through the Worker Wrangler config", () => {
+  const workflow = read(".github/workflows/deploy-worker.yml");
+  const config = read("worker/wrangler.toml");
+  const start = workflow.indexOf("- name: Publish Near You and meeting route read models");
+  const end = workflow.indexOf("# Wrangler rewrites Cron Trigger configuration", start);
+  assert.ok(start >= 0 && end > start);
+  const publish = workflow.slice(start, end).replace(/\\\n/g, " ");
+  const kvCommands = publish
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("npx wrangler@4.110.0 kv "));
+  assert.equal(kvCommands.length, 3);
+  for (const command of kvCommands) {
+    assert.match(command, /--binding ALERT_STATE/);
+    assert.match(command, /--config worker\/wrangler\.toml/);
+  }
+  assert.match(config, /\[\[kv_namespaces\]\]\s+binding = "ALERT_STATE"/);
+});
+
 test("digest deploy guard covers trigger propagation before the cron", () => {
   assert.equal(digestDeployDelayMs(new Date("2026-08-03T12:39:59.999Z")), 0);
   assert.equal(digestDeployDelayMs(new Date("2026-08-03T12:40:00.000Z")), 25 * 60_000);
