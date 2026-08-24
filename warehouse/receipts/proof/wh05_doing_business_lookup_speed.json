@@ -1,4 +1,11 @@
 {
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "doing-business-entities",
+  "observed_at": "2026-08-24T08:25:03.900Z",
+  "status": "succeeded",
+  "run_id": "doing-business-entities:2026-08-24T08:25:03.900Z",
+  "publisher_clock_basis": "soda_resource_last_modified",
+  "publisher_updated_at": null,
   "phase": "WH-05",
   "measured_at": "2026-08-24T08:25:03.968Z",
   "replaces_live_fetch": {

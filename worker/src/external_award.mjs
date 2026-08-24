@@ -22,6 +22,7 @@ import {
   awardSourceFor, aboSources, awardKvKey,
   normalizeRecentAuthorityAwards, rankNychaAwardCandidates,
 } from "./lib/external_award.mjs";
+import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
 
 const SODA_NYC = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NY_RESOURCE = "https://data.ny.gov/resource/";
@@ -30,6 +31,11 @@ const CHECKBOOK = "https://www.checkbooknyc.com/api";
 
 const ABO_RECENT_LIMIT = 8;         // recent awards cached per source (matches the client's old $limit:8)
 const ABO_REFRESH_DAYS = 7;         // weekly gate — the sources refresh ~annually, daily buys nothing
+const ABO_CONTRACT_BY_DATASET = Object.freeze({
+  "8w5p-k45m": "abo-local-authorities",
+  "d84c-dk28": "abo-local-development-corporations",
+  "ehig-g5x3": "abo-state-authorities",
+});
 const NYCHA_PAGE = 25, NYCHA_MAX_PAGES = 8; // one notice's paginated Checkbook lookup (mirrors index.html)
 const PREWARM_MAX = 40;             // cron pre-warm cap per run — bounded, never a full-corpus backfill
 // Empty answers must not stick forever: a solicitation with no award yet should re-check after a
@@ -91,6 +97,9 @@ export async function refreshAboAwards(env, nowISO) {
   const refreshedCache = new Map(); // dataset -> refresh date (one metadata fetch per dataset)
   let updated = 0, failed = 0;
   for (const src of aboSources()) {
+    const observedAt = new Date().toISOString();
+    const sourceContractId = ABO_CONTRACT_BY_DATASET[src.dataset];
+    const runId = `worker:abo:${now}:${src.dataset}:${src.authority}`;
     try {
       if (!refreshedCache.has(src.dataset)) refreshedCache.set(src.dataset, await datasetRefreshedISO(src.dataset));
       const rows = await soda(`${NY_RESOURCE}${src.dataset}.json`, {
@@ -104,8 +113,31 @@ export async function refreshAboAwards(env, nowISO) {
         dataset: src.dataset, authority: src.authority,
         refreshed: refreshedCache.get(src.dataset), awards,
       }));
+      await recordSourceAcquisitionReceipt(env, {
+        source_contract_id: sourceContractId,
+        observed_at: observedAt,
+        status: "succeeded",
+        run_id: runId,
+        publisher_clock_basis: "publisher_metadata",
+        publisher_updated_at: refreshedCache.get(src.dataset),
+        adapter: "worker-refreshAboAwards",
+      });
       updated++;
-    } catch {
+    } catch (error) {
+      if (sourceContractId) {
+        try {
+          await recordSourceAcquisitionReceipt(env, {
+            source_contract_id: sourceContractId,
+            observed_at: new Date().toISOString(),
+            status: "failed",
+            run_id: runId,
+            publisher_clock_basis: null,
+            publisher_updated_at: null,
+            adapter: "worker-refreshAboAwards",
+            exact_error: String(error?.message || error),
+          });
+        } catch { /* receipt failure must not erase the source's prior cache */ }
+      }
       failed++; // leave the previous KV value in place — a transient outage must not blank a source
     }
   }
