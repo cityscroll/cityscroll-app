@@ -31,7 +31,6 @@ function json(value) {
 
 function statementsForSearch(doc) {
   const lines = [
-    "BEGIN;",
     "DELETE FROM keyword_search_fts;",
     "DELETE FROM keyword_search_documents;",
     "DELETE FROM keyword_search_families;",
@@ -48,7 +47,7 @@ function statementsForSearch(doc) {
       lines.push(`INSERT INTO keyword_search_fts (document_id, family_id, search_text) VALUES (${sqlString(documentId)}, ${sqlString(familyId)}, ${sqlString(searchText)});`);
     }
   }
-  lines.push("COMMIT;", "");
+  lines.push("");
   return lines.join("\n");
 }
 
@@ -58,11 +57,11 @@ function rowKey(row, ordinal) {
 }
 
 function statementsForOcp(doc) {
-  const lines = ["BEGIN;", "DELETE FROM ocp_awards_warehouse;"];
+  const lines = ["DELETE FROM ocp_awards_warehouse;"];
   for (const [ordinal, row] of (doc?.rows || []).entries()) {
     lines.push(`INSERT INTO ocp_awards_warehouse (row_key, request_id, start_date, agency_name, type_of_notice_description, short_title, pin, contract_amount, vendor_name) VALUES (${sqlString(rowKey(row, ordinal))}, ${nullable(row.request_id)}, ${nullable(row.start_date)}, ${nullable(row.agency_name)}, ${nullable(row.type_of_notice_description)}, ${nullable(row.short_title)}, ${nullable(row.pin == null ? null : String(row.pin).trim())}, ${nullable(row.contract_amount)}, ${nullable(row.vendor_name)});`);
   }
-  lines.push("COMMIT;", "");
+  lines.push("");
   return lines.join("\n");
 }
 
