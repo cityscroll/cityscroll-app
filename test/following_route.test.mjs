@@ -52,3 +52,24 @@ test("Following topic+place watch combines subject and place in a scannable sent
   assert.match(html, /<dt>Place<\/dt>.*Brooklyn/s);
   assert.match(html, /<dt>Agency<\/dt>.*Housing Preservation and Development/s);
 });
+
+test("district watches make the Community Board picker discoverable", () => {
+  const districtHtml = renderFollowingDocument(buildFollowingViewModel({
+    lens: "district",
+    filter: { councilDistrict: "7" },
+    requested: true,
+  }));
+
+  assert.match(districtHtml, /Not a Community Board\. Boards are 1–18 in each borough/);
+  assert.match(districtHtml, /<a href="https:\/\/cityscroll\.org\/following\?lens=meetings(?:&amp;|&)filter=%7B%7D(?:&amp;|&)freq=daily">Choose a Community Board watch<\/a>/);
+
+  const meetingsHtml = renderFollowingDocument(buildFollowingViewModel({
+    lens: "meetings",
+    filter: {},
+    requested: true,
+  }));
+
+  assert.match(meetingsHtml, /<details class="following-refinements" open>/);
+  assert.match(meetingsHtml, /name="boardBorough"/);
+  assert.match(meetingsHtml, /name="boardNumber"/);
+});

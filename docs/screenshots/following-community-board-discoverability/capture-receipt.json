@@ -1,0 +1,14 @@
+{
+  "route": "/following?lens=district&council=7",
+  "captured_before": "https://cityscroll.org/following?lens=district&council=7",
+  "captured_after": "local renderer from the committed branch",
+  "viewports": [
+    390,
+    1440
+  ],
+  "captures": [
+    "before-district",
+    "after-district",
+    "after-community-board-picker"
+  ]
+}
