@@ -12,16 +12,16 @@ import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
 import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compile.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
+import {
+  attachCoherenceReceipt,
+  sourceModelFingerprint,
+} from "./lib/procurement_index_coherence.mjs";
 
 const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta.url);
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
-
-function json(url) {
-  return JSON.parse(readFileSync(url, "utf8"));
-}
 
 function norm(value) {
   return String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -112,7 +112,7 @@ export function procurementSourceRecordsFromMaterializations(spine, awards) {
   ];
 }
 
-export function buildProcurementArtifacts(spine, awards) {
+export function buildProcurementArtifacts(spine, awards, options = {}) {
   const sourceRecords = procurementSourceRecordsFromMaterializations(spine, awards);
   const publication = describeCrolAwardPublication({
     now: spine?.generated_at || null,
@@ -125,7 +125,7 @@ export function buildProcurementArtifacts(spine, awards) {
   const checkbookLookupRows = Array.isArray(spine?.rows?.checkbook_contracts)
     ? spine.rows.checkbook_contracts
     : [];
-  const model = {
+  const unsigned = {
     ...buildSharedProcurementReadModel({
       sourceRecords,
       checkbookLookupRows,
@@ -134,7 +134,16 @@ export function buildProcurementArtifacts(spine, awards) {
     }),
     publication,
   };
-  const corpus = buildProcurementSearchDocuments(model);
+  const corpus = buildProcurementSearchDocuments(unsigned);
+  const fingerprint = options.sourceModelFingerprint || sourceModelFingerprint({
+    spineBytes: options.spineBytes || Buffer.from(JSON.stringify(spine)),
+    awardsBytes: options.awardsBytes || Buffer.from(JSON.stringify(awards)),
+  });
+  const model = attachCoherenceReceipt(unsigned, {
+    sourceModelFingerprint: fingerprint,
+    advertisedRefs: corpus.documents.map((document) => document.object_ref),
+    selectedRowCount: sourceRecords.length,
+  });
   const browse = {
     schema: "cityscroll.procurement_browse_rows.v1",
     generated_at: model.generated_at,
@@ -156,7 +165,13 @@ function serialized(value) {
 }
 
 function main() {
-  const { model, browse, digest } = buildProcurementArtifacts(json(SPINE), json(AWARDS));
+  const spineBytes = readFileSync(SPINE);
+  const awardsBytes = readFileSync(AWARDS);
+  const { model, browse, digest } = buildProcurementArtifacts(
+    JSON.parse(spineBytes.toString("utf8")),
+    JSON.parse(awardsBytes.toString("utf8")),
+    { spineBytes, awardsBytes },
+  );
   const outputs = [
     [MODEL_OUT, serialized(model)],
     [BROWSE_OUT, serialized(browse)],

@@ -108,6 +108,7 @@ const standards = [
   ["node", "tools/build_land_upcoming_hearings.mjs", ["--check"]],
   ["node", "warehouse/scripts/dcas_vehicle_auctions.mjs", ["--check"]],
   ["node", "tools/check_public_payload_integrity.mjs", []],
+  ["node", "tools/check_procurement_index_coherence.mjs", []],
 ];
 for (const [kind, path, toolArgs] of standards) {
   const absolutePath = join(sourceDir, path);
