@@ -3423,6 +3423,8 @@
       ],
       "max_stale_days": 400,
       "publisher_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
+      "acquisition_cadence": "Weekly",
+      "acquisition_cadence_days": 7,
       "product_freshness": "Worker re-fetches the full entity list during the daily vendor-profile rebuild and attaches stem-joined rows to matching profiles. Schema probes tolerate multi-month publisher lag via max_stale_days.",
       "used_for": "Vendor identity enrichment on vendor profiles: Doing Business Search listing, ownership structure, organization phone, and doing-business start date when organization_name stems match a City Record award vendor.",
       "join_keys": [

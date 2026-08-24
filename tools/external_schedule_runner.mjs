@@ -9,6 +9,11 @@ import {
   persistScheduleResult,
   replayOutbox,
 } from "./external_schedule_outbox.mjs";
+import { loadSourceContracts } from "./source_contracts.mjs";
+import {
+  buildSourceHealthObservations,
+  loadSourceHealthInputs,
+} from "./source_health_observations.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const JOBS_PATH = join(ROOT, "tools", "external_schedule_jobs.json");
@@ -96,7 +101,43 @@ async function runSourceContracts(job, context) {
   const failures = sourceFailures(output);
   const healthy = sourceHealthy(output);
   const observed = new Date().toISOString();
-  const result = { observed_at: observed, status: resultRun.code === 0 ? "healthy" : "degraded", command_exit: resultRun.code, failures, healthy, body: output.slice(-12000) };
+  const receipts = [
+    ...healthy.map((id) => ({
+      schema: "cityscroll.source_acquisition_receipt.v1",
+      source_contract_id: id,
+      observed_at: observed,
+      status: "succeeded",
+      run_id: `${context.runKey}:${id}`,
+      publisher_clock_basis: null,
+      publisher_updated_at: null,
+      clock_kind: "check",
+    })),
+    ...failures.map((failure) => ({
+      schema: "cityscroll.source_acquisition_receipt.v1",
+      source_contract_id: failure.id,
+      observed_at: observed,
+      status: "failed",
+      run_id: `${context.runKey}:${failure.id}`,
+      publisher_clock_basis: null,
+      publisher_updated_at: null,
+      clock_kind: "check",
+      exact_error: failure.detail,
+    })),
+  ];
+  const result = {
+    observed_at: observed,
+    status: resultRun.code === 0 ? "healthy" : "degraded",
+    command_exit: resultRun.code,
+    failures,
+    healthy,
+    receipts,
+    scheduler_heartbeat: {
+      observed_at: observed,
+      status: "succeeded",
+      run_id: context.runKey,
+    },
+    body: output.slice(-12000),
+  };
   const intents = failures.map((failure) => ({
     result,
     issue: issueIntent(job, context.runKey, { ...result, body: [`Classification: ${classify(failure.detail)}.`, `Source contract: ${failure.id}.`, `Detail: ${failure.detail}`].join("\n") }, "open", {
@@ -118,6 +159,34 @@ async function runSourceContracts(job, context) {
     });
   }
   return { result, intents };
+}
+
+async function runFreshnessWatchdog(job, context) {
+  const registry = loadSourceContracts();
+  const inputs = loadSourceHealthInputs(ROOT, registry, { externalScheduleStateDir: context.stateDir });
+  const projection = buildSourceHealthObservations(registry, { ...inputs, asOf: context.now.toISOString() });
+  const stale = projection.observations
+    .filter((row) => row.freshness_watchdog?.status === "STALE")
+    .map((row) => ({
+      source_contract_id: row.source_id,
+      observed_at: row.freshness_watchdog.observed_at,
+      status: "failed",
+      run_id: row.freshness_watchdog.receipts?.[0]?.run_id || null,
+      reasons: row.freshness_watchdog.reason_codes,
+    }));
+  const healthy = stale.length === 0;
+  const result = {
+    observed_at: context.now.toISOString(),
+    status: healthy ? "healthy" : "degraded",
+    stale_sources: stale,
+    body: healthy
+      ? "Source evidence freshness watchdog is current."
+      : `Source evidence freshness is STALE for ${stale.length} source contract(s).`,
+  };
+  return {
+    result,
+    issue: issueIntent(job, context.runKey, result, healthy ? "close" : "open"),
+  };
 }
 
 function sanitize(value) {
@@ -154,6 +223,7 @@ export async function runScheduledJob(job, options = {}) {
   let output;
   if (job.runner === "action-links") output = await runActionLinks(job, context);
   else if (job.runner === "source-contracts") output = await runSourceContracts(job, context);
+  else if (job.runner === "source-freshness") output = await runFreshnessWatchdog(job, context);
   else if (job.runner === "digest-shadow") output = await runDigestShadow(job, context);
   else throw new Error(`unknown external schedule runner: ${job.runner}`);
   if (output.intents) {

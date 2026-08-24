@@ -87,8 +87,42 @@ import { handleNearYou } from "./near_you.mjs";
 import { handleFollowing } from "./following.mjs";
 import { handleSearch } from "./search.mjs";
 import { handleSemanticCandidates } from "./semantic_candidates.mjs";
+import { recordSourceAcquisitionReceipt } from "./lib/source_acquisition_receipt.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
+
+async function withWorkerAcquisitionReceipt(env, sourceContractId, runId, work) {
+  try {
+    const result = await work();
+    const status = result?.status === "failed" || result?.status === "error" || result?.ok === false
+      ? "failed"
+      : "succeeded";
+    await recordSourceAcquisitionReceipt(env, {
+      source_contract_id: sourceContractId,
+      observed_at: new Date().toISOString(),
+      status,
+      run_id: runId,
+      publisher_clock_basis: status === "succeeded" && result?.publisher_updated_at ? "publisher_response" : null,
+      publisher_updated_at: status === "succeeded" ? result?.publisher_updated_at || null : null,
+      adapter: "worker-scheduled-refresh",
+    });
+    return result;
+  } catch (error) {
+    try {
+      await recordSourceAcquisitionReceipt(env, {
+        source_contract_id: sourceContractId,
+        observed_at: new Date().toISOString(),
+        status: "failed",
+        run_id: runId,
+        publisher_clock_basis: null,
+        publisher_updated_at: null,
+        adapter: "worker-scheduled-refresh",
+        exact_error: String(error?.message || error),
+      });
+    } catch { /* receipt failure must not mask the source failure */ }
+    throw error;
+  }
+}
 
 export default {
   async fetch(request, env, ctx) {
@@ -179,23 +213,24 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    const runId = `worker:${event.cron}:${new Date().toISOString()}`;
     // Morning live-derived caches: sell-facing ZAP lookup, upcoming hearings, and
     // staffing exams. Public SODA / OASys only — keep these off the 13:00 digest chain.
     if (event.cron === "0 8 * * *") {
       try {
-        const r = await refreshZapProjectsLookup(env);
+        const r = await withWorkerAcquisitionReceipt(env, "zap-projects", runId, () => refreshZapProjectsLookup(env));
         console.log("land zap lookup:", JSON.stringify(r));
       } catch (error) {
         console.error("land zap lookup refresh failed:", String(error?.message || error));
       }
       try {
-        const r = await refreshLandUpcomingHearings(env);
+        const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshLandUpcomingHearings(env));
         console.log("land upcoming hearings:", JSON.stringify(r));
       } catch (error) {
         console.error("land upcoming hearings refresh failed:", String(error?.message || error));
       }
       try {
-        const r = await refreshStaffingExams(env);
+        const r = await withWorkerAcquisitionReceipt(env, "dcas-exam-notices", runId, () => refreshStaffingExams(env));
         console.log("staffing exams:", JSON.stringify(r));
       } catch (error) {
         console.error("staffing exams refresh failed:", String(error?.message || error));
@@ -209,7 +244,7 @@ export default {
         // Match the send cron's source freshness: refresh the notices mirror first, then let
         // runAlerts use the same D1/SODA selection logic it will use at 09:00.
         try {
-          const result = await ingestNotices(env);
+          const result = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => ingestNotices(env));
           console.log("digest shadow ingest:", JSON.stringify(result));
           const prewarm = await prewarmNotices(env, result?.noticeRequestIds);
           console.log("digest shadow notice prewarm:", JSON.stringify(prewarm));
@@ -252,7 +287,7 @@ export default {
     // block the digest run — alerts fall back to querying Socrata live anyway).
     let ingestResult = null;
     try {
-      ingestResult = await ingestNotices(env);
+      ingestResult = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => ingestNotices(env));
       console.log("ingest:", JSON.stringify(ingestResult));
     } catch (e) {
       console.error("ingest failed (alerts continue):", String(e?.message || e));
@@ -300,7 +335,7 @@ export default {
     // PASSPort Public contracts + RFx: rebuild the edge materialization from the portal's
     // dataJs dumps before lifecycle prewarm so PIN↔EPIN joins see today's rows. Fail-soft.
     try {
-      const r = await ingestPassportPublic(env);
+      const r = await withWorkerAcquisitionReceipt(env, "passport-public-contracts", runId, () => ingestPassportPublic(env));
       console.log("passport public ingest:", JSON.stringify(r));
     } catch (e) {
       console.error("passport public ingest failed (digest continues):", String(e?.message || e));
@@ -334,7 +369,7 @@ export default {
     // suggestion counts are not a request-time 6.8M employee fetch. Fail-soft —
     // a bad write leaves yesterday's KV (or the committed twin) in place.
     try {
-      const r = await refreshPayrollTitleMart(env);
+      const r = await withWorkerAcquisitionReceipt(env, "citywide-payroll", runId, () => refreshPayrollTitleMart(env));
       console.log("payroll title mart:", JSON.stringify(r));
     } catch (e) {
       console.error("payroll title mart refresh failed (digest continues):", String(e?.message || e));
@@ -353,19 +388,19 @@ export default {
     // public events. A daily refresh keeps location extraction and GeoSearch work off the
     // browser path; a stale view remains usable if either upstream is briefly unavailable.
     try {
-      const r = await refreshHearings(env, undefined, undefined, { includeCommunityBoard: true });
+      const r = await withWorkerAcquisitionReceipt(env, "city-record", runId, () => refreshHearings(env, undefined, undefined, { includeCommunityBoard: true }));
       console.log("hearings:", JSON.stringify(r));
     } catch (e) {
       console.error("hearing refresh failed (digest continues):", String(e?.message || e));
     }
     try {
-      const r = await refreshProperties(env);
+      const r = await withWorkerAcquisitionReceipt(env, "nyc-property-address-directory", runId, () => refreshProperties(env));
       console.log("properties:", JSON.stringify(r));
     } catch (e) {
       console.error("Property refresh failed (digest continues):", String(e?.message || e));
     }
     try {
-      const r = await refreshMeetingOutcomes(env);
+      const r = await withWorkerAcquisitionReceipt(env, "nyc-council-legistar", runId, () => refreshMeetingOutcomes(env));
       console.log("meeting outcomes:", JSON.stringify(r));
     } catch (e) {
       console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
@@ -374,7 +409,7 @@ export default {
     // Noticed, Active, Filed — capped). Cold GET /zap-outcomes fans out to ZAP API + SODA and
     // takes ~12s; warm KV hits are sub-second. Fail-soft; un-warmed ids still compute-on-miss.
     try {
-      const r = await refreshZapOutcomes(env);
+      const r = await withWorkerAcquisitionReceipt(env, "zap-api-outcomes", runId, () => refreshZapOutcomes(env));
       console.log("zap outcomes prewarm:", JSON.stringify(r));
     } catch (e) {
       console.error("zap outcomes prewarm failed (digest continues):", String(e?.message || e));
@@ -383,7 +418,7 @@ export default {
     // RSS lifecycle records. RSS enrichment is fail-soft — a stale or unreachable feed
     // leaves the view with City Record notices only, and the join gap is explicit.
     try {
-      const r = await refreshRules(env);
+      const r = await withWorkerAcquisitionReceipt(env, "nyc-rules-rss", runId, () => refreshRules(env));
       console.log("rules:", JSON.stringify(r));
     } catch (e) {
       console.error("rules refresh failed (digest continues):", String(e?.message || e));
@@ -392,7 +427,7 @@ export default {
     // Award history. Publish versioned KV buckets before the manifest so readers never depend
     // on a partially-built generation; any failure leaves the live Socrata resolver available.
     try {
-      const r = await refreshVendorProfiles(env);
+      const r = await withWorkerAcquisitionReceipt(env, "doing-business-entities", runId, () => refreshVendorProfiles(env));
       console.log("vendor profiles:", JSON.stringify(r));
     } catch (e) {
       console.error("vendor profile refresh failed (digest continues):", String(e?.message || e));

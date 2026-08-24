@@ -23,6 +23,7 @@ const CORE_INPUTS = [
   "worker/wrangler.toml",
   "worker/src/worker.mjs",
   "worker/src/external_award.mjs",
+  "tools/external_schedule_jobs.json",
 ];
 
 const WORKER_JOBS = {
@@ -245,6 +246,16 @@ function deskHealthFor(contract, observation, ingest, researchState) {
   };
   const reasonCodes = Array.isArray(health?.reason_codes) ? health.reason_codes : [];
   const runs = normalizedOperatorRuns(observation);
+  const operatorClocks = observation?.operator?.clocks || {};
+  const freshnessWatchdog = observation?.freshness_watchdog || {
+    status: "UNKNOWN",
+    reason_codes: ["missing-freshness-watchdog"],
+    source_contract_id: contract.id,
+    observed_at: null,
+    scheduler_heartbeat: { observed_at: null, status: "unknown", run_id: null },
+    acquisition: { observed_at: null, cadence_days: null, age_days: null },
+    receipts: [],
+  };
   const receipts = (observation?.evidence || []).map((item) => ({
     kind: String(item?.kind || "receipt"),
     path: item?.path ? String(item.path) : null,
@@ -254,6 +265,18 @@ function deskHealthFor(contract, observation, ingest, researchState) {
     (Date.parse(right.at || "") || 0) - (Date.parse(left.at || "") || 0)
     || compareText(left.kind, right.kind)
     || compareText(left.path || "", right.path || "")
+  ));
+  const acquisitionReceipts = (observation?.operator?.acquisition_receipts || []).map((receipt) => ({
+    source_contract_id: String(receipt?.source_contract_id || contract.id),
+    observed_at: typeof receipt?.observed_at === "string" ? receipt.observed_at : null,
+    status: String(receipt?.status || "unknown"),
+    run_id: receipt?.run_id ? String(receipt.run_id) : null,
+    publisher_clock_basis: receipt?.publisher_clock_basis || null,
+    publisher_updated_at: receipt?.publisher_updated_at || null,
+    clock_kind: receipt?.clock_kind || "acquisition",
+  })).sort((left, right) => (
+    (Date.parse(right.observed_at || "") || 0) - (Date.parse(left.observed_at || "") || 0)
+    || compareText(left.run_id || "", right.run_id || "")
   ));
   const adapters = [...new Set([
     ingest.job,
@@ -276,6 +299,20 @@ function deskHealthFor(contract, observation, ingest, researchState) {
     contract_fingerprint: observation?.contract_fingerprint || null,
     health: { ...health, clocks },
     clocks,
+    freshness_clocks: {
+      checked: operatorClocks.checked || unknownClock(),
+      acquired: operatorClocks.acquired || unknownClock(),
+      scheduler_heartbeat: operatorClocks.scheduler_heartbeat || unknownClock(),
+    },
+    freshness_watchdog: freshnessWatchdog,
+    freshness_events: [
+      ...acquisitionReceipts,
+      ...(freshnessWatchdog.receipts || []),
+    ].sort((left, right) => (
+      (Date.parse(right.observed_at || "") || 0) - (Date.parse(left.observed_at || "") || 0)
+      || compareText(left.source_contract_id || "", right.source_contract_id || "")
+      || compareText(left.run_id || "", right.run_id || "")
+    )),
     adapters,
     runs,
     exact_errors: runs.map((run) => run.exact_error).filter(Boolean),
@@ -671,13 +708,16 @@ function selectSource(id){
   const gap=s.known_gap?'<h3>Known gap</h3><p>'+escapeHtml(s.known_gap)+'</p>':'';
   const reasons=(s.health?.reason_codes||[]).length?'<br><small>'+s.health.reason_codes.map(escapeHtml).join(' · ')+'</small>':'';
   const clocks='<ul>'+clockLine('Publisher updated',s.clocks?.publisher_updated)+clockLine('CityScroll checked / acquired',s.clocks?.cityscroll_checked_acquired)+clockLine('CityScroll serving',s.clocks?.cityscroll_serving)+'</ul>';
+  const freshnessClocks='<ul>'+clockLine('Acquisition',s.freshness_clocks?.acquired)+clockLine('Scheduler heartbeat',s.freshness_clocks?.scheduler_heartbeat)+'</ul>';
+  const watchdog=s.freshness_watchdog||{};
+  const freshnessEvents=(s.freshness_events||[]).length?'<ol>'+s.freshness_events.map(event=>'<li><strong>'+escapeHtml(event.status||'unknown')+'</strong> · '+atText(event.observed_at)+'<br><small>'+escapeHtml(event.source_contract_id||s.id)+(event.run_id?' · '+escapeHtml(event.run_id):'')+(event.state?' · '+escapeHtml(event.state):'')+'</small></li>').join('')+'</ol>':'<p>No canonical freshness event is available.</p>';
   const adapters=(s.adapters||[]).length?'<ul>'+s.adapters.map(a=>'<li>'+escapeHtml(a)+'</li>').join('')+'</ul>':'<p>No adapter declared.</p>';
   const runs=(s.runs||[]).length?'<ol>'+s.runs.map(run=>'<li><strong>'+escapeHtml(run.status)+'</strong> · '+atText(run.at)+'<br><small>'+escapeHtml(run.adapter)+(run.run_id?' · '+escapeHtml(run.run_id):'')+(run.receipt_ref?' · '+escapeHtml(run.receipt_ref):'')+'</small>'+(run.exact_error?'<pre>'+escapeHtml(run.exact_error)+'</pre>':'')+'</li>').join('')+'</ol>':'<p>No run receipt is available.</p>';
   const receipts=(s.receipts||[]).length?'<ol>'+s.receipts.map(receipt=>'<li><strong>'+escapeHtml(receipt.kind)+'</strong> · '+escapeHtml(receipt.status)+'<br><small>'+atText(receipt.at)+(receipt.path?' · '+escapeHtml(receipt.path):'')+'</small></li>').join('')+'</ol>':'<p>No receipt is available.</p>';
   const fallback=s.serving_fallback?.active?'<strong>Active:</strong> '+escapeHtml(s.serving_fallback.status)+(s.serving_fallback.valid?' · valid last-known-good':' · validity unknown'):'Not active';
   const join=s.join_gate||{};
   const notes=(s.operator_notes||[]).length?'<h3>Operator notes</h3><ul>'+s.operator_notes.map(note=>'<li>'+escapeHtml(note)+'</li>').join('')+'</ul>':'';
-  details.innerHTML='<div class="eyebrow">'+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · '+escapeHtml(s.delivery_tier)+'</p><h3>Health</h3><p><strong>'+escapeHtml(s.health?.status||'Unknown')+'</strong>'+reasons+'<br><small>contract '+escapeHtml(s.contract_fingerprint||'UNKNOWN')+'</small></p><h3>Collecting body</h3><p>'+escapeHtml(s.body)+'</p><h3>Endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Adapters</h3>'+adapters+'<h3>Our ingest</h3><p><strong>'+escapeHtml(s.ingest.job)+'</strong><br>'+escapeHtml(s.ingest.cadence)+'<br>'+escapeHtml(s.ingest.transform)+'</p><h3>Three clocks</h3>'+clocks+'<h3>Serving fallback</h3><p>'+fallback+'</p><h3>Runs and exact errors</h3>'+runs+'<h3>Receipts</h3>'+receipts+'<h3>Join gate</h3><p><strong>'+escapeHtml(join.status||'unknown')+'</strong> · '+escapeHtml(join.join_status||'unknown')+'<br><small>rows '+escapeHtml(join.row_count??'UNKNOWN')+' · measured '+atText(join.measured_at)+'</small></p><h3>Freshness contract</h3><p><strong>Publisher cadence:</strong> '+escapeHtml(s.publisher_cadence)+'<br>'+escapeHtml(s.approach)+freshness+'</p><h3>Coverage</h3><p>'+escapeHtml(s.coverage)+'</p>'+notes+gap+wishlist+'<h3>Surfaces</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';
+  details.innerHTML='<div class="eyebrow">'+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · '+escapeHtml(s.delivery_tier)+'</p><h3>Health</h3><p><strong>'+escapeHtml(s.health?.status||'Unknown')+'</strong>'+reasons+'<br><small>contract '+escapeHtml(s.contract_fingerprint||'UNKNOWN')+'</small></p><h3>Freshness watchdog</h3><p><strong>'+escapeHtml(watchdog.status||'UNKNOWN')+'</strong>'+(watchdog.reason_codes?.length?'<br><small>'+watchdog.reason_codes.map(escapeHtml).join(' · ')+'</small>':'')+'</p><h3>Collecting body</h3><p>'+escapeHtml(s.body)+'</p><h3>Endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Adapters</h3>'+adapters+'<h3>Our ingest</h3><p><strong>'+escapeHtml(s.ingest.job)+'</strong><br>'+escapeHtml(s.ingest.cadence)+'<br>'+escapeHtml(s.ingest.transform)+'</p><h3>Three clocks</h3>'+clocks+'<h3>Acquisition and scheduler clocks</h3>'+freshnessClocks+'<h3>Freshness events</h3>'+freshnessEvents+'<h3>Serving fallback</h3><p>'+fallback+'</p><h3>Runs and exact errors</h3>'+runs+'<h3>Receipts</h3>'+receipts+'<h3>Join gate</h3><p><strong>'+escapeHtml(join.status||'unknown')+'</strong> · '+escapeHtml(join.join_status||'unknown')+'<br><small>rows '+escapeHtml(join.row_count??'UNKNOWN')+' · measured '+atText(join.measured_at)+'</small></p><h3>Freshness contract</h3><p><strong>Publisher cadence:</strong> '+escapeHtml(s.publisher_cadence)+'<br>'+escapeHtml(s.approach)+freshness+'</p><h3>Coverage</h3><p>'+escapeHtml(s.coverage)+'</p>'+notes+gap+wishlist+'<h3>Surfaces</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';
   render();
 }
 function highlight(id){svg.querySelectorAll(".edge").forEach(node=>node.classList.toggle("active",node.classList.contains("edge-"+CSS.escape(id))))}

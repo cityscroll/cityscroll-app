@@ -21,6 +21,12 @@
       "issue_title_prefix": "Live civic-data source contract drift"
     },
     {
+      "id": "source-freshness-watchdog",
+      "schedule": ["30 10 * * *"],
+      "runner": "source-freshness",
+      "issue_title": "Source evidence freshness is stale"
+    },
+    {
       "id": "digest-shadow-monitor",
       "schedule": ["10 10 * * *", "10 13 * * *"],
       "runner": "digest-shadow",
