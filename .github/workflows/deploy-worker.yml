@@ -87,12 +87,12 @@ jobs:
           route_dir="$RUNNER_TEMP/crol-worker-route-read-models"
           for bulk_file in "$route_dir"/near-you.bulk.*.json "$route_dir"/meetings.bulk.*.json; do
             [ -f "$bulk_file" ] || continue
-            npx wrangler@4.110.0 kv bulk put "$bulk_file" --binding ALERT_STATE --remote
+            npx wrangler@4.110.0 kv bulk put "$bulk_file" --binding ALERT_STATE --remote --config worker/wrangler.toml
           done
           npx wrangler@4.110.0 kv key put route-read-model:near-you:manifest:v1 \
-            --path "$route_dir/near-you.manifest.json" --binding ALERT_STATE --remote
+            --path "$route_dir/near-you.manifest.json" --binding ALERT_STATE --remote --config worker/wrangler.toml
           npx wrangler@4.110.0 kv key put route-read-model:meetings:manifest:v1 \
-            --path "$route_dir/meetings.manifest.json" --binding ALERT_STATE --remote
+            --path "$route_dir/meetings.manifest.json" --binding ALERT_STATE --remote --config worker/wrangler.toml
       # Wrangler rewrites Cron Trigger configuration on every deploy. Cloudflare says
       # trigger changes can take up to 15 minutes to propagate, so a deploy immediately
       # before 13:00 UTC can suppress that day's digest invocation.
