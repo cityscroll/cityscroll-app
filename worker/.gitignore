@@ -1,6 +1,7 @@
 node_modules/
 .netlify/
 .wrangler/
+.d1-read-models/
 .env
 .env.*
 !.env.example

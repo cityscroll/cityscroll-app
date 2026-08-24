@@ -4,6 +4,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   lookupOcpFromWarehouseMaterialization,
   warehouseMaterializationMeta,
@@ -12,18 +13,40 @@ import {
 } from "../src/lib/ocp_warehouse_lookup.mjs";
 import { fetchOcpAwardRows } from "../src/checkbook_lifecycle.mjs";
 
+const MATERIALIZATION = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
+
+function d1ForRows(rows) {
+  return {
+    prepare(sql) {
+      let args = [];
+      const statement = {
+        bind(...values) { args = values; return statement; },
+        async all() {
+          const key = String(args[0] || "");
+          const byRequest = sql.includes("request_id") && !sql.includes("pin = ? OR pin = ? OR pin = ?");
+          const matches = rows.filter((row) => byRequest
+            ? String(row.request_id || "") === key
+            : [key, key.toLowerCase(), key.toUpperCase()].includes(String(row.pin || "")));
+          return { results: matches.slice(0, byRequest ? 5 : 10) };
+        },
+      };
+      return statement;
+    },
+  };
+}
+
 test("committed materialization includes OCP field-case demos", () => {
-  const meta = warehouseMaterializationMeta();
+  const meta = warehouseMaterializationMeta(MATERIALIZATION);
   assert.equal(meta.schema_version, 1);
   assert.ok(meta.row_count >= 3);
-  const index = getOcpWarehouseIndex();
+  const index = getOcpWarehouseIndex(MATERIALIZATION);
   assert.ok(index.byRequestId.has("20260723031"));
 });
 
 test("warehouse materialization hits without network", () => {
   const hit = lookupOcpFromWarehouseMaterialization({
     request_id: "20260723031",
-  });
+  }, MATERIALIZATION);
   assert.equal(hit.hit, true);
   assert.equal(hit.path, "warehouse");
   assert.equal(hit.join_key, "request_id");
@@ -48,7 +71,7 @@ test("fetchOcpAwardRows uses warehouse path for materialization hits", async () 
     throw new Error("SODA should not be called on warehouse hit");
   };
   try {
-    const r = await fetchOcpAwardRows({ request_id: "20260723031" });
+    const r = await fetchOcpAwardRows({ request_id: "20260723031" }, { db: d1ForRows(MATERIALIZATION.rows) });
     assert.equal(r.ok, true);
     assert.equal(r.lookup_path, "warehouse");
     assert.equal(r.rows[0].vendor_name, "Make it Zesty LLC");
@@ -85,7 +108,7 @@ test("fetchOcpAwardRows falls back to live SODA on materialization miss", async 
     return { ok: true, status: 200, json: async () => [] };
   };
   try {
-    const r = await fetchOcpAwardRows({ request_id: "19990101000" });
+    const r = await fetchOcpAwardRows({ request_id: "19990101000" }, { db: d1ForRows(MATERIALIZATION.rows) });
     assert.equal(r.ok, true);
     assert.equal(r.lookup_path, "soda");
     assert.equal(sawOcp, true);
