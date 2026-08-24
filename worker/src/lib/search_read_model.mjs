@@ -1,6 +1,9 @@
 import { matchKeywordDocument, searchKeywordDocuments } from "../../../site/keyword_matcher.mjs";
 
-const FAMILY_LIMIT = 20_000;
+// Keep the D1 payload bounded even when callers ask for a larger family
+// snapshot. The public search route returns at most 100 results, and the FTS
+// rank is the only useful ordering for choosing those candidates.
+const FAMILY_LIMIT = 100;
 
 function ftsToken(value) {
   const token = String(value || "").replace(/[^\p{L}\p{N}_-]/gu, "");
@@ -69,7 +72,7 @@ export async function searchKeywordFamilyFromD1(db, familyId, resolved, { limit 
     FROM keyword_search_fts f
     JOIN keyword_search_documents d ON d.document_id = f.document_id
     WHERE f.family_id = ? AND keyword_search_fts MATCH ?
-    ORDER BY d.ordinal
+    ORDER BY bm25(keyword_search_fts) ASC, d.ordinal ASC, d.document_id ASC
     LIMIT ?
   `).bind(familyId, query, candidateLimit).all();
   const documents = (result?.results || []).map(parseDocument).filter(Boolean);
