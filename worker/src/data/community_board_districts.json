@@ -1,0 +1,18 @@
+{
+  "bronx-cb-01": "X01", "bronx-cb-02": "X02", "bronx-cb-03": "X03", "bronx-cb-04": "X04",
+  "bronx-cb-05": "X05", "bronx-cb-06": "X06", "bronx-cb-07": "X07", "bronx-cb-08": "X08",
+  "bronx-cb-09": "X09", "bronx-cb-10": "X10", "bronx-cb-11": "X11", "bronx-cb-12": "X12",
+  "brooklyn-cb-01": "K01", "brooklyn-cb-02": "K02", "brooklyn-cb-03": "K03", "brooklyn-cb-04": "K04",
+  "brooklyn-cb-05": "K05", "brooklyn-cb-06": "K06", "brooklyn-cb-07": "K07", "brooklyn-cb-08": "K08",
+  "brooklyn-cb-09": "K09", "brooklyn-cb-10": "K10", "brooklyn-cb-11": "K11", "brooklyn-cb-12": "K12",
+  "brooklyn-cb-13": "K13", "brooklyn-cb-14": "K14", "brooklyn-cb-15": "K15", "brooklyn-cb-16": "K16",
+  "brooklyn-cb-17": "K17", "brooklyn-cb-18": "K18",
+  "manhattan-cb-01": "M01", "manhattan-cb-02": "M02", "manhattan-cb-03": "M03", "manhattan-cb-04": "M04",
+  "manhattan-cb-05": "M05", "manhattan-cb-06": "M06", "manhattan-cb-07": "M07", "manhattan-cb-08": "M08",
+  "manhattan-cb-09": "M09", "manhattan-cb-10": "M10", "manhattan-cb-11": "M11", "manhattan-cb-12": "M12",
+  "queens-cb-01": "Q01", "queens-cb-02": "Q02", "queens-cb-03": "Q03", "queens-cb-04": "Q04",
+  "queens-cb-05": "Q05", "queens-cb-06": "Q06", "queens-cb-07": "Q07", "queens-cb-08": "Q08",
+  "queens-cb-09": "Q09", "queens-cb-10": "Q10", "queens-cb-11": "Q11", "queens-cb-12": "Q12",
+  "queens-cb-13": "Q13", "queens-cb-14": "Q14",
+  "staten-island-cb-01": "R01", "staten-island-cb-02": "R02", "staten-island-cb-03": "R03"
+}
