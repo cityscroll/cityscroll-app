@@ -13,20 +13,48 @@ import {
 const NOTICE_SCHEMA = readFileSync(new URL("../migrations/0001_notices.sql", import.meta.url), "utf8");
 const FACTS_SCHEMA = readFileSync(new URL("../migrations/0010_notice_facts.sql", import.meta.url), "utf8");
 const FTS_SCHEMA = readFileSync(new URL("../migrations/0016_notice_fts.sql", import.meta.url), "utf8");
+const READ_MODEL_SCHEMA = readFileSync(new URL("../migrations/0025_search_and_ocp_read_models.sql", import.meta.url), "utf8");
+const KEYWORD_INDEX = JSON.parse(readFileSync(new URL("../src/data/keyword_search_index.json", import.meta.url), "utf8"));
+const OCP_LOOKUP = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 
-function database(rows) {
-  const sqlite = new DatabaseSync(":memory:");
-  sqlite.exec(NOTICE_SCHEMA);
-  sqlite.exec(FACTS_SCHEMA);
-  const add = sqlite.prepare(`INSERT INTO notices
-    (request_id, section, agency, type_of_notice, short_title, description,
-     start_date, haystack, document_urls, n_documents)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, '[]', 0)`);
-  for (const row of rows) add.run(
-    row.id, row.section, row.agency, row.noticeType, row.title, row.description,
-    row.date, row.haystack,
+function installReadModels(sqlite) {
+  sqlite.exec(READ_MODEL_SCHEMA);
+  const family = sqlite.prepare("INSERT INTO keyword_search_families (family_id, source, as_of, source_row_count, indexed_count, coverage_json) VALUES (?, ?, ?, ?, ?, ?)");
+  const document = sqlite.prepare("INSERT INTO keyword_search_documents (document_id, family_id, ordinal, object_ref, source_observation_refs_json, document_json, search_text) VALUES (?, ?, ?, ?, ?, ?, ?)");
+  const fts = sqlite.prepare("INSERT INTO keyword_search_fts (document_id, family_id, search_text) VALUES (?, ?, ?)");
+  for (const [familyId, readModel] of Object.entries(KEYWORD_INDEX.families)) {
+    family.run(familyId, readModel.source, readModel.as_of, readModel.source_row_count, readModel.indexed_count, JSON.stringify(readModel.coverage || []));
+    for (const [ordinal, row] of readModel.documents.entries()) {
+      const id = `${familyId}:${ordinal}`;
+      const text = [row.title, row.summary, row.search_text].filter(Boolean).join(" ");
+      document.run(id, familyId, ordinal, row.object_ref, JSON.stringify(row.source_observation_refs || []), JSON.stringify(row), text);
+      fts.run(id, familyId, text);
+    }
+  }
+  const ocp = sqlite.prepare("INSERT INTO ocp_awards_warehouse (row_key, request_id, start_date, agency_name, type_of_notice_description, short_title, pin, contract_amount, vendor_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  for (const [ordinal, row] of (OCP_LOOKUP.rows || []).entries()) ocp.run(
+    [row.request_id, row.pin, row.start_date, ordinal].map((value) => String(value ?? "")).join("|"),
+    row.request_id, row.start_date, row.agency_name, row.type_of_notice_description,
+    row.short_title, row.pin, row.contract_amount, row.vendor_name,
   );
-  sqlite.exec(FTS_SCHEMA);
+}
+
+function database(rows, { notices = true } = {}) {
+  const sqlite = new DatabaseSync(":memory:");
+  if (notices) {
+    sqlite.exec(NOTICE_SCHEMA);
+    sqlite.exec(FACTS_SCHEMA);
+    const add = sqlite.prepare(`INSERT INTO notices
+      (request_id, section, agency, type_of_notice, short_title, description,
+       start_date, haystack, document_urls, n_documents)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, '[]', 0)`);
+    for (const row of rows) add.run(
+      row.id, row.section, row.agency, row.noticeType, row.title, row.description,
+      row.date, row.haystack,
+    );
+    sqlite.exec(FTS_SCHEMA);
+  }
+  installReadModels(sqlite);
   return {
     sqlite,
     DB: {
@@ -43,6 +71,8 @@ function database(rows) {
     },
   };
 }
+
+const STATIC_ENV = database([], { notices: false });
 
 const ROWS = [
   {
@@ -253,7 +283,7 @@ test("six lanes retain typed bounded results and honest empty states", async () 
 test("a missing notice mirror leaves static family lanes independently usable", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=parks"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(response.status, 200);
@@ -280,7 +310,7 @@ test("a missing notice mirror leaves static family lanes independently usable", 
 test("People uses its complete production provider for worker recall and coverage", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=Christopher%20Marte"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(response.status, 200);
@@ -308,7 +338,7 @@ test("People uses its complete production provider for worker recall and coverag
 test("Community boards uses its dedicated production provider for recall and indexed coverage", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=Bronx%20Community%20Board%201"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(response.status, 200);
@@ -339,7 +369,7 @@ test("Community boards uses its dedicated production provider for recall and ind
 test("Vendors uses its complete production provider for worker recall and coverage", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=Accenture"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(response.status, 200);
@@ -371,7 +401,7 @@ test("Vendors uses its complete production provider for worker recall and covera
 test("Parcels use the exact-BBL production corpus for worker recall and coverage", async () => {
   const exact = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=1000730008"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(exact.status, 200);
@@ -395,7 +425,7 @@ test("Parcels use the exact-BBL production corpus for worker recall and coverage
 
   const address = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=PIER-16%20SOUTH%20STREET"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(address.status, 200);
@@ -421,7 +451,7 @@ test("Parcels use the exact-BBL production corpus for worker recall and coverage
 test("Committees use the published graph production corpus for worker recall and coverage", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=Committee%20on%20Finance"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(response.status, 200);
@@ -683,7 +713,7 @@ test("GET /search land canaries from the published family stay warehouse-fresh, 
 test("Agencies uses its dedicated production provider for worker recall and coverage", async () => {
   const response = await worker.fetch(
     new Request("https://api.cityscroll.org/search?q=Department%20of%20Parks%20and%20Recreation"),
-    {},
+    { DB: STATIC_ENV.DB },
     {},
   );
   assert.equal(response.status, 200);

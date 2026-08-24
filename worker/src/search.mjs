@@ -6,8 +6,6 @@ import {
   NOTICE_SEARCH_PROVIDER_ID,
 } from "../../capabilities/notice_search.mjs";
 import rulesDomainObservations from "../../site/data/rules_domain_observations.json" with { type: "json" };
-import ocpAwardLookup from "./data/ocp_awards_warehouse_lookup.json" with { type: "json" };
-import keywordSearchIndex from "./data/keyword_search_index.json" with { type: "json" };
 import {
   buildCityRecordRuleProjectionIndex,
   materializeCityRecordSearchDocument,
@@ -21,9 +19,13 @@ import {
 import {
   matchKeywordDocument,
   resolveKeywordQuery,
-  searchKeywordDocuments,
 } from "../../site/keyword_matcher.mjs";
 import { searchLandKeywordFamily } from "../../site/land_keyword_soda_missfill.mjs";
+import {
+  exactKeywordDocumentFromD1,
+  searchKeywordFamilyFromD1,
+} from "./lib/search_read_model.mjs";
+import { searchOcpFromD1, lookupOcpFromD1 } from "./lib/ocp_warehouse_lookup.mjs";
 
 const MAX_QUERY_LENGTH = 240;
 const RESULT_LIMIT = 100;
@@ -102,9 +104,18 @@ export function publicSearchResult(record, { ruleIndex = RULE_PROJECTION_INDEX }
 
 async function exactContractDocuments(env, refs) {
   if (!refs || refs.invalid) return [];
-  let document = keywordSearchIndex?.families?.procurements?.documents
-    ?.find((candidate) => candidate.object_ref === refs.objectRef
-      && candidate.source_observation_refs.includes(refs.sourceRef)) || null;
+  let document = null;
+  try {
+    document = await exactKeywordDocumentFromD1(
+      env?.DB,
+      "procurements",
+      refs.objectRef,
+      refs.sourceRef,
+    );
+  } catch (error) {
+    console.error("exact search read model failed:", String(error?.message || error));
+    if (!refs.sourceRef.startsWith("notice:")) return [];
+  }
   if (!document && refs.sourceRef.startsWith("notice:") && env?.DB) {
     const requestId = refs.sourceRef.slice("notice:".length);
     const row = await env.DB.prepare("SELECT * FROM notices WHERE request_id = ?")
@@ -113,7 +124,15 @@ async function exactContractDocuments(env, refs) {
     if (row) document = publicSearchResult(toRecord(row));
   } else if (!document && refs.sourceRef.startsWith("ocp_award:")) {
     const pin = refs.objectRef.slice("procurement:".length);
-    document = searchContractAwardDocuments(ocpAwardLookup, pin, { limit: 10 }).documents
+    const lookup = await lookupOcpFromD1(env?.DB, { pin });
+    if (lookup.status !== "ok") return [];
+    document = searchContractAwardDocuments({
+      schema_version: 1,
+      source: "ocp-recent-contract-awards",
+      dataset_id: "qyyg-4tf5",
+      table_name: "ocp_recent_contract_awards",
+      rows: lookup.rows,
+    }, pin, { limit: 10 }).documents
       .find((candidate) => candidate.source_observation_refs.includes(refs.sourceRef)) || null;
   }
   return document?.outcome === "indexed"
@@ -276,21 +295,36 @@ async function noticeSearchLanes(env, resolved) {
       document,
       evidence: matchKeywordDocument(document, resolved),
     })).filter(({ evidence }) => evidence || resolved.alias);
-    const awardDocuments = resolved.alias
-      ? []
-      : searchContractAwardDocuments(
-        ocpAwardLookup,
-        resolved.canonical_tokens.join(" "),
-        { limit: RESULT_LIMIT },
-      ).documents;
-    const procurementFamily = keywordSearchIndex?.families?.procurements;
-    const procurementDocuments = resolved.alias || !procurementFamily
-      ? []
-      : searchKeywordDocuments(
-        procurementFamily.documents,
-        resolved,
-        { limit: procurementFamily.documents.length },
-      ).map(({ match_evidence: _evidence, ...document }) => document);
+    let awardDocuments = [];
+    if (!resolved.alias) {
+      try {
+        const awardLookup = await searchOcpFromD1(env.DB, resolved.raw_query, { limit: RESULT_LIMIT });
+        awardDocuments = searchContractAwardDocuments({
+          schema_version: 1,
+          source: "ocp-recent-contract-awards",
+          dataset_id: "qyyg-4tf5",
+          table_name: "ocp_recent_contract_awards",
+          rows: awardLookup.rows,
+        }, resolved.raw_query, { limit: RESULT_LIMIT }).documents;
+      } catch (error) {
+        console.error("notice-search OCP read model unavailable:", String(error?.message || error));
+      }
+    }
+    let procurementDocuments = [];
+    if (!resolved.alias) {
+      try {
+        const procurementResult = await searchKeywordFamilyFromD1(
+          env.DB,
+          "procurements",
+          resolved,
+          { limit: RESULT_LIMIT * 20 },
+        );
+        procurementDocuments = procurementResult.matches
+          .map(({ match_evidence: _evidence, ...document }) => document);
+      } catch (error) {
+        console.error("notice-search procurement read model unavailable:", String(error?.message || error));
+      }
+    }
     const noticeMerged = mergeUniversalSearchCandidates({
       cityRecordDocuments: cityMatches.map(({ document }) => document),
       contractAwardDocuments: awardDocuments,
@@ -355,10 +389,13 @@ async function noticeSearchLanes(env, resolved) {
   }
 }
 
-async function landSearchLane(resolved, { fetchImpl = fetch, now = new Date() } = {}) {
-  const family = keywordSearchIndex?.families?.land;
-  if (!family) return staticSearchLane("land", resolved);
+async function landSearchLane(resolved, { env, fetchImpl = fetch, now = new Date() } = {}) {
+  let family = null;
   try {
+    const indexed = await searchKeywordFamilyFromD1(env?.DB, "land", resolved, { limit: 20_000 });
+    family = indexed.family;
+    if (!family) return staticSearchLane("land", resolved, env);
+    family.documents = indexed.matches.length ? indexed.matches.map(({ match_evidence: _evidence, ...document }) => document) : [];
     const result = await searchLandKeywordFamily(family, resolved, {
       fetchImpl,
       now,
@@ -388,25 +425,24 @@ async function landSearchLane(resolved, { fetchImpl = fetch, now = new Date() } 
     console.error("land keyword search failed:", JSON.stringify({
       error: String(error?.message || error),
     }));
-    return unknownLane("land", family.source, "bounded_family_search_failed");
+    return unknownLane("land", family?.source || "D1 keyword read model", "bounded_family_search_failed");
   }
 }
 
-function staticSearchLane(id, resolved) {
-  const family = keywordSearchIndex?.families?.[id];
-  if (!family) {
-    return laneEnvelope(id, {
-      status: "not_covered",
-      count: null,
-      asOf: null,
-      source: "No bounded source configured",
-      coverage: Object.freeze({ reason: "bounded_family_index_not_ready" }),
-    });
-  }
+async function staticSearchLane(id, resolved, env) {
   try {
-    const matches = searchKeywordDocuments(family.documents, resolved, {
-      limit: family.documents.length,
-    });
+    const indexed = await searchKeywordFamilyFromD1(env?.DB, id, resolved, { limit: 20_000 });
+    const family = indexed.family;
+    if (!family) {
+      return laneEnvelope(id, {
+        status: "not_covered",
+        count: null,
+        asOf: null,
+        source: "No bounded source configured",
+        coverage: Object.freeze({ reason: "bounded_family_index_not_ready" }),
+      });
+    }
+    const matches = indexed.matches;
     return laneEnvelope(id, {
       status: matches.length ? "matched" : "empty",
       count: matches.length,
@@ -424,63 +460,81 @@ function staticSearchLane(id, resolved) {
       }),
     });
   } catch (error) {
-    console.error("static keyword search failed:", JSON.stringify({ id, error: String(error?.message || error) }));
-    return unknownLane(id, family.source, "bounded_family_search_failed");
+    console.error("D1 keyword search failed:", JSON.stringify({ id, error: String(error?.message || error) }));
+    return unknownLane(id, "D1 keyword read model", "bounded_family_search_failed");
   }
 }
 
-function keywordFamilyProvider(familyId) {
+function keywordFamilyProvider(familyId, env) {
   return Object.freeze({
     async search({ query, limit }) {
-      const family = keywordSearchIndex?.families?.[familyId];
-      if (!family) {
+      try {
+        const indexed = await searchKeywordFamilyFromD1(env?.DB, familyId, resolveKeywordQuery(query), { limit: limit * 20 });
+        const family = indexed.family;
+        if (!family) {
+          return {
+            candidates: [],
+            coverage: {
+              state: "not_indexed",
+              reason: "bounded_family_index_not_ready",
+              indexed_count: null,
+              as_of: null,
+              source: "No bounded source configured",
+              method: "bounded_keyword_family_v1",
+            },
+          };
+        }
+        const resolved = resolveKeywordQuery(query);
+        const matches = indexed.matches;
+        const complete = Number.isInteger(family.source_row_count)
+          && family.source_row_count === family.indexed_count;
+        return {
+          candidates: matches.map((document, index) => {
+            const evidence = matchKeywordDocument(document, resolved);
+            return {
+              document,
+              local_score: index + 1,
+              match_fields: [{
+                field: evidence.field,
+                matched_term: evidence.matched_normalized_term,
+                source_observation_ref: evidence.source_identifier,
+              }],
+            };
+          }),
+          coverage: {
+            state: complete ? (matches.length ? "matched" : "empty") : "partial",
+            reason: complete ? null : "bounded_family_index_incomplete",
+            indexed_count: family.indexed_count,
+            as_of: family.as_of,
+            source: family.source,
+            method: "bounded_keyword_family_v1",
+          },
+        };
+      } catch (error) {
+        console.error("D1 collection search failed:", JSON.stringify({ familyId, error: String(error?.message || error) }));
         return {
           candidates: [],
           coverage: {
-            state: "not_indexed",
-            reason: "bounded_family_index_not_ready",
+            state: "provider_unavailable",
+            reason: "bounded_family_search_failed",
             indexed_count: null,
             as_of: null,
-            source: "No bounded source configured",
+            source: "D1 keyword read model",
             method: "bounded_keyword_family_v1",
           },
         };
       }
-      const resolved = resolveKeywordQuery(query);
-      const matches = searchKeywordDocuments(family.documents, resolved, { limit });
-      const complete = Number.isInteger(family.source_row_count)
-        && family.source_row_count === family.indexed_count;
-      return {
-        candidates: matches.map((document, index) => {
-          const { match_evidence: evidence, ...searchDocument } = document;
-          return {
-            document: searchDocument,
-            local_score: index + 1,
-            match_fields: [{
-              field: evidence.field,
-              matched_term: evidence.matched_normalized_term,
-              source_observation_ref: evidence.source_identifier,
-            }],
-          };
-        }),
-        coverage: {
-          state: complete ? (matches.length ? "matched" : "empty") : "partial",
-          reason: complete ? null : "bounded_family_index_incomplete",
-          indexed_count: family.indexed_count,
-          as_of: family.as_of,
-          source: family.source,
-          method: "bounded_keyword_family_v1",
-        },
-      };
     },
   });
 }
 
-const PRODUCTION_COLLECTION_PROVIDERS = Object.freeze(Object.fromEntries(
-  Object.entries(PRODUCTION_COLLECTION_FAMILIES).map(([lens, familyId]) => (
-    [lens, keywordFamilyProvider(familyId)]
-  )),
-));
+function productionCollectionProviders(env) {
+  return Object.freeze(Object.fromEntries(
+    Object.entries(PRODUCTION_COLLECTION_FAMILIES).map(([lens, familyId]) => (
+      [lens, keywordFamilyProvider(familyId, env)]
+    )),
+  ));
+}
 
 function federatedCollectionLane(lens, federation, resolved) {
   const coverage = federation.coverage.by_lens[lens];
@@ -696,7 +750,7 @@ export async function handleSearch(request, env) {
   const dynamic = await noticeSearchLanes(env, resolved);
   const collectionFederation = await federateUniversalSearch({
     query: resolved.raw_query,
-    lenses: PRODUCTION_COLLECTION_PROVIDERS,
+    lenses: productionCollectionProviders(env),
     limit: RESULT_LIMIT,
   });
   const peopleLane = federatedCollectionLane("people", collectionFederation, resolved);
@@ -706,7 +760,7 @@ export async function handleSearch(request, env) {
   const agencyLane = federatedCollectionLane("agencies", collectionFederation, resolved);
   const committeesLane = federatedCollectionLane("committees", collectionFederation, resolved);
   const contractsMirror = dynamic.lanes.contracts;
-  const procurementLane = staticSearchLane("procurements", resolved);
+  const procurementLane = await staticSearchLane("procurements", resolved, env);
   const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
   // Keep an unavailable notice mirror honest as unknown unless a Vendor hit
   // can still publish through the Contracts presentation lane.
@@ -733,9 +787,9 @@ export async function handleSearch(request, env) {
     parcels: parcelsLane,
     committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,
-    land: await landSearchLane(resolved),
-    meetings: staticSearchLane("meetings", resolved),
-    exams: staticSearchLane("exams", resolved),
+    land: await landSearchLane(resolved, { env }),
+    meetings: await staticSearchLane("meetings", resolved, env),
+    exams: await staticSearchLane("exams", resolved, env),
   };
   const results = flattenedResults(dynamic.results, lanes);
   return json({
