@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { buildFollowingViewModel, renderFollowingDocument } from "../site/following_view.mjs";
+import templates from "../site/data/watch_templates.json" with { type: "json" };
+import moneyOpen from "../site/data/money_default_open.json" with { type: "json" };
+import rulesOpen from "../site/data/rules_domain_observations.json" with { type: "json" };
+import meetingsOpen from "../site/data/meetings_domain_observations.json" with { type: "json" };
+import { mergeCanonicalProcurementBrowseRows } from "../site/contract_search_bridge.mjs";
 import {
   buildResultsBackedWatchTemplateRegistry,
   countOpenMatches,
@@ -70,4 +76,21 @@ test("missing source stays null instead of becoming a fabricated zero", () => {
     { todayISO: "2026-08-12" },
   );
   assert.equal(result.count, null);
+});
+
+test("the committed Worker registry is the source-row results-backed projection", () => {
+  const source = JSON.parse(readFileSync(new URL("../site/data/procurement_browse_rows.json", import.meta.url), "utf8"));
+  const expected = buildResultsBackedWatchTemplateRegistry(templates, {
+    money: { ...moneyOpen, notices: mergeCanonicalProcurementBrowseRows(moneyOpen.notices, source.rows) },
+    rules: rulesOpen,
+    meetings: meetingsOpen,
+  });
+  const artifact = JSON.parse(readFileSync(new URL("../site/data/following_procurement_suggestions.json", import.meta.url), "utf8"));
+
+  assert.equal(artifact.schema, "cityscroll.following_suggestions.v1");
+  assert.deepEqual(
+    { schema_version: artifact.schema_version, pattern: artifact.pattern, results_backed: artifact.results_backed, generated_from: artifact.generated_from, templates: artifact.templates },
+    expected,
+  );
+  assert.equal(Object.hasOwn(artifact, "rows"), false);
 });

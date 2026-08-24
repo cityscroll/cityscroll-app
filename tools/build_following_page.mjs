@@ -4,20 +4,10 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { buildFollowingViewModel, renderFollowingDocument } from "../site/following_view.mjs";
-import { buildResultsBackedWatchTemplateRegistry } from "../site/following_suggestions.mjs";
-import { mergeCanonicalProcurementBrowseRows } from "../site/contract_search_bridge.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const output = join(ROOT, "site/following/index.html");
-const templates = JSON.parse(readFileSync(join(ROOT, "site/data/watch_templates.json"), "utf8"));
-const sources = {
-  money: JSON.parse(readFileSync(join(ROOT, "site/data/money_default_open.json"), "utf8")),
-  rules: JSON.parse(readFileSync(join(ROOT, "site/data/rules_domain_observations.json"), "utf8")),
-  meetings: JSON.parse(readFileSync(join(ROOT, "site/data/meetings_domain_observations.json"), "utf8")),
-};
-const procurementBrowse = JSON.parse(readFileSync(join(ROOT, "site/data/procurement_browse_rows.json"), "utf8"));
-sources.money = { ...sources.money, notices: mergeCanonicalProcurementBrowseRows(sources.money.notices, procurementBrowse.rows) };
-const suggestedTemplates = buildResultsBackedWatchTemplateRegistry(templates, sources);
+const suggestedTemplates = JSON.parse(readFileSync(join(ROOT, "site/data/following_procurement_suggestions.json"), "utf8"));
 const html = renderFollowingDocument(buildFollowingViewModel({}, suggestedTemplates));
 const current = existsSync(output) ? readFileSync(output, "utf8") : null;
 const check = process.argv.includes("--check");
