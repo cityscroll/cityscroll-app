@@ -6,7 +6,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { handleMirror } from "../src/mirror.mjs";
+import { handleMirror, normalizeDocumentTrailingSlash } from "../src/mirror.mjs";
 import loopRedirectFixtures from "./fixtures/mirror_redirect_regressions.json" with { type: "json" };
 
 test("handleMirror: proxies GET to crol-list.org with the same path and query, dropping Host", async () => {
@@ -29,6 +29,30 @@ test("handleMirror: proxies GET to crol-list.org with the same path and query, d
     assert.equal(capturedRedirect, "manual", "the origin request must never auto-follow a redirect back to this Worker");
     assert.equal(res.status, 200);
     assert.equal(await res.text(), "<html>hi</html>");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("document routes normalize a trailing slash without changing directory routes", async () => {
+  for (const document of ["about", "data", "api", "changelog"]) {
+    assert.equal(normalizeDocumentTrailingSlash(`/${document}.html/`), `/${document}.html`);
+  }
+  assert.equal(normalizeDocumentTrailingSlash("/nested/data.HTML/"), "/nested/data.HTML");
+  assert.equal(normalizeDocumentTrailingSlash("/browse/"), "/browse/");
+  assert.equal(normalizeDocumentTrailingSlash("/agencies/"), "/agencies/");
+
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(url);
+    return new Response("ok", { status: 200 });
+  };
+  try {
+    await handleMirror(new Request("https://cityscroll.org/about.html/?x=1"));
+    await handleMirror(new Request("https://cityscroll.org/browse/?x=1"));
+    assert.equal(calls[0], "https://crol-list.org/about.html?x=1");
+    assert.equal(calls[1], "https://crol-list.org/browse/?x=1");
   } finally {
     globalThis.fetch = originalFetch;
   }
