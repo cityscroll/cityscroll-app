@@ -14,7 +14,6 @@
  *   ?demo=1  — verified multi-domain demo entity
  */
 
-import materialization from "./data/entity_intelligence_lookup.json" with { type: "json" };
 import vendorFootprintCoverage from "./data/vendor_footprint_coverage.json" with { type: "json" };
 import passportGraph from "./data/passport_ei_graph.json" with { type: "json" };
 import {
@@ -23,6 +22,10 @@ import {
   resolveRootQuery,
 } from "../../entity_resolution/cross_domain/index.mjs";
 import { vendorCoverageKey } from "../../entity_resolution/cross_domain/vendor_coverage_key.mjs";
+import {
+  loadEntityIntelligenceMeta,
+  lookupEntityIntelligenceFromD1,
+} from "./lib/entity_intelligence_read_model.mjs";
 
 const CACHE = "public, max-age=300";
 const VENDOR_SECTION_SPECS = Object.freeze([
@@ -60,7 +63,7 @@ function json(body, status = 200, cache) {
 export function attachVendorFootprint(
   view,
   root,
-  source = materialization,
+  source = null,
   coverageIndex = vendorFootprintCoverage,
 ) {
   if (root?.kind !== "vendor") return view;
@@ -146,123 +149,17 @@ export function attachVendorFootprint(
   };
 }
 
-/** Daily vendor-profile read model assembled entirely from committed lookups. */
-export function precomputedVendorFootprint(stem, displayName = stem) {
+/** Daily vendor-profile read model assembled from keyed D1 lookups. */
+export async function precomputedVendorFootprint(stem, displayName = stem, db = null) {
   const value = String(stem || "").trim();
   if (!value) return null;
   const ref = `vendor:stem:${encodeURIComponent(value)}`;
-  const view = decorateConnectionView(lookupEntityIntelligence(materialization, {
-    ref,
-    name: displayName,
-  }));
-  return attachVendorFootprint(view, view.root);
-}
-
-function publicConfidence(value) {
-  const confidence = String(value || "").trim().toLowerCase();
-  return confidence === "strong" || confidence === "tentative" ? confidence : null;
-}
-
-function publicEntityRef(value) {
-  const ref = String(value || "").trim();
-  if (/^agency:[^:]+:.+$/.test(ref)) return ref;
-  if (/^vendor:stem:.+$/.test(ref)) return ref;
-  if (/^entity:official:.+$/.test(ref)) return ref;
-  return "";
-}
-
-function decoded(value) {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return "";
-  }
-}
-
-function connectionLabel(entityRef, object) {
-  const materialized = materialization.by_ref?.[entityRef]?.root;
-  if (materialized?.display_name) return materialized.display_name;
-  if (entityRef.startsWith("vendor:stem:")) {
-    return decoded(entityRef.slice("vendor:stem:".length)) || entityRef;
-  }
-  if (entityRef.startsWith("entity:official:") && object?.subject_ref === entityRef) {
-    return String(object.label || "").split(" · ")[0].trim() || entityRef;
-  }
-  return materialized?.canonical_name || entityRef;
-}
-
-function connectedEntitiesForObject(object, rootRef) {
-  const candidates = [...(materialization.by_subject_ref?.[object?.subject_ref] || [])];
-  const subjectEntity = publicEntityRef(object?.subject_ref);
-  if (subjectEntity && subjectEntity !== rootRef) {
-    candidates.push({
-      entity_ref: subjectEntity,
-      relation: object.link_type,
-      confidence: object.confidence,
-    });
-  }
-
-  const seen = new Set();
-  const connections = [];
-  for (const candidate of candidates) {
-    const entityRef = publicEntityRef(candidate?.entity_ref);
-    const confidence = publicConfidence(candidate?.confidence);
-    const relation = String(candidate?.relation || "").trim();
-    if (!entityRef || entityRef === rootRef || !confidence || !relation) continue;
-    const key = `${entityRef}|${relation}|${confidence}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    connections.push({
-      entity_ref: entityRef,
-      label: connectionLabel(entityRef, object),
-      relation,
-      confidence,
-      evidence: object?.provenance?.basis || null,
-    });
-  }
-  return connections;
-}
-
-/** Add read-model framing without changing the committed graph materialization. */
-function decorateConnectionView(view) {
-  if (!view?.ok) return view;
-  let strongCount = 0;
-  let tentativeCount = 0;
-  const domains = Object.fromEntries(Object.entries(view.domains || {}).map(([domain, block]) => {
-    const objects = (block?.objects || []).map((object) => {
-      const confidence = publicConfidence(object?.confidence);
-      if (confidence === "strong") strongCount += 1;
-      else if (confidence === "tentative") tentativeCount += 1;
-      return {
-        ...object,
-        connected_entities: connectedEntitiesForObject(object, view.root?.ref),
-      };
-    });
-    return [domain, {
-      ...block,
-      objects,
-      strong_count: objects.filter((object) => object.confidence === "strong").length,
-      tentative_count: objects.filter((object) => object.confidence === "tentative").length,
-    }];
-  }));
-
-  return {
-    ...view,
-    domains,
-    coverage: {
-      eligible: null,
-      linked: strongCount,
-      rate: null,
-      vintage: materialization.generated_at || null,
-      gap: "eligible_denominator_not_measured",
-      tentative: tentativeCount,
-    },
-    materialization_meta: {
-      generated_at: materialization.generated_at || null,
-      observation_count: materialization.observation_count || 0,
-      entity_count: materialization.entity_count || 0,
-    },
-  };
+  const query = { ref, name: displayName };
+  const view = db
+    ? await lookupEntityIntelligenceFromD1(db, query)
+    : lookupEntityIntelligence({ by_ref: {} }, query);
+  const meta = db ? await loadEntityIntelligenceMeta(db) : null;
+  return attachVendorFootprint(view, view.root, meta);
 }
 
 export async function handleEntityIntelligence(req, env, ctx) {
@@ -281,20 +178,40 @@ export async function handleEntityIntelligence(req, env, ctx) {
   const url = new URL(req.url);
   const list = url.searchParams.get("list") === "1";
   const demo = url.searchParams.get("demo") === "1";
+  const db = env?.DB || null;
+  const meta = await loadEntityIntelligenceMeta(db);
 
   if (list) {
+    if (!meta) {
+      return json(
+        {
+          ok: true,
+          version: CROSS_DOMAIN_OBJECT_LINK_VERSION,
+          serve: "unavailable",
+          entity_count: null,
+          multi_domain_count: null,
+          domains: [],
+          demo_refs: [],
+          verified_demo: null,
+          entities: [],
+          provenance: null,
+        },
+        200,
+        "no-store",
+      );
+    }
     return json(
       {
         ok: true,
         version: CROSS_DOMAIN_OBJECT_LINK_VERSION,
         serve: "materialization",
-        entity_count: materialization.entity_count,
-        multi_domain_count: materialization.multi_domain_count,
-        domains: materialization.domains,
-        demo_refs: materialization.demo_refs,
-        verified_demo: materialization.verified_demo,
-        entities: materialization.entity_index || [],
-        provenance: materialization.provenance,
+        entity_count: meta.entity_count,
+        multi_domain_count: meta.multi_domain_count,
+        domains: meta.domains,
+        demo_refs: meta.demo_refs,
+        verified_demo: meta.verified_demo,
+        entities: meta.entity_index || [],
+        provenance: meta.provenance,
       },
       200,
       CACHE,
@@ -302,16 +219,16 @@ export async function handleEntityIntelligence(req, env, ctx) {
   }
 
   if (demo) {
-    const ref = materialization.verified_demo?.ref || materialization.demo_refs?.[0];
+    const ref = meta?.verified_demo?.ref || meta?.demo_refs?.[0];
     if (!ref) {
       return json(
         { ok: false, reason: "no_demo", version: CROSS_DOMAIN_OBJECT_LINK_VERSION },
         404,
       );
     }
-    const view = decorateConnectionView(lookupEntityIntelligence(materialization, { ref }));
+    const view = await lookupEntityIntelligenceFromD1(db, { ref });
     return json(
-      { ...view, demo: true, materialization_meta: materialization.verified_demo },
+      { ...view, demo: true, materialization_meta: meta?.verified_demo || view.materialization_meta },
       200,
       CACHE,
     );
@@ -348,10 +265,6 @@ export async function handleEntityIntelligence(req, env, ctx) {
   }
 
   const resolvedRoot = resolveRootQuery(query);
-  const view = decorateConnectionView(lookupEntityIntelligence(materialization, query));
-  return json(attachVendorFootprint(view, resolvedRoot), 200, CACHE);
-}
-
-export function getEntityIntelligenceMaterialization() {
-  return materialization;
+  const view = await lookupEntityIntelligenceFromD1(db, query);
+  return json(attachVendorFootprint(view, resolvedRoot, meta), 200, CACHE);
 }

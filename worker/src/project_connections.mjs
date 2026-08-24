@@ -1,6 +1,5 @@
 /** Server adapter for the pure ZAP-project constellation. */
 
-import entityLookup from "./data/entity_intelligence_lookup.json" with { type: "json" };
 import projectLookup from "./data/zap_projects_warehouse_lookup.json" with { type: "json" };
 import bblLookup from "./data/zap_bbl_warehouse_lookup.json" with { type: "json" };
 import outcomeReceipt from "../../site/data/zap_outcome_sources/verification_receipts/zap_api_outcomes_2026-07-30.json" with { type: "json" };
@@ -10,6 +9,11 @@ import {
   PROJECT_CONNECTIONS_SCHEMA_VERSION,
   PROJECT_CONNECTION_GROUPS,
 } from "../../site/project_connections.mjs";
+import {
+  entityLinksForProjectFromD1,
+  graphLinksForProjectFromD1,
+  loadEntityIntelligenceMeta,
+} from "./lib/entity_intelligence_read_model.mjs";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 const projectRows = Array.isArray(projectLookup?.rows) ? projectLookup.rows : [];
@@ -18,39 +22,6 @@ const projectById = new Map(projectRows.map((row) => [clean(row?.project_id), ro
 const bblById = new Map(bblRows.map((row) => [clean(row?.project_id), row]).filter(([id]) => id));
 const currentIds = new Set(projectById.keys());
 
-function decoded(value) {
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return "";
-  }
-}
-
-function entityLabel(ref) {
-  const root = entityLookup?.by_ref?.[ref]?.root || {};
-  if (root.display_name || root.canonical_name) return root.display_name || root.canonical_name;
-  if (ref.startsWith("vendor:stem:")) return decoded(ref.slice("vendor:stem:".length)) || ref;
-  return ref;
-}
-
-const objectBySubject = new Map();
-const graphLinkByKey = new Map();
-for (const dossier of Object.values(entityLookup?.by_ref || {})) {
-  for (const block of Object.values(dossier?.domains || {})) {
-    for (const object of block?.objects || []) {
-      if (object?.subject_ref && !objectBySubject.has(object.subject_ref)) {
-        objectBySubject.set(object.subject_ref, object);
-      }
-    }
-  }
-  for (const link of dossier?.links || []) {
-    if (link?.type !== "decides_land_project" || !String(link?.to || "").startsWith("project:")) continue;
-    const key = [link.type, link.from, link.to].join("|");
-    graphLinkByKey.set(key, link);
-  }
-}
-const graphLinks = [...graphLinkByKey.values()];
-const graphProjectCount = new Set(graphLinks.map((link) => link.to)).size;
 const currentBblProjectCount = new Set(
   bblRows.map((row) => clean(row?.project_id)).filter((id) => currentIds.has(id)),
 ).size;
@@ -75,10 +46,10 @@ export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
   },
   meetings: {
     eligible: null,
-    linked: graphProjectCount,
+    linked: null,
     rate: null,
     scope: "bounded_entity_materialization",
-    vintage: entityLookup?.generated_at || null,
+    vintage: null,
     gap: "eligible_denominator_not_measured",
   },
   decisions: {
@@ -93,7 +64,7 @@ export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
     linked: null,
     rate: null,
     scope: "this_project",
-    vintage: entityLookup?.generated_at || null,
+    vintage: null,
     gap: "eligible_denominator_not_measured",
   },
   mih: {
@@ -106,29 +77,20 @@ export const PROJECT_CONNECTION_COVERAGE = Object.freeze({
   },
 });
 
-function entityLinksForProject(id) {
-  return (entityLookup?.by_subject_ref?.[`project:${id}`] || []).map((link) => ({
-    ...link,
-    label: entityLabel(clean(link?.entity_ref)),
-    evidence: "land_primary_applicant",
-  }));
-}
-
-function graphLinksForProject(id) {
-  const ref = `project:${id}`;
-  return graphLinks.filter((link) => link.to === ref).map((link) => {
-    const object = objectBySubject.get(link.from) || {};
-    return {
-      ...link,
-      label: object.label || link.from,
-      agency_name: object.root_ref ? entityLabel(object.root_ref) : null,
-      when: object.when || link.provenance?.observed_at || null,
-    };
-  });
+async function coverageForRequest(db) {
+  if (!db) return PROJECT_CONNECTION_COVERAGE;
+  const meta = await loadEntityIntelligenceMeta(db);
+  const overlay = meta?.project_connection_coverage;
+  if (!overlay) return PROJECT_CONNECTION_COVERAGE;
+  return {
+    ...PROJECT_CONNECTION_COVERAGE,
+    meetings: { ...PROJECT_CONNECTION_COVERAGE.meetings, ...overlay.meetings },
+    notices: { ...PROJECT_CONNECTION_COVERAGE.notices, ...overlay.notices },
+  };
 }
 
 /** Decorate fresh or cached outcome records at serve time. */
-export function attachProjectConnections(record) {
+export async function attachProjectConnections(record, { db = null } = {}) {
   if (!record?.project_id) return record;
   const id = clean(record.project_id);
   const project = projectById.get(id)
@@ -140,17 +102,22 @@ export function attachProjectConnections(record) {
     };
   const bblRow = bblById.get(id)
     || (Array.isArray(record.bbls) ? { project_id: id, bbls: record.bbls } : null);
+  const [entityLinks, graphLinks, coverage] = await Promise.all([
+    entityLinksForProjectFromD1(db, id),
+    graphLinksForProjectFromD1(db, id),
+    coverageForRequest(db),
+  ]);
   return {
     ...record,
     project_connections: buildProjectConnectionEvidence({
       projectId: id,
       projectRows: [project],
       bblRows: bblRow ? [bblRow] : [],
-      entityLinks: entityLinksForProject(id),
-      graphLinks: graphLinksForProject(id),
+      entityLinks,
+      graphLinks,
       outcome: record,
       mihRows,
-      coverage: PROJECT_CONNECTION_COVERAGE,
+      coverage,
     }),
   };
 }
@@ -171,9 +138,12 @@ function unavailableRecord(record, reason) {
 }
 
 /** Attach the read model and always return an explicit section availability contract. */
-export function attachProjectConnectionsSection(record, { attach = attachProjectConnections } = {}) {
+export async function attachProjectConnectionsSection(
+  record,
+  { attach = attachProjectConnections, db = null } = {},
+) {
   try {
-    const decorated = attach(record);
+    const decorated = await attach(record, { db });
     const evidence = decorated?.project_connections;
     const groupIds = new Set((evidence?.groups || []).map((group) => group?.id));
     if (evidence?.schema_version === PROJECT_CONNECTIONS_SCHEMA_VERSION

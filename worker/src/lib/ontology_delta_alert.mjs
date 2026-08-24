@@ -1,5 +1,5 @@
-import currentEntityIntelligence from "../data/entity_intelligence_lookup.json" with { type: "json" };
 import previousOntologyInventory from "../../../site/data/ontology_inventory_baseline.json" with { type: "json" };
+import { loadEntityIntelligenceMeta } from "./entity_intelligence_read_model.mjs";
 
 import { toDayLogEntry } from "./digest_ops.mjs";
 
@@ -20,6 +20,13 @@ function sortedTokens(values) {
 }
 
 function currentInventory(materialization = {}) {
+  if (Array.isArray(materialization.entity_types) || Array.isArray(materialization.edge_types)) {
+    return {
+      as_of: materialization.as_of || materialization.generated_at || null,
+      entity_types: sortedTokens(materialization.entity_types || materialization.root_kinds),
+      edge_types: sortedTokens(materialization.edge_types),
+    };
+  }
   const entityTypes = new Set();
   const edgeTypes = new Set();
   for (const row of Object.values(materialization?.by_ref || {})) {
@@ -95,10 +102,12 @@ export function buildOntologyDeltaCandidates({ previous = {}, current = {} } = {
   return events.slice(0, MAX_CANDIDATES);
 }
 
-export function buildDefaultOntologyDeltaCandidates() {
+export async function buildDefaultOntologyDeltaCandidates(db) {
+  const meta = await loadEntityIntelligenceMeta(db);
+  if (!meta?.ontology_inventory) return [];
   return buildOntologyDeltaCandidates({
     previous: previousOntologyInventory,
-    current: currentEntityIntelligence,
+    current: meta.ontology_inventory,
   });
 }
 

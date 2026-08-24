@@ -7,8 +7,13 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { handleEntityIntelligence, getEntityIntelligenceMaterialization } from "../src/entity_intelligence.mjs";
+import { handleEntityIntelligence } from "../src/entity_intelligence.mjs";
 import { lookupEntityIntelligence } from "../../entity_resolution/cross_domain/index.mjs";
+import { resetEntityIntelligenceReadModelCache } from "../src/lib/entity_intelligence_read_model.mjs";
+import { entityIntelligenceD1 } from "./helpers/entity_intelligence_d1.mjs";
+
+const { env } = entityIntelligenceD1();
+resetEntityIntelligenceReadModelCache();
 
 function req(path, headers = {}) {
   return new Request(`https://cityscroll.org${path}`, {
@@ -19,7 +24,7 @@ function req(path, headers = {}) {
 
 describe("GET /entity-intelligence", () => {
   it("serves demo with people matched when person-level votes are productized", async () => {
-    const res = await handleEntityIntelligence(req("/entity-intelligence?demo=1"));
+    const res = await handleEntityIntelligence(req("/entity-intelligence?demo=1"), env);
     assert.equal(res.status, 200);
     const body = await res.json();
     assert.equal(body.ok, true);
@@ -40,6 +45,7 @@ describe("GET /entity-intelligence", () => {
   it("City Council people domain is matched; Parks remains multi-domain without inventing people", async () => {
     const councilRes = await handleEntityIntelligence(
       req("/entity-intelligence?kind=agency&name=City%20Council"),
+      env,
     );
     assert.equal(councilRes.status, 200);
     const council = await councilRes.json();
@@ -48,6 +54,7 @@ describe("GET /entity-intelligence", () => {
 
     const parksRes = await handleEntityIntelligence(
       req("/entity-intelligence?kind=agency&name=Department%20of%20Parks%20and%20Recreation"),
+      env,
     );
     assert.equal(parksRes.status, 200);
     const parks = await parksRes.json();
@@ -62,9 +69,11 @@ describe("GET /entity-intelligence", () => {
   it("resolves agency by name and by id", async () => {
     const byName = await handleEntityIntelligence(
       req("/entity-intelligence?kind=agency&name=Department%20of%20Parks%20and%20Recreation"),
+      env,
     );
     const byId = await handleEntityIntelligence(
       req("/entity-intelligence?kind=agency&id=parks-and-recreation"),
+      env,
     );
     assert.equal(byName.status, 200);
     assert.equal(byId.status, 200);
@@ -77,6 +86,7 @@ describe("GET /entity-intelligence", () => {
   it("serves confidence-safe connection metadata and materialization coverage framing", async () => {
     const res = await handleEntityIntelligence(
       req("/entity-intelligence?kind=agency&name=Housing%20Preservation%20and%20Development"),
+      env,
     );
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -100,7 +110,7 @@ describe("GET /entity-intelligence", () => {
   });
 
   it("lists multi-domain entities", async () => {
-    const res = await handleEntityIntelligence(req("/entity-intelligence?list=1"));
+    const res = await handleEntityIntelligence(req("/entity-intelligence?list=1"), env);
     assert.equal(res.status, 200);
     const body = await res.json();
     assert.ok(body.multi_domain_count >= 1);
@@ -109,16 +119,15 @@ describe("GET /entity-intelligence", () => {
   });
 
   it("400 on missing query; 400 on unresolved root", async () => {
-    const missing = await handleEntityIntelligence(req("/entity-intelligence"));
+    const missing = await handleEntityIntelligence(req("/entity-intelligence"), env);
     assert.equal(missing.status, 400);
     // Empty kind without name
-    const bad = await handleEntityIntelligence(req("/entity-intelligence?kind=agency"));
+    const bad = await handleEntityIntelligence(req("/entity-intelligence?kind=agency"), env);
     assert.equal(bad.status, 400);
   });
 
   it("materialization miss is honest empty (not fabricated)", async () => {
-    const mat = getEntityIntelligenceMaterialization();
-    const miss = lookupEntityIntelligence(mat, {
+    const miss = lookupEntityIntelligence({ by_ref: {} }, {
       kind: "vendor",
       name: "Completely Unknown Vendor XYZ Inc",
     });
@@ -131,6 +140,7 @@ describe("GET /entity-intelligence", () => {
   it("attaches build-derived vendor coverage even when the bounded graph has no dossier", async () => {
     const res = await handleEntityIntelligence(
       req("/entity-intelligence?kind=vendor&name=CAMBA"),
+      env,
     );
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -156,6 +166,7 @@ describe("GET /entity-intelligence", () => {
   it("gc-08: PASSPort/Checkbook contract corroboration (VI-02) counts separately from awards and payments", async () => {
     const res = await handleEntityIntelligence(
       req("/entity-intelligence?kind=vendor&name=Make%20it%20Zesty%20LLC"),
+      env,
     );
     assert.equal(res.status, 200);
     const body = await res.json();
@@ -170,5 +181,39 @@ describe("GET /entity-intelligence", () => {
       body.vendor_footprint.section_counts.contracts.confirmed_count,
       undefined,
     );
+  });
+
+  it("keyed miss and store failure stay empty without loading the corpus", async () => {
+    resetEntityIntelligenceReadModelCache();
+    const missRes = await handleEntityIntelligence(
+      req("/entity-intelligence?kind=vendor&name=Completely%20Unknown%20Vendor%20XYZ%20Inc"),
+      env,
+    );
+    assert.equal(missRes.status, 200);
+    const miss = await missRes.json();
+    assert.equal(miss.serve, "materialization_miss");
+    assert.equal(miss.metrics.link_count, 0);
+
+    resetEntityIntelligenceReadModelCache();
+    const throwingDb = {
+      prepare() {
+        throw new Error("d1 unavailable");
+      },
+    };
+    const failed = await handleEntityIntelligence(
+      req("/entity-intelligence?kind=agency&id=parks-and-recreation"),
+      { DB: throwingDb },
+    );
+    assert.equal(failed.status, 200);
+    const failedBody = await failed.json();
+    assert.equal(failedBody.serve, "materialization_miss");
+    assert.equal(failedBody.root.ref, "agency:id:parks-and-recreation");
+    assert.equal(failedBody.metrics.link_count, 0);
+
+    const listDown = await handleEntityIntelligence(req("/entity-intelligence?list=1"), {});
+    assert.equal(listDown.status, 200);
+    const listBody = await listDown.json();
+    assert.equal(listBody.serve, "unavailable");
+    assert.deepEqual(listBody.entities, []);
   });
 });
