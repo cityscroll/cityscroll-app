@@ -1,8 +1,7 @@
-import activity from "./data/district_activity.json" with { type: "json" };
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
-import communityGeography from "./data/community_board_geography_lookup.json" with { type: "json" };
 import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
 import { buildNearYouViewModel, renderNearYouDocument } from "../../site/near_you_view.mjs";
+import { loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
 
 const SITE_BASE = "https://cityscroll.org";
 const CANONICAL_BASE = `${SITE_BASE}/near-you`;
@@ -40,10 +39,20 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     if (cached) return cached;
   }
   const scope = scopeFromNearYouUrl(url, { language: url.searchParams.get("lang") || "en" });
-  const view = buildNearYouViewModel(scope, activity, boundaries, {
+  let routeReadModel;
+  try {
+    routeReadModel = await loadNearYouActivity(env, scope);
+  } catch (error) {
+    if (!(error instanceof RouteReadModelUnavailable)) throw error;
+    return new Response(JSON.stringify({ ok: false, reason: "near-you-read-model-unavailable" }), {
+      status: 503,
+      headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+    });
+  }
+  const view = buildNearYouViewModel(scope, routeReadModel.activity, boundaries, {
     canonicalBase: CANONICAL_BASE,
     siteBase: SITE_BASE,
-    communityGeography,
+    communityGeography: routeReadModel.communityGeography,
   });
   const html = renderNearYouDocument(view, {
     canonicalBase: CANONICAL_BASE,

@@ -34,6 +34,16 @@ test("Worker deploys when shared Following source changes and smokes the canonic
   assert.match(workflow, /python3 test\/functional\/20_demo_links\.py/);
 });
 
+test("Worker deploy uses the pinned dry-run budget and read-model canary guard", () => {
+  const workflow = read(".github/workflows/deploy-worker.yml");
+  assert.match(workflow, /npx wrangler@4\.110\.0 deploy --dry-run/);
+  assert.match(workflow, /tools\/worker_deploy_guard\.mjs/);
+  assert.match(workflow, /--read-model-dir/);
+  assert.match(workflow, /52 MiB/);
+  assert.match(workflow, /route-read-model:near-you:manifest:v1/);
+  assert.match(workflow, /route-read-model:meetings:manifest:v1/);
+});
+
 test("digest deploy guard covers trigger propagation before the cron", () => {
   assert.equal(digestDeployDelayMs(new Date("2026-08-03T12:39:59.999Z")), 0);
   assert.equal(digestDeployDelayMs(new Date("2026-08-03T12:40:00.000Z")), 25 * 60_000);

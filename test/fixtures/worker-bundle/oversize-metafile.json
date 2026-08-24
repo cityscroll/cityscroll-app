@@ -1,0 +1,16 @@
+{
+  "outputs": {
+    "worker.js": {
+      "entryPoint": "worker/src/worker.mjs",
+      "bytes": 54525953,
+      "inputs": {
+        "worker/src/data/oversize.json": { "bytesInOutput": 54500000 },
+        "worker/src/worker.mjs": { "bytesInOutput": 10000 },
+        "worker/src/lib/router.mjs": { "bytesInOutput": 5000 },
+        "worker/src/lib/alerts.mjs": { "bytesInOutput": 4000 },
+        "worker/src/lib/search.mjs": { "bytesInOutput": 3000 },
+        "worker/src/lib/other.mjs": { "bytesInOutput": 2000 }
+      }
+    }
+  }
+}
