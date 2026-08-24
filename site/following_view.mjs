@@ -565,6 +565,13 @@ function withTopic(view, lens) {
   }, { frequency: view.frequency, matchCount: view.matchCount });
 }
 
+function communityBoardWatchHref(view) {
+  return followingUrlFromWatch({
+    lens: "meetings",
+    filter: {},
+  }, { frequency: view.frequency });
+}
+
 function withPlace(view, borough) {
   const nextFilter = { ...view.filter };
   if (!borough) {
@@ -753,7 +760,7 @@ function templateHtml(template) {
 function controlsHtml(view) {
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
   const borough = placeBorough(view.filter);
-  const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard ? " open" : "";
+  const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard || view.lens === "meetings" ? " open" : "";
   const councilFieldHidden = view.lens !== "district" ? " hidden" : "";
   const boardFieldHidden = view.lens !== "meetings" ? " hidden" : "";
   const boardSelection = communityBoardSelectionFromRef(view.filter.communityBoard);
@@ -777,7 +784,7 @@ function controlsHtml(view) {
         <label>Agency<input name="agency" value="${esc(view.filter.agency || "")}" placeholder="Any agency" data-following-refine="agency"></label>
         <div data-following-council-field${councilFieldHidden}>
           <label>City Council District (1–51)<input name="council" value="${esc(view.filter.councilDistrict || "")}" inputmode="numeric" pattern="(?:[1-9]|[1-4][0-9]|5[01])" placeholder="1–51" aria-describedby="following-council-help" data-following-refine="council"></label>
-          <p id="following-council-help">Not a Community Board. Boards are 1–18 in each borough; City Council Districts are 1–51 citywide.</p>
+          <p id="following-council-help">Not a Community Board. Boards are 1–18 in each borough; City Council Districts are 1–51 citywide. <a href="${esc(communityBoardWatchHref(view))}">Choose a Community Board watch</a>.</p>
         </div>
         <div data-following-community-board-field${boardFieldHidden}>
           <fieldset class="following-community-board-picker">
