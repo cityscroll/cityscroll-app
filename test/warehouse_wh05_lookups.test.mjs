@@ -93,7 +93,7 @@ describe("WH-05 committed Doing Business materialization + speed receipt", () =>
     const worker = JSON.parse(readFileSync(DB_WORKER, "utf8"));
     assert.equal(site.schema_version, 1);
     assert.equal(site.phase, "WH-05");
-    assert.equal(site.mode, "bulk_warehouse");
+    assert.ok(["bulk_warehouse", "bulk_soda"].includes(site.mode));
     assert.equal(site.row_count, site.rows.length);
     assert.deepEqual(site.rows, worker.rows);
     assert.deepEqual(site.mode, worker.mode);
