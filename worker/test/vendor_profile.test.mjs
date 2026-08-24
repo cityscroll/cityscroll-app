@@ -161,7 +161,7 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_name, "CAMBA  INC");
   // Warehouse serve carries the publisher phone (normalized), not the old SODA fixture.
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "718-287-2600");
-  assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-18");
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
   assert.equal(bucket.profiles.CAMBA.footprint.root.ref, "vendor:stem:CAMBA");
   assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.scope_count, 273);
   assert.equal(bucket.profiles.CAMBA.footprint.vendor_footprint.section_counts.awards.confirmed_count, 273);

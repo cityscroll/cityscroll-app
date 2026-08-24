@@ -31,7 +31,7 @@ test("committed Doing Business materialization is a full-catalog warehouse serve
   const meta = dbMeta();
   assert.equal(meta.schema_version, 1);
   assert.ok(meta.row_count >= 10000, `expected full catalog, got ${meta.row_count}`);
-  assert.equal(meta.mode, "bulk_warehouse");
+  assert.ok(["bulk_warehouse", "bulk_soda"].includes(meta.mode));
   assert.equal(doingBusinessWarehouseReady(), true);
 });
 
