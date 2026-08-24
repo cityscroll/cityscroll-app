@@ -1,6 +1,14 @@
 import { officialSourceDisclosure, officialSourceLink } from "./affordance_grammar.mjs";
+import legislativeMatterLookup from "./data/legislative_matter_lookup.json" with { type: "json" };
 
 export const MEETING_OUTCOMES_SNAPSHOT_SCHEMA = "cityscroll.meeting_outcomes_snapshot.v1";
+
+function matterCityScrollHref(matterId) {
+  const id = String(matterId ?? "").trim();
+  return /^\d+$/.test(id) && Object.hasOwn(legislativeMatterLookup?.matters || {}, id)
+    ? `/matters/${encodeURIComponent(id)}/`
+    : null;
+}
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -190,7 +198,11 @@ export function renderMeetingOutcomesFirstPaint(snapshotOrRecord, requestId) {
       ? `<p class="meeting-sub meeting-roll-call-static" data-vote-identity="roll_call" data-official-count="${esc(String(votes?.person_count || people.length))}">Roll call: ${names.join(", ")}${more > 0 ? ` (+${more} more)` : ""}</p>`
       : "";
     const vote = `${tally}${rollCallChip}`;
-    const file = `<span class="meeting-file">${esc(matter.matter_file || matter.matter_id)}</span>`;
+    const fileLabel = matter.matter_file || matter.matter_id;
+    const matterHref = matterCityScrollHref(matter.matter_id);
+    const file = matterHref
+      ? `<a class="meeting-file meeting-matter-link ui-constellation-link" href="${esc(matterHref)}" data-matter-id="${esc(matter.matter_id)}">${esc(fileLabel)}</a>`
+      : `<span class="meeting-file">${esc(fileLabel)}</span>`;
     return `<li class="meeting-matter" data-outcome-bucket="${outcomeBucket(label)}">
       <div class="meeting-matter-main"><div>${file}<p class="meeting-title">${esc(matter.title)}</p>${vote}</div>
       ${label ? `<span class="meeting-badge meeting-badge--${outcomeBucket(label)}">${esc(label)}</span>` : ""}</div>

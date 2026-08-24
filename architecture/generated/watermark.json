@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-23T17:42:01-04:00",
-  "commit": "f9e2247683e4ce651b0dfdd465bdc504327d2cf2",
+  "generated_at": "2026-08-23T21:22:03-04:00",
+  "commit": "885a37266dec9440ffdc962187a35cc339cd858d",
   "observer_coverage_hash": "7557b64a31f5d1d3d67e2ad9c26426ad20401a77f2a069ee08a56db248197d47",
   "canaries": {
     "agency-constellation-model": {
@@ -46,13 +46,13 @@
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
-      "count": 14,
-      "fingerprint": "60eebce57fa6670140a9104c5a5a1040ebb46e0ba5b0690ec36d86c4ea2aef46"
+      "count": 15,
+      "fingerprint": "77a3a75b07485c28fc7991706fc2cd9bc896aa09ba66744de0f2f230f1139fe0"
     },
     "pages-edge-routes": {
       "path": "site/_routes.json",
-      "count": 15,
-      "fingerprint": "c979946bf388b87575b3f8bdeebd8c28f2ebcc3dad2784d373ee0eea68c860d8"
+      "count": 16,
+      "fingerprint": "5f489c4eaf023f9d98f056996900852998b9324277173f888fb4119e4e481b9a"
     },
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",

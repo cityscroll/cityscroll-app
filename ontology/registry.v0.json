@@ -390,14 +390,25 @@
     },
     {
       "id": "matter",
-      "status": "unregistered",
+      "status": "registered",
       "layer": "semantic",
-      "reason": "Legistar matters folded into meeting-outcomes KV; not independent ontology objects.",
+      "reason": "Legistar matter 78605 is published as an exact-key static legislative matter document over the meeting-outcomes materialization; broader matter coverage remains bounded.",
       "primary_key_pattern": "matter:{legistar_id}",
-      "families": [],
-      "backing": [],
-      "properties_ref": [],
-      "grounding": "gap"
+      "families": [
+        "civic:legislative-matter"
+      ],
+      "backing": [
+        "meeting_outcomes",
+        "legislative_matter_lookup"
+      ],
+      "properties_ref": [
+        "matter_file",
+        "title",
+        "matter_href",
+        "appearances",
+        "source_receipt"
+      ],
+      "grounding": "partial"
     },
     {
       "id": "recommendation",
@@ -471,7 +482,7 @@
       "id": "vote",
       "status": "unregistered",
       "layer": "semantic",
-      "reason": "Roll-call rows aggregated; person-level identity discarded (source_coverage legistar-votes).",
+      "reason": "Roll-call rows and person-level identity are retained inside the bounded meeting-outcomes and legislative-matter projections; an independent public vote object is not yet published.",
       "primary_key_pattern": "vote:{event_item_id}:{person_id}",
       "families": [],
       "backing": [],
