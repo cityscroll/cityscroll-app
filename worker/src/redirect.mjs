@@ -6,15 +6,16 @@
 // tracked: who clicked, which subscriber, which email, IP, user agent. The counter is a plain
 // per-day integer. The disclosure line in every digest footer points at this file's behavior.
 //
-// Not an open redirect: the target is always constructed by us from the validated request id
-// (cityscroll.org/notices/<id>); the path never carries a URL. Bad paths fall through to the
-// homepage uncounted. The optional `w` query value (w12-12: the originating watch's own filter,
+// Not an open redirect: the target is always constructed by us from the validated id and the
+// digest route contract (under cityscroll.org); the path never carries a URL. Bad paths fall
+// through to the homepage uncounted. The optional `w` query value (w12-12: the originating watch's own filter,
 // built by encodeWatchFilter()/lib/filter.mjs) is passed through unread — the redirect only
 // bounds its shape (validWatchParam) before re-embedding it in the target's document query; the
 // site's own client-side parseWatchParam() is what actually validates its JSON contents, and
 // fails soft to the plain notice view on anything malformed or truncated.
 
-import { parseRedirect, noticeUrl, validWatchParam, bumpStat } from "./lib/stats.mjs";
+import { parseRedirect, validWatchParam, bumpStat } from "./lib/stats.mjs";
+import { digestPermalinkUrl } from "./lib/digest_routes.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { verifyToken, signToken } from "optin-token";
 import {
@@ -43,7 +44,7 @@ export async function handleRedirect(req, env, ctx, pathname) {
   if (ctx && ctx.waitUntil) ctx.waitUntil(bump); // don't make the reader wait for a counter
   const url = new URL(req.url);
   const w = validWatchParam(url.searchParams.get("w"));
-  const location = noticeUrl(parsed.id, w);
+  const location = digestPermalinkUrl(parsed.kind, parsed.id, w);
   // Optional pins-scoped magic-link token from digest emails. Invalid/expired →
   // silent anonymous redirect (no scary error). Never put the token on the final URL.
   const sessionTok = url.searchParams.get("s") || "";

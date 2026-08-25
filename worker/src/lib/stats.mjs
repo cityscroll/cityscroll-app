@@ -5,6 +5,8 @@
 // per-recipient anything. KV read-modify-write is eventually consistent, so concurrent bumps can
 // under-count slightly; these are trend numbers, not billing. Day keys self-expire.
 
+import { digestRoute, normalizeDigestId } from "./digest_routes.mjs";
+
 export const STATS_TTL = 40 * 24 * 3600; // 40 days — enough for a 30-day window with slack
 
 // UTC YYYY-MM-DD, matching the `m:nl:<day>` / `sendcount:<day>` convention elsewhere.
@@ -23,22 +25,31 @@ export function lastNDays(n, now) {
   return out;
 }
 
-// Parse a /r/<kind>/<id> path. kind is one of our watch/lens kinds (lowercase slug); id is a City
-// Record request id (digits + letters + dashes). Anything else → null. The redirect TARGET is
-// always built by us (cityscroll.org/notices/<id>) — the path never carries a URL, so /r cannot be
-// an open redirect.
+// Parse a /r/<kind>/<id> path. URL.pathname preserves percent-encoding in Workers, so decode only
+// the final path segment. The decoded id is validated by the route contract, then re-encoded by
+// the fixed-origin target builder; an embedded https:// string therefore remains data, never a
+// redirect destination.
 export function parseRedirect(pathname) {
-  const m = /^\/r\/([a-z][a-z0-9-]{0,23})\/([A-Za-z0-9][A-Za-z0-9-]{0,39})$/.exec(pathname);
+  const m = /^\/r\/([a-z][a-z0-9-]{0,23})\/([^/]+)$/.exec(pathname);
   if (!m) return null;
-  return { kind: m[1], id: m[2] };
+  const route = digestRoute(m[1]);
+  if (!route || m[2].length > 4096) return null;
+  let id;
+  try { id = decodeURIComponent(m[2]); } catch { return null; }
+  const normalizedId = normalizeDigestId(m[1], id);
+  return normalizedId === null ? null : { kind: m[1], id: normalizedId };
 }
 
 // w (w12-12): the originating watch's filter, already encoded by encodeWatchFilter()
 // (lib/filter.mjs) — an opaque, already-percent-safe string the redirect just re-embeds after
 // the id as a bounded document query. Re-encoded here (not passed through raw) since the caller may have decoded it via
 // URLSearchParams on the way in.
-export function noticeUrl(id, w) {
-  const base = `https://cityscroll.org/notices/${encodeURIComponent(id)}`;
+export function noticeUrl(id, w, kind = "rfp") {
+  const route = digestRoute(kind);
+  if (!route) return null;
+  // Keep this helper's historical permissive behavior for direct callers; /r callers have
+  // already passed normalizeDigestId() through parseRedirect above.
+  const base = `https://cityscroll.org${route.permalinkPathPrefix}${encodeURIComponent(id)}`;
   return w ? `${base}?w=${encodeURIComponent(w)}` : base;
 }
 

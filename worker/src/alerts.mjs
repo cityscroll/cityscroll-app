@@ -34,6 +34,7 @@ import { encodeWatchFilter } from "./lib/filter.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
+import { digestPermalinkUrl, digestRedirectUrl } from "./lib/digest_routes.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 import { currentAwardCandidates } from "./external_award.mjs";
@@ -2610,7 +2611,7 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const itemKind = kind === "district" ? r.district_kind : kind;
     const itemClass = kind === "district" ? ' class="district-item"' : "";
     if (itemKind === "meetings" && r.meeting_id) {
-      const meetingLink = `https://cityscroll.org/meetings/${encodeURIComponent(r.meeting_id)}/`;
+      const meetingLink = `${digestPermalinkUrl("meetings", r.meeting_id)}/`;
       const institution = r.board_name || r.agency || r.agency_name || "";
       const committee = r.committee?.name || "";
       const venue = r.venue?.address || r.venue?.name || "";
@@ -2704,10 +2705,10 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     // own percent-encoded output, so it's placed directly, not re-encoded (that would double-encode).
     // Optional `s=` carries a pins-scoped magic-link token; /r exchanges it for a session
     // cookie and never forwards the token to the final cityscroll.org URL.
-    const qs = [];
-    if (sessionTok) qs.push(`s=${encodeURIComponent(sessionTok)}`);
-    if (w) qs.push(`w=${w}`);
-    const noticeLink = `${base}/r/${encodeURIComponent(itemKind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
+    const noticeLink = digestRedirectUrl(base, itemKind, r.request_id, {
+      sessionToken: sessionTok,
+      watchParam: w,
+    });
     acts.push(`<a href="${noticeLink}">↗ View on CityScroll</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     if (kind === "rules" && r.action_band?.action_url) {
@@ -2963,11 +2964,11 @@ export function rollupDigestHtml({
       }
       const titleText = r.short_title || "Notice";
       const ev = matchEvidence(titleText, r.additional_description_1, keywords);
-      const qs = [];
-      if (sessionTok) qs.push(`s=${encodeURIComponent(sessionTok)}`);
-      if (w) qs.push(`w=${w}`);
       const rowKind = itemKind || "rfp";
-      const noticeLink = `${base}/r/${encodeURIComponent(rowKind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
+      const noticeLink = digestRedirectUrl(base, rowKind, r.request_id, {
+        sessionToken: sessionTok,
+        watchParam: w,
+      });
       // Money awards share query kind "award" with award-arrival watches; still
       // render City Record vendor_name on the notice meta line.
       const meta = [r.agency_name,
