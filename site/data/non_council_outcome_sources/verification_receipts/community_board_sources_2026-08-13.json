@@ -423,15 +423,15 @@
     {
       "board_id": "brooklyn-cb-05",
       "role": "upcoming_meetings",
-      "publisher": null,
-      "publisher_kind": null,
-      "url": null,
+      "publisher": "Brooklyn Community Board 5",
+      "publisher_kind": "third_party_storage",
+      "url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
       "seen_on": "2026-08-13",
-      "format": null,
-      "fetchability": "unknown",
+      "format": "public Google Calendar iCalendar",
+      "fetchability": "machine_fetchable",
       "access_note": null,
-      "status": "not_observed",
-      "reason": "not_observed_in_pass"
+      "status": "observed",
+      "reason": null
     },
     {
       "board_id": "brooklyn-cb-05",

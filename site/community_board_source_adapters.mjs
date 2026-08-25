@@ -549,6 +549,23 @@ function officialCalendarBlocks(html, pageYear) {
       bodyHtml: following,
     });
   }
+  // A small set of NYC board pages publishes the next meeting as an
+  // explicit date in prose, without a clock time or event markup. Preserve
+  // that publisher observation as a date-only event; do not infer a time.
+  const prose = plain(calendarHtml, 4_000);
+  const nextMeeting = prose.match(/\bnext scheduled\s+(.{0,100}?)\s+will be\s+((?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},?\s+20\d{2})\b/i);
+  if (nextMeeting) {
+    const date = explicitCalendarDate(nextMeeting[2], pageYear);
+    const title = officialCalendarTitleFromProse(nextMeeting[1]) || "Community Board Meeting";
+    const venue = prose.match(/\bheld at:\s*(.+?)(?:\s+Parking is available|\s+There are no scheduled|$)/i)?.[1] || null;
+    if (date) blocks.push({
+      title,
+      logistics: nextMeeting[2],
+      lines: venue ? [venue] : [],
+      bodyHtml: "",
+      date_only: true,
+    });
+  }
   return blocks;
 }
 
@@ -566,7 +583,7 @@ export function parseNycOfficialCalendarSource(html, source = {}, options = {}) 
     const date = explicitCalendarDate(block.logistics, pageYear);
     const startAt = calendarStartAt(date, block.logistics);
     const recordId = calendarRecordId(descriptor, date, block.title);
-    if (!block.title || !date || !startAt || !recordId) continue;
+    if (!block.title || !date || (!startAt && !block.date_only) || !recordId) continue;
     const participation = eventPageParticipation(block.bodyHtml, sourceUrl);
     found.push(record(descriptor, {
       record_kind: "event",
