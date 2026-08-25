@@ -5,6 +5,8 @@
 // no-send backfill endpoint. It has no provider, queue, or drain dependency.
 
 import { readFile } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import process from "node:process";
 import {
   DELIVERED_LAND_ITEM_ID,
@@ -16,7 +18,7 @@ import { deriveSubscriberId } from "../src/lib/subscriptions.mjs";
 export const DEFAULT_BASE_URL = "https://api.cityscroll.org";
 export const SHADOW_DAY = "2026-08-10";
 export const OWNER_REDACTED = "ja***@gmail.com";
-export const ADMIN_KEY_PATH = "/Users/openclaw/.config/estate/cityscroll-admin-key";
+export const ADMIN_KEY_PATH = path.join(os.homedir(), ".config", "estate", "cityscroll-admin-key");
 export const RECOVERY_PATHS = Object.freeze(new Set([
   "/admin/digest-shadow",
   "/admin/stats",
