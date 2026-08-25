@@ -1,0 +1,190 @@
+{
+  "boundary": {
+    "ambient_network_calls": 0,
+    "credentials": 0,
+    "forbidden_imports": 0,
+    "gadget_source_sha256": "12c48a851a7ae0a465f6616e63b84d3e435b027bc4fe4fca42aab1eb02575c30",
+    "model_calls": 0,
+    "raw_store_bindings": 0,
+    "semantic_reimplementation": 0,
+    "source_files": [
+      "integrations/cloudflare-os-entity-research/src/gadget.mjs",
+      "integrations/cloudflare-os-entity-research/README.md",
+      "integrations/cloudflare-os-entity-research/deployment.json"
+    ]
+  },
+  "card": "cs-07-cloudflare-os-composition-proof",
+  "deployment": {
+    "auth_mode": "none-for-public-read-fixture",
+    "deployment_id": "cs07-entity-research-gadget-rehearsal-v1",
+    "mode": "isolated-rehearsal",
+    "model_enabled": false,
+    "raw_store_bindings": 0,
+    "resident_baseline_comparison": {
+      "cityscroll_capabilities_changed": false,
+      "cityscroll_files_changed": false,
+      "cityscroll_routes_changed": false,
+      "production_write_operations": 0
+    },
+    "resident_path_dependency": false,
+    "url": "https://cs07-entity-research-gadget.workers.dev"
+  },
+  "fixture": {
+    "id": "cs-07-acme-entity-research-v1",
+    "path": "test/fixtures/cloudflare_os_entity_research.json",
+    "sha256": "4f7d6ec75b78668e0ea8c492ae14b4735a8f48ffad138fb96fe29fa27890bea5"
+  },
+  "kill_switch": {
+    "active_after": false,
+    "active_before": false,
+    "active_during_proof": true,
+    "disabled_endpoint": "https://cs07-entity-research-gadget.workers.dev (disabled)",
+    "variable": "CITYSCROLL_CS07_ENABLED"
+  },
+  "observed_at": "2026-08-24T00:00:00.000Z",
+  "protocol": {
+    "capability_calls": 4,
+    "endpoint": "POST /mcp",
+    "initialize": 1,
+    "list_tools": 1,
+    "post_requests": 7,
+    "raw_app_store_reads": 0,
+    "transport": "Streamable HTTP"
+  },
+  "rollback": {
+    "cityscroll_unchanged": true,
+    "deployment_id": "cs07-entity-research-gadget-rehearsal-v1",
+    "endpoint_disabled": true,
+    "grant_removed": true,
+    "rehearsal": "pass"
+  },
+  "schema": "cityscroll.cloudflare_os_composition_proof_receipt.v1",
+  "source": {
+    "deployment_sha256": "3db3107d6c4ebe3b565b0f8f31fe3156b49c1f40af07c09a6c2f17f8fb1defaa",
+    "gadget_sha256": "12c48a851a7ae0a465f6616e63b84d3e435b027bc4fe4fca42aab1eb02575c30",
+    "path": "integrations/cloudflare-os-entity-research"
+  },
+  "status": "pass",
+  "tool_grant": {
+    "capability_versions": [
+      "cited.passages.retrieve@1",
+      "entity.dossier.get@1",
+      "entity.relationships.get@1",
+      "notice.search@1"
+    ],
+    "exact_capability_references": [
+      "cited.passages.retrieve@1",
+      "entity.dossier.get@1",
+      "entity.relationships.get@1",
+      "notice.search@1"
+    ],
+    "granted_tools": [
+      "get_entity_dossier",
+      "get_entity_relationships",
+      "search_notices",
+      "retrieve_cited_passages"
+    ],
+    "mutation_tools_granted": 0,
+    "raw_store_bindings_granted": 0,
+    "registered_public_read_tools": 4
+  },
+  "upstream": {
+    "cloudflare_os_commit": "e4b5cc65c4681ec72ff95e67a6dcd087fd1c4e04",
+    "cloudflare_os_starter_commit": "3d211477ad009e13a98d863d843e5c12a29ad02b",
+    "gatekeeper": "packages/gatekeeper-mcp"
+  },
+  "workflow": {
+    "bounds": {
+      "cited_passage_limit": 10,
+      "notice_limit": 10,
+      "relationship_depth": 2,
+      "relationship_fan_out": 12
+    },
+    "call_count": 4,
+    "call_order": [
+      "get_entity_dossier",
+      "get_entity_relationships",
+      "search_notices",
+      "retrieve_cited_passages"
+    ],
+    "model_enabled": false,
+    "provenance": {
+      "cited_sources": [
+        {
+          "id": "city_record_notice:20260715041",
+          "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260715041"
+        }
+      ],
+      "dossier_sources": [
+        {
+          "id": "20260730001",
+          "system": "city_record",
+          "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730001"
+        },
+        {
+          "id": "CT-850-1",
+          "system": "checkbook",
+          "url": "https://www.checkbooknyc.com/contract/CT-850-1"
+        }
+      ],
+      "notice_source_ids": [
+        "city_record:20260730002",
+        "city_record:20260730001"
+      ],
+      "relationship_sources": [
+        {
+          "id": "20260730001",
+          "system": "city_record",
+          "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730001"
+        },
+        {
+          "id": "20260730002",
+          "system": "city_record",
+          "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730002"
+        }
+      ]
+    },
+    "result_ids": {
+      "citation_ids": [
+        "city_record_notice:20260715041:p0001"
+      ],
+      "notice_request_ids": [
+        "20260730001",
+        "20260730002"
+      ],
+      "relationship_node_ids": [
+        "agency:name:department%20of%20design%20and%20construction",
+        "award:city_record:20260730001",
+        "contract:name:ct-850-1",
+        "solicitation:city_record:20260730002",
+        "vendor:stem:ACME CONSTRUCTION"
+      ]
+    },
+    "result_semantic_sha256": {
+      "get_entity_dossier": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "get_entity_relationships": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
+      "retrieve_cited_passages": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68",
+      "search_notices": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a"
+    },
+    "row_bounds": {
+      "cited_passages": {
+        "maximum_results": 20,
+        "returned_citations": 1
+      },
+      "dossier": {
+        "maximum_records": 250,
+        "returned_records": 2
+      },
+      "notices": {
+        "maximum_results": 100,
+        "returned_results": 2
+      },
+      "relationships": {
+        "maximum_records": 250,
+        "returned_edges": 5,
+        "returned_nodes": 5
+      }
+    },
+    "workbook_semantic_sha256": "2e4446060b0cc15efc3b496aa854709541cdd73b29b8642ef3bbb3af7c838398"
+  }
+}
