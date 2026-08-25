@@ -87,6 +87,23 @@ produce a versioned `unavailable` result without counts or percentiles. Successf
 best-effort `rum:health:latest-query` timestamp. Freshness reports the latest retained observation and
 its age only when one exists.
 
+The read configuration is deliberately diagnosed without exposing credentials: `missing-account-id`,
+`invalid-account-id`, and `missing-read-token` are returned in the private `read_path` receipt. The
+worker deploy workflow syncs the optional repository `ANALYTICS_READ_TOKEN` secret explicitly; it does
+not reuse the broader deploy token. A missing secret remains `unavailable`, never an empty dataset.
+
+The admin response keeps the existing `series` contract and adds `coarse_summary`, whose rows contain
+only metric, dimensions, p50/p75/p95 when the row is `flowing`, retained `sampled_count`, latest
+observation time, and one operational status. `implementation_status=code_complete` describes the
+registered code path; `operational_status=flowing` is reserved for retained observations. The other
+operational states are `no_data`, `insufficient_sample`, `uninstrumented`, and `unavailable`.
+
+The opt-in live chain proof is `test/functional/rum_performance_e2e.py`. It uses Playwright to load
+real public pages, observes the collector's real `/performance-events` requests, optionally checks the
+authenticated API with `CROL_PERF_ADMIN_URL`/`CROL_PERF_ADMIN_KEY`, and opens the Access-authenticated
+Desk view with `CROL_ACCESS_SERVICE_TOKEN_FILE`. It writes only ignored local evidence; it never posts
+synthetic observations.
+
 The adapter also projects a bounded seven-day health view from the intake counters: accepted rows,
 rejections by the closed reason vocabulary, unsupported schemas, developer/disabled/preview
 exclusions, storage configured versus unavailable checks, latest accepted, latest query, and the

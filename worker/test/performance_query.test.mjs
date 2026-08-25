@@ -9,6 +9,7 @@ import {
   PerformanceQueryError,
   buildPerformanceSnapshot,
   normalizePerformanceQuery,
+  performanceReadConfiguration,
   performanceAnalyticsQueryPlan,
   readPerformanceAnalytics,
 } from "../src/lib/performance_query.mjs";
@@ -234,9 +235,18 @@ test("read adapter keeps credentials server-side and returns explicit unavailabl
     filters: { metric_id: "ttfb_ms" },
   }, { now: new Date(fixture.now) });
   assert.equal(unavailable.status, "unavailable");
-  assert.equal(unavailable.unavailable_reason, "not-configured");
+  assert.equal(unavailable.unavailable_reason, "missing-account-id");
+  assert.deepEqual(unavailable.read_path, { status: "unavailable", reason: "missing-account-id" });
   assert.deepEqual(unavailable.series, []);
   assert.equal(Object.hasOwn(unavailable, "percentiles"), false);
+
+  assert.deepEqual(performanceReadConfiguration({
+    ANALYTICS_ACCOUNT_ID: "a".repeat(32),
+  }), { configured: false, reason: "missing-read-token" });
+  assert.deepEqual(performanceReadConfiguration({
+    ANALYTICS_ACCOUNT_ID: "not-an-account",
+    ANALYTICS_READ_TOKEN: "opaque",
+  }), { configured: false, reason: "invalid-account-id" });
 
   const sqlFailure = await readPerformanceAnalytics({
     ANALYTICS_ACCOUNT_ID: "a".repeat(32),

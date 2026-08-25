@@ -13,6 +13,15 @@ export const MAX_PERFORMANCE_GROUPS = 64;
 export const MAX_PERFORMANCE_TREND_DAYS = 91;
 export const PERFORMANCE_HEALTH_WINDOW_DAYS = 7;
 
+export function performanceReadConfiguration(env = {}) {
+  const accountId = String(env.ANALYTICS_ACCOUNT_ID || "").trim();
+  const token = String(env.ANALYTICS_READ_TOKEN || "").trim();
+  if (!accountId) return { configured: false, reason: "missing-account-id" };
+  if (!/^[a-f0-9]{32}$/.test(accountId)) return { configured: false, reason: "invalid-account-id" };
+  if (!token) return { configured: false, reason: "missing-read-token" };
+  return { configured: true };
+}
+
 export const PERFORMANCE_WINDOWS = Object.freeze({
   "24h": 24 * 60 * 60 * 1000,
   "7d": 7 * 24 * 60 * 60 * 1000,
@@ -609,6 +618,7 @@ function unavailableSnapshot(plan, reason, dataHealth) {
     series: [],
     freshness: { status: "unavailable", queried_at: plan?.queried_at || null },
     data_health: dataHealth,
+    read_path: { status: "unavailable", reason },
   };
 }
 
@@ -628,8 +638,9 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
 
   const now = new Date(plan.queried_at);
   const health = () => readPerformanceDataHealth(env, now, options.healthWindowDays);
-  if (!/^[a-f0-9]{32}$/.test(String(env?.ANALYTICS_ACCOUNT_ID || "")) || !env?.ANALYTICS_READ_TOKEN) {
-    return unavailableSnapshot(plan, "not-configured", await health());
+  const readConfiguration = performanceReadConfiguration(env);
+  if (!readConfiguration.configured) {
+    return unavailableSnapshot(plan, readConfiguration.reason, await health());
   }
 
   const fetchImpl = options.fetchImpl || globalThis.fetch;

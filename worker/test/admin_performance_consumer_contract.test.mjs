@@ -28,7 +28,7 @@ function parsedQuery(query) {
 
 function assertMissingPercentilesNeverBecomeZero(value, label = "response") {
   if (!value || typeof value !== "object") return;
-  if (value.status && value.status !== "available") {
+  if (value.status && !["available", "flowing"].includes(value.status)) {
     assert.equal(Object.hasOwn(value, "percentiles"), false, `${label} has percentiles for ${value.status}`);
     for (const field of ["p50", "p75", "p95"]) {
       assert.equal(Object.hasOwn(value, field), false, `${label}.${field} must be absent, not zero`);

@@ -20,6 +20,14 @@ export const ADMIN_PERFORMANCE_STATES = Object.freeze([
   "unclassified",
   "unavailable",
 ]);
+export const ADMIN_PERFORMANCE_OPERATIONAL_STATES = Object.freeze([
+  "code_complete",
+  "flowing",
+  "no_data",
+  "insufficient_sample",
+  "uninstrumented",
+  "unavailable",
+]);
 
 const PARAMETER_TO_FILTER = Object.freeze({
   surface: "surface_id",
@@ -72,6 +80,47 @@ function responseStatus(snapshot) {
   return "available";
 }
 
+function implementationStatus(query) {
+  return selectedIsUninstrumented(query) ? "uninstrumented" : "code_complete";
+}
+
+function operationalStatus(snapshot, series) {
+  if (snapshot.status === "unavailable" || snapshot.data_health?.status === "partial") return "unavailable";
+  const statuses = series.map((item) => item.current?.status);
+  if (statuses.includes("available")) return "flowing";
+  if (statuses.includes("insufficient_sample")) return "insufficient_sample";
+  if (statuses.includes("no_data")) {
+    return selectedIsUninstrumented(snapshot.query) ? "uninstrumented" : "no_data";
+  }
+  if (statuses.includes("retention_partial")) return "unavailable";
+  return selectedIsUninstrumented(snapshot.query) ? "uninstrumented" : "no_data";
+}
+
+function coarseLatencySummary(snapshot) {
+  const rows = snapshot.series.map((series) => {
+    const current = series.current || {};
+    const metricId = series.dimensions?.metric_id || snapshot.query.filters.metric_id || null;
+    const row = {
+      metric_id: metricId,
+      ...series.dimensions,
+      sampled_count: current.sampled_count ?? null,
+      latest_observation_at: series.latest_observation_at || null,
+      status: operationalStatus(snapshot, [series]),
+    };
+    if (current.status === "available" && current.percentiles) {
+      row.p50 = current.percentiles.p50;
+      row.p75 = current.percentiles.p75;
+      row.p95 = current.percentiles.p95;
+    }
+    return row;
+  });
+  return {
+    schema: "cityscroll.admin.performance.coarse_summary.v1",
+    status: operationalStatus(snapshot, snapshot.series),
+    rows,
+  };
+}
+
 export function parseAdminPerformanceRequest(req) {
   const params = new URL(req.url).searchParams;
   for (const key of new Set(params.keys())) {
@@ -112,6 +161,8 @@ export function buildAdminPerformanceResponse(snapshot) {
     schema: ADMIN_PERFORMANCE_SCHEMA,
     generated_at: snapshot.freshness?.queried_at || null,
     status: responseStatus(snapshot),
+    operational_status: operationalStatus(snapshot, snapshot.series),
+    implementation_status: implementationStatus(snapshot.query),
     query: {
       window: snapshot.query.window,
       filters: snapshot.query.filters,
@@ -146,6 +197,7 @@ export function buildAdminPerformanceResponse(snapshot) {
     sampling: snapshot.sampling,
     retention: snapshot.retention,
     series: snapshot.series,
+    coarse_summary: coarseLatencySummary(snapshot),
     freshness: snapshot.freshness,
     data_health: snapshot.data_health,
     ...(snapshot.unavailable_reason ? { unavailable_reason: snapshot.unavailable_reason } : {}),

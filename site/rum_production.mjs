@@ -5,6 +5,7 @@ const RESULT_STATES = new Set(["content", "empty", "unavailable", "error"]);
 const DEV_TOKEN_STORAGE_KEY = "crol_analytics_dev_token_v1";
 const MAX_BATCH = 16;
 const MAX_BUFFERED_MILESTONES = 32;
+export const RUM_IDLE_FLUSH_MS = 5000;
 
 export const RUM_PRODUCTION_HOSTS = Object.freeze([
   "cityscroll.org",
@@ -115,12 +116,38 @@ export function createProductionObservationSink({
   releaseId,
   deviceClass,
   deliver,
+  schedule = globalThis.setTimeout,
+  cancelSchedule = globalThis.clearTimeout,
+  idleFlushMs = RUM_IDLE_FLUSH_MS,
 } = {}) {
   const pending = [];
   let flushing = false;
+  let flushTimer = null;
+
+  function cancelIdleFlush() {
+    if (flushTimer === null) return;
+    try { cancelSchedule?.(flushTimer); } catch { /* best effort */ }
+    flushTimer = null;
+  }
+
+  function scheduleIdleFlush() {
+    if (flushTimer !== null || !pending.length || typeof schedule !== "function") return;
+    try {
+      flushTimer = schedule(() => {
+        flushTimer = null;
+        void flush();
+      }, idleFlushMs);
+      // Node-based callers should not be kept alive by an observational timer. Browsers return
+      // numeric timer handles, so this is a no-op there.
+      flushTimer?.unref?.();
+    } catch {
+      flushTimer = null;
+    }
+  }
 
   async function flush() {
     if (flushing || !pending.length || typeof deliver !== "function") return { state: "idle" };
+    cancelIdleFlush();
     flushing = true;
     try {
       while (pending.length) {
@@ -146,6 +173,7 @@ export function createProductionObservationSink({
       if (!observation) return { state: "ignored" };
       pending.push(observation);
       if (pending.length >= MAX_BATCH) void flush();
+      else scheduleIdleFlush();
       return { state: "queued" };
     },
     flush,
