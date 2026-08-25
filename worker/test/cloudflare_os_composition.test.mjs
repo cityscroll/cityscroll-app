@@ -4,11 +4,11 @@ import test from "node:test";
 import {
   REQUIRED_TOOL_GRANT,
   renderEvidenceWorkbook,
-} from "../integrations/cloudflare-os-entity-research/src/gadget.mjs";
+} from "../../integrations/cloudflare-os-entity-research/src/gadget.mjs";
 import {
   buildCloudflareOsProof,
   verifyCloudflareOsProof,
-} from "../tools/verify_cloudflare_os_proof.mjs";
+} from "../../tools/verify_cloudflare_os_proof.mjs";
 
 test("CS-07 uses exactly four registered public-read tools", () => {
   assert.deepEqual(
