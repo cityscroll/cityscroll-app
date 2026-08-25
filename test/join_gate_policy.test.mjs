@@ -8,14 +8,67 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  JOIN_GATE_CONSEQUENCES,
+  JOIN_GATE_TIER_REGISTRY,
   evaluateRc1PlanPassportGate,
   evaluateUlurpRecommendationGate,
   missingProductStrategies,
+  materializeDecision,
+  resolveJoinGateTier,
   selectUsefulnessGate,
+  PRECISION_THRESHOLD,
   USEFULNESS_THRESHOLD,
 } from "../ontology/join_gate_policy.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+test("join-gate registry resolves every declared consequence band", () => {
+  assert.deepEqual(
+    JOIN_GATE_TIER_REGISTRY.map((tier) => tier.id),
+    ["auto_join", "shadow", "review", "reject"],
+  );
+  assert.deepEqual(
+    JOIN_GATE_TIER_REGISTRY.map((tier) => tier.consequence),
+    [
+      JOIN_GATE_CONSEQUENCES.AUTO_JOIN,
+      JOIN_GATE_CONSEQUENCES.SHADOW,
+      JOIN_GATE_CONSEQUENCES.REVIEW,
+      JOIN_GATE_CONSEQUENCES.REJECT,
+    ],
+  );
+
+  const cases = [
+    { usefulness: 0.3, precision: 0.95, tier: "auto_join", materialize: true },
+    { usefulness: 0.3, precision: 0.949, tier: "shadow", materialize: false },
+    { usefulness: 0.299, precision: 0.95, tier: "review", materialize: false },
+    { usefulness: 0.299, precision: 0.949, tier: "reject", materialize: false },
+    { usefulness: null, precision: 1, tier: "reject", materialize: false },
+  ];
+  for (const input of cases) {
+    const decision = resolveJoinGateTier(input);
+    assert.equal(decision.tier, input.tier, JSON.stringify(input));
+    assert.equal(decision.consequence, input.tier, JSON.stringify(input));
+    assert.equal(decision.materialize, input.materialize, JSON.stringify(input));
+  }
+});
+
+test("materializeDecision consumes the registry and preserves the old boundary", () => {
+  assert.equal(USEFULNESS_THRESHOLD, 0.3);
+  assert.equal(PRECISION_THRESHOLD, 0.95);
+
+  const admitted = materializeDecision({ usefulness: 0.3, precision: 0.95 });
+  assert.equal(admitted.materialize, true);
+  assert.equal(admitted.tier, "auto_join");
+  assert.equal(admitted.consequence, JOIN_GATE_CONSEQUENCES.AUTO_JOIN);
+
+  const belowPrecision = materializeDecision({ usefulness: 0.3, precision: 0.949 });
+  assert.equal(belowPrecision.materialize, false);
+  assert.equal(belowPrecision.consequence, JOIN_GATE_CONSEQUENCES.SHADOW);
+
+  const belowUsefulness = materializeDecision({ usefulness: 0.299, precision: 0.95 });
+  assert.equal(belowUsefulness.materialize, false);
+  assert.equal(belowUsefulness.consequence, JOIN_GATE_CONSEQUENCES.REVIEW);
+});
 
 test("selectUsefulnessGate prefers joinable-candidate rates over catalog coverage", () => {
   const decision = selectUsefulnessGate({

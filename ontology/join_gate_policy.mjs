@@ -11,8 +11,149 @@
  * gate headline and which strategies must be attempted.
  */
 
-export const USEFULNESS_THRESHOLD = 0.3;
-export const PRECISION_THRESHOLD = 0.95;
+/**
+ * Consequences for the measured usefulness/precision bands.
+ *
+ * The registry is ordered from the strongest explicit admission rule to the
+ * weakest. `reject` is the fail-closed fallback for combinations that do not
+ * satisfy an explicit promotion band (including missing or non-finite rates).
+ */
+export const JOIN_GATE_CONSEQUENCES = Object.freeze({
+  AUTO_JOIN: "auto_join",
+  SHADOW: "shadow",
+  REVIEW: "review",
+  REJECT: "reject",
+});
+
+function freezeBand(band) {
+  return Object.freeze({ ...band });
+}
+
+function freezeTier(tier) {
+  return Object.freeze({
+    ...tier,
+    usefulness: tier.usefulness && freezeBand(tier.usefulness),
+    precision: tier.precision && freezeBand(tier.precision),
+  });
+}
+
+/**
+ * Declarative join-gate policy. Bounds are inclusive at `min` and exclusive
+ * at `max`; a tier without bounds is the explicit fail-closed fallback.
+ */
+export const JOIN_GATE_TIER_REGISTRY = Object.freeze([
+  freezeTier({
+    id: "auto_join",
+    consequence: JOIN_GATE_CONSEQUENCES.AUTO_JOIN,
+    usefulness: { band: "high", min: 0.3 },
+    precision: { band: "high", min: 0.95 },
+    materialize: true,
+  }),
+  freezeTier({
+    id: "shadow",
+    consequence: JOIN_GATE_CONSEQUENCES.SHADOW,
+    usefulness: { band: "high", min: 0.3 },
+    precision: { band: "medium", min: 0.8, max: 0.95 },
+    materialize: false,
+  }),
+  freezeTier({
+    id: "review",
+    consequence: JOIN_GATE_CONSEQUENCES.REVIEW,
+    usefulness: { band: "medium", min: 0.1, max: 0.3 },
+    precision: { band: "high", min: 0.95 },
+    materialize: false,
+  }),
+  freezeTier({
+    id: "reject",
+    consequence: JOIN_GATE_CONSEQUENCES.REJECT,
+    usefulness: null,
+    precision: null,
+    fallback: true,
+    materialize: false,
+  }),
+]);
+
+// Compatibility exports for receipts and callers that still record the
+// admission boundary as named thresholds. The values come from the registry;
+// the registry, not these aliases, is the policy source of truth.
+export const USEFULNESS_THRESHOLD = JOIN_GATE_TIER_REGISTRY[0].usefulness.min;
+export const PRECISION_THRESHOLD = JOIN_GATE_TIER_REGISTRY[0].precision.min;
+
+/** A compatibility alias for callers that prefer the shorter registry name. */
+export const JOIN_GATE_TIERS = JOIN_GATE_TIER_REGISTRY;
+
+/** Explicitly records the owner-selected policy mode. */
+export const JOIN_GATE_POLICY = "tiered";
+
+/** Descriptive alias for consumers that use the consequence terminology. */
+export const JOIN_GATE_CONSEQUENCE_REGISTRY = JOIN_GATE_TIER_REGISTRY;
+
+function matchesBand(value, band) {
+  if (!band) return true;
+  if (!Number.isFinite(value)) return false;
+  if (band.min != null && value < band.min) return false;
+  if (band.max != null && value >= band.max) return false;
+  return true;
+}
+
+function tiersWithThresholdOverrides(usefulnessThreshold, precisionThreshold) {
+  if (usefulnessThreshold == null && precisionThreshold == null) {
+    return JOIN_GATE_TIER_REGISTRY;
+  }
+  const usefulness = Number(usefulnessThreshold ?? USEFULNESS_THRESHOLD);
+  const precision = Number(precisionThreshold ?? PRECISION_THRESHOLD);
+  return JOIN_GATE_TIER_REGISTRY.map((tier) => {
+    if (tier.id === "auto_join") {
+      return freezeTier({
+        ...tier,
+        usefulness: { ...tier.usefulness, min: usefulness },
+        precision: { ...tier.precision, min: precision },
+      });
+    }
+    if (tier.id === "shadow") {
+      return freezeTier({
+        ...tier,
+        usefulness: { ...tier.usefulness, min: usefulness },
+        precision: { ...tier.precision, max: precision },
+      });
+    }
+    if (tier.id === "review") {
+      return freezeTier({
+        ...tier,
+        usefulness: { ...tier.usefulness, max: usefulness },
+        precision: { ...tier.precision, min: precision },
+      });
+    }
+    return tier;
+  });
+}
+
+/**
+ * Resolve measured rates through the declared tier registry.
+ *
+ * @param {{ usefulness?: number|null, precision?: number|null }} input
+ * @param {{ usefulnessThreshold?: number, precisionThreshold?: number, tiers?: object[] }} [opts]
+ */
+export function resolveJoinGateTier(input = {}, opts = {}) {
+  const usefulness = Number(input.usefulness);
+  const precision = Number(input.precision);
+  const tiers = opts.tiers || tiersWithThresholdOverrides(
+    opts.usefulnessThreshold,
+    opts.precisionThreshold,
+  );
+  const tier = tiers.find((candidate) => (
+    !candidate.fallback
+    && matchesBand(usefulness, candidate.usefulness)
+    && matchesBand(precision, candidate.precision)
+  )) || tiers.find((candidate) => candidate.fallback) || JOIN_GATE_TIER_REGISTRY.at(-1);
+  return {
+    tier: tier.id,
+    consequence: tier.consequence,
+    materialize: tier.materialize === true,
+    usefulness: Number.isFinite(usefulness) ? usefulness : null,
+    precision: Number.isFinite(precision) ? precision : null,
+  };
+}
 
 /** Product-documented identifier strategies that must be measured, not skipped. */
 export const PRODUCT_IDENTIFIER_STRATEGIES = Object.freeze([
@@ -117,8 +258,17 @@ export function materializeDecision(input = {}) {
   const precision = Number(input.precision);
   const usefulnessOk = Number.isFinite(usefulness) && usefulness >= usefulnessThreshold;
   const precisionOk = Number.isFinite(precision) && precision >= precisionThreshold;
+  const tierDecision = resolveJoinGateTier(
+    { usefulness, precision },
+    {
+      usefulnessThreshold: input.usefulnessThreshold,
+      precisionThreshold: input.precisionThreshold,
+    },
+  );
   return {
-    materialize: usefulnessOk && precisionOk,
+    materialize: tierDecision.materialize,
+    tier: tierDecision.tier,
+    consequence: tierDecision.consequence,
     usefulnessOk,
     precisionOk,
     usefulness: Number.isFinite(usefulness) ? usefulness : null,
@@ -186,6 +336,8 @@ export function evaluateUlurpRecommendationGate(rates = {}) {
     ...decision,
     precision: 1.0,
     precision_ok: true,
+    consequence: mat.consequence,
+    tier: mat.tier,
     materialize: decision.ok && mat.materialize,
     wrong_universe_note:
       "Property Disposition City Record notices are not ZAP ULURP projects and must not be used as a success metric.",
