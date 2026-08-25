@@ -58,6 +58,8 @@ test("parseRedirect rejects junk: no URL smuggling, no odd chars, no empty parts
     "/r/money/123/extra",             // trailing segment
     "/r/" + "k".repeat(30) + "/1",    // kind too long
   ]) assert.equal(parseRedirect(bad), null, bad);
+  assert.equal(parseRedirect(`/r/meetings/${encodeURIComponent("meeting:community_board:event with space")}`), null);
+  assert.equal(parseRedirect(`/r/meetings/${encodeURIComponent("meeting:community_board:event\nline")}`), null);
 });
 
 test("noticeUrl always targets cityscroll.org (never an attacker-supplied URL)", () => {
@@ -133,6 +135,35 @@ test("handleRedirect carries a well-formed ?w= filter through to the notice docu
   );
   assert.equal(res.status, 302);
   assert.equal(res.headers.get("Location"), `https://cityscroll.org/notices/20260701123?w=${w}`);
+});
+
+test("handleRedirect resolves the exact composite meeting digest link", async () => {
+  const kv = fakeKV();
+  const meetingId = "meeting:community_board:board@example.google.com::2026-09-08";
+  const path = `/r/meetings/${encodeURIComponent(meetingId)}`;
+  const w = encodeURIComponent('{"lens":"meetings","filter":{"communityBoard":"6"}}');
+  const res = await handleRedirect(
+    new Request(`https://api.cityscroll.org${path}?s=expired&w=${w}`),
+    { ALERT_STATE: kv }, { waitUntil() {} }, path,
+  );
+  assert.equal(res.status, 302);
+  assert.equal(
+    res.headers.get("Location"),
+    `https://cityscroll.org/meetings/${encodeURIComponent(meetingId)}?w=${w}`,
+  );
+});
+
+test("meeting ids containing an https substring remain same-origin targets", async () => {
+  const meetingId = "meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/";
+  const path = `/r/meetings/${encodeURIComponent(meetingId)}`;
+  const res = await handleRedirect(
+    new Request(`https://api.cityscroll.org${path}`),
+    { ALERT_STATE: fakeKV() }, { waitUntil() {} }, path,
+  );
+  assert.equal(res.status, 302);
+  const target = new URL(res.headers.get("Location"));
+  assert.equal(target.origin, "https://cityscroll.org");
+  assert.equal(target.pathname, `/meetings/${encodeURIComponent(meetingId)}`);
 });
 
 test("handleRedirect drops an oversized/garbled ?w= rather than relay it — plain notice link, not a broken redirect", async () => {
