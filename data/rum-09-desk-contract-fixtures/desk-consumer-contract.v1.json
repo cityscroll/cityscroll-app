@@ -19,12 +19,15 @@
       "result_dimension": "metric_id",
       "required_response_fields": [
         "status",
+        "operational_status",
+        "implementation_status",
         "query",
         "catalog.metrics",
         "series.current",
         "series.previous",
         "series.comparison",
-        "series.trend"
+        "series.trend",
+        "coarse_summary.rows"
       ]
     },
     "surface_detail": {

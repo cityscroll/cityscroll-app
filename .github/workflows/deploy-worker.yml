@@ -112,6 +112,21 @@ jobs:
           # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
           # here would clobber real secrets of the same name (see worker/README.md).
 
+      # The RUM query is intentionally separate from the write binding. Reuse the existing
+      # deployment token, whose account permissions include Analytics Engine read, for the Worker
+      # read binding. An absent binding must remain visible as an unavailable read path rather than
+      # being mistaken for an empty dataset.
+      - name: Sync Analytics Engine read token secret
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        working-directory: worker
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "CLOUDFLARE_API_TOKEN is not configured; /admin/performance will remain unavailable."
+            exit 0
+          fi
+          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler@4.110.0 secret put ANALYTICS_READ_TOKEN
+
       # Idempotent single-secret sync for the authenticated Legistar Web API token. This is a
       # targeted `wrangler secret put` (NOT the action's bulk secrets/vars inputs that the
       # code-only deploy deliberately avoids). It only touches LEGISTAR_API_TOKEN, re-sets the

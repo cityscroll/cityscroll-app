@@ -60,6 +60,42 @@ test("production switches are on for production and off for beta, preview, and l
   assert.equal(isRumProductionOrigin("https://pr-14.cityscroll.pages.dev"), false);
 });
 
+test("partial production batches flush after an idle interval instead of waiting for unload", async () => {
+  const delivered = [];
+  let timerCallback;
+  const sink = createProductionObservationSink({
+    manifest: MANIFEST,
+    classification: { surface_id: "home", delivery_class: "static" },
+    releaseId: RELEASE_ID,
+    deviceClass: "desktop",
+    deliver(batch) { delivered.push(batch); },
+    schedule(callback) {
+      timerCallback = callback;
+      return { unref() {} };
+    },
+    cancelSchedule() {},
+  });
+
+  assert.equal(sink.record({
+    metric_id: "ttfb_ms",
+    value: 123,
+    surface_id: "home",
+    component_id: "none",
+    navigation_type: "navigate",
+    result_state: "content",
+    delivery_class: "static",
+  }).state, "queued");
+  assert.equal(sink.size(), 1);
+  assert.equal(delivered.length, 0);
+  assert.equal(typeof timerCallback, "function");
+
+  timerCallback();
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(delivered.length, 1);
+  assert.equal(delivered[0].observations[0].metric_id, "ttfb_ms");
+  assert.equal(sink.size(), 0);
+});
+
 test("either kill switch stops new production writes and leaves no residual queue", async () => {
   const delivered = [];
   const sink = createProductionObservationSink({

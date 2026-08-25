@@ -64,15 +64,17 @@ the exact current interval, so a rolling 7-day interval can touch eight dates. A
 
 Analytics Engine retains data for three months; this adapter uses a bounded 90-day retention model
 and also honors `RUM_MEASURED_SINCE`. Each requested interval declares its requested bounds,
-queryable bounds, availability start, and `complete` or `partial` status. Partial-retention,
-low-sample, no-data, invalid-provider, and unavailable results omit percentiles:
+queryable bounds, availability start, and `complete` or `partial` status. Low-sample, no-data,
+invalid-provider, and unavailable results omit percentiles. A partial window still emits an
+`available` current distribution when its retained sample floor is met; the partial coverage remains
+explicit in `retention.current.status`:
 
 | State | Counts | Percentiles |
 | --- | --- | --- |
 | `available` | sampled + estimated | p50, p75, p95 |
 | `insufficient_sample` | sampled + estimated + floor | omitted |
 | `no_data` | omitted | omitted |
-| `retention_partial` | retained counts when present | omitted |
+| `retention_partial` | retained counts when present | omitted when below sample floor |
 | `unavailable` | omitted | omitted |
 
 A measured numeric zero remains a valid observation and can therefore be a percentile. Absence is
@@ -86,6 +88,33 @@ Missing account/token configuration, SQL failures, malformed provider rows, and 
 produce a versioned `unavailable` result without counts or percentiles. Successful reads record a
 best-effort `rum:health:latest-query` timestamp. Freshness reports the latest retained observation and
 its age only when one exists.
+
+The read configuration is deliberately diagnosed without exposing credentials: `missing-account-id`,
+`invalid-account-id`, and `missing-read-token` are returned in the private `read_path` receipt. The
+worker deploy workflow reuses the existing account deployment token for the
+`ANALYTICS_READ_TOKEN` binding explicitly. A missing binding remains `unavailable`, never an empty
+dataset.
+
+The admin response keeps the existing `series` contract and adds `coarse_summary`, whose rows contain
+only metric, dimensions, p50/p75/p95 when a retained distribution is available, retained
+`sampled_count`, latest observation time, and one operational status. A query whose requested window
+starts before `RUM_MEASURED_SINCE` keeps `retention.current.status=partial`, while the response remains
+`status=available` when retained distributions are readable. Those rows report
+`operational_status=flowing` and their percentiles are calculated over the available interval. This
+keeps a healthy live path distinct from an unavailable read path while preserving the coverage caveat.
+`implementation_status=code_complete` describes the registered code path; `operational_status=flowing`
+is reserved for retained observations. The other operational states are `no_data`,
+`insufficient_sample`, `uninstrumented`, and `unavailable`.
+
+The opt-in live chain proof is `test/functional/rum_performance_e2e.py`. It uses Playwright to load
+real public pages, waits for their normal collector lifecycle, reads fresh retained rows through the
+authenticated API with `CROL_PERF_ADMIN_URL`/`CROL_PERF_ADMIN_KEY`, and opens the Access-authenticated
+Desk view with `CROL_ACCESS_SERVICE_TOKEN_FILE`. Intercepted beacon requests are diagnostic only;
+read-back is the acceptance signal. It writes only ignored local evidence and never posts synthetic
+observations.
+
+The Analytics Engine SQL uses ClickHouse's `%i` minute formatter (rather than `%M`, which emits a
+month name in this dialect) so the returned observation timestamps remain parseable ISO-8601 values.
 
 The adapter also projects a bounded seven-day health view from the intake counters: accepted rows,
 rejections by the closed reason vocabulary, unsupported schemas, developer/disabled/preview
