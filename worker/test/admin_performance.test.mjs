@@ -123,7 +123,17 @@ test("request parser exposes only the bounded operator vocabulary", () => {
   const catalogRequest = parseAdminPerformanceRequest(new Request(
     "https://w/admin/performance?key=secret&window=24h",
   ));
-  assert.equal(catalogRequest.group_by, "metric_id");
+  assert.deepEqual(catalogRequest.group_by, ["metric_id", "surface_id", "component_id"]);
+
+  const metricRequest = parseAdminPerformanceRequest(new Request(
+    "https://w/admin/performance?key=secret&window=24h&metric=content_ready_ms",
+  ));
+  assert.deepEqual(metricRequest.group_by, ["surface_id", "component_id"]);
+
+  const surfaceRequest = parseAdminPerformanceRequest(new Request(
+    "https://w/admin/performance?key=secret&window=24h&metric=content_ready_ms&surface=notice",
+  ));
+  assert.equal(surfaceRequest.group_by, "component_id");
 
   for (const query of [
     "sql=select+1",
@@ -264,7 +274,7 @@ test("planned selections stay uninstrumented even when the query has no rows", (
   const snapshot = availableSnapshot({
     window: "7d",
     filters: { metric_id: "ttfb_ms", surface_id: "about" },
-    group_by: null,
+    group_by: "component_id",
   });
   snapshot.status = "no_data";
   snapshot.series = [{
@@ -321,7 +331,7 @@ test("GET /admin/performance uses the shared gate, is private no-store, and leak
   assert.deepEqual(received, {
     window: "7d",
     filters: { metric_id: "ttfb_ms", surface_id: "home" },
-    group_by: null,
+    group_by: "component_id",
   });
   const text = await response.text();
   assert.doesNotMatch(text, /ae-super-secret|ANALYTICS_READ_TOKEN|ANALYTICS_ACCOUNT_ID|analytics_engine\/sql|SELECT/);

@@ -71,6 +71,30 @@ test("bounded SQL uses per-row adaptive weights for counts and distributions", (
   assert.match(PERFORMANCE_SAMPLING_SEMANTICS.sufficiency, /estimated_count is never used/);
 });
 
+test("composite readiness grouping keeps metric, surface, and component dimensions separate", () => {
+  const queryPlan = performanceAnalyticsQueryPlan({
+    window: "7d",
+    filters: { metric_id: "content_ready_ms" },
+    group_by: ["surface_id", "component_id"],
+  }, {
+    now: fixture.now,
+    configuredSince: fixture.configured_since,
+    sampleFloor: fixture.sample_floor,
+  });
+  const summary = queryPlan.requests.find(({ id }) => id === "current").sql;
+  const trend = queryPlan.requests.find(({ id }) => id === "trend").sql;
+  assert.match(summary, /blob3 AS surface_id,\n  blob4 AS component_id/);
+  assert.match(summary, /GROUP BY surface_id, component_id/);
+  assert.match(trend, /GROUP BY day, surface_id, component_id/);
+
+  const normalized = normalizePerformanceQuery({
+    window: "7d",
+    filters: { metric_id: "content_ready_ms" },
+    group_by: ["surface_id", "component_id"],
+  });
+  assert.deepEqual(normalized.group_by, ["surface_id", "component_id"]);
+});
+
 test("fixture-backed rows expose weighted percentiles, daily trends, and equal-window comparison", () => {
   const queryPlan = plan();
   const snapshot = buildPerformanceSnapshot(fixture.sql_results, queryPlan, {
