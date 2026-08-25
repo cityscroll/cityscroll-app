@@ -14,6 +14,7 @@
 
 import assert from "node:assert/strict";
 import { createReadStream, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { createInterface } from "node:readline";
 import { fileURLToPath } from "node:url";
@@ -37,7 +38,7 @@ const MAPPLUTO_QUERY =
 const DEFAULT_PLUTO_CANDIDATES = [
   process.env.CROL_PLUTO_CSV,
   path.join(ROOT, "warehouse", "raw", "mappluto", "pluto_latest.csv"),
-  "/Users/openclaw/dev/nyc-neighborhood-warehouse/raw_data/pluto/pluto_latest.csv",
+  path.join(os.homedir(), "dev", "nyc-neighborhood-warehouse", "raw_data", "pluto", "pluto_latest.csv"),
 ].filter(Boolean);
 
 function parseArgs(argv) {
