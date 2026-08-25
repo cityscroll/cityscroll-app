@@ -231,8 +231,8 @@ ${groupSelect}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
-  formatDateTime(min(timestamp), '%Y-%m-%dT%H:%M:%SZ', 'Etc/UTC') AS first_observation_at,
-  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%M:%SZ', 'Etc/UTC') AS latest_observation_at
+  formatDateTime(min(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS first_observation_at,
+  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
 WHERE ${whereSql(query, coverage.query_start_ms, coverage.query_end_ms)}${groupClause}
 LIMIT ${limit}`;
@@ -251,7 +251,7 @@ ${groupSelect}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
-  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%M:%SZ', 'Etc/UTC') AS latest_observation_at
+  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
 WHERE ${whereSql(query, coverage.query_start_ms, coverage.query_end_ms)}
 GROUP BY day${groupClause}
@@ -312,9 +312,21 @@ function observedCounts(row) {
 function distributionFromRow(row, coverage, sampleFloor) {
   const counts = observedCounts(row);
   if (coverage.status !== "complete") {
-    return counts?.sampled_count > 0
-      ? { status: "retention_partial", ...counts }
-      : { status: "retention_partial" };
+    if (!counts || counts.sampled_count === 0) return { status: "retention_partial" };
+    if (counts.sampled_count < sampleFloor) {
+      return { status: "insufficient_sample", ...counts, sample_floor: sampleFloor };
+    }
+    const p50 = finiteNonnegative(row.p50);
+    const p75 = finiteNonnegative(row.p75);
+    const p95 = finiteNonnegative(row.p95);
+    if (p50 === null || p75 === null || p95 === null || p50 > p75 || p75 > p95) {
+      throw new PerformanceSqlError("invalid-query-result");
+    }
+    return {
+      status: "available",
+      ...counts,
+      percentiles: { p50, p75, p95 },
+    };
   }
   if (!counts || counts.sampled_count === 0) return { status: "no_data" };
   if (counts.sampled_count < sampleFloor) {

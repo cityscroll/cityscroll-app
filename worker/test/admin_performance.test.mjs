@@ -228,7 +228,7 @@ test("admin contract names every honest display state and never manufactures mis
   }
 
   for (const [queryStatus, expected] of [
-    ["retention_partial", "partial"],
+    ["retention_partial", "available"],
     ["insufficient_sample", "insufficient_sample"],
     ["no_data", "no_data"],
     ["unavailable", "unavailable"],
@@ -237,7 +237,9 @@ test("admin contract names every honest display state and never manufactures mis
     snapshot.status = queryStatus;
     snapshot.series = queryStatus === "unavailable" ? [] : [{
       dimensions: {},
-      current: { status: queryStatus },
+      current: queryStatus === "retention_partial"
+        ? { status: queryStatus, sampled_count: 42, estimated_count: 42, percentiles: { p50: 120, p75: 180, p95: 310 } }
+        : { status: queryStatus },
       previous: { status: queryStatus },
       comparison: { status: queryStatus },
       trend: [],
@@ -248,7 +250,7 @@ test("admin contract names every honest display state and never manufactures mis
     const body = buildAdminPerformanceResponse(snapshot);
     assert.equal(body.status, expected);
     assert.equal(body.operational_status, {
-      retention_partial: "unavailable",
+      retention_partial: "flowing",
       insufficient_sample: "insufficient_sample",
       no_data: "no_data",
       unavailable: "unavailable",

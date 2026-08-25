@@ -61,6 +61,8 @@ test("bounded SQL uses per-row adaptive weights for counts and distributions", (
 
   const summary = queryPlan.requests.find(({ id }) => id === "current").sql;
   const trend = queryPlan.requests.find(({ id }) => id === "trend").sql;
+  assert.match(summary, /%Y-%m-%dT%H:%i:%SZ/);
+  assert.doesNotMatch(summary, /%Y-%m-%dT%H:%M:%SZ/);
   assert.match(summary, new RegExp(`LIMIT ${MAX_PERFORMANCE_GROUPS + 1}$`));
   assert.match(trend, new RegExp(`LIMIT ${MAX_PERFORMANCE_GROUPS * MAX_PERFORMANCE_TREND_DAYS + 1}$`));
   assert.match(trend, /GROUP BY day, surface_id/);
@@ -156,10 +158,15 @@ test("no-data and retention-partial windows never synthesize zero percentiles", 
   const partial = buildPerformanceSnapshot(fixture.sql_results, partialPlan);
   assert.equal(partial.status, "retention_partial");
   assert.equal(partial.retention.current.status, "partial");
+  assert.ok(partial.series.some((series) => series.current.status === "available"));
   for (const series of partial.series) {
-    assert.equal(series.current.status, "retention_partial");
-    assert.equal(Object.hasOwn(series.current, "percentiles"), false);
-    assert.equal(series.comparison.status, "retention_partial");
+    if (series.current.sampled_count >= fixture.sample_floor) {
+      assert.equal(series.current.status, "available");
+      assert.equal(Object.hasOwn(series.current, "percentiles"), true);
+    } else {
+      assert.equal(series.current.status, "insufficient_sample");
+    }
+    assert.ok(["available", "retention_partial", "insufficient_sample"].includes(series.comparison.status));
   }
   assert.doesNotMatch(JSON.stringify(partial), /"p(?:50|75|95)":0/);
 
