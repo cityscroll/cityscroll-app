@@ -5,7 +5,7 @@ import { relative, resolve } from "node:path";
 
 // Cloudflare Pages' per-file guard. The Worker has a separate uncompressed
 // bundle ceiling: tools/worker_deploy_guard.mjs checks the pinned Wrangler
-// dry-run metafile against 52 MiB in .github/workflows/deploy-worker.yml.
+// dry-run metafile against the 64 MiB raw, 10 MB compressed, and startup budgets.
 // Keep these checks separate because they measure different deploy artifacts.
 export const MAX_PAGES_FILE_BYTES = 24 * 1024 * 1024;
 
