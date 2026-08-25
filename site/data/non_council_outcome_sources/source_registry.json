@@ -651,11 +651,11 @@
         },
         "minutes": {
           "source_type": "minutes",
-          "publisher": "Brooklyn Community Board 5",
-          "publisher_kind": "third_party_storage",
-          "url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
-          "format": "public Google Calendar iCalendar",
-          "fetch_mode": "machine-fetchable",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
           "access_constraint": null,
           "seen_on": "2026-08-13",
           "archive_depth": {
@@ -1333,26 +1333,26 @@
             "earliest_year": null,
             "latest_year": null
           },
-          "stable_key": null,
-          "stable_event_key": null,
+          "stable_key": "publisher_event_id|start_at",
+          "stable_event_key": "publisher_event_id|start_at",
           "stable_document_key": null,
-          "status": "absent_in_pass",
+          "status": "verified",
           "verification": {
-            "status": "not_observed",
+            "status": "observed",
             "seen_on": "2026-08-13",
-            "fetchability": "unknown",
+            "fetchability": "machine_fetchable",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
-            "reason": "not_observed_in_pass"
+            "reason": null
           }
         },
         "minutes": {
           "source_type": "minutes",
           "publisher": null,
           "publisher_kind": null,
-          "url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
-          "format": "public Google Calendar iCalendar",
-          "fetch_mode": "machine-fetchable",
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
           "access_constraint": null,
           "seen_on": "2026-08-13",
           "archive_depth": {
@@ -1398,9 +1398,9 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
-          "publisher": "Brooklyn Community Board 5",
-          "publisher_kind": "third_party_storage",
-          "url": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
           "format": null,
           "fetch_mode": null,
           "access_constraint": null,

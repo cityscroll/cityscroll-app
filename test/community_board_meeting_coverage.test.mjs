@@ -95,7 +95,7 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 46, "checked-empty": 50, unavailable: 8, "not-yet-checked": 14 },
+    { indexed: 46, "checked-empty": 49, unavailable: 8, "not-yet-checked": 15 },
   );
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
