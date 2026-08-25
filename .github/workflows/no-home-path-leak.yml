@@ -20,10 +20,30 @@ jobs:
         run: |
           set -euo pipefail
           # Build the expression in pieces so this workflow does not match itself.
-          pattern='/Users/'"[A-Za-z][A-Za-z0-9._-]*/"
-          matches="$(git grep --cached -n -I -E "$pattern" -- ':!.github/workflows/no-home-path-leak.yml' || true)"
+          path_segment='[A-Za-z][A-Za-z0-9._-]*'
+          pattern='/Users/'"$path_segment/"
+          linux_pattern='/home/'"$path_segment/"
+          tilde_pattern="(^|[[:space:]]|[\"'\`=(:,])~/$path_segment(/[A-Za-z0-9._-]+)*"
+
+          # Add # leak-allow to a matching line when the path is intentional and documented.
+          matches=''
+          for candidate in "$pattern" "$linux_pattern" "$tilde_pattern"; do
+            found="$(git grep --cached -n -I -E "$candidate" -- ':!.github/workflows/no-home-path-leak.yml' || true)"
+            if [[ -n "$found" ]]; then
+              matches+="$found"$'\n'
+            fi
+          done
+          filtered=''
           if [[ -n "$matches" ]]; then
-            echo "Absolute home path detected in tracked source:" >&2
+            while IFS= read -r line; do
+              if [[ -n "$line" && "$line" != *'# leak-allow'* ]]; then
+                filtered+="$line"$'\n'
+              fi
+            done <<< "$matches"
+          fi
+          matches="$filtered"
+          if [[ -n "$matches" ]]; then
+            echo "Home or machine path detected in tracked source:" >&2
             echo "$matches" >&2
             exit 1
           fi
