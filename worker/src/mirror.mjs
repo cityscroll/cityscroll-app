@@ -1,18 +1,18 @@
 // /mirror — serves the canonical cityscroll.org and www.cityscroll.org hosts by
-// reverse-proxying the static site from crol-list.org, its GitHub Pages origin.
+// reverse-proxying the compatibility origin at crol-list.org.
 // Origin redirects are handled manually so a redirect back to this Worker cannot
-// become a recursive subrequest loop. If the direct-visitor redirect catches the
-// subrequest, the stamped Cloudflare Pages production artifact is the site failover
-// seam (not raw GitHub source, which keeps unsubstituted build tokens).
+// become a recursive subrequest loop. If the compatibility origin redirects back,
+// the stamped Cloudflare Pages artifact serves the full site; raw repository source
+// is reserved for the narrow public-document seam because it keeps build tokens.
 //
-// GitHub Pages virtual-hosts by the Host header, so the request to the origin must NOT
-// carry the incoming Host (cityscroll.org) — that would 404 on a domain GitHub doesn't
-// know about. Only a small, safe header allowlist is forwarded; everything else is dropped.
+// The compatibility origin is virtual-hosted by the Host header, so the request to
+// it must NOT carry the incoming Host (cityscroll.org). Only a small, safe header
+// allowlist is forwarded; everything else is dropped.
 
 const ORIGIN = "https://crol-list.org";
-// Built, cache-stamped site (parallel Pages host). Source trees keep __I18N_ASSET_VERSION__
-// merge-stable; only the deploy artifact substitutes it. Field case 2026-07-30: raw
-// GitHub fallback served the unsubstituted placeholder on the live homepage.
+// Built, cache-stamped site (Cloudflare Pages host). Source trees keep
+// __I18N_ASSET_VERSION__ merge-stable; only the deploy artifact substitutes it.
+// Raw repository source is intentionally not a full-site substitute.
 const SITE_FALLBACK_ORIGIN = "https://cityscroll.pages.dev/";
 const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/cityscroll-app/main/";
 const FORWARD_REQUEST_HEADERS = ["accept", "accept-language", "if-none-match", "if-modified-since", "user-agent"];

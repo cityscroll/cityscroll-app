@@ -1,21 +1,19 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("Cloudflare Pages serves publicly while GitHub Pages remains deployed as fallback", () => {
+test("Cloudflare Pages is the sole public static deployment path", () => {
   const cf = read(".github/workflows/deploy-cloudflare-pages.yml");
-  const gh = read(".github/workflows/deploy-pages.yml");
 
-  assert.match(gh, /Deploy to GitHub Pages/);
-  assert.match(gh, /actions\/deploy-pages@v4/);
+  assert.equal(existsSync(new URL("../.github/workflows/deploy-pages.yml", import.meta.url)), false);
   assert.match(cf, /pages deploy _site/);
   assert.match(cf, /--project-name=cityscroll/);
   // Production branch is main; pull requests use a numbered preview branch.
   assert.match(cf, /branch=main|branch=\$\{\{\s*steps\.branch\.outputs\.branch\s*\}\}/);
-  assert.doesNotMatch(cf, /deploy-pages@v4/);
-  assert.doesNotMatch(cf, /cloudflare_pages.*replace|disable.*github pages/i);
+  assert.doesNotMatch(cf, /deploy-pages@v4|GitHub Pages remains|GitHub Pages.*fallback/i);
+  assert.match(cf, /Cloudflare Pages is the production static origin/);
 });
 
 test("Cloudflare Pages workflow provisions the project before first deploy", () => {

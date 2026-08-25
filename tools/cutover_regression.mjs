@@ -3,8 +3,8 @@
  * Scheduled production regression monitor for the Pages-primary hosting shape.
  *
  * The monitor checks the public Pages hostnames, every deep static route, the
- * API Worker, and the retained GitHub Pages fallback. Redirects are followed
- * manually by live_url_smoke so a host-to-host cycle fails deterministically.
+ * API Worker, and the compatibility origin. Redirects are followed manually by
+ * live_url_smoke so a host-to-host cycle fails deterministically.
  */
 
 import { pathToFileURL } from "node:url";
@@ -26,7 +26,6 @@ export const PAGES_ORIGIN = "https://cityscroll.pages.dev";
 export const API_HEALTH_URL = "https://api.cityscroll.org/health";
 export const API_STATS_URL = "https://api.cityscroll.org/stats";
 export const LEGACY_ORIGIN = "https://crol-list.org";
-export const GITHUB_FALLBACK_URL = "https://cityscroll.github.io/crol-list/";
 
 export const DEFAULT_CUTOVER_TIMEOUT_MS = 180_000;
 
@@ -73,19 +72,15 @@ export function buildCutoverTargets() {
       url: `${LEGACY_ORIGIN}/`,
       marker: CONTENT_MARKER,
     },
-    {
-      id: "github-pages-fallback",
-      url: GITHUB_FALLBACK_URL,
-      marker: CONTENT_MARKER,
-    },
   ]);
 }
 
 export const CUTOVER_TARGETS = buildCutoverTargets();
 
 /**
- * Verify the stable Pages response profile used by both the custom domains and
- * pages.dev. The GitHub header absence is also enforced inside each URL probe.
+ * Verify the stable Cloudflare Pages response profile used by both the custom
+ * domains and pages.dev. The legacy GitHub header absence is also enforced
+ * inside each URL probe.
  */
 export function pagesHeaderFailure(result) {
   const headers = result?.finalHeaders;
@@ -117,17 +112,6 @@ export function architectureFailures(results) {
     if (result.classification?.ok) {
       const failure = pagesHeaderFailure(result);
       if (failure) failures.push(failure);
-    }
-  }
-
-  const fallback = byId.get("github-pages-fallback");
-  if (!fallback) {
-    failures.push("github-pages-fallback: missing result");
-  } else if (fallback.classification?.ok) {
-    const server = String(headerValue(fallback.finalHeaders, "server") || "").toLowerCase();
-    const requestId = headerValue(fallback.finalHeaders, "x-github-request-id");
-    if (server !== "github.com" || !requestId) {
-      failures.push("github-pages-fallback: expected GitHub Pages origin headers");
     }
   }
 
@@ -208,9 +192,9 @@ Options:
   --interval-ms N
   --request-timeout-ms N
 
-Checks Pages origin headers on apex/www, the complete public route inventory,
-bounded redirect following, API Worker health, the crol-list.org compatibility
-host, and the retained GitHub Pages fallback origin.`);
+Checks Cloudflare Pages origin headers on apex/www, the complete public route
+inventory, bounded redirect following, API Worker health, and the crol-list.org
+compatibility host.`);
     return 0;
   }
 
