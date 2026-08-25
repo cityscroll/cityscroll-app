@@ -1,0 +1,27 @@
+name: Reliability watchdogs
+
+on:
+  schedule:
+    - cron: "10 14 * * *"
+    - cron: "10 10 * * *"
+    - cron: "50 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check digest and scheduler operational receipts
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          : "${CITYSCROLL_ADMIN_KEY:?CITYSCROLL_ADMIN_KEY is required}"
+          case "${{ github.event.schedule || '' }}" in
+            "50 * * * *") endpoint="https://api.cityscroll.org/admin/reliability/scheduler" ;;
+            *) endpoint="https://api.cityscroll.org/admin/reliability/digest" ;;
+          esac
+          curl --fail-with-body --retry 2 "$endpoint" \
+            -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY"

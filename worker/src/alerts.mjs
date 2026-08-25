@@ -117,6 +117,7 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
 // stats:page_view, stats:catday:*, stats:alert_confirmed) so a list-prefix scan or
 // exact get can never confuse a page-view counter with a send cap or last-sent clock.
 export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
+export const OPS_ALERT_TO = "team@cityscroll.org";
 
 export function digestRunDayKey(day) {
   return `digest:run:${day}`;
@@ -1683,6 +1684,8 @@ export async function consumeDigestJob(env, jobOrKey, options = {}) {
 
   console.log("digest job:", JSON.stringify(maskDigestResultForLog(r)));
   await recordQueueJobOutcome(env, day, r);
+  const { recordDigestQueueOutcome } = await import("./reliability_watchdogs.mjs");
+  await recordDigestQueueOutcome(env, r, now);
   const daylogWrite = await appendQueueDayLogEntry(env, day, r);
   await stampQueueDeliveryObservation(env, day, r, daylogWrite);
   if (!daylogWrite.ok) {
@@ -2450,6 +2453,17 @@ function logDryRunEmail(payload) {
     html: safeHtml,
     headers: payload.headers ? { ...payload.headers, "List-Unsubscribe": safeUrl(payload.headers["List-Unsubscribe"]) } : null,
   }));
+}
+
+export async function sendOpsAlert(env, { guard, subject, text, observedAt = new Date().toISOString() } = {}) {
+  if (!env?.RESEND_API_KEY) return { accepted: false, reason: "resend-not-configured" };
+  const safeGuard = String(guard || "reliability").slice(0, 80);
+  const safeGuardHtml = safeGuard.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  const body = `<h1>${safeGuardHtml}</h1><p>${String(text || "Reliability check failed.")
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")}</p><p>Observed at ${observedAt}</p>`;
+  const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
+    subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false);
+  return { accepted: true, provider: accepted };
 }
 
 async function sendEmail(env, from, to, subject, html, listUnsub, oneClick) {

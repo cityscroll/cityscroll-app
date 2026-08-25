@@ -1,0 +1,40 @@
+name: Served artifact freshness
+
+on:
+  schedule:
+    - cron: "25 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Build expected main artifact manifest
+        uses: ./.github/actions/build-site
+        with:
+          site-dir: _site
+      - name: Compare the served artifact with main
+        id: probe
+        env:
+          CITYSCROLL_ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          set +e
+          findings="$(node tools/check_served_artifact_freshness.mjs --origin https://cityscroll.org --expected-manifest _site/artifact-manifest.json 2>&1)"
+          status=$?
+          set -e
+          if [ "$status" -eq 0 ]; then exit 0; fi
+          : "${CITYSCROLL_ADMIN_KEY:?CITYSCROLL_ADMIN_KEY is required}"
+          FINDINGS="$findings" curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/ops-alert" \
+            -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY" \
+            -H "content-type: application/json" \
+            --data "$(FINDINGS="$findings" node -e 'console.log(JSON.stringify({guard:"served-artifact-freshness", subject:"Served artifact freshness check failed", text:process.env.FINDINGS||"The served artifact is stale or mismatched."}))')"
+          echo "$findings"
+          exit 1

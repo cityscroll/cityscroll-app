@@ -9,11 +9,11 @@ const ROOT = new URL("../", import.meta.url).pathname;
 const guard = join(ROOT, "tools/worker_deploy_guard.mjs");
 const fixture = join(ROOT, "test/fixtures/worker-bundle/oversize-metafile.json");
 
-test("the 52 MiB guard trips on an oversize Wrangler metafile and prints largest inputs", () => {
+test("the 64 MiB raw guard trips on an oversize Wrangler metafile and prints largest inputs", () => {
   const result = spawnSync(process.execPath, [guard, "--metafile", fixture], { encoding: "utf8" });
   assert.notEqual(result.status, 0);
   assert.match(`${result.stdout}\n${result.stderr}`, /oversize.json/);
-  assert.match(result.stderr, /exceeds 52 MiB/);
+  assert.match(result.stderr, /exceeds 64 MiB/);
 });
 
 test("the read-model canary gate trips when a published slice is empty", () => {

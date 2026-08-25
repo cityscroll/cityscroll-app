@@ -2,7 +2,9 @@
   "outputs": {
     "worker.js": {
       "entryPoint": "worker/src/worker.mjs",
-      "bytes": 54525953,
+      "bytes": 73400321,
+      "compressedBytes": 1048576,
+      "startupTimeMs": 100,
       "inputs": {
         "worker/src/data/oversize.json": { "bytesInOutput": 54500000 },
         "worker/src/worker.mjs": { "bytesInOutput": 10000 },
