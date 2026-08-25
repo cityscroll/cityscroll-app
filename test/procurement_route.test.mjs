@@ -5,6 +5,7 @@ import test from "node:test";
 import edgeWorker, { edgeRequestKind } from "../site/pages_edge.mjs";
 import { procurementCanonicalHref } from "../site/procurement_object_contract.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
+import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 
 const cohort = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_search/golden_cohort.json", import.meta.url),
@@ -14,6 +15,7 @@ const model = buildSharedProcurementReadModel({
   sourceRecords: cohort.source_records,
   generatedAt: cohort.generated_at,
 });
+const modelArtifacts = buildSharedProcurementReadModelShardArtifacts(model);
 
 test("canonical procurement route resolves without request_id", async () => {
   const object = model.rows.find((row) => row.procurement_id === "procurement:contract:CT101520271400806");
@@ -24,8 +26,10 @@ test("canonical procurement route resolves without request_id", async () => {
       async fetch(request) {
         const path = new URL(request.url).pathname;
         if (path === "/data/shared_procurement_read_model.json") {
-          return Response.json(model);
+          return Response.json(modelArtifacts.manifest);
         }
+        const shardIndex = modelArtifacts.manifest.shards.findIndex((descriptor) => `/data/${descriptor.path}` === path);
+        if (shardIndex >= 0) return Response.json(modelArtifacts.shards[shardIndex]);
         return new Response("asset", { status: 200 });
       },
     },

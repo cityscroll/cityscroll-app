@@ -342,6 +342,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/procurement_route.test.mjs`, `test/procurement_served_index_parity.test.mjs`,
   `test/procurement_index_coherence.test.mjs`, and
   `worker/test/procurement_digest_parity.test.mjs`.
+- **Procurement Pages asset sharding:** the committed
+  `site/data/shared_procurement_read_model.json` is a contract-preserving manifest;
+  bounded row/observation shards live under
+  `site/data/shared_procurement_read_model/`. Build consumers reassemble it through
+  `tools/lib/procurement_read_model_io.mjs`, while `site/pages_edge.mjs` uses the
+  manifest's exact procurement-id-to-shard map. `tools/check_pages_bundle_sizes.mjs`
+  enforces the 24 MiB Pages per-file guard; the Worker has its separate 52 MiB
+  uncompressed Wrangler dry-run guard in `tools/worker_deploy_guard.mjs`. The
+  source-native community-board meeting index follows the same manifest/shard
+  pattern through `site/community_board_meeting_index_shards.mjs` and is read
+  with `tools/lib/community_board_meeting_index_io.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
   model and derives a source-qualified board meeting's community district from the published
   `community-board → covers → community-district` edge in

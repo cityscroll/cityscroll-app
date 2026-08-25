@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   fetchCommunityBoardSource,
@@ -15,11 +15,14 @@ import {
   attachMeetingDocuments,
   MEETING_DOCUMENT_SCHEMA,
 } from "../site/meeting_document.mjs";
+import { buildCommunityBoardMeetingIndexShardArtifacts } from "../site/community_board_meeting_index_shards.mjs";
+import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
 const OUTPUT = join(ROOT, "site/data/community_board_meeting_index.json");
+const SHARD_DIR = join(ROOT, "site/data/community_board_meeting_index");
 const INDEX_SCHEMA = "cityscroll.community_board_meeting_index.v1";
 const JOIN_SCHEMA = "cityscroll.community_board_source_join.v1";
 const JOIN_METHOD = "exact_board_date_publisher_identifier";
@@ -36,6 +39,15 @@ export const COMMUNITY_BOARD_SOURCE_STATES = SOURCE_STATES;
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
+function writeIndex(index) {
+  const artifacts = buildCommunityBoardMeetingIndexShardArtifacts(index);
+  mkdirSync(SHARD_DIR, { recursive: true });
+  for (const entry of readdirSync(SHARD_DIR, { withFileTypes: true })) {
+    if (entry.isFile() && /^shard-\d+\.json$/.test(entry.name)) rmSync(join(SHARD_DIR, entry.name));
+  }
+  writeJson(OUTPUT, artifacts.manifest);
+  artifacts.shards.forEach((shard, index) => writeJson(join(SHARD_DIR, `shard-${String(index).padStart(3, "0")}.json`), shard));
+}
 function clean(value, max = 500) { return String(value ?? "").replace(/\s+/g, " ").trim().slice(0, max); }
 function boardCommunityDistrict(board) {
   const match = clean(board?.id).match(/^([a-z]+)-cb-(\d{2})$/i);
@@ -376,7 +388,7 @@ const check = process.argv.includes("--check");
 if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
   if (check) {
     if (!existsSync(OUTPUT)) throw new Error("community board meeting index is missing");
-    const index = readJson(OUTPUT);
+    const index = readCommunityBoardMeetingIndex(OUTPUT);
     if (index.schema !== INDEX_SCHEMA || !index.coverage?.records_indexed) throw new Error("community board meeting index is invalid");
     if ((index.rows || []).some((row) => !Array.isArray(row.entity_refs_all)
       || !row.entity_refs_all.includes(row.meeting_id)
@@ -386,7 +398,7 @@ if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
     console.log(`checked ${index.coverage.records_indexed} indexed meetings across ${index.coverage.boards_indexed} boards`);
   } else {
     const index = await buildCommunityBoardMeetingIndex();
-    writeJson(OUTPUT, index);
+    writeIndex(index);
     console.log(`wrote ${index.coverage.records_indexed} indexed meetings across ${index.coverage.boards_indexed} boards`);
   }
 }

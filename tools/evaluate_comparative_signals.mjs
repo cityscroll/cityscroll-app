@@ -12,6 +12,7 @@ import {
   projectPublishedStorySignal,
 } from "../site/comparative_signal_admission.mjs";
 import { detectAmendments } from "../worker/src/lib/checkbook_lifecycle.mjs";
+import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
 
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const SOURCE_CONTRACTS = new URL("../site/data/source_contracts.json", import.meta.url);
@@ -409,7 +410,7 @@ export function loadComparativeSignalEvaluationInputs() {
     sourceContracts: json(SOURCE_CONTRACTS),
     awardReceipts: json(AWARD_RECEIPTS),
     storySignals: json(STORY_SIGNALS),
-    procurement: json(PROCUREMENT),
+    procurement: readSharedProcurementReadModel(PROCUREMENT),
     negativeControl: json(NEGATIVE_CONTROL),
     frozenCases: json(FROZEN_CASES),
   };

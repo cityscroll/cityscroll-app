@@ -12,6 +12,7 @@ import {
   checkProcurementIndexCoherence,
   formatCoherenceFindings,
 } from "./lib/procurement_index_coherence.mjs";
+import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 
@@ -23,7 +24,12 @@ function argValue(name) {
 function readTarget(relativeOrAbsolute, fallbackRelative) {
   const raw = relativeOrAbsolute || fallbackRelative;
   const path = isAbsolute(raw) ? raw : resolve(ROOT, raw);
-  return { path, value: JSON.parse(readFileSync(path, "utf8")) };
+  return {
+    path,
+    value: path === resolve(ROOT, READ_MODEL_PATH)
+      ? readSharedProcurementReadModel(path)
+      : JSON.parse(readFileSync(path, "utf8")),
+  };
 }
 
 function readBytes(relative) {

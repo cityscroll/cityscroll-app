@@ -4,6 +4,7 @@ import test from "node:test";
 
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
+import { readSharedProcurementReadModel } from "../tools/lib/procurement_read_model_io.mjs";
 import { searchContractAwardDocuments } from "../site/contract_award_search_producer.mjs";
 import { contractSearchDocumentToMoneyRow } from "../site/contract_search_bridge.mjs";
 import {
@@ -15,10 +16,9 @@ const cohort = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_search/golden_cohort.json", import.meta.url),
   "utf8",
 ));
-const productionShared = JSON.parse(readFileSync(
+const productionShared = readSharedProcurementReadModel(
   new URL("../site/data/shared_procurement_read_model.json", import.meta.url),
-  "utf8",
-));
+);
 const FIREMATIC_FIXTURE = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_search/firematic_vendor.json", import.meta.url),
   "utf8",
@@ -74,10 +74,9 @@ test("one unavailable source changes only that source coverage", () => {
 });
 
 test("production corpus adds material CROL-negative recall without reducing CROL awards", () => {
-  const shared = JSON.parse(readFileSync(
+  const shared = readSharedProcurementReadModel(
     new URL("../site/data/shared_procurement_read_model.json", import.meta.url),
-    "utf8",
-  ));
+  );
   const browse = JSON.parse(readFileSync(
     new URL("../site/data/procurement_browse_rows.json", import.meta.url),
     "utf8",

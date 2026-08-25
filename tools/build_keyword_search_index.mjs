@@ -13,6 +13,7 @@ import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
 import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
 import {
   attachKeywordCoherenceReceipt,
   checkProcurementIndexCoherence,
@@ -94,7 +95,7 @@ const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");
 const propertyResidents = json("site/data/property_resident_snapshot.json");
 const committees = json("site/data/committee_graph_lookup.json");
-const procurements = json("site/data/shared_procurement_read_model.json");
+const procurements = readSharedProcurementReadModel(new URL("../site/data/shared_procurement_read_model.json", import.meta.url));
 const peopleCorpus = buildPeopleSearchDocuments(people);
 const agencyCorpus = buildAgencySearchDocuments(agencies, { identityReport: agencyIdentityReport });
 const vendorCorpus = buildVendorSearchDocuments(vendors, { aliasRegistry: vendorAliases });

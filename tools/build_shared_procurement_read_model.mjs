@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,6 +12,7 @@ import { attachPassportPublicFields } from "../site/passport_public_fields.mjs";
 import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compile.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
+import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import {
   attachCoherenceReceipt,
   sourceModelFingerprint,
@@ -20,6 +21,7 @@ import {
 const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta.url);
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
+const MODEL_SHARD_DIR = new URL("../site/data/shared_procurement_read_model/", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 
@@ -164,6 +166,49 @@ function serialized(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
 }
 
+function shardPath(descriptor) {
+  return new URL(`../site/data/${descriptor.path}`, import.meta.url);
+}
+
+function checkOrWriteShardedModel(model) {
+  const artifacts = buildSharedProcurementReadModelShardArtifacts(model);
+  const outputs = [
+    [MODEL_OUT, serialized(artifacts.manifest)],
+    ...artifacts.manifest.shards.map((descriptor, index) => [
+      shardPath(descriptor),
+      serialized(artifacts.shards[index]),
+    ]),
+  ];
+  const expectedNames = new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1)));
+  const actualNames = new Set(existsSync(MODEL_SHARD_DIR)
+    ? readdirSync(MODEL_SHARD_DIR, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && /^shard-\d+\.json$/.test(entry.name))
+      .map((entry) => entry.name)
+    : []);
+  if (process.argv.includes("--check")) {
+    let current = true;
+    for (const [path, content] of outputs) {
+      if (readFileSync(path, "utf8") !== content) {
+        console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
+        current = false;
+      }
+    }
+    for (const name of actualNames) {
+      if (!expectedNames.has(name)) {
+        console.error(`stale procurement shard: ${fileURLToPath(new URL(name, MODEL_SHARD_DIR))}`);
+        current = false;
+      }
+    }
+    return current;
+  }
+  mkdirSync(MODEL_SHARD_DIR, { recursive: true });
+  for (const name of actualNames) {
+    if (!expectedNames.has(name)) rmSync(new URL(name, MODEL_SHARD_DIR));
+  }
+  for (const [path, content] of outputs) writeFileSync(path, content);
+  return true;
+}
+
 function main() {
   const spineBytes = readFileSync(SPINE);
   const awardsBytes = readFileSync(AWARDS);
@@ -173,20 +218,22 @@ function main() {
     { spineBytes, awardsBytes },
   );
   const outputs = [
-    [MODEL_OUT, serialized(model)],
     [BROWSE_OUT, serialized(browse)],
     [DIGEST_OUT, serialized(digest)],
   ];
   if (process.argv.includes("--check")) {
+    const modelCurrent = checkOrWriteShardedModel(model);
     for (const [path, content] of outputs) {
       if (readFileSync(path, "utf8") !== content) {
         console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
         process.exitCode = 1;
       }
     }
+    if (!modelCurrent) process.exitCode = 1;
     if (!process.exitCode) console.log(`procurement artifacts current (${model.rows.length} objects)`);
     return;
   }
+  checkOrWriteShardedModel(model);
   for (const [path, content] of outputs) writeFileSync(path, content);
   console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows, ${digest.row_count} CROL-negative digest rows)`);
 }
