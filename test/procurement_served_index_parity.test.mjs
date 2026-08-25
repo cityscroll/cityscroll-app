@@ -4,6 +4,7 @@ import test from "node:test";
 
 import edgeWorker from "../site/pages_edge.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
+import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import { buildProcurementArtifacts } from "../tools/build_shared_procurement_read_model.mjs";
 
 const spine = JSON.parse(readFileSync(
@@ -21,6 +22,7 @@ const indexed = JSON.parse(readFileSync(
 
 const { model, browse } = buildProcurementArtifacts(spine, awards);
 const corpus = buildProcurementSearchDocuments(model);
+const modelArtifacts = buildSharedProcurementReadModelShardArtifacts(model);
 
 function normalized(value) {
   return String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -30,9 +32,10 @@ function routeEnv() {
   return {
     ASSETS: {
       async fetch(request) {
-        if (new URL(request.url).pathname === "/data/shared_procurement_read_model.json") {
-          return Response.json(model);
-        }
+        const path = new URL(request.url).pathname;
+        if (path === "/data/shared_procurement_read_model.json") return Response.json(modelArtifacts.manifest);
+        const shardIndex = modelArtifacts.manifest.shards.findIndex((descriptor) => `/data/${descriptor.path}` === path);
+        if (shardIndex >= 0) return Response.json(modelArtifacts.shards[shardIndex]);
         return new Response("asset", { status: 200 });
       },
     },

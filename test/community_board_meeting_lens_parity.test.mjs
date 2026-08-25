@@ -21,15 +21,16 @@ import { routeHashFromScope, scopeFromLensState, scopeFromRouteHash } from "../s
 import { scopeWithPlace } from "../site/near_you_scope_runtime.mjs";
 import { buildNearYouViewModel } from "../site/near_you_view.mjs";
 import { buildCommunityBoardConstellationMaterialization } from "../tools/build_community_board_constellation_documents.mjs";
+import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
 const shared = JSON.parse(fs.readFileSync(new URL(
   "../site/data/shared_meeting_read_model.json",
   import.meta.url,
 ), "utf8"));
-const meetingIndex = JSON.parse(fs.readFileSync(new URL(
+const meetingIndex = readCommunityBoardMeetingIndex(new URL(
   "../site/data/community_board_meeting_index.json",
   import.meta.url,
-), "utf8"));
+));
 const districtActivity = JSON.parse(fs.readFileSync(new URL(
   "../site/data/district_activity.json",
   import.meta.url,

@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildScorecard, renderScorecardPage } from "../site/community-board-scorecard.mjs";
+import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
@@ -14,7 +15,7 @@ const JSON_OUT = join(ROOT, "site/data/community_board_minutes_scorecard.json");
 const HTML_OUT = join(ROOT, "site/community-boards/index.html");
 const check = process.argv.includes("--check");
 const detector = existsSync(DETECTOR) ? JSON.parse(readFileSync(DETECTOR, "utf8")) : null;
-const meetingIndex = existsSync(MEETING_INDEX) ? JSON.parse(readFileSync(MEETING_INDEX, "utf8")) : null;
+const meetingIndex = existsSync(MEETING_INDEX) ? readCommunityBoardMeetingIndex(MEETING_INDEX) : null;
 const scorecard = buildScorecard({
   registry: JSON.parse(readFileSync(REGISTRY, "utf8")),
   detector,

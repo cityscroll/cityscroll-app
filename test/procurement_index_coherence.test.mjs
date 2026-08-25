@@ -8,6 +8,7 @@ import test from "node:test";
 
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildProcurementArtifacts } from "../tools/build_shared_procurement_read_model.mjs";
+import { readSharedProcurementReadModel } from "../tools/lib/procurement_read_model_io.mjs";
 import {
   PROCUREMENT_INDEX_COHERENCE_SCHEMA,
   advertisedProcurementRefs,
@@ -93,10 +94,9 @@ test("a suppressed served object may be absent from the index", () => {
 });
 
 test("the committed procurement model and keyword index stay coherent", () => {
-  const readModel = JSON.parse(readFileSync(
+  const readModel = readSharedProcurementReadModel(
     new URL("../site/data/shared_procurement_read_model.json", import.meta.url),
-    "utf8",
-  ));
+  );
   const keywordIndex = JSON.parse(readFileSync(
     new URL("../worker/src/data/keyword_search_index.json", import.meta.url),
     "utf8",

@@ -14,9 +14,14 @@ from playwright.sync_api import sync_playwright
 BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000").rstrip("/")
 BOARD_HREF = "/community-boards/manhattan-cb-10/"
 ROOT = Path(__file__).resolve().parents[2]
-MEETING_INDEX = json.loads(
-    (ROOT / "site/data/community_board_meeting_index.json").read_text()
-)
+MEETING_INDEX = json.loads((ROOT / "site/data/community_board_meeting_index.json").read_text())
+if "shards" in MEETING_INDEX:
+    by_board = {}
+    for descriptor in MEETING_INDEX["shards"]:
+        shard = json.loads((ROOT / "site/data" / descriptor["path"]).read_text())
+        if shard.get("kind") == "by_board":
+            by_board.update(dict(shard.get("entries", [])))
+    MEETING_INDEX["by_board"] = by_board
 EXPECTED_CB10_MEETINGS = len(MEETING_INDEX["by_board"]["manhattan-cb-10"])
 
 

@@ -5,6 +5,7 @@ import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
 import { renderProcurementDocument } from "./procurement_document.mjs";
+import { procurementShardPathForId } from "./procurement_read_model_shards.mjs";
 import { meetingCalendarICS } from "./hearing_attend_pack.mjs";
 import sharedMeetingSnapshot from "./data/shared_meeting_read_model.json" with { type: "json" };
 import rulesSemanticLaneArtifact from "./data/rules_semantic_lane.json" with { type: "json" };
@@ -623,6 +624,30 @@ async function staticAsset(env, request, pathname) {
   return env.ASSETS.fetch(assetRequest(request, pathname));
 }
 
+async function procurementObjectFromAsset(env, request, id) {
+  const manifestRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const manifestResponse = await staticAsset(env, manifestRequest, "/data/shared_procurement_read_model.json");
+  if (!manifestResponse.ok) return null;
+  try {
+    const manifest = await manifestResponse.json();
+    if (Array.isArray(manifest?.rows)) {
+      const object = manifest.rows.find((row) => row?.procurement_id === id);
+      return object ? { object, observations: manifest.observations } : null;
+    }
+    const relativeShardPath = procurementShardPathForId(manifest, id);
+    if (!relativeShardPath) return null;
+    const shardResponse = await staticAsset(env, manifestRequest, `/data/${relativeShardPath}`);
+    if (!shardResponse.ok) return null;
+    const shard = await shardResponse.json();
+    const object = Array.isArray(shard?.rows)
+      ? shard.rows.find((row) => row?.procurement_id === id)
+      : null;
+    return object ? { object, observations: shard.observations } : null;
+  } catch {
+    return null;
+  }
+}
+
 function rewrittenResponse(asset, status, cacheControl) {
   const headers = new Headers(asset.headers);
   headers.delete("Content-Length");
@@ -665,17 +690,9 @@ async function noticeRow(id) {
 async function handleProcurement(request, env, encodedId) {
   let id;
   try { id = decodeURIComponent(encodedId); } catch { return new Response("Invalid procurement link", { status: 400 }); }
-  const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
-  const snapshot = await staticAsset(env, snapshotRequest, "/data/shared_procurement_read_model.json");
   let html = null;
-  if (snapshot.ok) {
-    try {
-      const payload = await snapshot.json();
-      const object = (Array.isArray(payload?.rows) ? payload.rows : [])
-        .find((row) => row?.procurement_id === id);
-      if (object) html = renderProcurementDocument(object, payload.observations, { currentHref: request.url });
-    } catch { html = null; }
-  }
+  const result = await procurementObjectFromAsset(env, request, id);
+  if (result) html = renderProcurementDocument(result.object, result.observations, { currentHref: request.url });
   if (!html) {
     return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Procurement not found · CityScroll</title></head><body><main><h1>Procurement not found</h1><p><a href=\"/browse/contracts/\">Browse contracts</a></p></main></body></html>", {
       status: 404,
