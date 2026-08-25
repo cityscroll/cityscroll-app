@@ -7,6 +7,7 @@ import {
 } from "../src/admin.mjs";
 import {
   ADMIN_PERFORMANCE_SCHEMA,
+  ADMIN_PERFORMANCE_OPERATIONAL_STATES,
   ADMIN_PERFORMANCE_STATES,
   buildAdminPerformanceResponse,
   parseAdminPerformanceRequest,
@@ -144,6 +145,17 @@ test("admin response is a dedicated versioned read model with registered invento
   const body = buildAdminPerformanceResponse(availableSnapshot());
   assert.equal(body.schema, ADMIN_PERFORMANCE_SCHEMA);
   assert.equal(body.status, "available");
+  assert.equal(body.operational_status, "flowing");
+  assert.equal(body.implementation_status, "code_complete");
+  assert.deepEqual(body.coarse_summary.rows[0], {
+    metric_id: "ttfb_ms",
+    sampled_count: 42,
+    latest_observation_at: "2026-08-19T14:00:00.000Z",
+    status: "flowing",
+    p50: 120,
+    p75: 180,
+    p95: 310,
+  });
   assert.equal(body.query.comparison, "current-vs-previous");
   assert.equal(body.catalog.metrics.length, 13);
   assert.equal(body.coverage.registered.surface_count, 36);
@@ -154,6 +166,17 @@ test("admin response is a dedicated versioned read model with registered invento
   assert.equal(body.coverage.unclassified_observations.count, 2);
   assert.deepEqual(body.series[0].current.percentiles, { p50: 120, p75: 180, p95: 310 });
   assert.equal(Object.hasOwn(body, "credentials"), false);
+});
+
+test("operational states separate code completion from observed flow", () => {
+  assert.deepEqual(ADMIN_PERFORMANCE_OPERATIONAL_STATES, [
+    "code_complete",
+    "flowing",
+    "no_data",
+    "insufficient_sample",
+    "uninstrumented",
+    "unavailable",
+  ]);
 });
 
 test("committed available response fixture stays byte-structurally compatible for Desk", () => {
@@ -205,7 +228,7 @@ test("admin contract names every honest display state and never manufactures mis
   }
 
   for (const [queryStatus, expected] of [
-    ["retention_partial", "partial"],
+    ["retention_partial", "available"],
     ["insufficient_sample", "insufficient_sample"],
     ["no_data", "no_data"],
     ["unavailable", "unavailable"],
@@ -214,7 +237,9 @@ test("admin contract names every honest display state and never manufactures mis
     snapshot.status = queryStatus;
     snapshot.series = queryStatus === "unavailable" ? [] : [{
       dimensions: {},
-      current: { status: queryStatus },
+      current: queryStatus === "retention_partial"
+        ? { status: queryStatus, sampled_count: 42, estimated_count: 42, percentiles: { p50: 120, p75: 180, p95: 310 } }
+        : { status: queryStatus },
       previous: { status: queryStatus },
       comparison: { status: queryStatus },
       trend: [],
@@ -224,8 +249,43 @@ test("admin contract names every honest display state and never manufactures mis
     if (queryStatus === "unavailable") snapshot.unavailable_reason = "not-configured";
     const body = buildAdminPerformanceResponse(snapshot);
     assert.equal(body.status, expected);
+    assert.equal(body.operational_status, {
+      retention_partial: "flowing",
+      insufficient_sample: "insufficient_sample",
+      no_data: "no_data",
+      unavailable: "unavailable",
+    }[queryStatus]);
+    assert.equal(body.coarse_summary.status, body.operational_status);
     assert.doesNotMatch(JSON.stringify(body), /"p(?:50|75|95)":0/);
   }
+});
+
+test("planned selections stay uninstrumented even when the query has no rows", () => {
+  const snapshot = availableSnapshot({
+    window: "7d",
+    filters: { metric_id: "ttfb_ms", surface_id: "about" },
+    group_by: null,
+  });
+  snapshot.status = "no_data";
+  snapshot.series = [{
+    dimensions: {},
+    current: { status: "no_data" },
+    previous: { status: "no_data" },
+    comparison: { status: "no_data" },
+    trend: [],
+    first_observation_at: null,
+    latest_observation_at: null,
+  }];
+  const body = buildAdminPerformanceResponse(snapshot);
+  assert.equal(body.status, "uninstrumented");
+  assert.equal(body.operational_status, "uninstrumented");
+  assert.equal(body.implementation_status, "uninstrumented");
+  assert.deepEqual(body.coarse_summary.rows[0], {
+    metric_id: "ttfb_ms",
+    sampled_count: null,
+    latest_observation_at: null,
+    status: "uninstrumented",
+  });
 });
 
 test("GET /admin/performance uses the shared gate, is private no-store, and leaks no AE credentials", async () => {

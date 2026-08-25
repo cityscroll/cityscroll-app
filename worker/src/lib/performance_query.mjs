@@ -13,6 +13,15 @@ export const MAX_PERFORMANCE_GROUPS = 64;
 export const MAX_PERFORMANCE_TREND_DAYS = 91;
 export const PERFORMANCE_HEALTH_WINDOW_DAYS = 7;
 
+export function performanceReadConfiguration(env = {}) {
+  const accountId = String(env.ANALYTICS_ACCOUNT_ID || "").trim();
+  const token = String(env.ANALYTICS_READ_TOKEN || "").trim();
+  if (!accountId) return { configured: false, reason: "missing-account-id" };
+  if (!/^[a-f0-9]{32}$/.test(accountId)) return { configured: false, reason: "invalid-account-id" };
+  if (!token) return { configured: false, reason: "missing-read-token" };
+  return { configured: true };
+}
+
 export const PERFORMANCE_WINDOWS = Object.freeze({
   "24h": 24 * 60 * 60 * 1000,
   "7d": 7 * 24 * 60 * 60 * 1000,
@@ -222,8 +231,8 @@ ${groupSelect}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
-  formatDateTime(min(timestamp), '%Y-%m-%dT%H:%M:%SZ', 'Etc/UTC') AS first_observation_at,
-  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%M:%SZ', 'Etc/UTC') AS latest_observation_at
+  formatDateTime(min(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS first_observation_at,
+  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
 WHERE ${whereSql(query, coverage.query_start_ms, coverage.query_end_ms)}${groupClause}
 LIMIT ${limit}`;
@@ -242,7 +251,7 @@ ${groupSelect}  count() AS sampled_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
   quantileExactWeighted(0.95)(double1, _sample_interval) AS p95,
-  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%M:%SZ', 'Etc/UTC') AS latest_observation_at
+  formatDateTime(max(timestamp), '%Y-%m-%dT%H:%i:%SZ', 'Etc/UTC') AS latest_observation_at
 FROM ${dataset}
 WHERE ${whereSql(query, coverage.query_start_ms, coverage.query_end_ms)}
 GROUP BY day${groupClause}
@@ -303,9 +312,21 @@ function observedCounts(row) {
 function distributionFromRow(row, coverage, sampleFloor) {
   const counts = observedCounts(row);
   if (coverage.status !== "complete") {
-    return counts?.sampled_count > 0
-      ? { status: "retention_partial", ...counts }
-      : { status: "retention_partial" };
+    if (!counts || counts.sampled_count === 0) return { status: "retention_partial" };
+    if (counts.sampled_count < sampleFloor) {
+      return { status: "insufficient_sample", ...counts, sample_floor: sampleFloor };
+    }
+    const p50 = finiteNonnegative(row.p50);
+    const p75 = finiteNonnegative(row.p75);
+    const p95 = finiteNonnegative(row.p95);
+    if (p50 === null || p75 === null || p95 === null || p50 > p75 || p75 > p95) {
+      throw new PerformanceSqlError("invalid-query-result");
+    }
+    return {
+      status: "available",
+      ...counts,
+      percentiles: { p50, p75, p95 },
+    };
   }
   if (!counts || counts.sampled_count === 0) return { status: "no_data" };
   if (counts.sampled_count < sampleFloor) {
@@ -609,6 +630,7 @@ function unavailableSnapshot(plan, reason, dataHealth) {
     series: [],
     freshness: { status: "unavailable", queried_at: plan?.queried_at || null },
     data_health: dataHealth,
+    read_path: { status: "unavailable", reason },
   };
 }
 
@@ -628,8 +650,9 @@ export async function readPerformanceAnalytics(env, input = {}, options = {}) {
 
   const now = new Date(plan.queried_at);
   const health = () => readPerformanceDataHealth(env, now, options.healthWindowDays);
-  if (!/^[a-f0-9]{32}$/.test(String(env?.ANALYTICS_ACCOUNT_ID || "")) || !env?.ANALYTICS_READ_TOKEN) {
-    return unavailableSnapshot(plan, "not-configured", await health());
+  const readConfiguration = performanceReadConfiguration(env);
+  if (!readConfiguration.configured) {
+    return unavailableSnapshot(plan, readConfiguration.reason, await health());
   }
 
   const fetchImpl = options.fetchImpl || globalThis.fetch;

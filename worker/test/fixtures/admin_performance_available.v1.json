@@ -2,6 +2,8 @@
   "schema": "cityscroll.admin.performance.v1",
   "generated_at": "2026-08-19T14:30:00.000Z",
   "status": "available",
+  "operational_status": "flowing",
+  "implementation_status": "code_complete",
   "query": {
     "window": "7d",
     "filters": {
@@ -2116,6 +2118,29 @@
       "latest_observation_at": "2026-08-19T14:00:00.000Z"
     }
   ],
+  "coarse_summary": {
+    "schema": "cityscroll.admin.performance.coarse_summary.v1",
+    "status": "flowing",
+    "rows": [
+      {
+        "metric_id": "ttfb_ms",
+        "surface_id": "browse-contracts",
+        "sampled_count": 2,
+        "latest_observation_at": "2026-08-19T12:00:00.000Z",
+        "status": "insufficient_sample"
+      },
+      {
+        "metric_id": "ttfb_ms",
+        "surface_id": "home",
+        "sampled_count": 4,
+        "latest_observation_at": "2026-08-19T14:00:00.000Z",
+        "status": "flowing",
+        "p50": 240,
+        "p75": 360,
+        "p95": 480
+      }
+    ]
+  },
   "freshness": {
     "status": "available",
     "queried_at": "2026-08-19T14:30:00.000Z",
