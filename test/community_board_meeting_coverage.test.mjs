@@ -95,7 +95,7 @@ test("the coverage builder accounts for both roles across all 59 boards", async 
       counts[row.state] = (counts[row.state] || 0) + 1;
       return counts;
     }, {}),
-    { indexed: 45, "checked-empty": 49, unavailable: 8, "not-yet-checked": 16 },
+    { indexed: 46, "checked-empty": 49, unavailable: 8, "not-yet-checked": 15 },
   );
   assert.equal(index.coverage.records_indexed, index.rows.length);
   assert.ok(index.rows.every((row) => row.source_role === "upcoming_meetings"));
@@ -126,7 +126,7 @@ test("duplicate publisher identifiers within a board fail the build", async () =
   );
 });
 
-test("previously missing CB7 meetings index from explicit sources and are followable", () => {
+test("campaign boards index explicit meetings and remain followable", () => {
   const brooklyn = parseHtmlPdfSource(`<script type="application/ld+json">${JSON.stringify([{
     "@type": "Event",
     name: "CB7 Monthly Board Meeting – September 16",
@@ -153,6 +153,20 @@ END:VCALENDAR`, {
     body_name: "Manhattan Community Board 7",
     url: "https://calendar.google.com/calendar/ical/example/public/basic.ics",
   }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
+  const brooklyn05 = parseGoogleCalendarSource(`BEGIN:VCALENDAR
+BEGIN:VEVENT
+UID:bk5-ahss@google.com
+DTSTART;TZID=America/New_York:20260714T183000
+SUMMARY:Aging, Health & Social Services (AHSS) Committee Mtg
+LOCATION:127 Pennsylvania Ave, Brooklyn, NY 11207
+END:VEVENT
+END:VCALENDAR`, {
+    adapter: "google_calendar_v1",
+    role: "upcoming_meetings",
+    board_id: "brooklyn-cb-05",
+    body_name: "Brooklyn Community Board 5",
+    url: "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
+  }, { receipt: { status: "ok", observed_at: "2026-08-21T12:00:00Z" } });
   const queens = parseNycOfficialCalendarSource(`
     <div class="span6 about-description">
       Meetings The Community Board meets on the 2nd Monday of each month.
@@ -172,7 +186,11 @@ END:VCALENDAR`, {
 
   assert.equal(brooklyn.length, 1);
   assert.equal(manhattan.length, 1);
-  assert.equal(queens.length, 0, "Queens CB7 prose without a publisher event identity stays unindexed");
+  assert.equal(brooklyn05.length, 1);
+  assert.equal(brooklyn05[0].date, "2026-07-14");
+  assert.equal(queens.length, 1);
+  assert.equal(queens[0].date, "2026-09-14");
+  assert.equal(queens[0].start_at, null, "CB7 does not publish a meeting clock time");
 
   const observedAt = "2026-08-21T12:00:00Z";
   const brooklynRow = materializeCommunityBoardMeetingRow(brooklyn[0], {
@@ -185,8 +203,18 @@ END:VCALENDAR`, {
     name: "Manhattan Community Board 7",
     borough: "Manhattan",
   }, observedAt);
+  const brooklyn05Row = materializeCommunityBoardMeetingRow(brooklyn05[0], {
+    id: "brooklyn-cb-05",
+    name: "Brooklyn Community Board 5",
+    borough: "Brooklyn",
+  }, observedAt);
+  const queensRow = materializeCommunityBoardMeetingRow(queens[0], {
+    id: "queens-cb-07",
+    name: "Queens Community Board 7",
+    borough: "Queens",
+  }, observedAt);
 
-  for (const row of [brooklynRow, manhattanRow]) {
+  for (const row of [brooklynRow, manhattanRow, brooklyn05Row, queensRow]) {
     const href = meetingCanonicalHref(row);
     const scopeHref = communityBoardScopeHref("meetings", row.board_id);
     const followHref = followingUrlFromWatch({

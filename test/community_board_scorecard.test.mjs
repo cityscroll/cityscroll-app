@@ -50,7 +50,7 @@ test("board source inventory keeps explicit roles and honest collection states",
   assert.equal(joined.sources.minutes.collection_state, "joined");
 
   const absent = scorecard.rows.find((row) => row.body_id === "brooklyn-cb-05");
-  assert.equal(absent.sources.upcoming_meetings.collection_state, "absent_in_pass");
+  assert.equal(absent.sources.upcoming_meetings.collection_state, "observed");
   assert.equal(absent.sources.minutes.collection_state, "absent_in_pass");
   const html = renderScorecardPage(scorecard);
   assert.match(html, /Official source inventory/);
