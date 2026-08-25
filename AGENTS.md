@@ -1867,7 +1867,8 @@ not generate `site/changelog.html`, open a pull request, or enter the merge queu
 ## Live-URL smoke target sets
 
 Cloudflare Pages is the public origin for `cityscroll.org` and `www.cityscroll.org`;
-GitHub Pages remains deployed as the fallback origin. Post-deploy gate:
+the Worker retains the stamped Cloudflare Pages full-site failover and a raw-repository
+document seam for `/docs/*` and `/README.md` only. Post-deploy gate:
 `node tools/live_url_smoke.mjs` (default set includes apex, www, crol-list redirect
 host, about). Scheduled production monitoring runs `node tools/cutover_regression.mjs`
 and is intentionally not a pull-request or merge-queue check. Named opt-in sets do

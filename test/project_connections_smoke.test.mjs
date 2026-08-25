@@ -68,10 +68,10 @@ test("smoke retries incomplete responses until the contract is complete", async 
 });
 
 test("production deploys gate API readiness before Pages and verify the rendered section after deploy", () => {
-  const pages = readFileSync(new URL("../.github/workflows/deploy-pages.yml", import.meta.url), "utf8");
+  const pages = readFileSync(new URL("../.github/workflows/deploy-cloudflare-pages.yml", import.meta.url), "utf8");
   const worker = readFileSync(new URL("../.github/workflows/deploy-worker.yml", import.meta.url), "utf8");
   assert.match(pages, /api-contract:[\s\S]*project_connections_smoke\.mjs/);
-  assert.match(pages, /needs:\s*\[build, api-contract\]/);
+  assert.match(pages, /needs:\s*api-contract/);
   for (const workflow of [pages, worker]) {
     assert.match(workflow, /project_connections_smoke\.mjs/);
     assert.match(workflow, /setup-playwright/);

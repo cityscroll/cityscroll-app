@@ -2,7 +2,7 @@
 
 The thin serverless backend for **[CityScroll](https://cityscroll.org)** — a single
 **Cloudflare Worker** at `https://api.cityscroll.org` (custom domain; `crol-worker.crol-worker.workers.dev` remains an alias). CityScroll itself is
-100% static (one `index.html` on GitHub Pages, no keys); everything that needs a held secret,
+100% static (one `index.html` on Cloudflare Pages, no keys); everything that needs a held secret,
 a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
 the worker — every feature degrades gracefully when it's absent.
 

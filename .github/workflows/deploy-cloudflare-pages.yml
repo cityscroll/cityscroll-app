@@ -1,7 +1,8 @@
 # Deploy the verified static site to the public Cloudflare Pages origin.
 # GitHub Actions is the canonical production path so every main push has an
 # observable deploy receipt. Cloudflare's native Git integration is optional.
-# GitHub Pages remains deployed as an independent public fallback origin.
+# Cloudflare Pages is the production static origin; the Worker retains a narrow
+# raw-repository document seam for compatibility-origin failures.
 name: Deploy Cloudflare Pages
 
 on:
@@ -10,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       refresh_decision_outcomes:
-        description: Refresh bounded Land and meeting outcomes before the fallback deploy
+        description: Refresh bounded Land and meeting outcomes before the production deploy
         required: false
         default: true
         type: boolean
@@ -23,8 +24,25 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Keep the semantic API readiness gate paired with the production static
+  # deploy so a new client cannot outrun its matching route/read model.
+  api-contract:
+    name: Wait for project-connections API contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Require complete or honestly unavailable project connections
+        run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+
   deploy:
     name: Deploy public Cloudflare Pages origin
+    needs: api-contract
     runs-on: ubuntu-latest
     outputs:
       deployment_url: ${{ steps.deploy.outputs.deployment-url }}
@@ -86,7 +104,7 @@ jobs:
             echo
             echo "Production alias: [$PAGES_URL]($PAGES_URL)"
             echo
-            echo "cityscroll.org and www.cityscroll.org use this Pages project. GitHub Pages remains the independent fallback origin."
+            echo "cityscroll.org and www.cityscroll.org use this Cloudflare Pages project as the production static origin."
             echo
             echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -145,6 +163,14 @@ jobs:
           CROL_BASE: ${{ steps.origin.outputs.base_url }}
           CROL_DEMO_LINK_IDS: exam-guide
         run: python3 test/functional/20_demo_links.py
+      - name: Post-deploy project-connections API smoke
+        run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000
+      - name: Post-deploy project-connections browser smoke
+        env:
+          CROL_BASE: ${{ steps.origin.outputs.base_url }}
+          # Keep deploy conclusions tied to a committed read-model canary.
+          CROL_PROJECT_CONNECTIONS_ID: "2022M0258"
+        run: python3 test/functional/27_project_connections_live.py
       - name: Upload parity report
         if: always() && needs.deploy.outputs.is_preview != 'true'
         uses: actions/upload-artifact@v4

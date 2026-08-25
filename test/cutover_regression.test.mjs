@@ -36,12 +36,6 @@ function healthyFetch(url) {
   if (parsed.hostname === "api.cityscroll.org") {
     return Promise.resolve(response(200, "crol-worker ok", { server: "cloudflare" }));
   }
-  if (parsed.hostname === "cityscroll.github.io") {
-    return Promise.resolve(response(200, "<title>CityScroll</title>", {
-      server: "GitHub.com",
-      "x-github-request-id": "fixture-request-id",
-    }));
-  }
   if (parsed.pathname === "/robots.txt") {
     return Promise.resolve(response(200, "Sitemap: https://cityscroll.org/sitemap.xml", pagesHeaders));
   }
@@ -60,7 +54,6 @@ test("cutover target matrix covers every public route and each retained service"
     "api-worker-health",
     "api-worker-stats",
     "legacy-origin",
-    "github-pages-fallback",
   ]) assert.ok(ids.has(id));
 });
 
@@ -106,7 +99,7 @@ test("bounded redirect following rejects a cycle between public hosts", async ()
   assert.match(result.failures.join("\n"), /redirect loop/);
 });
 
-test("architecture checks require Pages headers and the GitHub fallback header", () => {
+test("architecture checks require Cloudflare Pages headers", () => {
   const result = (id, headers) => ({
     id,
     classification: { ok: true },
@@ -116,12 +109,9 @@ test("architecture checks require Pages headers and the GitHub fallback header",
     result("pages-apex-home", pagesHeaders),
     result("pages-www-home", pagesHeaders),
     result("pages-dev-home", pagesHeaders),
-    result("github-pages-fallback", { server: "cloudflare" }),
     { ...result("api-worker-stats", {}), body: '{"schema":"public-stats.v2","city_record":{},"sources":{},"language_coverage":{}}' },
   ]);
-  assert.deepEqual(failures, [
-    "github-pages-fallback: expected GitHub Pages origin headers",
-  ]);
+  assert.deepEqual(failures, []);
 });
 
 test("scheduled production monitor rejects a changed Stats API schema", () => {
