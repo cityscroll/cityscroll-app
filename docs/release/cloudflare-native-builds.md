@@ -34,15 +34,10 @@ duplicate deployments. The beta preview and promotion lanes remain explicit
 manual workflows because they publish selected review channels, not the
 production release.
 
-## GitHub Pages fallback decision
+## Legacy hosting retirement
 
-GitHub Pages remains intact and continues to be an active public fallback. The
-site owner should explicitly choose whether to keep or retire it after the
-Cloudflare-native path has a measured rollback history:
-
-- Keep it for an independent static-origin fallback during Cloudflare incidents;
-  the cost is a second public release surface and a freshness obligation.
-- Retire it only after accepting the loss of that origin-level fallback and
-  updating the cutover regression and DNS/incident documentation accordingly.
-
-This change does not make that choice.
+The independent GitHub Pages copy is retired. Cloudflare Pages is the production
+static origin and the Worker keeps its existing two-tier failover: the stamped
+`cityscroll.pages.dev` artifact covers the full site, while the raw repository is
+used only for `/docs/*` and `/README.md`. The raw-repository tier is not a full-site
+disaster-recovery substitute because it can contain unsubstituted build tokens.

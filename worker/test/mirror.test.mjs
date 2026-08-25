@@ -1,8 +1,7 @@
 // cityscroll.org / www.cityscroll.org parallel-serving domain: handleMirror normally
-// reverse-proxies crol-list.org (the GitHub Pages origin) byte-for-byte, with a stamped
+// reverse-proxies the crol-list.org compatibility origin byte-for-byte, with a stamped
 // Cloudflare Pages failover when that origin redirects back to the mirror. It must never
-// leak the incoming Host header upstream (GitHub Pages virtual-hosts by Host and 404s
-// otherwise).
+// leak the incoming Host header upstream because the compatibility origin is virtual-hosted.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -161,6 +160,31 @@ test("handleMirror: falls back to stamped Pages artifact when the Pages origin r
     const body = await res.text();
     assert.match(body, /i18n\.js\?v=c4609cdfa552/);
     assert.doesNotMatch(body, /__I18N_ASSET_VERSION__/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("failover receipt: Cloudflare Pages covers the site and raw repository covers documents only", async () => {
+  const originalFetch = globalThis.fetch;
+  const expected = new Map([
+    ["/", "https://cityscroll.pages.dev/"],
+    ["/about.html", "https://cityscroll.pages.dev/about.html"],
+    ["/docs/architecture.md", "https://raw.githubusercontent.com/cityscroll/cityscroll-app/main/docs/architecture.md"],
+    ["/README.md", "https://raw.githubusercontent.com/cityscroll/cityscroll-app/main/README.md"],
+  ]);
+  try {
+    for (const [path, expectedFallbackUrl] of expected) {
+      const calls = [];
+      globalThis.fetch = async (url) => {
+        calls.push(url);
+        if (calls.length === 1) return Response.redirect(`https://cityscroll.org${path}`, 301);
+        return new Response("fallback", { status: 200 });
+      };
+      const response = await handleMirror(new Request(`https://cityscroll.org${path}`));
+      assert.equal(response.status, 200);
+      assert.deepEqual(calls, [`https://crol-list.org${path}`, expectedFallbackUrl]);
+    }
   } finally {
     globalThis.fetch = originalFetch;
   }

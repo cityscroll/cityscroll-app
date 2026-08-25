@@ -319,11 +319,11 @@ test("probeUrl applies requireAbsentHeaders from the target", async () => {
   assert.match(result.classification.reason, /x-github-request-id/i);
 });
 
-test("deploy-pages and deploy-worker run the live-URL smoke after deploy", () => {
-  const pages = readFileSync(new URL("../.github/workflows/deploy-pages.yml", import.meta.url), "utf8");
+test("Cloudflare Pages and deploy-worker run the live-URL smoke after deploy", () => {
+  const pages = readFileSync(new URL("../.github/workflows/deploy-cloudflare-pages.yml", import.meta.url), "utf8");
   const worker = readFileSync(new URL("../.github/workflows/deploy-worker.yml", import.meta.url), "utf8");
 
-  for (const [name, workflow] of [["deploy-pages", pages], ["deploy-worker", worker]]) {
+  for (const [name, workflow] of [["deploy-cloudflare-pages", pages], ["deploy-worker", worker]]) {
     assert.match(workflow, /live_url_smoke\.mjs/, `${name} must invoke the smoke tool`);
     assert.match(workflow, /needs:\s*deploy/, `${name} smoke job must run after deploy`);
     // Failure must fail the workflow (default step failure); no continue-on-error.

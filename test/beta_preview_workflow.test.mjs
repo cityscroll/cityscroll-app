@@ -37,7 +37,7 @@ test("beta previews publish a numbered alias and expose immutable provenance", (
 });
 
 test("stable and preview lanes share one build, i18n stamp, and artifact gate", () => {
-  const stable = read(".github/workflows/deploy-pages.yml");
+  const stable = read(".github/workflows/deploy-cloudflare-pages.yml");
   const preview = read(".github/workflows/deploy-beta-preview.yml");
   const action = read(".github/actions/build-site/action.yml");
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,7 +16,7 @@ function requireCheck(condition, message) {
 const pagesWorkflow = read(".github/workflows/deploy-cloudflare-pages.yml");
 const workerWorkflow = read(".github/workflows/deploy-worker.yml");
 const sharedBuild = read(".github/actions/build-site/action.yml");
-const pagesFallback = read(".github/workflows/deploy-pages.yml");
+const legacyPagesWorkflow = join(root, ".github/workflows/deploy-pages.yml");
 const deployOnMainPush = (workflow, name) => {
   const trigger = workflow.match(/^on:\n([\s\S]*?)\n(?=(?:permissions|concurrency|jobs):)/m)?.[1] || "";
   requireCheck(/workflow_dispatch:/.test(trigger), `${name} must retain a manual recovery trigger`);
@@ -45,15 +45,16 @@ deployOnMainPushWithPaths(workerWorkflow, "Worker workflow", [
   "site/data/watch_templates.json",
   ".github/workflows/deploy-worker.yml",
 ]);
-requireCheck(/actions\/deploy-pages@v4/.test(pagesFallback), "GitHub Pages fallback must remain intact");
-requireCheck(/Keep it|Retire it/.test(read("docs/release/cloudflare-native-builds.md")), "fallback keep/retire decision must be documented");
+requireCheck(!existsSync(legacyPagesWorkflow), "legacy GitHub Pages deployment workflow must be retired");
+requireCheck(/Cloudflare Pages is the production static origin/.test(pagesWorkflow), "Cloudflare Pages must be documented as the production static origin");
+requireCheck(/raw-repository document seam/.test(pagesWorkflow), "the narrow raw-repository document seam must be documented");
 
 if (process.argv.includes("--check")) {
   if (failures.length) {
     console.error(failures.map((failure) => `FAIL ${failure}`).join("\n"));
     process.exit(1);
   }
-  console.log("Deploy control plane OK: GitHub Actions deploys Pages and the shared Following Worker path on main pushes; GitHub Pages remains intact.");
+  console.log("Deploy control plane OK: GitHub Actions deploys Cloudflare Pages and the shared Following Worker path on main pushes; the legacy Pages deployment is retired.");
 } else {
   console.log(JSON.stringify({ ok: failures.length === 0, failures }, null, 2));
 }

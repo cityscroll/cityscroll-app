@@ -30,7 +30,7 @@ summary: >-
   preserves their official source links.
   A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
   and an owner-triggered pointer to one exact reviewed commit without changing
-  the stable GitHub Pages host.
+  the stable production site.
 updated: 2026-08-18
 sources:
   - README.md
@@ -65,7 +65,7 @@ sources:
   - tools/stamp_i18n_assets.py
   - tools/ensure_beta_pages.mjs
   - .github/actions/build-site/action.yml
-  - .github/workflows/deploy-pages.yml
+  - .github/workflows/deploy-cloudflare-pages.yml
   - .github/workflows/deploy-worker.yml
   - .github/workflows/deploy-beta-preview.yml
   - .github/workflows/promote-beta.yml
@@ -124,7 +124,7 @@ The narrow exceptions are not civic-data reads: (1) navigation to an official so
 ## System map
 
 ```
-Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
+Browser (cityscroll.org — Cloudflare Pages production site with Worker routes)
   site/index.html  (inline CSS + static markup)
   site/app/main.mjs → browser-native feature modules (vanilla JS, no build step)
         ├──►  site/data/* + page-specific materialized read models (resident reads)
@@ -210,11 +210,11 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## Serving & deploy
 
-- The public tree under `site/` is built by the Cloudflare Pages Git integration through the provider-neutral build contract in `docs/release/cloudflare-native-builds.json`; GitHub Pages remains an independent public fallback whose origin hostname is `crol-list.org` (from `site/CNAME`). The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The manual Pages fallback derives one cache stamp from `site/i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
+- The public tree under `site/` is built and deployed to Cloudflare Pages through the provider-neutral build contract in `docs/release/cloudflare-native-builds.json`. The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The Pages release derives one cache stamp from `site/i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
 - Cloudflare Pages also hosts public review artifacts. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.cityscroll.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
 - Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
 - Worker deployed via `wrangler deploy` from `worker/` to the custom domains `api.cityscroll.org` and `api.crol-list.org`, with workers.dev retained for compatibility. Bounded zone routes serve `/near-you*`, `/following*`, and `/prefs*` on canonical `cityscroll.org`; API-host versions of those reader documents permanently redirect to the canonical host. Changes under `worker/**` deploy from `main` through Cloudflare Workers Builds; `.github/workflows/deploy-worker.yml` remains a manual, non-required fallback. Cron triggers refresh land upcoming hearings at `0 8 * * *`, run the delivery-free digest shadow at `0 10 * * *`, and deliver at `0 13 * * *` (~9am ET). The 13:00 advisory chain also refreshes the payroll title mart into `ALERT_STATE`. The versioned D1 shadow-hold lease gates only redlined `affected_digest_ids` from 12:45–14:00 UTC and fails open when no digest-specific scope exists. D1 schema is versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
-- `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts. The Worker normally reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`), while the bounded document routes above execute directly. Origin redirects are manual; a redirect back to CityScroll trips a circuit breaker and retries through GitHub's public repository source seam.
+- `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts served by Cloudflare Pages, with bounded Worker routes layered where needed. The mirror retains `crol-list.org` as a compatibility origin; if it redirects back to CityScroll, the stamped `cityscroll.pages.dev` artifact is the full-site failover, while raw repository content is used only for `/docs/*` and `/README.md`.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query. The mirror's independent redirect-loop failover keeps the canonical site available if an origin fetch is redirected back at the Worker. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org` with Reply-To `alerts@crol-list.org` (still-routable). Public feedback notifies `feedback@cityscroll.org` (`FEEDBACK_TO`); subscribe-by-email inbound remains on `subscribe@crol-list.org` until inbound routing is migrated.
 - Secrets are stored outside the repository (Wrangler secret bindings). Bindings referenced by code include `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. The production analytics write gate `ANALYTICS_ENVIRONMENT=production` is a non-secret var in `wrangler.toml` (beta overrides it to `preview`); a missing or non-production value drops Analytics Engine writes. The developer key authenticates short-lived HMAC exclusions. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` fails closed (503) without `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` (no CAPTCHA on this path); `/feedback` fails closed without `RESEND_API_KEY` + `FEEDBACK` (rate limits only; no CAPTCHA).
@@ -258,13 +258,13 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 1 static site (`site/index.html` + window-sized `site/app/` modules + `site/data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → normalization/materialization → edge prewarm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles; CityScroll-owned materialized read models serve ordinary views, while public-source access and durable snapshots provide graceful degradation and reproducibility.
 
-1. A visitor loads `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs` at canonical `cityscroll.org`, mirrored from the static GitHub Pages origin — no application backend or build step required.
+1. A visitor loads `site/index.html` (inline CSS + markup) and the ordered browser-native modules from `site/app/main.mjs` at canonical `cityscroll.org`, served by Cloudflare Pages — no application backend or build step required.
 2. Picking a lens consumes page-specific materialized read models and snapshot-only Worker projections. Publisher APIs are confined to scheduled/manual acquisition and non-required source-contract monitors; request-dependent search executes over retained indexes.
 3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/unsubscribe` (immediate enrollment with welcome/manage links; rate-limited and fail-closed without token/send secrets), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback` (rate-limited; notifies `feedback@cityscroll.org`), keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC contract terms into estimated expirations (`fc:<stem>` in `ALERT_STATE`) and renders them in the profile timeline. Official procurement-plan rows are disabled; the cleanup job removes stale `plan:` keys.
 5. Subscriptions land immediately in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the hearings, Property, and versioned whole-profile vendor projections in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
-7. Cloudflare Pages Git integration serves the static site from the `main` production branch, and Workers Builds deploys Worker changes from `main`. GitHub Pages remains an active fallback, while the Cloudflare deploy workflows are manual emergency paths.
+7. Cloudflare Pages serves the static site from the `main` production branch, and Workers Builds deploys Worker changes from `main`. The Worker mirror's Cloudflare Pages fallback covers the full site; its raw-repository fallback is intentionally limited to `/docs/*` and `/README.md` and may contain unsubstituted build tokens.
 
 ## Check yourself
 

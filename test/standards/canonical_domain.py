@@ -115,8 +115,8 @@ def main() -> None:
                 f"{path.relative_to(ROOT)}: public source mints an API-host document URL"
             )
 
-    if (SITE_ROOT / "CNAME").read_text().strip() != "crol-list.org":
-        failures.append("CNAME: must remain the GitHub Pages origin used by the CityScroll mirror")
+    if (SITE_ROOT / "CNAME").read_text().strip() != "cityscroll.org":
+        failures.append("CNAME: must identify the Cloudflare Pages production origin")
 
     cors = (ROOT / "worker/src/lib/cors.mjs").read_text()
     if '? (origin || "https://cityscroll.org")' not in cors:
@@ -158,8 +158,8 @@ def main() -> None:
 
     mirror = (ROOT / "worker/src/mirror.mjs").read_text()
     if 'const ORIGIN = "https://crol-list.org";' not in mirror:
-        failures.append("mirror: primary GitHub Pages origin must remain crol-list.org")
-    # Site failover must be the stamped deploy host, not raw GitHub source (source keeps
+        failures.append("mirror: compatibility origin must remain crol-list.org")
+    # Site failover must be the stamped deploy host, not raw repository source (source keeps
     # merge-stable __I18N_ASSET_VERSION__ tokens). Field case 2026-07-30.
     if 'const SITE_FALLBACK_ORIGIN = "https://cityscroll.pages.dev/";' not in mirror:
         failures.append("mirror: site failover must use the stamped cityscroll.pages.dev artifact")
