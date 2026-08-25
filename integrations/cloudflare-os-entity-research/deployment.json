@@ -1,0 +1,53 @@
+{
+  "schema": "cityscroll.cloudflare_os_entity_research_deployment.v1",
+  "adapter": "cloudflare-os.entity-constellation-gadget@1",
+  "runtime": "Cloudflare OS Gadget",
+  "upstream": {
+    "starter": {
+      "repository": "https://github.com/cloudflare/cloudflare-os-starter",
+      "commit": "3d211477ad009e13a98d863d843e5c12a29ad02b"
+    },
+    "cloudflare_os": {
+      "repository": "https://github.com/cloudflare/cloudflare-os",
+      "commit": "e4b5cc65c4681ec72ff95e67a6dcd087fd1c4e04"
+    },
+    "gatekeeper": {
+      "package": "packages/gatekeeper-mcp",
+      "mode": "named-tools"
+    }
+  },
+  "gadget": {
+    "entrypoint": "src/gadget.mjs",
+    "model": null,
+    "bindings": [],
+    "credentials": [],
+    "ambient_internet": false
+  },
+  "grant": {
+    "authority_class": "public_read",
+    "capability_references": [
+      "cited.passages.retrieve@1",
+      "entity.dossier.get@1",
+      "entity.relationships.get@1",
+      "notice.search@1"
+    ],
+    "tools": [
+      "get_entity_dossier",
+      "get_entity_relationships",
+      "search_notices",
+      "retrieve_cited_passages"
+    ],
+    "write_tools": []
+  },
+  "kill_switch": {
+    "variable": "CITYSCROLL_CS07_ENABLED",
+    "enabled_value": "true",
+    "disabled_value": "false",
+    "default": "false"
+  },
+  "rollback": {
+    "route_removal": "disable Gadget and remove the named MCP grant",
+    "deployment_removal": "delete the isolated Gadget deployment by recorded deployment_id",
+    "cityscroll_change": false
+  }
+}

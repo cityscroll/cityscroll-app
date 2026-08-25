@@ -1,0 +1,38 @@
+{
+  "schema": "cityscroll.cloudflare_os_entity_research_fixture.v1",
+  "id": "cs-07-acme-entity-research-v1",
+  "entity_id": "vendor:stem:ACME CONSTRUCTION",
+  "notice_query": "acme construction",
+  "cited_query": "energy conservation",
+  "expected": {
+    "call_order": [
+      "get_entity_dossier",
+      "get_entity_relationships",
+      "search_notices",
+      "retrieve_cited_passages"
+    ],
+    "call_count": 4,
+    "model_enabled": false,
+    "bounds": {
+      "notice_limit": 10,
+      "cited_passage_limit": 10,
+      "relationship_depth": 2,
+      "relationship_fan_out": 12
+    },
+    "result_semantic_sha256": {
+      "get_entity_dossier": "f2eecf61a5a2a75e2d7c4f07a096691d56937048db3ca318128523e50d492590",
+      "get_entity_relationships": "9e7afdde1e9eb0da3ac87cb39c4bb80b6d9ee0932c5c37284a171b9617966bb4",
+      "search_notices": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a",
+      "retrieve_cited_passages": "a7b681017372321e137d1fd30baf6b06c95e2876a93133a06c2852fc7154cd68"
+    },
+    "notice_request_ids": ["20260730001", "20260730002"],
+    "relationship_node_ids": [
+      "agency:name:department%20of%20design%20and%20construction",
+      "award:city_record:20260730001",
+      "contract:name:ct-850-1",
+      "solicitation:city_record:20260730002",
+      "vendor:stem:ACME CONSTRUCTION"
+    ],
+    "citation_ids": ["city_record_notice:20260715041:p0001"]
+  }
+}
