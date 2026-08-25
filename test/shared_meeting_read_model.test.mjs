@@ -8,9 +8,10 @@ import {
 } from "../site/shared_meeting_read_model.mjs";
 import { materializeCommunityBoardMeetingRow } from "../tools/build_community_board_meeting_index.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
+import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
 const meetings = JSON.parse(readFileSync(new URL("../site/data/meetings_domain_observations.json", import.meta.url)));
-const boardIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
+const boardIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 const sharedSnapshot = JSON.parse(readFileSync(new URL("../site/data/shared_meeting_read_model.json", import.meta.url)));
 const cityRecordParity = JSON.parse(readFileSync(new URL("./fixtures/city_record_meeting_parity.json", import.meta.url)));
 

@@ -15,6 +15,7 @@ import {
 import { buildExamsDocument } from "../site/exams_surface.mjs";
 import { buildStaffingDocument } from "../site/staffing_surface.mjs";
 import { buildSharedMeetingReadModel } from "../site/shared_meeting_read_model.mjs";
+import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
@@ -23,6 +24,9 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
 
 function json(path) {
+  if (path === "/data/community_board_meeting_index.json") {
+    return readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
+  }
   return JSON.parse(readFileSync(join(SITE, path.replace(/^\//, "")), "utf8"));
 }
 

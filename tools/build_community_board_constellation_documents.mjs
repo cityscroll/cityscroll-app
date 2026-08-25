@@ -10,6 +10,7 @@ import {
   COMMUNITY_BOARD_CONSTELLATION_SCHEMA,
 } from "../site/community_board_constellation.mjs";
 import { communityBoardMeetingEdgeFromSourceRow } from "../site/community_board_institution_edges.mjs";
+import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -17,6 +18,9 @@ const LOOKUP = join(SITE, "data/community_board_constellation_lookup.json");
 const check = process.argv.includes("--check");
 
 function readJson(relative) {
+  if (relative === "site/data/community_board_meeting_index.json") {
+    return readCommunityBoardMeetingIndex(join(ROOT, relative));
+  }
   return JSON.parse(readFileSync(join(ROOT, relative), "utf8"));
 }
 

@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
+import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
-const index = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url), "utf8"));
+const index = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 test("community board meeting index reports receipt-backed coverage for every board role", () => {
   assert.equal(index.schema, "cityscroll.community_board_meeting_index.v1");

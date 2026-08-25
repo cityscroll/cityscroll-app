@@ -756,6 +756,9 @@ jobs:
       - name: Verify site digest and exact build identity
         if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
         run: node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"
+      - name: Check Cloudflare Pages per-file size budget
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Save exact-input site cache
         if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success' && steps.cached-site.outputs.ready != 'true'
         uses: actions/cache/save@v4

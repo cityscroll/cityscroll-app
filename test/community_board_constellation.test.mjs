@@ -12,12 +12,13 @@ import {
   renderCommunityBoardConstellationDocument,
 } from "../site/community_board_constellation.mjs";
 import { entityPivotRouteStatus } from "../site/edge_summary.mjs";
+import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
 const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url)));
 const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
 const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url)));
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
-const meetingIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
+const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
 

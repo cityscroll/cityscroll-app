@@ -3,12 +3,13 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
 import { buildScorecard, renderScorecardPage } from "../site/community-board-scorecard.mjs";
+import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
 const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url)));
 const receipt = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/verification_receipts/cb_minutes_publication_probes.json", import.meta.url)));
 const report = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/cb_minutes_gap_report.json", import.meta.url)));
 const inventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
-const meetingIndex = JSON.parse(readFileSync(new URL("../site/data/community_board_meeting_index.json", import.meta.url)));
+const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 test("CB minutes report is a complete deterministic expected-set projection", () => {
   assert.equal(registry.sources.filter((row) => row.body_type === "community_board").length, 59);
