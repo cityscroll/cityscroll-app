@@ -35,6 +35,9 @@ import {
   handleAdminDigestSendTest,
   handleAdminDigestCatchUp,
   handleAdminPassportIngest,
+  handleAdminOpsAlert,
+  handleAdminDigestWatchdog,
+  handleAdminSchedulerHeartbeat,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
@@ -47,6 +50,7 @@ import { handlePerformanceEvents } from "./performance_events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
+import { recordDigestDeliveryReceipt, recordDigestQueueFailure, recordDigestShadowReceipt } from "./reliability_watchdogs.mjs";
 import { redactEmail } from "./lib/subscriptions.mjs";
 import { recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import { ingestNotices } from "./ingest.mjs";
@@ -199,6 +203,9 @@ export default {
     if (pathname === "/admin/digest-backfill") return handleAdminDigestBackfill(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
     if (pathname === "/admin/digest-shadow") return handleAdminDigestShadow(request, env);
+    if (pathname === "/admin/ops-alert") return handleAdminOpsAlert(request, env);
+    if (pathname === "/admin/reliability/digest") return handleAdminDigestWatchdog(request, env);
+    if (pathname === "/admin/reliability/scheduler") return handleAdminSchedulerHeartbeat(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/meeting-outcomes-refresh") return handleAdminMeetingOutcomesRefresh(request, env);
@@ -252,6 +259,7 @@ export default {
           console.error("digest shadow ingest failed (rehearsal continues):", String(error?.message || error));
         }
         const summary = await runDigestShadow(env);
+        await recordDigestShadowReceipt(env, summary);
         console.log("digest shadow:", JSON.stringify(summary, (key, value) => {
           if (typeof value !== "string") return value;
           if (key === "recipient") return redactEmail(value);
@@ -266,7 +274,13 @@ export default {
     // Delivery is the scheduled run's critical path. Keep it ahead of advisory read-model
     // refreshes so a slow or failing upstream cannot prevent queue fan-out and its receipt.
     console.log("digest delivery: starting");
-    await runAlerts(env);
+    try {
+      const summary = await runAlerts(env);
+      await recordDigestDeliveryReceipt(env, summary?.receipt || summary);
+    } catch (error) {
+      await recordDigestDeliveryReceipt(env, null, new Date(), error);
+      throw error;
+    }
     console.log("digest delivery: complete");
 
     // Idempotent recovery of the four vetted stranded signups. Fail-soft so a store error
@@ -461,7 +475,13 @@ export default {
 
   // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).
   async queue(batch, env) {
+    const deadLetterBatch = batch.queue === "crol-digests-dlq";
     for (const msg of batch.messages) {
+      if (deadLetterBatch) {
+        await recordDigestQueueFailure(env);
+        msg.ack();
+        continue;
+      }
       try {
         // Body is { type, key?, email?, keys? } or legacy { key }.
         await consumeDigestJob(env, msg.body || {});

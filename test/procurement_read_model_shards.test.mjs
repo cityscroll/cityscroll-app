@@ -54,7 +54,7 @@ test("shards retain the read-model contract and round-trip rows and observations
 test("Pages bundle guard passes the committed site and fails a planted oversized file", () => {
   const workerWorkflow = readFileSync(new URL("../.github/workflows/deploy-worker.yml", import.meta.url), "utf8");
   assert.match(workerWorkflow, /tools\/worker_deploy_guard\.mjs/);
-  assert.match(workerWorkflow, /52 MiB uncompressed budget/);
+  assert.match(workerWorkflow, /64 MiB uncompressed budget/);
   const committed = spawnSync(process.execPath, [guard.pathname, "--site-dir", "site"], { encoding: "utf8" });
   assert.equal(committed.status, 0, committed.stderr);
 

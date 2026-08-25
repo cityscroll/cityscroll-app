@@ -39,7 +39,7 @@ test("Worker deploy uses the pinned dry-run budget and read-model canary guard",
   assert.match(workflow, /npx wrangler@4\.110\.0 deploy --dry-run/);
   assert.match(workflow, /tools\/worker_deploy_guard\.mjs/);
   assert.match(workflow, /--read-model-dir/);
-  assert.match(workflow, /52 MiB/);
+  assert.match(workflow, /64 MiB/);
   assert.match(workflow, /route-read-model:near-you:manifest:v1/);
   assert.match(workflow, /route-read-model:meetings:manifest:v1/);
 });

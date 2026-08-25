@@ -126,6 +126,15 @@ max_retries = 3
 max_concurrency = 1
 dead_letter_queue = "crol-digests-dlq"
 
+# The dead-letter queue is consumed only to create a durable operational observation;
+# its messages are never re-entered into resident delivery.
+[[queues.consumers]]
+queue = "crol-digests-dlq"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 0
+max_concurrency = 1
+
 # D1 mirror of City Record notices (Socrata stays the source of truth; the daily cron
 # refreshes it -- see src/ingest.mjs). Created via `wrangler d1 create crol-notices`;
 # apply schema with `npx wrangler d1 migrations apply crol-notices --remote`.

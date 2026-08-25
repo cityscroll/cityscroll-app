@@ -54,3 +54,5 @@ runs:
           args+=(--review-channel "$REVIEW_CHANNEL" --commit-sha "$COMMIT_SHA")
         fi
         node "$SOURCE_DIR/tools/build_cloudflare_pages.mjs" "${args[@]}"
+        node "$SOURCE_DIR/tools/check_pages_bundle_sizes.mjs" --site-dir "$SITE_DIR"
+        node "$SOURCE_DIR/tools/artifact_manifest.mjs" --site-dir "$SITE_DIR" --source-commit "${GITHUB_SHA:-$COMMIT_SHA}"

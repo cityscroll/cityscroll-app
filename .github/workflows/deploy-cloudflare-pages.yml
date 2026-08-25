@@ -57,6 +57,8 @@ jobs:
         uses: ./.github/actions/build-site
         with:
           refresh-decision-outcomes: ${{ github.event_name == 'push' || inputs.refresh_decision_outcomes }}
+      - name: Verify hosting budgets
+        run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Deploy to Cloudflare Pages
         id: deploy
         uses: cloudflare/wrangler-action@v3.14.1

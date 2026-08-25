@@ -47,16 +47,19 @@ jobs:
       - name: Build versioned Worker route read models
         run: node tools/build_worker_route_read_models.mjs --output-dir "$RUNNER_TEMP/crol-worker-route-read-models" --check
       - name: Verify Worker bundle budget and route read-model canaries
-        # worker_deploy_guard enforces the hard 52 MiB uncompressed budget.
+        # worker_deploy_guard enforces the 64 MiB uncompressed budget, 10 MB compressed budget, and 1 second startup ceiling.
         working-directory: worker
         run: |
           set -euo pipefail
           bundle_dir="$RUNNER_TEMP/crol-worker-bundle"
           mkdir -p "$bundle_dir"
           npx wrangler@4.110.0 deploy --dry-run --outdir "$bundle_dir" --metafile "$bundle_dir/meta.json"
+          npx wrangler@4.110.0 check startup > "$bundle_dir/startup.txt"
           node ../tools/worker_deploy_guard.mjs \
             --metafile "$bundle_dir/meta.json" \
-            --read-model-dir "$RUNNER_TEMP/crol-worker-route-read-models"
+            --startup-report "$bundle_dir/startup.txt" \
+            --read-model-dir "$RUNNER_TEMP/crol-worker-route-read-models" \
+            --kv-dir "$RUNNER_TEMP/crol-worker-route-read-models"
       # Apply pending D1 migrations before code deploy. CREATE TABLE IF NOT EXISTS migrations
       # are idempotent; skipping this left passport_* tables missing in production and turned
       # every PASSPort lifecycle lookup into lookup_status=error.

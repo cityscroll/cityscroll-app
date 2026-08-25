@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFile, mkdir, writeFile } from "node:fs/promises";
+import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join, resolve } from "node:path";
@@ -260,6 +260,38 @@ export function cronMatches(expression, date) {
 
 async function loadJobs() { return JSON.parse(await readFile(JOBS_PATH, "utf8")); }
 
+async function pendingOutboxCount(stateDir) {
+  try {
+    const names = await readdir(join(stateDir, "outbox"));
+    let pending = 0;
+    for (const name of names.filter((item) => item.endsWith(".json"))) {
+      try {
+        const event = JSON.parse(await readFile(join(stateDir, "outbox", name), "utf8"));
+        if (event.status === "pending") pending++;
+      } catch {}
+    }
+    return pending;
+  } catch { return 0; }
+}
+
+async function publishHeartbeat(stateDir, now, dueJobs) {
+  const url = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL
+    || "https://api.cityscroll.org/admin/reliability/scheduler";
+  const key = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY;
+  if (!url || !key) return { status: "unconfigured" };
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      observed_at: now.toISOString(),
+      run_key: runKey(now),
+      pending_outbox: await pendingOutboxCount(stateDir),
+      due_jobs: dueJobs,
+    }),
+  });
+  return { status: response.ok ? "succeeded" : "failed", http_status: response.status };
+}
+
 async function main() {
   const jobs = await loadJobs();
   const stateDir = arg("--state-dir") || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
@@ -268,13 +300,14 @@ async function main() {
   const selected = arg("--job");
   const now = new Date();
   const due = selected ? jobs.jobs.filter((job) => job.id === selected) : jobs.jobs.filter((job) => job.schedule.some((expression) => cronMatches(expression, now)));
+  const heartbeat = await publishHeartbeat(stateDir, now, due.map((job) => job.id));
   const summaries = [];
   for (const job of due) {
     const output = await runScheduledJob(job, { stateDir, now });
     summaries.push({ id: job.id, status: output.result.status });
   }
   const replayAfter = await replayOutbox({ stateDir, github });
-  process.stdout.write(`${JSON.stringify({ replayBefore, due: summaries, replayAfter }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ replayBefore, heartbeat, due: summaries, replayAfter }, null, 2)}\n`);
   if (summaries.some((summary) => summary.status !== "healthy")) process.exitCode = 1;
 }
 

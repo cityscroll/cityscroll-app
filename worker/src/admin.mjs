@@ -28,6 +28,12 @@ import {
   runCatchUpDigests,
 } from "./alerts.mjs";
 import {
+  digestWatchdogSnapshot,
+  emitOpsAlertOnce,
+  recordSchedulerHeartbeat,
+  schedulerWatchdogSnapshot,
+} from "./reliability_watchdogs.mjs";
+import {
   INVESTIGATION_WORKSPACE_VERSION,
   buildInvestigationWorkspace,
   activeReviewItems,
@@ -106,6 +112,49 @@ export function checkOperatorProbeKey(req, env) {
   const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
   if (key !== env.ADMIN_KEY && key !== env.ANALYTICS_DEV_KEY) return { ok: false, res: json({ error: "unauthorized" }, 401) };
   return { ok: true };
+}
+
+export async function handleAdminOpsAlert(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method" }, 405);
+  let body;
+  try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
+  if (!body?.guard || !body?.text) return json({ error: "guard-and-text-required" }, 400);
+  return json({ ok: true, ...(await emitOpsAlertOnce(env, body)) }, 200);
+}
+
+export async function handleAdminDigestWatchdog(req, env, { now = new Date() } = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method" }, 405);
+  const snapshot = await digestWatchdogSnapshot(env, { now });
+  if (!snapshot.ok) await emitOpsAlertOnce(env, {
+    guard: "digest-dead-mans-switch",
+    fingerprint: `${snapshot.day}:${snapshot.findings.join("|")}`,
+    subject: "Digest dead-man switch failed",
+    text: snapshot.findings.join("; "),
+  });
+  return json(snapshot, snapshot.ok ? 200 : 503);
+}
+
+export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date() } = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method === "POST") {
+    let body;
+    try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
+    return json({ ok: true, heartbeat: await recordSchedulerHeartbeat(env, body, now) }, 200);
+  }
+  if (req.method !== "GET") return json({ error: "method" }, 405);
+  const snapshot = await schedulerWatchdogSnapshot(env, { now });
+  if (!snapshot.ok) await emitOpsAlertOnce(env, {
+    guard: "scheduler-heartbeat",
+    fingerprint: snapshot.findings.join("|"),
+    subject: "External scheduler heartbeat failed",
+    text: snapshot.findings.join("; "),
+  });
+  return json(snapshot, snapshot.ok ? 200 : 503);
 }
 
 // Extracts the operator key exactly the way the shared gates do: ?key= query param or an
