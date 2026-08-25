@@ -1,0 +1,29 @@
+name: Home path leak guard
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  no-home-path-leak:
+    name: Reject absolute home paths
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Scan tracked files
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Build the expression in pieces so this workflow does not match itself.
+          pattern='/Users/'"[A-Za-z][A-Za-z0-9._-]*/"
+          matches="$(git grep --cached -n -I -E "$pattern" -- ':!.github/workflows/no-home-path-leak.yml' || true)"
+          if [[ -n "$matches" ]]; then
+            echo "Absolute home path detected in tracked source:" >&2
+            echo "$matches" >&2
+            exit 1
+          fi

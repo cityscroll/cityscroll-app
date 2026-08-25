@@ -1,12 +1,19 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import os from "node:os";
+import path from "node:path";
 import {
+  ADMIN_KEY_PATH,
   assembleBackfillRequest,
   assertRecoveryPath,
   CarryForwardRunnerError,
   extractOwnerSnapshots,
 } from "../scripts/carry_forward_backfill.mjs";
 import { deriveBackfillTestData } from "./helpers/digest_backfill_fixture.mjs";
+
+test("admin key path follows the runtime home directory", () => {
+  assert.equal(ADMIN_KEY_PATH, path.join(os.homedir(), ".config", "estate", "cityscroll-admin-key"));
+});
 
 function shadowPreview() {
   const data = deriveBackfillTestData();
