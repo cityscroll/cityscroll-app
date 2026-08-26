@@ -4,6 +4,11 @@
 
 export const ANALYTICAL_PROJECTION_SCHEMA = "cityscroll.analytical_projection.v1";
 export const UNKNOWN_DIMENSION_LABEL = "Unknown / not published";
+export const CITY_RECORD_MATCH_VALUES = Object.freeze([
+  "exact",
+  "none",
+  "cannot_evaluate_missing_pin",
+]);
 
 export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
   schema: ANALYTICAL_PROJECTION_SCHEMA,
@@ -53,6 +58,13 @@ export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
       source_field: "registration_date, start_date",
       derivation: "eligible when both dates are published; retroactive when registration_lag_days > 0",
       null_label: UNKNOWN_DIMENSION_LABEL,
+    }),
+    city_record_match: Object.freeze({
+      label: "City Record match",
+      field: "city_record_match",
+      source_field: "exact normalized Checkbook PIN matched to a City Record award PIN",
+      derivation: "reuses the existing exact-PIN Checkbook ↔ City Record join; no fuzzy matching",
+      values: CITY_RECORD_MATCH_VALUES,
     }),
   }),
   measures: Object.freeze({
@@ -134,6 +146,34 @@ export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
       reader_label: "P90 lag",
       aggregation: "nearest_rank_percentile_0.90",
       source_field: "registration_lag_days",
+      facts: Object.freeze(["registered_contract"]),
+    }),
+    city_record_eligible_contract_count: Object.freeze({
+      label: "Eligible registered contracts for City Record match coverage",
+      reader_label: "Eligible registered contracts",
+      aggregation: "count_distinct",
+      source_field: "prime_contract_id",
+      facts: Object.freeze(["registered_contract"]),
+    }),
+    city_record_matched_contract_count: Object.freeze({
+      label: "Registered contracts with an exact City Record match",
+      reader_label: "Exact City Record matches",
+      aggregation: "count_distinct",
+      source_field: "prime_contract_id",
+      facts: Object.freeze(["registered_contract"]),
+    }),
+    city_record_unmatched_contract_count: Object.freeze({
+      label: "Registered contracts without an exact City Record match",
+      reader_label: "No exact match found",
+      aggregation: "count_distinct",
+      source_field: "prime_contract_id",
+      facts: Object.freeze(["registered_contract"]),
+    }),
+    city_record_missing_pin_contract_count: Object.freeze({
+      label: "Registered contracts that cannot be evaluated because PIN is missing",
+      reader_label: "Missing PIN",
+      aggregation: "count_distinct",
+      source_field: "prime_contract_id",
       facts: Object.freeze(["registered_contract"]),
     }),
   }),

@@ -1,0 +1,11 @@
+{
+  "registered_contracts": [
+    {"prime_contract_id": "CT-EXACT", "agency": "Department of Housing", "pin": "PIN-EXACT", "current_registered_amount": 150000},
+    {"prime_contract_id": "CT-NONE", "agency": "Department of Housing", "pin": "PIN-NONE", "current_registered_amount": 200000},
+    {"prime_contract_id": "CT-MISSING", "agency": "Department of Housing", "current_registered_amount": 300000}
+  ],
+  "city_record_awards": [
+    {"request_id": "20250101001", "start_date": "2025-01-15", "pin": "PIN-EXACT", "type_of_notice_description": "Award"},
+    {"request_id": "20250101002", "start_date": "2025-01-15", "pin": "PIN-OTHER", "type_of_notice_description": "Award"}
+  ]
+}

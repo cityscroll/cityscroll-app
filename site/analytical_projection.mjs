@@ -14,7 +14,8 @@ export const ANALYTICAL_GROUPS = Object.freeze({
   amount_band: "contract_amount_band",
 });
 export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
-  "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max", "retroactive",
+  "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
+  "retroactive", "ap_city_record_match",
 ]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",
@@ -25,6 +26,12 @@ export const ANALYTICAL_VALUE_MEASURES = Object.freeze({
   current: "current_registered_amount",
   original: "original_registered_amount",
 });
+export const CITY_RECORD_MATCHES = Object.freeze({
+  exact: "exact",
+  none: "none",
+  missingPin: "cannot_evaluate_missing_pin",
+});
+export const CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD = 100000;
 
 /** Preserve analytical drill-through parameters while a document URL crosses the shared scope hash. */
 export function preserveAnalyticalProjectionQuery(source, target) {
@@ -64,8 +71,8 @@ export function normalizeAnalyticalContractRow(row) {
   if (!contractId) return null;
   const registeredDate = row?.registered || row?.registration_date || null;
   const startDate = row?.start || row?.start_date || null;
-  const current = Number(row?.current ?? row?.current_amount);
-  const original = Number(row?.original ?? row?.original_amount);
+  const current = Number(row?.current ?? row?.current_amount ?? row?.current_registered_amount);
+  const original = Number(row?.original ?? row?.original_amount ?? row?.original_registered_amount);
   const registrationFiscalYearValue = row?.registration_fiscal_year
     ?? registrationFiscalYear(registeredDate);
   // Recompute from the two published dates so a stale or hand-authored lag
@@ -76,6 +83,7 @@ export function normalizeAnalyticalContractRow(row) {
     prime_contract_id: contractId,
     agency: row?.agency || null,
     prime_vendor: row?.prime_vendor || row?.vendor || null,
+    pin: row?.pin || row?.prime_contract_pin || null,
     registration_date: registeredDate || null,
     start_date: startDate || null,
     registration_fiscal_year: Number.isInteger(Number(registrationFiscalYearValue))
@@ -91,6 +99,7 @@ export function normalizeAnalyticalContractRow(row) {
     original_registered_amount: Number.isFinite(original) ? original : null,
     source_fiscal_years: Array.isArray(row?.source_fiscal_years) ? [...row.source_fiscal_years] : [],
     source: "checkbook-contracts",
+    ...(row?.city_record_match ? { city_record_match: row.city_record_match } : {}),
   };
 }
 
@@ -123,6 +132,7 @@ export function filterAnalyticalContracts(rows, filters = {}) {
   const amountBand = filters.contract_amount_band || null;
   const retroactive = filters.retroactive == null || filters.retroactive === ""
     ? null : String(filters.retroactive).toLowerCase() === "true";
+  const cityRecordMatch = filters.city_record_match || null;
   return (Array.isArray(rows) ? rows : []).filter((row) => {
     const current = Number(row?.current_registered_amount);
     if (fy != null && row.registration_fiscal_year !== fy) return false;
@@ -133,6 +143,7 @@ export function filterAnalyticalContracts(rows, filters = {}) {
     if (retroactive === false && row.registration_timing !== "early_on_time") return false;
     if (min != null && (!Number.isFinite(current) || current < min)) return false;
     if (max != null && (!Number.isFinite(current) || current > max)) return false;
+    if (cityRecordMatch && row.city_record_match !== cityRecordMatch) return false;
     return true;
   });
 }
@@ -303,7 +314,7 @@ export function populationSummary(rows, { snapshot_date, population_definition }
   };
 }
 
-export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive } = {}) {
+export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match } = {}) {
   const params = new URLSearchParams({ mode: "award" });
   if (agency) params.set("ap_agency", agency);
   if (prime_vendor) params.set("ap_vendor", prime_vendor);
@@ -312,7 +323,69 @@ export function analyticalDrillThroughHref({ agency, prime_vendor, registration_
   if (min_amount != null && min_amount !== "") params.set("ap_min", String(min_amount));
   if (max_amount != null && max_amount !== "") params.set("ap_max", String(max_amount));
   if (retroactive === true || String(retroactive).toLowerCase() === "true") params.set("retroactive", "true");
+  if (city_record_match) params.set("ap_city_record_match", city_record_match);
   return `/browse/contracts/?${params.toString()}`;
+}
+
+function coverageBucket(row) {
+  return Object.values(CITY_RECORD_MATCHES).includes(row?.city_record_match)
+    ? row.city_record_match
+    : CITY_RECORD_MATCHES.missingPin;
+}
+
+function coverageStats(rows) {
+  const list = Array.isArray(rows) ? rows : [];
+  const buckets = Object.fromEntries(Object.values(CITY_RECORD_MATCHES).map((bucket) => [bucket, {
+    contract_count: 0,
+    registered_value: 0,
+  }]));
+  for (const row of list) {
+    const bucket = buckets[coverageBucket(row)];
+    bucket.contract_count += 1;
+    bucket.registered_value += Number(row?.current_registered_amount) || 0;
+  }
+  const matched = buckets.exact.contract_count;
+  const evaluable = matched + buckets.none.contract_count;
+  return {
+    eligible_contract_count: list.length,
+    eligible_registered_value: list.reduce((sum, row) => sum + (Number(row?.current_registered_amount) || 0), 0),
+    matched_contract_count: matched,
+    matched_registered_value: buckets.exact.registered_value,
+    unmatched_contract_count: buckets.none.contract_count,
+    unmatched_registered_value: buckets.none.registered_value,
+    missing_pin_contract_count: buckets.cannot_evaluate_missing_pin.contract_count,
+    missing_pin_registered_value: buckets.cannot_evaluate_missing_pin.registered_value,
+    match_rate: list.length ? matched / list.length : null,
+    evaluable_match_rate: evaluable ? matched / evaluable : null,
+    buckets,
+  };
+}
+
+export function cityRecordCoverage(rows, { min_amount = CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD, registration_fiscal_year, contract_amount_band, agency } = {}) {
+  const filtered = filterAnalyticalContracts(rows, {
+    min_amount,
+    registration_fiscal_year,
+    contract_amount_band,
+    agency,
+  });
+  return { ...coverageStats(filtered), rows: filtered };
+}
+
+export function groupCityRecordCoverage(rows, { groupBy = "agency", min_amount = CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD, registration_fiscal_year, contract_amount_band, agency } = {}) {
+  const filtered = cityRecordCoverage(rows, { min_amount, registration_fiscal_year, contract_amount_band, agency }).rows;
+  const dimension = ANALYTICAL_GROUPS[groupBy] || groupBy;
+  const groups = new Map();
+  for (const row of filtered) {
+    const label = readerDimensionValue(row?.[dimension]);
+    if (!groups.has(label)) groups.set(label, []);
+    groups.get(label).push(row);
+  }
+  const result = [...groups.entries()].map(([label, groupRows]) => ({
+    label,
+    ...coverageStats(groupRows),
+  }));
+  result.sort((a, b) => b.eligible_registered_value - a.eligible_registered_value || a.label.localeCompare(b.label));
+  return { groups: result, rows: filtered };
 }
 
 export function formatRegisteredValue(value) {
