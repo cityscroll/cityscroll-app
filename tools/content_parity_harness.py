@@ -31,8 +31,6 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urljoin
 
-from playwright.sync_api import Browser, Page, TimeoutError as PlaywrightTimeoutError, sync_playwright
-
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / ".artifacts" / "content-parity"
@@ -121,7 +119,7 @@ def percentile(values: list[float], p: float = 0.75) -> float | None:
     return round(value, 3)
 
 
-def load_fixture_routes(page: Page) -> None:
+def load_fixture_routes(page: Any) -> None:
     """Install the repository's hermetic Playwright fixture network routes."""
     fixture = ROOT / "test" / "functional" / "assets" / "i18n_fixtures.py"
     spec = importlib.util.spec_from_file_location("cityscroll_i18n_fixtures", fixture)
@@ -195,14 +193,16 @@ EXTRACT_JS = r"""
 """
 
 
-def wait_for(page: Page, selector: str, timeout_ms: int) -> None:
+def wait_for(page: Any, selector: str, timeout_ms: int) -> None:
+    from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+
     try:
         page.wait_for_selector(selector, state="attached", timeout=timeout_ms)
     except PlaywrightTimeoutError as exc:
         raise RuntimeError(f"readiness selector timed out: {selector}") from exc
 
 
-def browser_metrics(page: Page) -> dict[str, Any]:
+def browser_metrics(page: Any) -> dict[str, Any]:
     return page.evaluate(
         """() => {
           const nav = performance.getEntriesByType('navigation')[0] || {};
@@ -220,7 +220,7 @@ def browser_metrics(page: Page) -> dict[str, Any]:
 
 
 def capture_viewport(
-    browser: Browser,
+    browser: Any,
     surface: str,
     ref: str,
     base: str,
@@ -294,6 +294,8 @@ def capture(args: argparse.Namespace) -> int:
         "viewports": list(VIEWPORTS),
         "surfaces": {},
     }
+    from playwright.sync_api import sync_playwright
+
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         try:

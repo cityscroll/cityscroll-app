@@ -5,14 +5,24 @@ import test from "node:test";
 const ROOT = new URL("../", import.meta.url);
 const HARNESS = new URL("../tools/content_parity_harness.py", import.meta.url);
 
-function runPython(code) {
-  const result = spawnSync("python3", ["-c", code], {
+function runPython(code, pythonArgs = []) {
+  const result = spawnSync("python3", [...pythonArgs, "-c", code], {
     cwd: ROOT,
     encoding: "utf8",
   });
   assert.equal(result.status, 0, result.stderr);
   return JSON.parse(result.stdout);
 }
+
+test("pure comparison logic imports without Playwright installed", () => {
+  const output = runPython(`
+import importlib.util, json
+spec = importlib.util.spec_from_file_location("h", ${JSON.stringify(HARNESS.pathname)})
+h = importlib.util.module_from_spec(spec); spec.loader.exec_module(h)
+print(json.dumps(h.compare_content({"records": [], "controls": []}, {"records": [], "controls": []}, "home", {})))
+`, ["-S"]);
+  assert.equal(output.verdict, "PASS");
+});
 
 test("content parity fails with the specific removed record and control", () => {
   const output = runPython(`
