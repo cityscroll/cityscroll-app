@@ -361,6 +361,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   source-native community-board meeting index follows the same manifest/shard
   pattern through `site/community_board_meeting_index_shards.mjs` and is read
   with `tools/lib/community_board_meeting_index_io.mjs`.
+- **Contracts bounded query projection:** non-default Contracts Browse uses
+  `site/procurement_browse_query.mjs` and Pages-build-generated
+  `site/data/procurement_browse_query.json` plus
+  `site/data/procurement_browse_rows/`; those deploy-time artifacts are
+  gitignored and must not be committed. Rebuild them with
+  `node tools/build_shared_procurement_read_model.mjs`; the query projection must stay
+  field-equivalent to `filterMoneySnapshot`, and full-row hydration must retain the
+  legacy fallback. Proof lives in `test/procurement_browse_query.test.mjs`.
 - **Community-board meeting geography:** Near-you district activity reads the shared meeting
   model and derives a source-qualified board meeting's community district from the published
   `community-board → covers → community-district` edge in
