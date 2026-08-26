@@ -49,6 +49,7 @@ const FILTER_COLUMNS = Object.freeze({
   navigation_type: "blob7",
   delivery_class: "blob8",
   result_state: "blob9",
+  traffic_class: "blob10",
   release_id: "blob13",
 });
 
@@ -75,6 +76,7 @@ const deviceClasses = new Set(performanceAllowlist.collector?.device_classes || 
 const navigationTypes = new Set(performanceAllowlist.collector?.navigation_types || []);
 const deliveryClasses = new Set(performanceAllowlist.delivery_classes || []);
 const resultStates = new Set(performanceAllowlist.result_states || []);
+const trafficClasses = new Set(["production", "lab"]);
 const RELEASE_ID = /^[a-f0-9]{40}$/;
 
 const REJECTION_REASONS = RUM_HEALTH_REASONS.filter((reason) => ![
@@ -135,6 +137,7 @@ function checkedFilterValue(key, rawValue) {
     navigation_type: navigationTypes,
     delivery_class: deliveryClasses,
     result_state: resultStates,
+    traffic_class: trafficClasses,
   })[key];
   if (key === "release_id" ? !RELEASE_ID.test(value) : !allowed?.has(value)) {
     throw new PerformanceQueryError(`Unsupported ${key}`);
@@ -228,9 +231,10 @@ function whereSql(query, startMs, endMs) {
     `timestamp >= ${dateTimeSql(startMs)}`,
     `timestamp < ${dateTimeSql(endMs)}`,
     `blob1 = ${sqlString(RUM_OBSERVATION_SCHEMA)}`,
-    "blob10 = 'production'",
+    `blob10 = ${sqlString(query.filters.traffic_class || "production")}`,
   ];
   for (const [key, value] of Object.entries(query.filters)) {
+    if (key === "traffic_class") continue;
     clauses.push(`${FILTER_COLUMNS[key]} = ${sqlString(value)}`);
   }
   return clauses.join("\n  AND ");

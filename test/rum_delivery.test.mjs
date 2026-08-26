@@ -38,6 +38,23 @@ test("browser RUM delivery prefers a distinct beacon endpoint without a develope
   assert.equal(calls[0][1], JSON.stringify(BATCH));
 });
 
+test("controlled RUM delivery marks lab traffic on the beacon endpoint", async () => {
+  let request;
+  const result = await deliverRumBatch(BATCH, {
+    enabled: true,
+    trafficClass: "lab",
+    runtime: {
+      navigator: { sendBeacon() { return false; } },
+      async fetch(url, init) {
+        request = { url, init };
+        return new Response(null, { status: 204 });
+      },
+    },
+  });
+  assert.deepEqual(result, { state: "queued", transport: "fetch" });
+  assert.equal(request.url, "https://api.cityscroll.org/performance-events?traffic_class=lab");
+});
+
 test("developer delivery skips beacon so token validity remains an opaque request header", async () => {
   let beacons = 0;
   let request;
