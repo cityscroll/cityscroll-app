@@ -1,0 +1,3 @@
+# iCalendar is defined with CRLF line endings; do not flag the terminator as whitespace.
+test/fixtures/calendar-contract/*.ics whitespace=cr-at-eol
+docs/evidence/calendar-contract/**/*.ics whitespace=cr-at-eol
