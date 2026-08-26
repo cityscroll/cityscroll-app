@@ -1,5 +1,13 @@
 import { officialSourceLink } from "./affordance_grammar.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { communityDistrictIdForBoard } from "./community_board_geography.mjs";
+import {
+  bboxToViewBox,
+  defaultViewBox,
+  mapLabelText,
+  polygonLabelPoint,
+  polygonsToSvgPath,
+} from "./map_exploration.mjs";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -11,6 +19,81 @@ export const DETECTOR_SCHEMA = "cityscroll.community_board_minutes_gap_detector.
 export const SOURCE_INVENTORY_SCHEMA = "cityscroll.community_board_source_inventory.v1";
 
 const SOURCE_ROLES = ["upcoming_meetings", "minutes"];
+
+export const SOURCE_COVERAGE = Object.freeze({
+  both: Object.freeze({
+    label: "Both sources identified",
+    description: "Meeting/calendar and minutes or records sources are listed.",
+  }),
+  one: Object.freeze({
+    label: "One source identified",
+    description: "Only a meeting/calendar or minutes/records source is listed.",
+  }),
+  neither: Object.freeze({
+    label: "Neither source identified",
+    description: "Neither source is listed, or the source has not yet been checked.",
+  }),
+  unknown: Object.freeze({
+    label: "Source check failed or unknown",
+    description: "A source check could not establish the current source status.",
+  }),
+});
+
+const SOURCE_CHECK_FAILURE_STATES = new Set([
+  "unavailable", "stale", "unknown", "failed", "error",
+]);
+
+function sourceCheckFailed(source = {}) {
+  return SOURCE_CHECK_FAILURE_STATES.has(String(source.collection_state || "").toLowerCase())
+    || ["unknown", "unavailable", "failed", "error"].includes(String(source.verification?.status || "").toLowerCase());
+}
+
+/** Classify map color by source coverage while leaving role-level details intact. */
+export function sourceCoverage(row = {}) {
+  const sources = row.sources || {};
+  if (SOURCE_ROLES.some((role) => sourceCheckFailed(sources[role]))) return "unknown";
+  const identified = SOURCE_ROLES.filter((role) => Boolean(sources[role]?.source_url));
+  if (identified.length === SOURCE_ROLES.length) return "both";
+  if (identified.length === 1) return "one";
+  return "neither";
+}
+
+/** Build all 59 board-linked boundaries using the shared district geometry. */
+export function buildCommunityBoardMap(scorecard = {}, boundaries = {}) {
+  const regular = (boundaries.community_districts || [])
+    .filter((feature) => /^\D\d{2}$/.test(String(feature?.id || "")))
+    .filter((feature) => Number(String(feature.id).slice(1)) <= 18);
+  const rowsByDistrict = new Map((scorecard.rows || [])
+    .map((row) => [communityDistrictIdForBoard(row), row])
+    .filter(([districtId]) => districtId));
+  const features = regular.map((feature) => {
+    const row = rowsByDistrict.get(feature.id) || null;
+    return {
+      id: feature.id,
+      row,
+      boardId: row?.body_id || null,
+      label: row?.name || feature.label || feature.id,
+      coverage: sourceCoverage(row || {}),
+      path: polygonsToSvgPath(feature.polygons),
+      labelPoint: polygonLabelPoint(feature.polygons),
+      bbox: feature.bbox,
+    };
+  });
+  const bbox = features.reduce((bounds, feature) => {
+    if (!Array.isArray(feature.bbox) || feature.bbox.length !== 4) return bounds;
+    return [
+      Math.min(bounds[0], feature.bbox[0]),
+      Math.min(bounds[1], feature.bbox[1]),
+      Math.max(bounds[2], feature.bbox[2]),
+      Math.max(bounds[3], feature.bbox[3]),
+    ];
+  }, [Infinity, Infinity, -Infinity, -Infinity]);
+  return {
+    vintage: boundaries.boundary_vintage || null,
+    viewBox: bbox.every(Number.isFinite) ? bboxToViewBox(bbox, 0.04) : null,
+    features,
+  };
+}
 
 function asDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ""))) return null;
@@ -184,7 +267,7 @@ function sourceRoleLabel(role) {
   return role === "upcoming_meetings" ? "Upcoming meetings" : "Minutes and records";
 }
 
-function sourceCard(source, role) {
+function sourceCard(source = {}, role) {
   const link = source.source_url
     ? officialSourceLink({ href: source.source_url, label: role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
     : `<span class="scorecard-muted">Source not listed</span>`;
@@ -260,7 +343,56 @@ export function buildScorecard({ registry, detector = null, observedOn = null, s
   };
 }
 
-export function renderScorecardPage(scorecard) {
+function fallbackSource(row, role) {
+  return {
+    source_url: role === "minutes" ? row.minutes_url : null,
+    collection_state: role === "minutes" && row.minutes_url ? "not_yet_ingested" : "not-yet-checked",
+    observed_on: row.receipts?.[0]?.observed_on || null,
+    origin_label: role === "minutes" && row.minutes_url ? "NYC-hosted official source" : "Source not listed",
+  };
+}
+
+function boardSource(row, role) {
+  return row.sources?.[role] || fallbackSource(row, role);
+}
+
+function renderBoardDetail(row, selected, scorecard) {
+  const freshness = formatLastMinutes(row.last_minutes_date, row.days_since_last_minutes);
+  const completeness = [
+    row.notice_completeness == null ? "Notice: not measured" : `Notice: ${row.notice_completeness}% observed`,
+    row.media_completeness == null ? "Media: not measured" : `Media: ${row.media_completeness}% observed`,
+  ].join(" · ");
+  const boardHref = communityBoardPageHref(row.body_id);
+  const homepage = row.homepage_url
+    ? `<a class="scorecard-homepage-link" href="${esc(row.homepage_url)}" target="_blank" rel="noopener noreferrer">Official homepage<span aria-hidden="true">↗</span></a>`
+    : `<span class="scorecard-muted">Official homepage: not listed</span>`;
+  return `<article class="scorecard-detail-card" data-board-detail="${esc(row.body_id)}"${selected ? "" : " hidden"} aria-labelledby="scorecard-detail-${esc(row.body_id)}">
+    <p class="scorecard-kicker">Selected board</p>
+    <h3 id="scorecard-detail-${esc(row.body_id)}">${esc(row.name)}</h3>
+    <p class="scorecard-board-meta">${esc(row.borough)} · Community District ${esc(row.district)}</p>
+    <p class="scorecard-detail-links">${boardHref ? `<a href="${esc(boardHref)}">Open board profile</a>` : ""}${homepage}</p>
+    <dl class="scorecard-metadata">
+      <div><dt>Minutes freshness</dt><dd>${esc(freshness)}${row.rank ? ` · Rank ${row.rank} of ${scorecard.coverage.measured}` : ""}</dd></div>
+      <div><dt>Scorecard as of</dt><dd>${esc(scorecard.as_of || "Not measured")}</dd></div>
+      <div><dt>Observed completeness</dt><dd>${esc(completeness)}</dd></div>
+    </dl>
+    <div class="scorecard-detail-sources">
+      ${SOURCE_ROLES.map((role) => sourceCard(boardSource(row, role), role)).join("")}
+    </div>
+  </article>`;
+}
+
+function renderCoverageLegend(map) {
+  const counts = Object.fromEntries(Object.keys(SOURCE_COVERAGE).map((key) => [key, 0]));
+  for (const feature of map.features) counts[feature.coverage] += 1;
+  return `<div class="scorecard-coverage-legend" aria-labelledby="scorecard-legend-heading">
+    <h3 id="scorecard-legend-heading">Source coverage</h3>
+    <p>Map colors show whether each board has explicit meeting/calendar and minutes/records sources. Details keep the underlying observed status.</p>
+    <ul>${Object.entries(SOURCE_COVERAGE).map(([key, value]) => `<li><span class="scorecard-legend-swatch scorecard-coverage-${key}" aria-hidden="true"></span><span><strong>${esc(value.label)}</strong><small>${esc(value.description)} ${counts[key]} board${counts[key] === 1 ? "" : "s"}.</small></span></li>`).join("")}</ul>
+  </div>`;
+}
+
+export function renderScorecardPage(scorecard, { boundaries = {} } = {}) {
   const measured = scorecard.coverage.measured;
   const rows = scorecard.rows.map((row) => {
     const freshness = formatLastMinutes(row.last_minutes_date, row.days_since_last_minutes);
@@ -275,9 +407,19 @@ export function renderScorecardPage(scorecard) {
     const boardName = boardHref ? `<a href="${esc(boardHref)}">${esc(row.name)}</a>` : esc(row.name);
     return `<tr id="board-${esc(row.body_id)}"><th scope="row">${boardName}<span>${esc(row.borough)} · District ${row.district}</span><a class="scorecard-homepage-link" href="${esc(row.homepage_url)}" target="_blank" rel="noopener noreferrer">Official homepage<span aria-hidden="true">↗</span></a></th><td>${esc(freshness)}${row.rank ? `<small>Rank ${row.rank} of ${measured}</small>` : ""}</td><td><div class="scorecard-sources">${sources}</div><span class="scorecard-muted">${esc(completeness)}</span></td></tr>`;
   }).join("");
+  const map = buildCommunityBoardMap(scorecard, boundaries);
+  const defaultBoardId = scorecard.rows[0]?.body_id || "";
+  const mapPaths = map.features.filter((feature) => feature.boardId).map((feature) => {
+    const row = feature.row;
+    const coverage = SOURCE_COVERAGE[feature.coverage];
+    const selected = feature.boardId === defaultBoardId;
+    return `<path class="community-board-boundary scorecard-coverage-${esc(feature.coverage)}${selected ? " is-selected" : ""}" data-board-id="${esc(feature.boardId)}" data-community-district="${esc(feature.id)}" data-coverage="${esc(feature.coverage)}" d="${esc(feature.path)}" tabindex="0" role="button" aria-pressed="${selected ? "true" : "false"}" aria-label="${esc(row.name)}; ${esc(row.borough)}, District ${esc(row.district)}; ${esc(coverage.label)}"></path>`;
+  }).join("");
+  const mapLabels = map.features.filter((feature) => feature.boardId && feature.labelPoint).map((feature) => `<text class="community-board-map-label" data-board-label="${esc(feature.boardId)}" x="${esc(feature.labelPoint.x)}" y="${esc(feature.labelPoint.y)}" text-anchor="middle" dominant-baseline="central" aria-hidden="true">${esc(mapLabelText("community_district", feature.id, feature.label))}</text>`).join("");
+  const details = scorecard.rows.map((row) => renderBoardDetail(row, row.body_id === defaultBoardId, scorecard)).join("");
   const legalText = "The City Comptroller ";
   const legalLink = `<a href="${esc(scorecard.legal_basis.citation_url)}">has recommended</a>`;
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community board minutes · CityScroll</title><meta name="description" content="A public, receipt-backed view of community board minutes freshness."><link rel="canonical" href="https://cityscroll.org/community-boards/"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"><link rel="stylesheet" href="/community-board-scorecard.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/"><span aria-hidden="true">▣</span><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header><main id="main" class="scorecard"><section class="scorecard-hero"><h1>Community board sources</h1><p class="scorecard-dek">See each of New York City’s 59 community boards with its explicit calendar, homepage, and minutes sources.</p><p class="scorecard-asof">Sources checked through ${esc(scorecard.as_of)} · ${scorecard.coverage.boards} boards listed</p></section><p class="scorecard-legal">${legalText}${legalLink} that community boards post minutes from the past 12 months.</p><section aria-labelledby="scorecard-table-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-table-heading">Official source inventory</h2></div><a class="scorecard-json" href="/data/community_board_minutes_scorecard.json">Machine-readable JSON</a></div><div class="scorecard-table-wrap"><table><thead><tr><th scope="col">Board</th><th scope="col">Minutes freshness</th><th scope="col">Official sources</th></tr></thead><tbody>${rows}</tbody></table></div></section></main></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Community board sources · CityScroll</title><meta name="description" content="A public, receipt-backed view of community board sources and minutes freshness."><link rel="canonical" href="https://cityscroll.org/community-boards/"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/civic-documents.css"><link rel="stylesheet" href="/community-board-scorecard.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/"><span aria-hidden="true">▣</span><span>CityScroll</span></a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header><main id="main" class="scorecard" data-community-board-root data-selected-board="${esc(defaultBoardId)}"><section class="scorecard-hero"><h1>Community board sources</h1><p class="scorecard-dek">See each of New York City’s 59 community boards with its explicit calendar, homepage, and minutes sources.</p><p class="scorecard-asof">Sources checked through ${esc(scorecard.as_of)} · ${scorecard.coverage.boards} boards listed</p></section><p class="scorecard-legal">${legalText}${legalLink} that community boards post minutes from the past 12 months.</p><nav class="scorecard-view-switch" aria-label="Community board view"><a class="is-active" href="#scorecard-map" data-scorecard-view="map" aria-current="page">Map</a><a href="#scorecard-table" data-scorecard-view="table">Table</a></nav><section class="scorecard-map-view" id="scorecard-map" data-view-panel="map" aria-labelledby="scorecard-map-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-map-heading">Community districts by source coverage</h2></div><span class="scorecard-map-count">${map.features.length} boundaries</span></div><div class="scorecard-map-grid"><div class="scorecard-map-wrap"><svg class="community-board-map" role="img" aria-labelledby="scorecard-map-title scorecard-map-desc" viewBox="${esc(map.viewBox || defaultViewBox())}" preserveAspectRatio="xMidYMid meet"><title id="scorecard-map-title">New York City community district boundaries</title><desc id="scorecard-map-desc">All ${map.features.length} community district boundaries are selectable. Use Tab to focus a district, then Enter or Space to select it.</desc><g fill-rule="evenodd">${mapPaths}</g><g>${mapLabels}</g></svg><p class="scorecard-map-boundary-note">Boundaries: ${esc(map.vintage || "not published")}. Select a district to see its source details.</p></div><aside class="scorecard-detail-panel" aria-label="Selected community board details">${details}</aside></div>${renderCoverageLegend(map)}</section><section id="scorecard-table" data-view-panel="table" aria-labelledby="scorecard-table-heading"><div class="scorecard-heading"><div><p class="scorecard-kicker">All boards</p><h2 id="scorecard-table-heading">Official source inventory</h2></div><a class="scorecard-json" href="/data/community_board_minutes_scorecard.json">Machine-readable JSON</a></div><div class="scorecard-table-wrap"><table><thead><tr><th scope="col">Board</th><th scope="col">Minutes freshness</th><th scope="col">Official sources</th></tr></thead><tbody>${rows}</tbody></table></div></section></main><script type="module" src="/app/community-board-scorecard.mjs"></script></body></html>`;
 }
 
 export { esc };
