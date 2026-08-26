@@ -7,9 +7,14 @@ import {
 } from "./analytical_projection_contract.mjs";
 
 export const ANALYTICAL_PROJECTION_URL = "data/analytics_registered_contracts.json";
-export const ANALYTICAL_GROUPS = Object.freeze({ agency: "agency", vendor: "prime_vendor" });
+export const ANALYTICAL_GROUPS = Object.freeze({
+  agency: "agency",
+  vendor: "prime_vendor",
+  registration_fiscal_year: "registration_fiscal_year",
+  amount_band: "contract_amount_band",
+});
 export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
-  "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
+  "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max", "retroactive",
 ]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",
@@ -58,24 +63,54 @@ export function normalizeAnalyticalContractRow(row) {
   const contractId = String(row?.prime_contract_id || row?.contract_id || row?.id || "").trim();
   if (!contractId) return null;
   const registeredDate = row?.registered || row?.registration_date || null;
+  const startDate = row?.start || row?.start_date || null;
   const current = Number(row?.current ?? row?.current_amount);
   const original = Number(row?.original ?? row?.original_amount);
   const registrationFiscalYearValue = row?.registration_fiscal_year
     ?? registrationFiscalYear(registeredDate);
+  // Recompute from the two published dates so a stale or hand-authored lag
+  // can never turn a missing-date row into an eligible observation.
+  const registrationLagDays = registrationLagDaysBetween(registeredDate, startDate);
+  const hasRegistrationLag = Number.isFinite(registrationLagDays);
   return {
     prime_contract_id: contractId,
     agency: row?.agency || null,
     prime_vendor: row?.prime_vendor || row?.vendor || null,
     registration_date: registeredDate || null,
+    start_date: startDate || null,
     registration_fiscal_year: Number.isInteger(Number(registrationFiscalYearValue))
       ? Number(registrationFiscalYearValue) : null,
     contract_amount_band: row?.contract_amount_band || contractAmountBand(current),
     award_method: row?.award_method || row?.awardMethod || null,
+    registration_lag_days: hasRegistrationLag ? registrationLagDays : null,
+    registration_timing: row?.registration_timing
+      || (hasRegistrationLag
+        ? Number(registrationLagDays) > 0 ? "retroactive" : "early_on_time"
+        : null),
     current_registered_amount: Number.isFinite(current) ? current : null,
     original_registered_amount: Number.isFinite(original) ? original : null,
     source_fiscal_years: Array.isArray(row?.source_fiscal_years) ? [...row.source_fiscal_years] : [],
     source: "checkbook-contracts",
   };
+}
+
+function dateOnly(value) {
+  const match = String(value || "").slice(0, 10).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const timestamp = Date.UTC(year, month - 1, day);
+  const date = new Date(timestamp);
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+  return timestamp;
+}
+
+export function registrationLagDaysBetween(registrationDate, startDate) {
+  const registration = dateOnly(registrationDate);
+  const start = dateOnly(startDate);
+  if (registration == null || start == null) return null;
+  return Math.round((registration - start) / 86_400_000);
 }
 
 export function filterAnalyticalContracts(rows, filters = {}) {
@@ -86,12 +121,16 @@ export function filterAnalyticalContracts(rows, filters = {}) {
   const agency = filters.agency == null || filters.agency === "" ? null : String(filters.agency);
   const vendor = filters.prime_vendor == null || filters.prime_vendor === "" ? null : String(filters.prime_vendor);
   const amountBand = filters.contract_amount_band || null;
+  const retroactive = filters.retroactive == null || filters.retroactive === ""
+    ? null : String(filters.retroactive).toLowerCase() === "true";
   return (Array.isArray(rows) ? rows : []).filter((row) => {
     const current = Number(row?.current_registered_amount);
     if (fy != null && row.registration_fiscal_year !== fy) return false;
     if (agency != null && readerDimensionValue(row.agency) !== agency) return false;
     if (vendor != null && readerDimensionValue(row.prime_vendor) !== vendor) return false;
     if (amountBand && readerDimensionValue(row.contract_amount_band) !== amountBand) return false;
+    if (retroactive === true && row.registration_timing !== "retroactive") return false;
+    if (retroactive === false && row.registration_timing !== "early_on_time") return false;
     if (min != null && (!Number.isFinite(current) || current < min)) return false;
     if (max != null && (!Number.isFinite(current) || current > max)) return false;
     return true;
@@ -103,6 +142,35 @@ function median(values) {
   if (!sorted.length) return null;
   const middle = Math.floor(sorted.length / 2);
   return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
+function nearestRank(values, percentile) {
+  const sorted = values.filter(Number.isFinite).sort((a, b) => a - b);
+  if (!sorted.length) return null;
+  return sorted[Math.max(0, Math.ceil(sorted.length * percentile) - 1)];
+}
+
+export function registrationTimingSummary(rows) {
+  const uniqueRows = [...new Map((Array.isArray(rows) ? rows : [])
+    .filter((row) => row?.prime_contract_id)
+    .map((row) => [row.prime_contract_id, row])).values()];
+  const eligibleRows = uniqueRows.filter((row) => row.registration_lag_days != null && Number.isFinite(Number(row.registration_lag_days)));
+  const lags = eligibleRows.map((row) => Number(row.registration_lag_days));
+  const retroactiveCount = lags.filter((lag) => lag > 0).length;
+  const missingDateCount = uniqueRows.length - eligibleRows.length;
+  return {
+    total_contract_count: uniqueRows.length,
+    eligible_contract_count: eligibleRows.length,
+    missing_date_contract_count: missingDateCount,
+    retroactive_contract_count: retroactiveCount,
+    early_on_time_contract_count: lags.filter((lag) => lag <= 0).length,
+    retroactive_share: eligibleRows.length ? retroactiveCount / eligibleRows.length : null,
+    missing_date_share: uniqueRows.length ? missingDateCount / uniqueRows.length : null,
+    median_lag_days: nearestRank(lags, 0.5),
+    p75_lag_days: nearestRank(lags, 0.75),
+    p90_lag_days: nearestRank(lags, 0.9),
+    excluded_row_count: missingDateCount,
+  };
 }
 
 export function groupAnalyticalContracts(rows, { groupBy = "agency", measure = "current", topN = 10 } = {}) {
@@ -127,6 +195,7 @@ export function groupAnalyticalContracts(rows, { groupBy = "agency", measure = "
       sum_current_registered_amount: current.reduce((sum, value) => sum + value, 0),
       sum_original_registered_amount: original.reduce((sum, value) => sum + value, 0),
       median_current_registered_amount: median(current),
+      ...registrationTimingSummary(group.rows),
     };
   });
   const valueKey = measureId === "unique_contract_count" ? "contract_count"
@@ -234,7 +303,7 @@ export function populationSummary(rows, { snapshot_date, population_definition }
   };
 }
 
-export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount } = {}) {
+export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive } = {}) {
   const params = new URLSearchParams({ mode: "award" });
   if (agency) params.set("ap_agency", agency);
   if (prime_vendor) params.set("ap_vendor", prime_vendor);
@@ -242,6 +311,7 @@ export function analyticalDrillThroughHref({ agency, prime_vendor, registration_
   if (contract_amount_band) params.set("ap_amount_band", contract_amount_band);
   if (min_amount != null && min_amount !== "") params.set("ap_min", String(min_amount));
   if (max_amount != null && max_amount !== "") params.set("ap_max", String(max_amount));
+  if (retroactive === true || String(retroactive).toLowerCase() === "true") params.set("retroactive", "true");
   return `/browse/contracts/?${params.toString()}`;
 }
 

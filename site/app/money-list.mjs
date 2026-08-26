@@ -29,6 +29,7 @@ import {
   groupAnalyticalContracts,
   populationSummary,
   vendorConcentration,
+  registrationTimingSummary,
 } from "../analytical_projection.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
@@ -328,6 +329,7 @@ function analyticalUrlFilters(){
     contract_amount_band: params.get("ap_amount_band") || null,
     min_amount: params.get("ap_min") || null,
     max_amount: params.get("ap_max") || null,
+    retroactive: params.get("retroactive") || null,
   };
 }
 
@@ -356,7 +358,8 @@ function analyticalMoneyRow(row){
     vendor_name: row.prime_vendor,
     contract_id: row.prime_contract_id,
     contract_amount: row.current_registered_amount,
-    start_date: row.registration_date,
+    start_date: row.start_date,
+    registration_date: row.registration_date,
     type_of_notice_description: t("analytics_registered_contract_type"),
     procurement_stages: ["registered"],
     primary_stage: "registered",
@@ -366,7 +369,10 @@ function analyticalMoneyRow(row){
 }
 
 function analyticalGroupLabel(groupBy){
-  return groupBy === "vendor" ? t("analytics_group_vendor").toLowerCase() : t("analytics_group_agency").toLowerCase();
+  if(groupBy === "vendor") return t("analytics_group_vendor").toLowerCase();
+  if(groupBy === "registration_fiscal_year") return t("analytics_group_fy").toLowerCase();
+  if(groupBy === "amount_band") return t("analytics_group_amount_band").toLowerCase();
+  return t("analytics_group_agency").toLowerCase();
 }
 
 function analyticalMeasureLabel(measure){
@@ -431,6 +437,55 @@ function renderAnalyticalVendorConcentration(filtered, filters, measure, agency)
   });
 }
 
+function analyticalGroupDimension(groupBy){
+  return groupBy === "vendor" ? "prime_vendor"
+    : groupBy === "registration_fiscal_year" ? "registration_fiscal_year"
+      : groupBy === "amount_band" ? "contract_amount_band" : "agency";
+}
+
+function syncAnalyticalViewControls(view){
+  const timing = view === "timing";
+  const measureField = document.querySelector("#analytics-measure")?.closest(".field");
+  if(measureField) measureField.hidden = timing;
+  const group = $("#analytics-group");
+  if(!group) return;
+  const current = group.value;
+  const options = timing
+    ? [["agency", t("analytics_group_agency")], ["registration_fiscal_year", t("analytics_group_fy")], ["amount_band", t("analytics_group_amount_band")]]
+    : [["agency", t("analytics_group_agency")], ["vendor", t("analytics_group_vendor")], ["registration_fiscal_year", t("analytics_group_fy")], ["amount_band", t("analytics_group_amount_band")]];
+  group.innerHTML = options.map(([value, label]) => `<option value="${value}">${escUiHtml(label)}</option>`).join("");
+  group.value = options.some(([value]) => value === current) ? current : "agency";
+}
+
+function formatLagDays(value){
+  return value == null ? t("analytics_not_available") : `${Number(value).toLocaleString("en-US")} ${t("analytics_days")}`;
+}
+
+function timingMetricHTML(label, value, className=""){
+  return `<div class="contracts-analytics-timing-metric ${className}"><strong>${escUiHtml(value)}</strong><span>${escUiHtml(label)}</span></div>`;
+}
+
+function renderRegistrationTimingSummary(summary, populationInfo){
+  const eligible = summary.eligible_contract_count.toLocaleString("en-US");
+  const retroactive = summary.retroactive_contract_count.toLocaleString("en-US");
+  const rate = summary.retroactive_share == null ? t("analytics_not_available") : `${(summary.retroactive_share * 100).toFixed(1)}%`;
+  const headline = summary.retroactive_share == null
+    ? t("analytics_timing_no_rate", { eligible })
+    : t("analytics_timing_headline", { rate, retroactive, eligible });
+  const populationElement = $("#contracts-analytics-population");
+  if(populationElement) populationElement.textContent = `${headline} · ${populationInfo.year_label}. ${t("analytics_population_suffix")} ${t("analytics_timing_missing", { missing: summary.missing_date_contract_count.toLocaleString("en-US"), total: summary.total_contract_count.toLocaleString("en-US"), share: summary.missing_date_share == null ? t("analytics_not_available") : `${(summary.missing_date_share * 100).toFixed(1)}%` })}`;
+  const metrics = $("#contracts-analytics-timing");
+  if(metrics) metrics.innerHTML = [
+    timingMetricHTML(t("analytics_metric_eligible"), eligible),
+    timingMetricHTML(t("analytics_metric_missing"), summary.missing_date_contract_count.toLocaleString("en-US")),
+    timingMetricHTML(t("analytics_metric_retroactive"), retroactive),
+    timingMetricHTML(t("analytics_metric_median"), formatLagDays(summary.median_lag_days)),
+    timingMetricHTML(t("analytics_metric_p75"), formatLagDays(summary.p75_lag_days)),
+    timingMetricHTML(t("analytics_metric_p90"), formatLagDays(summary.p90_lag_days)),
+  ].join("");
+  return headline;
+}
+
 function renderAnalyticalProjection(rows){
   const panel=$("#contracts-analytics");
   if(!panel) return;
@@ -439,6 +494,16 @@ function renderAnalyticalProjection(rows){
   const projection=Array.isArray(rows) ? { rows } : (rows || {});
   const projectionRows=Array.isArray(projection.rows) ? projection.rows : [];
   syncAnalyticalFiscalYears(projectionRows);
+  const view=$("#analytics-view")?.value||"overview";
+  syncAnalyticalViewControls(view);
+  const timingView=view === "timing";
+  const kicker=$("#contracts-analytics-kicker");
+  if(kicker) kicker.textContent=t(timingView ? "analytics_view_timing" : "analytics_compare_kicker");
+  $("#contracts-analytics-heading")?.replaceChildren(document.createTextNode(t(timingView ? "analytics_timing_heading" : "analytics_overview_heading")));
+  const deck=$("#contracts-analytics-deck");
+  if(deck) deck.textContent=t(timingView ? "analytics_timing_deck" : "analytics_overview_deck");
+  const timingMetrics=$("#contracts-analytics-timing");
+  if(timingMetrics) timingMetrics.hidden=!timingView;
   const urlFilters=analyticalUrlFilters();
   const controls=analyticalControlsFilters();
   if(urlFilters.registration_fiscal_year && [...($("#analytics-fy")?.options || [])].some((option)=>option.value===urlFilters.registration_fiscal_year)) $("#analytics-fy").value=urlFilters.registration_fiscal_year;
@@ -448,8 +513,10 @@ function renderAnalyticalProjection(rows){
   if(urlFilters.registration_fiscal_year) filters.registration_fiscal_year=urlFilters.registration_fiscal_year;
   if(urlFilters.min_amount) filters.min_amount=urlFilters.min_amount;
   if(urlFilters.max_amount) filters.max_amount=urlFilters.max_amount;
+  if(urlFilters.retroactive) filters.retroactive=urlFilters.retroactive;
   const filtered=filterAnalyticalContracts(projectionRows,filters);
   const summary=populationSummary(filtered,{snapshot_date:projection.snapshot_date,population_definition:projection.population_definition});
+  const timingSummary=registrationTimingSummary(filtered);
   const groupBy=$("#analytics-group")?.value||"agency";
   const measure=$("#analytics-measure")?.value||"current";
   const grouped=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
@@ -457,30 +524,37 @@ function renderAnalyticalProjection(rows){
   renderAnalyticalVendorConcentration(filtered,filters,measure,urlFilters.agency);
   const population=$("#contracts-analytics-population");
   if(population){
-    const headline=measure==="count"
+    const headline=timingView ? renderRegistrationTimingSummary(timingSummary, summary) : measure==="count"
       ? t("analytics_population_count",{count:summary.contract_count.toLocaleString("en-US")})
       : t("analytics_population_value",{value:formatRegisteredValue(measure==="original" ? filtered.reduce((sum,row)=>sum+(Number(row.original_registered_amount)||0),0) : summary.current_registered_value),measure:measureLabel.toLowerCase(),count:summary.contract_count.toLocaleString("en-US")});
-    population.textContent=`${headline} · ${summary.year_label}. ${t("analytics_population_suffix")}`;
+    if(!timingView) population.textContent=`${headline} · ${summary.year_label}. ${t("analytics_population_suffix")}`;
   }
   const list=$("#contracts-analytics-groups");
   if(!list) return;
   list.hidden=!!urlFilters.agency && !urlFilters.prime_vendor;
   list.innerHTML=grouped.shown_groups.map((group,index)=>{
     const href=analyticalDrillThroughHref({
-      [groupBy==="vendor"?"prime_vendor":"agency"]: group.label,
+      [analyticalGroupDimension(groupBy)]: groupBy === "registration_fiscal_year" ? group.label.replace(/^FY/, "") : group.label,
       registration_fiscal_year: filters.registration_fiscal_year,
+      contract_amount_band: groupBy === "amount_band" ? group.label : filters.contract_amount_band,
       min_amount: filters.min_amount,
       max_amount: filters.max_amount,
+      retroactive: timingView || filters.retroactive === "true",
     });
-    const value=measure==="count" ? `${group.contract_count.toLocaleString("en-US")} ${t("analytics_contracts_unit")}` : `${formatRegisteredValue(group[valueKeyForMeasure(measure)])} ${measureLabel.toLowerCase()}`;
-    return `<li class="contracts-analytics-group"><a href="${escUiHtml(href)}" data-analytics-drill-through="${escUiHtml(group.label)}">${index+1}. ${escUiHtml(group.label)}</a><span class="contracts-analytics-group-meta">${escUiHtml(value)} · <span>${group.contract_count.toLocaleString("en-US")} ${t("analytics_contracts_unit")}</span></span></li>`;
+    const timingValue=group.retroactive_share == null ? t("analytics_not_available") : `${(group.retroactive_share*100).toFixed(1)}% ${t("analytics_after_start")}`;
+    const value=timingView ? timingValue : measure==="count" ? `${group.contract_count.toLocaleString("en-US")} ${t("analytics_contracts_unit")}` : `${formatRegisteredValue(group[valueKeyForMeasure(measure)])} ${measureLabel.toLowerCase()}`;
+    const groupLabel=groupBy === "registration_fiscal_year" && Number.isInteger(Number(group.label)) ? `FY${group.label}` : group.label;
+    const timingMeta=timingView ? `${group.retroactive_contract_count.toLocaleString("en-US")} ${t("analytics_metric_retroactive").toLowerCase()} · ${group.eligible_contract_count.toLocaleString("en-US")} ${t("analytics_metric_eligible").toLowerCase()}` : `${group.contract_count.toLocaleString("en-US")} ${t("analytics_contracts_unit")}`;
+    return `<li class="contracts-analytics-group"><a href="${escUiHtml(href)}" data-analytics-drill-through="${escUiHtml(group.label)}">${index+1}. ${escUiHtml(groupLabel)}</a><span class="contracts-analytics-group-meta">${escUiHtml(value)} · <span>${escUiHtml(timingMeta)}</span></span></li>`;
   }).join("");
   const remaining=grouped.groups.length-grouped.shown_groups.length;
   const note=$("#contracts-analytics-note");
-  if(note) note.hidden=!!urlFilters.agency && !urlFilters.prime_vendor;
-  if(note) note.textContent=remaining>0
-    ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
-    : t("analytics_group_exact_note");
+  if(note) note.hidden=!!urlFilters.agency && !urlFilters.prime_vendor && !timingView;
+  if(note) note.textContent=timingView
+    ? `${t("analytics_timing_note")} ${remaining>0 ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:t("analytics_measure_timing").toLowerCase(),remaining:remaining.toLocaleString("en-US")}) : ""}`.trim()
+    : remaining>0
+      ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
+      : t("analytics_group_exact_note");
 }
 
 function valueKeyForMeasure(measure){
@@ -488,7 +562,7 @@ function valueKeyForMeasure(measure){
 }
 
 function bindAnalyticalControls(){
-  ["#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max"].forEach((selector)=>{
+  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max"].forEach((selector)=>{
     const element=$(selector);
     if(!element || element.dataset.analyticsBound) return;
     element.dataset.analyticsBound="1";

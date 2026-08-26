@@ -41,9 +41,12 @@ def main() -> int:
                 agency VARCHAR,
                 prime_vendor VARCHAR,
                 registration_date DATE,
+                start_date DATE,
                 registration_fiscal_year INTEGER,
                 contract_amount_band VARCHAR,
                 award_method VARCHAR,
+                registration_lag_days INTEGER,
+                registration_timing VARCHAR,
                 current_registered_amount DOUBLE,
                 original_registered_amount DOUBLE,
                 source_fiscal_years VARCHAR[],
@@ -51,12 +54,13 @@ def main() -> int:
             )"""
         )
         connection.executemany(
-            """INSERT INTO analytics_registered_contracts VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            """INSERT INTO analytics_registered_contracts VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             [
                 (
                     row.get("prime_contract_id"), row.get("agency"), row.get("prime_vendor"),
-                    row.get("registration_date"), row.get("registration_fiscal_year"),
+                    row.get("registration_date"), row.get("start_date"), row.get("registration_fiscal_year"),
                     row.get("contract_amount_band"), row.get("award_method"),
+                    row.get("registration_lag_days"), row.get("registration_timing"),
                     row.get("current_registered_amount"), row.get("original_registered_amount"),
                     row.get("source_fiscal_years") or [], row.get("source"),
                 )

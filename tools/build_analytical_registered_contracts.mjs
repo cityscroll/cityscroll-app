@@ -12,6 +12,7 @@ import {
   CHECKBOOK_DIMENSION_PROFILE_FIELDS,
   normalizeAnalyticalContractRow,
   profileDimension,
+  registrationTimingSummary,
 } from "../site/analytical_projection.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -98,8 +99,9 @@ function build(args) {
     generated_at: generatedAt,
     snapshot_date: snapshotDate,
     population_definition: "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
-    dimensions: ["agency", "prime_vendor", "registration_fiscal_year", "contract_amount_band", "award_method"],
-    measures: ["unique_contract_count", "sum_original_registered_amount", "sum_current_registered_amount", "median_current_registered_amount"],
+    dimensions: ["agency", "prime_vendor", "registration_fiscal_year", "contract_amount_band", "award_method", "registration_timing"],
+    measures: ["unique_contract_count", "sum_original_registered_amount", "sum_current_registered_amount", "median_current_registered_amount", "eligible_contract_count", "missing_date_contract_count", "retroactive_contract_count", "retroactive_share", "median_registration_lag_days", "p75_registration_lag_days", "p90_registration_lag_days"],
+    registration_timing_summary: registrationTimingSummary(rows),
     source_population: {
       source_tag: "checkbook-contracts",
       normalized_unique_contracts: rows.length,
@@ -128,6 +130,7 @@ function build(args) {
       duplicate_contract_ids: rows.length - ids.size,
       duplicate_slices_collapsed: normalized.counts.duplicate_slices_collapsed || 0,
       blocked: normalized.blocked,
+      registration_timing: registrationTimingSummary(rows),
     },
     dimension_profile: profile,
     materialization: {
