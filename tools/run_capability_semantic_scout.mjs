@@ -337,7 +337,9 @@ function fixtureEntityDatabase(rows) {
 }
 
 function registryProjection() {
-  return CAPABILITY_REGISTRY.map((capability) => ({
+  return CAPABILITY_REGISTRY
+    .filter((capability) => REQUIRED_REFERENCES.includes(capability.reference))
+    .map((capability) => ({
     reference: capability.reference,
     provider_id: capability.provider.id,
     input_schema: capability.input.schema,
@@ -345,7 +347,7 @@ function registryProjection() {
     availability: capability.output.availability,
     bounds: capability.input.limits || null,
     freshness: capability.freshness,
-  }));
+    }));
 }
 
 export function receiptSemanticPayload(receipt, field = "actual_projection") {

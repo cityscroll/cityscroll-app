@@ -416,12 +416,12 @@ function verifyRemoteMcpEvidence(receipt) {
   }
   if (receipt.request_counts?.initialize !== 1
       || receipt.request_counts?.list_tools !== 1
-      || receipt.request_counts?.capability_calls !== 4
-      || receipt.request_counts?.post_requests !== 7
+      || receipt.request_counts?.capability_calls !== 5
+      || receipt.request_counts?.post_requests !== 8
       || receipt.request_counts?.optional_get_probe !== 1) {
     throw new Error("remote MCP request counts drifted");
   }
-  if (receipt.policy_boundary?.registered_public_tools !== 4
+  if (receipt.policy_boundary?.registered_public_tools !== 5
       || receipt.policy_boundary?.mutation_capabilities !== 0
       || receipt.policy_boundary?.raw_store_bindings_exposed !== 0
       || receipt.policy_boundary?.unregistered_public_tools !== 0) {

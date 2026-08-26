@@ -82,6 +82,10 @@ export const ENTITY_RELATIONSHIPS_CAPABILITY = deepFreeze({
     class: "bounded-d1-read",
     machineFanOut: "bounded-graph",
   },
+  bounds: {
+    input: ENTITY_RELATIONSHIPS_LIMITS,
+    output: { maximumEdges: ENTITY_RELATIONSHIPS_LIMITS.recordLimit },
+  },
   input: {
     schema: "cityscroll.capability.entity_relationships_get.input.v1",
     identity: "exact canonical entity id",
@@ -110,6 +114,16 @@ export const ENTITY_RELATIONSHIPS_CAPABILITY = deepFreeze({
     owner: "D1 entity-resolution read model plus committed public graph overlays",
     projection: "public serializer and adapter-owned representation",
   },
+  examples: [
+    {
+      input: { entityId: "vendor:stem:ACME CONSTRUCTION", depth: 2, fanOut: 12 },
+      output: { availability: "available", maximumDepth: ENTITY_RELATIONSHIPS_LIMITS.maximumDepth, maximumFanOut: ENTITY_RELATIONSHIPS_LIMITS.maximumFanOut },
+    },
+    {
+      input: { entityId: "vendor:unknown" },
+      output: { availability: "not_yet_public", error: "not-found" },
+    },
+  ],
   provider: {
     id: ENTITY_RELATIONSHIPS_PROVIDER_ID,
     module: "worker/src/public_relationship_graph.mjs",

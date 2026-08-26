@@ -67,6 +67,10 @@ export const CITED_PASSAGES_CAPABILITY = deepFreeze({
     class: "bounded-committed-corpus-read",
     machineFanOut: "low",
   },
+  bounds: {
+    input: CITED_PASSAGES_LIMITS,
+    output: { maximumCitations: CITED_PASSAGES_LIMITS.maximumResults },
+  },
   input: {
     schema: "cityscroll.capability.cited_passages_retrieve.input.v1",
     query: "resident search terms plus closed structured scope",
@@ -93,6 +97,16 @@ export const CITED_PASSAGES_CAPABILITY = deepFreeze({
     owner: "committed semantic retrieval corpus manifest and source-passage map",
     projection: "citation freshness plus corpus and passage-map observation clocks",
   },
+  examples: [
+    {
+      input: { query: "energy conservation", filters: { source_family: "city_record_notice" }, limit: 5 },
+      output: { availability: "partial", maximumCitations: 5, exactJoin: "matched-or-unknown" },
+    },
+    {
+      input: { query: "public hearing", limit: 10 },
+      output: { availability: "complete-or-partial-or-unknown", maximumCitations: 10, exactJoin: "matched-or-unknown" },
+    },
+  ],
   provider: {
     id: CITED_PASSAGES_PROVIDER_ID,
     module: "worker/src/cited_retrieval.mjs",
@@ -101,6 +115,14 @@ export const CITED_PASSAGES_CAPABILITY = deepFreeze({
     readModel: "typed candidates joined exactly to source passages and corpus manifest records",
   },
   adapters: [
+    {
+      id: "worker-http.retrieve-cited-passages@1",
+      module: "worker/src/cited_retrieval.mjs",
+      kind: "http-route",
+      route: "GET /cited-passages",
+      surface: "Cited passage retrieval",
+      representations: CITED_PASSAGES_REPRESENTATIONS,
+    },
     {
       id: "mcp.retrieve_cited_passages@1",
       module: "worker/src/mcp.mjs",

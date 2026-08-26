@@ -1,5 +1,6 @@
 import corpusManifest from "../../warehouse/manifests/semantic_retrieval_corpus_manifest.json" with { type: "json" };
 import sourcePassageMap from "../../warehouse/experiments/semantic-layer-trial/source_passage_map.json" with { type: "json" };
+import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 
 import {
   SEMANTIC_CANDIDATE_RESPONSE_SCHEMA,
@@ -11,12 +12,23 @@ import {
   CITED_PASSAGES_EXACT_JOIN_METHOD,
   CITED_PASSAGES_CAPABILITY_REFERENCE,
   CITED_PASSAGES_PROVIDER_ID,
+  CITED_PASSAGES_REPRESENTATIONS,
   CITED_PASSAGES_RESPONSE_SCHEMA,
+  executeCitedPassages,
 } from "../../capabilities/cited_passages.mjs";
 
 export const CITED_RETRIEVAL_RESPONSE_SCHEMA = CITED_PASSAGES_RESPONSE_SCHEMA;
 export const CITED_RETRIEVAL_CONTRACT_VERSION = CITED_PASSAGES_CONTRACT_VERSION;
 export const CITED_RETRIEVAL_EXACT_JOIN_METHOD = CITED_PASSAGES_EXACT_JOIN_METHOD;
+
+export const HTTP_CITED_PASSAGES_ADAPTER = Object.freeze({
+  id: "worker-http.retrieve-cited-passages@1",
+  capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
+  providerId: CITED_PASSAGES_PROVIDER_ID,
+  route: "GET /cited-passages",
+  surface: "Cited passage retrieval",
+  representations: CITED_PASSAGES_REPRESENTATIONS,
+});
 
 const COVERAGE_STATES = new Set(["partial", "complete", "unknown"]);
 const JOIN_STATES = new Set(["matched", "unknown"]);
@@ -287,4 +299,72 @@ export function workerCitedPassages(options = {}) {
       return retrieveCitedPassages(input, options);
     },
   });
+}
+
+function json(body, status, cors, cacheControl = "no-store") {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      ...cors,
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": cacheControl,
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+}
+
+function parseHttpInput(url) {
+  const query = String(url.searchParams.get("q") || url.searchParams.get("query") || "").trim();
+  const sourceFamily = String(url.searchParams.get("source_family") || "").trim() || null;
+  const bodyId = String(url.searchParams.get("body_id") || "").trim() || null;
+  const publishedFrom = String(url.searchParams.get("published_from") || "").trim() || null;
+  const publishedTo = String(url.searchParams.get("published_to") || "").trim() || null;
+  const rawLimit = url.searchParams.get("limit");
+  return {
+    query,
+    filters: {
+      source_family: sourceFamily,
+      body_id: bodyId,
+      published_from: publishedFrom,
+      published_to: publishedTo,
+    },
+    ...(rawLimit === null ? {} : { limit: Number(rawLimit) }),
+  };
+}
+
+export function formatCitedPassagesText(result) {
+  const count = result.citations.length;
+  return `Returned ${count} source passage${count === 1 ? "" : "s"}. Use the structured citations for source text and links.`;
+}
+
+/** HTTP adapter for cited.passages.retrieve@1; all civic meaning comes from the capability. */
+export async function handleCitedPassages(request, env) {
+  const origin = request.headers.get("origin") || "";
+  const cors = corsHeaders(origin, env, {
+    methods: "GET, OPTIONS",
+    headers: "Accept, Content-Type",
+  });
+  if (!isAllowedRequestOrigin(origin, env)) return json({ ok: false, reason: "origin" }, 403, cors);
+  if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+  if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
+  if (env?.SEMANTIC_CANDIDATES_ENABLED === "false") {
+    return json({ ok: false, reason: "unavailable" }, 503, cors);
+  }
+
+  const input = parseHttpInput(new URL(request.url));
+  try {
+    const result = await executeCitedPassages(workerCitedPassages(), input);
+    const format = new URL(request.url).searchParams.get("format");
+    if (format === "text" || (request.headers.get("accept") || "").includes("text/plain")) {
+      return new Response(formatCitedPassagesText(result), {
+        status: 200,
+        headers: { ...cors, "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=60" },
+      });
+    }
+    return json(result, 200, cors, "public, max-age=60, stale-while-revalidate=300");
+  } catch (error) {
+    const message = String(error?.message || error);
+    const invalid = /^(?:query|body_id|published_|source_family|filters|limit)/.test(message);
+    return json({ ok: false, reason: invalid ? "invalid-request" : "unavailable" }, invalid ? 400 : 503, cors);
+  }
 }

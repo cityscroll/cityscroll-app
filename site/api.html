@@ -192,7 +192,7 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
 <p><strong>Available tools</strong> (generated from the runtime declarations):</p>
 <ul>
   <li><code>search_notices</code> <span aria-hidden="true">·</span> read — Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched. Add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded). Rolling placeholder deadlines are labeled, never shown as dates.</li>
-  <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Full detail for one City Record notice by its RequestID.</li>
+  <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and distinguishes a missing public notice from a read that cannot be served.</li>
   <li><code>get_entity_dossier</code> <span aria-hidden="true">·</span> read — Get the bounded public dossier for one exact canonical CityScroll entity. Preserves attributed disagreements, availability, provenance, and public redaction.</li>
   <li><code>get_entity_relationships</code> <span aria-hidden="true">·</span> read — Traverse bounded, evidence-bearing public relationships from one exact canonical CityScroll entity. Only the closed node and edge vocabularies are returned.</li>
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Retrieve source passages with stable citations and exact source joins. Returns source text only. It does not generate an answer or infer civic relationships.</li>

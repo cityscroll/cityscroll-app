@@ -66,6 +66,10 @@ export const NOTICE_SEARCH_CAPABILITY = deepFreeze({
     class: "bounded-d1-read",
     machineFanOut: "low",
   },
+  bounds: {
+    input: { ...NOTICE_SEARCH_INPUT_BOUNDS, ...NOTICE_SEARCH_LIMITS },
+    output: { maximumResults: NOTICE_SEARCH_LIMITS.maximum },
+  },
   input: {
     schema: "cityscroll.capability.notice_search.input.v1",
     termGroups: "bounded AND-of-OR term arrays",
@@ -89,6 +93,16 @@ export const NOTICE_SEARCH_CAPABILITY = deepFreeze({
     owner: "D1 notice-mirror read model",
     projection: "adapter-owned",
   },
+  examples: [
+    {
+      input: { termGroups: [["construction", "scaffolding"]], limit: 10 },
+      output: { availability: "complete", maximumResults: 10 },
+    },
+    {
+      input: { termGroups: [], openOnly: true, limit: 1 },
+      output: { availability: "empty", maximumResults: 1 },
+    },
+  ],
   provider: {
     id: NOTICE_SEARCH_PROVIDER_ID,
     module: "worker/src/lib/notices.mjs",

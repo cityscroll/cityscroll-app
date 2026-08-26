@@ -3,13 +3,15 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 
 import { executeCitedPassages } from "../../capabilities/cited_passages.mjs";
+import { executeNoticeGet } from "../../capabilities/notice_get.mjs";
 import { executeEntityDossier } from "../../capabilities/entity_dossier.mjs";
 import { executeEntityRelationships } from "../../capabilities/entity_relationships.mjs";
 import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
 import { workerD1NoticeSearch } from "../src/lib/notices.mjs";
-import { mcpCitedPassagesInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
+import { mcpCitedPassagesInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
+import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
@@ -21,6 +23,11 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
       agency: "Department of Design and Construction",
       limit: 10,
     }),
+  }),
+  Object.freeze({
+    capabilityReference: "notice.get@1",
+    name: "get_notice",
+    arguments: Object.freeze({ request_id: "20260730002" }),
   }),
   Object.freeze({
     capabilityReference: "entity.dossier.get@1",
@@ -151,7 +158,7 @@ export function createRemoteMcpFixtureEnv() {
         },
         async first() {
           const result = prepared.get(...args) ?? null;
-          reads.push({ capability_reference: "notice.get", rows_read: result ? 1 : 0 });
+          reads.push({ capability_reference: "notice.get@1", rows_read: result ? 1 : 0 });
           return result;
         },
       };
@@ -172,21 +179,25 @@ export async function directCapabilityResults(env) {
     workerD1NoticeSearch(env.DB),
     mcpNoticeSearchInput(CAPABILITY_TOOL_CASES[0].arguments),
   ));
+  results.set("get_notice", await executeNoticeGet(
+    workerNoticeGet(env, { nowMs: Date.parse("2026-08-04T00:00:00.000Z") }),
+    mcpNoticeGetInput(CAPABILITY_TOOL_CASES[1].arguments),
+  ));
   results.set("get_entity_dossier", await executeEntityDossier(
     workerD1EntityDossier(env.DB),
-    { entityId: CAPABILITY_TOOL_CASES[1].arguments.entity_id },
+    { entityId: CAPABILITY_TOOL_CASES[2].arguments.entity_id },
   ));
   results.set("get_entity_relationships", await executeEntityRelationships(
     workerD1EntityRelationships(env.DB),
     {
-      entityId: CAPABILITY_TOOL_CASES[2].arguments.entity_id,
-      depth: CAPABILITY_TOOL_CASES[2].arguments.depth,
-      fanOut: CAPABILITY_TOOL_CASES[2].arguments.fan_out,
+      entityId: CAPABILITY_TOOL_CASES[3].arguments.entity_id,
+      depth: CAPABILITY_TOOL_CASES[3].arguments.depth,
+      fanOut: CAPABILITY_TOOL_CASES[3].arguments.fan_out,
     },
   ));
   results.set("retrieve_cited_passages", await executeCitedPassages(
     workerCitedPassages(),
-    mcpCitedPassagesInput(CAPABILITY_TOOL_CASES[3].arguments),
+    mcpCitedPassagesInput(CAPABILITY_TOOL_CASES[4].arguments),
   ));
   return results;
 }
