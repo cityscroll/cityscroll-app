@@ -274,12 +274,27 @@ function applyAsOf(root, nowView, day) {
   wireForm(root, nowView);
 }
 
+function hasAgencyPrimaryIdentity(main) {
+  return main?.dataset.civicObjectKind === "agency-constellation"
+    && Boolean(main.querySelector(".agency-constellation-hero h1")?.textContent?.trim());
+}
+
+/**
+ * The civic-object marker is the primary document boundary. Relationship
+ * hydration has its own deferred state and must not hold this marker open.
+ */
+function markAgencyPrimaryReady(main) {
+  if (!hasAgencyPrimaryIdentity(main)) return false;
+  main.dataset.civicObjectSettled = "true";
+  return true;
+}
+
 function reportAgencyDocumentReadiness(main, view, { relationshipsState } = {}) {
   if (main?.dataset.civicObjectKind !== "agency-constellation") return;
   const rum = runtimeRumSemanticMilestones();
   agencyIdentityReady(rum, {
     kind: "agency-constellation",
-    hasIdentityHeading: Boolean(main.querySelector(".agency-constellation-hero h1")?.textContent?.trim()),
+    hasIdentityHeading: hasAgencyPrimaryIdentity(main),
   });
   if (relationshipsState || view) {
     agencyRelationshipsReady(rum, {
@@ -372,7 +387,6 @@ async function hydrateAgencyRelationships(main, href) {
       }
     }
     main.dataset.civicObjectDeferredState = "ready";
-    main.dataset.civicObjectSettled = "true";
     const nowView = payload.view || null;
     wireAgencyDocument(main, nowView, { viewHref: payload.view_href || main.dataset.civicObjectViewHref });
     return { nowView, state: "ready" };
@@ -382,7 +396,6 @@ async function hydrateAgencyRelationships(main, href) {
       host.dataset.civicObjectDeferredState = "error";
     }
     main.dataset.civicObjectDeferredState = "error";
-    main.dataset.civicObjectSettled = "true";
     reportAgencyDocumentReadiness(main, null, { relationshipsState: "error" });
     return { nowView: null, state: "error", error };
   }
@@ -393,6 +406,7 @@ export function mountAgencyCivicTimeLedger(root = document) {
     || (root.matches?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']") ? root : null);
   if (!main) return null;
   reportAgencyDocumentReadiness(main, null);
+  markAgencyPrimaryReady(main);
   const payloadEl = root.getElementById?.("civic-object-payload")
     || document.getElementById("civic-object-payload");
   if (payloadEl) {
@@ -400,12 +414,16 @@ export function mountAgencyCivicTimeLedger(root = document) {
       const nowView = JSON.parse(payloadEl.textContent || "null");
       if (!nowView || !["agency-constellation", "parcel"].includes(nowView.kind)) return null;
       main.dataset.civicObjectDeferredState = "ready";
-      main.dataset.civicObjectSettled = "true";
+      if (main.dataset.civicObjectKind !== "agency-constellation") {
+        main.dataset.civicObjectSettled = "true";
+      }
       wireAgencyDocument(main, nowView);
       return { nowView, asOf: parseAsOfFromSearch(location.search) };
     } catch {
       main.dataset.civicObjectDeferredState = "error";
-      main.dataset.civicObjectSettled = "true";
+      if (main.dataset.civicObjectKind !== "agency-constellation") {
+        main.dataset.civicObjectSettled = "true";
+      }
       reportAgencyDocumentReadiness(main, null, { relationshipsState: "error" });
       return null;
     }
@@ -413,7 +431,9 @@ export function mountAgencyCivicTimeLedger(root = document) {
   const href = main.dataset.civicObjectDeferredHref;
   if (!href) {
     main.dataset.civicObjectDeferredState = "unavailable";
-    main.dataset.civicObjectSettled = "true";
+    if (main.dataset.civicObjectKind !== "agency-constellation") {
+      main.dataset.civicObjectSettled = "true";
+    }
     reportAgencyDocumentReadiness(main, null, { relationshipsState: "unavailable" });
     return null;
   }

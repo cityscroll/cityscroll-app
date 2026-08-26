@@ -228,6 +228,19 @@ test("agency identity and graph readiness distinguish relationships from honest 
   ]);
 });
 
+test("agency surface readiness does not wait for the relationships result", () => {
+  const sink = recorder(20, 30);
+  const result = reportAgencyConstellationReadiness(sink.rum, {
+    identityState: "content",
+  });
+  assert.equal(result.identity.state, "recorded");
+  assert.equal(result.relationships.state, "not_ready");
+  assert.deepEqual(sink.records.map((row) => [row.metric_id, row.component_id, row.result_state]), [
+    ["content_ready_ms", "none", "content"],
+    ["component_ready_ms", "agency-identity", "content"],
+  ]);
+});
+
 test("async land outcomes cover present, absent, unavailable, and error without reader absence copy", () => {
   assert.equal(SEMANTIC_READINESS_MARKERS.land_outcome_first_paint.component_id, "land-outcomes");
   assert.equal(SEMANTIC_READINESS_MARKERS.land_outcome_first_paint.reader_absence, "empty-html");
