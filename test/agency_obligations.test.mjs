@@ -20,6 +20,7 @@ import { compileSub } from "../worker/src/lib/compile.mjs";
 import {
   AGENCY_CONSTELLATION_CATEGORIES,
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 
@@ -177,10 +178,11 @@ test("constellation folds obligations as rules→obligations facet for Parks", (
   assert.match(byId.obligations.honesty, /mandate|City Record|statutory/i);
   assert.ok(view.summary.matched_categories >= 5);
 
-  const html = renderAgencyConstellationDocument(view);
+  const initialHtml = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.doesNotMatch(html, /id="mandates-conformance"/);
   assert.match(html, /id="agency-statutory-mandates"/);
-  assert.match(html, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
+  assert.match(initialHtml, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
   assert.match(html, /Mandates/);
   assert.match(html, /Source law/);
   assert.match(html, /Watch mandates and deadlines/);

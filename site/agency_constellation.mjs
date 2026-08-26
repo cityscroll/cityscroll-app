@@ -23,8 +23,10 @@ import {
 import {
   asOfFilterCanNarrow,
   asOfHref,
+  buildLedgerSummary,
   normalizeAsOfDay,
   projectAgencyConstellationAsOf,
+  renderCivicTimeLedgerPanel,
 } from "./civic_time_ledger.mjs";
 import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
 
@@ -122,6 +124,46 @@ function readerDay(value) {
   return String(value || "").match(/\d{4}-\d{2}-\d{2}/)?.[0] || "";
 }
 
+function agencyDeferredSectionView(view, displayView, activeClaimId, effectiveAsOf, showAsOf) {
+  const sections = renderAgencyConstellationSections({
+    view,
+    displayView,
+    activeClaimId,
+    effectiveAsOf,
+    showAsOf,
+  }, { exclude: ["as-of"] });
+  const edgeSummary = buildAgencyEdgeSummary(displayView);
+  const surfaceEdgeSummary = sections.includes('id="mandates-conformance"')
+    ? edgeSummary
+    : edgeSummary.map((record) => record.edge_type === "statute_duty"
+      ? { ...record, href: "#agency-statutory-mandates", canonical_href: "#agency-statutory-mandates" }
+      : record);
+  return { sections, surfaceEdgeSummary };
+}
+
+/** Render the relationship/list region for the deferred agency artifact. */
+export function renderAgencyConstellationDeferredFragment(view, options = {}) {
+  if (!view || view.kind !== "agency-constellation") {
+    throw new Error("Unknown agency constellation view");
+  }
+  const asOf = normalizeAsOfDay(options.asOf);
+  const showAsOf = asOfFilterCanNarrow(view);
+  const displayView = asOf && showAsOf
+    ? projectAgencyConstellationAsOf(view, asOf, { axis: "valid" })
+    : view;
+  const activeClaimId = clean(options.activeClaimId || options.claim, 200) || null;
+  const effectiveAsOf = showAsOf ? asOf : null;
+  const { sections, surfaceEdgeSummary } = agencyDeferredSectionView(
+    view,
+    displayView,
+    activeClaimId,
+    effectiveAsOf,
+    showAsOf,
+  );
+  const ledgerSlot = showAsOf ? '<div data-civic-time-ledger-slot></div>' : '';
+  return `${renderAgencyConnectionCards(surfaceEdgeSummary)}${ledgerSlot}${sections}`;
+}
+
 export function agencyConstellationSharePath(viewPath, { claim = null, asOf = null } = {}) {
   const base = String(viewPath || "/");
   const params = new URLSearchParams();
@@ -148,7 +190,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   const effectiveAsOf = showAsOf ? asOf : null;
   const sharePath = agencyConstellationSharePath(view.path, { claim: activeClaimId, asOf: effectiveAsOf });
   const canonical = `https://cityscroll.org${sharePath}`;
-  const payload = JSON.stringify(view).replace(/<\/script/gi, "<\\/script");
   const matched = displayView.summary.matched_categories;
   const lead = effectiveAsOf
     ? (matched
@@ -157,7 +198,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     : (matched
       ? `Explore ${matched} ${matched === 1 ? "kind" : "kinds"} of public record connected with this agency.`
       : "Public records for this agency appear here when contracts, vendors, meetings, rules, mandates, or staffing exams join to its published identity.");
-  const edgeSummary = buildAgencyEdgeSummary(displayView);
   const secondaryActions = renderNodeActions([
     { kind: "link", label: "Interactive profile", href: view.interactive_profile_href, className: "civic-object-action" },
     { kind: "button", label: "Copy link", attrs: { "data-object-copy": true }, className: "civic-object-action" },
@@ -168,6 +208,20 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     exportClass: "object_utilities",
     extraClass: "civic-object-actions agency-secondary-actions",
   });
+  const { sections, surfaceEdgeSummary } = agencyDeferredSectionView(
+    view,
+    displayView,
+    activeClaimId,
+    effectiveAsOf,
+    showAsOf,
+  );
+  const initialLedger = showAsOf
+    ? renderCivicTimeLedgerPanel({
+      path: view.path,
+      asOfDay: effectiveAsOf,
+      summary: effectiveAsOf ? buildLedgerSummary(view, displayView) : null,
+    })
+    : "";
   const sectionView = Object.freeze({
     view,
     displayView,
@@ -175,12 +229,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     effectiveAsOf,
     showAsOf,
   });
-  const sections = renderAgencyConstellationSections(sectionView);
-  const surfaceEdgeSummary = sections.includes('id="mandates-conformance"')
-    ? edgeSummary
-    : edgeSummary.map((record) => record.edge_type === "statute_duty"
-      ? { ...record, href: "#agency-statutory-mandates", canonical_href: "#agency-statutory-mandates" }
-      : record);
   const primaryActions = renderNodeActions([
     { kind: "link", label: "Follow this agency", href: view.follow_href, primary: true, className: "civic-object-action" },
     primaryRecordAction(surfaceEdgeSummary),
@@ -190,7 +238,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     exportClass: "object_actions",
     extraClass: "civic-object-actions agency-primary-actions",
   });
-  const connectedRecords = renderAgencyConnectionCards(surfaceEdgeSummary);
   const assetPrefix = options.assetPrefix || "/";
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
@@ -214,7 +261,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
 <body>
   <a class="skip" href="#main">Skip to content</a>
   ${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
-  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(effectiveAsOf || "")}" data-ctl-useful="${showAsOf ? "1" : "0"}">
+  <main id="main" class="node-document civic-object-document" data-civic-object-kind="agency-constellation" data-subject-ref="${esc(view.subject_ref)}" data-er-match-basis="${esc(view.summary.er_match_basis)}" data-edge-provenance="1" data-node-document="1" data-as-of="${esc(effectiveAsOf || "")}" data-ctl-useful="${showAsOf ? "1" : "0"}" data-civic-object-deferred-href="${esc(options.deferredDataHref || `${view.path}relationships.json`)}" data-civic-object-view-href="${esc(options.deferredViewHref || `${view.path}relationships-data.json`)}" data-civic-object-settled="false">
     ${renderNodeBack({ href: "/agencies/", label: "Back to agencies", extraClass: "civic-object-back" })}
     <header class="node-hero civic-object-hero agency-constellation-hero" data-export-class="object_identity">
       <p class="node-kicker civic-object-kicker">Agency constellation</p>
@@ -223,12 +270,11 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>
     ${primaryActions}
-    ${connectedRecords}
-    ${sections}
+    ${initialLedger}
+    <div data-civic-object-deferred data-civic-object-deferred-state="loading" role="status">Loading public relationships…</div>
     ${secondaryActions}
   </main>
   ${renderNodeFooter({ extraClass: "civic-object-footer" })}
-  <script id="civic-object-payload" type="application/json">${payload}</script>
   <script defer src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`) + "export_workflows.js")}"></script>
   <script type="module" src="${esc(traversalSrc)}"></script>
   <script type="module" src="${esc(runtimeSrc)}"></script>

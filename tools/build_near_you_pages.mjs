@@ -3,7 +3,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildNearYouViewModel, renderNearYouDocument } from "../site/near_you_view.mjs";
+import {
+  buildNearYouViewModel,
+  renderNearYouDeferredParts,
+  renderNearYouDocument,
+} from "../site/near_you_view.mjs";
 import {
   commonNearYouPath,
   nearYouUrlFromScope,
@@ -58,9 +62,20 @@ function buildDocuments() {
       urlForScope,
       communityGeography,
     });
+    const deferredParts = renderNearYouDeferredParts(view);
     return {
       path: outputPath(publicPath),
-      html: renderNearYouDocument(view, { assetPrefix: "/" }),
+      deferredPath: join(SITE, publicPath.replace(/^\/+/, ""), "deferred.json"),
+      html: renderNearYouDocument(view, {
+        assetPrefix: "/",
+        deferredDataHref: `${publicPath}deferred.json`,
+      }),
+      deferred: `${JSON.stringify({
+        schema: "cityscroll.near_you_deferred.v1",
+        href: `${publicPath}deferred.json`,
+        results_html: deferredParts.resultsHtml,
+        bags_html: deferredParts.bagsHtml,
+      })}\n`,
     };
   });
 }
@@ -69,11 +84,15 @@ const check = process.argv.includes("--check");
 let changed = 0;
 for (const document of buildDocuments()) {
   const current = existsSync(document.path) ? readFileSync(document.path, "utf8") : null;
-  if (current === document.html) continue;
+  const currentDeferred = existsSync(document.deferredPath)
+    ? readFileSync(document.deferredPath, "utf8")
+    : null;
+  if (current === document.html && currentDeferred === document.deferred) continue;
   changed += 1;
   if (!check) {
     mkdirSync(dirname(document.path), { recursive: true });
     writeFileSync(document.path, document.html);
+    writeFileSync(document.deferredPath, document.deferred);
     console.log("wrote", document.path);
   }
 }

@@ -56,6 +56,12 @@ class QuietHandler(SimpleHTTPRequestHandler):
             return False
         # Path segments for /agencies/<id> only (routing grammar, not a data table).
         segments = [segment for segment in route.split("/") if segment]  # source: URL path grammar
+        if len(segments) == 3 and segments[2] in {"relationships.json", "relationships-data.json"}:
+            relationship_data = Path(self.directory) / "agencies" / segments[1] / segments[2]
+            if relationship_data.is_file() and ".." not in segments[1]:
+                self.path = f"{route}" + (f"?{query}" if query else "")
+                super().do_GET()
+                return True
         if len(segments) != 2 or segments[0] != "agencies":
             return False
         agency_id = segments[1]

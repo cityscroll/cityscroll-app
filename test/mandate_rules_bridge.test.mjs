@@ -13,6 +13,7 @@ import {
 } from "../site/mandate_rules_bridge.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -172,7 +173,9 @@ test("Parks constellation document surfaces Mandates → Rules card", () => {
   assert.ok(view.mandates_rules.counts.rules_filings >= 1);
   assert.match(view.mandates_rules_href, /#mandates-rules$/);
 
-  const html = renderAgencyConstellationDocument(view);
+  const initialHtml = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
+  assert.doesNotMatch(initialHtml, /id="mandates-rules"/);
   assert.match(html, /id="mandates-rules"/);
   // Parks has zero public observed_links — honest title omits "Rules activity".
   if ((view.mandates_rules.counts?.observed_links || 0) === 0) {

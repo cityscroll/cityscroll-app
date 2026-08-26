@@ -27,6 +27,7 @@ import {
 } from "../site/mandate_reports_receipt.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
   agencyCategoryBrowseHref,
 } from "../site/agency_constellation.mjs";
@@ -259,7 +260,7 @@ test("EPA and Parks mandate cards no longer share identical agency-wide Open-in 
       obligations,
       process_conformance: processConformance,
     });
-    const html = renderAgencyConstellationDocument(view);
+    const html = renderAgencyConstellationDeferredFragment(view);
     // Extract mandate row lists across rules / reports / predictions.
     const rowBlocks = [
       ...html.matchAll(/data-bridge-side="(?:mandates|report-mandates|predicted-events)">([\s\S]*?)<\/ul>/g),
@@ -293,7 +294,8 @@ test("Parks constellation document wires honest section-level agency neighbors",
   assert.ok(view.mandates_rules?.graph_neighbors?.meetings_browse_href);
   assert.ok(view.mandates_rules?.graph_neighbors?.contracts_browse_href);
 
-  const html = renderAgencyConstellationDocument(view);
+  const initialHtml = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   // Honest nav + H2: no edge-sounding labels when joins are empty.
   assert.doesNotMatch(html, /Report mandates · Filing receipts/);
   assert.doesNotMatch(html, /Rulemaking mandates · Rules activity/);
@@ -306,7 +308,7 @@ test("Parks constellation document wires honest section-level agency neighbors",
     assert.equal((html.match(new RegExp(`class="agency-connection-card" data-edge-type="${edgeType}"`, "g")) || []).length, 1);
   }
   assert.match(html, /data-mandate-edge="source_law"/);
-  assert.deepEqual(detectNodePageCruft(html), []);
+  assert.deepEqual(detectNodePageCruft(initialHtml), []);
 });
 
 test("EPA page keeps one connected-record grid and distinct mandate section actions", () => {
@@ -317,7 +319,7 @@ test("EPA page keeps one connected-record grid and distinct mandate section acti
     obligations,
     process_conformance: processConformance,
   });
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.equal((html.match(/<section class="agency-connections"/g) || []).length, 1);
   assert.doesNotMatch(html, /aria-label="Explore this agency"|Browse agency /);
   for (const edgeType of ["issued_rule", "published_by_agency", "statute_duty", "certified_to_agency"]) {

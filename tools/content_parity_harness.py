@@ -53,7 +53,7 @@ SURFACES: dict[str, dict[str, str]] = {
     "near-you": {
         "path": "/near-you/",
         "root": "main[data-near-you-root]",
-        "ready": "main[data-near-you-root]",
+        "ready": "main[data-near-you-root][data-near-deferred-state='ready']",
         "component": "[data-near-surface-panel='list'], [data-near-surface-switch]",
         "records": "[data-record-id]",
         "controls": "[data-near-you-root] a, [data-near-you-root] button, [data-near-you-root] input, [data-near-you-root] select, [data-near-you-root] summary",
@@ -97,7 +97,7 @@ SURFACES: dict[str, dict[str, str]] = {
     "agency": {
         "path": "/agencies/office-of-the-mayor/",
         "root": "main[data-civic-object-kind='agency-constellation']",
-        "ready": "main[data-civic-object-kind='agency-constellation']",
+        "ready": "main[data-civic-object-kind='agency-constellation'][data-civic-object-settled='true']",
         "component": "main[data-civic-object-kind='agency-constellation']",
         "records": "main[data-civic-object-kind='agency-constellation'], [data-edge-summary-item], .node-record",
         "controls": "main[data-civic-object-kind='agency-constellation'] a, main[data-civic-object-kind='agency-constellation'] button, main[data-civic-object-kind='agency-constellation'] summary",

@@ -16,6 +16,8 @@ import {
 } from "../site/near_you_scope_runtime.mjs";
 import {
   buildNearYouViewModel,
+  renderNearYouDeferredBody,
+  renderNearYouDeferredParts,
   renderNearYouDocument,
 } from "../site/near_you_view.mjs";
 
@@ -203,27 +205,31 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   );
   const view = buildNearYouViewModel(scope, fixtureActivity(), fixtureBoundaries);
   const html = renderNearYouDocument(view, { canonicalBase: "https://cityscroll.org/near-you" });
-  const visible = html.replace(/<[^>]+>/g, " ");
+  const deferred = renderNearYouDeferredBody(view);
+  const visible = `${html}${deferred}`.replace(/<[^>]+>/g, " ");
 
   assert.equal(view.results.count, 1);
   assert.deepEqual(view.results.ids, ["m-queens"]);
   assert.match(html, /data-near-you-root/);
-  assert.match(html, /data-results-count="1"/);
-  assert.match(html, /data-record-id="m-queens"/);
-  assert.match(html, /data-pivot-schema="cityscroll\.edge_summary\.v1"[^>]+data-pivot-target-kind="notice"/);
-  assert.match(html, /Queens curb redesign hearing/);
-  assert.match(html, /Affected area/);
-  assert.equal((html.match(/data-why-here-path="1"/g) || []).length, 1);
-  assert.match(html, /Why this is here/);
-  assert.match(html, /Affected area: Queens/);
-  assert.match(html, /href="\/agencies\/transportation\/"/);
-  assert.match(html, /href="\/notices\/m-queens"[^>]*>Mandate: Local Law § 1/);
+  assert.match(html, /class="near-results near-results-shell"[^>]+data-results-count="0"[^>]+data-near-deferred="results"/);
+  assert.match(html, /class="near-bags near-bags-shell"[^>]+data-near-deferred="bags"/);
+  assert.match(html, /class="near-bag" data-bag="(?:citywide|virtual|unlocated)"/);
+  assert.match(deferred, /data-results-count="1"/);
+  assert.match(deferred, /data-record-id="m-queens"/);
+  assert.match(deferred, /data-pivot-schema="cityscroll\.edge_summary\.v1"[^>]+data-pivot-target-kind="notice"/);
+  assert.match(deferred, /Queens curb redesign hearing/);
+  assert.match(deferred, /Affected area/);
+  assert.equal((deferred.match(/data-why-here-path="1"/g) || []).length, 1);
+  assert.match(deferred, /Why this is here/);
+  assert.match(deferred, /Affected area: Queens/);
+  assert.match(deferred, /href="\/agencies\/transportation\/"/);
+  assert.match(deferred, /href="\/notices\/m-queens"[^>]*>Mandate: Local Law § 1/);
   assert.match(html, /data-map-id="Queens"[^>]+data-count="1"/);
   assert.match(html, /data-map-area="Queens"[^>]+data-count="1"/);
-  assert.match(html, /data-bag="citywide"/);
-  assert.match(html, /data-bag="virtual"/);
-  assert.match(html, /data-bag="unlocated"/);
-  assert.match(html, /m-citywide/);
+  assert.match(deferred, /data-bag="citywide"/);
+  assert.match(deferred, /data-bag="virtual"/);
+  assert.match(deferred, /data-bag="unlocated"/);
+  assert.match(deferred, /m-citywide/);
   assert.match(html, /type="module" src="\/app\/map\.mjs"/);
   assert.match(html, /<form[^>]+method="get"/);
   assert.match(html, /rel="stylesheet" href="\/brand\.css"/);
@@ -240,6 +246,34 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.match(html, /name="cd"/);
   assert.match(html, /name="council"/);
   assert.match(html, /id="near-area-list"/);
+});
+
+test("deferred Near-you parts preserve records, empty copy, and error-state hooks", () => {
+  const scope = scopeWithPlace(scopeFromLensState("meetings"), { borough: "Queens" });
+  const view = buildNearYouViewModel(scope, fixtureActivity(), fixtureBoundaries);
+  const parts = renderNearYouDeferredParts(view);
+  assert.match(parts.resultsHtml, /data-results-count="1"/);
+  assert.match(parts.resultsHtml, /data-record-id="m-queens"/);
+  assert.match(parts.bagsHtml, /data-bag="citywide"/);
+
+  const emptyView = {
+    ...view,
+    results: { ...view.results, count: 0, ids: [], records: [] },
+    bags: Object.fromEntries(Object.entries(view.bags).map(([key, bag]) => [key, {
+      ...bag,
+      count: 0,
+      records: [],
+    }])),
+  };
+  const emptyParts = renderNearYouDeferredParts(emptyView);
+  assert.match(emptyParts.resultsHtml, /No records match these filters/);
+  assert.match(emptyParts.bagsHtml, /No citywide records match these filters/);
+
+  const mapRuntime = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
+  assert.match(mapRuntime, /copy\("messageDeferredUnavailable"\)/);
+  assert.match(mapRuntime, /focusedDeferredPart/);
+  assert.match(mapRuntime, /removeAttribute\("data-results-count"\)/);
+  assert.match(mapRuntime, /nearDeferredState = "error"/);
 });
 
 test("the map island adopts server markup and is absent from unrelated routes", () => {

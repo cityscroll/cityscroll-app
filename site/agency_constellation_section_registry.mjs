@@ -52,8 +52,9 @@ export const AGENCY_CONSTELLATION_SECTIONS = Object.freeze(
   [...registeredSections].sort((left, right) => left.order - right.order),
 );
 
-export function renderAgencyConstellationSections(view) {
-  const rendered = AGENCY_CONSTELLATION_SECTIONS.map((section) => ({
+export function renderAgencyConstellationSections(view, { exclude = [] } = {}) {
+  const excluded = new Set(exclude);
+  const rendered = AGENCY_CONSTELLATION_SECTIONS.filter((section) => !excluded.has(section.id)).map((section) => ({
     html: section.render(view),
     region: section.region || "main",
   }));

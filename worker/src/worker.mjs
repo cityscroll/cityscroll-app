@@ -132,7 +132,7 @@ export default {
   async fetch(request, env, ctx) {
     const { pathname, hostname } = new URL(request.url);
     if (MIRROR_HOSTS.has(hostname)) {
-      if (pathname === "/near-you" || pathname === "/near-you/") return handleNearYou(request, env, ctx);
+      if (pathname === "/near-you" || pathname === "/near-you/" || pathname === "/near-you/deferred.json") return handleNearYou(request, env, ctx);
       if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
       if (pathname === "/prefs") return handlePrefs(request, env);
       return handleMirror(request);
@@ -180,7 +180,7 @@ export default {
     if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
-    if (pathname === "/near-you" || pathname === "/near-you/") return handleNearYou(request, env, ctx);
+    if (pathname === "/near-you" || pathname === "/near-you/" || pathname === "/near-you/deferred.json") return handleNearYou(request, env, ctx);
     if (pathname === "/following" || pathname === "/following/" || pathname === "/following/personal") return handleFollowing(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/source-health") return handleSourceHealth(request);

@@ -1,9 +1,9 @@
 /**
  * Browser runtime for Civic Time Ledger as-of view on agency documents.
- * Static HTML already embeds the full constellation payload; this module
- * re-filters categories when ?as_of=YYYY-MM-DD is present and keeps the URL
- * shareable. Claim (?claim=) is preserved alongside as_of so the edge
- * provenance inspector stays deep-linkable.
+ * The initial document carries identity and controls. Relationship/list HTML
+ * and the full as-of view are loaded from the route-local deferred artifact;
+ * this module keeps the URL shareable while applying ?as_of=YYYY-MM-DD to the
+ * same view once it arrives.
  */
 import {
   AS_OF_QUERY_KEY,
@@ -281,31 +281,49 @@ function reportAgencyDocumentReadiness(main, view, { relationshipsState } = {}) 
     kind: "agency-constellation",
     hasIdentityHeading: Boolean(main.querySelector(".agency-constellation-hero h1")?.textContent?.trim()),
   });
-  agencyRelationshipsReady(rum, {
-    resultState: relationshipsState || agencyRelationshipsOutcomeFromView(view) || "unavailable",
-  });
+  if (relationshipsState || view) {
+    agencyRelationshipsReady(rum, {
+      resultState: relationshipsState || agencyRelationshipsOutcomeFromView(view) || "unavailable",
+    });
+  }
 }
 
-export function mountAgencyCivicTimeLedger(root = document) {
-  const main = root.querySelector?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']")
-    || (root.matches?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']") ? root : null);
-  if (!main) return null;
-  const payloadEl = root.getElementById?.("civic-object-payload")
-    || document.getElementById("civic-object-payload");
-  if (!payloadEl) {
-    reportAgencyDocumentReadiness(main, null, { relationshipsState: "unavailable" });
-    return null;
+async function loadAgencyView(href) {
+  const response = await fetch(new URL(href, document.baseURI), { headers: { Accept: "application/json" } });
+  if (!response.ok) throw new Error(`agency-relationships-data-response-${response.status}`);
+  const payload = await response.json();
+  if (payload?.schema !== "cityscroll.agency_relationships_data.v1" || !payload.view) {
+    throw new Error("agency-relationships-data-payload-invalid");
   }
-  let nowView;
-  try {
-    nowView = JSON.parse(payloadEl.textContent || "null");
-  } catch {
-    reportAgencyDocumentReadiness(main, null, { relationshipsState: "error" });
-    return null;
-  }
-  if (!nowView || !["agency-constellation", "parcel"].includes(nowView.kind)) return null;
+  return payload.view;
+}
 
+function wireAgencyDocument(main, nowView, { viewHref = null } = {}) {
   const initial = parseAsOfFromSearch(location.search);
+  if (!nowView) {
+    const loader = main.__civicAgencyViewLoader || (() => loadAgencyView(viewHref || main.dataset.civicObjectViewHref));
+    main.__civicAgencyViewLoader = loader;
+    const form = main.querySelector("[data-ctl-form]");
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const view = await loader();
+      wireAgencyDocument(main, view);
+      applyAsOf(main, view, parseAsOfFromSearch(location.search));
+    }, { once: true });
+    main.querySelector('[data-object-export="json"]')?.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const view = await loader();
+      wireAgencyDocument(main, view);
+      main.querySelector('[data-object-export="json"]')?.click();
+    }, { once: true });
+    if (initial) {
+      void loader().then((view) => {
+        wireAgencyDocument(main, view);
+        applyAsOf(main, view, initial);
+      });
+    }
+    return;
+  }
   applyAsOf(main, nowView, initial);
   const displayView = asOfFilterCanNarrow(nowView)
     ? (normalizeAsOfDay(initial)
@@ -331,8 +349,76 @@ export function mountAgencyCivicTimeLedger(root = document) {
   window.addEventListener("popstate", () => {
     applyAsOf(main, nowView, parseAsOfFromSearch(location.search));
   });
+}
 
-  return { nowView, asOf: initial };
+async function hydrateAgencyRelationships(main, href) {
+  const host = main.querySelector("[data-civic-object-deferred]");
+  try {
+    const response = await fetch(href, { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`agency-relationships-response-${response.status}`);
+    const payload = await response.json();
+    if (payload?.schema !== "cityscroll.agency_relationships.v1"
+      || typeof payload.html !== "string") {
+      throw new Error("agency-relationships-payload-invalid");
+    }
+    if (host) {
+      const initialLedger = main.querySelector("[data-civic-time-ledger]");
+      host.insertAdjacentHTML("beforebegin", payload.html);
+      host.remove();
+      const ledgerSlot = main.querySelector("[data-civic-time-ledger-slot]");
+      if (ledgerSlot) {
+        if (initialLedger) ledgerSlot.replaceWith(initialLedger);
+        else ledgerSlot.remove();
+      }
+    }
+    main.dataset.civicObjectDeferredState = "ready";
+    main.dataset.civicObjectSettled = "true";
+    const nowView = payload.view || null;
+    wireAgencyDocument(main, nowView, { viewHref: payload.view_href || main.dataset.civicObjectViewHref });
+    return { nowView, state: "ready" };
+  } catch (error) {
+    if (host) {
+      host.textContent = "Public relationships are temporarily unavailable.";
+      host.dataset.civicObjectDeferredState = "error";
+    }
+    main.dataset.civicObjectDeferredState = "error";
+    main.dataset.civicObjectSettled = "true";
+    reportAgencyDocumentReadiness(main, null, { relationshipsState: "error" });
+    return { nowView: null, state: "error", error };
+  }
+}
+
+export function mountAgencyCivicTimeLedger(root = document) {
+  const main = root.querySelector?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']")
+    || (root.matches?.("[data-civic-object-kind='agency-constellation'], [data-civic-object-kind='parcel']") ? root : null);
+  if (!main) return null;
+  reportAgencyDocumentReadiness(main, null);
+  const payloadEl = root.getElementById?.("civic-object-payload")
+    || document.getElementById("civic-object-payload");
+  if (payloadEl) {
+    try {
+      const nowView = JSON.parse(payloadEl.textContent || "null");
+      if (!nowView || !["agency-constellation", "parcel"].includes(nowView.kind)) return null;
+      main.dataset.civicObjectDeferredState = "ready";
+      main.dataset.civicObjectSettled = "true";
+      wireAgencyDocument(main, nowView);
+      return { nowView, asOf: parseAsOfFromSearch(location.search) };
+    } catch {
+      main.dataset.civicObjectDeferredState = "error";
+      main.dataset.civicObjectSettled = "true";
+      reportAgencyDocumentReadiness(main, null, { relationshipsState: "error" });
+      return null;
+    }
+  }
+  const href = main.dataset.civicObjectDeferredHref;
+  if (!href) {
+    main.dataset.civicObjectDeferredState = "unavailable";
+    main.dataset.civicObjectSettled = "true";
+    reportAgencyDocumentReadiness(main, null, { relationshipsState: "unavailable" });
+    return null;
+  }
+  void hydrateAgencyRelationships(main, new URL(href, document.baseURI).href);
+  return { deferred: true, asOf: parseAsOfFromSearch(location.search) };
 }
 
 // Auto-mount on agency constellation documents.
