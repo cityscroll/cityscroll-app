@@ -53,6 +53,7 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
   assert.equal(init.result.serverInfo.name, "crol-list");
   const list = await (await handleMcp(post({ jsonrpc: "2.0", id: 2, method: "tools/list" }), env)).json();
   assert.deepEqual(list.result.tools.map((t) => t.name), [
+    "search_federated",
     "search_notices",
     "get_notice",
     "get_entity_dossier",

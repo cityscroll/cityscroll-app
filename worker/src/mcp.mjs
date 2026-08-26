@@ -17,6 +17,10 @@
 
 import { noticeSearchTerms, workerD1NoticeSearch } from "./lib/notices.mjs";
 import {
+  executeFederatedSearch,
+  FEDERATED_SEARCH_LIMITS,
+} from "../../capabilities/federated_search.mjs";
+import {
   executeNoticeSearch,
   NOTICE_SEARCH_LIMITS,
 } from "../../capabilities/notice_search.mjs";
@@ -46,6 +50,7 @@ export {
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
+  MCP_FEDERATED_SEARCH_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS,
   MCP_PUBLIC_READ_ANNOTATIONS,
@@ -63,8 +68,10 @@ import { workerCitedPassages } from "./cited_retrieval.mjs";
 import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
+import { workerFederatedSearch } from "./search.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
+const FEDERATED_SEARCH_INPUT_FIELDS = new Set(["query", "limit"]);
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -105,6 +112,17 @@ export function mcpNoticeSearchInput(args = {}) {
     excludeRollingDeadlines: !!args.exclude_rolling,
     limit: Math.max(NOTICE_SEARCH_LIMITS.minimum, Math.min(requestedLimit, NOTICE_SEARCH_LIMITS.maximum)),
   };
+}
+
+export function mcpFederatedSearchInput(args = {}) {
+  for (const field of Object.keys(args || {})) {
+    if (!FEDERATED_SEARCH_INPUT_FIELDS.has(field)) {
+      throw new TypeError(`search_federated does not accept arbitrary field: ${field}`);
+    }
+  }
+  const query = String(args.query || "").trim();
+  const limit = args.limit == null ? FEDERATED_SEARCH_LIMITS.defaultResults : Number(args.limit);
+  return { query, limit };
 }
 
 export function mcpNoticeGetInput(args = {}) {
@@ -188,8 +206,28 @@ function previewText(p) {
   return `${head}\n\nRecent matches (${p.rows.length} shown):\n` + items.join("\n");
 }
 
-async function callTool(env, req, name, args) {
+async function callTool(env, req, name, args, { federatedProvider = null } = {}) {
   switch (name) {
+    case "search_federated": {
+      const input = mcpFederatedSearchInput(args);
+      if (!input.query) return toolError("query is required.");
+      if (input.query.length > FEDERATED_SEARCH_LIMITS.queryMaximumLength) {
+        return toolError("query must be 240 characters or fewer.");
+      }
+      if (!Number.isInteger(input.limit)
+          || input.limit < 1
+          || input.limit > FEDERATED_SEARCH_LIMITS.maximumResults) {
+        return toolError("limit must be a whole number from 1 through 100.");
+      }
+      const result = await executeFederatedSearch(
+        federatedProvider || workerFederatedSearch(env),
+        input,
+      );
+      return structuredResult(
+        result,
+        `Returned ${result.results.length} federated public search result${result.results.length === 1 ? "" : "s"}. Use the structured result for per-lens coverage, source observations, and exact object routes.`,
+      );
+    }
     case "search_notices": {
       if (!env.DB) return toolError("The notices mirror is unavailable right now.");
       const res = await executeNoticeSearch(
@@ -304,7 +342,7 @@ function rpc(id, result, error) {
   return error ? { jsonrpc: "2.0", id, error } : { jsonrpc: "2.0", id, result };
 }
 
-export async function handleMcp(req, env) {
+export async function handleMcp(req, env, { federatedProvider = null } = {}) {
   if (env.MCP_BEARER_TOKEN) {
     const auth = req.headers.get("authorization") || "";
     if (auth !== `Bearer ${env.MCP_BEARER_TOKEN}`) return new Response("Unauthorized", { status: 401 });
@@ -344,7 +382,7 @@ export async function handleMcp(req, env) {
       case "tools/call": {
         const name = String(params?.name || "");
         const args = (params?.arguments) || {};
-        const result = await callTool(env, req, name, args);
+        const result = await callTool(env, req, name, args, { federatedProvider });
         return Response.json(rpc(id, result));
       }
       default:

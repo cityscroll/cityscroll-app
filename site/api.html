@@ -191,6 +191,7 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
 <div class="src" aria-label="MCP tool catalog">
 <p><strong>Available tools</strong> (generated from the runtime declarations):</p>
 <ul>
+  <li><code>search_federated</code> <span aria-hidden="true">·</span> read — Search the registered public CityScroll lenses in one bounded result set. Preserves per-lens coverage, source observations, exact object routes, and federated ranking. It does not expose a raw store or arbitrary query language.</li>
   <li><code>search_notices</code> <span aria-hidden="true">·</span> read — Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched. Add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded). Rolling placeholder deadlines are labeled, never shown as dates.</li>
   <li><code>get_notice</code> <span aria-hidden="true">·</span> read — Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and distinguishes a missing public notice from a read that cannot be served.</li>
   <li><code>get_entity_dossier</code> <span aria-hidden="true">·</span> read — Get the bounded public dossier for one exact canonical CityScroll entity. Preserves attributed disagreements, availability, provenance, and public redaction.</li>

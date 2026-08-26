@@ -7,14 +7,21 @@ import { executeNoticeGet } from "../../capabilities/notice_get.mjs";
 import { executeEntityDossier } from "../../capabilities/entity_dossier.mjs";
 import { executeEntityRelationships } from "../../capabilities/entity_relationships.mjs";
 import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
+import { executeFederatedSearch } from "../../capabilities/federated_search.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
 import { workerD1NoticeSearch } from "../src/lib/notices.mjs";
 import { mcpCitedPassagesInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
 import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
+import { workerFederatedSearch } from "../src/search.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
+  Object.freeze({
+    capabilityReference: "search.federated@1",
+    name: "search_federated",
+    arguments: Object.freeze({ query: "acme construction", limit: 10 }),
+  }),
   Object.freeze({
     capabilityReference: "notice.search@1",
     name: "search_notices",
@@ -175,29 +182,40 @@ export function createRemoteMcpFixtureEnv() {
 
 export async function directCapabilityResults(env) {
   const results = new Map();
+  const argsFor = (name) => CAPABILITY_TOOL_CASES.find((toolCase) => toolCase.name === name).arguments;
+  const federatedArgs = argsFor("search_federated");
+  results.set("search_federated", await executeFederatedSearch(
+    workerFederatedSearch(env),
+    { query: federatedArgs.query, limit: federatedArgs.limit },
+  ));
+  const noticeSearchArgs = argsFor("search_notices");
   results.set("search_notices", await executeNoticeSearch(
     workerD1NoticeSearch(env.DB),
-    mcpNoticeSearchInput(CAPABILITY_TOOL_CASES[0].arguments),
+    mcpNoticeSearchInput(noticeSearchArgs),
   ));
+  const noticeGetArgs = argsFor("get_notice");
   results.set("get_notice", await executeNoticeGet(
     workerNoticeGet(env, { nowMs: Date.parse("2026-08-04T00:00:00.000Z") }),
-    mcpNoticeGetInput(CAPABILITY_TOOL_CASES[1].arguments),
+    mcpNoticeGetInput(noticeGetArgs),
   ));
+  const dossierArgs = argsFor("get_entity_dossier");
   results.set("get_entity_dossier", await executeEntityDossier(
     workerD1EntityDossier(env.DB),
-    { entityId: CAPABILITY_TOOL_CASES[2].arguments.entity_id },
+    { entityId: dossierArgs.entity_id },
   ));
+  const relationshipsArgs = argsFor("get_entity_relationships");
   results.set("get_entity_relationships", await executeEntityRelationships(
     workerD1EntityRelationships(env.DB),
     {
-      entityId: CAPABILITY_TOOL_CASES[3].arguments.entity_id,
-      depth: CAPABILITY_TOOL_CASES[3].arguments.depth,
-      fanOut: CAPABILITY_TOOL_CASES[3].arguments.fan_out,
+      entityId: relationshipsArgs.entity_id,
+      depth: relationshipsArgs.depth,
+      fanOut: relationshipsArgs.fan_out,
     },
   ));
+  const citedArgs = argsFor("retrieve_cited_passages");
   results.set("retrieve_cited_passages", await executeCitedPassages(
     workerCitedPassages(),
-    mcpCitedPassagesInput(CAPABILITY_TOOL_CASES[4].arguments),
+    mcpCitedPassagesInput(citedArgs),
   ));
   return results;
 }

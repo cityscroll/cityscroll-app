@@ -537,12 +537,199 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "search.federated@1",
+      "id": "search.federated",
+      "version": "1.0.0",
+      "owner": "universal-search",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none",
+        "semantics": "bounded SearchDocument federation; no raw store or query language"
+      },
+      "cost": {
+        "class": "bounded-multi-lens-read",
+        "machineFanOut": "registered-lenses-only"
+      },
+      "input_schema": "cityscroll.capability.search_federated.input.v1",
+      "output_schema": "cityscroll.universal_search_federator.v1",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "defaultResults": 40,
+          "maximumResults": 100,
+          "maximumCards": 8
+        },
+        "output": {
+          "maximumResults": 100,
+          "maximumCardsPerLane": 8
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "query": "parks",
+            "limit": 10
+          },
+          "output": {
+            "coverageStates": [
+              "matched",
+              "empty",
+              "partial",
+              "stale",
+              "not_indexed",
+              "provider_unavailable"
+            ],
+            "maximumResults": 10,
+            "maximumCardsPerLane": 8
+          }
+        },
+        {
+          "input": {
+            "query": "public hearing",
+            "limit": 100
+          },
+          "output": {
+            "registeredLenses": [
+              "notices",
+              "people",
+              "agencies",
+              "vendors",
+              "committees",
+              "community_boards",
+              "exams",
+              "parcels",
+              "land",
+              "meetings"
+            ],
+            "maximumResults": 100,
+            "provenance": "source-observation refs retained"
+          }
+        }
+      ],
+      "availability": [
+        "matched",
+        "empty",
+        "partial",
+        "stale",
+        "not_indexed",
+        "provider_unavailable"
+      ],
+      "provenance": {
+        "objectIdentity": "results[].object_ref",
+        "sourceObservations": "results[].source_observation_refs and results[].edge_provenance.matches[]",
+        "matchEvidence": "results[].match_fields",
+        "exactSourceRoute": "results[].canonical_href",
+        "coverageByLens": "coverage.by_lens[].state and coverage.by_lens[].source"
+      },
+      "freshness": {
+        "owner": "registered lens read models",
+        "projection": "per-lens as_of and coverage state are retained; incomplete coverage is not collapsed"
+      },
+      "provider": {
+        "id": "worker-federated-search",
+        "module": "worker/src/search.mjs",
+        "export": "workerFederatedSearch",
+        "store": "registered public lens read models",
+        "readModel": "SearchDocument producers plus universal search federator"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.search.federated@1",
+          "module": "worker/src/search.mjs",
+          "kind": "http-route",
+          "route": "GET /search",
+          "surface": "Universal search"
+        },
+        {
+          "id": "mcp.search_federated@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "search_federated",
+          "route": "POST /mcp",
+          "surface": "MCP"
+        }
+      ]
     }
   ],
   "mcp": {
     "route": "POST /mcp",
     "catalog": "site/data/mcp_tool_catalog.json",
     "tools": [
+      {
+        "name": "search_federated",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "search.federated@1",
+        "capability_reference": "search.federated@1",
+        "adapter_id": "mcp.search_federated@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "queryMaximumLength": 240,
+            "defaultResults": 40,
+            "maximumResults": 100,
+            "maximumCards": 8
+          },
+          "output": {
+            "maximumResults": 100,
+            "maximumCardsPerLane": 8
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "query": "parks",
+              "limit": 10
+            },
+            "output": {
+              "coverageStates": [
+                "matched",
+                "empty",
+                "partial",
+                "stale",
+                "not_indexed",
+                "provider_unavailable"
+              ],
+              "maximumResults": 10,
+              "maximumCardsPerLane": 8
+            }
+          },
+          {
+            "input": {
+              "query": "public hearing",
+              "limit": 100
+            },
+            "output": {
+              "registeredLenses": [
+                "notices",
+                "people",
+                "agencies",
+                "vendors",
+                "committees",
+                "community_boards",
+                "exams",
+                "parcels",
+                "land",
+                "meetings"
+              ],
+              "maximumResults": 100,
+              "provenance": "source-observation refs retained"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
       {
         "name": "search_notices",
         "operation_class": "read",

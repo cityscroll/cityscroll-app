@@ -66,6 +66,8 @@ test("MCP structured results preserve direct-provider semantics and declared bou
     assert.deepEqual(adapterFixture.reads.map(({ capability_reference: reference }) => reference), [
       "notice.search@1",
       "notice.get@1",
+      "notice.search@1",
+      "notice.get@1",
       "entity.dossier.get@1",
       "entity.relationships.get@1",
     ]);
@@ -81,6 +83,7 @@ test("semantic capabilities stay independent from MCP and Cloudflare runtime pac
     "../../capabilities/entity_dossier.mjs",
     "../../capabilities/entity_relationships.mjs",
     "../../capabilities/cited_passages.mjs",
+    "../../capabilities/federated_search.mjs",
   ]) {
     const source = readFileSync(new URL(path, import.meta.url), "utf8");
     assert.doesNotMatch(source, /from\s+["'][^"']*(?:modelcontextprotocol|cloudflare\/agents|agents\/mcp)/i, path);
