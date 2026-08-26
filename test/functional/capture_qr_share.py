@@ -246,20 +246,20 @@ def assert_copy_matches_qr(page: Page, copy_selector: str, qr_selector: str) -> 
 
 
 def open_landing_actions(page: Page):
-    """Require the landing actions to be one labeled disclosure interaction away."""
+    """Require the landing actions to be one labeled preview interaction away."""
     disclosure = page.locator('[data-ask-lens="money"]')
-    assert disclosure.count() == 1, "Contracts must expose one Ask disclosure"
+    assert disclosure.count() == 1, "Contracts must expose one topic preview disclosure"
     summary = disclosure.locator(":scope > summary")
-    assert summary.count() == 1, "Ask disclosure must have a summary control"
-    assert summary.get_attribute("data-i18n") == "ask_cityscroll_action"
-    assert (summary.text_content() or "").strip() == "Ask CityScroll"
+    assert summary.count() == 1, "Topic preview disclosure must have a summary control"
+    assert summary.get_attribute("data-i18n") == "preview_panel_heading"
+    assert (summary.text_content() or "").strip() == "Preview"
     actions = disclosure.locator("#landing-share-actions")
-    assert actions.count() == 1, "landing actions must stay inside the Ask disclosure"
+    assert actions.count() == 1, "landing actions must stay inside the topic preview disclosure"
     actions.locator("[data-landing-copy]").wait_for(state="attached")
     actions.locator("[data-qr-share]").wait_for(state="attached")
     assert actions.locator("[data-landing-copy]").count() == 1
     assert actions.locator("[data-qr-share]").count() == 1
-    assert not actions.is_visible(), "landing actions should start collapsed with Ask"
+    assert not actions.is_visible(), "landing actions should start collapsed with Preview"
     summary.click()
     actions.wait_for(state="visible")
     assert disclosure.get_attribute("open") is not None
