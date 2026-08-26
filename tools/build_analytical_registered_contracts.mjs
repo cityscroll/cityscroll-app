@@ -2,7 +2,7 @@
 /** Build the precomputed registered-contract analytical projection. */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseContractTransactions } from "../worker/src/lib/checkbook_lifecycle.mjs";
@@ -28,6 +28,12 @@ function readJson(path) {
 function writeJson(path, value) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`);
+}
+
+function sourcePathLabel(path) {
+  const relativePath = relative(ROOT, resolve(path)).replaceAll("\\", "/");
+  if (relativePath && relativePath !== ".." && !relativePath.startsWith("../")) return relativePath;
+  return `external-input:${basename(path)}`;
 }
 
 function parseArgs(argv) {
@@ -128,7 +134,7 @@ function build(args) {
       table: "analytics_registered_contracts",
       site_artifact: "site/data/analytics_registered_contracts.json",
       request_time_database_queries: false,
-      reproducible_input: args.fixture ? args.fixture : args.input,
+      reproducible_input: sourcePathLabel(args.fixture ? args.fixture : args.input),
     },
   };
   writeJson(args.output, payload);

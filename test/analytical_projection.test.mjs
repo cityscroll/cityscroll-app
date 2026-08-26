@@ -80,6 +80,7 @@ describe("committed analytical population artifact", () => {
     assert.equal(ids.size, receipt.population.distinct_prime_contract_ids);
     assert.equal(receipt.materialization.table, "analytics_registered_contracts");
     assert.equal(receipt.materialization.request_time_database_queries, false);
+    assert.doesNotMatch(receipt.materialization.reproducible_input, /(?:^|\/)Users\/[A-Za-z]|(?:^|\/)home\/[A-Za-z]|^~\//);
     assert.ok(receipt.dimension_profile.agency.distinct_count > 0);
     assert.ok(receipt.dimension_profile.prime_vendor.distinct_count > 0);
   });

@@ -258,6 +258,6 @@
     "table": "analytics_registered_contracts",
     "site_artifact": "site/data/analytics_registered_contracts.json",
     "request_time_database_queries": false,
-    "reproducible_input": "/Users/openclaw/.treehouse/cityscroll-app-ac844d/3/cityscroll-app/.generated/ap/checkbook-normalized.json"
+    "reproducible_input": ".generated/ap/checkbook-normalized.json"
   }
 }
