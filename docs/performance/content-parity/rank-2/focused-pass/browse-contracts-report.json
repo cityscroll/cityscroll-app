@@ -16,13 +16,13 @@
       },
       "readiness": {
         "deltas_ms": {
-          "component_ready_ms": -11.3,
-          "content_ready_ms": -11.2,
-          "first_contentful_paint_ms": -4,
-          "first_paint_ms": -4
+          "component_ready_ms": -1.15,
+          "content_ready_ms": -0.9,
+          "first_contentful_paint_ms": 0,
+          "first_paint_ms": 0
         },
         "failures": [],
-        "improvement_ms": 11.3,
+        "improvement_ms": 1.15,
         "verdict": "PASS"
       },
       "visual": {
@@ -46,13 +46,13 @@
       },
       "readiness": {
         "deltas_ms": {
-          "component_ready_ms": -14.85,
-          "content_ready_ms": -14.95,
-          "first_contentful_paint_ms": -2,
-          "first_paint_ms": -2
+          "component_ready_ms": -32.55,
+          "content_ready_ms": -40.25,
+          "first_contentful_paint_ms": -30,
+          "first_paint_ms": -30
         },
         "failures": [],
-        "improvement_ms": 14.95,
+        "improvement_ms": 40.25,
         "verdict": "PASS"
       },
       "visual": {
