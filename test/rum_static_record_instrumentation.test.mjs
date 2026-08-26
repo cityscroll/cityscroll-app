@@ -186,3 +186,15 @@ test("production owners call the semantic seam used by the production reporter",
   assert.match(context, /noticeContextReady/);
   assert.equal(manifest.collector.production_enabled, true);
 });
+
+test("Notice primary readiness is ordered before optional route modules and client enrichment", () => {
+  const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+  const showNotice = routing.slice(routing.indexOf("async function showNotice"));
+  const primary = showNotice.indexOf("if(edgePrimaryState) noticePrimaryReady");
+  const modules = showNotice.indexOf("globalThis.ensureMoneyHistory");
+  const read = showNotice.indexOf('import("../notice-read.mjs")');
+  assert.ok(primary >= 0);
+  assert.ok(modules > primary, "optional route modules start after edge primary readiness");
+  assert.ok(read > primary, "client notice enrichment starts after edge primary readiness");
+  assert.match(showNotice, /const optionalRouteModules = Promise\.allSettled/);
+});

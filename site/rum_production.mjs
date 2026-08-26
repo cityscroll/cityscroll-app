@@ -188,9 +188,17 @@ export function createBufferedSemanticMilestones(runtime = globalThis) {
   if (existing && typeof existing.surfaceReady === "function") return existing;
 
   const queued = [];
+  function ownerTimestamp() {
+    try {
+      const value = runtime?.performance?.now?.();
+      return Number.isFinite(value) && value >= 0 ? value : null;
+    } catch {
+      return null;
+    }
+  }
   function enqueue(kind, args) {
     if (queued.length >= MAX_BUFFERED_MILESTONES) return { state: "disabled" };
-    queued.push({ kind, args });
+    queued.push({ kind, args, timestamp: ownerTimestamp() });
     return { state: "buffered" };
   }
 
@@ -216,7 +224,7 @@ export function createBufferedSemanticMilestones(runtime = globalThis) {
       while (queued.length) {
         const item = queued.shift();
         if (typeof target[item.kind] === "function") {
-          target[item.kind](item.args);
+          target[item.kind](item.args, item.timestamp);
           replayed += 1;
         }
       }

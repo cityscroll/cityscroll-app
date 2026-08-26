@@ -7,6 +7,7 @@ import {
   boundedTerminalState,
   createRumSemanticMilestones,
 } from "../site/rum_semantic_milestones.mjs";
+import { createBufferedSemanticMilestones } from "../site/rum_production.mjs";
 import {
   fixtureHomeReady,
   fixtureInteraction,
@@ -162,6 +163,24 @@ test("duplicate and out-of-order milestones are rejected without extra records",
     "settled",
     "feedback-to-settled",
   ]);
+});
+
+test("buffered milestone keeps the owner-call timestamp across delayed collector install", () => {
+  let clockValue = 125;
+  const runtime = { performance: { now: () => clockValue } };
+  const buffer = createBufferedSemanticMilestones(runtime);
+  assert.equal(buffer.surfaceReady({ surfaceId: "home", resultState: "content" }).state, "buffered");
+
+  clockValue = 9_000;
+  const sink = recorder();
+  const rum = createRumSemanticMilestones({
+    enabled: true,
+    navigationStart: 0,
+    now: () => clockValue,
+    record: sink.record,
+  });
+  assert.equal(buffer.drain(rum), 1);
+  assert.equal(sink.records[0].value, 125);
 });
 
 test("terminal states are closed and disabled RUM is a fail-soft no-op", () => {

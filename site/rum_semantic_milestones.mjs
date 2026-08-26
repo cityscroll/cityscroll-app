@@ -162,6 +162,10 @@ function safeNow(now) {
   }
 }
 
+function safeTimestamp(value) {
+  return Number.isFinite(value) && value >= 0 ? value : null;
+}
+
 function safeRecord(record, value) {
   try {
     const result = record(value);
@@ -220,12 +224,12 @@ export function createRumSemanticMilestones({
   const readySurfaces = new Set();
   const readyComponents = new Set();
 
-  function ready({ kind, id, surfaceId, resultState }) {
+  function ready({ kind, id, surfaceId, resultState }, ownerTimestamp = null) {
     const bounded = boundedTerminalState(resultState);
     if (!validId(id) || !validId(surfaceId) || !bounded) return { state: "invalid" };
     const seen = kind === "surface" ? readySurfaces : readyComponents;
     if (seen.has(id)) return { state: "duplicate" };
-    const at = safeNow(now);
+    const at = safeTimestamp(ownerTimestamp) ?? safeNow(now);
     if (at == null || at < origin) return { state: "out_of_order" };
     seen.add(id);
     safeRecord(record, milestoneRecord({
@@ -320,11 +324,11 @@ export function createRumSemanticMilestones({
 
   return Object.freeze({
     state: "enabled",
-    surfaceReady({ surfaceId, resultState } = {}) {
-      return ready({ kind: "surface", id: surfaceId, surfaceId, resultState });
+    surfaceReady({ surfaceId, resultState } = {}, ownerTimestamp = null) {
+      return ready({ kind: "surface", id: surfaceId, surfaceId, resultState }, ownerTimestamp);
     },
-    componentReady({ surfaceId, componentId, resultState } = {}) {
-      return ready({ kind: "component", id: componentId, surfaceId, resultState });
+    componentReady({ surfaceId, componentId, resultState } = {}, ownerTimestamp = null) {
+      return ready({ kind: "component", id: componentId, surfaceId, resultState }, ownerTimestamp);
     },
     interactionStart,
   });

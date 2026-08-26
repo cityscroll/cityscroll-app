@@ -75,12 +75,12 @@ test("the reference response supports overview and surface-detail projections", 
   assert.deepEqual(parsedQuery(manifest.views.overview.query), {
     window: "7d",
     filters: {},
-    group_by: "metric_id",
+    group_by: ["metric_id", "surface_id", "component_id"],
   });
   assert.deepEqual(parsedQuery(manifest.views.surface_detail.query), {
     window: "7d",
     filters: { surface_id: "home" },
-    group_by: "metric_id",
+    group_by: ["metric_id", "component_id"],
   });
 
   assert.ok(response.catalog.metrics.length > 0);
