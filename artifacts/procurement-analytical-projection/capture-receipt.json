@@ -68,6 +68,24 @@
         "top_shares": "TOP 5 VENDORS' SHARE\n42.6%\n$6,807,021,842 current registered contract value\nTOP 10 VENDORS' SHARE\n60.7%\n$9,700,344,493 current registered contract value",
         "vendors": 141
       },
+      "timing": {
+        "population": "No retroactive rate is available \u00b7 0 contracts have both dates \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts. 26,270 of 26,270 contracts are missing a start or registration date (100.0%)",
+        "metrics": "0\nELIGIBLE CONTRACTS\n26,270\nMISSING-DATE CONTRACTS\n0\nRETROACTIVE\nNot available\nMEDIAN LAG\nNot available\nP75 LAG\nNot available\nP90 LAG",
+        "groups": [
+          {
+            "label": "1. Department of Design and Construction",
+            "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction&retroactive=true"
+          },
+          {
+            "label": "2. Department of Homeless Services",
+            "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services&retroactive=true"
+          },
+          {
+            "label": "3. Department of Environmental Protection",
+            "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection&retroactive=true"
+          }
+        ]
+      },
       "page_errors": []
     },
     {
@@ -114,6 +132,24 @@
         "denominator": "$15,978,562,684 current registered contract value across 373 contracts is the explicit selected-scope denominator. Shares use this current registered contract value total.",
         "top_shares": "TOP 5 VENDORS' SHARE\n42.6%\n$6,807,021,842 current registered contract value\nTOP 10 VENDORS' SHARE\n60.7%\n$9,700,344,493 current registered contract value",
         "vendors": 141
+      },
+      "timing": {
+        "population": "No retroactive rate is available \u00b7 0 contracts have both dates \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts. 26,270 of 26,270 contracts are missing a start or registration date (100.0%)",
+        "metrics": "0\nELIGIBLE CONTRACTS\n26,270\nMISSING-DATE CONTRACTS\n0\nRETROACTIVE\nNot available\nMEDIAN LAG\nNot available\nP75 LAG\nNot available\nP90 LAG",
+        "groups": [
+          {
+            "label": "1. Department of Design and Construction",
+            "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction&retroactive=true"
+          },
+          {
+            "label": "2. Department of Homeless Services",
+            "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services&retroactive=true"
+          },
+          {
+            "label": "3. Department of Environmental Protection",
+            "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection&retroactive=true"
+          }
+        ]
       },
       "page_errors": []
     }
