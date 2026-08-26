@@ -51,6 +51,7 @@ function buildFill({ noticeFlags, awardContext, related, mandate, tables }) {
   const document = { contains: (node) => node?.dataset === elementDataset }; // replaced per call
   const sourceForFunction = [
     "const CONTEXT_SLOTS=[\"mandate\",\"related\",\"flags\",\"award\"];",
+    "const noticeContextTimingMark=()=>{};",
     extractFn("contextSlotsHTML"),
     extractFn("contextSlot"),
     extractFn("contextReady"),
@@ -77,9 +78,9 @@ function buildFill({ noticeFlags, awardContext, related, mandate, tables }) {
       contains(node) { return node?.dataset === elementDatasetRef.value; },
     },
   );
-  return (record, element) => {
+  return (record, element, settledWith) => {
     elementDataset = element.dataset;
-    return fill(record, element);
+    return fill(record, element, settledWith);
   };
 }
 
@@ -113,4 +114,25 @@ test("Notice context reports its first card before deferred owners and settles w
   assert.match(element.innerHTML, /flag/);
   assert.match(element.innerHTML, /award context/);
   assert.match(element.innerHTML, /attachment table/);
+});
+
+test("Notice context can include late attachment hydration in the settled boundary", async () => {
+  states = [];
+  const fill = buildFill({
+    noticeFlags: async () => [],
+    awardContext: async () => "",
+    related: async () => "",
+    mandate: async () => "",
+    tables: async () => "",
+  });
+  const element = createElement();
+  let release;
+  const attachmentHydration = new Promise((resolve) => { release = resolve; });
+  fill({ request_id: "notice-2" }, element, [attachmentHydration]);
+  assert.deepEqual(states, ["content"]);
+  await new Promise((resolve) => setTimeout(resolve, 10));
+  assert.notEqual(element.dataset.noticeContextSettled, "true");
+  release();
+  await new Promise((resolve) => setTimeout(resolve, 10));
+  assert.equal(element.dataset.noticeContextSettled, "true");
 });
