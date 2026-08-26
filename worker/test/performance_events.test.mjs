@@ -146,6 +146,34 @@ test("enabled production intake writes one normalized point per numeric observat
   assert.equal(health.store.get("rum:health:latest-accepted"), new Date(NOW_MS).toISOString());
 });
 
+test("controlled lab intake is retained and tagged separately from field traffic", async () => {
+  const points = [];
+  const response = await post(batch(), {
+    env: {
+      RUM_ANALYTICS: analyticsBinding(points),
+      RUM_INGEST_ENABLED: "true",
+      ANALYTICS_ENVIRONMENT: "production",
+    },
+  });
+  assert.equal(response.status, 204);
+  assert.equal(points[0].blobs[9], "production");
+
+  const labResponse = await handlePerformanceEvents(new Request(
+    "https://api.cityscroll.org/performance-events?traffic_class=lab",
+    {
+      method: "POST",
+      headers: { Origin: "https://cityscroll.org", "Content-Type": "application/json" },
+      body: JSON.stringify(batch()),
+    },
+  ), {
+    RUM_ANALYTICS: analyticsBinding(points),
+    RUM_INGEST_ENABLED: "true",
+    ANALYTICS_ENVIRONMENT: "production",
+  }, { nowMs: NOW_MS });
+  assert.equal(labResponse.status, 204);
+  assert.equal(points[1].blobs[9], "lab");
+});
+
 test("strict batch validation rejects private, unknown, incompatible, and corrupt data without writes", async (t) => {
   const cases = [
     ["forbidden nested key", batch([{ ...observation(), metadata: { visitor_id: "private" } }]), "forbidden_key"],

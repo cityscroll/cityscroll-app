@@ -36,6 +36,7 @@ const PARAMETER_TO_FILTER = Object.freeze({
   device: "device_class",
   nav: "navigation_type",
   delivery: "delivery_class",
+  traffic: "traffic_class",
   release: "release_id",
 });
 const REQUEST_PARAMETERS = new Set([

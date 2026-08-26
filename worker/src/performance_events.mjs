@@ -10,6 +10,8 @@ export const RUM_OBSERVATION_SCHEMA = "cityscroll.performance_observation.v1";
 export const RUM_MAX_BATCH_SIZE = 16;
 export const RUM_MAX_REQUEST_BYTES = 8 * 1024;
 export const RUM_DEV_HEADER = "X-CROL-Analytics-Dev";
+export const RUM_TRAFFIC_CLASS_QUERY = "traffic_class";
+export const RUM_TRAFFIC_CLASSES = Object.freeze(["production", "lab"]);
 
 // These are transport corruption bounds, not speed thresholds. They prevent a malformed
 // observation from consuming an unbounded numeric domain while preserving generous headroom.
@@ -319,6 +321,16 @@ export function rumDataPoint(observation, trafficClass = "production") {
   };
 }
 
+function requestTrafficClass(req) {
+  try {
+    return new URL(req.url).searchParams.get(RUM_TRAFFIC_CLASS_QUERY) === "lab"
+      ? "lab"
+      : "production";
+  } catch {
+    return "production";
+  }
+}
+
 async function recordHealth(env, reason, now, count = 1) {
   if (!HEALTH_REASON_SET.has(reason) || !env?.ALERT_STATE) return;
   // bumpStat is a KV read-modify-write operation, so serialize the bounded increments inside
@@ -400,9 +412,10 @@ export async function handlePerformanceEvents(req, env, options = {}) {
   }
 
   await recordHealth(env, "storage_configured", now);
+  const trafficClass = requestTrafficClass(req);
   try {
     for (const observation of normalized.observations) {
-      await env.RUM_ANALYTICS.writeDataPoint(rumDataPoint(observation, "production"));
+      await env.RUM_ANALYTICS.writeDataPoint(rumDataPoint(observation, trafficClass));
     }
   } catch {
     await recordHealth(env, "storage_unavailable", now);

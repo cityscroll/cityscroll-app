@@ -96,6 +96,7 @@ export function scheduleProductionRumCollector({
             deliver(batch) {
               return delivery.deliverRumBatch(batch, {
                 enabled: true,
+                trafficClass: runtime?.CROL_RUM_TRAFFIC_CLASS === "lab" ? "lab" : "production",
                 developerToken: production.developerExclusionToken(runtime),
                 runtime,
               });

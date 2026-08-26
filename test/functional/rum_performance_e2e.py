@@ -7,9 +7,9 @@ authenticated Worker path, and then checks the same real result through the Acce
 Desk page. The request listener is diagnostic only: asynchronous beacon delivery can complete after
 the browser-visible request window, so read-back is the acceptance signal.
 
-Run with ``CROL_RUM_E2E=1``, ``CROL_PERF_ADMIN_URL``, ``CROL_PERF_ADMIN_KEY``, and a short-lived
-Access service-token file supplied through ``CROL_ACCESS_SERVICE_TOKEN_FILE``. The output directory
-is ignored by git.
+Run with ``CROL_RUM_E2E=1`` for the complete read-back proof. The daily scheduled generator uses
+``CROL_RUM_E2E_GENERATE=1`` to load the same surfaces repeatedly with a lab traffic marker; it
+does not require private read-back credentials. The output directory is ignored by git.
 """
 
 from __future__ import annotations
@@ -35,6 +35,7 @@ OUTPUT = Path(os.environ.get("CROL_RUM_E2E_OUTPUT", ".artifacts/rum-performance-
 READ_TIMEOUT_MS = int(os.environ.get("CROL_RUM_E2E_READ_TIMEOUT_MS", "60000"))
 READ_POLL_MS = int(os.environ.get("CROL_RUM_E2E_READ_POLL_MS", "3000"))
 SETTLE_MS = int(os.environ.get("CROL_RUM_E2E_SETTLE_MS", "12000"))
+REPEATS = int(os.environ.get("CROL_RUM_E2E_REPEATS", "5"))
 REQUIRED_MILESTONES = ("content_ready_ms", "component_ready_ms")
 SAMPLE_FLOOR = 30
 GOOD_P75_MS = 2_500
@@ -287,13 +288,14 @@ def read_admin_performance(
 
 
 def main() -> None:
-    if os.environ.get("CROL_RUM_E2E") != "1":
+    generate_only = os.environ.get("CROL_RUM_E2E_GENERATE") == "1"
+    if os.environ.get("CROL_RUM_E2E") != "1" and not generate_only:
         print("SKIP: set CROL_RUM_E2E=1 to run the live RUM chain proof")
         return
 
     admin_url = os.environ.get("CROL_PERF_ADMIN_URL")
     admin_key = os.environ.get("CROL_PERF_ADMIN_KEY")
-    if not admin_url or not admin_key:
+    if not generate_only and (not admin_url or not admin_key):
         raise RuntimeError("CROL_PERF_ADMIN_URL and CROL_PERF_ADMIN_KEY are required for read-back")
 
     OUTPUT.mkdir(parents=True, exist_ok=True)
@@ -301,118 +303,137 @@ def main() -> None:
         "public_base": PUBLIC_BASE,
         "paths": PATHS,
         "viewports": VIEWPORTS,
+        "repeats": REPEATS,
+        "traffic_class": "lab" if generate_only else "production",
+        "mode": "generate" if generate_only else "read-back",
         "pages": [],
         "beacons": [],
         "groups": [],
     }
     failures: list[str] = []
-    access = access_headers()
+    access = access_headers() if not generate_only else {}
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        baseline_context = browser.new_context(viewport=VIEWPORTS["desktop"])
-        baseline_response, baseline_payload = read_admin_performance(
-            baseline_context.request, admin_url, admin_key
-        )
-        evidence["operator_baseline"] = query_receipt(baseline_response, baseline_payload)
-        baseline_context.close()
+        if not generate_only:
+            baseline_context = browser.new_context(viewport=VIEWPORTS["desktop"])
+            baseline_response, baseline_payload = read_admin_performance(
+                baseline_context.request, admin_url, admin_key
+            )
+            evidence["operator_baseline"] = query_receipt(baseline_response, baseline_payload)
+            baseline_context.close()
 
         for device, viewport in VIEWPORTS.items():
             capture_started = datetime.now(timezone.utc)
             context = browser.new_context(viewport=viewport)
+            if generate_only:
+                context.add_init_script("window.CROL_RUM_TRAFFIC_CLASS = 'lab';")
             api_request = context.request
             public_page = context.new_page()
             beacons: list[dict[str, Any]] = []
 
             def record_request(request: Any) -> None:
-                if request.method == "POST" and request.url.rstrip("/").endswith("/performance-events"):
+                if request.method == "POST" and urlsplit(request.url).path.rstrip("/").endswith("/performance-events"):
                     beacons.append({"url": request.url, "method": request.method})
 
             public_page.on("request", record_request)
-            for path in PATHS:
-                url = f"{PUBLIC_BASE.rstrip('/')}/{path.lstrip('/')}"
-                public_page.goto(url, wait_until="domcontentloaded", timeout=60_000)
-                public_page.wait_for_timeout(SETTLE_MS)
-                evidence["pages"].append({"device": device, "path": path, "title": public_page.title()})
-
-            read_results: dict[str, tuple[Response, dict[str, Any] | None]] = {}
-            read_deadline = time.monotonic() + READ_TIMEOUT_MS / 1000
-            while time.monotonic() < read_deadline:
-                for metric in REQUIRED_MILESTONES:
-                    query_url = admin_query_url(admin_url, window="7d", metric=metric, device=device)
-                    read_results[metric] = read_admin_performance(api_request, query_url, admin_key)
-                latest_values = [latest_observation(payload) for _, payload in read_results.values()]
-                if all(value is not None and value >= capture_started - timedelta(seconds=5) for value in latest_values):
-                    break
-                public_page.wait_for_timeout(READ_POLL_MS)
+            for repeat in range(REPEATS):
+                for path in PATHS:
+                    url = f"{PUBLIC_BASE.rstrip('/')}/{path.lstrip('/')}"
+                    public_page.goto(url, wait_until="domcontentloaded", timeout=60_000)
+                    public_page.wait_for_timeout(SETTLE_MS)
+                    evidence["pages"].append({
+                        "device": device,
+                        "repeat": repeat + 1,
+                        "path": path,
+                        "title": public_page.title(),
+                    })
 
             device_evidence: dict[str, Any] = {
                 "device": device,
                 "capture_started": capture_started.isoformat().replace("+00:00", "Z"),
+                "page_loads": REPEATS * len(PATHS),
                 "metrics": {},
             }
-            for metric, (response, payload) in read_results.items():
-                device_evidence["metrics"][metric] = query_receipt(response, payload)
-                for expected in EXPECTED_GROUPS[metric]:
-                    verdict = group_verdict(response, payload, metric, expected, capture_started)
-                    evidence["groups"].append({"device": device, **verdict})
+            if not generate_only:
+                read_results: dict[str, tuple[Response, dict[str, Any] | None]] = {}
+                read_deadline = time.monotonic() + READ_TIMEOUT_MS / 1000
+                while time.monotonic() < read_deadline:
+                    for metric in REQUIRED_MILESTONES:
+                        query_url = admin_query_url(admin_url, window="7d", metric=metric, device=device)
+                        read_results[metric] = read_admin_performance(api_request, query_url, admin_key)
+                    latest_values = [latest_observation(payload) for _, payload in read_results.values()]
+                    if all(value is not None and value >= capture_started - timedelta(seconds=5) for value in latest_values):
+                        break
+                    public_page.wait_for_timeout(READ_POLL_MS)
+                for metric, (response, payload) in read_results.items():
+                    device_evidence["metrics"][metric] = query_receipt(response, payload)
+                    for expected in EXPECTED_GROUPS[metric]:
+                        verdict = group_verdict(response, payload, metric, expected, capture_started)
+                        evidence["groups"].append({"device": device, **verdict})
             evidence["devices"] = evidence.get("devices", []) + [device_evidence]
             evidence["beacons"].extend({"device": device, **beacon} for beacon in beacons)
             public_page.close()
             context.close()
 
-        desk_context = browser.new_context(viewport=VIEWPORTS["desktop"])
-        desk = desk_context.new_page()
-        desk.set_extra_http_headers(access)
-        desk_payloads: list[dict[str, Any]] = []
+        if not generate_only:
+            desk_context = browser.new_context(viewport=VIEWPORTS["desktop"])
+            desk = desk_context.new_page()
+            desk.set_extra_http_headers(access)
+            desk_payloads: list[dict[str, Any]] = []
 
-        def record_desk_response(response: Response) -> None:
-            if "/admin/performance" not in response.url:
-                return
-            payload = response_json(response)
-            if payload:
-                desk_payloads.append(payload)
+            def record_desk_response(response: Response) -> None:
+                if "/admin/performance" not in response.url:
+                    return
+                payload = response_json(response)
+                if payload:
+                    desk_payloads.append(payload)
 
-        desk.on("response", record_desk_response)
-        desk.goto(DESK_URL, wait_until="domcontentloaded", timeout=60_000)
-        desk.wait_for_timeout(5_000)
-        desk.screenshot(path=str(OUTPUT / "desk-performance.png"), full_page=True)
-        desk_payload = desk_payloads[-1] if desk_payloads else None
-        desk_text = desk.locator("body").inner_text()
-        evidence["desk"] = {
-            "url": DESK_URL,
-            "title": desk.title(),
-            "api_status": desk_payload.get("status") if desk_payload else None,
-            "operational_status": desk_payload.get("operational_status") if desk_payload else None,
-            "series_with_samples": len(series_with_samples(desk_payload)),
-            "milestones_with_samples": sorted(required_metric_rows(desk_payload)),
-            "latest_observation_at": (
-                latest_observation(desk_payload).isoformat().replace("+00:00", "Z")
-                if latest_observation(desk_payload) else None
-            ),
-            "body_contains_content_ready": "content" in desk_text.lower(),
-            "body_contains_component_ready": "component" in desk_text.lower(),
-        }
-        if not desk_payload or not series_with_samples(desk_payload):
-            failures.append("Desk performance view did not receive retained samples")
-        if not desk_payload or desk_payload.get("operational_status") != "flowing":
-            failures.append("Desk performance view did not render a flowing status")
-        if not desk_payload or required_metric_rows(desk_payload).keys() < set(REQUIRED_MILESTONES):
-            failures.append("Desk performance view did not receive the coarse readiness milestones")
-        if "content" not in desk_text.lower() or "component" not in desk_text.lower():
-            failures.append("Desk performance view did not render readiness metric labels")
-        desk.close()
-        desk_context.close()
+            desk.on("response", record_desk_response)
+            desk.goto(DESK_URL, wait_until="domcontentloaded", timeout=60_000)
+            desk.wait_for_timeout(5_000)
+            desk.screenshot(path=str(OUTPUT / "desk-performance.png"), full_page=True)
+            desk_payload = desk_payloads[-1] if desk_payloads else None
+            desk_text = desk.locator("body").inner_text()
+            evidence["desk"] = {
+                "url": DESK_URL,
+                "title": desk.title(),
+                "api_status": desk_payload.get("status") if desk_payload else None,
+                "operational_status": desk_payload.get("operational_status") if desk_payload else None,
+                "series_with_samples": len(series_with_samples(desk_payload)),
+                "milestones_with_samples": sorted(required_metric_rows(desk_payload)),
+                "latest_observation_at": (
+                    latest_observation(desk_payload).isoformat().replace("+00:00", "Z")
+                    if latest_observation(desk_payload) else None
+                ),
+                "body_contains_content_ready": "content" in desk_text.lower(),
+                "body_contains_component_ready": "component" in desk_text.lower(),
+            }
+            if not desk_payload or not series_with_samples(desk_payload):
+                failures.append("Desk performance view did not receive retained samples")
+            if not desk_payload or desk_payload.get("operational_status") != "flowing":
+                failures.append("Desk performance view did not render a flowing status")
+            if not desk_payload or required_metric_rows(desk_payload).keys() < set(REQUIRED_MILESTONES):
+                failures.append("Desk performance view did not receive the coarse readiness milestones")
+            if "content" not in desk_text.lower() or "component" not in desk_text.lower():
+                failures.append("Desk performance view did not render readiness metric labels")
+            desk.close()
+            desk_context.close()
         browser.close()
 
-    verdicts = [group["verdict"] for group in evidence["groups"]]
-    if any(verdict in {"FAIL", "NEEDS-WORK", "COVERAGE-FAILURE"} for verdict in verdicts):
-        evidence["verdict"] = "FAIL"
-        failures.append("one or more readiness groups missed the p75/p95 launch target")
-    elif any(verdict == "NEEDS-DATA" for verdict in verdicts):
-        evidence["verdict"] = "NEEDS-DATA"
+    if generate_only:
+        evidence["verdict"] = "GENERATED" if evidence["beacons"] else "UNAVAILABLE"
+        if not evidence["beacons"]:
+            failures.append("controlled page loads did not emit any RUM beacons")
     else:
-        evidence["verdict"] = "GOOD"
+        verdicts = [group["verdict"] for group in evidence["groups"]]
+        if any(verdict in {"FAIL", "NEEDS-WORK", "COVERAGE-FAILURE"} for verdict in verdicts):
+            evidence["verdict"] = "FAIL"
+            failures.append("one or more readiness groups missed the p75/p95 launch target")
+        elif any(verdict == "NEEDS-DATA" for verdict in verdicts):
+            evidence["verdict"] = "NEEDS-DATA"
+        else:
+            evidence["verdict"] = "GOOD"
     evidence["thresholds"] = {
         "sample_floor": SAMPLE_FLOOR,
         "p75_ms": GOOD_P75_MS,

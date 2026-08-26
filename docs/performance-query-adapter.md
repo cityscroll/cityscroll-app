@@ -18,13 +18,14 @@ The adapter reads the normalized point written by `worker/src/performance_events
 | `blob2`–`blob4` | metric, surface, component |
 | `blob5` | unit |
 | `blob6`–`blob9` | device, navigation, delivery, result state |
-| `blob10` | traffic class; queries require `production` |
+| `blob10` | traffic class; `production` is field traffic and `lab` is controlled Playwright traffic |
 | `blob11`–`blob13` | collector, manifest, bounded release |
 | `double1` | the numeric metric observation |
 | `index1` | metric + surface + component sampling index |
 
 The query grammar accepts only the `24h`, `7d`, `30d`, and `90d` windows and the registered filter
-values for metric, surface, component, device, navigation, delivery, result state, and release. A
+values for metric, surface, component, device, navigation, delivery, result state, traffic class,
+and release. A
 query must filter one metric or group by metric, because combining latency and score metrics into a
 single distribution would be meaningless. At most one reviewed grouping dimension is allowed.
 Release is filter-only, so a long deployment history cannot create an unbounded grouping. Summary
@@ -109,9 +110,11 @@ is reserved for retained observations. The other operational states are `no_data
 The opt-in live chain proof is `test/functional/rum_performance_e2e.py`. It uses Playwright to load
 real public pages, waits for their normal collector lifecycle, reads fresh retained rows through the
 authenticated API with `CROL_PERF_ADMIN_URL`/`CROL_PERF_ADMIN_KEY`, and opens the Access-authenticated
-Desk view with `CROL_ACCESS_SERVICE_TOKEN_FILE`. Intercepted beacon requests are diagnostic only;
-read-back is the acceptance signal. It writes only ignored local evidence and never posts synthetic
-observations.
+Desk view with `CROL_ACCESS_SERVICE_TOKEN_FILE`. Its scheduled generator mode repeats those real
+loads and sends real beacons with `traffic_class=lab`; the daily overlay reads that class separately
+so controlled measurements never satisfy or alter the field-user SLO. Intercepted beacon requests
+are diagnostic only; read-back is the acceptance signal. It writes only ignored local evidence and
+never posts fabricated observations.
 
 The Analytics Engine SQL uses ClickHouse's `%i` minute formatter (rather than `%M`, which emits a
 month name in this dialect) so the returned observation timestamps remain parseable ISO-8601 values.

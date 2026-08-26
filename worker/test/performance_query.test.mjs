@@ -95,6 +95,21 @@ test("composite readiness grouping keeps metric, surface, and component dimensio
   assert.deepEqual(normalized.group_by, ["surface_id", "component_id"]);
 });
 
+test("traffic class is an explicit bounded query filter", () => {
+  const queryPlan = performanceAnalyticsQueryPlan({
+    window: "7d",
+    filters: { metric_id: "ttfb_ms", traffic_class: "lab" },
+    group_by: ["surface_id"],
+  }, {
+    now: fixture.now,
+    configuredSince: fixture.configured_since,
+    sampleFloor: fixture.sample_floor,
+  });
+  const sql = queryPlan.requests.find(({ id }) => id === "current").sql;
+  assert.match(sql, /blob10 = 'lab'/);
+  assert.doesNotMatch(sql, /blob10 = 'production'/);
+});
+
 test("fixture-backed rows expose weighted percentiles, daily trends, and equal-window comparison", () => {
   const queryPlan = plan();
   const snapshot = buildPerformanceSnapshot(fixture.sql_results, queryPlan, {
