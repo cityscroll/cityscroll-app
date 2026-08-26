@@ -3,6 +3,7 @@
 import { officialSourceLink } from "../affordance_grammar.mjs";
 import {
   noticeContextReady,
+  noticeContextTimingMark,
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
 const SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
@@ -80,13 +81,36 @@ function contextSlot(el,slot,html){
   if(host)host.outerHTML=html;
   else el.insertAdjacentHTML("beforeend",html);
 }
+async function hydrateNoticeAttachments(r,el){
+  if(!r||!el||!Array.isArray(r.attachments)||!r.attachments.length||!document.contains(el))return;
+  const attachmentHTML=attachmentChipHTML(r);
+  const alreadyPainted=Boolean(el.querySelector(".attachment-panel"));
+  if(attachmentHTML&&!alreadyPainted){
+    const firstSlot=el.querySelector("[data-notice-context-slot]");
+    if(firstSlot)firstSlot.insertAdjacentHTML("beforebegin",attachmentHTML);
+    else el.insertAdjacentHTML("afterbegin",attachmentHTML);
+  }
+  // fillContext owns the initial attachment render when the row already carried
+  // attachment data; do not duplicate its related/table branches on late resolve.
+  if(alreadyPainted)return;
+  const relatedHTML=await attachmentRelatedHTMLFor(r);
+  contextSlot(el,"related",relatedHTML);
+  const tablesHTML=await attachmentTablesHTMLFor(r);
+  if(!tablesHTML||!document.contains(el))return;
+  const host=el.querySelector("[data-attachment-tables-host]");
+  if(host)host.outerHTML=tablesHTML;
+  else if(el.querySelector(".attachment-panel"))el.querySelector(".attachment-panel").insertAdjacentHTML("beforeend",tablesHTML);
+  const tools=await attachmentTablesTools();
+  if(tools&&document.contains(el))tools.bindAttachmentTableSort(el);
+}
 function contextReady(el,resultState){
   if(!document.contains(el))return;
   el.dataset.noticeContextReady="true";
   el.dataset.noticeContextResult=resultState;
+  noticeContextTimingMark("first-ready");
   noticeContextReady(runtimeRumSemanticMilestones(),{resultState});
 }
-async function fillContext(r,el){
+async function fillContext(r,el,settledWith=[]){
   if(!el)return;
   const attachmentHTML=attachmentChipHTML(r);
   // Mount the first useful card synchronously. The slots preserve the old visual
@@ -113,10 +137,14 @@ async function fillContext(r,el){
       if(tools&&document.contains(el))tools.bindAttachmentTableSort(el);
     }),
   ].map(branch=>branch.catch(()=>{}));
-  Promise.allSettled(settled).then(()=>{
-    if(document.contains(el))el.dataset.noticeContextSettled="true";
+  const additionalSettled=Array.isArray(settledWith)?settledWith:[settledWith];
+  Promise.allSettled([...settled,...additionalSettled]).then(()=>{
+    if(document.contains(el)){
+      el.dataset.noticeContextSettled="true";
+      noticeContextTimingMark("settled");
+    }
   });
 }
 async function externalAwardForNotice(r,el){if(!el)return;const cov=awardCoverage(r.agency_name);if(cov==="absent"||cov==="unknown")return;const resp=await loadExternalAward({id:r.request_id});if(!document.contains(el)||!resp)return;el.innerHTML=externalAwardHTML(resp,r);const offerBtn=el.querySelector("[data-award-watch-offer]");if(offerBtn)offerBtn.addEventListener("click",async()=>{const carry=await import("../alerts_context_carry.mjs").catch(()=>null);const scope=carry?.alertScopeFromNotice({...r,kind:"award"});location.assign(scope?carry.alertsHref(scope):"/following/");});}
 
-Object.assign(globalThis,{SECTION_LENS,BM_CACHE,NONCOMP_RE,yearCut,ordinal,agencyNorms,noticeFlags,awardContext,parcelLinksHTML,fillAddressLinks,attachmentExtractHTML,attachmentTablesHTMLFor,attachmentChipHTML,attachmentRelatedHTMLFor,mandateBacklinksHTMLFor,fillContext,externalAwardForNotice});
+Object.assign(globalThis,{SECTION_LENS,BM_CACHE,NONCOMP_RE,yearCut,ordinal,agencyNorms,noticeFlags,awardContext,parcelLinksHTML,fillAddressLinks,attachmentExtractHTML,attachmentTablesHTMLFor,attachmentChipHTML,attachmentRelatedHTMLFor,hydrateNoticeAttachments,mandateBacklinksHTMLFor,fillContext,externalAwardForNotice});

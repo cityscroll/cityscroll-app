@@ -21,6 +21,7 @@ import {
 } from "../official_profile_navigation.mjs";
 import {
   noticeContextReady,
+  noticeContextTimingMark,
   noticePrimaryOutcomeFromEdge,
   noticePrimaryReady,
   runtimeRumSemanticMilestones,
@@ -1377,6 +1378,7 @@ async function noticeAttachmentMetadata(id, notice=null){
   return {request_id:String(id),n_attachments:attachments.length,attachments};
 }
 async function showNotice(id, watch){
+  noticeContextTimingMark("route-start");
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
@@ -1393,16 +1395,25 @@ async function showNotice(id, watch){
   const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
   if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
+  let attachmentDataPromise = Promise.resolve(null);
   try{
-    const rows = await import("../notice-read.mjs").then(m=>m.read(id));
+    noticeContextTimingMark("notice-read-start");
+    const noticeRowsPromise = import("../notice-read.mjs").then(m=>m.read(id));
+    const rows = await noticeRowsPromise;
     r = rows[0];
-    const attachmentData = await noticeAttachmentMetadata(id,r);
-    if(r && attachmentData && Array.isArray(attachmentData.attachments) && attachmentData.attachments.length){
-      r.attachments=attachmentData.attachments;
-      r.n_documents=Math.max(Number(r.n_documents||0),attachmentData.attachments.length);
-      // T3: precomputed related edges from /attachment-metadata when present.
-      if(attachmentData.related_by_attachment) r.related_by_attachment=attachmentData.related_by_attachment;
-    }
+    noticeContextTimingMark("notice-read-end");
+    // Attachment metadata is optional context. Start it after the primary row is
+    // available, but do not await it before the first useful body or context state.
+    noticeContextTimingMark("attachment-start");
+    attachmentDataPromise = noticeAttachmentMetadata(id,r)
+      .then(data=>{
+        noticeContextTimingMark("attachment-end");
+        return data;
+      })
+      .catch(()=>{
+        noticeContextTimingMark("attachment-end");
+        return null;
+      });
   }catch(e){}
   if(!r){
     lastNoticeContext = null;
@@ -1423,10 +1434,6 @@ async function showNotice(id, watch){
     if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
     return;
   }
-  // Property deep links keep the loading state until the route module has supplied the parcel
-  // identity used by the action registry. The first rendered action is therefore the final one.
-  await optionalRouteModules;
-  if(typeof hydratePropertyActionMatter==="function") await hydratePropertyActionMatter(r);
   // Header "Want email updates?" and Watch CTAs read this for notice-scoped #alerts entry.
   lastNoticeContext = { row: r };
   if(typeof syncAlertsEntryHrefs === "function") Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});
@@ -1476,7 +1483,35 @@ async function showNotice(id, watch){
   bindQRShare($("#nqr"), link);
   $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));
   $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
-  fillContext(r, $("#ncontext"));
+  const contextElement=$("#ncontext");
+  const attachmentHydration=attachmentDataPromise.then(attachmentData=>{
+    let resolved=attachmentData;
+    if(!resolved?.attachments?.length){
+      const fallback=noticeAttachmentFallbacks(r);
+      if(fallback.length)resolved={...(resolved||{}),request_id:String(r.request_id),n_attachments:fallback.length,attachments:fallback};
+    }
+    if(resolved&&Array.isArray(resolved.attachments)&&resolved.attachments.length){
+      r.attachments=resolved.attachments;
+      r.n_documents=Math.max(Number(r.n_documents||0),resolved.attachments.length);
+      // T3: precomputed related edges from /attachment-metadata when present.
+      if(resolved.related_by_attachment)r.related_by_attachment=resolved.related_by_attachment;
+    }
+    return resolved;
+  }).then(()=>typeof hydrateNoticeAttachments==="function"
+    ? hydrateNoticeAttachments(r,contextElement)
+    : undefined);
+  fillContext(r, contextElement, [attachmentHydration]);
+  // Property action identity remains progressively hydrated, but no longer gates the
+  // notice body or Notice-context readiness on a cold route-module import.
+  optionalRouteModules
+    .then(()=>{
+      noticeContextTimingMark("route-modules-end");
+      return typeof hydratePropertyActionMatter==="function" ? hydratePropertyActionMatter(r) : r;
+    })
+    .then(()=>{
+      if(isPropertyDispositionEligible(r)&&$("#nactions"))mountNoticeActionRail($("#nactions"),r);
+    })
+    .catch(()=>{});
   mountNoticeActionRail($("#nactions"),r);
   if(typeof loadSolicitationMwbe === "function") loadSolicitationMwbe(r, $("#nmwbe"));
   loadRuleLifecycle(r, $("#nrules"));
