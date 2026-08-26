@@ -39,7 +39,7 @@ export async function handleFeedback(req, env) {
 
   const v = validateFeedback(body);
   if (!v.ok) return json({ ok: false, reason: v.reason }, 400, cors);
-  const { category, message, email } = v.value;
+  const { category, message, email, evidence, report_target: reportTarget, report } = v.value;
 
   const ip = req.headers.get("CF-Connecting-IP") || "";
   // Cheap KV rate-limit BEFORE a store or an email send.
@@ -47,6 +47,7 @@ export async function handleFeedback(req, env) {
 
   const record = {
     category, message, email,
+    ...(reportTarget ? { report_target: reportTarget, report, evidence } : {}),
     ip,
     ua: (req.headers.get("User-Agent") || "").slice(0, 300),
     at: new Date().toISOString(),
@@ -92,7 +93,18 @@ export async function notifyOperator(env, r) {
     if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
     return res.json();
   }
-  const label = { bug: "Bug", feature: "Feature idea", general: "General" }[r.category] || r.category;
+  const label = {
+    bug: "Bug",
+    feature: "Feature idea",
+    general: "General",
+    information_wrong: "Information is wrong",
+    connection_wrong: "Connection is wrong",
+    same_thing: "These are the same thing",
+    different_things: "These are different things",
+    something_missing: "Something is missing",
+    interpretation_wrong: "Interpretation is wrong",
+    other: "Other",
+  }[r.report?.category || r.category] || r.category;
   const payload = {
     from, to,
     subject: `[CityScroll] ${label}: ${firstLine(r.message)}`,
@@ -113,6 +125,16 @@ function firstLine(s) {
   return one.length > 80 ? one.slice(0, 77) + "…" : one;
 }
 function notifyText(r, label) {
+  const target = r.report_target ? [
+    "",
+    "Report target:",
+    `Description: ${r.report_target.description}`,
+    `Object ID:   ${r.report_target.object_id}`,
+    `Canonical:   ${r.report_target.canonical_url}`,
+    `Target ID:   ${r.report_target.target_id}`,
+    `Claim:       ${r.report_target.claim_anchor?.anchor || "whole object"}`,
+    `Evidence:    ${r.evidence || "(none supplied)"}`,
+  ] : [];
   return [
     "New CityScroll feedback",
     "",
@@ -123,6 +145,7 @@ function notifyText(r, label) {
     `UA:       ${r.ua || "(unknown)"}`,
     "",
     r.message,
+    ...target,
   ].join("\n");
 }
 function notifyHtml(r, label) {
@@ -133,10 +156,13 @@ function notifyHtml(r, label) {
     ["IP", r.ip || "(unknown)"],
     ["UA", r.ua || "(unknown)"],
   ].map(([k, val]) => `<tr><td style="padding:2px 12px 2px 0;color:#5b6470;vertical-align:top">${k}</td><td>${escHtml(val)}</td></tr>`).join("");
+  const target = r.report_target
+    ? `<div style="white-space:pre-wrap;border-left:3px solid #1b3a8f;padding-left:12px;margin:0 0 12px"><strong>Report target</strong>\n${escHtml(r.report_target.description)}\nObject: ${escHtml(r.report_target.object_id)}\nCanonical: ${escHtml(r.report_target.canonical_url)}\nClaim: ${escHtml(r.report_target.claim_anchor?.anchor || "whole object")}\nEvidence: ${escHtml(r.evidence || "(none supplied)")}</div>`
+    : "";
   return `<div style="font:15px/1.6 Georgia,serif;color:#12181f;max-width:640px">
     <h2 style="font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px">New CityScroll feedback</h2>
     <table style="font:13px/1.6 ui-sans-serif,system-ui,sans-serif;border-collapse:collapse;margin:0 0 14px">${rows}</table>
-    <div style="white-space:pre-wrap;border-left:3px solid #dde1e7;padding-left:12px">${escHtml(r.message)}</div>
+    ${target}<div style="white-space:pre-wrap;border-left:3px solid #dde1e7;padding-left:12px">${escHtml(r.message)}</div>
     ${r.email ? `<p style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5b6470">Reply directly to this email to respond to the sender.</p>` : ""}
   </div>`;
 }

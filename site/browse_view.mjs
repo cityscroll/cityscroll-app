@@ -46,6 +46,7 @@ import {
   renderProcurementCoverageHtml,
   renderProcurementRowCoverageHtml,
 } from "./procurement_coverage_labels.mjs";
+import { buildContractReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -1243,6 +1244,9 @@ export function renderBrowseView(view) {
       })
       : `<span lang="en" dir="ltr">${esc(title)}</span>`;
     const copyMarkup = renderObjectCardCopy(interaction, { label: "Copy link", escape: esc });
+    const reportMarkup = view.facet === "contracts" && (row.procurement_id || row.canonical_href)
+      ? renderReportIssueAffordance(buildContractReportTarget(row), { escape: esc })
+      : "";
     const sourceHandoff = interaction?.external_handoffs?.[0];
     const sourceMarkup = view.facet === "meetings" && row.source_system === "community_board" && !sourceHandoff
       ? staticFact({ label: meetingOriginLabel(row.meeting_origin), className: "browse-source-fact", escape: esc })
@@ -1325,7 +1329,7 @@ export function renderBrowseView(view) {
       : "";
     return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
-      ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
+      ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
       <p class="browse-static-meta">${[typedMetadata, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${detailMarkup}${view.facet === "contracts" ? renderProcurementRowCoverageHtml(row) : ""}
       ${assertionMarkup}

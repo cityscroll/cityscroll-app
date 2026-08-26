@@ -1,8 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { validateFeedback, FEEDBACK_CATEGORIES, MSG_MIN, MSG_MAX } from "../src/lib/feedback.mjs";
+import { validateFeedback, FEEDBACK_CATEGORIES, REPORT_CATEGORIES, MSG_MIN, MSG_MAX } from "../src/lib/feedback.mjs";
 import { handleFeedback } from "../src/feedback.mjs";
 import { overActorLimit } from "../src/lib/meter.mjs";
+import { buildContractReportTarget } from "../../site/report_issue.mjs";
 
 const good = (over = {}) => ({ category: "bug", message: "Something broke on the money tab.", email: "", ...over });
 
@@ -10,6 +11,39 @@ test("validateFeedback accepts a well-formed submission", () => {
   const r = validateFeedback(good());
   assert.equal(r.ok, true);
   assert.deepEqual(r.value, { category: "bug", message: "Something broke on the money tab.", email: "" });
+});
+
+test("validateFeedback keeps a Contract report target and optional evidence attached", () => {
+  const target = buildContractReportTarget({
+    procurement_id: "procurement:contract:CT123",
+    canonical_href: "/procurements/procurement%3Acontract%3ACT123",
+    short_title: "Street repair contract",
+    vendor_name: "Acme Works",
+    source_observation_refs: ["passport_public_contracts:row-1"],
+  });
+  const result = validateFeedback({
+    category: "information_wrong",
+    message: "The published vendor name does not match the source record.",
+    evidence: "See the attached public contract row.",
+    report_target: target,
+    email: "",
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.value.category, "report");
+  assert.equal(result.value.report.category, "information_wrong");
+  assert.equal(result.value.report_target.target_id, target.target_id);
+  assert.equal(result.value.report_target.canonical_url, target.canonical_url);
+  assert.equal(result.value.evidence, "See the attached public contract row.");
+});
+
+test("object reports reject generic categories and malformed targets", () => {
+  assert.ok(REPORT_CATEGORIES.includes("information_wrong"));
+  assert.equal(validateFeedback({
+    category: "bug", message: "This is long enough.", report_target: {},
+  }).reason, "bad-report-category");
+  assert.equal(validateFeedback({
+    category: "information_wrong", message: "This is long enough.", report_target: {},
+  }).reason, "bad-report-target");
 });
 
 test("every known category is accepted", () => {
@@ -136,6 +170,50 @@ test("accepts submission without turnstile token when Turnstile is not configure
   const fbKeys = Object.keys(store).filter((k) => k.startsWith("fb:"));
   assert.equal(fbKeys.length, 1);
 }));
+
+test("stores a Contract report as structured feedback with its target and evidence", async () => {
+  const store = {};
+  const target = buildContractReportTarget({
+    procurement_id: "procurement:contract:CT123",
+    canonical_href: "/procurements/procurement%3Acontract%3ACT123",
+    short_title: "Street repair contract",
+    vendor_name: "Acme Works",
+  });
+  const previous = globalThis.fetch;
+  let notification = null;
+  globalThis.fetch = async (url, options) => {
+    if (String(url).includes("api.resend.com")) {
+      notification = JSON.parse(options.body);
+      return new Response(JSON.stringify({ id: "mock" }), { status: 200 });
+    }
+    return previous ? previous(url, options) : new Response("unexpected", { status: 500 });
+  };
+  try {
+    const response = await handleFeedback(post({
+      category: "information_wrong",
+      message: "The vendor should be checked against the source record.",
+      evidence: "Public contract source row",
+      email: "",
+      report_target: target,
+      report: { category: "information_wrong", explanation: "The vendor should be checked against the source record.", evidence: "Public contract source row" },
+    }, { "CF-Connecting-IP": "203.0.113.11", origin: "https://cityscroll.org" }), {
+      RESEND_API_KEY: "rk",
+      FEEDBACK: {
+        put: async (key, value) => { store[key] = value; },
+      },
+    });
+    assert.equal(response.status, 200);
+    const record = JSON.parse(Object.values(store)[0]);
+    assert.equal(record.category, "report");
+    assert.equal(record.report_target.target_id, target.target_id);
+    assert.equal(record.report_target.canonical_url, target.canonical_url);
+    assert.equal(record.evidence, "Public contract source row");
+    assert.match(notification.text, /Object ID:\s+procurement:contract:CT123/);
+    assert.match(notification.text, /Public contract source row/);
+  } finally {
+    globalThis.fetch = previous;
+  }
+});
 
 test("rejects empty / too-short message with 400 bad-message", async () => {
   const r = await handleFeedback(post(good({ message: "" })), configured());
