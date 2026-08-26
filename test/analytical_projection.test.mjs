@@ -15,6 +15,7 @@ import {
   groupAnalyticalContracts,
   normalizeAnalyticalContractRow,
   registrationFiscalYear,
+  vendorConcentration,
 } from "../site/analytical_projection.mjs";
 import { normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
@@ -70,6 +71,33 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(filtered.length, 0);
     const href = analyticalDrillThroughHref({ agency: "Agency A", prime_vendor: "Vendor A", registration_fiscal_year: 2026, min_amount: 1000 });
     assert.equal(href, "/browse/contracts/?mode=award&ap_agency=Agency+A&ap_vendor=Vendor+A&ap_fy=2026&ap_min=1000");
+  });
+
+  it("computes vendor shares and top-N shares from the explicit scope denominator", () => {
+    const rows = [
+      normalizeAnalyticalContractRow({ id: "CT-A1", agency: "Agency A", vendor: "Vendor A", current: 100, original: 90, registered: "2025-08-01" }),
+      normalizeAnalyticalContractRow({ id: "CT-A2", agency: "Agency A", vendor: "Vendor A", current: 50, original: 45, registered: "2025-08-02" }),
+      normalizeAnalyticalContractRow({ id: "CT-B1", agency: "Agency A", vendor: "Vendor B", current: 50, original: 40, registered: "2025-08-03" }),
+      normalizeAnalyticalContractRow({ id: "CT-U1", agency: "Agency A", vendor: null, current: 100, original: 80, registered: "2025-08-04" }),
+    ];
+    // Independent expectation: 150 + 50 + 100 = 300 selected-scope current value.
+    const expectedDenominator = rows.reduce((sum, row) => sum + row.current_registered_amount, 0);
+    const result = vendorConcentration(rows, { measure: "current" });
+    const named = result.vendors.filter((vendor) => !vendor.unclassified);
+    const unknown = result.vendors.find((vendor) => vendor.unclassified);
+    assert.equal(result.denominator, expectedDenominator);
+    assert.equal(result.denominator_contract_count, 4);
+    assert.deepEqual(named.map((vendor) => [vendor.label, vendor.contract_count, vendor.registered_value]), [
+      ["Vendor A", 2, 150],
+      ["Vendor B", 1, 50],
+    ]);
+    assert.equal(unknown.registered_value, 100);
+    assert.equal(named[0].share, 150 / 300);
+    assert.equal(result.top_5_value, 200);
+    assert.equal(result.top_5_share, 200 / 300);
+    assert.equal(result.top_10_share, 200 / 300);
+    assert.equal(result.vendors.reduce((sum, vendor) => sum + vendor.share, 0), 1);
+    assert.equal(vendorConcentration(rows, { measure: "original" }).denominator, 255);
   });
 
   it("preserves linked agency and vendor scopes across the cold document-route handoff", () => {

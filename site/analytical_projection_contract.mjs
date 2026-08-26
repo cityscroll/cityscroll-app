@@ -83,7 +83,7 @@ export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
   }),
   ratio_policy: Object.freeze({
     required_fields: Object.freeze(["numerator", "denominator", "excluded_row_count"]),
-    note: "Ratios are not part of this first slice; any future ratio must publish all three fields.",
+    note: "Vendor shares publish numerator, explicit selected-scope denominator, and excluded value rows.",
   }),
   guards: Object.freeze([
     "registration_fiscal_year is derived from registration date; source_fiscal_years is provenance only",

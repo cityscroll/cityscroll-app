@@ -52,6 +52,16 @@ def main() -> None:
             wait_for_contracts(page)
             assert_scope(page, key, value.replace("+", " "), expected_count, value)
 
+        page.goto(f"{BASE}/browse/contracts/?{urlencode({'mode': 'award', 'ap_agency': AGENCY})}", wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_selector("#contracts-analytics-concentration:not([hidden])", timeout=60000)
+        assert "Who receives this contract value?" in page.locator("#contracts-analytics-concentration-heading").inner_text()
+        assert "top 5 vendors' share" in page.locator("#contracts-analytics-concentration-summaries").inner_text().lower()
+        assert page.locator("#contracts-analytics-concentration-vendors > li").count() > 0
+        vendor_href = page.locator("#contracts-analytics-concentration-vendors .contracts-analytics-concentration-vendor-name a").first.get_attribute("href")
+        contracts_href = page.locator(".contracts-analytics-concentration-contracts").first.get_attribute("href")
+        assert vendor_href.startswith("/vendors/"), vendor_href
+        assert "ap_agency=" in contracts_href and "ap_vendor=" in contracts_href, contracts_href
+
         page.goto(f"{BASE}/browse/contracts/?mode=award", wait_until="domcontentloaded", timeout=60000)
         page.wait_for_selector("#contracts-analytics-groups a", timeout=60000)
         page.locator(f'a[data-analytics-drill-through="{AGENCY}"]').click()

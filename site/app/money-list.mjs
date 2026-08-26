@@ -28,6 +28,7 @@ import {
   formatRegisteredValue,
   groupAnalyticalContracts,
   populationSummary,
+  vendorConcentration,
 } from "../analytical_projection.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
@@ -372,6 +373,64 @@ function analyticalMeasureLabel(measure){
   return measure === "original" ? t("analytics_measure_original") : measure === "count" ? t("analytics_measure_count") : t("analytics_measure_current");
 }
 
+function formatAnalyticalShare(value){
+  return `${(Number(value || 0) * 100).toLocaleString("en-US", { maximumFractionDigits: 1 })}%`;
+}
+
+function renderAnalyticalVendorConcentration(filtered, filters, measure, agency){
+  const panel=$("#contracts-analytics-concentration");
+  if(!panel) return;
+  const scopedAgency=!!agency && !filters.prime_vendor;
+  panel.hidden=!scopedAgency;
+  if(!scopedAgency) return;
+  const concentrationMeasure=measure === "original" ? "original" : "current";
+  const concentration=vendorConcentration(filtered,{measure:concentrationMeasure,topN:10});
+  const measureLabel=analyticalMeasureLabel(concentrationMeasure);
+  const title=$("#contracts-analytics-concentration-heading");
+  if(title) title.textContent=t("analytics_concentration_heading");
+  const deck=$("#contracts-analytics-concentration-deck");
+  if(deck) deck.textContent=t("analytics_concentration_deck",{agency,measure:measureLabel.toLowerCase()});
+  const denominator=$("#contracts-analytics-concentration-denominator");
+  if(denominator){
+    const excluded=concentration.excluded_value_count
+      ? ` ${t("analytics_concentration_excluded",{n:concentration.excluded_value_count.toLocaleString("en-US")})}`
+      : "";
+    denominator.textContent=t("analytics_concentration_denominator",{
+      value:formatRegisteredValue(concentration.denominator),
+      measure:measureLabel.toLowerCase(),
+      count:concentration.denominator_value_count.toLocaleString("en-US"),
+    })+excluded;
+  }
+  const summaries=$("#contracts-analytics-concentration-summaries");
+  if(summaries) summaries.innerHTML=[
+    ["analytics_top_5_share",concentration.top_5_share,concentration.top_5_value],
+    ["analytics_top_10_share",concentration.top_10_share,concentration.top_10_value],
+  ].map(([labelKey,share,value])=>`<div class="contracts-analytics-concentration-stat"><span>${escUiHtml(t(labelKey))}</span><strong>${formatAnalyticalShare(share)}</strong><small>${formatRegisteredValue(value)} ${escUiHtml(measureLabel.toLowerCase())}</small></div>`).join("");
+  const list=$("#contracts-analytics-concentration-vendors");
+  if(!list) return;
+  list.innerHTML=concentration.vendors.map((vendor,index)=>{
+    const vendorLabel=vendor.vendor_name
+      ? listEntityMentionHTML({kind:"vendor",value:vendor.vendor_name,escape:escUiHtml,relation:"analytics_vendor"})
+      : escUiHtml(vendor.label);
+    const href=analyticalDrillThroughHref({
+      agency,
+      prime_vendor:vendor.vendor_name || vendor.label,
+      registration_fiscal_year:filters.registration_fiscal_year,
+      min_amount:filters.min_amount,
+      max_amount:filters.max_amount,
+    });
+    const contractLabel=t("analytics_view_contracts",{count:vendor.contract_count.toLocaleString("en-US")});
+    const rank=vendor.unclassified ? "—" : `${vendor.rank || index+1}.`;
+    return `<li class="contracts-analytics-concentration-vendor" data-analytics-concentration-vendor="${escUiHtml(vendor.label)}"><div class="contracts-analytics-concentration-vendor-name"><span class="contracts-analytics-rank">${rank}</span>${vendorLabel}</div><div class="contracts-analytics-concentration-vendor-meta"><strong>${formatRegisteredValue(vendor.registered_value)}</strong> · ${formatAnalyticalShare(vendor.share)} · ${vendor.contract_count.toLocaleString("en-US")} ${escUiHtml(t("analytics_contracts_unit"))}</div><a class="contracts-analytics-concentration-contracts" href="${escUiHtml(href)}" data-analytics-concentration-contracts="${escUiHtml(vendor.label)}">${escUiHtml(contractLabel)}</a></li>`;
+  }).join("");
+  const note=$("#contracts-analytics-concentration-note");
+  if(note) note.textContent=t("analytics_concentration_note",{
+    measure:measureLabel.toLowerCase(),
+    unclassified:formatRegisteredValue(concentration.unclassified_value),
+    share:formatAnalyticalShare(concentration.unclassified_share),
+  });
+}
+
 function renderAnalyticalProjection(rows){
   const panel=$("#contracts-analytics");
   if(!panel) return;
@@ -395,6 +454,7 @@ function renderAnalyticalProjection(rows){
   const measure=$("#analytics-measure")?.value||"current";
   const grouped=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
   const measureLabel=analyticalMeasureLabel(measure);
+  renderAnalyticalVendorConcentration(filtered,filters,measure,urlFilters.agency);
   const population=$("#contracts-analytics-population");
   if(population){
     const headline=measure==="count"
@@ -404,6 +464,7 @@ function renderAnalyticalProjection(rows){
   }
   const list=$("#contracts-analytics-groups");
   if(!list) return;
+  list.hidden=!!urlFilters.agency && !urlFilters.prime_vendor;
   list.innerHTML=grouped.shown_groups.map((group,index)=>{
     const href=analyticalDrillThroughHref({
       [groupBy==="vendor"?"prime_vendor":"agency"]: group.label,
@@ -416,6 +477,7 @@ function renderAnalyticalProjection(rows){
   }).join("");
   const remaining=grouped.groups.length-grouped.shown_groups.length;
   const note=$("#contracts-analytics-note");
+  if(note) note.hidden=!!urlFilters.agency && !urlFilters.prime_vendor;
   if(note) note.textContent=remaining>0
     ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
     : t("analytics_group_exact_note");
