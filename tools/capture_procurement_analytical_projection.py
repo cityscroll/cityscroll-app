@@ -19,6 +19,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "artifacts" / "procurement-analytical-projection"
 VIEWPORTS = ((390, 844), (1440, 1000))
+AGENCY = "Department of Homeless Services"
 sys.path.insert(0, str(ROOT / "tools"))
 
 
@@ -68,9 +69,20 @@ def capture_page(page, url: str, path: Path, after: bool) -> dict:
             page.goto(url.rstrip("/") + drill["href"], wait_until="domcontentloaded")
             page.wait_for_selector("#list .row")
             drill_result = {"href": drill["href"], "visible_contract_rows": page.locator("#list .row").count(), "result_count": page.locator("#rescount").inner_text()}
-        return {"population": population, "groups": groups, "vendor_groups": vendor_groups, "drill_through": drill_result, "page_errors": page_errors}
+        page.goto(url + "browse/contracts/?mode=award&ap_agency=" + AGENCY.replace(" ", "+"), wait_until="domcontentloaded")
+        page.wait_for_selector("#contracts-analytics-concentration:not([hidden])", timeout=60000)
+        concentration = {
+            "denominator": page.locator("#contracts-analytics-concentration-denominator").inner_text(),
+            "top_shares": page.locator("#contracts-analytics-concentration-summaries").inner_text(),
+            "vendors": page.locator("#contracts-analytics-concentration-vendors > li").count(),
+        }
+        page.locator("#contracts-analytics-concentration").screenshot(path=str(OUT / f"after-agency-{page.viewport_size['width']}.png"), animations="disabled")
+        return {"population": population, "groups": groups, "vendor_groups": vendor_groups, "drill_through": drill_result, "concentration": concentration, "page_errors": page_errors}
+    page.goto(url + "browse/contracts/?mode=award&ap_agency=" + AGENCY.replace(" ", "+"), wait_until="domcontentloaded")
+    page.wait_for_selector("#list .row")
+    page.locator("#tab-money .grid").screenshot(path=str(OUT / f"before-agency-{page.viewport_size['width']}.png"), animations="disabled")
     page.locator("#tab-money .grid").screenshot(path=str(path), animations="disabled")
-    return {"population": None, "groups": [], "page_errors": page_errors}
+    return {"population": None, "groups": [], "agency": AGENCY, "page_errors": page_errors}
 
 
 def main() -> None:

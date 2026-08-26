@@ -6,7 +6,8 @@ Population statement: **26,270 unique registered expense contracts, registration
 
 - Before, existing Contracts record list: `artifacts/procurement-analytical-projection/before-390.png` and `before-1440.png`.
 - After, Contracts Compare / Overview with the population statement and ranked groups: `artifacts/procurement-analytical-projection/after-390.png` and `after-1440.png`.
-- The after view is grouped by Agency and measured by Current registered contract value. Vendor grouping is available from the same control.
+- Agency-scope before/after: the DHS contract list is in `before-agency-390.png` and `before-agency-1440.png`; the ranked vendor projection is in `after-agency-390.png` and `after-agency-1440.png`.
+- The after view is grouped by Agency and measured by Current registered contract value. Vendor grouping is available from the same control; an agency scope adds the vendor projection with top-5/top-10 shares and exact contract links.
 
 ## Drill-through paths
 
@@ -19,6 +20,10 @@ These links open the ordinary Contracts route with exact analytical group filter
 
 All amounts above are registered contract values, not actual spending or payment totals.
 
+## AP-07 agency-scope proof
+
+Department of Homeless Services: 373 contracts and **$15,978,562,684 current registered contract value** in the explicit selected-scope denominator. The top five named vendors account for **42.6%** ($6,807,021,842); the top ten account for **60.7%** ($9,700,344,493). Each named-vendor row exposes the vendor entity page and an exact agency+vendor Contracts link. Unclassified vendor value is shown as its own bucket when present; DHS has $0 unclassified value in this snapshot.
+
 ## Scope
 
-This delivery covers AP-01 through AP-04: the versioned projection contract, Checkbook source-native dimension profile, population materialization, and the Contracts Compare / Overview reader view. AP-05 through AP-10 remain deferred future waves.
+This delivery extends AP-01 through AP-04 with AP-07: the versioned vendor-share calculation, explicit selected-scope denominator, unclassified-vendor bucket, and agency-scoped vendor drill-through in the Contracts Compare / Overview reader view. AP-05, AP-06, and AP-08 through AP-10 remain deferred future waves.

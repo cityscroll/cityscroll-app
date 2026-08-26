@@ -9,6 +9,7 @@
       },
       "population": null,
       "groups": [],
+      "agency": "Department of Homeless Services",
       "page_errors": []
     },
     {
@@ -19,6 +20,7 @@
       },
       "population": null,
       "groups": [],
+      "agency": "Department of Homeless Services",
       "page_errors": []
     },
     {
@@ -61,6 +63,11 @@
         "visible_contract_rows": 40,
         "result_count": "40 or more results"
       },
+      "concentration": {
+        "denominator": "$15,978,562,684 current registered contract value across 373 contracts is the explicit selected-scope denominator. Shares use this current registered contract value total.",
+        "top_shares": "TOP 5 VENDORS' SHARE\n42.6%\n$6,807,021,842 current registered contract value\nTOP 10 VENDORS' SHARE\n60.7%\n$9,700,344,493 current registered contract value",
+        "vendors": 141
+      },
       "page_errors": []
     },
     {
@@ -102,6 +109,11 @@
         "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction",
         "visible_contract_rows": 40,
         "result_count": "40 or more results"
+      },
+      "concentration": {
+        "denominator": "$15,978,562,684 current registered contract value across 373 contracts is the explicit selected-scope denominator. Shares use this current registered contract value total.",
+        "top_shares": "TOP 5 VENDORS' SHARE\n42.6%\n$6,807,021,842 current registered contract value\nTOP 10 VENDORS' SHARE\n60.7%\n$9,700,344,493 current registered contract value",
+        "vendors": 141
       },
       "page_errors": []
     }

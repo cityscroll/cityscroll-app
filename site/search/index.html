@@ -754,11 +754,32 @@
   .contracts-analytics-controls label{display:block;color:var(--muted);font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
   .contracts-analytics-controls select,.contracts-analytics-controls input{width:100%;margin-top:4px}
   .contracts-analytics-groups{display:grid;gap:7px;margin:14px 0 0;padding:0;list-style:none}
+  .contracts-analytics-groups[hidden],.contracts-analytics-note[hidden]{display:none}
   .contracts-analytics-group{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
   .contracts-analytics-group a{min-width:0;color:var(--ink);font-weight:750;text-decoration:none;overflow-wrap:anywhere}
   .contracts-analytics-group a:hover{text-decoration:underline}
   .contracts-analytics-group-meta{text-align:end;color:var(--muted);font:650 12px/1.35 ui-sans-serif,system-ui,sans-serif;white-space:nowrap}
   .contracts-analytics-note{margin-top:11px;font-size:11.5px}
+  .contracts-analytics-concentration{margin-top:16px;padding-top:16px;border-top:1px solid var(--rule)}
+  .contracts-analytics-concentration[hidden]{display:none}
+  .contracts-analytics-concentration h3{margin:0 0 5px;font:700 1.25rem/1.15 var(--font-display);color:var(--ink)}
+  .contracts-analytics-concentration-deck,.contracts-analytics-concentration-denominator,.contracts-analytics-concentration-note{margin:0;color:var(--ink-soft);font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-concentration-denominator{margin-top:9px;padding:9px 11px;border-radius:6px;background:var(--paper-2);color:var(--ink);font-weight:700}
+  .contracts-analytics-concentration-summaries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+  .contracts-analytics-concentration-stat{display:grid;gap:2px;padding:10px 11px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+  .contracts-analytics-concentration-stat span{color:var(--muted);font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+  .contracts-analytics-concentration-stat strong{font:800 1.4rem/1.1 var(--font-display);color:var(--oxblood)}
+  .contracts-analytics-concentration-stat small{color:var(--muted);font:11px/1.3 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-concentration-vendors{display:grid;gap:7px;max-height:560px;overflow-y:auto;margin:12px 0 0;padding:0 4px 0 0;list-style:none}
+  .contracts-analytics-concentration-vendor{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+  .contracts-analytics-concentration-vendor-name{min-width:0;color:var(--ink);font-weight:750;overflow-wrap:anywhere}
+  .contracts-analytics-concentration-vendor-name a{color:inherit;text-decoration:none}
+  .contracts-analytics-concentration-vendor-name a:hover{text-decoration:underline}
+  .contracts-analytics-rank{display:inline-block;min-width:2em;color:var(--muted);font-variant-numeric:tabular-nums}
+  .contracts-analytics-concentration-vendor-meta{color:var(--muted);font:650 12px/1.35 ui-sans-serif,system-ui,sans-serif;white-space:nowrap;text-align:end}
+  .contracts-analytics-concentration-contracts{color:var(--oxblood);font:700 12px/1.35 ui-sans-serif,system-ui,sans-serif;white-space:nowrap}
+  .contracts-analytics-concentration-note{margin-top:11px;font-size:11.5px}
+  @media(max-width:680px){.contracts-analytics-concentration-summaries{grid-template-columns:1fr}.contracts-analytics-concentration-vendor{grid-template-columns:minmax(0,1fr) auto}.contracts-analytics-concentration-vendor-meta{grid-column:1;text-align:start}.contracts-analytics-concentration-contracts{grid-column:2;grid-row:1 / span 2}}
   @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
@@ -1878,6 +1899,14 @@
         <div class="field"><label for="analytics-min" data-i18n="analytics_min_current">Minimum current value</label><input id="analytics-min" type="number" min="0" step="1000" placeholder="No minimum" data-i18n-placeholder="analytics_no_minimum"></div>
         <div class="field"><label for="analytics-max" data-i18n="analytics_max_current">Maximum current value</label><input id="analytics-max" type="number" min="0" step="1000" placeholder="No maximum" data-i18n-placeholder="analytics_no_maximum"></div>
       </div>
+      <section class="contracts-analytics-concentration" id="contracts-analytics-concentration" hidden aria-labelledby="contracts-analytics-concentration-heading">
+        <h3 id="contracts-analytics-concentration-heading">Who receives this contract value?</h3>
+        <p class="contracts-analytics-concentration-deck" id="contracts-analytics-concentration-deck">Vendor shares within the selected agency.</p>
+        <p class="contracts-analytics-concentration-denominator" id="contracts-analytics-concentration-denominator" role="status"></p>
+        <div class="contracts-analytics-concentration-summaries" id="contracts-analytics-concentration-summaries" aria-label="Vendor concentration summary"></div>
+        <ol class="contracts-analytics-concentration-vendors" id="contracts-analytics-concentration-vendors"></ol>
+        <p class="contracts-analytics-concentration-note" id="contracts-analytics-concentration-note"></p>
+      </section>
       <ol class="contracts-analytics-groups" id="contracts-analytics-groups"></ol>
       <p class="contracts-analytics-note" id="contracts-analytics-note"></p>
     </section>
