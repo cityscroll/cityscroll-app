@@ -1,4 +1,5 @@
 import { entityHref, entityRouteRef } from "./entity_pivot.mjs";
+import { ANALYTICAL_PROJECTION_QUERY_KEYS } from "./analytical_projection.mjs";
 import {
   EXAMS_SURFACE,
   PEOPLE_ORGANIZATIONS_SURFACE,
@@ -56,7 +57,7 @@ export function canonicalizeBrowseUrl(value, { origin = CANONICAL_ORIGIN } = {})
 }
 
 export const LEGACY_ROUTE_PARAMETERS = Object.freeze({
-  money: new Set([...COMMON_FILTERS, "mode", "sort", "min", "max", "category", "standard", "closing", "m", "basis", "actionBasis"]),
+  money: new Set([...COMMON_FILTERS, "mode", "sort", "min", "max", "category", "standard", "closing", "m", "basis", "actionBasis", ...ANALYTICAL_PROJECTION_QUERY_KEYS]),
   people: new Set([...COMMON_FILTERS, "type", "mode"]),
   staffing: new Set([...COMMON_FILTERS, "role"]),
   exams: new Set([...COMMON_FILTERS, "interest", "eligibility", "window", "format", "salary", "fee", "experience"]),
