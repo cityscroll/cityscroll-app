@@ -5,6 +5,7 @@ import {
   parseSearchLensHandoff,
   renderSearchLensHandoffHtml,
 } from "../search_lens_handoff.mjs";
+import { calendarSubscriptionHrefForScope } from "../calendar_subscription.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -810,8 +811,39 @@ function renderSearchLensHandoff(lens){
   state.before(node);
 }
 
+function calendarRowsForLens(lens) {
+  if (lens === "money") return Array.isArray(globalThis.currentRows) ? globalThis.currentRows : [];
+  if (lens === "land") return Array.isArray(globalThis.lRows) ? globalThis.lRows : [];
+  if (lens === "property") return Array.isArray(globalThis.propAll) ? globalThis.propAll : [];
+  if (lens === "rules") return Array.isArray(globalThis.rulesAll) ? globalThis.rulesAll : [];
+  if (lens === "meetings") return Object.values(globalThis.feedRows?.meetings || {});
+  return [];
+}
+
+export function syncCalendarSubscription(lens, rows = null) {
+  const controls = [...document.querySelectorAll("[data-calendar-subscribe-lens]")];
+  controls.forEach((control) => {
+    const active = control.dataset.calendarSubscribeLens === lens;
+    control.hidden = !active;
+    if (!active) control.removeAttribute("href");
+  });
+  const control = controls.find((candidate) => candidate.dataset.calendarSubscribeLens === lens);
+  if (!control || !globalThis.CrolScope) return null;
+  const hash = location.hash.startsWith(`#${lens}`) ? location.hash : `#${lens}`;
+  const scope = CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
+  const href = calendarSubscriptionHrefForScope(scope, {
+    lens,
+    rows: rows || calendarRowsForLens(lens),
+  });
+  if (!href) return null;
+  control.href = href;
+  control.hidden = false;
+  return href;
+}
+
 function renderSearchComponents(lens, options){
   renderSearchLensHandoff(lens);
+  syncCalendarSubscription(lens);
   if(!["people","land","property","rules","meetings"].includes(lens)) return;
   const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():documentSearchHash(lens);
   const hash=(options&&options.hash)||serialized;
@@ -1327,6 +1359,7 @@ globalThis.renderLandingShareActions = renderLandingShareActions;
 globalThis.renderNLQPresets = renderNLQPresets;
 globalThis.renderNLSamples = renderNLSamples;
 globalThis.renderSearchComponents = renderSearchComponents;
+globalThis.syncCalendarSubscription = syncCalendarSubscription;
 globalThis.renderSearchLensHandoff = renderSearchLensHandoff;
 globalThis.rerenderAllSuggestions = rerenderAllSuggestions;
 globalThis.resolveMoneyNarrow = resolveMoneyNarrow;

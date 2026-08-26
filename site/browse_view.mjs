@@ -47,6 +47,7 @@ import {
   renderProcurementRowCoverageHtml,
 } from "./procurement_coverage_labels.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
+import { renderCalendarSubscriptionAffordance } from "./calendar_subscription.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -786,11 +787,11 @@ function rowAgencyFilterMatches(row, facet, filter) {
   const raw = String(filter || "").trim();
   if (!raw) return true;
   const resolved = resolveAgencyIdentity(raw).canonical_id;
-  const rowAgency = String(readAgencyIdFromRow(row, facet) || rowAgency(facet, row) || "").trim();
-  const normalizedRowAgency = rowAgency.toLocaleLowerCase();
+  const rowAgencyName = String(readAgencyIdFromRow(row, facet) || rowAgency(facet, row) || "").trim();
+  const normalizedRowAgency = rowAgencyName.toLocaleLowerCase();
   const normalizedFilter = raw.toLocaleLowerCase();
   if (normalizedRowAgency.includes(normalizedFilter)) return true;
-  if (resolved && resolveAgencyIdentity(rowAgency).canonical_id === resolved) return true;
+  if (resolved && resolveAgencyIdentity(rowAgencyName).canonical_id === resolved) return true;
   return false;
 }
 
@@ -1036,6 +1037,8 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     config,
     total: matched.length,
     scope: scopeSummary,
+    scopeObject: scopeState.parsed,
+    calendarRows: matched,
     preScopeTotal: matchedBase.length,
     rows: visibleRows,
     asOf: isoDay(asOf),
@@ -1186,6 +1189,7 @@ export function renderBrowseView(view) {
       : `<p class="note warn browse-filter-disclosure" role="status" aria-label="Loading requested filters"><span class="loading" aria-hidden="true"></span></p>`
     : "";
   const scopeChip = renderScopeChip(view.scope, view.config, view.scopeSearch);
+  const calendarSubscription = renderCalendarSubscriptionAffordance(view, { escape: esc });
   const contextualSuggestions = renderContextualSuggestions(view.contextualSuggestions);
   const edgeRail = renderEdgeSummaryRail(buildBrowseEdgeSummary(view), {
     heading: "Related records",
@@ -1369,7 +1373,7 @@ export function renderBrowseView(view) {
       })[key] || key,
     })
     : "";
-  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
+  return `<div class="browse-build-view" data-build-rendered="browse" data-browse-facet="${esc(view.facet)}">${traversal}${summary}${contractsDiscoveryHtml(view)}${procurementCoverage}${asOfMismatch}${scopeChip}${calendarSubscription}${boardInstitutionPivot}${boardDisambiguation}${edgeRail}${contextualSuggestions}${disclosure}${semanticLane}${cards}</div>`;
 }
 
 export function browseAssetPath(facet) {
