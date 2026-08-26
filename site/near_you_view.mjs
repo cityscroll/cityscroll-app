@@ -545,9 +545,9 @@ export function renderNearYouDeferredBody(view) {
     ${bagsHtml}`;
 }
 
-function renderNearYouDeferredShell(view, part) {
+function renderNearYouDeferredShell(view, part, { includeListPanelMarker = false } = {}) {
   if (part === "results") {
-    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-results-count="0" data-near-deferred="results" data-near-deferred-state="pending" data-near-surface-panel="list" aria-busy="true">
+    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-results-count="0" data-near-deferred="results" data-near-deferred-state="pending"${includeListPanelMarker ? ` data-near-surface-panel="list"` : ""} aria-busy="true">
       <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
       <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
     </section>`;
@@ -563,7 +563,7 @@ function renderNearYouDeferredShell(view, part) {
     </section>`;
 }
 
-export function renderNearYouBody(view) {
+export function renderNearYouBody(view, { includeListPanelMarker = false } = {}) {
   const scopeChips = view.scopeSummary
     .map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
   const paths = view.features.map((feature) => `<path class="map-district"
@@ -676,7 +676,7 @@ export function renderNearYouBody(view) {
       <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">Records (${view.results.count})</a>
       <a class="near-surface-link" href="#near-map-heading" data-near-surface="map">Map</a>
     </nav>
-    ${renderNearYouDeferredShell(view, "results")}
+    ${renderNearYouDeferredShell(view, "results", { includeListPanelMarker })}
     <section class="near-map-section" aria-labelledby="near-map-heading" data-near-surface-panel="map">
       <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
         <div class="map-controls js-only" hidden>
@@ -714,7 +714,7 @@ export function renderNearYouDocument(view, options = {}) {
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   const deferredDataHref = options.deferredDataHref || view.deferredDataHref || "";
-  const body = renderNearYouBody({ ...view, deferredDataHref });
+  const body = renderNearYouBody({ ...view, deferredDataHref }, { includeListPanelMarker: true });
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
