@@ -75,7 +75,8 @@ test("the Contracts award query path augments the bounded resident snapshot from
   assert.match(source, /const retrievalQuery=kw\|\|scopedVendorStem/);
   assert.match(source, /contractObjectRef:contractIdentity\?\.object_ref\|\|""/);
   assert.match(source, /mergeContractSearchRows\(retainedRows,searchDocuments\)/);
-  assert.match(source, /mergeCanonicalProcurementBrowseRows\(searchedRows,canonicalSnapshot\?\.rows\)/);
+  assert.match(source, /loadMoneyProcurementSnapshot\(\{\.\.\.common,method:methodSel\},searchedRows\)/);
+  assert.match(source, /mergeCanonicalProcurementBrowseRows\(searchedRows,hydrated\.rows\)/);
 });
 
 test("the spaced vendor pivot returns all 16 retained P&T II awards in-window", () => {

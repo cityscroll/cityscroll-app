@@ -1,0 +1,86 @@
+{
+  "content": {"verdict": "PASS"},
+  "readiness": {"verdict": "PASS"},
+  "surface": "browse-contracts",
+  "verdict": "PASS",
+  "viewports": {
+    "desktop": {
+      "content": {
+        "after_control_count": 90,
+        "after_record_count": 22,
+        "allowed_losses": [],
+        "before_control_count": 90,
+        "before_record_count": 22,
+        "missing": [],
+        "verdict": "PASS"
+      },
+      "readiness": {
+        "deltas_ms": {
+          "component_ready_ms": -1.15,
+          "content_ready_ms": -0.9,
+          "first_contentful_paint_ms": 0,
+          "first_paint_ms": 0
+        },
+        "failures": [],
+        "improvement_ms": 1.15,
+        "verdict": "PASS"
+      },
+      "visual": {
+        "changed_fraction": 0,
+        "mean_absolute_channel_delta": 0,
+        "sample_stride": 8,
+        "sampled_pixels": 65160,
+        "threshold": 0.02,
+        "verdict": "PASS"
+      }
+    },
+    "mobile": {
+      "content": {
+        "after_control_count": 90,
+        "after_record_count": 22,
+        "allowed_losses": [],
+        "before_control_count": 90,
+        "before_record_count": 22,
+        "missing": [],
+        "verdict": "PASS"
+      },
+      "readiness": {
+        "deltas_ms": {
+          "component_ready_ms": -32.55,
+          "content_ready_ms": -40.25,
+          "first_contentful_paint_ms": -30,
+          "first_paint_ms": -30
+        },
+        "failures": [],
+        "improvement_ms": 40.25,
+        "verdict": "PASS"
+      },
+      "visual": {
+        "changed_fraction": 0,
+        "mean_absolute_channel_delta": 0,
+        "sample_stride": 8,
+        "sampled_pixels": 32340,
+        "threshold": 0.02,
+        "verdict": "PASS"
+      }
+    }
+  },
+  "visual": {
+    "desktop": {
+      "changed_fraction": 0,
+      "mean_absolute_channel_delta": 0,
+      "sample_stride": 8,
+      "sampled_pixels": 65160,
+      "threshold": 0.02,
+      "verdict": "PASS"
+    },
+    "mobile": {
+      "changed_fraction": 0,
+      "mean_absolute_channel_delta": 0,
+      "sample_stride": 8,
+      "sampled_pixels": 32340,
+      "threshold": 0.02,
+      "verdict": "PASS"
+    }
+  }
+}

@@ -13,6 +13,7 @@ import { buildProcurementDigestSnapshot } from "../site/procurement_digest_compi
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
+import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
 import {
   attachCoherenceReceipt,
   sourceModelFingerprint,
@@ -23,6 +24,8 @@ const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.m
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
 const MODEL_SHARD_DIR = new URL("../site/data/shared_procurement_read_model/", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
+const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", import.meta.url);
+const BROWSE_QUERY_SHARD_DIR = new URL("../site/data/procurement_browse_rows/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 
 function norm(value) {
@@ -209,6 +212,52 @@ function checkOrWriteShardedModel(model) {
   return true;
 }
 
+function browseQueryShardPath(descriptor) {
+  return new URL(`../site/data/${descriptor.path}`, import.meta.url);
+}
+
+function checkOrWriteBrowseQueryArtifacts(browse, sourceModelFingerprint) {
+  const artifacts = buildProcurementBrowseQueryArtifacts({
+    ...browse,
+    source_model_fingerprint: sourceModelFingerprint,
+  });
+  const outputs = [
+    [BROWSE_QUERY_OUT, `${JSON.stringify(artifacts.manifest)}\n`],
+    ...artifacts.manifest.shards.map((descriptor, index) => [
+      browseQueryShardPath(descriptor),
+      serialized(artifacts.shards[index]),
+    ]),
+  ];
+  const expectedNames = new Set(artifacts.manifest.shards.map((descriptor) => descriptor.path.split("/").at(-1)));
+  const actualNames = existsSync(BROWSE_QUERY_SHARD_DIR)
+    ? readdirSync(BROWSE_QUERY_SHARD_DIR, { withFileTypes: true })
+      .filter((entry) => entry.isFile() && /^shard-\d+\.json$/.test(entry.name))
+      .map((entry) => entry.name)
+    : [];
+  if (process.argv.includes("--check")) {
+    let current = true;
+    for (const [path, content] of outputs) {
+      if (readFileSync(path, "utf8") !== content) {
+        console.error(`stale procurement browse query artifact: ${fileURLToPath(path)}`);
+        current = false;
+      }
+    }
+    for (const name of actualNames) {
+      if (!expectedNames.has(name)) {
+        console.error(`stale procurement browse query shard: ${fileURLToPath(new URL(name, BROWSE_QUERY_SHARD_DIR))}`);
+        current = false;
+      }
+    }
+    return current;
+  }
+  mkdirSync(BROWSE_QUERY_SHARD_DIR, { recursive: true });
+  for (const name of actualNames) {
+    if (!expectedNames.has(name)) rmSync(new URL(name, BROWSE_QUERY_SHARD_DIR));
+  }
+  for (const [path, content] of outputs) writeFileSync(path, content);
+  return true;
+}
+
 function main() {
   const spineBytes = readFileSync(SPINE);
   const awardsBytes = readFileSync(AWARDS);
@@ -223,17 +272,19 @@ function main() {
   ];
   if (process.argv.includes("--check")) {
     const modelCurrent = checkOrWriteShardedModel(model);
+    const browseQueryCurrent = checkOrWriteBrowseQueryArtifacts(browse, model.coherence_receipt.source_model_fingerprint);
     for (const [path, content] of outputs) {
       if (readFileSync(path, "utf8") !== content) {
         console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
         process.exitCode = 1;
       }
     }
-    if (!modelCurrent) process.exitCode = 1;
+    if (!modelCurrent || !browseQueryCurrent) process.exitCode = 1;
     if (!process.exitCode) console.log(`procurement artifacts current (${model.rows.length} objects)`);
     return;
   }
   checkOrWriteShardedModel(model);
+  checkOrWriteBrowseQueryArtifacts(browse, model.coherence_receipt.source_model_fingerprint);
   for (const [path, content] of outputs) writeFileSync(path, content);
   console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows, ${digest.row_count} CROL-negative digest rows)`);
 }

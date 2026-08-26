@@ -34,8 +34,9 @@ const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
 const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
 const MONEY_PROCUREMENT_SNAPSHOT_URL="data/procurement_browse_rows.json";
+const MONEY_PROCUREMENT_QUERY_URL="data/procurement_browse_query.json";
 const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
-let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyProcurementSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
+let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
 let analyticalProjectionPromise=null;
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
@@ -140,13 +141,12 @@ function loadMoneyResidentSnapshot(){
   }
   return moneyResidentSnapshotPromise;
 }
-function loadMoneyProcurementSnapshot(){
-  if(!moneyProcurementSnapshotPromise){
-    moneyProcurementSnapshotPromise=fetch(MONEY_PROCUREMENT_SNAPSHOT_URL)
-      .then(r=>r.ok?r.json():{rows:[]})
-      .catch(()=>({rows:[]}));
-  }
-  return moneyProcurementSnapshotPromise;
+function loadMoneyProcurementSnapshot(options={}, baseRows=[]){
+  return import("../procurement_browse_query.mjs").then(({loadProcurementBrowseQuery}) => loadProcurementBrowseQuery({
+    manifestUrl:MONEY_PROCUREMENT_QUERY_URL,
+    legacyUrl:MONEY_PROCUREMENT_SNAPSHOT_URL,
+    options:{...options,baseRows},
+  }));
 }
 function loadAnalyticalProjection(){
   if(!analyticalProjectionPromise){
@@ -215,7 +215,7 @@ async function loadAgencies(){
   }
 }
 
-let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
+let currentRows = [], currentMoneyLineageRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
 let currentMoneyNarrowed = false;
 let forceFullHistorySearch = false;
 let moneyNlResolved = {};
@@ -504,16 +504,18 @@ async function search(){
     const searchDocuments=((contractIdentity||retrievalQuery)&&(mode==="award"||mode==="archive"))
       ? await loadContractSearchDocuments(retrievalQuery,contractIdentity)
       : [];
-    const canonicalSnapshot=(mode==="award"||mode==="archive")
-      ? await loadMoneyProcurementSnapshot()
-      : {rows:[]};
     const searchedRows=mergeContractSearchRows(retainedRows,searchDocuments);
-    const snapshotRows=mergeCanonicalProcurementBrowseRows(searchedRows,canonicalSnapshot?.rows);
-  const common={
+    const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
       monthEnd:months?addMonthsISO(todayISO(),months):null,
-  };
+    };
+    const canonicalSnapshot=(mode==="award"||mode==="archive")
+      ? await loadMoneyProcurementSnapshot({...common,method:methodSel},searchedRows)
+      : {rows:[],facets:{},hydrate:Promise.resolve({rows:[]})};
+    const snapshotRows=(mode==="award"||mode==="archive")
+      ? (canonicalSnapshot?.rows || [])
+      : retainedRows;
     const analyticsProjection = mode === "award" ? await loadAnalyticalProjection() : null;
     bindAnalyticalControls();
     if (analyticsProjection) renderAnalyticalProjection(analyticsProjection);
@@ -531,11 +533,15 @@ async function search(){
       });
       return;
     }
-    const facetRows=filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});
-    loadMethodFacet(facetRows);
-    const rows=methodSel
-      ? filterMoneySnapshot(snapshotRows,{...common,method:methodSel,limit:40})
-      : facetRows.slice(0,40);
+    const facetRows=(mode==="award"||mode==="archive")
+      ? snapshotRows
+      : filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});
+    loadMethodFacet(facetRows,(mode==="award"||mode==="archive") ? canonicalSnapshot?.facets?.method : null);
+    const rows=(mode==="award"||mode==="archive")
+      ? snapshotRows.slice(0,40)
+      : methodSel
+        ? filterMoneySnapshot(snapshotRows,{...common,method:methodSel,limit:40})
+        : facetRows.slice(0,40);
     if(stale()) return;
     paintMoneyRows(rows,{
       autoSelect:true,
@@ -543,6 +549,12 @@ async function search(){
       lineageRows:snapshotRows,
       rumInteraction,
     });
+    const hydration=typeof canonicalSnapshot?.hydrate === "function" ? canonicalSnapshot.hydrate() : canonicalSnapshot?.hydrate;
+    Promise.resolve(hydration)?.then((hydrated)=>{
+      if(stale() || !Array.isArray(hydrated?.rows)) return;
+      currentMoneyLineageRows=mergeCanonicalProcurementBrowseRows(searchedRows,hydrated.rows);
+      loadLineageBadges(currentMoneyLineageRows);
+    }).catch(()=>{});
   }catch(e){
     if(stale()) return;
     unbusy("#list");
@@ -554,6 +566,7 @@ async function search(){
 }
 function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null,rumInteraction=null}={}){
   currentRows = rows;
+  currentMoneyLineageRows = lineageRows || rows;
   currentMoneyNarrowed = narrowed;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
   unbusy("#list");
@@ -575,11 +588,11 @@ function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null
   reportContractsRumResults(rumInteraction,currentRows.length?"content":"empty");
 }
 
-function loadMethodFacet(rows){
+function loadMethodFacet(rows, precomputedFacets=null){
   const el = $("#methodfacet");
   const primary = $("#money-method-primary");
   try{
-    const facets=moneyMethodFacet(rows);
+    const facets=Array.isArray(precomputedFacets) ? precomputedFacets : moneyMethodFacet(rows);
     if(facets.length < 2 && !methodSel){
       el.innerHTML="";
       primary.hidden=true;
@@ -814,7 +827,7 @@ function bindMoneyListRowClicks(lineageRows=null){
       if(event.target.closest?.("a,button")) return;
       const row=currentRows[+el.dataset.i];
       if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
-      select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:lineageRows);
+      select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:(currentMoneyLineageRows || lineageRows));
     });
   });
 }
@@ -904,20 +917,20 @@ function renderList(autoSelect,lineageRows=null){
     if(event.target.closest?.("a,button")) return;
     const row=currentRows[+el.dataset.i];
     if(event.isTrusted&&!row?.request_id&&row?.canonical_href){ location.assign(row.canonical_href); return; }
-    select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:lineageRows);
+      select(+el.dataset.i, el, event.isTrusted, event.isTrusted?null:(currentMoneyLineageRows || lineageRows));
   }));
   if(autoSelect===false&&keepId){
     const idx=currentRows.findIndex(r=>r&&(r.procurement_id||r.request_id)===keepId);
     if(idx>=0){
       const el=document.querySelector(`#list .row[data-i="${idx}"]`);
       if(el){ el.classList.add("sel"); selectedRFP=currentRows[idx]; }
-      loadLineageBadges(lineageRows);
+      loadLineageBadges(currentMoneyLineageRows || lineageRows);
       return;
     }
   }
   if(autoSelect!==false) document.querySelector("#list .row")?.click();
   else if(!keepId){ selectedRFP=null; $("#detail").innerHTML=""; }
-  loadLineageBadges(lineageRows);
+  loadLineageBadges(currentMoneyLineageRows || lineageRows);
 }
 
 const LINEAGE_MIN_STAGES = 2;
