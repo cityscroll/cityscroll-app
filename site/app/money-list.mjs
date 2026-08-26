@@ -21,6 +21,14 @@ import {
 } from "../resident_snapshot_queries.mjs";
 import { mergeCanonicalProcurementBrowseRows, mergeContractSearchRows } from "../contract_search_bridge.mjs";
 import { renderProcurementRowCoverageHtml } from "../procurement_coverage_labels.mjs";
+import {
+  ANALYTICAL_PROJECTION_URL,
+  analyticalDrillThroughHref,
+  filterAnalyticalContracts,
+  formatRegisteredValue,
+  groupAnalyticalContracts,
+  populationSummary,
+} from "../analytical_projection.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -28,6 +36,7 @@ const MONEY_RESIDENT_SNAPSHOT_URL="data/money_resident_snapshot.json";
 const MONEY_PROCUREMENT_SNAPSHOT_URL="data/procurement_browse_rows.json";
 const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyProcurementSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
+let analyticalProjectionPromise=null;
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
@@ -138,6 +147,14 @@ function loadMoneyProcurementSnapshot(){
       .catch(()=>({rows:[]}));
   }
   return moneyProcurementSnapshotPromise;
+}
+function loadAnalyticalProjection(){
+  if(!analyticalProjectionPromise){
+    analyticalProjectionPromise=fetch(ANALYTICAL_PROJECTION_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return analyticalProjectionPromise;
 }
 async function residentMoneyRows(){
   return moneySnapshotRows(await loadMoneyResidentSnapshot());
@@ -300,12 +317,133 @@ function bindFullHistorySearch(){
     }, { once: true });
   });
 }
+
+function analyticalUrlFilters(){
+  const params=new URLSearchParams(location.search);
+  return {
+    agency: params.get("ap_agency") || null,
+    prime_vendor: params.get("ap_vendor") || null,
+    registration_fiscal_year: params.get("ap_fy") || null,
+    contract_amount_band: params.get("ap_amount_band") || null,
+    min_amount: params.get("ap_min") || null,
+    max_amount: params.get("ap_max") || null,
+  };
+}
+
+function analyticalControlsFilters(){
+  return {
+    registration_fiscal_year: $("#analytics-fy")?.value || null,
+    min_amount: $("#analytics-min")?.value || null,
+    max_amount: $("#analytics-max")?.value || null,
+  };
+}
+
+function syncAnalyticalFiscalYears(rows){
+  const select=$("#analytics-fy");
+  if(!select) return;
+  const current=select.value;
+  const years=[...new Set((rows||[]).map(row=>row.registration_fiscal_year).filter(Number.isInteger))].sort((a,b)=>b-a);
+  select.innerHTML=`<option value="" data-i18n="analytics_all_years">${t("analytics_all_years")}</option>`+years.map(year=>`<option value="${year}">FY${year}</option>`).join("");
+  if(years.includes(Number(current))) select.value=current;
+}
+
+function analyticalMoneyRow(row){
+  return {
+    id: row.prime_contract_id,
+    short_title: t("analytics_contract_title",{id:row.prime_contract_id}),
+    agency_name: row.agency,
+    vendor_name: row.prime_vendor,
+    contract_id: row.prime_contract_id,
+    contract_amount: row.current_registered_amount,
+    start_date: row.registration_date,
+    type_of_notice_description: t("analytics_registered_contract_type"),
+    procurement_stages: ["registered"],
+    primary_stage: "registered",
+    source_system: "analytics_registered_contracts",
+    analytics_projection: true,
+  };
+}
+
+function analyticalGroupLabel(groupBy){
+  return groupBy === "vendor" ? t("analytics_group_vendor").toLowerCase() : t("analytics_group_agency").toLowerCase();
+}
+
+function analyticalMeasureLabel(measure){
+  return measure === "original" ? t("analytics_measure_original") : measure === "count" ? t("analytics_measure_count") : t("analytics_measure_current");
+}
+
+function renderAnalyticalProjection(rows){
+  const panel=$("#contracts-analytics");
+  if(!panel) return;
+  panel.hidden=mode!=="award";
+  if(mode!=="award") return;
+  const projection=Array.isArray(rows) ? { rows } : (rows || {});
+  const projectionRows=Array.isArray(projection.rows) ? projection.rows : [];
+  syncAnalyticalFiscalYears(projectionRows);
+  const urlFilters=analyticalUrlFilters();
+  const controls=analyticalControlsFilters();
+  if(urlFilters.registration_fiscal_year && [...($("#analytics-fy")?.options || [])].some((option)=>option.value===urlFilters.registration_fiscal_year)) $("#analytics-fy").value=urlFilters.registration_fiscal_year;
+  const filters={...controls, agency:urlFilters.agency, prime_vendor:urlFilters.prime_vendor, contract_amount_band:urlFilters.contract_amount_band};
+  // A drill-through scope is authoritative for the population shown in the
+  // ordinary list, while the panel still lets the reader change its grouping.
+  if(urlFilters.registration_fiscal_year) filters.registration_fiscal_year=urlFilters.registration_fiscal_year;
+  if(urlFilters.min_amount) filters.min_amount=urlFilters.min_amount;
+  if(urlFilters.max_amount) filters.max_amount=urlFilters.max_amount;
+  const filtered=filterAnalyticalContracts(projectionRows,filters);
+  const summary=populationSummary(filtered,{snapshot_date:projection.snapshot_date,population_definition:projection.population_definition});
+  const groupBy=$("#analytics-group")?.value||"agency";
+  const measure=$("#analytics-measure")?.value||"current";
+  const grouped=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
+  const measureLabel=analyticalMeasureLabel(measure);
+  const population=$("#contracts-analytics-population");
+  if(population){
+    const headline=measure==="count"
+      ? t("analytics_population_count",{count:summary.contract_count.toLocaleString("en-US")})
+      : t("analytics_population_value",{value:formatRegisteredValue(measure==="original" ? filtered.reduce((sum,row)=>sum+(Number(row.original_registered_amount)||0),0) : summary.current_registered_value),measure:measureLabel.toLowerCase(),count:summary.contract_count.toLocaleString("en-US")});
+    population.textContent=`${headline} · ${summary.year_label}. ${t("analytics_population_suffix")}`;
+  }
+  const list=$("#contracts-analytics-groups");
+  if(!list) return;
+  list.innerHTML=grouped.shown_groups.map((group,index)=>{
+    const href=analyticalDrillThroughHref({
+      [groupBy==="vendor"?"prime_vendor":"agency"]: group.label,
+      registration_fiscal_year: filters.registration_fiscal_year,
+      min_amount: filters.min_amount,
+      max_amount: filters.max_amount,
+    });
+    const value=measure==="count" ? `${group.contract_count.toLocaleString("en-US")} ${t("analytics_contracts_unit")}` : `${formatRegisteredValue(group[valueKeyForMeasure(measure)])} ${measureLabel.toLowerCase()}`;
+    return `<li class="contracts-analytics-group"><a href="${escUiHtml(href)}" data-analytics-drill-through="${escUiHtml(group.label)}">${index+1}. ${escUiHtml(group.label)}</a><span class="contracts-analytics-group-meta">${escUiHtml(value)} · <span>${group.contract_count.toLocaleString("en-US")} ${t("analytics_contracts_unit")}</span></span></li>`;
+  }).join("");
+  const remaining=grouped.groups.length-grouped.shown_groups.length;
+  const note=$("#contracts-analytics-note");
+  if(note) note.textContent=remaining>0
+    ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
+    : t("analytics_group_exact_note");
+}
+
+function valueKeyForMeasure(measure){
+  return measure==="original" ? "sum_original_registered_amount" : measure==="count" ? "contract_count" : "sum_current_registered_amount";
+}
+
+function bindAnalyticalControls(){
+  ["#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max"].forEach((selector)=>{
+    const element=$(selector);
+    if(!element || element.dataset.analyticsBound) return;
+    element.dataset.analyticsBound="1";
+    element.addEventListener("change",()=>{
+      if(!analyticalProjectionPromise) return;
+      analyticalProjectionPromise.then(renderAnalyticalProjection).catch(()=>{});
+    });
+  });
+}
+
 async function search(){
   const rumInteraction=claimContractsRumInteraction();
   const forceFullHistory = forceFullHistorySearch;
   forceFullHistorySearch = false;
   moneyLoaded = true;
   mode = $("#mode").value;
+  if(mode!=="award" && $("#contracts-analytics")) $("#contracts-analytics").hidden=true;
   const agency = $("#agency").value, kw = $("#kw").value.trim();
   const sort = $("#sort").value, minamt = $("#minamt").value;
   $("#minwrap").style.display = mode === "award" ? "" : "none";
@@ -371,11 +509,28 @@ async function search(){
       : {rows:[]};
     const searchedRows=mergeContractSearchRows(retainedRows,searchDocuments);
     const snapshotRows=mergeCanonicalProcurementBrowseRows(searchedRows,canonicalSnapshot?.rows);
-    const common={
+  const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
       monthEnd:months?addMonthsISO(todayISO(),months):null,
-    };
+  };
+    const analyticsProjection = mode === "award" ? await loadAnalyticalProjection() : null;
+    bindAnalyticalControls();
+    if (analyticsProjection) renderAnalyticalProjection(analyticsProjection);
+    const analyticalScope = mode === "award" ? analyticalUrlFilters() : {};
+    const analyticalScopeActive = Object.values(analyticalScope).some((value) => value != null && value !== "");
+    const analyticalScopeRows = analyticalScopeActive
+      ? filterAnalyticalContracts(analyticsProjection?.rows || [], analyticalScope).map(analyticalMoneyRow)
+      : null;
+    if (analyticalScopeActive) {
+      if (stale()) return;
+      paintMoneyRows(analyticalScopeRows.slice(0, 40), {
+        autoSelect: false,
+        lineageRows: analyticalScopeRows,
+        rumInteraction,
+      });
+      return;
+    }
     const facetRows=filterMoneySnapshot(snapshotRows,{...common,method:"",limit:snapshotRows.length});
     loadMethodFacet(facetRows);
     const rows=methodSel

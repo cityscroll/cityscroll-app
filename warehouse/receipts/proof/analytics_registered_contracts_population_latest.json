@@ -1,0 +1,263 @@
+{
+  "schema": "cityscroll.analytics_registered_contracts_population_receipt.v1",
+  "status": "complete",
+  "projection_contract": "cityscroll.analytical_projection.v1",
+  "snapshot_date": "2026-08-26",
+  "generated_at": "2026-08-26T03:04:48.286Z",
+  "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
+  "source": {
+    "source_tag": "checkbook-contracts",
+    "normalized_unique_contracts": 26270,
+    "source_fiscal_years": [
+      2025,
+      2026,
+      2027
+    ],
+    "normalized_receipt": "embedded source_receipt envelope in the committed analytical population receipt"
+  },
+  "source_receipt": {
+    "schema": "cityscroll.checkbook_contracts_population_receipt.v1",
+    "pulled_at": "2026-08-26T03:04:48.286Z",
+    "checksums": {
+      "page_manifest_sha256": "54aad3b5f4b529188df42734cc4f5b30a7b7ffbd70265caf70b7428713d556dc",
+      "normalized_contracts_sha256": "b9428e5d4ec9ef40c89335ec6848c8fb001a6b87edbb41405d952b92339d1f63",
+      "committed_graph_slice_sha256": "ae3f10fa85b6233116c495b094a3acd844735022afddd11ece565c72d1ccc2a6"
+    },
+    "population": {
+      "api_transaction_rows": 35671,
+      "by_fiscal_year": {
+        "2025": 19268,
+        "2026": 14619,
+        "2027": 1784
+      },
+      "normalized_unique_contracts": 26270,
+      "duplicate_slices_collapsed": 9401,
+      "prime_slices": 26270,
+      "subvendor_slices": 9401,
+      "other_slices": 0,
+      "blocked": {
+        "missing_contract_id_slices": 0,
+        "ambiguous_pin_contracts": 0,
+        "missing_pin_contracts": 0,
+        "ambiguous_prime_vendor_contracts": 15,
+        "missing_prime_vendor_contracts": 0,
+        "ambiguous_agency_contracts": 0,
+        "missing_agency_contracts": 0,
+        "ambiguous_registration_date_contracts": 0,
+        "ambiguous_award_method_contracts": 0,
+        "ambiguous_mwbe_category_contracts": 7,
+        "ambiguous_duration_contracts": 0,
+        "ambiguous_includes_subvendors_contracts": 0
+      }
+    }
+  },
+  "population": {
+    "normalized_unique_contracts": 26270,
+    "distinct_prime_contract_ids": 26270,
+    "duplicate_contract_ids": 0,
+    "duplicate_slices_collapsed": 9401,
+    "blocked": {
+      "missing_contract_id_slices": 0,
+      "ambiguous_pin_contracts": 0,
+      "missing_pin_contracts": 0,
+      "ambiguous_prime_vendor_contracts": 15,
+      "missing_prime_vendor_contracts": 0,
+      "ambiguous_agency_contracts": 0,
+      "missing_agency_contracts": 0,
+      "ambiguous_registration_date_contracts": 0,
+      "ambiguous_award_method_contracts": 0,
+      "ambiguous_mwbe_category_contracts": 7,
+      "ambiguous_duration_contracts": 0,
+      "ambiguous_includes_subvendors_contracts": 0
+    }
+  },
+  "dimension_profile": {
+    "agency": {
+      "id": "agency",
+      "source_tag": "prime_contracting_agency",
+      "field": "agency",
+      "usefulness": "required by AP-04",
+      "row_count": 26270,
+      "distinct_count": 69,
+      "null_count": 0,
+      "null_rate": 0,
+      "top_values": [
+        {
+          "value": "Department of Education",
+          "count": 7482
+        },
+        {
+          "value": "Department of Youth and Community Development",
+          "count": 2830
+        },
+        {
+          "value": "Department of Parks and Recreation",
+          "count": 2532
+        },
+        {
+          "value": "Department of Health and Mental Hygiene",
+          "count": 1772
+        },
+        {
+          "value": "Housing Preservation and Development",
+          "count": 1170
+        }
+      ]
+    },
+    "prime_vendor": {
+      "id": "prime_vendor",
+      "source_tag": "prime_vendor",
+      "field": "prime_vendor",
+      "usefulness": "required by AP-04",
+      "row_count": 26270,
+      "distinct_count": 7475,
+      "null_count": 15,
+      "null_rate": 0.0005709935287400076,
+      "top_values": [
+        {
+          "value": "NEW YORK CITY HOUSING AUTHORITY",
+          "count": 730
+        },
+        {
+          "value": "NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
+          "count": 543
+        },
+        {
+          "value": "COMPULINK TECHNOLOGIES INC",
+          "count": 204
+        },
+        {
+          "value": "FUSING MARKETING SOLUTIONS INC",
+          "count": 174
+        },
+        {
+          "value": "RESEARCH FOUNDATION OF THE CITY UNIVERSITY OF NEW YORK",
+          "count": 119
+        }
+      ]
+    },
+    "registration_fiscal_year": {
+      "id": "registration_fiscal_year",
+      "source_tag": "prime_contract_registration_date",
+      "field": "registration_fiscal_year",
+      "usefulness": "required by AP-04; derived",
+      "row_count": 26270,
+      "distinct_count": 3,
+      "null_count": 0,
+      "null_rate": 0,
+      "top_values": [
+        {
+          "value": "2025",
+          "count": 12670
+        },
+        {
+          "value": "2026",
+          "count": 12015
+        },
+        {
+          "value": "2027",
+          "count": 1585
+        }
+      ]
+    },
+    "contract_amount_band": {
+      "id": "contract_amount_band",
+      "source_tag": "prime_contract_current_amount",
+      "field": "contract_amount_band",
+      "usefulness": "required by AP-04; derived",
+      "row_count": 26270,
+      "distinct_count": 4,
+      "null_count": 0,
+      "null_rate": 0,
+      "top_values": [
+        {
+          "value": "Under $100,000",
+          "count": 13888
+        },
+        {
+          "value": "$100,000–$999,999",
+          "count": 5879
+        },
+        {
+          "value": "$1 million–$9.99 million",
+          "count": 4907
+        },
+        {
+          "value": "$10 million or more",
+          "count": 1596
+        }
+      ]
+    },
+    "award_method": {
+      "id": "award_method",
+      "source_tag": "prime_contract_award_method",
+      "field": "award_method",
+      "usefulness": "retained when published",
+      "row_count": 26270,
+      "distinct_count": 52,
+      "null_count": 146,
+      "null_rate": 0.0055576703464027405,
+      "top_values": [
+        {
+          "value": "SMALL PURCHASE - WRITTEN",
+          "count": 6294
+        },
+        {
+          "value": "SMALL PURCHASE - UNDER $5,000",
+          "count": 3134
+        },
+        {
+          "value": "RENEWAL OF CONTRACT",
+          "count": 2626
+        },
+        {
+          "value": "M/WBE SMALL PURCHASE",
+          "count": 2076
+        },
+        {
+          "value": "BORO NEEDS/DISCRETIONARY FUND",
+          "count": 1885
+        }
+      ]
+    },
+    "mwbe_category": {
+      "id": "mwbe_category",
+      "source_tag": "prime_vendor_mwbe_category",
+      "field": "mwbe_category",
+      "usefulness": "deferred reader control",
+      "row_count": 26270,
+      "distinct_count": 0,
+      "null_count": 26270,
+      "null_rate": 1,
+      "top_values": []
+    },
+    "duration": {
+      "id": "duration",
+      "source_tag": "prime_contract_duration|prime_contract_term",
+      "field": "duration",
+      "usefulness": "deferred reader control",
+      "row_count": 26270,
+      "distinct_count": 0,
+      "null_count": 26270,
+      "null_rate": 1,
+      "top_values": []
+    },
+    "includes_subvendors": {
+      "id": "includes_subvendors",
+      "source_tag": "contract_includes_sub_vendors",
+      "field": "includes_subvendors",
+      "usefulness": "deferred reader control",
+      "row_count": 26270,
+      "distinct_count": 0,
+      "null_count": 26270,
+      "null_rate": 1,
+      "top_values": []
+    }
+  },
+  "materialization": {
+    "table": "analytics_registered_contracts",
+    "site_artifact": "site/data/analytics_registered_contracts.json",
+    "request_time_database_queries": false,
+    "reproducible_input": ".generated/ap/checkbook-normalized.json"
+  }
+}
