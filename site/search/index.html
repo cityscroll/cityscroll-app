@@ -742,6 +742,24 @@
   .money-facet-rails{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4);margin:var(--space-3) 0 0}
   .money-facet-rail{min-width:0}
   .money-facet-rail .chip{max-width:100%;white-space:normal;text-align:start}
+  .contracts-analytics{margin:22px 0 0;padding:18px 20px 20px;border:1px solid var(--rule);border-top:4px solid var(--oxblood);border-radius:9px;background:var(--card);box-shadow:var(--shadow)}
+  .contracts-analytics[hidden]{display:none}
+  .contracts-analytics-head{max-width:760px;margin:0 0 14px}
+  .contracts-analytics-kicker{margin:0 0 4px;color:var(--oxblood);font:800 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .contracts-analytics h2{margin:0 0 5px;font:700 clamp(1.35rem,2.6vw,1.9rem)/1.1 var(--font-display);color:var(--ink)}
+  .contracts-analytics-deck,.contracts-analytics-population,.contracts-analytics-note{margin:0;color:var(--ink-soft);font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-population{margin-top:10px;padding:10px 12px;border-radius:6px;background:var(--paper-2);color:var(--ink);font-weight:700}
+  .contracts-analytics-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:14px 0}
+  .contracts-analytics-controls .field{min-width:145px;flex:1 1 145px}
+  .contracts-analytics-controls label{display:block;color:var(--muted);font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+  .contracts-analytics-controls select,.contracts-analytics-controls input{width:100%;margin-top:4px}
+  .contracts-analytics-groups{display:grid;gap:7px;margin:14px 0 0;padding:0;list-style:none}
+  .contracts-analytics-group{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+  .contracts-analytics-group a{min-width:0;color:var(--ink);font-weight:750;text-decoration:none;overflow-wrap:anywhere}
+  .contracts-analytics-group a:hover{text-decoration:underline}
+  .contracts-analytics-group-meta{text-align:end;color:var(--muted);font:650 12px/1.35 ui-sans-serif,system-ui,sans-serif;white-space:nowrap}
+  .contracts-analytics-note{margin-top:11px;font-size:11.5px}
+  @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
@@ -1845,6 +1863,24 @@
         </select>
       </div>
     </div>
+
+    <section class="contracts-analytics" id="contracts-analytics" hidden aria-labelledby="contracts-analytics-heading">
+      <div class="contracts-analytics-head">
+        <p class="contracts-analytics-kicker" data-i18n="analytics_compare_kicker">Compare / Overview</p>
+        <h2 id="contracts-analytics-heading" data-i18n="analytics_overview_heading">What is large in this population?</h2>
+        <p class="contracts-analytics-deck" data-i18n="analytics_overview_deck">Compare registered contracts before opening an individual record. Rankings use the complete normalized Checkbook population, not the smaller published record list.</p>
+        <p class="contracts-analytics-population" id="contracts-analytics-population" role="status"></p>
+      </div>
+      <div class="contracts-analytics-controls" role="group" aria-label="Compare contracts" data-i18n-aria="analytics_compare_contracts_aria">
+        <div class="field"><label for="analytics-group" data-i18n="analytics_group_by">Group by</label><select id="analytics-group"><option value="agency" data-i18n="analytics_group_agency">Agency</option><option value="vendor" data-i18n="analytics_group_vendor">Vendor</option></select></div>
+        <div class="field"><label for="analytics-measure" data-i18n="analytics_measure">Measure</label><select id="analytics-measure"><option value="current" data-i18n="analytics_measure_current">Current registered contract value</option><option value="original" data-i18n="analytics_measure_original">Original registered contract value</option><option value="count" data-i18n="analytics_measure_count">Contract count</option></select></div>
+        <div class="field"><label for="analytics-fy" data-i18n="analytics_registration_fy">Registration FY</label><select id="analytics-fy"><option value="" data-i18n="analytics_all_years">All years</option></select></div>
+        <div class="field"><label for="analytics-min" data-i18n="analytics_min_current">Minimum current value</label><input id="analytics-min" type="number" min="0" step="1000" placeholder="No minimum" data-i18n-placeholder="analytics_no_minimum"></div>
+        <div class="field"><label for="analytics-max" data-i18n="analytics_max_current">Maximum current value</label><input id="analytics-max" type="number" min="0" step="1000" placeholder="No maximum" data-i18n-placeholder="analytics_no_maximum"></div>
+      </div>
+      <ol class="contracts-analytics-groups" id="contracts-analytics-groups"></ol>
+      <p class="contracts-analytics-note" id="contracts-analytics-note"></p>
+    </section>
 
     <div class="grid">
       <div class="panel">

@@ -4,6 +4,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- **Registered-contract analytical projection:** `site/analytical_projection_contract.mjs` is the
+  versioned AP-01 registry; `tools/build_analytical_registered_contracts.mjs` materializes the
+  full normalized Checkbook population into `site/data/analytics_registered_contracts.json` and
+  `warehouse/receipts/proof/analytics_registered_contracts_population_latest.json`. The
+  Contracts Compare / Overview panel in `site/app/money-list.mjs` reads that precomputed artifact
+  only in Recent Awards mode. Group links use `ap_agency` / `ap_vendor` plus optional FY and
+  amount filters so the ordinary Contracts list can drill into the same population slice.
+
 - **Observer-coverage canaries:** `architecture/observer-canaries.json` is the
   single registration for architecture-affecting surfaces. Facts
   `observer_coverage`, the reconciliation workflow path filter, and the

@@ -67,6 +67,11 @@ export function normalizeCheckbookContractRows(inputRows) {
     missing_prime_vendor_contracts: 0,
     ambiguous_agency_contracts: 0,
     missing_agency_contracts: 0,
+    ambiguous_registration_date_contracts: 0,
+    ambiguous_award_method_contracts: 0,
+    ambiguous_mwbe_category_contracts: 0,
+    ambiguous_duration_contracts: 0,
+    ambiguous_includes_subvendors_contracts: 0,
   };
   let primeSlices = 0;
   let subvendorSlices = 0;
@@ -78,6 +83,11 @@ export function normalizeCheckbookContractRows(inputRows) {
     const pins = unique(slices.map((row) => row?.pin || row?.prime_contract_pin));
     const vendors = unique(slices.map((row) => row?.vendor || row?.prime_vendor));
     const agencies = unique(slices.map((row) => row?.agency || row?.agency_name || row?.prime_contracting_agency));
+    const registrationDates = unique(slices.map((row) => row?.registered || row?.registration_date));
+    const awardMethods = unique(slices.map((row) => row?.awardMethod || row?.award_method));
+    const mwbeCategories = unique(slices.map((row) => row?.mwbe || row?.mwbe_category));
+    const durations = unique(slices.map((row) => row?.duration));
+    const includesSubvendors = unique(slices.map((row) => row?.subs || row?.includes_subvendors));
     const fiscalYears = unique(slices.flatMap((row) => row?.sourceFiscalYears || row?.source_fiscal_years || []));
     const subVendors = unique(slices.map((row) => row?.subVendor || row?.sub_vendor));
     const sliceCounts = { prime: 0, subvendor: 0, other: 0 };
@@ -96,6 +106,11 @@ export function normalizeCheckbookContractRows(inputRows) {
     else if (!vendors.length) blocked.missing_prime_vendor_contracts += 1;
     if (agencies.length > 1) blocked.ambiguous_agency_contracts += 1;
     else if (!agencies.length) blocked.missing_agency_contracts += 1;
+    if (registrationDates.length > 1) blocked.ambiguous_registration_date_contracts += 1;
+    if (awardMethods.length > 1) blocked.ambiguous_award_method_contracts += 1;
+    if (mwbeCategories.length > 1) blocked.ambiguous_mwbe_category_contracts += 1;
+    if (durations.length > 1) blocked.ambiguous_duration_contracts += 1;
+    if (includesSubvendors.length > 1) blocked.ambiguous_includes_subvendors_contracts += 1;
 
     rows.push({
       prime_contract_id: id,
@@ -103,6 +118,11 @@ export function normalizeCheckbookContractRows(inputRows) {
       prime_vendor: vendors.length === 1 ? vendors[0] : null,
       agency: agencies.length === 1 ? agencies[0] : null,
       pin: pins.length === 1 ? pins[0] : null,
+      award_method: awardMethods.length === 1 ? awardMethods[0] : null,
+      mwbe_category: mwbeCategories.length === 1 ? mwbeCategories[0] : null,
+      duration: durations.length === 1 ? durations[0] : null,
+      includes_subvendors: includesSubvendors.length === 1 ? includesSubvendors[0] : null,
+      registration_date: registrationDates.length === 1 ? registrationDates[0] : null,
       status: usable(best.status) || "registered",
       current: Number(best.current) || 0,
       original: Number(best.original) || 0,
