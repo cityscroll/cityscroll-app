@@ -78,3 +78,32 @@ reuse `feedItems()`. The current semantic duplication begins at the input and de
 
 Later work should establish one scope-to-calendar serialization boundary while preserving the
 legacy feed parser and the `@crol-list` namespace until a deliberate migration exists.
+
+## Card 2 replay findings
+
+Card 2 establishes that boundary in `site/scope_v0.mjs`: `subscriptionParamsFromWatch()` is the
+single `lens` + JSON `filter` serializer used by Following and the modern `/feed.ics` path, while
+`calendarFeedUrlForScope()` suppresses a calendar URL when the scope cannot be replayed without
+loss. The legacy `lens/q/agency/min` parser remains unchanged.
+
+The following fields are carried by the canonical scope/watch or an existing surface but are not
+currently replayed by `compileSub()` for the corresponding feed lens, so the calendar projection
+does not advertise those scopes:
+
+- money: `mode`, `excludeSpecial`, `borough`, `route`, `name`, `tab`, `entity_refs_all`, and
+  `connection_relation`;
+- land: `agency`, `action`/`actions`, `stage`, `futureAction`, `attendance`, `sort`,
+  `entity_refs_all`, and `connection_relation`;
+- property: `borough`, `neighborhood`, `communityDistrict`, `councilDistrict`, `process`,
+  `stage`, and `sort`;
+- rules: `borough`, `neighborhood`, `communityDistrict`, `councilDistrict`, `locationScope`,
+  and `process`;
+- meetings: `process`, `group`, `action`/`actions`, `entity_refs_all`, and
+  `connection_relation`;
+- all feedable lenses: typed entity/project relations (`entity_refs_all`) remain present in the
+  Following wire where a surface carries them, but `compileSub()` has no relation join to apply.
+
+These are architecture findings for later scope/compiler work, not calendar-specific parameter
+exceptions. Modern feed requests containing one of these fields fail with HTTP 400 at the Worker;
+they never fall through to a broader query. The separate `compileSub_d1()` mirror is not involved
+in calendar serialization and remains a later parity concern.
