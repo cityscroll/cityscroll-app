@@ -9,7 +9,14 @@ import { compileSub, rowsForCompiledQuery } from "./lib/compile.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
-import { parseFeedQuery, feedItems, atomFeed, jsonFeed, icsFeed } from "./lib/feed.mjs";
+import {
+  parseFeedQuery,
+  unsupportedModernFeedFilterFields,
+  feedItems,
+  atomFeed,
+  jsonFeed,
+  icsFeed,
+} from "./lib/feed.mjs";
 
 const FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
 const TYPES = {
@@ -28,8 +35,14 @@ export async function handleFeed(request, env, ctx) {
     if (hit) return hit;
   }
 
-  const { lens, filter } = parseFeedQuery(url.searchParams);
+  const parsed = parseFeedQuery(url.searchParams);
+  const { lens, filter } = parsed;
   if (!FEED_LENSES.has(lens)) return plain(`unknown lens '${lens}' — use money|land|property|rules|meetings`, 400);
+  if (parsed.error) return plain("invalid modern feed filter", 400);
+  if (parsed.modern) {
+    const unsupported = unsupportedModernFeedFilterFields(lens, filter);
+    if (unsupported.length) return plain(`modern feed filter cannot be replayed: ${unsupported.join(", ")}`, 400);
+  }
 
   const sub = { lens, filter: sanitize(lens, filter) };
   const q = compileSub(sub, new Date().toISOString().slice(0, 10));

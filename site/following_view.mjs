@@ -3,6 +3,8 @@ import {
   routeHashFromScope,
   scopeFromWatch,
   scopeWithEntity,
+  subscriptionParamsFromWatch,
+  subscriptionWatchFromScope,
   watchFromScope,
 } from "./scope_v0.mjs";
 import { normalizeWatchTemplateRegistry, packAttentionCopy } from "./watch_templates.mjs";
@@ -116,7 +118,7 @@ export function followingLensNeedsRedirect(lens) {
 
 function normalizedWatch(lens, filter) {
   const wantedLens = canonicalFollowingLens(lens);
-  const watch = watchFromScope(scopeFromWatch({ lens: wantedLens, filter: compact(filter) }), { lens: wantedLens });
+  const watch = subscriptionWatchFromScope({ lens: wantedLens, filter: compact(filter) }, { lens: wantedLens });
   return { lens: canonicalFollowingLens(watch.lens), filter: compact(watch.filter) };
 }
 
@@ -180,10 +182,7 @@ export function followingUrlFromWatch(watch, options = {}) {
   const base = String(options.base || `${SITE_BASE}/following`).replace(/\/$/, "");
   if (!watch || !watch.lens) return options.emptyBase || "/following/";
   const normalized = normalizedWatch(watch.lens, watch.filter);
-  const params = new URLSearchParams({
-    lens: normalized.lens,
-    filter: JSON.stringify(normalized.filter),
-  });
+  const params = subscriptionParamsFromWatch(normalized);
   const frequency = String(options.frequency || watch.freq || "").toLowerCase();
   if (frequency === "daily" || frequency === "weekly") params.set("freq", frequency);
   const count = cleanCount(options.matchCount ?? watch.matchCount);

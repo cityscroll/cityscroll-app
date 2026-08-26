@@ -4,10 +4,18 @@ import { join } from "node:path";
 import { test } from "node:test";
 
 import { meetingCalendarICS } from "../site/hearing_attend_pack.mjs";
-import { watchFromFollowingParams } from "../site/following_view.mjs";
+import { followingUrlFromWatch, watchFromFollowingParams } from "../site/following_view.mjs";
+import {
+  calendarFeedUrlForScope,
+  routeHashFromScope,
+  scopeFromRouteHash,
+  scopeFromWatch,
+  watchFromScope,
+} from "../site/scope_v0.mjs";
 import { compileSub } from "../worker/src/lib/compile.mjs";
 import { describeFilter } from "../worker/src/lib/confirm_email.mjs";
 import { feedItems, icsFeed, parseFeedQuery } from "../worker/src/lib/feed.mjs";
+import { handleFeed } from "../worker/src/feed.mjs";
 import { handleMeetingICS } from "../worker/src/hearings.mjs";
 
 const ROOT = new URL(".", import.meta.url).pathname.replace(/\/test\/$/, "");
@@ -117,4 +125,60 @@ test("compileSub and Following retain the current query and watch serialization 
   }));
   assert.deepEqual(watch.filter, { keywords: ["rat"], agency: "Health and Mental Hygiene" });
   assert.equal(watch.lens, "meetings");
+});
+
+test("one canonical civic scope keeps its normalized query across Browse, Following, preview, email, and calendar", async () => {
+  const scope = scopeFromRouteHash("#meetings?agency=City%20Planning&council=33");
+  const watch = watchFromScope(scope, { lens: "meetings" });
+  const browseScope = scopeFromRouteHash(routeHashFromScope(scope, { surface: "meetings" }));
+  const followingUrl = followingUrlFromWatch(watch);
+  const followingScope = scopeFromWatch(watch);
+  const previewQuery = compileSub(watch, "2026-08-26");
+  const emailScope = scopeFromWatch(watch);
+  const calendarUrl = calendarFeedUrlForScope(scope);
+  const calendarQuery = parseFeedQuery(new URL(calendarUrl).searchParams);
+  const calendarScope = scopeFromWatch(calendarQuery);
+
+  assert.equal(new URL(followingUrl).searchParams.get("lens"), "meetings");
+  assert.equal(new URL(calendarUrl).searchParams.get("lens"), "meetings");
+  assert.equal(new URL(followingUrl).search, new URL(calendarUrl).search);
+  assert.deepEqual(followingScope, browseScope);
+  assert.deepEqual(emailScope, browseScope);
+  assert.deepEqual(scopeFromWatch({ lens: previewQuery.routeReadModel.kind, filter: previewQuery.routeReadModel.filter }), browseScope);
+  assert.deepEqual(calendarScope, browseScope);
+  assert.equal(previewQuery.routeReadModel.filter.councilDistrict, "33");
+  assert.equal(calendarQuery.modern, true);
+
+  const response = await handleFeed(new Request(calendarUrl), {}, {});
+  assert.equal(response.status, 200, "the canonical scope must be accepted by the standing feed");
+});
+
+test("modern feed filters use the Following JSON wire and reject unsupported replay dimensions", async () => {
+  const modern = new URL("https://api.cityscroll.org/feed.ics");
+  modern.searchParams.set("lens", "meetings");
+  modern.searchParams.set("filter", JSON.stringify({ agency: "City Planning", process: "held" }));
+  const parsed = parseFeedQuery(modern.searchParams);
+  assert.equal(parsed.modern, true);
+  assert.deepEqual(parsed.filter, { agency: "City Planning", process: "held" });
+
+  const response = await handleFeed(new Request(modern), {}, {});
+  assert.equal(response.status, 400);
+  assert.match(await response.text(), /cannot be replayed: process/);
+});
+
+test("calendar scope projection suppresses scope dimensions that would be lost", () => {
+  const withViewport = scopeFromRouteHash("#meetings?council=33");
+  withViewport.place.viewport = {
+    level: "council_district",
+    id: "33",
+    parent: null,
+    basis: "performance",
+    view_box: null,
+  };
+  assert.equal(calendarFeedUrlForScope(withViewport), null);
+
+  const relation = scopeFromRouteHash("#meetings?facet=" + encodeURIComponent(JSON.stringify({
+    entity_refs_all: ["project:2026R0127"],
+  })));
+  assert.equal(calendarFeedUrlForScope(relation), null);
 });

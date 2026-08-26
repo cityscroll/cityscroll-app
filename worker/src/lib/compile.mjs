@@ -79,7 +79,8 @@ function materializedMeetingRows(filter, todayISO, dateWindow, sourceRows = MEET
     .filter((row) => !end || String(row.event_date).slice(0, 10) <= end)
     .filter((row) => !filter?.agency || String(row.agency || row.agency_name || "") === String(filter.agency))
     .filter((row) => !keywords.length || keywords.every((keyword) => String(row.search_text || "").toLowerCase().includes(keyword)))
-    .filter((row) => !filter?.borough && !filter?.neighborhood && !filter?.locationScope
+    .filter((row) => !filter?.borough && !filter?.neighborhood && !filter?.communityDistrict
+      && !filter?.councilDistrict && !filter?.locationScope
       ? true
       : hearingMatchesLocation(row, filter))
     .map((row) => ({ ...row, request_id: row.meeting_id, start_date: row.source_receipt?.observed_at || row.event_date }));
