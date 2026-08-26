@@ -6,21 +6,21 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 
 const indexSource = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 
-test("exact list search is primary and Ask CityScroll is a disclosed secondary mode", () => {
+test("exact list search is primary and topic preview is a disclosed secondary mode", () => {
   assert.match(
     indexSource,
     /<div class="lens-toolbar money-toolbar">[\s\S]*?<details class="nlbox ask-cityscroll" data-ask-lens="money">/,
-    "Contracts should place its exact-search toolbar before the secondary Ask disclosure",
+    "Contracts should place its exact-search toolbar before the secondary topic preview",
   );
   assert.match(
     SITE_SOURCE,
-    /Ask CityScroll/,
+    /Preview/,
     "the secondary mode should use a concise, named action",
   );
   assert.match(
     SITE_SOURCE,
-    /Interprets your request/,
-    "adjacent context should explain that the secondary mode interprets the request",
+    /Search NYC records by topic/,
+    "adjacent context should explain that the secondary mode searches by topic",
   );
   assert.match(
     SITE_SOURCE,

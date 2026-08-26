@@ -606,7 +606,7 @@ async function search(){
       t,agency:$("#agency").value,query:$("#kw").value,
       paintMoneyRows:(rows,options)=>paintMoneyRows(rows,{...options,rumInteraction}),
     });
-    return;
+    return true;
   }
 
   const {category=null, maxAmount=null, months=null, excludeSpecial=false} = moneyNlResolved;
@@ -667,7 +667,7 @@ async function search(){
         lineageRows: analyticalScopeRows,
         rumInteraction,
       });
-      return;
+      return true;
     }
     const facetRows=(mode==="award"||mode==="archive")
       ? snapshotRows
@@ -691,13 +691,14 @@ async function search(){
       currentMoneyLineageRows=mergeCanonicalProcurementBrowseRows(searchedRows,hydrated.rows);
       loadLineageBadges(currentMoneyLineageRows);
     }).catch(()=>{});
+    return true;
   }catch(e){
     if(stale()) return;
     unbusy("#list");
     $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>';
     $("#detail").innerHTML = "";
     reportContractsRumResults(rumInteraction,"unavailable");
-    return;
+    return false;
   }
 }
 function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null,rumInteraction=null}={}){
