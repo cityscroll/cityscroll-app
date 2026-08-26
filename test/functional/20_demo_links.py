@@ -312,6 +312,57 @@ def install_demo_routes(page) -> None:
             status=200, content_type="application/json", body=json.dumps(body),
         )
 
+    def local_bounded_procurement_query(route) -> None:
+        """Keep local demo runs on the same bounded query contract as deploys.
+
+        The Pages build creates this artifact in a gitignored directory. A plain
+        checkout therefore serves the legacy full-row fallback, whose intentional
+        complete-read contract does not apply the URL query before the first page
+        paints. A search target far down that full list then looks permanently
+        missing to this gate. Preserve a real filterable query projection for the
+        local fixture server without changing the application fallback behavior.
+        """
+        if is_production_base(BASE):
+            route.fallback()
+            return
+        response = route.fetch()
+        if response.ok:
+            route.fulfill(response=response)
+            return
+        browse = json.loads((ROOT / "site" / "data" / "procurement_browse_rows.json").read_text())
+        rows = browse.get("rows", []) if isinstance(browse, dict) else []
+        query_fields = (
+            "procurement_id", "canonical_href", "procurement_stages", "primary_stage",
+            "request_id", "start_date", "due_date", "agency_name", "short_title", "pin",
+            "contract_id", "contract_amount", "vendor_name", "selection_method_description",
+            "category_description", "type_of_notice_description", "source_system",
+            "method_family", "procurement_category", "coverage_state", "additional_description_1",
+            "project_id", "project_name",
+        )
+        manifest = {
+            "schema": "cityscroll.procurement_browse_query.v1",
+            "version": 1,
+            "source_model_schema": browse.get("source_model_schema") if isinstance(browse, dict) else None,
+            "generated_at": browse.get("generated_at") if isinstance(browse, dict) else None,
+            "source_model_fingerprint": "demo-links-tracked-browse-fixture-v1",
+            "query_fields": query_fields,
+            "query_rows": [
+                {field: row[field] for field in query_fields if field in row}
+                for row in rows
+            ],
+            "row_count": len(rows),
+            # The gate only needs the first filterable page. Hydration may fall
+            # back to the complete tracked payload, exactly as production does
+            # when a shard is unavailable.
+            "shards": [],
+            "row_shard_by_id": {},
+        }
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body=json.dumps(manifest),
+        )
+
     def worker(route) -> None:
         path = urlparse(route.request.url).path
         query = parse_qs(urlparse(route.request.url).query)
@@ -416,6 +467,9 @@ def install_demo_routes(page) -> None:
     # relying on the retired City Record/ZAP query stubs above.
     page.route("**/data/money_resident_snapshot.json", fixed(money_snapshot))
     page.route("**/data/shared_meeting_read_model.json", fixed(meetings_snapshot))
+    # Keep a fresh checkout deterministic: deploy artifacts are gitignored, but
+    # non-default Contracts demos still need the real bounded query projection.
+    page.route("**/data/procurement_browse_query.json", local_bounded_procurement_query)
 
 
 def visible_locator(page, expected: dict):
@@ -423,6 +477,31 @@ def visible_locator(page, expected: dict):
     if expected.get("text"):
         locator = locator.filter(has_text=expected["text"])
     return locator
+
+
+def wait_for_demo_route_ready(page, entry: dict, timeout_ms: int) -> None:
+    """Wait for the owning document's completion signal after navigation.
+
+    SPA routes set ``data-app-route`` before boot and then publish
+    ``data-app-ready`` after the initial route is applied. Edge-rendered agency
+    documents intentionally have no SPA boot, so DOMContentLoaded is their
+    complete readiness boundary. Only routes whose target is populated by the
+    dynamic Land or Contracts path need the extra barrier; other valid hybrid
+    documents retain their existing target waits.
+    """
+    if entry.get("id") != "agency-edge-provenance-parks" and not is_slow_land_entry(entry):
+        return
+    page.wait_for_function(
+        """() => {
+            const body = document.body;
+            if (!body || document.readyState === 'loading') return false;
+            if (body.dataset.appReady === 'true') return true;
+            // Static edge-rendered documents do not boot the SPA. Their parsed
+            // main landmark is the completed document boundary.
+            return body.dataset.appRoute !== 'true' && Boolean(document.querySelector('main'));
+        }""",
+        timeout=timeout_ms,
+    )
 
 
 # Land/zoning detail hydrates GET /zap-outcomes on select. Cold edge builds have been
@@ -552,6 +631,7 @@ def wait_expected_visible(page, expected: dict, entry: dict, timeout_ms: int) ->
         return
     except PlaywrightTimeoutError:
         page.reload(wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
+        wait_for_demo_route_ready(page, entry, timeout_ms)
         if is_slow_land_entry(entry):
             wait_land_detail_ready(page, timeout_ms)
         if is_slow_property_entry(entry):
@@ -594,6 +674,10 @@ class DemoLinkContract(unittest.TestCase):
         wait_ms = entry_wait_ms(entry)
         self.page_errors.clear()
         page.goto(f"{BASE.rstrip('/')}/{entry['url'].lstrip('/')}", wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
+        # The document's marker is set only after the full app graph and the
+        # initial route application have completed. This prevents assertions
+        # from observing the static shell during an empty-then-populated render.
+        wait_for_demo_route_ready(page, entry, wait_ms)
 
         if is_slow_land_entry(entry):
             wait_land_detail_ready(page, wait_ms)
