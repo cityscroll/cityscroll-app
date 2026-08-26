@@ -8,7 +8,9 @@
     "entity.dossier.get@1",
     "entity.relationships.get@1",
     "cited.passages.retrieve@1",
-    "search.federated@1"
+    "search.federated@1",
+    "contract.get@1",
+    "contracts.browse@1"
   ],
   "tools": [
     {
@@ -317,6 +319,102 @@
             "availability": "complete-or-partial-or-unknown",
             "maximumCitations": 10,
             "exactJoin": "matched-or-unknown"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "get_contract",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.",
+      "schema_reference": "contract.get@1",
+      "capability_reference": "contract.get@1",
+      "bounds": {
+        "input": {
+          "procurementIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "oneContract": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "procurementId": "procurement:contract:20211201861"
+          },
+          "output": {
+            "availability": "available",
+            "exactIdentity": true,
+            "lifecycle": "preserved when present"
+          }
+        },
+        {
+          "input": {
+            "procurementId": "procurement:contract:not-published"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "browse_contracts",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.",
+      "schema_reference": "contracts.browse@1",
+      "capability_reference": "contracts.browse@1",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "agency": "design and construction",
+            "stage": "award",
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "maximumResults": 10,
+            "oneRowPer": "exact procurement_id"
+          }
+        },
+        {
+          "input": {
+            "sourceSystem": "passport_public_contracts",
+            "limit": 25
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": "cursor when more rows remain"
           }
         }
       ],

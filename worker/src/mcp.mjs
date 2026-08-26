@@ -6,6 +6,7 @@
 //   get_entity_dossier           — one bounded, attributed public entity record
 //   get_entity_relationships     — one bounded, evidence-bearing public graph
 //   retrieve_cited_passages      — typed source passages only (no model call, cheap)
+//   get_contract / browse_contracts — canonical Contracts objects from the shared read model
 //   preview_watch                — plain English → lens filter → live results (LLM, metered)
 //   create_watch                 — plain English → immediate watch + welcome email (LLM, metered)
 // No list/delete tools: watch management stays behind the emailed unsubscribe links,
@@ -43,11 +44,19 @@ import {
   executeEntityRelationships,
 } from "../../capabilities/entity_relationships.mjs";
 import {
+  CONTRACT_GET_LIMITS,
+  CONTRACTS_BROWSE_LIMITS,
+  executeContractGet,
+  executeContractsBrowse,
+} from "../../capabilities/contracts.mjs";
+import {
   MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
 export {
   MCP_CITED_PASSAGES_ADAPTER,
+  MCP_CONTRACT_GET_ADAPTER,
+  MCP_CONTRACTS_BROWSE_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
   MCP_FEDERATED_SEARCH_ADAPTER,
@@ -69,6 +78,7 @@ import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
 import { workerFederatedSearch } from "./search.mjs";
+import { formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const FEDERATED_SEARCH_INPUT_FIELDS = new Set(["query", "limit"]);
@@ -270,6 +280,23 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
         ? `Returned ${result.graph.edges.length} bounded public relationship${result.graph.edges.length === 1 ? "" : "s"}. Use the structured result for evidence and provenance.`
         : `Entity relationships are ${result.availability.replaceAll("_", " ")} (${result.error}).`;
       return structuredResult(result, summary);
+    }
+    case "get_contract": {
+      const input = mcpContractGetInput(args);
+      if (!input.procurementId) return toolError("procurement_id is required.");
+      if (input.procurementId.length > CONTRACT_GET_LIMITS.procurementIdMaximumLength) {
+        return toolError(`procurement_id must be ${CONTRACT_GET_LIMITS.procurementIdMaximumLength} characters or fewer.`);
+      }
+      const result = await executeContractGet(workerProcurementContracts(env).get, input);
+      return structuredResult(result, formatContractText(result));
+    }
+    case "browse_contracts": {
+      const input = mcpContractsBrowseInput(args);
+      if (input.limit != null && (input.limit < CONTRACTS_BROWSE_LIMITS.minimum || input.limit > CONTRACTS_BROWSE_LIMITS.maximum)) {
+        return toolError(`limit must be a whole number from ${CONTRACTS_BROWSE_LIMITS.minimum} through ${CONTRACTS_BROWSE_LIMITS.maximum}.`);
+      }
+      const result = await executeContractsBrowse(workerProcurementContracts(env).browse, input);
+      return structuredResult(result, formatContractsBrowseText(result));
     }
     case "retrieve_cited_passages": {
       if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {

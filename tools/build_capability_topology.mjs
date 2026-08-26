@@ -15,6 +15,8 @@ import {
 } from "../capabilities/registry.mjs";
 import {
   MCP_CITED_PASSAGES_ADAPTER,
+  MCP_CONTRACT_GET_ADAPTER,
+  MCP_CONTRACTS_BROWSE_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
   MCP_FEDERATED_SEARCH_ADAPTER,
@@ -28,6 +30,7 @@ import { ENTITY_DOSSIER_HTTP_ADAPTER } from "../worker/src/entity_dossier.mjs";
 import { ENTITY_RELATIONSHIPS_HTTP_ADAPTER } from "../worker/src/public_relationship_graph.mjs";
 import { NOTICE_GET_HTTP_ADAPTER } from "../worker/src/notice.mjs";
 import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
+import { CONTRACT_GET_HTTP_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER } from "../worker/src/contracts.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
@@ -73,6 +76,10 @@ export function validateRuntimeTopology() {
     HTTP_CITED_PASSAGES_ADAPTER,
     MCP_ENTITY_RELATIONSHIPS_ADAPTER,
     MCP_CITED_PASSAGES_ADAPTER,
+    CONTRACT_GET_HTTP_ADAPTER,
+    CONTRACTS_BROWSE_HTTP_ADAPTER,
+    MCP_CONTRACT_GET_ADAPTER,
+    MCP_CONTRACTS_BROWSE_ADAPTER,
   ];
   for (const runtimeAdapter of runtimeAdapters) {
     const registered = registeredAdapters.get(runtimeAdapter.id);

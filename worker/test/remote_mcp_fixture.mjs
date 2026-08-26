@@ -8,6 +8,8 @@ import { executeEntityDossier } from "../../capabilities/entity_dossier.mjs";
 import { executeEntityRelationships } from "../../capabilities/entity_relationships.mjs";
 import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
 import { executeFederatedSearch } from "../../capabilities/federated_search.mjs";
+import { executeContractGet, executeContractsBrowse } from "../../capabilities/contracts.mjs";
+import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
 import { workerD1NoticeSearch } from "../src/lib/notices.mjs";
@@ -15,6 +17,7 @@ import { mcpCitedPassagesInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "
 import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
 import { workerFederatedSearch } from "../src/search.mjs";
+import { workerProcurementContracts } from "../src/contracts.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
   Object.freeze({
@@ -58,6 +61,16 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
       source_family: "city_record_notice",
       limit: 5,
     }),
+  }),
+  Object.freeze({
+    capabilityReference: "contract.get@1",
+    name: "get_contract",
+    arguments: Object.freeze({ procurement_id: "procurement:contract:CT-REMOTE" }),
+  }),
+  Object.freeze({
+    capabilityReference: "contracts.browse@1",
+    name: "browse_contracts",
+    arguments: Object.freeze({ vendor: "Remote Vendor", limit: 1 }),
   }),
 ]);
 
@@ -125,6 +138,35 @@ export function createRemoteMcpFixtureEnv() {
   }
   sqlite.exec(NOTICE_FTS_SCHEMA);
 
+  const procurementModel = buildSharedProcurementReadModel({
+    sourceRecords: [
+      {
+        source_system: "passport_public_contracts",
+        source_system_id: "contract:REMOTE:CTR-REMOTE",
+        content_hash: "remote-passport-hash",
+        normalized_snapshot: JSON.stringify({
+          ctr_id: "CTR-REMOTE", epin: "REMOTE-PIN", contract_id: "CT-REMOTE", title: "Remote contract",
+          vendor: "Remote Vendor", agency: "Remote Agency", current_amount: 125000,
+        }),
+        raw_snapshot: "{}",
+        ingested_at: "2026-08-18T19:46:32Z",
+      },
+      {
+        source_system: "passport_public_contracts",
+        source_system_id: "contract:REMOTE:CTR-OTHER",
+        content_hash: "remote-other-hash",
+        normalized_snapshot: JSON.stringify({
+          ctr_id: "CTR-OTHER", epin: "REMOTE-OTHER-PIN", contract_id: "CT-OTHER", title: "Other contract",
+          vendor: "Other Vendor", agency: "Remote Agency", current_amount: 250000,
+        }),
+        raw_snapshot: "{}",
+        ingested_at: "2026-08-18T19:46:32Z",
+      },
+    ],
+    generatedAt: "2026-08-18T20:00:00Z",
+    now: "2026-08-18T20:01:00Z",
+  });
+
   const dossierRows = entityRows(FIXTURE.cases.entity_dossier.source_rows);
   const relationshipRows = entityRows(FIXTURE.cases.entity_relationships.source_rows);
   const reads = [];
@@ -174,7 +216,7 @@ export function createRemoteMcpFixtureEnv() {
   };
 
   return {
-    env: { DB, SUBS: new MockKV(), NL_METER: new MockKV() },
+    env: { DB, SUBS: new MockKV(), NL_METER: new MockKV(), PROCUREMENT_READ_MODEL: procurementModel },
     reads,
     close() { sqlite.close(); },
   };
@@ -216,6 +258,16 @@ export async function directCapabilityResults(env) {
   results.set("retrieve_cited_passages", await executeCitedPassages(
     workerCitedPassages(),
     mcpCitedPassagesInput(citedArgs),
+  ));
+  const contractGetArgs = argsFor("get_contract");
+  results.set("get_contract", await executeContractGet(
+    workerProcurementContracts(env).get,
+    { procurementId: contractGetArgs.procurement_id },
+  ));
+  const contractsBrowseArgs = argsFor("browse_contracts");
+  results.set("browse_contracts", await executeContractsBrowse(
+    workerProcurementContracts(env).browse,
+    { vendor: contractsBrowseArgs.vendor, limit: contractsBrowseArgs.limit },
   ));
   return results;
 }
