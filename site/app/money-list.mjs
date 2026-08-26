@@ -23,9 +23,12 @@ import { mergeCanonicalProcurementBrowseRows, mergeContractSearchRows } from "..
 import { renderProcurementRowCoverageHtml } from "../procurement_coverage_labels.mjs";
 import {
   ANALYTICAL_PROJECTION_URL,
+  CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD,
   analyticalDrillThroughHref,
+  cityRecordCoverage,
   filterAnalyticalContracts,
   formatRegisteredValue,
+  groupCityRecordCoverage,
   groupAnalyticalContracts,
   populationSummary,
   vendorConcentration,
@@ -330,6 +333,7 @@ function analyticalUrlFilters(){
     min_amount: params.get("ap_min") || null,
     max_amount: params.get("ap_max") || null,
     retroactive: params.get("retroactive") || null,
+    city_record_match: params.get("ap_city_record_match") || null,
   };
 }
 
@@ -357,6 +361,7 @@ function analyticalMoneyRow(row){
     agency_name: row.agency,
     vendor_name: row.prime_vendor,
     contract_id: row.prime_contract_id,
+    pin: row.pin || null,
     contract_amount: row.current_registered_amount,
     start_date: row.start_date,
     registration_date: row.registration_date,
@@ -366,6 +371,82 @@ function analyticalMoneyRow(row){
     source_system: "analytics_registered_contracts",
     analytics_projection: true,
   };
+}
+
+function analyticalCoverageControls() {
+  return {
+    threshold: Number($("#analytics-coverage-threshold")?.value || CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD),
+    contract_amount_band: $("#analytics-coverage-band")?.value || null,
+  };
+}
+
+function coveragePercent(value) {
+  return value == null ? "—" : `${(value * 100).toFixed(1)}%`;
+}
+
+function coverageBucketLabel(bucket) {
+  return bucket === "exact" ? t("analytics_coverage_exact")
+    : bucket === "none" ? t("analytics_coverage_none")
+      : t("analytics_coverage_missing_pin");
+}
+
+function coverageCell(stat, valueKey) {
+  const count = stat?.contract_count || 0;
+  const value = stat?.registered_value || 0;
+  return `${count.toLocaleString("en-US")} · ${formatRegisteredValue(value)}`;
+}
+
+function renderAnalyticalCoverage(projectionRows, filters) {
+  const controls = analyticalCoverageControls();
+  const coverageFilters = {
+    min_amount: controls.threshold,
+    registration_fiscal_year: filters.registration_fiscal_year,
+    contract_amount_band: controls.contract_amount_band,
+    agency: filters.agency,
+  };
+  const coverage = cityRecordCoverage(projectionRows, coverageFilters);
+  const grouped = groupCityRecordCoverage(projectionRows, { groupBy: "agency", ...coverageFilters });
+  const summary = $("#contracts-analytics-coverage-summary");
+  if (summary) {
+    summary.innerHTML = [
+      ["analytics_coverage_eligible", coverage.eligible_contract_count, coverage.eligible_registered_value],
+      ["analytics_coverage_exact", coverage.matched_contract_count, coverage.matched_registered_value],
+      ["analytics_coverage_none", coverage.unmatched_contract_count, coverage.unmatched_registered_value],
+      ["analytics_coverage_missing_pin", coverage.missing_pin_contract_count, coverage.missing_pin_registered_value],
+    ].map(([key, count, value]) => `<div class="contracts-analytics-coverage-stat"><dt>${escUiHtml(t(key))}</dt><dd>${Number(count).toLocaleString("en-US")}</dd><small>${escUiHtml(formatRegisteredValue(value))}</small></div>`).join("");
+  }
+  const statement = $("#contracts-analytics-coverage-statement");
+  if (statement) {
+    statement.innerHTML = `${escUiHtml(t("analytics_coverage_statement", {
+      matched: coverage.matched_contract_count.toLocaleString("en-US"),
+      eligible: coverage.eligible_contract_count.toLocaleString("en-US"),
+      rate: coveragePercent(coverage.match_rate),
+      value: formatRegisteredValue(coverage.matched_registered_value),
+      total: formatRegisteredValue(coverage.eligible_registered_value),
+    }))} ${escUiHtml(t("analytics_coverage_missing_sentence", {
+      count: coverage.missing_pin_contract_count.toLocaleString("en-US"),
+      value: formatRegisteredValue(coverage.missing_pin_registered_value),
+    }))}`;
+  }
+  const table = $("#contracts-analytics-coverage-groups");
+  if (!table) return;
+  table.innerHTML = grouped.groups.map((group) => {
+    const link = (bucket, label) => analyticalDrillThroughHref({
+      agency: group.label,
+      registration_fiscal_year: filters.registration_fiscal_year,
+      contract_amount_band: controls.contract_amount_band,
+      min_amount: controls.threshold,
+      city_record_match: bucket,
+    });
+    const exact = group.buckets.exact;
+    const none = group.buckets.none;
+    const missing = group.buckets.cannot_evaluate_missing_pin;
+    return `<tr><th scope="row"><a href="${escUiHtml(analyticalDrillThroughHref({ agency: group.label, registration_fiscal_year: filters.registration_fiscal_year, contract_amount_band: controls.contract_amount_band, min_amount: controls.threshold }))}">${escUiHtml(group.label)}</a></th><td>${group.eligible_contract_count.toLocaleString("en-US")} · ${escUiHtml(formatRegisteredValue(group.eligible_registered_value))}</td><td><a href="${escUiHtml(link("exact"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("exact")}`)}">${escUiHtml(coverageCell(exact))}</a></td><td><a href="${escUiHtml(link("none"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("none")}`)}">${escUiHtml(coverageCell(none))}</a></td><td><a href="${escUiHtml(link("cannot_evaluate_missing_pin"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("cannot_evaluate_missing_pin")}`)}">${escUiHtml(coverageCell(missing))}</a></td></tr>`;
+  }).join("");
+  const note = $("#contracts-analytics-coverage-note");
+  if (note) note.textContent = t("analytics_coverage_note", {
+    evaluable: coverage.evaluable_match_rate == null ? "—" : coveragePercent(coverage.evaluable_match_rate),
+  });
 }
 
 function analyticalGroupLabel(groupBy){
@@ -555,6 +636,7 @@ function renderAnalyticalProjection(rows){
     : remaining>0
       ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
       : t("analytics_group_exact_note");
+  renderAnalyticalCoverage(projectionRows, filters);
 }
 
 function valueKeyForMeasure(measure){
@@ -562,7 +644,7 @@ function valueKeyForMeasure(measure){
 }
 
 function bindAnalyticalControls(){
-  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max"].forEach((selector)=>{
+  ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
     const element=$(selector);
     if(!element || element.dataset.analyticsBound) return;
     element.dataset.analyticsBound="1";

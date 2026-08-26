@@ -257,6 +257,21 @@ export function measureCheckbookOverlap(rows, passportRows, cityRecordRows) {
   };
 }
 
+/**
+ * Project the existing exact-PIN overlap onto each normalized Checkbook row.
+ * Missing PINs remain a separate evaluation failure; names never participate.
+ */
+export function classifyCheckbookCityRecordMatches(rows, cityRecordRows) {
+  const list = Array.isArray(rows) ? rows : [];
+  const overlap = measureCheckbookOverlap(list, [], cityRecordRows);
+  return list.map((row) => ({
+    ...row,
+    city_record_match: !normId(row?.pin)
+      ? "cannot_evaluate_missing_pin"
+      : overlap._sets.cityRecordPins.has(normId(row.pin)) ? "exact" : "none",
+  }));
+}
+
 function rowSort(a, b) {
   const date = clean(b.registered || b.received).localeCompare(clean(a.registered || a.received));
   return date || clean(a.contract_id).localeCompare(clean(b.contract_id));

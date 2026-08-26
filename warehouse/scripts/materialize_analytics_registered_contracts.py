@@ -40,6 +40,7 @@ def main() -> int:
                 prime_contract_id VARCHAR PRIMARY KEY,
                 agency VARCHAR,
                 prime_vendor VARCHAR,
+                pin VARCHAR,
                 registration_date DATE,
                 start_date DATE,
                 registration_fiscal_year INTEGER,
@@ -50,19 +51,20 @@ def main() -> int:
                 current_registered_amount DOUBLE,
                 original_registered_amount DOUBLE,
                 source_fiscal_years VARCHAR[],
-                source VARCHAR
+                source VARCHAR,
+                city_record_match VARCHAR
             )"""
         )
         connection.executemany(
-            """INSERT INTO analytics_registered_contracts VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            """INSERT INTO analytics_registered_contracts VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             [
                 (
-                    row.get("prime_contract_id"), row.get("agency"), row.get("prime_vendor"),
+                    row.get("prime_contract_id"), row.get("agency"), row.get("prime_vendor"), row.get("pin"),
                     row.get("registration_date"), row.get("start_date"), row.get("registration_fiscal_year"),
                     row.get("contract_amount_band"), row.get("award_method"),
                     row.get("registration_lag_days"), row.get("registration_timing"),
                     row.get("current_registered_amount"), row.get("original_registered_amount"),
-                    row.get("source_fiscal_years") or [], row.get("source"),
+                    row.get("source_fiscal_years") or [], row.get("source"), row.get("city_record_match"),
                 )
                 for row in rows
             ],
