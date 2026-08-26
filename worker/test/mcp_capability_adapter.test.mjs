@@ -24,7 +24,7 @@ function post(body) {
   });
 }
 
-test("the MCP policy boundary contains exactly the four registered public reads", () => {
+test("the MCP policy boundary contains the registered public reads", () => {
   assert.deepEqual(
     MCP_PUBLIC_CAPABILITY_TOOL_BINDINGS.map(({ name, capabilityReference }) => ({
       name,
@@ -65,6 +65,7 @@ test("MCP structured results preserve direct-provider semantics and declared bou
     }
     assert.deepEqual(adapterFixture.reads.map(({ capability_reference: reference }) => reference), [
       "notice.search@1",
+      "notice.get@1",
       "entity.dossier.get@1",
       "entity.relationships.get@1",
     ]);

@@ -17,10 +17,15 @@ import {
 } from "../capabilities/registry.mjs";
 import {
   MCP_CITED_PASSAGES_ADAPTER,
+  MCP_NOTICE_GET_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
 } from "../capabilities/mcp_tool_declarations.mjs";
+import {
+  NOTICE_GET_CAPABILITY,
+  NOTICE_GET_CAPABILITY_REFERENCE,
+} from "../capabilities/notice_get.mjs";
 import {
   NOTICE_SEARCH_CAPABILITY,
   NOTICE_SEARCH_CAPABILITY_REFERENCE,
@@ -38,6 +43,8 @@ import {
   CITED_PASSAGES_CAPABILITY_REFERENCE,
 } from "../capabilities/cited_passages.mjs";
 import { workerD1NoticeSearch } from "../worker/src/lib/notices.mjs";
+import { NOTICE_GET_HTTP_ADAPTER, workerNoticeGet } from "../worker/src/notice.mjs";
+import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import {
   ENTITY_DOSSIER_HTTP_ADAPTER,
@@ -60,16 +67,20 @@ const ROOT = new URL("../", import.meta.url);
 const TOPOLOGY = new URL("../architecture/generated/capability-topology.json", import.meta.url);
 const CATALOG = new URL("../site/data/mcp_tool_catalog.json", import.meta.url);
 
-test("the registry is frozen, versioned, owned, and contains the four ladder capabilities", () => {
+test("the registry is frozen, versioned, owned, and contains the four spine capabilities plus notice retrieval", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 4);
+  assert.equal(CAPABILITY_REGISTRY.length, 5);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
-  assert.equal(CAPABILITY_REGISTRY[1], ENTITY_DOSSIER_CAPABILITY);
-  assert.equal(CAPABILITY_REGISTRY[2], ENTITY_RELATIONSHIPS_CAPABILITY);
-  assert.equal(CAPABILITY_REGISTRY[3], CITED_PASSAGES_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[1], NOTICE_GET_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[2], ENTITY_DOSSIER_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[3], ENTITY_RELATIONSHIPS_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[4], CITED_PASSAGES_CAPABILITY);
   assert.equal(NOTICE_SEARCH_CAPABILITY.reference, "notice.search@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(NOTICE_SEARCH_CAPABILITY.owner, "notices");
+  assert.equal(NOTICE_GET_CAPABILITY.reference, NOTICE_GET_CAPABILITY_REFERENCE);
+  assert.equal(NOTICE_GET_CAPABILITY.version, "1.0.0");
+  assert.equal(NOTICE_GET_CAPABILITY.owner, "notices");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.reference, "entity.dossier.get@1");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.version, "1.0.0");
   assert.equal(ENTITY_DOSSIER_CAPABILITY.owner, "entity-resolution");
@@ -161,11 +172,23 @@ test("provider and MCP adapter explicitly reference cited.passages.retrieve@1", 
     providerId: MCP_CITED_PASSAGES_ADAPTER.providerId,
     representations: MCP_CITED_PASSAGES_ADAPTER.representations,
   }, {
-    id: CITED_PASSAGES_CAPABILITY.adapters[0].id,
-    capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
-    providerId: CITED_PASSAGES_CAPABILITY.provider.id,
-    representations: CITED_PASSAGES_CAPABILITY.adapters[0].representations,
+      id: CITED_PASSAGES_CAPABILITY.adapters[1].id,
+      capabilityReference: CITED_PASSAGES_CAPABILITY_REFERENCE,
+      providerId: CITED_PASSAGES_CAPABILITY.provider.id,
+      representations: CITED_PASSAGES_CAPABILITY.adapters[1].representations,
   });
+  assert.equal(HTTP_CITED_PASSAGES_ADAPTER.capabilityReference, CITED_PASSAGES_CAPABILITY_REFERENCE);
+  assert.equal(HTTP_CITED_PASSAGES_ADAPTER.providerId, CITED_PASSAGES_CAPABILITY.provider.id);
+  assert.equal(HTTP_CITED_PASSAGES_ADAPTER.id, CITED_PASSAGES_CAPABILITY.adapters[0].id);
+  assert.equal(validateRuntimeTopology(), true);
+});
+
+test("notice retrieval has one authoritative provider and HTTP/MCP adapters", () => {
+  const provider = workerNoticeGet({});
+  assert.equal(provider.capabilityReference, NOTICE_GET_CAPABILITY_REFERENCE);
+  assert.equal(provider.providerId, NOTICE_GET_CAPABILITY.provider.id);
+  assert.equal(NOTICE_GET_HTTP_ADAPTER.id, NOTICE_GET_CAPABILITY.adapters[0].id);
+  assert.equal(MCP_NOTICE_GET_ADAPTER.id, NOTICE_GET_CAPABILITY.adapters[1].id);
   assert.equal(validateRuntimeTopology(), true);
 });
 
@@ -178,13 +201,14 @@ test("every MCP tool has a capability, existing contract, or scoped pilot except
   assert.equal(cited.capabilityReference, CITED_PASSAGES_CAPABILITY_REFERENCE);
   assert.equal(cited.adapterId, MCP_CITED_PASSAGES_ADAPTER.id);
   const exceptions = MCP_TOOL_BINDINGS.filter(({ pilotException }) => pilotException);
-  assert.deepEqual(exceptions.map(({ name }) => name), ["get_notice", "preview_watch", "create_watch"]);
+  assert.deepEqual(exceptions.map(({ name }) => name), ["preview_watch", "create_watch"]);
   assert.equal(exceptions.find(({ name }) => name === "create_watch").operationClass, "mutation");
 });
 
 test("core capability files contain no runtime or transport dependencies", () => {
   for (const path of [
     "capabilities/notice_search.mjs",
+    "capabilities/notice_get.mjs",
     "capabilities/entity_dossier.mjs",
     "capabilities/entity_relationships.mjs",
     "capabilities/cited_passages.mjs",
@@ -205,6 +229,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
   const catalog = buildMcpToolCatalog();
   assert.deepEqual(catalog.registered_capability_references, [
     "notice.search@1",
+    "notice.get@1",
     "entity.dossier.get@1",
     "entity.relationships.get@1",
     "cited.passages.retrieve@1",

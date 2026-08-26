@@ -153,6 +153,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
         core_transport_imports: countImports(
           [
             "capabilities/notice_search.mjs",
+            "capabilities/notice_get.mjs",
             "capabilities/entity_dossier.mjs",
             "capabilities/entity_relationships.mjs",
             "capabilities/cited_passages.mjs",
@@ -162,6 +163,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
         core_cloudflare_agents_imports: countImports(
           [
             "capabilities/notice_search.mjs",
+            "capabilities/notice_get.mjs",
             "capabilities/entity_dossier.mjs",
             "capabilities/entity_relationships.mjs",
             "capabilities/cited_passages.mjs",
@@ -173,7 +175,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
           /from\s+["'][^"']*(?:cloudflare-os|gatekeeper-mcp)[^"']*["']/gi,
         ),
       },
-      status: toolEvidence.length === 4
+      status: toolEvidence.length === 5
         && toolEvidence.every(({ parity }) => parity === "pass")
         ? "pass"
         : "fail",

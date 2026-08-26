@@ -2,6 +2,7 @@
 // contracts and explicit providers directly; this file never resolves or invokes one.
 
 import { NOTICE_SEARCH_CAPABILITY } from "./notice_search.mjs";
+import { NOTICE_GET_CAPABILITY } from "./notice_get.mjs";
 import { ENTITY_DOSSIER_CAPABILITY } from "./entity_dossier.mjs";
 import { ENTITY_RELATIONSHIPS_CAPABILITY } from "./entity_relationships.mjs";
 import { CITED_PASSAGES_CAPABILITY } from "./cited_passages.mjs";
@@ -57,6 +58,7 @@ export function validateCapabilityRegistry(registry) {
 
 export const CAPABILITY_REGISTRY = deepFreeze([
   NOTICE_SEARCH_CAPABILITY,
+  NOTICE_GET_CAPABILITY,
   ENTITY_DOSSIER_CAPABILITY,
   ENTITY_RELATIONSHIPS_CAPABILITY,
   CITED_PASSAGES_CAPABILITY,

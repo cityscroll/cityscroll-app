@@ -17,6 +17,7 @@ import {
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
+  MCP_NOTICE_GET_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
@@ -24,6 +25,8 @@ import {
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import { ENTITY_DOSSIER_HTTP_ADAPTER } from "../worker/src/entity_dossier.mjs";
 import { ENTITY_RELATIONSHIPS_HTTP_ADAPTER } from "../worker/src/public_relationship_graph.mjs";
+import { NOTICE_GET_HTTP_ADAPTER } from "../worker/src/notice.mjs";
+import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
@@ -59,9 +62,12 @@ export function validateRuntimeTopology() {
   const runtimeAdapters = [
     SEARCH_NOTICE_ADAPTER,
     MCP_NOTICE_SEARCH_ADAPTER,
+    NOTICE_GET_HTTP_ADAPTER,
+    MCP_NOTICE_GET_ADAPTER,
     ENTITY_DOSSIER_HTTP_ADAPTER,
     MCP_ENTITY_DOSSIER_ADAPTER,
     ENTITY_RELATIONSHIPS_HTTP_ADAPTER,
+    HTTP_CITED_PASSAGES_ADAPTER,
     MCP_ENTITY_RELATIONSHIPS_ADAPTER,
     MCP_CITED_PASSAGES_ADAPTER,
   ];
@@ -73,6 +79,20 @@ export function validateRuntimeTopology() {
     }
     if (runtimeAdapter.providerId !== registered.capability.provider.id) {
       throw new Error(`runtime adapter provider drift: ${runtimeAdapter.id}`);
+    }
+  }
+
+  for (const capability of CAPABILITY_REGISTRY) {
+    const adapters = capability.adapters;
+    if (!adapters.some(({ kind }) => kind.startsWith("http"))
+        || !adapters.some(({ kind }) => kind === "mcp-tool")) {
+      throw new Error(`capability lacks authoritative HTTP and MCP adapters: ${capability.reference}`);
+    }
+    if (!Array.isArray(capability.examples) || capability.examples.length < 2) {
+      throw new Error(`capability examples are required: ${capability.reference}`);
+    }
+    if (!capability.bounds || typeof capability.bounds !== "object") {
+      throw new Error(`capability bounds are required: ${capability.reference}`);
     }
   }
 
@@ -98,6 +118,10 @@ export function validateRuntimeTopology() {
     } else if (!binding.contractReference && !binding.pilotException) {
       throw new Error(`MCP tool lacks a contract or scoped pilot exception: ${binding.name}`);
     }
+    if (binding.pilotException && binding.operationClass === "read"
+        && /^(?:search|get|retrieve)_/.test(binding.name)) {
+      throw new Error(`equivalent read operation retains an inline pilot exception: ${binding.name}`);
+    }
   }
   return true;
 }
@@ -105,6 +129,7 @@ export function validateRuntimeTopology() {
 export function buildMcpToolCatalog() {
   validateRuntimeTopology();
   const bindings = bindingByName();
+  const capabilities = new Map(CAPABILITY_REGISTRY.map((capability) => [capability.reference, capability]));
   return {
     schema: "cityscroll.mcp_tool_catalog.v1",
     generated_from: "worker/src/mcp.mjs + capabilities/registry.mjs",
@@ -119,7 +144,8 @@ export function buildMcpToolCatalog() {
         description: tool.description,
         schema_reference: binding.schemaReference,
         capability_reference: binding.capabilityReference || null,
-        bounds: binding.bounds || null,
+        bounds: capabilities.get(binding.capabilityReference)?.bounds || binding.bounds || null,
+        examples: capabilities.get(binding.capabilityReference)?.examples || null,
         annotations: tool.annotations || null,
         store_access: binding.storeAccess || null,
       };
@@ -129,6 +155,7 @@ export function buildMcpToolCatalog() {
 
 export function buildCapabilityTopology() {
   validateRuntimeTopology();
+  const capabilities = new Map(CAPABILITY_REGISTRY.map((capability) => [capability.reference, capability]));
   return {
     schema: "cityscroll.capability_topology.v1",
     generated_from: "capabilities/registry.mjs",
@@ -142,6 +169,8 @@ export function buildCapabilityTopology() {
       cost: capability.cost,
       input_schema: capability.input.schema,
       output_schema: capability.output.schema,
+      bounds: capability.bounds,
+      examples: capability.examples,
       availability: capability.output.availability,
       provenance: capability.provenance,
       freshness: capability.freshness,
@@ -160,7 +189,8 @@ export function buildCapabilityTopology() {
         adapter_id: binding.adapterId || null,
         contract_reference: binding.contractReference || null,
         pilot_exception: binding.pilotException || null,
-        bounds: binding.bounds || null,
+        bounds: capabilities.get(binding.capabilityReference)?.bounds || binding.bounds || null,
+        examples: capabilities.get(binding.capabilityReference)?.examples || null,
         annotations: binding.annotations || null,
         store_access: binding.storeAccess || null,
       })),

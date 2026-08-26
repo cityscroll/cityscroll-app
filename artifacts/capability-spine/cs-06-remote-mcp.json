@@ -15,7 +15,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 4,
+    "registered_public_tools": 5,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -50,6 +50,31 @@
       "store_access": "provider-only",
       "store_read_operations": 1,
       "store_rows_read": 2
+    },
+    {
+      "adapter_id": "mcp.get_notice@1",
+      "adapter_semantic_sha256": "35b86db1f4e08be3f80fd4de5ac620bc6552aa1d054ccfca0f8e93c00f8e3a4a",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "requestIdMaximumLength": 80
+      },
+      "calls": 1,
+      "capability_reference": "notice.get@1",
+      "direct_semantic_sha256": "35b86db1f4e08be3f80fd4de5ac620bc6552aa1d054ccfca0f8e93c00f8e3a4a",
+      "name": "get_notice",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-notices.notice-get",
+      "store_access": "provider-only",
+      "store_read_operations": 1,
+      "store_rows_read": 1
     },
     {
       "adapter_id": "mcp.get_entity_dossier@1",
@@ -134,11 +159,11 @@
     }
   ],
   "request_counts": {
-    "capability_calls": 4,
+    "capability_calls": 5,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 7
+    "post_requests": 8
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

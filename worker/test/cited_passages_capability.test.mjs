@@ -16,6 +16,8 @@ import {
   mcpCitedPassagesInput,
 } from "../src/mcp.mjs";
 import {
+  handleCitedPassages,
+  HTTP_CITED_PASSAGES_ADAPTER,
   retrieveCitedPassages,
   workerCitedPassages,
 } from "../src/cited_retrieval.mjs";
@@ -198,4 +200,27 @@ test("MCP structured content is byte-compatible with the direct provider", async
     "Returned 1 source passage. Use the structured citations for source text and links.",
   );
   assertEvidenceOnly(mcp.result.structuredContent);
+});
+
+test("HTTP JSON and text adapters preserve the direct cited-passages semantics", async () => {
+  const input = {
+    query: "energy conservation",
+    filters: { source_family: "city_record_notice" },
+    limit: 5,
+  };
+  const direct = await executeCitedPassages(workerCitedPassages(), input);
+  assert.equal(HTTP_CITED_PASSAGES_ADAPTER.capabilityReference, CITED_PASSAGES_CAPABILITY_REFERENCE);
+
+  const jsonResponse = await handleCitedPassages(new Request(
+    "https://api.cityscroll.org/cited-passages?q=energy%20conservation&source_family=city_record_notice&limit=5",
+    { headers: { Accept: "application/json" } },
+  ), {});
+  assert.equal(jsonResponse.status, 200);
+  assert.deepEqual(await jsonResponse.json(), direct);
+
+  const textResponse = await handleCitedPassages(new Request(
+    "https://api.cityscroll.org/cited-passages?q=energy%20conservation&source_family=city_record_notice&limit=5&format=text",
+  ), {});
+  assert.equal(textResponse.status, 200);
+  assert.equal(await textResponse.text(), "Returned 1 source passage. Use the structured citations for source text and links.");
 });
