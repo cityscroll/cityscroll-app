@@ -297,3 +297,95 @@ export function browseScopeIdentity(surfaceId) {
     sourceDomain: surface.sourceDomain,
   }) : null;
 }
+
+// The Following URL and calendar subscription URL share this versioned query wire. Keep the
+// calendar projection here with scope-v0 so a delivery surface cannot invent a second scope
+// grammar. The worker imports the replayable-field contract below to reject modern feed filters
+// that compileSub cannot apply without broadening them.
+const CALENDAR_FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
+const CALENDAR_REPLAYABLE_FILTER_FIELDS = Object.freeze({
+  money: new Set(["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "closingWeek", "procurement_id"]),
+  land: new Set(["keywords", "boro", "status", "communityDistrict", "councilDistrict", "procedure", "family", "regulatoryEffect", "geographies"]),
+  property: new Set(["keywords", "agency", "asset", "saleMethod", "priceBand", "geographies"]),
+  rules: new Set(["keywords", "agency", "geographies"]),
+  meetings: new Set(["keywords", "agency", "when", "dateWindow", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "communityBoard", "geographies"]),
+  entity: new Set(["name", "kind"]),
+});
+
+function compactSubscriptionFilter(value) {
+  const out = {};
+  for (const [key, item] of Object.entries(value || {})) {
+    if (item == null || item === "" || item === false) continue;
+    if (Array.isArray(item) && item.length === 0) continue;
+    out[key] = item;
+  }
+  return out;
+}
+
+function isSubscriptionWatch(value) {
+  return !!(value && typeof value === "object" && !Array.isArray(value)
+    && (Object.prototype.hasOwnProperty.call(value, "lens")
+      || Object.prototype.hasOwnProperty.call(value, "filter")));
+}
+
+/** Normalize either a canonical scope or an existing {lens, filter} watch to one watch wire. */
+export function subscriptionWatchFromScope(input = {}, { lens } = {}) {
+  const source = isSubscriptionWatch(input) ? input : null;
+  const sourceLens = lens || source?.lens;
+  const scope = source
+    ? scopeFromGeographyWatch(source, { language: source.language || "en" })
+    : scopeWithGeographies(input);
+  const watch = watchFromGeographyScope(scope, { lens: sourceLens });
+  return {
+    lens: watch.lens,
+    filter: compactSubscriptionFilter(watch.filter),
+  };
+}
+
+/** Serialize the exact {lens, filter} query used by Following. */
+export function subscriptionParamsFromWatch(input = {}) {
+  const watch = subscriptionWatchFromScope(input);
+  return new URLSearchParams({
+    lens: watch.lens,
+    filter: JSON.stringify(watch.filter),
+  });
+}
+
+/** Fields that the standing feed can replay through compileSub without dropping a constraint. */
+export function calendarFeedUnsupportedFilterFields(input = {}) {
+  const watch = subscriptionWatchFromScope(input);
+  const allowed = CALENDAR_REPLAYABLE_FILTER_FIELDS[watch.lens];
+  if (!allowed) return ["lens"];
+  return Object.keys(watch.filter).filter((key) => !allowed.has(key)).sort();
+}
+
+/**
+ * Project a canonical civic scope onto the standing calendar feed.
+ *
+ * A null result suppresses an affordance when scope-v0 contains dimensions that the Following
+ * watch wire or compileSub cannot replay. This is deliberately fail-closed: a calendar must not
+ * silently become broader than the scope it came from.
+ */
+export function calendarFeedUrlForScope(input = {}, { base = "https://api.cityscroll.org/feed.ics" } = {}) {
+  const source = isSubscriptionWatch(input) ? input : null;
+  const scope = source
+    ? scopeFromGeographyWatch(source, { language: source.language || "en" })
+    : scopeWithGeographies(input);
+  const watch = subscriptionWatchFromScope(source || scope, { lens: source?.lens });
+  const unsupported = [];
+  if (!CALENDAR_FEED_LENSES.has(watch.lens)) unsupported.push("lens");
+  if (scope.place.viewport) unsupported.push("place.viewport");
+  if (scope.time_window.start) unsupported.push("time_window.start");
+  if (scope.time_window.end) unsupported.push("time_window.end");
+  if (scope.place.boroughs.length > 1) unsupported.push("place.boroughs");
+  if (scope.place.community_districts.length > 1) unsupported.push("place.community_districts");
+  if (scope.place.council_districts.length > 1) unsupported.push("place.council_districts");
+  if (scope.facets.domains.length > 1) unsupported.push("facets.domains");
+  unsupported.push(...calendarFeedUnsupportedFilterFields(watch));
+  if (unsupported.length) return null;
+
+  const url = new URL(base, "https://cityscroll.invalid");
+  for (const [key, value] of subscriptionParamsFromWatch(watch)) url.searchParams.set(key, value);
+  const absolute = /^[a-z][a-z\d+.-]*:\/\//i.test(base);
+  return absolute ? url.toString() : `${url.pathname}${url.search}`;
+}

@@ -449,12 +449,18 @@ export function hearingMatchesLocation(rowOrRecord, filter = {}) {
   const area = record.affected_area;
   const borough = String(filter.borough || "").toLowerCase();
   const neighborhood = String(filter.neighborhood || "").trim().toLowerCase();
+  const communityDistrict = String(filter.communityDistrict || "").trim().toUpperCase();
+  const councilDistrict = String(filter.councilDistrict || "").trim();
   if (filter.locationScope === "citywide-unlocated") {
     if (area.scope !== "citywide" && area.scope !== "unlocated") return false;
   } else if (borough) {
     if (area.scope !== "citywide"
         && !area.boroughs.some((value) => String(value).toLowerCase() === borough)) return false;
   }
+  if (communityDistrict && area.scope !== "citywide"
+      && !(area.community_districts || []).some((value) => String(value).toUpperCase() === communityDistrict)) return false;
+  if (councilDistrict && area.scope !== "citywide"
+      && !(area.council_districts || []).some((value) => String(value) === councilDistrict)) return false;
   if (neighborhood && area.scope !== "citywide") {
     const haystack = [
       ...area.neighborhoods,

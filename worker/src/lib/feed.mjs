@@ -5,6 +5,7 @@
 
 import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../../../site/display_title.mjs";
+import { calendarFeedUnsupportedFilterFields } from "../../../site/scope_v0.mjs";
 
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"']/g, (c) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -15,6 +16,15 @@ const d10 = (s) => (s ? String(s).slice(0, 10) : "");
 // URL query → { lens, filter } in the shape sanitize() expects. Keywords capped like the NL layer.
 export function parseFeedQuery(searchParams) {
   const lens = searchParams.get("lens") || "money";
+  if (searchParams.has("filter")) {
+    try {
+      const filter = JSON.parse(searchParams.get("filter") || "");
+      if (!filter || typeof filter !== "object" || Array.isArray(filter)) throw new Error("filter must be an object");
+      return { lens, filter, modern: true, error: null };
+    } catch {
+      return { lens, filter: null, modern: true, error: "invalid filter" };
+    }
+  }
   const keywords = (searchParams.get("q") || "").split(/\s+/).filter(Boolean).slice(0, 4);
   const agency = searchParams.get("agency") || null;
   const min = searchParams.get("min");
@@ -22,6 +32,11 @@ export function parseFeedQuery(searchParams) {
     keywords, agency, minAmount: min ? Number(min) : null,
     name: searchParams.get("name") || null, kind: searchParams.get("kind") || null, // entity feeds
   } };
+}
+
+/** Modern scope filters must be replayable or the feed must refuse them explicitly. */
+export function unsupportedModernFeedFilterFields(lens, filter) {
+  return calendarFeedUnsupportedFilterFields({ lens, filter });
 }
 
 // Normalize compileSub result rows → neutral feed items.
