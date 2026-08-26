@@ -9,6 +9,7 @@ import {
 } from "../site/analytical_projection_contract.mjs";
 import {
   analyticalDrillThroughHref,
+  preserveAnalyticalProjectionQuery,
   contractAmountBand,
   filterAnalyticalContracts,
   groupAnalyticalContracts,
@@ -16,6 +17,8 @@ import {
   registrationFiscalYear,
 } from "../site/analytical_projection.mjs";
 import { normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
+import { migrateLegacyUrl } from "../site/route_migration.mjs";
+import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
 
 describe("registered contract analytical projection contract", () => {
   it("declares reader labels, source fields, and the registration-year guard", () => {
@@ -67,6 +70,22 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(filtered.length, 0);
     const href = analyticalDrillThroughHref({ agency: "Agency A", prime_vendor: "Vendor A", registration_fiscal_year: 2026, min_amount: 1000 });
     assert.equal(href, "/browse/contracts/?mode=award&ap_agency=Agency+A&ap_vendor=Vendor+A&ap_fy=2026&ap_min=1000");
+  });
+
+  it("preserves linked agency and vendor scopes across the cold document-route handoff", () => {
+    const raw = "#money?mode=award&ap_agency=Department+of+Design+and+Construction&ap_vendor=Vendor+A&ap_fy=2026&ap_amount_band=%24100%2C000%E2%80%93999%2C999&ap_min=1000&ap_max=2000";
+    const scope = scopeFromRouteHash(raw);
+    const normalized = routeHashFromScope(scope, { surface: "money" });
+    assert.equal(normalized, "#money?mode=award");
+    assert.equal(preserveAnalyticalProjectionQuery(raw, normalized), raw);
+    assert.equal(
+      migrateLegacyUrl(`/${raw}`).target,
+      "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction&ap_vendor=Vendor+A&ap_fy=2026&ap_amount_band=%24100%2C000%E2%80%93999%2C999&ap_min=1000&ap_max=2000",
+    );
+
+    const routingSource = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
+    assert.match(routingSource, /preserveAnalyticalProjectionQuery\("#"\+raw/);
+    assert.match(routingSource, /ANALYTICAL_PROJECTION_QUERY_KEYS/);
   });
 });
 

@@ -9,6 +9,7 @@ import { resolveTraversalBackHref, traversalFromHref } from "../traversal_path.m
 import { renderNoticeBitemporalHistory } from "../civic_time_ledger.mjs";
 import { retainSearchHandoffForQuery } from "../search_lens_handoff.mjs";
 import { normalizeCommunityBoardRef } from "../community_board_watch.mjs";
+import { ANALYTICAL_PROJECTION_QUERY_KEYS, preserveAnalyticalProjectionQuery } from "../analytical_projection.mjs";
 import {
   EXAMS_SURFACE,
   STAFFING_SURFACE,
@@ -208,6 +209,10 @@ function serializeState(){
   const q = new URLSearchParams();
   if(tab === "money"){
     if($("#mode").value !== "open") q.set("mode", $("#mode").value);
+    const analyticalParams = new URLSearchParams(location.search);
+    for(const key of ANALYTICAL_PROJECTION_QUERY_KEYS){
+      if(analyticalParams.has(key)) q.set(key, analyticalParams.get(key));
+    }
     if($("#agency").value) q.set("agency", $("#agency").value);
     if($("#kw").value.trim()) q.set("q", $("#kw").value.trim());
     if($("#sort").value !== "deadline") q.set("sort", $("#sort").value);
@@ -961,7 +966,7 @@ function applyHash(){
     ?CrolScope.scopeFromRouteHash("#"+raw,{language:window.LANG||"en"}):null;
   if(scope){
     const adapted=CrolScope.routeHashFromScope(scope,{surface:scopeSurface});
-    const canonical = carryWalk(adapted, "#"+raw);
+    const canonical = preserveAnalyticalProjectionQuery("#"+raw, carryWalk(adapted, "#"+raw));
     if(canonical!=="#"+raw){
       history.replaceState(routeHistoryState({entry:{hash:canonical,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)}}),"",routeUrlForHash(canonical));
       return applyHash();
