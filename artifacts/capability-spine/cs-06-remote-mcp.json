@@ -15,7 +15,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 5,
+    "registered_public_tools": 6,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -26,6 +26,33 @@
     "transport": "Streamable HTTP"
   },
   "public_tool_inventory": [
+    {
+      "adapter_id": "mcp.search_federated@1",
+      "adapter_semantic_sha256": "59f93f3eeea2025597229610f7f8127c1a7bd139da8a651fa277d1e67cde2bba",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "defaultResults": 40,
+        "maximumCards": 8,
+        "maximumResults": 100,
+        "queryMaximumLength": 240
+      },
+      "calls": 1,
+      "capability_reference": "search.federated@1",
+      "direct_semantic_sha256": "59f93f3eeea2025597229610f7f8127c1a7bd139da8a651fa277d1e67cde2bba",
+      "name": "search_federated",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-federated-search",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
     {
       "adapter_id": "mcp.search_notices@1",
       "adapter_semantic_sha256": "fdfce907e1f111d1842275b129afe24ec8c2633c6ea20d9e7aed6fe139dc7b3a",
@@ -48,8 +75,8 @@
       "parity": "pass",
       "provider_id": "worker-d1.notice-search",
       "store_access": "provider-only",
-      "store_read_operations": 1,
-      "store_rows_read": 2
+      "store_read_operations": 2,
+      "store_rows_read": 4
     },
     {
       "adapter_id": "mcp.get_notice@1",
@@ -73,8 +100,8 @@
       "parity": "pass",
       "provider_id": "worker-notices.notice-get",
       "store_access": "provider-only",
-      "store_read_operations": 1,
-      "store_rows_read": 1
+      "store_read_operations": 2,
+      "store_rows_read": 2
     },
     {
       "adapter_id": "mcp.get_entity_dossier@1",
@@ -159,11 +186,11 @@
     }
   ],
   "request_counts": {
-    "capability_calls": 5,
+    "capability_calls": 6,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 8
+    "post_requests": 9
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

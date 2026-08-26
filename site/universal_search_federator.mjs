@@ -8,33 +8,21 @@
  */
 
 import { admitSearchDocument } from "./search_document_contract.mjs";
+import {
+  FEDERATED_SEARCH_COVERAGE_SCHEMA,
+  FEDERATED_SEARCH_COVERAGE_STATES,
+  FEDERATED_SEARCH_LENS_IDS,
+  FEDERATED_SEARCH_RESULT_SCHEMA,
+  FEDERATED_SEARCH_SCHEMA,
+} from "../capabilities/federated_search.mjs";
 
-export const UNIVERSAL_SEARCH_FEDERATOR_SCHEMA =
-  "cityscroll.universal_search_federator.v1";
-export const UNIVERSAL_SEARCH_RESULT_SCHEMA =
-  "cityscroll.universal_search_result.v1";
-export const UNIVERSAL_SEARCH_COVERAGE_SCHEMA =
-  "cityscroll.universal_search_coverage.v1";
+export const UNIVERSAL_SEARCH_FEDERATOR_SCHEMA = FEDERATED_SEARCH_SCHEMA;
+export const UNIVERSAL_SEARCH_RESULT_SCHEMA = FEDERATED_SEARCH_RESULT_SCHEMA;
+export const UNIVERSAL_SEARCH_COVERAGE_SCHEMA = FEDERATED_SEARCH_COVERAGE_SCHEMA;
 
-export const UNIVERSAL_SEARCH_LENS_IDS = Object.freeze([
-  "notices",
-  "people",
-  "agencies",
-  "vendors",
-  "committees",
-  "community_boards",
-  "exams",
-  "parcels",
-]);
+export const UNIVERSAL_SEARCH_LENS_IDS = FEDERATED_SEARCH_LENS_IDS;
 
-const COVERAGE_STATES = new Set([
-  "matched",
-  "empty",
-  "partial",
-  "stale",
-  "not_indexed",
-  "provider_unavailable",
-]);
+const COVERAGE_STATES = new Set(FEDERATED_SEARCH_COVERAGE_STATES);
 
 const COMPLETE_COVERAGE_STATES = new Set(["matched", "empty"]);
 
@@ -136,6 +124,7 @@ export function normalizeUniversalSearchQuery(value) {
 }
 
 function nullableCount(value) {
+  if (value === undefined || value === null || value === "") return null;
   const count = Number(value);
   return Number.isInteger(count) && count >= 0 ? count : null;
 }
@@ -208,6 +197,7 @@ function prepareCandidates(rawCandidates, lensId, method) {
       local_score: localScore,
       local_score_kind: method,
       match_fields: matchFields,
+      match_evidence: plainObject(raw?.match_evidence) ? deepFreeze(raw.match_evidence) : null,
     });
   }
 
@@ -296,6 +286,7 @@ async function queryLens(lensId, provider, query, tokens, limit) {
         as_of: clean(declared.as_of, 80) || null,
         source: clean(declared.source, 240) || null,
         method,
+        ...(plainObject(declared.details) ? { details: declared.details } : {}),
       }),
     };
   } catch {
@@ -345,7 +336,9 @@ function coverageReceipt(coverageByLens, merged) {
   ), 0);
   const incompleteLenses = UNIVERSAL_SEARCH_LENS_IDS.filter((lensId) => {
     const row = coverageByLens[lensId];
-    const hasCorpusReceipt = row.indexed_count !== null || row.as_of !== null;
+    // An observation clock alone cannot prove corpus completeness. Providers
+    // must also publish an indexed row count before a lens is complete.
+    const hasCorpusReceipt = row.indexed_count !== null;
     return !COMPLETE_COVERAGE_STATES.has(row.state)
       || row.matched_count === null
       || !hasCorpusReceipt;
@@ -418,6 +411,7 @@ export async function federateUniversalSearch({ query, lenses = {}, limit = 40 }
       normalized_rank: maxScore ? rounded(winner.calibrated_score / maxScore) : 0,
       rank: index + 1,
       match_fields: winner.match_fields,
+      match_evidence: winner.match_evidence,
       matched_lenses: matchedLenses,
       ranking: {
         policy: UNIVERSAL_SEARCH_RANKING_POLICY.id,

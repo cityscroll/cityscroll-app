@@ -16,6 +16,7 @@
         "raw_string",
         "request_id",
         "retrieve_cited_passages",
+        "search_federated",
         "search_notices"
       ],
       "surface_family": "reference",

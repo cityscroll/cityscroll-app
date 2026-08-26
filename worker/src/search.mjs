@@ -1,6 +1,12 @@
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { workerD1NoticeSearch, toRecord } from "./lib/notices.mjs";
 import {
+  executeFederatedSearch,
+  FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+  FEDERATED_SEARCH_LIMITS,
+  FEDERATED_SEARCH_PROVIDER_ID,
+} from "../../capabilities/federated_search.mjs";
+import {
   executeNoticeSearch,
   NOTICE_SEARCH_CAPABILITY_REFERENCE,
   NOTICE_SEARCH_PROVIDER_ID,
@@ -53,8 +59,15 @@ export const SEARCH_NOTICE_ADAPTER = Object.freeze({
   route: "GET /search",
   surface: "Universal search",
 });
-// Production collection providers register here. Follow-on collection wiring
-// adds one lens-to-family entry without changing the federator contract.
+export const SEARCH_FEDERATED_ADAPTER = Object.freeze({
+  id: "worker-http.search.federated@1",
+  capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+  providerId: FEDERATED_SEARCH_PROVIDER_ID,
+  route: "GET /search",
+  surface: "Universal search",
+});
+// Production collection providers register here; the federator remains the
+// sole owner of cross-lens normalization, ranking, deduplication, and coverage.
 const PRODUCTION_COLLECTION_FAMILIES = Object.freeze({
   people: "people",
   vendors: "vendors",
@@ -376,6 +389,7 @@ async function noticeSearchLanes(env, resolved) {
     return {
       results: matched.map(({ document, evidence }) => publicCard(document, evidence)),
       lanes,
+      candidate_counts: merged.candidate_counts,
     };
   } catch (error) {
     console.error("notice-search failed:", String(error?.message || error));
@@ -494,6 +508,7 @@ function keywordFamilyProvider(familyId, env) {
             return {
               document,
               local_score: index + 1,
+              match_evidence: document.match_evidence || null,
               match_fields: [{
                 field: evidence.field,
                 matched_term: evidence.matched_normalized_term,
@@ -536,6 +551,114 @@ function productionCollectionProviders(env) {
   ));
 }
 
+function noticeFederatedProvider(env) {
+  return Object.freeze({
+    async search({ query }) {
+      const resolved = resolveKeywordQuery(query);
+      const response = await noticeSearchLanes(env, resolved);
+      const documents = response.results || [];
+      const candidates = documents.map((document, index) => {
+        const evidence = document.match_fields?.[0] || {};
+        return {
+          document,
+          local_score: index + 1,
+          match_evidence: document.match_evidence || null,
+          match_fields: [{
+            field: evidence.field || "search_text",
+            matched_term: evidence.matched_term || resolved.raw_query,
+            source_observation_ref: evidence.source_observation_ref
+              || document.source_observation_refs?.[0],
+          }],
+        };
+      });
+      const noticeLanes = Object.values(response.lanes || {});
+      const available = noticeLanes.length > 0
+        && noticeLanes.every((lane) => ["matched", "empty"].includes(lane.status));
+      const failed = noticeLanes.find((lane) => lane.status === "unknown");
+      const asOf = noticeLanes.map((lane) => lane.as_of).filter(Boolean).sort().at(-1) || null;
+      return {
+        candidates,
+        coverage: {
+          state: failed ? "provider_unavailable" : available
+            ? (candidates.length ? "matched" : "empty")
+            : "not_indexed",
+          reason: failed?.coverage?.reason || (!available ? "notice_lanes_not_ready" : null),
+          indexed_count: null,
+          as_of: asOf,
+          source: "City Record and retained contract-award snapshots",
+          method: "bounded_notice_search_v1",
+          details: {
+            candidate_count: response.candidate_counts?.post_merge ?? null,
+            pre_merge_candidate_count: response.candidate_counts?.pre_merge ?? null,
+            pre_merge_candidate_counts: response.candidate_counts || null,
+          },
+        },
+      };
+    },
+  });
+}
+
+function productionFederatedProviders(env) {
+  return Object.freeze({
+    ...productionCollectionProviders(env),
+    notices: noticeFederatedProvider(env),
+    land: landFederatedProvider(env),
+    meetings: keywordFamilyProvider("meetings", env),
+    exams: keywordFamilyProvider("exams", env),
+  });
+}
+
+/** Explicit provider for search.federated@1; all ranking and coverage stay in the federator. */
+export function workerFederatedSearch(env, { lenses = productionFederatedProviders(env) } = {}) {
+  return Object.freeze({
+    capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+    providerId: FEDERATED_SEARCH_PROVIDER_ID,
+    async execute({ query, limit }) {
+      return federateUniversalSearch({
+        query,
+        lenses,
+        limit: limit ?? FEDERATED_SEARCH_LIMITS.defaultResults,
+      });
+    },
+  });
+}
+
+function landFederatedProvider(env) {
+  return Object.freeze({
+    async search({ query }) {
+      const lane = await landSearchLane(resolveKeywordQuery(query), { env });
+      const candidates = (lane.cards || []).map((document, index) => {
+        const evidence = document.match_fields?.[0] || {};
+        return {
+          document,
+          local_score: index + 1,
+          match_evidence: document.match_evidence || null,
+          match_fields: [{
+            field: evidence.field || "search_text",
+            matched_term: evidence.matched_term || query,
+            source_observation_ref: evidence.source_observation_ref
+              || document.source_observation_refs?.[0],
+          }],
+        };
+      });
+      return {
+        candidates,
+        coverage: {
+          state: ["matched", "empty"].includes(lane.status)
+            ? (candidates.length ? "matched" : "empty")
+            : lane.status === "unknown" ? "provider_unavailable" : "not_indexed",
+          reason: lane.coverage?.reason || null,
+          indexed_count: lane.coverage?.indexed_count ?? null,
+          as_of: lane.as_of,
+          source: lane.source,
+          method: "bounded_land_keyword_family_v1",
+          details: lane.coverage || {},
+        },
+      };
+    },
+  });
+}
+
 function federatedCollectionLane(lens, federation, resolved) {
   const coverage = federation.coverage.by_lens[lens];
   const matched = federation.results.filter((result) => result.matched_lenses.includes(lens));
@@ -547,15 +670,56 @@ function federatedCollectionLane(lens, federation, resolved) {
     count: available ? matched.length : null,
     asOf: coverage.as_of,
     source: coverage.source || "No bounded source configured",
-    cards: matched.slice(0, CARD_LIMIT).map((document) => (
-      publicCard(document, matchKeywordDocument(document, resolved))
-    )),
+    cards: matched.slice(0, CARD_LIMIT).map((document) => federatedPublicCard(document)),
     coverage: Object.freeze({
       bounded: true,
       source_row_count: coverage.indexed_count,
       indexed_count: coverage.indexed_count,
       card_limit: CARD_LIMIT,
       reason: coverage.reason,
+      ...(coverage.details || {}),
+    }),
+  });
+}
+
+function federatedPublicCard(document) {
+  if (document.match_evidence) return publicCard(document, document.match_evidence);
+  const evidence = document.match_fields?.[0];
+  return publicCard(document, evidence ? {
+    field: evidence.field,
+    matched_normalized_term: evidence.matched_term,
+    source_identifier: evidence.source_observation_ref,
+    status: "matched",
+  } : null);
+}
+
+function federatedPresentationLane(id, federation, {
+  lenses,
+  domains,
+  source,
+}) {
+  const coverageRows = lenses.map((lens) => federation.coverage.by_lens[lens]);
+  const available = coverageRows.every((row) => ["matched", "empty"].includes(row.state));
+  const matched = federation.results.filter((result) => (
+    domains.includes(result.domain)
+      && result.matched_lenses.some((lens) => lenses.includes(lens))
+  ));
+  return laneEnvelope(id, {
+    status: available
+      ? (matched.length ? "matched" : "empty")
+      : coverageRows.some((row) => row.state === "provider_unavailable") ? "unknown" : "not_covered",
+    count: available ? matched.length : null,
+    asOf: coverageRows.map((row) => row.as_of).filter(Boolean).sort().at(-1),
+    source,
+    cards: matched.slice(0, CARD_LIMIT).map(federatedPublicCard),
+    coverage: Object.freeze({
+      bounded: true,
+      indexed_count: coverageRows.every((row) => row.indexed_count !== null)
+        ? coverageRows.reduce((sum, row) => sum + row.indexed_count, 0)
+        : null,
+      card_limit: CARD_LIMIT,
+      reason: coverageRows.find((row) => row.reason)?.reason || null,
+      ...Object.assign({}, ...coverageRows.map((row) => row.details || {})),
     }),
   });
 }
@@ -621,107 +785,17 @@ function flattenedResults(dynamicResults, lanes) {
   return results;
 }
 
-function universalSearchCoverage(lanes, results, dynamicResults, federatedCoverage) {
-  const typeCount = (types) => results.filter((document) => types.includes(document.object_type)).length;
-  const partialLens = (lens, familyId, types) => {
-    const family = lanes[familyId];
-    const available = family?.status === "matched" || family?.status === "empty";
-    const matchedCount = available ? typeCount(types) : null;
-    return {
-      lens,
-      participated: available,
-      state: available ? "partial" : family?.status === "unknown" ? "provider_unavailable" : "not_indexed",
-      reason: available ? "family_index_combines_multiple_universal_lenses" : family?.coverage?.reason || null,
-      matched_count: matchedCount,
-      candidate_count: matchedCount,
-      invalid_candidate_count: available ? 0 : null,
-      indexed_count: null,
-      as_of: family?.as_of || null,
-      source: family?.source || "No bounded source configured",
-      method: "bounded_keyword_family_v1",
-    };
-  };
-  const familiesMatchedLens = (lens, familyId, types) => {
-    const family = lanes[familyId];
-    const matchedCount = ["matched", "empty"].includes(family?.status) ? typeCount(types) : null;
-    return {
-      lens,
-      participated: ["matched", "empty"].includes(family?.status),
-      state: ["matched", "empty"].includes(family?.status)
-        ? (matchedCount ? "matched" : "empty")
-        : family?.status === "unknown" ? "provider_unavailable" : "not_indexed",
-      reason: ["matched", "empty"].includes(family?.status) ? "family_index_combines_multiple_universal_lenses" : family?.coverage?.reason || null,
-      matched_count: matchedCount,
-      candidate_count: matchedCount,
-      invalid_candidate_count: ["matched", "empty"].includes(family?.status) ? 0 : null,
-      indexed_count: family?.coverage?.indexed_count ?? null,
-      as_of: family?.as_of || null,
-      source: family?.source || "No bounded source configured",
-      method: "bounded_keyword_family_v1",
-    };
-  };
-  const noticeFamilies = [lanes.contracts, lanes.rules];
-  const noticeAvailable = noticeFamilies.every((family) => ["matched", "empty"].includes(family?.status));
-  const noticeMatchedCount = noticeAvailable ? dynamicResults.length : null;
-  const examFamily = lanes.exams;
-  const examsAvailable = ["matched", "empty"].includes(examFamily?.status);
-  const byLens = {
-    notices: {
-      lens: "notices",
-      participated: noticeAvailable,
-      state: noticeAvailable ? (noticeMatchedCount ? "matched" : "empty") : "provider_unavailable",
-      reason: noticeAvailable ? null : "notice_family_unavailable",
-      matched_count: noticeMatchedCount,
-      candidate_count: noticeMatchedCount,
-      invalid_candidate_count: noticeAvailable ? 0 : null,
-      indexed_count: null,
-      as_of: lanes.contracts?.as_of || lanes.rules?.as_of || null,
-      source: "City Record and retained contract-award snapshots",
-      method: "bounded_keyword_family_v1",
-    },
-    people: federatedCoverage.by_lens.people,
-    agencies: familiesMatchedLens("agencies", "agencies", ["agency"]),
-    vendors: federatedCoverage.by_lens.vendors,
-    community_boards: federatedCoverage.by_lens.community_boards,
-    committees: federatedCoverage.by_lens.committees,
-    exams: {
-      lens: "exams",
-      participated: examsAvailable,
-      state: examsAvailable ? (examFamily.count ? "matched" : "empty") : "not_indexed",
-      reason: examsAvailable ? null : examFamily?.coverage?.reason || "exam_family_unavailable",
-      matched_count: examsAvailable ? examFamily.count : null,
-      candidate_count: examsAvailable ? examFamily.count : null,
-      invalid_candidate_count: examsAvailable ? 0 : null,
-      indexed_count: examFamily?.coverage?.indexed_count ?? null,
-      as_of: examFamily?.as_of || null,
-      source: examFamily?.source || "No bounded source configured",
-      method: "bounded_keyword_family_v1",
-    },
-    parcels: federatedCoverage.by_lens.parcels,
-  };
-  const incompleteLenses = UNIVERSAL_SEARCH_LENS_IDS.filter((lens) => (
-    !["matched", "empty"].includes(byLens[lens].state)
-  ));
-  return {
+function universalSearchCoverage(_lanes, results, _dynamicResults, federatedCoverage) {
+  return Object.freeze({
+    ...federatedCoverage,
     schema: UNIVERSAL_SEARCH_COVERAGE_SCHEMA,
-    all_lenses_participated: incompleteLenses.length === 0,
-    complete_count: null,
-    observed_count: results.length,
-    total_matches: null,
     returned_count: results.length,
-    by_entity_type: Object.fromEntries([...new Set(results.map((result) => result.object_type))]
-      .map((type) => [type, typeCount([type])])),
-    incomplete_lenses: incompleteLenses,
-    snapshot: {
-      state: "incomplete",
-      as_of: null,
-      as_of_by_lens: Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lens) => [lens, byLens[lens].as_of])),
-    },
-    by_lens: byLens,
-  };
+  });
 }
 
-export async function handleSearch(request, env) {
+export async function handleSearch(request, env, {
+  federatedProvider = workerFederatedSearch(env),
+} = {}) {
   const origin = request.headers.get("origin") || "";
   const cors = corsHeaders(origin, env, {
     methods: "GET, OPTIONS",
@@ -747,53 +821,61 @@ export async function handleSearch(request, env) {
   const query = cleanQuery(url.searchParams.get("q"));
   if (!query) return json({ ok: false, reason: "missing-query" }, 400, cors);
   const resolved = resolveKeywordQuery(query);
-  const dynamic = await noticeSearchLanes(env, resolved);
-  const collectionFederation = await federateUniversalSearch({
-    query: resolved.raw_query,
-    lenses: productionCollectionProviders(env),
-    limit: RESULT_LIMIT,
+  const federation = await executeFederatedSearch(
+    federatedProvider,
+    { query: resolved.raw_query, limit: RESULT_LIMIT },
+  );
+  const peopleLane = federatedCollectionLane("people", federation, resolved);
+  const vendorLane = federatedCollectionLane("vendors", federation, resolved);
+  const parcelsLane = federatedCollectionLane("parcels", federation, resolved);
+  const communityBoardsLane = federatedCollectionLane("community_boards", federation, resolved);
+  const agencyLane = federatedCollectionLane("agencies", federation, resolved);
+  const committeesLane = federatedCollectionLane("committees", federation, resolved);
+  const contractsLane = federatedPresentationLane("contracts", federation, {
+    lenses: ["notices", "vendors"],
+    domains: ["contracts"],
+    source: "City Record, PASSPort, Checkbook NYC, and CityScroll vendor profiles",
   });
-  const peopleLane = federatedCollectionLane("people", collectionFederation, resolved);
-  const vendorLane = federatedCollectionLane("vendors", collectionFederation, resolved);
-  const parcelsLane = federatedCollectionLane("parcels", collectionFederation, resolved);
-  const communityBoardsLane = federatedCollectionLane("community_boards", collectionFederation, resolved);
-  const agencyLane = federatedCollectionLane("agencies", collectionFederation, resolved);
-  const committeesLane = federatedCollectionLane("committees", collectionFederation, resolved);
-  const contractsMirror = dynamic.lanes.contracts;
-  const procurementLane = await staticSearchLane("procurements", resolved, env);
-  const contractsMirrorAvailable = ["matched", "empty"].includes(contractsMirror?.status);
-  // Keep an unavailable notice mirror honest as unknown unless a Vendor hit
-  // can still publish through the Contracts presentation lane.
-  const contractsLane = contractsMirrorAvailable || vendorLane.cards.length || procurementLane.cards.length
-    ? combinedStaticLane(
-      "contracts",
-      "City Record, PASSPort, Checkbook NYC, and CityScroll vendor profiles",
-      [contractsMirror, vendorLane, procurementLane],
-    )
-    : contractsMirror;
   const peopleOrganizationsLane = combinedStaticLane(
     "people-organizations",
     "NYC Council people and CityScroll agency profiles",
     [peopleLane, agencyLane],
   );
   const lanes = {
-    ...dynamic.lanes,
+    rules: federatedPresentationLane("rules", federation, {
+      lenses: ["notices"],
+      domains: ["rules"],
+      source: "City Record daily mirror and bounded Rules projection",
+    }),
     people: peopleLane,
     vendors: vendorLane,
     community_boards: communityBoardsLane,
     agencies: agencyLane,
     contracts: contractsLane,
-    procurements: procurementLane,
     parcels: parcelsLane,
     committees: committeesLane,
     "people-organizations": peopleOrganizationsLane,
-    land: await landSearchLane(resolved, { env }),
-    meetings: await staticSearchLane("meetings", resolved, env),
-    exams: await staticSearchLane("exams", resolved, env),
+    land: federatedPresentationLane("land", federation, {
+      lenses: ["land"],
+      domains: ["zoning"],
+      source: "Bounded land-use keyword read model",
+    }),
+    meetings: federatedPresentationLane("meetings", federation, {
+      lenses: ["meetings", "committees"],
+      domains: ["meetings"],
+      source: "Bounded meeting and committee read models",
+    }),
+    exams: federatedPresentationLane("exams", federation, {
+      lenses: ["exams"],
+      domains: ["civil_service_exam"],
+      source: "Bounded civil-service exam read model",
+    }),
   };
-  const results = flattenedResults(dynamic.results, lanes);
+  const results = federation.results.map(federatedPublicCard).slice(0, RESULT_LIMIT);
   return json({
     schema: RESPONSE_SCHEMA,
+    capability_reference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+    federated: federation,
     query: resolved.raw_query,
     match_mode: resolved.match_mode,
     resolved_term: {
@@ -805,6 +887,6 @@ export async function handleSearch(request, env) {
     },
     lanes: LANE_ORDER.map((id) => lanes[id]),
     results,
-    coverage: universalSearchCoverage(lanes, results, dynamic.results, collectionFederation.coverage),
+    coverage: universalSearchCoverage(lanes, results, [], federation.coverage),
   }, 200, cors, "public, max-age=60, stale-while-revalidate=300");
 }

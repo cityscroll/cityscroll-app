@@ -157,6 +157,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
             "capabilities/entity_dossier.mjs",
             "capabilities/entity_relationships.mjs",
             "capabilities/cited_passages.mjs",
+            "capabilities/federated_search.mjs",
           ],
           /from\s+["'][^"']*(?:modelcontextprotocol|agents\/mcp|mcp\.mjs)["']/gi,
         ),
@@ -167,6 +168,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
             "capabilities/entity_dossier.mjs",
             "capabilities/entity_relationships.mjs",
             "capabilities/cited_passages.mjs",
+            "capabilities/federated_search.mjs",
           ],
           /from\s+["'][^"']*(?:@cloudflare|cloudflare\/agents|agents\/)[^"']*["']/gi,
         ),
@@ -175,7 +177,7 @@ export async function buildRemoteMcpEvidenceReceipt() {
           /from\s+["'][^"']*(?:cloudflare-os|gatekeeper-mcp)[^"']*["']/gi,
         ),
       },
-      status: toolEvidence.length === 5
+      status: toolEvidence.length === 6
         && toolEvidence.every(({ parity }) => parity === "pass")
         ? "pass"
         : "fail",

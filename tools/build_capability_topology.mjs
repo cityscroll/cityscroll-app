@@ -17,12 +17,13 @@ import {
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
+  MCP_FEDERATED_SEARCH_ADAPTER,
   MCP_NOTICE_GET_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
 } from "../capabilities/mcp_tool_declarations.mjs";
-import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
+import { SEARCH_FEDERATED_ADAPTER, SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import { ENTITY_DOSSIER_HTTP_ADAPTER } from "../worker/src/entity_dossier.mjs";
 import { ENTITY_RELATIONSHIPS_HTTP_ADAPTER } from "../worker/src/public_relationship_graph.mjs";
 import { NOTICE_GET_HTTP_ADAPTER } from "../worker/src/notice.mjs";
@@ -60,8 +61,10 @@ export function validateRuntimeTopology() {
     capability.adapters.map((adapter) => [adapter.id, { capability, adapter }])
   )));
   const runtimeAdapters = [
+    SEARCH_FEDERATED_ADAPTER,
     SEARCH_NOTICE_ADAPTER,
     MCP_NOTICE_SEARCH_ADAPTER,
+    MCP_FEDERATED_SEARCH_ADAPTER,
     NOTICE_GET_HTTP_ADAPTER,
     MCP_NOTICE_GET_ADAPTER,
     ENTITY_DOSSIER_HTTP_ADAPTER,

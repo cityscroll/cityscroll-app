@@ -7,9 +7,79 @@
     "notice.get@1",
     "entity.dossier.get@1",
     "entity.relationships.get@1",
-    "cited.passages.retrieve@1"
+    "cited.passages.retrieve@1",
+    "search.federated@1"
   ],
   "tools": [
+    {
+      "name": "search_federated",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Search the registered public CityScroll lenses in one bounded result set. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
+      "schema_reference": "search.federated@1",
+      "capability_reference": "search.federated@1",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "defaultResults": 40,
+          "maximumResults": 100,
+          "maximumCards": 8
+        },
+        "output": {
+          "maximumResults": 100,
+          "maximumCardsPerLane": 8
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "query": "parks",
+            "limit": 10
+          },
+          "output": {
+            "coverageStates": [
+              "matched",
+              "empty",
+              "partial",
+              "stale",
+              "not_indexed",
+              "provider_unavailable"
+            ],
+            "maximumResults": 10,
+            "maximumCardsPerLane": 8
+          }
+        },
+        {
+          "input": {
+            "query": "public hearing",
+            "limit": 100
+          },
+          "output": {
+            "registeredLenses": [
+              "notices",
+              "people",
+              "agencies",
+              "vendors",
+              "committees",
+              "community_boards",
+              "exams",
+              "parcels",
+              "land",
+              "meetings"
+            ],
+            "maximumResults": 100,
+            "provenance": "source-observation refs retained"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
     {
       "name": "search_notices",
       "operation_class": "read",

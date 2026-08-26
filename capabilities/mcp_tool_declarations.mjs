@@ -3,6 +3,12 @@
 // topology tests can inspect the public tool contract in the site Unit family.
 
 import {
+  FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+  FEDERATED_SEARCH_LIMITS,
+  FEDERATED_SEARCH_OUTPUT_SCHEMA,
+  FEDERATED_SEARCH_PROVIDER_ID,
+} from "./federated_search.mjs";
+import {
   NOTICE_SEARCH_CAPABILITY_REFERENCE,
   NOTICE_SEARCH_LIMITS,
   NOTICE_SEARCH_PROVIDER_ID,
@@ -58,6 +64,15 @@ export const MCP_NOTICE_SEARCH_ADAPTER = Object.freeze({
   providerId: NOTICE_SEARCH_PROVIDER_ID,
   route: "POST /mcp",
   tool: "search_notices",
+  surface: "MCP",
+});
+
+export const MCP_FEDERATED_SEARCH_ADAPTER = Object.freeze({
+  id: "mcp.search_federated@1",
+  capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+  providerId: FEDERATED_SEARCH_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "search_federated",
   surface: "MCP",
 });
 
@@ -161,6 +176,20 @@ const ENTITY_RELATIONSHIPS_OUTPUT_SCHEMA = Object.freeze({
 const SUBSCRIBABLE_LENSES = ["money", "people", "land", "property", "rules", "meetings"];
 
 export const MCP_TOOLS = [
+  {
+    name: "search_federated",
+    description: "Search the registered public CityScroll lenses in one bounded result set. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        query: { type: "string", minLength: 1, maxLength: FEDERATED_SEARCH_LIMITS.queryMaximumLength, description: "Resident search terms, up to 240 characters." },
+        limit: { type: "integer", minimum: 1, maximum: FEDERATED_SEARCH_LIMITS.maximumResults, default: FEDERATED_SEARCH_LIMITS.defaultResults },
+      },
+      required: ["query"],
+    },
+    outputSchema: FEDERATED_SEARCH_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
   {
     name: "search_notices",
     description: "Search NYC City Record notices (the daily-refreshed mirror). Keyword terms are OR-matched; add structured filters to narrow. Amounts are validity-filtered (data-entry errors excluded); rolling placeholder deadlines are labeled, never shown as dates.",
@@ -302,6 +331,17 @@ export const MCP_TOOLS = [
 ];
 
 export const MCP_TOOL_BINDINGS = Object.freeze([
+  Object.freeze({
+    name: "search_federated",
+    operationClass: "read",
+    schemaReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+    capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+    adapterId: MCP_FEDERATED_SEARCH_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: FEDERATED_SEARCH_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  }),
   Object.freeze({
     name: "search_notices",
     operationClass: "read",
