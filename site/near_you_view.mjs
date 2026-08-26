@@ -516,6 +516,40 @@ function geographyOptions(options, current) {
   }).join("")}`;
 }
 
+/** Render the lower-priority record lists for the deferred Near-you artifact. */
+export function renderNearYouDeferredParts(view) {
+  const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
+    <summary><span>${esc(bag.label)}</span><strong>${bag.count}</strong></summary>
+    <p>${bag.kind === "citywide"
+      ? "These records apply citywide, so they do not belong to one district."
+      : bag.kind === "virtual"
+        ? "These records are online only and have no physical place."
+        : "The source does not give enough place detail to map these records."}</p>
+    ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match these filters.`)}
+  </details>`).join("");
+  const resultsHtml = `<section class="near-results" aria-labelledby="near-results-heading" data-results-count="${view.results.count}" data-near-surface-panel="list">
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records for these filters</h2></div></div>
+      ${recordList(view.results.records)}
+    </section>`;
+  const bagsHtml = `<section class="near-bags" aria-labelledby="near-bags-heading">
+      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
+      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
+      ${bags}
+    </section>`;
+  return { resultsHtml, bagsHtml };
+}
+
+export function renderNearYouDeferredBody(view) {
+  const { resultsHtml, bagsHtml } = renderNearYouDeferredParts(view);
+  return `${resultsHtml}
+    ${bagsHtml}`;
+}
+
+function renderNearYouDeferredPlaceholder(part) {
+  const label = part === "bags" ? "other places" : "matching records";
+  return `<div data-near-deferred="${part}" data-near-deferred-state="pending" role="status">Loading ${label}…</div>`;
+}
+
 export function renderNearYouBody(view) {
   const scopeChips = view.scopeSummary
     .map((chip) => `<li data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`).join("");
@@ -531,15 +565,6 @@ export function renderNearYouBody(view) {
     .sort((a, b) => b.total - a.total || String(a.label).localeCompare(String(b.label)))
     .map((feature) => `<li><a data-map-area="${esc(feature.id)}" data-count="${feature.total}" href="${esc(feature.href)}"><span>${esc(feature.label)}</span><strong>${feature.total}</strong></a></li>`)
     .join("");
-  const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
-    <summary><span>${esc(bag.label)}</span><strong>${bag.count}</strong></summary>
-    <p>${bag.kind === "citywide"
-      ? "These records apply citywide, so they do not belong to one district."
-      : bag.kind === "virtual"
-        ? "These records are online only and have no physical place."
-        : "The source does not give enough place detail to map these records."}</p>
-    ${recordList(bag.records, `No ${bag.label.toLowerCase()} records match these filters.`)}
-  </details>`).join("");
   const currentBorough = first(view.scope.place.boroughs);
   const currentGeography = first(view.scope.place.geographies);
   const walkQuery = view.scope.topic?.query || first(view.scope.topic?.keywords);
@@ -581,6 +606,7 @@ export function renderNearYouBody(view) {
       : "Choose a place first. A guessed location is not an edge.",
   });
   return `<main id="main" data-near-you-root data-lens="${esc(view.lens)}" data-level="${esc(view.level)}"
+    data-near-deferred-href="${esc(view.deferredDataHref || "")}" data-near-deferred-state="pending"
     data-message-updating="Updating the map…"
     data-message-updated="Map updated. Map and list counts match."
     data-message-location-unavailable="Location is not available in this browser. Choose an area from the list."
@@ -589,6 +615,8 @@ export function renderNearYouBody(view) {
     data-message-location-unmatched="Your district could not be matched. Choose an area from the list."
     data-message-location-update-failed="Location matched {district}, but the page could not update. Try again or choose the district from the list."
     data-message-location-denied="Location permission was not granted. Choose an area from the list."
+    data-message-deferred-unavailable="Matching records are temporarily unavailable."
+    data-message-bags-unavailable="Other place records are temporarily unavailable."
     data-translation-all-boroughs="All boroughs"
     data-translation-borough-label="Borough"
     data-translation-context-strip-label="Context">
@@ -635,10 +663,7 @@ export function renderNearYouBody(view) {
       <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">Records (${view.results.count})</a>
       <a class="near-surface-link" href="#near-map-heading" data-near-surface="map">Map</a>
     </nav>
-    <section class="near-results" aria-labelledby="near-results-heading" data-results-count="${view.results.count}" data-near-surface-panel="list">
-      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">${view.results.count} ${esc(view.lensLabel)} records for these filters</h2></div></div>
-      ${recordList(view.results.records)}
-    </section>
+    ${renderNearYouDeferredPlaceholder("results")}
     <section class="near-map-section" aria-labelledby="near-map-heading" data-near-surface-panel="map">
       <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
         <div class="map-controls js-only" hidden>
@@ -668,17 +693,15 @@ export function renderNearYouBody(view) {
         </div>
       </div>
     </section>
-    <section class="near-bags" aria-labelledby="near-bags-heading">
-      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
-      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
-      ${bags}
-    </section>
+    ${renderNearYouDeferredPlaceholder("bags")}
   </main>`;
 }
 
 export function renderNearYouDocument(view, options = {}) {
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
+  const deferredDataHref = options.deferredDataHref || view.deferredDataHref || "";
+  const body = renderNearYouBody({ ...view, deferredDataHref });
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Near you · CityScroll</title><meta name="description" content="Explore NYC civic records by place without losing your active filters.">
@@ -687,7 +710,7 @@ export function renderNearYouDocument(view, options = {}) {
 <link rel="stylesheet" href="${esc(`${prefix}local_constellation.css`)}"></head>
 <body><a class="skip" href="#main">Skip to content</a>
 ${renderCivicDocumentMast({ current: "near-you", siteBase: view.siteBase, scope: view.scope, surfaceClass: "near-mast" })}
-${renderNearYouBody(view)}
+${body}
 <footer class="near-footer">Counts and place labels reflect the listed public records. Check each record with the linked official source.</footer>
 <script defer src="${esc(prefix)}analytics.js?v=1.3.0"></script>
 <script type="module" src="${esc(prefix)}app/walk-entry.mjs"></script>

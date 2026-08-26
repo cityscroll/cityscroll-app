@@ -82,9 +82,55 @@ async function fetchNearYouDocument(href) {
   return { href: response.url || href, incoming, next };
 }
 
+async function hydrateNearYouDeferredData() {
+  if (!root) return;
+  const state = root.dataset.nearDeferredState;
+  if (state === "loading" || state === "ready") return;
+  const href = root.dataset.nearDeferredHref;
+  const hosts = [...root.querySelectorAll("[data-near-deferred]")];
+  if (!href || !hosts.length) {
+    root.dataset.nearDeferredState = "error";
+    reportNearYouReadiness();
+    return;
+  }
+  root.dataset.nearDeferredState = "loading";
+  try {
+    const response = await fetch(new URL(href, document.baseURI), {
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) throw new Error(`near-you-deferred-response-${response.status}`);
+    const payload = await response.json();
+    if (
+      payload?.schema !== "cityscroll.near_you_deferred.v1"
+      || typeof payload.results_html !== "string"
+      || typeof payload.bags_html !== "string"
+    ) {
+      throw new Error("near-you-deferred-payload-invalid");
+    }
+    for (const host of hosts) {
+      const html = host.dataset.nearDeferred === "bags" ? payload.bags_html : payload.results_html;
+      host.outerHTML = html;
+    }
+    root.dataset.nearDeferredState = "ready";
+    wireMapAndList();
+    wireSurfaceSwitch();
+    reportNearYouReadiness();
+  } catch {
+    for (const host of hosts) {
+      host.textContent = host.dataset.nearDeferred === "bags"
+        ? copy("messageBagsUnavailable")
+        : copy("messageDeferredUnavailable");
+      host.dataset.nearDeferredState = "error";
+    }
+    root.dataset.nearDeferredState = "error";
+    reportNearYouReadiness();
+  }
+}
+
 async function adoptDocument(href, { replaceHistory = false } = {}) {
   const prepared = await fetchNearYouDocument(href);
   const { incoming, next } = prepared;
+  root.dataset.nearDeferredState = "pending";
   // Resolve optional synchronization dependencies before committing any page state.
   const placeContext = await import("./place-context.mjs");
   const currentMast = document.querySelector(".document-mast");
@@ -97,14 +143,24 @@ async function adoptDocument(href, { replaceHistory = false } = {}) {
     ".near-coverage",
     ".near-surface-switch",
     ".near-map-section",
-    ".near-results",
-    ".near-bags",
   ]) {
     const current = root.querySelector(selector);
     const replacement = incoming.querySelector(selector);
     if (current && replacement) current.replaceWith(document.importNode(replacement, true));
     else if (current && !replacement) current.remove();
     else if (!current && replacement) root.append(document.importNode(replacement, true));
+  }
+  const currentDeferred = [...root.querySelectorAll("[data-near-deferred]")];
+  const incomingDeferred = [...incoming.querySelectorAll("[data-near-deferred]")];
+  for (const current of currentDeferred) {
+    const replacement = incomingDeferred.find((node) => node.dataset.nearDeferred === current.dataset.nearDeferred);
+    if (replacement) current.replaceWith(document.importNode(replacement, true));
+    else current.remove();
+  }
+  for (const replacement of incomingDeferred) {
+    if (!root.querySelector(`[data-near-deferred="${CSS.escape(replacement.dataset.nearDeferred || "")}"]`)) {
+      root.append(document.importNode(replacement, true));
+    }
   }
   root.dataset.lens = incoming.dataset.lens || root.dataset.lens;
   root.dataset.level = incoming.dataset.level || root.dataset.level;
@@ -350,7 +406,7 @@ function wireIsland() {
   wireGeolocation();
   wireForms();
   wireSurfaceSwitch();
-  reportNearYouReadiness();
+  void hydrateNearYouDeferredData();
 }
 
 if (root) {

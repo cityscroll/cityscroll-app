@@ -20,9 +20,17 @@ test("the edge renderer returns an inspectable scoped HTML document and public c
   assert.match(html, /rel="stylesheet" href="https:\/\/cityscroll\.org\/civic-documents\.css"/);
   assert.match(html, /data-scope-axis="borough"[^>]*>Queens/);
   assert.match(html, /data-scope-axis="agency"[^>]*>Transportation/);
-  assert.match(html, /data-results-count=/);
-  assert.match(html, /data-record-id=/);
+  assert.match(html, /data-near-deferred-href="https:\/\/cityscroll\.org\/near-you\/deferred\.json/);
   assert.match(html, /data-map-area=/);
+
+  const deferred = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?v=0&lens=meetings&boro=Queens&agency=Transportation",
+  ));
+  const payload = await deferred.json();
+  assert.equal(payload.schema, "cityscroll.near_you_deferred.v1");
+  assert.match(payload.results_html, /data-results-count=/);
+  assert.match(payload.results_html, /data-record-id=/);
+  assert.match(payload.bags_html, /data-bag=/);
 });
 
 test("shared API-host Near-you documents permanently recover to the canonical host", async () => {
@@ -45,7 +53,10 @@ test("contract response-address scope remains separate from performance geograph
 
   assert.match(html, /data-scope-axis="map basis"[^>]*>Contract response address/);
   assert.match(html, /does not say where the contract work will happen/);
-  assert.match(html, /Located by (?:submission address|pre-bid venue)/);
+  const deferred = await handleNearYou(new Request(
+    "https://cityscroll.org/near-you/deferred.json?v=0&lens=money&basis=contract_action_address&boro=Manhattan",
+  ));
+  assert.match(await deferred.text(), /Located by (?:submission address|pre-bid venue)/);
 });
 
 test("the Near-you handler does not claim the public Stats routes", async () => {

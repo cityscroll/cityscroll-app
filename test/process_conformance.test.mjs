@@ -29,6 +29,7 @@ import {
 } from "../site/mandate_category_conformance.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { relatedCivicEdgesForMandate } from "../site/mandate_document.mjs";
@@ -215,7 +216,7 @@ test("agency constellation renders a complete procurement lifecycle slice", () =
   });
 
   assert.equal(view.agency_lifecycle_conformance.status, "matched");
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /id="procurement-lifecycle-conformance"/);
   assert.match(html, /Transportation · Procurement lifecycle/);
   assert.match(html, /Expected stages/);
@@ -976,7 +977,7 @@ test("constellation surfaces only public Sanitation CWZ rule edges after attachm
   assert.ok((view.mandates_conformance.counts.observed || 0) >= 1);
   assert.match(view.mandates_href, /#mandates-conformance/);
 
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   // Densified public CWZ observation mounts expected-vs-observed + rules bridge.
   assert.match(html, /id="mandates-conformance"/);
   assert.match(html, /id="mandates-rules"/);

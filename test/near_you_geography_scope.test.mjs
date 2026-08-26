@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   buildNearYouViewModel,
+  renderNearYouDeferredParts,
   renderNearYouBody,
 } from "../site/near_you_view.mjs";
 import {
@@ -63,10 +64,12 @@ test("NTA and Police Precinct scopes drive the same Near You membership index an
     assert.ok(view.results.records.every((record) => record.geography_evidence?.key === key));
     assert.ok(view.geographyOptions.some((option) => option.key === key));
 
-    const html = renderNearYouBody(view);
-    assert.match(html, new RegExp(`data-geography-key="${key}"`));
-    assert.match(html, /data-geography-evidence="1"/);
-    assert.match(html, /Why this place matched/);
-    assert.match(html, new RegExp(`<option value="${key}" selected>`));
+    const initialHtml = renderNearYouBody(view);
+    const { resultsHtml } = renderNearYouDeferredParts(view);
+    assert.doesNotMatch(initialHtml, /data-geography-key=/);
+    assert.match(resultsHtml, new RegExp(`data-geography-key="${key}"`));
+    assert.match(resultsHtml, /data-geography-evidence="1"/);
+    assert.match(resultsHtml, /Why this place matched/);
+    assert.match(initialHtml, new RegExp(`<option value="${key}" selected>`));
   }
 });

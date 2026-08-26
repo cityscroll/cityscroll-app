@@ -18,6 +18,7 @@ import {
 } from "../site/mandate_prediction_alerts.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -403,7 +404,7 @@ test("constellation document renders Expected mandate events for Parks", () => {
   assert.equal(view.mandates_predictions?.status, "matched");
   assert.match(view.mandates_predictions_href, /#mandates-predictions$/);
 
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /id="mandates-predictions"/);
   assert.match(html, /Expected mandate events/);
   assert.match(html, /data-expected-event-kind=/);

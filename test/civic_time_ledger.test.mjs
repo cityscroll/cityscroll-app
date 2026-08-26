@@ -322,8 +322,10 @@ test("agency document embeds compact ledger when useful; asOf pre-filters", () =
   assert.match(htmlAsOf, /canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\/\?as_of=2024-06-01"/);
   assert.match(htmlAsOf, /data-as-of="2024-06-01"/);
   assert.match(htmlAsOf, /of\s*<strong>\d+<\/strong>\s*dated records/i);
-  // Full now payload remains for client re-filter.
-  assert.match(htmlAsOf, /"kind":"agency-constellation"/);
+  // Relationship data is deferred; the initial document retains the as-of
+  // controls and points the runtime at the complete view artifact.
+  assert.doesNotMatch(htmlAsOf, /"kind":"agency-constellation"/);
+  assert.match(htmlAsOf, /data-civic-object-view-href="\/agencies\/parks-and-recreation\/relationships-data\.json"/);
 });
 
 test("ledger panel HTML is compact and free of system-time disclaimers", () => {

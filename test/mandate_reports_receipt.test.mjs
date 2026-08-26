@@ -14,6 +14,7 @@ import {
 } from "../site/mandate_reports_receipt.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -167,7 +168,7 @@ test("Parks constellation document surfaces Required Reports receipt card", () =
   assert.ok(view.mandates_reports.counts.report_mandates >= 1);
   assert.match(view.mandates_reports_href, /#mandates-reports$/);
 
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /id="mandates-reports"/);
   // Parks has zero filing receipts — honest title omits "Filing receipts".
   if ((view.mandates_reports.counts?.filing_receipts || 0) === 0) {
