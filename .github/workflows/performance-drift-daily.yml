@@ -23,13 +23,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: ./.github/actions/setup-playwright
       - name: Restore the prior daily baseline and queue ledger
         uses: actions/cache/restore@v4
         with:
           path: .performance-drift-state
           key: performance-drift-state-${{ github.run_id }}
           restore-keys: performance-drift-state-
-      - name: Read live RUM and build evidence overlay
+      - name: Generate controlled RUM observations from real page loads
+        id: generate
+        continue-on-error: true
+        env:
+          CROL_RUM_E2E: "1"
+          CROL_RUM_E2E_GENERATE: "1"
+          CROL_RUM_E2E_OUTPUT: artifacts/performance-drift/rum-generation
+          CROL_RUM_E2E_REPEATS: "5"
+          CROL_RUM_E2E_SETTLE_MS: "3000"
+        run: |
+          mkdir -p artifacts/performance-drift/rum-generation
+          python3 test/functional/rum_performance_e2e.py
+      - name: Read field and lab RUM and build evidence overlay
         env:
           ANALYTICS_ACCOUNT_ID: "8162581cb1d97e20a172031adb8a13af"
           ANALYTICS_READ_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -42,6 +55,7 @@ jobs:
             --out artifacts/performance-drift \
             --baseline .performance-drift-state/baseline.json \
             --ledger .performance-drift-state/ledger.json \
+            --generation artifacts/performance-drift/rum-generation/chain.json \
             --source-run "${GITHUB_RUN_ID}"
           cp artifacts/performance-drift/baseline.json .performance-drift-state/baseline.json
       - name: Store this run as the next daily baseline

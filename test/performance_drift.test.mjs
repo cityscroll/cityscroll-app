@@ -106,6 +106,25 @@ test("an unavailable read creates honest overlay evidence and no enforcement fai
   assert.equal(overlay.enforcement.ci_gate, false);
 });
 
+test("lab evidence is separate and cannot emit field candidates", () => {
+  const lab = snapshotFor({ p75: 6000, p95: 12000 });
+  lab.query.filters.traffic_class = "lab";
+  const overlay = buildDriftOverlay(snapshotFor({ p75: 2000, p95: 4000 }), {
+    labSnapshot: lab,
+    now: new Date("2026-08-25T00:00:00.000Z"),
+    sourceRun: "generate-read-test",
+    generation: { mode: "generate", traffic_class: "lab", verdict: "GENERATED" },
+  });
+  assert.equal(overlay.field.traffic_class, "production");
+  assert.equal(overlay.surfaces.find((surface) => surface.surface_id === "home")
+    .metrics.content_ready_ms.traffic_class, "production");
+  assert.equal(overlay.lab.traffic_class, "lab");
+  assert.equal(overlay.lab.measurement_origin, "controlled");
+  assert.equal(overlay.lab.surfaces.find((surface) => surface.surface_id === "home")
+    .metrics.content_ready_ms.slo_state, "fail");
+  assert.equal(buildCandidates(overlay).length, 0);
+});
+
 test("the live CLI stays successful on an unavailable read and the workflow is once daily", () => {
   const out = mkdtempSync(join(tmpdir(), "cityscroll-performance-drift-"));
   const env = { ...process.env };
@@ -126,4 +145,6 @@ test("the live CLI stays successful on an unavailable read and the workflow is o
   assert.match(workflow, /cron: "31 9 \* \* \*"/);
   assert.doesNotMatch(workflow, /cron: "\d+  \* \* \* \*"/);
   assert.doesNotMatch(workflow, /exit 1/);
+  assert.match(workflow, /Generate controlled RUM observations[\s\S]*CROL_RUM_E2E_GENERATE: "1"[\s\S]*python3 test\/functional\/rum_performance_e2e\.py[\s\S]*Read field and lab RUM/);
+  assert.match(workflow, /--generation artifacts\/performance-drift\/rum-generation\/chain\.json/);
 });

@@ -117,7 +117,7 @@ function driftFor(values, baselineRecord) {
   }
   const percentiles = {};
   const triggers = [];
-  for (const percentile of ["p75", "p95"]) {
+  for (const percentile of ["p50", "p75", "p95"]) {
     const current = values[`${percentile}_ms`];
     const baseline = baselineRecord[`${percentile}_ms`];
     const delta = Number.isFinite(current) && Number.isFinite(baseline) ? current - baseline : null;
@@ -146,7 +146,17 @@ function driftFor(values, baselineRecord) {
   };
 }
 
-function metricEvidence({ snapshot, series, baseline, surface, metricId, instrumented, window }) {
+function metricEvidence({
+  snapshot,
+  series,
+  baseline,
+  surface,
+  metricId,
+  instrumented,
+  window,
+  trafficClass = "production",
+  measurementOrigin = "field",
+}) {
   const dataStatus = statusFor(snapshot, series, instrumented);
   const current = series?.current || {};
   const distribution = current.percentiles || {};
@@ -172,6 +182,8 @@ function metricEvidence({ snapshot, series, baseline, surface, metricId, instrum
   const evidence = {
     surface_id: surface.surface_id,
     metric_id: metricId,
+    traffic_class: trafficClass,
+    measurement_origin: measurementOrigin,
     card_id: `cityscroll-snappiness/surface-${surface.surface_id}`,
     data_status: dataStatus,
     slo_state: values.slo_state,
@@ -206,6 +218,8 @@ function worstDataStatus(metrics) {
 
 export function buildDriftOverlay(snapshot, {
   baseline = null,
+  labSnapshot = null,
+  generation = null,
   now = new Date(),
   sourceRun = null,
 } = {}) {
@@ -221,6 +235,8 @@ export function buildDriftOverlay(snapshot, {
       metricId,
       instrumented,
       window,
+      trafficClass: "production",
+      measurementOrigin: "field",
     }));
     return {
       card_id: `cityscroll-snappiness/surface-${surface.surface_id}`,
@@ -249,6 +265,12 @@ export function buildDriftOverlay(snapshot, {
     slo: PERFORMANCE_SLO,
     sampling: snapshot?.sampling || null,
     data_health: snapshot?.data_health || null,
+    field: {
+      traffic_class: "production",
+      measurement_origin: "field",
+    },
+    lab: buildLabEvidence(labSnapshot, now),
+    generation: generation || null,
     surfaces,
     enforcement: {
       mode: "human-review-only",
@@ -260,6 +282,45 @@ export function buildDriftOverlay(snapshot, {
   return {
     ...overlayBody,
     evidence_hash: hashEvidence(overlayBody),
+  };
+}
+
+function buildLabEvidence(snapshot, now) {
+  const window = currentWindow(snapshot, now);
+  const surfaces = performanceInventory.surfaces.map((surface) => {
+    const instrumented = surface.lifecycle_state === "instrumented";
+    const metrics = PERFORMANCE_METRICS.map((metricId) => metricEvidence({
+      snapshot,
+      series: findSeries(snapshot, surface.surface_id, metricId),
+      baseline: null,
+      surface,
+      metricId,
+      instrumented,
+      window,
+      trafficClass: "lab",
+      measurementOrigin: "controlled",
+    }));
+    return {
+      surface_id: surface.surface_id,
+      operator_label: surface.operator_label,
+      lifecycle_state: surface.lifecycle_state,
+      data_status: worstDataStatus(metrics),
+      slo_state: worstSlo(metrics),
+      metrics: Object.fromEntries(metrics.map((metric) => [metric.metric_id, metric])),
+    };
+  });
+  return {
+    traffic_class: "lab",
+    measurement_origin: "controlled",
+    query_status: snapshot?.status || "unavailable",
+    query_hash: hashEvidence({
+      query: snapshot?.query || null,
+      retention: snapshot?.retention || null,
+      sample_floor: snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR,
+    }),
+    sample_floor: snapshot?.sample_floor || PERFORMANCE_SAMPLE_FLOOR,
+    window,
+    surfaces,
   };
 }
 

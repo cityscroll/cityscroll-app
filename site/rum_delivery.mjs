@@ -1,13 +1,14 @@
 const DEFAULT_API_ORIGIN = "https://api.cityscroll.org";
 const DEV_HEADER = "X-CROL-Analytics-Dev";
 
-function performanceEndpoint(endpoint, runtime) {
+function performanceEndpoint(endpoint, runtime, trafficClass) {
   if (endpoint) return endpoint;
   const configured = runtime?.CROL_API_ORIGIN || runtime?.window?.CROL_API_ORIGIN;
   const origin = typeof configured === "string" && /^https:\/\//.test(configured)
     ? configured.replace(/\/+$/, "")
     : DEFAULT_API_ORIGIN;
-  return `${origin}/performance-events`;
+  const target = `${origin}/performance-events`;
+  return trafficClass === "lab" ? `${target}?traffic_class=lab` : target;
 }
 
 /**
@@ -19,11 +20,12 @@ function performanceEndpoint(endpoint, runtime) {
 export async function deliverRumBatch(batch, {
   enabled = false,
   endpoint,
+  trafficClass = "production",
   developerToken = "",
   runtime = globalThis,
 } = {}) {
   if (enabled !== true) return { state: "disabled" };
-  const target = performanceEndpoint(endpoint, runtime);
+  const target = performanceEndpoint(endpoint, runtime, trafficClass);
 
   let body;
   try {
