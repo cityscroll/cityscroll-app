@@ -1,0 +1,33 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CityScroll//feeds//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:CityScroll — Hearings and meetings — all notices
+BEGIN:VEVENT
+UID:meeting:city_record:20260803026@crol-list
+DTSTAMP:20260915T110000
+DTSTART:20260915T110000
+DTEND:20260915T110000
+SUMMARY:Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors
+DESCRIPTION:Buildings · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260803026/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:fixture-cb6::2026-10-14@crol-list
+DTSTAMP:20261014T183000
+DTSTART:20261014T183000
+DTEND:20261014T183000
+SUMMARY:Community Board 6 Transportation Committee
+DESCRIPTION:Manhattan Community Board 6 · Transportation Committee · 66 John Street\, New York\, NY · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Afixture-cb6%3A%3A2026-10-14/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+END:VCALENDAR

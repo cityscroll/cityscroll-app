@@ -1,0 +1,3595 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//CityScroll//feeds//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:CityScroll — Hearings and meetings — all notices
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2031-02-03@crol-list
+DTSTAMP:20310204T000000
+DTSTART:20310204T000000
+DTEND:20310204T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2031-02-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2031-01-06@crol-list
+DTSTAMP:20310107T000000
+DTSTART:20310107T000000
+DTEND:20310107T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2031-01-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-12-02@crol-list
+DTSTAMP:20301203T000000
+DTSTART:20301203T000000
+DTEND:20301203T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-12-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-11-04@crol-list
+DTSTAMP:20301105T000000
+DTSTART:20301105T000000
+DTEND:20301105T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-11-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-10-07@crol-list
+DTSTAMP:20301007T230000
+DTSTART:20301007T230000
+DTEND:20301007T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-10-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-09-02@crol-list
+DTSTAMP:20300902T230000
+DTSTART:20300902T230000
+DTEND:20300902T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-09-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-08-05@crol-list
+DTSTAMP:20300805T230000
+DTSTART:20300805T230000
+DTEND:20300805T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-08-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-07-01@crol-list
+DTSTAMP:20300701T230000
+DTSTART:20300701T230000
+DTEND:20300701T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-07-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-06-03@crol-list
+DTSTAMP:20300603T230000
+DTSTART:20300603T230000
+DTEND:20300603T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-06-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-05-06@crol-list
+DTSTAMP:20300506T230000
+DTSTART:20300506T230000
+DTEND:20300506T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-05-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-04-01@crol-list
+DTSTAMP:20300401T230000
+DTSTART:20300401T230000
+DTEND:20300401T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-04-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-03-04@crol-list
+DTSTAMP:20300305T000000
+DTSTART:20300305T000000
+DTEND:20300305T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-03-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-02-04@crol-list
+DTSTAMP:20300205T000000
+DTSTART:20300205T000000
+DTEND:20300205T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-02-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2030-01-07@crol-list
+DTSTAMP:20300108T000000
+DTSTART:20300108T000000
+DTEND:20300108T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2030-01-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-12-03@crol-list
+DTSTAMP:20291204T000000
+DTSTART:20291204T000000
+DTEND:20291204T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-12-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-11-05@crol-list
+DTSTAMP:20291106T000000
+DTSTART:20291106T000000
+DTEND:20291106T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-11-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-10-01@crol-list
+DTSTAMP:20291001T230000
+DTSTART:20291001T230000
+DTEND:20291001T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-10-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-09-03@crol-list
+DTSTAMP:20290903T230000
+DTSTART:20290903T230000
+DTEND:20290903T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-09-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-08-06@crol-list
+DTSTAMP:20290806T230000
+DTSTART:20290806T230000
+DTEND:20290806T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-08-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-07-02@crol-list
+DTSTAMP:20290702T230000
+DTSTART:20290702T230000
+DTEND:20290702T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-07-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-06-04@crol-list
+DTSTAMP:20290604T230000
+DTSTART:20290604T230000
+DTEND:20290604T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-06-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-05-07@crol-list
+DTSTAMP:20290507T230000
+DTSTART:20290507T230000
+DTEND:20290507T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-05-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-04-02@crol-list
+DTSTAMP:20290402T230000
+DTSTART:20290402T230000
+DTEND:20290402T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-04-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-03-05@crol-list
+DTSTAMP:20290306T000000
+DTSTART:20290306T000000
+DTEND:20290306T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-03-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-02-05@crol-list
+DTSTAMP:20290206T000000
+DTSTART:20290206T000000
+DTEND:20290206T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-02-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2029-01-01@crol-list
+DTSTAMP:20290102T000000
+DTSTART:20290102T000000
+DTEND:20290102T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2029-01-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-12-04@crol-list
+DTSTAMP:20281205T000000
+DTSTART:20281205T000000
+DTEND:20281205T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-12-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-11-06@crol-list
+DTSTAMP:20281107T000000
+DTSTART:20281107T000000
+DTEND:20281107T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-11-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-10-02@crol-list
+DTSTAMP:20281002T230000
+DTSTART:20281002T230000
+DTEND:20281002T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-10-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-09-04@crol-list
+DTSTAMP:20280904T230000
+DTSTART:20280904T230000
+DTEND:20280904T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-09-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-08-07@crol-list
+DTSTAMP:20280807T230000
+DTSTART:20280807T230000
+DTEND:20280807T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-08-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-07-03@crol-list
+DTSTAMP:20280703T230000
+DTSTART:20280703T230000
+DTEND:20280703T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-07-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-06-05@crol-list
+DTSTAMP:20280605T230000
+DTSTART:20280605T230000
+DTEND:20280605T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-06-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-05-01@crol-list
+DTSTAMP:20280501T230000
+DTSTART:20280501T230000
+DTEND:20280501T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-05-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-04-03@crol-list
+DTSTAMP:20280403T230000
+DTSTART:20280403T230000
+DTEND:20280403T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-04-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-03-06@crol-list
+DTSTAMP:20280307T000000
+DTSTART:20280307T000000
+DTEND:20280307T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-03-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-02-07@crol-list
+DTSTAMP:20280208T000000
+DTSTART:20280208T000000
+DTEND:20280208T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-02-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2028-01-03@crol-list
+DTSTAMP:20280104T000000
+DTSTART:20280104T000000
+DTEND:20280104T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2028-01-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-12-06@crol-list
+DTSTAMP:20271207T000000
+DTSTART:20271207T000000
+DTEND:20271207T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-12-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-11-01@crol-list
+DTSTAMP:20271101T230000
+DTSTART:20271101T230000
+DTEND:20271101T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-11-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-10-04@crol-list
+DTSTAMP:20271004T230000
+DTSTART:20271004T230000
+DTEND:20271004T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-10-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-09-06@crol-list
+DTSTAMP:20270906T230000
+DTSTART:20270906T230000
+DTEND:20270906T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-09-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-08-02@crol-list
+DTSTAMP:20270802T230000
+DTSTART:20270802T230000
+DTEND:20270802T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-08-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reciNqTUcFf6LNSUs@crol-list
+DTSTAMP:20270720T000000
+DTSTART:20270720T000000
+DTEND:20270720T000000
+SUMMARY:Full Board (tentative)
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreciNqTUcFf6LNSUs/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-07-05@crol-list
+DTSTAMP:20270705T230000
+DTSTART:20270705T230000
+DTEND:20270705T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-07-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recqMJOQ8JwuOl3lR@crol-list
+DTSTAMP:20270622T000000
+DTSTART:20270622T000000
+DTEND:20270622T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecqMJOQ8JwuOl3lR/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec7QmzqZXVUU732f@crol-list
+DTSTAMP:20270616T000000
+DTSTART:20270616T000000
+DTEND:20270616T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec7QmzqZXVUU732f/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec5chzggrCYKh199@crol-list
+DTSTAMP:20270615T000000
+DTSTART:20270615T000000
+DTEND:20270615T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec5chzggrCYKh199/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recmmY58TAfh1ygfT@crol-list
+DTSTAMP:20270614T000000
+DTSTART:20270614T000000
+DTEND:20270614T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecmmY58TAfh1ygfT/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec4IffXmADaLbnvi@crol-list
+DTSTAMP:20270610T000000
+DTSTART:20270610T000000
+DTEND:20270610T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec4IffXmADaLbnvi/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recVAUzUH1DkdH2nm@crol-list
+DTSTAMP:20270609T000000
+DTSTART:20270609T000000
+DTEND:20270609T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecVAUzUH1DkdH2nm/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reck5aHOWuMMEMjPz@crol-list
+DTSTAMP:20270608T000000
+DTSTART:20270608T000000
+DTEND:20270608T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Areck5aHOWuMMEMjPz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-06-07@crol-list
+DTSTAMP:20270607T230000
+DTSTART:20270607T230000
+DTEND:20270607T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-06-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recGujXx4SgVoYfyb@crol-list
+DTSTAMP:20270603T000000
+DTSTART:20270603T000000
+DTEND:20270603T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecGujXx4SgVoYfyb/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec7GrCqCIRGQXh2x@crol-list
+DTSTAMP:20270602T000000
+DTSTART:20270602T000000
+DTEND:20270602T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec7GrCqCIRGQXh2x/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recECUsXhavxKrTcH@crol-list
+DTSTAMP:20270602T000000
+DTSTART:20270602T000000
+DTEND:20270602T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecECUsXhavxKrTcH/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec2q4Mi1DkZNJdil@crol-list
+DTSTAMP:20270601T000000
+DTSTART:20270601T000000
+DTEND:20270601T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec2q4Mi1DkZNJdil/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rece17HhtedKFXs4o@crol-list
+DTSTAMP:20270601T000000
+DTSTART:20270601T000000
+DTEND:20270601T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arece17HhtedKFXs4o/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec6VxYqAAbrFL8Wq@crol-list
+DTSTAMP:20270525T000000
+DTSTART:20270525T000000
+DTEND:20270525T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec6VxYqAAbrFL8Wq/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recCsLQVWnFU678nz@crol-list
+DTSTAMP:20270519T000000
+DTSTART:20270519T000000
+DTEND:20270519T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecCsLQVWnFU678nz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recWsxJPSTYd1wBmO@crol-list
+DTSTAMP:20270518T000000
+DTSTART:20270518T000000
+DTEND:20270518T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecWsxJPSTYd1wBmO/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec4yAxor9mzDvFWs@crol-list
+DTSTAMP:20270513T000000
+DTSTART:20270513T000000
+DTEND:20270513T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec4yAxor9mzDvFWs/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recAgAGi1a1v7kbJu@crol-list
+DTSTAMP:20270512T000000
+DTSTART:20270512T000000
+DTEND:20270512T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecAgAGi1a1v7kbJu/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recUHlSbo2HRmTKxm@crol-list
+DTSTAMP:20270511T000000
+DTSTART:20270511T000000
+DTEND:20270511T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecUHlSbo2HRmTKxm/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec1VwkQvI9Re7pJZ@crol-list
+DTSTAMP:20270510T000000
+DTSTART:20270510T000000
+DTEND:20270510T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec1VwkQvI9Re7pJZ/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recmYw2m3grb2tNz5@crol-list
+DTSTAMP:20270506T000000
+DTSTART:20270506T000000
+DTEND:20270506T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecmYw2m3grb2tNz5/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec05TuWcSnNfyK4P@crol-list
+DTSTAMP:20270505T000000
+DTSTART:20270505T000000
+DTEND:20270505T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec05TuWcSnNfyK4P/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec4FqSSN7xtwS8Km@crol-list
+DTSTAMP:20270505T000000
+DTSTART:20270505T000000
+DTEND:20270505T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec4FqSSN7xtwS8Km/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recA5HI4OSOxbHi7l@crol-list
+DTSTAMP:20270504T000000
+DTSTART:20270504T000000
+DTEND:20270504T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecA5HI4OSOxbHi7l/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recrtHMGRGJT8mWNV@crol-list
+DTSTAMP:20270504T000000
+DTSTART:20270504T000000
+DTEND:20270504T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecrtHMGRGJT8mWNV/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-05-03@crol-list
+DTSTAMP:20270503T230000
+DTSTART:20270503T230000
+DTEND:20270503T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-05-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recW44h1IRvQa3AOs@crol-list
+DTSTAMP:20270427T000000
+DTSTART:20270427T000000
+DTEND:20270427T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecW44h1IRvQa3AOs/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reccAU75o1Cn9gkR8@crol-list
+DTSTAMP:20270421T000000
+DTSTART:20270421T000000
+DTEND:20270421T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreccAU75o1Cn9gkR8/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recSoi1rcluol3bbu@crol-list
+DTSTAMP:20270420T000000
+DTSTART:20270420T000000
+DTEND:20270420T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecSoi1rcluol3bbu/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec2q5cLpIZ523R8Q@crol-list
+DTSTAMP:20270414T000000
+DTSTART:20270414T000000
+DTEND:20270414T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec2q5cLpIZ523R8Q/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recuqK8JdqDdPIAVr@crol-list
+DTSTAMP:20270413T000000
+DTSTART:20270413T000000
+DTEND:20270413T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecuqK8JdqDdPIAVr/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recFIXKwWE9gXhAhN@crol-list
+DTSTAMP:20270412T000000
+DTSTART:20270412T000000
+DTEND:20270412T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecFIXKwWE9gXhAhN/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec6iJWMCxMds23IH@crol-list
+DTSTAMP:20270408T000000
+DTSTART:20270408T000000
+DTEND:20270408T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec6iJWMCxMds23IH/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec02a1sSMb60uVQf@crol-list
+DTSTAMP:20270407T000000
+DTSTART:20270407T000000
+DTEND:20270407T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec02a1sSMb60uVQf/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recgh1bk963GemTPz@crol-list
+DTSTAMP:20270407T000000
+DTSTART:20270407T000000
+DTEND:20270407T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecgh1bk963GemTPz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec5j4ZNyggmUPuZR@crol-list
+DTSTAMP:20270406T000000
+DTSTART:20270406T000000
+DTEND:20270406T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec5j4ZNyggmUPuZR/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recPdtDf08j1z19OM@crol-list
+DTSTAMP:20270406T000000
+DTSTART:20270406T000000
+DTEND:20270406T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecPdtDf08j1z19OM/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-04-05@crol-list
+DTSTAMP:20270405T230000
+DTSTART:20270405T230000
+DTEND:20270405T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-04-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recNZQuKkkEBFWrxm@crol-list
+DTSTAMP:20270401T000000
+DTSTART:20270401T000000
+DTEND:20270401T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecNZQuKkkEBFWrxm/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:81fo4rm1s3kre5gk3biu7551hg_R20260623T223000@google.com::2027-03-30@crol-list
+DTSTAMP:20270330T223000
+DTSTART:20270330T223000
+DTEND:20270330T223000
+SUMMARY:Health & Human Services Committee
+DESCRIPTION:Manhattan Community Board 7 · 250 W 87th St\, New York\, NY 10024\, USA · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A81fo4rm1s3kre5gk3biu7551hg_R20260623T223000%40google.com%3A%3A2027-03-30/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recn4cmgnqYToo3kg@crol-list
+DTSTAMP:20270323T000000
+DTSTART:20270323T000000
+DTEND:20270323T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecn4cmgnqYToo3kg/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recq49763cGcBM5ch@crol-list
+DTSTAMP:20270317T000000
+DTSTART:20270317T000000
+DTEND:20270317T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecq49763cGcBM5ch/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reckxjYoiN4mTqqG3@crol-list
+DTSTAMP:20270316T000000
+DTSTART:20270316T000000
+DTEND:20270316T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreckxjYoiN4mTqqG3/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec8RPhdt2P5PmJjo@crol-list
+DTSTAMP:20270311T000000
+DTSTART:20270311T000000
+DTEND:20270311T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec8RPhdt2P5PmJjo/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recmCHklAkYFIZ1EC@crol-list
+DTSTAMP:20270311T000000
+DTSTART:20270311T000000
+DTEND:20270311T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecmCHklAkYFIZ1EC/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec3uY56ood9Fwudz@crol-list
+DTSTAMP:20270310T000000
+DTSTART:20270310T000000
+DTEND:20270310T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec3uY56ood9Fwudz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec3JoqF7FDjlywx8@crol-list
+DTSTAMP:20270308T000000
+DTSTART:20270308T000000
+DTEND:20270308T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec3JoqF7FDjlywx8/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reciyzSStRQHw6Hg9@crol-list
+DTSTAMP:20270304T000000
+DTSTART:20270304T000000
+DTEND:20270304T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreciyzSStRQHw6Hg9/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recNnXbQniJYdLcxT@crol-list
+DTSTAMP:20270303T000000
+DTSTART:20270303T000000
+DTEND:20270303T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecNnXbQniJYdLcxT/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recy7xD1mrEju5q5a@crol-list
+DTSTAMP:20270303T000000
+DTSTART:20270303T000000
+DTEND:20270303T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecy7xD1mrEju5q5a/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recaw6LkKYswJDhvw@crol-list
+DTSTAMP:20270302T000000
+DTSTART:20270302T000000
+DTEND:20270302T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecaw6LkKYswJDhvw/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recylmSp3xuDs4wFz@crol-list
+DTSTAMP:20270302T000000
+DTSTART:20270302T000000
+DTEND:20270302T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecylmSp3xuDs4wFz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-03-01@crol-list
+DTSTAMP:20270302T000000
+DTSTART:20270302T000000
+DTEND:20270302T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-03-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reck8COOS2RSGNWqV@crol-list
+DTSTAMP:20270223T000000
+DTSTART:20270223T000000
+DTEND:20270223T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Areck8COOS2RSGNWqV/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recCttziebyjZgh0X@crol-list
+DTSTAMP:20270217T000000
+DTSTART:20270217T000000
+DTEND:20270217T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecCttziebyjZgh0X/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recrtVkWUI7tt14bR@crol-list
+DTSTAMP:20270216T000000
+DTSTART:20270216T000000
+DTEND:20270216T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecrtVkWUI7tt14bR/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recNgkPxBPwueXgcw@crol-list
+DTSTAMP:20270211T000000
+DTSTART:20270211T000000
+DTEND:20270211T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecNgkPxBPwueXgcw/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recOe2QDuPDuxcAuc@crol-list
+DTSTAMP:20270210T000000
+DTSTART:20270210T000000
+DTEND:20270210T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecOe2QDuPDuxcAuc/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec7Ud2jt1DpdprgL@crol-list
+DTSTAMP:20270209T000000
+DTSTART:20270209T000000
+DTEND:20270209T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec7Ud2jt1DpdprgL/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recVLmzkmRYCxjT8j@crol-list
+DTSTAMP:20270208T000000
+DTSTART:20270208T000000
+DTEND:20270208T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecVLmzkmRYCxjT8j/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recIlaCWvOgMiL3BN@crol-list
+DTSTAMP:20270204T000000
+DTSTART:20270204T000000
+DTEND:20270204T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecIlaCWvOgMiL3BN/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:receWHh8To4CJndp3@crol-list
+DTSTAMP:20270203T000000
+DTSTART:20270203T000000
+DTEND:20270203T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreceWHh8To4CJndp3/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reci8N8iaRZp6ebuf@crol-list
+DTSTAMP:20270203T000000
+DTSTART:20270203T000000
+DTEND:20270203T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Areci8N8iaRZp6ebuf/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recfkDWoguKmjo9uk@crol-list
+DTSTAMP:20270202T000000
+DTSTART:20270202T000000
+DTEND:20270202T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecfkDWoguKmjo9uk/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recPN8mLpOBOMn2bG@crol-list
+DTSTAMP:20270202T000000
+DTSTART:20270202T000000
+DTEND:20270202T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecPN8mLpOBOMn2bG/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-02-01@crol-list
+DTSTAMP:20270202T000000
+DTSTART:20270202T000000
+DTEND:20270202T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-02-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reccmVv3VR6PNjt87@crol-list
+DTSTAMP:20270126T000000
+DTSTART:20270126T000000
+DTEND:20270126T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreccmVv3VR6PNjt87/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recZk2HM1YO3EBJLn@crol-list
+DTSTAMP:20270120T000000
+DTSTART:20270120T000000
+DTEND:20270120T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecZk2HM1YO3EBJLn/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recmr87RgmAqtzaJM@crol-list
+DTSTAMP:20270119T000000
+DTSTART:20270119T000000
+DTEND:20270119T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecmr87RgmAqtzaJM/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recuuLJa2ppDPZfiu@crol-list
+DTSTAMP:20270114T000000
+DTSTART:20270114T000000
+DTEND:20270114T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecuuLJa2ppDPZfiu/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recyEMXcM07KxfqBC@crol-list
+DTSTAMP:20270113T000000
+DTSTART:20270113T000000
+DTEND:20270113T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecyEMXcM07KxfqBC/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recRRYfDnY9ts5Fm9@crol-list
+DTSTAMP:20270112T000000
+DTSTART:20270112T000000
+DTEND:20270112T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecRRYfDnY9ts5Fm9/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recbWSuaH8juNQvfj@crol-list
+DTSTAMP:20270111T000000
+DTSTART:20270111T000000
+DTEND:20270111T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecbWSuaH8juNQvfj/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recM0orZ6QVgehCTT@crol-list
+DTSTAMP:20270107T000000
+DTSTART:20270107T000000
+DTEND:20270107T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecM0orZ6QVgehCTT/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recOk9EwZVJfEO8Gu@crol-list
+DTSTAMP:20270106T000000
+DTSTART:20270106T000000
+DTEND:20270106T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecOk9EwZVJfEO8Gu/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recXMR7T0zAXNeuaM@crol-list
+DTSTAMP:20270106T000000
+DTSTART:20270106T000000
+DTEND:20270106T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecXMR7T0zAXNeuaM/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec0zjlFvgr978NKu@crol-list
+DTSTAMP:20270105T000000
+DTSTART:20270105T000000
+DTEND:20270105T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec0zjlFvgr978NKu/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recue2GPyKqqSz45Z@crol-list
+DTSTAMP:20270105T000000
+DTSTART:20270105T000000
+DTEND:20270105T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecue2GPyKqqSz45Z/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2027-01-04@crol-list
+DTSTAMP:20270105T000000
+DTSTART:20270105T000000
+DTEND:20270105T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2027-01-04/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recbnhZeXySgLog3t@crol-list
+DTSTAMP:20261222T000000
+DTSTART:20261222T000000
+DTEND:20261222T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecbnhZeXySgLog3t/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0vp6ha9c3qb8v4sdt752493rcu@google.com::2026-12-18@crol-list
+DTSTAMP:20261218T000000
+DTSTART:20261218T000000
+DTEND:20261218T000000
+SUMMARY:Community Board 6 Meeting
+DESCRIPTION:Queens Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0vp6ha9c3qb8v4sdt752493rcu%40google.com%3A%3A2026-12-18/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec1liLfWRN7j8TFp@crol-list
+DTSTAMP:20261216T000000
+DTSTART:20261216T000000
+DTEND:20261216T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec1liLfWRN7j8TFp/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec3Gaa44jsP1UyJx@crol-list
+DTSTAMP:20261215T000000
+DTSTART:20261215T000000
+DTEND:20261215T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec3Gaa44jsP1UyJx/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recphn6vxjMLQE90N@crol-list
+DTSTAMP:20261214T000000
+DTSTART:20261214T000000
+DTEND:20261214T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecphn6vxjMLQE90N/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reccoiripLVBGDZlG@crol-list
+DTSTAMP:20261210T000000
+DTSTART:20261210T000000
+DTEND:20261210T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreccoiripLVBGDZlG/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recLtbu8TpKCI4mAd@crol-list
+DTSTAMP:20261209T000000
+DTSTART:20261209T000000
+DTEND:20261209T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecLtbu8TpKCI4mAd/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec7pxqzVXVj64WbD@crol-list
+DTSTAMP:20261208T000000
+DTSTART:20261208T000000
+DTEND:20261208T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec7pxqzVXVj64WbD/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-12-07@crol-list
+DTSTAMP:20261208T000000
+DTSTART:20261208T000000
+DTEND:20261208T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2026-12-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recEni6veDzocqRM9@crol-list
+DTSTAMP:20261203T000000
+DTSTART:20261203T000000
+DTEND:20261203T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecEni6veDzocqRM9/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recnWu7xK8OOh9kSN@crol-list
+DTSTAMP:20261202T000000
+DTSTART:20261202T000000
+DTEND:20261202T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecnWu7xK8OOh9kSN/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recqwC7HSGOfBBNb6@crol-list
+DTSTAMP:20261202T000000
+DTSTART:20261202T000000
+DTEND:20261202T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecqwC7HSGOfBBNb6/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec2VVTO3Zkq4lJew@crol-list
+DTSTAMP:20261201T000000
+DTSTART:20261201T000000
+DTEND:20261201T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec2VVTO3Zkq4lJew/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reccFU25To4TfBSPz@crol-list
+DTSTAMP:20261201T000000
+DTSTART:20261201T000000
+DTEND:20261201T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3AreccFU25To4TfBSPz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recCaFpqRHgzdNd3x@crol-list
+DTSTAMP:20261124T000000
+DTSTART:20261124T000000
+DTEND:20261124T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecCaFpqRHgzdNd3x/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-11:2026-11-23:public-hearing@crol-list
+DTSTAMP:20261123T234500
+DTSTART:20261123T234500
+DTEND:20261123T234500
+SUMMARY:Public Hearing
+DESCRIPTION:Bronx Community Board 11 · 6:45 PM Public · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-11-23%3Apublic-hearing/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-10:2026-11-19:full-board@crol-list
+DTSTAMP:20261120T000000
+DTSTART:20261120T000000
+DTEND:20261120T000000
+SUMMARY:Full Board
+DESCRIPTION:Bronx Community Board 10 · CB#10 Full Board · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-11-19%3Afull-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec2bBcOQxTsZoFO0@crol-list
+DTSTAMP:20261119T000000
+DTSTART:20261119T000000
+DTEND:20261119T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec2bBcOQxTsZoFO0/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-11-18@crol-list
+DTSTAMP:20261119T000000
+DTSTART:20261119T000000
+DTEND:20261119T000000
+SUMMARY:Full Board Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A598h8thfkslekvsh851uussla8_R20210114T000000%40google.com%3A%3A2026-11-18/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-november-18/@crol-list
+DTSTAMP:20261118T233000
+DTSTART:20261118T233000
+DTEND:20261118T233000
+SUMMARY:CB7 Monthly Board Meeting – November 18
+DESCRIPTION:Brooklyn Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fcb7-monthly-board-meeting-november-18%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recT6acnvboUkNR82@crol-list
+DTSTAMP:20261118T000000
+DTSTART:20261118T000000
+DTEND:20261118T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecT6acnvboUkNR82/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec5rtCFiNPjsdwJs@crol-list
+DTSTAMP:20261117T000000
+DTSTART:20261117T000000
+DTEND:20261117T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec5rtCFiNPjsdwJs/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-10:2026-11-16:executive-board@crol-list
+DTSTAMP:20261117T000000
+DTSTART:20261117T000000
+DTEND:20261117T000000
+SUMMARY:Executive Board
+DESCRIPTION:Bronx Community Board 10 · Executive · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-11-16%3Aexecutive-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0gdjgpdfb3g5mg9012s229k2s7@google.com::2026-11-13@crol-list
+DTSTAMP:20261113T000000
+DTSTART:20261113T000000
+DTEND:20261113T000000
+SUMMARY:Community Board 6 Meeting
+DESCRIPTION:Queens Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0gdjgpdfb3g5mg9012s229k2s7%40google.com%3A%3A2026-11-13/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recDFqEx9EKkv2w6O@crol-list
+DTSTAMP:20261112T000000
+DTSTART:20261112T000000
+DTEND:20261112T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecDFqEx9EKkv2w6O/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recnM1VbubLuVbavY@crol-list
+DTSTAMP:20261112T000000
+DTSTART:20261112T000000
+DTEND:20261112T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecnM1VbubLuVbavY/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec9n3rxbrUPCjTLU@crol-list
+DTSTAMP:20261110T000000
+DTSTART:20261110T000000
+DTEND:20261110T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec9n3rxbrUPCjTLU/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recftHwx5suiIvdmv@crol-list
+DTSTAMP:20261110T000000
+DTSTART:20261110T000000
+DTEND:20261110T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecftHwx5suiIvdmv/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recs69FPGwbvVFmGi@crol-list
+DTSTAMP:20261109T000000
+DTSTART:20261109T000000
+DTEND:20261109T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecs69FPGwbvVFmGi/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recMnRfUkn8BJDsQd@crol-list
+DTSTAMP:20261105T000000
+DTSTART:20261105T000000
+DTEND:20261105T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecMnRfUkn8BJDsQd/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recBBtJ9r0MPjUgre@crol-list
+DTSTAMP:20261104T000000
+DTSTART:20261104T000000
+DTEND:20261104T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecBBtJ9r0MPjUgre/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recxqcbtpqCwfzgoz@crol-list
+DTSTAMP:20261104T000000
+DTSTART:20261104T000000
+DTEND:20261104T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecxqcbtpqCwfzgoz/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-11-03@crol-list
+DTSTAMP:20261103T233000
+DTSTART:20261103T233000
+DTEND:20261103T233000
+SUMMARY:Full Board Meeting
+DESCRIPTION:Manhattan Community Board 7 · Location to be determined · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000%40google.com%3A%3A2026-11-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-11-02@crol-list
+DTSTAMP:20261103T000000
+DTSTART:20261103T000000
+DTEND:20261103T000000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2026-11-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recVSMigOWpk2U9vd@crol-list
+DTSTAMP:20261027T000000
+DTSTART:20261027T000000
+DTEND:20261027T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecVSMigOWpk2U9vd/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-11:2026-10-22:public-hearing@crol-list
+DTSTAMP:20261022T224500
+DTSTART:20261022T224500
+DTEND:20261022T224500
+SUMMARY:Public Hearing
+DESCRIPTION:Bronx Community Board 11 · 6:45 PM Public · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-10-22%3Apublic-hearing/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-october-21/@crol-list
+DTSTAMP:20261021T223000
+DTSTART:20261021T223000
+DTEND:20261021T223000
+SUMMARY:CB7 Monthly Board Meeting – October 21
+DESCRIPTION:Brooklyn Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fcb7-monthly-board-meeting-october-21%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-10-21@crol-list
+DTSTAMP:20261021T220000
+DTSTART:20261021T220000
+DTEND:20261021T220000
+SUMMARY:Land Use Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Aoglh37k1ij8sqmq9m2jgqnm3ni%40google.com%3A%3A2026-10-21/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recaGAyRZj5i2MBqG@crol-list
+DTSTAMP:20261021T000000
+DTSTART:20261021T000000
+DTEND:20261021T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecaGAyRZj5i2MBqG/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec3U8HXTujXivKId@crol-list
+DTSTAMP:20261020T000000
+DTSTART:20261020T000000
+DTEND:20261020T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec3U8HXTujXivKId/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:3ectfmt48v3vuj7lmcrmc3u5bb@google.com::2026-10-19@crol-list
+DTSTAMP:20261019T220000
+DTSTART:20261019T220000
+DTEND:20261019T220000
+SUMMARY:Health & Human Services Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A3ectfmt48v3vuj7lmcrmc3u5bb%40google.com%3A%3A2026-10-19/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-10:2026-10-19:executive-board@crol-list
+DTSTAMP:20261019T230000
+DTSTART:20261019T230000
+DTEND:20261019T230000
+SUMMARY:Executive Board
+DESCRIPTION:Bronx Community Board 10 · Executive · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-10-19%3Aexecutive-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recXo04A65TINqzsO@crol-list
+DTSTAMP:20261019T000000
+DTSTART:20261019T000000
+DTEND:20261019T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecXo04A65TINqzsO/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:1h6o7jd9m72ntf8l33gtq05ora@google.com::2026-10-15@crol-list
+DTSTAMP:20261015T220000
+DTSTART:20261015T220000
+DTEND:20261015T220000
+SUMMARY:Capital & Expense Budget Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A1h6o7jd9m72ntf8l33gtq05ora%40google.com%3A%3A2026-10-15/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees-2/@crol-list
+DTSTAMP:20261015T223000
+DTSTART:20261015T223000
+DTEND:20261015T223000
+SUMMARY:Transportation & Health Committees
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Ftransportation-health-committees-2%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-10:2026-10-15:full-board@crol-list
+DTSTAMP:20261015T230000
+DTSTART:20261015T230000
+DTEND:20261015T230000
+SUMMARY:Full Board
+DESCRIPTION:Bronx Community Board 10 · CB#10 Full Board · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-10-15%3Afull-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:4fjsm23brmu1965oojlokib311_R20240612T223000@google.com::2026-10-14@crol-list
+DTSTAMP:20261014T223000
+DTSTART:20261014T223000
+DTEND:20261014T223000
+SUMMARY:City Services & Public Safety Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A4fjsm23brmu1965oojlokib311_R20240612T223000%40google.com%3A%3A2026-10-14/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:6gboi43hr7004l5tct0dj5pdc5@google.com::2026-10-14@crol-list
+DTSTAMP:20261014T230000
+DTSTART:20261014T230000
+DTEND:20261014T230000
+SUMMARY:Community Board 6 Meeting
+DESCRIPTION:Queens Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A6gboi43hr7004l5tct0dj5pdc5%40google.com%3A%3A2026-10-14/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-10-14/@crol-list
+DTSTAMP:20261014T223000
+DTSTART:20261014T223000
+DTEND:20261014T223000
+SUMMARY:Economic Development\, Environment & Parks\, Sanitation Committees
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Feconomic-development-environment-and-parks-sanitation-committees%2F2026-10-14%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recSrxsBujckCUo4u@crol-list
+DTSTAMP:20261014T000000
+DTSTART:20261014T000000
+DTEND:20261014T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecSrxsBujckCUo4u/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-10-13@crol-list
+DTSTAMP:20261013T220000
+DTSTART:20261013T220000
+DTEND:20261013T220000
+SUMMARY:Arts & Culture Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A74s6ehltphp52khfgu6kdo3ame_R20240611T220000%40google.com%3A%3A2026-10-13/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-10-13/@crol-list
+DTSTAMP:20261013T223000
+DTSTART:20261013T223000
+DTEND:20261013T223000
+SUMMARY:Housing & Land Use\, Youth & Education Committees
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fhousing-land-use-youth-education-committees%2F2026-10-13%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recef8b2IWjot8bs4@crol-list
+DTSTAMP:20261013T000000
+DTSTART:20261013T000000
+DTEND:20261013T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecef8b2IWjot8bs4/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rectQy6gJVEczYvLa@crol-list
+DTSTAMP:20261008T000000
+DTSTART:20261008T000000
+DTEND:20261008T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArectQy6gJVEczYvLa/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-10-07/@crol-list
+DTSTAMP:20261007T223000
+DTSTART:20261007T223000
+DTEND:20261007T223000
+SUMMARY:Executive Committee (TBD)
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fexecutive-committee-tbd%2F2026-10-07%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec350Qrub0fIMil0@crol-list
+DTSTAMP:20261007T000000
+DTSTART:20261007T000000
+DTEND:20261007T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec350Qrub0fIMil0/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recdaAgj9LHruxOuK@crol-list
+DTSTAMP:20261007T000000
+DTSTART:20261007T000000
+DTEND:20261007T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecdaAgj9LHruxOuK/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:2q5hj0nsacuk2hjf2n3dkvmln3_R20240604T220000@google.com::2026-10-06@crol-list
+DTSTAMP:20261006T220000
+DTSTART:20261006T220000
+DTEND:20261006T220000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A2q5hj0nsacuk2hjf2n3dkvmln3_R20240604T220000%40google.com%3A%3A2026-10-06/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-10-06/@crol-list
+DTSTAMP:20261006T160000
+DTSTART:20261006T160000
+DTEND:20261006T160000
+SUMMARY:Disciplinary Committee
+DESCRIPTION:Bronx Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fdisciplinary-committee-7%2F2026-10-06%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recEUl78ABzNOBmqB@crol-list
+DTSTAMP:20261006T000000
+DTSTART:20261006T000000
+DTEND:20261006T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecEUl78ABzNOBmqB/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recfbe7FHz2hhAnTy@crol-list
+DTSTAMP:20261006T000000
+DTSTART:20261006T000000
+DTEND:20261006T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecfbe7FHz2hhAnTy/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-10-05@crol-list
+DTSTAMP:20261005T230000
+DTSTART:20261005T230000
+DTEND:20261005T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2026-10-05/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:574f5mfqukjk891p60d59c5lvb@google.com::2026-10-01@crol-list
+DTSTAMP:20261001T223000
+DTSTART:20261001T223000
+DTEND:20261001T223000
+SUMMARY:CB2 Board Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A574f5mfqukjk891p60d59c5lvb%40google.com%3A%3A2026-10-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recirDkekViJCC517@crol-list
+DTSTAMP:20261001T000000
+DTSTART:20261001T000000
+DTEND:20261001T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecirDkekViJCC517/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:3fr3vc7mnkcl6rna4o8oo4vq0b_R20210308T233000@google.com::2026-09-29@crol-list
+DTSTAMP:20260929T223000
+DTSTART:20260929T223000
+DTEND:20260929T223000
+SUMMARY:Budget & Governmental Affairs Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A3fr3vc7mnkcl6rna4o8oo4vq0b_R20210308T233000%40google.com%3A%3A2026-09-29/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-29:community-board-3-full-board-meeting@crol-list
+DTSTAMP:20260929T223000
+DTSTART:20260929T223000
+DTEND:20260929T223000
+SUMMARY:Community Board 3\, Full Board Meeting
+DESCRIPTION:Manhattan Community Board 3 · PS 20 - 166 Essex Street (E Houston & Stanton Sts) · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-29%3Acommunity-board-3-full-board-meeting/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:3p8lrr5oa50t0grbf5ms9gfguk@google.com::2026-09-24@crol-list
+DTSTAMP:20260924T223000
+DTSTART:20260924T223000
+DTEND:20260924T223000
+SUMMARY:Environment\, Parks\, and Recreation Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A3p8lrr5oa50t0grbf5ms9gfguk%40google.com%3A%3A2026-09-24/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-11:2026-09-24:public-hearing-and-full-board@crol-list
+DTSTAMP:20260924T224500
+DTSTART:20260924T224500
+DTEND:20260924T224500
+SUMMARY:Public Hearing and Full Board
+DESCRIPTION:Bronx Community Board 11 · 6:45 PM Public · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-11%3A2026-09-24%3Apublic-hearing-and-full-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cb14brooklyn.com/meeting/housing-and-land-use-committee-meeting-september-2026/@crol-list
+DTSTAMP:20260923T223000
+DTSTART:20260923T223000
+DTEND:20260923T223000
+SUMMARY:Housing and Land Use Committee Meeting
+DESCRIPTION:Brooklyn Community Board 14 · Online via Webex · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fhousing-and-land-use-committee-meeting-september-2026%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/general-board-meeting-11/2026-09-23/@crol-list
+DTSTAMP:20260923T223000
+DTSTART:20260923T223000
+DTEND:20260923T223000
+SUMMARY:General Board Meeting
+DESCRIPTION:Bronx Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fgeneral-board-meeting-11%2F2026-09-23%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/education-libraries-cultural-affairs/2026-09-22/@crol-list
+DTSTAMP:20260922T193000
+DTSTART:20260922T193000
+DTEND:20260922T193000
+SUMMARY:Education\, Libraries & Cultural Affairs
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Feducation-libraries-cultural-affairs%2F2026-09-22%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:nyc-calendar:queens-cb-01:2026-09-22:full-board-public-hearing-meetings@crol-list
+DTSTAMP:20260922T220000
+DTSTART:20260922T220000
+DTEND:20260922T220000
+SUMMARY:Full Board / Public Hearing Meetings
+DESCRIPTION:Queens Community Board 1 · October 20\, 2026 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-01%3A2026-09-22%3Afull-board-public-hearing-meetings/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:reci8Gw5Hu4vLXIRJ@crol-list
+DTSTAMP:20260922T000000
+DTSTART:20260922T000000
+DTEND:20260922T000000
+SUMMARY:Executive
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Areci8Gw5Hu4vLXIRJ/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:nyc-calendar:manhattan-cb-03:2026-09-21:cb-3-public-hearing-fy-2028-budget-priorities@crol-list
+DTSTAMP:20260921T223000
+DTSTART:20260921T223000
+DTEND:20260921T223000
+SUMMARY:CB 3 Public Hearing - FY 2028 Budget Priorities
+DESCRIPTION:Manhattan Community Board 3 · Community Board 3 Office\, 59 East 4th Street (btwn 2nd Ave and Bowery) · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Amanhattan-cb-03%3A2026-09-21%3Acb-3-public-hearing-fy-2028-budget-priorities/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:358gkog981jpblemipdrmldmcs_R20231016T223000@google.com::2026-09-17@crol-list
+DTSTAMP:20260917T223000
+DTSTART:20260917T223000
+DTEND:20260917T223000
+SUMMARY:Housing & Homelessness Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A358gkog981jpblemipdrmldmcs_R20231016T223000%40google.com%3A%3A2026-09-17/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:5fl6a6rlqpefe1g4riinuti8bv@google.com::2026-09-17@crol-list
+DTSTAMP:20260917T220000
+DTSTART:20260917T220000
+DTEND:20260917T220000
+SUMMARY:Capital & Expense Budget Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A5fl6a6rlqpefe1g4riinuti8bv%40google.com%3A%3A2026-09-17/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:736npi1uck6vrjtnq7oacvojmo@google.com::2026-09-17@crol-list
+DTSTAMP:20260917T230000
+DTSTART:20260917T230000
+DTEND:20260917T230000
+SUMMARY:Community Board 6 Meeting
+DESCRIPTION:Queens Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A736npi1uck6vrjtnq7oacvojmo%40google.com%3A%3A2026-09-17/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/monthly-board-meeting-11/@crol-list
+DTSTAMP:20260917T230000
+DTSTART:20260917T230000
+DTEND:20260917T230000
+SUMMARY:Monthly Board Meeting
+DESCRIPTION:Brooklyn Community Board 10 · 9941 Ft Hamilton Parkway\, Brooklyn\, 11209 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fmonthly-board-meeting-11%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-10:2026-09-17:full-board@crol-list
+DTSTAMP:20260917T230000
+DTSTART:20260917T230000
+DTEND:20260917T230000
+SUMMARY:Full Board
+DESCRIPTION:Bronx Community Board 10 · CB#10 Full Board · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-09-17%3Afull-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260806002@crol-list
+DTSTAMP:20260916T100000
+DTSTART:20260916T100000
+DTEND:20260916T100000
+SUMMARY:Rules Regarding Restricted Substances in Personal Care Products
+DESCRIPTION:Health and Mental Hygiene · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260806002/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:01u3fokggn4pehk5ipi6kkmq39_R20210120T233000@google.com::2026-09-16@crol-list
+DTSTAMP:20260916T223000
+DTSTART:20260916T223000
+DTEND:20260916T223000
+SUMMARY:Executive Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A01u3fokggn4pehk5ipi6kkmq39_R20210120T233000%40google.com%3A%3A2026-09-16/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/public-safety-committee-4/2026-09-16/@crol-list
+DTSTAMP:20260916T223000
+DTSTART:20260916T223000
+DTEND:20260916T223000
+SUMMARY:Public Safety & Licensing Committee
+DESCRIPTION:Bronx Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fpublic-safety-committee-4%2F2026-09-16%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/environment-sanitation-2/2026-09-16/@crol-list
+DTSTAMP:20260916T190000
+DTSTART:20260916T190000
+DTEND:20260916T190000
+SUMMARY:Environment & Sanitation
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Fenvironment-sanitation-2%2F2026-09-16%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/traffic-and-transportation-committee-26/@crol-list
+DTSTAMP:20260916T230000
+DTSTART:20260916T230000
+DTEND:20260916T230000
+SUMMARY:Traffic and Transportation Committee
+DESCRIPTION:Brooklyn Community Board 10 · Via Zoom and live streamed to YouTube with Hybrid Component for limited in-person participation at the District Office · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Ftraffic-and-transportation-committee-26%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-monthly-board-meeting-september-16/@crol-list
+DTSTAMP:20260916T223000
+DTSTART:20260916T223000
+DTEND:20260916T223000
+SUMMARY:CB7 Monthly Board Meeting – September 16
+DESCRIPTION:Brooklyn Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fcb7-monthly-board-meeting-september-16%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:oglh37k1ij8sqmq9m2jgqnm3ni@google.com::2026-09-16@crol-list
+DTSTAMP:20260916T220000
+DTSTART:20260916T220000
+DTEND:20260916T220000
+SUMMARY:Land Use Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Aoglh37k1ij8sqmq9m2jgqnm3ni%40google.com%3A%3A2026-09-16/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recLUaFbQe9dHmlEc@crol-list
+DTSTAMP:20260916T000000
+DTSTART:20260916T000000
+DTEND:20260916T000000
+SUMMARY:Board Oversight
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecLUaFbQe9dHmlEc/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260803026@crol-list
+DTSTAMP:20260915T110000
+DTSTART:20260915T110000
+DTEND:20260915T110000
+SUMMARY:Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors
+DESCRIPTION:Buildings · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260803026/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:4an5rrag5crtfqb1gtjkk7c102@google.com::2026-09-15@crol-list
+DTSTAMP:20260915T220000
+DTSTART:20260915T220000
+DTEND:20260915T220000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A4an5rrag5crtfqb1gtjkk7c102%40google.com%3A%3A2026-09-15/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec1uA1X3lFd2SBdO@crol-list
+DTSTAMP:20260915T000000
+DTSTART:20260915T000000
+DTEND:20260915T000000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 2017 First Avenue\, New York\, NY 10029 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec1uA1X3lFd2SBdO/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260803009@crol-list
+DTSTAMP:20260914T100000
+DTSTART:20260914T100000
+DTEND:20260914T100000
+SUMMARY:New Rules Relating to Rat Inspections
+DESCRIPTION:Health and Mental Hygiene · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260803009/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:1iq086dtevpopcoirspbvhqcip_R20260615T223000@google.com::2026-09-14@crol-list
+DTSTAMP:20260914T223000
+DTSTART:20260914T223000
+DTEND:20260914T223000
+SUMMARY:Park & Environment Committee **New Date**
+DESCRIPTION:Manhattan Community Board 7 · 250 W 87th St\, New York\, NY 10024\, USA · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A1iq086dtevpopcoirspbvhqcip_R20260615T223000%40google.com%3A%3A2026-09-14/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cb14brooklyn.com/meeting/september-2026-board-meeting/@crol-list
+DTSTAMP:20260914T223000
+DTSTART:20260914T223000
+DTEND:20260914T223000
+SUMMARY:September 2026 Board Meeting and Public Hearings on Cannabis Application and NYC Budget FY 2028
+DESCRIPTION:Brooklyn Community Board 14 · 1625 Ocean Avenue\, Brooklyn\, New York\, 11230 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fseptember-2026-board-meeting%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/aging/2026-09-14/@crol-list
+DTSTAMP:20260914T160000
+DTSTART:20260914T160000
+DTEND:20260914T160000
+SUMMARY:Aging
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Faging%2F2026-09-14%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/executive-2-2/2026-09-14/@crol-list
+DTSTAMP:20260914T190000
+DTSTART:20260914T190000
+DTEND:20260914T190000
+SUMMARY:EXECUTIVE COMMITTEE
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Fexecutive-2-2%2F2026-09-14%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/law-rules-ethics-2/2026-09-14/@crol-list
+DTSTAMP:20260914T190000
+DTSTART:20260914T190000
+DTEND:20260914T190000
+SUMMARY:Law\, Rules & Ethics
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Flaw-rules-ethics-2%2F2026-09-14%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/police-and-public-safety-committee-23/@crol-list
+DTSTAMP:20260914T230000
+DTSTART:20260914T230000
+DTEND:20260914T230000
+SUMMARY:Police and Public Safety Committee
+DESCRIPTION:Brooklyn Community Board 10 · 8119 5th Avenue\, Brooklyn\, NY\, 11209 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fpolice-and-public-safety-committee-23%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting@crol-list
+DTSTAMP:20260914T000000
+DTSTART:20260914T000000
+DTEND:20260914T000000
+SUMMARY:Regular & Public Hearing meeting
+DESCRIPTION:Queens Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Anyc-calendar%3Aqueens-cb-07%3A2026-09-14%3Aregular-public-hearing-meeting/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:p3vfshdk6m2pt5kmskct7dt8em@google.com::2026-09-14@crol-list
+DTSTAMP:20260914T220000
+DTSTART:20260914T220000
+DTEND:20260914T220000
+SUMMARY:Health & Human Services Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ap3vfshdk6m2pt5kmskct7dt8em%40google.com%3A%3A2026-09-14/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:pdf-calendar:bronx-cb-10:2026-09-14:executive-board@crol-list
+DTSTAMP:20260914T230000
+DTSTART:20260914T230000
+DTEND:20260914T230000
+SUMMARY:Executive Board
+DESCRIPTION:Bronx Community Board 10 · Executive · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Apdf-calendar%3Abronx-cb-10%3A2026-09-14%3Aexecutive-board/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recjaTt6mlQoHMaAh@crol-list
+DTSTAMP:20260914T000000
+DTSTART:20260914T000000
+DTEND:20260914T000000
+SUMMARY:Human Services
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecjaTt6mlQoHMaAh/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:2aa6dkse90cddbdvqgi2h5165g@google.com::2026-09-10@crol-list
+DTSTAMP:20260910T223000
+DTSTART:20260910T223000
+DTEND:20260910T223000
+SUMMARY:CB2 Board Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A2aa6dkse90cddbdvqgi2h5165g%40google.com%3A%3A2026-09-10/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:3gklmd3v0csnt1a7kl9q6lb4iq_R20260514T223000@google.com::2026-09-10@crol-list
+DTSTAMP:20260910T223000
+DTSTART:20260910T223000
+DTEND:20260910T223000
+SUMMARY:Health\, Education & Environment Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A3gklmd3v0csnt1a7kl9q6lb4iq_R20260514T223000%40google.com%3A%3A2026-09-10/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:4q3uqughsrpttqf24c3riu0ib1@google.com::2026-09-10@crol-list
+DTSTAMP:20260910T000000
+DTSTART:20260910T000000
+DTEND:20260910T000000
+SUMMARY:Land Use\, Housing\, Landmark Committee Briefing
+DESCRIPTION:Queens Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A4q3uqughsrpttqf24c3riu0ib1%40google.com%3A%3A2026-09-10/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/transportation-health-committees/2026-09-10/@crol-list
+DTSTAMP:20260910T223000
+DTSTART:20260910T223000
+DTEND:20260910T223000
+SUMMARY:Transportation & Health Committees
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Ftransportation-health-committees%2F2026-09-10%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recCUxAqawlygvkw5@crol-list
+DTSTAMP:20260910T000000
+DTSTART:20260910T000000
+DTEND:20260910T000000
+SUMMARY:Economic Development & Culture
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecCUxAqawlygvkw5/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260728026@crol-list
+DTSTAMP:20260909T110000
+DTSTART:20260909T110000
+DTEND:20260909T110000
+SUMMARY:Proposed Rule - Rule relating to Incomplete Inspections
+DESCRIPTION:Buildings · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260728026/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260709020@crol-list
+DTSTAMP:20260909T100000
+DTSTART:20260909T100000
+DTEND:20260909T100000
+SUMMARY:FOR ACQUISTION - Block 5308 Lot 50
+DESCRIPTION:Citywide Administrative Services · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260709020/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260714002@crol-list
+DTSTAMP:20260909T100000
+DTSTART:20260909T100000
+DTEND:20260909T100000
+SUMMARY:CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board
+DESCRIPTION:City Planning Commission · 120 Broadway\, Lower Level\, New York\, NY\, 10271 · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260714002/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260723022@crol-list
+DTSTAMP:20260909T100000
+DTSTART:20260909T100000
+DTEND:20260909T100000
+SUMMARY:511 West 171
+DESCRIPTION:Housing Preservation and Development · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260723022/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:4fjsm23brmu1965oojlokib311_R20240612T223000@google.com::2026-09-09@crol-list
+DTSTAMP:20260909T223000
+DTSTART:20260909T223000
+DTEND:20260909T223000
+SUMMARY:City Services & Public Safety Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A4fjsm23brmu1965oojlokib311_R20240612T223000%40google.com%3A%3A2026-09-09/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cb14brooklyn.com/meeting/public-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026/@crol-list
+DTSTAMP:20260909T223000
+DTSTART:20260909T223000
+DTEND:20260909T223000
+SUMMARY:Public Hearing on ULURP Application and Executive Committee Meeting
+DESCRIPTION:Brooklyn Community Board 14 · 810 East 16th Street\, Brooklyn\, NY\, 11230 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcb14brooklyn.com%2Fmeeting%2Fpublic-hearing-on-ulurp-application-and-executive-committee-meeting-september-2026%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/economic-development-environment-and-parks-sanitation-committees/2026-09-09/@crol-list
+DTSTAMP:20260909T223000
+DTSTART:20260909T223000
+DTEND:20260909T223000
+SUMMARY:Economic Development\, Environment & Parks\, Sanitation Committees
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Feconomic-development-environment-and-parks-sanitation-committees%2F2026-09-09%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/health-hospitals-social-services/2026-09-09/@crol-list
+DTSTAMP:20260909T190000
+DTSTART:20260909T190000
+DTEND:20260909T190000
+SUMMARY:Health\, Hospitals & Social Services
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Fhealth-hospitals-social-services%2F2026-09-09%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb10/event/zoning-and-land-use-committee-18/@crol-list
+DTSTAMP:20260909T230000
+DTSTART:20260909T230000
+DTEND:20260909T230000
+SUMMARY:Zoning and Land Use Committee
+DESCRIPTION:Brooklyn Community Board 10 · Via Zoom and live streamed to YouTube with Hybrid Component for limited in-person participation at the District Office · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb10%2Fevent%2Fzoning-and-land-use-committee-18%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/cb7-transportation-committee-meeting-september-9/@crol-list
+DTSTAMP:20260909T223000
+DTSTART:20260909T223000
+DTEND:20260909T223000
+SUMMARY:CB7 Transportation Committee Meeting – September 9
+DESCRIPTION:Brooklyn Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fcb7-transportation-committee-meeting-september-9%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbrooklyn.cityofnewyork.us/cb7/event/public-hearing-and-land-use-landmarks-committee-meeting-september-9/@crol-list
+DTSTAMP:20260909T223000
+DTSTART:20260909T223000
+DTEND:20260909T223000
+SUMMARY:Public Hearing and Land Use/Landmarks Committee meeting – September 9
+DESCRIPTION:Brooklyn Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbrooklyn.cityofnewyork.us%2Fcb7%2Fevent%2Fpublic-hearing-and-land-use-landmarks-committee-meeting-september-9%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recq0Fa6sPSbMmDib@crol-list
+DTSTAMP:20260909T000000
+DTSTART:20260909T000000
+DTEND:20260909T000000
+SUMMARY:Housing & Land Use
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arecq0Fa6sPSbMmDib/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0pue8uab456hejvloi8sikfpke@google.com::2026-09-08@crol-list
+DTSTAMP:20260908T000000
+DTSTART:20260908T000000
+DTEND:20260908T000000
+SUMMARY:Consumer Affairs\, Cultural Affairs\, Economic Development Committee Briefing
+DESCRIPTION:Queens Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0pue8uab456hejvloi8sikfpke%40google.com%3A%3A2026-09-08/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:74s6ehltphp52khfgu6kdo3ame_R20240611T220000@google.com::2026-09-08@crol-list
+DTSTAMP:20260908T220000
+DTSTART:20260908T220000
+DTEND:20260908T220000
+SUMMARY:Arts & Cultural Affairs Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A74s6ehltphp52khfgu6kdo3ame_R20240611T220000%40google.com%3A%3A2026-09-08/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/housing-land-use-youth-education-committees/2026-09-08/@crol-list
+DTSTAMP:20260908T223000
+DTSTART:20260908T223000
+DTEND:20260908T223000
+SUMMARY:Housing & Land Use\, Youth & Education Committees
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fhousing-land-use-youth-education-committees%2F2026-09-08%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb8/event/full-board/2026-09-08/@crol-list
+DTSTAMP:20260908T190000
+DTSTART:20260908T190000
+DTEND:20260908T190000
+SUMMARY:Full Board
+DESCRIPTION:Bronx Community Board 8 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb8%2Fevent%2Ffull-board%2F2026-09-08%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:rec40ahXvqRNpJN41@crol-list
+DTSTAMP:20260908T000000
+DTSTART:20260908T000000
+DTEND:20260908T000000
+SUMMARY:Youth & Education
+DESCRIPTION:Manhattan Community Board 11 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Arec40ahXvqRNpJN41/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:302q5sg0lfpbg4v51d4tlco2m3@google.com::2026-09-07@crol-list
+DTSTAMP:20260907T223000
+DTSTART:20260907T223000
+DTEND:20260907T223000
+SUMMARY:Public Safety Task Force
+DESCRIPTION:Manhattan Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A302q5sg0lfpbg4v51d4tlco2m3%40google.com%3A%3A2026-09-07/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260805006@crol-list
+DTSTAMP:20260903T110000
+DTSTART:20260903T110000
+DTEND:20260903T110000
+SUMMARY:Dining Out NYC Hearing
+DESCRIPTION:Transportation · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260805006/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:264etuspll5sdhca2ohv92i721@google.com::2026-09-03@crol-list
+DTSTAMP:20260903T220000
+DTSTART:20260903T220000
+DTEND:20260903T220000
+SUMMARY:Special Land Use Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A264etuspll5sdhca2ohv92i721%40google.com%3A%3A2026-09-03/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/concerns-of-the-aging-committee-12/@crol-list
+DTSTAMP:20260903T143000
+DTSTART:20260903T143000
+DTEND:20260903T143000
+SUMMARY:Concerns of the Aging Committee
+DESCRIPTION:Manhattan Community Board 12 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb12%2Fcalendar%2Fconcerns-of-the-aging-committee-12%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/health-environment-committee-19/@crol-list
+DTSTAMP:20260903T230000
+DTSTART:20260903T230000
+DTEND:20260903T230000
+SUMMARY:Health & Environment Committee
+DESCRIPTION:Manhattan Community Board 12 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb12%2Fcalendar%2Fhealth-environment-committee-19%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://manhattancb1.cityofnewyork.us/event/battery-park-city-committee-12/@crol-list
+DTSTAMP:20260903T220000
+DTSTART:20260903T220000
+DTEND:20260903T220000
+SUMMARY:Battery Park City Committee
+DESCRIPTION:Manhattan Community Board 1 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fmanhattancb1.cityofnewyork.us%2Fevent%2Fbattery-park-city-committee-12%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recV0nPQoOtlTnmpA@crol-list
+DTSTAMP:20260903T000000
+DTSTART:20260903T000000
+DTEND:20260903T000000
+SUMMARY:Environment\, Open Space & Parks
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecV0nPQoOtlTnmpA/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-09-02@crol-list
+DTSTAMP:20260902T230000
+DTSTART:20260902T230000
+DTEND:20260902T230000
+SUMMARY:Transportation Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000%40google.com%3A%3A2026-09-02/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/executive-committee-tbd/2026-09-02/@crol-list
+DTSTAMP:20260902T223000
+DTSTART:20260902T223000
+DTEND:20260902T223000
+SUMMARY:Executive Committee (TBD)
+DESCRIPTION:Bronx Community Board 6 · 1932 Arthur Avenue 403A\, Bronx\, NY\, 10457 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fexecutive-committee-tbd%2F2026-09-02%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2-3-2/2026-09-02/@crol-list
+DTSTAMP:20260902T220000
+DTSTART:20260902T220000
+DTEND:20260902T220000
+SUMMARY:General Board Meeting
+DESCRIPTION:Manhattan Community Board 10 · 163 W. 125th St\, 2nd Floor\, New York\, 10027 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb10%2Fevent%2Fgeneral-board-meeting-12-3-2-2-2-3-2%2F2026-09-02%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb10/event/general-board-meeting-12-3-2-2-2/2026-09-02/@crol-list
+DTSTAMP:20260902T220000
+DTSTART:20260902T220000
+DTEND:20260902T220000
+SUMMARY:General Board Meeting
+DESCRIPTION:Manhattan Community Board 10 · 117 W. 125th St\, New York\, NY\, 10027 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb10%2Fevent%2Fgeneral-board-meeting-12-3-2-2-2%2F2026-09-02%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/public-safety-committee-19/@crol-list
+DTSTAMP:20260902T223000
+DTSTART:20260902T223000
+DTEND:20260902T223000
+SUMMARY:Public Safety Committee
+DESCRIPTION:Manhattan Community Board 12 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb12%2Fcalendar%2Fpublic-safety-committee-19%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb4/meeting/full-board-66/@crol-list
+DTSTAMP:20260902T223000
+DTSTART:20260902T223000
+DTEND:20260902T223000
+SUMMARY:Full Board
+DESCRIPTION:Manhattan Community Board 4 · 305 West 44th Street\, New York\, NY\, 10036 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb4%2Fmeeting%2Ffull-board-66%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://manhattancb1.cityofnewyork.us/event/transportation-street-activity-permits-committee-13/@crol-list
+DTSTAMP:20260902T220000
+DTSTART:20260902T220000
+DTEND:20260902T220000
+SUMMARY:Transportation & Street Activity Permits Committee
+DESCRIPTION:Manhattan Community Board 1 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fmanhattancb1.cityofnewyork.us%2Fevent%2Ftransportation-street-activity-permits-committee-13%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recGj6OGIefrAGiVq@crol-list
+DTSTAMP:20260902T000000
+DTSTART:20260902T000000
+DTEND:20260902T000000
+SUMMARY:Licenses & Permits
+DESCRIPTION:Manhattan Community Board 11 · 1664 Park Avenue\, New York\, NY 10035\, via Video Conference · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecGj6OGIefrAGiVq/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recyDJwpvAED4vBih@crol-list
+DTSTAMP:20260902T000000
+DTSTART:20260902T000000
+DTEND:20260902T000000
+SUMMARY:Public Safety & Transportation
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 7 East 116th Street\, New York\, NY 10029 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecyDJwpvAED4vBih/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260714029@crol-list
+DTSTAMP:20260901T100000
+DTSTART:20260901T100000
+DTEND:20260901T100000
+SUMMARY:Notice of Public Hearing and Opportunity to Comment- FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings
+DESCRIPTION:Transportation · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260714029/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000@google.com::2026-09-01@crol-list
+DTSTAMP:20260901T223000
+DTSTART:20260901T223000
+DTEND:20260901T223000
+SUMMARY:Full Board Meeting
+DESCRIPTION:Manhattan Community Board 7 · 10 Lincoln Center Plaza\, New York\, NY 10023\, USA · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A63opnsm7n7f5d8rpk76mftnpfa_R20260602T223000%40google.com%3A%3A2026-09-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:h5r2q7jem9u2af2mjtt7m6gea8_R20260407T223000@google.com::2026-09-01@crol-list
+DTSTAMP:20260901T223000
+DTSTART:20260901T223000
+DTEND:20260901T223000
+SUMMARY:Parks & Cultural Affairs Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ah5r2q7jem9u2af2mjtt7m6gea8_R20260407T223000%40google.com%3A%3A2026-09-01/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbbronx.cityofnewyork.us/cb6/event/disciplinary-committee-7/2026-09-01/@crol-list
+DTSTAMP:20260901T160000
+DTSTART:20260901T160000
+DTEND:20260901T160000
+SUMMARY:Disciplinary Committee
+DESCRIPTION:Bronx Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbbronx.cityofnewyork.us%2Fcb6%2Fevent%2Fdisciplinary-committee-7%2F2026-09-01%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb12/calendar/business-development-committee-15/2026-09-01/@crol-list
+DTSTAMP:20260901T230000
+DTSTART:20260901T230000
+DTEND:20260901T230000
+SUMMARY:Business Development Committee
+DESCRIPTION:Manhattan Community Board 12 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb12%2Fcalendar%2Fbusiness-development-committee-15%2F2026-09-01%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recbiJJVgYHykNAis@crol-list
+DTSTAMP:20260901T000000
+DTSTART:20260901T000000
+DTEND:20260901T000000
+SUMMARY:Second Avenue Subway Taskforce
+DESCRIPTION:Manhattan Community Board 11 · Vinale Management And Consultants Inc.\, 7 East 116th Street\, New York\, NY 10029 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecbiJJVgYHykNAis/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:recqZlYhRHXKTXHOA@crol-list
+DTSTAMP:20260901T000000
+DTSTART:20260901T000000
+DTEND:20260901T000000
+SUMMARY:District Needs & Budget
+DESCRIPTION:Manhattan Community Board 11 · via Video Conference\, 1664 Park Avenue\, New York\, NY 10035 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3ArecqZlYhRHXKTXHOA/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:714mm07vskk622h444m1vml7sf@google.com::2026-08-31@crol-list
+DTSTAMP:20260831T223000
+DTSTART:20260831T223000
+DTEND:20260831T223000
+SUMMARY:Housing & Land Use Committee **NEW DATE**
+DESCRIPTION:Manhattan Community Board 7 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A714mm07vskk622h444m1vml7sf%40google.com%3A%3A2026-08-31/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:https://cbmanhattan.cityofnewyork.us/cb2/event/cannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8/@crol-list
+DTSTAMP:20260831T223000
+DTSTART:20260831T223000
+DTEND:20260831T223000
+SUMMARY:CANNABIS LICENSING – Mar Fitzgerald\, Chair\; Patricia Laraia\, Vice Chair – IN PERSON ONLY
+DESCRIPTION:Manhattan Community Board 2 · CANNABIS LICENSING · 3 Washington Square Village #1A\, New York\, NY\, 10012 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3Ahttps%3A%2F%2Fcbmanhattan.cityofnewyork.us%2Fcb2%2Fevent%2Fcannabis-licensing-mar-fitzgerald-chair-patricia-laraia-vice-chair-in-person-only-8%2F/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260715041@crol-list
+DTSTAMP:20260827T110000
+DTSTART:20260827T110000
+DTEND:20260827T110000
+SUMMARY:Amendments to Rules Relating to the Energy Conservation Code
+DESCRIPTION:Buildings · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260715041/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:city_record:20260728028@crol-list
+DTSTAMP:20260827T110000
+DTSTART:20260827T110000
+DTEND:20260827T110000
+SUMMARY:Dining Out NYC Public Hearings
+DESCRIPTION:Transportation · https://cityscroll.org/meetings/meeting%3Acity_record%3A20260728028/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:6t85ltf3a3kmcfbmu44ejfqbh2_R20250731T223000@google.com::2026-08-27@crol-list
+DTSTAMP:20260827T223000
+DTSTART:20260827T223000
+DTEND:20260827T223000
+SUMMARY:Business Affairs & Licensing Committee Meeting
+DESCRIPTION:Manhattan Community Board 6 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A6t85ltf3a3kmcfbmu44ejfqbh2_R20250731T223000%40google.com%3A%3A2026-08-27/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:meeting:community_board:71k2ss3vfo1hksnqm4vr1uvbkm@google.com::2026-08-27@crol-list
+DTSTAMP:20260827T220000
+DTSTART:20260827T220000
+DTEND:20260827T220000
+SUMMARY:Executive and Personnel Committee Meeting
+DESCRIPTION:Queens Community Board 2 · https://cityscroll.org/meetings/meeting%3Acommunity_board%3A71k2ss3vfo1hksnqm4vr1uvbkm%40google.com%3A%3A2026-08-27/
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Tomorrow
+END:VALARM
+END:VEVENT
+END:VCALENDAR
