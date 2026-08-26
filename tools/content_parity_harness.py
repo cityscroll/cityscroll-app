@@ -78,10 +78,19 @@ SURFACES: dict[str, dict[str, str]] = {
         # The local static server serves the shared shell for clean notice URLs. The
         # client route is the repository's canonical local deep-link form; production
         # edge rendering still supplies the same notice fixture on the clean URL.
-        "path": "/#notice/20260701099",
+        # This award fixture exercises the resident-snapshot branches whose completion
+        # previously gated Notice context readiness.
+        "path": "/#notice/20260701003",
         "root": "#noticeview, main#main",
         "ready": "[data-edge-rendered='notice'], [data-edge-rendered='notice-unavailable'], #noticeview [data-notice-id], #noticeview .notice-body",
+        # New Notice context owners mark the first useful/terminal card separately from
+        # the settled boundary used for content extraction. The fallback keeps captures
+        # readable against a baseline artifact that predates the marker.
+        "component_first": "#noticeview #ncontext[data-notice-context-ready='true']",
+        "component_first_required": True,
         "component": "[data-edge-rendered='notice'], [data-edge-rendered='notice-unavailable'], #noticeview [data-notice-id]",
+        "settled": "#noticeview #ncontext[data-notice-context-settled='true']",
+        "settled_required": True,
         "records": "[data-edge-rendered], #noticeview [data-notice-id], #noticeview .notice-body",
         "controls": "#noticeview a, #noticeview button, #noticeview input, #noticeview select, #noticeview summary",
     },
@@ -202,6 +211,25 @@ def wait_for(page: Any, selector: str, timeout_ms: int) -> None:
         raise RuntimeError(f"readiness selector timed out: {selector}") from exc
 
 
+def wait_for_component(page: Any, config: dict[str, str], timeout_ms: int) -> None:
+    first = config.get("component_first")
+    if first and config.get("component_first_required"):
+        wait_for(page, first, timeout_ms)
+        return
+    if first and page.locator(first).count():
+        wait_for(page, first, timeout_ms)
+        return
+    wait_for(page, config["component"], timeout_ms)
+
+
+def wait_for_settled(page: Any, config: dict[str, str], timeout_ms: int) -> None:
+    settled = config.get("settled")
+    if settled and config.get("settled_required"):
+        wait_for(page, settled, timeout_ms)
+    elif settled and page.locator(settled).count():
+        wait_for(page, settled, timeout_ms)
+
+
 def browser_metrics(page: Any) -> dict[str, Any]:
     return page.evaluate(
         """() => {
@@ -245,8 +273,9 @@ def capture_viewport(
         page.goto(urljoin(base.rstrip("/") + "/", config["path"].lstrip("/")), wait_until="domcontentloaded", timeout=timeout_ms)
         wait_for(page, config["ready"], timeout_ms)
         content_ready = page.evaluate("performance.now()")
-        wait_for(page, config["component"], timeout_ms)
+        wait_for_component(page, config, timeout_ms)
         component_ready = page.evaluate("performance.now()")
+        wait_for_settled(page, config, timeout_ms)
         page.wait_for_timeout(100)
         metrics = browser_metrics(page)
         metrics["content_ready_ms"] = round(float(content_ready), 3)

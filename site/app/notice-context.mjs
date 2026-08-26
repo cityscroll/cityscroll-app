@@ -72,30 +72,50 @@ async function mandateBacklinksHTMLFor(r){
   if(!lookup)return "";
   return tools.renderNoticeMandateBacklinksForId(lookup,r.request_id,{esc:escUiHtml})||"";
 }
+const CONTEXT_SLOTS=["mandate","related","flags","award"];
+function contextSlotsHTML(){return CONTEXT_SLOTS.map(slot=>`<span data-notice-context-slot="${slot}"></span>`).join("");}
+function contextSlot(el,slot,html){
+  if(!html||!document.contains(el))return;
+  const host=el.querySelector(`[data-notice-context-slot="${slot}"]`);
+  if(host)host.outerHTML=html;
+  else el.insertAdjacentHTML("beforeend",html);
+}
+function contextReady(el,resultState){
+  if(!document.contains(el))return;
+  el.dataset.noticeContextReady="true";
+  el.dataset.noticeContextResult=resultState;
+  noticeContextReady(runtimeRumSemanticMilestones(),{resultState});
+}
 async function fillContext(r,el){
   if(!el)return;
   const attachmentHTML=attachmentChipHTML(r);
-  if(attachmentHTML)el.innerHTML=attachmentHTML;
-  try{
-    const[flags,ctx,relatedHTML,tablesHTML,mandateHTML]=await Promise.all([noticeFlags(r),awardContext(r),attachmentRelatedHTMLFor(r),attachmentTablesHTMLFor(r),mandateBacklinksHTMLFor(r)]);
-    if(!document.contains(el))return;
-    let html=attachmentHTML;
-    if(mandateHTML)html+=mandateHTML;
-    if(relatedHTML)html+=relatedHTML;
-    if(flags.length)html+=`<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`;
-    html+=ctx;
-    if(html)el.innerHTML=html;
-    if(tablesHTML&&document.contains(el)){
+  // Mount the first useful card synchronously. The slots preserve the old visual
+  // order while allowing each optional owner to append without replacing prior work.
+  el.innerHTML=attachmentHTML+contextSlotsHTML();
+  contextReady(el,attachmentHTML?"content":"empty");
+
+  // Keep all optional owners independent: one rejected import/fetch must not prevent
+  // the remaining context cards from arriving. Their final settled marker is the
+  // content-parity harness boundary, not the component-ready boundary above.
+  const settled=[
+    Promise.resolve().then(()=>noticeFlags(r)).then(flags=>{
+      if(flags.length)contextSlot(el,"flags",`<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`);
+    }),
+    Promise.resolve().then(()=>awardContext(r)).then(ctx=>contextSlot(el,"award",ctx)),
+    Promise.resolve().then(()=>attachmentRelatedHTMLFor(r)).then(relatedHTML=>contextSlot(el,"related",relatedHTML)),
+    Promise.resolve().then(()=>mandateBacklinksHTMLFor(r)).then(mandateHTML=>contextSlot(el,"mandate",mandateHTML)),
+    Promise.resolve().then(()=>attachmentTablesHTMLFor(r)).then(async tablesHTML=>{
+      if(!tablesHTML||!document.contains(el))return;
       const host=el.querySelector("[data-attachment-tables-host]");
       if(host)host.outerHTML=tablesHTML;
       else if(el.querySelector(".attachment-panel"))el.querySelector(".attachment-panel").insertAdjacentHTML("beforeend",tablesHTML);
       const tools=await attachmentTablesTools();
       if(tools&&document.contains(el))tools.bindAttachmentTableSort(el);
-    }
-    noticeContextReady(runtimeRumSemanticMilestones(),{resultState:html||tablesHTML?"content":"empty"});
-  }catch(_error){
-    if(document.contains(el))noticeContextReady(runtimeRumSemanticMilestones(),{resultState:attachmentHTML?"content":"error"});
-  }
+    }),
+  ].map(branch=>branch.catch(()=>{}));
+  Promise.allSettled(settled).then(()=>{
+    if(document.contains(el))el.dataset.noticeContextSettled="true";
+  });
 }
 async function externalAwardForNotice(r,el){if(!el)return;const cov=awardCoverage(r.agency_name);if(cov==="absent"||cov==="unknown")return;const resp=await loadExternalAward({id:r.request_id});if(!document.contains(el)||!resp)return;el.innerHTML=externalAwardHTML(resp,r);const offerBtn=el.querySelector("[data-award-watch-offer]");if(offerBtn)offerBtn.addEventListener("click",async()=>{const carry=await import("../alerts_context_carry.mjs").catch(()=>null);const scope=carry?.alertScopeFromNotice({...r,kind:"award"});location.assign(scope?carry.alertsHref(scope):"/following/");});}
 
