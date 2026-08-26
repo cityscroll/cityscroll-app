@@ -9,8 +9,8 @@ after-minus-before p75 readiness deltas were:
 
 | Viewport | Content ready | Component ready | First paint | First contentful paint |
 | --- | ---: | ---: | ---: | ---: |
-| Desktop | -21.3 ms | -21.9 ms | -8.0 ms | -8.0 ms |
-| Mobile | -25.9 ms | -9.3 ms | 0.0 ms | 0.0 ms |
+| Desktop | -11.2 ms | -11.3 ms | -4.0 ms | -4.0 ms |
+| Mobile | -14.95 ms | -14.85 ms | -2.0 ms | -2.0 ms |
 
 The focused verdict is PASS. The committed report contains the before/after
 content, readiness, and visual verdicts used for this gate.

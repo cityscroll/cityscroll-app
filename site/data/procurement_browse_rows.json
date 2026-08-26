@@ -60,7 +60,6 @@
       "checkbook_contracts": 2000
     }
   },
-  "source_model_fingerprint": "7db6cc2562a7d6a3a1a79724b5fc748c25db915bb97ab45bacae23fb988f92e1",
   "rows": [
     {
       "procurement_id": "procurement:contract:20211201861",
@@ -45010,10 +45009,10 @@
       "short_title": "Architectural & Engineering Design Services - Renewal #1",
       "pin": "05618P8212KXLR001",
       "contract_id": "CT105620258801619",
-      "contract_amount": 8871609.69,
+      "contract_amount": 8871610,
       "vendor_name": "LiRo Architects and Planners, PC",
       "selection_method_description": "Renewal",
-      "additional_description_1": "Police Department · LiRo Architects and Planners, PC · $8,871,609.69",
+      "additional_description_1": "Police Department · LiRo Architects and Planners, PC · $8,871,610",
       "notice_evidence": [
         {
           "request_id": "20241224014",
@@ -73685,10 +73684,10 @@
       "short_title": "Prevention Services - Family Treatment/Rehabilitation",
       "pin": "06820P8173KXLR001",
       "contract_id": "CT106820248800184",
-      "contract_amount": 11028274.31,
+      "contract_amount": 10130140,
       "vendor_name": "SCO Family of Services",
       "selection_method_description": "Renewal",
-      "additional_description_1": "Administration for Children's Services · SCO Family of Services · $11,028,274.31",
+      "additional_description_1": "Administration for Children's Services · SCO Family of Services · $10,130,140",
       "notice_evidence": [
         {
           "request_id": "20260722020",
@@ -124846,10 +124845,10 @@
       "short_title": "Provision of Respect First ENDGBV plus allowance",
       "pin": "06924N0001001",
       "contract_id": "CT106920258800720",
-      "contract_amount": 895917.5,
+      "contract_amount": 895918,
       "vendor_name": "Justice Innovation Inc.",
       "selection_method_description": "Negotiated Acquisition",
-      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Justice Innovation Inc. · $895,917.5",
+      "additional_description_1": "Dept. of Social Svcs/Human Resources Administration · Justice Innovation Inc. · $895,918",
       "notice_evidence": [
         {
           "request_id": "20241016064",
@@ -161445,10 +161444,10 @@
       "short_title": "Janitorial Services at DHS Central Warehouse",
       "pin": "07124M0001001",
       "contract_id": "CT107120258803280",
-      "contract_amount": 1006510.43,
+      "contract_amount": 1006510,
       "vendor_name": "New York State Industries For The Disabled Inc.",
       "selection_method_description": "Required Method",
-      "additional_description_1": "Homeless Services · New York State Industries For The Disabled Inc. · $1,006,510.43",
+      "additional_description_1": "Homeless Services · New York State Industries For The Disabled Inc. · $1,006,510",
       "notice_evidence": [
         {
           "request_id": "20241203016",
@@ -161954,10 +161953,10 @@
       "short_title": "Hotel Management Services for DHS Emergency Programs",
       "pin": "07124N0007001",
       "contract_id": "CT107120258806286",
-      "contract_amount": 929104933.75,
+      "contract_amount": 929104934,
       "vendor_name": "HANYC Foundation Inc.",
       "selection_method_description": "Negotiated Acquisition",
-      "additional_description_1": "Homeless Services · HANYC Foundation Inc. · $929,104,933.75",
+      "additional_description_1": "Homeless Services · HANYC Foundation Inc. · $929,104,934",
       "notice_evidence": [
         {
           "request_id": "20250612025",
@@ -182900,10 +182899,10 @@
       "short_title": "OLDER ADULT CENTER SERVICES",
       "pin": "12521P0019126",
       "contract_id": "CT112520228804661",
-      "contract_amount": 1891908,
+      "contract_amount": 2364885,
       "vendor_name": "Hope Senior Center Inc",
       "selection_method_description": "Competitive Sealed Proposal",
-      "additional_description_1": "Aging · Hope Senior Center Inc · $1,891,908",
+      "additional_description_1": "Aging · Hope Senior Center Inc · $2,364,885",
       "notice_evidence": [
         {
           "request_id": "20241227022",
@@ -185483,10 +185482,10 @@
       "short_title": "12522OACKCC3 - Older Adult Center Services",
       "pin": "12522P0001005R001",
       "contract_id": "CT112520238800878",
-      "contract_amount": 619510,
+      "contract_amount": 1239020,
       "vendor_name": "Merrill Park Civic Association of Springfield Gardens Inc.",
       "selection_method_description": "Competitive Sealed Proposal",
-      "additional_description_1": "Aging · Merrill Park Civic Association of Springfield Gardens Inc. · $619,510",
+      "additional_description_1": "Aging · Merrill Park Civic Association of Springfield Gardens Inc. · $1,239,020",
       "notice_evidence": [
         {
           "request_id": "20230526107",
@@ -368109,10 +368108,10 @@
       "short_title": "TUGBOATS FOR TOWING BARGES-SUPPLY AND SERVICES",
       "pin": "82721B8001KXLR001",
       "contract_id": "CT182720268800283",
-      "contract_amount": 1588758.92,
+      "contract_amount": 1588759,
       "vendor_name": "Don Jon Marine Co Inc.",
       "selection_method_description": "Renewal",
-      "additional_description_1": "Sanitation · Don Jon Marine Co Inc. · $1,588,758.92",
+      "additional_description_1": "Sanitation · Don Jon Marine Co Inc. · $1,588,759",
       "notice_evidence": [
         {
           "request_id": "20250522014",
@@ -444404,10 +444403,10 @@
       "short_title": "OGS Fleet Management System",
       "pin": "85624O0002001",
       "contract_id": "CT185620258806929",
-      "contract_amount": 3829427.3,
+      "contract_amount": 3829427,
       "vendor_name": "AssetWorks Inc",
       "selection_method_description": "Intergovernmental GSA",
-      "additional_description_1": "Citywide Administrative Services · AssetWorks Inc · $3,829,427.3",
+      "additional_description_1": "Citywide Administrative Services · AssetWorks Inc · $3,829,427",
       "notice_evidence": [
         {
           "request_id": "20250515011",
@@ -445042,10 +445041,10 @@
       "short_title": "OGS Geotab Telematics",
       "pin": "85624O0003001",
       "contract_id": "CT185620258807699",
-      "contract_amount": 41201992.5,
+      "contract_amount": 41201993,
       "vendor_name": "AT&T Mobility LLC",
       "selection_method_description": "Intergovernmental GSA",
-      "additional_description_1": "Citywide Administrative Services · AT&T Mobility LLC · $41,201,992.5",
+      "additional_description_1": "Citywide Administrative Services · AT&T Mobility LLC · $41,201,993",
       "notice_evidence": [
         {
           "request_id": "20250625011",

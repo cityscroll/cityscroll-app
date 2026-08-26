@@ -16,14 +16,14 @@ const fullBrowse = JSON.parse(readFileSync(
   new URL("../site/data/procurement_browse_rows.json", import.meta.url),
   "utf8",
 ));
-const committedManifest = JSON.parse(readFileSync(
-  new URL("../site/data/procurement_browse_query.json", import.meta.url),
-  "utf8",
-));
-const shardPayloads = committedManifest.shards.map((descriptor) => JSON.parse(readFileSync(
-  new URL(`../site/data/${descriptor.path}`, import.meta.url),
-  "utf8",
-)));
+// The query manifest and shards are Pages build artifacts, not committed
+// fixtures. Build the test input from the tracked full projection so the
+// equivalence proof covers the same deterministic source used in deploy.
+const committedArtifacts = buildProcurementBrowseQueryArtifacts({
+  ...fullBrowse,
+  source_model_fingerprint: "source-fingerprint-fixture",
+});
+const { manifest: committedManifest, shards: shardPayloads } = committedArtifacts;
 
 const cases = [
   { name: "recent awards", options: { mode: "award", sort: "newest" } },

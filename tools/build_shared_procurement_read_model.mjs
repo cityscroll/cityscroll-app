@@ -156,7 +156,6 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
     row_count: corpus.documents.length,
     coverage: corpus.coverage,
     publication,
-    source_model_fingerprint: fingerprint,
     rows: corpus.documents.map(contractSearchDocumentToMoneyRow).filter(Boolean).map((row) => {
       const { search_document: _searchDocument, ...publicRow } = row;
       return publicRow;
@@ -217,8 +216,11 @@ function browseQueryShardPath(descriptor) {
   return new URL(`../site/data/${descriptor.path}`, import.meta.url);
 }
 
-function checkOrWriteBrowseQueryArtifacts(browse) {
-  const artifacts = buildProcurementBrowseQueryArtifacts(browse);
+function checkOrWriteBrowseQueryArtifacts(browse, sourceModelFingerprint) {
+  const artifacts = buildProcurementBrowseQueryArtifacts({
+    ...browse,
+    source_model_fingerprint: sourceModelFingerprint,
+  });
   const outputs = [
     [BROWSE_QUERY_OUT, `${JSON.stringify(artifacts.manifest)}\n`],
     ...artifacts.manifest.shards.map((descriptor, index) => [
@@ -270,7 +272,7 @@ function main() {
   ];
   if (process.argv.includes("--check")) {
     const modelCurrent = checkOrWriteShardedModel(model);
-    const browseQueryCurrent = checkOrWriteBrowseQueryArtifacts(browse);
+    const browseQueryCurrent = checkOrWriteBrowseQueryArtifacts(browse, model.coherence_receipt.source_model_fingerprint);
     for (const [path, content] of outputs) {
       if (readFileSync(path, "utf8") !== content) {
         console.error(`stale procurement artifact: ${fileURLToPath(path)}`);
@@ -282,7 +284,7 @@ function main() {
     return;
   }
   checkOrWriteShardedModel(model);
-  checkOrWriteBrowseQueryArtifacts(browse);
+  checkOrWriteBrowseQueryArtifacts(browse, model.coherence_receipt.source_model_fingerprint);
   for (const [path, content] of outputs) writeFileSync(path, content);
   console.log(`wrote procurement artifacts (${model.rows.length} objects, ${browse.rows.length} Browse rows, ${digest.row_count} CROL-negative digest rows)`);
 }
