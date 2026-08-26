@@ -15,7 +15,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 6,
+    "registered_public_tools": 8,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -183,14 +183,67 @@
       "store_access": "provider-only",
       "store_read_operations": 0,
       "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_contract@1",
+      "adapter_semantic_sha256": "36865786036adedc76c21ff4785f281617feba157d95a73c443ac92d2b41400e",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "procurementIdMaximumLength": 320
+      },
+      "calls": 1,
+      "capability_reference": "contract.get@1",
+      "direct_semantic_sha256": "36865786036adedc76c21ff4785f281617feba157d95a73c443ac92d2b41400e",
+      "name": "get_contract",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.procurement-contract.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.browse_contracts@1",
+      "adapter_semantic_sha256": "8aa1258ba941adc89dec091209d02c189dbf856e7d86a1d925c659b8df3795fc",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 320,
+        "default": 25,
+        "filterMaximumLength": 240,
+        "maximum": 100,
+        "minimum": 1
+      },
+      "calls": 1,
+      "capability_reference": "contracts.browse@1",
+      "direct_semantic_sha256": "8aa1258ba941adc89dec091209d02c189dbf856e7d86a1d925c659b8df3795fc",
+      "name": "browse_contracts",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.procurement-contracts.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
     }
   ],
   "request_counts": {
-    "capability_calls": 6,
+    "capability_calls": 8,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 9
+    "post_requests": 11
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

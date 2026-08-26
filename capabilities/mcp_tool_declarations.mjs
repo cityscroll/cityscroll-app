@@ -37,6 +37,14 @@ import {
   CITED_PASSAGES_PROVIDER_ID,
   CITED_PASSAGES_REPRESENTATIONS,
 } from "./cited_passages.mjs";
+import {
+  CONTRACT_GET_CAPABILITY_REFERENCE,
+  CONTRACT_GET_LIMITS,
+  CONTRACT_GET_PROVIDER_ID,
+  CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
+  CONTRACTS_BROWSE_LIMITS,
+  CONTRACTS_BROWSE_PROVIDER_ID,
+} from "./contracts.mjs";
 import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
@@ -114,6 +122,24 @@ export const MCP_ENTITY_RELATIONSHIPS_ADAPTER = Object.freeze({
   surface: "MCP",
 });
 
+export const MCP_CONTRACT_GET_ADAPTER = Object.freeze({
+  id: "mcp.get_contract@1",
+  capabilityReference: CONTRACT_GET_CAPABILITY_REFERENCE,
+  providerId: CONTRACT_GET_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "get_contract",
+  surface: "MCP",
+});
+
+export const MCP_CONTRACTS_BROWSE_ADAPTER = Object.freeze({
+  id: "mcp.browse_contracts@1",
+  capabilityReference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
+  providerId: CONTRACTS_BROWSE_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "browse_contracts",
+  surface: "MCP",
+});
+
 const NOTICE_SEARCH_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
   additionalProperties: false,
@@ -169,6 +195,32 @@ const ENTITY_RELATIONSHIPS_OUTPUT_SCHEMA = Object.freeze({
     capability_reference: { type: "string", const: ENTITY_RELATIONSHIPS_CAPABILITY_REFERENCE },
     availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
     graph: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
+  },
+});
+const CONTRACT_GET_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["capability_reference", "availability", "contract", "error"],
+  properties: {
+    capability_reference: { type: "string", const: CONTRACT_GET_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+    contract: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
+  },
+});
+const CONTRACTS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["capability_reference", "availability", "results", "total_matches", "pagination", "coverage", "freshness", "error"],
+  properties: {
+    capability_reference: { type: "string", const: CONTRACTS_BROWSE_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
+    results: { type: ["array", "null"], maxItems: CONTRACTS_BROWSE_LIMITS.maximum, items: { type: "object" } },
+    total_matches: { type: ["integer", "null"], minimum: 0 },
+    pagination: { type: ["object", "null"] },
+    coverage: { type: ["object", "null"] },
+    freshness: { type: ["object", "null"] },
     error: { type: ["string", "null"] },
   },
 });
@@ -301,6 +353,44 @@ export const MCP_TOOLS = [
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
+    name: "get_contract",
+    description: "Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        procurement_id: {
+          type: "string",
+          minLength: 1,
+          maxLength: CONTRACT_GET_LIMITS.procurementIdMaximumLength,
+          description: "Exact canonical procurement_id, including its procurement: prefix.",
+        },
+      },
+      required: ["procurement_id"],
+    },
+    outputSchema: CONTRACT_GET_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
+    name: "browse_contracts",
+    description: "List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        query: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Case-insensitive terms matched against the existing Contracts browse fields." },
+        agency: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Case-insensitive agency substring." },
+        vendor: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Case-insensitive vendor substring." },
+        stage: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Exact lifecycle stage." },
+        source_system: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.filterMaximumLength, description: "Exact source-system value." },
+        min_amount: { type: "number", description: "Inclusive valid public amount floor." },
+        max_amount: { type: "number", description: "Inclusive valid public amount ceiling." },
+        limit: { type: "integer", minimum: CONTRACTS_BROWSE_LIMITS.minimum, maximum: CONTRACTS_BROWSE_LIMITS.maximum, default: CONTRACTS_BROWSE_LIMITS.default },
+        cursor: { type: "string", maxLength: CONTRACTS_BROWSE_LIMITS.cursorMaximumLength, description: "Opaque cursor returned by the previous page." },
+      },
+    },
+    outputSchema: CONTRACTS_BROWSE_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
     name: "preview_watch",
     description: "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
     inputSchema: {
@@ -395,6 +485,28 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
     authorityClass: "public_read",
     storeAccess: "provider-only",
     bounds: CITED_PASSAGES_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  }),
+  Object.freeze({
+    name: "get_contract",
+    operationClass: "read",
+    schemaReference: CONTRACT_GET_CAPABILITY_REFERENCE,
+    capabilityReference: CONTRACT_GET_CAPABILITY_REFERENCE,
+    adapterId: MCP_CONTRACT_GET_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: CONTRACT_GET_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  }),
+  Object.freeze({
+    name: "browse_contracts",
+    operationClass: "read",
+    schemaReference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
+    capabilityReference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
+    adapterId: MCP_CONTRACTS_BROWSE_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: CONTRACTS_BROWSE_LIMITS,
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   }),
   Object.freeze({

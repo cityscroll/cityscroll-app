@@ -18,6 +18,8 @@ import {
 import {
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_FEDERATED_SEARCH_ADAPTER,
+  MCP_CONTRACT_GET_ADAPTER,
+  MCP_CONTRACTS_BROWSE_ADAPTER,
   MCP_NOTICE_GET_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
@@ -47,9 +49,16 @@ import {
   CITED_PASSAGES_CAPABILITY,
   CITED_PASSAGES_CAPABILITY_REFERENCE,
 } from "../capabilities/cited_passages.mjs";
+import {
+  CONTRACT_GET_CAPABILITY,
+  CONTRACT_GET_CAPABILITY_REFERENCE,
+  CONTRACTS_BROWSE_CAPABILITY,
+  CONTRACTS_BROWSE_CAPABILITY_REFERENCE,
+} from "../capabilities/contracts.mjs";
 import { workerD1NoticeSearch } from "../worker/src/lib/notices.mjs";
 import { NOTICE_GET_HTTP_ADAPTER, workerNoticeGet } from "../worker/src/notice.mjs";
 import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
+import { CONTRACT_GET_HTTP_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER } from "../worker/src/contracts.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
 import { SEARCH_FEDERATED_ADAPTER, workerFederatedSearch } from "../worker/src/search.mjs";
 import {
@@ -75,13 +84,15 @@ const CATALOG = new URL("../site/data/mcp_tool_catalog.json", import.meta.url);
 
 test("the registry is frozen, versioned, owned, and contains the federated search capability", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 6);
+  assert.equal(CAPABILITY_REGISTRY.length, 8);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[1], NOTICE_GET_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[2], ENTITY_DOSSIER_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[3], ENTITY_RELATIONSHIPS_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[4], CITED_PASSAGES_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[5], FEDERATED_SEARCH_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[6], CONTRACT_GET_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[7], CONTRACTS_BROWSE_CAPABILITY);
   assert.equal(NOTICE_SEARCH_CAPABILITY.reference, "notice.search@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(NOTICE_SEARCH_CAPABILITY.owner, "notices");
@@ -100,6 +111,10 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.equal(FEDERATED_SEARCH_CAPABILITY.reference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
   assert.equal(FEDERATED_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(FEDERATED_SEARCH_CAPABILITY.owner, "universal-search");
+  assert.equal(CONTRACT_GET_CAPABILITY.reference, CONTRACT_GET_CAPABILITY_REFERENCE);
+  assert.equal(CONTRACTS_BROWSE_CAPABILITY.reference, CONTRACTS_BROWSE_CAPABILITY_REFERENCE);
+  assert.equal(CONTRACT_GET_CAPABILITY.owner, "procurement");
+  assert.equal(CONTRACTS_BROWSE_CAPABILITY.owner, "procurement");
   assert.ok(Object.isFrozen(CAPABILITY_REGISTRY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY.adapters));
@@ -111,6 +126,10 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.ok(Object.isFrozen(CITED_PASSAGES_CAPABILITY.adapters));
   assert.ok(Object.isFrozen(FEDERATED_SEARCH_CAPABILITY));
   assert.ok(Object.isFrozen(FEDERATED_SEARCH_CAPABILITY.adapters));
+  assert.ok(Object.isFrozen(CONTRACT_GET_CAPABILITY));
+  assert.ok(Object.isFrozen(CONTRACT_GET_CAPABILITY.adapters));
+  assert.ok(Object.isFrozen(CONTRACTS_BROWSE_CAPABILITY));
+  assert.ok(Object.isFrozen(CONTRACTS_BROWSE_CAPABILITY.adapters));
 });
 
 test("federated search provider and HTTP/MCP adapters reference one capability", () => {
@@ -222,6 +241,19 @@ test("notice retrieval has one authoritative provider and HTTP/MCP adapters", ()
   assert.equal(validateRuntimeTopology(), true);
 });
 
+test("Contracts retrieval has one authoritative provider and HTTP/MCP adapters", () => {
+  const providers = [CONTRACT_GET_CAPABILITY, CONTRACTS_BROWSE_CAPABILITY];
+  const adapters = [CONTRACT_GET_HTTP_ADAPTER, MCP_CONTRACT_GET_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER, MCP_CONTRACTS_BROWSE_ADAPTER];
+  assert.deepEqual(adapters.map(({ id, capabilityReference, providerId }) => ({ id, capabilityReference, providerId })), [
+    { id: CONTRACT_GET_CAPABILITY.adapters[0].id, capabilityReference: CONTRACT_GET_CAPABILITY_REFERENCE, providerId: CONTRACT_GET_CAPABILITY.provider.id },
+    { id: CONTRACT_GET_CAPABILITY.adapters[1].id, capabilityReference: CONTRACT_GET_CAPABILITY_REFERENCE, providerId: CONTRACT_GET_CAPABILITY.provider.id },
+    { id: CONTRACTS_BROWSE_CAPABILITY.adapters[0].id, capabilityReference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE, providerId: CONTRACTS_BROWSE_CAPABILITY.provider.id },
+    { id: CONTRACTS_BROWSE_CAPABILITY.adapters[1].id, capabilityReference: CONTRACTS_BROWSE_CAPABILITY_REFERENCE, providerId: CONTRACTS_BROWSE_CAPABILITY.provider.id },
+  ]);
+  assert.ok(providers.every((capability) => capability.adapters.length === 2));
+  assert.equal(validateRuntimeTopology(), true);
+});
+
 test("every MCP tool has a capability, existing contract, or scoped pilot exception", () => {
   assert.deepEqual(MCP_TOOL_BINDINGS.map(({ name }) => name), MCP_TOOLS.map(({ name }) => name));
   const search = MCP_TOOL_BINDINGS.find(({ name }) => name === "search_notices");
@@ -243,6 +275,7 @@ test("core capability files contain no runtime or transport dependencies", () =>
     "capabilities/entity_relationships.mjs",
     "capabilities/cited_passages.mjs",
     "capabilities/federated_search.mjs",
+    "capabilities/contracts.mjs",
     "capabilities/registry.mjs",
   ]) {
     const source = readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
@@ -265,6 +298,8 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "entity.relationships.get@1",
     "cited.passages.retrieve@1",
     "search.federated@1",
+    "contract.get@1",
+    "contracts.browse@1",
   ]);
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
     "search_federated",
@@ -273,10 +308,12 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "get_entity_dossier",
     "get_entity_relationships",
     "retrieve_cited_passages",
+    "get_contract",
+    "browse_contracts",
     "preview_watch",
     "create_watch",
   ]);
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 8);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 10);
 });
 
 test("the deterministic CLI check passes and --stdout is stable", () => {
