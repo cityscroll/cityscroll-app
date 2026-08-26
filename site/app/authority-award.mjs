@@ -28,6 +28,9 @@ function loadAboAwardPanelTools(){
 
 function aboAwardPanelHTML(match, sourceUrl){
   if(!match || !sourceUrl) return "";
+  const noteKey = match.method === "title_date_fuzzy"
+    ? "external_awards_abo_note"
+    : "external_awards_abo_note_confirmed";
   return `<div class="chain-h">${t("external_awards_heading")}</div>
     <section class="lc-phase-lead" data-abo-award-panel="1" aria-label="${escUiHtml(t("lifecycle_stage_award"))}">
       <div class="lc-phase-now-label">${t("lifecycle_stage_award")} · ${t("external_awards_abo_source")}</div>
@@ -36,6 +39,7 @@ function aboAwardPanelHTML(match, sourceUrl){
         <p class="lc-phase-fact"><b>${t("award_guide_amount_label")}:</b> ${lifecycleMoney(match.amount)}</p>
         <p class="lc-phase-fact" lang="en" dir="ltr"><b>${escUiHtml(match.authority)}</b> · ${fdate(match.award_date)}</p>
       </div>
+      <p class="pnote">${t(noteKey)}</p>
       <a class="view" data-abo-award-source="1" href="${escUiHtml(sourceUrl)}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>
     </section>`;
 }
