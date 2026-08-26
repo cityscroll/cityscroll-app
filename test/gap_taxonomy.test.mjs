@@ -145,7 +145,7 @@ const helpers = new Function(
 const { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML } = helpers;
 
 const CLASS_A_PREFIX = /Not yet shown here/;
-const CLASS_B_PREFIX = /The city does not publish/;
+const CLASS_B_PREFIX = /awards are not in a city open dataset/;
 
 // ---------------------------------------------------------------------------
 // Registry shape + ranked ingest list
