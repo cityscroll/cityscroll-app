@@ -2,7 +2,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 import { renderAgencyTopVendorsSection } from "../site/agency_constellation_sections/vendors.mjs";
-import { buildAgencyConstellationView, renderAgencyConstellationDocument } from "../site/agency_constellation.mjs";
+import {
+  buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
+  renderAgencyConstellationDocument,
+} from "../site/agency_constellation.mjs";
 
 test("12-month agency vendor rollup groups normalized identities and applies award honesty rules", () => {
   const rollup = buildAgencyVendorRollups([
@@ -61,7 +65,7 @@ test("vendor category composes into the agency model and ordered document", () =
   const vendorCategory = view.categories.find((category) => category.id === "vendors");
   assert.equal(vendorCategory.status, "matched");
   assert.equal(vendorCategory.items[0].award_total, 150);
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.ok(html.indexOf('data-agency-constellation-category="contracts"')
     < html.indexOf('data-agency-constellation-category="vendors"'));
   assert.match(html, /Top vendors by award \$ \(last 12 mo\)/);

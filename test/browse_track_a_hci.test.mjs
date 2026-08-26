@@ -92,7 +92,7 @@ test("Following handoff renders scope chips and count before the email field", (
   assert.match(body, /12 matching records/);
 });
 
-test("Near-you body leads with records and offers a mobile surface switch", () => {
+test("Near-you initial body keeps the map frame and exposes the deferred list", () => {
   const body = renderNearYouBody({
     lens: "meetings",
     lensLabel: "Meetings",
@@ -124,10 +124,11 @@ test("Near-you body leads with records and offers a mobile surface switch", () =
     activity: { boundary_vintage: "test" },
   });
   assert.match(body, /data-near-surface-switch/);
-  assert.match(body, /data-near-surface-panel="list"/);
+  assert.doesNotMatch(body, /data-near-surface-panel="list"/);
+  assert.match(body, /data-near-deferred="results"/);
   assert.match(body, /data-near-surface-panel="map"/);
-  const list = body.indexOf('data-near-surface-panel="list"');
+  const listSlot = body.indexOf('data-near-deferred="results"');
   const mapPanel = body.indexOf('data-near-surface-panel="map"');
-  assert.ok(list >= 0 && mapPanel > list, "list panel precedes map for mobile-first order");
+  assert.ok(listSlot >= 0 && mapPanel > listSlot, "deferred list slot precedes map for mobile-first order");
   assert.match(map, /wireSurfaceSwitch/);
 });

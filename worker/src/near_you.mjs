@@ -1,6 +1,10 @@
 import boundaries from "./data/district_boundaries.json" with { type: "json" };
 import { scopeFromNearYouUrl } from "../../site/near_you_scope_runtime.mjs";
-import { buildNearYouViewModel, renderNearYouDocument } from "../../site/near_you_view.mjs";
+import {
+  buildNearYouViewModel,
+  renderNearYouDeferredParts,
+  renderNearYouDocument,
+} from "../../site/near_you_view.mjs";
 import { loadNearYouActivity, RouteReadModelUnavailable } from "./lib/route_read_model_kv.mjs";
 
 const SITE_BASE = "https://cityscroll.org";
@@ -18,9 +22,17 @@ function responseHeaders() {
   };
 }
 
+function deferredResponseHeaders() {
+  return {
+    ...responseHeaders(),
+    "Content-Type": "application/json; charset=utf-8",
+  };
+}
+
 export async function handleNearYou(request, env = {}, ctx = {}) {
   const url = new URL(request.url);
-  if (url.pathname !== "/near-you" && url.pathname !== "/near-you/") {
+  const deferred = url.pathname === "/near-you/deferred.json";
+  if (!deferred && url.pathname !== "/near-you" && url.pathname !== "/near-you/") {
     return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain" } });
   }
   if (request.method !== "GET" && request.method !== "HEAD") {
@@ -30,7 +42,7 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     });
   }
   if (LEGACY_DOCUMENT_HOSTS.has(url.hostname)) {
-    return Response.redirect(`${CANONICAL_BASE}${url.search}`, 301);
+    return Response.redirect(`${CANONICAL_BASE}${deferred ? "/deferred.json" : ""}${url.search}`, 301);
   }
   const edgeCache = typeof caches !== "undefined" ? caches.default : null;
   const cacheKey = new Request(url.toString(), { method: "GET" });
@@ -54,13 +66,22 @@ export async function handleNearYou(request, env = {}, ctx = {}) {
     siteBase: SITE_BASE,
     communityGeography: routeReadModel.communityGeography,
   });
-  const html = renderNearYouDocument(view, {
-    canonicalBase: CANONICAL_BASE,
-    assetPrefix: `${SITE_BASE}/`,
-  });
-  const response = new Response(request.method === "HEAD" ? null : html, {
+  const deferredParts = deferred ? renderNearYouDeferredParts(view) : null;
+  const body = deferred
+    ? JSON.stringify({
+      schema: "cityscroll.near_you_deferred.v1",
+      href: `${CANONICAL_BASE}/deferred.json${url.search}`,
+      results_html: deferredParts.resultsHtml,
+      bags_html: deferredParts.bagsHtml,
+    })
+    : renderNearYouDocument(view, {
+      canonicalBase: CANONICAL_BASE,
+      assetPrefix: `${SITE_BASE}/`,
+      deferredDataHref: `${CANONICAL_BASE}/deferred.json${url.search}`,
+    });
+  const response = new Response(request.method === "HEAD" ? null : body, {
     status: 200,
-    headers: responseHeaders(),
+    headers: deferred ? deferredResponseHeaders() : responseHeaders(),
   });
   if (request.method === "GET" && edgeCache) {
     const pending = edgeCache.put(cacheKey, response.clone()).catch(() => {});

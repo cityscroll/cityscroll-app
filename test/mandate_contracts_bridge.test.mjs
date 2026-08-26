@@ -13,6 +13,7 @@ import {
 } from "../site/mandate_contracts_bridge.mjs";
 import {
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
@@ -214,8 +215,9 @@ test("constellation model registers claims and renders the standalone bridge sec
     assert.ok(view.claims.some((claim) => claim.claim_id === row.claim.claim_id));
   }
 
-  const html = renderAgencyConstellationDocument(view);
+  const initialHtml = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /data-agency-constellation-card="mandates-contracts"/);
   assert.match(html, /data-edge-type="implemented_by_contract"/);
-  assert.deepEqual(detectNodePageCruft(html), []);
+  assert.deepEqual(detectNodePageCruft(initialHtml), []);
 });

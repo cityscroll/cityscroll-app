@@ -12,7 +12,11 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 
-import { buildAgencyConstellationView, renderAgencyConstellationDocument } from "../site/agency_constellation.mjs";
+import {
+  buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
+  renderAgencyConstellationDocument,
+} from "../site/agency_constellation.mjs";
 import edgeWorker, { edgeRequestKind, isExamDocumentHtml, renderExamUnavailable } from "../site/pages_edge.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -75,7 +79,9 @@ test("DCAS agency staffing lists only document-backed exams — never cert-only 
     assert.equal(item.href, `/exams/${item.id}/`);
   }
 
-  const html = renderAgencyConstellationDocument(view);
+  const initialHtml = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
+  assert.doesNotMatch(initialHtml, /href="\/exams\//);
   assert.doesNotMatch(html, /href="\/exams\/1194\/"/);
   assert.doesNotMatch(html, />Exam 1194</);
   // At least one document-backed exam remains linked when present in the list.

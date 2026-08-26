@@ -26,6 +26,7 @@ import {
   AGENCY_CONSTELLATION_METHOD,
   AGENCY_CONSTELLATION_SCHEMA,
   buildAgencyConstellationView,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
@@ -403,9 +404,30 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       edge_summary: view.edge_summary,
       top_vendors: view.categories.find((category) => category.id === "vendors")?.items || [],
     };
+    const deferredDataHref = `/agencies/${id}/relationships.json`;
+    const deferredViewHref = `/agencies/${id}/relationships-data.json`;
     documents.push([
       join(SITE, "agencies", id, "index.html"),
-      renderAgencyConstellationDocument(view),
+      renderAgencyConstellationDocument(view, { deferredDataHref, deferredViewHref }),
+    ]);
+    documents.push([
+      join(SITE, "agencies", id, "relationships.json"),
+      `${JSON.stringify({
+        schema: "cityscroll.agency_relationships.v1",
+        subject_ref: view.subject_ref,
+        generated_at: generatedAt,
+        html: renderAgencyConstellationDeferredFragment(view),
+        view_href: deferredViewHref,
+      })}\n`,
+    ]);
+    documents.push([
+      join(SITE, "agencies", id, "relationships-data.json"),
+      `${JSON.stringify({
+        schema: "cityscroll.agency_relationships_data.v1",
+        subject_ref: view.subject_ref,
+        generated_at: generatedAt,
+        view,
+      })}\n`,
     ]);
   }
 

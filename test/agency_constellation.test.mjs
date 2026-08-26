@@ -15,6 +15,7 @@ import {
   buildAgencyEdgeSummary,
   buildAgencyConstellationView,
   constellationObjectHref,
+  renderAgencyConstellationDeferredFragment,
   renderAgencyConstellationDocument,
 } from "../site/agency_constellation.mjs";
 import {
@@ -107,7 +108,7 @@ test("upstream obligations envelopes remain ingestable without changing product 
   assert.equal(lookup.source_receipt.schema_version, "upstream-obligations-v1");
   assert.equal(lookup.by_agency[PARKS].count, 1);
 
-  const html = renderAgencyConstellationDocument(buildAgencyConstellationView(PARKS, {
+  const html = renderAgencyConstellationDeferredFragment(buildAgencyConstellationView(PARKS, {
     obligations: lookup,
   }));
   const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
@@ -300,7 +301,7 @@ test("agency previews and Browse destinations share open/linked totals and snaps
   assert.match(byId.meetings.view_all_href, /connection_relation/);
   assert.match(byId.meetings.view_all_href, /as_of=2026-08-11/);
 
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /Showing 8 of 10 open/);
   assert.match(html, /data-total-count="10"/);
   assert.match(html, /Open records as of 2026-08-11/);
@@ -354,7 +355,7 @@ test("passport EI graph hydrates a denser precomputed contracts category", () =>
   assert.ok(byId.contracts.count > 1, "graph inventory must exceed the open-RFP snapshot");
   assert.match(byId.contracts.view_all_href, /mode=award/);
   assert.doesNotMatch(byId.contracts.view_all_href, /mode=open/);
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /data-total-count="12"/);
   assert.doesNotMatch(html, /https?:\/\/a0333-passportpublic/);
 });
@@ -403,7 +404,7 @@ test("empty categories stay honest and never invent items", () => {
     assert.equal(category.items.length, 0);
     assert.equal(category.note, null);
   }
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   // Empty families stay in the model for logic, but do not occupy the reader surface.
   assert.equal((html.match(/data-agency-constellation-category=/g) || []).length, 0);
   assert.doesNotMatch(html, /data-edge-state="empty"|No meetings or hearings linked yet/);
@@ -427,16 +428,20 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /data-er-match-basis="/);
   assert.doesNotMatch(html, /Match basis for this iteration/);
   assert.doesNotMatch(html, /Materialization methods:/i);
-  assert.match(html, /data-agency-constellation-category="contracts"/);
-  assert.match(html, /data-agency-constellation-category="meetings"/);
-  assert.match(html, /data-agency-constellation-category="rules"/);
-  assert.doesNotMatch(html, /id="mandates-conformance"/);
-  assert.match(html, /id="agency-statutory-mandates"/);
-  assert.match(html, /data-agency-constellation-category="staffing"/);
-  assert.match(html, /class="ui-constellation-link agency-edge-link"/);
-  assert.match(html, /class="ui-official-source-link agency-source-link"/);
+  assert.doesNotMatch(html, /data-agency-constellation-category=/);
+  const deferred = renderAgencyConstellationDeferredFragment(view);
+  assert.match(deferred, /data-agency-constellation-category="contracts"/);
+  assert.match(deferred, /data-agency-constellation-category="meetings"/);
+  assert.match(deferred, /data-agency-constellation-category="rules"/);
+  assert.doesNotMatch(deferred, /data-civic-time-ledger="1"/);
+  assert.doesNotMatch(deferred, /id="mandates-conformance"/);
+  assert.match(deferred, /id="agency-statutory-mandates"/);
+  assert.match(deferred, /data-agency-constellation-category="staffing"/);
+  assert.match(deferred, /class="ui-constellation-link agency-edge-link"/);
+  assert.match(deferred, /class="ui-official-source-link agency-source-link"/);
   assert.match(html, />Follow this agency<\/a>/);
-  assert.match(html, /class="agency-connection-action">View mandates/);
+  assert.doesNotMatch(html, /class="agency-connection-action"/);
+  assert.match(deferred, /class="agency-connection-action">View mandates/);
   const actionNav = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
   assert.match(actionNav, /href="#edge-provenance"/);
   assert.doesNotMatch(html, /class="ui-constellation-link agency-pivot-link"/);
@@ -444,6 +449,26 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
   assert.doesNotMatch(html, /civil-service certification|provenance inspector/i);
   assert.deepEqual(detectNodePageCruft(html), []);
+});
+
+test("deferred agency relationships preserve as-of projection and empty output", () => {
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+  });
+  const asOf = renderAgencyConstellationDeferredFragment(view, { asOf: "2024-06-01" });
+  assert.match(asOf, /data-agency-constellation-category=/);
+  assert.doesNotMatch(asOf, /data-civic-time-ledger="1"/);
+  assert.match(asOf, /data-civic-time-ledger-slot/);
+
+  const emptyView = buildAgencyConstellationView("campaign-finance-board", {
+    intelligence: { by_ref: {}, generated_at: "test" },
+    certification: { edges: [], by_agency: [], by_exam: [], generated_at: "test" },
+    obligations: { by_agency: {}, generated_at: "test" },
+  });
+  assert.equal(renderAgencyConstellationDeferredFragment(emptyView).trim(), "");
 });
 
 test("shared agency template leads with compact actions and connected-record cards", () => {
@@ -454,8 +479,9 @@ test("shared agency template leads with compact actions and connected-record car
     staffing_exams: staffingExams,
   });
   const html = renderAgencyConstellationDocument(view);
+  const deferred = renderAgencyConstellationDeferredFragment(view);
   const primaryActions = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
-  const connectedRecords = html.match(/<section class="agency-connections"[\s\S]*?<\/section>/)?.[0] || "";
+  const connectedRecords = deferred.match(/<section class="agency-connections"[\s\S]*?<\/section>/)?.[0] || "";
 
   assert.match(html, /<header class="node-hero civic-object-hero agency-constellation-hero"/);
   assert.match(html, /<p class="node-kicker civic-object-kicker">Agency constellation<\/p>/);
@@ -486,8 +512,9 @@ test("shared agency template selects the best available record action and degrad
     staffing_exams: staffingExams,
   });
   const html = renderAgencyConstellationDocument(view);
+  const deferred = renderAgencyConstellationDeferredFragment(view);
   const primaryActions = html.match(/<nav class="node-actions civic-object-actions agency-primary-actions"[\s\S]*?<\/nav>/)?.[0] || "";
-  const connectedRecords = html.match(/<section class="agency-connections"[\s\S]*?<\/section>/)?.[0] || "";
+  const connectedRecords = deferred.match(/<section class="agency-connections"[\s\S]*?<\/section>/)?.[0] || "";
 
   assert.match(primaryActions, />View staffing exams<\/a>/);
   assert.doesNotMatch(primaryActions, />View contracts<\/a>/);
@@ -521,7 +548,7 @@ test("Parks edges carry real provenance and a shareable why-inspector", () => {
   );
 
   const claimId = sample.claim.claim_id;
-  const html = renderAgencyConstellationDocument(view, { activeClaimId: claimId });
+  const html = renderAgencyConstellationDeferredFragment(view, { activeClaimId: claimId });
   assert.doesNotMatch(html, /Why do we believe this\?/);
   assert.match(html, /data-edge-provenance-panel/);
   assert.match(html, /data-warrant-class="exact"/);
@@ -613,7 +640,7 @@ test("tentative edges stay off the public list rather than shipping with hedges"
   assert.equal(contracts.items[0].id, "strong1");
   assert.equal(contracts.warrant_summary.standable_total, 1);
   assert.equal(contracts.warrant_summary.possible_total, 0);
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(html, /1 linked/);
   const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
   assert.doesNotMatch(readerHtml, /not verified/i);
@@ -764,7 +791,7 @@ test("agency contracts render document notice links and vendor links for passpor
   assert.equal(noticeItem.claim.object_href, "/notices/20260724010");
   assert.equal(contractItem.claim.object_href, "/vendors/QUADIENT/");
 
-  const html = renderAgencyConstellationDocument(view);
+  const html = renderAgencyConstellationDeferredFragment(view);
   assert.match(
     html,
     /class="ui-constellation-link agency-edge-link" href="\/notices\/20260724010"[^>]*>[\s\S]*?Heat Pump Water Heaters/,
