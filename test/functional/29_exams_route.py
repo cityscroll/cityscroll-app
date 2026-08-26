@@ -10,14 +10,31 @@ from playwright.sync_api import expect
 
 ROOT = pathlib.Path(__file__).parents[2]
 sys.path.insert(0, str(pathlib.Path(__file__).parent / "assets"))
-from ci_waits import wait_for_locator  # noqa: E402
+from ci_waits import wait_for_function, wait_for_locator  # noqa: E402
 from i18n_fixtures import install_routes  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
 
 
 def wait_for_guide(page):
-    wait_for_locator(page.locator("#career-results .career-card").first, timeout=45_000, label="Exams guide cards")
+    # The result list is incrementally painted after the guide's data load. A
+    # card is not a reliable readiness signal: a valid filter can settle on
+    # the empty state, and waiting on a child card masks that distinction as a
+    # 45-second timeout. Wait for the result region's semantic settled state;
+    # callers that require records retain their explicit card assertions.
+    wait_for_function(
+        page,
+        """() => {
+            const guide = document.querySelector('#career-guide');
+            const results = document.querySelector('#career-results');
+            return Boolean(
+                guide && !guide.hidden && results
+                && results.querySelector('.career-card, .career-empty')
+            );
+        }""",
+        timeout=45_000,
+        label="Exams guide results",
+    )
 
 
 def assert_active_civic_object(page, href, pane=None):
@@ -180,11 +197,15 @@ def run(page):
     assert page.evaluate("navigator.clipboard.readText()") == page.url.split("#", 1)[0].replace("/browse/exams/", "/exams/7016/")
 
     # A direct filtered route rehydrates the same guide state instead of a static list.
-    page.goto(f"{BASE}browse/exams/?interest=public-safety&window=open", wait_until="domcontentloaded", timeout=30_000)
+    # `open` is date-sensitive and can legitimately have no public-safety rows
+    # as the publisher's exam windows roll forward. Use the stable all-window
+    # projection here so this route test exercises rehydration and card grammar
+    # instead of coupling readiness to today's calendar.
+    page.goto(f"{BASE}browse/exams/?interest=public-safety&window=all", wait_until="domcontentloaded", timeout=30_000)
     wait_for_guide(page)
     assert page.locator("#career-query").input_value() == ""
     assert page.locator("[data-career-facet='people:interest:public-safety'][aria-pressed='true']").count() == 1
-    assert page.locator("[data-career-facet='people:window:open'][aria-pressed='true']").count() == 1
+    assert page.locator("[data-career-facet='people:window:all'][aria-pressed='true']").count() == 1
     assert page.locator("#staffing-active-filters").inner_text().strip()
     filtered = page.url
     page.reload(wait_until="domcontentloaded")
