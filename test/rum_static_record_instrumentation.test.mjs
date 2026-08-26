@@ -15,6 +15,7 @@ import {
 import {
   homeEntryReady,
   noticeContextReady,
+  noticeContextTimingMark,
   noticePrimaryOutcomeFromEdge,
   noticePrimaryReady,
 } from "../site/rum_static_record_instrumentation.mjs";
@@ -187,6 +188,19 @@ test("production owners call the semantic seam used by the production reporter",
   assert.equal(manifest.collector.production_enabled, true);
 });
 
+test("Notice timing marks are bounded browser diagnostics, not RUM dimensions", () => {
+  const marks = [];
+  const original = globalThis.performance;
+  globalThis.performance = { mark: (name) => marks.push(name) };
+  try {
+    assert.deepEqual(noticeContextTimingMark("notice-read-start"), { state: "recorded" });
+    assert.deepEqual(noticeContextTimingMark("notice/20260701003"), { state: "invalid" });
+  } finally {
+    globalThis.performance = original;
+  }
+  assert.deepEqual(marks, ["cityscroll.notice-context.notice-read-start"]);
+});
+
 test("Notice primary readiness is ordered before optional route modules and client enrichment", () => {
   const routing = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
   const showNotice = routing.slice(routing.indexOf("async function showNotice"));
@@ -197,4 +211,6 @@ test("Notice primary readiness is ordered before optional route modules and clie
   assert.ok(modules > primary, "optional route modules start after edge primary readiness");
   assert.ok(read > primary, "client notice enrichment starts after edge primary readiness");
   assert.match(showNotice, /const optionalRouteModules = Promise\.allSettled/);
+  assert.equal(showNotice.includes("await optionalRouteModules"), false, "route modules cannot gate Notice context");
+  assert.ok(showNotice.indexOf("fillContext(r, contextElement") < showNotice.indexOf("optionalRouteModules\n    .then"));
 });

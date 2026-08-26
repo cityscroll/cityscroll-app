@@ -7,6 +7,19 @@ import { createBufferedSemanticMilestones } from "./rum_production.mjs";
 
 const DISABLED_RUM = createRumSemanticMilestones();
 
+// Keep the Notice owner trace visible in the browser Performance timeline without
+// adding identifiers or free-form dimensions to the production RUM contract.
+export function noticeContextTimingMark(phase) {
+  const value = String(phase || "");
+  if (!/^[a-z0-9-]+$/.test(value)) return { state: "invalid" };
+  try {
+    globalThis.performance?.mark?.(`cityscroll.notice-context.${value}`);
+    return { state: "recorded" };
+  } catch {
+    return { state: "unavailable" };
+  }
+}
+
 /**
  * Owner instrumentation reports through this accessor. When the production
  * reporter is not yet installed, readiness calls buffer so first-paint
