@@ -50,6 +50,12 @@ import {
   executeContractsBrowse,
 } from "../../capabilities/contracts.mjs";
 import {
+  executePeopleGet,
+  executeOrganizationsBrowse,
+  PEOPLE_GET_LIMITS,
+  ORGANIZATIONS_BROWSE_LIMITS,
+} from "../../capabilities/people_organizations.mjs";
+import {
   MCP_NOTICE_SEARCH_DEFAULT_LIMIT,
   MCP_TOOLS,
 } from "../../capabilities/mcp_tool_declarations.mjs";
@@ -57,6 +63,8 @@ export {
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_CONTRACT_GET_ADAPTER,
   MCP_CONTRACTS_BROWSE_ADAPTER,
+  MCP_ORGANIZATIONS_BROWSE_ADAPTER,
+  MCP_PEOPLE_GET_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
   MCP_FEDERATED_SEARCH_ADAPTER,
@@ -79,6 +87,7 @@ import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
 import { workerFederatedSearch } from "./search.mjs";
 import { formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
+import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, mcpOrganizationsBrowseInput, workerPeopleOrganizations } from "./people_organizations.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const FEDERATED_SEARCH_INPUT_FIELDS = new Set(["query", "limit"]);
@@ -297,6 +306,19 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       }
       const result = await executeContractsBrowse(workerProcurementContracts(env).browse, input);
       return structuredResult(result, formatContractsBrowseText(result));
+    }
+    case "get_person_or_organization": {
+      const input = mcpPeopleGetInput(args);
+      if (!input.entityId) return toolError("entity_id is required.");
+      if (input.entityId.length > PEOPLE_GET_LIMITS.entityIdMaximumLength) return toolError(`entity_id must be ${PEOPLE_GET_LIMITS.entityIdMaximumLength} characters or fewer.`);
+      const result = await executePeopleGet(workerPeopleOrganizations(env).get, input);
+      return structuredResult(result, formatPeopleGetText(result));
+    }
+    case "browse_organizations": {
+      const input = mcpOrganizationsBrowseInput(args);
+      if (input.limit != null && (input.limit < ORGANIZATIONS_BROWSE_LIMITS.minimum || input.limit > ORGANIZATIONS_BROWSE_LIMITS.maximum)) return toolError(`limit must be a whole number from ${ORGANIZATIONS_BROWSE_LIMITS.minimum} through ${ORGANIZATIONS_BROWSE_LIMITS.maximum}.`);
+      const result = await executeOrganizationsBrowse(workerPeopleOrganizations(env).browse, input);
+      return structuredResult(result, formatOrganizationsBrowseText(result));
     }
     case "retrieve_cited_passages": {
       if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {

@@ -881,6 +881,233 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "people.get@1",
+      "id": "people.get",
+      "version": "1.0.0",
+      "owner": "people-organizations",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.people_get.input.v1",
+      "output_schema": "cityscroll.capability.people_get.output.v1",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "oneRow": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "entityId": "official:example"
+          },
+          "output": {
+            "availability": "available",
+            "exactIdentity": true
+          }
+        },
+        {
+          "input": {
+            "entityId": "agency:id:not-published"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "row.id from site/people_organizations_read_model.mjs; display names never mint identity",
+        "sourceIdentity": "row.source_record_id when the source publishes one; otherwise the source-specific identity fields are retained",
+        "observationClock": "read-model generated_at",
+        "identityAuthority": "site/people_organizations_read_model.mjs exact row construction"
+      },
+      "freshness": {
+        "owner": "people and organizations read model",
+        "projection": "read-model generated_at"
+      },
+      "provider": {
+        "id": "worker-static.people-organizations.get",
+        "module": "worker/src/people_organizations.mjs",
+        "export": "workerPeopleOrganizations",
+        "store": "precomputed people and organizations read model",
+        "readModel": "typed People + organizations rows"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.people-get@1",
+          "module": "worker/src/people_organizations.mjs",
+          "kind": "http-route",
+          "route": "GET /people-organizations?id=",
+          "surface": "People and organizations",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "typed public people or organization row"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public row summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_person_or_organization@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_person_or_organization",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "typed public people or organization row"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public row summary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "organizations.browse@1",
+      "id": "organizations.browse",
+      "version": "1.0.0",
+      "owner": "people-organizations",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.organizations_browse.input.v1",
+      "output_schema": "cityscroll.capability.organizations_browse.output.v1",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "kindMaximumLength": 80,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "kind": "agency",
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "maximumResults": 10,
+            "oneRowPer": "exact read-model row id"
+          }
+        },
+        {
+          "input": {
+            "query": "community board",
+            "limit": 25
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": "cursor when more rows remain"
+          }
+        }
+      ],
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "row.id from site/people_organizations_read_model.mjs; display names never mint identity",
+        "sourceIdentity": "row.source_record_id when the source publishes one; otherwise the source-specific identity fields are retained",
+        "observationClock": "read-model generated_at",
+        "identityAuthority": "site/people_organizations_read_model.mjs exact row construction"
+      },
+      "freshness": {
+        "owner": "people and organizations read model",
+        "projection": "read-model generated_at"
+      },
+      "provider": {
+        "id": "worker-static.people-organizations.browse",
+        "module": "worker/src/people_organizations.mjs",
+        "export": "workerPeopleOrganizations",
+        "store": "precomputed people and organizations read model",
+        "readModel": "typed People + organizations rows"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.organizations-browse@1",
+          "module": "worker/src/people_organizations.mjs",
+          "kind": "http-route",
+          "route": "GET /people-organizations",
+          "surface": "People and organizations browse",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "typed public people or organization row"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public row summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.browse_organizations@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "browse_organizations",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "typed public people or organization row"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public row summary"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
@@ -1300,6 +1527,105 @@
           {
             "input": {
               "sourceSystem": "passport_public_contracts",
+              "limit": 25
+            },
+            "output": {
+              "availability": "complete",
+              "pagination": "cursor when more rows remain"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "get_person_or_organization",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "people.get@1",
+        "capability_reference": "people.get@1",
+        "adapter_id": "mcp.get_person_or_organization@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "entityIdMaximumLength": 320,
+            "maximum": 1
+          },
+          "output": {
+            "oneRow": true
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "entityId": "official:example"
+            },
+            "output": {
+              "availability": "available",
+              "exactIdentity": true
+            }
+          },
+          {
+            "input": {
+              "entityId": "agency:id:not-published"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "browse_organizations",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "organizations.browse@1",
+        "capability_reference": "organizations.browse@1",
+        "adapter_id": "mcp.browse_organizations@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "queryMaximumLength": 240,
+            "kindMaximumLength": 80,
+            "cursorMaximumLength": 320,
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25
+          },
+          "output": {
+            "maximumResults": 100
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "kind": "agency",
+              "limit": 10
+            },
+            "output": {
+              "availability": "complete",
+              "maximumResults": 10,
+              "oneRowPer": "exact read-model row id"
+            }
+          },
+          {
+            "input": {
+              "query": "community board",
               "limit": 25
             },
             "output": {
