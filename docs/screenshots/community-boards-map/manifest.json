@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "route": "/community-boards/",
+  "captures": [
+    {
+      "state": "before",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "file": "docs/screenshots/community-boards-map/before-desktop.png",
+      "overflow_px": 0
+    },
+    {
+      "state": "after",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "file": "docs/screenshots/community-boards-map/after-desktop.png",
+      "overflow_px": 0
+    },
+    {
+      "state": "before",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/community-boards-map/before-mobile.png",
+      "overflow_px": 0
+    },
+    {
+      "state": "after",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/community-boards-map/after-mobile.png",
+      "overflow_px": 0
+    }
+  ]
+}
