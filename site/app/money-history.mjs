@@ -209,6 +209,7 @@ async function loadExternalAward(params){
 import { solicitationResponseContextReady } from "../solicitation_response_context.mjs";
 import { noticeDisplayTitle } from "../display_title.mjs";
 import { renderObjectCardTitle } from "../affordance_grammar.mjs";
+import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 
 // Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
@@ -1050,6 +1051,7 @@ function renderDetail(r, chain, stats, loadContext = true){
     <button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button>
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
+    ${(r.procurement_id || r.canonical_href) ? renderReportIssueAffordance(buildContractReportTarget(r), { escape: escUiHtml }) : ""}
   </div>`;
   html += solicitationContextHeadingHTML(r);
   html += `<div id="dcontext" data-export-class="notice_context"></div><div id="dactions" data-export-class="actions"></div>`;

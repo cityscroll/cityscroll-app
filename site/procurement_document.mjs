@@ -8,6 +8,7 @@ import {
   renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import { buildContractReportTarget, reportIssueAction } from "./report_issue.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
@@ -94,6 +95,7 @@ function procurementActions(object, facts) {
       attrs: { "data-follow": "vendor", "data-name": facts.vendor },
     });
   }
+  items.push(reportIssueAction(buildContractReportTarget(object, facts)));
   return items.length ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" }) : "";
 }
 
@@ -195,7 +197,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
   const canonical = procurementCanonicalHref(object);
   const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}</head>
+<title>${esc(facts.title)} · CityScroll</title><link rel="canonical" href="https://cityscroll.org${esc(canonical)}">${renderCivicDocumentAssets("/")}<script type="module" src="/report_issue.mjs"></script></head>
 <body>${renderCivicDocumentMast({ current: "browse" })}<main class="node-document" data-civic-object-kind="procurement" data-procurement-id="${esc(id)}">
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>

@@ -5,10 +5,17 @@
 // is OPTIONAL — a blank/missing address is valid (the sender just doesn't want a reply).
 
 import { isValidEmail, normalizeEmail } from "./subscriptions.mjs";
+import { REPORT_TARGET_SCHEMA, resolveReportTarget, reportTargetIdentity } from "../../../site/report_target.mjs";
 
 export const FEEDBACK_CATEGORIES = ["bug", "feature", "general"];
+export const REPORT_CATEGORIES = [
+  "information_wrong", "connection_wrong", "same_thing", "different_things",
+  "something_missing", "interpretation_wrong", "other",
+];
+const VENDOR_REPORT_CATEGORIES = new Set(["information_wrong", "something_missing", "other"]);
 export const MSG_MIN = 10;
 export const MSG_MAX = 2000;
+export const EVIDENCE_MAX = 4000;
 
 // Returns { ok: true, value: { category, message, email } } or { ok: false, reason }.
 // reason ∈ { "bad-category", "bad-message", "bad-email" }.
@@ -16,7 +23,11 @@ export function validateFeedback(body) {
   const b = body || {};
 
   const category = String(b.category == null ? "" : b.category).trim().toLowerCase();
-  if (!FEEDBACK_CATEGORIES.includes(category)) return { ok: false, reason: "bad-category" };
+  const isReport = Object.prototype.hasOwnProperty.call(b, "report_target");
+  if ((!isReport && !FEEDBACK_CATEGORIES.includes(category))
+    || (isReport && !REPORT_CATEGORIES.includes(category))) {
+    return { ok: false, reason: isReport ? "bad-report-category" : "bad-category" };
+  }
 
   const message = String(b.message == null ? "" : b.message).trim();
   if (message.length < MSG_MIN || message.length > MSG_MAX) return { ok: false, reason: "bad-message" };
@@ -28,5 +39,34 @@ export function validateFeedback(body) {
     email = normalizeEmail(rawEmail);
   }
 
-  return { ok: true, value: { category, message, email } };
+  if (!isReport) return { ok: true, value: { category, message, email } };
+  const evidence = String(b.evidence == null ? "" : b.evidence).trim();
+  if (evidence.length > EVIDENCE_MAX) return { ok: false, reason: "bad-evidence" };
+  const target = normalizeReportTargetForFeedback(b.report_target);
+  if (!target) return { ok: false, reason: "bad-report-target" };
+  if (target.claim_anchor?.field_or_semantic_key === "vendor"
+    && !VENDOR_REPORT_CATEGORIES.has(category)) {
+    return { ok: false, reason: "bad-report-category" };
+  }
+  return {
+    ok: true,
+    value: {
+      category: "report",
+      message,
+      email,
+      evidence,
+      report_target: target,
+      report: { category, explanation: message, evidence },
+    },
+  };
+}
+
+function normalizeReportTargetForFeedback(value) {
+  if (!value || typeof value !== "object" || value.schema !== REPORT_TARGET_SCHEMA) return null;
+  let target;
+  try { target = resolveReportTarget(value); } catch { return null; }
+  if (!target || target.target_id !== value.target_id || reportTargetIdentity(target) !== value.target_id) return null;
+  if (target.object_type !== "procurement" || !target.object_id.startsWith("procurement:contract:")) return null;
+  if (!target.canonical_url.startsWith("/procurements/")) return null;
+  return target;
 }
