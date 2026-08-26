@@ -1372,14 +1372,19 @@ async function noticeAttachmentMetadata(id, notice=null){
   return {request_id:String(id),n_attachments:attachments.length,attachments};
 }
 async function showNotice(id, watch){
-  await globalThis.ensureMoneyHistory?.();
-  await globalThis.ensureRules?.();
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
   const edgeNotice=box.querySelector(`[data-edge-rendered][data-notice-id="${CSS.escape(String(id))}"]`);
   const edgePrimaryState=noticePrimaryOutcomeFromEdge(edgeNotice?.dataset.edgeRendered);
   if(edgePrimaryState) noticePrimaryReady(runtimeRumSemanticMilestones(),{resultState:edgePrimaryState});
+  // The edge-rendered body is the primary interaction boundary. Optional route
+  // modules and the client read/enrichment path may start after that boundary,
+  // but must not delay its semantic readiness measurement.
+  const optionalRouteModules = Promise.allSettled([
+    globalThis.ensureMoneyHistory?.(),
+    globalThis.ensureRules?.(),
+  ]);
   const meetingFirstPaint=box.querySelector("[data-meeting-outcomes-first-paint]")?.outerHTML||"";
   if(!edgeNotice) box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
@@ -1415,6 +1420,7 @@ async function showNotice(id, watch){
   }
   // Property deep links keep the loading state until the route module has supplied the parcel
   // identity used by the action registry. The first rendered action is therefore the final one.
+  await optionalRouteModules;
   if(typeof hydratePropertyActionMatter==="function") await hydratePropertyActionMatter(r);
   // Header "Want email updates?" and Watch CTAs read this for notice-scoped #alerts entry.
   lastNoticeContext = { row: r };

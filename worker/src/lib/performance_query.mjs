@@ -9,7 +9,7 @@ import { lastNDays, statsKey } from "./stats.mjs";
 export const DEFAULT_RUM_ANALYTICS_DATASET = "crol_rum_observations_v1";
 export const PERFORMANCE_RETENTION_DAYS = 90;
 export const DEFAULT_PERFORMANCE_SAMPLE_FLOOR = 30;
-export const MAX_PERFORMANCE_GROUPS = 64;
+export const MAX_PERFORMANCE_GROUPS = 256;
 export const MAX_PERFORMANCE_TREND_DAYS = 91;
 export const PERFORMANCE_HEALTH_WINDOW_DAYS = 7;
 
@@ -60,6 +60,11 @@ const GROUPABLE_DIMENSIONS = new Set([
   "navigation_type",
   "delivery_class",
   "result_state",
+]);
+const READINESS_GROUP_DIMENSIONS = Object.freeze([
+  "metric_id",
+  "surface_id",
+  "component_id",
 ]);
 
 const metricIds = new Set(performanceAllowlist.metric_ids || []);
@@ -150,13 +155,24 @@ export function normalizePerformanceQuery(input = {}) {
     Object.entries(rawFilters).map(([key, value]) => [key, checkedFilterValue(key, value)]),
   );
 
-  const groupBy = input.group_by ?? null;
-  if (groupBy !== null && (!GROUPABLE_DIMENSIONS.has(groupBy) || filters[groupBy])) {
+  const rawGroupBy = input.group_by ?? null;
+  const groupDimensions = rawGroupBy === null
+    ? null
+    : Array.isArray(rawGroupBy) ? rawGroupBy : [rawGroupBy];
+  if (groupDimensions !== null && (
+    groupDimensions.length === 0
+    || groupDimensions.length > READINESS_GROUP_DIMENSIONS.length
+    || new Set(groupDimensions).size !== groupDimensions.length
+    || groupDimensions.some((dimension) => !GROUPABLE_DIMENSIONS.has(dimension) || filters[dimension])
+  )) {
     throw new PerformanceQueryError("Unsupported or redundant grouping dimension");
   }
-  if (!filters.metric_id && groupBy !== "metric_id") {
+  if (!filters.metric_id && !groupDimensions?.includes("metric_id")) {
     throw new PerformanceQueryError("A metric_id filter or metric_id grouping is required");
   }
+  const groupBy = groupDimensions === null
+    ? null
+    : groupDimensions.length === 1 ? groupDimensions[0] : Object.freeze([...groupDimensions]);
   return Object.freeze({ window, filters: Object.freeze(filters), group_by: groupBy });
 }
 
@@ -221,12 +237,16 @@ function whereSql(query, startMs, endMs) {
 }
 
 function summarySql(dataset, query, coverage) {
-  const group = query.group_by;
-  const groupSelect = group ? `  ${FILTER_COLUMNS[group]} AS ${group},\n` : "";
-  const groupClause = group ? `\nGROUP BY ${group}\nORDER BY ${group} ASC` : "";
-  const limit = group ? MAX_PERFORMANCE_GROUPS + 1 : 1;
+  const groups = query.group_by === null
+    ? []
+    : Array.isArray(query.group_by) ? query.group_by : [query.group_by];
+  const groupSelect = groups.map((group) => `  ${FILTER_COLUMNS[group]} AS ${group}`).join(",\n");
+  const groupClause = groups.length
+    ? `\nGROUP BY ${groups.join(", ")}\nORDER BY ${groups.join(", ")}`
+    : "";
+  const limit = groups.length ? MAX_PERFORMANCE_GROUPS + 1 : 1;
   return `SELECT
-${groupSelect}  count() AS sampled_count,
+${groupSelect ? `${groupSelect},\n` : ""}  count() AS sampled_count,
   sum(_sample_interval) AS estimated_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
@@ -239,14 +259,16 @@ LIMIT ${limit}`;
 }
 
 function trendSql(dataset, query, coverage) {
-  const group = query.group_by;
-  const groupSelect = group ? `  ${FILTER_COLUMNS[group]} AS ${group},\n` : "";
-  const groupClause = group ? `, ${group}` : "";
-  const orderClause = group ? `, ${group} ASC` : "";
-  const limit = MAX_PERFORMANCE_GROUPS * MAX_PERFORMANCE_TREND_DAYS + 1;
+  const groups = query.group_by === null
+    ? []
+    : Array.isArray(query.group_by) ? query.group_by : [query.group_by];
+  const groupSelect = groups.map((group) => `  ${FILTER_COLUMNS[group]} AS ${group}`).join(",\n");
+  const groupClause = groups.length ? `, ${groups.join(", ")}` : "";
+  const orderClause = groups.length ? `, ${groups.join(", ")} ASC` : "";
+  const limit = groups.length ? MAX_PERFORMANCE_GROUPS * MAX_PERFORMANCE_TREND_DAYS + 1 : MAX_PERFORMANCE_TREND_DAYS + 1;
   return `SELECT
   formatDateTime(timestamp, '%Y-%m-%d', 'Etc/UTC') AS day,
-${groupSelect}  count() AS sampled_count,
+${groupSelect ? `${groupSelect},\n` : ""}  count() AS sampled_count,
   sum(_sample_interval) AS estimated_count,
   quantileExactWeighted(0.50)(double1, _sample_interval) AS p50,
   quantileExactWeighted(0.75)(double1, _sample_interval) AS p75,
@@ -347,7 +369,7 @@ function distributionFromRow(row, coverage, sampleFloor) {
 }
 
 function groupKey(value) {
-  return value == null ? "__all__" : value;
+  return value == null ? "__all__" : JSON.stringify(value);
 }
 
 function validateGroupValue(dimension, value) {
@@ -363,13 +385,19 @@ function summaryMap(rows, plan, coverage) {
   if (!Array.isArray(rows)) throw new PerformanceSqlError("invalid-query-result");
   if (rows.length > MAX_PERFORMANCE_GROUPS) throw new PerformanceSqlError("too-many-groups");
   const out = new Map();
+  const groups = plan.query.group_by === null
+    ? []
+    : Array.isArray(plan.query.group_by) ? plan.query.group_by : [plan.query.group_by];
   for (const row of rows) {
     if (!isRecord(row)) throw new PerformanceSqlError("invalid-query-result");
-    const group = validateGroupValue(plan.query.group_by, row[plan.query.group_by]);
-    const key = groupKey(group);
+    const dimensions = Object.fromEntries(groups.map((dimension) => [
+      dimension,
+      validateGroupValue(dimension, row[dimension]),
+    ]));
+    const key = groupKey(groups.length ? dimensions : null);
     if (out.has(key)) throw new PerformanceSqlError("invalid-query-result");
     out.set(key, {
-      dimensions: group == null ? {} : { [plan.query.group_by]: group },
+      dimensions,
       distribution: distributionFromRow(row, coverage, plan.sample_floor),
       first_observation_at: validTimestamp(row.first_observation_at),
       latest_observation_at: validTimestamp(row.latest_observation_at),
@@ -404,12 +432,18 @@ function trendMap(rows, plan) {
     throw new PerformanceSqlError(rows?.length ? "too-many-trend-rows" : "invalid-query-result");
   }
   const out = new Map();
+  const groups = plan.query.group_by === null
+    ? []
+    : Array.isArray(plan.query.group_by) ? plan.query.group_by : [plan.query.group_by];
   for (const row of rows) {
     if (!isRecord(row) || !/^\d{4}-\d{2}-\d{2}$/.test(String(row.day || ""))) {
       throw new PerformanceSqlError("invalid-query-result");
     }
-    const group = validateGroupValue(plan.query.group_by, row[plan.query.group_by]);
-    const key = groupKey(group);
+    const dimensions = Object.fromEntries(groups.map((dimension) => [
+      dimension,
+      validateGroupValue(dimension, row[dimension]),
+    ]));
+    const key = groupKey(groups.length ? dimensions : null);
     if (!out.has(key)) out.set(key, new Map());
     if (out.get(key).has(row.day)) throw new PerformanceSqlError("invalid-query-result");
     out.get(key).set(row.day, {

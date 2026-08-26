@@ -142,10 +142,12 @@ export function parseAdminPerformanceRequest(req) {
   for (const [parameter, filter] of Object.entries(PARAMETER_TO_FILTER)) {
     if (params.has(parameter)) filters[filter] = params.get(parameter);
   }
+  const readinessDimensions = ["metric_id", "surface_id", "component_id"]
+    .filter((dimension) => !filters[dimension]);
   return normalizePerformanceQuery({
     window: params.get("window") || "7d",
     filters,
-    group_by: filters.metric_id ? null : "metric_id",
+    group_by: readinessDimensions.length ? readinessDimensions : null,
   });
 }
 

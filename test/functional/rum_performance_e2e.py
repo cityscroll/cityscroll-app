@@ -20,6 +20,7 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from playwright.sync_api import APIRequestContext, Response, sync_playwright
 
@@ -27,13 +28,37 @@ from playwright.sync_api import APIRequestContext, Response, sync_playwright
 PUBLIC_BASE = os.environ.get("CROL_BASE", "https://cityscroll.org/").rstrip("/") + "/"
 DESK_URL = os.environ.get("CROL_DESK_URL", "https://desk.cityscroll.org/performance")
 PATHS = [path.strip() for path in os.environ.get(
-    "CROL_RUM_E2E_PATHS", "/,/near-you/,/browse/contracts/"
+    "CROL_RUM_E2E_PATHS",
+    "/,/near-you/,/following/,/browse/contracts/,/notices/20260714015/,/agencies/office-of-the-mayor/",
 ).split(",") if path.strip()]
 OUTPUT = Path(os.environ.get("CROL_RUM_E2E_OUTPUT", ".artifacts/rum-performance-e2e"))
 READ_TIMEOUT_MS = int(os.environ.get("CROL_RUM_E2E_READ_TIMEOUT_MS", "60000"))
 READ_POLL_MS = int(os.environ.get("CROL_RUM_E2E_READ_POLL_MS", "3000"))
 SETTLE_MS = int(os.environ.get("CROL_RUM_E2E_SETTLE_MS", "12000"))
 REQUIRED_MILESTONES = ("content_ready_ms", "component_ready_ms")
+SAMPLE_FLOOR = 30
+GOOD_P75_MS = 2_500
+GOOD_P95_MS = 5_000
+VIEWPORTS = {
+    "mobile": {"width": 390, "height": 844},
+    "desktop": {"width": 1440, "height": 900},
+}
+EXPECTED_GROUPS = {
+    "content_ready_ms": [
+        {"surface_id": surface, "component_id": "none"}
+        for surface in ("agency", "browse-contracts", "following", "home", "near-you", "notice")
+    ],
+    "component_ready_ms": [
+        {"surface_id": "agency", "component_id": "agency-identity"},
+        {"surface_id": "agency", "component_id": "agency-relationships"},
+        {"surface_id": "browse-contracts", "component_id": "browse-contracts-results"},
+        {"surface_id": "following", "component_id": "following-watch-list"},
+        {"surface_id": "home", "component_id": "home-topic-entry"},
+        {"surface_id": "near-you", "component_id": "near-you-map"},
+        {"surface_id": "near-you", "component_id": "near-you-map-data"},
+        {"surface_id": "notice", "component_id": "notice-context"},
+    ],
+}
 
 
 def access_headers() -> dict[str, str]:
@@ -57,6 +82,13 @@ def response_json(response: Response) -> dict[str, Any] | None:
     except Exception:
         return None
     return body if isinstance(body, dict) else None
+
+
+def admin_query_url(admin_url: str, **params: str) -> str:
+    parsed = urlsplit(admin_url)
+    query = dict(parse_qsl(parsed.query, keep_blank_values=True))
+    query.update(params)
+    return urlunsplit((parsed.scheme, parsed.netloc, parsed.path, urlencode(query), parsed.fragment))
 
 
 def metric_rows(payload: dict[str, Any] | None) -> list[dict[str, Any]]:
@@ -129,6 +161,95 @@ def required_metric_rows(payload: dict[str, Any] | None) -> dict[str, dict[str, 
     }
 
 
+def row_dimensions(row: dict[str, Any]) -> dict[str, str | None]:
+    dimensions = row.get("dimensions") if isinstance(row.get("dimensions"), dict) else row
+    return {
+        "metric_id": metric_id(row),
+        "surface_id": dimensions.get("surface_id"),
+        "component_id": dimensions.get("component_id", "none"),
+    }
+
+
+def find_group_row(payload: dict[str, Any] | None, metric: str, expected: dict[str, str]) -> dict[str, Any] | None:
+    for row in metric_rows(payload):
+        dimensions = row_dimensions(row)
+        if dimensions.get("metric_id") != metric:
+            continue
+        if all(dimensions.get(key) == value for key, value in expected.items()):
+            return row
+    return None
+
+
+def group_verdict(
+    response: Response | None,
+    payload: dict[str, Any] | None,
+    metric: str,
+    expected: dict[str, str],
+    capture_started: datetime,
+) -> dict[str, Any]:
+    result: dict[str, Any] = {
+        "metric_id": metric,
+        **expected,
+        "verdict": "NEEDS-DATA",
+        "status": "unavailable",
+    }
+    if response is None or response.status != 200 or payload is None:
+        result["reason"] = "unavailable"
+        return result
+    retention = payload.get("retention", {}).get("current", {})
+    if retention.get("status") != "complete":
+        result["status"] = "partial"
+        result["reason"] = "partial-window"
+        return result
+    row = find_group_row(payload, metric, expected)
+    if row is None:
+        if payload.get("status") in {"no_data", "insufficient_sample", "unavailable"}:
+            result["status"] = payload.get("status")
+            result["reason"] = payload.get("status")
+        else:
+            result["verdict"] = "COVERAGE-FAILURE"
+            result["status"] = "coverage_failure"
+            result["reason"] = "missing_registered_group"
+        return result
+    result["sampled_count"] = sampled_count(row)
+    result.update(percentile_values(row))
+    if sampled_count(row) < int(payload.get("sample_floor") or SAMPLE_FLOOR):
+        result["status"] = "insufficient_sample"
+        result["reason"] = "insufficient_sample"
+        return result
+    if not has_percentiles(row):
+        result["status"] = "unavailable"
+        result["reason"] = "missing_percentiles"
+        return result
+    latest = row.get("latest_observation_at") or (row.get("current") or {}).get("latest_observation_at")
+    if not isinstance(latest, str):
+        result["status"] = "unavailable"
+        result["reason"] = "stale_or_missing_observation"
+        return result
+    try:
+        observed_at = datetime.fromisoformat(latest.replace("Z", "+00:00"))
+    except ValueError:
+        result["status"] = "unavailable"
+        result["reason"] = "invalid_observation_timestamp"
+        return result
+    if observed_at < capture_started - timedelta(seconds=5):
+        result["status"] = "unavailable"
+        result["reason"] = "stale_observation"
+        return result
+    if payload.get("operational_status") != "flowing" or payload.get("status") not in {"available", "partial"}:
+        result["status"] = payload.get("status") or payload.get("operational_status") or "unavailable"
+        result["reason"] = payload.get("status") or payload.get("operational_status") or "unavailable"
+        return result
+    result["status"] = "available"
+    if result["p75"] <= GOOD_P75_MS and result["p95"] <= GOOD_P95_MS:
+        result["verdict"] = "GOOD"
+    elif result["p75"] <= 5_000 and result["p95"] <= 10_000:
+        result["verdict"] = "NEEDS-WORK"
+    else:
+        result["verdict"] = "FAIL"
+    return result
+
+
 def query_receipt(response: Response, payload: dict[str, Any] | None) -> dict[str, Any]:
     rows = series_with_samples(payload)
     return {
@@ -176,71 +297,72 @@ def main() -> None:
         raise RuntimeError("CROL_PERF_ADMIN_URL and CROL_PERF_ADMIN_KEY are required for read-back")
 
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    evidence: dict[str, Any] = {"public_base": PUBLIC_BASE, "pages": [], "beacons": []}
+    evidence: dict[str, Any] = {
+        "public_base": PUBLIC_BASE,
+        "paths": PATHS,
+        "viewports": VIEWPORTS,
+        "pages": [],
+        "beacons": [],
+        "groups": [],
+    }
     failures: list[str] = []
     access = access_headers()
-    capture_started = datetime.now(timezone.utc)
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context(viewport={"width": 1440, "height": 1000})
-        api_request = context.request
-        baseline_response, baseline_payload = read_admin_performance(api_request, admin_url, admin_key)
-        baseline_latest = latest_observation(baseline_payload)
+        baseline_context = browser.new_context(viewport=VIEWPORTS["desktop"])
+        baseline_response, baseline_payload = read_admin_performance(
+            baseline_context.request, admin_url, admin_key
+        )
         evidence["operator_baseline"] = query_receipt(baseline_response, baseline_payload)
+        baseline_context.close()
 
-        public_page = context.new_page()
-        beacons: list[dict[str, Any]] = []
+        for device, viewport in VIEWPORTS.items():
+            capture_started = datetime.now(timezone.utc)
+            context = browser.new_context(viewport=viewport)
+            api_request = context.request
+            public_page = context.new_page()
+            beacons: list[dict[str, Any]] = []
 
-        def record_request(request: Any) -> None:
-            if request.method == "POST" and request.url.rstrip("/").endswith("/performance-events"):
-                beacons.append({"url": request.url, "method": request.method})
+            def record_request(request: Any) -> None:
+                if request.method == "POST" and request.url.rstrip("/").endswith("/performance-events"):
+                    beacons.append({"url": request.url, "method": request.method})
 
-        public_page.on("request", record_request)
-        for path in PATHS:
-            url = f"{PUBLIC_BASE.rstrip('/')}/{path.lstrip('/')}"
-            public_page.goto(url, wait_until="domcontentloaded", timeout=60_000)
-            public_page.wait_for_timeout(SETTLE_MS)
-            evidence["pages"].append({"path": path, "title": public_page.title()})
-        evidence["beacons"] = beacons
+            public_page.on("request", record_request)
+            for path in PATHS:
+                url = f"{PUBLIC_BASE.rstrip('/')}/{path.lstrip('/')}"
+                public_page.goto(url, wait_until="domcontentloaded", timeout=60_000)
+                public_page.wait_for_timeout(SETTLE_MS)
+                evidence["pages"].append({"device": device, "path": path, "title": public_page.title()})
 
-        read_deadline = time.monotonic() + READ_TIMEOUT_MS / 1000
-        read_response: Response | None = None
-        read_payload: dict[str, Any] | None = None
-        while time.monotonic() < read_deadline:
-            read_response, read_payload = read_admin_performance(api_request, admin_url, admin_key)
-            latest = latest_observation(read_payload)
-            if (
-                read_response.status == 200
-                and read_payload
-                and read_payload.get("operational_status") == "flowing"
-                and len(series_with_samples(read_payload)) > 0
-                and required_metric_rows(read_payload).keys() >= set(REQUIRED_MILESTONES)
-                and latest is not None
-                and latest >= capture_started - timedelta(seconds=5)
-            ):
-                break
-            public_page.wait_for_timeout(READ_POLL_MS)
+            read_results: dict[str, tuple[Response, dict[str, Any] | None]] = {}
+            read_deadline = time.monotonic() + READ_TIMEOUT_MS / 1000
+            while time.monotonic() < read_deadline:
+                for metric in REQUIRED_MILESTONES:
+                    query_url = admin_query_url(admin_url, window="7d", metric=metric, device=device)
+                    read_results[metric] = read_admin_performance(api_request, query_url, admin_key)
+                latest_values = [latest_observation(payload) for _, payload in read_results.values()]
+                if all(value is not None and value >= capture_started - timedelta(seconds=5) for value in latest_values):
+                    break
+                public_page.wait_for_timeout(READ_POLL_MS)
 
-        public_page.close()
+            device_evidence: dict[str, Any] = {
+                "device": device,
+                "capture_started": capture_started.isoformat().replace("+00:00", "Z"),
+                "metrics": {},
+            }
+            for metric, (response, payload) in read_results.items():
+                device_evidence["metrics"][metric] = query_receipt(response, payload)
+                for expected in EXPECTED_GROUPS[metric]:
+                    verdict = group_verdict(response, payload, metric, expected, capture_started)
+                    evidence["groups"].append({"device": device, **verdict})
+            evidence["devices"] = evidence.get("devices", []) + [device_evidence]
+            evidence["beacons"].extend({"device": device, **beacon} for beacon in beacons)
+            public_page.close()
+            context.close()
 
-        if read_response is None or read_payload is None:
-            failures.append("authenticated performance query returned no response")
-        else:
-            evidence["operator_query"] = query_receipt(read_response, read_payload)
-            latest = latest_observation(read_payload)
-            if read_response.status != 200 or not series_with_samples(read_payload):
-                failures.append("authenticated performance query did not return retained samples")
-            if read_payload.get("operational_status") != "flowing":
-                failures.append("authenticated performance query was not operationally flowing")
-            if not required_metric_rows(read_payload).keys() >= set(REQUIRED_MILESTONES):
-                failures.append("coarse summary did not retain content_ready_ms and component_ready_ms")
-            if latest is None or latest < capture_started - timedelta(seconds=5):
-                failures.append("read-back latest observation was not fresh after the real page loads")
-            if baseline_latest and latest and latest < baseline_latest:
-                failures.append("read-back latest observation regressed from the baseline")
-
-        desk = context.new_page()
+        desk_context = browser.new_context(viewport=VIEWPORTS["desktop"])
+        desk = desk_context.new_page()
         desk.set_extra_http_headers(access)
         desk_payloads: list[dict[str, Any]] = []
 
@@ -280,7 +402,23 @@ def main() -> None:
         if "content" not in desk_text.lower() or "component" not in desk_text.lower():
             failures.append("Desk performance view did not render readiness metric labels")
         desk.close()
+        desk_context.close()
         browser.close()
+
+    verdicts = [group["verdict"] for group in evidence["groups"]]
+    if any(verdict in {"FAIL", "NEEDS-WORK", "COVERAGE-FAILURE"} for verdict in verdicts):
+        evidence["verdict"] = "FAIL"
+        failures.append("one or more readiness groups missed the p75/p95 launch target")
+    elif any(verdict == "NEEDS-DATA" for verdict in verdicts):
+        evidence["verdict"] = "NEEDS-DATA"
+    else:
+        evidence["verdict"] = "GOOD"
+    evidence["thresholds"] = {
+        "sample_floor": SAMPLE_FLOOR,
+        "p75_ms": GOOD_P75_MS,
+        "p95_ms": GOOD_P95_MS,
+        "missing_data_is_pass": False,
+    }
 
     (OUTPUT / "chain.json").write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(evidence, indent=2))
