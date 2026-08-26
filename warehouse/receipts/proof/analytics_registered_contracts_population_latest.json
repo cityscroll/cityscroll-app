@@ -2,8 +2,8 @@
   "schema": "cityscroll.analytics_registered_contracts_population_receipt.v1",
   "status": "complete",
   "projection_contract": "cityscroll.analytical_projection.v1",
-  "snapshot_date": "2026-08-26",
-  "generated_at": "2026-08-26T03:04:48.286Z",
+  "snapshot_date": "2026-08-18",
+  "generated_at": "2026-08-18T04:05:51.552Z",
   "population_definition": "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
   "source": {
     "source_tag": "checkbook-contracts",
@@ -17,23 +17,23 @@
   },
   "source_receipt": {
     "schema": "cityscroll.checkbook_contracts_population_receipt.v1",
-    "pulled_at": "2026-08-26T03:04:48.286Z",
+    "pulled_at": "2026-08-18T04:05:51.552Z",
     "checksums": {
-      "page_manifest_sha256": "54aad3b5f4b529188df42734cc4f5b30a7b7ffbd70265caf70b7428713d556dc",
-      "normalized_contracts_sha256": "b9428e5d4ec9ef40c89335ec6848c8fb001a6b87edbb41405d952b92339d1f63",
-      "committed_graph_slice_sha256": "ae3f10fa85b6233116c495b094a3acd844735022afddd11ece565c72d1ccc2a6"
+      "page_manifest_sha256": "cbba1f7ed95ac5ed1b0d8971703db3673be23cb3de34a23a07e32ffeadf3c85b",
+      "normalized_contracts_sha256": "7705d818bbe439ec3f849bcfb4202220a1516dd054f86a12c6ef3508ed608d30",
+      "committed_graph_slice_sha256": "47314e7d0b40755c742007dd38c6b364f3a409b314f31ce6cc7d6a8d6eff6ff8"
     },
     "population": {
-      "api_transaction_rows": 35671,
+      "api_transaction_rows": 35330,
       "by_fiscal_year": {
-        "2025": 19268,
-        "2026": 14619,
-        "2027": 1784
+        "2025": 19236,
+        "2026": 14575,
+        "2027": 1519
       },
-      "normalized_unique_contracts": 26270,
-      "duplicate_slices_collapsed": 9401,
-      "prime_slices": 26270,
-      "subvendor_slices": 9401,
+      "normalized_unique_contracts": 26038,
+      "duplicate_slices_collapsed": 9292,
+      "prime_slices": 26038,
+      "subvendor_slices": 9292,
       "other_slices": 0,
       "blocked": {
         "missing_contract_id_slices": 0,
@@ -42,12 +42,7 @@
         "ambiguous_prime_vendor_contracts": 15,
         "missing_prime_vendor_contracts": 0,
         "ambiguous_agency_contracts": 0,
-        "missing_agency_contracts": 0,
-        "ambiguous_registration_date_contracts": 0,
-        "ambiguous_award_method_contracts": 0,
-        "ambiguous_mwbe_category_contracts": 7,
-        "ambiguous_duration_contracts": 0,
-        "ambiguous_includes_subvendors_contracts": 0
+        "missing_agency_contracts": 0
       }
     }
   },
@@ -55,21 +50,17 @@
     "normalized_unique_contracts": 26270,
     "distinct_prime_contract_ids": 26270,
     "duplicate_contract_ids": 0,
-    "duplicate_slices_collapsed": 9401,
-    "blocked": {
-      "missing_contract_id_slices": 0,
-      "ambiguous_pin_contracts": 0,
-      "missing_pin_contracts": 0,
-      "ambiguous_prime_vendor_contracts": 15,
-      "missing_prime_vendor_contracts": 0,
-      "ambiguous_agency_contracts": 0,
-      "missing_agency_contracts": 0,
-      "ambiguous_registration_date_contracts": 0,
-      "ambiguous_award_method_contracts": 0,
-      "ambiguous_mwbe_category_contracts": 7,
-      "ambiguous_duration_contracts": 0,
-      "ambiguous_includes_subvendors_contracts": 0,
-      "ambiguous_start_date_contracts": 0
+    "duplicate_slices_collapsed": 0,
+    "blocked": {},
+    "city_record_match": {
+      "join": "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
+      "city_record_input": "site/data/ocp_awards_warehouse_lookup.json",
+      "pin_enrichment": null,
+      "buckets": {
+        "exact": 4210,
+        "none": 2366,
+        "cannot_evaluate_missing_pin": 19694
+      }
     },
     "registration_timing": {
       "total_contract_count": 26270,
@@ -272,6 +263,6 @@
     "table": "analytics_registered_contracts",
     "site_artifact": "site/data/analytics_registered_contracts.json",
     "request_time_database_queries": false,
-    "reproducible_input": ".generated/ap/checkbook-normalized.json"
+    "reproducible_input": "site/data/analytics_registered_contracts.json"
   }
 }

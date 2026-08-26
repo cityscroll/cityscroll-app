@@ -6,7 +6,10 @@ import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseContractTransactions } from "../worker/src/lib/checkbook_lifecycle.mjs";
-import { normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
+import {
+  classifyCheckbookCityRecordMatches,
+  normalizeCheckbookContractRows,
+} from "../warehouse/lib/checkbook_contracts.mjs";
 import { ANALYTICAL_PROJECTION_SCHEMA } from "../site/analytical_projection_contract.mjs";
 import {
   CHECKBOOK_DIMENSION_PROFILE_FIELDS,
@@ -21,6 +24,8 @@ const DEFAULT_OUTPUT = join(ROOT, "site/data/analytics_registered_contracts.json
 const DEFAULT_RECEIPT = join(ROOT, "warehouse/receipts/proof/analytics_registered_contracts_population_latest.json");
 const DEFAULT_FIXTURE = join(ROOT, "warehouse/fixtures/checkbook-contracts/collector.json");
 const DEFAULT_SOURCE_RECEIPT = join(ROOT, "warehouse/receipts/proof/checkbook_contracts_population_latest.json");
+const DEFAULT_CITY_RECORD_INPUT = join(ROOT, "site/data/ocp_awards_warehouse_lookup.json");
+const DEFAULT_PIN_SOURCE = join(ROOT, "site/data/procurement_browse_rows.json");
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -38,13 +43,23 @@ function sourcePathLabel(path) {
 }
 
 function parseArgs(argv) {
-  const args = { input: DEFAULT_INPUT, output: DEFAULT_OUTPUT, receipt: DEFAULT_RECEIPT, sourceReceipt: DEFAULT_SOURCE_RECEIPT, fixture: null };
+  const args = {
+    input: DEFAULT_INPUT,
+    output: DEFAULT_OUTPUT,
+    receipt: DEFAULT_RECEIPT,
+    sourceReceipt: DEFAULT_SOURCE_RECEIPT,
+    cityRecordInput: DEFAULT_CITY_RECORD_INPUT,
+    pinSource: DEFAULT_PIN_SOURCE,
+    fixture: null,
+  };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--input") args.input = resolve(argv[++i]);
     else if (arg === "--output") args.output = resolve(argv[++i]);
     else if (arg === "--receipt") args.receipt = resolve(argv[++i]);
     else if (arg === "--source-receipt") args.sourceReceipt = resolve(argv[++i]);
+    else if (arg === "--city-record-input") args.cityRecordInput = resolve(argv[++i]);
+    else if (arg === "--pin-source") args.pinSource = resolve(argv[++i]);
     else if (arg === "--from-fixture") args.fixture = DEFAULT_FIXTURE;
     else if (arg === "--fixture") args.fixture = resolve(argv[++i]);
     else if (arg === "--check") args.check = true;
@@ -52,6 +67,22 @@ function parseArgs(argv) {
     else throw new Error(`unknown argument: ${arg}`);
   }
   return args;
+}
+
+function rowsFromDocument(path) {
+  if (!path || !existsSync(path)) return [];
+  const value = readJson(path);
+  return Array.isArray(value) ? value : Array.isArray(value.rows) ? value.rows : [];
+}
+
+function exactContractPins(path) {
+  const byId = new Map();
+  for (const row of rowsFromDocument(path)) {
+    const id = String(row?.prime_contract_id || row?.contract_id || row?.id || "").trim();
+    const pin = String(row?.pin || row?.prime_contract_pin || "").trim();
+    if (id && pin && !byId.has(id)) byId.set(id, pin);
+  }
+  return byId;
 }
 
 function fixtureRows(path) {
@@ -74,12 +105,25 @@ function sourceRows(args) {
 
 function build(args) {
   const raw = sourceRows(args);
-  const normalized = args.fixture ? normalizeCheckbookContractRows(raw) : {
-    rows: raw,
-    counts: readJson(args.input).counts || { unique_contracts: raw.length },
+  const pinByContractId = exactContractPins(args.pinSource);
+  const rawPinIds = new Set(raw
+    .filter((row) => row?.pin || row?.prime_contract_pin)
+    .map((row) => String(row?.prime_contract_id || row?.contract_id || row?.id || "").trim())
+    .filter(Boolean));
+  const enrichedRaw = raw.map((row) => {
+    const id = String(row?.prime_contract_id || row?.contract_id || row?.id || "").trim();
+    if (row?.pin || row?.prime_contract_pin || !pinByContractId.has(id)) return row;
+    return { ...row, pin: pinByContractId.get(id) };
+  });
+  const normalized = args.fixture ? normalizeCheckbookContractRows(enrichedRaw) : {
+    rows: enrichedRaw,
+    counts: readJson(args.input).counts || { unique_contracts: enrichedRaw.length },
     blocked: readJson(args.input).blocked || {},
   };
-  const rows = normalized.rows.map(normalizeAnalyticalContractRow).filter(Boolean);
+  const baseRows = normalized.rows.map(normalizeAnalyticalContractRow).filter(Boolean);
+  const cityRecordRows = rowsFromDocument(args.cityRecordInput);
+  const rows = classifyCheckbookCityRecordMatches(baseRows, cityRecordRows);
+  const recoveredPinCount = rows.filter((row) => row.pin && !rawPinIds.has(row.prime_contract_id)).length;
   const ids = new Set(rows.map((row) => row.prime_contract_id));
   if (ids.size !== rows.length) throw new Error("analytical projection contains duplicate prime_contract_id values");
   if (Number(normalized.counts.unique_contracts) !== rows.length) {
@@ -99,9 +143,23 @@ function build(args) {
     generated_at: generatedAt,
     snapshot_date: snapshotDate,
     population_definition: "Normalized Checkbook NYC registered expense contracts; one row per exact prime_contract_id across explicit collection fiscal-year partitions.",
-    dimensions: ["agency", "prime_vendor", "registration_fiscal_year", "contract_amount_band", "award_method", "registration_timing"],
-    measures: ["unique_contract_count", "sum_original_registered_amount", "sum_current_registered_amount", "median_current_registered_amount", "eligible_contract_count", "missing_date_contract_count", "retroactive_contract_count", "retroactive_share", "median_registration_lag_days", "p75_registration_lag_days", "p90_registration_lag_days"],
+    dimensions: ["agency", "prime_vendor", "registration_fiscal_year", "contract_amount_band", "award_method", "registration_timing", "city_record_match"],
+    measures: ["unique_contract_count", "sum_original_registered_amount", "sum_current_registered_amount", "median_current_registered_amount", "eligible_contract_count", "missing_date_contract_count", "retroactive_contract_count", "retroactive_share", "median_registration_lag_days", "p75_registration_lag_days", "p90_registration_lag_days", "city_record_eligible_contract_count", "city_record_matched_contract_count", "city_record_unmatched_contract_count", "city_record_missing_pin_contract_count"],
     registration_timing_summary: registrationTimingSummary(rows),
+    city_record_match: {
+      join: "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
+      city_record_input: sourcePathLabel(args.cityRecordInput),
+      pin_enrichment: recoveredPinCount ? {
+        source: sourcePathLabel(args.pinSource),
+        join: "exact prime_contract_id only; used only to recover an omitted PIN field",
+        recovered_contract_pins: recoveredPinCount,
+      } : null,
+      buckets: {
+        exact: rows.filter((row) => row.city_record_match === "exact").length,
+        none: rows.filter((row) => row.city_record_match === "none").length,
+        cannot_evaluate_missing_pin: rows.filter((row) => row.city_record_match === "cannot_evaluate_missing_pin").length,
+      },
+    },
     source_population: {
       source_tag: "checkbook-contracts",
       normalized_unique_contracts: rows.length,
@@ -131,6 +189,7 @@ function build(args) {
       duplicate_slices_collapsed: normalized.counts.duplicate_slices_collapsed || 0,
       blocked: normalized.blocked,
       registration_timing: registrationTimingSummary(rows),
+      city_record_match: payload.city_record_match,
     },
     dimension_profile: profile,
     materialization: {
@@ -159,7 +218,7 @@ function check(args) {
 
 const args = parseArgs(process.argv.slice(2));
 if (args.help) {
-  console.log("Usage: node tools/build_analytical_registered_contracts.mjs [--input path] [--output path] [--receipt path] [--from-fixture] [--check]");
+  console.log("Usage: node tools/build_analytical_registered_contracts.mjs [--input path] [--output path] [--receipt path] [--city-record-input path] [--pin-source path] [--from-fixture] [--check]");
 } else if (args.check) {
   check(args);
 } else {

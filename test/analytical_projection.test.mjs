@@ -9,6 +9,7 @@ import {
   assertSupportedProjection,
 } from "../site/analytical_projection_contract.mjs";
 import {
+  cityRecordCoverage,
   analyticalDrillThroughHref,
   preserveAnalyticalProjectionQuery,
   contractAmountBand,
@@ -20,7 +21,7 @@ import {
   registrationFiscalYear,
   vendorConcentration,
 } from "../site/analytical_projection.mjs";
-import { normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
+import { classifyCheckbookCityRecordMatches, normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
 import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
 
@@ -76,6 +77,24 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(filtered.length, 0);
     const href = analyticalDrillThroughHref({ agency: "Agency A", prime_vendor: "Vendor A", registration_fiscal_year: 2026, min_amount: 1000 });
     assert.equal(href, "/browse/contracts/?mode=award&ap_agency=Agency+A&ap_vendor=Vendor+A&ap_fy=2026&ap_min=1000");
+    assert.match(analyticalDrillThroughHref({ agency: "Agency A", city_record_match: "none" }), /ap_city_record_match=none/);
+  });
+
+  it("classifies the coverage fixture with an independently computed exact-PIN expectation", () => {
+    const fixture = JSON.parse(readFileSync(new URL("./fixtures/analytical_projection/city_record_coverage.json", import.meta.url)));
+    const rows = fixture.registered_contracts;
+    const awards = fixture.city_record_awards;
+    const cityRecordPins = new Set(awards.filter((row) => String(row.start_date).slice(0, 10) >= "2025-01-01").map((row) => row.pin));
+    const projected = classifyCheckbookCityRecordMatches(rows, awards);
+    for (const row of projected) {
+      const expected = !row.pin ? "cannot_evaluate_missing_pin" : cityRecordPins.has(row.pin) ? "exact" : "none";
+      assert.equal(row.city_record_match, expected, row.prime_contract_id);
+    }
+    const coverage = cityRecordCoverage(projected);
+    assert.deepEqual(
+      [coverage.matched_contract_count, coverage.unmatched_contract_count, coverage.missing_pin_contract_count],
+      [1, 1, 1],
+    );
   });
 
   it("computes vendor shares and top-N shares from the explicit scope denominator", () => {
