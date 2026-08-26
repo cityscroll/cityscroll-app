@@ -10,12 +10,17 @@ const localeSources = readdirSync(new URL("lang/", i18nRoot))
   .map((name) => readFileSync(new URL(`lang/${name}`, i18nRoot), "utf8"));
 const shippedCopy = [about, stats, readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8"), ...localeSources].join("\n");
 
-test("About describes the time-and-action product in one short section", () => {
+test("About introduces the product and links its primary surfaces before methodology", () => {
   const section = about.match(/<h2 data-i18n="about_h_what">[\s\S]*?(?=<h2 id="context")/)?.[0] || "";
   assert.match(section, /<b>Now<\/b>[\s\S]*<b>Near you<\/b>[\s\S]*<b>Following<\/b>[\s\S]*<b>Browse<\/b>/);
   assert.match(section, /contracts and plans[\s\S]*land use[\s\S]*meetings and votes[\s\S]*job exams[\s\S]*city property sales[\s\S]*rules/i);
   assert.match(section, /official city publications/);
   assert.doesNotMatch(section, /Where the data comes from|Data notes|1\.09 million|87\.5%/i);
+  assert.match(section, /<h2 id="explore">Explore CityScroll<\/h2>/);
+  for (const route of ["/now/", "/near-you/", "/following/", "/browse/"]) assert.match(section, new RegExp(`href="${route}"`));
+  assert.match(section, /<h2 id="maintainers">Maintainers<\/h2>/);
+  assert.match(section, /CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan\. Contact them at <a href="mailto:team@cityscroll\.org">team@cityscroll\.org<\/a>\./);
+  assert.match(section, /href="https:\/\/github\.com\/cityscroll\/cityscroll-app"/);
 });
 
 test("removed data and privacy policy copy is absent and unlinked in every shipped locale", () => {
