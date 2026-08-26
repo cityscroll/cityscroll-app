@@ -52,6 +52,10 @@
   .pattern-card details{border-top:1px solid var(--rule);margin-top:12px;padding-top:10px;font:14px/1.6 var(--ui);color:var(--ink-soft)}
   .pattern-card summary{color:var(--oxblood);cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
   .pattern-card details p{margin:6px 0 0}
+  .explore-grid{display:grid;gap:12px;margin-top:14px}
+  .explore-card{display:block;text-decoration:none;color:inherit}
+  .explore-card h3{color:var(--oxblood)}
+  .explore-card p{font:14px/1.6 var(--ui);color:var(--ink-soft);margin:0}
   /* form */
   .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:12px}
   label{display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
@@ -121,6 +125,30 @@
 <main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
 <p data-i18n-html="about_p_what_html">CityScroll connects official publications to agencies, mandates, parcels, people, and processes, so you can see what New York City government is doing and what you can do next. Use <b>Now</b> for urgent dates. Use <b>Near you</b> for local changes. Use <b>Following</b> for saved watches. Use <b>Browse</b> for contracts and plans, land use, meetings and votes, job exams, city property sales, and rules. The site uses official city publications. CityScroll is independent. It is not part of city government.</p>
+
+<h2 id="explore">Explore CityScroll</h2>
+<div class="explore-grid" aria-label="CityScroll product areas">
+  <a class="pattern-card explore-card" href="/now/">
+    <h3>Now</h3>
+    <p>Deadlines, hearings, meetings, and auctions happening soon.</p>
+  </a>
+  <a class="pattern-card explore-card" href="/near-you/">
+    <h3>Near you</h3>
+    <p>Records and activity tied to a place.</p>
+  </a>
+  <a class="pattern-card explore-card" href="/following/">
+    <h3>Following</h3>
+    <p>Saved searches, watches, and alerts.</p>
+  </a>
+  <a class="pattern-card explore-card" href="/browse/">
+    <h3>Browse</h3>
+    <p>Contracts, staffing and exams, zoning, property, rules, meetings, and votes.</p>
+  </a>
+</div>
+
+<h2 id="maintainers">Maintainers</h2>
+<p>CityScroll is maintained by Anna Bao, James Carroll, Dev Doshi, and Michael Sheehan. Contact them at <a href="mailto:team@cityscroll.org">team@cityscroll.org</a>.</p>
+<p class="src">CityScroll is open-source software. <a href="https://github.com/cityscroll/cityscroll-app" target="_blank" rel="noopener noreferrer">View the source on GitHub<span class="sr-only"> (opens in new tab)</span></a>.</p>
 
 <h2 id="context" data-i18n="about_h_flags">Flags and context, explained</h2>
 <p class="src" data-i18n-html="about_p_flags_intro_html">Procurement notices carry two kinds of computed notes. Both are <b>statistical context, not
