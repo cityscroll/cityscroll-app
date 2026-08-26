@@ -16,6 +16,10 @@ export const ANALYTICAL_MEASURES = Object.freeze({
   current: "sum_current_registered_amount",
   original: "sum_original_registered_amount",
 });
+export const ANALYTICAL_VALUE_MEASURES = Object.freeze({
+  current: "current_registered_amount",
+  original: "original_registered_amount",
+});
 
 /** Preserve analytical drill-through parameters while a document URL crosses the shared scope hash. */
 export function preserveAnalyticalProjectionQuery(source, target) {
@@ -131,6 +135,89 @@ export function groupAnalyticalContracts(rows, { groupBy = "agency", measure = "
         : "sum_current_registered_amount";
   result.sort((a, b) => (Number(b[valueKey]) || 0) - (Number(a[valueKey]) || 0) || a.label.localeCompare(b.label));
   return { groups: result, shown_groups: result.slice(0, Math.max(1, Number(topN) || 10)), value_key: valueKey };
+}
+
+function uniqueAnalyticalRows(rows) {
+  const unique = new Map();
+  for (const row of Array.isArray(rows) ? rows : []) {
+    const id = String(row?.prime_contract_id || "").trim();
+    if (id && !unique.has(id)) unique.set(id, row);
+  }
+  return [...unique.values()];
+}
+
+function shareOf(value, denominator) {
+  return denominator > 0 ? value / denominator : 0;
+}
+
+/**
+ * Calculate an auditable agency → prime-vendor concentration view.
+ * The denominator is always the explicit selected-scope value total, including
+ * unclassified vendor rows; top-N shares rank named vendors only.
+ */
+export function vendorConcentration(rows, { measure = "current", topN = 10 } = {}) {
+  const valueField = ANALYTICAL_VALUE_MEASURES[measure] || measure;
+  if (!Object.values(ANALYTICAL_VALUE_MEASURES).includes(valueField)) {
+    throw new Error(`Unsupported vendor concentration measure: ${measure}`);
+  }
+  const uniqueRows = uniqueAnalyticalRows(rows);
+  const groups = new Map();
+  let excludedValueCount = 0;
+  for (const row of uniqueRows) {
+    const value = Number(row?.[valueField]);
+    if (!Number.isFinite(value)) {
+      excludedValueCount += 1;
+      continue;
+    }
+    const label = readerDimensionValue(row?.prime_vendor);
+    if (!groups.has(label)) groups.set(label, {
+      label,
+      vendor_name: label === UNKNOWN_DIMENSION_LABEL ? null : label,
+      contract_ids: [],
+      registered_value: 0,
+    });
+    const group = groups.get(label);
+    group.registered_value += value;
+    group.contract_ids.push(row.prime_contract_id);
+  }
+  const denominator = [...groups.values()].reduce((sum, group) => sum + group.registered_value, 0);
+  const unclassified = groups.get(UNKNOWN_DIMENSION_LABEL) || {
+    label: UNKNOWN_DIMENSION_LABEL,
+    vendor_name: null,
+    contract_ids: [],
+    registered_value: 0,
+  };
+  const named = [...groups.values()]
+    .filter((group) => group.label !== UNKNOWN_DIMENSION_LABEL)
+    .sort((left, right) => right.registered_value - left.registered_value
+      || left.label.localeCompare(right.label));
+  const vendors = named.concat(unclassified.registered_value || unclassified.contract_ids.length ? [unclassified] : [])
+    .map((group, index) => ({
+      label: group.label,
+      vendor_name: group.vendor_name,
+      contract_ids: [...group.contract_ids],
+      contract_count: new Set(group.contract_ids).size,
+      registered_value: group.registered_value,
+      share: shareOf(group.registered_value, denominator),
+      rank: group.label === UNKNOWN_DIMENSION_LABEL ? null : index + 1,
+      unclassified: group.label === UNKNOWN_DIMENSION_LABEL,
+    }));
+  const namedValue = (count) => named.slice(0, count).reduce((sum, group) => sum + group.registered_value, 0);
+  return {
+    measure,
+    value_field: valueField,
+    vendors,
+    denominator,
+    denominator_contract_count: uniqueRows.length,
+    denominator_value_count: uniqueRows.length - excludedValueCount,
+    excluded_value_count: excludedValueCount,
+    unclassified_value: unclassified.registered_value,
+    unclassified_share: shareOf(unclassified.registered_value, denominator),
+    top_5_value: namedValue(5),
+    top_5_share: shareOf(namedValue(5), denominator),
+    top_10_value: namedValue(10),
+    top_10_share: shareOf(namedValue(10), denominator),
+  };
 }
 
 export function populationSummary(rows, { snapshot_date, population_definition } = {}) {

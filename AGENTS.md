@@ -12,6 +12,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   only in Recent Awards mode. Group links use `ap_agency` / `ap_vendor` plus optional FY and
   amount filters so the ordinary Contracts list can drill into the same population slice.
 
+- **Vendor concentration projection:** `vendorConcentration` in
+  `site/analytical_projection.mjs` computes agency-scoped prime-vendor shares from the
+  explicit selected-scope registered-value denominator. Named-vendor top-5/top-10 shares
+  exclude the separately displayed `Unknown / not published` bucket; use
+  `test/analytical_projection.test.mjs` and
+  `test/functional/29_procurement_analytical_projection_drillthrough.py` for focused proof.
+
 - **Observer-coverage canaries:** `architecture/observer-canaries.json` is the
   single registration for architecture-affecting surfaces. Facts
   `observer_coverage`, the reconciliation workflow path filter, and the
