@@ -5,6 +5,7 @@ import {
   REPORT_TARGET_SCHEMA,
   buildReportTarget,
   buildReportTargetFromAnchor,
+  buildRelationshipReportTarget,
   describeReportTarget,
   parseReportClaimAnchor,
   reportTargetCardProjection,
@@ -12,6 +13,10 @@ import {
   resolveReportTarget,
   serializeReportTarget,
 } from "../site/report_target.mjs";
+import {
+  buildContractVendorRelationshipReportTarget,
+  buildProjectParcelRelationshipReportTarget,
+} from "../site/report_issue.mjs";
 
 test("whole-object target uses the existing object id and Copy link route", () => {
   const target = buildReportTarget({
@@ -47,6 +52,29 @@ test("contract vendor field anchor is stable and carries existing observation pr
   assert.equal(target.claim_anchor.subject_id, "procurement:contract:CT123");
   assert.deepEqual(target.provenance.source_record_ids, ["passport_public_contracts:row-1"]);
   assert.match(target.description, /Street repair contract: Acme Works/);
+});
+
+test("Contract ↔ vendor relationship anchor names both civic endpoints", () => {
+  const target = buildContractVendorRelationshipReportTarget({
+    procurement_id: "procurement:contract:CT123",
+    canonical_href: "/procurements/procurement%3Acontract%3ACT123",
+    short_title: "Street repair contract",
+    vendor_name: "Acme Works",
+    vendor_entity_ref: "vendor:stem:ACME%20WORKS",
+    source_observation_refs: ["passport_public_contracts:row-1"],
+  });
+
+  assert.equal(target.claim_anchor.claim_type, "relationship");
+  assert.equal(target.claim_anchor.relation_type, "named_vendor");
+  assert.equal(target.claim_anchor.subject_id, "procurement:contract:CT123");
+  assert.equal(target.claim_anchor.object_id, "vendor:stem:ACME%20WORKS");
+  assert.equal(target.description, "Street repair contract is connected to Acme Works");
+  assert.deepEqual(target.provenance.source_record_ids, ["passport_public_contracts:row-1"]);
+  assert.equal(target.target_id, reportTargetIdentity({
+    ...target,
+    object_label: "A differently formatted title",
+    claim_anchor: { ...target.claim_anchor, rendered_value: "Acme Works — Street repair contract" },
+  }));
 });
 
 test("entity identity anchor remains semantic across display and markup changes", () => {
@@ -103,6 +131,56 @@ test("land parcel relationship resolves existing project and parcel ids", () => 
     source_urls: ["https://zap.planning.nyc.gov/projects/2026M0258"],
     systems: ["zap-bbl"],
   });
+});
+
+test("project ↔ parcel relationship anchor survives unrelated presentation changes", () => {
+  const edge = {
+    ref: "bbl:1006440001",
+    label: "Manhattan — Block 644, Lot 1",
+    relation: "sited_on_parcel",
+    provenance: {
+      source_system: "zap-bbl",
+      source_record_id: "zap-bbl:2026M0258:1006440001",
+      source_url: "https://zap.planning.nyc.gov/projects/2026M0258",
+    },
+  };
+  const target = buildProjectParcelRelationshipReportTarget({
+    project_id: "2026M0258",
+    project_name: "Avenue project",
+  }, edge);
+  const reordered = buildProjectParcelRelationshipReportTarget({
+    project_id: "2026M0258",
+    project_name: "Avenue project",
+    unrelated_cards: ["different", "order"],
+  }, { ...edge, label: "A different parcel presentation" });
+
+  assert.equal(target.claim_anchor.anchor, "landuse:2026M0258#parcel:1006440001");
+  assert.equal(target.claim_anchor.claim_type, "relationship");
+  assert.equal(target.claim_anchor.relation_type, "sited_on_parcel");
+  assert.equal(target.claim_anchor.subject_id, "project:2026M0258");
+  assert.equal(target.claim_anchor.object_id, "bbl:1006440001");
+  assert.match(target.description, /Avenue project is connected to Manhattan/);
+  assert.deepEqual(target.provenance.source_record_ids, ["zap-bbl:2026M0258:1006440001"]);
+  assert.equal(target.target_id, reordered.target_id);
+});
+
+test("generic relationship builder keeps the machine relation type separate from civic copy", () => {
+  const target = buildRelationshipReportTarget({
+    object_type: "rulemaking",
+    object_id: "rulemaking:nyc-rules-9001",
+    canonical_url: "/browse/rules/",
+    object_label: "Commercial curb-use rule",
+    anchor: "rulemaking:nyc-rules-9001#lifecycle",
+    relation_type: "same_rulemaking_lifecycle",
+    subject_id: "rulemaking:nyc-rules-9001",
+    subject_label: "Commercial curb-use proposal",
+    related_object_id: "notice:adoption-9001",
+    related_object_label: "Notice of adoption",
+    field_or_semantic_key: "lifecycle",
+  });
+  assert.equal(target.claim_anchor.relation_type, "same_rulemaking_lifecycle");
+  assert.equal(target.description, "Commercial curb-use proposal is connected to Notice of adoption");
+  assert.doesNotMatch(target.description, /relation_type|subject_id|object_id/);
 });
 
 test("land regulatory-effect fallback is a derived interpretation", () => {

@@ -3,7 +3,10 @@ import assert from "node:assert/strict";
 import { validateFeedback, FEEDBACK_CATEGORIES, REPORT_CATEGORIES, MSG_MIN, MSG_MAX } from "../src/lib/feedback.mjs";
 import { handleFeedback } from "../src/feedback.mjs";
 import { overActorLimit } from "../src/lib/meter.mjs";
-import { buildContractReportTarget } from "../../site/report_issue.mjs";
+import {
+  buildContractReportTarget,
+  buildProjectParcelRelationshipReportTarget,
+} from "../../site/report_issue.mjs";
 
 const good = (over = {}) => ({ category: "bug", message: "Something broke on the money tab.", email: "", ...over });
 
@@ -34,6 +37,40 @@ test("validateFeedback keeps a Contract report target and optional evidence atta
   assert.equal(result.value.report_target.target_id, target.target_id);
   assert.equal(result.value.report_target.canonical_url, target.canonical_url);
   assert.equal(result.value.evidence, "See the attached public contract row.");
+});
+
+test("validateFeedback preserves a wrong project ↔ parcel edge with civic labels and provenance", () => {
+  const target = buildProjectParcelRelationshipReportTarget({
+    project_id: "2026M0258",
+    project_name: "Avenue project",
+  }, {
+    ref: "bbl:1006440001",
+    label: "Manhattan — Block 644, Lot 1",
+    relation: "sited_on_parcel",
+    provenance: {
+      source_system: "zap-bbl",
+      source_record_id: "zap-bbl:2026M0258:1006440001",
+      source_url: "https://zap.planning.nyc.gov/projects/2026M0258",
+    },
+  });
+  const result = validateFeedback({
+    category: "connection_wrong",
+    message: "This project is adjacent to that parcel, but the application does not include it.",
+    evidence: "See the filed project map.",
+    report_target: target,
+    email: "",
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.value.report_target.claim_anchor.relation_type, "sited_on_parcel");
+  assert.equal(result.value.report_target.claim_anchor.subject_id, "project:2026M0258");
+  assert.equal(result.value.report_target.claim_anchor.object_id, "bbl:1006440001");
+  assert.equal(result.value.report_target.description, "Avenue project is connected to Manhattan — Block 644, Lot 1");
+  assert.deepEqual(result.value.report_target.provenance, {
+    source_record_ids: ["zap-bbl:2026M0258:1006440001"],
+    source_urls: ["https://zap.planning.nyc.gov/projects/2026M0258"],
+    systems: ["zap-bbl"],
+  });
 });
 
 test("object reports reject generic categories and malformed targets", () => {

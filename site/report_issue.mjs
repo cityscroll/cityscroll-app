@@ -2,10 +2,12 @@ import {
   REPORT_TARGET_SCHEMA,
   buildReportTarget,
   buildReportTargetFromAnchor,
+  buildRelationshipReportTarget,
   reportTargetIdentity,
   resolveReportTarget,
   serializeReportTarget,
 } from "./report_target.mjs";
+import { entityRouteRef } from "./entity_pivot.mjs";
 
 export const REPORT_CATEGORIES = Object.freeze([
   { value: "information_wrong", label: "Information is wrong" },
@@ -17,8 +19,13 @@ export const REPORT_CATEGORIES = Object.freeze([
   { value: "other", label: "Other" },
 ]);
 
-const VENDOR_REPORT_CATEGORIES = Object.freeze(new Set([
+const FIELD_REPORT_CATEGORIES = Object.freeze(new Set([
   "information_wrong",
+  "something_missing",
+  "other",
+]));
+const RELATIONSHIP_REPORT_CATEGORIES = Object.freeze(new Set([
+  "connection_wrong",
   "something_missing",
   "other",
 ]));
@@ -27,7 +34,7 @@ const DEFAULT_FALLBACK_HREF = "/about.html#feedback";
 const API_ORIGIN = () => globalThis.CROL_API_ORIGIN || "https://api.cityscroll.org";
 const API_FALLBACK_ORIGIN = () => globalThis.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
 
-function clean(value, max = 500) {
+function reportClean(value, max = 500) {
   const result = String(value ?? "")
     .replace(/[\u0000-\u001f\u007f]/g, " ")
     .replace(/\s+/g, " ")
@@ -44,10 +51,10 @@ function esc(value) {
 
 function contractParts(record = {}) {
   const source = record && typeof record === "object" ? record : {};
-  const procurementId = clean(source.procurement_id || source.object_id, 320);
+  const procurementId = reportClean(source.procurement_id || source.object_id, 320);
   const match = procurementId?.match(/^procurement:contract:([^:]+)$/i);
   if (!match) return null;
-  const canonicalUrl = clean(
+  const canonicalUrl = reportClean(
     source.canonical_href
       || source.canonical_url
       || source.compatibility?.canonical_href,
@@ -63,11 +70,11 @@ export function buildContractReportTarget(record = {}, facts = {}) {
   if (!parts) return null;
   const source = record && typeof record === "object" ? record : {};
   const details = facts && typeof facts === "object" ? facts : {};
-  const objectLabel = clean(
+  const objectLabel = reportClean(
     details.title || source.short_title || source.title || source.object_label,
     1_000,
   ) || `Contract ${parts.contractId}`;
-  const vendor = clean(
+  const vendor = reportClean(
     details.vendor || source.vendor_name || source.vendor || source.prime_vendor,
     500,
   );
@@ -100,6 +107,86 @@ export function buildContractReportTarget(record = {}, facts = {}) {
   }
 }
 
+function existingVendorRef(record, facts) {
+  const values = [
+    facts?.vendor_ref,
+    facts?.vendor_entity_ref,
+    facts?.vendor_subject_ref,
+    record?.vendor_ref,
+    record?.vendor_entity_ref,
+    record?.vendor_subject_ref,
+    ...(Array.isArray(record?.entity_refs_all) ? record.entity_refs_all : []),
+  ];
+  return values.map((value) => reportClean(value, 320))
+    .find((value) => /^vendor:stem:[^\s]+$/.test(value || "")) || null;
+}
+
+/** Build the durable Contract ↔ vendor edge target from the vendor identity model. */
+export function buildContractVendorRelationshipReportTarget(record = {}, facts = {}) {
+  const parts = contractParts(record);
+  if (!parts) return null;
+  const source = record && typeof record === "object" ? record : {};
+  const details = facts && typeof facts === "object" ? facts : {};
+  const contractLabel = reportClean(
+    details.title || source.short_title || source.title || source.object_label,
+    1_000,
+  ) || `Contract ${parts.contractId}`;
+  const vendor = reportClean(
+    details.vendor || source.vendor_name || source.vendor || source.prime_vendor,
+    500,
+  );
+  const vendorRef = existingVendorRef(source, details) || (vendor ? entityRouteRef("vendor", vendor) : null);
+  if (!vendor || !vendorRef) return null;
+  try {
+    return buildRelationshipReportTarget({
+      object_type: "procurement",
+      object_id: parts.procurementId,
+      canonical_url: parts.canonicalUrl,
+      object_label: contractLabel,
+      anchor: `contract:${parts.contractId}#vendor`,
+      relation_type: "named_vendor",
+      subject_id: parts.procurementId,
+      subject_label: contractLabel,
+      related_object_id: vendorRef,
+      related_object_label: vendor,
+      field_or_semantic_key: "vendor",
+      source,
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Build the durable Land project ↔ exact parcel edge target. */
+export function buildProjectParcelRelationshipReportTarget(evidence = {}, item = {}) {
+  const projectId = reportClean(evidence?.project_id || evidence?.project_ref, 80).replace(/^project:/, "");
+  const projectRef = projectId ? `project:${projectId}` : null;
+  const parcelRef = reportClean(item?.ref || item?.object_id, 80);
+  const bbl = parcelRef?.match(/^bbl:(\d{10})$/)?.[1] || null;
+  if (!projectId || !projectRef || !bbl) return null;
+  const projectLabel = reportClean(evidence?.project_name || evidence?.project_label) || `Land-use project ${projectId}`;
+  const parcelLabel = reportClean(item?.label) || `Parcel BBL ${bbl}`;
+  try {
+    return buildRelationshipReportTarget({
+      object_type: "land_use_project",
+      object_id: projectRef,
+      canonical_url: `/browse/zoning/#land/${encodeURIComponent(projectId)}`,
+      object_label: projectLabel,
+      anchor: `landuse:${projectId}#parcel:${bbl}`,
+      relation_type: reportClean(item?.relation) || "sited_on_parcel",
+      subject_id: projectRef,
+      subject_label: projectLabel,
+      related_object_id: parcelRef,
+      related_object_label: parcelLabel,
+      field_or_semantic_key: "parcel",
+      edge: item,
+      source: evidence,
+    });
+  } catch {
+    return null;
+  }
+}
+
 export function reportIssueAction(target, options = {}) {
   const fallbackHref = options?.fallbackHref || DEFAULT_FALLBACK_HREF;
   if (!target) {
@@ -114,7 +201,7 @@ export function reportIssueAction(target, options = {}) {
   try {
     return {
       kind: "button",
-      label: "Report an issue",
+      label: options?.label || "Report an issue",
       className: "ui-report-issue",
       attrs: {
         "data-report-target": serializeReportTarget(target),
@@ -151,9 +238,14 @@ export function renderReportIssueAffordance(target, options = {}) {
 }
 
 function categoryOptions(target) {
-  const isVendor = target?.claim_anchor?.field_or_semantic_key === "vendor";
+  const claimType = target?.claim_anchor?.claim_type;
+  const allowed = claimType === "relationship"
+    ? RELATIONSHIP_REPORT_CATEGORIES
+    : target?.claim_anchor?.field_or_semantic_key === "vendor"
+      ? FIELD_REPORT_CATEGORIES
+      : null;
   return REPORT_CATEGORIES
-    .filter((item) => !isVendor || VENDOR_REPORT_CATEGORIES.has(item.value))
+    .filter((item) => !allowed || allowed.has(item.value))
     .map((item) => `<option value="${esc(item.value)}">${esc(item.label)}</option>`)
     .join("");
 }
@@ -165,9 +257,9 @@ function dialogHtml() {
       <h2 id="report-issue-heading">Report an issue</h2>
       <p class="report-issue-intro">Tell us what is wrong with this CityScroll record. Your report is evidence of a disagreement, not an automatic change to the record.</p>
       <div class="report-issue-target" data-report-target-panel>
-        <span class="report-issue-target-label">Reporting</span>
+        <span class="report-issue-target-label" data-report-target-label>Reporting</span>
         <strong data-report-target-description></strong>
-        <a data-report-target-link target="_blank" rel="noopener noreferrer"><span data-report-target-link-label>Open this Contract</span><span class="sr-only"> (opens in new tab)</span></a>
+        <a data-report-target-link target="_blank" rel="noopener noreferrer"><span data-report-target-link-label>Open this record</span><span class="sr-only"> (opens in new tab)</span></a>
       </div>
       <p class="report-issue-failure" data-report-failure hidden></p>
       <form data-report-form novalidate>
@@ -227,6 +319,7 @@ function installHandlers(dialog, documentRef) {
   const failure = dialog.querySelector("[data-report-failure]");
   const status = dialog.querySelector("[data-report-status]");
   const targetPanel = dialog.querySelector("[data-report-target-panel]");
+  const targetLabel = dialog.querySelector("[data-report-target-label]");
   const targetDescription = dialog.querySelector("[data-report-target-description]");
   const targetLink = dialog.querySelector("[data-report-target-link]");
   const category = dialog.querySelector("[data-report-category]");
@@ -238,7 +331,7 @@ function installHandlers(dialog, documentRef) {
     targetPanel.hidden = true;
     form.hidden = true;
     failure.hidden = false;
-    failure.innerHTML = `This report could not be attached to a specific Contract. Use <a href="${esc(DEFAULT_FALLBACK_HREF)}">generic Feedback</a> instead.`;
+    failure.innerHTML = `This report could not be attached to a specific civic record. Use <a href="${esc(DEFAULT_FALLBACK_HREF)}">generic Feedback</a> instead.`;
     status.textContent = "";
     showDialog(dialog);
   }
@@ -255,6 +348,9 @@ function installHandlers(dialog, documentRef) {
     targetPanel.hidden = false;
     form.hidden = false;
     failure.hidden = true;
+    targetLabel.textContent = target.claim_anchor?.claim_type === "relationship"
+      ? `Reporting ${typeof globalThis.t === "function" ? globalThis.t("scope_relation_connection") : "connection"}`
+      : "Reporting";
     targetDescription.textContent = target.description;
     targetLink.href = target.canonical_url;
     form.elements.report_target.value = serializeReportTarget(target);
@@ -312,7 +408,7 @@ function installHandlers(dialog, documentRef) {
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) throw new Error(result.reason || "send-failed");
-      status.textContent = "Thanks — your report was sent with this Contract attached.";
+      status.textContent = "Thanks — your report was sent with this civic record attached.";
       message.value = "";
       form.elements.evidence.value = "";
     } catch (error) {
