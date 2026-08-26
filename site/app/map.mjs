@@ -94,6 +94,7 @@ async function hydrateNearYouDeferredData() {
     return;
   }
   root.dataset.nearDeferredState = "loading";
+  const focusedDeferredPart = hosts.find((host) => host.contains(document.activeElement))?.dataset.nearDeferred;
   try {
     const response = await fetch(new URL(href, document.baseURI), {
       headers: { Accept: "application/json" },
@@ -114,12 +115,23 @@ async function hydrateNearYouDeferredData() {
     root.dataset.nearDeferredState = "ready";
     wireMapAndList();
     wireSurfaceSwitch();
+    if (focusedDeferredPart) {
+      const focusTarget = focusedDeferredPart === "bags" ? "#near-bags-heading" : "#near-results-heading";
+      root.querySelector(focusTarget)?.focus?.({ preventScroll: true });
+    }
     reportNearYouReadiness();
   } catch {
     for (const host of hosts) {
-      host.textContent = host.dataset.nearDeferred === "bags"
+      const message = host.dataset.nearDeferred === "bags"
         ? copy("messageBagsUnavailable")
         : copy("messageDeferredUnavailable");
+      const statusNode = document.createElement("p");
+      statusNode.className = "near-deferred-status";
+      statusNode.setAttribute("role", "status");
+      statusNode.textContent = message;
+      host.replaceChildren(statusNode);
+      host.setAttribute("aria-busy", "false");
+      if (host.dataset.nearDeferred === "results") host.removeAttribute("data-results-count");
       host.dataset.nearDeferredState = "error";
     }
     root.dataset.nearDeferredState = "error";

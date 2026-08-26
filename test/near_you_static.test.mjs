@@ -211,6 +211,9 @@ test("the shared renderer emits exact server-owned records, counts, map paths, a
   assert.equal(view.results.count, 1);
   assert.deepEqual(view.results.ids, ["m-queens"]);
   assert.match(html, /data-near-you-root/);
+  assert.match(html, /class="near-results near-results-shell"[^>]+data-results-count="0"[^>]+data-near-deferred="results"/);
+  assert.match(html, /class="near-bags near-bags-shell"[^>]+data-near-deferred="bags"/);
+  assert.match(html, /class="near-bag" data-bag="(?:citywide|virtual|unlocated)"/);
   assert.match(deferred, /data-results-count="1"/);
   assert.match(deferred, /data-record-id="m-queens"/);
   assert.match(deferred, /data-pivot-schema="cityscroll\.edge_summary\.v1"[^>]+data-pivot-target-kind="notice"/);
@@ -268,6 +271,8 @@ test("deferred Near-you parts preserve records, empty copy, and error-state hook
 
   const mapRuntime = readFileSync(new URL("../site/app/map.mjs", import.meta.url), "utf8");
   assert.match(mapRuntime, /copy\("messageDeferredUnavailable"\)/);
+  assert.match(mapRuntime, /focusedDeferredPart/);
+  assert.match(mapRuntime, /removeAttribute\("data-results-count"\)/);
   assert.match(mapRuntime, /nearDeferredState = "error"/);
 });
 

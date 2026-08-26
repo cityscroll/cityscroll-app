@@ -545,9 +545,22 @@ export function renderNearYouDeferredBody(view) {
     ${bagsHtml}`;
 }
 
-function renderNearYouDeferredPlaceholder(part) {
-  const label = part === "bags" ? "other places" : "matching records";
-  return `<div data-near-deferred="${part}" data-near-deferred-state="pending" role="status">Loading ${label}…</div>`;
+function renderNearYouDeferredShell(view, part) {
+  if (part === "results") {
+    return `<section class="near-results near-results-shell" aria-labelledby="near-results-heading" data-results-count="0" data-near-deferred="results" data-near-deferred-state="pending" data-near-surface-panel="list" aria-busy="true">
+      <div class="near-section-heading"><div><p class="near-kicker">Matching records</p><h2 id="near-results-heading" tabindex="-1">Matching ${esc(view.lensLabel)} records</h2></div></div>
+      <p class="near-deferred-status" role="status" aria-live="polite">Loading matching records…</p>
+    </section>`;
+  }
+  const bags = Object.values(view.bags).map((bag) => `<details class="near-bag" data-bag="${bag.kind}">
+    <summary><span>${esc(bag.label)}</span><strong>${bag.count}</strong></summary>
+    <p class="near-deferred-status" role="status" aria-live="polite">Loading ${esc(bag.label.toLowerCase())} records…</p>
+  </details>`).join("");
+  return `<section class="near-bags near-bags-shell" aria-labelledby="near-bags-heading" data-near-deferred="bags" data-near-deferred-state="pending" aria-busy="true">
+      <p class="near-kicker">Other places</p><h2 id="near-bags-heading">Records outside mapped districts</h2>
+      <p>Citywide, online, and records without a place stay visible. We do not assign them to a district.</p>
+      ${bags}
+    </section>`;
 }
 
 export function renderNearYouBody(view) {
@@ -663,7 +676,7 @@ export function renderNearYouBody(view) {
       <a class="near-surface-link is-active" href="#near-results-heading" data-near-surface="list">Records (${view.results.count})</a>
       <a class="near-surface-link" href="#near-map-heading" data-near-surface="map">Map</a>
     </nav>
-    ${renderNearYouDeferredPlaceholder("results")}
+    ${renderNearYouDeferredShell(view, "results")}
     <section class="near-map-section" aria-labelledby="near-map-heading" data-near-surface-panel="map">
       <div class="near-section-heading"><div><p class="near-kicker">Map view</p><h2 id="near-map-heading">${esc(view.lensLabel)} by area</h2></div>
         <div class="map-controls js-only" hidden>
@@ -693,7 +706,7 @@ export function renderNearYouBody(view) {
         </div>
       </div>
     </section>
-    ${renderNearYouDeferredPlaceholder("bags")}
+    ${renderNearYouDeferredShell(view, "bags")}
   </main>`;
 }
 

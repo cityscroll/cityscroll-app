@@ -131,7 +131,7 @@ function agencyDeferredSectionView(view, displayView, activeClaimId, effectiveAs
     activeClaimId,
     effectiveAsOf,
     showAsOf,
-  });
+  }, { exclude: ["as-of"] });
   const edgeSummary = buildAgencyEdgeSummary(displayView);
   const surfaceEdgeSummary = sections.includes('id="mandates-conformance"')
     ? edgeSummary
@@ -160,7 +160,8 @@ export function renderAgencyConstellationDeferredFragment(view, options = {}) {
     effectiveAsOf,
     showAsOf,
   );
-  return `${renderAgencyConnectionCards(surfaceEdgeSummary)}${sections}`;
+  const ledgerSlot = showAsOf ? '<div data-civic-time-ledger-slot></div>' : '';
+  return `${renderAgencyConnectionCards(surfaceEdgeSummary)}${ledgerSlot}${sections}`;
 }
 
 export function agencyConstellationSharePath(viewPath, { claim = null, asOf = null } = {}) {

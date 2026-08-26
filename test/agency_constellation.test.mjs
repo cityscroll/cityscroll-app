@@ -433,6 +433,7 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(deferred, /data-agency-constellation-category="contracts"/);
   assert.match(deferred, /data-agency-constellation-category="meetings"/);
   assert.match(deferred, /data-agency-constellation-category="rules"/);
+  assert.doesNotMatch(deferred, /data-civic-time-ledger="1"/);
   assert.doesNotMatch(deferred, /id="mandates-conformance"/);
   assert.match(deferred, /id="agency-statutory-mandates"/);
   assert.match(deferred, /data-agency-constellation-category="staffing"/);
@@ -459,7 +460,8 @@ test("deferred agency relationships preserve as-of projection and empty output",
   });
   const asOf = renderAgencyConstellationDeferredFragment(view, { asOf: "2024-06-01" });
   assert.match(asOf, /data-agency-constellation-category=/);
-  assert.match(asOf, /data-as-of="2024-06-01"/);
+  assert.doesNotMatch(asOf, /data-civic-time-ledger="1"/);
+  assert.match(asOf, /data-civic-time-ledger-slot/);
 
   const emptyView = buildAgencyConstellationView("campaign-finance-board", {
     intelligence: { by_ref: {}, generated_at: "test" },

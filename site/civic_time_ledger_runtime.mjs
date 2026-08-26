@@ -362,8 +362,14 @@ async function hydrateAgencyRelationships(main, href) {
       throw new Error("agency-relationships-payload-invalid");
     }
     if (host) {
+      const initialLedger = main.querySelector("[data-civic-time-ledger]");
       host.insertAdjacentHTML("beforebegin", payload.html);
       host.remove();
+      const ledgerSlot = main.querySelector("[data-civic-time-ledger-slot]");
+      if (ledgerSlot) {
+        if (initialLedger) ledgerSlot.replaceWith(initialLedger);
+        else ledgerSlot.remove();
+      }
     }
     main.dataset.civicObjectDeferredState = "ready";
     main.dataset.civicObjectSettled = "true";

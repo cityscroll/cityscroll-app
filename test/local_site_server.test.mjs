@@ -25,6 +25,7 @@ test("full preflight and CI use the route-aware server without touching existing
   const server = read("tools/local_site_server.py");
   assert.match(server, /def _static_document\(/);
   assert.match(server, /if self\._static_document\(route, query\):/);
+  assert.match(server, /segments\[2\] in \{"relationships\.json", "relationships-data\.json"\}/);
   assert.match(server, /def publish_ready\(/);
   assert.match(server, /probe_base\(base, timeout_seconds=args\.readiness_timeout\)/);
   assert.match(server, /urllib\.error\.URLError/);
