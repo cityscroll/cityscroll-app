@@ -17,11 +17,16 @@ import {
 } from "../capabilities/registry.mjs";
 import {
   MCP_CITED_PASSAGES_ADAPTER,
+  MCP_FEDERATED_SEARCH_ADAPTER,
   MCP_NOTICE_GET_ADAPTER,
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
 } from "../capabilities/mcp_tool_declarations.mjs";
+import {
+  FEDERATED_SEARCH_CAPABILITY,
+  FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+} from "../capabilities/federated_search.mjs";
 import {
   NOTICE_GET_CAPABILITY,
   NOTICE_GET_CAPABILITY_REFERENCE,
@@ -46,6 +51,7 @@ import { workerD1NoticeSearch } from "../worker/src/lib/notices.mjs";
 import { NOTICE_GET_HTTP_ADAPTER, workerNoticeGet } from "../worker/src/notice.mjs";
 import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
 import { SEARCH_NOTICE_ADAPTER } from "../worker/src/search.mjs";
+import { SEARCH_FEDERATED_ADAPTER, workerFederatedSearch } from "../worker/src/search.mjs";
 import {
   ENTITY_DOSSIER_HTTP_ADAPTER,
   workerD1EntityDossier,
@@ -67,14 +73,15 @@ const ROOT = new URL("../", import.meta.url);
 const TOPOLOGY = new URL("../architecture/generated/capability-topology.json", import.meta.url);
 const CATALOG = new URL("../site/data/mcp_tool_catalog.json", import.meta.url);
 
-test("the registry is frozen, versioned, owned, and contains the four spine capabilities plus notice retrieval", () => {
+test("the registry is frozen, versioned, owned, and contains the federated search capability", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 5);
+  assert.equal(CAPABILITY_REGISTRY.length, 6);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[1], NOTICE_GET_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[2], ENTITY_DOSSIER_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[3], ENTITY_RELATIONSHIPS_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[4], CITED_PASSAGES_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[5], FEDERATED_SEARCH_CAPABILITY);
   assert.equal(NOTICE_SEARCH_CAPABILITY.reference, "notice.search@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(NOTICE_SEARCH_CAPABILITY.owner, "notices");
@@ -90,6 +97,9 @@ test("the registry is frozen, versioned, owned, and contains the four spine capa
   assert.equal(CITED_PASSAGES_CAPABILITY.reference, "cited.passages.retrieve@1");
   assert.equal(CITED_PASSAGES_CAPABILITY.version, "1.0.0");
   assert.equal(CITED_PASSAGES_CAPABILITY.owner, "semantic-retrieval");
+  assert.equal(FEDERATED_SEARCH_CAPABILITY.reference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
+  assert.equal(FEDERATED_SEARCH_CAPABILITY.version, "1.0.0");
+  assert.equal(FEDERATED_SEARCH_CAPABILITY.owner, "universal-search");
   assert.ok(Object.isFrozen(CAPABILITY_REGISTRY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY));
   assert.ok(Object.isFrozen(NOTICE_SEARCH_CAPABILITY.adapters));
@@ -99,6 +109,26 @@ test("the registry is frozen, versioned, owned, and contains the four spine capa
   assert.ok(Object.isFrozen(ENTITY_RELATIONSHIPS_CAPABILITY.adapters));
   assert.ok(Object.isFrozen(CITED_PASSAGES_CAPABILITY));
   assert.ok(Object.isFrozen(CITED_PASSAGES_CAPABILITY.adapters));
+  assert.ok(Object.isFrozen(FEDERATED_SEARCH_CAPABILITY));
+  assert.ok(Object.isFrozen(FEDERATED_SEARCH_CAPABILITY.adapters));
+});
+
+test("federated search provider and HTTP/MCP adapters reference one capability", () => {
+  const provider = workerFederatedSearch({});
+  assert.equal(provider.capabilityReference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
+  assert.equal(provider.providerId, FEDERATED_SEARCH_CAPABILITY.provider.id);
+  assert.deepEqual(
+    [SEARCH_FEDERATED_ADAPTER, MCP_FEDERATED_SEARCH_ADAPTER].map((adapter) => ({
+      id: adapter.id,
+      capabilityReference: adapter.capabilityReference,
+      providerId: adapter.providerId,
+    })),
+    FEDERATED_SEARCH_CAPABILITY.adapters.map((adapter) => ({
+      id: adapter.id,
+      capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+      providerId: FEDERATED_SEARCH_CAPABILITY.provider.id,
+    })),
+  );
 });
 
 test("provider and both real adapters explicitly reference notice.search@1", () => {
@@ -212,6 +242,7 @@ test("core capability files contain no runtime or transport dependencies", () =>
     "capabilities/entity_dossier.mjs",
     "capabilities/entity_relationships.mjs",
     "capabilities/cited_passages.mjs",
+    "capabilities/federated_search.mjs",
     "capabilities/registry.mjs",
   ]) {
     const source = readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
@@ -233,8 +264,10 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "entity.dossier.get@1",
     "entity.relationships.get@1",
     "cited.passages.retrieve@1",
+    "search.federated@1",
   ]);
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
+    "search_federated",
     "search_notices",
     "get_notice",
     "get_entity_dossier",
@@ -243,7 +276,7 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "preview_watch",
     "create_watch",
   ]);
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 7);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 8);
 });
 
 test("the deterministic CLI check passes and --stdout is stable", () => {
