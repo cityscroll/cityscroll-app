@@ -5,6 +5,11 @@ __pycache__/
 docs/data-source-graph.json
 docs/data-source-graph.html
 
+# Regenerable local build output; source lives under site/ outside these paths.
+_site/
+site/browse/
+site/now/
+
 # Architecture evidence is generated at verification time and uploaded from CI.
 architecture/generated/facts.json
 architecture/generated/reconciliation.json
