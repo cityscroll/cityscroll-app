@@ -48,13 +48,15 @@ jobs:
         run: node tools/build_worker_route_read_models.mjs --output-dir "$RUNNER_TEMP/crol-worker-route-read-models" --check
       - name: Verify Worker bundle budget and route read-model canaries
         # worker_deploy_guard enforces the 64 MiB uncompressed budget, 10 MB compressed budget, and 1 second startup ceiling.
+        # Keep the startup profiler on a Wrangler release whose bundled workerd supports the
+        # Worker compatibility date; older alpha-check binaries can lag the Cloudflare runtime.
         working-directory: worker
         run: |
           set -euo pipefail
           bundle_dir="$RUNNER_TEMP/crol-worker-bundle"
           mkdir -p "$bundle_dir"
-          npx wrangler@4.110.0 deploy --dry-run --outdir "$bundle_dir" --metafile "$bundle_dir/meta.json"
-          npx wrangler@4.110.0 check startup > "$bundle_dir/startup.txt"
+          npx wrangler@4.126.0 deploy --dry-run --outdir "$bundle_dir" --metafile "$bundle_dir/meta.json"
+          npx wrangler@4.126.0 check startup > "$bundle_dir/startup.txt"
           node ../tools/worker_deploy_guard.mjs \
             --metafile "$bundle_dir/meta.json" \
             --startup-report "$bundle_dir/startup.txt" \
@@ -68,7 +70,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: worker
-          wranglerVersion: "4.110.0"
+          wranglerVersion: "4.126.0"
           command: d1 migrations apply crol-notices --remote
       - name: Build D1 search, OCP, and entity-intelligence read models
         run: node tools/build_worker_d1_read_models.mjs --output-dir worker/.d1-read-models
@@ -77,9 +79,9 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          npx wrangler@4.110.0 d1 execute crol-notices --remote --yes --file .d1-read-models/keyword_search_read_model.sql
-          npx wrangler@4.110.0 d1 execute crol-notices --remote --yes --file .d1-read-models/ocp_awards_read_model.sql
-          npx wrangler@4.110.0 d1 execute crol-notices --remote --yes --file .d1-read-models/entity_intelligence_read_model.sql
+          npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/keyword_search_read_model.sql
+          npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/ocp_awards_read_model.sql
+          npx wrangler@4.126.0 d1 execute crol-notices --remote --yes --file .d1-read-models/entity_intelligence_read_model.sql
       # Route slices are immutable and versioned. Publish every slice first, then
       # publish the small manifests last so a live reader never follows a partial version.
       - name: Publish Near You and meeting route read models
@@ -90,11 +92,11 @@ jobs:
           route_dir="$RUNNER_TEMP/crol-worker-route-read-models"
           for bulk_file in "$route_dir"/near-you.bulk.*.json "$route_dir"/meetings.bulk.*.json; do
             [ -f "$bulk_file" ] || continue
-            npx wrangler@4.110.0 kv bulk put "$bulk_file" --binding ALERT_STATE --remote --config worker/wrangler.toml
+            npx wrangler@4.126.0 kv bulk put "$bulk_file" --binding ALERT_STATE --remote --config worker/wrangler.toml
           done
-          npx wrangler@4.110.0 kv key put route-read-model:near-you:manifest:v1 \
+          npx wrangler@4.126.0 kv key put route-read-model:near-you:manifest:v1 \
             --path "$route_dir/near-you.manifest.json" --binding ALERT_STATE --remote --config worker/wrangler.toml
-          npx wrangler@4.110.0 kv key put route-read-model:meetings:manifest:v1 \
+          npx wrangler@4.126.0 kv key put route-read-model:meetings:manifest:v1 \
             --path "$route_dir/meetings.manifest.json" --binding ALERT_STATE --remote --config worker/wrangler.toml
       # Wrangler rewrites Cron Trigger configuration on every deploy. Cloudflare says
       # trigger changes can take up to 15 minutes to propagate, so a deploy immediately
@@ -106,7 +108,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: worker
-          wranglerVersion: "4.110.0"
+          wranglerVersion: "4.126.0"
           # No accountId input: wrangler.toml carries no account_id, so wrangler resolves the
           # account from the API token itself — avoids a second repo secret to keep in sync.
           # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
@@ -125,7 +127,7 @@ jobs:
             echo "CLOUDFLARE_API_TOKEN is not configured; /admin/performance will remain unavailable."
             exit 0
           fi
-          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler@4.110.0 secret put ANALYTICS_READ_TOKEN
+          printf '%s' "$CLOUDFLARE_API_TOKEN" | npx wrangler@4.126.0 secret put ANALYTICS_READ_TOKEN
 
       # Idempotent single-secret sync for the authenticated Legistar Web API token. This is a
       # targeted `wrangler secret put` (NOT the action's bulk secrets/vars inputs that the
