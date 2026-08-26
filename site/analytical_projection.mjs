@@ -8,11 +8,27 @@ import {
 
 export const ANALYTICAL_PROJECTION_URL = "data/analytics_registered_contracts.json";
 export const ANALYTICAL_GROUPS = Object.freeze({ agency: "agency", vendor: "prime_vendor" });
+export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
+  "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
+]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",
   current: "sum_current_registered_amount",
   original: "sum_original_registered_amount",
 });
+
+/** Preserve analytical drill-through parameters while a document URL crosses the shared scope hash. */
+export function preserveAnalyticalProjectionQuery(source, target) {
+  const sourceParams = new URLSearchParams(String(source || "").split("?", 2)[1] || "");
+  const targetParts = String(target || "").split("?", 2);
+  const targetParams = new URLSearchParams(targetParts[1] || "");
+  if (targetParts[0].replace(/^#/, "") !== "money") return target;
+  for (const key of ANALYTICAL_PROJECTION_QUERY_KEYS) {
+    if (sourceParams.has(key)) targetParams.set(key, sourceParams.get(key));
+  }
+  const query = targetParams.toString();
+  return `${targetParts[0]}${query ? `?${query}` : ""}`;
+}
 
 export function registrationFiscalYear(value) {
   const match = String(value || "").slice(0, 10).match(/^(\d{4})-(\d{2})-(\d{2})$/);

@@ -1,0 +1,74 @@
+"""Verify analytical Contracts drill-throughs survive cold URL loads and in-app clicks."""
+
+from __future__ import annotations
+
+import os
+from urllib.parse import urlencode
+
+from playwright.sync_api import sync_playwright
+
+
+BASE = os.environ.get("CROL_BASE", "http://127.0.0.1:8000/").rstrip("/")
+AGENCY = "Department of Design and Construction"
+VENDOR = "CDW GOVERNMENT LLC"
+
+
+def wait_for_contracts(page) -> None:
+    page.wait_for_selector("#list .row, #list .empty", timeout=60000)
+    page.wait_for_function(
+        "() => !document.querySelector('#list .loading') && document.querySelector('#rescount')?.textContent",
+        timeout=60000,
+    )
+
+
+def assert_scope(page, key: str, value: str, expected_count: int, expected_label: str) -> None:
+    assert page.url.split("?", 1)[1].find(f"{key}=") >= 0, page.url
+    assert page.url.split(key + "=", 1)[1].split("&", 1)[0] == value.replace(" ", "+"), page.url
+    assert page.locator("#list .row").count() == expected_count
+    assert page.locator("#list .ragency").count() == expected_count
+    if key == "ap_agency":
+        assert all(
+            expected_label in text
+            for text in page.locator("#list .ragency").evaluate_all("els => els.map(el => el.textContent)")
+        )
+    else:
+        assert all(
+            expected_label in text
+            for text in page.locator("#list .rmeta").evaluate_all("els => els.map(el => el.textContent)")
+        )
+
+
+def main() -> None:
+    with sync_playwright() as playwright:
+        browser = playwright.chromium.launch(headless=True)
+        page = browser.new_page()
+
+        for key, value, expected_count in (
+            ("ap_agency", AGENCY, 40),
+            ("ap_vendor", VENDOR, 20),
+        ):
+            query = urlencode({"mode": "award", key: value})
+            page.goto(f"{BASE}/browse/contracts/?{query}", wait_until="domcontentloaded", timeout=60000)
+            wait_for_contracts(page)
+            assert_scope(page, key, value.replace("+", " "), expected_count, value)
+
+        page.goto(f"{BASE}/browse/contracts/?mode=award", wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_selector("#contracts-analytics-groups a", timeout=60000)
+        page.locator(f'a[data-analytics-drill-through="{AGENCY}"]').click()
+        wait_for_contracts(page)
+        assert_scope(page, "ap_agency", AGENCY, 40, AGENCY)
+
+        page.goto(f"{BASE}/browse/contracts/?mode=award", wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_selector("#contracts-analytics-groups a", timeout=60000)
+        page.select_option("#analytics-group", "vendor")
+        page.wait_for_selector(f'a[data-analytics-drill-through="{VENDOR}"]', timeout=60000)
+        page.locator(f'a[data-analytics-drill-through="{VENDOR}"]').click()
+        wait_for_contracts(page)
+        assert_scope(page, "ap_vendor", VENDOR, 20, VENDOR)
+
+        print("PASS: analytical agency and vendor drill-throughs work from cold URLs and in-app links")
+        browser.close()
+
+
+if __name__ == "__main__":
+    main()
