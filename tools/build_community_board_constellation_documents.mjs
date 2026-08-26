@@ -77,7 +77,10 @@ function sourceRows() {
     sourceRecords: meetingIndex.by_board,
     meetingDocuments: meetingIndex.meeting_documents,
     sourceReceipts: meetingIndex.receipts,
-    generated_at: meetingIndex.generated_at,
+    // The meeting index timestamp is a refresh/freshness clock and changes on
+    // every rebuild. Constellation lookup summaries use the stable scorecard
+    // date so the committed artifact remains byte-idempotent between changes.
+    generated_at: scorecard.as_of,
     institutionEdges,
   };
 }

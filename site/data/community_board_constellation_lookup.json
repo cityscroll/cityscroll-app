@@ -11,7 +11,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -242,7 +242,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -473,7 +473,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -704,7 +704,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -935,7 +935,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1166,7 +1166,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1391,7 +1391,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1622,7 +1622,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -1847,7 +1847,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2078,7 +2078,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2303,7 +2303,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2528,7 +2528,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2759,7 +2759,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -2990,7 +2990,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3221,7 +3221,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3452,7 +3452,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3681,9 +3681,9 @@
       "display_name": "Brooklyn Community Board 5",
       "path": "/community-boards/brooklyn-cb-05/",
       "summary": {
-        "matched_categories": 1,
+        "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -3781,12 +3781,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:76reb4fal8q881m5hc6fossrll@google.com::2026-05-27",
           "target_name": "Meetings and hearings",
-          "count": null,
-          "state": "unknown",
-          "href": null,
-          "canonical_href": null,
+          "count": 4,
+          "state": "matched",
+          "href": "/meetings/meeting%3Acommunity_board%3A76reb4fal8q881m5hc6fossrll%40google.com%3A%3A2026-05-27",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A76reb4fal8q881m5hc6fossrll%40google.com%3A%3A2026-05-27",
           "scope": {
             "board": "brooklyn-cb-05"
           },
@@ -3799,17 +3799,11 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_record_id": "76reb4fal8q881m5hc6fossrll@google.com::2026-05-27",
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "source_href": "https://calendar.google.com/calendar/ical/bkcb5cc%40gmail.com/public/basic.ics",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -3914,7 +3908,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4145,7 +4139,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4370,7 +4364,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4601,7 +4595,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -4832,7 +4826,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5057,7 +5051,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5282,7 +5276,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5513,7 +5507,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5744,7 +5738,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -5969,7 +5963,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6200,7 +6194,7 @@
       "summary": {
         "matched_categories": 1,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6431,7 +6425,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6656,7 +6650,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -6880,7 +6874,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7105,7 +7099,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7330,7 +7324,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7554,7 +7548,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -7779,7 +7773,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8010,7 +8004,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8235,7 +8229,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8460,7 +8454,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8691,7 +8685,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -8922,7 +8916,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9147,7 +9141,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9245,12 +9239,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:recaPg7xf7ZGHRuNU",
+          "target_id": "meeting:community_board:recGninsUMAZBPfKG",
           "target_name": "Meetings and hearings",
-          "count": 141,
+          "count": 140,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3ArecaPg7xf7ZGHRuNU",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3ArecaPg7xf7ZGHRuNU",
+          "href": "/meetings/meeting%3Acommunity_board%3ArecGninsUMAZBPfKG",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3ArecGninsUMAZBPfKG",
           "scope": {
             "board": "manhattan-cb-11"
           },
@@ -9263,10 +9257,10 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "recaPg7xf7ZGHRuNU",
+            "source_record_id": "recGninsUMAZBPfKG",
             "source_fields": null,
             "join_method": null,
-            "source_href": "https://airtable.com/shrJ150rk13A8HfPK/recaPg7xf7ZGHRuNU",
+            "source_href": "https://airtable.com/shrJ150rk13A8HfPK/recGninsUMAZBPfKG",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -9372,7 +9366,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9597,7 +9591,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9821,7 +9815,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -9919,12 +9913,12 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": "meeting:community_board:kr8dstbptvgrbhkb9uoan0er4f@google.com::2026-05-26",
+          "target_id": "meeting:community_board:5mgf2lc08khja50llbl4hudp6b@google.com::2026-05-27",
           "target_name": "Meetings and hearings",
-          "count": 27,
+          "count": 37,
           "state": "matched",
-          "href": "/meetings/meeting%3Acommunity_board%3Akr8dstbptvgrbhkb9uoan0er4f%40google.com%3A%3A2026-05-26",
-          "canonical_href": "/meetings/meeting%3Acommunity_board%3Akr8dstbptvgrbhkb9uoan0er4f%40google.com%3A%3A2026-05-26",
+          "href": "/meetings/meeting%3Acommunity_board%3A5mgf2lc08khja50llbl4hudp6b%40google.com%3A%3A2026-05-27",
+          "canonical_href": "/meetings/meeting%3Acommunity_board%3A5mgf2lc08khja50llbl4hudp6b%40google.com%3A%3A2026-05-27",
           "scope": {
             "board": "queens-cb-02"
           },
@@ -9937,10 +9931,10 @@
           },
           "provenance": {
             "source_system": null,
-            "source_record_id": "kr8dstbptvgrbhkb9uoan0er4f@google.com::2026-05-26",
+            "source_record_id": "5mgf2lc08khja50llbl4hudp6b@google.com::2026-05-27",
             "source_fields": null,
             "join_method": null,
-            "source_href": "https://calendar.google.com/calendar/ical/1lvipg1herl0rqt22erj2qamek%40group.calendar.google.com/public/basic.ics",
+            "source_href": "https://calendar.google.com/calendar/ical/28ru4snbijf1ipteprvph0s0c0%40group.calendar.google.com/public/basic.ics",
             "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
@@ -10046,7 +10040,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10277,7 +10271,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10508,7 +10502,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10739,7 +10733,7 @@
       "summary": {
         "matched_categories": 3,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -10964,7 +10958,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11062,7 +11056,7 @@
           "relation_label": "Meetings and hearings",
           "label": null,
           "target_kind": "meeting",
-          "target_id": null,
+          "target_id": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
           "target_name": "Meetings and hearings",
           "count": null,
           "state": "unknown",
@@ -11081,16 +11075,9 @@
           "provenance": {
             "source_system": null,
             "source_record_id": null,
-            "source_fields": [
-              "body_id",
-              "borough",
-              "district",
-              "name",
-              "directory_url",
-              "observed_on"
-            ],
+            "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-12T00:00:00.000Z",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -11195,7 +11182,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11426,7 +11413,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11657,7 +11644,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -11888,7 +11875,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12119,7 +12106,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12350,7 +12337,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12581,7 +12568,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -12812,7 +12799,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -13043,7 +13030,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
@@ -13274,7 +13261,7 @@
       "summary": {
         "matched_categories": 2,
         "category_count": 5,
-        "generated_at": "2026-08-22T06:39:44.923Z",
+        "generated_at": "2026-08-13",
         "method": "community_board_constellation_v1"
       },
       "edge_summary": [
