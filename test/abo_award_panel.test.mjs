@@ -100,9 +100,11 @@ test("public card names vendor, amount, date, authority, and the exact source", 
     `${extractFunction("aboAwardPanelHTML")}; return aboAwardPanelHTML;`,
   )(
     (key) => ({
-      external_awards_heading: "Awards published elsewhere",
+      external_awards_heading: "Also recorded in",
       lifecycle_stage_award: "Award",
       external_awards_abo_source: "NYS Authorities Budget Office",
+      external_awards_abo_note: "The state's annual authority filings likely list this same award. Updated yearly, so they can run up to a year behind.",
+      external_awards_abo_note_confirmed: "The state's annual authority filings independently list this award. Updated yearly, so they can run up to a year behind.",
       award_guide_amount_label: "Award amount",
     })[key] || key,
     (value) => String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;"),
@@ -120,7 +122,31 @@ test("public card names vendor, amount, date, authority, and the exact source", 
   assert.match(html, /Governors Island Corporation/);
   assert.match(html, /data-abo-award-source="1"/);
   assert.match(html, /data\.ny\.gov\/d\/d84c-dk28/);
+  assert.match(html, /likely list this same award/);
   assert.doesNotMatch(html, /possible|fuzzy|candidate/i);
+});
+
+test("exact-identifier matches use confident corroboration wording", () => {
+  const render = new Function(
+    "t", "escUiHtml", "lifecycleMoney", "fdate", "EXT_ATTRS", "extSR",
+    `${extractFunction("aboAwardPanelHTML")}; return aboAwardPanelHTML;`,
+  )(
+    (key) => ({
+      external_awards_heading: "Also recorded in",
+      lifecycle_stage_award: "Award",
+      external_awards_abo_source: "NYS Authorities Budget Office",
+      external_awards_abo_note: "likely",
+      external_awards_abo_note_confirmed: "independently list this award",
+      award_guide_amount_label: "Award amount",
+    })[key] || key,
+    (value) => String(value), (value) => `$${value}`, (value) => String(value).slice(0, 10),
+    'target="_blank" rel="noopener noreferrer"', () => "",
+  );
+  const exact = structuredClone(EDGE);
+  exact.method = "exact_identifier_date";
+  const html = render(releasedAboAward(payload("accepted", exact), EDGE.request_id), aboAwardSourceUrl(exact.award));
+  assert.match(html, /independently list this award/);
+  assert.doesNotMatch(html, /likely/);
 });
 
 test("routing renders either the released award or the older candidate panel, never both", () => {

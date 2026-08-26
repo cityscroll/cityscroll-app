@@ -58,10 +58,10 @@ function extractConst(name) {
 // Leaf helpers the render functions lean on (injected, so the test needs no DOM).
 const T = (key, vars) => {
   const s = ({
-    external_awards_heading: "Awards published elsewhere",
+    external_awards_heading: "Also recorded in",
     external_awards_abo_source: "NYS Authorities Budget Office",
     external_awards_checkbook_source: "Checkbook NYC",
-    external_awards_abo_note: "Likely the same award, reported in the state authorities' annual filings (which can run up to a year behind).",
+    external_awards_abo_note: "The state's annual authority filings likely list this same award. Updated yearly, so they can run up to a year behind.",
     external_awards_possible_note: "Matched by vendor and award date — not a confirmed City Record match.",
     lifecycle_how_summary: "How this was matched",
     external_awards_updated: "Source updated {date}.",
@@ -69,7 +69,7 @@ const T = (key, vars) => {
     external_award_nycha_none_note_html: "Not yet shown here — Housing Authority registrations live in {link}.",
     external_award_nycha_note_html: "{link} award matched by exact PIN <code>{pin}</code>.",
     agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
-    agency_awards_none_open_data_html: "The city does not publish this agency's awards in an open dataset — they would appear in NYS Authorities Budget Office filings or Checkbook NYC if released. <a href=\"api.html#upstream\">See what we checked</a>.",
+    agency_awards_none_open_data_html: "This agency's awards are not in a city open dataset — they may be recorded in NYS Authorities Budget Office filings or Checkbook NYC. <a href=\"api.html#upstream\">See what we checked</a>.",
     agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"api.html#upstream\">See what we checked</a>.",
     mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
     award_watch_offer_btn: "Watch award",
@@ -200,7 +200,7 @@ test("agencyAwardsNote: registry-backed empty state — before, every branch nam
   // Verified-absent: the honest affordance is transparency, not a dead source name — links to
   // the site's own provenance doc instead of naming a source with nowhere to click.
   const absent = agencyAwardsNote("Tax Commission");
-  assert.match(absent, /does not publish this agency's awards in an open dataset/);
+  assert.match(absent, /awards are not in a city open dataset/);
   assert.match(absent, /<a href="api\.html#upstream">/);
 
   // Unknown (agency not in the registry at all) keeps the soft hedge, also now linked to the
@@ -249,7 +249,7 @@ test("externalAwardHTML: fuzzy ABO awards (real SCA fixture) render as a 'possib
   const html = externalAwardHTML(resp, null);
   assert.match(html, /class="timeline"/, "fuzzy reads as a list, not a confident chain box");
   assert.doesNotMatch(html, /class="box award"/);
-  assert.match(html, /Likely the same award, reported in the state authorities' annual filings/);
+  assert.match(html, /The state's annual authority filings likely list this same award/);
   assert.match(html, /<a href="https:\/\/data\.ny\.gov\/d\/8w5p-k45m"[^>]*>NYS Authorities Budget Office/);
   assert.doesNotMatch(html, /<details class="inline-disclose lc-how">|How this was matched/);
   assert.doesNotMatch(html, /Matched by vendor and award date/);
