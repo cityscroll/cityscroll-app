@@ -219,6 +219,12 @@
   .nlqactions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
   .nlqactions .act,.nlqactions button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;border-radius:7px}
   .nlqactions .act{display:inline-flex;align-items:center;background:#fff;color:var(--oxblood);border:1px solid var(--rule);text-decoration:none}
+  .interpret-preview{margin-top:var(--space-4);padding-top:var(--space-3);border-top:1px solid var(--rule)}
+  .interpret-preview h3{margin:0;color:var(--ink);font:700 18px/1.2 var(--font-display)}
+  .interpret-preview-note{margin:4px 0 0;color:var(--muted);font:12px/1.4 var(--font-interface)}
+  .interpret-preview-results{margin-top:var(--space-2);border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--card);overflow:hidden}
+  .interpret-preview-results .money-row-card:last-child{border-bottom:0}
+  .interpret-preview-empty{margin-top:var(--space-3);padding:var(--space-3);border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper-2);color:var(--ink-soft);font:13px/1.45 var(--font-interface)}
   .qr-dialog{width:min(92vw,520px);max-height:92vh;border:1px solid var(--rule-strong);border-radius:10px;background:var(--card);color:var(--ink);padding:22px;box-shadow:0 18px 60px #12181f80}
   .qr-dialog::backdrop{background:#12181fb8}
   .qr-dialog h2{font:700 24px/1.15 var(--font-display);margin:0 0 16px;text-align:center}
@@ -1795,10 +1801,10 @@
         <div class="chiprow lens-primary-rail" id="methodfacet" role="group" aria-label="Procurement method"></div>
       </div>
     </div>
-    <details class="nlbox ask-cityscroll" data-ask-lens="money"><summary data-i18n="ask_cityscroll_action">Ask CityScroll</summary><div class="nlbody">
-      <div class="nlrow"><input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money"><button id="nlgo" data-i18n="ask_btn">Ask</button></div>
+    <details class="nlbox ask-cityscroll" data-ask-lens="money"><summary data-i18n="preview_panel_heading">Preview</summary><div class="nlbody">
+      <div class="nlrow"><input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money"><button id="nlgo" data-i18n="preview_panel_heading">Preview</button></div>
       <div id="nltry" class="nltry"></div><div id="nltrans"></div><div id="landing-share-actions"></div><div id="nlpresets" data-search-presets></div>
-    </div></details><p class="ask-context" data-i18n="ask_cityscroll_context">Interprets your request</p>
+    </div></details><p class="ask-context" data-i18n="topic_search_intro">Search NYC records by topic. Results stay grouped by civic object.</p>
     <div class="lens-search-state" id="moneyactivefilters"></div>
     <div class="lens-resultbar">
       <span class="lens-count" id="rescount" aria-live="polite"></span>

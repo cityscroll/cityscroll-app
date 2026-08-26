@@ -1,4 +1,5 @@
 import { renderAskCitedQuotesHtml } from "../ask_cited_synthesis.mjs";
+import { renderInterpretPreview } from "../interpret_preview.mjs";
 import { walkEntryHref } from "../walk_entry.mjs";
 import {
   parseSearchLensHandoff,
@@ -187,9 +188,22 @@ async function nlTranslate(){
   closingWeek=!!p.closingWeek && !wantsAward;
   $("#closingweek").classList.toggle("on", closingWeek);
   $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
-  await search();
+  // Reset the previous result before the bounded search completes. If the source is
+  // unavailable, stale rows must never be presented as the new interpretation's matches.
+  currentRows=[];
+  const searchSucceeded=await search();
   if(btn) btn.disabled=false;
-  $("#nltrans").innerHTML=askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
+  const preview=renderInterpretPreview({
+    query:text,
+    rows:currentRows,
+    renderRow:(row,index)=>moneyRowHTML(row,index,p.keywords||[]),
+    heading:t("preview_panel_heading"),
+    empty:t("topic_search_bounded_empty"),
+    error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
+    state:searchSucceeded?"ready":"error",
+    escape:nlqEscape,
+  });
+  $("#nltrans").innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
   bindNLQResolvedActions(text, deepLink);
   if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
 }
