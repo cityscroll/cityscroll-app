@@ -5,12 +5,22 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
 from urllib.parse import parse_qs, urlparse
 
 from playwright.sync_api import Route, sync_playwright
 
 
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/").rstrip("/")
+ROOT = pathlib.Path(__file__).parents[2]
+QUERY_FIELDS = (
+    "procurement_id", "canonical_href", "procurement_stages", "primary_stage",
+    "request_id", "start_date", "due_date", "agency_name", "short_title", "pin",
+    "contract_id", "contract_amount", "vendor_name", "selection_method_description",
+    "category_description", "type_of_notice_description", "source_system",
+    "method_family", "procurement_category", "coverage_state", "additional_description_1",
+    "project_id", "project_name",
+)
 CASES = {
     "mosquito": {
         "pin": "02EA43001R0X00",
@@ -85,6 +95,45 @@ def main() -> None:
         browser = playwright.chromium.launch(headless=True)
         context = browser.new_context()
 
+        def local_bounded_procurement_query(route: Route) -> None:
+            """Provide the Pages query projection when a checkout lacks its ignored artifact.
+
+            The local site server serves the complete legacy payload when the Pages-build
+            artifact is absent. That fallback is intentionally not queryable before paint,
+            so this test must supply the same filterable manifest that deploys serve while
+            leaving the SearchDocument route as the source of the beyond-snapshot award.
+            """
+            base = urlparse(BASE)
+            if base.hostname not in {"localhost", "127.0.0.1", "::1"}:
+                route.fallback()
+                return
+            response = route.fetch()
+            if response.ok:
+                route.fulfill(response=response)
+                return
+            browse = json.loads((ROOT / "site" / "data" / "procurement_browse_rows.json").read_text())
+            rows = browse.get("rows", []) if isinstance(browse, dict) else []
+            manifest = {
+                "schema": "cityscroll.procurement_browse_query.v1",
+                "version": 1,
+                "source_model_schema": browse.get("source_model_schema") if isinstance(browse, dict) else None,
+                "generated_at": browse.get("generated_at") if isinstance(browse, dict) else None,
+                "source_model_fingerprint": "contract-search-regression-legacy-fallback-v1",
+                "query_fields": QUERY_FIELDS,
+                "query_rows": [
+                    {field: row[field] for field in QUERY_FIELDS if field in row}
+                    for row in rows
+                ],
+                "row_count": len(rows),
+                "shards": [],
+                "row_shard_by_id": {},
+            }
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(manifest),
+            )
+
         def first_party(route: Route) -> None:
             parsed = urlparse(route.request.url)
             if parsed.path == "/search":
@@ -106,6 +155,7 @@ def main() -> None:
             "**/crol-worker.crol-worker.workers.dev/**",
         ):
             context.route(pattern, first_party)
+        context.route("**/data/procurement_browse_query.json", local_bounded_procurement_query)
 
         for query, case in CASES.items():
             page = context.new_page()
