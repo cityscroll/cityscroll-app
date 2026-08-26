@@ -5,12 +5,29 @@
 // unavailable/partial mirror. A stale D1 row is still preferable to paying upstream
 // latency or turning a refresh failure into a blank notice.
 
+import {
+  executeNoticeGet,
+  NOTICE_GET_CAPABILITY_REFERENCE,
+  NOTICE_GET_PROVIDER_ID,
+  NOTICE_GET_REPRESENTATIONS,
+  NOTICE_GET_REQUEST_ID_PATTERN,
+} from "../../capabilities/notice_get.mjs";
+
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
-const NOTICE_ID_RE = /^[A-Za-z0-9_-]{1,80}$/;
+const NOTICE_ID_RE = NOTICE_GET_REQUEST_ID_PATTERN;
 const MATERIALIZED_MAX_AGE_MS = 2 * 86400_000;
 const EDGE_MAX_AGE = 86400;
 const EDGE_STALE = 7 * 86400;
 const CIVIC_TIME_HISTORY_SCHEMA = "cityscroll.civic_time_notice_history.v1";
+
+export const NOTICE_GET_HTTP_ADAPTER = Object.freeze({
+  id: "worker-http.notice-get@1",
+  capabilityReference: NOTICE_GET_CAPABILITY_REFERENCE,
+  providerId: NOTICE_GET_PROVIDER_ID,
+  route: "GET /notice",
+  surface: "Notice detail",
+  representations: NOTICE_GET_REPRESENTATIONS,
+});
 
 function corsHeaders() {
   return {
@@ -40,7 +57,8 @@ function rowFromD1(record) {
   if (!record) return null;
   try {
     const raw = JSON.parse(record.raw || "null");
-    if (raw && typeof raw === "object" && !Array.isArray(raw)) return raw;
+    if (raw && typeof raw === "object" && !Array.isArray(raw)
+        && raw.request_id === record.request_id) return raw;
   } catch (_error) {
     // The normalized columns below are the durable fallback if an older row predates raw.
   }
@@ -136,6 +154,66 @@ async function putEdgeCache(request, response) {
   try { await cache.put(request, response.clone()); } catch (_error) { /* edge cache is best effort */ }
 }
 
+/** Explicit provider for the transport-neutral notice.get@1 contract. */
+export function workerNoticeGet(env, { nowMs = Date.now() } = {}) {
+  return Object.freeze({
+    capabilityReference: NOTICE_GET_CAPABILITY_REFERENCE,
+    providerId: NOTICE_GET_PROVIDER_ID,
+    async execute({ requestId }) {
+      try {
+        const materialized = await readMaterialized(env, requestId, nowMs);
+        if (materialized?.row) {
+          return {
+            capability_reference: NOTICE_GET_CAPABILITY_REFERENCE,
+            availability: "available",
+            notice: materialized.row,
+            source: "materialized",
+            generated_at: materialized.generated_at,
+            stale: materialized.stale,
+            error: null,
+          };
+        }
+      } catch (_error) {
+        // A D1 read failure is an exceptional upstream-style miss; try the public source below.
+      }
+
+      try {
+        const notice = await readUpstream(requestId);
+        if (!notice) {
+          return {
+            capability_reference: NOTICE_GET_CAPABILITY_REFERENCE,
+            availability: "not_yet_public",
+            notice: null,
+            source: "public-source",
+            generated_at: null,
+            stale: null,
+            error: "not-found",
+          };
+        }
+        return {
+          capability_reference: NOTICE_GET_CAPABILITY_REFERENCE,
+          availability: "available",
+          notice,
+          source: "public-source-fallback",
+          generated_at: null,
+          stale: false,
+          error: null,
+        };
+      } catch (_error) {
+        return {
+          capability_reference: NOTICE_GET_CAPABILITY_REFERENCE,
+          availability: "unavailable",
+          notice: null,
+          source: "public-source",
+          generated_at: null,
+          stale: null,
+          error: "unavailable",
+        };
+      }
+    },
+  });
+}
+
 export async function handleNotice(request, env, { skipCache = false, nowMs = Date.now() } = {}) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return json({ ok: false, reason: "method" }, 405);
@@ -152,34 +230,22 @@ export async function handleNotice(request, env, { skipCache = false, nowMs = Da
     } catch (_error) { /* continue to the durable read model */ }
   }
 
-  try {
-    const materialized = await readMaterialized(env, id, nowMs);
-    if (materialized?.row) {
-      const response = json({
-      ok: true,
-      row: materialized.row,
-      civic_time: materialized.civic_time,
-        source: "materialized",
-        generated_at: materialized.generated_at,
-        stale: materialized.stale,
-      }, 200, `public, max-age=60, s-maxage=${EDGE_MAX_AGE}, stale-while-revalidate=${EDGE_STALE}, stale-if-error=${EDGE_STALE}`);
-      await putEdgeCache(key, response);
-      return response;
-    }
-  } catch (_error) {
-    // A D1 read failure is an exceptional upstream-style miss; try the public source below.
-  }
-
-  try {
-    const row = await readUpstream(id);
-    if (!row) return json({ ok: false, reason: "not-found", source: "public-source" }, 404);
-    const response = json({ ok: true, row, source: "public-source-fallback", generated_at: null, stale: false }, 200,
-      "public, max-age=30, s-maxage=300, stale-while-revalidate=3600, stale-if-error=86400");
-    await putEdgeCache(key, response);
-    return response;
-  } catch (error) {
-    return json({ ok: false, reason: "unavailable", source: "public-source", detail: String(error?.message || error) }, 503);
-  }
+  const result = await executeNoticeGet(workerNoticeGet(env, { nowMs }), { requestId: id });
+  if (result.availability === "not_yet_public") return json({ ok: false, reason: "not-found", source: result.source }, 404);
+  if (result.availability === "unavailable") return json({ ok: false, reason: "unavailable", source: result.source }, 503);
+  const isMaterialized = result.source === "materialized";
+  const response = json({
+    ok: true,
+    row: result.notice,
+    ...(isMaterialized ? { civic_time: await readCivicTimeHistory(env, id) } : {}),
+    source: result.source,
+    generated_at: result.generated_at,
+    stale: result.stale,
+  }, 200, isMaterialized
+    ? `public, max-age=60, s-maxage=${EDGE_MAX_AGE}, stale-while-revalidate=${EDGE_STALE}, stale-if-error=${EDGE_STALE}`
+    : "public, max-age=30, s-maxage=300, stale-while-revalidate=3600, stale-if-error=86400");
+  await putEdgeCache(key, response);
+  return response;
 }
 
 export async function prewarmNotices(env, requestIds) {

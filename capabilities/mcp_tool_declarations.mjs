@@ -8,6 +8,12 @@ import {
   NOTICE_SEARCH_PROVIDER_ID,
 } from "./notice_search.mjs";
 import {
+  NOTICE_GET_CAPABILITY_REFERENCE,
+  NOTICE_GET_LIMITS,
+  NOTICE_GET_PROVIDER_ID,
+  NOTICE_GET_REPRESENTATIONS,
+} from "./notice_get.mjs";
+import {
   ENTITY_DOSSIER_CAPABILITY_REFERENCE,
   ENTITY_DOSSIER_LIMITS,
   ENTITY_DOSSIER_PROVIDER_ID,
@@ -53,6 +59,16 @@ export const MCP_NOTICE_SEARCH_ADAPTER = Object.freeze({
   route: "POST /mcp",
   tool: "search_notices",
   surface: "MCP",
+});
+
+export const MCP_NOTICE_GET_ADAPTER = Object.freeze({
+  id: "mcp.get_notice@1",
+  capabilityReference: NOTICE_GET_CAPABILITY_REFERENCE,
+  providerId: NOTICE_GET_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "get_notice",
+  surface: "MCP",
+  representations: NOTICE_GET_REPRESENTATIONS,
 });
 
 export const MCP_CITED_PASSAGES_ADAPTER = Object.freeze({
@@ -116,6 +132,20 @@ const ENTITY_DOSSIER_OUTPUT_SCHEMA = Object.freeze({
     error: { type: ["string", "null"] },
   },
 });
+const NOTICE_GET_OUTPUT_SCHEMA = Object.freeze({
+  type: "object",
+  additionalProperties: false,
+  required: ["capability_reference", "availability", "notice", "source", "generated_at", "stale", "error"],
+  properties: {
+    capability_reference: { type: "string", const: NOTICE_GET_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+    notice: { type: ["object", "null"] },
+    source: { type: ["string", "null"] },
+    generated_at: { type: ["string", "null"] },
+    stale: { type: ["boolean", "null"] },
+    error: { type: ["string", "null"] },
+  },
+});
 const ENTITY_RELATIONSHIPS_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
   additionalProperties: false,
@@ -152,12 +182,15 @@ export const MCP_TOOLS = [
   },
   {
     name: "get_notice",
-    description: "Full detail for one City Record notice by its RequestID.",
+    description: "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and distinguishes a missing public notice from a read that cannot be served.",
     inputSchema: {
       type: "object", additionalProperties: false,
-      properties: { request_id: { type: "string" } },
+      properties: {
+        request_id: { type: "string", minLength: 1, maxLength: NOTICE_GET_LIMITS.requestIdMaximumLength },
+      },
       required: ["request_id"],
     },
+    outputSchema: NOTICE_GET_OUTPUT_SCHEMA,
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
@@ -283,8 +316,13 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
   Object.freeze({
     name: "get_notice",
     operationClass: "read",
-    schemaReference: "mcp.get_notice.inline@1",
-    pilotException: "notice.get is outside the notice.search@1 pilot",
+    schemaReference: NOTICE_GET_CAPABILITY_REFERENCE,
+    capabilityReference: NOTICE_GET_CAPABILITY_REFERENCE,
+    adapterId: MCP_NOTICE_GET_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: NOTICE_GET_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   }),
   Object.freeze({
     name: "get_entity_dossier",
@@ -322,14 +360,14 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
   Object.freeze({
     name: "preview_watch",
     operationClass: "read",
-    schemaReference: "mcp.preview_watch.inline@1",
-    pilotException: "watch.preview is outside the notice.search@1 pilot",
+    schemaReference: "mcp.preview_watch.pilot@1",
+    pilotException: "watch.preview is a scoped, metered composition without a registered capability",
   }),
   Object.freeze({
     name: "create_watch",
     operationClass: "mutation",
-    schemaReference: "mcp.create_watch.inline@1",
-    pilotException: "watch.create is an explicit mutation outside the notice.search@1 pilot",
+    schemaReference: "mcp.create_watch.pilot@1",
+    pilotException: "watch.create is a scoped, metered mutation without a registered capability",
   }),
 ]);
 

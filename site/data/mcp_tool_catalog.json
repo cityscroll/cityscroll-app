@@ -4,6 +4,7 @@
   "endpoint": "POST https://api.cityscroll.org/mcp",
   "registered_capability_references": [
     "notice.search@1",
+    "notice.get@1",
     "entity.dossier.get@1",
     "entity.relationships.get@1",
     "cited.passages.retrieve@1"
@@ -17,9 +18,45 @@
       "schema_reference": "notice.search@1",
       "capability_reference": "notice.search@1",
       "bounds": {
-        "minimum": 1,
-        "maximum": 100
+        "input": {
+          "maximumTermGroups": 64,
+          "maximumTermsPerGroup": 64,
+          "maximumTermLength": 500,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "output": {
+          "maximumResults": 100
+        }
       },
+      "examples": [
+        {
+          "input": {
+            "termGroups": [
+              [
+                "construction",
+                "scaffolding"
+              ]
+            ],
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "maximumResults": 10
+          }
+        },
+        {
+          "input": {
+            "termGroups": [],
+            "openOnly": true,
+            "limit": 1
+          },
+          "output": {
+            "availability": "empty",
+            "maximumResults": 1
+          }
+        }
+      ],
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
@@ -31,18 +68,47 @@
     {
       "name": "get_notice",
       "operation_class": "read",
-      "authority_class": null,
-      "description": "Full detail for one City Record notice by its RequestID.",
-      "schema_reference": "mcp.get_notice.inline@1",
-      "capability_reference": null,
-      "bounds": null,
+      "authority_class": "public_read",
+      "description": "Get one public City Record notice by its exact RequestID. The result preserves materialized-source freshness and distinguishes a missing public notice from a read that cannot be served.",
+      "schema_reference": "notice.get@1",
+      "capability_reference": "notice.get@1",
+      "bounds": {
+        "input": {
+          "requestIdMaximumLength": 80,
+          "maximum": 1
+        },
+        "output": {
+          "oneNotice": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "requestId": "20260807001"
+          },
+          "output": {
+            "availability": "available",
+            "source": "materialized",
+            "stale": false
+          }
+        },
+        {
+          "input": {
+            "requestId": "20260807999"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
         "idempotentHint": true,
         "openWorldHint": false
       },
-      "store_access": null
+      "store_access": "provider-only"
     },
     {
       "name": "get_entity_dossier",
@@ -52,9 +118,34 @@
       "schema_reference": "entity.dossier.get@1",
       "capability_reference": "entity.dossier.get@1",
       "bounds": {
-        "entityIdMaximumLength": 300,
-        "recordLimit": 250
+        "input": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250
+        },
+        "output": {
+          "maximumLinkedRecords": 250
+        }
       },
+      "examples": [
+        {
+          "input": {
+            "entityId": "vendor:stem:ACME CONSTRUCTION"
+          },
+          "output": {
+            "availability": "available",
+            "maximumLinkedRecords": 250
+          }
+        },
+        {
+          "input": {
+            "entityId": "vendor:unknown"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
@@ -71,13 +162,41 @@
       "schema_reference": "entity.relationships.get@1",
       "capability_reference": "entity.relationships.get@1",
       "bounds": {
-        "entityIdMaximumLength": 300,
-        "recordLimit": 250,
-        "defaultDepth": 2,
-        "maximumDepth": 2,
-        "defaultFanOut": 12,
-        "maximumFanOut": 25
+        "input": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250,
+          "defaultDepth": 2,
+          "maximumDepth": 2,
+          "defaultFanOut": 12,
+          "maximumFanOut": 25
+        },
+        "output": {
+          "maximumEdges": 250
+        }
       },
+      "examples": [
+        {
+          "input": {
+            "entityId": "vendor:stem:ACME CONSTRUCTION",
+            "depth": 2,
+            "fanOut": 12
+          },
+          "output": {
+            "availability": "available",
+            "maximumDepth": 2,
+            "maximumFanOut": 25
+          }
+        },
+        {
+          "input": {
+            "entityId": "vendor:unknown"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
@@ -94,11 +213,43 @@
       "schema_reference": "cited.passages.retrieve@1",
       "capability_reference": "cited.passages.retrieve@1",
       "bounds": {
-        "queryMaximumLength": 240,
-        "bodyIdMaximumLength": 120,
-        "defaultResults": 10,
-        "maximumResults": 20
+        "input": {
+          "queryMaximumLength": 240,
+          "bodyIdMaximumLength": 120,
+          "defaultResults": 10,
+          "maximumResults": 20
+        },
+        "output": {
+          "maximumCitations": 20
+        }
       },
+      "examples": [
+        {
+          "input": {
+            "query": "energy conservation",
+            "filters": {
+              "source_family": "city_record_notice"
+            },
+            "limit": 5
+          },
+          "output": {
+            "availability": "partial",
+            "maximumCitations": 5,
+            "exactJoin": "matched-or-unknown"
+          }
+        },
+        {
+          "input": {
+            "query": "public hearing",
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete-or-partial-or-unknown",
+            "maximumCitations": 10,
+            "exactJoin": "matched-or-unknown"
+          }
+        }
+      ],
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
@@ -112,9 +263,10 @@
       "operation_class": "read",
       "authority_class": null,
       "description": "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
-      "schema_reference": "mcp.preview_watch.inline@1",
+      "schema_reference": "mcp.preview_watch.pilot@1",
       "capability_reference": null,
       "bounds": null,
+      "examples": null,
       "annotations": {
         "readOnlyHint": true,
         "destructiveHint": false,
@@ -128,9 +280,10 @@
       "operation_class": "mutation",
       "authority_class": null,
       "description": "Create a standing email watch from plain English. The watch starts immediately; the welcome email states its scope and includes manage and unsubscribe links.",
-      "schema_reference": "mcp.create_watch.inline@1",
+      "schema_reference": "mcp.create_watch.pilot@1",
       "capability_reference": null,
       "bounds": null,
+      "examples": null,
       "annotations": {
         "readOnlyHint": false,
         "destructiveHint": false,

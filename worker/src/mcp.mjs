@@ -15,11 +15,16 @@
 // request limit; shared daily LLM ceiling (NL_METER `m:mcp:<day>`, MCP_MAX_CALLS_PER_DAY);
 // per-sender signup-email limit (same 5/day as /subscribe).
 
-import { noticeSearchTerms, workerD1NoticeSearch, toRecord } from "./lib/notices.mjs";
+import { noticeSearchTerms, workerD1NoticeSearch } from "./lib/notices.mjs";
 import {
   executeNoticeSearch,
   NOTICE_SEARCH_LIMITS,
 } from "../../capabilities/notice_search.mjs";
+import {
+  executeNoticeGet,
+  NOTICE_GET_LIMITS,
+  NOTICE_GET_REQUEST_ID_PATTERN,
+} from "../../capabilities/notice_get.mjs";
 import {
   executeCitedPassages,
   CITED_PASSAGES_LIMITS,
@@ -57,6 +62,7 @@ import { overSurfaceCap, overActorLimit } from "./lib/meter.mjs";
 import { workerCitedPassages } from "./cited_retrieval.mjs";
 import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
+import { workerNoticeGet } from "./notice.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
@@ -99,6 +105,10 @@ export function mcpNoticeSearchInput(args = {}) {
     excludeRollingDeadlines: !!args.exclude_rolling,
     limit: Math.max(NOTICE_SEARCH_LIMITS.minimum, Math.min(requestedLimit, NOTICE_SEARCH_LIMITS.maximum)),
   };
+}
+
+export function mcpNoticeGetInput(args = {}) {
+  return { requestId: String(args.request_id || "").trim() };
 }
 
 export function formatMcpNoticeSearchResult(result) {
@@ -191,12 +201,16 @@ async function callTool(env, req, name, args) {
       return structuredResult(res, formatMcpNoticeSearchResult(res));
     }
     case "get_notice": {
-      if (!env.DB) return toolError("The notices mirror is unavailable right now.");
-      const id = String(args.request_id || "").trim();
-      if (!id) return toolError("request_id is required.");
-      const row = await env.DB.prepare("SELECT * FROM notices WHERE request_id = ?").bind(id).first();
-      if (!row) return text(`No notice ${id} in the mirror. Full record: https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`);
-      return text(JSON.stringify(toRecord(row), null, 1));
+      const input = mcpNoticeGetInput(args);
+      if (!input.requestId) return toolError("request_id is required.");
+      if (!NOTICE_GET_REQUEST_ID_PATTERN.test(input.requestId)) {
+        return toolError("request_id must be a non-empty City Record identifier.");
+      }
+      const result = await executeNoticeGet(workerNoticeGet(env), input);
+      const summary = result.availability === "available"
+        ? `Returned the public notice ${result.notice.request_id}. Use the structured result for source and freshness details.`
+        : `Notice is ${result.availability.replaceAll("_", " ")} (${result.error}).`;
+      return structuredResult(result, summary);
     }
     case "get_entity_dossier": {
       const input = mcpEntityDossierInput(args);

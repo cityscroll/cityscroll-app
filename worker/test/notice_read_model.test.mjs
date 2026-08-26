@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { handleNotice, prewarmNotices } from "../src/notice.mjs";
+import { handleNotice, prewarmNotices, workerNoticeGet } from "../src/notice.mjs";
+import { executeNoticeGet } from "../../capabilities/notice_get.mjs";
+import { handleMcp, mcpNoticeGetInput } from "../src/mcp.mjs";
 import worker from "../src/worker.mjs";
 
 const notice = {
@@ -11,6 +13,12 @@ const notice = {
   due_date: "2026-08-20T00:00:00.000",
 };
 const FIXTURE_NOW = Date.parse("2026-08-07T12:00:00.000Z");
+
+class MockKV {
+  constructor() { this.store = new Map(); }
+  async get(key) { return this.store.get(key) ?? null; }
+  async put(key, value) { this.store.set(key, String(value)); }
+}
 
 function dbFor(record, events = []) {
   return {
@@ -44,6 +52,19 @@ function d1Record(overrides = {}) {
   };
 }
 
+function mcpGetPost(arguments_) {
+  return new Request("https://api.cityscroll.org/mcp", {
+    method: "POST",
+    headers: { "content-type": "application/json", "CF-Connecting-IP": "203.0.113.21" },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      id: 1,
+      method: "tools/call",
+      params: { name: "get_notice", arguments: arguments_ },
+    }),
+  });
+}
+
 test("notice endpoint serves the materialized raw row without an upstream fetch", async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async () => { throw new Error("unexpected upstream fetch"); };
@@ -72,6 +93,35 @@ test("the public Worker route dispatches to the notice read model", async () => 
   );
   assert.equal(response.status, 200);
   assert.equal((await response.json()).source, "materialized");
+});
+
+test("notice.get HTTP and MCP adapters preserve one direct provider result", async () => {
+  const env = { DB: dbFor(d1Record()) };
+  const input = { requestId: notice.request_id };
+  const direct = await executeNoticeGet(workerNoticeGet(env), input);
+
+  const mcpResponse = await handleMcp(mcpGetPost({ request_id: notice.request_id }), {
+    ...env,
+    SUBS: new MockKV(),
+    NL_METER: new MockKV(),
+  });
+  const mcpBody = await mcpResponse.json();
+  assert.deepEqual(mcpBody.result.structuredContent, direct);
+
+  const httpResponse = await handleNotice(
+    new Request(`https://api.cityscroll.org/notice?id=${notice.request_id}`, {
+      headers: { Accept: "application/json" },
+    }),
+    env,
+    { skipCache: true },
+  );
+  const httpBody = await httpResponse.json();
+  assert.equal(httpBody.ok, true);
+  assert.deepEqual(httpBody.row, direct.notice);
+  assert.equal(httpBody.source, direct.source);
+  assert.equal(httpBody.generated_at, direct.generated_at);
+  assert.equal(httpBody.stale, direct.stale);
+  assert.deepEqual(mcpNoticeGetInput({ request_id: notice.request_id }), input);
 });
 
 test("notice read model exposes exact civic-time history with source-null clocks", async () => {

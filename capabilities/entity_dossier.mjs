@@ -63,6 +63,10 @@ export const ENTITY_DOSSIER_CAPABILITY = deepFreeze({
     class: "bounded-d1-read",
     machineFanOut: "low",
   },
+  bounds: {
+    input: ENTITY_DOSSIER_LIMITS,
+    output: { maximumLinkedRecords: ENTITY_DOSSIER_LIMITS.recordLimit },
+  },
   input: {
     schema: "cityscroll.capability.entity_dossier_get.input.v1",
     identity: "exact canonical entity id",
@@ -86,6 +90,16 @@ export const ENTITY_DOSSIER_CAPABILITY = deepFreeze({
     owner: "D1 entity-resolution read model",
     projection: "public serializer and adapter-owned representation",
   },
+  examples: [
+    {
+      input: { entityId: "vendor:stem:ACME CONSTRUCTION" },
+      output: { availability: "available", maximumLinkedRecords: ENTITY_DOSSIER_LIMITS.recordLimit },
+    },
+    {
+      input: { entityId: "vendor:unknown" },
+      output: { availability: "not_yet_public", error: "not-found" },
+    },
+  ],
   provider: {
     id: ENTITY_DOSSIER_PROVIDER_ID,
     module: "worker/src/entity_dossier.mjs",

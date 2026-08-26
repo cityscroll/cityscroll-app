@@ -61,10 +61,11 @@ test("current Streamable HTTP client initializes, discovers, and calls all publi
     assert.deepEqual(calls, CAPABILITY_TOOL_CASES.map(({ name }) => name));
     assert.deepEqual(remoteFixture.reads.map(({ capability_reference: reference }) => reference), [
       "notice.search@1",
+      "notice.get@1",
       "entity.dossier.get@1",
       "entity.relationships.get@1",
     ]);
-    assert.equal(requests.filter((method) => method === "POST").length, 7);
+    assert.equal(requests.filter((method) => method === "POST").length, 8);
   } finally {
     await client.close();
     directFixture.close();

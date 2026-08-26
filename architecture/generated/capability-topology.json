@@ -19,6 +19,46 @@
       },
       "input_schema": "cityscroll.capability.notice_search.input.v1",
       "output_schema": "cityscroll.capability.notice_search.output.v1",
+      "bounds": {
+        "input": {
+          "maximumTermGroups": 64,
+          "maximumTermsPerGroup": 64,
+          "maximumTermLength": 500,
+          "minimum": 1,
+          "maximum": 100
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "termGroups": [
+              [
+                "construction",
+                "scaffolding"
+              ]
+            ],
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "maximumResults": 10
+          }
+        },
+        {
+          "input": {
+            "termGroups": [],
+            "openOnly": true,
+            "limit": 1
+          },
+          "output": {
+            "availability": "empty",
+            "maximumResults": 1
+          }
+        }
+      ],
       "availability": [
         "complete",
         "empty",
@@ -59,6 +99,117 @@
       ]
     },
     {
+      "reference": "notice.get@1",
+      "id": "notice.get",
+      "version": "1.0.0",
+      "owner": "notices",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-public-source-read",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.notice_get.input.v1",
+      "output_schema": "cityscroll.capability.notice_get.output.v1",
+      "bounds": {
+        "input": {
+          "requestIdMaximumLength": 80,
+          "maximum": 1
+        },
+        "output": {
+          "oneNotice": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "requestId": "20260807001"
+          },
+          "output": {
+            "availability": "available",
+            "source": "materialized",
+            "stale": false
+          }
+        },
+        {
+          "input": {
+            "requestId": "20260807999"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "noticeIdentity": "notice.request_id",
+        "sourceIdentity": "source + notice.request_id",
+        "observationClock": "generated_at",
+        "staleSnapshotPreserved": true
+      },
+      "freshness": {
+        "owner": "materialized notice mirror with public-source fallback",
+        "projection": "generated_at plus stale"
+      },
+      "provider": {
+        "id": "worker-notices.notice-get",
+        "module": "worker/src/notice.mjs",
+        "export": "workerNoticeGet",
+        "store": "Cloudflare D1 with City Record fallback",
+        "readModel": "public City Record notice row"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.notice-get@1",
+          "module": "worker/src/notice.mjs",
+          "kind": "http-route",
+          "route": "GET /notice",
+          "surface": "Notice detail",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public notice read envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public notice summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_notice@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_notice",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public notice read envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public notice summary"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "reference": "entity.dossier.get@1",
       "id": "entity.dossier.get",
       "version": "1.0.0",
@@ -76,6 +227,35 @@
       },
       "input_schema": "cityscroll.capability.entity_dossier_get.input.v1",
       "output_schema": "cityscroll.capability.entity_dossier_get.output.v1",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250
+        },
+        "output": {
+          "maximumLinkedRecords": 250
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "entityId": "vendor:stem:ACME CONSTRUCTION"
+          },
+          "output": {
+            "availability": "available",
+            "maximumLinkedRecords": 250
+          }
+        },
+        {
+          "input": {
+            "entityId": "vendor:unknown"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
       "availability": [
         "available",
         "not_yet_public",
@@ -146,6 +326,42 @@
       },
       "input_schema": "cityscroll.capability.entity_relationships_get.input.v1",
       "output_schema": "cityscroll.capability.entity_relationships_get.output.v1",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 300,
+          "recordLimit": 250,
+          "defaultDepth": 2,
+          "maximumDepth": 2,
+          "defaultFanOut": 12,
+          "maximumFanOut": 25
+        },
+        "output": {
+          "maximumEdges": 250
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "entityId": "vendor:stem:ACME CONSTRUCTION",
+            "depth": 2,
+            "fanOut": 12
+          },
+          "output": {
+            "availability": "available",
+            "maximumDepth": 2,
+            "maximumFanOut": 25
+          }
+        },
+        {
+          "input": {
+            "entityId": "vendor:unknown"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
       "availability": [
         "available",
         "not_yet_public",
@@ -218,6 +434,44 @@
       },
       "input_schema": "cityscroll.capability.cited_passages_retrieve.input.v1",
       "output_schema": "cityscroll.semantic_retrieval.cited_passage_response.v1",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "bodyIdMaximumLength": 120,
+          "defaultResults": 10,
+          "maximumResults": 20
+        },
+        "output": {
+          "maximumCitations": 20
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "query": "energy conservation",
+            "filters": {
+              "source_family": "city_record_notice"
+            },
+            "limit": 5
+          },
+          "output": {
+            "availability": "partial",
+            "maximumCitations": 5,
+            "exactJoin": "matched-or-unknown"
+          }
+        },
+        {
+          "input": {
+            "query": "public hearing",
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete-or-partial-or-unknown",
+            "maximumCitations": 10,
+            "exactJoin": "matched-or-unknown"
+          }
+        }
+      ],
       "availability": [
         "partial",
         "complete",
@@ -243,6 +497,25 @@
         "readModel": "typed candidates joined exactly to source passages and corpus manifest records"
       },
       "adapters": [
+        {
+          "id": "worker-http.retrieve-cited-passages@1",
+          "module": "worker/src/cited_retrieval.mjs",
+          "kind": "http-route",
+          "route": "GET /cited-passages",
+          "surface": "Cited passage retrieval",
+          "representations": [
+            {
+              "id": "structured-content",
+              "mediaType": "application/json",
+              "projection": "byte-identical cited passage response"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "meaning-compatible bounded result count"
+            }
+          ]
+        },
         {
           "id": "mcp.retrieve_cited_passages@1",
           "module": "worker/src/mcp.mjs",
@@ -280,9 +553,45 @@
         "contract_reference": null,
         "pilot_exception": null,
         "bounds": {
-          "minimum": 1,
-          "maximum": 100
+          "input": {
+            "maximumTermGroups": 64,
+            "maximumTermsPerGroup": 64,
+            "maximumTermLength": 500,
+            "minimum": 1,
+            "maximum": 100
+          },
+          "output": {
+            "maximumResults": 100
+          }
         },
+        "examples": [
+          {
+            "input": {
+              "termGroups": [
+                [
+                  "construction",
+                  "scaffolding"
+                ]
+              ],
+              "limit": 10
+            },
+            "output": {
+              "availability": "complete",
+              "maximumResults": 10
+            }
+          },
+          {
+            "input": {
+              "termGroups": [],
+              "openOnly": true,
+              "limit": 1
+            },
+            "output": {
+              "availability": "empty",
+              "maximumResults": 1
+            }
+          }
+        ],
         "annotations": {
           "readOnlyHint": true,
           "destructiveHint": false,
@@ -294,15 +603,49 @@
       {
         "name": "get_notice",
         "operation_class": "read",
-        "authority_class": null,
-        "schema_reference": "mcp.get_notice.inline@1",
-        "capability_reference": null,
-        "adapter_id": null,
+        "authority_class": "public_read",
+        "schema_reference": "notice.get@1",
+        "capability_reference": "notice.get@1",
+        "adapter_id": "mcp.get_notice@1",
         "contract_reference": null,
-        "pilot_exception": "notice.get is outside the notice.search@1 pilot",
-        "bounds": null,
-        "annotations": null,
-        "store_access": null
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "requestIdMaximumLength": 80,
+            "maximum": 1
+          },
+          "output": {
+            "oneNotice": true
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "requestId": "20260807001"
+            },
+            "output": {
+              "availability": "available",
+              "source": "materialized",
+              "stale": false
+            }
+          },
+          {
+            "input": {
+              "requestId": "20260807999"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
       },
       {
         "name": "get_entity_dossier",
@@ -314,9 +657,34 @@
         "contract_reference": null,
         "pilot_exception": null,
         "bounds": {
-          "entityIdMaximumLength": 300,
-          "recordLimit": 250
+          "input": {
+            "entityIdMaximumLength": 300,
+            "recordLimit": 250
+          },
+          "output": {
+            "maximumLinkedRecords": 250
+          }
         },
+        "examples": [
+          {
+            "input": {
+              "entityId": "vendor:stem:ACME CONSTRUCTION"
+            },
+            "output": {
+              "availability": "available",
+              "maximumLinkedRecords": 250
+            }
+          },
+          {
+            "input": {
+              "entityId": "vendor:unknown"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
+            }
+          }
+        ],
         "annotations": {
           "readOnlyHint": true,
           "destructiveHint": false,
@@ -335,13 +703,41 @@
         "contract_reference": null,
         "pilot_exception": null,
         "bounds": {
-          "entityIdMaximumLength": 300,
-          "recordLimit": 250,
-          "defaultDepth": 2,
-          "maximumDepth": 2,
-          "defaultFanOut": 12,
-          "maximumFanOut": 25
+          "input": {
+            "entityIdMaximumLength": 300,
+            "recordLimit": 250,
+            "defaultDepth": 2,
+            "maximumDepth": 2,
+            "defaultFanOut": 12,
+            "maximumFanOut": 25
+          },
+          "output": {
+            "maximumEdges": 250
+          }
         },
+        "examples": [
+          {
+            "input": {
+              "entityId": "vendor:stem:ACME CONSTRUCTION",
+              "depth": 2,
+              "fanOut": 12
+            },
+            "output": {
+              "availability": "available",
+              "maximumDepth": 2,
+              "maximumFanOut": 25
+            }
+          },
+          {
+            "input": {
+              "entityId": "vendor:unknown"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
+            }
+          }
+        ],
         "annotations": {
           "readOnlyHint": true,
           "destructiveHint": false,
@@ -360,11 +756,43 @@
         "contract_reference": null,
         "pilot_exception": null,
         "bounds": {
-          "queryMaximumLength": 240,
-          "bodyIdMaximumLength": 120,
-          "defaultResults": 10,
-          "maximumResults": 20
+          "input": {
+            "queryMaximumLength": 240,
+            "bodyIdMaximumLength": 120,
+            "defaultResults": 10,
+            "maximumResults": 20
+          },
+          "output": {
+            "maximumCitations": 20
+          }
         },
+        "examples": [
+          {
+            "input": {
+              "query": "energy conservation",
+              "filters": {
+                "source_family": "city_record_notice"
+              },
+              "limit": 5
+            },
+            "output": {
+              "availability": "partial",
+              "maximumCitations": 5,
+              "exactJoin": "matched-or-unknown"
+            }
+          },
+          {
+            "input": {
+              "query": "public hearing",
+              "limit": 10
+            },
+            "output": {
+              "availability": "complete-or-partial-or-unknown",
+              "maximumCitations": 10,
+              "exactJoin": "matched-or-unknown"
+            }
+          }
+        ],
         "annotations": {
           "readOnlyHint": true,
           "destructiveHint": false,
@@ -377,12 +805,13 @@
         "name": "preview_watch",
         "operation_class": "read",
         "authority_class": null,
-        "schema_reference": "mcp.preview_watch.inline@1",
+        "schema_reference": "mcp.preview_watch.pilot@1",
         "capability_reference": null,
         "adapter_id": null,
         "contract_reference": null,
-        "pilot_exception": "watch.preview is outside the notice.search@1 pilot",
+        "pilot_exception": "watch.preview is a scoped, metered composition without a registered capability",
         "bounds": null,
+        "examples": null,
         "annotations": null,
         "store_access": null
       },
@@ -390,12 +819,13 @@
         "name": "create_watch",
         "operation_class": "mutation",
         "authority_class": null,
-        "schema_reference": "mcp.create_watch.inline@1",
+        "schema_reference": "mcp.create_watch.pilot@1",
         "capability_reference": null,
         "adapter_id": null,
         "contract_reference": null,
-        "pilot_exception": "watch.create is an explicit mutation outside the notice.search@1 pilot",
+        "pilot_exception": "watch.create is a scoped, metered mutation without a registered capability",
         "bounds": null,
+        "examples": null,
         "annotations": null,
         "store_access": null
       }
