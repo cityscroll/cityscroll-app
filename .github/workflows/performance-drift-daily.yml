@@ -1,0 +1,58 @@
+name: Daily performance drift reader
+
+on:
+  schedule:
+    - cron: "31 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-performance-drift
+  cancel-in-progress: false
+
+jobs:
+  read:
+    name: Read RUM and emit review candidates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Restore the prior daily baseline and queue ledger
+        uses: actions/cache/restore@v4
+        with:
+          path: .performance-drift-state
+          key: performance-drift-state-${{ github.run_id }}
+          restore-keys: performance-drift-state-
+      - name: Read live RUM and build evidence overlay
+        env:
+          ANALYTICS_ACCOUNT_ID: "8162581cb1d97e20a172031adb8a13af"
+          ANALYTICS_READ_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          RUM_ANALYTICS_DATASET: crol_rum_observations_v1
+          RUM_MEASURED_SINCE: "2026-08-19"
+          RUM_MIN_SAMPLED_ROWS: "30"
+        run: |
+          mkdir -p .performance-drift-state artifacts/performance-drift
+          node tools/read_rum_drift.mjs \
+            --out artifacts/performance-drift \
+            --baseline .performance-drift-state/baseline.json \
+            --ledger .performance-drift-state/ledger.json \
+            --source-run "${GITHUB_RUN_ID}"
+          cp artifacts/performance-drift/baseline.json .performance-drift-state/baseline.json
+      - name: Store this run as the next daily baseline
+        uses: actions/cache/save@v4
+        with:
+          path: .performance-drift-state
+          key: performance-drift-state-${{ github.run_id }}
+      - name: Upload RUM evidence and human-review queue
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-drift-${{ github.run_id }}
+          path: artifacts/performance-drift/
+          if-no-files-found: error
+          retention-days: 30
