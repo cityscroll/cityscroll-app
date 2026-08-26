@@ -1,0 +1,75 @@
+{
+  "schema": "cityscroll.calendar_contract_fixture.v1",
+  "meeting_feed": {
+    "title": "CityScroll — Hearings and meetings — all notices",
+    "kind": "meetings",
+    "rows": [
+      {
+        "meeting_id": "meeting:city_record:20260803026",
+        "title": "Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors",
+        "start_date": "2026-08-10T00:00:00.000",
+        "event_date": "2026-09-15T11:00:00.000",
+        "agency": "Buildings",
+        "source_system": "city_record"
+      },
+      {
+        "meeting_id": "meeting:community_board:fixture-cb6::2026-10-14",
+        "title": "Community Board 6 Transportation Committee",
+        "start_date": "2026-09-20T00:00:00.000",
+        "event_date": "2026-10-14T18:30:00.000",
+        "board_name": "Manhattan Community Board 6",
+        "committee": { "name": "Transportation Committee" },
+        "venue": { "address": "66 John Street, New York, NY" },
+        "source_system": "community_board"
+      }
+    ]
+  },
+  "individual_meeting": {
+    "meeting_id": "meeting:city_record:20260803026",
+    "event_date": "2026-09-15T11:00:00",
+    "event_end": "2026-09-15T12:30:00",
+    "title": "Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors",
+    "short_title": "Proposed Rule - Amendment of Rules relating to Certain Qualified Inspectors",
+    "agency": "Buildings",
+    "agency_name": "Buildings",
+    "venue": { "address": "280 Broadway, New York, NY" },
+    "meeting_access": {
+      "mode": "hybrid",
+      "remote_join_url": "https://example.nyc.gov/meeting/20260803026",
+      "dial_in": ["212-555-0100"],
+      "passcode": "1234"
+    },
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260803026"
+  },
+  "keyword_agency_feed": {
+    "url": "https://api.cityscroll.org/feed.ics?lens=rules&q=rat%20inspections&agency=Health%20and%20Mental%20Hygiene",
+    "title": "CityScroll — about “rat / inspections” · agency “Health and Mental Hygiene”",
+    "kind": "rules",
+    "rows": [
+      {
+        "request_id": "20260803009",
+        "start_date": "2026-08-12T00:00:00.000",
+        "event_date": "2026-09-14T10:00:00.000",
+        "agency_name": "Health and Mental Hygiene",
+        "short_title": "New Rules Relating to Rat Inspections",
+        "type_of_notice_description": "Public Hearings"
+      }
+    ]
+  },
+  "documented_parameter_feed": {
+    "url": "https://api.cityscroll.org/feed.ics?lens=money&q=housing%20repair&agency=Housing%20Preservation%20and%20Development&min=500000",
+    "title": "CityScroll — Contracts and RFPs — about “housing / repair” · ≥ $500,000 · agency “Housing Preservation and Development”",
+    "kind": "award",
+    "rows": [
+      {
+        "request_id": "20260805017",
+        "start_date": "2026-08-05T00:00:00.000",
+        "agency_name": "Housing Preservation and Development",
+        "short_title": "Housing repair services",
+        "contract_amount": 1250000,
+        "vendor_name": "Example Builders",
+        "type_of_notice_description": "Award"
+      }
+    ]
+  }
+}
