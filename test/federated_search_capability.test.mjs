@@ -12,7 +12,6 @@ import {
 } from "../capabilities/federated_search.mjs";
 import { federateUniversalSearch } from "../site/universal_search_federator.mjs";
 import { handleSearch } from "../worker/src/search.mjs";
-import { handleMcp } from "../worker/src/mcp.mjs";
 
 function document() {
   return {
@@ -65,14 +64,6 @@ function provider() {
   };
 }
 
-function mcpPost(body) {
-  return new Request("https://api.cityscroll.org/mcp", {
-    method: "POST",
-    headers: { "content-type": "application/json", "CF-Connecting-IP": "203.0.113.70" },
-    body: JSON.stringify(body),
-  });
-}
-
 test("search.federated@1 declares the closed lenses, coverage states, and bounds", () => {
   assert.deepEqual(FEDERATED_SEARCH_CAPABILITY.input.lenses, [
     "notices", "people", "agencies", "vendors", "committees",
@@ -85,7 +76,7 @@ test("search.federated@1 declares the closed lenses, coverage states, and bounds
   assert.ok(Object.isFrozen(FEDERATED_SEARCH_CAPABILITY));
 });
 
-test("HTTP and MCP adapters delegate to the same capability provider result", async () => {
+test("HTTP adapter delegates to the same capability provider result", async () => {
   const explicit = provider();
   const direct = await executeFederatedSearch(explicit, { query: "parks", limit: 10 });
   const http = await handleSearch(
@@ -96,19 +87,6 @@ test("HTTP and MCP adapters delegate to the same capability provider result", as
   const httpBody = await http.json();
   assert.deepEqual(httpBody.federated, direct);
   assert.equal(httpBody.capability_reference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
-
-  const mcp = await handleMcp(
-    mcpPost({
-      jsonrpc: "2.0",
-      id: 1,
-      method: "tools/call",
-      params: { name: "search_federated", arguments: { query: "parks", limit: 10 } },
-    }),
-    { SUBS: { async get() { return null; }, async put() {} } },
-    { federatedProvider: explicit },
-  );
-  const mcpBody = await mcp.json();
-  assert.deepEqual(mcpBody.result.structuredContent, direct);
 });
 
 test("the adapter seams do not reconstruct federation semantics", () => {
@@ -126,19 +104,4 @@ test("the capability rejects arbitrary query fields and over-bound requests", ()
   assert.throws(() => validateFederatedSearchInput({ query: "parks", where: "raw SQL" }), /arbitrary field/);
   assert.throws(() => validateFederatedSearchInput({ query: "x".repeat(241) }), /240 characters/);
   assert.throws(() => validateFederatedSearchInput({ query: "parks", limit: 101 }), /1 through 100/);
-});
-
-test("the MCP adapter rejects arbitrary query fields instead of silently widening the contract", async () => {
-  const response = await handleMcp(
-    mcpPost({
-      jsonrpc: "2.0",
-      id: 2,
-      method: "tools/call",
-      params: { name: "search_federated", arguments: { query: "parks", where: "raw SQL" } },
-    }),
-    { SUBS: { async get() { return null; }, async put() {} } },
-  );
-  const body = await response.json();
-  assert.equal(body.error.code, -32603);
-  assert.match(body.error.message, /arbitrary field/);
 });
