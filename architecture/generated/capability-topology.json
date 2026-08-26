@@ -653,6 +653,234 @@
           "surface": "MCP"
         }
       ]
+    },
+    {
+      "reference": "contract.get@1",
+      "id": "contract.get",
+      "version": "1.0.0",
+      "owner": "procurement",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.contract_get.input.v1",
+      "output_schema": "cityscroll.capability.contract_get.output.v1",
+      "bounds": {
+        "input": {
+          "procurementIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "oneContract": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "procurementId": "procurement:contract:20211201861"
+          },
+          "output": {
+            "availability": "available",
+            "exactIdentity": true,
+            "lifecycle": "preserved when present"
+          }
+        },
+        {
+          "input": {
+            "procurementId": "procurement:contract:not-published"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "contract.procurement_id (materialized from exact publisher identifiers)",
+        "sourceIdentity": "contract.provenance.source_observations[].source_observation_ref",
+        "observationClock": "contract.freshness.as_of plus source_observations[].ingested_at",
+        "identityAuthority": "site/procurement_object_contract.mjs exact identity gate"
+      },
+      "freshness": {
+        "owner": "shared procurement read model",
+        "projection": "read-model generated_at, checked_at, and source envelopes"
+      },
+      "provider": {
+        "id": "worker-static.procurement-contract.get",
+        "module": "worker/src/contracts.mjs",
+        "export": "workerProcurementContracts",
+        "store": "precomputed shared procurement read model",
+        "readModel": "observation-fed procurement objects"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.contract-get@1",
+          "module": "worker/src/contracts.mjs",
+          "kind": "http-route",
+          "route": "GET /contract",
+          "surface": "Contract detail",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public procurement object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public procurement summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_contract@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_contract",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public procurement object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public procurement summary"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "reference": "contracts.browse@1",
+      "id": "contracts.browse",
+      "version": "1.0.0",
+      "owner": "procurement",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.contracts_browse.input.v1",
+      "output_schema": "cityscroll.capability.contracts_browse.output.v1",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "agency": "design and construction",
+            "stage": "award",
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "maximumResults": 10,
+            "oneRowPer": "exact procurement_id"
+          }
+        },
+        {
+          "input": {
+            "sourceSystem": "passport_public_contracts",
+            "limit": 25
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": "cursor when more rows remain"
+          }
+        }
+      ],
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "contract.procurement_id (materialized from exact publisher identifiers)",
+        "sourceIdentity": "contract.provenance.source_observations[].source_observation_ref",
+        "observationClock": "contract.freshness.as_of plus source_observations[].ingested_at",
+        "identityAuthority": "site/procurement_object_contract.mjs exact identity gate"
+      },
+      "freshness": {
+        "owner": "shared procurement read model",
+        "projection": "read-model generated_at, checked_at, and source envelopes"
+      },
+      "provider": {
+        "id": "worker-static.procurement-contracts.browse",
+        "module": "worker/src/contracts.mjs",
+        "export": "workerProcurementContracts",
+        "store": "precomputed shared procurement read model",
+        "readModel": "observation-fed procurement objects"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.contracts-browse@1",
+          "module": "worker/src/contracts.mjs",
+          "kind": "http-route",
+          "route": "GET /contracts",
+          "surface": "Contracts browse",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public procurement object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public procurement summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.browse_contracts@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "browse_contracts",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "public procurement object or bounded browse envelope"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded public procurement summary"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
@@ -977,6 +1205,106 @@
               "availability": "complete-or-partial-or-unknown",
               "maximumCitations": 10,
               "exactJoin": "matched-or-unknown"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "get_contract",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "contract.get@1",
+        "capability_reference": "contract.get@1",
+        "adapter_id": "mcp.get_contract@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "procurementIdMaximumLength": 320,
+            "maximum": 1
+          },
+          "output": {
+            "oneContract": true
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "procurementId": "procurement:contract:20211201861"
+            },
+            "output": {
+              "availability": "available",
+              "exactIdentity": true,
+              "lifecycle": "preserved when present"
+            }
+          },
+          {
+            "input": {
+              "procurementId": "procurement:contract:not-published"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "browse_contracts",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "contracts.browse@1",
+        "capability_reference": "contracts.browse@1",
+        "adapter_id": "mcp.browse_contracts@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "filterMaximumLength": 240,
+            "cursorMaximumLength": 320,
+            "minimum": 1,
+            "maximum": 100,
+            "default": 25
+          },
+          "output": {
+            "maximumResults": 100
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "agency": "design and construction",
+              "stage": "award",
+              "limit": 10
+            },
+            "output": {
+              "availability": "complete",
+              "maximumResults": 10,
+              "oneRowPer": "exact procurement_id"
+            }
+          },
+          {
+            "input": {
+              "sourceSystem": "passport_public_contracts",
+              "limit": 25
+            },
+            "output": {
+              "availability": "complete",
+              "pagination": "cursor when more rows remain"
             }
           }
         ],
