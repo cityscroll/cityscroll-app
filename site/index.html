@@ -753,6 +753,12 @@
   .contracts-analytics-controls .field{min-width:145px;flex:1 1 145px}
   .contracts-analytics-controls label{display:block;color:var(--muted);font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
   .contracts-analytics-controls select,.contracts-analytics-controls input{width:100%;margin-top:4px}
+  .contracts-analytics-controls .field[hidden]{display:none}
+  .contracts-analytics-timing{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:14px 0 4px}
+  .contracts-analytics-timing-metric{min-width:0;padding:10px 11px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2)}
+  .contracts-analytics-timing-metric strong,.contracts-analytics-timing-metric span{display:block;overflow-wrap:anywhere}
+  .contracts-analytics-timing-metric strong{font:750 18px/1.1 var(--font-display);color:var(--ink)}
+  .contracts-analytics-timing-metric span{margin-top:4px;color:var(--muted);font:650 10px/1.3 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em}
   .contracts-analytics-groups{display:grid;gap:7px;margin:14px 0 0;padding:0;list-style:none}
   .contracts-analytics-groups[hidden],.contracts-analytics-note[hidden]{display:none}
   .contracts-analytics-group{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
@@ -781,6 +787,8 @@
   .contracts-analytics-concentration-note{margin-top:11px;font-size:11.5px}
   @media(max-width:680px){.contracts-analytics-concentration-summaries{grid-template-columns:1fr}.contracts-analytics-concentration-vendor{grid-template-columns:minmax(0,1fr) auto}.contracts-analytics-concentration-vendor-meta{grid-column:1;text-align:start}.contracts-analytics-concentration-contracts{grid-column:2;grid-row:1 / span 2}}
   @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
+  @media(max-width:900px){.contracts-analytics-timing{grid-template-columns:repeat(3,minmax(0,1fr))}}
+  @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-timing{grid-template-columns:repeat(2,minmax(0,1fr))}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   .money-method-slot{min-height:calc(var(--space-8) + var(--space-5) + var(--space-1))}
   .lens-search-state{margin:var(--space-3) 0 0}
   .lens-search-state:empty{display:none}
@@ -1835,13 +1843,14 @@
 
     <section class="contracts-analytics" id="contracts-analytics" hidden aria-labelledby="contracts-analytics-heading">
       <div class="contracts-analytics-head">
-        <p class="contracts-analytics-kicker" data-i18n="analytics_compare_kicker">Compare / Overview</p>
+        <p class="contracts-analytics-kicker" id="contracts-analytics-kicker" data-i18n="analytics_compare_kicker">Compare / Overview</p>
         <h2 id="contracts-analytics-heading" data-i18n="analytics_overview_heading">What is large in this population?</h2>
-        <p class="contracts-analytics-deck" data-i18n="analytics_overview_deck">Compare registered contracts before opening an individual record. Rankings use the complete normalized Checkbook population, not the smaller published record list.</p>
+        <p class="contracts-analytics-deck" id="contracts-analytics-deck" data-i18n="analytics_overview_deck">Compare registered contracts before opening an individual record. Rankings use the complete normalized Checkbook population, not the smaller published record list.</p>
         <p class="contracts-analytics-population" id="contracts-analytics-population" role="status"></p>
       </div>
       <div class="contracts-analytics-controls" role="group" aria-label="Compare contracts" data-i18n-aria="analytics_compare_contracts_aria">
-        <div class="field"><label for="analytics-group" data-i18n="analytics_group_by">Group by</label><select id="analytics-group"><option value="agency" data-i18n="analytics_group_agency">Agency</option><option value="vendor" data-i18n="analytics_group_vendor">Vendor</option></select></div>
+        <div class="field"><label for="analytics-view" data-i18n="analytics_view">View</label><select id="analytics-view"><option value="overview" data-i18n="analytics_view_overview">Compare / Overview</option><option value="timing" data-i18n="analytics_view_timing">Registration timing</option></select></div>
+        <div class="field"><label for="analytics-group" data-i18n="analytics_group_by">Group by</label><select id="analytics-group"><option value="agency" data-i18n="analytics_group_agency">Agency</option><option value="vendor" data-i18n="analytics_group_vendor">Vendor</option><option value="registration_fiscal_year" data-i18n="analytics_group_fy">Registration FY</option><option value="amount_band" data-i18n="analytics_group_amount_band">Amount band</option></select></div>
         <div class="field"><label for="analytics-measure" data-i18n="analytics_measure">Measure</label><select id="analytics-measure"><option value="current" data-i18n="analytics_measure_current">Current registered contract value</option><option value="original" data-i18n="analytics_measure_original">Original registered contract value</option><option value="count" data-i18n="analytics_measure_count">Contract count</option></select></div>
         <div class="field"><label for="analytics-fy" data-i18n="analytics_registration_fy">Registration FY</label><select id="analytics-fy"><option value="" data-i18n="analytics_all_years">All years</option></select></div>
         <div class="field"><label for="analytics-min" data-i18n="analytics_min_current">Minimum current value</label><input id="analytics-min" type="number" min="0" step="1000" placeholder="No minimum" data-i18n-placeholder="analytics_no_minimum"></div>
@@ -1855,6 +1864,7 @@
         <ol class="contracts-analytics-concentration-vendors" id="contracts-analytics-concentration-vendors"></ol>
         <p class="contracts-analytics-concentration-note" id="contracts-analytics-concentration-note"></p>
       </section>
+      <div class="contracts-analytics-timing" id="contracts-analytics-timing" hidden aria-label="Registration timing measures"></div>
       <ol class="contracts-analytics-groups" id="contracts-analytics-groups"></ol>
       <p class="contracts-analytics-note" id="contracts-analytics-note"></p>
     </section>

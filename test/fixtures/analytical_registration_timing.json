@@ -1,0 +1,40 @@
+{
+  "schema": "cityscroll.analytical_registration_timing_fixture.v1",
+  "rows": [
+    {
+      "id": "CT-BEFORE",
+      "agency": "Department of Timing",
+      "vendor": "Early Vendor",
+      "current": 1000,
+      "original": 1000,
+      "start": "2025-04-10",
+      "registered": "2025-04-08"
+    },
+    {
+      "id": "CT-SAME-DAY",
+      "agency": "Department of Timing",
+      "vendor": "Same Day Vendor",
+      "current": 2000,
+      "original": 2000,
+      "start": "2025-04-10",
+      "registered": "2025-04-10"
+    },
+    {
+      "id": "CT-AFTER",
+      "agency": "Department of Timing",
+      "vendor": "Late Vendor",
+      "current": 3000,
+      "original": 2500,
+      "start": "2025-04-10",
+      "registered": "2025-04-21"
+    },
+    {
+      "id": "CT-MISSING-START",
+      "agency": "Department of Timing",
+      "vendor": "Unknown Start Vendor",
+      "current": 4000,
+      "original": 4000,
+      "registered": "2025-04-25"
+    }
+  ]
+}

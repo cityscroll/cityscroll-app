@@ -46,7 +46,7 @@ def extract_baseline(destination: Path) -> Path:
     return destination / "site"
 
 
-def capture_page(page, url: str, path: Path, after: bool) -> dict:
+def capture_page(page, url: str, path: Path, timing_path: Path | None, after: bool) -> dict:
     print(f"capturing {'after' if after else 'before'} at {url} -> {path.name}", flush=True)
     page_errors = []
     page.on("pageerror", lambda error: page_errors.append(str(error)))
@@ -69,6 +69,17 @@ def capture_page(page, url: str, path: Path, after: bool) -> dict:
             page.goto(url.rstrip("/") + drill["href"], wait_until="domcontentloaded")
             page.wait_for_selector("#list .row")
             drill_result = {"href": drill["href"], "visible_contract_rows": page.locator("#list .row").count(), "result_count": page.locator("#rescount").inner_text()}
+        page.goto(url + "browse/contracts/?mode=award", wait_until="domcontentloaded")
+        page.wait_for_selector("#contracts-analytics-groups a")
+        page.select_option("#analytics-view", "timing")
+        page.wait_for_function("() => document.querySelector('#contracts-analytics-timing:not([hidden])') && document.querySelector('#contracts-analytics-groups a')", timeout=60000)
+        timing = {
+            "population": page.locator("#contracts-analytics-population").inner_text(),
+            "metrics": page.locator("#contracts-analytics-timing").inner_text(),
+            "groups": page.locator("#contracts-analytics-groups a").evaluate_all("els => els.slice(0, 3).map(el => ({label: el.textContent.trim(), href: el.getAttribute('href')}))"),
+        }
+        if timing_path:
+            page.locator("#contracts-analytics").screenshot(path=str(timing_path), animations="disabled")
         page.goto(url + "browse/contracts/?mode=award&ap_agency=" + AGENCY.replace(" ", "+"), wait_until="domcontentloaded")
         page.wait_for_selector("#contracts-analytics-concentration:not([hidden])", timeout=60000)
         concentration = {
@@ -77,7 +88,7 @@ def capture_page(page, url: str, path: Path, after: bool) -> dict:
             "vendors": page.locator("#contracts-analytics-concentration-vendors > li").count(),
         }
         page.locator("#contracts-analytics-concentration").screenshot(path=str(OUT / f"after-agency-{page.viewport_size['width']}.png"), animations="disabled")
-        return {"population": population, "groups": groups, "vendor_groups": vendor_groups, "drill_through": drill_result, "concentration": concentration, "page_errors": page_errors}
+        return {"population": population, "groups": groups, "vendor_groups": vendor_groups, "drill_through": drill_result, "timing": timing, "concentration": concentration, "page_errors": page_errors}
     page.goto(url + "browse/contracts/?mode=award&ap_agency=" + AGENCY.replace(" ", "+"), wait_until="domcontentloaded")
     page.wait_for_selector("#list .row")
     page.locator("#tab-money .grid").screenshot(path=str(OUT / f"before-agency-{page.viewport_size['width']}.png"), animations="disabled")
@@ -99,7 +110,7 @@ def main() -> None:
                         context = browser.new_context(viewport={"width": width, "height": height}, device_scale_factor=1)
                         page = context.new_page()
                         page.route("https://**/*", lambda route: route.abort())
-                        result = capture_page(page, url, OUT / f"{phase}-{width}.png", after)
+                        result = capture_page(page, url, OUT / f"{phase}-{width}.png", OUT / f"{phase}-timing-{width}.png" if after else None, after)
                         captures.append({"phase": phase, "viewport": {"width": width, "height": height}, **result})
                         context.close()
             browser.close()

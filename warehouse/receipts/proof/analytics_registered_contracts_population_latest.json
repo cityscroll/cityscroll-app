@@ -68,7 +68,21 @@
       "ambiguous_award_method_contracts": 0,
       "ambiguous_mwbe_category_contracts": 7,
       "ambiguous_duration_contracts": 0,
-      "ambiguous_includes_subvendors_contracts": 0
+      "ambiguous_includes_subvendors_contracts": 0,
+      "ambiguous_start_date_contracts": 0
+    },
+    "registration_timing": {
+      "total_contract_count": 26270,
+      "eligible_contract_count": 0,
+      "missing_date_contract_count": 26270,
+      "retroactive_contract_count": 0,
+      "early_on_time_contract_count": 0,
+      "retroactive_share": null,
+      "missing_date_share": 1,
+      "median_lag_days": null,
+      "p75_lag_days": null,
+      "p90_lag_days": null,
+      "excluded_row_count": 26270
     }
   },
   "dimension_profile": {

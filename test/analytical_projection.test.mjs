@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { DatabaseSync } from "node:sqlite";
 import { describe, it } from "node:test";
 
 import {
@@ -14,6 +15,8 @@ import {
   filterAnalyticalContracts,
   groupAnalyticalContracts,
   normalizeAnalyticalContractRow,
+  registrationLagDaysBetween,
+  registrationTimingSummary,
   registrationFiscalYear,
   vendorConcentration,
 } from "../site/analytical_projection.mjs";
@@ -26,6 +29,8 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(REGISTERED_CONTRACT_PROJECTION.fact, "registered_contract");
     assert.equal(REGISTERED_CONTRACT_PROJECTION.measures.sum_current_registered_amount.reader_label, "Current registered contract value");
     assert.equal(REGISTERED_CONTRACT_PROJECTION.measures.sum_original_registered_amount.reader_label, "Original registered contract value");
+    assert.equal(REGISTERED_CONTRACT_PROJECTION.measures.retroactive_share.aggregation, "retroactive_count / eligible_contract_count");
+    assert.equal(REGISTERED_CONTRACT_PROJECTION.dimensions.registration_timing.source_field, "registration_date, start_date");
     assert.equal(REGISTERED_CONTRACT_PROJECTION.dimensions.registration_fiscal_year.source_field, "prime_contract_registration_date");
     assert.match(REGISTERED_CONTRACT_PROJECTION.guards.join(" "), /source_fiscal_years.*provenance/i);
     assert.throws(() => assertSupportedProjection({ fact: "payment", measure: "sum_current_registered_amount" }), /Unsupported analytical fact/);
@@ -100,6 +105,66 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(vendorConcentration(rows, { measure: "original" }).denominator, 255);
   });
 
+  it("derives timing without treating missing dates as on time", () => {
+    assert.equal(registrationLagDaysBetween("2025-04-08", "2025-04-10"), -2);
+    assert.equal(registrationLagDaysBetween("2025-04-10", "2025-04-10"), 0);
+    assert.equal(registrationLagDaysBetween("2025-04-21", "2025-04-10"), 11);
+    assert.equal(registrationLagDaysBetween("2025-04-25", null), null);
+    const fixture = JSON.parse(readFileSync("test/fixtures/analytical_registration_timing.json", "utf8"));
+    const rows = fixture.rows.map(normalizeAnalyticalContractRow);
+    assert.deepEqual(rows.map((row) => [row.prime_contract_id, row.registration_lag_days, row.registration_timing]), [
+      ["CT-BEFORE", -2, "early_on_time"],
+      ["CT-SAME-DAY", 0, "early_on_time"],
+      ["CT-AFTER", 11, "retroactive"],
+      ["CT-MISSING-START", null, null],
+    ]);
+    assert.deepEqual(registrationTimingSummary(rows), {
+      total_contract_count: 4,
+      eligible_contract_count: 3,
+      missing_date_contract_count: 1,
+      retroactive_contract_count: 1,
+      early_on_time_contract_count: 2,
+      retroactive_share: 1 / 3,
+      missing_date_share: 1 / 4,
+      median_lag_days: 0,
+      p75_lag_days: 11,
+      p90_lag_days: 11,
+      excluded_row_count: 1,
+    });
+    assert.deepEqual(filterAnalyticalContracts(rows, { retroactive: "true" }).map((row) => row.prime_contract_id), ["CT-AFTER"]);
+    assert.match(analyticalDrillThroughHref({ agency: "Department of Timing", retroactive: true }), /retroactive=true/);
+  });
+
+  it("matches the independently computed SQL timing fixture", () => {
+    const fixture = JSON.parse(readFileSync("test/fixtures/analytical_registration_timing.json", "utf8"));
+    const db = new DatabaseSync(":memory:");
+    db.exec("CREATE TABLE contracts (agency TEXT, start_date TEXT, registration_date TEXT)");
+    const insert = db.prepare("INSERT INTO contracts (agency, start_date, registration_date) VALUES (?, ?, ?)");
+    for (const row of fixture.rows) insert.run(row.agency, row.start || null, row.registered || null);
+    const sql = readFileSync("test/fixtures/analytical_registration_timing.sql", "utf8");
+    const sqlResult = db.prepare(sql).all();
+    db.close();
+    const rows = fixture.rows.map(normalizeAnalyticalContractRow);
+    const expected = groupAnalyticalContracts(rows, { groupBy: "agency" }).groups[0];
+    assert.equal(sqlResult.length, 1);
+    const actual = sqlResult[0];
+    assert.deepEqual(
+      Object.fromEntries(["total_contract_count", "eligible_contract_count", "missing_date_contract_count", "retroactive_contract_count", "early_on_time_contract_count", "median_lag_days", "p75_lag_days", "p90_lag_days"].map((key) => [key, Number(actual[key])])),
+      {
+        total_contract_count: expected.total_contract_count,
+        eligible_contract_count: expected.eligible_contract_count,
+        missing_date_contract_count: expected.missing_date_contract_count,
+        retroactive_contract_count: expected.retroactive_contract_count,
+        early_on_time_contract_count: expected.early_on_time_contract_count,
+        median_lag_days: expected.median_lag_days,
+        p75_lag_days: expected.p75_lag_days,
+        p90_lag_days: expected.p90_lag_days,
+      },
+    );
+    assert.equal(Number(actual.retroactive_share), expected.retroactive_share);
+    assert.equal(Number(actual.missing_date_share), expected.missing_date_share);
+  });
+
   it("preserves linked agency and vendor scopes across the cold document-route handoff", () => {
     const raw = "#money?mode=award&ap_agency=Department+of+Design+and+Construction&ap_vendor=Vendor+A&ap_fy=2026&ap_amount_band=%24100%2C000%E2%80%93999%2C999&ap_min=1000&ap_max=2000";
     const scope = scopeFromRouteHash(raw);
@@ -130,5 +195,8 @@ describe("committed analytical population artifact", () => {
     assert.doesNotMatch(receipt.materialization.reproducible_input, /(?:^|\/)Users\/[A-Za-z]|(?:^|\/)home\/[A-Za-z]|^~\//);
     assert.ok(receipt.dimension_profile.agency.distinct_count > 0);
     assert.ok(receipt.dimension_profile.prime_vendor.distinct_count > 0);
+    assert.equal(projection.registration_timing_summary.total_contract_count, projection.rows.length);
+    assert.equal(projection.registration_timing_summary.missing_date_contract_count, projection.rows.length);
+    assert.equal(projection.registration_timing_summary.retroactive_share, null);
   });
 });

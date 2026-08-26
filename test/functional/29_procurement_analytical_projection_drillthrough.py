@@ -42,6 +42,7 @@ def main() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         page = browser.new_page()
+        page.route("https://**/*", lambda route: route.abort())
 
         for key, value, expected_count in (
             ("ap_agency", AGENCY, 40),
@@ -76,7 +77,17 @@ def main() -> None:
         wait_for_contracts(page)
         assert_scope(page, "ap_vendor", VENDOR, 20, VENDOR)
 
-        print("PASS: analytical agency and vendor drill-throughs work from cold URLs and in-app links")
+        page.goto(f"{BASE}/browse/contracts/?mode=award", wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_selector("#contracts-analytics-groups a", timeout=60000)
+        page.select_option("#analytics-view", "timing")
+        page.wait_for_function("() => document.querySelector('#contracts-analytics-timing:not([hidden])')", timeout=60000)
+        timing_link = page.locator("#contracts-analytics-groups a").first
+        assert "retroactive=true" in (timing_link.get_attribute("href") or "")
+        timing_link.click()
+        wait_for_contracts(page)
+        assert "retroactive=true" in page.url
+
+        print("PASS: analytical agency, vendor, and retroactive timing drill-throughs work from cold URLs and in-app links")
         browser.close()
 
 

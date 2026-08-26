@@ -68,6 +68,7 @@ export function normalizeCheckbookContractRows(inputRows) {
     ambiguous_agency_contracts: 0,
     missing_agency_contracts: 0,
     ambiguous_registration_date_contracts: 0,
+    ambiguous_start_date_contracts: 0,
     ambiguous_award_method_contracts: 0,
     ambiguous_mwbe_category_contracts: 0,
     ambiguous_duration_contracts: 0,
@@ -84,6 +85,7 @@ export function normalizeCheckbookContractRows(inputRows) {
     const vendors = unique(slices.map((row) => row?.vendor || row?.prime_vendor));
     const agencies = unique(slices.map((row) => row?.agency || row?.agency_name || row?.prime_contracting_agency));
     const registrationDates = unique(slices.map((row) => row?.registered || row?.registration_date));
+    const startDates = unique(slices.map((row) => row?.start || row?.start_date));
     const awardMethods = unique(slices.map((row) => row?.awardMethod || row?.award_method));
     const mwbeCategories = unique(slices.map((row) => row?.mwbe || row?.mwbe_category));
     const durations = unique(slices.map((row) => row?.duration));
@@ -107,6 +109,7 @@ export function normalizeCheckbookContractRows(inputRows) {
     if (agencies.length > 1) blocked.ambiguous_agency_contracts += 1;
     else if (!agencies.length) blocked.missing_agency_contracts += 1;
     if (registrationDates.length > 1) blocked.ambiguous_registration_date_contracts += 1;
+    if (startDates.length > 1) blocked.ambiguous_start_date_contracts += 1;
     if (awardMethods.length > 1) blocked.ambiguous_award_method_contracts += 1;
     if (mwbeCategories.length > 1) blocked.ambiguous_mwbe_category_contracts += 1;
     if (durations.length > 1) blocked.ambiguous_duration_contracts += 1;
@@ -123,6 +126,7 @@ export function normalizeCheckbookContractRows(inputRows) {
       duration: durations.length === 1 ? durations[0] : null,
       includes_subvendors: includesSubvendors.length === 1 ? includesSubvendors[0] : null,
       registration_date: registrationDates.length === 1 ? registrationDates[0] : null,
+      start_date: startDates.length === 1 ? startDates[0] : null,
       status: usable(best.status) || "registered",
       current: Number(best.current) || 0,
       original: Number(best.original) || 0,
