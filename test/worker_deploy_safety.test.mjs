@@ -36,7 +36,7 @@ test("Worker deploys when shared Following source changes and smokes the canonic
 
 test("Worker deploy uses the pinned dry-run budget and read-model canary guard", () => {
   const workflow = read(".github/workflows/deploy-worker.yml");
-  assert.match(workflow, /npx wrangler@4\.110\.0 deploy --dry-run/);
+  assert.match(workflow, /npx wrangler@4\.126\.0 deploy --dry-run/);
   assert.match(workflow, /tools\/worker_deploy_guard\.mjs/);
   assert.match(workflow, /--read-model-dir/);
   assert.match(workflow, /64 MiB/);
@@ -54,7 +54,7 @@ test("route read-model publishing resolves ALERT_STATE through the Worker Wrangl
   const kvCommands = publish
     .split("\n")
     .map((line) => line.trim())
-    .filter((line) => line.startsWith("npx wrangler@4.110.0 kv "));
+    .filter((line) => line.startsWith("npx wrangler@4.126.0 kv "));
   assert.equal(kvCommands.length, 3);
   for (const command of kvCommands) {
     assert.match(command, /--binding ALERT_STATE/);
