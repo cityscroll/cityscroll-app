@@ -10,7 +10,7 @@ const INVENTORY_SCHEMA = "cityscroll.community_board_source_inventory.v1";
 const RECEIPT_SCHEMA = "cityscroll.community_board_source_receipt.v1";
 const OBSERVED_ON = "2026-08-13";
 const RECEIPT_REF = "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json";
-const ROLES = ["upcoming_meetings", "minutes"];
+const ROLES = ["upcoming_meetings", "minutes", "committees", "roster", "bylaws"];
 
 function readJson(path) { return JSON.parse(readFileSync(path, "utf8")); }
 function writeJson(path, value) { writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`); }
@@ -68,7 +68,9 @@ function roleRecord(board, role, raw, registryRole) {
       status: observed ? "observed" : "not_observed",
       seen_on: OBSERVED_ON,
       fetchability: observed ? fetchability(source.fetch_mode) : "unknown",
-      access_note: source.access_constraint || null,
+      access_note: source.verification?.access_note === "browser_required"
+        ? "browser_protected"
+        : source.verification?.access_note || source.access_constraint || null,
       receipt_ref: RECEIPT_REF,
       reason: observed ? null : "not_observed_in_pass",
     },
@@ -79,6 +81,9 @@ function sourceRolesFromRegistry(registryRow, oldRow) {
   const oldRoles = {
     upcoming_meetings: oldRow?.upcoming,
     minutes: oldRow?.minutes,
+    committees: oldRow?.committees,
+    roster: oldRow?.roster,
+    bylaws: oldRow?.bylaws,
   };
   const registryRoles = registryRow.source_roles || {};
   return Object.fromEntries(ROLES.map((role) => [role, roleRecord(
@@ -117,6 +122,9 @@ function build(registry, existing) {
       observed: OBSERVED_ON,
       upcoming: sources.upcoming_meetings,
       minutes: sources.minutes,
+      committees: sources.committees,
+      roster: sources.roster,
+      bylaws: sources.bylaws,
     };
   });
   return {
@@ -144,7 +152,7 @@ function withRegistryRoles(registry, inventory) {
       if (row.body_type !== "community_board") return row;
       const board = byId.get(row.body_id);
       const roles = Object.fromEntries(ROLES.map((role) => {
-        const value = role === "upcoming_meetings" ? board.upcoming : board.minutes;
+        const value = board[role === "upcoming_meetings" ? "upcoming" : role];
         return [role, { ...value, source_type: role }];
       }));
       return { ...row, source_roles: roles };
@@ -156,7 +164,7 @@ function buildReceipt(inventory) {
   const sources = [];
   for (const board of inventory.boards) {
     for (const role of ROLES) {
-      const value = role === "upcoming_meetings" ? board.upcoming : board.minutes;
+      const value = board[role === "upcoming_meetings" ? "upcoming" : role];
       sources.push({
         board_id: board.id,
         role,

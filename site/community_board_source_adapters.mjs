@@ -11,6 +11,13 @@ import { matchCommunityBoardCommittee } from "./community_board_committees.mjs";
 
 export const COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA = "cityscroll.community_board_source_record.v1";
 export const COMMUNITY_BOARD_SOURCE_RECEIPT_SCHEMA = "cityscroll.community_board_source_receipt.v1";
+export const COMMUNITY_BOARD_SOURCE_ROLES = Object.freeze([
+  "upcoming_meetings",
+  "minutes",
+  "committees",
+  "roster",
+  "bylaws",
+]);
 
 export const COMMUNITY_BOARD_SOURCE_ADAPTER_CONTRACTS = Object.freeze({
   html_pdf_v1: Object.freeze({
@@ -180,6 +187,7 @@ function adapterId(source) {
   const role = clean(source?.role || source?.source_role || source?.source_type, 80).toLowerCase();
   const publisherKind = clean(source?.publisher_kind, 80).toLowerCase();
   const url = explicitUrl(source);
+  if (["committees", "roster", "bylaws"].includes(role) && url) return "html_pdf_v1";
   if (role === "upcoming_meetings" && publisherKind === "nyc_official"
     && clean(source?.format, 200).toLowerCase() === "explicit board calendar"
     && /^https:\/\/www\d?\.nyc\.gov\/site\/.+\.page(?:$|[?#])/i.test(url || "")) {
@@ -195,6 +203,11 @@ function adapterId(source) {
 
 export function communityBoardSourceAdapterId(source = {}) {
   return adapterId(source);
+}
+
+export function communityBoardSourceRole(source = {}) {
+  const role = clean(source?.role || source?.source_role || source?.source_type, 80).toLowerCase();
+  return COMMUNITY_BOARD_SOURCE_ROLES.includes(role) ? role : null;
 }
 
 export function sourceAdapterContract(source = {}) {
