@@ -1,0 +1,157 @@
+{
+  "schema": "cityscroll.external_search_fixture.v1",
+  "source": {
+    "interface": "documented public HTTP",
+    "capability_reference": "search.federated@1",
+    "route": "GET /search",
+    "origin": "https://api.cityscroll.org",
+    "captured_at": "2026-08-27T20:00:00Z"
+  },
+  "cases": [
+    {
+      "query": "parks",
+      "response": {
+        "schema": "cityscroll.keyword_search_response.v1",
+        "capability_reference": "search.federated@1",
+        "query": "parks",
+        "federated": {
+          "schema": "cityscroll.universal_search_federator.v1",
+          "query": { "normalized": "parks", "tokens": ["parks"] },
+          "ranking_policy": { "policy": "cityscroll.cross_lens_rank.v1" },
+          "results": [
+            {
+              "result_schema": "cityscroll.universal_search_result.v1",
+              "object_ref": "agency:id:parks-and-recreation",
+              "object_type": "agency",
+              "domain": "people",
+              "canonical_href": "/agencies/parks-and-recreation/",
+              "source_observation_refs": ["agency:parks-and-recreation"],
+              "provenance": { "producer": "fixture.agency-search.v1" },
+              "match_fields": [{ "field": "title", "matched_term": "parks", "source_observation_ref": "agency:parks-and-recreation" }],
+              "matched_lenses": ["agencies"]
+            },
+            {
+              "result_schema": "cityscroll.universal_search_result.v1",
+              "object_ref": "community-board-person:brooklyn:parks-example",
+              "object_type": "person",
+              "domain": "people",
+              "canonical_href": "/people/community-board-person-brooklyn-parks-example/",
+              "source_observation_refs": ["community-board:brooklyn:parks-example"],
+              "provenance": { "producer": "fixture.community-board-people.v1" },
+              "match_fields": [{ "field": "summary", "matched_term": "parks", "source_observation_ref": "community-board:brooklyn:parks-example" }],
+              "matched_lenses": ["people"]
+            }
+          ],
+          "coverage": {
+            "by_lens": {
+              "notices": { "lens": "notices", "state": "empty", "matched_count": 0, "indexed_count": 12, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.notice-index" },
+              "people": { "lens": "people", "state": "matched", "matched_count": 1, "indexed_count": 8, "as_of": "2026-08-27T18:01:00Z", "source": "fixture.people-index" },
+              "agencies": { "lens": "agencies", "state": "matched", "matched_count": 1, "indexed_count": 4, "as_of": "2026-08-27T18:02:00Z", "source": "fixture.agency-index" },
+              "vendors": { "lens": "vendors", "state": "empty", "matched_count": 0, "indexed_count": 6, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.vendor-index" },
+              "committees": { "lens": "committees", "state": "partial", "matched_count": 0, "indexed_count": 2, "as_of": "2026-08-27T17:00:00Z", "source": "fixture.committee-index" },
+              "community_boards": { "lens": "community_boards", "state": "empty", "matched_count": 0, "indexed_count": 5, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.board-index" },
+              "exams": { "lens": "exams", "state": "not_indexed", "matched_count": 0, "indexed_count": null, "as_of": null, "source": "fixture.exam-index" },
+              "parcels": { "lens": "parcels", "state": "empty", "matched_count": 0, "indexed_count": 3, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.parcel-index" },
+              "land": { "lens": "land", "state": "empty", "matched_count": 0, "indexed_count": 7, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.land-index" },
+              "meetings": { "lens": "meetings", "state": "provider_unavailable", "matched_count": 0, "indexed_count": null, "as_of": null, "source": "fixture.meeting-index" }
+            }
+          }
+        },
+        "lanes": [
+          { "id": "people-organizations", "cards": [{ "object_ref": "agency:id:parks-and-recreation", "object_type": "agency", "canonical_href": "/agencies/parks-and-recreation/" }] }
+        ],
+        "results": [
+          { "object_ref": "agency:id:parks-and-recreation", "object_type": "agency", "canonical_href": "/agencies/parks-and-recreation/", "title": "Department of Parks and Recreation" },
+          { "object_ref": "community-board-person:brooklyn:parks-example", "object_type": "person", "canonical_href": "/people/community-board-person-brooklyn-parks-example/", "title": "Parks example" }
+        ],
+        "coverage": {
+          "by_lens": {
+            "notices": { "lens": "notices", "state": "empty", "matched_count": 0, "indexed_count": 12, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.notice-index" },
+            "people": { "lens": "people", "state": "matched", "matched_count": 1, "indexed_count": 8, "as_of": "2026-08-27T18:01:00Z", "source": "fixture.people-index" },
+            "agencies": { "lens": "agencies", "state": "matched", "matched_count": 1, "indexed_count": 4, "as_of": "2026-08-27T18:02:00Z", "source": "fixture.agency-index" },
+            "vendors": { "lens": "vendors", "state": "empty", "matched_count": 0, "indexed_count": 6, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.vendor-index" },
+            "committees": { "lens": "committees", "state": "partial", "matched_count": 0, "indexed_count": 2, "as_of": "2026-08-27T17:00:00Z", "source": "fixture.committee-index" },
+            "community_boards": { "lens": "community_boards", "state": "empty", "matched_count": 0, "indexed_count": 5, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.board-index" },
+            "exams": { "lens": "exams", "state": "not_indexed", "matched_count": 0, "indexed_count": null, "as_of": null, "source": "fixture.exam-index" },
+            "parcels": { "lens": "parcels", "state": "empty", "matched_count": 0, "indexed_count": 3, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.parcel-index" },
+            "land": { "lens": "land", "state": "empty", "matched_count": 0, "indexed_count": 7, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.land-index" },
+            "meetings": { "lens": "meetings", "state": "provider_unavailable", "matched_count": 0, "indexed_count": null, "as_of": null, "source": "fixture.meeting-index" }
+          }
+        }
+      }
+    },
+    {
+      "query": "public hearing",
+      "response": {
+        "schema": "cityscroll.keyword_search_response.v1",
+        "capability_reference": "search.federated@1",
+        "query": "public hearing",
+        "federated": {
+          "schema": "cityscroll.universal_search_federator.v1",
+          "query": { "normalized": "public hearing", "tokens": ["public", "hearing"] },
+          "ranking_policy": { "policy": "cityscroll.cross_lens_rank.v1" },
+          "results": [
+            {
+              "result_schema": "cityscroll.universal_search_result.v1",
+              "object_ref": "meeting:city-record:public-hearing-example",
+              "object_type": "meeting",
+              "domain": "meetings",
+              "canonical_href": "/meetings/meeting%3Acity-record%3Apublic-hearing-example/",
+              "source_observation_refs": ["city-record:public-hearing-example"],
+              "provenance": { "producer": "fixture.meeting-search.v1" },
+              "match_fields": [{ "field": "title", "matched_term": "public hearing", "source_observation_ref": "city-record:public-hearing-example" }],
+              "matched_lenses": ["meetings"]
+            },
+            {
+              "result_schema": "cityscroll.universal_search_result.v1",
+              "object_ref": "procurement:public-hearing-example",
+              "object_type": "procurement",
+              "domain": "contracts",
+              "canonical_href": "/browse/contracts/?mode=award&q=public-hearing-example",
+              "source_observation_refs": ["notice:public-hearing-example"],
+              "provenance": { "producer": "fixture.notice-search.v1" },
+              "match_fields": [{ "field": "title", "matched_term": "public hearing", "source_observation_ref": "notice:public-hearing-example" }],
+              "matched_lenses": ["notices"]
+            }
+          ],
+          "coverage": {
+            "by_lens": {
+              "notices": { "lens": "notices", "state": "matched", "matched_count": 1, "indexed_count": 12, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.notice-index" },
+              "people": { "lens": "people", "state": "empty", "matched_count": 0, "indexed_count": 8, "as_of": "2026-08-27T18:01:00Z", "source": "fixture.people-index" },
+              "agencies": { "lens": "agencies", "state": "empty", "matched_count": 0, "indexed_count": 4, "as_of": "2026-08-27T18:02:00Z", "source": "fixture.agency-index" },
+              "vendors": { "lens": "vendors", "state": "empty", "matched_count": 0, "indexed_count": 6, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.vendor-index" },
+              "committees": { "lens": "committees", "state": "empty", "matched_count": 0, "indexed_count": 2, "as_of": "2026-08-27T17:00:00Z", "source": "fixture.committee-index" },
+              "community_boards": { "lens": "community_boards", "state": "empty", "matched_count": 0, "indexed_count": 5, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.board-index" },
+              "exams": { "lens": "exams", "state": "not_indexed", "matched_count": 0, "indexed_count": null, "as_of": null, "source": "fixture.exam-index" },
+              "parcels": { "lens": "parcels", "state": "empty", "matched_count": 0, "indexed_count": 3, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.parcel-index" },
+              "land": { "lens": "land", "state": "empty", "matched_count": 0, "indexed_count": 7, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.land-index" },
+              "meetings": { "lens": "meetings", "state": "matched", "matched_count": 1, "indexed_count": 9, "as_of": "2026-08-27T18:03:00Z", "source": "fixture.meeting-index" }
+            }
+          }
+        },
+        "lanes": [
+          { "id": "contracts", "cards": [{ "object_ref": "procurement:public-hearing-example", "object_type": "procurement", "canonical_href": "/browse/contracts/?mode=award&q=public-hearing-example" }] },
+          { "id": "meetings", "cards": [{ "object_ref": "meeting:city-record:public-hearing-example", "object_type": "meeting", "canonical_href": "/meetings/meeting%3Acity-record%3Apublic-hearing-example/" }] }
+        ],
+        "results": [
+          { "object_ref": "meeting:city-record:public-hearing-example", "object_type": "meeting", "canonical_href": "/meetings/meeting%3Acity-record%3Apublic-hearing-example/", "title": "Public hearing" },
+          { "object_ref": "procurement:public-hearing-example", "object_type": "procurement", "canonical_href": "/browse/contracts/?mode=award&q=public-hearing-example", "title": "Public hearing example" }
+        ],
+        "coverage": {
+          "by_lens": {
+            "notices": { "lens": "notices", "state": "matched", "matched_count": 1, "indexed_count": 12, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.notice-index" },
+            "people": { "lens": "people", "state": "empty", "matched_count": 0, "indexed_count": 8, "as_of": "2026-08-27T18:01:00Z", "source": "fixture.people-index" },
+            "agencies": { "lens": "agencies", "state": "empty", "matched_count": 0, "indexed_count": 4, "as_of": "2026-08-27T18:02:00Z", "source": "fixture.agency-index" },
+            "vendors": { "lens": "vendors", "state": "empty", "matched_count": 0, "indexed_count": 6, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.vendor-index" },
+            "committees": { "lens": "committees", "state": "empty", "matched_count": 0, "indexed_count": 2, "as_of": "2026-08-27T17:00:00Z", "source": "fixture.committee-index" },
+            "community_boards": { "lens": "community_boards", "state": "empty", "matched_count": 0, "indexed_count": 5, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.board-index" },
+            "exams": { "lens": "exams", "state": "not_indexed", "matched_count": 0, "indexed_count": null, "as_of": null, "source": "fixture.exam-index" },
+            "parcels": { "lens": "parcels", "state": "empty", "matched_count": 0, "indexed_count": 3, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.parcel-index" },
+            "land": { "lens": "land", "state": "empty", "matched_count": 0, "indexed_count": 7, "as_of": "2026-08-27T18:00:00Z", "source": "fixture.land-index" },
+            "meetings": { "lens": "meetings", "state": "matched", "matched_count": 1, "indexed_count": 9, "as_of": "2026-08-27T18:03:00Z", "source": "fixture.meeting-index" }
+          }
+        }
+      }
+    }
+  ]
+}

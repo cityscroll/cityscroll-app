@@ -46,6 +46,40 @@ The public interfaces used are:
 
 The equivalent documented MCP operation is `analyze_contracts`, but this proof uses HTTP only.
 
+## Federated-search boundary proof
+
+### Boundary record
+
+Before this proof, the site's search route consumed a federated capability envelope and exposed
+an HTTP projection, but no independent application had checked that the two result paths retained
+the same canonical identity and order. The missing evidence was especially important for partial,
+unindexed, or unavailable lenses, where an empty result would be misleading.
+
+After this proof, a small external-style application makes the documented `GET /search` call,
+validates the public envelope, compares it with the site's public result projection, and records
+the result identities, source observations, coverage states, freshness, and published bounds in a
+reproducible receipt.
+
+The companion [external search proof](../examples/external-search-proof/index.mjs) is a second
+consumer workflow for the documented `search.federated@1` capability. It calls `GET /search` as
+an outside application would, validates the bounded federated envelope, and compares the
+canonical capability results with the site's public result projection for the representative
+queries `parks` and `public hearing`.
+
+The comparison uses canonical object references, object types, exact routes, and result order.
+For each result it also retains source-observation references, match evidence, and the producer;
+for every registered lens it records state, indexed/matched counts, source, and `as_of`. The
+[committed receipt](evidence/external-search-consumer/receipt.json) records the documented
+240-character query bound, 100-result response bound, 8-card lane bound, fixture fingerprint,
+and the two comparison outcomes.
+
+This proof intentionally uses a deterministic public-response fixture in CI. The same consumer
+can request the live public endpoint with `--base-url` and `--query`; CI does not depend on live
+network state. The consumer imports platform modules only and stops if the workflow would need
+private imports, rendered-page scraping, arbitrary queries, or undocumented fields.
+
+The dedicated CI evidence is [External consumer proof](../.github/workflows/external-consumer-proof.yml).
+
 ## Honest gap
 
 The documented analysis capability reports registered contract value. It explicitly does not
