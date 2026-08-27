@@ -1,0 +1,455 @@
+{
+  "schema": "cityscroll.land_procedure_profiles.v1",
+  "registry_version": "2026-08-27.v1",
+  "registry_status": "reviewed_static",
+  "effective_from": "2025-12-02",
+  "legal_basis": [
+    {
+      "citation": "NYC Charter § 197-a",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-826"
+    },
+    {
+      "citation": "NYC Charter § 197-c",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+    },
+    {
+      "citation": "NYC Charter § 197-d",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+    },
+    {
+      "citation": "NYC Charter § 197-e",
+      "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873"
+    }
+  ],
+  "profiles": [
+    {
+      "procedure_id": "ulurp_197c",
+      "label": "Uniform Land Use Review Procedure (§ 197-c)",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 197-c",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+        },
+        {
+          "citation": "NYC Charter § 197-d",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "ulurp_197c.application_certification",
+          "spine_phase_id": "pre_application",
+          "actor_selector": {
+            "kind": "department_of_city_planning",
+            "source_field": "publisher.department_of_city_planning",
+            "selection": "source_explicit"
+          },
+          "role": "administrative_certifier",
+          "effect": "Receives and circulates the application, then certifies it as complete for review.",
+          "permitted_actions": ["receive_application", "circulate_application", "certify_complete"],
+          "time_window": {
+            "kind": "not_specified",
+            "basis": "NYC Charter § 197-c"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-c(b)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+            }
+          ],
+          "conditional_successors": [
+            { "to_stage_id": "ulurp_197c.community_board_review", "when": null }
+          ]
+        },
+        {
+          "stage_id": "ulurp_197c.community_board_review",
+          "spine_phase_id": "community_board",
+          "actor_selector": {
+            "kind": "affected_community_board",
+            "source_field": "affected_review_bodies.community_boards",
+            "selection": "source_explicit"
+          },
+          "role": "advisory_reviewer",
+          "effect": "May hold a public hearing and submit a written recommendation; the recommendation is advisory, not binding.",
+          "permitted_actions": ["notify_public", "hold_public_hearing", "submit_recommendation", "waive_review"],
+          "time_window": {
+            "kind": "statutory_days",
+            "days": 60,
+            "start": "certified_application_received",
+            "basis": "NYC Charter § 197-c(c)"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-c(c)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+            }
+          ],
+          "conditional_successors": [
+            {
+              "to_stage_id": "ulurp_197c.borough_board_review",
+              "when": { "fact": "affected_review_bodies.borough_board", "equals": true }
+            },
+            { "to_stage_id": "ulurp_197c.borough_president_review", "when": null }
+          ]
+        },
+        {
+          "stage_id": "ulurp_197c.borough_board_review",
+          "spine_phase_id": "borough_president",
+          "when": { "fact": "affected_review_bodies.borough_board", "equals": true },
+          "actor_selector": {
+            "kind": "affected_borough_board",
+            "source_field": "affected_review_bodies.borough_board",
+            "selection": "source_explicit"
+          },
+          "role": "advisory_reviewer",
+          "effect": "May hold a public hearing and submit a written recommendation to the City Planning Commission; the recommendation is advisory, not binding.",
+          "permitted_actions": ["hold_public_hearing", "submit_recommendation", "waive_review"],
+          "time_window": {
+            "kind": "statutory_days",
+            "days": 30,
+            "start": "certified_application_received",
+            "basis": "NYC Charter § 197-c"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-c",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+            }
+          ],
+          "conditional_successors": [
+            { "to_stage_id": "ulurp_197c.borough_president_review", "when": null }
+          ]
+        },
+        {
+          "stage_id": "ulurp_197c.borough_president_review",
+          "spine_phase_id": "borough_president",
+          "actor_selector": {
+            "kind": "affected_borough_president",
+            "source_field": "affected_review_bodies.borough_president",
+            "selection": "source_explicit"
+          },
+          "role": "advisory_reviewer",
+          "effect": "Submits a written recommendation or waiver to the City Planning Commission; the recommendation is advisory, not binding.",
+          "permitted_actions": ["submit_recommendation", "waive_review"],
+          "time_window": {
+            "kind": "statutory_days",
+            "days": 30,
+            "start": "certified_application_received",
+            "basis": "NYC Charter § 197-c"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-c",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+            }
+          ],
+          "conditional_successors": [
+            { "to_stage_id": "ulurp_197c.city_planning_commission_review", "when": null }
+          ]
+        },
+        {
+          "stage_id": "ulurp_197c.city_planning_commission_review",
+          "spine_phase_id": "cpc",
+          "actor_selector": {
+            "kind": "city_planning_commission",
+            "source_field": "publisher.city_planning_commission",
+            "selection": "source_explicit"
+          },
+          "role": "decision_maker",
+          "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove the application.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": {
+            "kind": "statutory_days",
+            "days": 60,
+            "start": "application_certified",
+            "basis": "NYC Charter § 197-c"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-c",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+            }
+          ],
+          "conditional_successors": [
+            {
+              "to_stage_id": "ulurp_197c.city_council_review",
+              "when": { "fact": "council_review", "in": ["automatic", "triple_no", "called_up"] }
+            }
+          ]
+        },
+        {
+          "stage_id": "ulurp_197c.city_council_review",
+          "spine_phase_id": "city_council",
+          "when": { "fact": "council_review", "in": ["automatic", "triple_no", "called_up"] },
+          "actor_selector": {
+            "kind": "city_council",
+            "source_field": "publisher.city_council_review",
+            "selection": "source_explicit"
+          },
+          "role": "conditional_decision_maker",
+          "effect": "When § 197-d review applies, may approve, approve with modifications, or disapprove the CPC decision; otherwise this stage is not expected.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": {
+            "kind": "statutory_days",
+            "days": 50,
+            "start": "cpc_decision_filed_with_council",
+            "basis": "NYC Charter § 197-d(c)"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-d(b)-(c)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+            }
+          ],
+          "conditional_successors": [
+            { "to_stage_id": "ulurp_197c.mayoral_review", "when": null }
+          ]
+        },
+        {
+          "stage_id": "ulurp_197c.mayoral_review",
+          "spine_phase_id": "mayoral_appeals",
+          "actor_selector": {
+            "kind": "mayor",
+            "source_field": "publisher.mayoral_review",
+            "selection": "source_explicit"
+          },
+          "role": "executive_review",
+          "effect": "May file a written disapproval or objection where the Charter provides; this profile does not infer that one occurred.",
+          "permitted_actions": ["file_written_disapproval", "file_written_objection", "take_no_action"],
+          "time_window": {
+            "kind": "statutory_days",
+            "days": 5,
+            "start": "council_or_cpc_filing",
+            "basis": "NYC Charter § 197-d(e)-(g)"
+          },
+          "legal_basis": [
+            {
+              "citation": "NYC Charter § 197-d(e)-(g)",
+              "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+            }
+          ],
+          "conditional_successors": []
+        }
+      ]
+    },
+    {
+      "procedure_id": "ulurp_197d_conditional_council",
+      "label": "ULURP with conditional City Council review (§ 197-d)",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 197-d",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+        },
+        {
+          "citation": "NYC Charter § 197-c",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "ulurp_197d.application_certification",
+          "spine_phase_id": "pre_application",
+          "actor_selector": { "kind": "department_of_city_planning", "source_field": "publisher.department_of_city_planning", "selection": "source_explicit" },
+          "role": "administrative_certifier",
+          "effect": "Receives and certifies the application as complete for the applicable land-use review.",
+          "permitted_actions": ["receive_application", "circulate_application", "certify_complete"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-c" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-c(b)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834" }],
+          "conditional_successors": [{ "to_stage_id": "ulurp_197d.community_board_review", "when": null }]
+        },
+        {
+          "stage_id": "ulurp_197d.community_board_review",
+          "spine_phase_id": "community_board",
+          "actor_selector": { "kind": "affected_community_board", "source_field": "affected_review_bodies.community_boards", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "May hold a public hearing and submit an advisory written recommendation; it does not decide the application.",
+          "permitted_actions": ["notify_public", "hold_public_hearing", "submit_recommendation", "waive_review"],
+          "time_window": { "kind": "statutory_days", "days": 60, "start": "certified_application_received", "basis": "NYC Charter § 197-c(c)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-c(c)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834" }],
+          "conditional_successors": [{ "to_stage_id": "ulurp_197d.borough_president_review", "when": null }]
+        },
+        {
+          "stage_id": "ulurp_197d.borough_president_review",
+          "spine_phase_id": "borough_president",
+          "actor_selector": { "kind": "affected_borough_president", "source_field": "affected_review_bodies.borough_president", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "Submits an advisory written recommendation or waiver to the City Planning Commission.",
+          "permitted_actions": ["submit_recommendation", "waive_review"],
+          "time_window": { "kind": "statutory_days", "days": 30, "start": "certified_application_received", "basis": "NYC Charter § 197-c" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-c", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834" }],
+          "conditional_successors": [{ "to_stage_id": "ulurp_197d.city_planning_commission_review", "when": null }]
+        },
+        {
+          "stage_id": "ulurp_197d.city_planning_commission_review",
+          "spine_phase_id": "cpc",
+          "actor_selector": { "kind": "city_planning_commission", "source_field": "publisher.city_planning_commission", "selection": "source_explicit" },
+          "role": "decision_maker",
+          "effect": "May approve, approve with modifications, or disapprove the application; a favorable decision may be filed for conditional Council review.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove", "file_decision"],
+          "time_window": { "kind": "statutory_days", "days": 60, "start": "application_certified", "basis": "NYC Charter § 197-c" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-c and § 197-d(a)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746" }],
+          "conditional_successors": [{ "to_stage_id": "ulurp_197d.city_council_review", "when": { "fact": "council_review", "in": ["automatic", "triple_no", "called_up"] } }]
+        },
+        {
+          "stage_id": "ulurp_197d.city_council_review",
+          "spine_phase_id": "city_council",
+          "when": { "fact": "council_review", "in": ["automatic", "triple_no", "called_up"] },
+          "actor_selector": { "kind": "city_council", "source_field": "publisher.city_council_review", "selection": "source_explicit" },
+          "role": "conditional_decision_maker",
+          "effect": "Acts only when the source facts establish an automatic, triple-no, or called-up § 197-d review path.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": { "kind": "statutory_days", "days": 50, "start": "cpc_decision_filed_with_council", "basis": "NYC Charter § 197-d(c)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-d(b)-(c)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746" }],
+          "conditional_successors": [{ "to_stage_id": "ulurp_197d.mayoral_review", "when": null }]
+        },
+        {
+          "stage_id": "ulurp_197d.mayoral_review",
+          "spine_phase_id": "mayoral_appeals",
+          "actor_selector": { "kind": "mayor", "source_field": "publisher.mayoral_review", "selection": "source_explicit" },
+          "role": "executive_review",
+          "effect": "May file a written disapproval or objection where the Charter provides; this stage is not an observed action.",
+          "permitted_actions": ["file_written_disapproval", "file_written_objection", "take_no_action"],
+          "time_window": { "kind": "statutory_days", "days": 5, "start": "council_or_cpc_filing", "basis": "NYC Charter § 197-d(e)-(g)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-d(e)-(g)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746" }],
+          "conditional_successors": []
+        }
+      ]
+    },
+    {
+      "procedure_id": "elurp_197e",
+      "label": "Expedited Land Use Review Procedure (§ 197-e)",
+      "effective_from": "2025-12-02",
+      "effective_to": null,
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 197-e",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "elurp_197e.application_certification",
+          "spine_phase_id": "pre_application",
+          "actor_selector": { "kind": "department_of_city_planning", "source_field": "publisher.department_of_city_planning", "selection": "source_explicit" },
+          "role": "administrative_certifier",
+          "effect": "Certifies that the expedited application is complete and ready to proceed after the required notice.",
+          "permitted_actions": ["receive_application", "publish_precertification_notice", "certify_complete"],
+          "time_window": { "kind": "statutory_days", "days": 30, "start": "pre_certification_notice", "basis": "NYC Charter § 197-e(d)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(c)-(d)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": [{ "to_stage_id": "elurp_197e.community_board_review", "when": null }]
+        },
+        {
+          "stage_id": "elurp_197e.community_board_review",
+          "spine_phase_id": "community_board",
+          "actor_selector": { "kind": "affected_community_board", "source_field": "affected_review_bodies.community_boards", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "Notifies the public, may hold a hearing, and submits a written recommendation or waiver; it does not decide the application.",
+          "permitted_actions": ["notify_public", "hold_public_hearing", "submit_recommendation", "waive_review"],
+          "time_window": { "kind": "statutory_days", "days": 60, "start": "certified_application_received", "basis": "NYC Charter § 197-e(e)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(e)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": [{ "to_stage_id": "elurp_197e.borough_president_review", "when": null }]
+        },
+        {
+          "stage_id": "elurp_197e.borough_president_review",
+          "spine_phase_id": "borough_president",
+          "actor_selector": { "kind": "affected_borough_president", "source_field": "affected_review_bodies.borough_president", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "Submits a written recommendation or waiver to the City Planning Commission.",
+          "permitted_actions": ["submit_recommendation", "waive_review"],
+          "time_window": { "kind": "statutory_days", "days": 60, "start": "certified_application_received", "basis": "NYC Charter § 197-e(f)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(f)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": [{ "to_stage_id": "elurp_197e.city_planning_commission_review", "when": null }]
+        },
+        {
+          "stage_id": "elurp_197e.city_planning_commission_review",
+          "spine_phase_id": "cpc",
+          "actor_selector": { "kind": "city_planning_commission", "source_field": "publisher.city_planning_commission", "selection": "source_explicit" },
+          "role": "decision_maker",
+          "effect": "Holds a public hearing and may approve, approve with modifications, or disapprove; this expedited path is not filed for ordinary Council review.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": { "kind": "statutory_days_after_review", "days": 30, "alternate_days_with_eis": 45, "start": "community_board_and_borough_president_window_ends", "basis": "NYC Charter § 197-e(g)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-e(g)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-873" }],
+          "conditional_successors": []
+        }
+      ]
+    },
+    {
+      "procedure_id": "plan_197a",
+      "label": "197-a plan review (§ 197-a)",
+      "effective_from": "1990-07-01",
+      "effective_to": null,
+      "legal_basis": [
+        {
+          "citation": "NYC Charter § 197-a",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-826"
+        },
+        {
+          "citation": "NYC Charter § 197-d",
+          "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "plan_197a.proposal",
+          "spine_phase_id": "pre_application",
+          "actor_selector": { "kind": "197a_plan_proposer", "source_field": "publisher.plan_proposer", "selection": "source_explicit" },
+          "role": "plan_proposer",
+          "effect": "A listed proposer may submit a development, growth, or improvement plan with a written recommendation where required.",
+          "permitted_actions": ["submit_plan", "hold_public_hearing", "submit_recommendation"],
+          "time_window": { "kind": "not_specified", "basis": "NYC Charter § 197-a" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-a(a)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-826" }],
+          "conditional_successors": [{ "to_stage_id": "plan_197a.affected_body_review", "when": null }]
+        },
+        {
+          "stage_id": "plan_197a.affected_body_review",
+          "spine_phase_id": "community_board",
+          "actor_selector": { "kind": "affected_community_or_borough_board", "source_field": "affected_review_bodies", "selection": "source_explicit" },
+          "role": "advisory_reviewer",
+          "effect": "Affected boards hold a public hearing and submit a written recommendation; the recommendation is advisory, not binding.",
+          "permitted_actions": ["hold_public_hearing", "submit_recommendation"],
+          "time_window": { "kind": "rules_defined", "basis": "NYC Charter § 197-a(c)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-a(c)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-826" }],
+          "conditional_successors": [{ "to_stage_id": "plan_197a.city_planning_commission_review", "when": null }]
+        },
+        {
+          "stage_id": "plan_197a.city_planning_commission_review",
+          "spine_phase_id": "cpc",
+          "actor_selector": { "kind": "city_planning_commission", "source_field": "publisher.city_planning_commission", "selection": "source_explicit" },
+          "role": "decision_maker",
+          "effect": "Reviews, holds a public hearing, and may approve, approve with modifications, or disapprove the plan.",
+          "permitted_actions": ["review_plan", "hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": { "kind": "rules_defined", "basis": "NYC Charter § 197-a(d)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-a(d)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-826" }],
+          "conditional_successors": [{ "to_stage_id": "plan_197a.city_council_review", "when": { "fact": "cpc_disposition", "in": ["approve", "approve_with_modifications"] } }]
+        },
+        {
+          "stage_id": "plan_197a.city_council_review",
+          "spine_phase_id": "city_council",
+          "when": { "fact": "cpc_disposition", "in": ["approve", "approve_with_modifications"] },
+          "actor_selector": { "kind": "city_council", "source_field": "publisher.city_council_review", "selection": "source_explicit" },
+          "role": "decision_maker",
+          "effect": "Reviews and acts on an approved or modified 197-a plan pursuant to § 197-d; this expected stage does not assert that Council acted.",
+          "permitted_actions": ["hold_public_hearing", "approve", "approve_with_modifications", "disapprove"],
+          "time_window": { "kind": "statutory_days", "days": 50, "start": "cpc_decision_filed_with_council", "basis": "NYC Charter § 197-d(b)-(c)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-d(a)-(c)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746" }],
+          "conditional_successors": [{ "to_stage_id": "plan_197a.mayoral_review", "when": null }]
+        },
+        {
+          "stage_id": "plan_197a.mayoral_review",
+          "spine_phase_id": "mayoral_appeals",
+          "actor_selector": { "kind": "mayor", "source_field": "publisher.mayoral_review", "selection": "source_explicit" },
+          "role": "executive_review",
+          "effect": "May review or disapprove a Council action where § 197-d provides; this profile does not infer an action.",
+          "permitted_actions": ["file_written_disapproval", "take_no_action"],
+          "time_window": { "kind": "statutory_days", "days": 5, "start": "council_filing", "basis": "NYC Charter § 197-d(e)" },
+          "legal_basis": [{ "citation": "NYC Charter § 197-d(e)", "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746" }],
+          "conditional_successors": []
+        }
+      ]
+    }
+  ]
+}

@@ -46,6 +46,22 @@ test("client asset guard checks the built artifact over HTTP", async () => {
   }
 });
 
+test("client asset guard accepts JSON modules with their JSON media type", async () => {
+  const temporary = mkdtempSync(join(tmpdir(), "cityscroll-client-assets-"));
+  try {
+    writeFileSync(join(temporary, "index.html"), '<base href="/"><script type="module" src="/main.mjs"></script>');
+    writeFileSync(join(temporary, "main.mjs"), 'import data from "./data.json" with { type: "json" }; export { data };');
+    writeFileSync(join(temporary, "data.json"), '{"ok":true}');
+    const graph = discoverClientModuleGraph({ rootDir: temporary });
+    assert.equal(graph.missing.length, 0);
+    assert.equal(graph.modules.size, 2);
+    const receipt = await checkClientModuleAssets({ siteDir: temporary });
+    assert.equal(receipt.moduleCount, 2);
+  } finally {
+    rmSync(temporary, { recursive: true, force: true });
+  }
+});
+
 test("client asset guard rejects an unpublished local import", async () => {
   const temporary = mkdtempSync(join(tmpdir(), "cityscroll-client-assets-"));
   try {

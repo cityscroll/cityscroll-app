@@ -8,6 +8,8 @@
  * Presentation (HTML) lives in site/index.html landSpineHTML.
  */
 
+import { buildLandProcedureProfileView } from "./land_procedure_profiles.mjs";
+
 export const LAND_PHASE_SPINE_SCHEMA_VERSION = 1;
 
 /** Ordered ULURP-oriented phases (pre-public-review first, then statutory clock). */
@@ -655,6 +657,19 @@ export function buildLandPhaseView(spine, opts = {}) {
     return false;
   });
 
+  // Normative procedure interpretation is an additive sibling of the observed
+  // spine. The profile consumer receives source facts and the derived phase;
+  // it never receives, mutates, or manufactures an event.
+  const procedureFacts = {
+    ...(openData && typeof openData === "object" ? openData : {}),
+    ...(opts.procedure_facts && typeof opts.procedure_facts === "object" ? opts.procedure_facts : {}),
+  };
+  const procedureProfile = buildLandProcedureProfileView({
+    source: procedureFacts,
+    current_phase_id: currentPhaseId,
+    current_stage_id: opts.current_stage_id || null,
+  });
+
   return {
     schema_version: LAND_PHASE_SPINE_SCHEMA_VERSION,
     project_id: projectId,
@@ -688,6 +703,9 @@ export function buildLandPhaseView(spine, opts = {}) {
     portal_row_link_candidates: countDuplicatePortalLinks({ events }, portalUrl),
     lag: spine?.lag || null,
     gaps: Array.isArray(spine?.gaps) ? spine.gaps : [],
+    // Layer B (normative) remains structurally distinct from chronological,
+    // phase, and aggregate Layer C observation fields above.
+    procedure_profile: procedureProfile,
   };
 }
 
