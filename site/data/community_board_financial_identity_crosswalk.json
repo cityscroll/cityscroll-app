@@ -1,0 +1,2029 @@
+{
+  "schema": "cityscroll.community_board_financial_identity.v1",
+  "version": 1,
+  "title": "Reviewed source-scoped Community Board financial identity crosswalk",
+  "reviewed_at": "2026-08-27T21:56:42.587Z",
+  "review_basis": "Exact publisher agency_number / agency_code, with reviewed exact publisher name corroboration; no fuzzy or geography-based identity.",
+  "boards": [
+    {
+      "board_id": "bronx-cb-01",
+      "name": "Bronx Community Board 1"
+    },
+    {
+      "board_id": "bronx-cb-02",
+      "name": "Bronx Community Board 2"
+    },
+    {
+      "board_id": "bronx-cb-03",
+      "name": "Bronx Community Board 3"
+    },
+    {
+      "board_id": "bronx-cb-04",
+      "name": "Bronx Community Board 4"
+    },
+    {
+      "board_id": "bronx-cb-05",
+      "name": "Bronx Community Board 5"
+    },
+    {
+      "board_id": "bronx-cb-06",
+      "name": "Bronx Community Board 6"
+    },
+    {
+      "board_id": "bronx-cb-07",
+      "name": "Bronx Community Board 7"
+    },
+    {
+      "board_id": "bronx-cb-08",
+      "name": "Bronx Community Board 8"
+    },
+    {
+      "board_id": "bronx-cb-09",
+      "name": "Bronx Community Board 9"
+    },
+    {
+      "board_id": "bronx-cb-10",
+      "name": "Bronx Community Board 10"
+    },
+    {
+      "board_id": "bronx-cb-11",
+      "name": "Bronx Community Board 11"
+    },
+    {
+      "board_id": "bronx-cb-12",
+      "name": "Bronx Community Board 12"
+    },
+    {
+      "board_id": "brooklyn-cb-01",
+      "name": "Brooklyn Community Board 1"
+    },
+    {
+      "board_id": "brooklyn-cb-02",
+      "name": "Brooklyn Community Board 2"
+    },
+    {
+      "board_id": "brooklyn-cb-03",
+      "name": "Brooklyn Community Board 3"
+    },
+    {
+      "board_id": "brooklyn-cb-04",
+      "name": "Brooklyn Community Board 4"
+    },
+    {
+      "board_id": "brooklyn-cb-05",
+      "name": "Brooklyn Community Board 5"
+    },
+    {
+      "board_id": "brooklyn-cb-06",
+      "name": "Brooklyn Community Board 6"
+    },
+    {
+      "board_id": "brooklyn-cb-07",
+      "name": "Brooklyn Community Board 7"
+    },
+    {
+      "board_id": "brooklyn-cb-08",
+      "name": "Brooklyn Community Board 8"
+    },
+    {
+      "board_id": "brooklyn-cb-09",
+      "name": "Brooklyn Community Board 9"
+    },
+    {
+      "board_id": "brooklyn-cb-10",
+      "name": "Brooklyn Community Board 10"
+    },
+    {
+      "board_id": "brooklyn-cb-11",
+      "name": "Brooklyn Community Board 11"
+    },
+    {
+      "board_id": "brooklyn-cb-12",
+      "name": "Brooklyn Community Board 12"
+    },
+    {
+      "board_id": "brooklyn-cb-13",
+      "name": "Brooklyn Community Board 13"
+    },
+    {
+      "board_id": "brooklyn-cb-14",
+      "name": "Brooklyn Community Board 14"
+    },
+    {
+      "board_id": "brooklyn-cb-15",
+      "name": "Brooklyn Community Board 15"
+    },
+    {
+      "board_id": "brooklyn-cb-16",
+      "name": "Brooklyn Community Board 16"
+    },
+    {
+      "board_id": "brooklyn-cb-17",
+      "name": "Brooklyn Community Board 17"
+    },
+    {
+      "board_id": "brooklyn-cb-18",
+      "name": "Brooklyn Community Board 18"
+    },
+    {
+      "board_id": "manhattan-cb-01",
+      "name": "Manhattan Community Board 1"
+    },
+    {
+      "board_id": "manhattan-cb-02",
+      "name": "Manhattan Community Board 2"
+    },
+    {
+      "board_id": "manhattan-cb-03",
+      "name": "Manhattan Community Board 3"
+    },
+    {
+      "board_id": "manhattan-cb-04",
+      "name": "Manhattan Community Board 4"
+    },
+    {
+      "board_id": "manhattan-cb-05",
+      "name": "Manhattan Community Board 5"
+    },
+    {
+      "board_id": "manhattan-cb-06",
+      "name": "Manhattan Community Board 6"
+    },
+    {
+      "board_id": "manhattan-cb-07",
+      "name": "Manhattan Community Board 7"
+    },
+    {
+      "board_id": "manhattan-cb-08",
+      "name": "Manhattan Community Board 8"
+    },
+    {
+      "board_id": "manhattan-cb-09",
+      "name": "Manhattan Community Board 9"
+    },
+    {
+      "board_id": "manhattan-cb-10",
+      "name": "Manhattan Community Board 10"
+    },
+    {
+      "board_id": "manhattan-cb-11",
+      "name": "Manhattan Community Board 11"
+    },
+    {
+      "board_id": "manhattan-cb-12",
+      "name": "Manhattan Community Board 12"
+    },
+    {
+      "board_id": "queens-cb-01",
+      "name": "Queens Community Board 1"
+    },
+    {
+      "board_id": "queens-cb-02",
+      "name": "Queens Community Board 2"
+    },
+    {
+      "board_id": "queens-cb-03",
+      "name": "Queens Community Board 3"
+    },
+    {
+      "board_id": "queens-cb-04",
+      "name": "Queens Community Board 4"
+    },
+    {
+      "board_id": "queens-cb-05",
+      "name": "Queens Community Board 5"
+    },
+    {
+      "board_id": "queens-cb-06",
+      "name": "Queens Community Board 6"
+    },
+    {
+      "board_id": "queens-cb-07",
+      "name": "Queens Community Board 7"
+    },
+    {
+      "board_id": "queens-cb-08",
+      "name": "Queens Community Board 8"
+    },
+    {
+      "board_id": "queens-cb-09",
+      "name": "Queens Community Board 9"
+    },
+    {
+      "board_id": "queens-cb-10",
+      "name": "Queens Community Board 10"
+    },
+    {
+      "board_id": "queens-cb-11",
+      "name": "Queens Community Board 11"
+    },
+    {
+      "board_id": "queens-cb-12",
+      "name": "Queens Community Board 12"
+    },
+    {
+      "board_id": "queens-cb-13",
+      "name": "Queens Community Board 13"
+    },
+    {
+      "board_id": "queens-cb-14",
+      "name": "Queens Community Board 14"
+    },
+    {
+      "board_id": "staten-island-cb-01",
+      "name": "Staten Island Community Board 1"
+    },
+    {
+      "board_id": "staten-island-cb-02",
+      "name": "Staten Island Community Board 2"
+    },
+    {
+      "board_id": "staten-island-cb-03",
+      "name": "Staten Island Community Board 3"
+    }
+  ],
+  "bindings": [
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "341",
+      "publisher_identity": "Manhattan Community Board # 1",
+      "board_id": "manhattan-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "342",
+      "publisher_identity": "Manhattan Community Board # 2",
+      "board_id": "manhattan-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "343",
+      "publisher_identity": "Manhattan Community Board # 3",
+      "board_id": "manhattan-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "344",
+      "publisher_identity": "Manhattan Community Board # 4",
+      "board_id": "manhattan-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 6,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "345",
+      "publisher_identity": "Manhattan Community Board # 5",
+      "board_id": "manhattan-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "346",
+      "publisher_identity": "Manhattan Community Board # 6",
+      "board_id": "manhattan-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "347",
+      "publisher_identity": "Manhattan Community Board # 7",
+      "board_id": "manhattan-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "348",
+      "publisher_identity": "Manhattan Community Board # 8",
+      "board_id": "manhattan-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "349",
+      "publisher_identity": "Manhattan Community Board # 9",
+      "board_id": "manhattan-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "350",
+      "publisher_identity": "Manhattan Community Board # 10",
+      "board_id": "manhattan-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "351",
+      "publisher_identity": "Manhattan Community Board # 11",
+      "board_id": "manhattan-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "352",
+      "publisher_identity": "Manhattan Community Board # 12",
+      "board_id": "manhattan-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "381",
+      "publisher_identity": "Bronx Community Board # 1",
+      "board_id": "bronx-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "382",
+      "publisher_identity": "Bronx Community Board # 2",
+      "board_id": "bronx-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "383",
+      "publisher_identity": "Bronx Community Board # 3",
+      "board_id": "bronx-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "384",
+      "publisher_identity": "Bronx Community Board # 4",
+      "board_id": "bronx-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 6,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "387",
+      "publisher_identity": "Bronx Community Board # 7",
+      "board_id": "bronx-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "388",
+      "publisher_identity": "Bronx Community Board # 8",
+      "board_id": "bronx-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "389",
+      "publisher_identity": "Bronx Community Board # 9",
+      "board_id": "bronx-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "390",
+      "publisher_identity": "Bronx Community Board # 10",
+      "board_id": "bronx-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 27,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "392",
+      "publisher_identity": "Bronx Community Board # 12",
+      "board_id": "bronx-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "431",
+      "publisher_identity": "Queens Community Board #1",
+      "board_id": "queens-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "433",
+      "publisher_identity": "Queens Community Board #3",
+      "board_id": "queens-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "435",
+      "publisher_identity": "Queens Community Board # 5",
+      "board_id": "queens-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 6,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "436",
+      "publisher_identity": "Queens Community Board # 6",
+      "board_id": "queens-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 10,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "438",
+      "publisher_identity": "Queens Community Board # 8",
+      "board_id": "queens-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "442",
+      "publisher_identity": "Queens Community Board #12",
+      "board_id": "queens-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "471",
+      "publisher_identity": "Brooklyn Community Board # 1",
+      "board_id": "brooklyn-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 16,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "472",
+      "publisher_identity": "Brooklyn Community Board # 2",
+      "board_id": "brooklyn-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "473",
+      "publisher_identity": "Brooklyn Community Board # 3",
+      "board_id": "brooklyn-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "474",
+      "publisher_identity": "Brooklyn Community Board # 4",
+      "board_id": "brooklyn-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "476",
+      "publisher_identity": "Brooklyn Community Board # 6",
+      "board_id": "brooklyn-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "478",
+      "publisher_identity": "Brooklyn Community Board # 8",
+      "board_id": "brooklyn-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "479",
+      "publisher_identity": "Brooklyn Community Board # 9",
+      "board_id": "brooklyn-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "480",
+      "publisher_identity": "Brooklyn Community Board # 10",
+      "board_id": "brooklyn-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "481",
+      "publisher_identity": "Brooklyn Community Board # 11",
+      "board_id": "brooklyn-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "482",
+      "publisher_identity": "Brooklyn Community Board # 12",
+      "board_id": "brooklyn-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "483",
+      "publisher_identity": "Brooklyn Community Board # 13",
+      "board_id": "brooklyn-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 8,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "484",
+      "publisher_identity": "Brooklyn Community Board # 14",
+      "board_id": "brooklyn-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "486",
+      "publisher_identity": "Brooklyn Community Board # 16",
+      "board_id": "brooklyn-cb-16",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 22,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "487",
+      "publisher_identity": "Brooklyn Community Board # 17",
+      "board_id": "brooklyn-cb-17",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 10,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "488",
+      "publisher_identity": "Brooklyn Community Board # 18",
+      "board_id": "brooklyn-cb-18",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "491",
+      "publisher_identity": "Staten Island Community Board # 1",
+      "board_id": "staten-island-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "492",
+      "publisher_identity": "Staten Island Community Board # 2",
+      "board_id": "staten-island-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_contracts",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "493",
+      "publisher_identity": "Staten Island Community Board # 3",
+      "board_id": "staten-island-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "341",
+      "publisher_identity": "Manhattan Community Board # 1",
+      "board_id": "manhattan-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 70,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "342",
+      "publisher_identity": "Manhattan Community Board # 2",
+      "board_id": "manhattan-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 52,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "343",
+      "publisher_identity": "Manhattan Community Board # 3",
+      "board_id": "manhattan-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 94,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "344",
+      "publisher_identity": "Manhattan Community Board # 4",
+      "board_id": "manhattan-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "345",
+      "publisher_identity": "Manhattan Community Board # 5",
+      "board_id": "manhattan-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 56,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "346",
+      "publisher_identity": "Manhattan Community Board # 6",
+      "board_id": "manhattan-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 30,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "347",
+      "publisher_identity": "Manhattan Community Board # 7",
+      "board_id": "manhattan-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 40,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "348",
+      "publisher_identity": "Manhattan Community Board # 8",
+      "board_id": "manhattan-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 52,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "349",
+      "publisher_identity": "Manhattan Community Board # 9",
+      "board_id": "manhattan-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 10,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "350",
+      "publisher_identity": "Manhattan Community Board # 10",
+      "board_id": "manhattan-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 54,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "351",
+      "publisher_identity": "Manhattan Community Board # 11",
+      "board_id": "manhattan-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 68,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "352",
+      "publisher_identity": "Manhattan Community Board # 12",
+      "board_id": "manhattan-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "381",
+      "publisher_identity": "Bronx Community Board # 1",
+      "board_id": "bronx-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 28,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "382",
+      "publisher_identity": "Bronx Community Board # 2",
+      "board_id": "bronx-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 79,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "384",
+      "publisher_identity": "Bronx Community Board # 4",
+      "board_id": "bronx-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "385",
+      "publisher_identity": "Bronx Community Board # 5",
+      "board_id": "bronx-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 32,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "386",
+      "publisher_identity": "Bronx Community Board # 6",
+      "board_id": "bronx-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 113,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "387",
+      "publisher_identity": "Bronx Community Board # 7",
+      "board_id": "bronx-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 26,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "388",
+      "publisher_identity": "Bronx Community Board # 8",
+      "board_id": "bronx-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 37,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "389",
+      "publisher_identity": "Bronx Community Board # 9",
+      "board_id": "bronx-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 20,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "390",
+      "publisher_identity": "Bronx Community Board # 10",
+      "board_id": "bronx-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 74,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "391",
+      "publisher_identity": "Bronx Community Board # 11",
+      "board_id": "bronx-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 37,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "392",
+      "publisher_identity": "Bronx Community Board # 12",
+      "board_id": "bronx-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 16,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "431",
+      "publisher_identity": "Queens Community Board # 1",
+      "board_id": "queens-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 60,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "432",
+      "publisher_identity": "Queens Community Board # 2",
+      "board_id": "queens-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 50,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "433",
+      "publisher_identity": "Queens Community Board # 3",
+      "board_id": "queens-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 39,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "434",
+      "publisher_identity": "Queens Community Board # 4",
+      "board_id": "queens-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 71,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "435",
+      "publisher_identity": "Queens Community Board # 5",
+      "board_id": "queens-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 45,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "436",
+      "publisher_identity": "Queens Community Board # 6",
+      "board_id": "queens-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 76,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "437",
+      "publisher_identity": "Queens Community Board # 7",
+      "board_id": "queens-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 29,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "438",
+      "publisher_identity": "Queens Community Board # 8",
+      "board_id": "queens-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 60,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "439",
+      "publisher_identity": "Queens Community Board # 9",
+      "board_id": "queens-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 56,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "440",
+      "publisher_identity": "Queens Community Board # 10",
+      "board_id": "queens-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 59,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "441",
+      "publisher_identity": "Queens Community Board # 11",
+      "board_id": "queens-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 31,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "442",
+      "publisher_identity": "Queens Community Board # 12",
+      "board_id": "queens-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 25,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "443",
+      "publisher_identity": "Queens Community Board # 13",
+      "board_id": "queens-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 29,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "444",
+      "publisher_identity": "Queens Community Board # 14",
+      "board_id": "queens-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 8,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "471",
+      "publisher_identity": "Brooklyn Community Board # 1",
+      "board_id": "brooklyn-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 93,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "472",
+      "publisher_identity": "Brooklyn Community Board # 2",
+      "board_id": "brooklyn-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "473",
+      "publisher_identity": "Brooklyn Community Board # 3",
+      "board_id": "brooklyn-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 22,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "474",
+      "publisher_identity": "Brooklyn Community Board # 4",
+      "board_id": "brooklyn-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 65,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "475",
+      "publisher_identity": "Brooklyn Community Board # 5",
+      "board_id": "brooklyn-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 14,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "476",
+      "publisher_identity": "Brooklyn Community Board # 6",
+      "board_id": "brooklyn-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 44,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "477",
+      "publisher_identity": "Brooklyn Community Board # 7",
+      "board_id": "brooklyn-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 30,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "478",
+      "publisher_identity": "Brooklyn Community Board # 8",
+      "board_id": "brooklyn-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 86,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "479",
+      "publisher_identity": "Brooklyn Community Board # 9",
+      "board_id": "brooklyn-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 108,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "480",
+      "publisher_identity": "Brooklyn Community Board # 10",
+      "board_id": "brooklyn-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 64,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "481",
+      "publisher_identity": "Brooklyn Community Board # 11",
+      "board_id": "brooklyn-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 98,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "482",
+      "publisher_identity": "Brooklyn Community Board # 12",
+      "board_id": "brooklyn-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 93,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "483",
+      "publisher_identity": "Brooklyn Community Board # 13",
+      "board_id": "brooklyn-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 69,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "484",
+      "publisher_identity": "Brooklyn Community Board # 14",
+      "board_id": "brooklyn-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 93,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "485",
+      "publisher_identity": "Brooklyn Community Board # 15",
+      "board_id": "brooklyn-cb-15",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 38,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "486",
+      "publisher_identity": "Brooklyn Community Board # 16",
+      "board_id": "brooklyn-cb-16",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "487",
+      "publisher_identity": "Brooklyn Community Board # 17",
+      "board_id": "brooklyn-cb-17",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 228,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "488",
+      "publisher_identity": "Brooklyn Community Board # 18",
+      "board_id": "brooklyn-cb-18",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 78,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "491",
+      "publisher_identity": "Staten Island Community Board # 1",
+      "board_id": "staten-island-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 49,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "492",
+      "publisher_identity": "Staten Island Community Board # 2",
+      "board_id": "staten-island-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 65,
+      "ambiguous": false
+    },
+    {
+      "source_system": "checkbook_spending",
+      "source_native_key_field": "agency_code",
+      "source_native_board_key": "493",
+      "publisher_identity": "Staten Island Community Board # 3",
+      "board_id": "staten-island-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 45,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "341",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #1",
+      "board_id": "manhattan-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 24,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "342",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #2",
+      "board_id": "manhattan-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 14,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "343",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #3",
+      "board_id": "manhattan-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 18,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "344",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #4",
+      "board_id": "manhattan-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 14,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "345",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #5",
+      "board_id": "manhattan-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 16,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "346",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #6",
+      "board_id": "manhattan-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 16,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "347",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #7",
+      "board_id": "manhattan-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 14,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "348",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #8",
+      "board_id": "manhattan-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 16,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "349",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #9",
+      "board_id": "manhattan-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 13,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "350",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #10",
+      "board_id": "manhattan-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 11,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "351",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #11",
+      "board_id": "manhattan-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "352",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #12",
+      "board_id": "manhattan-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 19,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "381",
+      "publisher_identity": "BRONX COMMUNITY BOARD #1",
+      "board_id": "bronx-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 16,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "382",
+      "publisher_identity": "BRONX COMMUNITY BOARD #2",
+      "board_id": "bronx-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "383",
+      "publisher_identity": "BRONX COMMUNITY BOARD #3",
+      "board_id": "bronx-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 15,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "384",
+      "publisher_identity": "BRONX COMMUNITY BOARD #4",
+      "board_id": "bronx-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 14,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "385",
+      "publisher_identity": "BRONX COMMUNITY BOARD #5",
+      "board_id": "bronx-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 12,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "386",
+      "publisher_identity": "BRONX COMMUNITY BOARD #6",
+      "board_id": "bronx-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 22,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "387",
+      "publisher_identity": "BRONX COMMUNITY BOARD #7",
+      "board_id": "bronx-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 24,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "388",
+      "publisher_identity": "BRONX COMMUNITY BOARD #8",
+      "board_id": "bronx-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 22,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "389",
+      "publisher_identity": "BRONX COMMUNITY BOARD #9",
+      "board_id": "bronx-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 12,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "390",
+      "publisher_identity": "BRONX COMMUNITY BOARD #10",
+      "board_id": "bronx-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 27,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "391",
+      "publisher_identity": "BRONX COMMUNITY BOARD #11",
+      "board_id": "bronx-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "392",
+      "publisher_identity": "BRONX COMMUNITY BOARD #12",
+      "board_id": "bronx-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "431",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #1",
+      "board_id": "queens-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 24,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "432",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #2",
+      "board_id": "queens-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 25,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "433",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #3",
+      "board_id": "queens-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 27,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "434",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #4",
+      "board_id": "queens-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 25,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "435",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #5",
+      "board_id": "queens-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 30,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "436",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #6",
+      "board_id": "queens-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 26,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "437",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #7",
+      "board_id": "queens-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 19,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "438",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #8",
+      "board_id": "queens-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 19,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "439",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #9",
+      "board_id": "queens-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 17,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "440",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #10",
+      "board_id": "queens-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "441",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #11",
+      "board_id": "queens-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "442",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #12",
+      "board_id": "queens-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 18,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "443",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #13",
+      "board_id": "queens-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "444",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #14",
+      "board_id": "queens-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 20,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "471",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #1",
+      "board_id": "brooklyn-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "472",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #2",
+      "board_id": "brooklyn-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "473",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #3",
+      "board_id": "brooklyn-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 22,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "474",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #4",
+      "board_id": "brooklyn-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 30,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "475",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #5",
+      "board_id": "brooklyn-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "476",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #6",
+      "board_id": "brooklyn-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 15,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "477",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #7",
+      "board_id": "brooklyn-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 12,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "478",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #8",
+      "board_id": "brooklyn-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 24,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "479",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #9",
+      "board_id": "brooklyn-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 33,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "480",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #10",
+      "board_id": "brooklyn-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "481",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #11",
+      "board_id": "brooklyn-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 28,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "482",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #12",
+      "board_id": "brooklyn-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 24,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "483",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #13",
+      "board_id": "brooklyn-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 25,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "484",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #14",
+      "board_id": "brooklyn-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 29,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "485",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #15",
+      "board_id": "brooklyn-cb-15",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 13,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "486",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #16",
+      "board_id": "brooklyn-cb-16",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 21,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "487",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #17",
+      "board_id": "brooklyn-cb-17",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 29,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "488",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #18",
+      "board_id": "brooklyn-cb-18",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 18,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "491",
+      "publisher_identity": "STATEN ISLAND COMMUNITY BOARD #1",
+      "board_id": "staten-island-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 17,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "492",
+      "publisher_identity": "STATEN ISLAND COMMUNITY BOARD #2",
+      "board_id": "staten-island-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 23,
+      "ambiguous": false
+    },
+    {
+      "source_system": "expense_budget",
+      "source_native_key_field": "agency_number",
+      "source_native_board_key": "493",
+      "publisher_identity": "STATEN ISLAND COMMUNITY BOARD #3",
+      "board_id": "staten-island-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 15,
+      "ambiguous": false
+    }
+  ]
+}

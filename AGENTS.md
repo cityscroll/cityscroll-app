@@ -3452,6 +3452,13 @@ both the live and restored databases.
 - Route closure and resident vocabulary are covered by
   `test/community_board_constellation.test.mjs` and the built-site
   `test/standards/rendered_schema_vocabulary.py` census.
+- CB-MONEY-00's reviewed financial identity is the source-scoped exact-code
+  crosswalk at `site/data/community_board_financial_identity_crosswalk.json`,
+  built by `node tools/build_community_board_financial_identity.mjs`. Its
+  receipt records source coverage and explicit no-observation states; use
+  `--check` before downstream budget or payment materialization. Keep the
+  generic `Community Boards` agency grouping in `site/agency_identity.mjs`
+  unchanged.
 
 ## Agency statutory mandates (v1 free-watch)
 
