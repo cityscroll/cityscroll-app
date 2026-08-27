@@ -434,7 +434,7 @@
     subscribe_btn: "اشترك ←",
     home_cta_prompt: "هل تريد تحديثات بالبريد؟",
     home_cta_submit: "اشترك",
-    home_cta_topics: "أو اختر مواضيع",
+    home_cta_topics: "اختر ما تريد متابعته",
     alert_context_scope: "ستصلك رسالة بريد عن: {scope}",
     alert_context_from_notice: "من هذا الإشعار: “{title}”",
     alert_context_next_step: "الخطوة التالية المتوقعة: {step}",

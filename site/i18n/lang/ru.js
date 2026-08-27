@@ -432,7 +432,7 @@
     subscribe_btn: "Подписаться →",
     home_cta_prompt: "Хотите новости на почту?",
     home_cta_submit: "Подписаться",
-    home_cta_topics: "или выберите темы",
+    home_cta_topics: "Выберите, что отслеживать",
     alert_context_scope: "Вы получите письмо о: {scope}",
     alert_context_from_notice: "Из этого уведомления: «{title}»",
     alert_context_next_step: "Следующий ожидаемый шаг: {step}",

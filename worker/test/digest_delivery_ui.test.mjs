@@ -198,7 +198,7 @@ test("preview awareness ≡ email awareness for phase + next-step strings", () =
   assert.match(alerts, /function digItemHTML/);
   // Following list preview is a documented slim subset (title/summary), not a third dig item model.
   const following = readFileSync(join(ROOT, "site/following_view.mjs"), "utf8");
-  assert.match(following, /following-delivery-help|still-watching note|14 days/);
+  assert.match(following, /following-delivery-help|Weekly digest sends Monday/);
   assert.match(following, /previewItem|following-preview/);
 });
 

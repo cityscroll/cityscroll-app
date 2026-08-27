@@ -431,7 +431,7 @@
     subscribe_btn: "Abòne →",
     home_cta_prompt: "Ou vle nouvèl pa imèl?",
     home_cta_submit: "Enskri",
-    home_cta_topics: "oswa chwazi sijè",
+    home_cta_topics: "Chwazi sa pou swiv",
     alert_context_scope: "Ou pral resevwa yon imèl pou: {scope}",
     alert_context_from_notice: "Soti nan avi sa a: “{title}”",
     alert_context_next_step: "Pwochen etap espere: {step}",

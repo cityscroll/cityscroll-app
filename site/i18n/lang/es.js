@@ -437,7 +437,7 @@
     nl_recovery_heading: "Pruebe un punto de partida",
     nl_recovery_lead: "No pudimos convertir eso en una alerta clara. Elija un tema para previsualizar y editar su frase antes de guardarla.",
     home_cta_submit: "Registrarse",
-    home_cta_topics: "o elija temas",
+    home_cta_topics: "Elija qué seguir",
     alert_context_scope: "Recibirás un correo sobre: {scope}",
     alert_context_from_notice: "Desde este aviso: “{title}”",
     alert_context_next_step: "Próximo paso esperado: {step}",

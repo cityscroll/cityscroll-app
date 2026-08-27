@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -51,6 +52,12 @@ test("Following topic+place watch combines subject and place in a scannable sent
   assert.match(html, /<dt>Topic<\/dt>.*Rules/s);
   assert.match(html, /<dt>Place<\/dt>.*Brooklyn/s);
   assert.match(html, /<dt>Agency<\/dt>.*Housing Preservation and Development/s);
+});
+
+test("Following preview enhancement keeps refined criteria in the shareable URL", () => {
+  const following = readFileSync(new URL("../site/app/following.mjs", import.meta.url), "utf8");
+  assert.match(following, /history\.replaceState\(\{\}, \"\", `\$\{url\.pathname\}\$\{url\.search\}`\)/);
+  assert.match(following, /data-following-preview-status.*msg\("msgPreviewReady"\)|replaceChildren\(msg\("msgPreviewReady"\)\)/);
 });
 
 test("district watches make the Community Board picker discoverable", () => {

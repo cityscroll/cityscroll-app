@@ -432,7 +432,7 @@
     subscribe_btn: "订阅 →",
     home_cta_prompt: "想用邮件收更新吗？",
     home_cta_submit: "订阅",
-    home_cta_topics: "或自选主题",
+    home_cta_topics: "选择要关注的内容",
     alert_context_scope: "您将收到关于以下内容的邮件：{scope}",
     alert_context_from_notice: "来自此公告：“{title}”",
     alert_context_next_step: "下一步预期：{step}",

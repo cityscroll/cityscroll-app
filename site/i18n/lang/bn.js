@@ -432,7 +432,7 @@
     subscribe_btn: "সাবস্ক্রাইব করুন →",
     home_cta_prompt: "ইমেইলে আপডেট চান?",
     home_cta_submit: "নিবন্ধন",
-    home_cta_topics: "অথবা বিষয় বেছে নিন",
+    home_cta_topics: "যা অনুসরণ করবেন তা বেছে নিন",
     alert_context_scope: "আপনি ইমেইল পাবেন: {scope}",
     alert_context_from_notice: "এই নোটিশ থেকে: “{title}”",
     alert_context_next_step: "পরবর্তী প্রত্যাশিত ধাপ: {step}",
