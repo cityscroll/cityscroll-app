@@ -132,6 +132,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -208,6 +289,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -287,6 +449,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -364,6 +607,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -443,6 +767,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -519,6 +924,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -598,6 +1084,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -651,6 +1218,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -753,6 +1401,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": "not_observed_in_pass"
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -830,6 +1559,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -909,6 +1719,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -985,6 +1876,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -1064,6 +2036,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1117,6 +2170,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -1218,6 +2352,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1295,6 +2510,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1348,6 +2644,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -1449,6 +2826,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": "not_observed_in_pass"
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1525,6 +2983,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -1603,6 +3142,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1680,6 +3300,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1733,6 +3434,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -1834,6 +3616,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -1887,6 +3750,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -1988,6 +3932,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2064,6 +4089,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -2142,6 +4248,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2195,6 +4382,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -2296,6 +4564,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": "not_observed_in_pass"
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2373,6 +4722,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2426,6 +4856,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -2527,6 +5038,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2603,6 +5195,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -2681,6 +5354,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2758,6 +5512,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2833,6 +5668,87 @@
             "status": "observed",
             "seen_on": "2026-08-13",
             "fetchability": "browser_required",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": "Manhattan Community Board 6",
+          "publisher_kind": "board_owned_official",
+          "url": "https://cbsix.org/committees/",
+          "format": "board-owned HTML committee directory",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": "publisher_document_id|document_url",
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "verified",
+          "verification": {
+            "status": "observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "machine_fetchable",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": null
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": "Manhattan Community Board 6",
+          "publisher_kind": "board_owned_official",
+          "url": "https://cbsix.org/about-us/board-members-and-staff/",
+          "format": "board-owned HTML roster",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": "publisher_document_id|document_url",
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "verified",
+          "verification": {
+            "status": "observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "machine_fetchable",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": null
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": "Manhattan Community Board 6",
+          "publisher_kind": "board_owned_official",
+          "url": "https://cbsix.org/about-us/",
+          "format": "board-owned governance page",
+          "fetch_mode": "machine-fetchable",
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": "publisher_document_id|document_url",
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "verified",
+          "verification": {
+            "status": "observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "machine_fetchable",
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
@@ -2915,6 +5831,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -2991,6 +5988,87 @@
             "access_note": "browser_protected",
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -3069,6 +6147,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3146,6 +6305,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3172,6 +6412,7 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "airtable_v1",
           "publisher": "Manhattan Community Board 11",
           "publisher_kind": "board_owned_official",
           "url": "https://www.cb11m.org/calendar/",
@@ -3195,8 +6436,7 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
-          },
-          "adapter": "airtable_v1"
+          }
         },
         "minutes": {
           "source_type": "minutes",
@@ -3223,6 +6463,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -3301,6 +6622,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3377,6 +6779,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -3456,6 +6939,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3532,6 +7096,87 @@
             "access_note": "browser_protected",
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -3610,6 +7255,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3686,6 +7412,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -3765,6 +7572,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3791,9 +7679,9 @@
       "source_roles": {
         "upcoming_meetings": {
           "source_type": "upcoming_meetings",
+          "adapter": "nyc_official_calendar_v1",
           "publisher": "NYC Community Boards",
           "publisher_kind": "nyc_official",
-          "adapter": "nyc_official_calendar_v1",
           "url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
           "format": "NYC HTML meeting/agenda page",
           "fetch_mode": "machine-fetchable",
@@ -3842,6 +7730,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -3921,6 +7890,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -3998,6 +8048,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -4077,6 +8208,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -4153,6 +8365,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }
@@ -4232,6 +8525,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -4309,6 +8683,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -4363,6 +8818,87 @@
         },
         "minutes": {
           "source_type": "minutes",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
           "publisher": null,
           "publisher_kind": null,
           "url": null,
@@ -4465,6 +9001,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -4543,6 +9160,87 @@
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
           }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
         }
       }
     },
@@ -4620,6 +9318,87 @@
             "access_note": null,
             "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
             "reason": null
+          }
+        },
+        "committees": {
+          "source_type": "committees",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "roster": {
+          "source_type": "roster",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
+          }
+        },
+        "bylaws": {
+          "source_type": "bylaws",
+          "publisher": null,
+          "publisher_kind": null,
+          "url": null,
+          "format": null,
+          "fetch_mode": null,
+          "access_constraint": null,
+          "seen_on": "2026-08-13",
+          "archive_depth": {
+            "status": "unknown",
+            "earliest_year": null,
+            "latest_year": null
+          },
+          "stable_key": null,
+          "stable_event_key": null,
+          "stable_document_key": null,
+          "status": "absent_in_pass",
+          "verification": {
+            "status": "not_observed",
+            "seen_on": "2026-08-13",
+            "fetchability": "unknown",
+            "access_note": null,
+            "receipt_ref": "site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json",
+            "reason": "not_observed_in_pass"
           }
         }
       }

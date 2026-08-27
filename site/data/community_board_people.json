@@ -1,0 +1,88 @@
+{
+  "schema": "cityscroll.community_board_people.v1",
+  "observed_on": "2026-08-25",
+  "policy": {
+    "identity": "community-board-person:{board_id}:{publisher_person_id|reviewed_local_id}",
+    "same_name_never_merges_identity": true,
+    "council_official_identity_never_inferred": true,
+    "roles_are_temporal_and_separate": true
+  },
+  "boards": {
+    "manhattan-cb-06": {
+      "relationships": [
+        {
+          "publisher_person_id": "sandra-mckee",
+          "person_name": "Sandra McKee",
+          "relation": "member_of",
+          "role": "board_chair",
+          "relation_date": "2026-08-25",
+          "valid_from": "2026-08-25",
+          "source_document": {
+            "publisher_document_id": "cb6-board-members-and-staff-2026-08-25",
+            "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
+            "date": "2026-08-25",
+            "observed_receipt": { "status": "ok", "observed_at": "2026-08-25T12:00:00Z" }
+          }
+        },
+        {
+          "publisher_person_id": "sandra-mckee",
+          "person_name": "Sandra McKee",
+          "relation": "chairs",
+          "role": "board_chair",
+          "relation_date": "2026-08-25",
+          "valid_from": "2026-08-25",
+          "source_document": {
+            "publisher_document_id": "cb6-board-members-and-staff-2026-08-25",
+            "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
+            "date": "2026-08-25",
+            "observed_receipt": { "status": "ok", "observed_at": "2026-08-25T12:00:00Z" }
+          }
+        },
+        {
+          "publisher_person_id": "jason-froimowitz",
+          "person_name": "Jason Froimowitz",
+          "relation": "chairs",
+          "committee_ref": "community-board-committee:manhattan-cb-06:transportation",
+          "role": "committee_chair",
+          "relation_date": "2026-08-25",
+          "valid_from": "2026-08-25",
+          "source_document": {
+            "publisher_document_id": "cb6-board-members-and-staff-2026-08-25",
+            "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
+            "date": "2026-08-25",
+            "observed_receipt": { "status": "ok", "observed_at": "2026-08-25T12:00:00Z" }
+          }
+        },
+        {
+          "publisher_person_id": "michael-cohen",
+          "person_name": "Michael Cohen",
+          "relation": "member_of",
+          "committee_ref": "community-board-committee:manhattan-cb-06:transportation",
+          "role": "public_committee_member",
+          "relation_date": "2026-08-25",
+          "valid_from": "2026-08-25",
+          "source_document": {
+            "publisher_document_id": "cb6-board-members-and-staff-2026-08-25",
+            "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
+            "date": "2026-08-25",
+            "observed_receipt": { "status": "ok", "observed_at": "2026-08-25T12:00:00Z" }
+          }
+        },
+        {
+          "publisher_person_id": "jesus-perez",
+          "person_name": "Jesús Pérez",
+          "relation": "staffed_by",
+          "role": "district_manager",
+          "relation_date": "2026-08-25",
+          "valid_from": "2026-08-25",
+          "source_document": {
+            "publisher_document_id": "cb6-board-members-and-staff-2026-08-25",
+            "document_url": "https://cbsix.org/about-us/board-members-and-staff/",
+            "date": "2026-08-25",
+            "observed_receipt": { "status": "ok", "observed_at": "2026-08-25T12:00:00Z" }
+          }
+        }
+      ]
+    }
+  }
+}

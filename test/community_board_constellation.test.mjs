@@ -56,8 +56,8 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.match(html, /District coverage/);
   assert.match(html, /Official source inventory/);
   assert.match(html, /Meetings and hearings \(Records not shown\)/);
-  assert.match(html, /Board members \(Not yet shown — official board records are still being collected\)/);
-  assert.match(html, /Board recommendations \(Not yet shown — official board records are still being collected\)/);
+  assert.match(html, /Board members \(Records not shown\)/);
+  assert.match(html, /Board recommendations \(Records not shown\)/);
   assert.match(html, /Open official calendar/);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
   assert.doesNotMatch(html, /No meetings exist/);
