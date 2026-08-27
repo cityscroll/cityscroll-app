@@ -48,6 +48,7 @@ import {
 } from "./procurement_coverage_labels.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
 import { renderCalendarSubscriptionAffordance } from "./calendar_subscription.mjs";
+import { zoningHearingRowsForScope } from "./zoning_hearing_calendar.mjs";
 
 export const BROWSE_FACETS = Object.freeze({
   contracts: {
@@ -927,9 +928,26 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
   const requestedAsOf = isoDay(search.get("as_of"));
   const meetingWhen = facet === "meetings" ? String(search.get("when") || "") : "";
   const meetingProcess = facet === "meetings" ? String(search.get("process") || "") : "";
-  const rows = Array.isArray(options.rows)
+  const baseRows = Array.isArray(options.rows)
     ? options.rows
     : Array.isArray(payload[config.rowsKey]) ? payload[config.rowsKey] : [];
+  const futureAction = facet === "zoning" ? String(search.get("future") || "") : "";
+  const hearingMode = futureAction === "hearing";
+  const hearingRows = hearingMode
+    ? zoningHearingRowsForScope(options.hearingRows || payload.hearings, baseRows, {
+      boro: search.get("boro"),
+      communityDistrict: search.get("cd") || search.get("community_district"),
+      councilDistrict: search.get("council"),
+    }, { today: isoDay(asOf) || undefined })
+    : [];
+  const rows = hearingMode
+    ? hearingRows.map((hearing) => ({
+      ...hearing,
+      current_milestone: hearing.milestone_title || "Public hearing",
+      current_milestone_date: hearing.hearing_date || hearing.hearing_at || null,
+      project_status: hearing.project_status || "Active",
+    }))
+    : baseRows;
   const limit = Number.isFinite(options.limit) ? Math.max(1, Math.floor(options.limit)) : 40;
   const scopeState = scopeFromFacetParams(facet, search);
   const connectionRelation = String(scopeState.parsed?.facets?.values?.connection_relation || "").trim();
@@ -1040,7 +1058,7 @@ export function buildBrowseView(facet, payload = {}, params = new URLSearchParam
     total: matched.length,
     scope: scopeSummary,
     scopeObject: scopeState.parsed,
-    calendarRows: matched,
+    calendarRows: hearingMode ? matched.map((row) => row._hearing || row) : matched,
     preScopeTotal: matchedBase.length,
     rows: visibleRows,
     asOf: isoDay(asOf),

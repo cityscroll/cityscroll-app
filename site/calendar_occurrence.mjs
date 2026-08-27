@@ -6,9 +6,9 @@
  * formats later) only serialize the resulting occurrence.
  */
 
-export const CALENDAR_OCCURRENCE_SCHEMA = "cityscroll.calendar_occurrence.v1";
+const CALENDAR_OCCURRENCE_SCHEMA = "cityscroll.calendar_occurrence.v1";
 
-export const CALENDAR_OCCURRENCE_KINDS = Object.freeze([
+const CALENDAR_OCCURRENCE_KINDS = Object.freeze([
   "event",
   "deadline",
   "window_open",
@@ -16,7 +16,7 @@ export const CALENDAR_OCCURRENCE_KINDS = Object.freeze([
   "milestone",
 ]);
 
-export const CALENDAR_OCCURRENCE_STATUSES = Object.freeze([
+const CALENDAR_OCCURRENCE_STATUSES = Object.freeze([
   "scheduled",
   "cancelled",
   "completed",
@@ -142,7 +142,7 @@ function defaultTitle(record, kind) {
  * Validate and normalize one occurrence. `starts_at` is a timestamp; `date`
  * is a publisher date-only value. They are mutually exclusive by design.
  */
-export function createCalendarOccurrence(input = {}) {
+function createCalendarOccurrence(input = {}) {
   const uid = text(input.uid);
   const kind = text(input.kind);
   const status = text(input.status) || "scheduled";
@@ -186,9 +186,9 @@ export function createCalendarOccurrence(input = {}) {
   });
 }
 
-// Named export for consumers that treat the normalized object as a contract
+// Public alias for consumers that treat the normalized object as a contract
 // type rather than a factory.
-export const CalendarOccurrence = createCalendarOccurrence;
+const CalendarOccurrence = createCalendarOccurrence;
 
 function occurrenceInput(record, fields, options) {
   const objectRef = text(options.object_ref || objectRefForRecord(record));
@@ -225,7 +225,7 @@ function explicitOccurrences(record, options) {
  * producers migrate. Notice publication fields (`start_date`, `published_at`)
  * are intentionally absent from every candidate below.
  */
-export function calendarOccurrencesForRecord(record = {}, options = {}) {
+function calendarOccurrencesForRecord(record = {}, options = {}) {
   const explicit = explicitOccurrences(record, options);
   if (explicit) return explicit.filter((occurrence) => occurrence.status === "cancelled"
     || isFuture(occurrence.starts_at || occurrence.date, asOfDate(options.as_of)));
@@ -250,7 +250,7 @@ export function calendarOccurrencesForRecord(record = {}, options = {}) {
 }
 
 /** Compatibility producer for Cal-1 callers that still pass neutral items. */
-export function calendarOccurrenceFromLegacyFeedItem(item = {}) {
+function calendarOccurrenceFromLegacyFeedItem(item = {}) {
   const when = validDate(item.eventDate);
   if (!when || !text(item.id)) return null;
   return createCalendarOccurrence({
@@ -264,7 +264,7 @@ export function calendarOccurrenceFromLegacyFeedItem(item = {}) {
   });
 }
 
-export function calendarOccurrencesForRows(rows = [], options = {}) {
+function calendarOccurrencesForRows(rows = [], options = {}) {
   return rows.flatMap((record) => calendarOccurrencesForRecord(record, options));
 }
 
@@ -292,7 +292,7 @@ function recordHasAmbiguousDate(record = {}) {
 }
 
 /** Calendarization coverage is intentionally separate from source ingestion. */
-export function calendarizationCoverage(records = [], occurrences = [], options = {}) {
+function calendarizationCoverage(records = [], occurrences = [], options = {}) {
   const sourceRecords = Array.isArray(records) ? records : [];
   const projected = Array.isArray(occurrences) ? occurrences : [];
   const matching = Number.isFinite(options.matching_scope) ? options.matching_scope : sourceRecords.length;
@@ -311,7 +311,20 @@ export function calendarizationCoverage(records = [], occurrences = [], options 
   };
 }
 
-export function projectCalendarOccurrences(records = [], options = {}) {
+function projectCalendarOccurrences(records = [], options = {}) {
   const occurrences = calendarOccurrencesForRows(records, options);
   return { occurrences, coverage: calendarizationCoverage(records, occurrences, options) };
 }
+
+export {
+  CALENDAR_OCCURRENCE_SCHEMA,
+  CALENDAR_OCCURRENCE_KINDS,
+  CALENDAR_OCCURRENCE_STATUSES,
+  CalendarOccurrence,
+  createCalendarOccurrence,
+  calendarOccurrencesForRecord,
+  calendarOccurrenceFromLegacyFeedItem,
+  calendarOccurrencesForRows,
+  calendarizationCoverage,
+  projectCalendarOccurrences,
+};

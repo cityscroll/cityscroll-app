@@ -42,7 +42,7 @@ export const LENSES = {
   // closing-this-week, agency forecast tab) — not only keyword lists.
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id"],
   people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
-  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "geographies"],
+  land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
   rules:    ["keywords", "agency", "process", "geographies"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
@@ -149,6 +149,10 @@ function clampField(name, v) {
       const s = ({ up_zone: "upzone", down_zone: "downzone" })[raw] || raw;
       return ["upzone", "downzone", "mixed", "no_density_change"].includes(s) ? s : null;
     }
+    case "futureAction":
+      return ["any", "none", "any_future", "hearing", "non_hearing"].includes(v) ? v : null;
+    case "attendance":
+      return ["in_person", "livestream", "hybrid"].includes(v) ? v : null;
     case "when":
       return ["all", "upcoming", "week", "month", "past"].includes(v) ? v : null;
     case "borough": {

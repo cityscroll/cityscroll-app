@@ -73,6 +73,10 @@ function assertMeetingCoverage(readModel, cityRows) {
 export function primaryDocumentOutputs() {
   const shell = readFileSync(join(SITE, "index.html"), "utf8");
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  payloads.zoning = {
+    ...payloads.zoning,
+    hearings: json("/data/land_upcoming_hearings.json").hearings || [],
+  };
   const rulesSemanticLane = json("/data/rules_semantic_lane.json");
   const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
   // Keep previously published meeting identities while the current, rich
@@ -205,6 +209,10 @@ export function peopleOrganizationsOutputs() {
 
 function buildSharedMeetingArtifacts() {
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
+  payloads.zoning = {
+    ...payloads.zoning,
+    hearings: json("/data/land_upcoming_hearings.json").hearings || [],
+  };
   const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
   const cityRecordRows = [...cityRecordMeetings, ...(payloads.meetings.rows || [])];
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");

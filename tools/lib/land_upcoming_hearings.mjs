@@ -157,7 +157,8 @@ export function detectSyntheticUpcomingHearings(snapshot) {
 }
 
 /**
- * Enrich extracted logistics with project list metadata (name, status, borough).
+ * Enrich extracted logistics with project list metadata, including the exact
+ * publisher district fields used by the zoning calendar scope.
  */
 export function enrichHearingRows(logistics, meta = {}) {
   return (logistics || []).map((h) => ({
@@ -174,6 +175,10 @@ export function enrichHearingRows(logistics, meta = {}) {
         ? `https://zap.planning.nyc.gov/projects/${encodeURIComponent(meta.project_id)}`
         : null),
     borough: h.borough || meta.borough || null,
+    community_district: h.community_district || meta.community_district || null,
+    cc_district: h.cc_district || meta.cc_district || null,
+    latitude: h.latitude ?? meta.latitude ?? null,
+    longitude: h.longitude ?? meta.longitude ?? null,
   }));
 }
 
@@ -224,6 +229,8 @@ function milestoneHearingRow(milestone, classification, meta = {}) {
     public_status: meta.public_status || null,
     portal_url: portalUrl,
     borough: meta.borough || null,
+    community_district: meta.community_district || null,
+    cc_district: meta.cc_district || null,
     milestone_id: milestone.id || null,
     milestone_title: milestone.title || null,
     milestone_source_title: milestone.source_title || null,
@@ -329,6 +336,8 @@ export function hearingsFromZapOutcomeRecord(record) {
     borough: record.open_data?.borough
       || (Array.isArray(record.hearing_logistics) && record.hearing_logistics[0]?.borough)
       || null,
+    community_district: record.open_data?.community_district || null,
+    cc_district: record.open_data?.cc_district || null,
   };
   const stamped = Array.isArray(record.hearing_logistics) ? record.hearing_logistics : [];
   const dispositionRows = enrichHearingRows(
@@ -357,6 +366,8 @@ export function materializationRowsFromZapApiPayload(apiPayload, meta = {}) {
     public_status: record.public_status || meta.public_status,
     portal_url: record.portal_url || meta.portal_url,
     borough: meta.borough || record.open_data?.borough || null,
+    community_district: meta.community_district || record.open_data?.community_district || null,
+    cc_district: meta.cc_district || record.open_data?.cc_district || null,
   };
   const dispositionRows = enrichHearingRows(
     extractZapHearingLogistics(record, enrichedMeta),

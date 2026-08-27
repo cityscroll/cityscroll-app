@@ -72,6 +72,22 @@ export function feedItems(kind, rows) {
         nextStep: r.start_date ? `Registered ${d10(r.start_date)}` : null,
       };
     }
+    if (kind === "land-hearings") {
+      const id = String(r.project_id || "");
+      if (!id) return null;
+      const date = r.hearing_at || r.hearing_date || null;
+      return {
+        id,
+        url: r.portal_url || `https://cityscroll.org/browse/zoning/#land/${encodeURIComponent(id)}`,
+        title: `Public hearing — ${r.project_name || id}`,
+        date,
+        summary: [r.representing, r.venue_address || r.hearing_location_raw, r.livestream_url ? "Online" : ""]
+          .filter(Boolean).join(" · "),
+        eventDate: date,
+        phase: "Zoning hearing",
+        nextStep: date ? `Event ${d10(date)}` : null,
+      };
+    }
     if (kind === "rezone") {
       return {
         id: String(r.project_id || ""),
