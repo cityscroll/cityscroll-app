@@ -74,15 +74,19 @@ import {
 import { workerCitedPassages } from "../worker/src/cited_retrieval.mjs";
 import {
   buildCapabilityTopology,
+  buildApiCapabilityCatalog,
   buildMcpToolCatalog,
   checkGeneratedFile,
+  validateApiDocumentation,
   renderMcpCatalogHtml,
+  renderApiCapabilityCatalogHtml,
   validateRuntimeTopology,
 } from "../tools/build_capability_topology.mjs";
 
 const ROOT = new URL("../", import.meta.url);
 const TOPOLOGY = new URL("../architecture/generated/capability-topology.json", import.meta.url);
 const CATALOG = new URL("../site/data/mcp_tool_catalog.json", import.meta.url);
+const API_CATALOG = new URL("../site/data/api_capability_catalog.json", import.meta.url);
 
 test("the registry is frozen, versioned, owned, and contains the federated search capability", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
@@ -307,6 +311,8 @@ test("topology and public MCP catalog are deterministic and committed", () => {
   assert.equal(first, second);
   assert.deepEqual(JSON.parse(readFileSync(TOPOLOGY, "utf8")), buildCapabilityTopology());
   assert.deepEqual(JSON.parse(readFileSync(CATALOG, "utf8")), buildMcpToolCatalog());
+  assert.deepEqual(JSON.parse(readFileSync(API_CATALOG, "utf8")), buildApiCapabilityCatalog());
+  assert.deepEqual(buildApiCapabilityCatalog().operations.map(({ reference }) => reference), CAPABILITY_REGISTRY.map(({ reference }) => reference));
   const catalog = buildMcpToolCatalog();
   assert.deepEqual(catalog.registered_capability_references, [
     "notice.search@1",
@@ -336,7 +342,19 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "preview_watch",
     "create_watch",
   ]);
+  assert.equal(catalog.tools[0].input_schema.type, "object");
+  const renderedApi = renderApiCapabilityCatalogHtml(buildApiCapabilityCatalog());
+  const embeddedCatalog = renderedApi.match(/<script type="application\/json" id="api-capability-catalog">([\s\S]*)<\/script>/);
+  assert.ok(embeddedCatalog, "generated API page must embed its machine-readable catalog");
+  assert.deepEqual(JSON.parse(embeddedCatalog[1]), buildApiCapabilityCatalog());
   assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 13);
+});
+
+test("an undocumented capability operation fails the generated documentation check", () => {
+  const catalog = buildApiCapabilityCatalog();
+  const apiHtml = readFileSync(new URL("../site/api.html", import.meta.url), "utf8");
+  const undocumented = apiHtml.replace(catalog.operations[0].reference, "deliberately-undocumented");
+  assert.throws(() => validateApiDocumentation(undocumented, catalog), /undocumented or stale/);
 });
 
 test("the deterministic CLI check passes and --stdout is stable", () => {

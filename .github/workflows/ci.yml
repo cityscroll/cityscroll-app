@@ -197,6 +197,12 @@ jobs:
           node tools/generate_source_docs.mjs --check
           node tools/data_source_graph.mjs
           node tools/data_source_graph.mjs --check
+      - name: Generated API capability contract
+        if: matrix.family == 'static-standards'
+        # The registry is authoritative for operation schemas, bounds, examples,
+        # transport adapters, and the MCP inventory. Any undocumented or stale
+        # projection fails this required CI family.
+        run: node tools/build_capability_topology.mjs --check
       - name: Recorded civic-data source contracts
         if: matrix.family == 'static-standards'
         # Pull-request CI is deterministic. The daily source-contract workflow owns live
