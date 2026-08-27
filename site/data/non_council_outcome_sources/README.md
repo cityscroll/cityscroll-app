@@ -37,3 +37,24 @@ node --test test/non_council_outcomes_infrastructure.test.mjs
 
 The collector stores HTML/PDF/DOCX metadata and bounded extracted text, not
 document binaries. A later reader card owns any Meetings or Land presentation.
+
+## Community Board institutional-graph baseline
+
+`community_board_graph_census.json` is the Card 1 baseline census for all 59
+boards. It measures the current institutional graph without adding inference
+rules: 63 of 649 board-dimension slots are already modeled, 32 have explicit
+source signals that are currently discarded by typed projections, and 554
+remain unresolved or require another official source. Its meeting universe is
+395 indexed records across 24 boards: 182 titles explicitly name a committee,
+10 explicitly say public hearing, and 6 explicitly use a plural committee
+label; none exactly match a reviewed local-committee registry because that
+registry does not yet exist. The CB6, Bronx CB10, and Queens CB7 fixtures under
+`test/fixtures/community_board_graph_census/` preserve materially different
+calendar structures and the CB6 semantic/source-record duplication risk.
+
+Rebuild the census after changing its committed inputs:
+
+```bash
+node tools/build_community_board_graph_census.mjs
+node --test test/community_board_graph_census.test.mjs
+```
