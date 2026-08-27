@@ -1,6 +1,6 @@
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
-// Homepage noise-reduction + primary email CTA (site owner priority change).
-// Masthead → email CTA → category tabs → content. No edition strip, no scenario grid.
+// Homepage noise-reduction + Following entry (site owner priority change).
+// Masthead → Following entry → category tabs → content. No edition strip, no scenario grid.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -43,19 +43,15 @@ test("language control is a top-right labelled select with all shipping locales"
   assert.match(index, /inset-inline-end/);
 });
 
-test("homepage CTA sends an email into Following onboarding before any watch exists", () => {
+test("homepage CTA routes readers into Following before any watch exists", () => {
   assert.match(index, /id="homeCta"/);
   assert.match(index, /data-i18n="home_cta_prompt"/);
-  assert.match(index, /id="homeCtaEmail"/);
-  assert.match(index, /id="homeCtaForm"/);
-  assert.match(index, /href="\/following\/"/);
+  assert.doesNotMatch(index, /id="homeCtaEmail"|id="homeCtaForm"/);
+  assert.match(index, /href="\/following\/"[^>]*id="homeCtaTopics"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
   const entry = readFileSync(join(ROOT, "site/home_entry.mjs"), "utf8");
-  assert.match(entry, /location\.assign\("\/following\/\?onboarding=1"/);
-  assert.doesNotMatch(entry, /workerFetch\(["']\/subscribe["']/);
+  assert.doesNotMatch(entry, /homeCtaEmail|homeCtaForm|onboarding=1/);
   assert.match(index, /id="homeCtaManage"/);
-  assert.doesNotMatch(index, /We'll email a link to confirm\./);
-  assert.doesNotMatch(index, /data-i18n="subscribe_confirm_note"/);
   assert.match(index, /sessionShowBanner[\s\S]*homeCtaManage/);
 });
 
@@ -97,5 +93,5 @@ test("i18n carries homepage CTA keys in English", () => {
   }
   assert.match(i18n, /home_cta_prompt:\s*"Want email updates on this\?"/);
   assert.match(i18n, /home_cta_submit:\s*"Sign up"/);
-  assert.match(i18n, /home_cta_topics:\s*"or pick topics"/);
+  assert.match(i18n, /home_cta_topics:\s*"Choose what to follow"/);
 });

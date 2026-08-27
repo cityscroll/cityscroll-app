@@ -434,7 +434,7 @@
     subscribe_btn: "سبسکرائب کریں ←",
     home_cta_prompt: "ای میل اپ ڈیٹس چاہتے ہیں؟",
     home_cta_submit: "سائن اپ",
-    home_cta_topics: "یا موضوعات چنیں",
+    home_cta_topics: "فالو کرنے کے لیے منتخب کریں",
     alert_context_scope: "آپ کو اس بارے میں ای میل ملے گی: {scope}",
     alert_context_from_notice: "اس نوٹس سے: “{title}”",
     alert_context_next_step: "اگلا متوقع مرحلہ: {step}",

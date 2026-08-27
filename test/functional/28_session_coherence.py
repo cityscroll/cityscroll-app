@@ -125,7 +125,7 @@ def check_home(browser: Browser, recognized: bool) -> None:
     if recognized:
         page.locator('#sessionBanner[data-open="true"]').wait_for(state="visible")
         assert TEST_EMAIL in page.locator("#sessionBannerText").inner_text()
-        assert not page.locator("#homeCtaForm").is_visible(), "signed-in Home still asks for an email"
+        assert not page.locator("#homeCtaTopics").is_visible(), "signed-in Home still exposes the public entry"
         manage = page.locator("#homeCtaManage")
         assert manage.is_visible(), "signed-in Home did not expose watch management"
         assert_manage_url_is_session_native(manage.get_attribute("href") or "")
@@ -133,10 +133,10 @@ def check_home(browser: Browser, recognized: bool) -> None:
         page.locator("#sessionDismiss").click()
         assert not page.locator("#sessionBanner").is_visible()
         assert manage.is_visible(), "dismissing recognition copy incorrectly restored signup"
-        assert not page.locator("#homeCtaForm").is_visible()
+        assert not page.locator("#homeCtaTopics").is_visible()
     else:
         page.wait_for_function("document.querySelector('#sessionBanner').dataset.open === 'false'")
-        assert page.locator("#homeCtaForm").is_visible(), "signed-out Home lost watch signup"
+        assert page.locator("#homeCtaTopics").is_visible(), "signed-out Home lost Following entry"
         assert not page.locator("#homeCtaManage").is_visible(), "signed-out Home exposed account management"
         assert not page.locator("#sessionBanner").is_visible(), "signed-out Home rendered recognition"
     page.close()

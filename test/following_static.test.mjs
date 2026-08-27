@@ -59,10 +59,10 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /following-cadence-card/);
   assert.match(html, /Daily when there are matches/);
   assert.match(html, /Weekly digest/);
-  assert.match(html, /data-following-rule-line/);
+  assert.match(html, /data-following-identity-rule/);
   assert.match(html, /Notify me when/);
   assert.match(html, /following-digitem|following-dig-title/);
-  assert.match(html, /Click it to start the watch/);
+  assert.doesNotMatch(html, /Click it to start the watch|We send one link first/);
   assert.doesNotMatch(html, /href="https:\/\/cityscroll\.org\/prefs"/);
   assert.doesNotMatch(html, /Email and privacy|Confirm first|double opt-in/i);
   assert.doesNotMatch(html, /href="https:\/\/api\.cityscroll\.org\/following/);
@@ -84,6 +84,18 @@ test("Following create flow presents preview-first CTA text", () => {
   assert.match(html, /<p class="following-kicker">Delivery<\/p><h2>Create a watch<\/h2>/);
   assert.match(html, /class="following-refinements"/);
   assert.match(html, /<summary>Narrow it down<\/summary>/);
+});
+
+test("Following requested flow keeps one rule sentence and no confirmation step", () => {
+  const html = renderFollowingDocument(buildFollowingViewModel({
+    lens: "meetings",
+    filter: { keywords: ["curb"] },
+    requested: true,
+  }, templates));
+
+  assert.equal((html.match(/Notify me when/g) || []).length, 1);
+  assert.doesNotMatch(html, /following-confirm-note|We send one link first|Click it to start the watch/);
+  assert.match(html, /<button[^>]*>Update matches<\/button>/);
 });
 
 test("Following requested watch surface exposes create-watch submit state with summary", () => {

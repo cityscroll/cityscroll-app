@@ -351,7 +351,8 @@ async function preview(event) {
     const response = await fetch(url, { headers: { Accept: "text/html" } });
     if (!response.ok) throw new Error("preview");
     adoptFollowingDocument(await response.text());
-    if (status) status.textContent = msg("msgPreviewReady");
+    if (url.origin === location.origin) history.replaceState({}, "", `${url.pathname}${url.search}`);
+    root.querySelector("[data-following-preview-status]")?.replaceChildren(msg("msgPreviewReady"));
   } catch {
     if (status) status.textContent = msg("msgPreviewError");
   }

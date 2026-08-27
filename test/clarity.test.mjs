@@ -178,7 +178,7 @@ test("email capture fields ship with data-clarity-mask in markup", () => {
   const index = SITE_SOURCE;
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   assert.match(index, /id="adest"[^>]*data-clarity-mask="true"/);
-  assert.match(index, /id="homeCtaEmail"[^>]*data-clarity-mask="true"/);
+  assert.doesNotMatch(index, /id="homeCtaEmail"/);
   assert.match(about, /id="fbemail"[^>]*data-clarity-mask="true"/);
 });
 

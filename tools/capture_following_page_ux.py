@@ -143,7 +143,7 @@ def shot(page, base: str, name: str, html: str, caption: str, width: int, height
     page.wait_for_selector("#main", timeout=15_000)
     page.wait_for_timeout(500)
     raw = OUT / f"{LABEL}-{name}-{width}-raw.png"
-    page.screenshot(path=str(raw), full_page=False)
+    page.screenshot(path=str(raw), full_page=True)
     annotate(raw, OUT / f"{LABEL}-{name}-{width}.png", caption)
     raw.unlink(missing_ok=True)
 

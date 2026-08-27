@@ -930,7 +930,7 @@ async function showTaskFirst(task, id){
 }
 
 function applyHash(){
-  setNoticeCompactCta(false);
+  setNoticeCompactCta();
   const officialSection=officialProfileSectionRoute(location);
   if(officialSection){
     const current=document.querySelector(`[data-official-id="${officialSection.officialId}"]`);
@@ -981,7 +981,7 @@ function applyHash(){
     return applyHash();
   }
   if(raw.startsWith("notice/")){
-    setNoticeCompactCta(true);
+    setNoticeCompactCta();
     const { id, watch, focus } = parseNoticeHashSegment(raw.slice(7));
     pendingNoticeFocus = focus;
     showNotice(id, watch);
@@ -1324,10 +1324,9 @@ function forwardLegacyAlertsToFollowing(raw){
   return true;
 }
 
-function setNoticeCompactCta(isNoticeRoute){
+function setNoticeCompactCta(){
   const homeCta = $("#homeCta");
   if(!homeCta) return;
-  homeCta.classList.toggle("compact", !!isNoticeRoute);
   // Header CTA carries current context (notice / lens filters / neutral).
   if(typeof syncAlertsEntryHrefs === "function"){
     Promise.resolve(syncAlertsEntryHrefs()).catch(()=>{});

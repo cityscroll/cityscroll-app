@@ -440,7 +440,7 @@
     subscribe_btn: "Subskrybuj →",
     home_cta_prompt: "Chcesz nowości e-mailem?",
     home_cta_submit: "Zapisz się",
-    home_cta_topics: "lub wybierz tematy",
+    home_cta_topics: "Wybierz, co obserwować",
     alert_context_scope: "Otrzymasz e-mail dotyczący: {scope}",
     alert_context_from_notice: "Z tego ogłoszenia: „{title}”",
     alert_context_next_step: "Następny oczekiwany krok: {step}",

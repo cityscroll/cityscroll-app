@@ -1041,18 +1041,6 @@ async function aSubscribe(){
   }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
   btn.disabled=false;
 }
-// Homepage general-interest CTA — carry the email into topic selection; no watch exists yet.
-async function homeCtaSubscribe(e){
-  if(e && e.preventDefault) e.preventDefault();
-  const msg=$("#homeCtaMsg"), dest=$("#homeCtaEmail"), btn=$("#homeCtaSubmit");
-  if(!msg || !dest || !btn) return;
-  const email=dest.value.trim();
-  if(!aIsEmail(email)){ msg.textContent=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); dest.focus(); return; }
-  dest.removeAttribute("aria-invalid");
-  msg.textContent=t("home_onboarding_next");
-  window.location.assign("/following/?onboarding=1");
-}
-
 // Section → lens map for agency-profile section chips (not a homepage strip).
 const SECTION_LENS = {"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
 
@@ -1353,7 +1341,6 @@ globalThis.feedURLs = feedURLs;
 globalThis.fillAddressLinks = fillAddressLinks;
 globalThis.fillContext = fillContext;
 globalThis.focusAlertsRollupPanel = focusAlertsRollupPanel;
-globalThis.homeCtaSubscribe = homeCtaSubscribe;
 globalThis.initAlertsRollupPrefs = initAlertsRollupPrefs;
 globalThis.initWatchTemplates = initWatchTemplates;
 globalThis.paintWatchTemplateDetail = paintWatchTemplateDetail;
