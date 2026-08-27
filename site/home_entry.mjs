@@ -4,33 +4,6 @@ import {
 } from "./rum_static_record_instrumentation.mjs";
 import { renderInterpretPreview } from "./interpret_preview.mjs";
 
-const API_ORIGINS = Object.freeze([
-  window.CROL_API_ORIGIN || "https://api.cityscroll.org",
-  window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev",
-]);
-
-function homeSubscribeUrl(origin) {
-  return `${origin.replace(/\/$/, "")}/subscribe`;
-}
-
-async function subscribe(email) {
-  let lastError;
-  for (const origin of API_ORIGINS) {
-    try {
-      const response = await fetch(homeSubscribeUrl(origin), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, no_topic: true, source: "top-of-site", lang: window.LANG || "en" }),
-      });
-      if (response.ok) return response.json().catch(() => ({}));
-      lastError = new Error(`subscribe failed: ${response.status}`);
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  throw lastError || new Error("subscribe failed");
-}
-
 function initLanguageSwitcher() {
   const select = document.getElementById("langSelect");
   if (!select) return;
@@ -57,21 +30,10 @@ function initSubscription() {
       return;
     }
     emailInput.removeAttribute("aria-invalid");
-    button.disabled = true;
-    message.textContent = window.t?.("subscribing_now") || "Subscribing…";
-    try {
-      const result = await subscribe(email);
-      if (result?.ok) {
-        message.textContent = `${window.t?.("subscribed_now") || "You're subscribed — we'll email you."} ${window.t?.("welcome_sent_to", { email }) || ""}`.trim();
-        emailInput.value = "";
-      } else {
-        message.textContent = window.t?.("cant_reach_server") || "We could not reach the subscription service.";
-      }
-    } catch {
-      message.textContent = window.t?.("cant_reach_server") || "We could not reach the subscription service.";
-    } finally {
-      button.disabled = false;
-    }
+    // A topicless email is an onboarding signal, not a watch. Let the reader
+    // choose a family and review the editable sentence on Following first.
+    message.textContent = window.t?.("home_onboarding_next") || "";
+    window.location.assign("/following/?onboarding=1");
   });
 }
 

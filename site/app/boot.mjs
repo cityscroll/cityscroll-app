@@ -824,15 +824,9 @@ async function homeCtaSubscribeStatic(event){
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     msg.textContent=t("enter_valid_email");dest.setAttribute("aria-invalid","true");dest.focus();return;
   }
-  dest.removeAttribute("aria-invalid");btn.disabled=true;
-  msg.innerHTML='<span class="loading"></span> '+t("subscribing_now");
-  try{
-    const response=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,no_topic:true,source:"top-of-site",lang:window.LANG||"en"})});
-    const result=await response.json().catch(()=>({}));
-    if(result.ok){msg.innerHTML="<b>"+t("subscribed_now")+"</b> "+t("welcome_sent_to",{email:email.replace(/[<>&]/g," ")});dest.value="";}
-    else msg.textContent=t("cant_reach_server");
-  }catch{msg.textContent=t("cant_reach_server");}
-  btn.disabled=false;
+  dest.removeAttribute("aria-invalid");
+  msg.textContent=t("home_onboarding_next");
+  location.assign("/following/?onboarding=1");
 }
 
 // Language switcher init — compact <select> top-right; i18n.js already loaded in <head>.

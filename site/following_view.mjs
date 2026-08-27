@@ -23,6 +23,7 @@ import {
   COMMUNITY_BOARD_PICKER_NUMBERS,
 } from "./community_board_watch.mjs";
 import { communityBoardPlaceHref } from "./community_board_links.mjs";
+import { rankWatchFamilySuggestions } from "./watch_family_capabilities.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -156,6 +157,7 @@ export function watchFromFollowingParams(input) {
     requested,
     frequency: cleanFrequency(params.get("freq")),
     matchCount: cleanCount(params.get("count")),
+    onboarding: params.get("onboarding") === "1",
   };
 }
 
@@ -467,6 +469,9 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
   if (wanted === "entity") {
     const kind = f.kind === "agency" ? "agency" : "vendor";
     const name = f.name || "this name";
+    if (name === "an agency" || name === "a vendor") {
+      return `Notify me when public records name ${name}.`;
+    }
     return `Notify me when public records name the ${kind} ${name}.`;
   }
   if (wanted === "money" && f.procurement_id) {
@@ -528,6 +533,7 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     schema: "cityscroll.following_view.v1",
     ...watch,
     requested,
+    onboarding: input.onboarding === true,
     frequency,
     matchCount: matchCount == null && requested ? previewItems.length : matchCount,
     previewItems,
@@ -536,6 +542,7 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     ruleSentence,
     graphContext,
     templates: registry.templates,
+    familySuggestions: rankWatchFamilySuggestions(input.suggestionQuery || ""),
     followingUrl: followingUrlFromWatch(watch, {
       frequency,
       matchCount,
@@ -728,6 +735,37 @@ function subscribeHtml(view) {
   </section>`;
 }
 
+function familySuggestionHtml(capability, index) {
+  const href = followingUrlFromWatch({
+    lens: capability.lens,
+    filter: capability.filter,
+  }, { frequency: "weekly" });
+  return `<li class="following-suggestion" data-following-suggestion data-suggestion-kind="watch-family" data-watch-family-id="${esc(capability.id)}" data-suggestion-rank="${esc(String(index + 1))}">
+    <div>
+      <h3>${esc(capability.label)}</h3>
+      <p>${esc(capability.description)}</p>
+    </div>
+    ${constellationLink({ href, label: "Preview and edit", className: "following-suggestion-link", escape: esc })}
+  </li>`;
+}
+
+function familySuggestionsHtml(view) {
+  if (view.requested) return "";
+  const suggestions = Array.isArray(view.familySuggestions) ? view.familySuggestions : [];
+  if (!suggestions.length) return "";
+  const title = view.onboarding ? "Choose what to follow" : "Explore ways to follow CityScroll";
+  const lead = view.onboarding
+    ? "Pick a topic. We’ll show the sentence first. You can change it before you save."
+    : "Not sure what to call it? Pick a start. You can change the sentence, check the preview, then make a watch.";
+  return `<section class="following-suggestions" data-following-suggestions data-suggestion-kind="watch-family" aria-labelledby="following-suggestions-heading">
+    <p class="following-kicker">Suggestions</p>
+    <h2 id="following-suggestions-heading">${esc(title)}</h2>
+    <p>${esc(lead)}</p>
+    <ol class="following-suggestion-list">${suggestions.map(familySuggestionHtml).join("")}</ol>
+    <p class="following-suggestion-note">Pick a suggestion to open its preview. It does not make a watch. Check the sentence, then submit your email.</p>
+  </section>`;
+}
+
 function templateHtml(template) {
   const attention = packAttentionCopy(template, { frequency: "weekly" });
   const matchCount = Number.isInteger(template.matchCount) ? template.matchCount : null;
@@ -745,7 +783,7 @@ function templateHtml(template) {
   }).join("");
   const href = `/following/packs/${encodeURIComponent(template.id)}/`;
   const resultsHref = template.resultsHref || currentMatchesHref(template.watches[0]);
-  return `<article class="following-pack" data-pack-id="${esc(template.id)}">
+  return `<article class="following-pack" data-pack-id="${esc(template.id)}" data-suggestion-kind="pack">
     <h3>${esc(template.title)}</h3>
     <p class="following-pack-cost" data-pack-attention>${esc(attention.summary)}</p>
     ${countLine}
@@ -847,7 +885,7 @@ export function renderFollowingBody(view) {
   const identity = view.requested ? followingWatchIdentityHtml(view.graphContext) : "";
   const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${identity}${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
-  const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><div>${view.templates.map(templateHtml).join("")}</div></section>`;
+  const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><p class="following-pack-lead">These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div>${view.templates.map(templateHtml).join("")}</div></section>`;
   // Create flow leads for first-time / empty sessions; client reorders when
   // a recognized multi-watch account loads.
   return `<main id="main" data-following-root data-personal-url="${API_BASE}/following/personal"
@@ -869,6 +907,7 @@ export function renderFollowingBody(view) {
     </section>
     ${surfaceTabsHtml()}
     ${create}
+    ${familySuggestionsHtml(view)}
     ${workspace}
     ${personal}
     ${packs}
