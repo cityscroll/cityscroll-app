@@ -1,4 +1,5 @@
 import {
+  browseConfiguredPage,
   browseListState,
   PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
 } from "./browse_list_contract.mjs";
@@ -73,12 +74,12 @@ export function peopleBrowseRows(model = {}) {
 }
 
 export function buildPeopleListBrowseView(model = {}, params = new URLSearchParams(), options = {}) {
-  const state = browseListState(model, params, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
+  const state = options.capabilityResult || browseListState(model, params, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
   const rows = peopleBrowseRows({ rows: state.rows });
-  return buildBrowseView("people-list", { rows }, params, {
+  const view = buildBrowseView("people-list", { rows }, options.capabilityResult ? new URLSearchParams() : params, {
     config: PEOPLE_LIST_BROWSE_VIEW,
     rows,
-    asOf: state.generatedAt,
+    asOf: state.generatedAt || model.generated_at,
     limit: options.limit ?? PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize,
     handledFilters: [
       PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.facetParam,
@@ -86,4 +87,19 @@ export function buildPeopleListBrowseView(model = {}, params = new URLSearchPara
       PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.roleParam,
     ],
   });
+  if (options.capabilityResult) {
+    const search = params instanceof URLSearchParams ? params : new URLSearchParams(params);
+    view.total = state.total_matches;
+    view.preScopeTotal = state.total_matches;
+    view.scopeSearch = search.toString();
+    view.hasQuery = Boolean(search.get("q") || search.get("type"));
+  }
+  return view;
+}
+
+export function buildPeopleListCapabilityPage(model = {}, params = new URLSearchParams(), options = {}) {
+  return {
+    ...browseConfiguredPage(model.rows, params, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG, options.limit),
+    generatedAt: model.generated_at || null,
+  };
 }
