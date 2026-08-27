@@ -55,6 +55,7 @@ function buildFill({ noticeFlags, awardContext, related, mandate, tables }) {
     extractFn("contextSlotsHTML"),
     extractFn("contextSlot"),
     extractFn("contextReady"),
+    extractFn("timedContextBranch"),
     extractFn("fillContext"),
     "return fillContext;",
   ].join("\n");
