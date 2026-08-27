@@ -883,6 +883,124 @@
       ]
     },
     {
+      "reference": "contracts.analysis@1",
+      "id": "contracts.analysis",
+      "version": "1.0.0",
+      "owner": "procurement",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "low"
+      },
+      "input_schema": "cityscroll.capability.contracts_analysis.input.v1",
+      "output_schema": "cityscroll.capability.contracts_analysis.output.v1",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "minimumGroups": 1,
+          "maximumGroups": 100,
+          "defaultGroups": 10
+        },
+        "output": {
+          "maximumGroups": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "groupBy": "agency",
+            "measure": "current",
+            "fiscalYear": 2027,
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "measure": "current registered contract value in USD",
+            "denominator": "selected filtered population value"
+          }
+        },
+        {
+          "input": {
+            "groupBy": "vendor",
+            "measure": "count",
+            "agency": "Department of Education"
+          },
+          "output": {
+            "availability": "complete",
+            "measure": "unique registered contracts",
+            "drillThrough": "contract_ids and ordinary Contracts scope"
+          }
+        }
+      ],
+      "availability": [
+        "complete",
+        "empty",
+        "unavailable"
+      ],
+      "provenance": {
+        "population": "site/data/analytics_registered_contracts.json",
+        "identity": "prime_contract_id (exact registered-contract identity)",
+        "drillThrough": "ordinary Contracts scope with exact contributing contract identifiers"
+      },
+      "freshness": {
+        "owner": "committed registered-contract analytical projection",
+        "projection": "generated_at and snapshot_date"
+      },
+      "provider": {
+        "id": "worker-static.procurement-contracts.analysis",
+        "module": "worker/src/contracts.mjs",
+        "export": "workerContractsAnalysis",
+        "store": "precomputed registered-contract analytical projection",
+        "readModel": "site/data/analytics_registered_contracts.json"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.contracts-analysis@1",
+          "module": "worker/src/contracts.mjs",
+          "kind": "http-route",
+          "route": "GET /contracts/analysis",
+          "surface": "Contracts analysis",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "bounded grouped registered-contract analysis"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded grouped registered-contract analysis summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.analyze_contracts@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "analyze_contracts",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "bounded grouped registered-contract analysis"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "bounded grouped registered-contract analysis summary"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "reference": "people.get@1",
       "id": "people.get",
       "version": "1.0.0",
@@ -1532,6 +1650,61 @@
             "output": {
               "availability": "complete",
               "pagination": "cursor when more rows remain"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "analyze_contracts",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "contracts.analysis@1",
+        "capability_reference": "contracts.analysis@1",
+        "adapter_id": "mcp.analyze_contracts@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "filterMaximumLength": 240,
+            "minimumGroups": 1,
+            "maximumGroups": 100,
+            "defaultGroups": 10
+          },
+          "output": {
+            "maximumGroups": 100
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "groupBy": "agency",
+              "measure": "current",
+              "fiscalYear": 2027,
+              "limit": 10
+            },
+            "output": {
+              "availability": "complete",
+              "measure": "current registered contract value in USD",
+              "denominator": "selected filtered population value"
+            }
+          },
+          {
+            "input": {
+              "groupBy": "vendor",
+              "measure": "count",
+              "agency": "Department of Education"
+            },
+            "output": {
+              "availability": "complete",
+              "measure": "unique registered contracts",
+              "drillThrough": "contract_ids and ordinary Contracts scope"
             }
           }
         ],

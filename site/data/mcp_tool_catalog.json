@@ -11,6 +11,7 @@
     "search.federated@1",
     "contract.get@1",
     "contracts.browse@1",
+    "contracts.analysis@1",
     "people.get@1",
     "organizations.browse@1"
   ],
@@ -417,6 +418,59 @@
           "output": {
             "availability": "complete",
             "pagination": "cursor when more rows remain"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "analyze_contracts",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.",
+      "schema_reference": "contracts.analysis@1",
+      "capability_reference": "contracts.analysis@1",
+      "bounds": {
+        "input": {
+          "filterMaximumLength": 240,
+          "minimumGroups": 1,
+          "maximumGroups": 100,
+          "defaultGroups": 10
+        },
+        "output": {
+          "maximumGroups": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "groupBy": "agency",
+            "measure": "current",
+            "fiscalYear": 2027,
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "measure": "current registered contract value in USD",
+            "denominator": "selected filtered population value"
+          }
+        },
+        {
+          "input": {
+            "groupBy": "vendor",
+            "measure": "count",
+            "agency": "Department of Education"
+          },
+          "output": {
+            "availability": "complete",
+            "measure": "unique registered contracts",
+            "drillThrough": "contract_ids and ordinary Contracts scope"
           }
         }
       ],

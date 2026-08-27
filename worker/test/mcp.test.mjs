@@ -61,6 +61,7 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "retrieve_cited_passages",
     "get_contract",
     "browse_contracts",
+    "analyze_contracts",
     "get_person_or_organization",
     "browse_organizations",
     "preview_watch",

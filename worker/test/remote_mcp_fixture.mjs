@@ -9,16 +9,18 @@ import { executeEntityRelationships } from "../../capabilities/entity_relationsh
 import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
 import { executeFederatedSearch } from "../../capabilities/federated_search.mjs";
 import { executeContractGet, executeContractsBrowse } from "../../capabilities/contracts.mjs";
+import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
 import { executePeopleGet, executeOrganizationsBrowse } from "../../capabilities/people_organizations.mjs";
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
 import { workerD1NoticeSearch } from "../src/lib/notices.mjs";
 import { mcpCitedPassagesInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
+import { mcpContractsAnalysisInput } from "../src/contracts.mjs";
 import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
 import { workerFederatedSearch } from "../src/search.mjs";
-import { workerProcurementContracts } from "../src/contracts.mjs";
+import { workerContractsAnalysis, workerProcurementContracts } from "../src/contracts.mjs";
 import { workerPeopleOrganizations } from "../src/people_organizations.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
@@ -73,6 +75,11 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
     capabilityReference: "contracts.browse@1",
     name: "browse_contracts",
     arguments: Object.freeze({ vendor: "Remote Vendor", limit: 1 }),
+  }),
+  Object.freeze({
+    capabilityReference: "contracts.analysis@1",
+    name: "analyze_contracts",
+    arguments: Object.freeze({ group_by: "agency", measure: "count", limit: 10 }),
   }),
   Object.freeze({
     capabilityReference: "people.get@1",
@@ -237,6 +244,17 @@ export function createRemoteMcpFixtureEnv() {
       SUBS: new MockKV(),
       NL_METER: new MockKV(),
       PROCUREMENT_READ_MODEL: procurementModel,
+      ANALYTICAL_PROJECTION: {
+        schema: "cityscroll.analytical_projection.v1",
+        generated_at: "2026-08-18T20:00:00Z",
+        snapshot_date: "2026-08-18",
+        population_definition: "Normalized Checkbook NYC registered expense contracts.",
+        source_population: { normalized_unique_contracts: 2, source_tag: "checkbook-contracts" },
+        rows: [
+          { prime_contract_id: "CT-REMOTE", agency: "Remote Agency", prime_vendor: "Remote Vendor", registration_fiscal_year: 2027, current_registered_amount: 125000, original_registered_amount: 125000, city_record_match: "exact" },
+          { prime_contract_id: "CT-OTHER", agency: "Remote Agency", prime_vendor: "Other Vendor", registration_fiscal_year: 2027, current_registered_amount: 250000, original_registered_amount: 250000, city_record_match: "none" },
+        ],
+      },
       PEOPLE_ORGANIZATIONS_READ_MODEL: PEOPLE_ORGANIZATIONS_MODEL,
     },
     reads,
@@ -290,6 +308,11 @@ export async function directCapabilityResults(env) {
   results.set("browse_contracts", await executeContractsBrowse(
     workerProcurementContracts(env).browse,
     { vendor: contractsBrowseArgs.vendor, limit: contractsBrowseArgs.limit },
+  ));
+  const analysisArgs = argsFor("analyze_contracts");
+  results.set("analyze_contracts", await executeContractsAnalysis(
+    workerContractsAnalysis(env),
+    mcpContractsAnalysisInput(analysisArgs),
   ));
   const peopleGetArgs = argsFor("get_person_or_organization");
   results.set("get_person_or_organization", await executePeopleGet(
