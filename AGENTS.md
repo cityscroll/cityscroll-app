@@ -268,6 +268,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `cityscroll.community_board_source_join.v1` contract (`exact_board_date_publisher_identifier`);
   the older exact body/date/matter gate remains separate for decision details. Unjoined notices
   stay on their City Record/unknown surface.
+- **Community-board bylaws:** `site/community_board_bylaws.mjs` is the source-qualified
+  `bylaw-version` and `governed_by` contract. It resolves only board-local current versions,
+  retains superseded history, and answers material governance questions with explicit
+  `source_does_not_establish` when a rule is missing. The committed sample source is
+  `site/data/community_board_bylaws.json`; focused proof is
+  `test/community_board_bylaws.test.mjs`.
 - **Ambiguous community-board search:** `site/community_board_search.mjs` is the shared static/live
   projection for bare-number chooser state, explicit civic-context defaults, canonical card labels,
   and stable rank-without-hiding order. Bare `community board 3` keeps all five borough candidates;

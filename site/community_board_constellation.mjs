@@ -29,6 +29,12 @@ import {
 } from "./community_board_relations.mjs";
 import { communityBoardCommitteePageHref, communityBoardPageHref } from "./community_board_links.mjs";
 import { communityBoardMeetingEdgeAccepted } from "./community_board_institution_edges.mjs";
+import {
+  answerCommunityBoardGovernanceQuestion,
+  buildCommunityBoardBylawGraph,
+  communityBoardBylawSourceDescriptor,
+  renderCommunityBoardBylawPanel,
+} from "./community_board_bylaws.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -331,7 +337,7 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
 export function buildCommunityBoardEdgeSummary(viewOrCategories) {
   const categories = Array.isArray(viewOrCategories) ? viewOrCategories : viewOrCategories?.categories || [];
   const sourceId = viewOrCategories?.body_id || viewOrCategories?.id || null;
-  return normalizeEdgeSummaryRecords(categories.map((category) => ({
+  const categoryEdges = categories.map((category) => ({
     source_kind: "community-board",
     source_id: sourceId,
     edge_type: category.relation,
@@ -351,7 +357,23 @@ export function buildCommunityBoardEdgeSummary(viewOrCategories) {
     scope: { board: sourceId },
     source: category.source,
     provenance: category.provenance,
-  })));
+  }));
+  const bylawEdges = (viewOrCategories?.governed_by_edges || []).map((edge) => ({
+    source_kind: "community-board",
+    source_id: sourceId,
+    edge_type: "governed_by",
+    relation_label: "Governing bylaws",
+    target_kind: "bylaw-version",
+    target_id: edge.target_id || edge.to || null,
+    target_name: edge.target_name || "Community Board bylaw",
+    count: 1,
+    state: edge.status === "promoted" ? "matched" : "unknown",
+    href: edge.status === "promoted" ? edge.source_url || null : null,
+    scope: { board: sourceId },
+    source: { kind: "community-board", id: sourceId, name: "Community Board", canonical_href: communityBoardPageHref(sourceId) },
+    provenance: edge.provenance || null,
+  }));
+  return normalizeEdgeSummaryRecords([...categoryEdges, ...bylawEdges]);
 }
 
 export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
@@ -380,7 +402,19 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
   const scorecardRow = (sources.scorecard?.rows || []).find((row) => row?.body_id === requested);
   const inventoryRow = (sources.sourceInventory?.boards || []).find((row) => row?.id === requested || row?.body_id === requested);
   const boardReceipts = (sources.sourceReceipts || []).filter((row) => row?.board_id === requested);
+  const bylawGraph = buildCommunityBoardBylawGraph(sources.communityBoardBylaws || sources.bylaws || []);
+  const boardBylawSource = communityBoardBylawSourceDescriptor(bylawGraph, requested);
   const boardSources = sourceRows(scorecardRow, inventoryRow || board, boardReceipts);
+  if (boardBylawSource) {
+    const bylawSource = boardSources.find((row) => row.role === "bylaws");
+    if (bylawSource) Object.assign(bylawSource, {
+      url: boardBylawSource.source_url,
+      publisher: boardBylawSource.publisher,
+      observed_on: boardBylawSource.observed_on,
+      state: boardBylawSource.state,
+      bylaw_version_id: boardBylawSource.bylaw_version_id,
+    });
+  }
   const suppliedInstitutionEdges = sources.institutionEdges?.[requested]
     || sources.boardInstitutionEdges?.[requested]
     || sources.meetingEdges?.[requested];
@@ -409,7 +443,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     relationEdges,
     institutionEdges,
   ));
-  const edgeSummary = buildCommunityBoardEdgeSummary({ body_id: requested, categories });
+  const governedByEdges = bylawGraph.edges.filter((edge) => edge.from === `community-board:${requested}`);
+  const boardBylawVersions = bylawGraph.versions.filter((version) => version.board_id === requested);
+  const governanceQuestion = answerCommunityBoardGovernanceQuestion(bylawGraph, requested);
+  const edgeSummary = buildCommunityBoardEdgeSummary({ body_id: requested, categories, governed_by_edges: governedByEdges });
   const localConstellation = buildLocalConstellation({
     kind: "community-board",
     subject_ref: `community-board:${requested}`,
@@ -430,6 +467,12 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     board: normalizedBoard,
     source_records: boardSourceRecords,
     institution_edges: institutionEdges || [],
+    bylaw_versions: boardBylawVersions,
+    governed_by_edges: governedByEdges,
+    governance: {
+      question: governanceQuestion,
+      versions: boardBylawVersions,
+    },
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
@@ -685,7 +728,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-  ${renderAboutBoardSection(view)}${semanticCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardBylawPanel(view.governance)}${semanticCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;
