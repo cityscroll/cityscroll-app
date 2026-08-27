@@ -1,6 +1,6 @@
 import { createCalendarOccurrence } from "./calendar_occurrence.mjs";
 
-const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const ZONING_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const DISTRICT = /^(?:[1-9]|[1-4]\d|5[01])$/;
 const COMMUNITY_DISTRICT = /^(?:M|X|K|Q|R)\d{2}$/i;
 const LOW_CONFIDENCE = new Set(["inferred", "weak", "low", "approximate"]);
@@ -132,7 +132,7 @@ function localStartsAt(value) {
 
 function hearingWhen(row) {
   const day = clean(row.hearing_date || row.hearing_at)?.slice(0, 10);
-  if (!ISO_DATE.test(day || "")) return null;
+  if (!ZONING_ISO_DATE.test(day || "")) return null;
   if (row.parse_status !== "published_date_only" && row.hearing_at && /T\d{2}:\d{2}/.test(String(row.hearing_at))) {
     const startsAt = localStartsAt(row.hearing_at);
     if (startsAt) return { starts_at: startsAt, timezone: "America/New_York" };
