@@ -1,0 +1,105 @@
+{
+  "schema": "cityscroll.calendar_occurrence_fixtures.v1",
+  "as_of": "2026-08-27",
+  "records": [
+    {
+      "object_ref": "meeting:city_record:20260827001",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Public hearing — 123 Main Street rezoning",
+      "event_date": "2026-09-15T18:00:00-04:00",
+      "event_end": "2026-09-15T20:00:00-04:00",
+      "timezone": "America/New_York",
+      "location": "123 Main Street, New York, NY",
+      "source_system": "city_record",
+      "source_record_id": "20260827001",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827001",
+      "provenance": { "basis": "publisher_record", "field": "event_date" }
+    },
+    {
+      "object_ref": "meeting:community_board:2026-09-16-remote",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Public hearing — remote transportation plan",
+      "event_date": "2026-09-16T19:00:00-04:00",
+      "remote_join_url": "https://meet.example.gov/transportation",
+      "meeting_access": { "mode": "remote", "remote_join_url": "https://meet.example.gov/transportation" },
+      "source_system": "community_board",
+      "source_record_id": "cb33-2026-09-16-remote",
+      "source_url": "https://www.nyc.gov/site/cb33/calendar.page",
+      "provenance": { "basis": "publisher_record", "field": "event_date" }
+    },
+    {
+      "object_ref": "notice:20260827003",
+      "scope_ref": "scope:procurement:school-roof",
+      "title": "School roof repair",
+      "calendar_titles": { "deadline": "Bids due — School roof repair" },
+      "start_date": "2026-08-20T12:00:00-04:00",
+      "due_date": "2026-09-11",
+      "source_system": "city_record",
+      "source_record_id": "20260827003",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827003",
+      "provenance": { "basis": "publisher_record", "field": "due_date" }
+    },
+    {
+      "object_ref": "exam:associate-staff-analyst",
+      "scope_ref": "scope:exams:parks",
+      "title": "Associate Staff Analyst exam",
+      "canonical_url": "https://cityscroll.org/browse/exams/",
+      "application_open_date": "2026-09-01",
+      "application_close_date": "2026-09-30",
+      "source_system": "dcas",
+      "source_record_id": "exam-asa-2026",
+      "source_url": "https://www.nyc.gov/site/dcas/employment/exams.page",
+      "provenance": { "basis": "publisher_record", "fields": ["application_open_date", "application_close_date"] }
+    },
+    {
+      "object_ref": "meeting:city_record:20260827005",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Public hearing — rescheduled housing plan",
+      "event_date": "2026-09-15T19:00:00-04:00",
+      "source_system": "city_record",
+      "source_record_id": "20260827005",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827005",
+      "provenance": { "basis": "publisher_record", "field": "event_date", "revision": "2" }
+    },
+    {
+      "object_ref": "meeting:city_record:20260827006",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Public hearing — cancelled budget hearing",
+      "event_date": "2026-09-20T18:00:00-04:00",
+      "status": "cancelled",
+      "source_system": "city_record",
+      "source_record_id": "20260827006",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827006",
+      "provenance": { "basis": "publisher_record", "field": "event_date", "status_field": "status" }
+    },
+    {
+      "object_ref": "notice:20260827007",
+      "scope_ref": "scope:rules:all",
+      "title": "Monthly publication notice",
+      "start_date": "2026-08-27T12:00:00-04:00",
+      "published_at": "2026-08-27T12:00:00-04:00",
+      "source_system": "city_record",
+      "source_record_id": "20260827007",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827007"
+    },
+    {
+      "object_ref": "notice:20260827008",
+      "scope_ref": "scope:rules:all",
+      "title": "Unclear date notice",
+      "event_date": "next Tuesday",
+      "start_date": "2026-08-27T12:00:00-04:00",
+      "source_system": "city_record",
+      "source_record_id": "20260827008",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827008"
+    }
+  ],
+  "rescheduled_previous": {
+    "object_ref": "meeting:city_record:20260827005",
+    "scope_ref": "scope:meetings:district-33",
+    "title": "Public hearing — rescheduled housing plan",
+    "event_date": "2026-09-15T18:00:00-04:00",
+    "source_system": "city_record",
+    "source_record_id": "20260827005",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827005"
+  }
+}
