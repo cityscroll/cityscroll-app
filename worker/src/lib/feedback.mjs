@@ -12,7 +12,8 @@ export const REPORT_CATEGORIES = [
   "information_wrong", "connection_wrong", "same_thing", "different_things",
   "something_missing", "interpretation_wrong", "other",
 ];
-const VENDOR_REPORT_CATEGORIES = new Set(["information_wrong", "something_missing", "other"]);
+const FIELD_REPORT_CATEGORIES = new Set(["information_wrong", "something_missing", "other"]);
+const RELATIONSHIP_REPORT_CATEGORIES = new Set(["connection_wrong", "something_missing", "other"]);
 export const MSG_MIN = 10;
 export const MSG_MAX = 2000;
 export const EVIDENCE_MAX = 4000;
@@ -44,8 +45,13 @@ export function validateFeedback(body) {
   if (evidence.length > EVIDENCE_MAX) return { ok: false, reason: "bad-evidence" };
   const target = normalizeReportTargetForFeedback(b.report_target);
   if (!target) return { ok: false, reason: "bad-report-target" };
-  if (target.claim_anchor?.field_or_semantic_key === "vendor"
-    && !VENDOR_REPORT_CATEGORIES.has(category)) {
+  if (target.claim_anchor?.claim_type === "relationship"
+    && !RELATIONSHIP_REPORT_CATEGORIES.has(category)) {
+    return { ok: false, reason: "bad-report-category" };
+  }
+  if (target.claim_anchor?.claim_type !== "relationship"
+    && target.claim_anchor?.field_or_semantic_key === "vendor"
+    && !FIELD_REPORT_CATEGORIES.has(category)) {
     return { ok: false, reason: "bad-report-category" };
   }
   return {
@@ -66,7 +72,28 @@ function normalizeReportTargetForFeedback(value) {
   let target;
   try { target = resolveReportTarget(value); } catch { return null; }
   if (!target || target.target_id !== value.target_id || reportTargetIdentity(target) !== value.target_id) return null;
-  if (target.object_type !== "procurement" || !target.object_id.startsWith("procurement:contract:")) return null;
-  if (!target.canonical_url.startsWith("/procurements/")) return null;
+  const isProcurement = target.object_type === "procurement"
+    && target.object_id.startsWith("procurement:contract:")
+    && target.canonical_url.startsWith("/procurements/");
+  const isLandProject = target.object_type === "land_use_project"
+    && /^project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(target.object_id)
+    && target.canonical_url.startsWith("/browse/zoning/#land/");
+  if (!isProcurement && !isLandProject) return null;
+  const claim = target.claim_anchor;
+  if (!claim) return target;
+  if (claim.claim_type !== "relationship") return isProcurement ? target : null;
+  if (!claim.relation_type || !claim.subject_id || !claim.object_id || !claim.field_or_semantic_key) return null;
+  if (isProcurement) {
+    if (claim.relation_type !== "named_vendor"
+      || claim.field_or_semantic_key !== "vendor"
+      || claim.subject_id !== target.object_id
+      || !/^vendor:stem:[^\s]+$/.test(claim.object_id)) return null;
+  }
+  if (isLandProject) {
+    if (!['sited_on_parcel', 'sits_on_parcel'].includes(claim.relation_type)
+      || claim.field_or_semantic_key !== "parcel"
+      || claim.subject_id !== target.object_id
+      || !/^bbl:\d{10}$/.test(claim.object_id)) return null;
+  }
   return target;
 }

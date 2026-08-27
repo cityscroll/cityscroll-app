@@ -8,7 +8,11 @@ import {
   renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
-import { buildContractReportTarget, reportIssueAction } from "./report_issue.mjs";
+import {
+  buildContractReportTarget,
+  buildContractVendorRelationshipReportTarget,
+  reportIssueAction,
+} from "./report_issue.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
 import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
@@ -95,7 +99,9 @@ function procurementActions(object, facts) {
       attrs: { "data-follow": "vendor", "data-name": facts.vendor },
     });
   }
-  items.push(reportIssueAction(buildContractReportTarget(object, facts)));
+  const reportTarget = buildContractVendorRelationshipReportTarget(object, facts)
+    || buildContractReportTarget(object, facts);
+  items.push(reportIssueAction(reportTarget));
   return items.length ? renderNodeActions(items, { ariaLabel: "Document actions", extraClass: "civic-object-actions" }) : "";
 }
 
