@@ -192,6 +192,13 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     asOf: observedAt,
     committeeRegistry: options.committeeRegistry || {},
   });
+  const committeeHost = institutionEdges.find((edge) => (
+    edge?.relation === "hosts_meeting"
+      && edge?.institution_refs?.committee_ref
+  ));
+  const institutionRefs = committeeHost
+    ? { ...meeting.institution_refs, committee_ref: committeeHost.institution_refs.committee_ref }
+    : meeting.institution_refs;
   return {
     ...meeting,
     record_kind: record.record_kind,
@@ -242,7 +249,8 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt, o
     // Exact typed subjects are the shared scope identity. They do not assert
     // that the board-to-meeting edge is published; that still requires the
     // receipt-backed join above.
-    entity_refs_all: [meeting.institution_refs.board_ref, meeting.meeting_id].filter(Boolean),
+    entity_refs_all: [institutionRefs.board_ref, institutionRefs.committee_ref, meeting.meeting_id].filter(Boolean),
+    institution_refs: institutionRefs,
     institution_edges: institutionEdges,
   };
 }

@@ -134,6 +134,11 @@ test("committee-hosted meeting is rendered through the board-local committee cat
     href: "/meetings/meeting%3Acommunity_board%3Acb6-transport",
     canonical_href: "/meetings/meeting%3Acommunity_board%3Acb6-transport",
     board_href: "/community-boards/manhattan-cb-06/",
+    institution_refs: {
+      board_ref: "community-board:manhattan-cb-06",
+      committee_ref: "community-board-committee:manhattan-cb-06:transportation",
+    },
+    parent_board_ref: "community-board:manhattan-cb-06",
     provenance: { source_url: "https://cbsix.org/meetings-calendar/", observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" } },
   };
   const committeeEdge = {

@@ -93,3 +93,36 @@ test("committee refinement reuses the exact source join and leaves the meeting k
   assert.equal(edges[1].from, "community-board-committee:manhattan-cb-06:transportation");
   assert.equal(edges[1].join.method, "exact_board_date_publisher_identifier");
 });
+
+test("committee evidence cannot bypass a failed board source join", () => {
+  const boardMeeting = {
+    source_system: "community_board",
+    meeting_id: "meeting:community_board:cb6-transport::2026-08-12",
+    board_id: "manhattan-cb-06",
+    publisher_identifier: "cb6-transport",
+    event_date: "2026-08-12",
+    title: "Transportation Committee Meeting",
+  };
+  const boardRecord = {
+    ...source,
+    board_id: "manhattan-cb-06",
+    body_id: "manhattan-cb-06",
+    body_evidence: { board_id: "manhattan-cb-06", basis: "publisher_record" },
+    source_record_id: "cb6-transport",
+    record_id: "cb6-transport",
+    publisher_identifier: "cb6-transport",
+    date: "2026-08-12",
+    title: "Transportation Committee Meeting",
+    observed_receipt: null,
+  };
+  const edges = buildCommunityBoardInstitutionEdges([{ meeting: boardMeeting, source_record: boardRecord }], {
+    asOf: "2026-08-14T12:00:00Z",
+    committeeRegistry,
+  });
+  assert.equal(edges.length, 1);
+  assert.equal(edges[0].relation, "hosts_meeting");
+  assert.equal(edges[0].from, "community-board:manhattan-cb-06");
+  assert.equal(edges[0].status, "held");
+  assert.equal(edges[0].href, null);
+  assert.equal(edges[0].join.method, "exact_board_date_publisher_identifier");
+});
