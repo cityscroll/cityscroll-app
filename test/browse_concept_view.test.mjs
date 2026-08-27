@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
@@ -6,7 +7,10 @@ import {
   renderBrowseConceptLanding,
   renderPeopleOrganizationRow,
 } from "../site/browse_concept_view.mjs";
+import { buildBrowseConceptDocument } from "../site/primary_document_view.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
+
+const shell = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 
 const geography = {
   nodes: [{
@@ -53,6 +57,19 @@ test("People + organizations exposes a board institution projection", () => {
   assert.doesNotMatch(html, /Published official profiles\.|Vendor profiles from award records\.|Published committee records\./);
   assert.match(html, /Public bodies serving New York City districts\./);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
+});
+
+test("generated People landing renders each Community Board card once without internal ids", () => {
+  const html = buildBrowseConceptDocument(shell, "people", { places: geography });
+  const card = html.match(/<article class="browse-static-record[^>]*data-row-kind="community-board"[\s\S]*?<\/article>/)?.[0] || "";
+  const visibleText = card.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+  assert.ok(card, "the generated People landing contains a Community Board card");
+  assert.equal((card.match(/data-civic-object-kind="community-board"/g) || []).length, 1);
+  assert.equal((visibleText.match(/Bronx Community Board 1/g) || []).length, 1);
+  assert.equal((card.match(/href="\/community-boards\/bronx-cb-01\/"/g) || []).length, 1);
+  assert.doesNotMatch(visibleText, /community-board:/);
+  assert.match(visibleText, /Community Board · Appointed local advisory body · Covers Bronx Community District 1\./);
 });
 
 test("Community boards directory groups numbered institution links by borough", () => {
