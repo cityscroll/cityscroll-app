@@ -128,6 +128,10 @@ test("a reviewed committee inserts has_committee before the unchanged meeting id
     ["hosts_meeting", "community-board-committee:manhattan-cb-06:transportation", "meeting:community_board:cb6-event-1"],
   ]);
   assert.equal(edges[1].parent_board_ref, "community-board:manhattan-cb-06");
+  assert.deepEqual(edges[1].institution_refs, {
+    board_ref: "community-board:manhattan-cb-06",
+    committee_ref: "community-board-committee:manhattan-cb-06:transportation",
+  });
 });
 
 test("full-board and unresolved joint meetings retain the board host without a synthetic committee", () => {

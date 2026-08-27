@@ -18,6 +18,13 @@ export {
 } from "./community_board_source_join.mjs";
 
 export {
+  COMMUNITY_BOARD_PROCEEDING_FORMS,
+  COMMUNITY_BOARD_PROCEEDING_HOSTS_SCHEMA,
+  projectCommunityBoardProceedingHost,
+  projectCommunityBoardProceedingHosts,
+} from "./community_board_proceeding_hosts.mjs";
+
+export {
   COMMUNITY_BOARD_COMMITTEE_OBJECT_TYPE,
   COMMUNITY_BOARD_COMMITTEE_REGISTRY_SCHEMA,
   COMMUNITY_BOARD_HAS_COMMITTEE_RELATION,

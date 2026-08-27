@@ -209,6 +209,10 @@ function edgeStatus(join, record) {
   return acceptedJoin(join, record) ? "promoted" : "held";
 }
 
+function boardInstitutionRef(boardId) {
+  return boardId ? `community-board:${boardId}` : null;
+}
+
 /**
  * Materialize the board institution relation without inventing a meeting
  * destination. The target is always a source-qualified meeting id; held
@@ -243,6 +247,11 @@ export function promoteCommunityBoardHostsMeetingEdge(observation = {}, options 
     canonical_href: accepted ? targetHref : null,
     href: accepted ? targetHref : null,
     board_href: boardId ? communityBoardPageHref(boardId) : null,
+    // This is the board-membership fact established by the exact source
+    // join. A committee host may refine `from`, but must carry this context.
+    institution_refs: {
+      board_ref: boardInstitutionRef(boardId),
+    },
     source_url: sourceUrl,
     source_record_id: join?.source_record_id || record?.source_record_id || record?.record_id || null,
     source_receipt: receipt,
@@ -291,7 +300,9 @@ export function promoteCommunityBoardCommitteeHostsMeetingEdge(observation = {},
     board_id: record.board_id || meeting.board_id,
     body_id: record.body_id || meeting.body_id,
   }, options.committeeRegistry || {});
-  if (match.status !== "matched") return null;
+  // Committee evidence can refine a published board relationship; it cannot
+  // publish one. Keep the source join as the sole acceptance gate.
+  if (match.status !== "matched" || !communityBoardMeetingEdgeAccepted(boardEdge)) return null;
   return {
     ...boardEdge,
     schema: "cityscroll.community_board_committee_hosts_meeting_edge.v1",
@@ -300,6 +311,10 @@ export function promoteCommunityBoardCommitteeHostsMeetingEdge(observation = {},
     from: match.id,
     target_kind: "meeting",
     parent_board_ref: boardEdge.from,
+    institution_refs: {
+      ...boardEdge.institution_refs,
+      committee_ref: match.id,
+    },
     committee_ref: match.id,
     committee_id: match.committee_id,
     committee_name: match.publisher_name,
@@ -313,8 +328,9 @@ export function promoteCommunityBoardCommitteeHostsMeetingEdge(observation = {},
 
 function institutionEdgesForObservation(observation, options = {}) {
   const record = observationParts(observation).record || {};
+  const boardEdge = promoteCommunityBoardHostsMeetingEdge(observation, options);
   const committeeEdge = promoteCommunityBoardCommitteeHostsMeetingEdge(observation, options);
-  if (!committeeEdge) return [promoteCommunityBoardHostsMeetingEdge(observation, options)];
+  if (!committeeEdge) return [boardEdge];
   const hasCommittee = promoteCommunityBoardHasCommitteeEdge({
     ...record,
     committee_match: matchCommunityBoardCommittee({
@@ -407,6 +423,9 @@ export function communityBoardMeetingEdgeFromSourceRow(row = {}, options = {}) {
       || row.source_receipt
       || row.source_provenance?.observed_receipt
       || null,
+    committee: row.committee || null,
+    convening_body_label: row.convening_body_label || null,
+    convening_body_publisher_identifier: row.convening_body_publisher_identifier || null,
   };
   const observedJoin = joinCommunityBoardSourceRecord(row, sourceRecord, options);
   const join = sourceRoleAccepted ? observedJoin : {
