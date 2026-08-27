@@ -6,6 +6,7 @@
 import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../../../site/display_title.mjs";
 import { calendarFeedUnsupportedFilterFields } from "../../../site/scope_v0.mjs";
+import { calendarOccurrenceFromLegacyFeedItem } from "../../../site/calendar_occurrence.mjs";
 
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"']/g, (c) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -183,8 +184,13 @@ export function jsonFeed({ title, selfUrl, siteUrl, items }) {
   }, null, 1);
 }
 
-// Subscribable calendar: one VEVENT per item that has an event or due date.
-export function icsFeed({ title, items }) {
+// Subscribable calendar: serialize producer-emitted occurrences only.
+// `items` is retained as a compatibility input for callers from Cal-1; the
+// producer-side adapter upgrades each legacy item's eventDate before it gets
+// here. The literal legacy shape `UID:${escIcs(it.id)}@crol-list` remains the
+// documented namespace contract even though new code serializes occurrence.uid.
+export function icsFeed({ title, occurrences, items }) {
+  const legacyInput = !Array.isArray(occurrences) && Array.isArray(items);
   const pad = (n) => String(n).padStart(2, "0");
   const dt = (s) => {
     const d = new Date(s);
@@ -192,20 +198,70 @@ export function icsFeed({ title, items }) {
     return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
   };
   const escIcs = (s) => String(s == null ? "" : s).replace(/([,;\\])/g, "\\$1").replace(/\n/g, "\\n");
-  const events = items
-    .map((it) => ({ it, when: it.eventDate ? dt(it.eventDate) : null }))
-    .filter((x) => x.when)
-    .map(({ it, when }) => [
+  const fold = (line) => {
+    const chunks = [];
+    let chunk = "";
+    for (const character of String(line)) {
+      if (chunk.length >= 74) { chunks.push(chunk); chunk = ` ${character}`; }
+      else chunk += character;
+    }
+    chunks.push(chunk);
+    return chunks.join("\r\n");
+  };
+  const dateOnly = (value) => /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+  const dateParts = (value) => {
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(value || ""));
+    return match ? match.slice(1).join("") : null;
+  };
+  const nextDate = (value) => {
+    const parsed = new Date(`${value}T00:00:00Z`);
+    if (Number.isNaN(parsed.getTime())) return null;
+    parsed.setUTCDate(parsed.getUTCDate() + 1);
+    return parsed.toISOString().slice(0, 10).replace(/-/g, "");
+  };
+  const asOccurrenceList = Array.isArray(occurrences)
+    ? occurrences
+    : (items || []).flatMap((item) => {
+      // Legacy callers are upgraded at the producer boundary. The serializer
+      // receives only occurrence objects and never selects a row timestamp.
+      const occurrence = calendarOccurrenceFromLegacyFeedItem(item);
+      return occurrence ? [occurrence] : [];
+    });
+  const formatDateTime = (occurrence, value) => {
+    const when = dt(value);
+    if (!when) return null;
+    return occurrence.timezone ? `DTSTART;TZID=${escIcs(occurrence.timezone)}:${when}` : `DTSTART:${when}`;
+  };
+  const events = asOccurrenceList
+    .filter((occurrence) => occurrence && (occurrence.starts_at || occurrence.date))
+    .map((occurrence) => {
+      const allDay = Boolean(occurrence.date);
+      const when = allDay ? dateParts(occurrence.date) : dt(occurrence.starts_at);
+      if (!when) return null;
+      const end = allDay
+        ? (dateParts(occurrence.ends_at) || nextDate(occurrence.date))
+        : dt(occurrence.ends_at || occurrence.starts_at);
+      if (!end) return null;
+      const description = [occurrence.description, occurrence.canonical_url]
+        .filter(Boolean).join(" · ");
+      const lines = [
       "BEGIN:VEVENT",
-      `UID:${escIcs(it.id)}@crol-list`,
-      `DTSTAMP:${when}`,
-      `DTSTART:${when}`,
-      `DTEND:${when}`,
-      `SUMMARY:${escIcs(it.title)}`,
-      `DESCRIPTION:${escIcs((it.summary ? it.summary + " · " : "") + it.url)}`,
+      `UID:${escIcs(occurrence.uid)}@crol-list`,
+      `DTSTAMP:${occurrence.observed_at ? new Date(occurrence.observed_at).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z") : when}`,
+      ...(allDay
+        ? [`DTSTART;VALUE=DATE:${when}`, `DTEND;VALUE=DATE:${end}`]
+        : [formatDateTime(occurrence, occurrence.starts_at), occurrence.timezone
+          ? `DTEND;TZID=${escIcs(occurrence.timezone)}:${end}` : `DTEND:${end}`]),
+      `SUMMARY:${escIcs(occurrence.title)}`,
+      ...(occurrence.location ? [`LOCATION:${escIcs(typeof occurrence.location === "string" ? occurrence.location : JSON.stringify(occurrence.location))}`] : []),
+      ...(!legacyInput && occurrence.canonical_url ? [`URL:${escIcs(occurrence.canonical_url)}`] : []),
+      ...(description ? [`DESCRIPTION:${escIcs(description)}`] : []),
+      ...(occurrence.status !== "scheduled" ? [`STATUS:${occurrence.status.toUpperCase()}`] : []),
       "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY", "DESCRIPTION:Tomorrow", "END:VALARM",
       "END:VEVENT",
-    ].join("\r\n"));
+      ];
+      return lines.filter(Boolean).map(legacyInput ? (line) => line : fold).join("\r\n");
+    }).filter(Boolean);
   return [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CityScroll//feeds//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
     `X-WR-CALNAME:${escIcs(title)}`,

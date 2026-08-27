@@ -17,6 +17,7 @@ import {
   jsonFeed,
   icsFeed,
 } from "./lib/feed.mjs";
+import { calendarOccurrencesForRows } from "../../site/calendar_occurrence.mjs";
 
 const FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
 const TYPES = {
@@ -68,13 +69,20 @@ export async function handleFeed(request, env, ctx) {
 
   const title = `CityScroll — ${describeFilter(lens, sub.filter)}`;
   const items = feedItems(q.kind, rows);
+  const occurrences = calendarOccurrencesForRows(rows, {
+    kind: q.kind,
+    legacy_uid: true,
+    // Feed rows already satisfy the query's temporal bounds. The producer
+    // still chooses only semantic civic dates, never publication timestamps.
+    as_of: "0000-01-01",
+  });
   const siteUrl = "https://cityscroll.org/";
   const updated = new Date().toISOString();
 
   let body;
   if (url.pathname === "/feed.xml") body = atomFeed({ title, selfUrl: url.toString(), siteUrl, updated, items });
   else if (url.pathname === "/feed.json") body = jsonFeed({ title, selfUrl: url.toString(), siteUrl, items });
-  else body = icsFeed({ title, items });
+  else body = icsFeed({ title, occurrences });
 
   const res = new Response(body, {
     status: 200,
