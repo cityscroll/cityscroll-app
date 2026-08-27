@@ -3,7 +3,7 @@ description: Restore the exact run artifact or exact-input cache, rebuild on a m
 
 inputs:
   artifact-name:
-    description: Run- and attempt-qualified artifact name.
+    description: Run-qualified artifact name.
     required: true
 
 outputs:
@@ -22,7 +22,7 @@ runs:
       id: identity
       shell: bash
       run: node tools/site_artifact_identity.mjs identity --commit-sha "$GITHUB_SHA" --github-output "$GITHUB_OUTPUT"
-    - name: Download run-attempt site artifact
+    - name: Download run-scoped site artifact
       id: download
       continue-on-error: true
       uses: actions/download-artifact@v4
