@@ -6,7 +6,9 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   buildPublicSourceHealthProjection,
+  publicSourceHealthEvidence,
   publicSourceHealthProjectionText,
+  validatePublicSourceHealthProjection,
 } from "../site/source_health_public_projection.mjs";
 
 export const CONTRACTS_PATH = fileURLToPath(
@@ -28,8 +30,10 @@ function optionValue(argv, name, fallback) {
   return index >= 0 ? argv[index + 1] : fallback;
 }
 
-function evidenceHash(text) {
-  return createHash("sha256").update(text, "utf8").digest("hex");
+function evidenceHash(projection) {
+  return createHash("sha256")
+    .update(JSON.stringify(publicSourceHealthEvidence(projection)), "utf8")
+    .digest("hex");
 }
 
 export function generatePublicSourceHealthProjection(options = {}) {
@@ -39,7 +43,7 @@ export function generatePublicSourceHealthProjection(options = {}) {
 }
 
 export function checkPublicSourceHealthProjection(options = {}) {
-  const expected = publicSourceHealthProjectionText(generatePublicSourceHealthProjection(options));
+  const expectedProjection = generatePublicSourceHealthProjection(options);
   const outputPath = options.outputPath || OUTPUT_PATH;
   let actual = null;
   try {
@@ -50,17 +54,26 @@ export function checkPublicSourceHealthProjection(options = {}) {
     }
     return [`site/data/source_health_public.json cannot be read: ${error?.message || error}`];
   }
-  if (actual === expected) return [];
-
   let parsed = null;
   try { parsed = JSON.parse(actual); } catch {}
   if (!parsed) {
     return ["site/data/source_health_public.json is invalid; generated source-health evidence cannot be checked"];
   }
+  const validationErrors = validatePublicSourceHealthProjection(parsed, options.registry || readJson(CONTRACTS_PATH));
+  if (validationErrors.length) {
+    return [
+      "site/data/source_health_public.json is invalid; generated source-health evidence cannot be checked",
+      ...validationErrors,
+    ];
+  }
+  if (actual === publicSourceHealthProjectionText(expectedProjection)) return [];
+  const sameEvaluationTime = parsed.generated_at === expectedProjection.generated_at;
+  if (!sameEvaluationTime && evidenceHash(parsed) === evidenceHash(expectedProjection)) return [];
+
   const generatedAt = parsed.generated_at || "missing generated_at";
   const expectedAt = options.observations?.generated_at || "current source-health receipt";
   return [
-    `site/data/source_health_public.json is stale: generated source-health evidence (${generatedAt}) does not match ${expectedAt}; expected evidence hash ${evidenceHash(expected)}, found ${evidenceHash(actual)}`,
+    `site/data/source_health_public.json is stale: stable generated source-health evidence (${generatedAt}) does not match ${expectedAt}; expected evidence hash ${evidenceHash(expectedProjection)}, found ${evidenceHash(parsed)}`,
   ];
 }
 
