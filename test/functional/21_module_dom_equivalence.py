@@ -48,6 +48,73 @@ EXPORTED_NAME = re.compile(
 EXPORTED_LIST = re.compile(
     r'\bexport\s*\{[^}]+\}\s*(?:from\s+["\'][^"\']+["\'])?\s*;?'
 )
+MODULE_EXPORT_SYNTAX = re.compile(
+    r"\bexport(?=\s+(?:default\b|async\s+(?:function|class)\b|(?:function|class|const|let|var)\b)|\s*[\{*])"
+)
+
+
+def _mask_js_comments_and_strings(source: str) -> str:
+    """Mask non-code text so export checks do not match prose or string data."""
+    masked = list(source)
+    length = len(source)
+    index = 0
+    while index < length:
+        character = source[index]
+        next_character = source[index + 1] if index + 1 < length else ""
+        if character == "/" and next_character == "/":
+            index += 2
+            while index < length and source[index] not in "\r\n":
+                masked[index] = " "
+                index += 1
+            continue
+        if character == "/" and next_character == "*":
+            masked[index] = masked[index + 1] = " "
+            index += 2
+            while index < length:
+                if source[index] == "*" and index + 1 < length and source[index + 1] == "/":
+                    masked[index] = masked[index + 1] = " "
+                    index += 2
+                    break
+                if source[index] not in "\r\n":
+                    masked[index] = " "
+                index += 1
+            continue
+        if character in "'\"`":
+            quote = character
+            masked[index] = " "
+            index += 1
+            while index < length:
+                if source[index] == "\\":
+                    masked[index] = " "
+                    if index + 1 < length:
+                        if source[index + 1] not in "\r\n":
+                            masked[index + 1] = " "
+                        index += 2
+                    else:
+                        index += 1
+                    continue
+                if source[index] == quote:
+                    masked[index] = " "
+                    index += 1
+                    break
+                if source[index] not in "\r\n":
+                    masked[index] = " "
+                index += 1
+            continue
+        index += 1
+    return "".join(masked)
+
+
+def contains_module_export_syntax(source: str) -> bool:
+    """Return whether source still contains an ESM export declaration."""
+    return MODULE_EXPORT_SYNTAX.search(_mask_js_comments_and_strings(source)) is not None
+
+
+def assert_no_module_exports(source: str, helper_name: str) -> None:
+    """Keep the classic-script gate strict while ignoring comments and strings."""
+    assert not contains_module_export_syntax(source), (
+        f"inline reconstruction cannot flatten this export in {helper_name}"
+    )
 
 
 def strip_module_exports(source: str) -> str:
@@ -75,11 +142,23 @@ def flatten_helper(
         assert helper_path.is_file(), f"nested helper import missing: {helper_name}"
         dependency = flatten_helper(helper_path, (*stack, path), flattened)
         dependency = strip_module_exports(dependency)
-        assert not re.search(r"\bexport\s", dependency), (
-            f"inline reconstruction cannot flatten this export in {helper_name}"
-        )
+        assert_no_module_exports(dependency, helper_name)
         nested_sources.append(dependency)
     return "\n".join([*nested_sources, STATIC_LOCAL_IMPORT.sub("", source)])
+
+
+def assert_calendar_occurrence_flattens() -> None:
+    """Exercise the named declaration export path used by the calendar helper."""
+    helper_path = SITE / "calendar_occurrence.mjs"
+    helper_source = strip_module_exports(flatten_helper(helper_path))
+    assert "CalendarOccurrence = createCalendarOccurrence" in helper_source
+    assert_no_module_exports(helper_source, helper_path.name)
+    # Keep the assertion load-bearing: actual export forms still fail, while
+    # the explanatory comment that triggered the original false positive does not.
+    assert contains_module_export_syntax("export { value };\n")
+    assert contains_module_export_syntax("export default value;\n")
+    assert not contains_module_export_syntax("// export function value() {}\n")
+    assert not contains_module_export_syntax('const label = "export function";\n')
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -119,9 +198,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
                 exports.append((aliases[0], aliases[-1]))
         assert exports, f"namespace helper has no named exports: {helper_name}"
         helper_source = strip_module_exports(helper_source)
-        assert not re.search(r"\bexport\s", helper_source), (
-            f"inline reconstruction cannot flatten this export in {helper_name}"
-        )
+        assert_no_module_exports(helper_source, helper_name)
         namespace_members = ",".join(
             f"{public_name}:{binding}" for binding, public_name in exports
         )
@@ -142,16 +219,14 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
             # The comparison page is intentionally classic; strip every ESM
             # export form from flattened static helpers before evaluation.
             helper_source = strip_module_exports(helper_source)
-            assert not re.search(r"^\s*export\s", helper_source, re.MULTILINE), (
-                f"inline reconstruction cannot flatten this export in {helper_name}"
-            )
+            assert_no_module_exports(helper_source, helper_name)
             helpers.append(helper_source)
             seen_helpers.add(helper_name)
         source = STATIC_PARENT_IMPORT.sub("", source)
         source = strip_module_exports(source)
         chunks.append(source.split(FOOTER)[0].replace('import("../', 'import("./'))
     inline = "\n".join([*helpers, *chunks])
-    assert not re.search(r"^\s*export\b", inline, re.MULTILINE), (
+    assert not contains_module_export_syntax(inline), (
         "inline reconstruction left ESM export syntax in its classic script"
     )
     index_path = target / "index.html"
@@ -235,6 +310,7 @@ SURFACES = [
 
 
 def main() -> None:
+    assert_calendar_occurrence_flattens()
     with tempfile.TemporaryDirectory(prefix="cityscroll-module-equivalence-") as temp:
         baseline = pathlib.Path(temp) / "site"
         reconstruct_inline_site(baseline)
