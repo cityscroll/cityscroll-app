@@ -1,0 +1,52 @@
+{
+  "schema": "cityscroll.checkbook_payment_population_conversion_receipt.v1",
+  "source_csv": {
+    "path": "warehouse/raw/checkbook-payment-population/payments.csv",
+    "row_count": 1783465
+  },
+  "parquet": {
+    "parquet_path": "warehouse/parquet/checkbook-payment-population/payments.parquet",
+    "bytes": 150670809,
+    "row_count": 1783465,
+    "columns": [
+      "transaction_id",
+      "source_system",
+      "fiscal_year",
+      "issue_date",
+      "agency",
+      "payee_name",
+      "contract_id",
+      "spending_category",
+      "check_amount",
+      "document_id",
+      "expense_category",
+      "department",
+      "budget_code",
+      "capital_project",
+      "industry",
+      "mwbe_category",
+      "sub_vendor",
+      "associated_prime_vendor",
+      "sub_contract_reference_id",
+      "mocs_registered",
+      "woman_owned_business",
+      "emerging_business",
+      "is_reversal",
+      "source_fields_json"
+    ],
+    "threads": 1,
+    "column_map_applied": false,
+    "column_map_size": 0,
+    "net_check_amount": 52327564799.68
+  },
+  "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
+  "reconciliation": {
+    "expected_source_row_count": 1783465,
+    "expected_source_net_check_amount": 52327564799.68,
+    "count_matches": true,
+    "amount_matches": true,
+    "amount_from_parquet": 52327564799.68,
+    "reconciled": true
+  },
+  "query_proof": "SELECT agency, COUNT(*) AS transaction_count, ROUND(SUM(check_amount), 2) AS net_check_amount FROM checkbook_payment_population GROUP BY agency ORDER BY net_check_amount DESC"
+}
