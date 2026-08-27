@@ -302,5 +302,5 @@ export function buildSearchDocument(shell) {
   html = replaceElementContent(html, "browseview", renderSearchDocument());
   return html
     .replace(' data-i18n-title="index_title"', "")
-    .replace('<script type="module" src="app/main.mjs"></script>', '<script type="module" src="search_document.mjs"></script>');
+    .replace('<script type="module" src="app/main.mjs"></script>', '<script type="module" src="search_entry.mjs"></script>');
 }
