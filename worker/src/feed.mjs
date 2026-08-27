@@ -70,7 +70,9 @@ export async function handleFeed(request, env, ctx) {
 
   const title = `CityScroll — ${describeFilter(lens, sub.filter)}`;
   const items = feedItems(q.kind, rows);
-  const occurrences = q.kind === "land-hearings"
+  const occurrences = q.kind === "project-calendar"
+    ? rows
+    : q.kind === "land-hearings"
     ? rows.map((row) => zoningHearingCalendarOccurrence(row, {
       scope_ref: sub.filter.councilDistrict
         ? `council-district:${sub.filter.councilDistrict}`

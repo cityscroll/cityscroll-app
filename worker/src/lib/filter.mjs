@@ -47,7 +47,7 @@ export const LENSES = {
   rules:    ["keywords", "agency", "process", "geographies"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
   district: ["councilDistrict"],
-  entity:   ["name", "kind", "tab"],
+  entity:   ["name", "kind", "tab", "entity_refs_all"],
   // World-state agency mandates (statutory duties / approaching deadlines). Not a City
   // Record document match — compileSub loads agency_obligations_lookup.json. Optional
   // deliverable_type + windowDays narrow the free watch; agency_id is the join key.

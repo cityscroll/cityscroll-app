@@ -11,6 +11,7 @@ import {
   projectConnectionScopeHash,
 } from "../site/project_connections.mjs";
 import * as CrolScope from "../site/scope_v0.mjs";
+import { projectCalendarOccurrences } from "../site/project_calendar.mjs";
 import { vendorAgencyIntersectionHref } from "../site/vendor_footprint.mjs";
 
 const PROJECT_ID = "2022M0258";
@@ -312,4 +313,41 @@ test("project parcels carry a reader-friendly BBL label", () => {
     "Manhattan — Block 1767, Lot 1 (BBL 1017670001)",
     "Manhattan — Block 1767, Lot 2 (BBL 1017670002)",
   ]);
+});
+
+test("constellation edges provide multiple future project-calendar processes", () => {
+  const result = evidence({
+    graphLinks: [{
+      type: "decides_land_project",
+      from: "notice:future-hearing",
+      to: PROJECT_REF,
+      confidence: "strong",
+      method: "exact_ulurp_token_v1",
+      label: "City Planning Commission hearing",
+      agency_name: "City Planning Commission",
+      when: "2026-09-15T18:00:00-04:00",
+    }],
+    outcome: {
+      project_id: PROJECT_ID,
+      generated_at: "2026-08-27T17:00:00.000Z",
+      dispositions: [{
+        id: "future-vote",
+        representing: "Community Board",
+        vote_date: "2026-09-22",
+        community_board: "Pending",
+      }],
+      documents: [],
+      city_record_notices: [],
+      spine: { gaps: [] },
+    },
+  });
+  const occurrences = projectCalendarOccurrences({
+    project_ref: result.project_ref,
+    connections: result,
+  }, { as_of: "2026-08-27" });
+  assert.deepEqual(occurrences.map((item) => item.provenance.connected_relation), [
+    "decides_land_project",
+    "project_disposition",
+  ]);
+  assert.deepEqual(occurrences.map((item) => item.source.system), ["city_record", "zap-api-outcomes"]);
 });

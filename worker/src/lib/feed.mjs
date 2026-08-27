@@ -43,6 +43,19 @@ export function unsupportedModernFeedFilterFields(lens, filter) {
 // Normalize compileSub result rows → neutral feed items.
 export function feedItems(kind, rows) {
   return (rows || []).map((r) => {
+    if (kind === "project-calendar" && r?.uid) {
+      return {
+        id: String(r.uid),
+        url: r.canonical_url || "https://cityscroll.org/",
+        title: r.title || "Project calendar item",
+        date: r.starts_at || r.date || null,
+        summary: [r.kind, r.provenance?.connected_relation, r.source?.system]
+          .filter(Boolean).join(" · "),
+        eventDate: r.starts_at || r.date || null,
+        phase: r.kind || "Project milestone",
+        nextStep: null,
+      };
+    }
     if (kind === "meetings" && r.meeting_id) {
       return {
         id: String(r.meeting_id),

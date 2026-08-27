@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { compileSub, examOpenWindowBand } from "../src/lib/compile.mjs";
+import { compileSub, examOpenWindowBand, rowsForCompiledQuery } from "../src/lib/compile.mjs";
 
 test("money + minAmount → City Record award query (request_id diff)", () => {
   const q = compileSub({ lens: "money", filter: { minAmount: 1000000 } }, "2026-06-30");
@@ -182,6 +182,52 @@ test("entity/vendor → full-text stem query + exact-stem postFilter", () => {
   assert.ok(q.postFilter({ vendor_name: "Sinergia Incorporated" }), "variant matches stem");
   assert.ok(q.postFilter({ vendor_name: "SINERGIA, INC." }), "punctuation variant matches");
   assert.ok(!q.postFilter({ vendor_name: "Sinergia Partners LLC" }), "different stem rejected");
+});
+
+test("entity/project → exact project calendar read model", () => {
+  const q = compileSub({
+    lens: "entity",
+    filter: { entity_refs_all: ["project:2026M0001"] },
+  }, "2026-08-27");
+  assert.equal(q.kind, "project-calendar");
+  assert.equal(q.idField, "uid");
+  assert.equal(q.url, null);
+  assert.deepEqual(q.routeReadModel, {
+    kind: "project-calendar",
+    project_id: "2026M0001",
+    todayISO: "2026-08-27",
+  });
+  assert.equal(compileSub({
+    lens: "entity",
+    filter: { entity_refs_all: ["project:2026M0001"], name: "ambiguous" },
+  }, "2026-08-27"), null);
+});
+
+test("project calendar replay loads the current outcome and projects its milestones", async () => {
+  const q = compileSub({
+    lens: "entity",
+    filter: { entity_refs_all: ["project:2022M0258"] },
+  }, "2026-08-27");
+  const rows = await rowsForCompiledQuery(q, {
+    ALERT_STATE: {
+      async get() {
+        return JSON.stringify({
+          project_id: "2022M0258",
+          project_name: "Canal Street rezoning",
+          portal_url: "https://zap.planning.nyc.gov/projects/2022M0258",
+          milestones: [{
+            id: "cpc-review",
+            title: "CPC review",
+            time: { value: "2026-09-18", basis: "review_meeting" },
+          }],
+        });
+      },
+    },
+  });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].title, "CPC review");
+  assert.equal(rows[0].source.system, "zap-api-outcomes");
+  assert.equal(rows[0].provenance.connected_relation, "project_process");
 });
 
 test("money + procurement_id compiles the shared snapshot, not City Record SODA", () => {
