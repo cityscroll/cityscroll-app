@@ -30,6 +30,10 @@ import {
   landParticipationStepsMissingKey,
   normalizeLandUseActionType,
 } from "../land_use_action_type.mjs";
+import {
+  buildMeetingGroupingReportTarget,
+  renderReportIssueAffordance,
+} from "../report_issue.mjs";
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
@@ -1440,6 +1444,9 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     }).filter(Boolean).join(" · ");
     if(chips) siblingsHtml=`<div class="meetings-siblings">${t("meetings_siblings_label")}: ${chips}</div>`;
   }
+  const groupingReport=(entry.kind==="event"||entry.kind==="matter")
+    ? renderReportIssueAffordance(buildMeetingGroupingReportTarget(entry))
+    : "";
   const title=noticeDisplayTitle({title:entry.title||record.decides||record.title,request_id:record.request_id},t("now_event_meeting"));
   const interaction=meetingsCardInteractionProjection({
     meeting_id:record.meeting_id,
@@ -1493,6 +1500,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
       ${processLine}
       <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
       ${siblingsHtml}
+      ${groupingReport?`<div class="ui-object-card-report">${groupingReport}</div>`:""}
       ${factsHTML?`<div class="hfacts">${factsHTML}</div>`:""}
       ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
       ${digEvidenceHTML(ev)}

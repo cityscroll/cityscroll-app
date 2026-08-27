@@ -52,6 +52,7 @@ import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { zapActionDisplayLabels } from "../zap_action_labels.mjs";
 import {
   buildProjectParcelRelationshipReportTarget,
+  buildLandRegulatoryEffectReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
 
@@ -831,7 +832,7 @@ async function landSelect(i, el){
     : "")+`<h2 class="rolename" lang="en" dir="ltr">${renderObjectCardTitle(interaction,{escape:escUiHtml})}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
-      ${landFamilyChipsHTML(r,{t,escape:escUiHtml})}${landRegulatoryEffectChipHTML(r,{t,escape:escUiHtml})}${landProcedureLabelKey(r)?`<span class="tag land-procedure" data-land-procedure="${escUiHtml(resolveLandProcedure(r)||"")}">${escUiHtml(t(landProcedureLabelKey(r)))}</span>`:""}
+      ${landFamilyChipsHTML(r,{t,escape:escUiHtml})}${landRegulatoryEffectChipHTML(r,{t,escape:escUiHtml})} ${renderReportIssueAffordance(buildLandRegulatoryEffectReportTarget(r))}${landProcedureLabelKey(r)?`<span class="tag land-procedure" data-land-procedure="${escUiHtml(resolveLandProcedure(r)||"")}">${escUiHtml(t(landProcedureLabelKey(r)))}</span>`:""}
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
     </div>
     <div class="agencybar">
