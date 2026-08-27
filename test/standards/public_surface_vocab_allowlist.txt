@@ -7,3 +7,6 @@
 # file for intentional exceptions only.
 # API docs page names the Socrata SODA protocol on upstream dataset links.
 api_p_upstream_html:SODA
+# Calendar handoff copy uses the product's reader-facing scope term to identify
+# the exact filtered event set being subscribed to.
+calendar_this_scope:architecture jargon: scope
