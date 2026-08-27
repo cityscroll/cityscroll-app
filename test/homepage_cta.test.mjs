@@ -43,16 +43,16 @@ test("language control is a top-right labelled select with all shipping locales"
   assert.match(index, /inset-inline-end/);
 });
 
-test("homepage CTA wires an explicit no-topic intent into /subscribe", () => {
+test("homepage CTA sends an email into Following onboarding before any watch exists", () => {
   assert.match(index, /id="homeCta"/);
   assert.match(index, /data-i18n="home_cta_prompt"/);
   assert.match(index, /id="homeCtaEmail"/);
   assert.match(index, /id="homeCtaForm"/);
   assert.match(index, /href="\/following\/"/);
   assert.match(index, /data-i18n="home_cta_topics"/);
-  assert.match(index, /homeCtaSubscribeStatic[\s\S]*workerFetch\("\/subscribe"/);
-  assert.match(index, /no_topic:\s*true/);
-  assert.match(index, /source:\s*"top-of-site"/);
+  const entry = readFileSync(join(ROOT, "site/home_entry.mjs"), "utf8");
+  assert.match(entry, /location\.assign\("\/following\/\?onboarding=1"/);
+  assert.doesNotMatch(entry, /workerFetch\(["']\/subscribe["']/);
   assert.match(index, /id="homeCtaManage"/);
   assert.doesNotMatch(index, /We'll email a link to confirm\./);
   assert.doesNotMatch(index, /data-i18n="subscribe_confirm_note"/);

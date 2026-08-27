@@ -1475,7 +1475,8 @@ select {
 .near-map-section,
 .near-results,
 .near-bags,
-.following-packs {
+.following-packs,
+.following-suggestions {
   padding-block: var(--space-7);
 }
 
@@ -1518,6 +1519,7 @@ select {
 .following-scope,
 .following-preview,
 .following-subscribe,
+.following-suggestions,
 .following-pack,
 .following-privacy,
 .following-personal {
@@ -1607,6 +1609,8 @@ select {
 .following-explainer p,
 .following-pack p,
 .following-pack li,
+.following-suggestions p,
+.following-suggestions li,
 .following-scope p,
 .following-preview p,
 .following-subscribe p,
@@ -1629,10 +1633,76 @@ select {
 .following-scope,
 .following-preview,
 .following-subscribe,
+.following-suggestions,
 .following-pack,
 .following-privacy,
 .following-personal {
   padding: var(--space-5);
+}
+
+.following-suggestions {
+  margin-block: var(--space-5);
+}
+
+.following-suggestions > h2 {
+  margin-block-end: var(--space-2);
+}
+
+.following-suggestion-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-5) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.following-suggestion {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas-subtle);
+}
+
+.following-suggestion h3 {
+  margin: 0 0 var(--space-2);
+  font-size: 1.05rem;
+}
+
+.following-suggestion p {
+  margin: 0;
+}
+
+.following-suggestion-link {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-action);
+  border-radius: var(--radius-sm);
+  color: var(--color-action);
+  font: 600 .875rem/1.3 var(--font-interface);
+  text-decoration: none;
+}
+
+.following-suggestion-link:hover {
+  border-color: var(--color-action-hover);
+  color: var(--color-action-hover);
+}
+
+.following-suggestion-note,
+.following-pack-lead {
+  max-width: 68ch;
+}
+
+@media (max-width: 680px) {
+  .following-suggestion-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .near-area-panel h3,

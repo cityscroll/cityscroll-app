@@ -9,6 +9,8 @@ import {
   calendarSubscriptionDetailsForScope,
   renderCalendarSubscriptionHandoff,
 } from "../calendar_subscription.mjs";
+import { calendarSubscriptionHrefForScope } from "../calendar_subscription.mjs";
+import { rankWatchFamilySuggestions } from "../watch_family_capabilities.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -177,6 +179,7 @@ async function nlTranslate(){
   if(output) output.innerHTML=nlWorkingHTML();
   try{
     const p=await nlResolve(text, "money");
+    const recovery = hasInterpretedWatchSignal(p) ? "" : fullSpanSuggestionRecoveryHTML(text);
     // Entity/forecast intents leave the list surface for the agency (or vendor) profile.
     if(p.route==="agency" && p.name){
       location.hash=agencyHref(p.name, p.tab||null);
@@ -210,7 +213,7 @@ async function nlTranslate(){
       state:searchSucceeded?"ready":"error",
       escape:nlqEscape,
     });
-    if(output) output.innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
+    if(output) output.innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink)+recovery;
     bindNLQResolvedActions(text, deepLink);
     if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
   }catch(_error){
@@ -220,7 +223,7 @@ async function nlTranslate(){
       state:"error",
       error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
       escape:nlqEscape,
-    });
+    })+fullSpanSuggestionRecoveryHTML(text);
   }finally{
     if(btn) btn.disabled=false;
   }
@@ -326,6 +329,38 @@ function nlTransHTML(chips, forSel, weak){
   const status = `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join(" ")}</div>`;
   const edit = `<button type="button" class="mini nledit" data-nlfor="${forSel}">${t("nl_edit_btn")}</button>`;
   return weak ? `<div class="nlunderstood-weak">${status}${edit}</div>` : `${status}${edit}`;
+}
+
+function hasInterpretedWatchSignal(filter){
+  if(!filter || typeof filter !== "object") return false;
+  return Boolean(
+    (Array.isArray(filter.keywords) && filter.keywords.length)
+    || filter.agency || filter.minAmount || filter.maxAmount || filter.category
+    || filter.months || filter.noticeType || filter.closingWeek || filter.route
+    || filter.name || filter.watchType || filter.place,
+  );
+}
+
+function familySuggestionHref(capability){
+  const params = new URLSearchParams({
+    lens: capability.lens,
+    filter: JSON.stringify(capability.filter),
+    freq: "weekly",
+  });
+  return `/following/?${params}`;
+}
+
+function fullSpanSuggestionRecoveryHTML(query = ""){
+  const suggestions = rankWatchFamilySuggestions(query);
+  return `<section class="nl-family-recovery" data-following-suggestions data-suggestion-kind="watch-family" aria-labelledby="nl-family-recovery-heading">
+    <h3 id="nl-family-recovery-heading">${nlqEscape(t("nl_recovery_heading"))}</h3>
+    <p>${nlqEscape(t("nl_recovery_lead"))}</p>
+    <ul>${suggestions.map((capability, index) => `<li data-following-suggestion data-suggestion-kind="watch-family" data-watch-family-id="${nlqEscape(capability.id)}" data-suggestion-rank="${index + 1}">
+      <span><strong>${nlqEscape(capability.label)}</strong><span>${nlqEscape(capability.description)}</span></span>
+      <a href="${nlqEscape(familySuggestionHref(capability))}">${nlqEscape(t("following_suggestion_preview"))}</a>
+    </li>`).join("")}</ul>
+    <p class="muted">${nlqEscape(t("following_suggestion_nothing_saved"))}</p>
+  </section>`;
 }
 
 // "look up someone named X" → the model sets lookupType:"person" but often omits the name
@@ -985,7 +1020,8 @@ async function nlTranslateLens(lens, opts){
   const f=await nlResolve(text, lens);
   const quotesHtml=askCitedQuotesHTML(f.cited_quotes);
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
-  $("#nltrans-"+lens).innerHTML=quotesHtml+nlTransHTML(chips, inpSel, chips.length===0);
+  const recovery = chips.length ? "" : fullSpanSuggestionRecoveryHTML(text);
+  $("#nltrans-"+lens).innerHTML=quotesHtml+nlTransHTML(chips, inpSel, chips.length===0)+recovery;
   if(btn) btn.disabled=false;
   const context=globalThis.CrolPlaceContext;
   const inputFilter={...f};
@@ -1006,7 +1042,7 @@ async function nlTranslateLens(lens, opts){
   const deepLink=buildSearchDeepLink(lens, linkFilter);
   const carriedDeepLink=lens==="meetings"?deepLink:(contextual?.hash||deepLink);
   await NL[lens].apply(linkFilter);
-  $("#nltrans-"+lens).innerHTML=quotesHtml+(chips.length?"":nlTransHTML(chips, inpSel, chips.length===0));
+  $("#nltrans-"+lens).innerHTML=quotesHtml+(chips.length?"":fullSpanSuggestionRecoveryHTML(text));
   renderSearchComponents(lens, {hash:carriedDeepLink, label:text});
 }
 
