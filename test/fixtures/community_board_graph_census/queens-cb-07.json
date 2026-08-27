@@ -1,0 +1,40 @@
+{
+  "schema": "cityscroll.community_board_graph_census_fixture.v1",
+  "fixture_id": "queens-cb-07-official-calendar-hearing-v1",
+  "board_id": "queens-cb-07",
+  "board_name": "Queens Community Board 7",
+  "source_structure": {
+    "upcoming_meetings": {
+      "adapter": "nyc_official_calendar_v1",
+      "format": "NYC HTML meeting/agenda page",
+      "url": "https://www.nyc.gov/site/queenscb7/meetings/meetings.page",
+      "record_count": 1
+    },
+    "minutes": {
+      "adapter": "html_pdf_v1",
+      "publisher_kind": "nyc_official",
+      "url": "https://www.nyc.gov/site/queenscb7/meetings/minutes.page",
+      "record_count": 87
+    }
+  },
+  "meeting_samples": [
+    {
+      "meeting_id": "meeting:community_board:nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
+      "source_record_id": "nyc-calendar:queens-cb-07:2026-09-14:regular-public-hearing-meeting",
+      "date": "2026-09-14",
+      "title": "Regular & Public Hearing meeting",
+      "committee_field": null,
+      "title_committee_signal": false,
+      "explicit_public_hearing_signal": true,
+      "typed_host_body": false
+    }
+  ],
+  "expected_census_measurements": {
+    "record_count": 1,
+    "records_explicitly_identifying_committee": 0,
+    "full_board_records": 0,
+    "explicit_public_hearing_records": 1,
+    "joint_committee_records": 0,
+    "records_without_typed_institution_host": 1
+  }
+}
