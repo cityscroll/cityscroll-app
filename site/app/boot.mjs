@@ -481,8 +481,6 @@ async function syncAlertsEntryHrefs(){
   const href = await currentAlertsEntryHref();
   const topics = document.getElementById("homeCtaTopics");
   if(topics) topics.setAttribute("href", href);
-  const compact = document.querySelector("#homeCtaCompact a");
-  if(compact) compact.setAttribute("href", href);
 }
 
 // Quiz and advanced controls are two views of one draft.
@@ -815,20 +813,6 @@ async function sessionBoot(){
   else wire();
 })();
 
-// Static homepage subscription.
-async function homeCtaSubscribeStatic(event){
-  event?.preventDefault?.();
-  const msg=$("#homeCtaMsg"),dest=$("#homeCtaEmail"),btn=$("#homeCtaSubmit");
-  if(!msg||!dest||!btn)return;
-  const email=dest.value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    msg.textContent=t("enter_valid_email");dest.setAttribute("aria-invalid","true");dest.focus();return;
-  }
-  dest.removeAttribute("aria-invalid");
-  msg.textContent=t("home_onboarding_next");
-  location.assign("/following/?onboarding=1");
-}
-
 // Language switcher init — compact <select> top-right; i18n.js already loaded in <head>.
 (function(){
   function initLangSwitcher(){
@@ -851,13 +835,8 @@ async function homeCtaSubscribeStatic(event){
       if(changed) rerenderForLang();
     });
   }
-  function initHomeCta(){
-    const form = document.getElementById("homeCtaForm");
-    if(form) form.addEventListener("submit", homeCtaSubscribeStatic);
-  }
   function boot(){
     initLangSwitcher();
-    initHomeCta();
   }
   if(document.readyState === "loading"){
     document.addEventListener("DOMContentLoaded", boot);

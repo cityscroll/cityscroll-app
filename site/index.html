@@ -69,30 +69,18 @@
   .cr-seal{width:44px;height:44px;color:var(--ink);display:block;margin:0 auto 3px}
   .cr-title{font-family:var(--font-nameplate);font-weight:700;font-size:clamp(2.5rem,8vw,4.8rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin:.04em 0 .1em}
   .cr-tagline{font-family:var(--font-body);font-size:15px;line-height:1.4;color:var(--ink-soft);margin:0 0 8px}
-  /* Homepage email CTA — primary conversion, quiet card under the tagline */
+  /* Homepage Following entry — quiet card under the tagline */
   .home-cta{max-width:520px;margin:2px auto 12px;padding:14px 16px 12px;background:var(--card);border:1px solid var(--rule);border-radius:10px;text-align:center}
   .home-cta-prompt{font:700 17px/1.3 var(--font-body);margin:0 0 10px;color:var(--ink)}
-  .home-cta-compact{display:none;margin:0;font:700 17px/1.3 var(--font-body)}
-  .home-cta-compact a{color:var(--ink);text-decoration-color:color-mix(in srgb,var(--ink),transparent 65%);text-underline-offset:2px}
-  .home-cta-form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch}
-  .home-cta-form input[type=email]{flex:1 1 220px;max-width:280px;min-height:44px}
-  .home-cta-form button{min-height:44px;flex:0 0 auto}
-  .home-cta-alt{margin:10px 0 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-  .home-cta-alt a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
-  .home-cta-msg{margin-top:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .home-cta-action{margin:0}
+  .home-cta-action a{display:inline-flex;min-height:44px;align-items:center;padding:8px 16px;border:1px solid var(--oxblood);border-radius:7px;background:var(--oxblood);color:#fff;font:700 15px/1.3 var(--font-body);text-decoration:none}
   .home-cta-session{display:none;margin:0}
   .home-cta-session a{display:inline-flex;min-height:44px;align-items:center;padding:8px 14px;border:1px solid var(--oxblood);border-radius:7px;color:var(--oxblood);font:700 15px/1.3 var(--font-body);text-decoration:none}
   .home-cta.compact{max-width:none;margin:2px 0 12px;padding:10px 12px 8px;text-align:left}
   .home-cta.compact .home-cta-prompt,
-  .home-cta.compact .home-cta-form,
-  .home-cta.compact .home-cta-alt,
-  .home-cta.compact .home-cta-msg{display:none}
-  .home-cta.compact .home-cta-compact{display:block}
+  .home-cta.compact .home-cta-action{display:block}
   .home-cta[data-session-open="true"] .home-cta-prompt,
-  .home-cta[data-session-open="true"] .home-cta-form,
-  .home-cta[data-session-open="true"] .home-cta-alt,
-  .home-cta[data-session-open="true"] .home-cta-compact,
-  .home-cta[data-session-open="true"] .home-cta-msg{display:none}
+  .home-cta[data-session-open="true"] .home-cta-action{display:none}
   .home-cta[data-session-open="true"] .home-cta-session{display:block}
   .home-topic-entry{max-width:680px;margin:4px auto 14px;padding:18px 20px 16px;background:var(--card);border:2px solid var(--ink);border-radius:12px;text-align:left;box-shadow:var(--shadow)}
   .home-topic-kicker{display:flex;align-items:center;gap:7px;margin:0 0 5px;color:var(--oxblood);font:800 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase}
@@ -1751,15 +1739,8 @@
     </section>
     <div class="home-cta" id="homeCta">
       <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">Want email updates on this?</p>
-      <form id="homeCtaForm" class="home-cta-form" novalidate>
-        <label for="homeCtaEmail" class="sr-only" data-i18n="email_label">Email address</label>
-        <input type="email" id="homeCtaEmail" name="email" data-clarity-mask="true" autocomplete="email" required placeholder="example@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="homeCtaMsg">
-        <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Sign up</button>
-      </form>
-      <p class="home-cta-alt"><a href="/following/" id="homeCtaTopics" data-i18n="home_cta_topics">or pick topics</a></p>
-      <p class="home-cta-compact" id="homeCtaCompact"><a href="/following/"><span data-i18n="home_cta_prompt">Want email updates on this?</span> <span aria-hidden="true">→</span></a></p>
+      <p class="home-cta-action"><a href="/following/" id="homeCtaTopics" data-i18n="home_cta_topics">Choose what to follow</a></p>
       <p class="home-cta-session"><a id="homeCtaManage" href="/following/#your-following" data-i18n="session_manage_watches" hidden>Manage watches</a></p>
-      <div id="homeCtaMsg" class="home-cta-msg" role="status"></div>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
     <nav class="now-entry-row" aria-label="Primary">

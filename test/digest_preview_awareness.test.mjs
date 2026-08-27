@@ -80,5 +80,5 @@ test("Following list preview is a slim subset — dig item awareness stays digIt
   // not the full digItemHTML / subDigestHtml email item renderer.
   assert.match(following, /function followingPreviewItemHtml/);
   assert.doesNotMatch(following, /function digItemHTML/);
-  assert.match(following, /14 quiet days|still-watching/i);
+  assert.match(following, /Daily sends when there are matches|Weekly digest sends Monday/i);
 });

@@ -649,7 +649,7 @@ const STRINGS = {
     alert_context_next_step: "Next expected step: {step}",
     alert_context_confirm: "Enter your email below — your watch starts immediately. A welcome email includes manage and unsubscribe links.",
     home_cta_submit:    "Sign up",
-    home_cta_topics:     "or pick topics",
+    home_cta_topics:     "Choose what to follow",
     empty_preview:      "Pick a topic (or open with a watch link) to preview today's digest.",
 
     // Time/schedule strings (9 a.m. form per NYC style guide T-01/T-02)

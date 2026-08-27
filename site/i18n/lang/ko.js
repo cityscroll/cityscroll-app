@@ -432,7 +432,7 @@
     subscribe_btn: "구독 →",
     home_cta_prompt: "이메일 업데이트를 원하세요?",
     home_cta_submit: "신청",
-    home_cta_topics: "또는 주제 고르기",
+    home_cta_topics: "팔로우할 내용 고르기",
     alert_context_scope: "다음 알림 이메일을 받습니다: {scope}",
     alert_context_from_notice: "이 공고에서: “{title}”",
     alert_context_next_step: "다음 예상 단계: {step}",

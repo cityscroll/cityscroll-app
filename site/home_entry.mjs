@@ -14,29 +14,6 @@ function initLanguageSwitcher() {
   });
 }
 
-function initSubscription() {
-  const form = document.getElementById("homeCtaForm");
-  const emailInput = document.getElementById("homeCtaEmail");
-  const message = document.getElementById("homeCtaMsg");
-  const button = document.getElementById("homeCtaSubmit");
-  if (!form || !emailInput || !message || !button) return;
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const email = emailInput.value.trim();
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      message.textContent = window.t?.("enter_valid_email") || "Enter a valid email address.";
-      emailInput.setAttribute("aria-invalid", "true");
-      emailInput.focus();
-      return;
-    }
-    emailInput.removeAttribute("aria-invalid");
-    // A topicless email is an onboarding signal, not a watch. Let the reader
-    // choose a family and review the editable sentence on Following first.
-    message.textContent = window.t?.("home_onboarding_next") || "";
-    window.location.assign("/following/?onboarding=1");
-  });
-}
-
 let applicationPromise;
 function ensureApplicationForHash(force = false) {
   if (!force && !location.hash) return Promise.resolve();
@@ -97,7 +74,6 @@ function initTopicPreviewBootstrap() {
 }
 
 initLanguageSwitcher();
-initSubscription();
 initTopicPreviewBootstrap();
 homeEntryReady(runtimeRumSemanticMilestones(), {
   primaryContext: document.body?.dataset.primaryContext,

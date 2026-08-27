@@ -677,7 +677,6 @@ function scopeHtml(view) {
     <h2 id="following-scope-heading">Watch criteria</h2>
     <ul class="following-scope-chips" aria-label="Watch criteria">${chips}</ul>
     ${countLine}
-    ${ruleLineHtml(view)}
   </section>`;
 }
 
@@ -721,7 +720,7 @@ function subscribeHtml(view) {
     return `<section class="following-subscribe" data-following-subscribe-panel>
     <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
       <p>Follow what you care about. Save a topic, place, agency, or keyword. We email matching public records when they appear.</p>
-      <p class="following-note" data-following-delivery-help>After 14 quiet days on a daily watch, we send a short still-watching note. Weekly emails are sent on Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.</p>
+      <p class="following-note" data-following-delivery-help>Daily sends when there are matches. Weekly digest sends Monday.</p>
     </section>`;
   }
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
@@ -731,11 +730,10 @@ function subscribeHtml(view) {
       <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
       <input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-subscribe-freq>
       <input type="hidden" name="lang" value="en">
-      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-confirm-note following-delivery-help"></label>
+      <label>Email address<input type="email" name="email" required autocomplete="email" inputmode="email" aria-describedby="following-delivery-help"></label>
       <button type="submit">Create watch</button>
-      <p id="following-confirm-note">We send one link first. Click it to start the watch.</p>
       <p id="following-delivery-help" class="following-note" data-following-delivery-help>
-        After 14 quiet days on a daily watch, we send a short still-watching note. Weekly watches email every Monday. Edits start with the next digest (about 9am Eastern). Unsubscribing is instant.
+        Daily sends when there are matches. Weekly digest sends Monday.
       </p>
       <p data-following-submit-status role="status" aria-live="polite"></p>
     </form>
@@ -842,7 +840,7 @@ function controlsHtml(view) {
     </details>
     ${cadenceCardsHtml(view)}
     <div class="following-form-actions">
-      <button type="submit" class="following-form-action-preview" aria-label="Preview matches before saving">Preview matches</button>
+      <button type="submit" class="following-form-action-preview" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
     </div>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>

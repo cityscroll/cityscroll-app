@@ -443,7 +443,7 @@
     subscribe_btn:      "S'abonner →",
     home_cta_prompt: "Des nouvelles par e-mail ?",
     home_cta_submit: "S'inscrire",
-    home_cta_topics: "ou choisir des sujets",
+    home_cta_topics: "Choisir quoi suivre",
     alert_context_scope: "Vous recevrez un e-mail pour : {scope}",
     alert_context_from_notice: "À partir de cet avis : « {title} »",
     alert_context_next_step: "Prochaine étape attendue : {step}",
