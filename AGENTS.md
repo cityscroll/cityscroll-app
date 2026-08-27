@@ -1,5 +1,12 @@
 # Project agent memory
 
+- **Generic person contract:** `ontology/person.mjs` owns the additive
+  `cityscroll.person.v1` source-qualified envelope and `person_identity_link.v1` reviewed
+  `same_person` relation. It never rewrites `official:{PersonId}` or
+  `community-board-person:{board}:{key}` identities and its capability allowlist keeps generic,
+  Community Board, agency, and vendor-contact profiles out of Council-only surfaces. No generic
+  person route or source adapter is implied; focused proof is `test/person_ontology.test.mjs`.
+
 - **Community Board people and roles:** `site/community_board_relations.mjs` is the source-qualified,
   board-local contract for `community-board-person` identities and temporal role edges. Keep these
   distinct from Council `official` identities and routes; refresh the grounded CB people artifact
