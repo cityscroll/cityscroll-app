@@ -41,7 +41,7 @@ test("board constellation uses typed summaries and holds unjoined governance edg
   const view = buildCommunityBoardConstellationView("bronx-cb-02", sources);
   assert.equal(view.kind, "community-board-constellation");
   assert.equal(view.summary.matched_categories, 2);
-  assert.deepEqual(view.categories.map((category) => category.status), ["matched", "matched", "unknown", "unknown", "unknown"]);
+  assert.deepEqual(view.categories.map((category) => category.status), ["matched", "matched", "unknown", "unknown", "unknown", "unknown"]);
   const matched = buildCommunityBoardEdgeSummary(view).filter((edge) => edge.state === "matched");
   assert.ok(matched.every((edge) => edge.source && edge.source.name && entityPivotRouteStatus(edge.href).verified));
   assert.equal(view.edge_summary.find((edge) => edge.edge_type === "hosts_meeting")?.href, null);
@@ -118,4 +118,46 @@ test("indexed board events stay source records until accepted institution edges 
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
   assert.doesNotMatch(visible, /upcoming_meetings/);
   assert.match(visible, /Upcoming meetings/);
+});
+
+test("committee-hosted meeting is rendered through the board-local committee category", () => {
+  const meetingEdge = {
+    relation: "hosts_meeting",
+    edge_type: "hosts_meeting",
+    status: "promoted",
+    promoted: true,
+    from: "community-board-committee:manhattan-cb-06:transportation",
+    to: "meeting:community_board:cb6-transport",
+    target_kind: "meeting",
+    target_id: "meeting:community_board:cb6-transport",
+    target_name: "Transportation Committee Meeting",
+    href: "/meetings/meeting%3Acommunity_board%3Acb6-transport",
+    canonical_href: "/meetings/meeting%3Acommunity_board%3Acb6-transport",
+    board_href: "/community-boards/manhattan-cb-06/",
+    provenance: { source_url: "https://cbsix.org/meetings-calendar/", observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" } },
+  };
+  const committeeEdge = {
+    relation: "has_committee",
+    edge_type: "has_committee",
+    status: "promoted",
+    promoted: true,
+    from: "community-board:manhattan-cb-06",
+    to: "community-board-committee:manhattan-cb-06:transportation",
+    target_kind: "community-board-committee",
+    target_id: "community-board-committee:manhattan-cb-06:transportation",
+    target_name: "Transportation Committee",
+    provenance: { source_url: "https://cbsix.org/meetings-calendar/", observed_on: "2026-08-25" },
+  };
+  const view = buildCommunityBoardConstellationView("manhattan-cb-06", {
+    ...sources,
+    institutionEdges: { "manhattan-cb-06": [committeeEdge, meetingEdge] },
+  });
+  const committees = view.categories.find((category) => category.id === "committees");
+  const meetings = view.categories.find((category) => category.id === "meetings");
+  assert.equal(committees.items[0].target_id, committeeEdge.target_id);
+  assert.equal(meetings.items[0].target_id, meetingEdge.target_id);
+  assert.equal(view.edge_summary.find((edge) => edge.edge_type === "has_committee").target_kind, "community-board-committee");
+  const visible = renderCommunityBoardConstellationDocument(view).replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
+  assert.match(visible, /Community Board committees/);
+  assert.match(visible, /Transportation Committee Meeting/);
 });

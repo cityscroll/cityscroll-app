@@ -7,9 +7,24 @@ export {
   buildCommunityBoardMeetingEdge,
   communityBoardMeetingEdgeAccepted,
   communityBoardMeetingEdgeFromRow,
+  communityBoardMeetingEdgesFromRow,
   communityBoardMeetingEdgeFromSourceRow,
   joinCommunityBoardSourceRecord,
   joinCommunityBoardSourceRecords,
   materializeCommunityBoardMeetingEdge,
+  promoteCommunityBoardCommitteeHostsMeetingEdge,
+  promoteCommunityBoardHasCommitteeEdge,
   promoteCommunityBoardHostsMeetingEdge,
 } from "./community_board_source_join.mjs";
+
+export {
+  COMMUNITY_BOARD_COMMITTEE_OBJECT_TYPE,
+  COMMUNITY_BOARD_COMMITTEE_REGISTRY_SCHEMA,
+  COMMUNITY_BOARD_HAS_COMMITTEE_RELATION,
+  communityBoardCommitteeId,
+  communityBoardCommitteeObject,
+  communityBoardCommitteeRegistryEdge,
+  matchCommunityBoardCommittee,
+  normalizeCommunityBoardCommitteeLabel,
+  normalizeCommunityBoardCommitteeRegistry,
+} from "./community_board_committees.mjs";

@@ -38,6 +38,18 @@ node --test test/non_council_outcomes_infrastructure.test.mjs
 The collector stores HTML/PDF/DOCX metadata and bounded extracted text, not
 document binaries. A later reader card owns any Meetings or Land presentation.
 
+## Community Board committee identity
+
+`community_board_committees.json` is the reviewed, board-local committee
+authority. A committee identity includes its board id and local committee id;
+matching uses exact publisher identifiers, exact official publisher names, or
+reviewed local aliases. Topic facets support discovery only, so same-named
+committees on different boards remain distinct institutions. The projection
+keeps the meeting's source-qualified identity unchanged and emits
+`community-board → has_committee → community-board-committee → hosts_meeting`
+only when the reviewed registry and source evidence support it. Full Board and
+unresolved/joint meetings remain hosted by the board.
+
 ## Community Board institutional-graph baseline
 
 `community_board_graph_census.json` is the Card 1 baseline census for all 59

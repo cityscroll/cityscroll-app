@@ -9,7 +9,10 @@ import {
   COMMUNITY_BOARD_CONSTELLATION_METHOD,
   COMMUNITY_BOARD_CONSTELLATION_SCHEMA,
 } from "../site/community_board_constellation.mjs";
-import { communityBoardMeetingEdgeFromSourceRow } from "../site/community_board_institution_edges.mjs";
+import {
+  buildCommunityBoardInstitutionEdges,
+  communityBoardMeetingEdgeFromSourceRow,
+} from "../site/community_board_institution_edges.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -30,12 +33,15 @@ function sourceRows() {
   const meetingIndex = readJson("site/data/community_board_meeting_index.json");
   const scorecard = readJson("site/data/community_board_minutes_scorecard.json");
   const geography = readJson("site/data/community_board_geography_lookup.json");
+  const committeeRegistry = readJson("site/data/non_council_outcome_sources/community_board_committees.json");
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
-    const boardId = String(edge?.from || "").replace(/^community-board:/, "");
+    const boardId = String(edge?.parent_board_ref || edge?.from || "").replace(/^community-board:/, "");
     if (!boardId) return;
-    const key = [edge.from, edge.to, edge.source_record_id, edge.status].join("|");
+    const key = edge.relation === "has_committee"
+      ? [edge.from, edge.to].join("|")
+      : [edge.from, edge.to, edge.source_record_id, edge.status].join("|");
     if (edgeKeys.has(key)) return;
     edgeKeys.add(key);
     institutionEdges[boardId] = [...(institutionEdges[boardId] || []), edge];
@@ -61,8 +67,11 @@ function sourceRows() {
         }, edgeOptions));
       });
       else {
-        const edge = communityBoardMeetingEdgeFromSourceRow(row, edgeOptions);
-        if (edge) retainEdge(edge);
+        const edges = buildCommunityBoardInstitutionEdges([{
+          meeting: row,
+          source_record: row,
+        }], { ...edgeOptions, committeeRegistry });
+        edges.forEach(retainEdge);
       }
     }
   }

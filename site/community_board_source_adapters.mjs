@@ -7,6 +7,8 @@
  * later join can keep inaccessible, stale, and ambiguous observations honest.
  */
 
+import { matchCommunityBoardCommittee } from "./community_board_committees.mjs";
+
 export const COMMUNITY_BOARD_SOURCE_RECORD_SCHEMA = "cityscroll.community_board_source_record.v1";
 export const COMMUNITY_BOARD_SOURCE_RECEIPT_SCHEMA = "cityscroll.community_board_source_receipt.v1";
 
@@ -279,14 +281,77 @@ function record(source, fields = {}, receipt = {}) {
   const endAt = clean(fields.end_at, 80);
   const venueName = clean(fields.venue_name || fields.location_name, 300);
   const description = plain(fields.description, 4_000);
-  const committee = fields.committee && typeof fields.committee === "object"
-    ? { name: clean(fields.committee.name, 300) || null, url: safeUrl(fields.committee.url, sourceUrl) }
-    : (clean(fields.committee, 300) ? { name: clean(fields.committee, 300), url: null } : null);
+  const rawCommittee = fields.committee && typeof fields.committee === "object" && !Array.isArray(fields.committee)
+    ? fields.committee
+    : (fields.committee_name || fields.publisher_committee_name || fields.committee_id
+      || fields.publisher_committee_identifier || fields.publisher_committee_id
+      || fields.committee_publisher_identifier || fields.committee_publisher_id
+      ? {
+        name: fields.committee_name || fields.publisher_committee_name || fields.committee,
+        publisher_identifier: fields.committee_id || fields.publisher_committee_identifier || fields.publisher_committee_id
+          || fields.committee_publisher_identifier || fields.committee_publisher_id,
+      }
+      : null);
+  const explicitCommitteeName = clean(
+    rawCommittee?.name || rawCommittee?.publisher_name || rawCommittee?.label || rawCommittee?.title || fields.convening_body_label,
+    300,
+  ) || (clean(fields.committee, 300) || null);
+  const explicitCommitteeIdentifier = clean(
+    rawCommittee?.publisher_identifier
+      || rawCommittee?.publisher_id
+      || rawCommittee?.committee_identifier
+      || rawCommittee?.committee_id
+      || fields.convening_body_publisher_identifier
+      || fields.publisher_committee_identifier
+      || fields.publisher_committee_id
+      || fields.committee_publisher_identifier
+      || fields.committee_publisher_id,
+    240,
+  ) || null;
+  const committee = explicitCommitteeName
+    ? {
+      name: explicitCommitteeName,
+      url: safeUrl(rawCommittee?.url || rawCommittee?.href, sourceUrl),
+      ...(explicitCommitteeIdentifier ? { publisher_identifier: explicitCommitteeIdentifier } : {}),
+    }
+    : null;
+  const committeeMatch = matchCommunityBoardCommittee({
+    board_id: bodyId,
+    body_id: bodyId,
+    committee: rawCommittee || (explicitCommitteeName ? { name: explicitCommitteeName } : null),
+    convening_body_label: fields.convening_body_label,
+    convening_body_publisher_identifier: fields.convening_body_publisher_identifier,
+    // A title can resolve only through an exact reviewed board-local alias.
+    // It is never searched as a substring or against another board.
+    title: rawCommittee || fields.convening_body_label ? null : fields.title,
+  }, source.committee_registry || {});
   if (endAt) normalized.end_at = endAt;
   if (venueName) normalized.venue_name = venueName;
   if (clean(fields.mode, 40)) normalized.mode = clean(fields.mode, 40);
   if (description) normalized.description = description;
   if (committee?.name) normalized.committee = committee;
+  if (committee?.name || committeeMatch.status === "matched") {
+    normalized.convening_body_label = committeeMatch.status === "matched"
+      ? committeeMatch.publisher_name
+      : committee.name;
+  }
+  if (explicitCommitteeIdentifier) normalized.convening_body_publisher_identifier = explicitCommitteeIdentifier;
+  if (committeeMatch.status === "matched") {
+    normalized.convening_body_id = committeeMatch.id;
+    normalized.convening_body_match = {
+      status: committeeMatch.status,
+      method: committeeMatch.match_method,
+      board_id: committeeMatch.board_id,
+      committee_id: committeeMatch.committee_id,
+      source_url: committeeMatch.source_url,
+    };
+  } else if (committee?.name || explicitCommitteeIdentifier) {
+    normalized.convening_body_match = {
+      status: committeeMatch.status,
+      reason: committeeMatch.reason,
+      board_id: committeeMatch.board_id,
+    };
+  }
   if (fields.participation && typeof fields.participation === "object") normalized.participation = fields.participation;
   if (fields.organizer && typeof fields.organizer === "object") normalized.organizer = fields.organizer;
   const publisherEventId = clean(fields.publisher_event_id || fields.event_id, 240) || null;
@@ -331,6 +396,7 @@ function htmlRecords(html, source, receipt = {}) {
       title,
       format,
       record_url: url.href,
+      committee: attribute(tag, "data-committee") || attribute(tag, "data-convening-body") || null,
     }, receipt));
   }
   return found;
@@ -410,6 +476,7 @@ function jsonLdEvents(html, source, receipt = {}) {
           ? "hybrid" : (address ? "in-person" : "not-stated"),
         category: source.role || "upcoming_meetings",
         title: decode(entry.name || entry.headline),
+        committee: entry.committee || entry.conveningBody || null,
         address: decode(address),
         venue_name: decode(location.name),
         description,
@@ -434,7 +501,7 @@ function jsonLdEvents(html, source, receipt = {}) {
 }
 
 export function parseHtmlPdfSource(html, source = {}, options = {}) {
-  const descriptor = { ...source, adapter: adapterId(source) || "html_pdf_v1" };
+  const descriptor = { ...source, adapter: adapterId(source) || "html_pdf_v1", committee_registry: options.committeeRegistry || source.committee_registry };
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "html_pdf_v1", observed_at: options.observedAt });
   const records = [
     ...jsonLdEvents(html, descriptor, receipt),
@@ -570,7 +637,7 @@ function officialCalendarBlocks(html, pageYear) {
 }
 
 export function parseNycOfficialCalendarSource(html, source = {}, options = {}) {
-  const descriptor = { ...source, adapter: "nyc_official_calendar_v1" };
+  const descriptor = { ...source, adapter: "nyc_official_calendar_v1", committee_registry: options.committeeRegistry || source.committee_registry };
   const sourceUrl = explicitUrl(descriptor);
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, {
     parser: "nyc_official_calendar_v1",
@@ -746,8 +813,9 @@ function upcomingCalendarFloor(source, options = {}) {
 }
 
 export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
-  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, source, { parser: "google_calendar_v1", observed_at: options.observedAt });
-  const floor = upcomingCalendarFloor(source, { ...options, receipt });
+  const descriptor = { ...source, committee_registry: options.committeeRegistry || source.committee_registry };
+  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "google_calendar_v1", observed_at: options.observedAt });
+  const floor = upcomingCalendarFloor(descriptor, { ...options, receipt });
   const seen = new Set();
   return unfoldIcs(ics).split(/BEGIN:VEVENT/i).slice(1).flatMap((chunk) => {
     const block = chunk.split(/END:VEVENT/i)[0];
@@ -759,7 +827,7 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
     if (seen.has(instanceId)) return [];
     seen.add(instanceId);
     const bodyId = icsField(block, "X-BOARD-ID") || icsField(block, "X-BODY-ID") || source.board_id || source.body_id;
-    return [record(source, {
+    return [record(descriptor, {
       record_kind: "event",
       record_id: instanceId,
       event_id: instanceId,
@@ -771,6 +839,11 @@ export function parseGoogleCalendarSource(ics, source = {}, options = {}) {
       title: icsField(block, "SUMMARY"),
       address: icsField(block, "LOCATION"),
       description: icsField(block, "DESCRIPTION"),
+      committee: (() => {
+        const name = icsField(block, "X-COMMITTEE") || icsField(block, "X-CONVENING-BODY");
+        const publisherIdentifier = icsField(block, "X-COMMITTEE-ID") || icsField(block, "X-CONVENING-BODY-ID");
+        return name || publisherIdentifier ? { name, publisher_identifier: publisherIdentifier } : null;
+      })(),
       participation: {
         links: icsField(block, "URL") ? [{ label: "Meeting information", url: icsField(block, "URL") }] : [],
         remote_join_url: null,
@@ -1024,7 +1097,7 @@ function looksLikePdfBytes(payload, contentType) {
 }
 
 export function parsePdfCalendarSource(text, source = {}, options = {}) {
-  const descriptor = { ...source, adapter: "pdf_calendar_v1" };
+  const descriptor = { ...source, adapter: "pdf_calendar_v1", committee_registry: options.committeeRegistry || source.committee_registry };
   const sourceUrl = explicitUrl(descriptor);
   const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, {
     parser: "pdf_calendar_v1",
@@ -1063,13 +1136,13 @@ export function parsePdfCalendarSource(text, source = {}, options = {}) {
   return found;
 }
 
-async function harvestPdfCalendarRecords(payload, contentType, source, { fetchImpl, observedAt, receipt, limit, extractPdfText } = {}) {
+async function harvestPdfCalendarRecords(payload, contentType, source, { fetchImpl, observedAt, receipt, limit, extractPdfText, committeeRegistry } = {}) {
   const extract = typeof extractPdfText === "function" ? extractPdfText : extractPdfTextFromBytes;
   const records = [];
   const ingest = async (bytes, recordUrl) => {
     const text = await extract(bytes);
     if (!clean(text, 80)) return;
-    records.push(...parsePdfCalendarSource(text, { ...source, record_url: recordUrl }, { observedAt, receipt }));
+    records.push(...parsePdfCalendarSource(text, { ...source, record_url: recordUrl }, { observedAt, receipt, committeeRegistry }));
   };
   if (looksLikePdfBytes(payload, contentType)) {
     const bytes = typeof payload === "string" ? new TextEncoder().encode(payload) : payload;
@@ -1207,13 +1280,14 @@ function fieldValue(fields, map, key) {
 }
 
 export function parseAirtableSource(payload, source = {}, options = {}) {
-  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, source, { parser: "airtable_v1", observed_at: options.observedAt });
+  const descriptor = { ...source, committee_registry: options.committeeRegistry || source.committee_registry };
+  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "airtable_v1", observed_at: options.observedAt });
   const records = airtableRecordsFromSharedView(payload);
   const map = source.field_map || source.fieldMap || {};
   const role = clean(source.role || source.source_role || source.source_type, 80).toLowerCase();
   const defaultKind = role === "upcoming_meetings" || role === "calendar" ? "event" : "document";
-  const floor = upcomingCalendarFloor(source, { ...options, receipt });
-  const shareId = clean(source.airtable_share_id, 80) || airtableShareIdFromUrl(source.record_url || source.url);
+  const floor = upcomingCalendarFloor(descriptor, { ...options, receipt });
+  const shareId = clean(descriptor.airtable_share_id, 80) || airtableShareIdFromUrl(descriptor.record_url || descriptor.url);
   return records.flatMap((entry) => {
     const fields = entry?.fields && typeof entry.fields === "object" ? entry.fields : entry;
     const id = clean(entry?.id || fieldValue(fields, map, "record_id"), 240);
@@ -1231,7 +1305,7 @@ export function parseAirtableSource(payload, source = {}, options = {}) {
       || source.record_url
       || source.url
       || source.source_url;
-    return [record(source, {
+    return [record(descriptor, {
       record_kind: kind,
       record_id: id,
       board_id: bodyId,
@@ -1259,7 +1333,8 @@ export function parseAirtableSource(payload, source = {}, options = {}) {
 }
 
 export function parseVideoRecordSource(payload, source = {}, options = {}) {
-  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, source, { parser: "video_record_v1", observed_at: options.observedAt });
+  const descriptor = { ...source, committee_registry: options.committeeRegistry || source.committee_registry };
+  const receipt = normalizeObservedReceipt(options.receipt || source.observed_receipt || {}, descriptor, { parser: "video_record_v1", observed_at: options.observedAt });
   const input = jsonInput(payload);
   const records = Array.isArray(input) ? input : Array.isArray(input?.records) ? input.records : [];
   return records.flatMap((entry) => {
@@ -1267,7 +1342,7 @@ export function parseVideoRecordSource(payload, source = {}, options = {}) {
     const date = dateFromText(entry?.date || entry?.meeting_date || entry?.published_at);
     const bodyId = clean(entry?.board_id || entry?.body_id || source.board_id || source.body_id, 100) || null;
     if (!id || !date) return [];
-    return [record(source, {
+    return [record(descriptor, {
       record_kind: "video",
       record_id: id,
       video_id: id,
@@ -1299,13 +1374,13 @@ export function parseCommunityBoardSource(payload, source = {}, options = {}) {
   return [];
 }
 
-async function harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit } = {}) {
+async function harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit, committeeRegistry } = {}) {
   const parsed = jsonInput(text);
   if (parsed && (Array.isArray(parsed) || Array.isArray(parsed.records) || Array.isArray(parsed.data?.table?.rows))) {
-    return parseAirtableSource(parsed, source, { observedAt, receipt });
+    return parseAirtableSource(parsed, source, { observedAt, receipt, committeeRegistry });
   }
   if (/json/i.test(String(contentType || "")) && parsed) {
-    return parseAirtableSource(parsed, source, { observedAt, receipt });
+    return parseAirtableSource(parsed, source, { observedAt, receipt, committeeRegistry });
   }
   const records = [];
   const shareIds = [...new Set([
@@ -1347,7 +1422,7 @@ async function harvestAirtableRecords(text, contentType, source, { fetchImpl, ob
         ...source,
         record_url: embedUrl,
         airtable_share_id: shareId,
-      }, { observedAt, receipt }));
+      }, { observedAt, receipt, committeeRegistry }));
     } catch {
       continue;
     }
@@ -1355,9 +1430,9 @@ async function harvestAirtableRecords(text, contentType, source, { fetchImpl, ob
   return dedupeSourceRecords(records);
 }
 
-async function harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit } = {}) {
+async function harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit, committeeRegistry } = {}) {
   if (looksLikeIcalendar(text, contentType)) {
-    return parseGoogleCalendarSource(text, source, { observedAt, receipt });
+    return parseGoogleCalendarSource(text, source, { observedAt, receipt, committeeRegistry });
   }
   const records = [];
   for (const calendarId of googleCalendarIdsFromHtml(text)) {
@@ -1372,7 +1447,7 @@ async function harvestGoogleCalendarRecords(text, contentType, source, { fetchIm
       if (bytes.byteLength > (limit || 1_000_000)) continue;
       const icsText = new TextDecoder().decode(bytes);
       if (!looksLikeIcalendar(icsText, response?.headers?.get?.("content-type"))) continue;
-      records.push(...parseGoogleCalendarSource(icsText, { ...source, record_url: icsUrl }, { observedAt, receipt }));
+      records.push(...parseGoogleCalendarSource(icsText, { ...source, record_url: icsUrl }, { observedAt, receipt, committeeRegistry }));
     } catch {
       continue;
     }
@@ -1380,7 +1455,7 @@ async function harvestGoogleCalendarRecords(text, contentType, source, { fetchIm
   return dedupeSourceRecords(records);
 }
 
-export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null, extractPdfText = null } = {}) {
+export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globalThis.fetch, observedAt = new Date().toISOString(), maxBytes = null, extractPdfText = null, committeeRegistry = null } = {}) {
   const contract = sourceAdapterContract(source);
   const url = explicitUrl(source);
   const limit = Math.min(Number(maxBytes) || contract?.max_bytes || 1_000_000, contract?.max_bytes || 1_000_000);
@@ -1415,14 +1490,14 @@ export async function fetchCommunityBoardSource(source = {}, { fetchImpl = globa
       if (!response.ok || length > limit || accessDenied) continue;
       const adapter = adapterId(source);
       const records = adapter === "google_calendar_v1"
-        ? await harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit })
+          ? await harvestGoogleCalendarRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit, committeeRegistry })
         : adapter === "pdf_calendar_v1"
           ? await harvestPdfCalendarRecords(looksLikePdfBytes(bytes, contentType) ? bytes : text, contentType, source, {
-            fetchImpl, observedAt, receipt, limit, extractPdfText,
+            fetchImpl, observedAt, receipt, limit, extractPdfText, committeeRegistry,
           })
         : adapter === "airtable_v1"
-          ? await harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit })
-        : parseCommunityBoardSource(text, source, { observedAt, receipt });
+          ? await harvestAirtableRecords(text, contentType, source, { fetchImpl, observedAt, receipt, limit, committeeRegistry })
+        : parseCommunityBoardSource(text, source, { observedAt, receipt, committeeRegistry });
       return { records, receipt };
     } catch (error) {
       lastReceipt = normalizeObservedReceipt({ ...baseReceipt, reason: clean(error?.name || "fetch_error", 80) }, source);
