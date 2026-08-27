@@ -110,6 +110,36 @@ jobs:
             echo
             echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Bind Pages deployment to release-surface receipt
+        if: always()
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          DEPLOYMENT_OUTCOME: ${{ steps.deploy.outcome }}
+        shell: bash
+        run: |
+          if [ ! -f .artifacts/release-surface-receipt.json ]; then
+            echo "release-surface receipt is unavailable after the build" >&2
+            exit 0
+          fi
+          status="UNKNOWN"
+          if [ "$DEPLOYMENT_OUTCOME" = "success" ]; then status="PASS"; fi
+          if [ "$DEPLOYMENT_OUTCOME" = "failure" ]; then status="FAIL"; fi
+          node tools/update_release_surface_receipt.mjs \
+            --receipt .artifacts/release-surface-receipt.json \
+            --stage pages_deployment \
+            --status "$status" \
+            --required-stage pages_deployment \
+            --deployment-url "$DEPLOYMENT_URL"
+      - name: Retain generation and release-surface receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-pages-release-evidence-${{ github.run_id }}
+          path: |
+            .artifacts/generation-output-receipt.json
+            .artifacts/release-surface-receipt.json
+            _site/artifact-manifest.json
+          if-no-files-found: warn
 
   smoke:
     name: Pages host live URL smoke
