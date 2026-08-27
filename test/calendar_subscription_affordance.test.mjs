@@ -26,9 +26,35 @@ test("subscription eligibility requires a feed identity and a defensible date", 
   assert.equal(calendarOccurrenceForRow("meetings", { event_date: "2026-09-15" }), null);
   assert.equal(calendarOccurrenceForRow("meetings", { meeting_id: "meeting:1" }), null);
   assert.equal(calendarOccurrenceForRow("money", { procurement_id: "CT1", due_date: "2026-09-15" }), null);
+  assert.deepEqual(
+    calendarOccurrenceForRow("people", { exam_number: "7016", application_end: "2026-09-30" }),
+    { id: "exam:7016", date: "2026-09-30" },
+  );
+  assert.equal(calendarOccurrenceForRow("people", { exam_number: "7016" }), null);
   assert.equal(calendarOccurrenceForRow("land", { request_id: "1", event_date: "2026-09-15" }), null);
   assert.equal(hasDefensibleDatedOccurrences("rules", [{ request_id: "1", due_date: "2026-09-15" }]), true);
   assert.equal(hasDefensibleDatedOccurrences("rules", [{ request_id: "1" }]), false);
+});
+
+test("civil-service exam subscription keeps the guide scope and label", () => {
+  const scope = scopeFromRouteHash("#people?agency=Parks%20and%20Recreation&view=guide");
+  const href = calendarSubscriptionHrefForScope(scope, {
+    lens: "people",
+    rows: [{ exam_number: "7016", application_start: "2026-09-01", application_end: "2026-09-30" }],
+  });
+  assert.ok(href);
+  const url = new URL(href);
+  assert.equal(url.searchParams.get("lens"), "people");
+  assert.deepEqual(JSON.parse(url.searchParams.get("filter")), {
+    agency: "Parks and Recreation",
+    view: "guide",
+  });
+  const details = calendarSubscriptionDetailsForScope(scope, {
+    lens: "people",
+    rows: [{ exam_number: "7016", application_end: "2026-09-30" }],
+  });
+  assert.match(details.scopeLabel, /Civil-service exams/);
+  assert.match(details.scopeLabel, /Parks and Recreation/);
 });
 
 test("subscription URL reuses the complete displayed scope serialization", () => {

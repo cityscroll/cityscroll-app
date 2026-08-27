@@ -41,7 +41,7 @@ export const LENSES = {
   // NL can route to the same deep links the UI already supports (council/cd, process rails,
   // closing-this-week, agency forecast tab) — not only keyword lists.
   money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation", "geographies", "procurement_id"],
-  people:   ["keywords", "lookupType", "view", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
+  people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
   rules:    ["keywords", "agency", "process", "geographies"],
@@ -169,6 +169,7 @@ function clampField(name, v) {
       return v === "person" ? "person" : v === "role" ? "role" : null;
     case "view":
       return v === "guide" ? "guide" : null;
+    case "interest":
     case "interestArea":
       return [
         "public-safety", "health-care", "engineering-construction", "technology-science",
@@ -279,6 +280,7 @@ export function sanitize(lens, input) {
   // subscription identities, and /nl response envelopes remain byte-compatible.
   if (!out.geographies?.length) delete out.geographies;
   if (!out.procurement_id) delete out.procurement_id;
+  if (!out.interest) delete out.interest;
   return out;
 }
 

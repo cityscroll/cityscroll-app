@@ -302,9 +302,10 @@ export function browseScopeIdentity(surfaceId) {
 // calendar projection here with scope-v0 so a delivery surface cannot invent a second scope
 // grammar. The worker imports the replayable-field contract below to reject modern feed filters
 // that compileSub cannot apply without broadening them.
-const CALENDAR_FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
+const CALENDAR_FEED_LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "entity"]);
 const CALENDAR_REPLAYABLE_FILTER_FIELDS = Object.freeze({
   money: new Set(["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "closingWeek", "procurement_id"]),
+  people: new Set(["keywords", "agency", "view", "interest", "interestArea", "examNumber", "subject_refs_all"]),
   land: new Set(["keywords", "boro", "status", "communityDistrict", "councilDistrict", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"]),
   property: new Set(["keywords", "agency", "asset", "saleMethod", "priceBand", "geographies"]),
   rules: new Set(["keywords", "agency", "geographies"]),

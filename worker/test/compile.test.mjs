@@ -161,6 +161,18 @@ test("exam interest-area watch replays the staffing artifact and keys NOE-posted
   assert.equal(examOpenWindowBand({application_start:"2026-10-01",application_end:"2026-10-15"},"2026-08-03"),"approaching");
 });
 
+test("agency-scoped exam watch returns certified exams only", () => {
+  const q = compileSub({
+    lens: "people",
+    filter: { view: "guide", agency: "Parks and Recreation" },
+  }, "2026-08-03");
+  const rows = q.transformRows({ exams: [
+    { exam_number: "1003", title: "Certified Parks exam", application_start: "2026-09-01", application_end: "2026-09-30" },
+    { exam_number: "9998", title: "Unrelated exam", application_start: "2026-09-01", application_end: "2026-09-30" },
+  ] });
+  assert.deepEqual(rows.map((row) => row.exam_number), ["1003"]);
+});
+
 test("entity/vendor → full-text stem query + exact-stem postFilter", () => {
   const q = compileSub({ lens: "entity", filter: { kind: "vendor", name: "Sinergia Inc" } }, "2026-07-02");
   assert.equal(q.kind, "entity");

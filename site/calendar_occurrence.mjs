@@ -23,6 +23,7 @@ const CALENDAR_OCCURRENCE_STATUSES = Object.freeze([
 ]);
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const US_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?$/;
 
 function text(value) {
@@ -36,6 +37,12 @@ function validDate(value) {
   if (ISO_DATE.test(result)) {
     const parsed = new Date(`${result}T00:00:00Z`);
     return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === result ? result : null;
+  }
+  const us = result.match(US_DATE);
+  if (us) {
+    const normalized = `${us[3]}-${us[1].padStart(2, "0")}-${us[2].padStart(2, "0")}`;
+    const parsed = new Date(`${normalized}T00:00:00Z`);
+    return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === normalized ? normalized : null;
   }
   if (!ISO_DATE_TIME.test(result)) return null;
   return Number.isNaN(new Date(result).getTime()) ? null : result;
@@ -67,15 +74,17 @@ function sourceValue(input) {
 
 function objectRefForRecord(record = {}) {
   return text(record.object_ref || record.subject_ref || record.meeting_id
-    || record.procurement_id || record.project_id || record.request_id || record.record_id);
+    || record.procurement_id || record.project_id || record.request_id || record.record_id
+    || (record.exam_number ? `exam:${record.exam_number}` : null));
 }
 
 function sourceForRecord(record = {}) {
   return sourceValue({
     ...record,
     source: record.source || record.source_provenance || record.provenance?.source,
-    source_url: record.source_url || record.official_notice_url || record.official_source_url,
-    source_record_id: record.source_record_id || record.publisher_identifier || record.request_id,
+    source_url: record.source_url || record.notice_url || record.official_notice_url
+      || record.official_source_url || record.official_application_url,
+    source_record_id: record.source_record_id || record.publisher_identifier || record.request_id || record.exam_number,
   });
 }
 
@@ -90,6 +99,7 @@ function canonicalUrlForRecord(record = {}) {
   if (record.procurement_id || ref?.startsWith("procurement:")) return `https://cityscroll.org/procurements/${encodeURIComponent(ref)}`;
   if (record.project_id || ref?.startsWith("project:")) return `https://cityscroll.org/projects/${encodeURIComponent(ref)}`;
   if (record.request_id || ref?.startsWith("notice:")) return `https://cityscroll.org/notices/${encodeURIComponent(ref)}`;
+  if (record.exam_number || ref?.startsWith("exam:")) return `https://cityscroll.org/exams/${encodeURIComponent(String(record.exam_number || ref).replace(/^exam:/, ""))}/`;
   return null;
 }
 
@@ -136,6 +146,94 @@ function defaultTitle(record, kind) {
   if (kind === "window_close") return `Applications close — ${subject}`;
   if (kind === "deadline") return `Due — ${subject}`;
   return subject;
+}
+
+const PROCUREMENT_DATE_FIELDS = Object.freeze([
+  ["deadline", ["bid_deadline", "proposal_deadline", "due_date", "deadline_date"], "Bids due"],
+  ["questions_deadline", ["questions_deadline", "questions_due_date", "question_deadline", "inquiries_deadline"], "Questions due"],
+  ["pre_bid_conference", ["pre_bid_conference_date", "pre_bid_date"], "Pre-bid conference"],
+  ["pre_proposal_conference", ["pre_proposal_conference_date", "pre_proposal_date"], "Pre-proposal conference"],
+]);
+
+const EXAM_DATE_FIELDS = Object.freeze([
+  ["window_open", ["application_open_date", "application_start_date", "application_start"]],
+  ["deadline", ["application_close_date", "application_end_date", "application_end"]],
+  ["event", ["exam_date", "scheduled_exam_date", "examination_date", "test_date"]],
+]);
+
+function isExamRecord(record, options) {
+  return options.kind === "exam"
+    || Boolean(record.exam_number)
+    || /^exam:/.test(String(record.object_ref || record.subject_ref || ""));
+}
+
+function milestoneTitle(record, label, kind) {
+  const subject = text(record.title || record.short_title || record.name || record.subject) || "civic record";
+  return `${label || defaultTitle(record, kind)} — ${subject}`;
+}
+
+function explicitMilestones(record) {
+  const input = Array.isArray(record.procurement_milestones)
+    ? record.procurement_milestones
+    : Array.isArray(record.milestones) ? record.milestones : [];
+  return input.flatMap((milestone) => {
+    if (!milestone || typeof milestone !== "object") return [];
+    const when = validDate(milestone.date || milestone.starts_at || milestone.when);
+    const label = text(milestone.label || milestone.name || milestone.type);
+    if (!when || !label) return [];
+    const normalized = String(milestone.kind || "milestone").trim();
+    const kind = CALENDAR_OCCURRENCE_KINDS.includes(normalized) ? normalized : "milestone";
+    return [{
+      kind,
+      when,
+      uid_suffix: text(milestone.uid),
+      title: milestone.title || `${label} — ${text(record.title || record.short_title || "solicitation")}`,
+      provenance: { basis: "publisher_record", source_field: "procurement_milestones", label },
+    }];
+  });
+}
+
+function labeledTextMilestones(record) {
+  const textFields = ["additional_description_1", "additional_description_2", "additional_description_3",
+    "other_info_1", "other_info_2", "other_info_3", "printout_1"];
+  const source = textFields.map((key) => String(record?.[key] || "")).join(" ");
+  if (!source) return [];
+  const patterns = [
+    ["questions_deadline", /(?:questions?|inquiries?)\s+(?:deadline|due|close|accepted until)\s*[:\-]\s*(\d{1,2}\/\d{1,2}\/\d{4}|\d{4}-\d{2}-\d{2})/i, "Questions due"],
+    ["pre_bid_conference", /pre[- ]bid(?: conference)?\s*(?:date|on)?\s*[:\-]\s*(\d{1,2}\/\d{1,2}\/\d{4}|\d{4}-\d{2}-\d{2})/i, "Pre-bid conference"],
+    ["pre_proposal_conference", /pre[- ]proposal(?: conference)?\s*(?:date|on)?\s*[:\-]\s*(\d{1,2}\/\d{1,2}\/\d{4}|\d{4}-\d{2}-\d{2})/i, "Pre-proposal conference"],
+  ];
+  return patterns.flatMap(([uidKind, pattern, label]) => {
+    const match = source.match(pattern);
+    const when = validDate(match?.[1]);
+    return when ? [{ kind: uidKind === "questions_deadline" ? "deadline" : "milestone", when,
+      uid_suffix: uidKind, title: milestoneTitle(record, label, uidKind === "questions_deadline" ? "deadline" : "milestone"),
+      provenance: { basis: "publisher_record", source_fields: textFields, label } }] : [];
+  });
+}
+
+function domainOccurrences(record, options) {
+  const exam = isExamRecord(record, options);
+  if (exam) {
+    return EXAM_DATE_FIELDS.flatMap(([kind, keys]) => {
+      const when = sourceDate(record, keys);
+      if (!when) return [];
+      return [{ kind, when, force_typed_uid: true,
+        title: kind === "window_open" ? milestoneTitle(record, "Applications open", kind)
+          : kind === "deadline" ? milestoneTitle(record, "Applications close", kind)
+            : milestoneTitle(record, "Exam date", kind),
+        provenance: { basis: "publisher_record", source_fields: keys } }];
+    });
+  }
+  if (options.kind !== "rfp" && options.kind !== "procurement" && !record.procurement_milestones && !record.milestones) return null;
+  const fields = PROCUREMENT_DATE_FIELDS.flatMap(([uidKind, keys, label]) => {
+    const when = sourceDate(record, keys);
+    if (!when) return [];
+    const kind = uidKind === "deadline" || uidKind === "questions_deadline" ? "deadline" : "milestone";
+    return [{ kind, when, force_typed_uid: true, uid_suffix: uidKind,
+      title: milestoneTitle(record, label, kind), provenance: { basis: "publisher_record", source_fields: keys } }];
+  });
+  return [...fields, ...explicitMilestones(record), ...labeledTextMilestones(record)];
 }
 
 /**
@@ -192,7 +290,9 @@ const CalendarOccurrence = createCalendarOccurrence;
 
 function occurrenceInput(record, fields, options) {
   const objectRef = text(options.object_ref || objectRefForRecord(record));
-  const uid = text(fields.uid) || (options.legacy_uid ? objectRef : `${objectRef}:${fields.kind}`);
+  const uid = text(fields.uid)
+    || (text(fields.uid_suffix) ? `${objectRef}:${text(fields.uid_suffix)}`
+      : (options.legacy_uid && !fields.force_typed_uid ? objectRef : `${objectRef}:${fields.kind}`));
   return {
     uid,
     scope_ref: options.scope_ref || record.scope_ref || record.scope,
@@ -207,7 +307,8 @@ function occurrenceInput(record, fields, options) {
     description: fields.description || options.description || record.calendar_description || record.description,
     canonical_url: fields.canonical_url || options.canonical_url || canonicalUrlForRecord(record),
     source: fields.source || options.source || sourceForRecord(record),
-    provenance: fields.provenance || options.provenance || record.provenance || null,
+    provenance: fields.provenance || options.provenance || record.provenance
+      || (Array.isArray(record.sources) ? { basis: "publisher_record", source_records: record.sources } : null),
     observed_at: fields.observed_at || options.observed_at || record.observed_at || record.observed_receipt?.observed_at,
   };
 }
@@ -229,6 +330,12 @@ function calendarOccurrencesForRecord(record = {}, options = {}) {
   const explicit = explicitOccurrences(record, options);
   if (explicit) return explicit.filter((occurrence) => occurrence.status === "cancelled"
     || isFuture(occurrence.starts_at || occurrence.date, asOfDate(options.as_of)));
+  const domain = domainOccurrences(record, options);
+  if (domain) {
+    return domain
+      .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
+      .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
+  }
   const kind = options.kind || "event";
   const values = [];
   if (kind === "meetings" || kind === "meeting") {
@@ -243,7 +350,7 @@ function calendarOccurrencesForRecord(record = {}, options = {}) {
   const open = sourceDate(record, ["application_open_date", "application_start_date", "window_open_date"]);
   const close = sourceDate(record, ["application_close_date", "application_end_date", "window_close_date"]);
   if (open) values.push({ kind: "window_open", when: open });
-  if (close) values.push({ kind: "window_close", when: close });
+  if (close) values.push({ kind: isExamRecord(record, options) ? "deadline" : "window_close", when: close });
   return values
     .filter((value) => isFuture(value.when, asOfDate(options.as_of)))
     .map((value) => createCalendarOccurrence(occurrenceInput(record, value, options)));
@@ -271,7 +378,9 @@ function calendarOccurrencesForRows(rows = [], options = {}) {
 function semanticDateKeys() {
   return ["event_date", "meeting_date", "starts_at", "deadline_date", "due_date", "action_deadline",
     "comment_by_date", "application_open_date", "application_start_date", "window_open_date",
-    "application_close_date", "application_end_date", "window_close_date"];
+    "application_close_date", "application_end_date", "window_close_date", "application_start", "application_end",
+    "exam_date", "scheduled_exam_date", "examination_date", "test_date", "bid_deadline", "proposal_deadline",
+    "questions_deadline", "questions_due_date", "pre_bid_conference_date", "pre_proposal_conference_date"];
 }
 
 function semanticDateValues(record = {}) {

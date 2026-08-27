@@ -3,10 +3,11 @@ import { zoningHearingCalendarOccurrence } from "./zoning_hearing_calendar.mjs";
 
 export const CALENDAR_SUBSCRIPTION_LABEL = "Subscribe to calendar";
 
-const CALENDAR_LENSES = new Set(["money", "land", "property", "rules", "meetings"]);
+const CALENDAR_LENSES = new Set(["money", "people", "land", "property", "rules", "meetings"]);
 const CALENDAR_LENS_LABELS = Object.freeze({
   money: "Contracts",
   land: "Zoning hearings",
+  people: "Civil-service exams",
   property: "Property",
   rules: "Rules",
   meetings: "Meetings",
@@ -48,6 +49,11 @@ export function calendarOccurrenceForRow(lens, row = {}) {
     return row.meeting_id && hasValidDate(row.event_date)
       ? { id: String(row.meeting_id), date: String(row.event_date) }
       : null;
+  }
+  if (lens === "people") {
+    const id = row.exam_number && /^\d{4}$/.test(String(row.exam_number)) ? row.exam_number : null;
+    const date = row.exam_date || row.scheduled_exam_date || row.application_end || row.application_start;
+    return id && hasValidDate(date) ? { id: `exam:${id}`, date: String(date) } : null;
   }
   if (lens === "money" && row.procurement_id && !row.request_id) return null;
   const id = row.request_id || row.id;
@@ -114,10 +120,11 @@ export function calendarSubscriptionDetailsForScope(scope, { lens, rows, base } 
 
 export function calendarSubscriptionHrefForBrowseView(view, options = {}) {
   if (!view || view.scope?.mode === "unsupported") return null;
+  const viewLens = view.config?.tab || view.facet;
   const scope = view.scopeObject
-    || scopeFromRouteHash(`#${view.config?.tab || view.facet}?${view.scopeSearch || ""}`);
+    || scopeFromRouteHash(`#${viewLens}?${view.scopeSearch || ""}`);
   return calendarSubscriptionDetailsForScope(scope, {
-    lens: view.config?.tab || view.facet,
+    lens: viewLens === "exams" ? "people" : viewLens,
     rows: view.calendarRows || view.rows,
     base: options.base,
   })?.feedUrl || null;
@@ -125,10 +132,11 @@ export function calendarSubscriptionHrefForBrowseView(view, options = {}) {
 
 export function renderCalendarSubscriptionAffordance(view, { escape = (value) => String(value ?? "") } = {}) {
   if (!view || view.scope?.mode === "unsupported") return "";
+  const viewLens = view.config?.tab || view.facet;
   const scope = view.scopeObject
-    || scopeFromRouteHash(`#${view.config?.tab || view.facet}?${view.scopeSearch || ""}`);
+    || scopeFromRouteHash(`#${viewLens}?${view.scopeSearch || ""}`);
   const details = calendarSubscriptionDetailsForScope(scope, {
-    lens: view.config?.tab || view.facet,
+    lens: viewLens === "exams" ? "people" : viewLens,
     rows: view.calendarRows || view.rows,
   });
   if (!details) return "";
