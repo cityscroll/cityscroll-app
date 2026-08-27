@@ -74,12 +74,7 @@ def flatten_helper(
         helper_path = path.parent / helper_name
         assert helper_path.is_file(), f"nested helper import missing: {helper_name}"
         dependency = flatten_helper(helper_path, (*stack, path), flattened)
-        dependency = EXPORTED_DECLARATION.sub("", dependency)
-        dependency = re.sub(
-            r"\bexport\s*\{[^}]+\}\s*(?:from\s+[\"'][^\"']+[\"'])?\s*;?",
-            "",
-            dependency,
-        )
+        dependency = strip_module_exports(dependency)
         assert not re.search(r"\bexport\s", dependency), (
             f"inline reconstruction cannot flatten this export in {helper_name}"
         )
@@ -123,12 +118,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
                 aliases = re.split(r"\s+as\s+", item.strip())
                 exports.append((aliases[0], aliases[-1]))
         assert exports, f"namespace helper has no named exports: {helper_name}"
-        helper_source = EXPORTED_DECLARATION.sub("", helper_source)
-        helper_source = re.sub(
-            r"\bexport\s*\{[^}]+\}\s*(?:from\s+[\"'][^\"']+[\"'])?\s*;?",
-            "",
-            helper_source,
-        )
+        helper_source = strip_module_exports(helper_source)
         assert not re.search(r"\bexport\s", helper_source), (
             f"inline reconstruction cannot flatten this export in {helper_name}"
         )
@@ -149,7 +139,9 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
             helper_path = SITE / helper_name
             assert helper_path.is_file(), f"static helper import missing: {helper_name}"
             helper_source = flatten_helper(helper_path, flattened=flattened_static_helpers)
-            helper_source = EXPORTED_DECLARATION.sub("", helper_source)
+            # The comparison page is intentionally classic; strip every ESM
+            # export form from flattened static helpers before evaluation.
+            helper_source = strip_module_exports(helper_source)
             assert not re.search(r"^\s*export\s", helper_source, re.MULTILINE), (
                 f"inline reconstruction cannot flatten this export in {helper_name}"
             )
@@ -159,6 +151,9 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
         source = strip_module_exports(source)
         chunks.append(source.split(FOOTER)[0].replace('import("../', 'import("./'))
     inline = "\n".join([*helpers, *chunks])
+    assert not re.search(r"^\s*export\b", inline, re.MULTILINE), (
+        "inline reconstruction left ESM export syntax in its classic script"
+    )
     index_path = target / "index.html"
     index = index_path.read_text()
     marker = '<script type="module" src="app/main.mjs"></script>'
@@ -235,6 +230,7 @@ def capture(page, base: str, route: str, ready: str, root: str, action=None, err
 
 SURFACES = [
     ("retained-task", "#task/can-i-bid", "#taskview .task-card", "#taskview", None),
+    ("retained-task-zap", "#task/what-will-change", "#taskview .task-card", "#taskview", None),
 ]
 
 
