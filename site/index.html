@@ -849,6 +849,31 @@
   .contracts-analytics-coverage-table a:hover{text-decoration:underline}
   .contracts-analytics-coverage-note{margin-top:10px;font-size:11.5px}
   @media(max-width:820px){.contracts-analytics-coverage-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.contracts-analytics-coverage-table{display:block;overflow-x:auto;white-space:nowrap}}
+  .contracts-analytics-performance-evidence{margin-top:22px;padding-top:17px;border-top:1px solid var(--rule)}
+  .contracts-analytics-performance-evidence[hidden]{display:none}
+  .contracts-analytics-performance-evidence h3{margin:0 0 5px;font:700 1.15rem/1.2 var(--font-display);color:var(--ink)}
+  .contracts-analytics-performance-evidence h4{margin:18px 0 7px;font:700 1rem/1.2 var(--font-display);color:var(--ink)}
+  .contracts-analytics-performance-evidence-deck,.contracts-analytics-performance-evidence-note{margin:0;color:var(--ink-soft);font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-performance-evidence-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0;padding:0}
+  .contracts-analytics-evidence-stat{min-width:0;padding:10px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2)}
+  .contracts-analytics-evidence-stat dt{color:var(--muted);font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+  .contracts-analytics-evidence-stat dd{margin:5px 0 1px;color:var(--ink);font:750 18px/1.1 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-evidence-stat small{color:var(--ink-soft);font:12px/1.3 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-evidence-stat a{color:var(--ink);font-weight:700}
+  .contracts-analytics-performance-evidence-statement{margin:12px 0;padding:10px 12px;border-left:3px solid var(--oxblood);background:var(--paper-2);color:var(--ink);font:700 13px/1.45 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-performance-evidence-table{width:100%;border-collapse:collapse;margin-top:10px;font:12px/1.35 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-performance-evidence-table th,.contracts-analytics-performance-evidence-table td{padding:8px 6px;border-top:1px solid var(--rule);text-align:right;vertical-align:top}
+  .contracts-analytics-performance-evidence-table thead th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+  .contracts-analytics-performance-evidence-table th:first-child,.contracts-analytics-performance-evidence-table td:first-child{text-align:left}
+  .contracts-analytics-performance-evidence-table a{color:var(--ink);font-weight:700;text-decoration:none}
+  .contracts-analytics-performance-evidence-table a:hover{text-decoration:underline}
+  .contracts-analytics-performance-evidence-passages{display:grid;gap:8px;margin:0;padding:0 0 0 22px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .contracts-analytics-performance-evidence-passages li{padding:8px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--paper)}
+  .contracts-analytics-performance-evidence-passages a{font-weight:750;color:var(--ink)}
+  .contracts-analytics-performance-evidence-passages span{color:var(--muted)}
+  .contracts-analytics-performance-evidence-passages blockquote{margin:5px 0 0;padding:5px 8px;border-left:2px solid var(--rule);color:var(--ink-soft)}
+  .contracts-analytics-evidence-empty{color:var(--muted);font-style:italic}
+  @media(max-width:680px){.contracts-analytics-performance-evidence-summary{grid-template-columns:1fr}.contracts-analytics-performance-evidence-table{display:block;overflow-x:auto;white-space:nowrap}}
   @media(max-width:680px){.contracts-analytics{padding:15px 13px}.contracts-analytics-group{grid-template-columns:minmax(0,1fr)}.contracts-analytics-group-meta{text-align:start;white-space:normal}}
   @media(max-width:680px){.contracts-analytics-fact-comparison-cards{grid-template-columns:1fr}}
   @media(max-width:900px){.contracts-analytics-timing{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -1915,7 +1940,7 @@
       </div>
       <div class="contracts-analytics-controls" role="group" aria-label="Compare contracts" data-i18n-aria="analytics_compare_contracts_aria">
         <div class="field"><label for="analytics-fact" data-i18n="analytics_fact_label">Fact</label><select id="analytics-fact"><option value="registered_contract" data-i18n="analytics_fact_registered">Registered contracts</option><option value="payment" data-i18n="analytics_fact_payments">Actual payments</option></select></div>
-        <div class="field"><label for="analytics-view" data-i18n="analytics_view">View</label><select id="analytics-view"><option value="overview" data-i18n="analytics_view_overview">Compare / Overview</option><option value="timing" data-i18n="analytics_view_timing">Registration timing</option></select></div>
+        <div class="field"><label for="analytics-view" data-i18n="analytics_view">View</label><select id="analytics-view"><option value="overview" data-i18n="analytics_view_overview">Compare / Overview</option><option value="timing" data-i18n="analytics_view_timing">Registration timing</option><option value="performance_evidence" data-i18n="analytics_view_evidence">Performance evidence</option></select></div>
         <div class="field"><label for="analytics-group" data-i18n="analytics_group_by">Group by</label><select id="analytics-group"><option value="agency" data-i18n="analytics_group_agency">Agency</option><option value="vendor" data-i18n="analytics_group_vendor">Vendor</option><option value="registration_fiscal_year" data-i18n="analytics_group_fy">Registration FY</option><option value="amount_band" data-i18n="analytics_group_amount_band">Amount band</option></select></div>
         <div class="field"><label for="analytics-measure" data-i18n="analytics_measure">Measure</label><select id="analytics-measure"><option value="current" data-i18n="analytics_measure_current">Current registered contract value</option><option value="original" data-i18n="analytics_measure_original">Original registered contract value</option><option value="count" data-i18n="analytics_measure_count">Contract count</option></select></div>
         <div class="field"><label for="analytics-fy" data-i18n="analytics_registration_fy">Registration FY</label><select id="analytics-fy"><option value="" data-i18n="analytics_all_years">All years</option></select></div>
@@ -1950,6 +1975,16 @@
         <p class="contracts-analytics-coverage-statement" id="contracts-analytics-coverage-statement" role="status"></p>
         <div class="table-scroll"><table class="contracts-analytics-coverage-table"><caption class="sr-only" data-i18n="analytics_coverage_table_caption">City Record exact-PIN match coverage by agency. Each cell shows contracts and registered value.</caption><thead><tr><th scope="col" data-i18n="analytics_group_agency">Agency</th><th scope="col" data-i18n="analytics_coverage_eligible">Eligible</th><th scope="col" data-i18n="analytics_coverage_exact">Exact match</th><th scope="col" data-i18n="analytics_coverage_none">No exact match</th><th scope="col" data-i18n="analytics_coverage_missing_pin">Missing PIN</th></tr></thead><tbody id="contracts-analytics-coverage-groups"></tbody></table></div>
         <p class="contracts-analytics-coverage-note" id="contracts-analytics-coverage-note"></p>
+      </section>
+      <section class="contracts-analytics-performance-evidence" id="contracts-analytics-performance-evidence" hidden aria-labelledby="contracts-analytics-performance-evidence-heading">
+        <h3 id="contracts-analytics-performance-evidence-heading" data-i18n="analytics_evidence_heading">What public performance evidence is available?</h3>
+        <p class="contracts-analytics-performance-evidence-deck" data-i18n="analytics_evidence_deck">Financial visibility and public performance evidence are separate. This view counts qualifying public terms and evaluation documents, and it does not assess outcomes.</p>
+        <dl class="contracts-analytics-performance-evidence-summary" id="contracts-analytics-performance-evidence-summary"></dl>
+        <p class="contracts-analytics-performance-evidence-statement" id="contracts-analytics-performance-evidence-statement" role="status"></p>
+        <div class="table-scroll"><table class="contracts-analytics-performance-evidence-table"><caption class="sr-only" data-i18n="analytics_evidence_table_caption">Public performance-evidence state coverage by group. Each cell shows contracts and registered value.</caption><thead><tr><th scope="col" data-i18n="analytics_group_agency">Agency</th><th scope="col" data-i18n="analytics_evidence_total">Total</th><th scope="col" data-i18n="analytics_evidence_terms">Performance terms located</th><th scope="col" data-i18n="analytics_evidence_evaluation">Evaluation document located</th><th scope="col" data-i18n="analytics_evidence_none">No located evidence</th></tr></thead><tbody id="contracts-analytics-performance-evidence-groups"></tbody></table></div>
+        <h4 data-i18n="analytics_evidence_passages_heading">Located source passages</h4>
+        <ol class="contracts-analytics-performance-evidence-passages" id="contracts-analytics-performance-evidence-passages"></ol>
+        <p class="contracts-analytics-performance-evidence-note" data-i18n="analytics_evidence_note">No located evidence is an unresolved coverage state within the declared CityScroll sources. It is not a vendor-failure claim, an outcome, or a performance score.</p>
       </section>
     </section>
 

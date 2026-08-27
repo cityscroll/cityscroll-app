@@ -43,6 +43,14 @@ import {
   paymentRelatedContractDrillThroughHref,
   paymentTransactionDrillThroughHref,
 } from "../analytical_payment_projection.mjs";
+import {
+  PERFORMANCE_EVIDENCE_ANALYTICAL_PROJECTION_URL,
+  PERFORMANCE_EVIDENCE_STATES,
+  filterPerformanceEvidenceCoverage,
+  groupPerformanceEvidenceCoverage,
+  performanceEvidenceCoverageSummary,
+  performanceEvidenceDrillThroughHref,
+} from "../analytical_performance_evidence.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
@@ -169,7 +177,24 @@ function loadAnalyticalProjection(){
     analyticalProjectionPromise=Promise.all([
       fetch(ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
       fetch(PAYMENT_ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
-    ]).then(([registered_contract, payment])=>({registered_contract, payment})).catch(()=>null);
+      fetch(PERFORMANCE_EVIDENCE_ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
+    ]).then(([registered_contract, payment, performance_evidence])=>{
+      if(registered_contract && performance_evidence) {
+        const byContract=new Map((performance_evidence.rows||[]).map(row=>[row.prime_contract_id,row]));
+        registered_contract={
+          ...registered_contract,
+          rows:(registered_contract.rows||[]).map(row=>{
+            const evidence=byContract.get(row.prime_contract_id);
+            return {
+              ...row,
+              performance_evidence_state:evidence?.evidence_state||PERFORMANCE_EVIDENCE_STATES.NONE,
+              performance_evidence_items:evidence?.evidence_items||[],
+            };
+          }),
+        };
+      }
+      return {registered_contract, payment, performance_evidence};
+    }).catch(()=>null);
   }
   return analyticalProjectionPromise;
 }
@@ -349,6 +374,7 @@ function analyticalUrlFilters(){
     max_amount: params.get("ap_max") || null,
     retroactive: params.get("retroactive") || null,
     city_record_match: params.get("ap_city_record_match") || null,
+    performance_evidence_state: params.get("ap_evidence_state") || null,
     contract_id: params.get("ap_contract_id") || null,
   };
 }
@@ -387,6 +413,7 @@ function analyticalMoneyRow(row){
     primary_stage: "registered",
     source_system: "analytics_registered_contracts",
     analytics_projection: true,
+    performance_evidence_state: row.performance_evidence_state || PERFORMANCE_EVIDENCE_STATES.NONE,
   };
 }
 
@@ -486,6 +513,67 @@ function renderAnalyticalCoverage(projectionRows, filters) {
   if (note) note.textContent = t("analytics_coverage_note", {
     evaluable: coverage.evaluable_match_rate == null ? "—" : coveragePercent(coverage.evaluable_match_rate),
   });
+}
+
+function performanceEvidenceStateLabel(state) {
+  return state === PERFORMANCE_EVIDENCE_STATES.TERMS ? t("analytics_evidence_terms")
+    : state === PERFORMANCE_EVIDENCE_STATES.EVALUATION ? t("analytics_evidence_evaluation")
+      : t("analytics_evidence_none");
+}
+
+function renderPerformanceEvidenceProjection(projectionRows, filters, performanceProjection) {
+  const panel=$("#contracts-analytics-performance-evidence");
+  if(!panel) return;
+  panel.hidden=false;
+  const filtered=filterPerformanceEvidenceCoverage(
+    Array.isArray(performanceProjection?.rows) && performanceProjection.rows.length
+      ? performanceProjection.rows
+      : projectionRows,
+    filters,
+  );
+  const summary=performanceEvidenceCoverageSummary(filtered);
+  const summaryElement=$("#contracts-analytics-performance-evidence-summary");
+  if(summaryElement){
+    summaryElement.innerHTML=Object.values(PERFORMANCE_EVIDENCE_STATES).map((state)=>{
+      const stat=summary.states[state];
+      const href=performanceEvidenceDrillThroughHref({...filters,evidence_state:state});
+      return `<div class="contracts-analytics-evidence-stat"><dt>${escUiHtml(performanceEvidenceStateLabel(state))}</dt><dd>${stat.contract_count.toLocaleString("en-US")}</dd><small>${escUiHtml(formatRegisteredValue(stat.registered_value))} · <a href="${escUiHtml(href)}">${escUiHtml(t("analytics_evidence_view_contracts",{count:stat.contract_count.toLocaleString("en-US")}))}</a></small></div>`;
+    }).join("");
+  }
+  const statement=$("#contracts-analytics-performance-evidence-statement");
+  if(statement){
+    statement.textContent=t("analytics_evidence_statement",{
+      total:summary.total_contract_count.toLocaleString("en-US"),
+      located:summary.located_contract_count.toLocaleString("en-US"),
+      unresolved:summary.unresolved_contract_count.toLocaleString("en-US"),
+    });
+  }
+  const groupBy=$("#analytics-group")?.value||"agency";
+  const grouped=groupPerformanceEvidenceCoverage(filtered,{groupBy});
+  const table=$("#contracts-analytics-performance-evidence-groups");
+  if(table){
+    table.innerHTML=grouped.groups.map((group)=>{
+      const groupFilters={...filters};
+      if(groupBy==="agency") groupFilters.agency=group.label;
+      if(groupBy==="vendor") groupFilters.prime_vendor=group.label;
+      if(groupBy==="registration_fiscal_year") groupFilters.registration_fiscal_year=group.label;
+      if(groupBy==="amount_band") groupFilters.contract_amount_band=group.label;
+      const stateCells=Object.values(PERFORMANCE_EVIDENCE_STATES).map((state)=>{
+        const stat=group.states[state]||{contract_count:0,registered_value:0};
+        const href=performanceEvidenceDrillThroughHref({...groupFilters,evidence_state:state});
+        return `<td><a href="${escUiHtml(href)}" aria-label="${escUiHtml(`${group.label}: ${performanceEvidenceStateLabel(state)}`)}">${stat.contract_count.toLocaleString("en-US")} · ${escUiHtml(formatRegisteredValue(stat.registered_value))}</a></td>`;
+      }).join("");
+      const allHref=performanceEvidenceDrillThroughHref(groupFilters);
+      return `<tr><th scope="row"><a href="${escUiHtml(allHref)}">${escUiHtml(group.label)}</a></th><td>${group.contract_count.toLocaleString("en-US")} · ${escUiHtml(formatRegisteredValue(group.total_registered_value))}</td>${stateCells}</tr>`;
+    }).join("");
+  }
+  const passages=$("#contracts-analytics-performance-evidence-passages");
+  if(passages){
+    const items=filtered.flatMap((row)=>(row.evidence_items||[]).map((item)=>({row,item})));
+    passages.innerHTML=items.length
+      ? items.slice(0,20).map(({row,item})=>`<li><a href="${escUiHtml(item.source_passage.url)}" target="_blank" rel="noopener">${escUiHtml(item.label)}</a><span> · ${escUiHtml(item.source_passage.locator)} · ${escUiHtml(row.prime_contract_id)}</span><blockquote>${escUiHtml(item.source_passage.excerpt)}</blockquote></li>`).join("")
+      : `<li class="contracts-analytics-evidence-empty">${escUiHtml(t("analytics_evidence_no_passages"))}</li>`;
+  }
 }
 
 function analyticalGroupLabel(groupBy){
@@ -685,6 +773,8 @@ function renderAnalyticalPaymentProjection(projection, allProjection, urlFilters
   if(coverage) coverage.hidden=true;
   const concentration=$("#contracts-analytics-concentration");
   if(concentration) concentration.hidden=true;
+  const performanceEvidence=$("#contracts-analytics-performance-evidence");
+  if(performanceEvidence) performanceEvidence.hidden=true;
   const timing=$("#contracts-analytics-timing");
   if(timing) timing.hidden=true;
   const population=$("#contracts-analytics-population");
@@ -731,6 +821,33 @@ function renderAnalyticalProjection(rows){
   syncAnalyticalFiscalYears(projectionRows);
   const view=$("#analytics-view")?.value||"overview";
   syncAnalyticalViewControls(view,"registered_contract");
+  const performanceEvidencePanel=$("#contracts-analytics-performance-evidence");
+  if(performanceEvidencePanel) performanceEvidencePanel.hidden=view!=="performance_evidence";
+  if(view==="performance_evidence"){
+    const filters={
+      agency:urlFilters.agency,
+      prime_vendor:urlFilters.prime_vendor,
+      registration_fiscal_year:urlFilters.registration_fiscal_year,
+      contract_amount_band:urlFilters.contract_amount_band,
+      min_amount:urlFilters.min_amount,
+      max_amount:urlFilters.max_amount,
+    };
+    $("#contracts-analytics-coverage")?.setAttribute("hidden","");
+    $("#contracts-analytics-concentration")?.setAttribute("hidden","");
+    $("#contracts-analytics-timing")?.setAttribute("hidden","");
+    $("#contracts-analytics-kicker")?.replaceChildren(document.createTextNode(t("analytics_evidence_kicker")));
+    $("#contracts-analytics-heading")?.replaceChildren(document.createTextNode(t("analytics_evidence_heading")));
+    const deck=$("#contracts-analytics-deck");
+    if(deck) deck.textContent=t("analytics_evidence_deck");
+    const population=$("#contracts-analytics-population");
+    if(population) population.textContent=t("analytics_evidence_population",{count:projectionRows.length.toLocaleString("en-US")});
+    $("#contracts-analytics-groups")?.setAttribute("hidden","");
+    $("#contracts-analytics-note")?.setAttribute("hidden","");
+    renderPerformanceEvidenceProjection(projectionRows,filters,projection.performance_evidence);
+    renderAnalyticalFactComparison(projection,filters);
+    renderAnalyticalFactStatus();
+    return;
+  }
   const timingView=view === "timing";
   const kicker=$("#contracts-analytics-kicker");
   if(kicker) kicker.textContent=t(timingView ? "analytics_view_timing" : "analytics_compare_kicker");
@@ -811,6 +928,7 @@ function analyticalFactFilters(){
     max_amount:filters.max_amount,
     retroactive:filters.retroactive,
     city_record_match:filters.city_record_match,
+    performance_evidence_state:filters.performance_evidence_state,
     contract_id:filters.contract_id,
   };
 }
@@ -822,6 +940,7 @@ function analyticalDropQueryKey(key){
     max_amount:"ap_max",
     retroactive:"retroactive",
     city_record_match:"ap_city_record_match",
+    performance_evidence_state:"ap_evidence_state",
     contract_id:"ap_contract_id",
   }[key] || key;
 }
