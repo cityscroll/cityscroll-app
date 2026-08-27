@@ -1360,7 +1360,9 @@ export function renderBrowseView(view) {
     const peopleInstitutionMarkup = view.facet === "people-list"
       ? peopleOrganizationInstitutionMarkup(row, title)
       : "";
-    const detailMarkup = civicObject && row.detail
+    const peopleCommunityBoard = view.facet === "people-list" && civicObject?.kind === "community-board";
+    const peopleCommunityBoardDetail = peopleCommunityBoard && row.detail ? ` · ${esc(row.detail)}` : "";
+    const detailMarkup = civicObject && row.detail && !peopleCommunityBoard
       ? `<p class="browse-static-detail">${esc(row.detail)}</p>`
       : "";
     const assertionInspectHref = String(row.assertion_inspect_href || "").trim();
@@ -1376,7 +1378,7 @@ export function renderBrowseView(view) {
     return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
-      <p class="browse-static-meta">${[typedMetadata, peopleInstitutionMarkup, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
+      <p class="browse-static-meta">${[typedMetadata, peopleInstitutionMarkup, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}${peopleCommunityBoardDetail}</p>
       ${detailMarkup}${view.facet === "contracts" ? renderProcurementRowCoverageHtml(row) : ""}
       ${assertionMarkup}
       ${meetingSourceDetails}

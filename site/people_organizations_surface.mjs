@@ -47,18 +47,23 @@ export function peopleBrowseRows(model = {}) {
     const rawKindLabel = kind.replaceAll("-", " ");
     const kindLabel = kindLabels[kind] || `${rawKindLabel[0].toUpperCase()}${rawKindLabel.slice(1)}`;
     const institutionLabel = String(row.institution_label || institutionLabels[kind] || "").trim();
-    const heading = institutionLabel
-      ? `${institutionLabel} · ${kindLabel} · ${label}${kind === "official" ? "" : ` · ${id}`}`
+    const isCommunityBoard = kind === "community-board";
+    const heading = isCommunityBoard
+      ? label
+      : institutionLabel
+        ? `${institutionLabel} · ${kindLabel} · ${label}${kind === "official" ? "" : ` · ${id}`}`
       : kind === "official"
         ? `${kindLabel} · ${label}`
         : `${label} · ${kindLabel} · ${id}`;
     return [{
       ...row,
       institution: row.institution || (kind === "official" || kind === "exact-person-appointment" || kind === "committee" ? "city-council" : kind.startsWith("community-board") ? "community-board" : kind === "vendor" ? "vendor" : kind === "agency" || kind === "notice-only-hire" ? "agency" : ""),
-      institution_label: institutionLabel,
+      institution_label: isCommunityBoard ? "Community Board" : institutionLabel,
+      institution_ref: isCommunityBoard ? null : row.institution_ref,
+      institution_href: isCommunityBoard ? null : row.institution_href,
       institution_context: row.institution_context || (kind === "official" || kind === "exact-person-appointment" || kind === "committee" ? "Elected legislative body" : ""),
       detail: kind === "official" && row.detail === "Official profile" ? "" : row.detail,
-      show_civic_metadata: kind !== "official",
+      show_civic_metadata: kind !== "official" && !isCommunityBoard,
       show_relation_state: false,
       civic_object: {
         kind,
