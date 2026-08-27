@@ -5,7 +5,12 @@
 // is OPTIONAL — a blank/missing address is valid (the sender just doesn't want a reply).
 
 import { isValidEmail, normalizeEmail } from "./subscriptions.mjs";
-import { REPORT_TARGET_SCHEMA, resolveReportTarget, reportTargetIdentity } from "../../../site/report_target.mjs";
+import {
+  REPORT_IDENTITY_INTENTS,
+  REPORT_TARGET_SCHEMA,
+  resolveReportTarget,
+  reportTargetIdentity,
+} from "../../../site/report_target.mjs";
 
 export const FEEDBACK_CATEGORIES = ["bug", "feature", "general"];
 export const REPORT_CATEGORIES = [
@@ -78,11 +83,22 @@ function normalizeReportTargetForFeedback(value) {
   const isLandProject = target.object_type === "land_use_project"
     && /^project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(target.object_id)
     && target.canonical_url.startsWith("/browse/zoning/#land/");
-  if (!isProcurement && !isLandProject) return null;
+  const isEntity = target.object_type === "entity"
+    && isPublicEntityRef(target.object_id)
+    && isEntityProfileHref(target.object_id, target.canonical_url);
+  if (!isProcurement && !isLandProject && !isEntity) return null;
   const claim = target.claim_anchor;
   if (!claim) return target;
-  if (claim.claim_type !== "relationship") return isProcurement ? target : null;
-  if (!claim.relation_type || !claim.subject_id || !claim.object_id || !claim.field_or_semantic_key) return null;
+  if (claim.claim_type !== "relationship"
+    && !(isEntity && claim.claim_type === "identity")) return isProcurement ? target : null;
+  if (isEntity && claim.claim_type === "identity") {
+    if (claim.field_or_semantic_key !== "identity"
+      || claim.subject_id !== target.object_id
+      || !isPublicEntityRef(claim.object_id)
+      || claim.object_id === target.object_id
+      || !REPORT_IDENTITY_INTENTS.includes(claim.identity_intent)
+      || !claim.object_label) return null;
+  } else if (!claim.relation_type || !claim.subject_id || !claim.object_id || !claim.field_or_semantic_key) return null;
   if (isProcurement) {
     if (claim.relation_type !== "named_vendor"
       || claim.field_or_semantic_key !== "vendor"
@@ -96,4 +112,20 @@ function normalizeReportTargetForFeedback(value) {
       || !/^bbl:\d{10}$/.test(claim.object_id)) return null;
   }
   return target;
+}
+
+function isPublicEntityRef(value) {
+  const ref = String(value || "");
+  return /^entity:official:[^\s]+$/.test(ref)
+    || /^agency:id:[a-z0-9][a-z0-9-]*$/i.test(ref)
+    || /^vendor:stem:[^\s]+$/.test(ref);
+}
+
+function isEntityProfileHref(ref, href) {
+  const value = String(href || "");
+  if (!value.startsWith("/")) return false;
+  if (ref.startsWith("entity:official:")) return value.startsWith("/officials/");
+  if (ref.startsWith("agency:id:")) return value.startsWith("/agencies/");
+  if (ref.startsWith("vendor:stem:")) return value.startsWith("/vendors/");
+  return false;
 }

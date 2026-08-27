@@ -300,6 +300,20 @@ function boardRows(geography = {}) {
     });
 }
 
+function identityCandidates(rows = []) {
+  const candidates = rows
+    .filter((row) => ["official", "agency", "vendor"].includes(row?.kind)
+      && clean(row?.entity_ref, 320) && clean(row?.label) && clean(row?.href))
+    .map((row) => ({
+      entity_id: clean(row.entity_ref, 320),
+      label: clean(row.label, 500),
+      href: clean(row.href, 600),
+      kind: row.kind,
+    }));
+  return [...new Map(candidates.map((candidate) => [candidate.entity_id, candidate])).values()]
+    .sort((left, right) => left.label.localeCompare(right.label) || left.entity_id.localeCompare(right.entity_id));
+}
+
 export function buildPeopleOrganizationsReadModel(sources = {}) {
   const people = sources.people || {};
   const committees = sources.committees || {};
@@ -323,6 +337,9 @@ export function buildPeopleOrganizationsReadModel(sources = {}) {
     schema: "cityscroll.people_organizations_read_model.v1",
     row_kinds: [...PEOPLE_ORGANIZATION_ROW_KINDS],
     rows,
+    // Existing profiles are lookup choices only. They are not inferred
+    // matches, and selecting one creates no change to either profile.
+    identity_candidates: identityCandidates(rows),
     counts: Object.fromEntries(PEOPLE_ORGANIZATION_ROW_KINDS.map((kind) => [kind, rows.filter((row) => row.kind === kind).length])),
     relation_states: [...RELATION_STATES],
     generated_at: sourceDate(people.retrieved_at, committees.generated_at, agencies.generated_at, places.generated_at, hires.generated_at),

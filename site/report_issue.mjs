@@ -3,6 +3,7 @@ import {
   buildReportTarget,
   buildReportTargetFromAnchor,
   buildRelationshipReportTarget,
+  REPORT_IDENTITY_INTENTS,
   reportTargetIdentity,
   resolveReportTarget,
   serializeReportTarget,
@@ -40,6 +41,125 @@ function reportClean(value, max = 500) {
     .trim()
     .slice(0, max);
   return result || null;
+}
+
+const IDENTITY_CATEGORY_LABELS = Object.freeze({
+  same_thing: "Same person or organization",
+  different_things: "Different people or organizations",
+});
+
+function identityRef(value) {
+  const ref = reportClean(value, 320);
+  if (!ref || /\s/.test(ref)) return null;
+  if (/^entity:official:[^\s]+$/.test(ref)) return ref;
+  if (/^agency:id:[a-z0-9][a-z0-9-]*(?:-[a-z0-9]+)*$/i.test(ref)) return ref;
+  if (/^vendor:stem:[^\s]+$/.test(ref)) return ref;
+  return null;
+}
+
+function identityCanonicalUrl(ref, href) {
+  const value = reportClean(href, 600);
+  if (!value || !value.startsWith("/")) return null;
+  if (ref?.startsWith("entity:official:") && !value.startsWith("/officials/")) return null;
+  if (ref?.startsWith("agency:id:") && !value.startsWith("/agencies/")) return null;
+  if (ref?.startsWith("vendor:stem:") && !value.startsWith("/vendors/")) return null;
+  return value;
+}
+
+/** Build the initial identity-report target for an existing person or
+ * organization profile. The second profile is selected in the shared report
+ * dialog, then added to the final immutable target at submission time. */
+export function buildEntityProfileReportTarget({
+  entity_ref,
+  entity_id,
+  canonical_url,
+  object_label,
+  identity_lookup_href = "/data/people_organizations_read_model.json",
+  identity_candidates = null,
+} = {}) {
+  const ref = identityRef(entity_ref || entity_id);
+  const href = identityCanonicalUrl(ref, canonical_url);
+  const label = reportClean(object_label, 1_000);
+  if (!ref || !href || !label) return null;
+  try {
+    return buildReportTarget({
+      object_type: "entity",
+      object_id: ref,
+      canonical_url: href,
+      object_label: label,
+      claim_anchor: {
+        anchor: `${ref}#identity`,
+        claim_type: "identity",
+        field_or_semantic_key: "identity",
+        subject_id: ref,
+        subject_label: label,
+      },
+      identity_lookup_href,
+      identity_candidates,
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Add the expert's explicit same/different hypothesis and the selected
+ * existing profile to an identity target. This function changes only the
+ * report payload, never a canonical entity record. */
+export function buildEntityIdentityReportTarget({
+  source_target = null,
+  entity_ref,
+  entity_id,
+  canonical_url,
+  object_label,
+  other_entity_ref,
+  other_entity_id,
+  other_entity_label,
+  identity_intent,
+  identity_lookup_href = null,
+  identity_candidates = null,
+  provenance = null,
+  source = null,
+} = {}) {
+  const sourceTarget = source_target || buildEntityProfileReportTarget({
+    entity_ref,
+    entity_id,
+    canonical_url,
+    object_label,
+    identity_lookup_href,
+    identity_candidates,
+  });
+  const subject = identityRef(sourceTarget?.object_id || entity_ref || entity_id);
+  const object = identityRef(other_entity_ref || other_entity_id);
+  const intent = reportClean(identity_intent, 80);
+  const subjectLabel = reportClean(sourceTarget?.object_label || object_label, 1_000);
+  const objectLabel = reportClean(other_entity_label, 1_000);
+  if (!sourceTarget || !subject || !object || subject === object || !objectLabel
+    || !REPORT_IDENTITY_INTENTS.includes(intent)) return null;
+  try {
+    return buildReportTarget({
+      object_type: "entity",
+      object_id: subject,
+      canonical_url: sourceTarget.canonical_url,
+      object_label: subjectLabel,
+      claim_anchor: {
+        ...(sourceTarget.claim_anchor || {}),
+        anchor: `${subject}#identity`,
+        claim_type: "identity",
+        field_or_semantic_key: "identity",
+        subject_id: subject,
+        subject_label: subjectLabel,
+        object_id: object,
+        object_label: objectLabel,
+        identity_intent: intent,
+      },
+      identity_lookup_href: identity_lookup_href || sourceTarget.identity_lookup_href,
+      identity_candidates: identity_candidates || sourceTarget.identity_candidates,
+      provenance: provenance || sourceTarget.provenance,
+      source,
+    });
+  } catch {
+    return null;
+  }
 }
 
 function esc(value) {
@@ -256,6 +376,12 @@ export function renderReportIssueAffordance(target, options = {}) {
 
 function categoryOptions(target) {
   const claimType = target?.claim_anchor?.claim_type;
+  if (claimType === "identity") {
+    return REPORT_CATEGORIES
+      .filter((item) => Object.hasOwn(IDENTITY_CATEGORY_LABELS, item.value))
+      .map((item) => `<option value="${esc(item.value)}">${esc(IDENTITY_CATEGORY_LABELS[item.value])}</option>`)
+      .join("");
+  }
   const allowed = claimType === "relationship"
     ? RELATIONSHIP_REPORT_CATEGORIES
     : target?.claim_anchor?.field_or_semantic_key === "vendor"
@@ -286,6 +412,14 @@ function dialogHtml() {
         <input type="hidden" name="canonical_url">
         <label for="report-issue-category">Category</label>
         <select id="report-issue-category" name="category" required data-report-category></select>
+        <fieldset class="report-identity-picker" data-report-identity-picker hidden>
+          <legend>Which existing profile is this report about?</legend>
+          <p class="report-identity-help">Choose the other person or organization profile you are comparing. Selecting a profile records a hypothesis for review; it does not change either profile.</p>
+          <label for="report-identity-search">Find a profile</label>
+          <input id="report-identity-search" type="search" autocomplete="off" data-report-identity-search placeholder="Search names and organizations">
+          <div class="report-identity-results" role="list" aria-label="Existing people and organization profiles" data-report-identity-results></div>
+          <p class="report-identity-selected" data-report-identity-selected role="status" aria-live="polite"></p>
+        </fieldset>
         <label for="report-issue-message">What is wrong?</label>
         <textarea id="report-issue-message" name="message" required minlength="10" maxlength="2000" data-report-message></textarea>
         <label for="report-issue-evidence">Source or evidence <span class="report-issue-optional">— optional</span></label>
@@ -342,6 +476,65 @@ function installHandlers(dialog, documentRef) {
   const category = dialog.querySelector("[data-report-category]");
   const message = dialog.querySelector("[data-report-message]");
   const submit = dialog.querySelector("[data-report-submit]");
+  const identityPicker = dialog.querySelector("[data-report-identity-picker]");
+  const identitySearch = dialog.querySelector("[data-report-identity-search]");
+  const identityResults = dialog.querySelector("[data-report-identity-results]");
+  const identitySelected = dialog.querySelector("[data-report-identity-selected]");
+  let identityCandidates = [];
+  let selectedIdentity = null;
+  let identityLoadToken = 0;
+
+  function identityKindLabel(kind) {
+    return ({ official: "Person profile", agency: "Agency profile", vendor: "Organization profile" })[kind] || "Profile";
+  }
+
+  function renderIdentityCandidates() {
+    if (!identityResults) return;
+    const query = String(identitySearch?.value || "").trim().toLowerCase();
+    const shown = identityCandidates.filter((candidate) => !query
+      || `${candidate.label} ${identityKindLabel(candidate.kind)}`.toLowerCase().includes(query));
+    identityResults.innerHTML = shown.length
+        ? shown.map((candidate) => `<div class="report-identity-result" role="listitem">
+          <button type="button" data-report-identity-candidate="${esc(candidate.entity_id)}" data-report-identity-label="${esc(candidate.label)}" data-report-identity-href="${esc(candidate.href)}" data-report-identity-kind="${esc(candidate.kind || "profile")}">
+            <span>${esc(candidate.label)}</span><small>${esc(identityKindLabel(candidate.kind))}</small>
+          </button>
+          <a href="${esc(candidate.href)}" target="_blank" rel="noopener noreferrer"><span>Open profile</span><span class="sr-only"> (opens in new tab)</span></a>
+        </div>`).join("")
+      : `<p class="report-identity-empty" role="listitem">No matching existing profiles. Try a broader search; nothing is selected automatically.</p>`;
+  }
+
+  function setSelectedIdentity(candidate) {
+    selectedIdentity = candidate;
+    if (identitySelected) identitySelected.textContent = candidate
+      ? `Selected: ${candidate.label} (${identityKindLabel(candidate.kind)}).`
+      : "";
+    identityResults?.querySelectorAll("[data-report-identity-candidate]").forEach((button) => {
+      button.setAttribute("aria-pressed", button.dataset.reportIdentityCandidate === candidate?.entity_id ? "true" : "false");
+    });
+  }
+
+  async function loadIdentityCandidates(target) {
+    const token = ++identityLoadToken;
+    identityCandidates = Array.isArray(target.identity_candidates) ? target.identity_candidates : [];
+    if (!identityCandidates.length && target.identity_lookup_href) {
+      if (identityResults) identityResults.innerHTML = `<p class="report-identity-empty" role="listitem">Loading existing profiles…</p>`;
+      try {
+        const response = await fetch(target.identity_lookup_href, { cache: "force-cache", credentials: "omit" });
+        const model = response.ok ? await response.json() : null;
+        identityCandidates = Array.isArray(model?.rows) ? model.rows
+          .filter((row) => ["official", "agency", "vendor"].includes(row?.kind) && row?.entity_ref && row?.label && row?.href)
+          .map((row) => ({ entity_id: row.entity_ref, label: row.label, href: row.href, kind: row.kind })) : [];
+      } catch {
+        identityCandidates = [];
+      }
+    }
+    if (token !== identityLoadToken) return;
+    const current = target.object_id;
+    identityCandidates = [...new Map(identityCandidates
+      .filter((candidate) => candidate?.entity_id && candidate.entity_id !== current)
+      .map((candidate) => [candidate.entity_id, candidate])).values()];
+    renderIdentityCandidates();
+  }
 
   function showFailureState() {
     activeTarget = null;
@@ -375,6 +568,13 @@ function installHandlers(dialog, documentRef) {
     form.elements.object_id.value = target.object_id;
     form.elements.canonical_url.value = target.canonical_url;
     category.innerHTML = categoryOptions(target);
+    const isIdentity = target.claim_anchor?.claim_type === "identity";
+    identityPicker.hidden = !isIdentity;
+    selectedIdentity = null;
+    identitySearch.value = "";
+    identitySelected.textContent = "";
+    identityResults.innerHTML = isIdentity ? `<p class="report-identity-empty" role="listitem">Loading existing profiles…</p>` : "";
+    if (isIdentity) loadIdentityCandidates(target);
     message.value = "";
     form.elements.evidence.value = "";
     form.elements.email.value = "";
@@ -383,6 +583,21 @@ function installHandlers(dialog, documentRef) {
     showDialog(dialog);
     category.focus();
   }
+
+  category.addEventListener("change", () => {
+    if (activeTarget?.claim_anchor?.claim_type === "identity") setSelectedIdentity(selectedIdentity);
+  });
+  identitySearch?.addEventListener("input", renderIdentityCandidates);
+  identityResults?.addEventListener("click", (event) => {
+    const button = event.target?.closest?.("[data-report-identity-candidate]");
+    if (!button) return;
+    setSelectedIdentity({
+      entity_id: button.dataset.reportIdentityCandidate,
+      label: button.dataset.reportIdentityLabel,
+      href: button.dataset.reportIdentityHref,
+      kind: button.dataset.reportIdentityKind || "profile",
+    });
+  });
 
   documentRef.addEventListener("click", (event) => {
     const button = event.target?.closest?.("[data-report-target]");
@@ -403,6 +618,29 @@ function installHandlers(dialog, documentRef) {
     if (!activeTarget || form.dataset.targetId !== activeTarget.target_id) {
       showFailureState();
       return;
+    }
+    if (activeTarget.claim_anchor?.claim_type === "identity") {
+      if (!selectedIdentity) {
+        status.textContent = "Choose an existing profile before sending this identity report.";
+        identitySearch?.focus();
+        return;
+      }
+      const identityTarget = buildEntityIdentityReportTarget({
+        source_target: activeTarget,
+        other_entity_ref: selectedIdentity.entity_id,
+        other_entity_label: selectedIdentity.label,
+        identity_intent: category.value === "same_thing" ? "same_entity" : "different_entities",
+      });
+      if (!identityTarget) {
+        showFailureState();
+        return;
+      }
+      activeTarget = identityTarget;
+      form.dataset.targetId = identityTarget.target_id;
+      form.elements.report_target.value = serializeReportTarget(identityTarget);
+      form.elements.report_target_id.value = identityTarget.target_id;
+      form.elements.object_id.value = identityTarget.object_id;
+      form.elements.canonical_url.value = identityTarget.canonical_url;
     }
     const explanation = message.value.trim();
     if (explanation.length < 10) {
