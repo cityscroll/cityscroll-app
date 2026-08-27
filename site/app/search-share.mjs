@@ -5,7 +5,10 @@ import {
   parseSearchLensHandoff,
   renderSearchLensHandoffHtml,
 } from "../search_lens_handoff.mjs";
-import { calendarSubscriptionHrefForScope } from "../calendar_subscription.mjs";
+import {
+  calendarSubscriptionDetailsForScope,
+  renderCalendarSubscriptionHandoff,
+} from "../calendar_subscription.mjs";
 
 let nlParserPromise;
 function scopeHash(lens, hash){
@@ -845,15 +848,84 @@ function syncCalendarSubscription(lens, rows = null) {
   if (!control || !globalThis.CrolScope) return null;
   const hash = location.hash.startsWith(`#${lens}`) ? location.hash : `#${lens}`;
   const scope = CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
-  const href = calendarSubscriptionHrefForScope(scope, {
+  const details = calendarSubscriptionDetailsForScope(scope, {
     lens,
     rows: rows || calendarRowsForLens(lens),
   });
-  if (!href) return null;
-  control.href = href;
+  if (!details) return null;
+  control.href = details.webcalUrl;
+  control.dataset.calendarSubscriptionFeed = details.feedUrl;
+  control.dataset.calendarSubscriptionWebcal = details.webcalUrl;
+  control.dataset.calendarSubscriptionLabel = details.scopeLabel;
   control.hidden = false;
-  return href;
+  return details.feedUrl;
 }
+
+function calendarSubscriptionConfig(control) {
+  const feedUrl = control?.dataset.calendarSubscriptionFeed || "";
+  const webcalUrl = control?.dataset.calendarSubscriptionWebcal || control?.href || "";
+  const scopeLabel = control?.dataset.calendarSubscriptionLabel || t("calendar_this_scope");
+  return feedUrl && webcalUrl ? { feedUrl, webcalUrl, scopeLabel } : null;
+}
+
+async function copyCalendarSubscriptionUrl(url, button, status) {
+  let copied = false;
+  try {
+    await navigator.clipboard.writeText(url);
+    copied = true;
+  } catch {
+    try {
+      const input = document.createElement("textarea");
+      input.value = url;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.append(input);
+      input.select();
+      copied = document.execCommand("copy");
+      input.remove();
+    } catch {}
+  }
+  if (status) status.textContent = copied ? t("calendar_url_copied") : t("calendar_copy_failed");
+  if (button) {
+    const original = button.textContent;
+    button.textContent = copied ? t("calendar_copy_done") : t("calendar_copy_url");
+    setTimeout(() => { if (button.isConnected) button.textContent = original; }, 1800);
+  }
+}
+
+function openCalendarSubscriptionHandoff(control) {
+  const config = calendarSubscriptionConfig(control);
+  if (!config) return;
+  const existing = document.querySelector("[data-calendar-subscription-dialog]");
+  existing?.remove();
+  const template = document.createElement("template");
+  template.innerHTML = renderCalendarSubscriptionHandoff(config);
+  const dialog = template.content.firstElementChild;
+  if (!dialog) return;
+  document.body.append(dialog);
+  const close = () => {
+    if (dialog.open && typeof dialog.close === "function") dialog.close();
+    else dialog.remove();
+    control.focus();
+  };
+  dialog.querySelector("[data-calendar-subscription-close]")?.addEventListener("click", close);
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) close();
+  });
+  dialog.addEventListener("close", () => control.focus(), { once: true });
+  const copy = dialog.querySelector("[data-calendar-subscription-copy]");
+  copy?.addEventListener("click", () => copyCalendarSubscriptionUrl(config.feedUrl, copy, dialog.querySelector("[data-calendar-subscription-status]")));
+  if (typeof dialog.showModal === "function") dialog.showModal();
+  else dialog.setAttribute("open", "");
+}
+
+document.addEventListener("click", (event) => {
+  const control = event.target.closest?.('[data-calendar-subscription="scope"]');
+  if (!control) return;
+  event.preventDefault();
+  openCalendarSubscriptionHandoff(control);
+});
 
 function renderSearchComponents(lens, options){
   renderSearchLensHandoff(lens);

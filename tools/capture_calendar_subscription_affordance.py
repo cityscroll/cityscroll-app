@@ -31,12 +31,14 @@ def capture(browser, base: str, phase: str) -> None:
     for width, height, name in VIEWPORTS:
         page = browser.new_page(viewport={"width": width, "height": height}, device_scale_factor=1)
         page.goto(f"{base.rstrip('/')}{ROUTE}", wait_until="networkidle", timeout=45_000)
-        control = page.locator('a[data-calendar-subscribe-lens="meetings"]')
+        control = page.locator('a[data-calendar-subscription="scope"][data-calendar-subscription-label="Meetings"]:not([hidden])')
         if phase == "after":
             control.wait_for(state="visible", timeout=20_000)
             assert control.inner_text() == "Subscribe to calendar"
+            control.click()
+            page.locator("[data-calendar-subscription-dialog][open]").wait_for(state="visible", timeout=10_000)
         else:
-            assert control.count() == 0
+            assert page.locator("[data-calendar-subscription-dialog]").count() == 0
         page.locator("#meetings-toolbar").scroll_into_view_if_needed()
         assert_no_horizontal_overflow(page)
         page.screenshot(

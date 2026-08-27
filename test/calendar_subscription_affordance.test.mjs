@@ -3,10 +3,14 @@ import { test } from "node:test";
 
 import {
   calendarOccurrenceForRow,
+  calendarNativeSubscriptionUrl,
+  calendarScopeLabel,
+  calendarSubscriptionDetailsForScope,
   calendarSubscriptionHrefForBrowseView,
   calendarSubscriptionHrefForScope,
   hasDefensibleDatedOccurrences,
   renderCalendarSubscriptionAffordance,
+  renderCalendarSubscriptionHandoff,
 } from "../site/calendar_subscription.mjs";
 import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
 import { scopeFromRouteHash } from "../site/scope_v0.mjs";
@@ -75,4 +79,31 @@ test("Browse subscription helper remains fail-closed for unsupported scope dimen
   };
   assert.equal(calendarSubscriptionHrefForBrowseView(view), null);
   assert.equal(renderCalendarSubscriptionAffordance(view), "");
+});
+
+test("handoff keeps HTTPS for copying and uses webcal for native subscription", () => {
+  const scope = scopeFromRouteHash("#meetings?agency=City%20Planning&council=33&when=upcoming");
+  const details = calendarSubscriptionDetailsForScope(scope, {
+    rows: [{ meeting_id: "meeting:city_record:123", event_date: "2026-09-15" }],
+  });
+  assert.ok(details);
+  assert.match(details.feedUrl, /^https:\/\//);
+  assert.match(details.webcalUrl, /^webcal:\/\//);
+  assert.equal(calendarNativeSubscriptionUrl(details.feedUrl), details.webcalUrl);
+  assert.match(details.scopeLabel, /Meetings/);
+  assert.match(details.scopeLabel, /City Planning/);
+  assert.match(details.scopeLabel, /Council District 33/);
+  assert.equal(calendarScopeLabel(scope, "meetings"), details.scopeLabel);
+  const handoff = renderCalendarSubscriptionHandoff(details);
+  assert.match(handoff, /<dialog[^>]+data-calendar-subscription-dialog/);
+  assert.match(handoff, /Subscribe to Meetings/);
+  assert.match(handoff, /Keep new and rescheduled events from this scope in your calendar automatically/);
+  assert.match(handoff, /href="webcal:/);
+  assert.match(handoff, /data-copy-url="https:/);
+  assert.match(handoff, /Open calendar subscription/);
+  assert.match(handoff, /Copy subscription URL/);
+  assert.match(handoff, /Google Calendar/);
+  assert.match(handoff, /Outlook/);
+  assert.match(handoff, /How to subscribe/);
+  assert.doesNotMatch(handoff, /calendar_subscribed|Calendar: Active/);
 });
