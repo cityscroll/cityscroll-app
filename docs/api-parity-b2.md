@@ -44,6 +44,13 @@ footprint trace requested no `search_entry.mjs`, `search_document.mjs`, or
 `capabilities/federated_search.mjs` module. This keeps the Search capability
 off unrelated routes without changing the vendor-footprint gate.
 
+The decisive clean-main control reproduced the vendor timing failure: the
+unmodified main build measured 2.39s on the same fixture, versus 2.33–2.37s
+on this branch. The clean-main property notice-actions check passed; the
+intermittent timeout in the full route shard is therefore recorded separately
+from this Search migration. The vendor-footprint failure is pre-existing or
+runner-sensitive evidence for follow-up, not a Search regression.
+
 The live public response was sampled with `cache-control: public, max-age=60,
 stale-while-revalidate=300`. Static HTML paints first; the two bounded Search
 requests settle asynchronously. The receipt preserves per-lens `state`, source,
