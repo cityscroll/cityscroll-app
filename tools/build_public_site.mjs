@@ -11,6 +11,11 @@ import {
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import {
+  discoverClientModuleGraph,
+  repositoryRelativePath,
+} from "./client_module_graph.mjs";
+
 const scriptRoot = dirname(fileURLToPath(import.meta.url));
 
 function usage() {
@@ -82,6 +87,24 @@ function copyTree(sourceRoot, destinationRoot) {
   visit(sourceRoot, destinationRoot);
 }
 
+function publishClientCapabilityModules(sourceDir, siteSource, siteDir) {
+  const graph = discoverClientModuleGraph({
+    rootDir: siteSource,
+    sourceRoots: [siteSource, sourceDir],
+  });
+  if (graph.missing.length) {
+    throw new Error(`Client module graph has missing source modules: ${graph.missing.join(", ")}`);
+  }
+
+  for (const { sourcePath } of graph.modules.values()) {
+    const repositoryPath = repositoryRelativePath(sourcePath, sourceDir);
+    if (!repositoryPath?.startsWith("capabilities/")) continue;
+    const destinationPath = join(siteDir, repositoryPath);
+    mkdirSync(dirname(destinationPath), { recursive: true });
+    cpSync(sourcePath, destinationPath);
+  }
+}
+
 const args = parseArgs(process.argv.slice(2));
 const cwd = process.cwd();
 const sourceDir = resolve(cwd, args["source-dir"] || ".");
@@ -95,4 +118,5 @@ if (siteDir === sourceDir || siteDir === siteSource || siteDir.startsWith(`${sou
 }
 
 copyTree(siteSource, siteDir);
+publishClientCapabilityModules(sourceDir, siteSource, siteDir);
 console.log(`Built public site from ${relative(cwd, siteSource) || "."} to ${relative(cwd, siteDir) || "."}`);

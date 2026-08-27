@@ -125,6 +125,7 @@ for (const [kind, path, toolArgs] of standards) {
 }
 
 runNode(sourceDir, "build_public_site.mjs", ["--source-dir", sourceDir, "--site-dir", siteDir]);
+runNode(sourceDir, "check_client_module_assets.mjs", ["--site-dir", siteDir]);
 runNode(sourceDir, "check_pages_bundle_sizes.mjs", ["--site-dir", siteDir]);
 const releaseId = /^[a-f0-9]{40}$/.test(commitSha)
   ? commitSha
