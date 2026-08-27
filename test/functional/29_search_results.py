@@ -167,7 +167,7 @@ def json_response(route, body):
 
 SEARCH_LENSES = [
     "notices", "people", "agencies", "vendors", "committees",
-    "community_boards", "exams", "parcels",
+    "community_boards", "exams", "parcels", "land", "meetings",
 ]
 FAMILIES = ["contracts", "people-organizations", "land", "rules", "meetings", "exams"]
 

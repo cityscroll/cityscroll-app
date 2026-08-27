@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import { describe, it } from "node:test";
@@ -69,7 +69,9 @@ describe("independent Checkbook payment population", () => {
 
 describe("payment population fixture acquisition", () => {
   it("writes a named population receipt and normalized CSV", () => {
-    const stage = mkdtempSync(join(ROOT, ".generated", "checkbook-payment-population-test-"));
+    const generated = join(ROOT, ".generated");
+    mkdirSync(generated, { recursive: true });
+    const stage = mkdtempSync(join(generated, "checkbook-payment-population-test-"));
     const receipt = join(stage, "receipt.json");
     const output = join(stage, "payments.csv");
     const run = spawnSync(process.execPath, [

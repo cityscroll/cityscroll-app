@@ -47,6 +47,18 @@ const PLACE_KEYS = Object.freeze([
   ["neighborhood", "Neighborhood"],
   ["scope", "Area"],
 ]);
+let searchCoverageProjectionPromise;
+
+async function canonicalSearchCoverage(payload) {
+  if (!payload?.federated) return payload?.coverage || null;
+  try {
+    searchCoverageProjectionPromise ||= import("./search_capability_projection.mjs");
+    const { canonicalSearchCoverage: projectCoverage } = await searchCoverageProjectionPromise;
+    return projectCoverage(payload);
+  } catch {
+    return payload?.coverage || null;
+  }
+}
 
 function clean(value, max = MAX_QUERY_LENGTH) {
   return String(value ?? "")
@@ -441,7 +453,7 @@ function renderSemanticResults(root, response, keywordCoverage = null) {
   }
 }
 
-function renderCombinedResults(root, response, keywordPayload) {
+function renderCombinedResults(root, response, keywordPayload, keywordCoverage = null) {
   root.querySelector("[data-semantic-lanes]")?.removeAttribute("hidden");
   root.querySelector("[data-keyword-lanes]")?.setAttribute("hidden", "");
 
@@ -497,14 +509,14 @@ function renderCombinedResults(root, response, keywordPayload) {
     elements.body.append(list);
     appendFamilyReceipt(elements.body, families.get(group.id));
   }
-  renderCoverage(root, keywordPayload?.coverage, renderedCount);
+  renderCoverage(root, keywordCoverage, renderedCount);
 }
 
-function renderLegacyResults(root, payload) {
+function renderLegacyResults(root, payload, coverage = null) {
   root.querySelector("[data-semantic-lanes]")?.setAttribute("hidden", "");
   root.querySelector("[data-keyword-lanes]")?.removeAttribute("hidden");
   const matchCount = renderResults(root, payload);
-  renderCoverage(root, payload?.coverage, matchCount);
+  renderCoverage(root, coverage, matchCount);
 }
 
 function renderInitialState(root, query) {
@@ -601,6 +613,7 @@ async function loadResults(root, query) {
   ]);
   const candidatePayload = candidateAttempt.status === "fulfilled" ? candidateAttempt.value : null;
   const keywordPayload = keywordAttempt.status === "fulfilled" ? keywordAttempt.value : null;
+  const keywordCoverage = await canonicalSearchCoverage(keywordPayload);
   const semantic = candidatePayload
     ? normalizeSemanticCandidateResponse(candidatePayload, { expectedQuery: query })
     : null;
@@ -610,32 +623,33 @@ async function loadResults(root, query) {
   const hasKeywordResults = Boolean(keywordPayload?.results.length);
 
   if (semantic?.state === "typed" && hasSemanticResults && hasKeywordResults) {
-    lastResponse = { state: "combined", semantic, keyword: keywordPayload };
-    renderCombinedResults(root, semantic, keywordPayload);
+    lastResponse = { state: "combined", semantic, keyword: keywordPayload, keywordCoverage };
+    renderCombinedResults(root, semantic, keywordPayload, keywordCoverage);
     return;
   }
   if (keywordPayload && hasKeywordResults) {
-    lastResponse = { state: "legacy", payload: keywordPayload };
-    renderLegacyResults(root, keywordPayload);
+    lastResponse = { state: "legacy", payload: keywordPayload, coverage: keywordCoverage };
+    renderLegacyResults(root, keywordPayload, keywordCoverage);
     return;
   }
   if (semantic?.state === "typed") {
-    renderSemanticResults(root, semantic, keywordPayload?.coverage);
+    renderSemanticResults(root, semantic, keywordCoverage);
     lastResponse = {
       state: "semantic",
       semantic,
-      keywordCoverage: keywordPayload?.coverage,
+      keywordCoverage,
     };
     return;
   }
   if (candidateLegacy) {
-    lastResponse = { state: "legacy", payload: candidateLegacy };
-    renderLegacyResults(root, candidateLegacy);
+    const candidateCoverage = await canonicalSearchCoverage(candidateLegacy);
+    lastResponse = { state: "legacy", payload: candidateLegacy, coverage: candidateCoverage };
+    renderLegacyResults(root, candidateLegacy, candidateCoverage);
     return;
   }
   if (keywordPayload) {
-    lastResponse = { state: "legacy", payload: keywordPayload };
-    renderLegacyResults(root, keywordPayload);
+    lastResponse = { state: "legacy", payload: keywordPayload, coverage: keywordCoverage };
+    renderLegacyResults(root, keywordPayload, keywordCoverage);
     return;
   }
   renderCoverage(root, null);
@@ -657,10 +671,10 @@ function repaintResults(root) {
     renderSemanticResults(root, lastResponse.semantic, lastResponse.keywordCoverage);
   }
   else if (lastResponse?.state === "combined") {
-    renderCombinedResults(root, lastResponse.semantic, lastResponse.keyword);
+    renderCombinedResults(root, lastResponse.semantic, lastResponse.keyword, lastResponse.keywordCoverage);
   }
   else if (lastResponse?.state === "legacy") {
-    renderLegacyResults(root, lastResponse.payload);
+    renderLegacyResults(root, lastResponse.payload, lastResponse.coverage);
   }
 }
 
