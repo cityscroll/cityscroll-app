@@ -11,14 +11,9 @@ import {
 import { contractSearchDocumentToMoneyRow } from "../../site/contract_search_bridge.mjs";
 import { publicProcurementAmount } from "../../site/checkbook_passport_corroboration.mjs";
 import {
-  ANALYTICAL_MEASURES,
   ANALYTICAL_PROJECTION_URL,
-  analyticalDrillThroughHref,
-  cityRecordCoverage,
-  filterAnalyticalContracts,
-  groupAnalyticalContracts,
 } from "../../site/analytical_projection.mjs";
-import { ANALYTICAL_PROJECTION_SCHEMA, REGISTERED_CONTRACT_PROJECTION } from "../../site/analytical_projection_contract.mjs";
+import { ANALYTICAL_PROJECTION_SCHEMA } from "../../site/analytical_projection_contract.mjs";
 import {
   CONTRACT_GET_CAPABILITY_REFERENCE,
   CONTRACT_GET_LIMITS,
@@ -31,13 +26,12 @@ import {
   executeContractsBrowse,
 } from "../../capabilities/contracts.mjs";
 import {
-  CONTRACTS_ANALYSIS_AVAILABILITY,
   CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
-  CONTRACTS_ANALYSIS_LIMITS,
   CONTRACTS_ANALYSIS_PROVIDER_ID,
   CONTRACTS_ANALYSIS_REPRESENTATIONS,
   executeContractsAnalysis,
 } from "../../capabilities/contracts_analysis.mjs";
+import { createContractsAnalysisProvider } from "../../capabilities/contracts_analysis_provider.mjs";
 
 const SHARED_MODEL_ORIGIN = "https://cityscroll.org";
 const SHARED_MODEL_PATH = "/data/shared_procurement_read_model.json";
@@ -350,169 +344,13 @@ export function workerContractsBrowse(env) {
   });
 }
 
-function analyticalInputFilters(input) {
-  return {
-    ...(input.agency == null ? {} : { agency: input.agency }),
-    ...(input.vendor == null ? {} : { prime_vendor: input.vendor }),
-    ...(input.fiscalYear == null ? {} : { registration_fiscal_year: input.fiscalYear }),
-    ...(input.amountBand == null ? {} : { contract_amount_band: input.amountBand }),
-    ...(input.minAmount == null ? {} : { min_amount: input.minAmount }),
-    ...(input.maxAmount == null ? {} : { max_amount: input.maxAmount }),
-    ...(input.retroactive == null ? {} : { retroactive: input.retroactive }),
-    ...(input.cityRecordMatch == null ? {} : { city_record_match: input.cityRecordMatch }),
-  };
-}
-
-function publicAnalyticalFilters(input) {
-  return {
-    group_by: input.groupBy || "agency",
-    measure: input.measure || "current",
-    ...(input.agency == null ? {} : { agency: input.agency }),
-    ...(input.vendor == null ? {} : { vendor: input.vendor }),
-    ...(input.fiscalYear == null ? {} : { fiscal_year: input.fiscalYear }),
-    ...(input.amountBand == null ? {} : { amount_band: input.amountBand }),
-    ...(input.minAmount == null ? {} : { min_amount: input.minAmount }),
-    ...(input.maxAmount == null ? {} : { max_amount: input.maxAmount }),
-    ...(input.retroactive == null ? {} : { retroactive: input.retroactive }),
-    ...(input.cityRecordMatch == null ? {} : { city_record_match: input.cityRecordMatch }),
-    limit: input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups,
-  };
-}
-
-function analyticalMeasure(measure) {
-  const id = ANALYTICAL_MEASURES[measure];
-  const definition = REGISTERED_CONTRACT_PROJECTION.measures[id];
-  const isCount = measure === "count";
-  return {
-    key: measure,
-    id,
-    label: definition.label,
-    reader_label: definition.reader_label,
-    aggregation: definition.aggregation,
-    value_field: definition.source_field,
-    unit: isCount ? "contracts" : "USD",
-    fact: "registered_contract",
-    not_payment: true,
-  };
-}
-
-function analyticalGroupFilters(input, groupBy, label) {
-  const filters = publicAnalyticalFilters(input);
-  delete filters.group_by;
-  delete filters.measure;
-  delete filters.limit;
-  if (groupBy === "agency" && label !== "Unknown / not published") filters.agency = label;
-  if (groupBy === "vendor" && label !== "Unknown / not published") filters.vendor = label;
-  if (groupBy === "registration_fiscal_year" && label !== "Unknown / not published") filters.fiscal_year = Number(label);
-  if (groupBy === "amount_band" && label !== "Unknown / not published") filters.amount_band = label;
-  return filters;
-}
-
-function analyticalHref(input, groupBy, label) {
-  const filters = analyticalGroupFilters(input, groupBy, label);
-  return analyticalDrillThroughHref({
-    agency: filters.agency,
-    prime_vendor: filters.vendor,
-    registration_fiscal_year: filters.fiscal_year,
-    contract_amount_band: filters.amount_band,
-    min_amount: filters.min_amount,
-    max_amount: filters.max_amount,
-    retroactive: filters.retroactive,
-    city_record_match: filters.city_record_match,
-  });
-}
-
-function analyzeRegisteredContracts(projection, input) {
-  if (projection?.schema !== ANALYTICAL_PROJECTION_SCHEMA || !Array.isArray(projection.rows)) {
-    throw new Error("registered contract analytical projection is unavailable");
-  }
-  const filtered = filterAnalyticalContracts(projection.rows, analyticalInputFilters(input));
-  const groupBy = input.groupBy || "agency";
-  const measure = input.measure || "current";
-  const grouped = groupAnalyticalContracts(filtered, { groupBy, measure, topN: input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups });
-  const measureView = analyticalMeasure(measure);
-  const valueKey = grouped.value_key;
-  const groups = grouped.shown_groups.map((group) => {
-    const value = Number(group[valueKey]) || 0;
-    return {
-      label: group.label,
-      value,
-      measure_value: value,
-      unit: measureView.unit,
-      contract_count: group.contract_count,
-      contract_ids: [...group.contract_ids],
-      drill_through: {
-        href: analyticalHref(input, groupBy, group.label),
-        filters: analyticalGroupFilters(input, groupBy, group.label),
-      },
-    };
-  });
-  const denominatorValue = grouped.groups.reduce((sum, group) => sum + (Number(group[valueKey]) || 0), 0);
-  const denominatorContractCount = new Set(filtered.map((row) => row.prime_contract_id)).size;
-  const denominatorValueCount = filtered.filter((row) => {
-    const field = measure === "original" ? "original_registered_amount" : "current_registered_amount";
-    return measure === "count" || Number.isFinite(Number(row[field]));
-  }).length;
-  const coverage = cityRecordCoverage(filtered, { min_amount: -Number.MAX_VALUE });
-  const sourcePopulation = projection.source_population || {};
-  const selectedDescription = denominatorContractCount
-    ? `${denominatorContractCount.toLocaleString("en-US")} exact registered-contract rows after the requested filters`
-    : "No exact registered-contract rows after the requested filters";
-  return {
-    capability_reference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
-    availability: groups.length ? CONTRACTS_ANALYSIS_AVAILABILITY[0] : CONTRACTS_ANALYSIS_AVAILABILITY[1],
-    group_by: groupBy,
-    measure: measureView,
-    groups,
-    denominator: {
-      value: denominatorValue,
-      unit: measureView.unit,
-      contract_count: denominatorContractCount,
-      value_count: denominatorValueCount,
-      definition: `Selected filtered registered-contract population; ${measureView.reader_label} is not payments or agency spending.`,
-    },
-    population: {
-      fact: "registered_contract",
-      basis: projection.population_definition || "Normalized Checkbook NYC registered expense contracts",
-      included: selectedDescription,
-      excluded: [
-        "AP-08 payment transactions and actual payment amounts",
-        "contracts outside the committed analytical projection",
-        ...(denominatorValueCount < denominatorContractCount ? [`${denominatorContractCount - denominatorValueCount} rows without a numeric value for this measure` ] : []),
-      ],
-      contract_count: denominatorContractCount,
-      source_population: sourcePopulation,
-      snapshot_date: projection.snapshot_date || null,
-    },
-    coverage: {
-      statement: `City Record exact-PIN match coverage for the selected registered-contract population: ${coverage.matched_contract_count.toLocaleString("en-US")} of ${coverage.eligible_contract_count.toLocaleString("en-US")} eligible contracts; rows without a published PIN cannot be evaluated.`,
-      basis: "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
-      eligible_contract_count: coverage.eligible_contract_count,
-      matched_contract_count: coverage.matched_contract_count,
-      unmatched_contract_count: coverage.unmatched_contract_count,
-      missing_pin_contract_count: coverage.missing_pin_contract_count,
-      eligible_registered_value: coverage.eligible_registered_value,
-      matched_registered_value: coverage.matched_registered_value,
-      buckets: coverage.buckets,
-    },
-    filters: publicAnalyticalFilters(input),
-    freshness: {
-      as_of: projection.generated_at || projection.snapshot_date || "unknown",
-      generated_at: projection.generated_at || null,
-      snapshot_date: projection.snapshot_date || null,
-      source: "committed site/data/analytics_registered_contracts.json",
-    },
-    error: null,
-  };
-}
-
 export function workerContractsAnalysis(env) {
   return Object.freeze({
     capabilityReference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
     providerId: CONTRACTS_ANALYSIS_PROVIDER_ID,
     async execute(input) {
       try {
-        return analyzeRegisteredContracts(await readAnalyticalProjection(env), input);
+        return createContractsAnalysisProvider(await readAnalyticalProjection(env)).execute(input);
       } catch (error) {
         console.error("Contracts analysis projection unavailable:", String(error?.message || error));
         return {

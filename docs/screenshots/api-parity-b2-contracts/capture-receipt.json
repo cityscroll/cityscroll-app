@@ -1,0 +1,117 @@
+{
+  "schema": "cityscroll.api-parity-b2-contracts.capture.v1",
+  "captures": [
+    {
+      "phase": "before",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "docs/screenshots/api-parity-b2-contracts/before-390.png",
+      "population": "$104,947,948,439 current registered contract value across 26,270 contracts \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts.",
+      "groups": [
+        {
+          "label": "1. Department of Design and Construction",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction"
+        },
+        {
+          "label": "2. Department of Homeless Services",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services"
+        },
+        {
+          "label": "3. Department of Environmental Protection",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection"
+        }
+      ],
+      "visible_group_count": 10,
+      "fcp_ms": 2044,
+      "lcp_ms": 2984,
+      "static_analytical_fetch_count": 1,
+      "contracts_analysis_request_count": 0
+    },
+    {
+      "phase": "before",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "screenshot": "docs/screenshots/api-parity-b2-contracts/before-1440.png",
+      "population": "$104,947,948,439 current registered contract value across 26,270 contracts \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts.",
+      "groups": [
+        {
+          "label": "1. Department of Design and Construction",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction"
+        },
+        {
+          "label": "2. Department of Homeless Services",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services"
+        },
+        {
+          "label": "3. Department of Environmental Protection",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection"
+        }
+      ],
+      "visible_group_count": 10,
+      "fcp_ms": 2092,
+      "lcp_ms": 2092,
+      "static_analytical_fetch_count": 1,
+      "contracts_analysis_request_count": 0
+    },
+    {
+      "phase": "after",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "docs/screenshots/api-parity-b2-contracts/after-390.png",
+      "population": "$104,947,948,439 current registered contract value across 26,270 contracts \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts.",
+      "groups": [
+        {
+          "label": "1. Department of Design and Construction",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction"
+        },
+        {
+          "label": "2. Department of Homeless Services",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services"
+        },
+        {
+          "label": "3. Department of Environmental Protection",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection"
+        }
+      ],
+      "visible_group_count": 10,
+      "fcp_ms": 2084,
+      "lcp_ms": 2624,
+      "static_analytical_fetch_count": 1,
+      "contracts_analysis_request_count": 0
+    },
+    {
+      "phase": "after",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "screenshot": "docs/screenshots/api-parity-b2-contracts/after-1440.png",
+      "population": "$104,947,948,439 current registered contract value across 26,270 contracts \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts.",
+      "groups": [
+        {
+          "label": "1. Department of Design and Construction",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction"
+        },
+        {
+          "label": "2. Department of Homeless Services",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services"
+        },
+        {
+          "label": "3. Department of Environmental Protection",
+          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection"
+        }
+      ],
+      "visible_group_count": 10,
+      "fcp_ms": 2092,
+      "lcp_ms": 2092,
+      "static_analytical_fetch_count": 1,
+      "contracts_analysis_request_count": 0
+    }
+  ]
+}

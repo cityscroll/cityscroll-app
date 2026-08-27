@@ -2,9 +2,14 @@ import {
   ANALYTICAL_PROJECTION_SCHEMA,
   REGISTERED_CONTRACT_PROJECTION,
   UNKNOWN_DIMENSION_LABEL,
-  assertSupportedProjection,
   readerDimensionValue,
 } from "./analytical_projection_contract.mjs";
+import {
+  analyticalDrillThroughHref as capabilityAnalyticalDrillThroughHref,
+  cityRecordCoverage as capabilityCityRecordCoverage,
+  filterAnalyticalContracts as capabilityFilterAnalyticalContracts,
+  groupAnalyticalContracts as capabilityGroupAnalyticalContracts,
+} from "../capabilities/contracts_analysis_provider.mjs";
 
 export const ANALYTICAL_PROJECTION_URL = "data/analytics_registered_contracts.json";
 export const ANALYTICAL_GROUPS = Object.freeze({
@@ -123,39 +128,7 @@ export function registrationLagDaysBetween(registrationDate, startDate) {
 }
 
 export function filterAnalyticalContracts(rows, filters = {}) {
-  const min = filters.min_amount == null || filters.min_amount === "" ? null : Number(filters.min_amount);
-  const max = filters.max_amount == null || filters.max_amount === "" ? null : Number(filters.max_amount);
-  const fiscalYear = filters.fiscal_year ?? filters.registration_fiscal_year;
-  const fy = fiscalYear == null || fiscalYear === ""
-    ? null : Number(fiscalYear);
-  const agency = filters.agency == null || filters.agency === "" ? null : String(filters.agency);
-  const vendor = filters.prime_vendor == null || filters.prime_vendor === "" ? null : String(filters.prime_vendor);
-  const contractId = filters.contract_id == null || filters.contract_id === "" ? null : String(filters.contract_id);
-  const amountBand = filters.contract_amount_band || null;
-  const retroactive = filters.retroactive == null || filters.retroactive === ""
-    ? null : String(filters.retroactive).toLowerCase() === "true";
-  const cityRecordMatch = filters.city_record_match || null;
-  return (Array.isArray(rows) ? rows : []).filter((row) => {
-    const current = Number(row?.current_registered_amount);
-    if (fy != null && row.registration_fiscal_year !== fy) return false;
-    if (agency != null && readerDimensionValue(row.agency) !== agency) return false;
-    if (vendor != null && readerDimensionValue(row.prime_vendor) !== vendor) return false;
-    if (contractId != null && readerDimensionValue(row.prime_contract_id) !== contractId) return false;
-    if (amountBand && readerDimensionValue(row.contract_amount_band) !== amountBand) return false;
-    if (retroactive === true && row.registration_timing !== "retroactive") return false;
-    if (retroactive === false && row.registration_timing !== "early_on_time") return false;
-    if (min != null && (!Number.isFinite(current) || current < min)) return false;
-    if (max != null && (!Number.isFinite(current) || current > max)) return false;
-    if (cityRecordMatch && row.city_record_match !== cityRecordMatch) return false;
-    return true;
-  });
-}
-
-function median(values) {
-  const sorted = values.filter(Number.isFinite).sort((a, b) => a - b);
-  if (!sorted.length) return null;
-  const middle = Math.floor(sorted.length / 2);
-  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+  return capabilityFilterAnalyticalContracts(rows, filters);
 }
 
 function nearestRank(values, percentile) {
@@ -188,36 +161,7 @@ export function registrationTimingSummary(rows) {
 }
 
 export function groupAnalyticalContracts(rows, { groupBy = "agency", measure = "current", topN = 10 } = {}) {
-  const dimension = ANALYTICAL_GROUPS[groupBy] || groupBy;
-  const measureId = ANALYTICAL_MEASURES[measure] || measure;
-  assertSupportedProjection({ fact: "registered_contract", measure: measureId, dimension });
-  const groups = new Map();
-  for (const row of Array.isArray(rows) ? rows : []) {
-    const label = readerDimensionValue(row?.[dimension]);
-    if (!groups.has(label)) groups.set(label, { label, contract_ids: [], rows: [] });
-    const group = groups.get(label);
-    group.rows.push(row);
-    group.contract_ids.push(row.prime_contract_id);
-  }
-  const result = [...groups.values()].map((group) => {
-    const current = group.rows.map((row) => Number(row.current_registered_amount)).filter(Number.isFinite);
-    const original = group.rows.map((row) => Number(row.original_registered_amount)).filter(Number.isFinite);
-    return {
-      label: group.label,
-      contract_ids: group.contract_ids,
-      contract_count: new Set(group.contract_ids).size,
-      sum_current_registered_amount: current.reduce((sum, value) => sum + value, 0),
-      sum_original_registered_amount: original.reduce((sum, value) => sum + value, 0),
-      median_current_registered_amount: median(current),
-      ...registrationTimingSummary(group.rows),
-    };
-  });
-  const valueKey = measureId === "unique_contract_count" ? "contract_count"
-    : measureId === "sum_original_registered_amount" ? "sum_original_registered_amount"
-      : measureId === "median_current_registered_amount" ? "median_current_registered_amount"
-        : "sum_current_registered_amount";
-  result.sort((a, b) => (Number(b[valueKey]) || 0) - (Number(a[valueKey]) || 0) || a.label.localeCompare(b.label));
-  return { groups: result, shown_groups: result.slice(0, Math.max(1, Number(topN) || 10)), value_key: valueKey };
+  return capabilityGroupAnalyticalContracts(rows, { groupBy, measure, topN });
 }
 
 function uniqueAnalyticalRows(rows) {
@@ -318,16 +262,7 @@ export function populationSummary(rows, { snapshot_date, population_definition }
 }
 
 export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match } = {}) {
-  const params = new URLSearchParams({ mode: "award" });
-  if (agency) params.set("ap_agency", agency);
-  if (prime_vendor) params.set("ap_vendor", prime_vendor);
-  if (registration_fiscal_year != null) params.set("ap_fy", String(registration_fiscal_year));
-  if (contract_amount_band) params.set("ap_amount_band", contract_amount_band);
-  if (min_amount != null && min_amount !== "") params.set("ap_min", String(min_amount));
-  if (max_amount != null && max_amount !== "") params.set("ap_max", String(max_amount));
-  if (retroactive === true || String(retroactive).toLowerCase() === "true") params.set("retroactive", "true");
-  if (city_record_match) params.set("ap_city_record_match", city_record_match);
-  return `/browse/contracts/?${params.toString()}`;
+  return capabilityAnalyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match });
 }
 
 function coverageBucket(row) {
@@ -365,13 +300,7 @@ function coverageStats(rows) {
 }
 
 export function cityRecordCoverage(rows, { min_amount = CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD, registration_fiscal_year, contract_amount_band, agency } = {}) {
-  const filtered = filterAnalyticalContracts(rows, {
-    min_amount,
-    registration_fiscal_year,
-    contract_amount_band,
-    agency,
-  });
-  return { ...coverageStats(filtered), rows: filtered };
+  return capabilityCityRecordCoverage(rows, { min_amount, registration_fiscal_year, contract_amount_band, agency });
 }
 
 export function groupCityRecordCoverage(rows, { groupBy = "agency", min_amount = CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD, registration_fiscal_year, contract_amount_band, agency } = {}) {

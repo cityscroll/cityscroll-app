@@ -102,8 +102,8 @@ export const CONTRACTS_ANALYSIS_CAPABILITY = deepFreeze({
   },
   provider: {
     id: CONTRACTS_ANALYSIS_PROVIDER_ID,
-    module: "worker/src/contracts.mjs",
-    export: "workerContractsAnalysis",
+    module: "capabilities/contracts_analysis_provider.mjs",
+    export: "createContractsAnalysisProvider",
     store: "precomputed registered-contract analytical projection",
     readModel: "site/data/analytics_registered_contracts.json",
   },

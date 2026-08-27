@@ -1426,8 +1426,8 @@
       },
       "provider": {
         "id": "worker-static.procurement-contracts.analysis",
-        "module": "worker/src/contracts.mjs",
-        "export": "workerContractsAnalysis",
+        "module": "capabilities/contracts_analysis_provider.mjs",
+        "export": "createContractsAnalysisProvider",
         "store": "precomputed registered-contract analytical projection",
         "readModel": "site/data/analytics_registered_contracts.json"
       },
