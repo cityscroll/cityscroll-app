@@ -109,6 +109,19 @@ export async function attachProjectConnections(record, { db = null } = {}) {
   ]);
   return {
     ...record,
+    // ZAP's already-produced milestone records are a root-project connection:
+    // keep them as source inputs, never as a second project calendar table.
+    project_calendar_sources: (Array.isArray(record.milestones) ? record.milestones : []).map((milestone, index) => ({
+      ...milestone,
+      object_ref: `project:${id}:milestone:${clean(milestone?.id) || index}`,
+      relation: "project_process",
+      canonical_url: `https://cityscroll.org/#land/${encodeURIComponent(id)}`,
+      source: {
+        system: "zap-api-outcomes",
+        record_id: clean(milestone?.id) || `${id}:milestone:${index}`,
+        ...(record.portal_url ? { url: record.portal_url } : {}),
+      },
+    })),
     project_connections: buildProjectConnectionEvidence({
       projectId: id,
       projectRows: [project],

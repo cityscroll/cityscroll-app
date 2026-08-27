@@ -310,7 +310,7 @@ const CALENDAR_REPLAYABLE_FILTER_FIELDS = Object.freeze({
   property: new Set(["keywords", "agency", "asset", "saleMethod", "priceBand", "geographies"]),
   rules: new Set(["keywords", "agency", "geographies"]),
   meetings: new Set(["keywords", "agency", "when", "dateWindow", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "communityBoard", "geographies"]),
-  entity: new Set(["name", "kind"]),
+  entity: new Set(["name", "kind", "entity_refs_all"]),
 });
 
 function compactSubscriptionFilter(value) {
