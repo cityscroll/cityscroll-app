@@ -1,17 +1,15 @@
 // POST /subscribe — the public single-opt-in signup endpoint. The browser submits an
 // already-compiled lens filter (re-sanitized here, never trusted), and the worker stores the
 // subscription before sending a transactional welcome with manage + one-click unsubscribe.
-// Topicless homepage requests get the disclosed weekly NYC-contracts default plus provenance.
+// Signup requests without a chosen watch scope are rejected until the reader previews one.
 //
 // FAIL CLOSED: returns 503 until TOKEN_SECRET + RESEND_API_KEY + SUBS are configured.
 // Rate limits are the primary bot friction on this no-CAPTCHA path and run before any write/send.
 
 import { resolveLens, sanitize } from "./lib/filter.mjs";
 import {
-  TOPICLESS_SOURCE,
   isValidEmail,
   buildSubscription,
-  buildTopiclessIntent,
   deriveSubscriberId,
   deriveWatchId,
   isDeveloperTestEmail,
@@ -62,7 +60,7 @@ export async function handleSubscribe(req, env) {
   const requestedLens = String(body.lens || "");
   const lens = SUBSCRIBABLE.has(requestedLens) ? resolveLens(requestedLens) : null;
   if (!isValidEmail(email)) return reply(req, { ok: false, reason: "bad-email" }, 400, cors);
-  if (topicless && body.source !== TOPICLESS_SOURCE) return reply(req, { ok: false, reason: "bad-intent" }, 400, cors);
+  if (topicless) return reply(req, { ok: false, reason: "topic-required" }, 400, cors);
   if (!topicless && !lens) return reply(req, { ok: false, reason: "bad-lens" }, 400, cors);
   if ((body.channel || "email") !== "email") return reply(req, { ok: false, reason: "channel-unsupported" }, 400, cors);
 
@@ -70,21 +68,17 @@ export async function handleSubscribe(req, env) {
   if (await overLimit(env, ip, email)) return reply(req, { ok: false, reason: "rate-limited" }, 429, cors);
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
-  const sub = topicless
-    ? buildTopiclessIntent({ email, source: TOPICLESS_SOURCE, lang })
-    : buildSubscription({
-      email,
-      lens,
-      filter: sanitize(lens, body.filter),
-      channel: "email",
-      freq: body.freq,
-      lang,
-    });
+  const sub = buildSubscription({
+    email,
+    lens,
+    filter: sanitize(lens, body.filter),
+    channel: "email",
+    freq: body.freq,
+    lang,
+  });
   try {
-    const enrolled = await enrollAndWelcome(env, sub, {
-      source: topicless ? TOPICLESS_SOURCE : "following",
-    });
-    return reply(req, { ok: true, no_topic: topicless, key: enrolled.key }, 200, cors);
+    const enrolled = await enrollAndWelcome(env, sub, { source: "following" });
+    return reply(req, { ok: true, key: enrolled.key }, 200, cors);
   } catch (error) {
     const reason = error?.code === "save-failed" ? "save-failed" : "send-failed";
     return reply(req, { ok: false, reason, subscribed: error?.subscribed === true }, reason === "save-failed" ? 503 : 502, cors);
@@ -200,6 +194,7 @@ function reply(req, obj, status, cors) {
     "not-configured": ["Temporarily unavailable", "Watch signup is not available right now. Please try again later."],
     "bad-request": ["Check the form", "The saved scope could not be read. Return to Following and preview it again."],
     "bad-email": ["Check the email address", "Enter a complete email address and try again."],
+    "topic-required": ["Choose a topic", "Return to Following, preview a topic, and submit the watch when the sentence looks right."],
     "bad-intent": ["Check the form", "That signup source is not recognized."],
     "bad-lens": ["Check the saved scope", "That topic cannot be followed. Return to Following and choose another topic."],
     "channel-unsupported": ["Email only", "CityScroll currently sends watches by email."],

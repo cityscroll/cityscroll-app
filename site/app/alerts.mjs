@@ -847,7 +847,7 @@ function aLensFilter(){
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 function subscribeErrorWhy(reason){
-  return {"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error")}[reason]||t("generic_error");
+  return {"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error"),"topic-required":t("topic_required")}[reason]||t("generic_error");
 }
 /* ===================== WATCH TEMPLATES (ready-made watch sets) =====================
    Registry: site/data/watch_templates.json — pure helpers in site/watch_templates.mjs.
@@ -1041,8 +1041,7 @@ async function aSubscribe(){
   }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
   btn.disabled=false;
 }
-// Homepage general-interest CTA — same immediate /subscribe path as Following, with an explicit
-// no-topic marker so the disclosed weekly contracts default can later become a chosen topic.
+// Homepage general-interest CTA — carry the email into topic selection; no watch exists yet.
 async function homeCtaSubscribe(e){
   if(e && e.preventDefault) e.preventDefault();
   const msg=$("#homeCtaMsg"), dest=$("#homeCtaEmail"), btn=$("#homeCtaSubmit");
@@ -1050,21 +1049,8 @@ async function homeCtaSubscribe(e){
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.textContent=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); dest.focus(); return; }
   dest.removeAttribute("aria-invalid");
-  if(!API){ msg.textContent=t("subs_need_backend") || t("not_configured"); return; }
-  btn.disabled=true;
-  msg.innerHTML='<span class="loading"></span> ' + t("subscribing_now");
-  try{
-    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
-      email,
-      no_topic:true,
-      source:"top-of-site",
-      lang:window.LANG||"en"
-    })});
-    const j=await r.json().catch(()=>({}));
-    if(j.ok){ msg.innerHTML="<b>" + t("subscribed_now") + "</b> " + t("welcome_sent_to",{email:email.replace(/[<>&]/g," ")}); dest.value=""; }
-    else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); }
-  }catch(err){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
-  btn.disabled=false;
+  msg.textContent=t("home_onboarding_next");
+  window.location.assign("/following/?onboarding=1");
 }
 
 // Section → lens map for agency-profile section chips (not a homepage strip).

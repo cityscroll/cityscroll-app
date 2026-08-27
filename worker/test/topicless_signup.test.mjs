@@ -4,10 +4,6 @@ import { signToken } from "optin-token";
 
 import { handleSubscribe } from "../src/subscribe.mjs";
 import { handleConfirm } from "../src/confirm.mjs";
-import { handlePrefs } from "../src/prefs.mjs";
-import { handleAdminSubs } from "../src/admin.mjs";
-import { compileSub } from "../src/lib/compile.mjs";
-import { WATCHLOG_LATEST_KEY } from "../src/lib/watchlog.mjs";
 
 const SECRET = "topicless-tests-token-secret-32bytes-minimum";
 const EMAIL = "reader@example.com";
@@ -53,99 +49,17 @@ function records(environment) {
     .map(([key, raw]) => ({ key, ...JSON.parse(raw) }));
 }
 
-async function requestTopicless(environment) {
-  const sent = [];
-  const realFetch = globalThis.fetch;
-  globalThis.fetch = async (_url, options) => {
-    sent.push(JSON.parse(options.body));
-    return new Response(JSON.stringify({ id: "welcome" }), { status: 200 });
-  };
-  try {
-    const response = await handleSubscribe(new Request("https://api.cityscroll.org/subscribe", {
-      method: "POST",
-      headers: { "content-type": "application/json", origin: "https://cityscroll.org" },
-      body: JSON.stringify({ email: EMAIL, no_topic: true, source: "top-of-site" }),
-    }), environment);
-    assert.equal(response.status, 200);
-  } finally {
-    globalThis.fetch = realFetch;
-  }
-  return sent[0];
-}
-
-test("admin and ops expose the immediate topicless-default enrollment", async () => {
+test("topicless signup requires a selected watch and creates no record", async () => {
   const environment = env();
-  await requestTopicless(environment);
-  const [record] = records(environment);
-  assert.equal(record.state, "confirmed");
-  const compiled = compileSub(record, "2026-08-18");
-  assert.ok(compiled, "the marked default reaches the normal digest compiler");
-  assert.match(compiled.url, /dg92-zbpx/);
-
-  const response = await handleAdminSubs(
-    new Request("https://api.cityscroll.org/admin/subs?key=admin"),
-    environment,
-  );
-  assert.equal(response.status, 200);
-  const body = await response.json();
-  assert.equal(body.topiclessIntentCount, 1);
-  assert.deepEqual(body.topiclessIntents, [{
-    email: "reader@example.com",
-    status: "confirmed",
-    source: "top-of-site",
-    createdAt: record.createdAt,
-    intentState: "confirmed",
-  }]);
-  assert.equal(body.subs[0].status, "confirmed");
-  assert.equal(body.subs[0].lens, "money");
-  assert.equal(body.subs[0].freq, "weekly");
-
-  const ops = JSON.parse(await environment.ALERT_STATE.get(WATCHLOG_LATEST_KEY));
-  assert.equal(ops.length, 1);
-  assert.deepEqual({
-    action: ops[0].action,
-    source: ops[0].source,
-    lens: ops[0].lens,
-    label: ops[0].label,
-    freq: ops[0].freq,
-  }, {
-    action: "subscribe",
-    source: "top-of-site",
-    lens: "money",
-    label: "Contracts and RFPs — all notices",
-    freq: "weekly",
-  });
-  assert.equal(environment.actionRows.length, 1);
-  assert.equal(environment.actionRows[0][2], "watch_confirmed");
-  assert.equal(environment.actionRows[0][6], "single_opt_in");
-  assert.deepEqual(JSON.parse(environment.actionRows[0][8]), {
-    lens: "money",
-    source: "top-of-site",
-    freq: "weekly",
-  });
-});
-
-test("welcome manage link opens the normal weekly contracts watch and can delete it", async () => {
-  const environment = env();
-  const welcome = await requestTopicless(environment);
-  const manageUrl = welcome.html.match(/href="(https:\/\/cityscroll\.org\/prefs\?token=[^"]+)"/)?.[1]?.replaceAll("&amp;", "&");
-  assert.ok(manageUrl);
-  const [record] = records(environment);
-
-  const prefs = await handlePrefs(new Request(manageUrl), environment);
-  const prefsHtml = await prefs.text();
-  assert.match(prefsHtml, /Contracts and RFPs — all notices/);
-  assert.match(prefsHtml, /weekly/);
-  assert.doesNotMatch(prefsHtml, /choose a topic before|no civic digest/i);
-
-  const token = new URL(manageUrl).searchParams.get("token");
-  const deleted = await handlePrefs(new Request("https://cityscroll.org/prefs", {
+  const response = await handleSubscribe(new Request("https://api.cityscroll.org/subscribe", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ token, key: record.key, action: "delete" }),
+    headers: { "content-type": "application/json", origin: "https://cityscroll.org" },
+    body: JSON.stringify({ email: EMAIL, no_topic: true, source: "top-of-site" }),
   }), environment);
-  assert.equal(deleted.status, 200);
-  assert.equal(records(environment).length, 0);
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { ok: false, reason: "topic-required" });
+  assert.deepEqual(records(environment), []);
+  assert.deepEqual(environment.actionRows, []);
 });
 
 test("legacy confirmation links are idempotent after immediate enrollment", async () => {

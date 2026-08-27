@@ -597,6 +597,11 @@ const STRINGS = {
     subscribe_btn:      "Subscribe",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
     home_cta_prompt:    "Want email updates on this?",
+    home_onboarding_next: "Choose what to follow next.",
+    following_suggestion_preview: "Preview and edit",
+    following_suggestion_nothing_saved: "No suggestion makes a watch. Check the sentence and submit only when it looks right.",
+    nl_recovery_heading: "Try a starting point",
+    nl_recovery_lead: "Pick a topic to preview and edit before you save.",
     // Context-carrying alert entry (notice/lens → pre-scoped #alerts + real email preview)
     alert_context_scope: "Watching: {scope} — adjust below.",
     alert_context_count_one: "This matches the 1 result in the list you opened.",
@@ -627,6 +632,7 @@ const STRINGS = {
     not_configured:         "Subscriptions aren't switched on yet.",
     send_failed:            "Couldn't send the email just now — try again.",
     generic_error:          "Something went wrong — please try again.",
+    topic_required:         "Choose a topic before creating a watch.",
     // Turnstile on signup is interaction-only (invisible for most visitors); this is the race/load case.
     complete_human_check:   "Still verifying — try again in a moment.",
     subscribing_now:        "Subscribing…",
