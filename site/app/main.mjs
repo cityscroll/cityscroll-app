@@ -4,8 +4,20 @@ const rootPath = (location.pathname || "/").replace(/\/+$/, "") || "/";
 const isNeutralHome = rootPath === "/" && !location.hash;
 if (!isNeutralHome) document.body?.setAttribute("data-app-route", "true");
 
+const NOTICE_ROUTE = location.hash.startsWith("#notice/") || location.pathname.startsWith("/notices/");
+const NOTICE_CONTEXT_MODULE_PATH = "./notice-context.mjs";
+const APP_IMPORT_PHASES = new Set(["start", "core-end", "notice-context-start", "notice-context-end", "route-modules-start", "route-modules-end", "end"]);
+function appImportTimingMark(phase){
+  if(!APP_IMPORT_PHASES.has(phase)) return;
+  try{ globalThis.performance?.mark?.(`cityscroll.app-import.${phase}`); }catch(_e){}
+}
+
 async function loadApplication() {
+appImportTimingMark("start");
 await import("./core.mjs");
+appImportTimingMark("core-end");
+let noticeContextPromise = NOTICE_ROUTE ? import(NOTICE_CONTEXT_MODULE_PATH) : null;
+if(noticeContextPromise) appImportTimingMark("notice-context-start");
 globalThis.CrolScope = await import("../scope_v0.mjs");
 globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
 globalThis.CrolReportIssue = await import("../report_issue.mjs");
@@ -24,9 +36,7 @@ await import("./feed-actions.mjs");
 await import("./result-match.mjs");
 // Entity profiles use this shared section vocabulary without needing the notice-only context island.
 globalThis.SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
-let noticeContextPromise;
 globalThis.ensureNoticeContext = () => noticeContextPromise ||= import("./notice-context.mjs");
-
 // Property is the largest route-only lens on the default Money landing. Keep its registration
 // in the ordered graph, but fetch it only for Property and notice routes. Routing itself remains
 // eager: the loader is a narrow activation gate, not a second route-state owner.
@@ -75,12 +85,15 @@ globalThis.CrolRouteModules=Object.freeze({
   isReady:name=>!routeModuleLoaders[name] || loadedRouteModules.has(name),
 });
 globalThis.ensureRules = () => ensureRouteModule("rules");
+if(NOTICE_ROUTE) appImportTimingMark("route-modules-start");
 await ensureRouteModulesForHash(location.hash);
+if(NOTICE_ROUTE) appImportTimingMark("route-modules-end");
 await import("./procurement-lifecycle.mjs");
 await import("./procurement-phase.mjs");
 await import("./subsidy.mjs");
 if(location.hash.startsWith("#notice/") || location.pathname.startsWith("/notices/")){
   await globalThis.ensureNoticeContext();
+  appImportTimingMark("notice-context-end");
   await import("./authority-award.mjs");
 }
 await import("./meetings.mjs");
@@ -99,6 +112,7 @@ globalThis.CROLClarity?.applyInputMasking(document);
 // presence of functions imported near the start of the graph. Without this
 // marker, a click can race the first applyHash() and be overwritten by boot.
 document.body?.setAttribute("data-app-ready", "true");
+appImportTimingMark("end");
 }
 
 if (isNeutralHome) {

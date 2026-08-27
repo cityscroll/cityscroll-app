@@ -7,39 +7,52 @@ import {
   runtimeRumSemanticMilestones,
 } from "../rum_static_record_instrumentation.mjs";
 const SECTION_LENS={"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
-const BM_CACHE={};
+const NOTICE_CONTEXT_LOOKUP_URL="data/notice_context_lookup.json";
+let noticeContextLookupPromise=null;
 const yearCut=()=>new Date(Date.now()-365*86400000).toISOString().slice(0,10)+"T00:00:00";
 function ordinal(n){const s=["th","st","nd","rd"],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
-async function residentMoneyContextRows(){try{return await globalThis.residentMoneyRows?.()||[];}catch(_e){return [];}}
-function agencyNorms(agency){
-  if(BM_CACHE[agency]) return BM_CACHE[agency];
-  BM_CACHE[agency]=(async()=>{
-    const out={adMedian:null,adN:0,awardTotal:0,awardCount:0};
-    const rows=await residentMoneyContextRows();
-    const agencyRows=rows.filter(row=>String(row?.agency_name||"")===String(agency));
-    const sol=agencyRows.filter(row=>row?.type_of_notice_description==="Solicitation"&&row?.due_date).slice(0,200);
-    const ws=sol.map(r=>Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000)).filter(d=>d>0&&d<400).sort((a,b)=>a-b);
-    if(ws.length>=8){out.adMedian=ws[Math.floor(ws.length/2)];out.adN=ws.length;}
-    const awards=agencyRows.filter(row=>row?.type_of_notice_description==="Award"&&+row?.contract_amount>0&&+row?.contract_amount<MONEY_HONESTY_CAP&&String(row?.start_date||"")>yearCut());
-    out.awardCount=awards.length;
-    out.awardTotal=awards.reduce((sum,row)=>sum+(+row.contract_amount||0),0);
-    return out;
-  })();
-  return BM_CACHE[agency];
+function loadNoticeContextLookup(){
+  if(!noticeContextLookupPromise){
+    noticeContextTimingMark("lookup-start");
+    noticeContextLookupPromise=fetch(NOTICE_CONTEXT_LOOKUP_URL,{cache:"force-cache",credentials:"omit"})
+      .then(response=>response.ok?response.json():null)
+      .catch(()=>null)
+      .finally(()=>noticeContextTimingMark("lookup-end"));
+  }
+  return noticeContextLookupPromise;
+}
+async function noticeContextFacts(r){
+  if(!r?.request_id)return null;
+  const lookup=await loadNoticeContextLookup();
+  return lookup?.by_notice?.[String(r.request_id)]||null;
 }
 const NONCOMP_RE=/negotiated|sole source|emergency|demonstration project/i;
+
+
 async function noticeFlags(r){
-  const flags=[];if(!r||!r.agency_name)return flags;
+  const flags=[];
+  if(!r||!r.agency_name)return flags;
   if(NONCOMP_RE.test(r.selection_method_description||"")) flags.push({lvl:"soon",t:`⚑ non-competitive method: ${escUiHtml(cleanText(r.selection_method_description))}`});
-  if(r.type_of_notice_description==="Solicitation"&&r.due_date&&r.start_date){const w=Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000);if(w>0&&w<=10){const n=await agencyNorms(r.agency_name);if(n.adMedian&&w<n.adMedian/2)flags.push({lvl:"hot",t:`⚑ short ad window: ${w} day${w===1?"":"s"} (agency median ${n.adMedian})`});}}
-  if(r.type_of_notice_description==="Award"&&r.vendor_name){const cut90=new Date(Date.now()-90*86400000).toISOString().slice(0,10)+"T00:00:00";const rows=await residentMoneyContextRows();const n=rows.filter(row=>row?.type_of_notice_description==="Award"&&String(row?.agency_name||"")===String(r.agency_name)&&cleanText(row?.vendor_name)===cleanText(r.vendor_name)&&String(row?.start_date||"")>cut90).length;if(n>=3)flags.push({lvl:"soon",t:`⚑ ${ordinal(n)} award to this vendor at this agency in 90 days`});}
+  const facts=await noticeContextFacts(r);
+  if(r.type_of_notice_description==="Solicitation"&&r.due_date&&r.start_date){
+    const w=Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000);
+    if(w>0&&w<=10&&facts?.agency_ad_median_days&&w<facts.agency_ad_median_days/2) flags.push({lvl:"hot",t:`⚑ short ad window: ${w} day${w===1?"":"s"} (agency median ${facts.agency_ad_median_days})`});
+  }
+  if(r.type_of_notice_description==="Award"&&r.vendor_name&&facts?.vendor_award_count_90d>=3){
+    const n=facts.vendor_award_count_90d;
+    flags.push({lvl:"soon",t:`⚑ ${ordinal(n)} award to this vendor at this agency in 90 days`});
+  }
   return flags;
 }
 async function awardContext(r){
   if(!r||r.type_of_notice_description!=="Award"||!r.agency_name)return "";const X=+r.contract_amount;if(!X||X<=0||X>=MONEY_HONESTY_CAP)return "";const bits=[];
-  const rows=await residentMoneyContextRows();const awards=rows.filter(row=>String(row?.agency_name||"")===String(r.agency_name)&&row?.type_of_notice_description==="Award"&&+row?.contract_amount>0&&+row?.contract_amount<MONEY_HONESTY_CAP&&String(row?.start_date||"")>yearCut());const le=awards.filter(row=>+row.contract_amount<=X).length;if(awards.length>=20)bits.push(`larger than <b>${Math.round((le/awards.length)*100)}%</b> of this agency's awards (last 12 mo, n=${awards.length.toLocaleString()})`);
-  if(r.vendor_name){const n=await agencyNorms(r.agency_name);if(n.awardTotal>0){const vendorTotal=awards.filter(row=>cleanText(row?.vendor_name)===cleanText(r.vendor_name)).reduce((sum,row)=>sum+(+row.contract_amount||0),0);if(vendorTotal>0){const share=Math.round((vendorTotal/n.awardTotal)*100);if(share>=1)bits.push(`this vendor holds <b>${share}%</b> of the agency's award $ (12 mo)`);}}}
+  const facts=await noticeContextFacts(r);const awardsCount=facts?.agency_award_count_12m||0;if(awardsCount>=20)bits.push(`larger than <b>${Math.round(((facts?.agency_awards_at_or_below||0)/awardsCount)*100)}%</b> of this agency's awards (last 12 mo, n=${awardsCount.toLocaleString()})`);
+  if(r.vendor_name&&facts?.vendor_award_total_12m>0){const share=Math.round((facts.vendor_award_total_12m/(facts.agency_award_total_12m||0))*100);if(share>=1)bits.push(`this vendor holds <b>${share}%</b> of the agency's award $ (12 mo)`);}
   if(!bits.length)return "";return `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>${t("context_strip_lbl")}</b><span>${bits.join(" · ")}</span></div></div>`;
+}
+function timedContextBranch(label,work){
+  noticeContextTimingMark(`${label}-start`);
+  return Promise.resolve().then(work).then(value=>{noticeContextTimingMark(`${label}-end`);return value;},error=>{noticeContextTimingMark(`${label}-end`);throw error;});
 }
 function parcelLinksHTML(links,provenanceKey,displayBbl=links.bbl){if(!links)return "";return `<div class="rmeta2 property-parcel-links" style="margin:8px 0">${t("parcel_elsewhere_label")} <a href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("parcel_link_zola")}${extSR()}</a> · <a href="${escUiHtml(links.acris_url)}" ${EXT_ATTRS}>${t("parcel_link_acris")}${extSR()}</a> · <a href="${escUiHtml(links.who_owns_what_url)}" ${EXT_ATTRS}>${t("parcel_link_wow")}${extSR()}</a> <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:displayBbl})}</span></div>`;}
 async function fillAddressLinks(r,el){
@@ -122,13 +135,13 @@ async function fillContext(r,el,settledWith=[]){
   // the remaining context cards from arriving. Their final settled marker is the
   // content-parity harness boundary, not the component-ready boundary above.
   const settled=[
-    Promise.resolve().then(()=>noticeFlags(r)).then(flags=>{
+    timedContextBranch("flags",()=>noticeFlags(r)).then(flags=>{
       if(flags.length)contextSlot(el,"flags",`<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")}</div>`);
     }),
-    Promise.resolve().then(()=>awardContext(r)).then(ctx=>contextSlot(el,"award",ctx)),
-    Promise.resolve().then(()=>attachmentRelatedHTMLFor(r)).then(relatedHTML=>contextSlot(el,"related",relatedHTML)),
-    Promise.resolve().then(()=>mandateBacklinksHTMLFor(r)).then(mandateHTML=>contextSlot(el,"mandate",mandateHTML)),
-    Promise.resolve().then(()=>attachmentTablesHTMLFor(r)).then(async tablesHTML=>{
+    timedContextBranch("award",()=>awardContext(r)).then(ctx=>contextSlot(el,"award",ctx)),
+    timedContextBranch("related",()=>attachmentRelatedHTMLFor(r)).then(relatedHTML=>contextSlot(el,"related",relatedHTML)),
+    timedContextBranch("mandate",()=>mandateBacklinksHTMLFor(r)).then(mandateHTML=>contextSlot(el,"mandate",mandateHTML)),
+    timedContextBranch("tables",()=>attachmentTablesHTMLFor(r)).then(async tablesHTML=>{
       if(!tablesHTML||!document.contains(el))return;
       const host=el.querySelector("[data-attachment-tables-host]");
       if(host)host.outerHTML=tablesHTML;
@@ -147,4 +160,4 @@ async function fillContext(r,el,settledWith=[]){
 }
 async function externalAwardForNotice(r,el){if(!el)return;const cov=awardCoverage(r.agency_name);if(cov==="absent"||cov==="unknown")return;const resp=await loadExternalAward({id:r.request_id});if(!document.contains(el)||!resp)return;el.innerHTML=externalAwardHTML(resp,r);const offerBtn=el.querySelector("[data-award-watch-offer]");if(offerBtn)offerBtn.addEventListener("click",async()=>{const carry=await import("../alerts_context_carry.mjs").catch(()=>null);const scope=carry?.alertScopeFromNotice({...r,kind:"award"});location.assign(scope?carry.alertsHref(scope):"/following/");});}
 
-Object.assign(globalThis,{SECTION_LENS,BM_CACHE,NONCOMP_RE,yearCut,ordinal,agencyNorms,noticeFlags,awardContext,parcelLinksHTML,fillAddressLinks,attachmentExtractHTML,attachmentTablesHTMLFor,attachmentChipHTML,attachmentRelatedHTMLFor,hydrateNoticeAttachments,mandateBacklinksHTMLFor,fillContext,externalAwardForNotice});
+Object.assign(globalThis,{SECTION_LENS,NONCOMP_RE,yearCut,ordinal,noticeFlags,awardContext,parcelLinksHTML,fillAddressLinks,attachmentExtractHTML,attachmentTablesHTMLFor,attachmentChipHTML,attachmentRelatedHTMLFor,hydrateNoticeAttachments,mandateBacklinksHTMLFor,fillContext,externalAwardForNotice});
