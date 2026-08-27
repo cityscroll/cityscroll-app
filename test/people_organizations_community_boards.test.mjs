@@ -73,6 +73,35 @@ test("Community Board people and committees retain board-local identities and sc
   assert.equal(PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.facetValues.includes("community-board-committee"), true);
 });
 
+test("People rows carry additive generic person projections and verified constellation edges", () => {
+  const model = buildPeopleOrganizationsReadModel({ places, communityBoardPeople: boardPeople, communityBoardCommittees: committees });
+  const people = model.rows.filter((row) => row.kind === "community-board-person");
+  const manhattan = people.find((row) => row.id === "community-board-person:manhattan-cb-06:7801");
+  const brooklyn = people.find((row) => row.id === "community-board-person:brooklyn-cb-01:7801");
+  assert.equal(manhattan.person_ref, "person:community-board:manhattan-cb-06:7801");
+  assert.equal(manhattan.person_projection.source_alias.identity, manhattan.id);
+  assert.equal(manhattan.person_constellation.kind, "person-constellation");
+  assert.equal(manhattan.person_constellation.local_constellation.kind, "person");
+  assert.equal(manhattan.person_constellation.local_constellation.nodes.find((node) => node.edge_type === "member_of")?.href, "/community-boards/manhattan-cb-06/");
+  assert.equal(brooklyn.person_ref, "person:community-board:brooklyn-cb-01:7801");
+  assert.notEqual(manhattan.person_ref, brooklyn.person_ref);
+});
+
+test("Council rows retain the official route while surfacing an additive generic identity", () => {
+  const model = buildPeopleOrganizationsReadModel({
+    people: {
+      retrieved_at: "2026-08-25T12:00:00Z",
+      by_person_id: { "7801": { person_id: "7801", person_name: "Jane Doe", terms: [] } },
+    },
+  });
+  const official = model.rows.find((row) => row.kind === "official");
+  assert.equal(official.id, "official:7801");
+  assert.equal(official.href, "/officials/7801/");
+  assert.equal(official.person_ref, "person:legistar:7801");
+  assert.equal(official.person_projection.source_alias.identity, "official:7801");
+  assert.equal(official.person_constellation.local_constellation.nodes.find((node) => node.edge_type === "source_identity")?.href, "/officials/7801/");
+});
+
 test("Community Board cards link to the board institution without Council person UI", () => {
   const model = buildPeopleOrganizationsReadModel({ places, communityBoardPeople: boardPeople, communityBoardCommittees: committees });
   for (const row of model.rows.filter((candidate) => candidate.kind.startsWith("community-board-"))) {

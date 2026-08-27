@@ -18,6 +18,7 @@ import {
   projectCouncilOfficialAlias,
   projectPerson,
 } from "../ontology/person.mjs";
+import { buildPersonConstellation } from "../site/person_constellation.mjs";
 import { loadOntologyRegistry } from "../ontology/index.mjs";
 
 const EVIDENCE = Object.freeze([{
@@ -155,4 +156,50 @@ test("profile-family allowlist isolates generic, board, agency, and vendor peopl
   assert.equal(canLoadCouncilSurface(legacyCouncil), true);
   assert.equal(councilOfficialHref(legacyCouncil), "/officials/7801/");
   assert.equal(canLoadCouncilSurface({ ...legacyCouncil, id: "community-board-person:manhattan-cb-06:jane-001" }), false);
+});
+
+test("person constellation surfaces verified source and cross-category edges without a generic route", () => {
+  const boardPerson = projectCommunityBoardPersonAlias({
+    boardId: "manhattan-cb-06",
+    personKey: "jane-001",
+    displayName: "Jane Doe",
+    observedAt: "2026-08-25",
+    sourceObservationRefs: ["cb6-roster-2026-08-25"],
+  });
+  const view = buildPersonConstellation({
+    person: boardPerson,
+    source: { kind: "community-board", id: "manhattan-cb-06", name: "Manhattan Community Board 6" },
+    edges: [
+      {
+        relation: "member_of",
+        target_kind: "community-board",
+        target_ref: "community-board:manhattan-cb-06",
+        target_name: "Manhattan Community Board 6",
+        target_href: "/community-boards/manhattan-cb-06/",
+        status: "matched",
+        provenance: { source_record_id: "cb6-roster-2026-08-25" },
+      },
+      {
+        relation: "member_of",
+        target_kind: "community-board-committee",
+        target_ref: "community-board-committee:manhattan-cb-06:transportation",
+        target_name: "Transportation Committee",
+        status: "matched",
+      },
+      {
+        relation: "same_person",
+        target_kind: "person",
+        target_ref: "person:legistar:7801",
+        target_name: "Jane Doe",
+        status: "held",
+      },
+    ],
+  });
+
+  assert.equal(view.schema, "cityscroll.person_constellation.v1");
+  assert.equal(view.person_ref, "person:community-board:manhattan-cb-06:jane-001");
+  assert.equal(view.local_constellation.kind, "person");
+  assert.equal(view.local_constellation.nodes.find((node) => node.edge_type === "member_of")?.href, "/community-boards/manhattan-cb-06/");
+  assert.equal(view.local_constellation.nodes.find((node) => node.edge_type === "same_person")?.href, null);
+  assert.equal(view.local_constellation.nodes.find((node) => node.edge_type === "source_identity")?.href, null);
 });

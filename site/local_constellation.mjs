@@ -19,6 +19,7 @@ const LOCAL_PLACE_EMPTY_COPY = "Nearby place records link this district to civic
 const LOCAL_EMPTY_COPY = "Nearby records connect this item to civic records you can open.";
 
 const KINDS = Object.freeze([
+  "person",
   "official",
   "committee",
   "vendor",
@@ -29,6 +30,10 @@ const KINDS = Object.freeze([
 ]);
 
 const REGISTRY = Object.freeze({
+  person: Object.freeze({
+    label: "Person connections",
+    relation_families: Object.freeze(["source_identity", "same_person", "member_of", "chairs", "staffed_by", "works_for"]),
+  }),
   official: Object.freeze({
     label: "Official connections",
     relation_families: Object.freeze(["votes_on", "committee_membership", "member_of"]),

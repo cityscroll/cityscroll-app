@@ -19,6 +19,13 @@ import {
   communityBoardPersonObject,
   promoteCommunityBoardPersonRoleEdge,
 } from "./community_board_relations.mjs";
+import {
+  buildPersonConstellation,
+} from "./person_constellation.mjs";
+import {
+  projectCommunityBoardPersonAlias,
+  projectCouncilOfficialAlias,
+} from "../ontology/person.mjs";
 
 export const PEOPLE_ORGANIZATION_ROW_KINDS = Object.freeze([
   "community-board",
@@ -80,6 +87,12 @@ function officialRows(people = {}) {
     .filter((person) => clean(person?.person_id, 80) && clean(person?.person_name))
     .map((person) => {
       const id = clean(person.person_id, 80);
+      const projection = projectCouncilOfficialAlias({
+        personId: id,
+        displayName: person.person_name,
+        observedAt: people.retrieved_at,
+        sourceObservationRefs: [`person_hub:${id}`],
+      });
       return {
         kind: "official",
         id: `official:${id}`,
@@ -87,6 +100,13 @@ function officialRows(people = {}) {
         href: personHref(id),
         entity_ref: personRef(id),
         person_id: id,
+        person_ref: projection.person_ref,
+        person_projection: projection,
+        person_edges: [],
+        person_constellation: buildPersonConstellation({
+          person: projection,
+          source: { kind: "official", id: `official:${id}`, name: clean(person.person_name), canonical_href: personHref(id) },
+        }),
         relation_state: "published",
         detail: "Official profile",
         institution: "city-council",
@@ -103,6 +123,12 @@ function exactPersonAppointmentRows(people = {}) {
     const personId = clean(person?.person_id, 80);
     const personName = clean(person?.person_name);
     if (!personId || !personName) continue;
+    const projection = projectCouncilOfficialAlias({
+      personId,
+      displayName: personName,
+      observedAt: people.retrieved_at,
+      sourceObservationRefs: [`person_hub:${personId}`],
+    });
     for (const term of Array.isArray(person.terms) ? person.terms : []) {
       const officeId = clean(term?.office_id, 80);
       const start = clean(term?.term_start, 40);
@@ -114,6 +140,7 @@ function exactPersonAppointmentRows(people = {}) {
         href: personHref(personId),
         entity_ref: personRef(personId),
         person_id: personId,
+        person_ref: projection.person_ref,
         relation_state: "published",
         detail: `City Council term${term.district ? ` · District ${term.district}` : ""}`,
         institution: "city-council",
@@ -321,6 +348,11 @@ function boardDirectory(geography = {}) {
 
 function communityBoardPersonRows(communityBoardPeople = {}, geography = {}, committeeRegistry = {}) {
   const boards = boardDirectory(geography);
+  const registryRows = normalizeCommunityBoardCommitteeRegistry(committeeRegistry);
+  const committeeNames = new Map(registryRows.map((row) => [
+    communityBoardCommitteeId(row.board_id, row.committee_id),
+    row.publisher_name,
+  ]));
   const byId = new Map();
   for (const observation of boardSourceRows(communityBoardPeople)) {
     const edge = promoteCommunityBoardPersonRoleEdge(observation);
@@ -349,17 +381,43 @@ function communityBoardPersonRows(communityBoardPeople = {}, geography = {}, com
       roles: new Set(),
       committee_refs: new Set(),
       committee_names: new Map(),
+      person_edges: [],
     };
+    const projection = projectCommunityBoardPersonAlias({
+      boardId,
+      personKey: object.publisher_person_id,
+      displayName: object.person_name,
+      observedAt: observation.observed_on || observation.relation_date,
+      sourceObservationRefs: [edge.provenance?.source_record_id].filter(Boolean),
+    });
+    row.person_ref = projection.person_ref;
+    row.person_projection = projection;
+    const targetRef = edge.organization_ref || edge.target_id;
+    const targetKind = edge.relation === "staffed_by" || edge.relation === "works_for"
+      ? "community-board"
+      : edge.target_kind || (String(targetRef || "").startsWith("community-board-committee:") ? "community-board-committee" : "community-board");
+    const targetId = clean(targetRef, 320);
+    if (targetId && !row.person_edges.some((candidate) => candidate.relation === (edge.relation === "staffed_by" ? "works_for" : edge.relation) && candidate.target_ref === targetId)) {
+      const targetBoardId = targetKind === "community-board" ? targetId.replace(/^community-board:/, "") : null;
+      row.person_edges.push({
+        relation: edge.relation === "staffed_by" ? "works_for" : edge.relation,
+        relation_label: edge.role ? `${edge.role.replaceAll("_", " ")} · ${targetKind.replaceAll("-", " ")}` : null,
+        target_kind: targetKind,
+        target_ref: targetId,
+        target_id: targetId,
+        target_name: targetBoardId && boards.get(targetBoardId)?.label
+          ? boards.get(targetBoardId).label
+          : committeeNames.get(targetId) || targetId,
+        target_href: targetBoardId && boards.get(targetBoardId)?.href ? boards.get(targetBoardId).href : null,
+        status: "matched",
+        provenance: edge.provenance || null,
+      });
+    }
     row.roles.add(edge.role || "staff");
     const committeeRef = [edge.from, edge.to].find((value) => String(value || "").startsWith("community-board-committee:"));
     if (committeeRef) row.committee_refs.add(committeeRef);
     byId.set(object.id, row);
   }
-  const registryRows = normalizeCommunityBoardCommitteeRegistry(committeeRegistry);
-  const committeeNames = new Map(registryRows.map((row) => [
-    communityBoardCommitteeId(row.board_id, row.committee_id),
-    row.publisher_name,
-  ]));
   return [...byId.values()].map((row) => {
     const roles = [...row.roles].sort();
     const committeeNamesForRow = [...row.committee_refs]
@@ -377,6 +435,11 @@ function communityBoardPersonRows(communityBoardPeople = {}, geography = {}, com
       committee_names: committeeNamesForRow,
       detail: roleLabels.join(" · "),
       search_text: [row.label, row.board_label, "Community Board person", ...roleLabels, ...committeeNamesForRow].join(" "),
+      person_constellation: buildPersonConstellation({
+        person: row.person_projection,
+        edges: row.person_edges,
+        source: { kind: "community-board", id: row.board_id, name: row.board_label, canonical_href: row.board_href },
+      }),
     };
   });
 }
@@ -387,7 +450,12 @@ function communityBoardCommitteeRows(committeeRegistry = {}, geography = {}, per
   for (const person of personRows) {
     for (const ref of person.committee_refs || []) {
       const current = peopleByCommittee.get(ref) || [];
-      current.push({ person_id: person.id, person_name: person.label, role: person.role_labels?.join(" · ") || "Committee member" });
+      current.push({
+        person_id: person.id,
+        person_ref: person.person_ref || null,
+        person_name: person.label,
+        role: person.role_labels?.join(" · ") || "Committee member",
+      });
       peopleByCommittee.set(ref, current);
     }
   }
