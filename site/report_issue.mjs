@@ -8,6 +8,7 @@ import {
   resolveReportTarget,
   serializeReportTarget,
 } from "./report_target.mjs";
+import { landRegulatoryEffectForRow } from "./land_regulatory_effect.mjs";
 
 export const REPORT_CATEGORIES = Object.freeze([
   { value: "information_wrong", label: "Information is wrong" },
@@ -26,6 +27,16 @@ const FIELD_REPORT_CATEGORIES = Object.freeze(new Set([
 ]));
 const RELATIONSHIP_REPORT_CATEGORIES = Object.freeze(new Set([
   "connection_wrong",
+  "something_missing",
+  "other",
+]));
+const GROUPING_REPORT_CATEGORIES = Object.freeze(new Set([
+  "connection_wrong",
+  "something_missing",
+  "other",
+]));
+const INTERPRETATION_REPORT_CATEGORIES = Object.freeze(new Set([
+  "interpretation_wrong",
   "something_missing",
   "other",
 ]));
@@ -324,6 +335,145 @@ export function buildProjectParcelRelationshipReportTarget(evidence = {}, item =
   }
 }
 
+function sourceRecordId(record) {
+  return reportClean(
+    record?.source_record_id
+      || record?.source_record_identifier
+      || record?.source_observation_ref
+      || record?.request_id
+      || record?.project_id,
+    500,
+  );
+}
+
+function sourcePayload(records, extra = null) {
+  return (Array.isArray(records) ? records : [])
+    .filter(record => record && typeof record === "object")
+    .map(record => {
+      const id = sourceRecordId(record);
+      return id ? { ...record, source_record_id: id } : record;
+    })
+    .concat(extra && typeof extra === "object" ? [extra] : []);
+}
+
+function constituentNoticeIds(records) {
+  return [...new Set((Array.isArray(records) ? records : [])
+    .map(record => {
+      const requestId = reportClean(record?.request_id, 320);
+      if (requestId) return `notice:${requestId}`;
+      return reportClean(record?.meeting_id || record?.object_id, 500);
+    })
+    .filter(Boolean))];
+}
+
+function meetingReportObjectId(entry) {
+  const primary = entry?.primary || {};
+  const candidate = reportClean(primary.meeting_id || entry?.meeting_id || entry?.subject_ref, 500);
+  if (candidate?.startsWith("meeting:")) return candidate;
+  if (candidate?.startsWith("meeting-object:meeting:")) return candidate.slice("meeting-object:".length);
+  return null;
+}
+
+/** Build a hypothesis about a collapsed meeting while retaining every notice. */
+export function buildMeetingGroupingReportTarget(entry = {}) {
+  if (!entry || !["event", "matter"].includes(entry.kind) || Number(entry.notice_count) < 2) return null;
+  const objectId = meetingReportObjectId(entry);
+  const members = Array.isArray(entry.members) ? entry.members : [];
+  const constituentIds = constituentNoticeIds(members);
+  if (!objectId || constituentIds.length < 2) return null;
+  const label = reportClean(entry.title || entry.primary?.title || entry.primary?.decides, 1_000)
+    || `Meeting ${objectId.slice("meeting:".length)}`;
+  const scope = reportClean(entry.place_scope || entry.primary?.affected_area?.scope, 80);
+  const assertedMeaning = `The published notices are presented as one meeting${scope ? ` with ${scope} place semantics` : ""}: ${label}.`;
+  try {
+    return buildReportTarget({
+      object_type: "meeting",
+      object_id: objectId,
+      canonical_url: `/meetings/${encodeURIComponent(objectId)}`,
+      object_label: label,
+      claim_anchor: {
+        anchor: `${objectId}#collapsed_notices`,
+        claim_type: "grouping",
+        subject_id: objectId,
+        field_or_semantic_key: "collapsed_notices",
+        rendered_value: `${members.length} notices presented as one meeting`,
+      },
+      asserted_meaning: assertedMeaning,
+      constituent_object_ids: constituentIds,
+      source: sourcePayload(members),
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Build a hypothesis about a multi-notice rulemaking lifecycle. */
+export function buildRulemakingLifecycleReportTarget(entry = {}) {
+  if (!entry || entry.kind !== "rulemaking" || Number(entry.notice_count) < 2) return null;
+  const objectId = reportClean(entry.subject_ref, 500);
+  const members = Array.isArray(entry.members) ? entry.members : [];
+  const constituentIds = constituentNoticeIds(members);
+  if (!objectId?.startsWith("rulemaking:") || constituentIds.length < 2) return null;
+  const label = reportClean(entry.title || entry.primary?.short_title, 1_000) || objectId;
+  const sources = sourcePayload(members, entry.rule_url ? { source_url: entry.rule_url } : null);
+  try {
+    return buildReportTarget({
+      object_type: "rulemaking",
+      object_id: objectId,
+      canonical_url: "/#rules",
+      object_label: label,
+      claim_anchor: {
+        anchor: `${objectId}#lifecycle`,
+        claim_type: "lifecycle",
+        subject_id: objectId,
+        field_or_semantic_key: "lifecycle",
+        rendered_value: `${members.length} notices presented as one rulemaking lifecycle`,
+      },
+      asserted_meaning: `The published notices are presented as one rulemaking lifecycle: ${label}.`,
+      constituent_object_ids: constituentIds,
+      source: sources,
+    });
+  } catch {
+    return null;
+  }
+}
+
+/** Build a hypothesis about a plain-English land-use effect derived from source material. */
+export function buildLandRegulatoryEffectReportTarget(record = {}) {
+  const projectId = reportClean(record?.project_id || record?.object_id, 320);
+  const effect = landRegulatoryEffectForRow(record);
+  if (!projectId || !effect || !["upzone", "downzone", "mixed", "no_density_change"].includes(effect.effect)
+    || !["high", "medium"].includes(effect.confidence)) return null;
+  const objectId = projectId.startsWith("project:") ? projectId : `project:${projectId}`;
+  const sourceUrls = [
+    ...(effect.existing?.districts || []),
+    ...(effect.proposed?.districts || []),
+  ].map(district => district?.citation?.url).filter(Boolean);
+  const source = sourcePayload([record], { source_urls: sourceUrls });
+  try {
+    const effectLabel = effect.effect.replaceAll("_", " ");
+    const target = buildReportTarget({
+      object_type: "land_use_project",
+      object_id: objectId,
+      canonical_url: `/browse/zoning/#land/${encodeURIComponent(projectId.replace(/^project:/, ""))}`,
+      object_label: reportClean(record?.project_name || record?.title, 1_000) || `Land-use project ${projectId.replace(/^project:/, "")}`,
+      claim_anchor: {
+        anchor: `landuse:${projectId.replace(/^project:/, "")}#regulatory-effect`,
+        claim_type: "interpretation",
+        subject_id: objectId,
+        field_or_semantic_key: "regulatory-effect",
+        rendered_value: effectLabel,
+      },
+      asserted_meaning: `The project source material is interpreted as ${effectLabel} for ${reportClean(record?.project_name || record?.title, 1_000) || `Land-use project ${projectId.replace(/^project:/, "")}`}.`,
+      constituent_object_ids: [objectId],
+      source,
+    });
+    return target.provenance?.source_urls?.length ? target : null;
+  } catch {
+    return null;
+  }
+}
+
 export function reportIssueAction(target, options = {}) {
   const fallbackHref = options?.fallbackHref || DEFAULT_FALLBACK_HREF;
   if (!target) {
@@ -384,6 +534,10 @@ function categoryOptions(target) {
   }
   const allowed = claimType === "relationship"
     ? RELATIONSHIP_REPORT_CATEGORIES
+    : ["grouping", "lifecycle"].includes(claimType)
+      ? GROUPING_REPORT_CATEGORIES
+      : claimType === "interpretation"
+        ? INTERPRETATION_REPORT_CATEGORIES
     : target?.claim_anchor?.field_or_semantic_key === "vendor"
       ? FIELD_REPORT_CATEGORIES
       : null;

@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  buildLandRegulatoryEffectReportTarget,
+  buildMeetingGroupingReportTarget,
   buildContractReportTarget,
   buildContractVendorRelationshipReportTarget,
   buildProjectParcelRelationshipReportTarget,
@@ -97,6 +99,51 @@ test("relationship affordances show both civic endpoints without exposing schema
   }
   assert.doesNotMatch(contractTarget.description, /relation_type|subject_id|object_id/);
   assert.doesNotMatch(parcelTarget.description, /relation_type|subject_id|object_id/);
+});
+
+test("grouping and derived-meaning affordances render the durable target", () => {
+  const meetingTarget = buildMeetingGroupingReportTarget({
+    kind: "event",
+    notice_count: 2,
+    primary: { meeting_id: "meeting:city_record:20260814001", title: "Public hearing" },
+    members: [
+      { request_id: "20260814001", source_url: "https://example.test/1" },
+      { request_id: "20260814002", source_url: "https://example.test/2" },
+    ],
+  });
+  const landTarget = buildLandRegulatoryEffectReportTarget({
+    project_id: "2026K0123",
+    project_name: "1550 Bedford Avenue Rezoning",
+    regulatory_effect: "upzone",
+    regulatory_effect_confidence: "high",
+    regulatory_effect_basis: {
+      existing: { districts: [{ citation: { url: "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21" } }] },
+      proposed: { districts: [{ citation: { url: "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22" } }] },
+    },
+  });
+
+  for (const [target, anchor] of [
+    [meetingTarget, "meeting:city_record:20260814001#collapsed_notices"],
+    [landTarget, "landuse:2026K0123#regulatory-effect"],
+  ]) {
+    const html = renderReportIssueAffordance(target);
+    assert.match(html, />Report an issue<\/button>/);
+    assert.match(html, new RegExp(anchor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(target.description, /\S/);
+    assert.ok(target.constituent_object_ids.length);
+  }
+});
+
+test("higher-inference cards use the shared report target affordance", async () => {
+  const fs = await import("node:fs/promises");
+  const [meetings, land] = await Promise.all([
+    fs.readFile(new URL("../site/app/feed-actions.mjs", import.meta.url), "utf8"),
+    fs.readFile(new URL("../site/app/land.mjs", import.meta.url), "utf8"),
+  ]);
+  assert.match(meetings, /buildMeetingGroupingReportTarget/);
+  assert.match(meetings, /renderReportIssueAffordance/);
+  assert.match(land, /buildLandRegulatoryEffectReportTarget/);
+  assert.match(land, /renderReportIssueAffordance/);
 });
 
 test("report module contains navigation teardown and submits the immutable target", async () => {

@@ -77,6 +77,13 @@ function addProvenanceValue(out, field, value) {
   if (cleaned) out[field].add(cleaned);
 }
 
+function reportTargetList(value, max = 500) {
+  if (!Array.isArray(value)) return null;
+  const values = [...new Set(value.map(item => reportTargetClean(item, max)).filter(Boolean))]
+    .sort((left, right) => left.localeCompare(right));
+  return values.length ? Object.freeze(values) : null;
+}
+
 /**
  * Extract only explicitly labelled source values from existing source/edge
  * payloads. In particular, this never guesses a source system from an id.
@@ -251,6 +258,7 @@ export function describeReportTarget(target) {
   const label = reportTargetClean(target?.object_label || target?.label) || `${target?.object_type || "Civic"} ${target?.object_id || "object"}`;
   const claim = target?.claim_anchor;
   if (!claim) return label;
+  if (target?.asserted_meaning) return target.asserted_meaning;
   const rendered = reportTargetClean(claim.rendered_value, 2_000);
   if (claim.claim_type === "relationship") {
     if (rendered) return rendered;
@@ -289,6 +297,8 @@ export function buildReportTarget({
   provenance = null,
   edge = null,
   source = null,
+  asserted_meaning = null,
+  constituent_object_ids = null,
   identity_lookup_href = null,
   identity_candidates = null,
 } = {}) {
@@ -300,6 +310,10 @@ export function buildReportTarget({
     ...(reportTargetClean(object_label || label) ? { object_label: reportTargetClean(object_label || label) } : {}),
     provenance: provenanceFromExisting(provenance, edge, source),
   };
+  const meaning = reportTargetClean(asserted_meaning, 2_000);
+  if (meaning) target.asserted_meaning = meaning;
+  const constituentIds = reportTargetList(constituent_object_ids);
+  if (constituentIds) target.constituent_object_ids = constituentIds;
   const lookupHref = reportTargetClean(identity_lookup_href, 600);
   if (lookupHref) target.identity_lookup_href = lookupHref;
   if (Array.isArray(identity_candidates)) {
@@ -445,6 +459,8 @@ export function buildReportTargetFromAnchor(anchor, context = {}) {
     provenance: context.provenance,
     edge: context.edge,
     source: context.source || context.object,
+    asserted_meaning: context.asserted_meaning,
+    constituent_object_ids: context.constituent_object_ids,
   });
 }
 
@@ -477,6 +493,8 @@ export function resolveReportTarget(target) {
     object_label: target.object_label,
     claim_anchor: target.claim_anchor,
     provenance: target.provenance,
+    asserted_meaning: target.asserted_meaning,
+    constituent_object_ids: target.constituent_object_ids,
     identity_lookup_href: target.identity_lookup_href,
     identity_candidates: target.identity_candidates,
   });

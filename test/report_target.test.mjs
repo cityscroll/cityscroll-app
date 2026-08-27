@@ -14,8 +14,11 @@ import {
   serializeReportTarget,
 } from "../site/report_target.mjs";
 import {
+  buildLandRegulatoryEffectReportTarget,
+  buildMeetingGroupingReportTarget,
   buildContractVendorRelationshipReportTarget,
   buildProjectParcelRelationshipReportTarget,
+  buildRulemakingLifecycleReportTarget,
 } from "../site/report_issue.mjs";
 
 test("whole-object target uses the existing object id and Copy link route", () => {
@@ -231,6 +234,96 @@ test("rulemaking lifecycle anchor resolves subject ref and remains source-absent
   assert.equal(target.claim_anchor.subject_id, "rulemaking:nyc-rules-9001");
   assert.equal(target.provenance, null);
   assert.equal(target.description, "Commercial curb-use rule: lifecycle");
+});
+
+test("meeting grouping target preserves constituent notices and source provenance", () => {
+  const members = [
+    {
+      request_id: "20260814001",
+      source_system: "city_record",
+      source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260814001",
+    },
+    {
+      request_id: "20260814002",
+      source_system: "city_record",
+      source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260814002",
+    },
+  ];
+  const entry = {
+    kind: "event",
+    notice_count: 2,
+    subject_ref: "meeting-object:meeting:city_record:20260814001",
+    primary: {
+      meeting_id: "meeting:city_record:20260814001",
+      title: "Public hearing on street safety",
+      affected_area: { scope: "local" },
+    },
+    members,
+  };
+  const target = buildMeetingGroupingReportTarget(entry);
+
+  assert.equal(target.claim_anchor.claim_type, "grouping");
+  assert.equal(target.claim_anchor.anchor, "meeting:city_record:20260814001#collapsed_notices");
+  assert.deepEqual(target.constituent_object_ids, [
+    "notice:20260814001",
+    "notice:20260814002",
+  ]);
+  assert.deepEqual(target.provenance.source_record_ids, ["20260814001", "20260814002"]);
+  assert.deepEqual(target.provenance.source_urls, members.map(member => member.source_url));
+  assert.match(target.asserted_meaning, /one meeting with local place semantics/);
+  assert.match(target.description, /Public hearing on street safety/);
+  assert.deepEqual(entry.members, members, "report construction does not rewrite the grouping");
+});
+
+test("rulemaking lifecycle target retains notice ids and is stable across member order", () => {
+  const entry = {
+    kind: "rulemaking",
+    notice_count: 2,
+    subject_ref: "rulemaking:hpd:natural-gas-detectors",
+    title: "Natural gas detector rule",
+    rule_url: "https://rules.cityofnewyork.us/?p=9001",
+    members: [
+      { request_id: "20260301011", source_record_id: "20260301011", source_url: "https://example.test/proposal" },
+      { request_id: "20260701011", source_record_id: "20260701011", source_url: "https://example.test/adoption" },
+    ],
+  };
+  const first = buildRulemakingLifecycleReportTarget(entry);
+  const second = buildRulemakingLifecycleReportTarget({
+    ...entry,
+    members: [...entry.members].reverse(),
+  });
+
+  assert.equal(first.claim_anchor.anchor, "rulemaking:hpd:natural-gas-detectors#lifecycle");
+  assert.equal(first.canonical_url, "/#rules");
+  assert.deepEqual(first.constituent_object_ids, ["notice:20260301011", "notice:20260701011"]);
+  assert.deepEqual(first.provenance.source_record_ids, ["20260301011", "20260701011"]);
+  assert.ok(first.provenance.source_urls.includes(entry.rule_url));
+  assert.match(first.asserted_meaning, /one rulemaking lifecycle/);
+  assert.equal(first.target_id, second.target_id);
+});
+
+test("land regulatory-effect target carries the derived meaning and cited source material", () => {
+  const target = buildLandRegulatoryEffectReportTarget({
+    project_id: "2026K0123",
+    project_name: "1550 Bedford Avenue Rezoning",
+    regulatory_effect: "upzone",
+    regulatory_effect_confidence: "high",
+    regulatory_effect_basis: {
+      existing: { districts: [{ citation: { url: "https://zr.planning.nyc.gov/article-ii/chapter-3/23-21" } }] },
+      proposed: { districts: [{ citation: { url: "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22" } }] },
+    },
+  });
+
+  assert.equal(target.claim_anchor.anchor, "landuse:2026K0123#regulatory-effect");
+  assert.equal(target.claim_anchor.claim_type, "interpretation");
+  assert.deepEqual(target.constituent_object_ids, ["project:2026K0123"]);
+  assert.deepEqual(target.provenance.source_record_ids, ["2026K0123"]);
+  assert.ok(target.provenance.source_urls.some(url => url.includes("23-22")));
+  assert.match(target.asserted_meaning, /interpreted as upzone/);
+  assert.equal(buildLandRegulatoryEffectReportTarget({
+    project_id: "NO-PAIR",
+    actions: "ZM",
+  }), null, "an unsupported interpretation has no report target");
 });
 
 test("anchor parsing rejects positional or malformed anchors", () => {
