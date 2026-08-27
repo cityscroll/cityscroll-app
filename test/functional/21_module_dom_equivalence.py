@@ -45,6 +45,15 @@ EXPORTED_DECLARATION = re.compile(
 EXPORTED_NAME = re.compile(
     r'\bexport\s+(?:async\s+)?(?:function|class|const|let|var)\s+([A-Za-z_$][\w$]*)'
 )
+EXPORTED_LIST = re.compile(
+    r'\bexport\s*\{[^}]+\}\s*(?:from\s+["\'][^"\']+["\'])?\s*;?'
+)
+
+
+def strip_module_exports(source: str) -> str:
+    """Remove ESM-only export syntax before placing a module in a classic script."""
+    source = EXPORTED_DECLARATION.sub("", source)
+    return EXPORTED_LIST.sub("", source)
 
 
 def flatten_helper(
@@ -147,6 +156,7 @@ def reconstruct_inline_site(target: pathlib.Path) -> None:
             helpers.append(helper_source)
             seen_helpers.add(helper_name)
         source = STATIC_PARENT_IMPORT.sub("", source)
+        source = strip_module_exports(source)
         chunks.append(source.split(FOOTER)[0].replace('import("../', 'import("./'))
     inline = "\n".join([*helpers, *chunks])
     index_path = target / "index.html"
@@ -198,6 +208,7 @@ def capture(page, base: str, route: str, ready: str, root: str, action=None, err
     # A merge-group runner can lose one module-graph wakeup while Chromium is
     # cold. Retry the bounded readiness check once; a persistent syntax or
     # rendering error still fails below with the collected page errors.
+    error_start = len(errors) if errors is not None else 0
     for attempt in range(2):
         try:
             page.goto(base + route, wait_until="load", timeout=30_000)
@@ -210,6 +221,8 @@ def capture(page, base: str, route: str, ready: str, root: str, action=None, err
                     f"{route}: readiness selector {ready!r} did not settle after a retry{detail}"
                 ) from error
             print(f"WARN {route}: readiness timeout; retrying once", flush=True)
+    route_errors = errors[error_start:] if errors is not None else []
+    assert not route_errors, f"{route}: browser page errors: {route_errors}"
     if route == "#notice/20241112003":
         assert page.locator('#nactions .next-action-list > a[href*="zola.planning.nyc.gov"]').count() == 1, (
             "Property deep link painted before its BBL-backed action was hydrated"
