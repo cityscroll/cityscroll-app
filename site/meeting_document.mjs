@@ -399,18 +399,37 @@ function locationDetails(record) {
   const venue = record.venue || {};
   const area = record.affected_area || {};
   const borough = venue.borough || area.boroughs?.[0] || null;
-  const rows = [];
+  const locationLines = [];
+  const seenLocationLines = new Map();
+  const addLocationLine = (value) => {
+    const display = clean(value, 500);
+    if (!display) return;
+    // A publisher may expose a presentation prefix in one venue field and
+    // omit it in another. Compare the underlying line, while retaining the
+    // prefixed form when it is available so the mode remains visible.
+    const key = display.replace(/^via\s+/i, "").toLocaleLowerCase();
+    const existing = seenLocationLines.get(key);
+    if (!existing) {
+      const line = { display, hasViaPrefix: /^via\s+/i.test(display) };
+      seenLocationLines.set(key, line);
+      locationLines.push(line);
+    } else if (!existing.hasViaPrefix && /^via\s+/i.test(display)) {
+      existing.display = display;
+      existing.hasViaPrefix = true;
+    }
+  };
   const venueName = venue.name || venue.building || record.building_name || null;
-  if (venueName) rows.push(`<span>${esc(venueName)}</span>`);
-  if (venue.address) rows.push(`<span>${esc(venue.address)}</span>`);
+  addLocationLine(venueName);
+  addLocationLine(venue.address);
   if (!venue.address) {
     const address = [
       record.street_address_1,
       record.street_address_2,
       [record.city, record.state, record.zip_code].filter(Boolean).join(", "),
     ].filter(Boolean).join(", ");
-    if (address) rows.push(`<span>${esc(address)}</span>`);
+    addLocationLine(address);
   }
+  const rows = locationLines.map(({ display }) => `<span>${esc(display)}</span>`);
   if (borough) rows.push(`<a href="${esc(nearYouHref("borough", borough))}">${esc(borough)}</a>`);
   for (const value of area.community_districts || []) {
     rows.push(`<a href="${esc(nearYouHref("community_district", value, borough))}">Community District ${esc(value)}</a>`);
