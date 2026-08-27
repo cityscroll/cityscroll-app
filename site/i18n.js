@@ -2711,6 +2711,11 @@ const STRINGS = {
     hearing_notice_cr: "hearing notice in City Record",
     feeds_suffix: "— no email needed.",
     calendar_ics: "Add to calendar",
+    calendar_this_scope: "this scope",
+    calendar_copy_url: "Copy subscription URL",
+    calendar_copy_done: "Copied",
+    calendar_url_copied: "Subscription URL copied.",
+    calendar_copy_failed: "Could not copy the subscription URL.",
     saved_alerts_heading: "Saved alerts (demo)",
     // Multi-watch digest rollup + preference center surface (#alerts?view=rollup)
     alerts_rollup_summary: "Manage existing alerts",
