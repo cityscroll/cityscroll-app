@@ -820,7 +820,7 @@ function calendarRowsForLens(lens) {
   return [];
 }
 
-export function syncCalendarSubscription(lens, rows = null) {
+function syncCalendarSubscription(lens, rows = null) {
   const controls = [...document.querySelectorAll("[data-calendar-subscribe-lens]")];
   controls.forEach((control) => {
     const active = control.dataset.calendarSubscribeLens === lens;
