@@ -25,6 +25,7 @@ import {
   MCP_NOTICE_SEARCH_ADAPTER,
   MCP_ORGANIZATIONS_BROWSE_ADAPTER,
   MCP_PEOPLE_GET_ADAPTER,
+  MCP_MEETING_GET_ADAPTER,
   MCP_TOOL_BINDINGS,
   MCP_TOOLS,
 } from "../capabilities/mcp_tool_declarations.mjs";
@@ -35,6 +36,7 @@ import { NOTICE_GET_HTTP_ADAPTER } from "../worker/src/notice.mjs";
 import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
 import { CONTRACT_GET_HTTP_ADAPTER, CONTRACTS_ANALYSIS_HTTP_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER } from "../worker/src/contracts.mjs";
 import { PEOPLE_GET_HTTP_ADAPTER, ORGANIZATIONS_BROWSE_HTTP_ADAPTER } from "../worker/src/people_organizations.mjs";
+import { MEETING_GET_HTTP_ADAPTER } from "../worker/src/hearings.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
@@ -93,6 +95,8 @@ export function validateRuntimeTopology() {
     ORGANIZATIONS_BROWSE_HTTP_ADAPTER,
     MCP_PEOPLE_GET_ADAPTER,
     MCP_ORGANIZATIONS_BROWSE_ADAPTER,
+    MEETING_GET_HTTP_ADAPTER,
+    MCP_MEETING_GET_ADAPTER,
   ];
   for (const runtimeAdapter of runtimeAdapters) {
     const registered = registeredAdapters.get(runtimeAdapter.id);

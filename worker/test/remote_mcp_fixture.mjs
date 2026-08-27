@@ -10,6 +10,7 @@ import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
 import { executeFederatedSearch } from "../../capabilities/federated_search.mjs";
 import { executeContractGet, executeContractsBrowse } from "../../capabilities/contracts.mjs";
 import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
+import { executeMeetingGet } from "../../capabilities/meetings.mjs";
 import { executePeopleGet, executeOrganizationsBrowse } from "../../capabilities/people_organizations.mjs";
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
@@ -22,6 +23,7 @@ import { workerD1EntityRelationships } from "../src/public_relationship_graph.mj
 import { workerFederatedSearch } from "../src/search.mjs";
 import { workerContractsAnalysis, workerProcurementContracts } from "../src/contracts.mjs";
 import { workerPeopleOrganizations } from "../src/people_organizations.mjs";
+import { workerMeetingGet } from "../src/hearings.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
   Object.freeze({
@@ -91,6 +93,11 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
     name: "browse_organizations",
     arguments: Object.freeze({ kind: "agency", query: "childrens", limit: 1 }),
   }),
+  Object.freeze({
+    capabilityReference: "meeting.get@1",
+    name: "get_meeting",
+    arguments: Object.freeze({ meeting_id: "meeting:city_record:REMOTE-HEARING" }),
+  }),
 ]);
 
 class MockKV {
@@ -108,6 +115,24 @@ const PEOPLE_ORGANIZATIONS_MODEL = JSON.parse(readFileSync(
   new URL("../../site/data/people_organizations_read_model.json", import.meta.url),
   "utf8",
 ));
+const MEETING_READ_MODEL = Object.freeze({
+  schema: "cityscroll.shared_meeting_read_model.v1",
+  version: 1,
+  generated_at: "2026-08-18T20:00:00Z",
+  freshness: { generated_at: "2026-08-18T20:00:00Z", checked_at: "2026-08-18T20:01:00Z" },
+  sources: { city_record: { status: "available", row_count: 1 } },
+  rows: [{
+    object_type: "meeting",
+    meeting_id: "meeting:city_record:REMOTE-HEARING",
+    source_system: "city_record",
+    source_record_id: "REMOTE-HEARING",
+    request_id: "REMOTE-HEARING",
+    title: "Remote public hearing",
+    event_date: "2026-08-17T18:30:00-04:00",
+    source_receipt: { schema: "cityscroll.meeting_source_receipt.v1", status: "ok", observed_at: "2026-08-15T12:00:00Z" },
+    source_record: { source_system: "city_record", identifier: "REMOTE-HEARING", receipt: { status: "ok" } },
+  }],
+});
 const NOTICE_SCHEMA = readFileSync(new URL("../migrations/0001_notices.sql", import.meta.url), "utf8");
 const NOTICE_FACTS_SCHEMA = readFileSync(new URL("../migrations/0010_notice_facts.sql", import.meta.url), "utf8");
 const NOTICE_FTS_SCHEMA = readFileSync(new URL("../migrations/0016_notice_fts.sql", import.meta.url), "utf8");
@@ -189,6 +214,8 @@ export function createRemoteMcpFixtureEnv() {
     generatedAt: "2026-08-18T20:00:00Z",
     now: "2026-08-18T20:01:00Z",
   });
+  const alertState = new MockKV();
+  alertState.store.set("hearings:location:v1", JSON.stringify(MEETING_READ_MODEL));
 
   const dossierRows = entityRows(FIXTURE.cases.entity_dossier.source_rows);
   const relationshipRows = entityRows(FIXTURE.cases.entity_relationships.source_rows);
@@ -243,6 +270,7 @@ export function createRemoteMcpFixtureEnv() {
       DB,
       SUBS: new MockKV(),
       NL_METER: new MockKV(),
+      ALERT_STATE: alertState,
       PROCUREMENT_READ_MODEL: procurementModel,
       ANALYTICAL_PROJECTION: {
         schema: "cityscroll.analytical_projection.v1",
@@ -327,6 +355,11 @@ export async function directCapabilityResults(env) {
       query: organizationsBrowseArgs.query,
       limit: organizationsBrowseArgs.limit,
     },
+  ));
+  const meetingArgs = argsFor("get_meeting");
+  results.set("get_meeting", await executeMeetingGet(
+    workerMeetingGet(env),
+    { meetingId: meetingArgs.meeting_id },
   ));
   return results;
 }

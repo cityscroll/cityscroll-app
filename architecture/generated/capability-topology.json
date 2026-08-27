@@ -1226,6 +1226,116 @@
           ]
         }
       ]
+    },
+    {
+      "reference": "meeting.get@1",
+      "id": "meeting.get",
+      "version": "1.0.0",
+      "owner": "meetings",
+      "operation": "read",
+      "authority": {
+        "class": "public-read",
+        "sideEffect": "none",
+        "approval": "none"
+      },
+      "cost": {
+        "class": "bounded-static-read-model",
+        "machineFanOut": "one-record"
+      },
+      "input_schema": "cityscroll.capability.meeting_get.input.v1",
+      "output_schema": "cityscroll.capability.meeting_get.output.v1",
+      "bounds": {
+        "input": {
+          "meetingIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "maximumResults": 1
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "meetingId": "meeting:city_record:20260810053"
+          },
+          "output": {
+            "availability": "available",
+            "source": "city_record",
+            "exactIdentity": true
+          }
+        },
+        {
+          "input": {
+            "meetingId": "meeting:community_board:unpublished"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "availability": [
+        "available",
+        "not_yet_public",
+        "unavailable"
+      ],
+      "provenance": {
+        "identity": "meeting.meeting_id",
+        "sourceObservation": "meeting.source_record and meeting.source_receipt",
+        "coverage": "source and freshness envelopes from shared meeting read model"
+      },
+      "freshness": {
+        "owner": "committed shared meeting read model",
+        "projection": "generated_at, checked_at, and per-source status"
+      },
+      "provider": {
+        "id": "worker-static.shared-meeting.get",
+        "module": "worker/src/hearings.mjs",
+        "export": "workerMeetingGet",
+        "store": "precomputed shared meeting read model in KV or Pages",
+        "readModel": "cityscroll.shared_meeting_read_model.v1"
+      },
+      "adapters": [
+        {
+          "id": "worker-http.meeting-get@1",
+          "module": "worker/src/hearings.mjs",
+          "kind": "http-route",
+          "route": "GET /hearings?id=…",
+          "surface": "Meeting detail",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "one shared meeting row"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "one shared meeting summary"
+            }
+          ]
+        },
+        {
+          "id": "mcp.get_meeting@1",
+          "module": "worker/src/mcp.mjs",
+          "kind": "mcp-tool",
+          "tool": "get_meeting",
+          "route": "POST /mcp",
+          "surface": "MCP",
+          "representations": [
+            {
+              "id": "json",
+              "mediaType": "application/json",
+              "projection": "one shared meeting row"
+            },
+            {
+              "id": "text-summary",
+              "mediaType": "text/plain",
+              "projection": "one shared meeting summary"
+            }
+          ]
+        }
+      ]
     }
   ],
   "mcp": {
@@ -1804,6 +1914,53 @@
             "output": {
               "availability": "complete",
               "pagination": "cursor when more rows remain"
+            }
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "store_access": "provider-only"
+      },
+      {
+        "name": "get_meeting",
+        "operation_class": "read",
+        "authority_class": "public_read",
+        "schema_reference": "meeting.get@1",
+        "capability_reference": "meeting.get@1",
+        "adapter_id": "mcp.get_meeting@1",
+        "contract_reference": null,
+        "pilot_exception": null,
+        "bounds": {
+          "input": {
+            "meetingIdMaximumLength": 320,
+            "maximum": 1
+          },
+          "output": {
+            "maximumResults": 1
+          }
+        },
+        "examples": [
+          {
+            "input": {
+              "meetingId": "meeting:city_record:20260810053"
+            },
+            "output": {
+              "availability": "available",
+              "source": "city_record",
+              "exactIdentity": true
+            }
+          },
+          {
+            "input": {
+              "meetingId": "meeting:community_board:unpublished"
+            },
+            "output": {
+              "availability": "not_yet_public",
+              "error": "not-found"
             }
           }
         ],

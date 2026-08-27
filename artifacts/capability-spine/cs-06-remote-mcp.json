@@ -15,7 +15,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 11,
+    "registered_public_tools": 12,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -317,14 +317,39 @@
       "store_access": "provider-only",
       "store_read_operations": 0,
       "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_meeting@1",
+      "adapter_semantic_sha256": "e8f8a9ea077f996568ea7a5d545aa48d17072fcf27d3183ef8d71a874dae9db7",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "maximum": 1,
+        "meetingIdMaximumLength": 320
+      },
+      "calls": 1,
+      "capability_reference": "meeting.get@1",
+      "direct_semantic_sha256": "e8f8a9ea077f996568ea7a5d545aa48d17072fcf27d3183ef8d71a874dae9db7",
+      "name": "get_meeting",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.shared-meeting.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
     }
   ],
   "request_counts": {
-    "capability_calls": 11,
+    "capability_calls": 12,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 14
+    "post_requests": 15
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

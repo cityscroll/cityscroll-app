@@ -32,6 +32,7 @@ test("meeting documents render as official record links on the canonical meeting
   }]);
   const html = renderMeetingDocument(record);
   assert.match(html, /data-meeting-minutes/);
+  assert.match(html, /data-capability-reference="meeting\.get@1"/);
   assert.match(html, /https:\/\/board\.example\/minutes-1\.pdf/);
   assert.doesNotMatch(html, /data-meeting-documents/);
   assert.doesNotMatch(html, /meeting_document|attachment_status|source_status/);

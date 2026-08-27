@@ -64,6 +64,7 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     "analyze_contracts",
     "get_person_or_organization",
     "browse_organizations",
+    "get_meeting",
     "preview_watch",
     "create_watch",
   ]);
@@ -93,6 +94,46 @@ test("initialize + tools/list expose retrieval and action tools", async () => {
     MCP_TOOL_BINDINGS.find(({ name }) => name === "retrieve_cited_passages").capabilityReference,
     "cited.passages.retrieve@1",
   );
+});
+
+test("get_meeting delegates to the shared read-model capability and fails closed", async () => {
+  const meeting = {
+    object_type: "meeting",
+    meeting_id: "meeting:city_record:mcp-fixture-1",
+    source_system: "city_record",
+    source_record_id: "mcp-fixture-1",
+    title: "MCP meeting fixture",
+    source_receipt: { schema: "cityscroll.meeting_source_receipt.v1", status: "ok", observed_at: "2026-08-15T12:00:00Z" },
+    source_record: { source_system: "city_record", identifier: "mcp-fixture-1", receipt: { status: "ok" } },
+  };
+  const env = {
+    SUBS: new MockKV(),
+    NL_METER: new MockKV(),
+    ALERT_STATE: new MockKV(),
+  };
+  await env.ALERT_STATE.put("hearings:location:v1", JSON.stringify({
+    schema: "cityscroll.shared_meeting_read_model.v1",
+    version: 1,
+    generated_at: "2026-08-15T12:00:00Z",
+    freshness: { generated_at: "2026-08-15T12:00:00Z", checked_at: "2026-08-15T12:01:00Z" },
+    sources: { city_record: { status: "available", row_count: 1 } },
+    rows: [meeting],
+  }));
+  const success = await (await handleMcp(post({
+    jsonrpc: "2.0", id: 24, method: "tools/call",
+    params: { name: "get_meeting", arguments: { meeting_id: meeting.meeting_id } },
+  }), env)).json();
+  assert.equal(success.result.structuredContent.capability_reference, "meeting.get@1");
+  assert.equal(success.result.structuredContent.meeting.meeting_id, meeting.meeting_id);
+  assert.equal(success.result.structuredContent.coverage.state, "observed");
+  assert.equal(success.result.structuredContent.freshness.as_of, "2026-08-15T12:00:00Z");
+
+  const missing = await (await handleMcp(post({
+    jsonrpc: "2.0", id: 25, method: "tools/call",
+    params: { name: "get_meeting", arguments: { meeting_id: "meeting:city_record:missing" } },
+  }), env)).json();
+  assert.equal(missing.result.structuredContent.availability, "not_yet_public");
+  assert.equal(missing.result.structuredContent.error, "not-found");
 });
 
 test("retrieve_cited_passages returns source-only structured citations", async () => {

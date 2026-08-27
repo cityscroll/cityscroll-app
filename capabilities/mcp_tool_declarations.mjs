@@ -61,6 +61,12 @@ import {
   ORGANIZATIONS_BROWSE_PROVIDER_ID,
   PEOPLE_ORGANIZATION_ROW_KINDS,
 } from "./people_organizations.mjs";
+import {
+  MEETING_GET_CAPABILITY_REFERENCE,
+  MEETING_GET_LIMITS,
+  MEETING_GET_PROVIDER_ID,
+  MEETING_GET_REPRESENTATIONS,
+} from "./meetings.mjs";
 import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
@@ -167,6 +173,7 @@ export const MCP_CONTRACTS_ANALYSIS_ADAPTER = Object.freeze({
 
 export const MCP_PEOPLE_GET_ADAPTER = Object.freeze({ id: "mcp.get_person_or_organization@1", capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, providerId: PEOPLE_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_person_or_organization", surface: "MCP" });
 export const MCP_ORGANIZATIONS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_organizations@1", capabilityReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, providerId: ORGANIZATIONS_BROWSE_PROVIDER_ID, route: "POST /mcp", tool: "browse_organizations", surface: "MCP" });
+export const MCP_MEETING_GET_ADAPTER = Object.freeze({ id: "mcp.get_meeting@1", capabilityReference: MEETING_GET_CAPABILITY_REFERENCE, providerId: MEETING_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_meeting", surface: "MCP", representations: MEETING_GET_REPRESENTATIONS });
 
 const NOTICE_SEARCH_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
@@ -491,6 +498,25 @@ export const MCP_TOOLS = [
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
+    name: "get_meeting",
+    description: "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.",
+    inputSchema: { type: "object", additionalProperties: false, properties: { meeting_id: { type: "string", minLength: 1, maxLength: MEETING_GET_LIMITS.meetingIdMaximumLength, description: "Exact canonical meeting id, including its meeting: prefix." } }, required: ["meeting_id"] },
+    outputSchema: {
+      type: "object", additionalProperties: false,
+      required: ["capability_reference", "availability", "meeting", "source", "coverage", "freshness", "error"],
+      properties: {
+        capability_reference: { type: "string", const: MEETING_GET_CAPABILITY_REFERENCE },
+        availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+        meeting: { type: ["object", "null"] },
+        source: { type: ["object", "null"] },
+        coverage: { type: ["object", "null"] },
+        freshness: { type: ["object", "null"] },
+        error: { type: ["string", "null"] },
+      },
+    },
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
     name: "preview_watch",
     description: "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
     inputSchema: {
@@ -622,6 +648,7 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
   }),
   Object.freeze({ name: "get_person_or_organization", operationClass: "read", schemaReference: PEOPLE_GET_CAPABILITY_REFERENCE, capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, adapterId: MCP_PEOPLE_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: PEOPLE_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({ name: "browse_organizations", operationClass: "read", schemaReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, capabilityReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, adapterId: MCP_ORGANIZATIONS_BROWSE_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: ORGANIZATIONS_BROWSE_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
+  Object.freeze({ name: "get_meeting", operationClass: "read", schemaReference: MEETING_GET_CAPABILITY_REFERENCE, capabilityReference: MEETING_GET_CAPABILITY_REFERENCE, adapterId: MCP_MEETING_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: MEETING_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({
     name: "preview_watch",
     operationClass: "read",
