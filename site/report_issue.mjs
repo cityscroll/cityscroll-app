@@ -7,7 +7,6 @@ import {
   resolveReportTarget,
   serializeReportTarget,
 } from "./report_target.mjs";
-import { entityRouteRef } from "./entity_pivot.mjs";
 
 export const REPORT_CATEGORIES = Object.freeze([
   { value: "information_wrong", label: "Information is wrong" },
@@ -121,6 +120,24 @@ function existingVendorRef(record, facts) {
     .find((value) => /^vendor:stem:[^\s]+$/.test(value || "")) || null;
 }
 
+function vendorIdentityRef(value) {
+  const pivots = globalThis.CrolEntityPivots;
+  if (typeof pivots?.entityRouteRef === "function") {
+    return reportClean(pivots.entityRouteRef("vendor", value), 320);
+  }
+  // Direct module consumers may not have loaded the browser identity namespace.
+  // Keep the same typed fallback shape; the application path above remains the
+  // authoritative vendor identity model.
+  const stem = reportClean(value, 320)
+    ?.toUpperCase()
+    .replace(/[.,'’&]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/, "")
+    .trim();
+  return stem ? `vendor:stem:${encodeURIComponent(stem)}` : null;
+}
+
 /** Build the durable Contract ↔ vendor edge target from the vendor identity model. */
 export function buildContractVendorRelationshipReportTarget(record = {}, facts = {}) {
   const parts = contractParts(record);
@@ -135,7 +152,7 @@ export function buildContractVendorRelationshipReportTarget(record = {}, facts =
     details.vendor || source.vendor_name || source.vendor || source.prime_vendor,
     500,
   );
-  const vendorRef = existingVendorRef(source, details) || (vendor ? entityRouteRef("vendor", vendor) : null);
+  const vendorRef = existingVendorRef(source, details) || (vendor ? vendorIdentityRef(vendor) : null);
   if (!vendor || !vendorRef) return null;
   try {
     return buildRelationshipReportTarget({
