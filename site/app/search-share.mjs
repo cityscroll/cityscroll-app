@@ -881,7 +881,10 @@ function syncCalendarSubscription(lens, rows = null) {
   });
   const control = controls.find((candidate) => candidate.dataset.calendarSubscribeLens === lens);
   if (!control || !globalThis.CrolScope) return null;
-  const hash = location.hash.startsWith(`#${lens}`) ? location.hash : `#${lens}`;
+  const serialized = typeof globalThis.serializeState === "function" ? globalThis.serializeState() : null;
+  const hash = location.hash.startsWith(`#${lens}`)
+    ? location.hash
+    : (serialized && serialized.startsWith(`#${lens}`) ? serialized : `#${lens}`);
   const scope = CrolScope.scopeFromRouteHash(hash, { language: window.LANG || "en" });
   const details = calendarSubscriptionDetailsForScope(scope, {
     lens,

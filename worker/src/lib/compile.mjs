@@ -22,9 +22,12 @@ import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from ".
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
+import { loadLandUpcomingHearingsSnapshot } from "./land_upcoming_hearings_kv.mjs";
 import { MEETING_FLOOR_ROWS, NEAR_YOU_FLOOR } from "../data/route_read_model_floor.mjs";
 import { RouteReadModelUnavailable, loadMeetingRows, loadNearYouActivity } from "./route_read_model_kv.mjs";
 import communityBoardDistricts from "../data/community_board_districts.json" with { type: "json" };
+import landDefaultFloor from "../../../site/data/land_default_ulurp.json" with { type: "json" };
+import { zoningHearingRowsForScope } from "../../../site/zoning_hearing_calendar.mjs";
 export { vendorStem };
 
 const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });
@@ -151,6 +154,19 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
       }
     }
     rows = typeof q.transformRows === "function" ? q.transformRows(payload) : payload;
+  } else if (q.routeReadModel?.kind === "land-hearings") {
+    const loaded = await loadLandUpcomingHearingsSnapshot(env);
+    const hearings = q.routeReadModel.hearings || loaded.record?.hearings || [];
+    const projects = q.routeReadModel.projects || landDefaultFloor.projects;
+    const filter = q.routeReadModel.filter || {};
+    const keywords = (Array.isArray(filter.keywords) ? filter.keywords : [])
+      .map((value) => String(value || "").trim().toLowerCase()).filter(Boolean);
+    rows = zoningHearingRowsForScope(hearings, projects, filter, {
+      today: q.routeReadModel.todayISO,
+    }).filter((row) => !keywords.length || keywords.every((keyword) => (
+      `${row.project_name || ""} ${row.project_id || ""} ${row.milestone_title || ""} ${row.representing || ""}`
+        .toLowerCase().includes(keyword)
+    )));
   } else if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
   else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);
@@ -512,6 +528,19 @@ export function compileSub(sub, todayISO) {
   }
 
   if (sub.lens === "land") {
+    if (f.futureAction === "hearing") {
+      return {
+        url: null,
+        params: {},
+        idField: "project_id",
+        kind: "land-hearings",
+        routeReadModel: {
+          kind: "land-hearings",
+          todayISO,
+          filter: f,
+        },
+      };
+    }
     // Mirror the Land tab's zapWhere + district filters so suggestion fruitfulness counts
     // the same surface a click resolves to (borough / community district / council district).
     let where = landProcedureSodaWhere(f.procedure);

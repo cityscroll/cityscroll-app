@@ -147,7 +147,7 @@ export async function listActiveLandProjects({
     const where = `public_status='${String(status).replace(/'/g, "''")}'`;
     const url =
       `${SODA_BASE}/${ZAP_SODA_PROJECTS}.json`
-      + `?$select=project_id,project_name,public_status,borough,current_milestone_date`
+      + `?$select=project_id,project_name,public_status,borough,community_district,cc_district,current_milestone_date`
       + `&$where=${encodeURIComponent(where)}`
       + `&$order=current_milestone_date DESC`
       + `&$limit=${remaining}`;
@@ -170,6 +170,8 @@ export async function listActiveLandProjects({
         project_name: row.project_name || null,
         public_status: row.public_status || status,
         borough: row.borough || null,
+        community_district: row.community_district || null,
+        cc_district: row.cc_district || null,
       });
       if (ordered.length >= cap) break;
     }

@@ -828,6 +828,10 @@ async function handleBrowse(request, env, facet) {
     const dataResponse = await staticAsset(env, request, config.dataPath);
     if (!dataResponse.ok) return asset;
     const payload = await dataResponse.json();
+    if (facet === "zoning") {
+      const hearingsResponse = await staticAsset(env, request, "/data/land_upcoming_hearings.json");
+      if (hearingsResponse.ok) payload.hearings = (await hearingsResponse.json()).hearings || [];
+    }
     const view = buildBrowseView(facet, payload, url.searchParams, {
       semanticArtifact: facet === "rules" ? rulesSemanticLaneArtifact : null,
     });

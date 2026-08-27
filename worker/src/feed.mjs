@@ -18,6 +18,7 @@ import {
   icsFeed,
 } from "./lib/feed.mjs";
 import { calendarOccurrencesForRows } from "../../site/calendar_occurrence.mjs";
+import { zoningHearingCalendarOccurrence } from "../../site/zoning_hearing_calendar.mjs";
 
 const FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
 const TYPES = {
@@ -69,13 +70,21 @@ export async function handleFeed(request, env, ctx) {
 
   const title = `CityScroll — ${describeFilter(lens, sub.filter)}`;
   const items = feedItems(q.kind, rows);
-  const occurrences = calendarOccurrencesForRows(rows, {
-    kind: q.kind,
-    legacy_uid: true,
-    // Feed rows already satisfy the query's temporal bounds. The producer
-    // still chooses only semantic civic dates, never publication timestamps.
-    as_of: "0000-01-01",
-  });
+  const occurrences = q.kind === "land-hearings"
+    ? rows.map((row) => zoningHearingCalendarOccurrence(row, {
+      scope_ref: sub.filter.councilDistrict
+        ? `council-district:${sub.filter.councilDistrict}`
+        : sub.filter.communityDistrict
+          ? `community-district:${sub.filter.communityDistrict}`
+          : "land:hearings",
+    })).filter(Boolean)
+    : calendarOccurrencesForRows(rows, {
+      kind: q.kind,
+      legacy_uid: true,
+      // Feed rows already satisfy the query's temporal bounds. The producer
+      // still chooses only semantic civic dates, never publication timestamps.
+      as_of: "0000-01-01",
+    });
   const siteUrl = "https://cityscroll.org/";
   const updated = new Date().toISOString();
 
