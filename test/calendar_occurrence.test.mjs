@@ -5,6 +5,7 @@ import { test } from "node:test";
 import {
   CALENDAR_OCCURRENCE_KINDS,
   CALENDAR_OCCURRENCE_STATUSES,
+  CALENDAR_OCCURRENCE_LIFECYCLES,
   calendarizationCoverage,
   createCalendarOccurrence,
   projectCalendarOccurrences,
@@ -16,6 +17,7 @@ const fixture = JSON.parse(readFileSync(new URL("./fixtures/calendar-occurrences
 test("CalendarOccurrence is a validated, presentation-neutral contract", () => {
   assert.deepEqual(CALENDAR_OCCURRENCE_KINDS, ["event", "deadline", "window_open", "window_close", "milestone"]);
   assert.deepEqual(CALENDAR_OCCURRENCE_STATUSES, ["scheduled", "cancelled", "completed"]);
+  assert.deepEqual(CALENDAR_OCCURRENCE_LIFECYCLES, ["published", "scheduled", "rescheduled", "cancelled"]);
   const occurrence = createCalendarOccurrence({
     uid: "meeting:example:1:event",
     scope_ref: "scope:meetings:example",
@@ -129,6 +131,67 @@ test("rescheduling retains the producer-owned UID while changing the time", () =
   const previous = projectCalendarOccurrences([fixture.rescheduled_previous], { as_of: fixture.as_of }).occurrences[0];
   assert.equal(current.uid, previous.uid);
   assert.notEqual(current.starts_at, previous.starts_at);
+});
+
+test("refreshing a reschedule moves one UID and emits update metadata", () => {
+  const before = projectCalendarOccurrences([fixture.lifecycle.scheduled], { as_of: fixture.as_of }).occurrences;
+  const after = projectCalendarOccurrences([fixture.lifecycle.rescheduled], { as_of: fixture.as_of }).occurrences;
+  assert.equal(before.length, 1);
+  assert.equal(after.length, 1);
+  assert.equal(after[0].uid, before[0].uid);
+  assert.equal(after[0].starts_at, "2026-09-15T19:00:00-04:00");
+  assert.equal(after[0].lifecycle, "rescheduled");
+  assert.equal(after[0].sequence, 1);
+  const ics = icsFeed({ title: "Hearing calendar", occurrences: after });
+  assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 1);
+  assert.match(ics, /UID:meeting:city_record:hearing-a@crol-list/);
+  assert.match(ics, /DTSTART;TZID=America\/New_York:20260915T190000/);
+  assert.doesNotMatch(ics, /20260915T180000/);
+  assert.match(ics, /SEQUENCE:1/);
+  assert.match(ics, /LAST-MODIFIED:20260827T170000Z/);
+});
+
+test("the lifecycle records publication, scheduling, rescheduling, and cancellation", () => {
+  assert.deepEqual(
+    ["published", "scheduled", "rescheduled", "cancelled"].map((state) =>
+      projectCalendarOccurrences([fixture.lifecycle[state]], { as_of: fixture.as_of }).occurrences[0].lifecycle),
+    ["published", "scheduled", "rescheduled", "cancelled"],
+  );
+});
+
+test("cancellation retains identity and is communicated as a cancelled VEVENT", () => {
+  const occurrence = projectCalendarOccurrences([fixture.lifecycle.cancelled], { as_of: fixture.as_of }).occurrences[0];
+  assert.equal(occurrence.uid, "meeting:city_record:hearing-a");
+  assert.equal(occurrence.lifecycle, "cancelled");
+  assert.equal(occurrence.status, "cancelled");
+  const ics = icsFeed({ title: "Hearing calendar", occurrences: [occurrence] });
+  assert.match(ics, /UID:meeting:city_record:hearing-a@crol-list/);
+  assert.match(ics, /STATUS:CANCELLED/);
+  assert.match(ics, /SEQUENCE:2/);
+});
+
+test("explicit cancellation language is retained when the source has no typed status", () => {
+  const occurrence = projectCalendarOccurrences([{
+    object_ref: "meeting:city_record:hearing-b",
+    scope_ref: "scope:meetings:district-33",
+    title: "CANCELLED: Hearing B",
+    event_date: "2026-09-20T18:00:00-04:00",
+    source_system: "city_record",
+    source_record_id: "hearing-b",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/hearing-b",
+  }], { as_of: fixture.as_of }).occurrences[0];
+  assert.equal(occurrence.status, "cancelled");
+  assert.equal(occurrence.lifecycle, "cancelled");
+});
+
+test("same-UID rows collapse to the latest source state", () => {
+  const occurrences = projectCalendarOccurrences([
+    fixture.lifecycle.scheduled,
+    fixture.lifecycle.rescheduled,
+  ], { as_of: fixture.as_of }).occurrences;
+  assert.equal(occurrences.length, 1);
+  assert.equal(occurrences[0].starts_at, "2026-09-15T19:00:00-04:00");
+  assert.equal(occurrences[0].sequence, 1);
 });
 
 test("ICS consumes occurrences without selecting publication time", () => {
