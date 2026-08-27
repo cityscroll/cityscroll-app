@@ -52,13 +52,18 @@ async function submit(environment, body, sent) {
   }
 }
 
-test("homepage CTA sends its email into Following onboarding without subscribing", () => {
+test("homepage CTA links into Following without subscribing", () => {
+  const homepage = readFileSync(new URL("../../site/index.html", import.meta.url), "utf8");
+  assert.match(homepage, /id="homeCtaTopics"[^>]*href="\/following\/"|href="\/following\/"[^>]*id="homeCtaTopics"/);
+  assert.doesNotMatch(homepage, /id="homeCtaEmail"|id="homeCtaForm"|id="homeCtaSubmit"/);
   for (const path of ["../../site/home_entry.mjs", "../../site/app/boot.mjs", "../../site/app/alerts.mjs"]) {
     const source = readFileSync(new URL(path, import.meta.url), "utf8");
-    if (path.endsWith("alerts.mjs")) continue;
-    assert.doesNotMatch(source, /no_topic\s*:/, path);
-    assert.match(source, /\/following\/\?onboarding=1/, path);
-    assert.doesNotMatch(source, /workerFetch\(["']\/subscribe["']/, path);
+    assert.doesNotMatch(source, /\/following\/\?onboarding=1/, path);
+    assert.doesNotMatch(source, /homeCtaEmail|homeCtaForm|homeCtaSubmit/, path);
+    if (!path.endsWith("alerts.mjs")) {
+      assert.doesNotMatch(source, /no_topic\s*:/, path);
+      assert.doesNotMatch(source, /workerFetch\(["']\/subscribe["']/, path);
+    }
   }
 });
 
