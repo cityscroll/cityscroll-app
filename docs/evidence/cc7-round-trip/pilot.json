@@ -1,0 +1,603 @@
+{
+  "schema": "cityscroll.correction_round_trip_pilot.v1",
+  "generated_for": "2026-08-27",
+  "pilot_scope": "seeded_fixture_pilot_only",
+  "report_endpoint": "POST /feedback",
+  "claim": "These are four bounded seeded replays, not a coverage or correctness claim about equivalent records elsewhere.",
+  "cases": [
+    {
+      "schema": "cityscroll.correction_round_trip_pilot.v1",
+      "pilot_scope": "seeded_fixture_pilot_only",
+      "id": "CC7-IDENTITY-001",
+      "class": "wrong_identity",
+      "failure_origin": "entity_resolution",
+      "before": {
+        "assertion": "CityScroll presents Jordan Lee's appointment under a separate profile from the matching public biography.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-identity-appointment-001"
+          ],
+          "source_urls": [
+            "fixture://cc7/identity-appointment-001"
+          ],
+          "systems": [
+            "city_record_appointments_fixture"
+          ]
+        },
+        "source_truth": {
+          "canonical_entity_ref": "entity:official:cc7-1001",
+          "displayed_profile": "Jordan Lee"
+        },
+        "visible_result": "Jordan Lee is listed under entity:official:cc7-1001."
+      },
+      "report": {
+        "path": "POST /feedback",
+        "delivery": "structured correction payload validated locally; no external submission",
+        "payload": {
+          "category": "same_thing",
+          "message": "These two profiles describe the same person; the appointment and biography share the same published office history.",
+          "evidence": "cc7-identity-biography-001 and cc7-identity-appointment-001 use the same office history and name.",
+          "report_target": {
+            "schema": "cityscroll.report_target.v1",
+            "object_type": "entity",
+            "object_id": "entity:official:cc7-1001",
+            "canonical_url": "/officials/cc7-1001/",
+            "object_label": "Jordan Lee",
+            "provenance": {
+              "source_record_ids": [
+                "cc7-identity-appointment-001"
+              ],
+              "source_urls": [
+                "fixture://cc7/identity-appointment-001"
+              ],
+              "systems": [
+                "city_record_appointments_fixture"
+              ]
+            },
+            "identity_lookup_href": "/data/people_organizations_read_model.json",
+            "claim_anchor": {
+              "anchor": "entity:official:cc7-1001#identity",
+              "object_ref": "entity:official:cc7-1001",
+              "claim_type": "identity",
+              "subject_id": "entity:official:cc7-1001",
+              "object_id": "entity:official:cc7-1002",
+              "field_or_semantic_key": "identity",
+              "subject_label": "Jordan Lee",
+              "object_label": "Jordan Lee (separate profile)",
+              "identity_intent": "same_entity"
+            },
+            "target_id": "cityscroll.report_target.v1|entity|entity%3Aofficial%3Acc7-1001|identity::entity%3Aofficial%3Acc7-1001:entity%3Aofficial%3Acc7-1002:identity:same_entity",
+            "description": "Jordan Lee and Jordan Lee (separate profile) are reported as the same person or organization"
+          },
+          "report": {
+            "category": "same_thing",
+            "explanation": "These two profiles describe the same person; the appointment and biography share the same published office history.",
+            "evidence": "cc7-identity-biography-001 and cc7-identity-appointment-001 use the same office history and name."
+          }
+        },
+        "normalized_target_id": "cityscroll.report_target.v1|entity|entity%3Aofficial%3Acc7-1001|identity::entity%3Aofficial%3Acc7-1001:entity%3Aofficial%3Acc7-1002:identity:same_entity"
+      },
+      "adjudication": {
+        "verdict": "confirmed",
+        "evidence_reviewed": [
+          "cc7-identity-biography-001",
+          "cc7-identity-appointment-001"
+        ],
+        "rationale": "The two source records identify the same person, so the fixture's canonical profile reference is corrected.",
+        "evidence_complete": true,
+        "scope": "seeded_fixture_pilot_only",
+        "report_is_not_proof": true
+      },
+      "source_of_truth_change": {
+        "before": {
+          "canonical_entity_ref": "entity:official:cc7-1001",
+          "displayed_profile": "Jordan Lee"
+        },
+        "after": {
+          "canonical_entity_ref": "entity:official:cc7-1002",
+          "displayed_profile": "Jordan Lee"
+        },
+        "changed": true,
+        "applied": true,
+        "reason": null,
+        "source": "pilot fixture identity link",
+        "path": "canonical_entity_ref"
+      },
+      "after": {
+        "changed": true,
+        "visible_result": "Jordan Lee is listed under entity:official:cc7-1002.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-identity-appointment-001"
+          ],
+          "source_urls": [
+            "fixture://cc7/identity-appointment-001"
+          ],
+          "systems": [
+            "city_record_appointments_fixture"
+          ]
+        },
+        "source_truth": {
+          "canonical_entity_ref": "entity:official:cc7-1002",
+          "displayed_profile": "Jordan Lee"
+        }
+      }
+    },
+    {
+      "schema": "cityscroll.correction_round_trip_pilot.v1",
+      "pilot_scope": "seeded_fixture_pilot_only",
+      "id": "CC7-RELATIONSHIP-001",
+      "class": "wrong_relationship",
+      "failure_origin": "joining",
+      "before": {
+        "assertion": "CityScroll connects the street repair contract to Northstar Works.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-contract-2001"
+          ],
+          "source_urls": [],
+          "systems": []
+        },
+        "source_truth": {
+          "vendor_ref": "vendor:stem:NORTHSTAR%20WORKS",
+          "vendor_label": "Northstar Works"
+        },
+        "visible_result": "Street repair contract is connected to Northstar Works."
+      },
+      "report": {
+        "path": "POST /feedback",
+        "delivery": "structured correction payload validated locally; no external submission",
+        "payload": {
+          "category": "connection_wrong",
+          "message": "This contract is connected to Harbor Maintenance, not Northstar Works; the contract record and vendor record share the same contract identifier.",
+          "evidence": "cc7-contract-2001 and cc7-vendor-2001 both identify Harbor Maintenance for this contract.",
+          "report_target": {
+            "schema": "cityscroll.report_target.v1",
+            "object_type": "procurement",
+            "object_id": "procurement:contract:CC7-2001",
+            "canonical_url": "/procurements/procurement%3Acontract%3ACC7-2001",
+            "object_label": "Street repair contract",
+            "provenance": {
+              "source_record_ids": [
+                "cc7-contract-2001"
+              ],
+              "source_urls": [],
+              "systems": []
+            },
+            "claim_anchor": {
+              "anchor": "contract:CC7-2001#vendor",
+              "object_ref": "contract:CC7-2001",
+              "claim_type": "relationship",
+              "relation_type": "named_vendor",
+              "subject_id": "procurement:contract:CC7-2001",
+              "object_id": "vendor:stem:NORTHSTAR%20WORKS",
+              "field_or_semantic_key": "vendor",
+              "rendered_value": "Street repair contract is connected to Northstar Works",
+              "subject_label": "Street repair contract",
+              "object_label": "Northstar Works"
+            },
+            "target_id": "cityscroll.report_target.v1|procurement|procurement%3Acontract%3ACC7-2001|relationship:named_vendor:procurement%3Acontract%3ACC7-2001:vendor%3Astem%3ANORTHSTAR%2520WORKS:vendor:",
+            "description": "Street repair contract is connected to Northstar Works"
+          },
+          "report": {
+            "category": "connection_wrong",
+            "explanation": "This contract is connected to Harbor Maintenance, not Northstar Works; the contract record and vendor record share the same contract identifier.",
+            "evidence": "cc7-contract-2001 and cc7-vendor-2001 both identify Harbor Maintenance for this contract."
+          }
+        },
+        "normalized_target_id": "cityscroll.report_target.v1|procurement|procurement%3Acontract%3ACC7-2001|relationship:named_vendor:procurement%3Acontract%3ACC7-2001:vendor%3Astem%3ANORTHSTAR%2520WORKS:vendor:"
+      },
+      "adjudication": {
+        "verdict": "confirmed",
+        "evidence_reviewed": [
+          "cc7-contract-2001",
+          "cc7-vendor-2001"
+        ],
+        "rationale": "The exact contract identifier agrees across the two retained source records; the vendor edge in this fixture is replaced.",
+        "evidence_complete": true,
+        "scope": "seeded_fixture_pilot_only",
+        "report_is_not_proof": true
+      },
+      "source_of_truth_change": {
+        "before": {
+          "vendor_ref": "vendor:stem:NORTHSTAR%20WORKS",
+          "vendor_label": "Northstar Works"
+        },
+        "after": {
+          "vendor_ref": "vendor:stem:HARBOR%20MAINTENANCE",
+          "vendor_label": "Harbor Maintenance"
+        },
+        "changed": true,
+        "applied": true,
+        "reason": null,
+        "source": "pilot fixture contract-vendor edge",
+        "path": "vendor_ref"
+      },
+      "after": {
+        "changed": true,
+        "visible_result": "Street repair contract is connected to Harbor Maintenance.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-contract-2001"
+          ],
+          "source_urls": [],
+          "systems": []
+        },
+        "source_truth": {
+          "vendor_ref": "vendor:stem:HARBOR%20MAINTENANCE",
+          "vendor_label": "Harbor Maintenance"
+        }
+      }
+    },
+    {
+      "schema": "cityscroll.correction_round_trip_pilot.v1",
+      "pilot_scope": "seeded_fixture_pilot_only",
+      "id": "CC7-GROUPING-001",
+      "class": "wrong_grouping",
+      "failure_origin": "derived_interpretation",
+      "before": {
+        "assertion": "CityScroll presents two separately dated notices as one Street safety hearing.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-notice-3001",
+            "cc7-notice-3002"
+          ],
+          "source_urls": [
+            "fixture://cc7/notice-3001",
+            "fixture://cc7/notice-3002"
+          ],
+          "systems": [
+            "city_record"
+          ]
+        },
+        "source_truth": {
+          "grouping_mode": "one_meeting",
+          "notice_count": 2
+        },
+        "visible_result": "Two publisher notices are shown as one Street safety hearing."
+      },
+      "report": {
+        "path": "POST /feedback",
+        "delivery": "structured correction payload validated locally; no external submission",
+        "payload": {
+          "category": "connection_wrong",
+          "message": "These notices describe separate hearings and should not be presented as one meeting.",
+          "evidence": "cc7-notice-3001 and cc7-notice-3002 have distinct publisher dates and distinct hearing subjects.",
+          "report_target": {
+            "schema": "cityscroll.report_target.v1",
+            "object_type": "meeting",
+            "object_id": "meeting:city_record:cc7-3001",
+            "canonical_url": "/meetings/meeting%3Acity_record%3Acc7-3001",
+            "object_label": "Street safety hearing",
+            "provenance": {
+              "source_record_ids": [
+                "cc7-notice-3001",
+                "cc7-notice-3002"
+              ],
+              "source_urls": [
+                "fixture://cc7/notice-3001",
+                "fixture://cc7/notice-3002"
+              ],
+              "systems": [
+                "city_record"
+              ]
+            },
+            "asserted_meaning": "The published notices are presented as one meeting: Street safety hearing.",
+            "constituent_object_ids": [
+              "notice:cc7-notice-3001",
+              "notice:cc7-notice-3002"
+            ],
+            "claim_anchor": {
+              "anchor": "meeting:city_record:cc7-3001#collapsed_notices",
+              "object_ref": "meeting:city_record:cc7-3001",
+              "claim_type": "grouping",
+              "subject_id": "meeting:city_record:cc7-3001",
+              "field_or_semantic_key": "collapsed_notices",
+              "rendered_value": "2 notices presented as one meeting"
+            },
+            "target_id": "cityscroll.report_target.v1|meeting|meeting%3Acity_record%3Acc7-3001|grouping::meeting%3Acity_record%3Acc7-3001::collapsed_notices:",
+            "description": "The published notices are presented as one meeting: Street safety hearing."
+          },
+          "report": {
+            "category": "connection_wrong",
+            "explanation": "These notices describe separate hearings and should not be presented as one meeting.",
+            "evidence": "cc7-notice-3001 and cc7-notice-3002 have distinct publisher dates and distinct hearing subjects."
+          }
+        },
+        "normalized_target_id": "cityscroll.report_target.v1|meeting|meeting%3Acity_record%3Acc7-3001|grouping::meeting%3Acity_record%3Acc7-3001::collapsed_notices:"
+      },
+      "adjudication": {
+        "verdict": "confirmed",
+        "evidence_reviewed": [
+          "cc7-notice-3001",
+          "cc7-notice-3002"
+        ],
+        "rationale": "The retained publisher records have distinct dates and subjects, so this pilot grouping is split without changing unrelated meeting groups.",
+        "evidence_complete": true,
+        "scope": "seeded_fixture_pilot_only",
+        "report_is_not_proof": true
+      },
+      "source_of_truth_change": {
+        "before": {
+          "grouping_mode": "one_meeting",
+          "notice_count": 2
+        },
+        "after": {
+          "grouping_mode": "separate_notices",
+          "notice_count": 2
+        },
+        "changed": true,
+        "applied": true,
+        "reason": null,
+        "source": "pilot fixture meeting grouping",
+        "path": "grouping_mode"
+      },
+      "after": {
+        "changed": true,
+        "visible_result": "Two publisher notices are shown as two separate hearings.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-notice-3001",
+            "cc7-notice-3002"
+          ],
+          "source_urls": [
+            "fixture://cc7/notice-3001",
+            "fixture://cc7/notice-3002"
+          ],
+          "systems": [
+            "city_record"
+          ]
+        },
+        "source_truth": {
+          "grouping_mode": "separate_notices",
+          "notice_count": 2
+        }
+      }
+    },
+    {
+      "schema": "cityscroll.correction_round_trip_pilot.v1",
+      "pilot_scope": "seeded_fixture_pilot_only",
+      "id": "CC7-MISSING-001",
+      "class": "missing_relationship",
+      "failure_origin": "ingestion",
+      "before": {
+        "assertion": "CityScroll shows the public hearing but does not identify its Community Board host.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-meeting-4001"
+          ],
+          "source_urls": [
+            "fixture://cc7/meeting-4001"
+          ],
+          "systems": [
+            "community_board_calendar_fixture"
+          ]
+        },
+        "source_truth": {
+          "host_board_ref": null,
+          "host_board_label": null
+        },
+        "visible_result": "Host relationship is not published."
+      },
+      "report": {
+        "path": "POST /feedback",
+        "delivery": "structured correction payload validated locally; no external submission",
+        "payload": {
+          "category": "something_missing",
+          "message": "The meeting page is missing its Community Board 6 host relationship.",
+          "evidence": "cc7-meeting-4001 is published on the board calendar and names Manhattan Community Board 6.",
+          "report_target": {
+            "schema": "cityscroll.report_target.v1",
+            "object_type": "meeting",
+            "object_id": "meeting:community_board:cc7-4001",
+            "canonical_url": "/meetings/meeting%3Acommunity_board%3Acc7-4001",
+            "object_label": "Community Board 6 public hearing",
+            "provenance": {
+              "source_record_ids": [
+                "cc7-meeting-4001"
+              ],
+              "source_urls": [
+                "fixture://cc7/meeting-4001"
+              ],
+              "systems": [
+                "community_board_calendar_fixture"
+              ]
+            },
+            "claim_anchor": {
+              "anchor": "meeting:community_board:cc7-4001#host_board",
+              "object_ref": "meeting:community_board:cc7-4001",
+              "claim_type": "relationship",
+              "relation_type": "hosted_by_community_board",
+              "subject_id": "meeting:community_board:cc7-4001",
+              "object_id": "community-board:manhattan-06",
+              "field_or_semantic_key": "host_board",
+              "rendered_value": "Community Board 6 public hearing is connected to Manhattan Community Board 6",
+              "subject_label": "Community Board 6 public hearing",
+              "object_label": "Manhattan Community Board 6"
+            },
+            "target_id": "cityscroll.report_target.v1|meeting|meeting%3Acommunity_board%3Acc7-4001|relationship:hosted_by_community_board:meeting%3Acommunity_board%3Acc7-4001:community-board%3Amanhattan-06:host_board:",
+            "description": "Community Board 6 public hearing is connected to Manhattan Community Board 6"
+          },
+          "report": {
+            "category": "something_missing",
+            "explanation": "The meeting page is missing its Community Board 6 host relationship.",
+            "evidence": "cc7-meeting-4001 is published on the board calendar and names Manhattan Community Board 6."
+          }
+        },
+        "normalized_target_id": "cityscroll.report_target.v1|meeting|meeting%3Acommunity_board%3Acc7-4001|relationship:hosted_by_community_board:meeting%3Acommunity_board%3Acc7-4001:community-board%3Amanhattan-06:host_board:"
+      },
+      "adjudication": {
+        "verdict": "confirmed",
+        "evidence_reviewed": [
+          "cc7-meeting-4001"
+        ],
+        "rationale": "The board calendar directly names the host, so the missing relationship is added to this fixture's source-of-truth envelope.",
+        "evidence_complete": true,
+        "scope": "seeded_fixture_pilot_only",
+        "report_is_not_proof": true
+      },
+      "source_of_truth_change": {
+        "before": {
+          "host_board_ref": null,
+          "host_board_label": null
+        },
+        "after": {
+          "host_board_ref": "community-board:manhattan-06",
+          "host_board_label": "Manhattan Community Board 6"
+        },
+        "changed": true,
+        "applied": true,
+        "reason": null,
+        "source": "pilot fixture meeting source join",
+        "path": "host_board_ref"
+      },
+      "after": {
+        "changed": true,
+        "visible_result": "Hosted by Manhattan Community Board 6.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-meeting-4001"
+          ],
+          "source_urls": [
+            "fixture://cc7/meeting-4001"
+          ],
+          "systems": [
+            "community_board_calendar_fixture"
+          ]
+        },
+        "source_truth": {
+          "host_board_ref": "community-board:manhattan-06",
+          "host_board_label": "Manhattan Community Board 6"
+        }
+      }
+    },
+    {
+      "schema": "cityscroll.correction_round_trip_pilot.v1",
+      "pilot_scope": "seeded_fixture_pilot_only",
+      "id": "CC7-NEGATIVE-INSUFFICIENT-EVIDENCE-001",
+      "class": "wrong_grouping",
+      "failure_origin": "derived_interpretation",
+      "before": {
+        "assertion": "CityScroll presents two separately dated notices as one Street safety hearing.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-notice-3001",
+            "cc7-notice-3002"
+          ],
+          "source_urls": [
+            "fixture://cc7/notice-3001",
+            "fixture://cc7/notice-3002"
+          ],
+          "systems": [
+            "city_record"
+          ]
+        },
+        "source_truth": {
+          "grouping_mode": "one_meeting",
+          "notice_count": 2
+        },
+        "visible_result": "Two publisher notices are shown as one Street safety hearing."
+      },
+      "report": {
+        "path": "POST /feedback",
+        "delivery": "structured correction payload validated locally; no external submission",
+        "payload": {
+          "category": "connection_wrong",
+          "message": "These notices describe separate hearings and should not be presented as one meeting.",
+          "evidence": "The reporter says the notices look different but supplies no source record or date evidence.",
+          "report_target": {
+            "schema": "cityscroll.report_target.v1",
+            "object_type": "meeting",
+            "object_id": "meeting:city_record:cc7-3001",
+            "canonical_url": "/meetings/meeting%3Acity_record%3Acc7-3001",
+            "object_label": "Street safety hearing",
+            "provenance": {
+              "source_record_ids": [
+                "cc7-notice-3001",
+                "cc7-notice-3002"
+              ],
+              "source_urls": [
+                "fixture://cc7/notice-3001",
+                "fixture://cc7/notice-3002"
+              ],
+              "systems": [
+                "city_record"
+              ]
+            },
+            "asserted_meaning": "The published notices are presented as one meeting: Street safety hearing.",
+            "constituent_object_ids": [
+              "notice:cc7-notice-3001",
+              "notice:cc7-notice-3002"
+            ],
+            "claim_anchor": {
+              "anchor": "meeting:city_record:cc7-3001#collapsed_notices",
+              "object_ref": "meeting:city_record:cc7-3001",
+              "claim_type": "grouping",
+              "subject_id": "meeting:city_record:cc7-3001",
+              "field_or_semantic_key": "collapsed_notices",
+              "rendered_value": "2 notices presented as one meeting"
+            },
+            "target_id": "cityscroll.report_target.v1|meeting|meeting%3Acity_record%3Acc7-3001|grouping::meeting%3Acity_record%3Acc7-3001::collapsed_notices:",
+            "description": "The published notices are presented as one meeting: Street safety hearing."
+          },
+          "report": {
+            "category": "connection_wrong",
+            "explanation": "These notices describe separate hearings and should not be presented as one meeting.",
+            "evidence": "The reporter says the notices look different but supplies no source record or date evidence."
+          }
+        },
+        "normalized_target_id": "cityscroll.report_target.v1|meeting|meeting%3Acity_record%3Acc7-3001|grouping::meeting%3Acity_record%3Acc7-3001::collapsed_notices:"
+      },
+      "adjudication": {
+        "verdict": "unresolved",
+        "evidence_reviewed": [],
+        "rationale": "A report alone is evidence of disagreement, not enough evidence to change the grouping.",
+        "evidence_complete": false,
+        "scope": "seeded_fixture_pilot_only",
+        "report_is_not_proof": true
+      },
+      "source_of_truth_change": {
+        "before": {
+          "grouping_mode": "one_meeting",
+          "notice_count": 2
+        },
+        "after": {
+          "grouping_mode": "one_meeting",
+          "notice_count": 2
+        },
+        "changed": false,
+        "applied": false,
+        "reason": "unresolved",
+        "source": "pilot fixture meeting grouping",
+        "path": "grouping_mode"
+      },
+      "after": {
+        "changed": false,
+        "visible_result": "Two publisher notices are shown as one Street safety hearing.",
+        "provenance": {
+          "source_record_ids": [
+            "cc7-notice-3001",
+            "cc7-notice-3002"
+          ],
+          "source_urls": [
+            "fixture://cc7/notice-3001",
+            "fixture://cc7/notice-3002"
+          ],
+          "systems": [
+            "city_record"
+          ]
+        },
+        "source_truth": {
+          "grouping_mode": "one_meeting",
+          "notice_count": 2
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "The four fixtures exercise the seam; they do not establish universal challengeability or correctness.",
+    "Adjudication evidence is fixture-supplied and reviewed as a pilot record, not automatically inferred from the report.",
+    "Corrections are applied only to the named in-memory pilot source-of-truth envelope; production records are not mutated.",
+    "The negative case remains unresolved because the supplied disagreement has no source evidence."
+  ]
+}
