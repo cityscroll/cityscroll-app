@@ -16,6 +16,7 @@ import {
 import {
   MCP_CITED_PASSAGES_ADAPTER,
   MCP_CONTRACT_GET_ADAPTER,
+  MCP_CONTRACTS_ANALYSIS_ADAPTER,
   MCP_CONTRACTS_BROWSE_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
@@ -32,7 +33,7 @@ import { ENTITY_DOSSIER_HTTP_ADAPTER } from "../worker/src/entity_dossier.mjs";
 import { ENTITY_RELATIONSHIPS_HTTP_ADAPTER } from "../worker/src/public_relationship_graph.mjs";
 import { NOTICE_GET_HTTP_ADAPTER } from "../worker/src/notice.mjs";
 import { HTTP_CITED_PASSAGES_ADAPTER } from "../worker/src/cited_retrieval.mjs";
-import { CONTRACT_GET_HTTP_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER } from "../worker/src/contracts.mjs";
+import { CONTRACT_GET_HTTP_ADAPTER, CONTRACTS_ANALYSIS_HTTP_ADAPTER, CONTRACTS_BROWSE_HTTP_ADAPTER } from "../worker/src/contracts.mjs";
 import { PEOPLE_GET_HTTP_ADAPTER, ORGANIZATIONS_BROWSE_HTTP_ADAPTER } from "../worker/src/people_organizations.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -81,8 +82,10 @@ export function validateRuntimeTopology() {
     MCP_CITED_PASSAGES_ADAPTER,
     CONTRACT_GET_HTTP_ADAPTER,
     CONTRACTS_BROWSE_HTTP_ADAPTER,
+    CONTRACTS_ANALYSIS_HTTP_ADAPTER,
     MCP_CONTRACT_GET_ADAPTER,
     MCP_CONTRACTS_BROWSE_ADAPTER,
+    MCP_CONTRACTS_ANALYSIS_ADAPTER,
     PEOPLE_GET_HTTP_ADAPTER,
     ORGANIZATIONS_BROWSE_HTTP_ADAPTER,
     MCP_PEOPLE_GET_ADAPTER,

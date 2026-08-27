@@ -15,7 +15,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 10,
+    "registered_public_tools": 11,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -238,6 +238,33 @@
       "store_rows_read": 0
     },
     {
+      "adapter_id": "mcp.analyze_contracts@1",
+      "adapter_semantic_sha256": "b66ab090a60302c9567894cead55107651d7921eb0e6aa3e1f543c53fcd334a6",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "defaultGroups": 10,
+        "filterMaximumLength": 240,
+        "maximumGroups": 100,
+        "minimumGroups": 1
+      },
+      "calls": 1,
+      "capability_reference": "contracts.analysis@1",
+      "direct_semantic_sha256": "b66ab090a60302c9567894cead55107651d7921eb0e6aa3e1f543c53fcd334a6",
+      "name": "analyze_contracts",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.procurement-contracts.analysis",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
       "adapter_id": "mcp.get_person_or_organization@1",
       "adapter_semantic_sha256": "9adf1e6c2b4bbccc250375298e2cd642fd215210bea35598393aea5a3f95df0b",
       "annotations": {
@@ -293,11 +320,11 @@
     }
   ],
   "request_counts": {
-    "capability_calls": 10,
+    "capability_calls": 11,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 13
+    "post_requests": 14
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {

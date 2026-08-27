@@ -49,6 +49,7 @@ import {
   executeContractGet,
   executeContractsBrowse,
 } from "../../capabilities/contracts.mjs";
+import { CONTRACTS_ANALYSIS_LIMITS, executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
 import {
   executePeopleGet,
   executeOrganizationsBrowse,
@@ -86,7 +87,7 @@ import { workerD1EntityDossier } from "./entity_dossier.mjs";
 import { workerD1EntityRelationships } from "./public_relationship_graph.mjs";
 import { workerNoticeGet } from "./notice.mjs";
 import { workerFederatedSearch } from "./search.mjs";
-import { formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
+import { formatContractsAnalysisText, formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsAnalysisInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
 import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, mcpOrganizationsBrowseInput, workerPeopleOrganizations } from "./people_organizations.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
@@ -306,6 +307,14 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       }
       const result = await executeContractsBrowse(workerProcurementContracts(env).browse, input);
       return structuredResult(result, formatContractsBrowseText(result));
+    }
+    case "analyze_contracts": {
+      const input = mcpContractsAnalysisInput(args);
+      if (input.limit != null && (input.limit < CONTRACTS_ANALYSIS_LIMITS.minimumGroups || input.limit > CONTRACTS_ANALYSIS_LIMITS.maximumGroups)) {
+        return toolError(`limit must be a whole number from ${CONTRACTS_ANALYSIS_LIMITS.minimumGroups} through ${CONTRACTS_ANALYSIS_LIMITS.maximumGroups}.`);
+      }
+      const result = await executeContractsAnalysis(workerProcurementContracts(env).analysis, input);
+      return structuredResult(result, formatContractsAnalysisText(result));
     }
     case "get_person_or_organization": {
       const input = mcpPeopleGetInput(args);

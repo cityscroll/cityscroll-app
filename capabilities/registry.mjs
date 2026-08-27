@@ -8,6 +8,7 @@ import { ENTITY_RELATIONSHIPS_CAPABILITY } from "./entity_relationships.mjs";
 import { CITED_PASSAGES_CAPABILITY } from "./cited_passages.mjs";
 import { FEDERATED_SEARCH_CAPABILITY } from "./federated_search.mjs";
 import { CONTRACT_GET_CAPABILITY, CONTRACTS_BROWSE_CAPABILITY } from "./contracts.mjs";
+import { CONTRACTS_ANALYSIS_CAPABILITY } from "./contracts_analysis.mjs";
 import { PEOPLE_GET_CAPABILITY, ORGANIZATIONS_BROWSE_CAPABILITY } from "./people_organizations.mjs";
 
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
@@ -68,6 +69,7 @@ export const CAPABILITY_REGISTRY = deepFreeze([
   FEDERATED_SEARCH_CAPABILITY,
   CONTRACT_GET_CAPABILITY,
   CONTRACTS_BROWSE_CAPABILITY,
+  CONTRACTS_ANALYSIS_CAPABILITY,
   PEOPLE_GET_CAPABILITY,
   ORGANIZATIONS_BROWSE_CAPABILITY,
 ]);
