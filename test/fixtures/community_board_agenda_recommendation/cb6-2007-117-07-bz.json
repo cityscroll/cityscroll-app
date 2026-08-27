@@ -1,0 +1,100 @@
+{
+  "schema": "cityscroll.community_board_agenda_recommendation_fixture.v1",
+  "source": {
+    "publisher": "Manhattan Community Board 6",
+    "document_id": "mancb6-minutes-2007-06",
+    "url": "https://www.nyc.gov/html/mancb6/downloads/minutes/2007/june07.pdf",
+    "published_date": "2007-06-13",
+    "observed_receipt": {
+      "status": "ok",
+      "observed_at": "2026-08-27T00:00:00Z"
+    },
+    "locators": {
+      "committee_consideration": "pages 10-11",
+      "full_board_resolution": "page 10"
+    }
+  },
+  "board_ref": "community-board:manhattan-cb-06",
+  "meeting": {
+    "id": "meeting:community_board:mancb6-minutes-2007-06-13"
+  },
+  "committee": {
+    "id": "community-board-committee:manhattan-cb-06:land-use",
+    "source_system": "community_board",
+    "source_id": "mancb6-land-use-committee-2007-06-06",
+    "source_document": {
+      "id": "mancb6-minutes-2007-06",
+      "url": "https://www.nyc.gov/html/mancb6/downloads/minutes/2007/june07.pdf",
+      "published_date": "2007-06-13",
+      "observed_receipt": {
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00Z"
+      }
+    }
+  },
+  "matter": {
+    "source_system": "bsa",
+    "source_id": "117-07-BZ",
+    "publisher_identifier": "117-07-BZ",
+    "matter_ref": "matter:117-07-BZ",
+    "title": "Special Permit application for a Physical Culture Establishment at 222 East 34th Street",
+    "source_document": {
+      "id": "bsa-decision-117-07-bz",
+      "url": "https://www.nyc.gov/assets/bsa/downloads/pdf/decisions/117-07-BZ.pdf",
+      "published_date": "2007-07-24",
+      "observed_receipt": {
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00Z"
+      }
+    }
+  },
+  "agenda_item": {
+    "source_system": "community_board",
+    "source_id": "mancb6-minutes-2007-06-p10-a",
+    "title": "Special Permit Calendar #117-07-BZ",
+    "raw_text": "Land Use Committee presentation of the application for a Special Permit under Zoning Resolution §73-36 at 222 East 34th Street.",
+    "meeting_ref": "meeting:community_board:mancb6-minutes-2007-06-13",
+    "committee_ref": "community-board-committee:manhattan-cb-06:land-use",
+    "matter_join": {
+      "status": "matched",
+      "method": "exact_publisher_identifier",
+      "target_kind": "matter",
+      "publisher_identifier": "117-07-BZ",
+      "target_ref": "matter:117-07-BZ"
+    },
+    "source_document": {
+      "id": "mancb6-minutes-2007-06",
+      "url": "https://www.nyc.gov/html/mancb6/downloads/minutes/2007/june07.pdf",
+      "published_date": "2007-06-13",
+      "observed_receipt": {
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00Z"
+      }
+    }
+  },
+  "recommendation": {
+    "source_system": "community_board",
+    "source_id": "mancb6-minutes-2007-06-p10-a-resolution",
+    "title": "Community Board Six position on Calendar #117-07-BZ",
+    "recommendation_text": "Community Board Six has no objection to the application.",
+    "explicit_recommendation": true,
+    "decision": "no_objection",
+    "issuer_ref": "community-board:manhattan-cb-06",
+    "matter_join": {
+      "status": "matched",
+      "method": "exact_publisher_identifier",
+      "target_kind": "matter",
+      "publisher_identifier": "117-07-BZ",
+      "target_ref": "matter:117-07-BZ"
+    },
+    "source_document": {
+      "id": "mancb6-minutes-2007-06",
+      "url": "https://www.nyc.gov/html/mancb6/downloads/minutes/2007/june07.pdf",
+      "published_date": "2007-06-13",
+      "observed_receipt": {
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00Z"
+      }
+    }
+  }
+}
