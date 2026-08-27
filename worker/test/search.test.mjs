@@ -323,7 +323,7 @@ test("People uses its complete production provider for worker recall and coverag
   }, {
     participated: true,
     state: "matched",
-    indexed_count: 215,
+    indexed_count: 219,
   });
 
   const peopleCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
@@ -333,6 +333,41 @@ test("People uses its complete production provider for worker recall and coverag
     renderUniversalSearchCoverageHtml(body.coverage),
     /data-coverage-lens="people"|Coverage by collection/,
   );
+});
+
+test("Community Board committees and people stay discoverable with board context", async () => {
+  const committeeResponse = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=transportation%20community%20board%206"),
+    { DB: STATIC_ENV.DB },
+    {},
+  );
+  assert.equal(committeeResponse.status, 200);
+  const committeeBody = await committeeResponse.json();
+  const committee = committeeBody.results.find((result) => (
+    result.object_ref === "community-board-committee:manhattan-cb-06:transportation"
+  ));
+  assert.ok(committee);
+  assert.equal(committee.object_type, "community-board-committee");
+  assert.equal(committee.canonical_href, "/community-boards/manhattan-cb-06/#committee-transportation");
+  assert.equal(committee.summary, "Manhattan Community Board 6 · Community Board committee · appointed local advisory body.");
+  assert.doesNotMatch(committee.canonical_href, /\/officials\//);
+  assert.doesNotMatch(committee.summary, /Official profile/);
+
+  const personResponse = await worker.fetch(
+    new Request("https://api.cityscroll.org/search?q=Jes%C3%BAs%20P%C3%A9rez"),
+    { DB: STATIC_ENV.DB },
+    {},
+  );
+  assert.equal(personResponse.status, 200);
+  const personBody = await personResponse.json();
+  const person = personBody.results.find((result) => (
+    result.object_ref === "community-board-person:manhattan-cb-06:jesus-perez"
+  ));
+  assert.ok(person);
+  assert.equal(person.object_type, "community-board-person");
+  assert.match(person.summary, /^District Manager · Manhattan Community Board 6 · Community Board person\.$/);
+  assert.doesNotMatch(person.canonical_href, /\/officials\//);
+  assert.doesNotMatch(person.summary, /Official profile/);
 });
 
 test("Community boards uses its dedicated production provider for recall and indexed coverage", async () => {
@@ -469,7 +504,7 @@ test("Committees use the published graph production corpus for worker recall and
   }, {
     participated: true,
     state: "matched",
-    indexed_count: 96,
+    indexed_count: 98,
   });
 
   const committeesCoverage = buildUniversalSearchCoverageView(body.coverage).lenses

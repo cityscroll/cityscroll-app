@@ -21,6 +21,8 @@ const TYPE_LABELS = Object.freeze({
   agency: "Agency",
   vendor: "Vendor",
   committee: "Committee",
+  "community-board-committee": "Community Board committee",
+  "community-board-person": "Community Board person",
   community_board: "Community board",
   civil_service_exam: "Civil-service exam",
   parcel: "Property",

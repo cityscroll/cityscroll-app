@@ -11,6 +11,8 @@ import { buildBoardSearchDocuments } from "../site/board_search_producer.mjs";
 import { buildMeetingSearchDocuments } from "../site/meeting_search_producer.mjs";
 import { buildParcelSearchDocuments } from "../site/parcel_search_producer.mjs";
 import { buildPeopleSearchDocuments } from "../site/people_search_producer.mjs";
+import { buildCommunityBoardPersonSearchDocuments } from "../site/community_board_people_search_producer.mjs";
+import { buildCommunityBoardCommitteeSearchDocuments } from "../site/board_search_producer.mjs";
 import { buildVendorSearchDocuments } from "../site/vendor_search_producer.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
@@ -38,6 +40,24 @@ function latestClock(...values) {
 
 function compactDocument(document) {
   const provenance = document?.provenance || {};
+  const communityBoardContext = provenance.board_id
+    ? {
+      board_id: provenance.board_id,
+      board_name: provenance.board_name || null,
+      borough: provenance.borough || null,
+      district: provenance.district || null,
+      publisher_name: provenance.publisher_name || null,
+      publisher_identifier: provenance.publisher_identifier || null,
+      publisher_person_id: provenance.publisher_person_id || null,
+      publisher_committee_names: provenance.publisher_committee_names || [],
+      reviewed_aliases: provenance.reviewed_aliases || [],
+      topic_facets: provenance.topic_facets || [],
+      role_keys: provenance.role_keys || [],
+      role_labels: provenance.role_labels || [],
+      institution_label: provenance.institution_label || null,
+      institution_context: provenance.institution_context || null,
+    }
+    : null;
   return {
     schema: document.schema,
     object_ref: document.object_ref,
@@ -63,6 +83,7 @@ function compactDocument(document) {
       browse_record: provenance.browse_record || null,
       notice_evidence: provenance.notice_evidence || [],
       alias_object_refs: provenance.alias_object_refs || [],
+      ...(communityBoardContext ? { community_board_context: communityBoardContext } : {}),
     },
     outcome: document.outcome || "indexed",
     coverage_state: document.coverage_state || "matched",
@@ -95,6 +116,8 @@ const exams = json("site/data/staffing_exams.json");
 const parcels = json("site/data/property_cross_domain_lookup.json");
 const propertyResidents = json("site/data/property_resident_snapshot.json");
 const committees = json("site/data/committee_graph_lookup.json");
+const communityBoardPeople = json("site/data/community_board_people.json");
+const communityBoardCommittees = json("site/data/non_council_outcome_sources/community_board_committees.json");
 const procurements = readSharedProcurementReadModel(new URL("../site/data/shared_procurement_read_model.json", import.meta.url));
 const peopleCorpus = buildPeopleSearchDocuments(people);
 const agencyCorpus = buildAgencySearchDocuments(agencies, { identityReport: agencyIdentityReport });
@@ -126,6 +149,13 @@ const parcelCorpus = buildParcelSearchDocuments(parcels, {
   residentSnapshot: propertyResidents,
 });
 const communityBoardCorpus = buildBoardSearchDocuments(communityBoards);
+const communityBoardPeopleCorpus = buildCommunityBoardPersonSearchDocuments(communityBoardPeople, {
+  boardLookup: communityBoards,
+  committeeRegistry: communityBoardCommittees,
+});
+const communityBoardCommitteeCorpus = buildCommunityBoardCommitteeSearchDocuments(communityBoardCommittees, {
+  boardLookup: communityBoards,
+});
 const committeeCorpus = buildCommitteeSearchDocuments(committees);
 const procurementCorpus = buildProcurementSearchDocuments(procurements);
 
@@ -133,6 +163,7 @@ const output = {
   schema: "cityscroll.keyword_search_index.v1",
   generated_at: latestClock(
     people.retrieved_at,
+    communityBoardPeople.observed_on,
     agencies.generated_at,
     vendors.generated_at,
     communityBoards.generated_at,
@@ -142,14 +173,15 @@ const output = {
     parcels.generated_at,
     propertyResidents.generated_at,
     committees.generated_at,
+    communityBoardCommittees.observed_on,
     procurements.generated_at,
   ),
   match_mode: "keyword",
   families: {
     people: family(
-      "NYC Council person profiles",
-      people.retrieved_at,
-      [peopleCorpus],
+      "NYC Council and Community Board people",
+      latestClock(people.retrieved_at, communityBoardPeople.observed_on),
+      [peopleCorpus, communityBoardPeopleCorpus],
     ),
     agencies: family(
       "CityScroll agency profiles",
@@ -192,9 +224,9 @@ const output = {
       [parcelCorpus],
     ),
     committees: family(
-      "New York City Council committee graph",
-      committees.generated_at,
-      [committeeCorpus],
+      "New York City Council and Community Board committees",
+      latestClock(committees.generated_at, communityBoardCommittees.observed_on),
+      [committeeCorpus, communityBoardCommitteeCorpus],
     ),
     procurements: family(
       "PASSPort, Checkbook NYC, and City Record procurement observations",
@@ -215,6 +247,8 @@ const output = {
       parcels: "site/data/property_cross_domain_lookup.json",
       property_residents: "site/data/property_resident_snapshot.json",
       committees: "site/data/committee_graph_lookup.json",
+      community_board_people: "site/data/community_board_people.json",
+      community_board_committees: "site/data/non_council_outcome_sources/community_board_committees.json",
       procurements: "site/data/shared_procurement_read_model.json",
     },
     excluded_artifacts: ["worker/src/data/ocp_awards_warehouse_lookup.json"],

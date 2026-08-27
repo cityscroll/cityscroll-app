@@ -54,6 +54,8 @@ const OBJECT_DESTINATIONS = Object.freeze({
   agency: DESTINATIONS["people-organizations"],
   vendor: DESTINATIONS["people-organizations"],
   committee: DESTINATIONS["people-organizations"],
+  "community-board-committee": DESTINATIONS["people-organizations"],
+  "community-board-person": DESTINATIONS["people-organizations"],
   community_board: DESTINATIONS["people-organizations"],
   land_use_project: DESTINATIONS.zoning,
   parcel: DESTINATIONS.property,
@@ -77,6 +79,8 @@ const PEOPLE_TYPES = Object.freeze({
   agency: "agency",
   vendor: "vendor",
   committee: "committee",
+  "community-board-committee": "community-board-committee",
+  "community-board-person": "community-board-person",
   community_board: "community-board",
 });
 
