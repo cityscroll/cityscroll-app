@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "generated_note": "Civic Graph catalog (object\u2013link\u2013action). Catalog only \u2014 no production writer or public route. Each object/link carries grounding built|partial|gap from the measured existence matrix. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
@@ -10,9 +10,46 @@
     "action_log": "worker/src/lib/action_log.mjs",
     "action_registry": "site/action_registry.js",
     "er_taxonomy": "docs/adr/entity-resolution-taxonomy.md",
-    "process_spine": "worker/src/lib/process_spine.mjs"
+    "process_spine": "worker/src/lib/process_spine.mjs",
+    "person_projection": "ontology/person.mjs"
   },
   "object_types": [
+    {
+      "id": "person",
+      "status": "registered",
+      "layer": "identity",
+      "reason": "Additive source-qualified generic person envelope. It preserves each source identity and has no public person route; cross-source identity requires an accepted evidence-bearing same_person link.",
+      "primary_key_pattern": "person:{source_namespace}:{source_scope?}:{native_key}",
+      "families": [],
+      "backing": [
+        "cityscroll.person.v1",
+        "official",
+        "community-board-person",
+        "person_identity_link.v1"
+      ],
+      "properties_ref": [
+        "source_namespace",
+        "source_scope",
+        "native_key",
+        "issuer",
+        "display_name",
+        "canonical_person_ref"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.person.v1",
+        "smallest_unit": "one immutable source-qualified identity",
+        "source_qualified": true,
+        "issuer_required": true,
+        "source_scope_required": true,
+        "display_name_never_identity": true,
+        "same_name_never_merges": true,
+        "source_aliases_additive": true,
+        "source_identity_retained_after_accepted_link": true,
+        "public_route": null,
+        "accepted_link_schema": "person_identity_link.v1"
+      },
+      "grounding": "partial"
+    },
     {
       "id": "vendor",
       "status": "registered",
@@ -931,6 +968,37 @@
         "entity_link.auto_link"
       ],
       "label": "Same as (identity link)",
+      "grounding": "partial"
+    },
+    {
+      "id": "same_person",
+      "status": "registered",
+      "from": "person",
+      "to": "person",
+      "relation": "same_person",
+      "reason": "Explicit reviewed assertion linking two source-qualified person identities without destructive merging. Candidate and rejected links remain non-linking evidence.",
+      "edge_schema": "person_identity_link.v1",
+      "required_fields": [
+        "left_identity",
+        "right_identity",
+        "relation",
+        "status",
+        "method",
+        "evidence",
+        "observed_at",
+        "reviewed_at"
+      ],
+      "allowed_statuses": [
+        "candidate",
+        "accepted",
+        "rejected"
+      ],
+      "accepted_only_public_canonical_ref": true,
+      "backing": [
+        "person_identity_link.v1",
+        "explicit_reviewed_assertion"
+      ],
+      "label": "Same person",
       "grounding": "partial"
     },
     {
