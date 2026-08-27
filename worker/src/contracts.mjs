@@ -19,6 +19,7 @@ import {
   groupAnalyticalContracts,
 } from "../../site/analytical_projection.mjs";
 import { ANALYTICAL_PROJECTION_SCHEMA, REGISTERED_CONTRACT_PROJECTION } from "../../site/analytical_projection_contract.mjs";
+import { analyzeContractsProjection } from "../../site/contracts_analysis_projection.mjs";
 import {
   CONTRACT_GET_CAPABILITY_REFERENCE,
   CONTRACT_GET_LIMITS,
@@ -423,87 +424,7 @@ function analyticalHref(input, groupBy, label) {
 }
 
 function analyzeRegisteredContracts(projection, input) {
-  if (projection?.schema !== ANALYTICAL_PROJECTION_SCHEMA || !Array.isArray(projection.rows)) {
-    throw new Error("registered contract analytical projection is unavailable");
-  }
-  const filtered = filterAnalyticalContracts(projection.rows, analyticalInputFilters(input));
-  const groupBy = input.groupBy || "agency";
-  const measure = input.measure || "current";
-  const grouped = groupAnalyticalContracts(filtered, { groupBy, measure, topN: input.limit || CONTRACTS_ANALYSIS_LIMITS.defaultGroups });
-  const measureView = analyticalMeasure(measure);
-  const valueKey = grouped.value_key;
-  const groups = grouped.shown_groups.map((group) => {
-    const value = Number(group[valueKey]) || 0;
-    return {
-      label: group.label,
-      value,
-      measure_value: value,
-      unit: measureView.unit,
-      contract_count: group.contract_count,
-      contract_ids: [...group.contract_ids],
-      drill_through: {
-        href: analyticalHref(input, groupBy, group.label),
-        filters: analyticalGroupFilters(input, groupBy, group.label),
-      },
-    };
-  });
-  const denominatorValue = grouped.groups.reduce((sum, group) => sum + (Number(group[valueKey]) || 0), 0);
-  const denominatorContractCount = new Set(filtered.map((row) => row.prime_contract_id)).size;
-  const denominatorValueCount = filtered.filter((row) => {
-    const field = measure === "original" ? "original_registered_amount" : "current_registered_amount";
-    return measure === "count" || Number.isFinite(Number(row[field]));
-  }).length;
-  const coverage = cityRecordCoverage(filtered, { min_amount: -Number.MAX_VALUE });
-  const sourcePopulation = projection.source_population || {};
-  const selectedDescription = denominatorContractCount
-    ? `${denominatorContractCount.toLocaleString("en-US")} exact registered-contract rows after the requested filters`
-    : "No exact registered-contract rows after the requested filters";
-  return {
-    capability_reference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
-    availability: groups.length ? CONTRACTS_ANALYSIS_AVAILABILITY[0] : CONTRACTS_ANALYSIS_AVAILABILITY[1],
-    group_by: groupBy,
-    measure: measureView,
-    groups,
-    denominator: {
-      value: denominatorValue,
-      unit: measureView.unit,
-      contract_count: denominatorContractCount,
-      value_count: denominatorValueCount,
-      definition: `Selected filtered registered-contract population; ${measureView.reader_label} is not payments or agency spending.`,
-    },
-    population: {
-      fact: "registered_contract",
-      basis: projection.population_definition || "Normalized Checkbook NYC registered expense contracts",
-      included: selectedDescription,
-      excluded: [
-        "AP-08 payment transactions and actual payment amounts",
-        "contracts outside the committed analytical projection",
-        ...(denominatorValueCount < denominatorContractCount ? [`${denominatorContractCount - denominatorValueCount} rows without a numeric value for this measure` ] : []),
-      ],
-      contract_count: denominatorContractCount,
-      source_population: sourcePopulation,
-      snapshot_date: projection.snapshot_date || null,
-    },
-    coverage: {
-      statement: `City Record exact-PIN match coverage for the selected registered-contract population: ${coverage.matched_contract_count.toLocaleString("en-US")} of ${coverage.eligible_contract_count.toLocaleString("en-US")} eligible contracts; rows without a published PIN cannot be evaluated.`,
-      basis: "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
-      eligible_contract_count: coverage.eligible_contract_count,
-      matched_contract_count: coverage.matched_contract_count,
-      unmatched_contract_count: coverage.unmatched_contract_count,
-      missing_pin_contract_count: coverage.missing_pin_contract_count,
-      eligible_registered_value: coverage.eligible_registered_value,
-      matched_registered_value: coverage.matched_registered_value,
-      buckets: coverage.buckets,
-    },
-    filters: publicAnalyticalFilters(input),
-    freshness: {
-      as_of: projection.generated_at || projection.snapshot_date || "unknown",
-      generated_at: projection.generated_at || null,
-      snapshot_date: projection.snapshot_date || null,
-      source: "committed site/data/analytics_registered_contracts.json",
-    },
-    error: null,
-  };
+  return analyzeContractsProjection(projection, input);
 }
 
 export function workerContractsAnalysis(env) {

@@ -50,6 +50,7 @@ import {
   executeContractsBrowse,
 } from "../../capabilities/contracts.mjs";
 import { CONTRACTS_ANALYSIS_LIMITS, executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
+import { executeMeetingGet, MEETING_GET_LIMITS } from "../../capabilities/meetings.mjs";
 import {
   executePeopleGet,
   executeOrganizationsBrowse,
@@ -66,6 +67,7 @@ export {
   MCP_CONTRACTS_BROWSE_ADAPTER,
   MCP_ORGANIZATIONS_BROWSE_ADAPTER,
   MCP_PEOPLE_GET_ADAPTER,
+  MCP_MEETING_GET_ADAPTER,
   MCP_ENTITY_DOSSIER_ADAPTER,
   MCP_ENTITY_RELATIONSHIPS_ADAPTER,
   MCP_FEDERATED_SEARCH_ADAPTER,
@@ -89,6 +91,7 @@ import { workerNoticeGet } from "./notice.mjs";
 import { workerFederatedSearch } from "./search.mjs";
 import { formatContractsAnalysisText, formatContractsBrowseText, formatContractText, mcpContractGetInput, mcpContractsAnalysisInput, mcpContractsBrowseInput, workerProcurementContracts } from "./contracts.mjs";
 import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, mcpOrganizationsBrowseInput, workerPeopleOrganizations } from "./people_organizations.mjs";
+import { workerMeetingGet } from "./hearings.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
 const FEDERATED_SEARCH_INPUT_FIELDS = new Set(["query", "limit"]);
@@ -187,6 +190,16 @@ export function mcpEntityRelationshipsInput(args = {}) {
     nodeTypes: args.node_types,
     edgeTypes: args.edge_types,
   };
+}
+
+export function mcpMeetingGetInput(args = {}) {
+  return { meetingId: String(args.meeting_id || "").trim() };
+}
+
+function formatMeetingText(result) {
+  if (result.availability !== "available") return `Meeting is ${result.availability.replaceAll("_", " ")} (${result.error}).`;
+  const meeting = result.meeting;
+  return `Returned ${meeting.title || meeting.meeting_id}. Use the structured result for source receipt, coverage, freshness, and attached documents.`;
 }
 
 function structuredResult(result, summary) {
@@ -328,6 +341,13 @@ async function callTool(env, req, name, args, { federatedProvider = null } = {})
       if (input.limit != null && (input.limit < ORGANIZATIONS_BROWSE_LIMITS.minimum || input.limit > ORGANIZATIONS_BROWSE_LIMITS.maximum)) return toolError(`limit must be a whole number from ${ORGANIZATIONS_BROWSE_LIMITS.minimum} through ${ORGANIZATIONS_BROWSE_LIMITS.maximum}.`);
       const result = await executeOrganizationsBrowse(workerPeopleOrganizations(env).browse, input);
       return structuredResult(result, formatOrganizationsBrowseText(result));
+    }
+    case "get_meeting": {
+      const input = mcpMeetingGetInput(args);
+      if (!input.meetingId) return toolError("meeting_id is required.");
+      if (input.meetingId.length > MEETING_GET_LIMITS.meetingIdMaximumLength) return toolError(`meeting_id must be ${MEETING_GET_LIMITS.meetingIdMaximumLength} characters or fewer.`);
+      const result = await executeMeetingGet(workerMeetingGet(env), input);
+      return structuredResult(result, formatMeetingText(result));
     }
     case "retrieve_cited_passages": {
       if (env.SEMANTIC_CANDIDATES_ENABLED === "false") {

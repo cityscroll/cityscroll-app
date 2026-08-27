@@ -13,7 +13,8 @@
     "contracts.browse@1",
     "contracts.analysis@1",
     "people.get@1",
-    "organizations.browse@1"
+    "organizations.browse@1",
+    "meeting.get@1"
   ],
   "tools": [
     {
@@ -1830,6 +1831,123 @@
           "output": {
             "availability": "complete",
             "pagination": "cursor when more rows remain"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "get_meeting",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Get one exact source-qualified meeting from the shared CityScroll meeting read model. Preserves source receipt, coverage, freshness, and attached meeting documents.",
+      "schema_reference": "meeting.get@1",
+      "capability_reference": "meeting.get@1",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "meeting_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 320,
+            "description": "Exact canonical meeting id, including its meeting: prefix."
+          }
+        },
+        "required": [
+          "meeting_id"
+        ]
+      },
+      "output_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capability_reference",
+          "availability",
+          "meeting",
+          "source",
+          "coverage",
+          "freshness",
+          "error"
+        ],
+        "properties": {
+          "capability_reference": {
+            "type": "string",
+            "const": "meeting.get@1"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "available",
+              "not_yet_public",
+              "unavailable"
+            ]
+          },
+          "meeting": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "source": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "coverage": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "freshness": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "bounds": {
+        "input": {
+          "meetingIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "maximumResults": 1
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "meetingId": "meeting:city_record:20260810053"
+          },
+          "output": {
+            "availability": "available",
+            "source": "city_record",
+            "exactIdentity": true
+          }
+        },
+        {
+          "input": {
+            "meetingId": "meeting:community_board:unpublished"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
           }
         }
       ],

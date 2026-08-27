@@ -15,6 +15,7 @@ import {
   renderObjectCardTitle,
 } from "../affordance_grammar.mjs";
 import { meetingOriginLabel } from "../meeting_origin.mjs";
+import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import {
@@ -1495,7 +1496,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     ? `<div class="hfact"><b>${t("who_affected_label")}</b><span>${escUiHtml(record.affects.map(value=>t(value)).join(" · "))}</span></div>`
     : "";
   const factsHTML=`${areaFact}${venueFact}${affectsFact}`;
-  return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}"${boardId?` data-community-board-id="${escUiHtml(boardId)}"`:""}>
+  return `<article class="fcard hcard meetings-fcard" data-scope="${scope}" data-meeting-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}" data-capability-reference="meeting.get@1"${boardId?` data-community-board-id="${escUiHtml(boardId)}"`:""}>
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.event_date?` · <b style="color:var(--color-text)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       ${processLine}
       <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
@@ -1779,7 +1780,8 @@ async function loadHearings(){
   const key="meetings", stale=staleGuard("feed:"+key);
   try{
     const payload=await loadMeetingView();
-    const records=Array.isArray(payload?.rows)?payload.rows.map(normalizeHearingRow):[];
+    const normalizedRecords=Array.isArray(payload?.rows)?payload.rows.map(normalizeHearingRow):[];
+    const records=canonicalMeetingsForRender(normalizedRecords,payload);
     if(stale()) return;
     hearingAll=records;
     renderMeetingsAgencyScope(hearingAll);

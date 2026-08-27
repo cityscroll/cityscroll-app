@@ -35,6 +35,7 @@ import {
   registrationTimingSummary,
 } from "../analytical_projection.mjs";
 import { switchAnalyticalFact } from "../analytical_projection_contract.mjs";
+import { analyzeContractsProjection } from "../contracts_analysis_projection.mjs";
 import {
   PAYMENT_ANALYTICAL_PROJECTION_URL,
   filterAnalyticalPayments,
@@ -800,7 +801,7 @@ function renderAnalyticalPaymentProjection(projection, allProjection, urlFilters
   renderAnalyticalFactStatus();
 }
 
-function renderAnalyticalProjection(rows){
+async function renderAnalyticalProjection(rows){
   const panel=$("#contracts-analytics");
   if(!panel) return;
   panel.hidden=mode!=="award";
@@ -872,7 +873,34 @@ function renderAnalyticalProjection(rows){
   const timingSummary=registrationTimingSummary(filtered);
   const groupBy=$("#analytics-group")?.value||"agency";
   const measure=$("#analytics-measure")?.value||"current";
-  const grouped=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
+  const groupedLegacy=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
+  let grouped=groupedLegacy;
+  if(!timingView){
+    try{
+      const capability=await analyzeContractsProjection(registeredProjection,{
+        groupBy,
+        measure,
+        agency:filters.agency,
+        vendor:filters.prime_vendor,
+        fiscalYear:filters.registration_fiscal_year ? Number(filters.registration_fiscal_year) : null,
+        amountBand:filters.contract_amount_band,
+        minAmount:filters.min_amount ? Number(filters.min_amount) : null,
+        maxAmount:filters.max_amount ? Number(filters.max_amount) : null,
+        cityRecordMatch:urlFilters.city_record_match,
+        limit:10,
+      });
+      const valueKey=valueKeyForMeasure(measure);
+      grouped={
+        ...groupedLegacy,
+        // The capability owns the ranked groups and exact drill-through ids;
+        // timing-only metadata stays on the existing timing presentation.
+        shown_groups:capability.groups.map(group=>({...group,[valueKey]:group.value})),
+      };
+    }catch(_error){
+      // A malformed or unavailable projection keeps the existing local empty
+      // or degraded rendering instead of blanking the Contracts page.
+    }
+  }
   const measureLabel=analyticalMeasureLabel(measure);
   renderAnalyticalVendorConcentration(filtered,filters,measure,urlFilters.agency);
   const population=$("#contracts-analytics-population");
