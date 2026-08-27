@@ -414,19 +414,38 @@
       "id": "recommendation",
       "status": "unregistered",
       "layer": "semantic",
-      "reason": "Community-board recommendations are not yet retained as publisher-keyed source documents; the relation contract remains declared but no recommendation edge is materialized.",
-      "primary_key_pattern": "recommendation:{publisher_recommendation_id}",
+      "reason": "Recommendations are declared as source-qualified outputs of an explicit board or committee statement; production recommendation objects and edges are not materialized yet.",
+      "primary_key_pattern": "recommendation:{source_system}:{source_id}",
       "families": [],
       "backing": [
         "community_board_source_registry",
-        "community_board_recommendation_source_contract"
+        "source_records"
       ],
       "properties_ref": [
         "title",
-        "date",
+        "recommendation_text",
+        "decision",
         "source_document_id",
-        "source_document_url"
+        "source_document_url",
+        "observed_on",
+        "matter_ref",
+        "matter_join_status",
+        "issuer_ref"
       ],
+      "identity_contract": {
+        "schema": "cityscroll.community_board_recommendation.v1",
+        "source_qualified": true,
+        "source_keys": [
+          "source_system",
+          "source_id",
+          "source_document_id",
+          "source_locator"
+        ],
+        "explicit_statement_required": true,
+        "discussion_is_not_recommendation": true,
+        "canonical_matter_join": "exact_publisher_identifier_only",
+        "similar_text_never_identity": true
+      },
       "grounding": "gap"
     },
     {
@@ -471,12 +490,40 @@
       "id": "agenda_item",
       "status": "unregistered",
       "layer": "semantic",
-      "reason": "EventItems retained only inside assembled meeting-outcomes view.",
-      "primary_key_pattern": "agenda_item:{event_item_id}",
+      "reason": "Agenda items are declared as source-qualified meeting content; production agenda-item objects and edges are not materialized yet. Raw agenda text remains available when no canonical matter join exists.",
+      "primary_key_pattern": "agenda_item:{source_system}:{source_id}",
       "families": [],
-      "backing": [],
-      "properties_ref": [],
-      "grounding": "partial"
+      "backing": [
+        "community_board_source_registry",
+        "meeting_object",
+        "source_records"
+      ],
+      "properties_ref": [
+        "source_id",
+        "title",
+        "raw_text",
+        "agenda_number",
+        "source_document_id",
+        "source_document_url",
+        "observed_on",
+        "matter_ref",
+        "matter_join_status"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.community_board_agenda_item.v1",
+        "source_qualified": true,
+        "source_keys": [
+          "source_system",
+          "source_id",
+          "source_document_id",
+          "source_locator"
+        ],
+        "canonical_matter_join_required": true,
+        "similar_text_never_identity": true,
+        "raw_text_preserved_when_matter_unknown": true,
+        "recommendation_not_inferred_from_discussion": true
+      },
+      "grounding": "gap"
     },
     {
       "id": "vote",
@@ -626,6 +673,31 @@
         "active_to",
         "topic_facets"
       ],
+      "relation_contracts": {
+        "considers": {
+          "source_contract": "cityscroll.community_board_agenda_item_source_contract.v1",
+          "edge_schema": "cityscroll.community_board_considers_matter_edge.v1",
+          "required_evidence": [
+            "exact_committee_source_identity",
+            "exact_matter_publisher_identifier",
+            "retained_source_document",
+            "observed_receipt"
+          ],
+          "semantics": "the committee considered a matter only when the source explicitly identifies both; agenda-text similarity cannot mint a matter"
+        },
+        "recommends": {
+          "source_contract": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+          "edge_schema": "cityscroll.community_board_committee_recommends_edge.v1",
+          "required_evidence": [
+            "exact_committee_source_identity",
+            "explicit_recommendation_statement",
+            "exact_recommendation_source_identity",
+            "retained_source_document",
+            "observed_receipt"
+          ],
+          "semantics": "committee discussion alone is not a recommendation"
+        }
+      },
       "grounding": "partial"
     },
     {
@@ -962,6 +1034,72 @@
       "grounding": "partial"
     },
     {
+      "id": "has_agenda_item",
+      "status": "unregistered",
+      "from": "meeting",
+      "to": "agenda_item",
+      "reason": "Declared source-qualified meeting content edge; agenda-item production materialization is intentionally deferred. The meeting remains navigable even when its matter is unknown.",
+      "contract_ref": "cityscroll.community_board_agenda_item_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_has_agenda_item_edge.v1",
+      "required_evidence": [
+        "exact_meeting_source_identity",
+        "exact_agenda_item_source_identity",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "meeting_object",
+        "source_records"
+      ],
+      "label": "Has agenda item",
+      "grounding": "gap"
+    },
+    {
+      "id": "concerns",
+      "status": "unregistered",
+      "from": "agenda_item|recommendation",
+      "to": "matter|project|application|place",
+      "reason": "Declared only for an explicit exact publisher-keyed matter, project, application, or place join; similar agenda or recommendation text never creates canonical identity.",
+      "contract_ref": "cityscroll.community_board_matter_join_contract.v1",
+      "edge_schema": "cityscroll.community_board_concerns_edge.v1",
+      "required_evidence": [
+        "exact_source_object_identity",
+        "exact_target_publisher_identifier",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Concerns",
+      "grounding": "gap"
+    },
+    {
+      "id": "considers",
+      "status": "unregistered",
+      "from": "community-board-committee",
+      "to": "matter",
+      "reason": "Declared for a committee source that explicitly identifies a publisher-keyed matter; an agenda string or topic similarity cannot create a canonical matter.",
+      "contract_ref": "cityscroll.community_board_agenda_item_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_considers_matter_edge.v1",
+      "required_evidence": [
+        "exact_committee_source_identity",
+        "exact_matter_publisher_identifier",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Considers matter",
+      "grounding": "gap"
+    },
+    {
       "id": "has_committee",
       "status": "registered",
       "from": "community-board",
@@ -992,9 +1130,147 @@
       "contract_ref": "cityscroll.community_board_recommendation_source_contract.v1",
       "backing": [
         "community_board_source_registry",
-        "meeting-community-board-votes"
+        "source_records",
+        "public_graph.edge"
       ],
       "label": "Issues recommendation",
+      "grounding": "gap"
+    },
+    {
+      "id": "recommends",
+      "status": "unregistered",
+      "from": "community-board-committee",
+      "to": "recommendation",
+      "reason": "Declared only when a committee explicitly makes a recommendation with its own source-qualified identity; discussion or consideration alone is not a recommendation.",
+      "contract_ref": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_committee_recommends_edge.v1",
+      "required_evidence": [
+        "exact_committee_source_identity",
+        "explicit_recommendation_statement",
+        "exact_recommendation_source_identity",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Recommends",
+      "grounding": "gap"
+    },
+    {
+      "id": "adopts",
+      "status": "unregistered",
+      "from": "community-board",
+      "to": "recommendation",
+      "scope": "full_board",
+      "reason": "Full Board action is a scoped role of the Community Board, not a synthetic committee. Publish only from an explicit dated adoption statement.",
+      "contract_ref": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_full_board_action_edge.v1",
+      "required_evidence": [
+        "exact_board_source_identity",
+        "explicit_full_board_action",
+        "exact_recommendation_source_identity",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Full Board adopts",
+      "grounding": "gap"
+    },
+    {
+      "id": "rejects",
+      "status": "unregistered",
+      "from": "community-board",
+      "to": "recommendation",
+      "scope": "full_board",
+      "reason": "Full Board action is a scoped role of the Community Board, not a synthetic committee. Publish only from an explicit dated rejection statement.",
+      "contract_ref": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_full_board_action_edge.v1",
+      "required_evidence": [
+        "exact_board_source_identity",
+        "explicit_full_board_action",
+        "exact_recommendation_source_identity",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Full Board rejects",
+      "grounding": "gap"
+    },
+    {
+      "id": "modifies",
+      "status": "unregistered",
+      "from": "community-board",
+      "to": "recommendation",
+      "scope": "full_board",
+      "reason": "Full Board action is a scoped role of the Community Board, not a synthetic committee. Publish only from an explicit dated modification statement.",
+      "contract_ref": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_full_board_action_edge.v1",
+      "required_evidence": [
+        "exact_board_source_identity",
+        "explicit_full_board_action",
+        "exact_recommendation_source_identity",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_source_registry",
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Full Board modifies",
+      "grounding": "gap"
+    },
+    {
+      "id": "addressed_to",
+      "status": "unregistered",
+      "from": "recommendation",
+      "to": "agency|cpc|sla|council",
+      "reason": "A destination is declared only when the recommendation explicitly names the next recipient; no destination is inferred from topic or agency context.",
+      "contract_ref": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_recommendation_destination_edge.v1",
+      "required_evidence": [
+        "exact_recommendation_source_identity",
+        "explicit_destination_statement",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Addressed to",
+      "grounding": "gap"
+    },
+    {
+      "id": "next_procedural_body",
+      "status": "unregistered",
+      "from": "recommendation",
+      "to": "agency|cpc|sla|council",
+      "reason": "A next procedural body is declared only when the source explicitly identifies it; it is not inferred from a recommendation's subject.",
+      "contract_ref": "cityscroll.community_board_recommendation_bridge_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_recommendation_destination_edge.v1",
+      "required_evidence": [
+        "exact_recommendation_source_identity",
+        "explicit_next_procedural_body",
+        "retained_source_document",
+        "observed_receipt"
+      ],
+      "backing": [
+        "source_records",
+        "public_graph.edge"
+      ],
+      "label": "Next procedural body",
       "grounding": "gap"
     },
     {
@@ -1092,7 +1368,8 @@
       "status": "unregistered",
       "from": "meeting",
       "to": "agenda_item",
-      "reason": "Meeting objects unregistered; edges live inside KV assembly.",
+      "reason": "Legacy vocabulary retained for compatibility; new declarations use has_agenda_item and keep source-qualified agenda text available before matter materialization.",
+      "replaced_by": "has_agenda_item",
       "backing": [
         "meeting_outcomes"
       ],
