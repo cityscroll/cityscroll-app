@@ -193,7 +193,13 @@ export function icsFeed({ title, occurrences, items }) {
   const legacyInput = !Array.isArray(occurrences) && Array.isArray(items);
   const pad = (n) => String(n).padStart(2, "0");
   const dt = (s) => {
-    const d = new Date(s);
+    // Preserve the producer's wall-clock components. Converting an ISO value
+    // through the host timezone would turn 18:00-04:00 into 22:00 on UTC
+    // runners, even when the occurrence explicitly carries America/New_York.
+    const source = String(s == null ? "" : s);
+    const parts = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/.exec(source);
+    if (parts) return `${parts[1]}${parts[2]}${parts[3]}T${parts[4]}${parts[5]}${parts[6] || "00"}`;
+    const d = new Date(source);
     if (isNaN(d)) return null;
     return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
   };
