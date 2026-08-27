@@ -1,5 +1,12 @@
 # Project agent memory
 
+- **Independent Checkbook payment population (AP-08):** `warehouse/payment_populations.v0.json`
+  declares the fiscal-year `Spending` API acquisition separately from the bounded
+  `warehouse/scripts/checkbook_spending.mjs` graph-enrichment collector. The acquisition script
+  streams page-level normalization, identity measurement, CSV output, and reconciliation; its
+  committed receipt and agency proof are under `warehouse/receipts/proof/`. Do not use the
+  contract-enrichment row count as a spending denominator.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - Add durable project-specific notes here as they are discovered through real work.

@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.payment_population_registry.v1",
+  "populations": {
+    "checkbook-payments-fiscal-year": {
+      "contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+      "source_system": "checkbook_payment_population",
+      "publisher": "Office of the New York City Comptroller",
+      "endpoint": "https://www.checkbooknyc.com/api",
+      "query": {
+        "type_of_data": "Spending",
+        "required_partitions": ["fiscal_year"],
+        "spending_category": "c"
+      },
+      "dimensions": ["fiscal_year", "issue_date", "agency", "payee_name", "contract_id", "spending_category"],
+      "measure": "check_amount",
+      "identity": "sha256 of all retained source transaction fields",
+      "reversal_policy": "retain negative check_amount rows",
+      "boundary": {
+        "bounded_enrichment_collector": "warehouse/scripts/checkbook_spending.mjs",
+        "relationship": "independent population; never use enrichment row count as denominator"
+      },
+      "receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json"
+    }
+  }
+}

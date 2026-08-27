@@ -1,0 +1,47 @@
+{
+  "schema": "cityscroll.checkbook_payment_population_capture.v1",
+  "captures": [
+    {
+      "phase": "before",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "path": "artifacts/checkbook-payment-population/before-390.png"
+    },
+    {
+      "phase": "after",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "path": "artifacts/checkbook-payment-population/after-390.png"
+    },
+    {
+      "phase": "before",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "path": "artifacts/checkbook-payment-population/before-1440.png"
+    },
+    {
+      "phase": "after",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "path": "artifacts/checkbook-payment-population/after-1440.png"
+    }
+  ],
+  "before_population": {
+    "seed_contracts": 50,
+    "retained_payments": 31
+  },
+  "after_population": {
+    "fiscal_year": 2026,
+    "transactions": 1783465,
+    "net_check_amount": 52327564799.68,
+    "agency_groups": 131
+  }
+}
