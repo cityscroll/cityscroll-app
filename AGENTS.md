@@ -27,6 +27,12 @@
 
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
+- **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
+  `cityscroll.civic_institution.v1` envelope and exact-only `cityscroll.entity_link.v1` from retained
+  source observations. Agency profiles materialize its reader disclosure through
+  `tools/lib/agency_identity_evidence.mjs`; focused proof is in
+  `test/civic_institution.test.mjs` and `test/civic_institution_profile.test.mjs`.
+
 - Add durable project-specific notes here as they are discovered through real work.
 
 - **Public-site generation postcondition:** `tools/build_public_site.mjs` calls

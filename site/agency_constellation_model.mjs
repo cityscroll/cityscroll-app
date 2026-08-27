@@ -1194,6 +1194,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     display_name: identity.canonical_name,
     canonical_id: identity.canonical_id,
     categories,
+    identity_evidence: sources.identity_evidence || null,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
     derived_feature_rollup: constellationDerivedFeatureRollup(categories),

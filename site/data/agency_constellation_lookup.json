@@ -34,6 +34,12 @@
       "subject_ref": "agency:id:administration-for-childrens-services",
       "display_name": "Administration for Children's Services",
       "path": "/agencies/administration-for-childrens-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:administration-for-childrens-services",
+        "status": "matched",
+        "source_observation_count": 15
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -680,6 +686,12 @@
       "subject_ref": "agency:id:administrative-trials-and-hearings",
       "display_name": "Office of Administrative Trials and Hearings",
       "path": "/agencies/administrative-trials-and-hearings/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:administrative-trials-and-hearings",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -1320,6 +1332,12 @@
       "subject_ref": "agency:id:aging",
       "display_name": "Department for the Aging",
       "path": "/agencies/aging/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:aging",
+        "status": "matched",
+        "source_observation_count": 13
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -1972,6 +1990,12 @@
       "subject_ref": "agency:id:board-meetings",
       "display_name": "Board Meetings",
       "path": "/agencies/board-meetings/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:board-meetings",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -2511,6 +2535,12 @@
       "subject_ref": "agency:id:board-of-correction",
       "display_name": "Board of Correction",
       "path": "/agencies/board-of-correction/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:board-of-correction",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -3068,6 +3098,12 @@
       "subject_ref": "agency:id:board-of-elections",
       "display_name": "Board of Elections",
       "path": "/agencies/board-of-elections/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:board-of-elections",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -3607,6 +3643,12 @@
       "subject_ref": "agency:id:board-of-standards-and-appeals",
       "display_name": "Board of Standards and Appeals",
       "path": "/agencies/board-of-standards-and-appeals/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:board-of-standards-and-appeals",
+        "status": "matched",
+        "source_observation_count": 6
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -4152,6 +4194,12 @@
       "subject_ref": "agency:id:borough-president-bronx",
       "display_name": "Office of the Borough President of The Bronx",
       "path": "/agencies/borough-president-bronx/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:borough-president-bronx",
+        "status": "matched",
+        "source_observation_count": 5
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -4697,6 +4745,12 @@
       "subject_ref": "agency:id:borough-president-brooklyn",
       "display_name": "Office of the Borough President of Brooklyn",
       "path": "/agencies/borough-president-brooklyn/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:borough-president-brooklyn",
+        "status": "matched",
+        "source_observation_count": 6
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -5236,6 +5290,12 @@
       "subject_ref": "agency:id:borough-president-queens",
       "display_name": "Office of the Borough President of Queens",
       "path": "/agencies/borough-president-queens/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:borough-president-queens",
+        "status": "matched",
+        "source_observation_count": 5
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -5781,6 +5841,12 @@
       "subject_ref": "agency:id:buildings",
       "display_name": "Department of Buildings",
       "path": "/agencies/buildings/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:buildings",
+        "status": "matched",
+        "source_observation_count": 17
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -6439,6 +6505,12 @@
       "subject_ref": "agency:id:business-integrity-commission",
       "display_name": "Business Integrity Commission",
       "path": "/agencies/business-integrity-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:business-integrity-commission",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -7014,6 +7086,12 @@
       "subject_ref": "agency:id:campaign-finance-board",
       "display_name": "Campaign Finance Board",
       "path": "/agencies/campaign-finance-board/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:campaign-finance-board",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -7559,6 +7637,12 @@
       "subject_ref": "agency:id:charter-revision-commission",
       "display_name": "Charter Revision Commission",
       "path": "/agencies/charter-revision-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:charter-revision-commission",
+        "status": "matched",
+        "source_observation_count": 9
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -8098,6 +8182,12 @@
       "subject_ref": "agency:id:chief-medical-examiner",
       "display_name": "Office of the Chief Medical Examiner",
       "path": "/agencies/chief-medical-examiner/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:chief-medical-examiner",
+        "status": "matched",
+        "source_observation_count": 2
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -8726,6 +8816,12 @@
       "subject_ref": "agency:id:city-clerk",
       "display_name": "Office of the City Clerk",
       "path": "/agencies/city-clerk/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:city-clerk",
+        "status": "matched",
+        "source_observation_count": 6
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -9271,6 +9367,12 @@
       "subject_ref": "agency:id:city-council",
       "display_name": "New York City Council",
       "path": "/agencies/city-council/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:city-council",
+        "status": "matched",
+        "source_observation_count": 18
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -9822,6 +9924,12 @@
       "subject_ref": "agency:id:city-planning",
       "display_name": "Department of City Planning",
       "path": "/agencies/city-planning/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:city-planning",
+        "status": "matched",
+        "source_observation_count": 13
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -10447,6 +10555,12 @@
       "subject_ref": "agency:id:city-planning-commission",
       "display_name": "City Planning Commission",
       "path": "/agencies/city-planning-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:city-planning-commission",
+        "status": "matched",
+        "source_observation_count": 9
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -10992,6 +11106,12 @@
       "subject_ref": "agency:id:city-university",
       "display_name": "City University of New York",
       "path": "/agencies/city-university/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:city-university",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -11531,6 +11651,12 @@
       "subject_ref": "agency:id:citywide-administrative-services",
       "display_name": "Department of Citywide Administrative Services",
       "path": "/agencies/citywide-administrative-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:citywide-administrative-services",
+        "status": "matched",
+        "source_observation_count": 20
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -12183,6 +12309,12 @@
       "subject_ref": "agency:id:civilian-complaint-review-board",
       "display_name": "Civilian Complaint Review Board",
       "path": "/agencies/civilian-complaint-review-board/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:civilian-complaint-review-board",
+        "status": "matched",
+        "source_observation_count": 7
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -12758,6 +12890,12 @@
       "subject_ref": "agency:id:commission-on-human-rights",
       "display_name": "City Commission on Human Rights",
       "path": "/agencies/commission-on-human-rights/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:commission-on-human-rights",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -13333,6 +13471,12 @@
       "subject_ref": "agency:id:commission-on-racial-equity",
       "display_name": "Commission on Racial Equity",
       "path": "/agencies/commission-on-racial-equity/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:commission-on-racial-equity",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -13872,6 +14016,12 @@
       "subject_ref": "agency:id:community-boards",
       "display_name": "Community Boards",
       "path": "/agencies/community-boards/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:community-boards",
+        "status": "matched",
+        "source_observation_count": 72
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -14411,6 +14561,12 @@
       "subject_ref": "agency:id:comptroller",
       "display_name": "Office of the New York City Comptroller",
       "path": "/agencies/comptroller/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:comptroller",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -15063,6 +15219,12 @@
       "subject_ref": "agency:id:consumer-and-worker-protection",
       "display_name": "Department of Consumer and Worker Protection",
       "path": "/agencies/consumer-and-worker-protection/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:consumer-and-worker-protection",
+        "status": "matched",
+        "source_observation_count": 21
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -15721,6 +15883,12 @@
       "subject_ref": "agency:id:correction",
       "display_name": "Department of Correction",
       "path": "/agencies/correction/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:correction",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -16367,6 +16535,12 @@
       "subject_ref": "agency:id:criminal-justice-coordinator",
       "display_name": "Criminal Justice Coordinator",
       "path": "/agencies/criminal-justice-coordinator/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:criminal-justice-coordinator",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -16906,6 +17080,12 @@
       "subject_ref": "agency:id:cultural-affairs",
       "display_name": "Department of Cultural Affairs",
       "path": "/agencies/cultural-affairs/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:cultural-affairs",
+        "status": "matched",
+        "source_observation_count": 9
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -17546,6 +17726,12 @@
       "subject_ref": "agency:id:department-of-social-services",
       "display_name": "Department of Social Services",
       "path": "/agencies/department-of-social-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:department-of-social-services",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -18085,6 +18271,12 @@
       "subject_ref": "agency:id:design-and-construction",
       "display_name": "Department of Design and Construction",
       "path": "/agencies/design-and-construction/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:design-and-construction",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -18725,6 +18917,12 @@
       "subject_ref": "agency:id:district-attorney-bronx-county",
       "display_name": "Bronx District Attorney's Office",
       "path": "/agencies/district-attorney-bronx-county/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:district-attorney-bronx-county",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -19264,6 +19462,12 @@
       "subject_ref": "agency:id:district-attorney-kings-county",
       "display_name": "Brooklyn District Attorney's Office",
       "path": "/agencies/district-attorney-kings-county/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:district-attorney-kings-county",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -19803,6 +20007,12 @@
       "subject_ref": "agency:id:district-attorney-new-york-county",
       "display_name": "Manhattan District Attorney's Office",
       "path": "/agencies/district-attorney-new-york-county/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:district-attorney-new-york-county",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -20437,6 +20647,12 @@
       "subject_ref": "agency:id:district-attorney-queens-county",
       "display_name": "Queens District Attorney's Office",
       "path": "/agencies/district-attorney-queens-county/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:district-attorney-queens-county",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -20976,6 +21192,12 @@
       "subject_ref": "agency:id:district-attorney-richmond-county",
       "display_name": "Staten Island District Attorney's Office",
       "path": "/agencies/district-attorney-richmond-county/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:district-attorney-richmond-county",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -21515,6 +21737,12 @@
       "subject_ref": "agency:id:economic-development-corporation",
       "display_name": "Economic Development Corporation",
       "path": "/agencies/economic-development-corporation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:economic-development-corporation",
+        "status": "matched",
+        "source_observation_count": 5
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -22054,6 +22282,12 @@
       "subject_ref": "agency:id:education",
       "display_name": "New York City Public Schools",
       "path": "/agencies/education/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:education",
+        "status": "matched",
+        "source_observation_count": 13
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -22700,6 +22934,12 @@
       "subject_ref": "agency:id:emergency-management",
       "display_name": "New York City Emergency Management",
       "path": "/agencies/emergency-management/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:emergency-management",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -23340,6 +23580,12 @@
       "subject_ref": "agency:id:employees-retirement-system",
       "display_name": "Employees' Retirement System",
       "path": "/agencies/employees-retirement-system/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:employees-retirement-system",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -23974,6 +24220,12 @@
       "subject_ref": "agency:id:environmental-protection",
       "display_name": "Department of Environmental Protection",
       "path": "/agencies/environmental-protection/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:environmental-protection",
+        "status": "matched",
+        "source_observation_count": 13
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -24626,6 +24878,12 @@
       "subject_ref": "agency:id:equal-employment-practices-commission",
       "display_name": "Equal Employment Practices Commission",
       "path": "/agencies/equal-employment-practices-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:equal-employment-practices-commission",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -25171,6 +25429,12 @@
       "subject_ref": "agency:id:finance",
       "display_name": "Department of Finance",
       "path": "/agencies/finance/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:finance",
+        "status": "matched",
+        "source_observation_count": 17
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -25829,6 +26093,12 @@
       "subject_ref": "agency:id:financial-information-services-agency",
       "display_name": "Financial Information Services Agency",
       "path": "/agencies/financial-information-services-agency/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:financial-information-services-agency",
+        "status": "matched",
+        "source_observation_count": 3
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -26441,6 +26711,12 @@
       "subject_ref": "agency:id:fire-department",
       "display_name": "Fire Department of the City of New York",
       "path": "/agencies/fire-department/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:fire-department",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -27093,6 +27369,12 @@
       "subject_ref": "agency:id:health-and-mental-hygiene",
       "display_name": "Department of Health and Mental Hygiene",
       "path": "/agencies/health-and-mental-hygiene/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:health-and-mental-hygiene",
+        "status": "matched",
+        "source_observation_count": 20
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -27751,6 +28033,12 @@
       "subject_ref": "agency:id:homeless-services",
       "display_name": "Department of Homeless Services",
       "path": "/agencies/homeless-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:homeless-services",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -28397,6 +28685,12 @@
       "subject_ref": "agency:id:housing-authority",
       "display_name": "New York City Housing Authority",
       "path": "/agencies/housing-authority/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:housing-authority",
+        "status": "matched",
+        "source_observation_count": 13
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -28948,6 +29242,12 @@
       "subject_ref": "agency:id:housing-preservation-and-development",
       "display_name": "Department of Housing Preservation and Development",
       "path": "/agencies/housing-preservation-and-development/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:housing-preservation-and-development",
+        "status": "matched",
+        "source_observation_count": 16
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -29606,6 +29906,12 @@
       "subject_ref": "agency:id:human-resources-administration",
       "display_name": "Human Resources Administration",
       "path": "/agencies/human-resources-administration/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:human-resources-administration",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -30252,6 +30558,12 @@
       "subject_ref": "agency:id:independent-budget-office",
       "display_name": "Independent Budget Office",
       "path": "/agencies/independent-budget-office/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:independent-budget-office",
+        "status": "matched",
+        "source_observation_count": 8
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -30797,6 +31109,12 @@
       "subject_ref": "agency:id:information-technology-and-telecommunications",
       "display_name": "Office of Technology and Innovation",
       "path": "/agencies/information-technology-and-telecommunications/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:information-technology-and-telecommunications",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -31449,6 +31767,12 @@
       "subject_ref": "agency:id:investigation",
       "display_name": "Department of Investigation",
       "path": "/agencies/investigation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:investigation",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -32029,6 +32353,12 @@
       "subject_ref": "agency:id:landmarks-preservation-commission",
       "display_name": "Landmarks Preservation Commission",
       "path": "/agencies/landmarks-preservation-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:landmarks-preservation-commission",
+        "status": "matched",
+        "source_observation_count": 17
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -32610,6 +32940,12 @@
       "subject_ref": "agency:id:law-department",
       "display_name": "New York City Law Department",
       "path": "/agencies/law-department/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:law-department",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -33223,6 +33559,12 @@
       "subject_ref": "agency:id:management-and-budget",
       "display_name": "Mayor's Office of Management and Budget",
       "path": "/agencies/management-and-budget/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:management-and-budget",
+        "status": "matched",
+        "source_observation_count": 6
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -33819,6 +34161,12 @@
       "subject_ref": "agency:id:mayors-office-of-contract-services",
       "display_name": "Mayor's Office of Contract Services",
       "path": "/agencies/mayors-office-of-contract-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:mayors-office-of-contract-services",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -34416,6 +34764,12 @@
       "subject_ref": "agency:id:mayors-office-of-criminal-justice",
       "display_name": "Mayor's Office of Criminal Justice",
       "path": "/agencies/mayors-office-of-criminal-justice/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:mayors-office-of-criminal-justice",
+        "status": "matched",
+        "source_observation_count": 2
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -35044,6 +35398,12 @@
       "subject_ref": "agency:id:n-y-c-transit-authority",
       "display_name": "N.Y.C. Transit Authority",
       "path": "/agencies/n-y-c-transit-authority/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:n-y-c-transit-authority",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -35583,6 +35943,12 @@
       "subject_ref": "agency:id:new-york-city-police-pension-fund",
       "display_name": "New York City Police Pension Fund",
       "path": "/agencies/new-york-city-police-pension-fund/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:new-york-city-police-pension-fund",
+        "status": "matched",
+        "source_observation_count": 2
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -36122,6 +36488,12 @@
       "subject_ref": "agency:id:nyc-department-of-veterans-services",
       "display_name": "Department of Veterans' Services",
       "path": "/agencies/nyc-department-of-veterans-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:nyc-department-of-veterans-services",
+        "status": "matched",
+        "source_observation_count": 12
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -36702,6 +37074,12 @@
       "subject_ref": "agency:id:nyc-health-hospitals",
       "display_name": "NYC Health + Hospitals",
       "path": "/agencies/nyc-health-hospitals/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:nyc-health-hospitals",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -37247,6 +37625,12 @@
       "subject_ref": "agency:id:office-of-collective-bargaining",
       "display_name": "Office of Collective Bargaining",
       "path": "/agencies/office-of-collective-bargaining/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:office-of-collective-bargaining",
+        "status": "matched",
+        "source_observation_count": 5
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -37786,6 +38170,12 @@
       "subject_ref": "agency:id:office-of-labor-relations",
       "display_name": "Office of Labor Relations",
       "path": "/agencies/office-of-labor-relations/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:office-of-labor-relations",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -38366,6 +38756,12 @@
       "subject_ref": "agency:id:office-of-special-narcotics-prosecutor",
       "display_name": "Office of the Special Narcotics Prosecutor",
       "path": "/agencies/office-of-special-narcotics-prosecutor/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:office-of-special-narcotics-prosecutor",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -38923,6 +39319,12 @@
       "subject_ref": "agency:id:office-of-the-mayor",
       "display_name": "Office of the Mayor",
       "path": "/agencies/office-of-the-mayor/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:office-of-the-mayor",
+        "status": "matched",
+        "source_observation_count": 15
+      },
       "matched_categories": 3,
       "categories": {
         "contracts": {
@@ -39563,6 +39965,12 @@
       "subject_ref": "agency:id:parks-and-recreation",
       "display_name": "Department of Parks and Recreation",
       "path": "/agencies/parks-and-recreation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:parks-and-recreation",
+        "status": "matched",
+        "source_observation_count": 17
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -40221,6 +40629,12 @@
       "subject_ref": "agency:id:payroll-administration",
       "display_name": "Office of Payroll Administration",
       "path": "/agencies/payroll-administration/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:payroll-administration",
+        "status": "matched",
+        "source_observation_count": 3
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -40760,6 +41174,12 @@
       "subject_ref": "agency:id:police-department",
       "display_name": "New York City Police Department",
       "path": "/agencies/police-department/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:police-department",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -41412,6 +41832,12 @@
       "subject_ref": "agency:id:probation",
       "display_name": "Department of Probation",
       "path": "/agencies/probation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:probation",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -42058,6 +42484,12 @@
       "subject_ref": "agency:id:public-advocate",
       "display_name": "Office of the Public Advocate",
       "path": "/agencies/public-advocate/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:public-advocate",
+        "status": "matched",
+        "source_observation_count": 9
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -42597,6 +43029,12 @@
       "subject_ref": "agency:id:public-design-commission",
       "display_name": "Public Design Commission",
       "path": "/agencies/public-design-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:public-design-commission",
+        "status": "matched",
+        "source_observation_count": 5
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -43136,6 +43574,12 @@
       "subject_ref": "agency:id:records-and-information-services",
       "display_name": "Department of Records and Information Services",
       "path": "/agencies/records-and-information-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:records-and-information-services",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {
@@ -43705,6 +44149,12 @@
       "subject_ref": "agency:id:rent-guidelines-board",
       "display_name": "Rent Guidelines Board",
       "path": "/agencies/rent-guidelines-board/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:rent-guidelines-board",
+        "status": "matched",
+        "source_observation_count": 9
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -44250,6 +44700,12 @@
       "subject_ref": "agency:id:sanitation",
       "display_name": "New York City Department of Sanitation",
       "path": "/agencies/sanitation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:sanitation",
+        "status": "matched",
+        "source_observation_count": 19
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -44908,6 +45364,12 @@
       "subject_ref": "agency:id:small-business-services",
       "display_name": "Department of Small Business Services",
       "path": "/agencies/small-business-services/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:small-business-services",
+        "status": "matched",
+        "source_observation_count": 14
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -45560,6 +46022,12 @@
       "subject_ref": "agency:id:tax-commission",
       "display_name": "New York City Tax Commission",
       "path": "/agencies/tax-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:tax-commission",
+        "status": "matched",
+        "source_observation_count": 6
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -46105,6 +46573,12 @@
       "subject_ref": "agency:id:taxi-and-limousine-commission",
       "display_name": "New York City Taxi and Limousine Commission",
       "path": "/agencies/taxi-and-limousine-commission/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:taxi-and-limousine-commission",
+        "status": "matched",
+        "source_observation_count": 13
+      },
       "matched_categories": 5,
       "categories": {
         "contracts": {
@@ -46757,6 +47231,12 @@
       "subject_ref": "agency:id:teachers-retirement-system",
       "display_name": "Teachers' Retirement System of City of New York",
       "path": "/agencies/teachers-retirement-system/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:teachers-retirement-system",
+        "status": "matched",
+        "source_observation_count": 4
+      },
       "matched_categories": 2,
       "categories": {
         "contracts": {
@@ -47302,6 +47782,12 @@
       "subject_ref": "agency:id:transportation",
       "display_name": "New York City Department of Transportation",
       "path": "/agencies/transportation/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:transportation",
+        "status": "matched",
+        "source_observation_count": 23
+      },
       "matched_categories": 6,
       "categories": {
         "contracts": {
@@ -47960,6 +48446,12 @@
       "subject_ref": "agency:id:triborough-bridge-and-tunnel-authority",
       "display_name": "Triborough Bridge and Tunnel Authority",
       "path": "/agencies/triborough-bridge-and-tunnel-authority/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:triborough-bridge-and-tunnel-authority",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
       "matched_categories": 1,
       "categories": {
         "contracts": {
@@ -48499,6 +48991,12 @@
       "subject_ref": "agency:id:youth-and-community-development",
       "display_name": "Department of Youth and Community Development",
       "path": "/agencies/youth-and-community-development/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:youth-and-community-development",
+        "status": "matched",
+        "source_observation_count": 11
+      },
       "matched_categories": 4,
       "categories": {
         "contracts": {

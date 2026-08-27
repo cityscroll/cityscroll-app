@@ -13,9 +13,11 @@ import { provenanceSection } from "./agency_constellation_sections/provenance.mj
 import { rulesSection } from "./agency_constellation_sections/rules.mjs";
 import { staffingSection } from "./agency_constellation_sections/staffing.mjs";
 import { vendorsSection } from "./agency_constellation_sections/vendors.mjs";
+import { identitySection } from "./agency_constellation_sections/identity.mjs";
 
 const registeredSections = [
   asOfSection,
+  identitySection,
   mandatePredictionsSection,
   mandateReportsSection,
   mandateRulesSection,
