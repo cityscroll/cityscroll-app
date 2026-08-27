@@ -3809,6 +3809,15 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   is `worker/test/mcp_capability_adapter.test.mjs` and
   `worker/test/mcp_streamable_http_interop.test.mjs`.
 
+## Client module publication
+
+- `tools/client_module_graph.mjs` follows module scripts and local imports in
+  the public HTML artifact. `tools/build_public_site.mjs` publishes any
+  repository-level capability reached by that graph, and
+  `tools/check_client_module_assets.mjs` verifies the built HTTP paths return
+  JavaScript MIME types. The provider-neutral Pages build runs that guard;
+  update the graph fixtures when adding a client capability import.
+
 ## Worker route read models
 
 - Near You and meeting corpora are not Worker imports. Build immutable keyed
