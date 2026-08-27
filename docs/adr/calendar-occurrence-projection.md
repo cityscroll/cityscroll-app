@@ -14,10 +14,18 @@ directly from a search result. The contract is normalized by
 
 `uid`, `scope_ref`, `object_ref`, `kind`, `title`, `starts_at` or `date`,
 `ends_at`, `timezone`, `status`, `location`, `description`, `canonical_url`,
-`source`, `provenance`, and `observed_at`.
+`source`, `provenance`, `observed_at`, and, when the source publishes them,
+`lifecycle`, `sequence`, and `last_modified`.
 
 `kind` is one of `event`, `deadline`, `window_open`, `window_close`, or
 `milestone`. `status` is one of `scheduled`, `cancelled`, or `completed`.
+The source lifecycle is `published`, `scheduled`, `rescheduled`, or
+`cancelled`. A reschedule keeps the same `uid`, carries the updated time, and
+increments `sequence`; a cancellation keeps the same identity and serializes
+as `STATUS:CANCELLED`. `last_modified` is emitted as `LAST-MODIFIED` when a
+source timestamp is available. The feed has one VEVENT per UID, selecting the
+newest published revision at the consumer boundary so an old time cannot
+remain beside its replacement.
 Timed values use `starts_at`; publisher date-only values use `date`. A date-only
 occurrence may use a date-only `ends_at` for an exclusive all-day end.
 
