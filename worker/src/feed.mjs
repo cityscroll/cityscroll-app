@@ -1,5 +1,5 @@
 // GET /feed.xml | /feed.json | /feed.ics — any saved search as a standing feed.
-// Query params: lens=money|land|property|rules|meetings, q=<keywords>, agency=<name>, min=<amount>.
+// Query params: lens=money|people|land|property|rules|meetings, q=<keywords>, agency=<name>, min=<amount>.
 // Reuses the exact compileSub() queries the alerts cron replays, so a feed shows the same
 // items a digest would. No paid key anywhere near this path; results are edge-cached 15 min,
 // so repeated pulls of a popular feed cost one SODA query per window.
@@ -20,7 +20,7 @@ import {
 import { calendarOccurrencesForRows } from "../../site/calendar_occurrence.mjs";
 import { zoningHearingCalendarOccurrence } from "../../site/zoning_hearing_calendar.mjs";
 
-const FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
+const FEED_LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "entity"]);
 const TYPES = {
   "/feed.xml": "application/atom+xml; charset=utf-8",
   "/feed.json": "application/feed+json; charset=utf-8",
@@ -39,7 +39,7 @@ export async function handleFeed(request, env, ctx) {
 
   const parsed = parseFeedQuery(url.searchParams);
   const { lens, filter } = parsed;
-  if (!FEED_LENSES.has(lens)) return plain(`unknown lens '${lens}' — use money|land|property|rules|meetings`, 400);
+  if (!FEED_LENSES.has(lens)) return plain(`unknown lens '${lens}' — use money|people|land|property|rules|meetings`, 400);
   if (parsed.error) return plain("invalid modern feed filter", 400);
   if (parsed.modern) {
     const unsupported = unsupportedModernFeedFilterFields(lens, filter);

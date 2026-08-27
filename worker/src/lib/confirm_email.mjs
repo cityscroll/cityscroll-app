@@ -59,8 +59,11 @@ export function describeFilter(lens, filter) {
   if (lens === "people" && f.view === "guide" && f.examNumber) {
     return `Civil-service exam ${f.examNumber} — exact exam updates`;
   }
-  if (lens === "people" && f.view === "guide" && f.interestArea) {
-    return `Civil-service exams — ${f.interestLabel || f.interestArea}`;
+  if (lens === "people" && f.view === "guide" && f.agency) {
+    return `Civil-service exams — ${f.agency}`;
+  }
+  if (lens === "people" && f.view === "guide" && (f.interestArea || f.interest)) {
+    return `Civil-service exams — ${f.interestLabel || f.interestArea || f.interest}`;
   }
   if (lens === "award") {
     return `Award watch — notice ${f.requestId || "?"}${f.agency ? ` (${f.agency})` : ""} — you'll hear when the award registers`;

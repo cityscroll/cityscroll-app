@@ -21,6 +21,8 @@ import { landFamilySodaWhere, landRowMatchesFamily, normalizeLandFamily } from "
 import { landRowMatchesRegulatoryEffect, normalizeLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { normalizeGeographyKey } from "../../../site/scope_v0.mjs";
 import { normalizeCommunityBoardRef } from "../../../site/community_board_watch.mjs";
+import { examNumbersForAgency } from "../../../site/staffing_agency_scope.mjs";
+import examCertification from "../../../site/data/exam_certification_constellation.json" with { type: "json" };
 import { loadStaffingExams } from "./staffing_exams_kv.mjs";
 import { loadLandUpcomingHearingsSnapshot } from "./land_upcoming_hearings_kv.mjs";
 import { MEETING_FLOOR_ROWS, NEAR_YOU_FLOOR } from "../data/route_read_model_floor.mjs";
@@ -54,9 +56,9 @@ const AGENCY_OBLIGATIONS = "https://cityscroll.org/data/agency_obligations_looku
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
 // type_of_notice_description + address/method feed digest action rails (handoffs).
 // additional_description_1 feeds matchEvidence + package URL extraction.
-const CR_SELECT = "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1";
+const CR_SELECT = "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,section_name,type_of_notice_description,address_to_request,selection_method_description,additional_description_1,additional_description_2,additional_description_3,other_info_1,other_info_2,other_info_3,printout_1";
 // Section lenses additionally need the event date + address for a useful digest line.
-const CR_SELECT_EV = CR_SELECT + ",event_date,street_address_1,street_address_2,building_name,city,state,zip_code,additional_description_2,additional_description_3,other_info_1,other_info_2,other_info_3,printout_1";
+const CR_SELECT_EV = CR_SELECT + ",event_date,street_address_1,street_address_2,building_name,city,state,zip_code";
 const SECTION_BY_LENS = {
   property: "Property Disposition",
   rules: "Agency Rules",
@@ -112,6 +114,37 @@ export function examOpenWindowBand(exam, todayISO) {
   if (days <= 14) return "imminent";
   if (days <= 90) return "approaching";
   return "far";
+}
+
+function examDigestRow(exam, todayISO) {
+  return {
+    ...exam,
+    open_window_band: examOpenWindowBand(exam, todayISO),
+    alert_id: `exam:${exam.exam_number}:${exam.notice_url ? "noe-posted" : exam.application_start || "scheduled"}`,
+  };
+}
+
+function examGuideRows(payload, filter, todayISO, examNumbers = null) {
+  const keywords = (Array.isArray(filter?.keywords) ? filter.keywords : [])
+    .map((value) => String(value || "").toLowerCase().trim()).filter(Boolean);
+  const wanted = Array.isArray(filter?.subject_refs_all) && filter.subject_refs_all.length
+    ? new Set(filter.subject_refs_all.map((ref) => String(ref || "").replace(/^exam:/, "")))
+    : null;
+  return (Array.isArray(payload?.exams) ? payload.exams : [])
+    .filter((exam) => !wanted || wanted.has(String(exam?.exam_number || "")))
+    .filter((exam) => !filter?.examNumber || String(exam.exam_number || "") === String(filter.examNumber))
+    .filter((exam) => filter?.examNumber || wanted
+      ? true
+      : (!(filter?.interestArea || filter?.interest) || exam?.interest_area === (filter.interestArea || filter.interest)))
+    .filter((exam) => !examNumbers || examNumbers.has(String(exam?.exam_number || "")))
+    .filter((exam) => !keywords.length || keywords.every((keyword) =>
+      `${exam?.title || ""} ${exam?.exam_number || ""} ${exam?.title_code || ""} ${exam?.interest_area || ""}`
+        .toLowerCase().includes(keyword)))
+    .filter((exam) => {
+      const continuous = /continuous|walk[- ]?in/i.test(`${exam?.application_mode || ""} ${exam?.filing_method || ""}`);
+      return continuous || !exam?.application_end || exam.application_end >= todayISO;
+    })
+    .map((exam) => examDigestRow(exam, todayISO));
 }
 
 // sub: { lens, filter }. todayISO: "YYYY-MM-DD" (for the RFP due-date floor). Returns
@@ -309,63 +342,18 @@ export function compileSub(sub, todayISO) {
     };
   }
 
-  if (sub.lens === "people" && f.view === "guide" && f.subject_refs_all && Array.isArray(f.subject_refs_all) && f.subject_refs_all.length) {
-    const refs = new Set(f.subject_refs_all.map((candidate)=>String(candidate || "").trim()).filter((candidate)=>/^exam:\d{4}$/.test(candidate)));
-    if (refs.size === 0) return null;
+  if (sub.lens === "people" && f.view === "guide") {
+    const refs = Array.isArray(f.subject_refs_all)
+      ? f.subject_refs_all.filter((candidate) => /^exam:\d{4}$/.test(String(candidate || "").trim()))
+      : [];
+    if (f.subject_refs_all?.length && refs.length === 0) return null;
+    const examNumbers = f.agency ? examNumbersForAgency(examCertification, f.agency) : null;
     return {
       url: STAFFING_EXAMS,
       params: {},
       idField: "alert_id",
       kind: "exam",
-      transformRows: (payload) => {
-        const wanted = new Set([...(refs)].map((ref) => ref.slice("exam:".length)));
-        return (Array.isArray(payload?.exams) ? payload.exams : [])
-          .filter((exam) => wanted.has(String(exam?.exam_number || "")))
-          .map((exam) => ({
-            ...exam,
-            open_window_band: examOpenWindowBand(exam, todayISO),
-            alert_id: `exam:${exam.exam_number}:${exam.notice_url ? "noe-posted" : exam.application_start || "scheduled"}`,
-          }));
-      },
-    };
-  }
-
-  if (sub.lens === "people" && f.view === "guide" && f.examNumber) {
-    const examNumber = String(f.examNumber);
-    return {
-      url: STAFFING_EXAMS,
-      params: {},
-      idField: "alert_id",
-      kind: "exam",
-      transformRows: (payload) => (Array.isArray(payload?.exams) ? payload.exams : [])
-        .filter((exam) => String(exam?.exam_number || "") === examNumber)
-        .map((exam) => ({
-          ...exam,
-          open_window_band: examOpenWindowBand(exam, todayISO),
-          alert_id: `exam:${exam.exam_number}:${exam.notice_url ? "noe-posted" : exam.application_start || "scheduled"}`,
-        })),
-    };
-  }
-
-  if (sub.lens === "people" && f.view === "guide" && f.interestArea) {
-    const area = String(f.interestArea);
-    return {
-      url: STAFFING_EXAMS,
-      params: {},
-      idField: "alert_id",
-      kind: "exam",
-      transformRows: (payload) => (Array.isArray(payload?.exams) ? payload.exams : [])
-        .filter((exam) => exam?.interest_area === area)
-        .filter((exam) => {
-          const continuous = /continuous|walk[- ]?in/i.test(`${exam?.application_mode || ""} ${exam?.filing_method || ""}`);
-          return continuous || (exam?.application_end && exam.application_end >= todayISO);
-        })
-        .map((exam) => ({
-          ...exam,
-          open_window_band: examOpenWindowBand(exam, todayISO),
-          // A posted NOE is a positive, actionable state transition and gets one delivery.
-          alert_id: `exam:${exam.exam_number}:${exam.notice_url ? "noe-posted" : exam.application_start || "scheduled"}`,
-        })),
+      transformRows: (payload) => examGuideRows(payload, { ...f, subject_refs_all: refs }, todayISO, examNumbers),
     };
   }
 
