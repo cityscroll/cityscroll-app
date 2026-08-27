@@ -2811,3 +2811,112 @@ select {
     transition: none !important;
   }
 }
+
+.cross-source-evidence-receipt {
+  border-color: color-mix(in srgb, var(--color-action) 35%, var(--color-border));
+}
+
+.cross-source-evidence-lead,
+.cross-source-evidence-honesty,
+.cross-source-evidence-provenance {
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.cross-source-evidence-lead {
+  margin-block: 0 var(--space-4);
+}
+
+.cross-source-evidence-sources,
+.cross-source-evidence-facts,
+.cross-source-evidence-fact ul {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cross-source-evidence-sources {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  margin-block-end: var(--space-5);
+}
+
+.cross-source-evidence-source,
+.cross-source-evidence-fact {
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 4px);
+  background: var(--color-canvas);
+}
+
+.cross-source-evidence-source {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+}
+
+.cross-source-evidence-source code,
+.cross-source-evidence-provenance code {
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+}
+
+.cross-source-evidence-source-link {
+  color: var(--color-action);
+}
+
+.cross-source-evidence-fact {
+  background: color-mix(in srgb, var(--color-canvas) 88%, var(--color-action));
+}
+
+.cross-source-evidence-fact-disagrees {
+  border-color: var(--color-caution, #8a5a00);
+}
+
+.cross-source-evidence-fact h3 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: baseline;
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.cross-source-evidence-state {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.cross-source-evidence-fact-disagrees .cross-source-evidence-state {
+  color: var(--color-caution, #8a5a00);
+}
+
+.cross-source-evidence-assertion {
+  min-width: 0;
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.cross-source-evidence-assertion-value {
+  overflow-wrap: anywhere;
+  font-weight: 650;
+}
+
+.cross-source-evidence-assertion-kind {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.cross-source-evidence-provenance {
+  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+}
+
+.cross-source-evidence-honesty {
+  margin: var(--space-3) 0 0;
+  font-size: 0.82rem;
+}
