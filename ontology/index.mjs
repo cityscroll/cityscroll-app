@@ -111,3 +111,27 @@ export {
   councilOfficialHref,
   canLoadCouncilSurface,
 } from "./person.mjs";
+
+export {
+  CIVIC_INSTITUTION_PROJECTION_SCHEMA,
+  CIVIC_INSTITUTION_SCHEMA,
+  ENTITY_LINK_SCHEMA,
+  ENTITY_LINK_RELATION,
+  ENTITY_LINK_INVERSE,
+  ENTITY_LINK_VERSION,
+  ENTITY_LINK_METHODS,
+  ENTITY_LINK_CONFIDENCES,
+  CIVIC_INSTITUTION_KINDS,
+  civicInstitutionIdentity,
+  buildCivicInstitutionIdentity,
+  parseCivicInstitutionIdentity,
+  isCivicInstitutionIdentity,
+  projectCivicInstitution,
+  sourceRecordObservation,
+  buildSourceRecordObservation,
+  buildEntityLink,
+  buildCivicInstitutionEntityLink,
+  civicInstitutionEntityLink,
+  resolveCivicInstitutionLink,
+  sourceIdentityEvidence,
+} from "./civic_institution.mjs";

@@ -31,6 +31,7 @@ import {
 } from "../site/agency_constellation.mjs";
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
+import { buildAgencyIdentityEvidence } from "./lib/agency_identity_evidence.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -374,11 +375,17 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       generated_at: generatedAt,
     });
     if (!view) continue;
+    const identity = reconcileAgencyIdentity(id, publisherRows);
+    view.identity_evidence = buildAgencyIdentityEvidence({
+      identity,
+      publisherRow: sources.publisher_crosswalk?.entries?.[id] || null,
+      view,
+      generatedAt,
+    });
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;
     // A denser PASSPort graph can light up unmatched route spellings. Public
     // pages stay on identities the SearchDocument producer can admit.
-    const identity = reconcileAgencyIdentity(id, publisherRows);
     const matched = (view.categories || []).filter((category) => category.status === "matched");
     const onlyGraphContracts = matched.length > 0
       && matched.every((category) => category.id === "contracts" && category.method === "passport_ei_graph_v1");
@@ -393,6 +400,12 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       subject_ref: view.subject_ref,
       display_name: view.display_name,
       path: view.path,
+      identity_evidence: {
+        schema: view.identity_evidence?.schema || null,
+        institution_ref: view.identity_evidence?.institution?.id || null,
+        status: view.identity_evidence?.status || "unknown",
+        source_observation_count: view.identity_evidence?.coverage?.source_observation_count || 0,
+      },
       matched_categories: view.summary.matched_categories,
       categories: Object.fromEntries(
         view.categories.map((category) => [category.id, {

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.ontology.registry.v0",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "generated_note": "Civic Graph catalog (object\u2013link\u2013action). Catalog only \u2014 no production writer or public route. Each object/link carries grounding built|partial|gap from the measured existence matrix. Characterization imports live allowlists and fails if a code type is missing here.",
   "sources": {
     "public_graph": "entity_resolution/publication/relationship_graph.mjs",
@@ -11,7 +11,8 @@
     "action_registry": "site/action_registry.js",
     "er_taxonomy": "docs/adr/entity-resolution-taxonomy.md",
     "process_spine": "worker/src/lib/process_spine.mjs",
-    "person_projection": "ontology/person.mjs"
+    "person_projection": "ontology/person.mjs",
+    "civic_institution_projection": "ontology/civic_institution.mjs"
   },
   "object_types": [
     {
@@ -259,6 +260,37 @@
         "d1.source_records"
       ],
       "properties_ref": [],
+      "grounding": "partial"
+    },
+    {
+      "id": "civic-institution",
+      "status": "registered",
+      "layer": "identity",
+      "reason": "Additive enduring institution identity. It preserves the source record and legacy agency subject; unsupported institution kind and legal form remain null.",
+      "primary_key_pattern": "civic-institution:{canonical_id}",
+      "families": [],
+      "backing": [
+        "cityscroll.civic_institution.v1",
+        "agency:id:*",
+        "cityscroll.entity_link.v1"
+      ],
+      "properties_ref": [
+        "canonical_id",
+        "canonical_name",
+        "legacy_subject_ref",
+        "institution_kind",
+        "legal_form",
+        "source_observations"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.civic_institution.v1",
+        "source_qualified": true,
+        "display_name_never_identity": true,
+        "same_name_never_merges": true,
+        "legacy_agency_subject_retained": true,
+        "institution_kind_independent": true,
+        "source_observation_link_schema": "cityscroll.entity_link.v1"
+      },
       "grounding": "partial"
     },
     {
@@ -968,6 +1000,34 @@
         "entity_link.auto_link"
       ],
       "label": "Same as (identity link)",
+      "grounding": "partial"
+    },
+    {
+      "id": "entity_link",
+      "status": "registered",
+      "from": "source_record",
+      "to": "civic-institution",
+      "relation": "entity_link",
+      "inverse": "has_source_observation",
+      "reason": "Reversible source observation link emitted only for an exact source identifier, exact normalized publisher value, or reviewed publisher alias. Collisions and unresolved identities remain unknown.",
+      "edge_schema": "cityscroll.entity_link.v1",
+      "required_fields": [
+        "source_system",
+        "source_record_id",
+        "source_field",
+        "source_value",
+        "canonical_id",
+        "method",
+        "observed_at",
+        "confidence"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "negative_rule": "Never infer from acronym, OTI org_type, similar name, meeting title, address, or fuzzy similarity.",
+      "label": "Source identity link",
       "grounding": "partial"
     },
     {
