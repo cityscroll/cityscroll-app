@@ -29,6 +29,7 @@ import {
   renderCivicTimeLedgerPanel,
 } from "./civic_time_ledger.mjs";
 import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
+import { buildEntityProfileReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -239,6 +240,12 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     extraClass: "civic-object-actions agency-primary-actions",
   });
   const assetPrefix = options.assetPrefix || "/";
+  const identityReport = renderReportIssueAffordance(buildEntityProfileReportTarget({
+    entity_ref: view.subject_ref,
+    canonical_url: view.path,
+    object_label: title,
+    identity_lookup_href: `${assetPrefix || "/"}data/people_organizations_read_model.json`,
+  }), { label: "Report an issue" });
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
   const updatedDay = readerDay(displayView.summary.generated_at || view.summary.generated_at);
@@ -270,6 +277,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>
     ${primaryActions}
+    ${identityReport ? `<div class="agency-identity-report civic-object-actions">${identityReport}</div>` : ""}
     ${initialLedger}
     <div data-civic-object-deferred data-civic-object-deferred-state="loading" role="status">Loading public relationships…</div>
     ${secondaryActions}
@@ -278,6 +286,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
   <script defer src="${esc((assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`) + "export_workflows.js")}"></script>
   <script type="module" src="${esc(traversalSrc)}"></script>
   <script type="module" src="${esc(runtimeSrc)}"></script>
+  <script type="module" src="${esc(`${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}report_issue.mjs`)}"></script>
   <script>${agencyConstellationSectionScripts(sectionView)}</script>
 </body>
 </html>`);

@@ -26,6 +26,13 @@ export const REPORT_CLAIM_TYPES = Object.freeze([
   "interpretation",
 ]);
 
+/** The two reportable identity hypotheses. These are hypotheses only: they do
+ * not authorize a merge, split, or other change to the published model. */
+export const REPORT_IDENTITY_INTENTS = Object.freeze([
+  "same_entity",
+  "different_entities",
+]);
+
 const CLAIM_TYPE_ALIASES = Object.freeze({
   field_claim: "field",
   semantic_field: "field",
@@ -199,7 +206,7 @@ function normalizeClaimAnchor(value, defaults = {}) {
   };
   for (const field of [
     "relation_type", "subject_id", "object_id", "field_or_semantic_key",
-    "rendered_value", "subject_label", "object_label",
+    "rendered_value", "subject_label", "object_label", "identity_intent",
   ]) {
     const selected = value?.[field] ?? parsed[field] ?? defaults[field];
     const normalized = reportTargetClean(selected, field === "rendered_value" ? 2_000 : 500);
@@ -207,6 +214,9 @@ function normalizeClaimAnchor(value, defaults = {}) {
   }
   if (claimType === "relationship" && !claim.relation_type && key === "parcel") {
     claim.relation_type = "sits_on_parcel";
+  }
+  if (claim.identity_intent && !REPORT_IDENTITY_INTENTS.includes(claim.identity_intent)) {
+    throw new TypeError(`unsupported report identity intent: ${claim.identity_intent}`);
   }
   if (!claim.field_or_semantic_key && key) claim.field_or_semantic_key = key;
   return Object.freeze(claim);
@@ -220,6 +230,7 @@ function stableClaimIdentity(claim) {
     claim.subject_id,
     claim.object_id,
     claim.field_or_semantic_key,
+    claim.identity_intent,
   ].map((value) => encodeURIComponent(value || "")).join(":");
 }
 
@@ -249,7 +260,17 @@ export function describeReportTarget(target) {
   }
   if (claim.claim_type === "grouping") return `${label}: grouped notices`;
   if (claim.claim_type === "lifecycle") return `${label}: lifecycle`;
-  if (claim.claim_type === "identity") return `${label}: identity`;
+  if (claim.claim_type === "identity") {
+    const subject = reportTargetClean(claim.subject_label) || label;
+    const object = reportTargetClean(claim.object_label);
+    if (object && claim.identity_intent === "same_entity") {
+      return `${subject} and ${object} are reported as the same person or organization`;
+    }
+    if (object && claim.identity_intent === "different_entities") {
+      return `${subject} and ${object} are reported as different people or organizations`;
+    }
+    return `${label}: identity`;
+  }
   return `${label}: ${rendered || claimLabel(claim)}`;
 }
 
@@ -268,6 +289,8 @@ export function buildReportTarget({
   provenance = null,
   edge = null,
   source = null,
+  identity_lookup_href = null,
+  identity_candidates = null,
 } = {}) {
   const target = {
     schema: REPORT_TARGET_SCHEMA,
@@ -277,6 +300,23 @@ export function buildReportTarget({
     ...(reportTargetClean(object_label || label) ? { object_label: reportTargetClean(object_label || label) } : {}),
     provenance: provenanceFromExisting(provenance, edge, source),
   };
+  const lookupHref = reportTargetClean(identity_lookup_href, 600);
+  if (lookupHref) target.identity_lookup_href = lookupHref;
+  if (Array.isArray(identity_candidates)) {
+    const candidates = identity_candidates.map((candidate) => {
+      const entityId = reportTargetClean(candidate?.entity_id || candidate?.entity_ref, 320);
+      const candidateLabel = reportTargetClean(candidate?.label || candidate?.name, 500);
+      const href = reportTargetClean(candidate?.href || candidate?.canonical_url, 600);
+      if (!entityId || !candidateLabel || !href) return null;
+      return Object.freeze({
+        entity_id: entityId,
+        label: candidateLabel,
+        href,
+        ...(reportTargetClean(candidate?.kind, 80) ? { kind: reportTargetClean(candidate.kind, 80) } : {}),
+      });
+    }).filter(Boolean);
+    if (candidates.length) target.identity_candidates = Object.freeze(candidates);
+  }
   const normalizedClaim = normalizeClaimAnchor(claim_anchor);
   if (normalizedClaim) target.claim_anchor = normalizedClaim;
   target.target_id = reportTargetIdentity(target);
@@ -437,5 +477,7 @@ export function resolveReportTarget(target) {
     object_label: target.object_label,
     claim_anchor: target.claim_anchor,
     provenance: target.provenance,
+    identity_lookup_href: target.identity_lookup_href,
+    identity_candidates: target.identity_candidates,
   });
 }
