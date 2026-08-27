@@ -34,7 +34,7 @@ SURFACES = (
     (
         "people + organizations",
         "browse/people/",
-        "[data-browse-concept='people'] [data-civic-object-kind='official']",
+        "[data-browse-concept='people'] [data-civic-object-kind='community-board']",
     ),
     ("property", "#property", "#propertyfeed .fcard"),
     ("rules", "#rules", "#rulesfeed .fcard"),
@@ -152,8 +152,11 @@ def run(base: str) -> None:
                 contract = page.evaluate(
                     """() => ({
                       concept: document.querySelector('[data-browse-concept="people"]')?.dataset.browseConcept,
-                      officials: document.querySelectorAll('[data-civic-object-kind="official"]').length,
+                      communityBoards: document.querySelectorAll('[data-civic-object-kind="community-board"]').length,
+                      communityBoardPeople: document.querySelectorAll('[data-civic-object-kind="community-board-person"]').length,
+                      communityBoardCommittees: document.querySelectorAll('[data-civic-object-kind="community-board-committee"]').length,
                       organizationOption: Boolean(document.querySelector('#people-organizations-type option[value="agency"]')),
+                      institutionOption: Boolean(document.querySelector('#people-organizations-institution option[value="city-council"]')),
                       examsGuideVisible: (() => {
                         const guide = document.querySelector('#career-guide');
                         return Boolean(guide && guide.getClientRects().length);
@@ -161,8 +164,9 @@ def run(base: str) -> None:
                     })"""
                 )
                 assert contract["concept"] == "people", contract
-                assert contract["officials"] > 0, contract
+                assert contract["communityBoards"] > 0, contract
                 assert contract["organizationOption"], contract
+                assert contract["institutionOption"], contract
                 assert not contract["examsGuideVisible"], contract
 
             if name == "near you":

@@ -17,7 +17,7 @@ export const PEOPLE_ORGANIZATIONS_SURFACE = surfaceContract({
   controller: "people-organizations-browser",
   label: "People + organizations",
   title: "People + organizations",
-  description: "Officials, vendors, committees, and community boards with published records.",
+  description: "Community Boards, City Council, agencies, and vendors—each row names its institution.",
 });
 
 export const STAFFING_SURFACE = surfaceContract({

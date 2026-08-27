@@ -21,9 +21,16 @@ const model = {
 
 test("People Browse contract keeps typed facets exact and shareable", () => {
   const params = new URLSearchParams("q=Christopher%20Marte&type=official&type=not-a-kind");
-  assert.deepEqual(browseListParams(params), { query: "Christopher Marte", facet: "official" });
+  assert.deepEqual(browseListParams(params), { query: "Christopher Marte", facet: "official", institution: "", role: "" });
   assert.deepEqual(filterConfiguredBrowseRows(model.rows, params), [model.rows[0]]);
   assert.equal(browseListShareSearch({ query: "Christopher Marte", facet: "not-a-kind" }).toString(), "q=Christopher+Marte");
+  assert.deepEqual(
+    filterConfiguredBrowseRows([
+      { kind: "community-board-person", institution: "community-board", role_family: "staff", search_text: "Jesus Perez" },
+      { kind: "official", institution: "city-council", role_family: "member", search_text: "Jesus Perez" },
+    ], "institution=community-board&role=staff"),
+    [{ kind: "community-board-person", institution: "community-board", role_family: "staff", search_text: "Jesus Perez" }],
+  );
 });
 
 test("People Browse contract preserves complete-model matching and freshness state", () => {

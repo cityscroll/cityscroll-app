@@ -148,13 +148,14 @@ export const BROWSE_GROUPS = Object.freeze([
     id: "people-organizations",
     label: "People + organizations",
     primaryFacet: null,
-    description: "Officials, agencies, vendors, committees, and the relationships joining them.",
-    sources: "Person hub · committee graph · agency constellation",
+    description: "Community Boards, City Council, agencies, and vendors, each labeled by institution.",
+    sources: "Community Board people and roles · person hub · committee graph · agency constellation",
     children: [
       { id: "people-directory", route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute, label: "People + organizations", linkLabel: "Browse people and organizations" },
       { id: "staffing", facet: "staffing", label: "Staffing", linkLabel: "Browse appointments" },
+      { id: "community-boards", route: "/browse/people/#community-boards", label: "Community Boards", linkLabel: "Browse Community Boards" },
       { id: "vendors", label: "Vendors" },
-      { id: "committees", label: "Committees" },
+      { id: "committees", label: "City Council committees" },
     ],
   },
   {
@@ -690,6 +691,7 @@ function rowMatchesCouncilDistrict(row, council) {
 
 function rowHref(facet, row) {
   if (row?.civic_object?.href) return row.civic_object.href;
+  if (facet === "people-list") return null;
   const id = rowId(facet, row);
   if (!id) return null;
   if (facet === "zoning") return `/browse/zoning/#land/${encodeURIComponent(id)}`;
@@ -1172,6 +1174,23 @@ function contractsMode(view) {
   return String(new URLSearchParams(view?.scopeSearch || "").get("mode") || "open").toLowerCase();
 }
 
+function peopleOrganizationInstitutionMarkup(row, title) {
+  if (!row?.institution_label) return "";
+  const institutionRef = String(row.institution_ref || "").trim();
+  const institutionHref = String(row.institution_href || "").trim();
+  const institution = institutionRef && institutionHref
+    ? renderEntityPivotLink({
+      relation_label: "institution",
+      target_kind: institutionRef.split(":", 1)[0] || "organization",
+      target_id: institutionRef.replace(/^[^:]+:/, ""),
+      target_name: row.institution_label,
+      canonical_href: institutionHref,
+      source: { kind: "people-organization", id: row.id || null, name: title, canonical_href: row.href || null },
+    }, { className: "browse-people-institution-link", escape: esc })
+    : `<span class="browse-people-institution-label">${esc(row.institution_label)}</span>`;
+  return `<span class="browse-people-institution" data-people-institution="${esc(row.institution || "")}">${institution}${row.institution_context ? ` · ${esc(row.institution_context)}` : ""}</span>`;
+}
+
 export function contractsDiscoveryHtml(view) {
   if (view?.facet !== "contracts") return "";
   if (contractsMode(view) === "award") {
@@ -1227,7 +1246,7 @@ export function renderBrowseView(view) {
     const actionMarkup = actionTime
       ? `<p class="browse-record-action"><span class="browse-record-action-label">${esc(actionTime.label)}</span> ${renderedDate(actionTime.date)}</p>`
       : "";
-    const place = rowPlace(view.facet, row);
+    const place = view.facet === "people-list" ? "" : rowPlace(view.facet, row);
     const interaction = view.facet === "meetings"
       ? meetingsCardInteractionProjection({
         meeting_id: row.meeting_id,
@@ -1287,10 +1306,12 @@ export function renderBrowseView(view) {
       }, { className: "browse-agency-link", escape: esc })
       : "";
     const boardEdge = view.facet === "meetings" ? communityBoardMeetingEdgeFromRow(row) : null;
-    const boardId = boardEdge?.from?.replace(/^community-board:/, "")
-      || row.institution_refs?.board_ref?.replace(/^community-board:/, "")
-      || row.board_id
-      || communityBoardIdFromRow(row);
+    const boardId = view.facet === "meetings"
+      ? boardEdge?.from?.replace(/^community-board:/, "")
+        || row.institution_refs?.board_ref?.replace(/^community-board:/, "")
+        || row.board_id
+        || communityBoardIdFromRow(row)
+      : null;
     const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
     const boardName = row.board_name || boardEdge?.board_name || communityBoardShortLabel(boardId);
     const exactBoardReference = row.source_system === "community_board"
@@ -1318,6 +1339,9 @@ export function renderBrowseView(view) {
           : "",
       ].filter(Boolean).map((label) => staticFact({ label, className: "browse-object-fact", escape: esc })).join(" · ")
       : "";
+    const peopleInstitutionMarkup = view.facet === "people-list"
+      ? peopleOrganizationInstitutionMarkup(row, title)
+      : "";
     const detailMarkup = civicObject && row.detail
       ? `<p class="browse-static-detail">${esc(row.detail)}</p>`
       : "";
@@ -1329,12 +1353,12 @@ export function renderBrowseView(view) {
       ? ` data-civic-object-kind="${esc(civicObject.kind || "record")}" data-civic-object-id="${esc(civicObject.id || "")}"`
       : "";
     const peopleListAttributes = view.facet === "people-list"
-      ? ` id="people-row-${esc(String(civicObject?.id || "").replace(/[^A-Za-z0-9_-]/g, "-"))}" data-people-organization-row data-row-kind="${esc(civicObject?.kind || "")}" data-relation-state="${esc(row.relation_state || "unknown")}" data-search-text="${esc(row.search_text || "")}"${row.body_id ? ` data-board-projection="organization" data-body-id="${esc(row.body_id)}"` : ""}`
+      ? ` id="people-row-${esc(String(civicObject?.id || "").replace(/[^A-Za-z0-9_-]/g, "-"))}" data-people-organization-row data-row-kind="${esc(civicObject?.kind || "")}" data-institution="${esc(row.institution || "")}" data-relation-state="${esc(row.relation_state || "unknown")}" data-search-text="${esc(row.search_text || "")}"${row.body_id ? ` data-board-projection="organization" data-body-id="${esc(row.body_id)}"` : ""}`
       : "";
     return `<article class="browse-static-record${view.facet === "people-list" ? " people-org-row" : ""}"${peopleListAttributes} data-record-id="${esc(rowId(view.facet, row) || "")}"${civicObjectAttributes} data-meeting-origin="${esc(row.meeting_origin || "")}"${boardId ? ` data-community-board-id="${esc(boardId)}"` : ""}>
       ${actionMarkup}
       ${interaction.target ? `<div class="ui-object-card-primary"><h3>${titleMarkup}</h3>${copyMarkup}${reportMarkup}</div>` : `<h3>${titleMarkup}</h3>`}
-      <p class="browse-static-meta">${[typedMetadata, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
+      <p class="browse-static-meta">${[typedMetadata, peopleInstitutionMarkup, agencyMarkup, boardMarkup, date, place && staticFact({ label: place, className: "browse-place-fact", escape: esc }), sourceMarkup].filter(Boolean).join(" · ")}</p>
       ${detailMarkup}${view.facet === "contracts" ? renderProcurementRowCoverageHtml(row) : ""}
       ${assertionMarkup}
       ${meetingSourceDetails}

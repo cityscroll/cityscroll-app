@@ -182,13 +182,15 @@ function renderPlaceDiscovery() {
 }
 
 const ROW_KIND_LABELS = Object.freeze({
-  official: "Official",
-  "exact-person-appointment": "Exact-person appointment",
-  "notice-only-hire": "Notice-only hire",
+  official: "City Council member/official",
+  "exact-person-appointment": "City Council term",
+  "notice-only-hire": "Published staffing notice",
   agency: "Agency",
   vendor: "Vendor",
-  committee: "Committee",
-  "community-board": "Community board institution",
+  committee: "City Council committee",
+  "community-board": "Community Board",
+  "community-board-person": "Community Board person",
+  "community-board-committee": "Community Board committee",
 });
 
 function rowKindLabel(kind) {
@@ -200,7 +202,9 @@ function rowKindCountLabel(kind, count) {
     agency: "agencies",
     vendor: "vendors",
     committee: "committees",
-    "community-board": "community board institutions",
+    "community-board": "boards",
+    "community-board-person": "Community Board people",
+    "community-board-committee": "Community Board committees",
   };
   return `${Number(count).toLocaleString("en-US")} ${labels[kind] || `${rowKindLabel(kind).toLowerCase()}${count === 1 ? "" : "s"}`}`;
 }
@@ -220,13 +224,21 @@ function renderPeopleOrganizationsList(model) {
     .map(([kind, count]) => rowKindCountLabel(kind, count))
     .join(" · ");
   const facetLabels = {
-    official: "Officials",
-    "exact-person-appointment": "Exact-person appointments",
-    "notice-only-hire": "Notice-only hires",
+    official: "City Council members/officials",
+    "exact-person-appointment": "City Council terms",
+    "notice-only-hire": "Published staffing notices",
     agency: "Agencies",
     vendor: "Vendors",
-    committee: "Committees",
-    "community-board": "Community boards",
+    committee: "City Council committees",
+    "community-board": "Community Boards",
+    "community-board-person": "Community Board people",
+    "community-board-committee": "Community Board committees",
+  };
+  const institutionLabels = {
+    "community-board": "Community Board",
+    "city-council": "City Council",
+    agency: "Agency",
+    vendor: "Vendor",
   };
   const modelJson = JSON.stringify(model).replaceAll("<", "\\u003c");
   return `<section class="browse-concept-section people-organizations-unified" id="people-organizations-list" aria-labelledby="people-organizations-list-heading" data-people-organizations>
@@ -242,12 +254,44 @@ function renderPeopleOrganizationsList(model) {
         <option value="">All record types</option>
         ${config.facetValues.map((kind) => `<option value="${esc(kind)}">${esc(facetLabels[kind] || kind)}</option>`).join("")}
       </select>
+      <label for="people-organizations-institution">Institution</label>
+      <select id="people-organizations-institution" data-people-organizations-institution>
+        <option value="">All institutions</option>
+        ${config.institutionValues.map((institution) => `<option value="${esc(institution)}">${esc(institutionLabels[institution] || institution)}</option>`).join("")}
+      </select>
+      <label for="people-organizations-role">People subtype</label>
+      <select id="people-organizations-role" data-people-organizations-role>
+        <option value="">All people subtypes</option>
+        <option value="member">Board members &amp; officers</option>
+        <option value="staff">Staff/District Managers</option>
+      </select>
       <p class="people-org-search-summary" aria-live="polite" data-people-organizations-search-summary>${esc(countSummary)}</p>
     </form>
     <div class="people-org-row-list" aria-live="polite" data-people-organizations-list data-browse-list-status="${esc(state.status)}">${renderBrowseView(buildPeopleListBrowseView(model, new URLSearchParams(), { limit: config.initialPageSize }))}</div>
     <p class="empty people-org-no-results" data-people-organizations-no-results hidden>No matching people or organizations in this published snapshot.</p>
     <button type="button" class="people-org-more" id="people-organizations-more" data-people-organizations-more${rows.length > config.initialPageSize ? "" : " hidden"}>Show more</button>
     <script type="application/json" data-people-organizations-model>${modelJson}</script>
+  </section>`;
+}
+
+function institutionFilterHref(institution, kind = "", role = "") {
+  const params = new URLSearchParams({ institution });
+  if (kind) params.set("type", kind);
+  if (role) params.set("role", role);
+  return `${PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute}?${params.toString()}`;
+}
+
+function institutionFilterLink(label, institution, kind, count, role = "") {
+  const suffix = Number(count) > 0 ? ` · ${Number(count).toLocaleString("en-US")}` : "";
+  return `<li><a class="browse-institution-filter" href="${esc(institutionFilterHref(institution, kind, role))}">${esc(label)}</a><span class="browse-concept-meta">${esc(suffix ? suffix.slice(3) : "No published rows")}</span></li>`;
+}
+
+function renderInstitutionSection({ id, title, description, institution, links, extra = "" }) {
+  return `<section class="browse-concept-section browse-institution-section" id="${esc(id)}" aria-labelledby="${esc(id)}-heading">
+    <h2 id="${esc(id)}-heading">${esc(title)}</h2>
+    <p class="browse-concept-description">${esc(description)}</p>
+    <ul class="browse-concept-list browse-institution-list">${links.join("")}</ul>
+    ${extra}
   </section>`;
 }
 
@@ -259,23 +303,65 @@ export function buildBrowseConceptLanding(kind, sources = {}) {
   const awards = sources.awards || {};
   const geography = sources.places || {};
   const hires = sources.hires || {};
-  const officials = officialItems(people);
-  const vendors = vendorItems(awards);
-  const committeeRows = committeeItems(committees, people);
-  const boards = boardItems(geography);
+  const communityBoardPeople = sources.communityBoardPeople || sources.community_board_people || {};
+  const communityBoardCommittees = sources.communityBoardCommittees || sources.community_board_committees || {};
   const peopleOrganizations = kind === "people"
-    ? buildPeopleOrganizationsReadModel({ people, committees, agencies: sources.agencies || {}, awards, places: geography, hires })
+    ? buildPeopleOrganizationsReadModel({
+      people,
+      committees,
+      agencies: sources.agencies || {},
+      awards,
+      places: geography,
+      hires,
+      communityBoardPeople,
+      communityBoardCommittees,
+    })
     : null;
   const sections = kind === "people"
     ? [
-      // Keep the bounded concept sections as the established navigation and
-      // evidence surfaces. The typed list is an additive search layer above
-      // them, not a replacement for their existing renderers and pivots.
+      renderInstitutionSection({
+        id: "community-boards",
+        title: "Community boards",
+        description: "Appointed local advisory bodies. Public bodies serving New York City districts. Browse boards, Board members & officers, Staff/District Managers, and Community Board committees.",
+        institution: "community-board",
+        links: [
+          institutionFilterLink("Boards", "community-board", "community-board", peopleOrganizations.counts["community-board"]),
+          institutionFilterLink("Board members & officers", "community-board", "community-board-person", peopleOrganizations.counts["community-board-person"], "member"),
+          institutionFilterLink("Staff/District Managers", "community-board", "community-board-person", peopleOrganizations.counts["community-board-person"], "staff"),
+          institutionFilterLink("Community Board committees", "community-board", "community-board-committee", peopleOrganizations.counts["community-board-committee"]),
+        ],
+        extra: renderBoardOrganizations(geography),
+      }),
+      renderInstitutionSection({
+        id: "city-council",
+        title: "City Council",
+        description: "Elected legislative body. Council members, City Council terms, and City Council committees stay distinct from staffing hires.",
+        institution: "city-council",
+        links: [
+          institutionFilterLink("City Council members/officials", "city-council", "official", peopleOrganizations.counts.official),
+          institutionFilterLink("City Council terms", "city-council", "exact-person-appointment", peopleOrganizations.counts["exact-person-appointment"]),
+          institutionFilterLink("City Council committees", "city-council", "committee", peopleOrganizations.counts.committee),
+        ],
+        extra: conceptSection(
+          "committees",
+          "City Council committees",
+          "New York City Council · elected legislative body.",
+          renderCommittees(committees, people),
+          peopleOrganizations.counts.committee,
+        ),
+      }),
+      renderInstitutionSection({
+        id: "other-organizations",
+        title: "Other organizations",
+        description: "Agencies, vendors, and published staffing notices with their source institution named.",
+        institution: "agency",
+        links: [
+          institutionFilterLink("Agencies", "agency", "agency", peopleOrganizations.counts.agency),
+          institutionFilterLink("Vendors", "vendor", "vendor", peopleOrganizations.counts.vendor),
+          institutionFilterLink("Published staffing notices", "agency", "notice-only-hire", peopleOrganizations.counts["notice-only-hire"]),
+        ],
+      }),
       renderPeopleOrganizationsList(peopleOrganizations),
-      conceptSection("officials", "Officials", "Published official profiles.", renderOfficials(people), officials.length),
-      conceptSection("vendors", "Vendors", "Vendor profiles from award records.", renderVendors(awards), vendors.length),
-      conceptSection("committees", "Committees", "Published committee records.", renderCommittees(committees, people), committeeRows.length),
-      conceptSection("community-boards", "Community boards", "Public bodies serving New York City districts.", renderBoardOrganizations(geography), boards.length),
     ]
     : [
       conceptSection("community-boards", "Community boards", "Find a community board as a place in Near you.", renderPlaceDiscovery()),

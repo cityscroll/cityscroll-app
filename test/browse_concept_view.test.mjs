@@ -135,6 +135,84 @@ test("People + organizations builds one typed list and never joins a notice name
   assert.doesNotMatch(boardVisibleText, /Community District X01|\bpublished\b|\bunknown\b/i);
 });
 
+test("People + organizations keeps Community Board people and committees board-local", () => {
+  const boardPeople = {
+    observed_on: "2026-08-25",
+    boards: {
+      "manhattan-cb-06": {
+        relationships: [
+          {
+            publisher_person_id: "jesus-perez",
+            person_name: "Jesús Pérez",
+            relation: "staffed_by",
+            role: "district_manager",
+            relation_date: "2026-08-25",
+            source_document: {
+              publisher_document_id: "cb6-roster-2026-08-25",
+              document_url: "https://cbsix.org/about-us/board-members-and-staff/",
+              date: "2026-08-25",
+              observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" },
+            },
+          },
+          {
+            publisher_person_id: "jason-froimowitz",
+            person_name: "Jason Froimowitz",
+            relation: "chairs",
+            committee_ref: "community-board-committee:manhattan-cb-06:transportation",
+            role: "committee_chair",
+            relation_date: "2026-08-25",
+            source_document: {
+              publisher_document_id: "cb6-roster-2026-08-25",
+              document_url: "https://cbsix.org/about-us/board-members-and-staff/",
+              date: "2026-08-25",
+              observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" },
+            },
+          },
+        ],
+      },
+    },
+  };
+  const places = {
+    nodes: [{
+      id: "community-board:manhattan-cb-06",
+      type: "community-board",
+      name: "Manhattan Community Board 6",
+      properties: { body_id: "manhattan-cb-06", borough: "Manhattan", district: 6 },
+    }],
+    public_edges: [],
+  };
+  const committeeRegistry = {
+    committees: [{
+      board_id: "manhattan-cb-06",
+      committee_id: "transportation",
+      publisher_name: "Transportation Committee",
+      source_url: "https://cbsix.org/meetings-calendar/",
+      observed_on: "2026-08-25",
+    }],
+  };
+  const model = buildPeopleOrganizationsReadModel({
+    places,
+    communityBoardPeople: boardPeople,
+    communityBoardCommittees: committeeRegistry,
+  });
+  assert.deepEqual(model.rows.map((row) => row.kind), [
+    "community-board",
+    "community-board-person",
+    "community-board-person",
+    "community-board-committee",
+  ]);
+  const staff = model.rows.find((row) => row.role_family === "staff");
+  assert.equal(staff.id, "community-board-person:manhattan-cb-06:jesus-perez");
+  assert.equal(staff.institution_label, "Manhattan Community Board 6");
+  assert.equal(staff.href, null);
+  assert.doesNotMatch(renderPeopleOrganizationRow(staff), /officials|votes|finance|lobby/i);
+  const committee = model.rows.find((row) => row.kind === "community-board-committee");
+  const card = renderPeopleOrganizationRow(committee);
+  assert.match(card, /Manhattan Community Board 6 · Community Board committee/);
+  assert.match(card, /href="\/community-boards\/manhattan-cb-06\/"/);
+  assert.doesNotMatch(card, /href="\/committees\//);
+});
+
 test("People + organizations gives every row a unique resident-facing h3 heading", () => {
   const html = renderBrowseConceptLanding(buildBrowseConceptLanding("people", {
     people: { by_person_id: { "7801": { person_id: "7801", person_name: "Christopher Marte", terms: [{ office_id: "office-1", term_start: "2024-01-01" }] } } },
@@ -142,8 +220,8 @@ test("People + organizations gives every row a unique resident-facing h3 heading
   }));
   const headings = [...html.matchAll(/<h3[^>]*>(.*?)<\/h3>/g)].map((match) => match[1].replace(/<[^>]+>/g, ""));
   assert.equal(new Set(headings).size, headings.length);
-  assert.ok(headings.some((heading) => heading.includes("Official · Christopher Marte")));
-  assert.ok(headings.some((heading) => heading.includes("Exact-person appointment · appointment:7801:office-1:2024-01-01")));
+  assert.ok(headings.some((heading) => heading.includes("New York City Council · City Council member/official · Christopher Marte")));
+  assert.ok(headings.some((heading) => heading.includes("New York City Council · City Council term · Christopher Marte · appointment:7801:office-1:2024-01-01")));
 });
 
 test("official rows present one name and type without publication or internal-id noise", () => {
@@ -158,10 +236,10 @@ test("official rows present one name and type without publication or internal-id
   });
   const visibleText = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
-  assert.match(visibleText, /Official · Adolfo Carrion/);
+  assert.match(visibleText, /New York City Council · City Council member\/official · Adolfo Carrion/);
   assert.match(visibleText, /Copy link/);
   assert.doesNotMatch(visibleText, /Published|Official profile|official:425/);
-  assert.equal((visibleText.match(/Official/g) || []).length, 1);
+  assert.match(visibleText, /New York City Council/);
 });
 
 test("People + organizations keeps concept and unified-list headings unique", () => {

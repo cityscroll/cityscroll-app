@@ -122,7 +122,7 @@ def run(page):
     people = page.locator("[data-browse-concept='people']")
     wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="People + organizations list")
     expect(people).to_be_visible()
-    expect(people.locator('[data-civic-object-kind="official"]').first).to_be_visible()
+    expect(people.locator('[data-civic-object-kind="community-board"]').first).to_be_visible()
     assert people.locator("#people-organizations-type option[value='agency']").count() == 1
     expect(page.locator("#career-guide")).to_be_hidden()
 
@@ -240,7 +240,7 @@ def run(page):
     wait_for_locator(people.locator("#people-organizations-list"), timeout=30_000, label="People + organizations list")
     assert_active_civic_object(page, "/browse/people/")
     expect(people).to_be_visible()
-    expect(people.locator('[data-civic-object-kind="official"]').first).to_be_visible()
+    expect(people.locator('[data-civic-object-kind="community-board"]').first).to_be_visible()
     assert people.locator("#people-organizations-type option[value='agency']").count() == 1
     expect(page.locator("#career-guide")).to_be_hidden()
 
