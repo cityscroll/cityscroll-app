@@ -380,7 +380,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
   assert.equal((search.match(/data-search-lane=/g) || []).length, 6);
   assert.match(search, /name="q"[^>]+maxlength="240"/);
   assert.doesNotMatch(search, /app\/main\.mjs/);
-  assert.match(search, /search_document\.mjs/);
+  assert.match(search, /search_(?:entry|document)\.mjs/);
   const now = output("/site/now/index.html");
   assert.match(now, /data-build-rendered="now"/);
   assert.match(now, /data-now-item=/);

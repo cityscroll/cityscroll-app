@@ -10,7 +10,7 @@ coverage wording, static-first delivery, and degraded states remain unchanged.
 | Concern | Before | After |
 | --- | --- | --- |
 | UI route | `/search/?q=<term>` | `/search/?q=<term>` |
-| Provider/read-model path | The Search document fetched the public `/search` projection and rendered its presentation `coverage` field directly. The endpoint already ran the federated provider, but the browser did not validate or consume that canonical envelope. | The public `/search` response is still fetched directly. The Search document validates `federated` with the shared capability contract and derives its coverage receipt from `federated.coverage`; the existing projection remains a fallback for older or degraded responses. |
+| Provider/read-model path | The Search document fetched the public `/search` projection and rendered its presentation `coverage` field directly. The endpoint already ran the federated provider, but the browser did not validate or consume that canonical envelope. | The public `/search` response is still fetched directly. A Search-only entry module loads the document, which validates `federated` with the shared capability contract and derives its coverage receipt from `federated.coverage`; the existing projection remains a fallback for older or degraded responses. |
 | Duplicate civic semantics eliminated | Browser presentation code could treat the projection coverage as authoritative independently of the federator’s coverage contract. | Coverage state, participating lenses, source, and freshness are owned by `search.federated@1`; Search keeps only card/lane presentation. |
 | Public API / MCP gap closed | External adapters and the UI did not have an executable browser-side assertion that the same bounded coverage contract was being consumed. | HTTP `GET /search`, MCP `search_federated`, and this UI slice share the versioned federated envelope and its typed-evidence validation. |
 | Direct HTTP decision | Appropriate for this slice: `/search` is the public representation of the exact operation, already cacheable and already static-first from the page’s point of view. No private endpoint or extra request was introduced. | Same decision; capability validation happens on the returned envelope, below presentation and above transport. |
@@ -36,6 +36,13 @@ The measured difference is within run variance and is not a regression. The
 roughly 2.1s absolute local value is the existing full static shell/font
 startup; it is not attributed to this capability projection. The capability
 validation itself adds no request and does not displace static-first HTML.
+
+The route boundary is observable in the built module graph: `/search/` loads
+`search_entry.mjs`, which then loads `search_document.mjs` and the capability
+projection; the root shell continues to load only `app/main.mjs`. A vendor
+footprint trace requested no `search_entry.mjs`, `search_document.mjs`, or
+`capabilities/federated_search.mjs` module. This keeps the Search capability
+off unrelated routes without changing the vendor-footprint gate.
 
 The live public response was sampled with `cache-control: public, max-age=60,
 stale-while-revalidate=300`. Static HTML paints first; the two bounded Search
