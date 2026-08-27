@@ -12,6 +12,7 @@ import {
   procurementObservationRef,
   procurementObservationSnapshot,
 } from "./procurement_object_contract.mjs";
+import { buildCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procurement_read_model.v1";
 export const SHARED_PROCUREMENT_READ_MODEL_VERSION = 1;
@@ -83,6 +84,15 @@ export function buildSharedProcurementReadModel({
   ]));
   const rows = built.objects;
   const observations = retainedObservations(records);
+  for (const object of rows) {
+    const receipt = buildCrossSourceEvidenceReceipt({
+      object,
+      observations,
+      acceptedJoins: built.cross_source_identity_joins,
+      generatedAt,
+    });
+    if (receipt) object.cross_source_evidence_receipt = receipt;
+  }
   return {
     schema: SHARED_PROCUREMENT_READ_MODEL_SCHEMA,
     version: SHARED_PROCUREMENT_READ_MODEL_VERSION,

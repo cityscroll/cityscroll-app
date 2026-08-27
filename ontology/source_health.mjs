@@ -16,7 +16,10 @@ function reasonCodes(values) {
 
 function validInstant(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)) return null;
-  const epoch = Date.parse(value);
+  const text = value.trim();
+  const epoch = Date.parse(
+    /T/.test(text) && !/[zZ]|[+-]\d{2}:?\d{2}$/.test(text) ? `${text}Z` : text,
+  );
   if (!Number.isFinite(epoch)) return null;
   const date = new Date(epoch);
   if (date.getUTCFullYear() <= 1970) return null;

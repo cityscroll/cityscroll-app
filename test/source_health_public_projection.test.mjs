@@ -9,9 +9,11 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildPublicSourceHealthProjection,
+  publicSourceHealthEvidence,
   publicSourceHealthProjectionLeaks,
   validatePublicSourceHealthProjection,
 } from "../site/source_health_public_projection.mjs";
+import { buildSourceHealthObservations } from "../tools/source_health_observations.mjs";
 import {
   checkPublicSourceHealthProjection,
   generatePublicSourceHealthProjection,
@@ -289,15 +291,24 @@ test("public source-health receipt fails loudly when missing or stale and passes
     assert.equal(runCheck().status, 0);
 
     await writeFile(outputPath, JSON.stringify({ ...current, generated_at: "2026-08-17T12:00:00.000Z" }, null, 2) + "\n");
-    const stale = checkPublicSourceHealthProjection({ registry, observations, outputPath });
-    assert.equal(stale.length, 1);
-    assert.match(stale[0], /source_health_public\.json is stale/);
-    assert.match(stale[0], /2026-08-17T12:00:00\.000Z/);
-    assert.match(stale[0], /2026-08-18T12:00:00\.000Z/);
-    assert.match(stale[0], /expected evidence hash [a-f0-9]{64}, found [a-f0-9]{64}/);
-    const staleRun = runCheck();
-    assert.notEqual(staleRun.status, 0);
-    assert.match(staleRun.stderr, /source_health_public\.json is stale/);
+    assert.deepEqual(
+      checkPublicSourceHealthProjection({ registry, observations, outputPath }),
+      [],
+      "evaluation timestamps are not evidence drift",
+    );
+    assert.equal(runCheck().status, 0);
+
+    await writeFile(outputPath, JSON.stringify({
+      ...current,
+      sources: current.sources.map((row) => ({
+        ...row,
+        health: { ...row.health, status: "Degraded", reason_codes: ["serving-unavailable"] },
+      })),
+    }, null, 2) + "\n");
+    const volatileTamper = checkPublicSourceHealthProjection({ registry, observations, outputPath });
+    assert.equal(volatileTamper.length, 1);
+    assert.match(volatileTamper[0], /source_health_public\.json is stale/);
+    assert.notEqual(runCheck().status, 0);
 
     await writeFile(outputPath, JSON.stringify({
       ...current,
@@ -319,6 +330,92 @@ test("public source-health receipt fails loudly when missing or stale and passes
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+});
+
+test("--check passes when the canonical observation clock advances 48 hours", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "cityscroll-source-health-clock-"));
+  try {
+    const start = "2026-08-18T12:00:00.000Z";
+    const advanced = "2026-08-20T12:00:00.000Z";
+    const registry = { contracts: [contract("clock-source")] };
+    const inputs = {
+      asOf: start,
+      scheduleObservations: [{
+        source_id: "clock-source",
+        observed_at: start,
+        status: "succeeded",
+        publisher_updated_at: "2026-08-12T12:00:00.000Z",
+      }],
+    };
+    const atStart = buildSourceHealthObservations(registry, inputs);
+    const atAdvanced = buildSourceHealthObservations(registry, { ...inputs, asOf: advanced });
+    assert.equal(atStart.observations[0].health.status, "Healthy");
+    assert.equal(atAdvanced.observations[0].health.status, "Delayed");
+
+    const outputPath = join(directory, "source_health_public.json");
+    const contractsPath = join(directory, "source_contracts.json");
+    const observationsPath = join(directory, "source_health_observations.json");
+    await writeFile(contractsPath, JSON.stringify(registry));
+    await writeFile(observationsPath, JSON.stringify(atAdvanced));
+    await writeFile(
+      outputPath,
+      JSON.stringify(buildPublicSourceHealthProjection(registry, atStart), null, 2) + "\n",
+    );
+
+    assert.deepEqual(
+      publicSourceHealthEvidence(buildPublicSourceHealthProjection(registry, atStart)),
+      publicSourceHealthEvidence(buildPublicSourceHealthProjection(registry, atAdvanced)),
+    );
+    const tool = fileURLToPath(new URL("../tools/build_source_health_public_projection.mjs", import.meta.url));
+    const result = spawnSync(process.execPath, [
+      tool,
+      "--check",
+      "--contracts", contractsPath,
+      "--observations", observationsPath,
+      "--output", outputPath,
+    ], { encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("source-health evidence is byte-identical in New York and UTC timezones", () => {
+  const registry = { contracts: [contract("timezone-source")] };
+  const inputs = {
+    asOf: "2026-08-05T12:00:00.000Z",
+    scheduleObservations: [{
+      source_id: "timezone-source",
+      observed_at: "2026-08-05T12:00:00.000Z",
+      status: "succeeded",
+      publisher_updated_at: "2026-08-04T00:00:00.000",
+    }],
+  };
+  const runner = `
+    import { buildSourceHealthObservations } from './tools/source_health_observations.mjs';
+    import { buildPublicSourceHealthProjection } from './site/source_health_public_projection.mjs';
+    const registry = ${JSON.stringify(registry)};
+    const inputs = ${JSON.stringify(inputs)};
+    const canonical = buildSourceHealthObservations(registry, inputs);
+    process.stdout.write(JSON.stringify({ canonical, public: buildPublicSourceHealthProjection(registry, canonical) }));
+  `;
+  const buildForTimezone = (TZ) => {
+    const result = spawnSync(process.execPath, ["--input-type=module", "-e", runner], {
+      cwd: fileURLToPath(new URL("..", import.meta.url)),
+      env: { ...process.env, TZ },
+      encoding: "utf8",
+    });
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout;
+  };
+  const newYork = buildForTimezone("America/New_York");
+  const utc = buildForTimezone("UTC");
+  assert.equal(newYork, utc);
+  const output = JSON.parse(newYork);
+  assert.equal(
+    output.canonical.observations[0].health.clocks.publisher_updated.at,
+    "2026-08-04T00:00:00.000Z",
+  );
 });
 
 test("committed public artifact is canonical, generated, and contains no backstage leaks", () => {

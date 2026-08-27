@@ -15,7 +15,7 @@ export const ANALYTICAL_GROUPS = Object.freeze({
 });
 export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
   "ap_fact", "ap_payment_view", "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
-  "retroactive", "ap_city_record_match", "ap_contract_id",
+  "retroactive", "ap_city_record_match", "ap_evidence_state", "ap_contract_id",
 ]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",
@@ -135,6 +135,7 @@ export function filterAnalyticalContracts(rows, filters = {}) {
   const retroactive = filters.retroactive == null || filters.retroactive === ""
     ? null : String(filters.retroactive).toLowerCase() === "true";
   const cityRecordMatch = filters.city_record_match || null;
+  const performanceEvidenceState = filters.performance_evidence_state || filters.evidence_state || null;
   return (Array.isArray(rows) ? rows : []).filter((row) => {
     const current = Number(row?.current_registered_amount);
     if (fy != null && row.registration_fiscal_year !== fy) return false;
@@ -147,6 +148,7 @@ export function filterAnalyticalContracts(rows, filters = {}) {
     if (min != null && (!Number.isFinite(current) || current < min)) return false;
     if (max != null && (!Number.isFinite(current) || current > max)) return false;
     if (cityRecordMatch && row.city_record_match !== cityRecordMatch) return false;
+    if (performanceEvidenceState && row.performance_evidence_state !== performanceEvidenceState) return false;
     return true;
   });
 }
@@ -317,7 +319,7 @@ export function populationSummary(rows, { snapshot_date, population_definition }
   };
 }
 
-export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match } = {}) {
+export function analyticalDrillThroughHref({ agency, prime_vendor, registration_fiscal_year, contract_amount_band, min_amount, max_amount, retroactive, city_record_match, performance_evidence_state } = {}) {
   const params = new URLSearchParams({ mode: "award" });
   if (agency) params.set("ap_agency", agency);
   if (prime_vendor) params.set("ap_vendor", prime_vendor);
@@ -327,6 +329,7 @@ export function analyticalDrillThroughHref({ agency, prime_vendor, registration_
   if (max_amount != null && max_amount !== "") params.set("ap_max", String(max_amount));
   if (retroactive === true || String(retroactive).toLowerCase() === "true") params.set("retroactive", "true");
   if (city_record_match) params.set("ap_city_record_match", city_record_match);
+  if (performance_evidence_state) params.set("ap_evidence_state", performance_evidence_state);
   return `/browse/contracts/?${params.toString()}`;
 }
 
