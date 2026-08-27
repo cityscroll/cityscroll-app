@@ -150,8 +150,15 @@ test("report module contains navigation teardown and submits the immutable targe
   const source = await import("../site/report_issue.mjs").then(() => null);
   assert.equal(source, null);
   const fs = await import("node:fs/promises");
-  const text = await fs.readFile(new URL("../site/report_issue.mjs", import.meta.url), "utf8");
+  const [text, styles] = await Promise.all([
+    fs.readFile(new URL("../site/report_issue.mjs", import.meta.url), "utf8"),
+    fs.readFile(new URL("../site/brand.css", import.meta.url), "utf8"),
+  ]);
   assert.match(text, /hashchange/);
   assert.match(text, /report_target: activeTarget/);
   assert.match(text, /form\.dataset\.targetId !== activeTarget\.target_id/);
+  assert.doesNotMatch(text, /Which existing profile is this report about\?/);
+  assert.doesNotMatch(text, /Find a profile/);
+  assert.doesNotMatch(text, /data-report-identity/);
+  assert.doesNotMatch(styles, /report-identity/);
 });

@@ -1,6 +1,6 @@
-/* Add the identity-report affordance to the existing dynamic person and
- * organization profiles. The profile renderer remains the owner of profile
- * facts; this small enhancement only observes its already-rendered panel. */
+/* Add the report affordance to the existing dynamic person and organization
+ * profiles. The profile renderer remains the owner of profile facts; this
+ * small enhancement only observes its already-rendered panel. */
 
 function profileDescriptor(root) {
   const official = root.querySelector("#official-skim[data-official-id]");
@@ -48,7 +48,6 @@ function paint(root) {
     entity_ref: profile.ref,
     canonical_url: profile.href,
     object_label: profile.label,
-    identity_lookup_href: "/data/people_organizations_read_model.json",
   });
   const markup = reports.renderReportIssueAffordance(target, { label: "Report an issue" });
   if (!markup) return;

@@ -81,14 +81,21 @@ test("split hypothesis is independently inspectable and never mutates the source
   assert.deepEqual(profiles.person, original);
 });
 
-test("identity profile affordance uses the shared report button and domain choices", () => {
+test("profile affordance reports the current profile without comparison metadata", () => {
   const target = buildEntityProfileReportTarget({
     ...profiles.person,
     identity_candidates: [profiles.organization],
   });
   const html = renderReportIssueAffordance(target);
   assert.match(html, /data-report-target=/);
-  assert.match(html, /identity_lookup_href/);
+  assert.equal(target.claim_anchor, undefined);
+  assert.equal(target.identity_lookup_href, undefined);
+  assert.equal(validateFeedback({
+    category: "information_wrong",
+    message: "The current profile contains an incorrect fact.",
+    report_target: target,
+  }).ok, true);
+  assert.doesNotMatch(html, /identity_lookup_href|identity_candidates/);
 });
 
 test("lookup keeps ambiguous names as separate selectable profiles", () => {

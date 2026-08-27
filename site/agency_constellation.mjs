@@ -244,7 +244,6 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     entity_ref: view.subject_ref,
     canonical_url: view.path,
     object_label: title,
-    identity_lookup_href: `${assetPrefix || "/"}data/people_organizations_read_model.json`,
   }), { label: "Report an issue" });
   const runtimeSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}civic_time_ledger_runtime.mjs`;
   const traversalSrc = `${assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`}app/traversal.mjs`;
