@@ -15,12 +15,14 @@ import {
   attachMeetingDocuments,
   MEETING_DOCUMENT_SCHEMA,
 } from "../site/meeting_document.mjs";
+import { buildCommunityBoardInstitutionEdges } from "../site/community_board_institution_edges.mjs";
 import { buildCommunityBoardMeetingIndexShardArtifacts } from "../site/community_board_meeting_index_shards.mjs";
 import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_index_io.mjs";
 
 const ROOT = join(import.meta.dirname, "..");
 const INVENTORY = join(ROOT, "site/data/non_council_outcome_sources/board_source_inventory.json");
 const REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/source_registry.json");
+const COMMITTEE_REGISTRY = join(ROOT, "site/data/non_council_outcome_sources/community_board_committees.json");
 const OUTPUT = join(ROOT, "site/data/community_board_meeting_index.json");
 const SHARD_DIR = join(ROOT, "site/data/community_board_meeting_index");
 const INDEX_SCHEMA = "cityscroll.community_board_meeting_index.v1";
@@ -58,9 +60,14 @@ function boardCommunityDistrict(board) {
 
 function committeeFromRecord(record) {
   if (record?.committee?.name) return record.committee;
-  const title = clean(record?.title, 500);
-  const match = title.match(/^(.+?)\s+[–-]\s+.+\b(?:chair|vice chair)\b/i);
-  return match?.[1] ? { name: clean(match[1], 300), href: null } : null;
+  if (record?.convening_body_id && record?.convening_body_label) {
+    return {
+      name: record.convening_body_label,
+      href: record.committee?.url || null,
+      publisher_identifier: record.convening_body_publisher_identifier || null,
+    };
+  }
+  return null;
 }
 function sourceDescriptors(inventory, registry) {
   const boardNames = new Map((registry.sources || [])
@@ -143,7 +150,7 @@ function assertNoDuplicatePublisherIdentifiers(records) {
   }
 }
 
-export function materializeCommunityBoardMeetingRow(record, board, observedAt) {
+export function materializeCommunityBoardMeetingRow(record, board, observedAt, options = {}) {
   const sourceRecordId = record.source_record_id || record.record_id;
   const sourceUrl = record.record_url || record.source_url;
   const provenance = {
@@ -178,7 +185,13 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt) {
     meeting_documents: record.meeting_documents || [],
     search_text: record.search_text,
   });
-  const institutionEdge = record.institution_edge || record.community_board_edge || null;
+  const institutionEdges = buildCommunityBoardInstitutionEdges([{
+    meeting,
+    source_record: record,
+  }], {
+    asOf: observedAt,
+    committeeRegistry: options.committeeRegistry || {},
+  });
   return {
     ...meeting,
     record_kind: record.record_kind,
@@ -230,7 +243,7 @@ export function materializeCommunityBoardMeetingRow(record, board, observedAt) {
     // that the board-to-meeting edge is published; that still requires the
     // receipt-backed join above.
     entity_refs_all: [meeting.institution_refs.board_ref, meeting.meeting_id].filter(Boolean),
-    institution_edges: institutionEdge ? [institutionEdge] : [],
+    institution_edges: institutionEdges,
   };
 }
 
@@ -274,6 +287,7 @@ async function enrichEventRecord(record, descriptor, fetchImpl, observedAt) {
 export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, observedAt = new Date().toISOString() } = {}) {
   const inventory = readJson(INVENTORY);
   const registry = readJson(REGISTRY);
+  const committeeRegistry = readJson(COMMITTEE_REGISTRY);
   const boardById = new Map((inventory.boards || []).map((board) => [board.id, board]));
   const descriptors = sourceDescriptors(inventory, registry);
   const byBoard = {};
@@ -288,7 +302,12 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
       && Boolean(contract)
       && descriptor.verification?.fetchability !== "browser_required";
     const result = shouldFetch
-      ? await fetchCommunityBoardSource(descriptor, { fetchImpl, observedAt, extractPdfText: extractPdfCalendarText })
+      ? await fetchCommunityBoardSource(descriptor, {
+        fetchImpl,
+        observedAt,
+        extractPdfText: extractPdfCalendarText,
+        committeeRegistry,
+      })
       : { records: [], receipt: sourceReceipt(descriptor, observedAt) };
     if (shouldFetch) fetched += 1;
     let records = result.records.map((record) => ({
@@ -316,7 +335,7 @@ export async function buildCommunityBoardMeetingIndex({ fetchImpl = fetch, obser
     const meetingRows = records
       .filter((record) => descriptor.source_role === "upcoming_meetings")
       .filter((record) => record.record_kind === "event" && record.record_id && record.date)
-      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt));
+      .map((record) => materializeCommunityBoardMeetingRow(record, board, observedAt, { committeeRegistry }));
     if (meetingRows.length) byBoard[descriptor.board_id] = [...(byBoard[descriptor.board_id] || []), ...meetingRows];
   }
   assertNoDuplicatePublisherIdentifiers(allRecords);

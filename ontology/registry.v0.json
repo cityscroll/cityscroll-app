@@ -543,6 +543,7 @@
           "role": "public body",
           "link_types": [
             "has_member",
+            "has_committee",
             "member_of",
             "hosts_meeting",
             "issues_recommendation"
@@ -598,6 +599,32 @@
         "district",
         "directory_url",
         "observed_on"
+      ],
+      "grounding": "partial"
+    },
+    {
+      "id": "community-board-committee",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "A reviewed publisher-backed committee local to one Community Board. The board-local key prevents same-named committees on different boards from becoming one institution and does not broaden the Legistar Council committee object.",
+      "primary_key_pattern": "community-board-committee:{board_id}:{local_committee_id}",
+      "families": [],
+      "backing": [
+        "public_graph.node",
+        "community_board_committee_registry",
+        "community_board_source_registry"
+      ],
+      "properties_ref": [
+        "board_id",
+        "committee_id",
+        "publisher_name",
+        "publisher_identifier",
+        "aliases",
+        "source_url",
+        "observed_on",
+        "active_from",
+        "active_to",
+        "topic_facets"
       ],
       "grounding": "partial"
     },
@@ -872,6 +899,28 @@
         "public_graph.edge"
       ],
       "label": "Hosts meeting",
+      "grounding": "partial"
+    },
+    {
+      "id": "has_committee",
+      "status": "registered",
+      "from": "community-board",
+      "to": "community-board-committee",
+      "reason": "First materialized edge from a Community Board to a reviewed board-local committee record backed by an official publisher source. Same-named committees on different boards remain distinct identities.",
+      "contract_ref": "cityscroll.community_board_has_committee_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_has_committee_edge.v1",
+      "required_evidence": [
+        "board_local_reviewed_registry",
+        "official_publisher_source",
+        "source_url",
+        "observed_on"
+      ],
+      "backing": [
+        "public_graph.edge",
+        "community_board_committee_registry",
+        "community_board_source_registry"
+      ],
+      "label": "Has committee",
       "grounding": "partial"
     },
     {

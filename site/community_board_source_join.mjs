@@ -7,6 +7,10 @@
 import { sourceRecordStatus } from "./community_board_source_adapters.mjs";
 import { meetingCanonicalHref, normalizeCityRecordMeeting } from "./meeting_object_contract.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import {
+  communityBoardCommitteeRegistryEdge,
+  matchCommunityBoardCommittee,
+} from "./community_board_committees.mjs";
 
 export const COMMUNITY_BOARD_SOURCE_JOIN_SCHEMA = "cityscroll.community_board_source_join.v1";
 export const COMMUNITY_BOARD_SOURCE_JOIN_METHOD = "exact_board_date_publisher_identifier";
@@ -253,6 +257,75 @@ export function promoteCommunityBoardHostsMeetingEdge(observation = {}, options 
   };
 }
 
+/** Materialize a reviewed board-local committee's parent edge. */
+export function promoteCommunityBoardHasCommitteeEdge(record = {}, options = {}) {
+  const match = record.committee_match || record.convening_body_match?.status === "matched"
+    ? record.committee_match || matchCommunityBoardCommittee(record, options.committeeRegistry || {})
+    : matchCommunityBoardCommittee(record, options.committeeRegistry || {});
+  const edge = communityBoardCommitteeRegistryEdge(match);
+  if (!edge) return null;
+  const receipt = receiptFor(record, {});
+  return {
+    ...edge,
+    // The edge's authority is the reviewed official committee source; the
+    // event source remains inspectable in provenance and the receipt.
+    source_url: edge.source_url,
+    source_record_id: record.source_record_id || record.record_id || edge.source_record_id,
+    source_receipt: receipt,
+    provenance: {
+      ...edge.provenance,
+      source_url: edge.provenance?.source_url || null,
+      observation_source_url: record.source_url || null,
+      source_record_id: record.source_record_id || record.record_id || null,
+      observed_receipt: receipt,
+    },
+  };
+}
+
+/** Refine a board host to its reviewed committee without changing the meeting id. */
+export function promoteCommunityBoardCommitteeHostsMeetingEdge(observation = {}, options = {}) {
+  const { meeting, record } = observationParts(observation);
+  const boardEdge = promoteCommunityBoardHostsMeetingEdge(observation, options);
+  const match = matchCommunityBoardCommittee({
+    ...record,
+    board_id: record.board_id || meeting.board_id,
+    body_id: record.body_id || meeting.body_id,
+  }, options.committeeRegistry || {});
+  if (match.status !== "matched") return null;
+  return {
+    ...boardEdge,
+    schema: "cityscroll.community_board_committee_hosts_meeting_edge.v1",
+    edge_type: "hosts_meeting",
+    relation: "hosts_meeting",
+    from: match.id,
+    target_kind: "meeting",
+    parent_board_ref: boardEdge.from,
+    committee_ref: match.id,
+    committee_id: match.committee_id,
+    committee_name: match.publisher_name,
+    provenance: {
+      ...boardEdge.provenance,
+      committee_registry: match.registry_record?.source_url || null,
+      committee_match_method: match.match_method,
+    },
+  };
+}
+
+function institutionEdgesForObservation(observation, options = {}) {
+  const record = observationParts(observation).record || {};
+  const committeeEdge = promoteCommunityBoardCommitteeHostsMeetingEdge(observation, options);
+  if (!committeeEdge) return [promoteCommunityBoardHostsMeetingEdge(observation, options)];
+  const hasCommittee = promoteCommunityBoardHasCommitteeEdge({
+    ...record,
+    committee_match: matchCommunityBoardCommittee({
+      ...record,
+      board_id: record.board_id || observationParts(observation).meeting?.board_id,
+      body_id: record.body_id || observationParts(observation).meeting?.body_id,
+    }, options.committeeRegistry || {}),
+  }, options);
+  return [hasCommittee, committeeEdge].filter(Boolean);
+}
+
 export function buildCommunityBoardMeetingEdge(join = {}, meeting = {}, options = {}) {
   return promoteCommunityBoardHostsMeetingEdge({ join, meeting, source_record: options.source_record || {} }, options);
 }
@@ -273,12 +346,12 @@ export function buildCommunityBoardInstitutionEdges(observations = [], options =
         const board = meeting.board_id || meeting.body_id;
         const candidates = recordRows.filter((record) => !board || record.board_id === board || record.body_id === board);
         const join = joinCommunityBoardSourceRecords(meeting, candidates, options);
-        return [promoteCommunityBoardHostsMeetingEdge({ meeting, source_record: candidates[0] || {}, join }, options)];
+        return institutionEdgesForObservation({ meeting, source_record: candidates[0] || {}, join }, options);
       });
     }
   }
   const rows = Array.isArray(observations) ? observations : [];
-  return rows.map((observation) => promoteCommunityBoardHostsMeetingEdge(observation, options));
+  return rows.flatMap((observation) => institutionEdgesForObservation(observation, options));
 }
 
 /** Return the explicitly materialized institution edge carried by a meeting row. */
@@ -291,8 +364,15 @@ export function communityBoardMeetingEdgeFromRow(row = {}) {
   ];
   const edge = candidates.find((candidate) => candidate && typeof candidate === "object" && !Array.isArray(candidate));
   if (edge) return edge;
-  if (Array.isArray(row.institution_edges)) return row.institution_edges[0] || null;
+  if (Array.isArray(row.institution_edges)) return row.institution_edges.find((candidate) => candidate?.relation === "hosts_meeting") || row.institution_edges[0] || null;
   return null;
+}
+
+export function communityBoardMeetingEdgesFromRow(row = {}) {
+  const carried = Array.isArray(row.institution_edges) ? row.institution_edges : [];
+  if (carried.length) return carried;
+  const edge = communityBoardMeetingEdgeFromRow(row);
+  return edge ? [edge] : [];
 }
 
 /**
@@ -340,11 +420,11 @@ export function communityBoardMeetingEdgeFromSourceRow(row = {}, options = {}) {
       reason: `source_role_${options.sourceRoleState}`,
     },
   };
-  return promoteCommunityBoardHostsMeetingEdge({
+  return institutionEdgesForObservation({
     meeting: row,
     source_record: sourceRecord,
     join,
-  }, options);
+  }, options).find((edge) => edge?.relation === "hosts_meeting") || null;
 }
 
 export function communityBoardMeetingEdgeAccepted(edge = {}) {

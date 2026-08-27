@@ -4,6 +4,7 @@ import { test } from "node:test";
 import {
   communityBoardDisambiguation,
   communityBoardInstitutionHref,
+  communityBoardIdFromRow,
   parseCommunityBoardQuery,
   rowMatchesCommunityBoardQuery,
 } from "../site/community_board_search.mjs";
@@ -35,4 +36,12 @@ test("borough-qualified community-board search matches the exact board", () => {
   assert.equal(rowMatchesCommunityBoardQuery(row, parseCommunityBoardQuery("Bronx community board 3")), true);
   assert.equal(rowMatchesCommunityBoardQuery(row, parseCommunityBoardQuery("Brooklyn community board 3")), false);
   assert.equal(rowMatchesCommunityBoardQuery(row, parseCommunityBoardQuery("community board 3")), true);
+});
+
+test("same-named committee search results retain their parent board identity", () => {
+  const manhattan = { board_id: "manhattan-cb-06", committee_id: "transportation", title: "Transportation Committee" };
+  const brooklyn = { board_id: "brooklyn-cb-01", committee_id: "transportation", title: "Transportation Committee" };
+  assert.equal(communityBoardIdFromRow(manhattan), "manhattan-cb-06");
+  assert.equal(communityBoardIdFromRow(brooklyn), "brooklyn-cb-01");
+  assert.notEqual(communityBoardIdFromRow(manhattan), communityBoardIdFromRow(brooklyn));
 });

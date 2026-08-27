@@ -1,0 +1,32 @@
+{
+  "schema": "cityscroll.community_board_committee_registry.v1",
+  "version": 1,
+  "observed_on": "2026-08-25",
+  "policy": {
+    "identity": "community-board-committee:{board_id}:{committee_id}",
+    "board_local": true,
+    "publisher_name_and_aliases_are_exact": true,
+    "topic_facets_are_for_discovery_only": true,
+    "no_citywide_committee_identity": true
+  },
+  "committees": [
+    {
+      "board_id": "manhattan-cb-06",
+      "committee_id": "transportation",
+      "publisher_name": "Transportation Committee",
+      "aliases": ["Transportation Committee Meeting"],
+      "source_url": "https://cbsix.org/meetings-calendar/",
+      "observed_on": "2026-08-25",
+      "topic_facets": ["transportation"]
+    },
+    {
+      "board_id": "brooklyn-cb-01",
+      "committee_id": "transportation",
+      "publisher_name": "Transportation Committee",
+      "aliases": ["Transportation Committee Meeting"],
+      "source_url": "https://www.nyc.gov/site/brooklyncb1/calendar/calendar.page",
+      "observed_on": "2026-08-25",
+      "topic_facets": ["transportation"]
+    }
+  ]
+}
