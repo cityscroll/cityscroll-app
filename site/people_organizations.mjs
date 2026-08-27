@@ -14,6 +14,8 @@ import {
 const root = document.querySelector("[data-people-organizations]");
 const input = root?.querySelector("[data-people-organizations-search]");
 const type = root?.querySelector("[data-people-organizations-type]");
+const institution = root?.querySelector("[data-people-organizations-institution]");
+const role = root?.querySelector("[data-people-organizations-role]");
 const summary = root?.querySelector("[data-people-organizations-search-summary]");
 const empty = root?.querySelector("[data-people-organizations-no-results]");
 const list = root?.querySelector("[data-people-organizations-list]");
@@ -31,15 +33,17 @@ function readModel() {
 }
 
 function updateShareState() {
-  const params = browseListShareSearch({ query: input?.value, facet: type?.value });
+  const params = browseListShareSearch({ query: input?.value, facet: type?.value, institution: institution?.value, role: role?.value });
   const url = new URL(location.href);
   url.searchParams.delete(PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.queryParam);
   url.searchParams.delete(PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.facetParam);
+  url.searchParams.delete(PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.institutionParam);
+  url.searchParams.delete(PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.roleParam);
   for (const [key, value] of params) url.searchParams.set(key, value);
   history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
-if (root && input && type && summary && empty && list) {
+if (root && input && type && institution && role && summary && empty && list) {
   const handoff = parseSearchLensHandoff(location.search);
   if (handoff?.destination.surface === "people-organizations") {
     root.insertAdjacentHTML("afterbegin", renderSearchLensHandoffHtml(handoff, { t: globalThis.t }));
@@ -52,8 +56,8 @@ if (root && input && type && summary && empty && list) {
   let shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
 
   function updateSummary({ shownCount = null } = {}) {
-    const { query, facet } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
-    const constrained = Boolean(query || facet);
+    const { query, facet, institution: institutionFilter, role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
+    const constrained = Boolean(query || facet || institutionFilter || roleFilter);
     if (!constrained) {
       summary.textContent = shownCount == null
         ? initialSummary
@@ -71,6 +75,10 @@ if (root && input && type && summary && empty && list) {
     activeRows = filtered;
     const { facet } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (type.value !== facet) type.value = facet;
+    const { institution: institutionFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
+    if (institution.value !== institutionFilter) institution.value = institutionFilter;
+    const { role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
+    if (role.value !== roleFilter) role.value = roleFilter;
     const { query } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (input.value !== query) input.value = query;
     if (canonicalize) updateShareState();
@@ -92,6 +100,14 @@ if (root && input && type && summary && empty && list) {
     render({ reset: true });
   });
   type.addEventListener("change", () => {
+    updateShareState();
+    render({ reset: true });
+  });
+  institution.addEventListener("change", () => {
+    updateShareState();
+    render({ reset: true });
+  });
+  role.addEventListener("change", () => {
     updateShareState();
     render({ reset: true });
   });

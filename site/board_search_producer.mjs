@@ -68,7 +68,7 @@ export function projectBoardSearchDocument(id, row = {}, { lookup = {} } = {}) {
     domain: "places",
     canonical_href: identity.href,
     title,
-    summary: `${identity.borough} Community District ${identity.district}.`,
+    summary: `${title} · Community Board · appointed local advisory body.`,
     search_text: uniqueSearchText([title, identity.id, ...aliases, ...relationLabels])
       .join(" ").slice(0, SEARCH_TEXT_MAX_LENGTH),
     source_family: "community_board_constellation",

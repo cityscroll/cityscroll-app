@@ -50,7 +50,7 @@ export function buildCommitteeLocalConstellation(graph = {}, committeeId, people
 export function renderCommitteeLocalConstellationHTML(graph, committeeId, people = {}) {
   const constellation = buildCommitteeLocalConstellation(graph, committeeId, people);
   return renderLocalConstellationHTML(constellation, {
-    heading: constellation.subject_name ? `Committee members · ${constellation.subject_name}` : "Committee members",
+    heading: constellation.subject_name ? `City Council committee members · ${constellation.subject_name}` : "City Council committee members",
     id: `committee-local-constellation-${clean(committeeId).replace(/[^A-Za-z0-9_-]/g, "-")}`,
   });
 }
@@ -58,7 +58,7 @@ export function renderCommitteeLocalConstellationHTML(graph, committeeId, people
 export function renderOfficialLocalConstellationHTML(officialView, committeeRows, id, name) {
   ensureLocalConstellationStylesheet();
   return renderLocalConstellationHTML(buildOfficialLocalConstellation(officialView, committeeRows, id, name), {
-    heading: "Published meeting records",
+    heading: "Published City Council records",
     id: "official-local-constellation-heading",
   });
 }
@@ -110,7 +110,7 @@ export function renderCommitteeMembershipsHTML(bag, { escapeHtml, translate } = 
     && edge.to === `official:${clean(bag?.member_id).replace(/^official:/, "")}`
   ) || null;
   return `<section class="official-committee-memberships" data-membership-status="linked" data-entity-pivot-schema="cityscroll.edge_summary.v1">
-    <div class="chain-h">Committee memberships</div>
+    <div class="chain-h">City Council committee memberships</div>
     <ul>${rows.map((row) => {
       const reverseEdge = reverseForRow(row);
       const reverseUnavailable = "";

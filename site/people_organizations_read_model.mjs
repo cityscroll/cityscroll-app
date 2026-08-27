@@ -11,15 +11,32 @@ import {
   communityDistrictDisplayName,
 } from "./community_board_links.mjs";
 import { communityBoardPlaceHref } from "./community_board_constellation.mjs";
+import {
+  communityBoardCommitteeId,
+  normalizeCommunityBoardCommitteeRegistry,
+} from "./community_board_committees.mjs";
+import {
+  communityBoardPersonObject,
+  promoteCommunityBoardPersonRoleEdge,
+} from "./community_board_relations.mjs";
 
 export const PEOPLE_ORGANIZATION_ROW_KINDS = Object.freeze([
+  "community-board",
+  "community-board-person",
+  "community-board-committee",
   "official",
   "exact-person-appointment",
-  "notice-only-hire",
+  "committee",
   "agency",
   "vendor",
-  "committee",
+  "notice-only-hire",
+]);
+
+export const PEOPLE_ORGANIZATION_INSTITUTIONS = Object.freeze([
   "community-board",
+  "city-council",
+  "agency",
+  "vendor",
 ]);
 
 export const RELATION_STATES = Object.freeze(["published", "empty", "unknown"]);
@@ -72,6 +89,9 @@ function officialRows(people = {}) {
         person_id: id,
         relation_state: "published",
         detail: "Official profile",
+        institution: "city-council",
+        institution_label: "New York City Council",
+        institution_context: "Elected legislative body",
         search_text: `${person.person_name} official council member ${person.district || ""}`,
       };
     });
@@ -95,9 +115,12 @@ function exactPersonAppointmentRows(people = {}) {
         entity_ref: personRef(personId),
         person_id: personId,
         relation_state: "published",
-        detail: `Official term${term.district ? ` · District ${term.district}` : ""}`,
+        detail: `City Council term${term.district ? ` · District ${term.district}` : ""}`,
+        institution: "city-council",
+        institution_label: "New York City Council",
+        institution_context: "Elected legislative body",
         date: sourceDate(term.term_start, term.term_end),
-        search_text: `${personName} appointment official term ${term.office_id} ${term.district || ""}`,
+        search_text: `${personName} City Council term official ${term.office_id} ${term.district || ""}`,
       });
     }
   }
@@ -127,7 +150,10 @@ function noticeOnlyHireRows(hires = {}) {
         entity_ref: null,
         person_id: null,
         relation_state: "unknown",
-        detail: "Published appointment notice · person identity not joined",
+        detail: "Published staffing notice · person identity not joined",
+        institution: "agency",
+        institution_label: clean(notice.agency_name) || "Agency",
+        institution_context: "City Record staffing record",
         agency: clean(notice.agency_name),
         date: sourceDate(parsed.effectiveDate, notice.start_date),
         source_record_id: requestId,
@@ -149,6 +175,9 @@ function agencyRows(agencies = {}) {
       entity_ref: clean(agency.subject_ref),
       relation_state: "published",
       detail: `${Number(agency.matched_categories) || 0} linked record categories`,
+      institution: "agency",
+      institution_label: "Agency",
+      institution_context: "City agency organization",
       search_text: `${agency.display_name} agency organization`,
       categories: agency.categories || {},
     }));
@@ -171,6 +200,9 @@ function vendorRows(agencies = {}, awards = {}) {
         entity_ref: ref,
         relation_state: "published",
         detail: "Vendor profile from agency award records",
+        institution: "vendor",
+        institution_label: "Vendor",
+        institution_context: "Published supplier organization",
         agency_ids: new Set(),
         award_count: 0,
         search_text: `${label} vendor organization`,
@@ -197,6 +229,9 @@ function vendorRows(agencies = {}, awards = {}) {
         entity_ref: ref,
         relation_state: "published",
         detail: "Vendor profile from published award records",
+        institution: "vendor",
+        institution_label: "Vendor",
+        institution_context: "Published supplier organization",
         agency_ids: new Set(),
         award_count: 1,
         search_text: `${label} vendor organization`,
@@ -225,7 +260,10 @@ function committeeRows(graph = {}, people = {}) {
       href: /^\d+$/.test(committeeId) ? `/committees/${encodeURIComponent(committeeId)}/` : null,
       entity_ref: node.id,
       relation_state: published ? "empty" : "unknown",
-      detail: published ? "Committee identity published · no exact member edge in this snapshot" : "Committee relation coverage unknown",
+      detail: published ? "City Council committee identity published · no exact member edge in this snapshot" : "City Council committee relation coverage unknown",
+      institution: "city-council",
+      institution_label: "New York City Council",
+      institution_context: "Elected legislative body",
       members: [],
       search_text: `${node.name} committee organization`,
     });
@@ -254,9 +292,133 @@ function committeeRows(graph = {}, people = {}) {
     ...row,
     members: [...new Map(row.members.map((member) => [member.person_id, member])).values()],
     detail: row.relation_state === "published"
-      ? `${row.members.length} exact-person member${row.members.length === 1 ? "" : "s"}`
+      ? `${row.members.length} exact City Council member${row.members.length === 1 ? "" : "s"}`
       : row.detail,
   }));
+}
+
+const COMMUNITY_BOARD_ROLE_LABELS = Object.freeze({
+  appointed_member: "Board member",
+  board_chair: "Board chair",
+  board_officer: "Board officer",
+  committee_chair: "Committee chair",
+  committee_member: "Committee member",
+  public_committee_member: "Public committee member",
+  district_manager: "District Manager",
+  staff: "Community Board staff",
+});
+
+function boardSourceRows(communityBoardPeople = {}) {
+  return Object.entries(communityBoardPeople?.boards || {}).flatMap(([boardId, value]) => (
+    (Array.isArray(value?.relationships) ? value.relationships : [])
+      .map((relationship) => ({ ...relationship, board_id: relationship.board_id || boardId }))
+  ));
+}
+
+function boardDirectory(geography = {}) {
+  return new Map(boardRows(geography).map((row) => [row.body_id, row]));
+}
+
+function communityBoardPersonRows(communityBoardPeople = {}, geography = {}, committeeRegistry = {}) {
+  const boards = boardDirectory(geography);
+  const byId = new Map();
+  for (const observation of boardSourceRows(communityBoardPeople)) {
+    const edge = promoteCommunityBoardPersonRoleEdge(observation);
+    if (!edge.promoted) continue;
+    const object = communityBoardPersonObject(observation);
+    const boardId = String(observation.board_id || "").trim().toLowerCase();
+    const board = boards.get(boardId);
+    if (!object || !board) continue;
+    const row = byId.get(object.id) || {
+      kind: "community-board-person",
+      id: object.id,
+      label: object.person_name,
+      href: null,
+      entity_ref: object.id,
+      relation_state: "published",
+      institution: "community-board",
+      institution_label: board.label,
+      institution_context: "Appointed local advisory body",
+      institution_ref: board.entity_ref,
+      institution_href: board.href,
+      board_id: board.body_id,
+      board_label: board.label,
+      board_href: board.href,
+      publisher_person_id: object.publisher_person_id,
+      identity_basis: object.identity_basis,
+      roles: new Set(),
+      committee_refs: new Set(),
+      committee_names: new Map(),
+    };
+    row.roles.add(edge.role || "staff");
+    const committeeRef = [edge.from, edge.to].find((value) => String(value || "").startsWith("community-board-committee:"));
+    if (committeeRef) row.committee_refs.add(committeeRef);
+    byId.set(object.id, row);
+  }
+  const registryRows = normalizeCommunityBoardCommitteeRegistry(committeeRegistry);
+  const committeeNames = new Map(registryRows.map((row) => [
+    communityBoardCommitteeId(row.board_id, row.committee_id),
+    row.publisher_name,
+  ]));
+  return [...byId.values()].map((row) => {
+    const roles = [...row.roles].sort();
+    const committeeNamesForRow = [...row.committee_refs]
+      .map((ref) => committeeNames.get(ref))
+      .filter(Boolean)
+      .sort();
+    const roleLabels = roles.map((role) => COMMUNITY_BOARD_ROLE_LABELS[role] || "Community Board person");
+    const roleFamily = roles.some((role) => ["district_manager", "staff"].includes(role)) ? "staff" : "member";
+    return {
+      ...row,
+      roles,
+      role_labels: roleLabels,
+      role_family: roleFamily,
+      committee_refs: [...row.committee_refs].sort(),
+      committee_names: committeeNamesForRow,
+      detail: roleLabels.join(" · "),
+      search_text: [row.label, row.board_label, "Community Board person", ...roleLabels, ...committeeNamesForRow].join(" "),
+    };
+  });
+}
+
+function communityBoardCommitteeRows(committeeRegistry = {}, geography = {}, personRows = []) {
+  const boards = boardDirectory(geography);
+  const peopleByCommittee = new Map();
+  for (const person of personRows) {
+    for (const ref of person.committee_refs || []) {
+      const current = peopleByCommittee.get(ref) || [];
+      current.push({ person_id: person.id, person_name: person.label, role: person.role_labels?.join(" · ") || "Committee member" });
+      peopleByCommittee.set(ref, current);
+    }
+  }
+  return normalizeCommunityBoardCommitteeRegistry(committeeRegistry).map((committee) => {
+    const id = communityBoardCommitteeId(committee.board_id, committee.committee_id);
+    const board = boards.get(committee.board_id);
+    const members = [...new Map((peopleByCommittee.get(id) || []).map((person) => [person.person_id, person])).values()];
+    return {
+      kind: "community-board-committee",
+      id,
+      label: committee.publisher_name,
+      href: null,
+      entity_ref: id,
+      relation_state: "published",
+      institution: "community-board",
+      institution_label: board?.label || `Community Board ${committee.board_id}`,
+      institution_context: "Appointed local advisory body",
+      institution_ref: board?.entity_ref || `community-board:${committee.board_id}`,
+      institution_href: board?.href || communityBoardPageHref(committee.board_id),
+      board_id: committee.board_id,
+      board_label: board?.label || `Community Board ${committee.board_id}`,
+      board_href: board?.href || communityBoardPageHref(committee.board_id),
+      committee_id: committee.committee_id,
+      publisher_identifier: committee.publisher_identifier || null,
+      source_url: committee.source_url,
+      topic_facets: committee.topic_facets,
+      members,
+      detail: `${board?.label || `Community Board ${committee.board_id}`} · ${members.length} linked board member${members.length === 1 ? "" : "s"}`,
+      search_text: [committee.publisher_name, ...(committee.aliases || []), board?.label, "Community Board committee", "appointed local advisory body"].filter(Boolean).join(" "),
+    };
+  });
 }
 
 function boardRows(geography = {}) {
@@ -295,6 +457,11 @@ function boardRows(geography = {}) {
           community_district_id: node.properties?.community_district_id || district,
         }),
         organization_relations: organizationRelations,
+        institution: "community-board",
+        institution_label: clean(node.name),
+        institution_context: "Appointed local advisory body",
+        institution_ref: `community-board:${bodyId}`,
+        institution_href: communityBoardPageHref(bodyId),
         search_text: `${node.name} community board ${node.properties?.borough || ""} ${district || ""} institution`,
       };
     });
@@ -320,21 +487,26 @@ export function buildPeopleOrganizationsReadModel(sources = {}) {
   const agencies = sources.agencies || {};
   const places = sources.places || {};
   const hires = sources.hires || {};
+  const communityBoardPeople = sources.communityBoardPeople || sources.community_board_people || {};
+  const communityBoardCommittees = sources.communityBoardCommittees || sources.community_board_committees || {};
+  const communityBoardPersonRowsList = communityBoardPersonRows(communityBoardPeople, places, communityBoardCommittees);
   const rows = [
+    ...boardRows(places),
+    ...communityBoardPersonRowsList,
+    ...communityBoardCommitteeRows(communityBoardCommittees, places, communityBoardPersonRowsList),
     ...officialRows(people),
     ...exactPersonAppointmentRows(people),
-    ...noticeOnlyHireRows(hires),
+    ...committeeRows(committees, people),
     ...agencyRows(agencies),
     ...vendorRows(agencies, sources.awards || {}),
-    ...committeeRows(committees, people),
-    ...boardRows(places),
+    ...noticeOnlyHireRows(hires),
   ];
   const order = new Map(PEOPLE_ORGANIZATION_ROW_KINDS.map((kind, index) => [kind, index]));
   rows.sort((left, right) => (order.get(left.kind) - order.get(right.kind))
     || left.label.localeCompare(right.label)
     || left.id.localeCompare(right.id));
   return {
-    schema: "cityscroll.people_organizations_read_model.v1",
+    schema: "cityscroll.people_organizations_read_model.v2",
     row_kinds: [...PEOPLE_ORGANIZATION_ROW_KINDS],
     rows,
     // Existing profiles are lookup choices only. They are not inferred
@@ -342,6 +514,7 @@ export function buildPeopleOrganizationsReadModel(sources = {}) {
     identity_candidates: identityCandidates(rows),
     counts: Object.fromEntries(PEOPLE_ORGANIZATION_ROW_KINDS.map((kind) => [kind, rows.filter((row) => row.kind === kind).length])),
     relation_states: [...RELATION_STATES],
-    generated_at: sourceDate(people.retrieved_at, committees.generated_at, agencies.generated_at, places.generated_at, hires.generated_at),
+    institutions: [...PEOPLE_ORGANIZATION_INSTITUTIONS],
+    generated_at: sourceDate(people.retrieved_at, committees.generated_at, agencies.generated_at, places.generated_at, hires.generated_at, communityBoardPeople.observed_on, communityBoardCommittees.observed_on),
   };
 }

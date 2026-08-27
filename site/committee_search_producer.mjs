@@ -68,7 +68,7 @@ export function projectCommitteeSearchDocument(node = {}, { lookup = {} } = {}) 
     domain: "meetings",
     canonical_href: identity.href,
     title,
-    summary: "New York City Council committee.",
+    summary: "New York City Council · City Council committee · elected legislative body.",
     search_text: uniqueSearchText([title, ...aliases, "New York City Council"])
       .join(" ").slice(0, SEARCH_TEXT_MAX_LENGTH),
     source_family: "nyc_legistar_committee_graph",

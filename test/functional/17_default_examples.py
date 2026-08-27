@@ -82,7 +82,7 @@ def people_opens_on_a_populated_example(pw):
 
     goto_and_wait_for_app(page, f"{BASE}#people", timeout=30000)
     wait_for_locator(
-        page.locator('[data-browse-concept="people"] [data-civic-object-kind="official"]').first,
+        page.locator('[data-browse-concept="people"] [data-civic-object-kind="community-board"]').first,
         timeout=CI_WAIT_TIMEOUT_MS,
         label="bare People + organizations example",
     )
@@ -124,7 +124,7 @@ def people_opens_on_a_populated_example(pw):
                 timeout=CI_WAIT_TIMEOUT_MS,
             )
             wait_for_locator(
-                page.locator('[data-browse-concept="people"] [data-civic-object-kind="official"]').first,
+                page.locator('[data-browse-concept="people"] [data-civic-object-kind="community-board"]').first,
                 timeout=CI_WAIT_TIMEOUT_MS,
                 label="People concept document after tab navigation",
             )
@@ -150,7 +150,7 @@ def people_opens_on_a_populated_example(pw):
                 label="Money reset route",
             )
         elif tab == "people":
-            if page.locator('[data-browse-concept="people"] [data-civic-object-kind="official"]').count() == 0:
+            if page.locator('[data-browse-concept="people"] [data-civic-object-kind="community-board"]').count() == 0:
                 failures.append("people entry did not render the unified People + organizations document")
             if page.locator("#career-guide").is_visible():
                 failures.append("people entry rendered the Exams guide")
