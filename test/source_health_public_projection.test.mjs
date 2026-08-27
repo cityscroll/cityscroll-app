@@ -1,12 +1,21 @@
 import { readFileSync } from "node:fs";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   buildPublicSourceHealthProjection,
   publicSourceHealthProjectionLeaks,
   validatePublicSourceHealthProjection,
 } from "../site/source_health_public_projection.mjs";
+import {
+  checkPublicSourceHealthProjection,
+  generatePublicSourceHealthProjection,
+} from "../tools/build_source_health_public_projection.mjs";
 import { buildDataSourceGraph } from "../tools/data_source_graph.mjs";
 
 const GENERATED_AT = "2026-08-18T12:00:00.000Z";
@@ -248,6 +257,68 @@ test("frontstage and backstage derive from one canonical observation model", () 
     JSON.stringify(publicProjection),
     /SOURCE_API_TOKEN|runbook|fingerprint|HTTP 503|exact_error|backstage-source/i,
   );
+});
+
+test("public source-health receipt fails loudly when missing or stale and passes when current", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "cityscroll-source-health-"));
+  try {
+    const registry = { contracts: [contract("receipt-source")] };
+    const observations = {
+      generated_at: GENERATED_AT,
+      observations: [observation("receipt-source")],
+    };
+    const outputPath = join(directory, "source_health_public.json");
+    const current = generatePublicSourceHealthProjection({ registry, observations });
+    const contractsPath = join(directory, "source_contracts.json");
+    const observationsPath = join(directory, "source_health_observations.json");
+    await writeFile(contractsPath, JSON.stringify(registry));
+    await writeFile(observationsPath, JSON.stringify(observations));
+    await writeFile(outputPath, JSON.stringify(current, null, 2) + "\n");
+    assert.deepEqual(
+      checkPublicSourceHealthProjection({ registry, observations, outputPath }),
+      [],
+    );
+    const tool = fileURLToPath(new URL("../tools/build_source_health_public_projection.mjs", import.meta.url));
+    const runCheck = () => spawnSync(process.execPath, [
+      tool,
+      "--check",
+      "--contracts", contractsPath,
+      "--observations", observationsPath,
+      "--output", outputPath,
+    ], { encoding: "utf8" });
+    assert.equal(runCheck().status, 0);
+
+    await writeFile(outputPath, JSON.stringify({ ...current, generated_at: "2026-08-17T12:00:00.000Z" }, null, 2) + "\n");
+    const stale = checkPublicSourceHealthProjection({ registry, observations, outputPath });
+    assert.equal(stale.length, 1);
+    assert.match(stale[0], /source_health_public\.json is stale/);
+    assert.match(stale[0], /2026-08-17T12:00:00\.000Z/);
+    assert.match(stale[0], /2026-08-18T12:00:00\.000Z/);
+    assert.match(stale[0], /expected evidence hash [a-f0-9]{64}, found [a-f0-9]{64}/);
+    const staleRun = runCheck();
+    assert.notEqual(staleRun.status, 0);
+    assert.match(staleRun.stderr, /source_health_public\.json is stale/);
+
+    await writeFile(outputPath, JSON.stringify({
+      ...current,
+      sources: current.sources.map((row) => ({ ...row, publisher: "Changed publisher" })),
+    }, null, 2) + "\n");
+    const sourceHashStale = checkPublicSourceHealthProjection({ registry, observations, outputPath });
+    assert.equal(sourceHashStale.length, 1);
+    assert.match(sourceHashStale[0], /expected evidence hash [a-f0-9]{64}, found [a-f0-9]{64}/);
+    assert.notEqual(runCheck().status, 0);
+
+    await rm(outputPath);
+    const missing = checkPublicSourceHealthProjection({ registry, observations, outputPath });
+    assert.deepEqual(missing, [
+      "site/data/source_health_public.json is missing; generated source-health evidence cannot be delivered",
+    ]);
+    const missingRun = runCheck();
+    assert.notEqual(missingRun.status, 0);
+    assert.match(missingRun.stderr, /source_health_public\.json is missing/);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 });
 
 test("committed public artifact is canonical, generated, and contains no backstage leaks", () => {
