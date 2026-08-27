@@ -21,6 +21,7 @@ export const SITE_MODULES = [
   "authority-award.mjs",
   "meetings.mjs",
   "entities.mjs",
+  "entity_identity_report.mjs",
   "workspace.mjs",
   "now.mjs",
   "routing.mjs",

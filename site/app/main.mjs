@@ -8,6 +8,7 @@ async function loadApplication() {
 await import("./core.mjs");
 globalThis.CrolScope = await import("../scope_v0.mjs");
 globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
+globalThis.CrolReportIssue = await import("../report_issue.mjs");
 globalThis.CrolAgencyConnections = await import("../agency_connections.mjs");
 globalThis.CrolRouteMigration = await import("../route_migration.mjs");
 await import("./traversal.mjs");
@@ -84,6 +85,7 @@ if(location.hash.startsWith("#notice/") || location.pathname.startsWith("/notice
 }
 await import("./meetings.mjs");
 await import("./entities.mjs");
+await import("./entity_identity_report.mjs");
 await import("./workspace.mjs");
 await import("./now.mjs");
 await import("./routing.mjs");

@@ -26575,6 +26575,3422 @@
       "search_text": "Staten Island Community Board 3 community board Staten Island R03 institution"
     }
   ],
+  "identity_candidates": [
+    {
+      "entity_id": "vendor:stem:2050%20PARTNERS",
+      "label": "2050 Partners LLC",
+      "href": "/vendors/2050%20PARTNERS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:4TECH%20SOLUTIONS",
+      "label": "4Tech Solutions, LLC",
+      "href": "/vendors/4TECH%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ABSORB%20SOFTWARE",
+      "label": "Absorb Software, Inc.",
+      "href": "/vendors/ABSORB%20SOFTWARE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ACACIA%20NETWORK%20HOUSING",
+      "label": "Acacia Network Housing Inc",
+      "href": "/vendors/ACACIA%20NETWORK%20HOUSING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ACCENT%20ON%20LANGUAGES",
+      "label": "Accent on Languages Inc",
+      "href": "/vendors/ACCENT%20ON%20LANGUAGES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ACCENTURE",
+      "label": "Accenture LLP",
+      "href": "/vendors/ACCENTURE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ACCESS%20COMPUTER%20FLOORS",
+      "label": "Access Computer Floors LLC",
+      "href": "/vendors/ACCESS%20COMPUTER%20FLOORS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ACCURATE%20COMMUNICATION",
+      "label": "Accurate Communication Inc.",
+      "href": "/vendors/ACCURATE%20COMMUNICATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:administration-for-childrens-services",
+      "label": "Administration for Children's Services",
+      "href": "/agencies/administration-for-childrens-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:425",
+      "label": "Adolfo Carrion",
+      "href": "/officials/425/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7739",
+      "label": "Adrienne E. Adams",
+      "href": "/officials/7739/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:ADROIT%20CONSULTANTS",
+      "label": "Adroit Consultants LLC",
+      "href": "/vendors/ADROIT%20CONSULTANTS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AFFORDABLE%20SERVICES%20GROUP",
+      "label": "Affordable Services Group LLC",
+      "href": "/vendors/AFFORDABLE%20SERVICES%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AITA%20CONSULTING%20SERVICES",
+      "label": "Aita Consulting Services Inc",
+      "href": "/vendors/AITA%20CONSULTING%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5258",
+      "label": "Alan J. Gerson",
+      "href": "/officials/5258/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7635",
+      "label": "Alan N. Maisel",
+      "href": "/officials/7635/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5284",
+      "label": "Albert Vann",
+      "href": "/officials/5284/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7825",
+      "label": "Alexa Avilés",
+      "href": "/officials/7825/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:ALFRED%20EXECUTIVE%20TRANSPORTATION",
+      "label": "Alfred Executive Transportation LLC",
+      "href": "/vendors/ALFRED%20EXECUTIVE%20TRANSPORTATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7747",
+      "label": "Alicka Ampry-Samuel",
+      "href": "/officials/7747/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5277",
+      "label": "Allan W. Jennings, Jr.",
+      "href": "/officials/5277/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:420",
+      "label": "Alphonse Stabile",
+      "href": "/officials/420/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7809",
+      "label": "Althea V. Stevens",
+      "href": "/officials/7809/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7810",
+      "label": "Amanda C. Farías",
+      "href": "/officials/7810/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:AMAZONAS%20PAINTING",
+      "label": "Amazonas Painting Corp",
+      "href": "/vendors/AMAZONAS%20PAINTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AMERICA%20WORKS",
+      "label": "America Works of New York Inc.",
+      "href": "/vendors/AMERICA%20WORKS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AMERICAN%20COMPUTER%20CONSULTANTS",
+      "label": "American Computer Consultants Inc",
+      "href": "/vendors/AMERICAN%20COMPUTER%20CONSULTANTS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AMERICAN%20NATIONAL%20RED%20CROSS",
+      "label": "American National Red Cross",
+      "href": "/vendors/AMERICAN%20NATIONAL%20RED%20CROSS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AMERICAN%20TRAFFIC%20SOLUTIONS",
+      "label": "American Traffic Solutions, Inc.",
+      "href": "/vendors/AMERICAN%20TRAFFIC%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7624",
+      "label": "Andrew Cohen",
+      "href": "/officials/7624/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5255",
+      "label": "Andrew J. Lanza",
+      "href": "/officials/5255/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7613",
+      "label": "Andy L. King",
+      "href": "/officials/7613/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:433",
+      "label": "Angel Rodriguez",
+      "href": "/officials/433/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5416",
+      "label": "Annabel Palma",
+      "href": "/officials/5416/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:407",
+      "label": "Annette M. Robinson",
+      "href": "/officials/407/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7490",
+      "label": "Anthony Como",
+      "href": "/officials/7490/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:411",
+      "label": "Anthony Weiner",
+      "href": "/officials/411/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7638",
+      "label": "Antonio Reynoso",
+      "href": "/officials/7638/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:APTIM%20ENVIRONMENTAL%20INFRASTRUCTURE",
+      "label": "APTIM Environmental & Infrastructure, Inc.",
+      "href": "/vendors/APTIM%20ENVIRONMENTAL%20INFRASTRUCTURE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ARBOR%20E%20T",
+      "label": "Arbor E&T LLC",
+      "href": "/vendors/ARBOR%20E%20T/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:23",
+      "label": "Archie W. Spigner",
+      "href": "/officials/23/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7830",
+      "label": "Ari Kagan",
+      "href": "/officials/7830/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:ARON%20SECURITY",
+      "label": "Aron Security Inc",
+      "href": "/vendors/ARON%20SECURITY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ATLANTIC%20ROLLING%20STEEL%20DOOR",
+      "label": "Atlantic Rolling Steel Door Corp.",
+      "href": "/vendors/ATLANTIC%20ROLLING%20STEEL%20DOOR/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AVANTI%20MECHANICAL",
+      "label": "Avanti Mechanical LLC",
+      "href": "/vendors/AVANTI%20MECHANICAL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AWE-HUH%20CREATIVE%20SERVICES",
+      "label": "Awe-Huh Creative Services LLC",
+      "href": "/vendors/AWE-HUH%20CREATIVE%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:AXON%20ENTERPRISE",
+      "label": "Axon Enterprise, Inc.",
+      "href": "/vendors/AXON%20ENTERPRISE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BA%20GLOBAL%20CONSTRUCTION",
+      "label": "BA Global Construction Corp.",
+      "href": "/vendors/BA%20GLOBAL%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7691",
+      "label": "Barry S. Grodenchik",
+      "href": "/officials/7691/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:BECKMAN%20COULTER",
+      "label": "Beckman Coulter Inc",
+      "href": "/vendors/BECKMAN%20COULTER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7632",
+      "label": "Ben Kallos",
+      "href": "/officials/7632/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5286",
+      "label": "Bill De Blasio",
+      "href": "/officials/5286/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:430",
+      "label": "Bill Perkins",
+      "href": "/officials/430/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:BLENDERBOX",
+      "label": "Blenderbox Inc",
+      "href": "/vendors/BLENDERBOX/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BLINK%20SUPPLIES",
+      "label": "Blink Supplies Inc",
+      "href": "/vendors/BLINK%20SUPPLIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BLUE%20HILL%20DATA%20SERVICES",
+      "label": "Blue Hill Data Services",
+      "href": "/vendors/BLUE%20HILL%20DATA%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:board-meetings",
+      "label": "Board Meetings",
+      "href": "/agencies/board-meetings/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:board-of-correction",
+      "label": "Board of Correction",
+      "href": "/agencies/board-of-correction/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:board-of-elections",
+      "label": "Board of Elections",
+      "href": "/agencies/board-of-elections/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:board-of-standards-and-appeals",
+      "label": "Board of Standards and Appeals",
+      "href": "/agencies/board-of-standards-and-appeals/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:BOWERY%20RESIDENTS%20COMMITTEE",
+      "label": "Bowery Residents' Committee, Inc.",
+      "href": "/vendors/BOWERY%20RESIDENTS%20COMMITTEE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7566",
+      "label": "Brad S. Lander",
+      "href": "/officials/7566/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:district-attorney-bronx-county",
+      "label": "Bronx District Attorney's Office",
+      "href": "/agencies/district-attorney-bronx-county/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:BRONX%20PARENT%20HOUSING%20NETWORK",
+      "label": "Bronx Parent Housing Network Inc",
+      "href": "/vendors/BRONX%20PARENT%20HOUSING%20NETWORK/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BRONXWORKS",
+      "label": "Bronxworks Inc",
+      "href": "/vendors/BRONXWORKS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES",
+      "label": "Brooklyn Community Housing & Services, Inc.",
+      "href": "/vendors/BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BROOKLYN%20DEFENDER%20SERVICES",
+      "label": "Brooklyn Defender Services",
+      "href": "/vendors/BROOKLYN%20DEFENDER%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:district-attorney-kings-county",
+      "label": "Brooklyn District Attorney's Office",
+      "href": "/agencies/district-attorney-kings-county/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:BROOKLYN%20LEGAL%20SERVICES%20CORPORATION%20A",
+      "label": "Brooklyn Legal Services Corporation A",
+      "href": "/vendors/BROOKLYN%20LEGAL%20SERVICES%20CORPORATION%20A/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BRYANT%20RABBINO",
+      "label": "Bryant Rabbino LLP",
+      "href": "/vendors/BRYANT%20RABBINO/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:BUFFALO%20COMPUTER%20GRAPHICS",
+      "label": "Buffalo Computer Graphics Inc",
+      "href": "/vendors/BUFFALO%20COMPUTER%20GRAPHICS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:business-integrity-commission",
+      "label": "Business Integrity Commission",
+      "href": "/agencies/business-integrity-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:BUSINESS%20RELOCATION%20SERVICES",
+      "label": "Business Relocation Services Inc.",
+      "href": "/vendors/BUSINESS%20RELOCATION%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CAC%20INDUSTRIES",
+      "label": "CAC Industries Inc",
+      "href": "/vendors/CAC%20INDUSTRIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CAMBA",
+      "label": "CAMBA Inc",
+      "href": "/vendors/CAMBA/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:campaign-finance-board",
+      "label": "Campaign Finance Board",
+      "href": "/agencies/campaign-finance-board/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:CAPSTONE%20STRATEGY%20GROUP",
+      "label": "Capstone Strategy Group LLC",
+      "href": "/vendors/CAPSTONE%20STRATEGY%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7740",
+      "label": "Carlina Rivera",
+      "href": "/officials/7740/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7636",
+      "label": "Carlos Menchaca",
+      "href": "/officials/7636/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7806",
+      "label": "Carmen N. De La Rosa",
+      "href": "/officials/7806/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:CASTLE%20GATE%20ENGINEERING%20P%20C",
+      "label": "Castle Gate Engineering P.C.",
+      "href": "/vendors/CASTLE%20GATE%20ENGINEERING%20P%20C/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CATALIS%20COURTS%20LAND%20RECORDS",
+      "label": "Catalis Courts & Land Records LLC",
+      "href": "/vendors/CATALIS%20COURTS%20LAND%20RECORDS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CATHOLIC%20CHARITIES%20NEIGHBORHOOD%20SERVICES",
+      "label": "Catholic Charities Neighborhood Services Inc",
+      "href": "/vendors/CATHOLIC%20CHARITIES%20NEIGHBORHOOD%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CATHOLIC%20GUARDIAN%20SERVICES",
+      "label": "Catholic Guardian Services",
+      "href": "/vendors/CATHOLIC%20GUARDIAN%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES",
+      "label": "Center for Alternative Sentencing and Employment Services Inc.",
+      "href": "/vendors/CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES",
+      "label": "Center for Employment Opportunities Inc",
+      "href": "/vendors/CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CGI%20TECHNOLOGIES%20AND%20SOLUTIONS",
+      "label": "CGI Technologies and Solutions Inc.",
+      "href": "/vendors/CGI%20TECHNOLOGIES%20AND%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7629",
+      "label": "Chaim M. Deutsch",
+      "href": "/officials/7629/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5288",
+      "label": "Charles Barron",
+      "href": "/officials/5288/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:charter-revision-commission",
+      "label": "Charter Revision Commission",
+      "href": "/agencies/charter-revision-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:CHECKR",
+      "label": "Checkr Inc",
+      "href": "/vendors/CHECKR/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CHHAYA%20COMMUNITY%20DEVELOPMENT",
+      "label": "Chhaya Community Development Corporation",
+      "href": "/vendors/CHHAYA%20COMMUNITY%20DEVELOPMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7823",
+      "label": "Chi A. Ossé",
+      "href": "/officials/7823/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7864",
+      "label": "Chris Banks",
+      "href": "/officials/7864/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:434",
+      "label": "Christine C. Quinn",
+      "href": "/officials/434/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7801",
+      "label": "Christopher Marte",
+      "href": "/officials/7801/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:CITNALTA%20CONSTRUCTION",
+      "label": "Citnalta Construction Corp.",
+      "href": "/vendors/CITNALTA%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:commission-on-human-rights",
+      "label": "City Commission on Human Rights",
+      "href": "/agencies/commission-on-human-rights/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:city-planning-commission",
+      "label": "City Planning Commission",
+      "href": "/agencies/city-planning-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:city-university",
+      "label": "City University of New York",
+      "href": "/agencies/city-university/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:civilian-complaint-review-board",
+      "label": "Civilian Complaint Review Board",
+      "href": "/agencies/civilian-complaint-review-board/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:CNC%20CONSULTING",
+      "label": "CNC Consulting Inc.",
+      "href": "/vendors/CNC%20CONSULTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:commission-on-racial-equity",
+      "label": "Commission on Racial Equity",
+      "href": "/agencies/commission-on-racial-equity/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:COMMON%20GROUND%20MANAGEMENT",
+      "label": "Common Ground Management Corp",
+      "href": "/vendors/COMMON%20GROUND%20MANAGEMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:community-boards",
+      "label": "Community Boards",
+      "href": "/agencies/community-boards/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:COMMUNITY%20REINVESTMENT%20FUND",
+      "label": "Community Reinvestment Fund Inc.",
+      "href": "/vendors/COMMUNITY%20REINVESTMENT%20FUND/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:COMPCITI%20BUSINESS%20SOLUTIONS",
+      "label": "CompCiti Business Solutions",
+      "href": "/vendors/COMPCITI%20BUSINESS%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:COMPULINK%20TECHNOLOGIES",
+      "label": "Compulink Technologies Inc",
+      "href": "/vendors/COMPULINK%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7631",
+      "label": "Corey D. Johnson",
+      "href": "/officials/7631/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7627",
+      "label": "Costa G. Constantinides",
+      "href": "/officials/7627/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:COSTAR%20REALTY%20INFORMATION",
+      "label": "Costar Realty Information, Inc.",
+      "href": "/vendors/COSTAR%20REALTY%20INFORMATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:COURTCALL",
+      "label": "CourtCall LLC",
+      "href": "/vendors/COURTCALL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CP%20PERMA%20PAVING%20CONSTRUCTION",
+      "label": "CP Perma Paving Construction Inc",
+      "href": "/vendors/CP%20PERMA%20PAVING%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:CRESCENT%20CONTRACTING",
+      "label": "Crescent Contracting Corp.",
+      "href": "/vendors/CRESCENT%20CONTRACTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:criminal-justice-coordinator",
+      "label": "Criminal Justice Coordinator",
+      "href": "/agencies/criminal-justice-coordinator/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:7822",
+      "label": "Crystal Hudson",
+      "href": "/officials/7822/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7563",
+      "label": "Daniel Dromm",
+      "href": "/officials/7563/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7564",
+      "label": "Daniel J. Halloran III",
+      "href": "/officials/7564/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6267",
+      "label": "Daniel R. Garodnick",
+      "href": "/officials/6267/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6272",
+      "label": "Darlene Mealy",
+      "href": "/officials/6272/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7793",
+      "label": "Darma V. Diaz",
+      "href": "/officials/7793/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7577",
+      "label": "David G. Greenfield",
+      "href": "/officials/7577/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5272",
+      "label": "David I. Weprin",
+      "href": "/officials/5272/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7833",
+      "label": "David M. Carr",
+      "href": "/officials/7833/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5282",
+      "label": "David Yassky",
+      "href": "/officials/5282/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:DB%20GRANT%20ASSOCIATES",
+      "label": "DB Grant Associates Inc.",
+      "href": "/vendors/DB%20GRANT%20ASSOCIATES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7568",
+      "label": "Deborah L. Rose",
+      "href": "/officials/7568/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:DELL%20MARKETING%20L%20P",
+      "label": "Dell Marketing L.P.",
+      "href": "/vendors/DELL%20MARKETING%20L%20P/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:DELVE%20UNDERGROUND%20ENGINEERING",
+      "label": "Delve Underground Engineering PLLC",
+      "href": "/vendors/DELVE%20UNDERGROUND%20ENGINEERING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:DENALI%20WATER%20SOLUTIONS",
+      "label": "Denali Water Solutions LLC",
+      "href": "/vendors/DENALI%20WATER%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5279",
+      "label": "Dennis P. Gallagher",
+      "href": "/officials/5279/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:aging",
+      "label": "Department for the Aging",
+      "href": "/agencies/aging/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:buildings",
+      "label": "Department of Buildings",
+      "href": "/agencies/buildings/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:city-planning",
+      "label": "Department of City Planning",
+      "href": "/agencies/city-planning/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:citywide-administrative-services",
+      "label": "Department of Citywide Administrative Services",
+      "href": "/agencies/citywide-administrative-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:consumer-and-worker-protection",
+      "label": "Department of Consumer and Worker Protection",
+      "href": "/agencies/consumer-and-worker-protection/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:correction",
+      "label": "Department of Correction",
+      "href": "/agencies/correction/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:cultural-affairs",
+      "label": "Department of Cultural Affairs",
+      "href": "/agencies/cultural-affairs/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:design-and-construction",
+      "label": "Department of Design and Construction",
+      "href": "/agencies/design-and-construction/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:environmental-protection",
+      "label": "Department of Environmental Protection",
+      "href": "/agencies/environmental-protection/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:finance",
+      "label": "Department of Finance",
+      "href": "/agencies/finance/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:health-and-mental-hygiene",
+      "label": "Department of Health and Mental Hygiene",
+      "href": "/agencies/health-and-mental-hygiene/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:homeless-services",
+      "label": "Department of Homeless Services",
+      "href": "/agencies/homeless-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:housing-preservation-and-development",
+      "label": "Department of Housing Preservation and Development",
+      "href": "/agencies/housing-preservation-and-development/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:investigation",
+      "label": "Department of Investigation",
+      "href": "/agencies/investigation/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:parks-and-recreation",
+      "label": "Department of Parks and Recreation",
+      "href": "/agencies/parks-and-recreation/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:probation",
+      "label": "Department of Probation",
+      "href": "/agencies/probation/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:records-and-information-services",
+      "label": "Department of Records and Information Services",
+      "href": "/agencies/records-and-information-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:small-business-services",
+      "label": "Department of Small Business Services",
+      "href": "/agencies/small-business-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:department-of-social-services",
+      "label": "Department of Social Services",
+      "href": "/agencies/department-of-social-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:nyc-department-of-veterans-services",
+      "label": "Department of Veterans' Services",
+      "href": "/agencies/nyc-department-of-veterans-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:youth-and-community-development",
+      "label": "Department of Youth and Community Development",
+      "href": "/agencies/youth-and-community-development/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
+      "label": "Dewberry-GF Resident Engineering JV",
+      "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7742",
+      "label": "Diana I. Ayala",
+      "href": "/officials/7742/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5256",
+      "label": "Diana Reyna",
+      "href": "/officials/5256/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:DIFAZIO%20IND",
+      "label": "Difazio Ind LLC",
+      "href": "/vendors/DIFAZIO%20IND/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:DIGITAL%20TRANSITIONS",
+      "label": "Digital Transitions Inc",
+      "href": "/vendors/DIGITAL%20TRANSITIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:DNS%20MEDIA%20GROUP",
+      "label": "DNS Media Group Inc",
+      "href": "/vendors/DNS%20MEDIA%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5292",
+      "label": "Domenic M. Recchia, Jr.",
+      "href": "/officials/5292/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7617",
+      "label": "Donovan J. Richards",
+      "href": "/officials/7617/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:DOYLE%20SECURITY%20SERVICES",
+      "label": "Doyle Security Services Inc.",
+      "href": "/vendors/DOYLE%20SECURITY%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:E-J%20ELECTRIC%20INSTALLATION",
+      "label": "E-J Electric Installation Company",
+      "href": "/vendors/E-J%20ELECTRIC%20INSTALLATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:EAST%20RIVER%20DEVELOPMENT%20ALLIANCE",
+      "label": "East River Development Alliance, Inc.",
+      "href": "/vendors/EAST%20RIVER%20DEVELOPMENT%20ALLIANCE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:EAST%20SIDE%20HOUSE",
+      "label": "East Side House Inc.",
+      "href": "/vendors/EAST%20SIDE%20HOUSE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ECCO%20III%20ENTERPRISES",
+      "label": "ECCO III Enterprises Inc",
+      "href": "/vendors/ECCO%20III%20ENTERPRISES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:economic-development-corporation",
+      "label": "Economic Development Corporation",
+      "href": "/agencies/economic-development-corporation/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
+      "label": "Educational Data Systems Inc.",
+      "href": "/vendors/EDUCATIONAL%20DATA%20SYSTEMS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7502",
+      "label": "Elizabeth S. Crowley",
+      "href": "/officials/7502/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7895",
+      "label": "Elsie Encarnación",
+      "href": "/officials/7895/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:EMPIREVISTA%20TECHNOLOGIES",
+      "label": "EmpireVista Technologies LLC",
+      "href": "/vendors/EMPIREVISTA%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:employees-retirement-system",
+      "label": "Employees' Retirement System",
+      "href": "/agencies/employees-retirement-system/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:ENVIRONMENTAL%20OPERATING%20SOLUTIONS",
+      "label": "Environmental Operating Solutions, Inc.",
+      "href": "/vendors/ENVIRONMENTAL%20OPERATING%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE",
+      "label": "Environmental Systems Research Institute Inc",
+      "href": "/vendors/ENVIRONMENTAL%20SYSTEMS%20RESEARCH%20INSTITUTE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:equal-employment-practices-commission",
+      "label": "Equal Employment Practices Commission",
+      "href": "/agencies/equal-employment-practices-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:7510",
+      "label": "Eric A. Ulrich",
+      "href": "/officials/7510/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7799",
+      "label": "Eric Dinowitz",
+      "href": "/officials/7799/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5275",
+      "label": "Eric N. Gioia",
+      "href": "/officials/5275/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7802",
+      "label": "Erik D. Bottcher",
+      "href": "/officials/7802/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5285",
+      "label": "Erik Martin Dilan",
+      "href": "/officials/5285/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5229",
+      "label": "Eva S. Moskowitz",
+      "href": "/officials/5229/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:EVERGREEN%20TECHNOLOGIES",
+      "label": "Evergreen Technologies LLC",
+      "href": "/vendors/EVERGREEN%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:EXPERIS%20US",
+      "label": "Experis US LLC",
+      "href": "/vendors/EXPERIS%20US/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7785",
+      "label": "Farah N. Louis",
+      "href": "/officials/7785/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:FAUST%20HARRISON%20PIANOS",
+      "label": "Faust Harrison Pianos Inc.",
+      "href": "/vendors/FAUST%20HARRISON%20PIANOS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:FEDCAP%20NYC",
+      "label": "Fedcap NYC, Inc.",
+      "href": "/vendors/FEDCAP%20NYC/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:FEIGI%20TAUB%20HALBERSTAM%20AUDIOLOGY%20AND%20SPEECH%20PATHOLOGY",
+      "label": "Feigi Taub Halberstam Audiology and Speech Pathology",
+      "href": "/vendors/FEIGI%20TAUB%20HALBERSTAM%20AUDIOLOGY%20AND%20SPEECH%20PATHOLOGY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7561",
+      "label": "Fernando Cabrera",
+      "href": "/officials/7561/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:financial-information-services-agency",
+      "label": "Financial Information Services Agency",
+      "href": "/agencies/financial-information-services-agency/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:fire-department",
+      "label": "Fire Department of the City of New York",
+      "href": "/agencies/fire-department/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:FORT%20GREENE%20COUNCIL",
+      "label": "Fort Greene Council Inc.",
+      "href": "/vendors/FORT%20GREENE%20COUNCIL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7745",
+      "label": "Francisco P. Moya",
+      "href": "/officials/7745/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS",
+      "label": "Franco Belli Plumbing & Heating & Sons, Inc.",
+      "href": "/vendors/FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7887",
+      "label": "Frank Morano",
+      "href": "/officials/7887/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5262",
+      "label": "G. Oliver Koppell",
+      "href": "/officials/5262/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:GABRIELLI%20TRUCK%20SALES",
+      "label": "Gabrielli Truck Sales Ltd.",
+      "href": "/vendors/GABRIELLI%20TRUCK%20SALES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5259",
+      "label": "Gale A. Brewer",
+      "href": "/officials/5259/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:GANNETT%20FLEMING%20ENGINEERS%20ARCHITECTS",
+      "label": "Gannett Fleming Engineers & Architects PC",
+      "href": "/vendors/GANNETT%20FLEMING%20ENGINEERS%20ARCHITECTS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GARTNER",
+      "label": "Gartner Inc.",
+      "href": "/vendors/GARTNER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GENERATION%20WEALTH",
+      "label": "Generation Wealth LLC",
+      "href": "/vendors/GENERATION%20WEALTH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:422",
+      "label": "Gifford Miller",
+      "href": "/officials/422/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS",
+      "label": "Gioia P Ambrette Inc DBA Newcastle Communications",
+      "href": "/vendors/GIOIA%20P%20AMBRETTE%20INC%20DBA%20NEWCASTLE%20COMMUNICATIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GOOD%20SHEPHERD%20SERVICES",
+      "label": "Good Shepherd Services",
+      "href": "/vendors/GOOD%20SHEPHERD%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GOVERNORS%20ISLAND",
+      "label": "Governors Island Corporation",
+      "href": "/vendors/GOVERNORS%20ISLAND/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GRAHAM-WINDHAM",
+      "label": "Graham-Windham",
+      "href": "/vendors/GRAHAM-WINDHAM/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
+      "label": "Grand Street Settlement Inc",
+      "href": "/vendors/GRAND%20STREET%20SETTLEMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES",
+      "label": "Great Performances Artists as Waitresses Inc",
+      "href": "/vendors/GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GROUP%20HEALTH",
+      "label": "Group Health Incorporated",
+      "href": "/vendors/GROUP%20HEALTH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GRYPHON%20CONSTRUCTION",
+      "label": "Gryphon Construction Inc.",
+      "href": "/vendors/GRYPHON%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:GTM%20CONTRACTING",
+      "label": "GTM Contracting Inc",
+      "href": "/vendors/GTM%20CONTRACTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:395",
+      "label": "Guillermo Linares",
+      "href": "/officials/395/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:GXO%20LOGISTICS%20WORLDWIDE",
+      "label": "GXO Logistics Worldwide LLC",
+      "href": "/vendors/GXO%20LOGISTICS%20WORLDWIDE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:HANYC%20FOUNDATION",
+      "label": "HANYC Foundation Inc.",
+      "href": "/vendors/HANYC%20FOUNDATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7893",
+      "label": "Harvey D. Epstein",
+      "href": "/officials/7893/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:HAZEN%20-%20THORNTON%20TOMASETTI%20JV",
+      "label": "Hazen - Thornton Tomasetti JV",
+      "href": "/vendors/HAZEN%20-%20THORNTON%20TOMASETTI%20JV/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:HAZEN%20SAWYER",
+      "label": "Hazen & Sawyer",
+      "href": "/vendors/HAZEN%20SAWYER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:HEALTH%20PEOPLE",
+      "label": "Health People Inc.",
+      "href": "/vendors/HEALTH%20PEOPLE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5265",
+      "label": "Helen D. Foster",
+      "href": "/officials/5265/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7639",
+      "label": "Helen K. Rosenthal",
+      "href": "/officials/7639/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:401",
+      "label": "Helen M. Marshall",
+      "href": "/officials/401/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5274",
+      "label": "Helen Sears",
+      "href": "/officials/5274/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:HELLMAN%20ELECTRIC",
+      "label": "Hellman Electric LLC",
+      "href": "/vendors/HELLMAN%20ELECTRIC/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:HELP%20SOCIAL%20SERVICE",
+      "label": "Help Social Service Corporation",
+      "href": "/vendors/HELP%20SOCIAL%20SERVICE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:HENNINGSON%20DURHAM%20RICHARDSON",
+      "label": "Henningson Durham & Richardson PC",
+      "href": "/vendors/HENNINGSON%20DURHAM%20RICHARDSON/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5026",
+      "label": "Herbert E. Berman",
+      "href": "/officials/5026/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT",
+      "label": "Highland Park Community Development Corp.",
+      "href": "/vendors/HIGHLAND%20PARK%20COMMUNITY%20DEVELOPMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5270",
+      "label": "Hiram Monserrate",
+      "href": "/officials/5270/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:HIRE%20BREAKTHROUGH",
+      "label": "Hire Breakthrough LLC",
+      "href": "/vendors/HIRE%20BREAKTHROUGH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:418",
+      "label": "Howard L. Lasher",
+      "href": "/officials/418/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:human-resources-administration",
+      "label": "Human Resources Administration",
+      "href": "/agencies/human-resources-administration/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:HYLAN%20DATACOM%20ELECTRICAL",
+      "label": "Hylan Datacom & Electrical LLC",
+      "href": "/vendors/HYLAN%20DATACOM%20ELECTRICAL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7637",
+      "label": "I. Daneek Miller",
+      "href": "/officials/7637/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:IANNELLI%20CONSTRUCTION",
+      "label": "Iannelli Construction Co Inc",
+      "href": "/vendors/IANNELLI%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:IAQ%20SYSTEMS",
+      "label": "IAQ Systems Inc",
+      "href": "/vendors/IAQ%20SYSTEMS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:IHS%20GLOBAL",
+      "label": "IHS Global Inc.",
+      "href": "/vendors/IHS%20GLOBAL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:IMMEDIATE%20MAILING%20SERVICES",
+      "label": "Immediate Mailing Services Inc",
+      "href": "/vendors/IMMEDIATE%20MAILING%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:IN%20OUR%20SHOES",
+      "label": "In Our Shoes LLC",
+      "href": "/vendors/IN%20OUR%20SHOES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:independent-budget-office",
+      "label": "Independent Budget Office",
+      "href": "/agencies/independent-budget-office/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:INDUSTRIAL%20STRENGTH%20INDUSTRIES",
+      "label": "Industrial Strength Industries LLC",
+      "href": "/vendors/INDUSTRIAL%20STRENGTH%20INDUSTRIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7623",
+      "label": "Inez D. Barron",
+      "href": "/officials/7623/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6270",
+      "label": "Inez E. Dickens",
+      "href": "/officials/6270/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:INFO%20PEOPLE",
+      "label": "InFo People Corporation",
+      "href": "/vendors/INFO%20PEOPLE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INFOPEOPLE",
+      "label": "Infopeople Corporation",
+      "href": "/vendors/INFOPEOPLE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INFRA%20TECH%20LOZIER%20ENGINEERING%20JV",
+      "label": "Infra Tech Lozier Engineering JV",
+      "href": "/vendors/INFRA%20TECH%20LOZIER%20ENGINEERING%20JV/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7831",
+      "label": "Inna Vernikov",
+      "href": "/officials/7831/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:INSIGHT%20PUBLIC%20SECTOR",
+      "label": "Insight Public Sector Inc.",
+      "href": "/vendors/INSIGHT%20PUBLIC%20SECTOR/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INTEGRATED%20PARKING%20SOLUTIONS",
+      "label": "Integrated Parking Solutions, LLC",
+      "href": "/vendors/INTEGRATED%20PARKING%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INTER-CON%20SECURITY%20SYSTEMS",
+      "label": "Inter-Con Security Systems Incorporated",
+      "href": "/vendors/INTER-CON%20SECURITY%20SYSTEMS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INTERNATIONAL%20BUSINESS%20MACHINES",
+      "label": "International Business Machines Corp",
+      "href": "/vendors/INTERNATIONAL%20BUSINESS%20MACHINES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INTERNATIONAL%20LANGUAGE%20SERVICES",
+      "label": "International Language Services Inc",
+      "href": "/vendors/INTERNATIONAL%20LANGUAGE%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:INTIVITY",
+      "label": "Intivity Inc",
+      "href": "/vendors/INTIVITY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ITEGIX",
+      "label": "Itegix LLC",
+      "href": "/vendors/ITEGIX/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:JACOBS%20CIVIL%20CONSULTANTS",
+      "label": "Jacobs Civil Consultants",
+      "href": "/vendors/JACOBS%20CIVIL%20CONSULTANTS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5283",
+      "label": "James E. Davis",
+      "href": "/officials/5283/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5273",
+      "label": "James F. Gennaro",
+      "href": "/officials/5273/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7569",
+      "label": "James G. Van Bramer",
+      "href": "/officials/7569/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:436",
+      "label": "James S. Oddo",
+      "href": "/officials/436/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5280",
+      "label": "James Sanders, Jr.",
+      "href": "/officials/5280/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6271",
+      "label": "James Vacca",
+      "href": "/officials/6271/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7821",
+      "label": "Jennifer Gutiérrez",
+      "href": "/officials/7821/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7",
+      "label": "Jerome X. O'Donovan",
+      "href": "/officials/7/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6268",
+      "label": "Jessica S. Lappin",
+      "href": "/officials/6268/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:JEWISH%20CHILD%20CARE%20ASSOCIATION",
+      "label": "Jewish Child Care Association of New York",
+      "href": "/vendors/JEWISH%20CHILD%20CARE%20ASSOCIATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7819",
+      "label": "Joann Ariola",
+      "href": "/officials/7819/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5244",
+      "label": "Joel Rivera",
+      "href": "/officials/5244/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5269",
+      "label": "John C. Liu",
+      "href": "/officials/5269/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:JOHN%20CIVETTA%20SONS",
+      "label": "John Civetta & Sons Inc.",
+      "href": "/vendors/JOHN%20CIVETTA%20SONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:402",
+      "label": "John D. Sabini",
+      "href": "/officials/402/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:412",
+      "label": "John Fusco",
+      "href": "/officials/412/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5266",
+      "label": "Jose M. Serrano",
+      "href": "/officials/5266/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7264",
+      "label": "Joseph C. Borelli",
+      "href": "/officials/7264/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5281",
+      "label": "Joseph P. Addabbo, Jr.",
+      "href": "/officials/5281/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:JRCRUZ",
+      "label": "JRCRUZ Corp",
+      "href": "/vendors/JRCRUZ/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:406",
+      "label": "Juanita E. Watkins",
+      "href": "/officials/406/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:25",
+      "label": "Julia Harrison",
+      "href": "/officials/25/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7803",
+      "label": "Julie Menin",
+      "href": "/officials/7803/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7816",
+      "label": "Julie Won",
+      "href": "/officials/7816/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7509",
+      "label": "Julissa Ferreras-Copeland",
+      "href": "/officials/7509/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7571",
+      "label": "Jumaane D. Williams",
+      "href": "/officials/7571/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:16",
+      "label": "June M. Eisland",
+      "href": "/officials/16/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:JURISOLUTIONS",
+      "label": "JURISolutions, Inc.",
+      "href": "/vendors/JURISOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:JUSTICE%20INNOVATION",
+      "label": "Justice Innovation Inc",
+      "href": "/vendors/JUSTICE%20INNOVATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7897",
+      "label": "Justin E. Sanchez",
+      "href": "/officials/7897/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7748",
+      "label": "Justin L. Brannan",
+      "href": "/officials/7748/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7749",
+      "label": "Kalman Yeger",
+      "href": "/officials/7749/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7832",
+      "label": "Kamillah Hanks",
+      "href": "/officials/7832/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:386",
+      "label": "Karen Koslowitz",
+      "href": "/officials/386/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:391",
+      "label": "Kathryn E. Freed",
+      "href": "/officials/391/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7901",
+      "label": "Kayla Santosuosso",
+      "href": "/officials/7901/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:KEEFE%20GROUP",
+      "label": "Keefe Group LLC",
+      "href": "/vendors/KEEFE%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7741",
+      "label": "Keith Powers",
+      "href": "/officials/7741/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5290",
+      "label": "Kendall Stewart",
+      "href": "/officials/5290/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7516",
+      "label": "Kenneth C. Mitchell",
+      "href": "/officials/7516/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:385",
+      "label": "Kenneth K. Fisher",
+      "href": "/officials/385/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7794",
+      "label": "Kevin C. Riley",
+      "href": "/officials/7794/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:KINGS%20BAY%20YM%20-YWHA",
+      "label": "Kings Bay YM -YWHA Inc.",
+      "href": "/vendors/KINGS%20BAY%20YM%20-YWHA/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:KNOX%20GOLF%20ACADEMY",
+      "label": "Knox Golf Academy",
+      "href": "/vendors/KNOX%20GOLF%20ACADEMY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:KNZ%20SOLUTIONS",
+      "label": "KNZ Solutions Inc.",
+      "href": "/vendors/KNZ%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7805",
+      "label": "Kristin Richardson Jordan",
+      "href": "/officials/7805/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7865",
+      "label": "Kristy Marmorato",
+      "href": "/officials/7865/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:landmarks-preservation-commission",
+      "label": "Landmarks Preservation Commission",
+      "href": "/agencies/landmarks-preservation-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:5263",
+      "label": "Larry B. Seabrook",
+      "href": "/officials/5263/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7628",
+      "label": "Laurie A. Cumbo",
+      "href": "/officials/7628/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:397",
+      "label": "Lawrence A. Warden",
+      "href": "/officials/397/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:LEADSONLINE",
+      "label": "LeadsOnline LLC",
+      "href": "/vendors/LEADSONLINE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5276",
+      "label": "Leroy G. Comrie, Jr.",
+      "href": "/officials/5276/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5417",
+      "label": "Letitia James",
+      "href": "/officials/5417/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5291",
+      "label": "Lewis A. Fidler",
+      "href": "/officials/5291/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:LEXISNEXIS%20RISK%20SOLUTIONS",
+      "label": "LexisNexis Risk Solutions Inc",
+      "href": "/vendors/LEXISNEXIS%20RISK%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS",
+      "label": "Life Style Awards & Promotional Products",
+      "href": "/vendors/LIFE%20STYLE%20AWARDS%20PROMOTIONAL%20PRODUCTS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7820",
+      "label": "Lincoln Restler",
+      "href": "/officials/7820/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7814",
+      "label": "Linda Lee",
+      "href": "/officials/7814/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT",
+      "label": "Living Redemption Community Development Corporation",
+      "href": "/vendors/LIVING%20REDEMPTION%20COMMUNITY%20DEVELOPMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:417",
+      "label": "Lloyd Henry",
+      "href": "/officials/417/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:399",
+      "label": "Lucy Cruz",
+      "href": "/officials/399/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7818",
+      "label": "Lynn C. Schulman",
+      "href": "/officials/7818/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:431",
+      "label": "Madeline T. Provenzano",
+      "href": "/officials/431/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:district-attorney-new-york-county",
+      "label": "Manhattan District Attorney's Office",
+      "href": "/agencies/district-attorney-new-york-county/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:7562",
+      "label": "Margaret S. Chin",
+      "href": "/officials/7562/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:429",
+      "label": "Margarita Lopez",
+      "href": "/officials/429/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5264",
+      "label": "Maria Baez",
+      "href": "/officials/5264/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5911",
+      "label": "Maria Del Carmen Arroyo",
+      "href": "/officials/5911/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7807",
+      "label": "Marjorie Velázquez",
+      "href": "/officials/7807/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7743",
+      "label": "Mark Gjonaj",
+      "href": "/officials/7743/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7634",
+      "label": "Mark Levine",
+      "href": "/officials/7634/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7570",
+      "label": "Mark S. Weprin",
+      "href": "/officials/7570/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7641",
+      "label": "Mark Treyger",
+      "href": "/officials/7641/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:MARSH",
+      "label": "Marsh USA LLC",
+      "href": "/vendors/MARSH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:428",
+      "label": "Martin J. Golden",
+      "href": "/officials/428/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:415",
+      "label": "Martin Malave-Dilan",
+      "href": "/officials/415/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:35",
+      "label": "Mary Pinkett",
+      "href": "/officials/35/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7113",
+      "label": "Mathieu Eugene",
+      "href": "/officials/7113/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "agency:id:mayors-office-of-contract-services",
+      "label": "Mayor's Office of Contract Services",
+      "href": "/agencies/mayors-office-of-contract-services/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:mayors-office-of-criminal-justice",
+      "label": "Mayor's Office of Criminal Justice",
+      "href": "/agencies/mayors-office-of-criminal-justice/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:management-and-budget",
+      "label": "Mayor's Office of Management and Budget",
+      "href": "/agencies/management-and-budget/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:MEGA%20BUSINESS%20SYSTEMS",
+      "label": "Mega Business Systems",
+      "href": "/vendors/MEGA%20BUSINESS%20SYSTEMS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5278",
+      "label": "Melinda R. Katz",
+      "href": "/officials/5278/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6269",
+      "label": "Melissa Mark-Viverito",
+      "href": "/officials/6269/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7829",
+      "label": "Mercedes Narcisse",
+      "href": "/officials/7829/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:METROEXPRESS%20SERVICES",
+      "label": "MetroExpress Services Inc.",
+      "href": "/vendors/METROEXPRESS%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:435",
+      "label": "Michael C. Nelson",
+      "href": "/officials/435/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5293",
+      "label": "Michael E. McMahon",
+      "href": "/officials/5293/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5227",
+      "label": "Michael J. Abel",
+      "href": "/officials/5227/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:MICHAEL%20STAPLETON%20ASSOCIATES",
+      "label": "Michael Stapleton Associates, Ltd.",
+      "href": "/vendors/MICHAEL%20STAPLETON%20ASSOCIATES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5261",
+      "label": "Miguel Martinez",
+      "href": "/officials/5261/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:MINDBREEZE",
+      "label": "Mindbreeze Corporation",
+      "href": "/vendors/MINDBREEZE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:MODINE%20CONTRACTING",
+      "label": "Modine Contracting Corp.",
+      "href": "/vendors/MODINE%20CONTRACTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:MOLA%20GROUP",
+      "label": "Mola Group Corp.",
+      "href": "/vendors/MOLA%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:24",
+      "label": "Morton Povman",
+      "href": "/officials/24/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:MOUGONDHA%20ACHARYA",
+      "label": "Mougondha Acharya",
+      "href": "/vendors/MOUGONDHA%20ACHARYA/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS",
+      "label": "MYCA Multimedia & Training Solutions LLC",
+      "href": "/vendors/MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:n-y-c-transit-authority",
+      "label": "N.Y.C. Transit Authority",
+      "href": "/agencies/n-y-c-transit-authority/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:7817",
+      "label": "Nantasha M. Williams",
+      "href": "/officials/7817/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)",
+      "label": "National Association On Drug Abuse Problems (NYS)",
+      "href": "/vendors/NATIONAL%20ASSOCIATION%20ON%20DRUG%20ABUSE%20PROBLEMS%20(NYS)/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
+      "label": "National Medical Services, Inc.",
+      "href": "/vendors/NATIONAL%20MEDICAL%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEIGHBORHOOD%20DEFENDER%20SERVICE",
+      "label": "Neighborhood Defender Service Inc",
+      "href": "/vendors/NEIGHBORHOOD%20DEFENDER%20SERVICE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS",
+      "label": "Neighborhood Trust Financial Partners Inc.",
+      "href": "/vendors/NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20PARTNERS",
+      "label": "New Partners Inc.",
+      "href": "/vendors/NEW%20PARTNERS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT",
+      "label": "New York Center for Interpersonal Development Inc",
+      "href": "/vendors/NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:city-council",
+      "label": "New York City Council",
+      "href": "/agencies/city-council/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:sanitation",
+      "label": "New York City Department of Sanitation",
+      "href": "/agencies/sanitation/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:transportation",
+      "label": "New York City Department of Transportation",
+      "href": "/agencies/transportation/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20CITY%20ECONOMIC%20DEVELOPMENT",
+      "label": "New York City Economic Development Corporation",
+      "href": "/vendors/NEW%20YORK%20CITY%20ECONOMIC%20DEVELOPMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:emergency-management",
+      "label": "New York City Emergency Management",
+      "href": "/agencies/emergency-management/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:housing-authority",
+      "label": "New York City Housing Authority",
+      "href": "/agencies/housing-authority/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:law-department",
+      "label": "New York City Law Department",
+      "href": "/agencies/law-department/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:police-department",
+      "label": "New York City Police Department",
+      "href": "/agencies/police-department/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:new-york-city-police-pension-fund",
+      "label": "New York City Police Pension Fund",
+      "href": "/agencies/new-york-city-police-pension-fund/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:education",
+      "label": "New York City Public Schools",
+      "href": "/agencies/education/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:tax-commission",
+      "label": "New York City Tax Commission",
+      "href": "/agencies/tax-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:taxi-and-limousine-commission",
+      "label": "New York City Taxi and Limousine Commission",
+      "href": "/agencies/taxi-and-limousine-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES",
+      "label": "New York County Defender Services",
+      "href": "/vendors/NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20EDGE",
+      "label": "New York Edge Inc.",
+      "href": "/vendors/NEW%20YORK%20EDGE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20FOUNDATION%20FOR%20SENIOR%20CITIZENS",
+      "label": "New York Foundation for Senior Citizens",
+      "href": "/vendors/NEW%20YORK%20FOUNDATION%20FOR%20SENIOR%20CITIZENS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20FOUNDLING",
+      "label": "New York Foundling",
+      "href": "/vendors/NEW%20YORK%20FOUNDLING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP",
+      "label": "New York Legal Assistance Group Inc",
+      "href": "/vendors/NEW%20YORK%20LEGAL%20ASSISTANCE%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED",
+      "label": "New York State Industries for the Disabled Inc",
+      "href": "/vendors/NEW%20YORK%20STATE%20INDUSTRIES%20FOR%20THE%20DISABLED/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
+      "label": "Newtown Creek CSO Partners A Joint Venture",
+      "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NICHEVISION%20FORENSICS",
+      "label": "NicheVision Forensics LLC",
+      "href": "/vendors/NICHEVISION%20FORENSICS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:39",
+      "label": "Noach Dear",
+      "href": "/officials/39/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:NORTON%20ROSE%20FULBRIGHT%20US",
+      "label": "Norton Rose Fulbright US LLP",
+      "href": "/vendors/NORTON%20ROSE%20FULBRIGHT%20US/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NW3C%20INC%20DBA%20THE%20NATIONAL%20WHITE%20COLLAR%20CRIME%20CENTER",
+      "label": "NW3C, Inc. dba the National White Collar Crime Center",
+      "href": "/vendors/NW3C%20INC%20DBA%20THE%20NATIONAL%20WHITE%20COLLAR%20CRIME%20CENTER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:NY%20SPEAKS%20SPEECH%20LANGUAGE%20PATHOLOGY",
+      "label": "NY Speaks Speech Language Pathology PLLC",
+      "href": "/vendors/NY%20SPEAKS%20SPEECH%20LANGUAGE%20PATHOLOGY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:nyc-health-hospitals",
+      "label": "NYC Health + Hospitals",
+      "href": "/agencies/nyc-health-hospitals/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:administrative-trials-and-hearings",
+      "label": "Office of Administrative Trials and Hearings",
+      "href": "/agencies/administrative-trials-and-hearings/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:office-of-collective-bargaining",
+      "label": "Office of Collective Bargaining",
+      "href": "/agencies/office-of-collective-bargaining/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:office-of-labor-relations",
+      "label": "Office of Labor Relations",
+      "href": "/agencies/office-of-labor-relations/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:payroll-administration",
+      "label": "Office of Payroll Administration",
+      "href": "/agencies/payroll-administration/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:information-technology-and-telecommunications",
+      "label": "Office of Technology and Innovation",
+      "href": "/agencies/information-technology-and-telecommunications/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:borough-president-brooklyn",
+      "label": "Office of the Borough President of Brooklyn",
+      "href": "/agencies/borough-president-brooklyn/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:borough-president-queens",
+      "label": "Office of the Borough President of Queens",
+      "href": "/agencies/borough-president-queens/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:borough-president-bronx",
+      "label": "Office of the Borough President of The Bronx",
+      "href": "/agencies/borough-president-bronx/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:chief-medical-examiner",
+      "label": "Office of the Chief Medical Examiner",
+      "href": "/agencies/chief-medical-examiner/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:city-clerk",
+      "label": "Office of the City Clerk",
+      "href": "/agencies/city-clerk/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:office-of-the-mayor",
+      "label": "Office of the Mayor",
+      "href": "/agencies/office-of-the-mayor/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:comptroller",
+      "label": "Office of the New York City Comptroller",
+      "href": "/agencies/comptroller/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:public-advocate",
+      "label": "Office of the Public Advocate",
+      "href": "/agencies/public-advocate/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "agency:id:office-of-special-narcotics-prosecutor",
+      "label": "Office of the Special Narcotics Prosecutor",
+      "href": "/agencies/office-of-special-narcotics-prosecutor/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
+      "label": "Olympic Plumbing & Heating Services, Inc.",
+      "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7798",
+      "label": "Oswald J. Feliz",
+      "href": "/officials/7798/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:OVERWATCH%20SERVICES",
+      "label": "Overwatch Services LLC",
+      "href": "/vendors/OVERWATCH%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:P%20T%20II%20CONTRACTING",
+      "label": "P&T II Contracting Corp",
+      "href": "/vendors/P%20T%20II%20CONTRACTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PATCHAMP",
+      "label": "Patchamp Inc.",
+      "href": "/vendors/PATCHAMP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7642",
+      "label": "Paul A. Vallone",
+      "href": "/officials/7642/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:PAUL%20J%20SCARIANO",
+      "label": "Paul J. Scariano Inc",
+      "href": "/vendors/PAUL%20J%20SCARIANO/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5389",
+      "label": "Pedro Espada, Jr.",
+      "href": "/officials/5389/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:426",
+      "label": "Pedro G. Espada",
+      "href": "/officials/426/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:PEER%20CONSULTING%20RESOURCES",
+      "label": "Peer Consulting Resources Inc",
+      "href": "/vendors/PEER%20CONSULTING%20RESOURCES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PEN%20ENTERPRISES",
+      "label": "Pen Enterprises, Inc.",
+      "href": "/vendors/PEN%20ENTERPRISES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PEOPLE%20CARE",
+      "label": "People Care Inc.",
+      "href": "/vendors/PEOPLE%20CARE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PERSONAL%20-%20TOUCH%20HOME%20CARE",
+      "label": "Personal - Touch Home Care of NY, Inc.",
+      "href": "/vendors/PERSONAL%20-%20TOUCH%20HOME%20CARE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7565",
+      "label": "Peter A. Koo",
+      "href": "/officials/7565/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:26",
+      "label": "Peter F. Vallone",
+      "href": "/officials/26/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5271",
+      "label": "Peter F. Vallone, Jr.",
+      "href": "/officials/5271/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7900",
+      "label": "Phil Wong",
+      "href": "/officials/7900/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:432",
+      "label": "Philip Reed",
+      "href": "/officials/432/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7808",
+      "label": "Pierina Ana Sanchez",
+      "href": "/officials/7808/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:PIONEER%20LANDSCAPING%20ASPHALT%20PAVING",
+      "label": "Pioneer Landscaping & Asphalt Paving Inc",
+      "href": "/vendors/PIONEER%20LANDSCAPING%20ASPHALT%20PAVING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PLACER%20LABS",
+      "label": "Placer Labs Inc",
+      "href": "/vendors/PLACER%20LABS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:POLARIS%20ELECTRICAL%20CONSTRUCTION",
+      "label": "Polaris Electrical Construction Inc.",
+      "href": "/vendors/POLARIS%20ELECTRICAL%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PRESHER%20WINDOWS",
+      "label": "Presher Windows LLC",
+      "href": "/vendors/PRESHER%20WINDOWS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:31",
+      "label": "Priscilla A. Wooten",
+      "href": "/officials/31/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:PRISMATIC%20DEVELOPMENT",
+      "label": "Prismatic Development Corp.",
+      "href": "/vendors/PRISMATIC%20DEVELOPMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:PRUTECH%20SOLUTIONS",
+      "label": "Prutech Solutions, Inc.",
+      "href": "/vendors/PRUTECH%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:public-design-commission",
+      "label": "Public Design Commission",
+      "href": "/agencies/public-design-commission/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:PURVIS%20SYSTEMS",
+      "label": "Purvis Systems, Inc.",
+      "href": "/vendors/PURVIS%20SYSTEMS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
+      "label": "Quality and Assurance Technology Corp.",
+      "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY%20GROUP%20DBA%20QNA%20TECH",
+      "label": "Quality and Assurance Technology Group dba QNA Tech",
+      "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY%20GROUP%20DBA%20QNA%20TECH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:district-attorney-queens-county",
+      "label": "Queens District Attorney's Office",
+      "href": "/agencies/district-attorney-queens-county/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:R%20V%20INDUSTRIAL%20ELECTRICAL%20SUPPLY",
+      "label": "R&V Industrial Electrical Supply LLC",
+      "href": "/vendors/R%20V%20INDUSTRIAL%20ELECTRICAL%20SUPPLY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7630",
+      "label": "Rafael L. Espinal, Jr.",
+      "href": "/officials/7630/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7714",
+      "label": "Rafael Salamanca, Jr.",
+      "href": "/officials/7714/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS",
+      "label": "Raj Somas DBA Rusd Solutions",
+      "href": "/vendors/RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:rent-guidelines-board",
+      "label": "Rent Guidelines Board",
+      "href": "/agencies/rent-guidelines-board/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:REPLICATIONS",
+      "label": "Replications Inc.",
+      "href": "/vendors/REPLICATIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RESEARCH%20FOUNDATION%20FOR%20MENTAL%20HYGIENE",
+      "label": "Research Foundation for Mental Hygiene, Inc.",
+      "href": "/vendors/RESEARCH%20FOUNDATION%20FOR%20MENTAL%20HYGIENE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:REV%20AMBULANCE%20GROUP%20ORLANDO",
+      "label": "REV Ambulance Group Orlando Inc",
+      "href": "/vendors/REV%20AMBULANCE%20GROUP%20ORLANDO/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING",
+      "label": "Reworld Holding Corporation FKA Covanta Holding Co.",
+      "href": "/vendors/REWORLD%20HOLDING%20CORPORATION%20FKA%20COVANTA%20HOLDING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RIS%20NYC",
+      "label": "RIS NYC",
+      "href": "/vendors/RIS%20NYC/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RISEBORO%20COMMUNITY%20PARTNERSHIP",
+      "label": "Riseboro Community Partnership Inc",
+      "href": "/vendors/RISEBORO%20COMMUNITY%20PARTNERSHIP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RISING%20GROUND",
+      "label": "Rising Ground Inc.",
+      "href": "/vendors/RISING%20GROUND/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7827",
+      "label": "Rita C. Joseph",
+      "href": "/officials/7827/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7640",
+      "label": "Ritchie J. Torres",
+      "href": "/officials/7640/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:RJ%20INDUSTRIES",
+      "label": "RJ Industries, Inc",
+      "href": "/vendors/RJ%20INDUSTRIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RKM%20STRATEGIC%20CONSULTING",
+      "label": "RKM Strategic Consulting, LLC",
+      "href": "/vendors/RKM%20STRATEGIC%20CONSULTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RM%20SOLUTIONS%20GROUP",
+      "label": "RM Solutions Group, Inc.",
+      "href": "/vendors/RM%20SOLUTIONS%20GROUP/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7604",
+      "label": "Robert E. Cornegy, Jr.",
+      "href": "/officials/7604/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7746",
+      "label": "Robert F. Holden",
+      "href": "/officials/7746/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5260",
+      "label": "Robert Jackson",
+      "href": "/officials/5260/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:57",
+      "label": "Ronnie M. Eldridge",
+      "href": "/officials/57/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7633",
+      "label": "Rory I. Lancman",
+      "href": "/officials/7633/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6274",
+      "label": "Rosie Mendez",
+      "href": "/officials/6274/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:ROUTERATI",
+      "label": "Routerati Inc",
+      "href": "/vendors/ROUTERATI/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5267",
+      "label": "Ruben Diaz",
+      "href": "/officials/5267/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7744",
+      "label": "Ruben Diaz, Sr.",
+      "href": "/officials/7744/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7586",
+      "label": "Ruben Wills",
+      "href": "/officials/7586/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:S%20J%20TOUR%20BUS",
+      "label": "S & J Tour & Bus Inc",
+      "href": "/vendors/S%20J%20TOUR%20BUS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SAFE%20HORIZON",
+      "label": "Safe Horizon Inc.",
+      "href": "/vendors/SAFE%20HORIZON/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SAMARITAN%20DAYTOP%20VILLAGE",
+      "label": "Samaritan Daytop Village Inc",
+      "href": "/vendors/SAMARITAN%20DAYTOP%20VILLAGE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SAMUEL%20FIELD%20YM%20YWHA",
+      "label": "Samuel Field YM & YWHA Inc",
+      "href": "/vendors/SAMUEL%20FIELD%20YM%20YWHA/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7812",
+      "label": "Sandra Ung",
+      "href": "/officials/7812/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7824",
+      "label": "Sandy Nurse",
+      "href": "/officials/7824/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5376",
+      "label": "Sara M. Gonzalez",
+      "href": "/officials/5376/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:SCAN-HARBOR",
+      "label": "SCAN-Harbor Inc.",
+      "href": "/vendors/SCAN-HARBOR/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SCO%20FAMILY%20OF%20SERVICES",
+      "label": "SCO Family of Services",
+      "href": "/vendors/SCO%20FAMILY%20OF%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SECURUS%20TECHNOLOGIES",
+      "label": "Securus Technologies LLC",
+      "href": "/vendors/SECURUS%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7796",
+      "label": "Selvena N. Brooks-Powers",
+      "href": "/officials/7796/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:SERVICES%20FOR%20THE%20UNDERSERVED",
+      "label": "Services For The Underserved Inc.",
+      "href": "/vendors/SERVICES%20FOR%20THE%20UNDERSERVED/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7826",
+      "label": "Shahana K. Hanif",
+      "href": "/officials/7826/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7898",
+      "label": "Shanel Thomas-Henry",
+      "href": "/officials/7898/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7804",
+      "label": "Shaun Abreu",
+      "href": "/officials/7804/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7815",
+      "label": "Shekar Krishnan",
+      "href": "/officials/7815/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:22",
+      "label": "Sheldon S. Leffler",
+      "href": "/officials/22/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:SHI%20INTERNATIONAL",
+      "label": "SHI International Corp",
+      "href": "/vendors/SHI%20INTERNATIONAL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7896",
+      "label": "Shirley Aldebol",
+      "href": "/officials/7896/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5289",
+      "label": "Simcha Felder",
+      "href": "/officials/5289/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:SKCS",
+      "label": "SKCS LLC",
+      "href": "/vendors/SKCS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SKYLINE%20ELECTRICAL%20CONTRACTOR",
+      "label": "Skyline Electrical Contractor Corp",
+      "href": "/vendors/SKYLINE%20ELECTRICAL%20CONTRACTOR/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SLALOM",
+      "label": "Slalom Inc",
+      "href": "/vendors/SLALOM/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SLAM%20TECHNICAL%20SERVICES",
+      "label": "SLAM Technical Services LLC",
+      "href": "/vendors/SLAM%20TECHNICAL%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SOLVEXIA%20PTY",
+      "label": "Solvexia Pty Ltd.",
+      "href": "/vendors/SOLVEXIA%20PTY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SOURCECORP%20BPS",
+      "label": "Sourcecorp BPS Inc.",
+      "href": "/vendors/SOURCECORP%20BPS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SOUTH%20BRONX%20COMMUNITY%20MANAGEMENT",
+      "label": "South Bronx Community Management Company Inc.",
+      "href": "/vendors/SOUTH%20BRONX%20COMMUNITY%20MANAGEMENT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:SPRUCE%20TECHNOLOGY",
+      "label": "Spruce Technology Inc.",
+      "href": "/vendors/SPRUCE%20TECHNOLOGY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:12",
+      "label": "Stanley E. Michels",
+      "href": "/officials/12/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:STANTEC%20CONSULTING%20SERVICES",
+      "label": "Stantec Consulting Services Inc",
+      "href": "/vendors/STANTEC%20CONSULTING%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:district-attorney-richmond-county",
+      "label": "Staten Island District Attorney's Office",
+      "href": "/agencies/district-attorney-richmond-county/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:STATEWIDE%20DEMOLITION",
+      "label": "Statewide Demolition Corp",
+      "href": "/vendors/STATEWIDE%20DEMOLITION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:STEINWAY",
+      "label": "Steinway, Inc.",
+      "href": "/vendors/STEINWAY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:37",
+      "label": "Stephen DiBrienza",
+      "href": "/officials/37/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7567",
+      "label": "Stephen T. Levin",
+      "href": "/officials/7567/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5953",
+      "label": "Steven Matteo",
+      "href": "/officials/5953/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:STRATEGIC%20VALUE%20SOLUTIONS",
+      "label": "Strategic Value Solutions Inc.",
+      "href": "/vendors/STRATEGIC%20VALUE%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7867",
+      "label": "Susan Zhuang",
+      "href": "/officials/7867/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:T%20R%20JOY%20ASSOCIATES",
+      "label": "T R Joy & Associates Inc",
+      "href": "/vendors/T%20R%20JOY%20ASSOCIATES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:TAMCO%20MECHANICAL",
+      "label": "Tamco Mechanical Inc.",
+      "href": "/vendors/TAMCO%20MECHANICAL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:teachers-retirement-system",
+      "label": "Teachers' Retirement System of City of New York",
+      "href": "/agencies/teachers-retirement-system/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20ANIMAL%20MEDICAL%20CENTER",
+      "label": "The Animal Medical Center",
+      "href": "/vendors/THE%20ANIMAL%20MEDICAL%20CENTER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20BRONX%20DEFENDERS",
+      "label": "The Bronx Defenders",
+      "href": "/vendors/THE%20BRONX%20DEFENDERS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20CHILD%20CENTER",
+      "label": "The Child Center of NY Inc",
+      "href": "/vendors/THE%20CHILD%20CENTER/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20CHILDREN%20S%20AID%20SOCIETY",
+      "label": "The Children's Aid Society",
+      "href": "/vendors/THE%20CHILDREN%20S%20AID%20SOCIETY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20CHILDREN%20S%20VILLAGE",
+      "label": "The Children's Village",
+      "href": "/vendors/THE%20CHILDREN%20S%20VILLAGE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20DESIGN%20AND%20BRANDING",
+      "label": "The Design and Branding Company Inc.",
+      "href": "/vendors/THE%20DESIGN%20AND%20BRANDING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20FORTUNE%20SOCIETY",
+      "label": "The Fortune Society, Inc.",
+      "href": "/vendors/THE%20FORTUNE%20SOCIETY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20HOME%20FOR%20LITTLE%20WANDERERS",
+      "label": "The Home for Little Wanderers Inc.",
+      "href": "/vendors/THE%20HOME%20FOR%20LITTLE%20WANDERERS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20HOPE%20PROGRAM",
+      "label": "The Hope Program Inc.",
+      "href": "/vendors/THE%20HOPE%20PROGRAM/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20JERICHO%20PROJECT",
+      "label": "The Jericho Project",
+      "href": "/vendors/THE%20JERICHO%20PROJECT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED",
+      "label": "The Jewish Association for Services for the Aged",
+      "href": "/vendors/THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
+      "label": "The Legal Aid Society",
+      "href": "/vendors/THE%20LEGAL%20AID%20SOCIETY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20MAYOR%20S%20FUND%20TO%20ADVANCE%20NEW%20YORK%20CITY",
+      "label": "The Mayor's Fund to Advance New York City",
+      "href": "/vendors/THE%20MAYOR%20S%20FUND%20TO%20ADVANCE%20NEW%20YORK%20CITY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20NATURAL%20LANDSCAPE",
+      "label": "The Natural Landscape of New York",
+      "href": "/vendors/THE%20NATURAL%20LANDSCAPE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20OSBORNE%20ASSOCIATION",
+      "label": "The Osborne Association, Inc.",
+      "href": "/vendors/THE%20OSBORNE%20ASSOCIATION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:THE%20PETEY%20GREENE%20PROGRAM",
+      "label": "The Petey Greene Program, Inc.",
+      "href": "/vendors/THE%20PETEY%20GREENE%20PROGRAM/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:393",
+      "label": "Thomas K. Duane",
+      "href": "/officials/393/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:405",
+      "label": "Thomas V. Ognibene",
+      "href": "/officials/405/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:404",
+      "label": "Thomas White",
+      "href": "/officials/404/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:6273",
+      "label": "Thomas White, Jr.",
+      "href": "/officials/6273/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:THORNTON%20TOMASETTI",
+      "label": "Thornton Tomasetti Inc",
+      "href": "/vendors/THORNTON%20TOMASETTI/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7813",
+      "label": "Tiffany L. Cabán",
+      "href": "/officials/7813/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:TILCON%20NEW%20YORK",
+      "label": "Tilcon New York Inc.",
+      "href": "/vendors/TILCON%20NEW%20YORK/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:TOMEX%20ELECTRONICS",
+      "label": "Tomex Electronics Inc",
+      "href": "/vendors/TOMEX%20ELECTRONICS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5268",
+      "label": "Tony Avella",
+      "href": "/officials/5268/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:424",
+      "label": "Tracy L. Boyland",
+      "href": "/officials/424/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:TRANSDEV%20FLEET%20SERVICES",
+      "label": "Transdev Fleet Services Inc.",
+      "href": "/vendors/TRANSDEV%20FLEET%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "agency:id:triborough-bridge-and-tunnel-authority",
+      "label": "Triborough Bridge and Tunnel Authority",
+      "href": "/agencies/triborough-bridge-and-tunnel-authority/",
+      "kind": "agency"
+    },
+    {
+      "entity_id": "entity:official:7899",
+      "label": "Ty Hankerson",
+      "href": "/officials/7899/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:TYLER%20TECHNOLOGIES",
+      "label": "Tyler Technologies Inc",
+      "href": "/vendors/TYLER%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:5029",
+      "label": "Una Clarke",
+      "href": "/officials/5029/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:UNIQUE%20PEOPLE%20SERVICES",
+      "label": "Unique People Services, Inc.",
+      "href": "/vendors/UNIQUE%20PEOPLE%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:UNITED%20METRO%20ENERGY",
+      "label": "United Metro Energy Corp.",
+      "href": "/vendors/UNITED%20METRO%20ENERGY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:UNIVERSAL%20PROTECTION%20SERVICE",
+      "label": "Universal Protection Service LLC",
+      "href": "/vendors/UNIVERSAL%20PROTECTION%20SERVICE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:UNIVERSAL%20TECHNOLOGIES",
+      "label": "Universal Technologies, LLC",
+      "href": "/vendors/UNIVERSAL%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:UNIVERSITY%20BEHAVIORAL%20ASSOCIATES",
+      "label": "University Behavioral Associates, Inc.",
+      "href": "/vendors/UNIVERSITY%20BEHAVIORAL%20ASSOCIATES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:URBAN%20HOMESTEADING%20ASSISTANCE%20UHAB",
+      "label": "Urban Homesteading Assistance UHAB Inc",
+      "href": "/vendors/URBAN%20HOMESTEADING%20ASSISTANCE%20UHAB/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:URBAN%20RESOURCE%20INSTITUTE",
+      "label": "Urban Resource Institute",
+      "href": "/vendors/URBAN%20RESOURCE%20INSTITUTE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7622",
+      "label": "Vanessa L. Gibson",
+      "href": "/officials/7622/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS",
+      "label": "Variety Boys and Girls Club of Queens Inc.",
+      "href": "/vendors/VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VCLOUD%20TECH",
+      "label": "VCloud Tech Inc",
+      "href": "/vendors/VCLOUD%20TECH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VEOLIA%20ES%20TECHNICAL%20SOLUTIONS",
+      "label": "Veolia Es Technical Solutions LLC",
+      "href": "/vendors/VEOLIA%20ES%20TECHNICAL%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VETERAN%20ADVOCACY%20PROJECT",
+      "label": "Veteran Advocacy Project Inc",
+      "href": "/vendors/VETERAN%20ADVOCACY%20PROJECT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7811",
+      "label": "Vickie Paladino",
+      "href": "/officials/7811/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:34",
+      "label": "Victor L. Robles",
+      "href": "/officials/34/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:VIDEO%20HI-TECH",
+      "label": "Video Hi-Tech Corp",
+      "href": "/vendors/VIDEO%20HI-TECH/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7112",
+      "label": "Vincent Ignizio",
+      "href": "/officials/7112/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5390",
+      "label": "Vincent J. Gentile",
+      "href": "/officials/5390/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:7894",
+      "label": "Virginia Maloney",
+      "href": "/officials/7894/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:VIRTAIR",
+      "label": "Virtair Inc",
+      "href": "/vendors/VIRTAIR/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VISION%20GOVERNMENT%20SOLUTIONS",
+      "label": "Vision Government Solutions, Inc.",
+      "href": "/vendors/VISION%20GOVERNMENT%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
+      "label": "Volunteers of America Greater New York Inc",
+      "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:VPMA%20GLOBAL%20SERVICES",
+      "label": "VPMA Global Services LLC.",
+      "href": "/vendors/VPMA%20GLOBAL%20SERVICES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:W%20O%20DONNELL%20CONSULTING",
+      "label": "W. O'Donnell Consulting, Inc.",
+      "href": "/vendors/W%20O%20DONNELL%20CONSULTING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:27",
+      "label": "Walter L. McCaffrey",
+      "href": "/officials/27/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:WELKIN%20MECHANICAL",
+      "label": "Welkin Mechanical",
+      "href": "/vendors/WELKIN%20MECHANICAL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:15",
+      "label": "Wendell Foster",
+      "href": "/officials/15/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:WEST%20HARLEM%20GROUP%20ASSISTANCE",
+      "label": "West Harlem Group Assistance Inc.",
+      "href": "/vendors/WEST%20HARLEM%20GROUP%20ASSISTANCE/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WILLIAM%20A%20GROSS%20CONSTRUCTION%20ASSOCIATES",
+      "label": "William A Gross Construction Associates Inc.",
+      "href": "/vendors/WILLIAM%20A%20GROSS%20CONSTRUCTION%20ASSOCIATES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WINIFRED%20EILEEN%20CAMPBELL",
+      "label": "Winifred Eileen Campbell",
+      "href": "/vendors/WINIFRED%20EILEEN%20CAMPBELL/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WOLLMAN%20PARK%20PARTNERS%20II",
+      "label": "Wollman Park Partners II LLC",
+      "href": "/vendors/WOLLMAN%20PARK%20PARTNERS%20II/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WOMEN%20IN%20NEED",
+      "label": "Women In Need, Inc.",
+      "href": "/vendors/WOMEN%20IN%20NEED/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES",
+      "label": "Wonderware, Inc. Core Business Technologies",
+      "href": "/vendors/WONDERWARE%20INC%20CORE%20BUSINESS%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WORKINGBUILDING",
+      "label": "Workingbuilding Inc.",
+      "href": "/vendors/WORKINGBUILDING/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WORLD%20WIDE%20TECHNOLOGY",
+      "label": "World Wide Technology LLC",
+      "href": "/vendors/WORLD%20WIDE%20TECHNOLOGY/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:WUKKOUT",
+      "label": "Wukkout LLC",
+      "href": "/vendors/WUKKOUT/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:Y%20AND%20S%20TECHNOLOGIES",
+      "label": "Y and S Technologies, Inc.",
+      "href": "/vendors/Y%20AND%20S%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7541",
+      "label": "Ydanis A. Rodriguez",
+      "href": "/officials/7541/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:YSKOUD",
+      "label": "YSKOUD LLC",
+      "href": "/vendors/YSKOUD/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "entity:official:7866",
+      "label": "Yusef Salaam",
+      "href": "/officials/7866/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "entity:official:5287",
+      "label": "Yvette D. Clarke",
+      "href": "/officials/5287/",
+      "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:ZAMAN%20CONSTRUCTION",
+      "label": "Zaman Construction Corp.",
+      "href": "/vendors/ZAMAN%20CONSTRUCTION/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:ZHL%20GROUP",
+      "label": "ZHL Group Inc.",
+      "href": "/vendors/ZHL%20GROUP/",
+      "kind": "vendor"
+    }
+  ],
   "counts": {
     "official": 215,
     "exact-person-appointment": 558,
