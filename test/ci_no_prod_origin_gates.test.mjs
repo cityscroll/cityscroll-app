@@ -77,10 +77,12 @@ test("ci.yml PR-gate jobs never set CROL_BASE (or equivalent) to a production or
 test("a11y-pr shard demo-link contract uses the local site server and remains required", () => {
   const ci = read(".github/workflows/ci.yml");
   const a11y = extractJob(ci, "a11y-pr-shard");
+  const aggregate = extractJob(ci, "a11y-pr");
   const routesPrimary = extractJob(ci, "a11y-routes-focus-primary");
   const routesRetry = extractJob(ci, "a11y-routes-focus-retry");
   const shardRunner = read("tools/run_a11y_ci_shard.sh");
   assert.ok(a11y, "expected a11y-pr-shard job");
+  assert.ok(aggregate, "expected accessibility aggregate job");
   assert.ok(routesPrimary, "expected routes-focus primary job");
   assert.ok(routesRetry, "expected routes-focus retry job");
   assert.match(a11y, /tools\/run_a11y_ci_shard\.sh/);
@@ -92,9 +94,15 @@ test("a11y-pr shard demo-link contract uses the local site server and remains re
   const runs = shardRunner.match(/python3 test\/functional\/20_demo_links\.py/g) || [];
   assert.equal(runs.length, 1, "the routes-focus shard should run demo-links once against local origin");
   assert.doesNotMatch(
-    `${a11y}\n${routesPrimary}\n${routesRetry}\n${shardRunner}`,
+    `${a11y}\n${routesRetry}\n${shardRunner}`,
     /continue-on-error:/,
-    "the local demo-link contract must remain required on every CI event",
+    "the local demo-link contract must remain strict in the shard and retry jobs",
+  );
+  assert.match(routesPrimary, /continue-on-error:\s*true/);
+  assert.match(
+    aggregate,
+    /routes_focus_primary_passed != 'true' && needs\.a11y-routes-focus-retry\.result != 'success'/,
+    "the required aggregate must fail when both routes-focus attempts fail",
   );
   for (const origin of PROD_ORIGINS) {
     assert.doesNotMatch(shardRunner, new RegExp(origin.replace(/\./g, "\\.")));
