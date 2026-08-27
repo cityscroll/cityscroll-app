@@ -9,6 +9,7 @@ import { executeEntityRelationships } from "../../capabilities/entity_relationsh
 import { executeNoticeSearch } from "../../capabilities/notice_search.mjs";
 import { executeFederatedSearch } from "../../capabilities/federated_search.mjs";
 import { executeContractGet, executeContractsBrowse } from "../../capabilities/contracts.mjs";
+import { executePeopleGet, executeOrganizationsBrowse } from "../../capabilities/people_organizations.mjs";
 import { buildSharedProcurementReadModel } from "../../site/shared_procurement_read_model.mjs";
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
@@ -18,6 +19,7 @@ import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
 import { workerFederatedSearch } from "../src/search.mjs";
 import { workerProcurementContracts } from "../src/contracts.mjs";
+import { workerPeopleOrganizations } from "../src/people_organizations.mjs";
 
 export const CAPABILITY_TOOL_CASES = Object.freeze([
   Object.freeze({
@@ -72,6 +74,16 @@ export const CAPABILITY_TOOL_CASES = Object.freeze([
     name: "browse_contracts",
     arguments: Object.freeze({ vendor: "Remote Vendor", limit: 1 }),
   }),
+  Object.freeze({
+    capabilityReference: "people.get@1",
+    name: "get_person_or_organization",
+    arguments: Object.freeze({ entity_id: "official:425" }),
+  }),
+  Object.freeze({
+    capabilityReference: "organizations.browse@1",
+    name: "browse_organizations",
+    arguments: Object.freeze({ kind: "agency", query: "childrens", limit: 1 }),
+  }),
 ]);
 
 class MockKV {
@@ -83,6 +95,10 @@ class MockKV {
 
 const FIXTURE = JSON.parse(readFileSync(
   new URL("../../test/fixtures/capability_semantic_scout.json", import.meta.url),
+  "utf8",
+));
+const PEOPLE_ORGANIZATIONS_MODEL = JSON.parse(readFileSync(
+  new URL("../../site/data/people_organizations_read_model.json", import.meta.url),
   "utf8",
 ));
 const NOTICE_SCHEMA = readFileSync(new URL("../migrations/0001_notices.sql", import.meta.url), "utf8");
@@ -216,7 +232,13 @@ export function createRemoteMcpFixtureEnv() {
   };
 
   return {
-    env: { DB, SUBS: new MockKV(), NL_METER: new MockKV(), PROCUREMENT_READ_MODEL: procurementModel },
+    env: {
+      DB,
+      SUBS: new MockKV(),
+      NL_METER: new MockKV(),
+      PROCUREMENT_READ_MODEL: procurementModel,
+      PEOPLE_ORGANIZATIONS_READ_MODEL: PEOPLE_ORGANIZATIONS_MODEL,
+    },
     reads,
     close() { sqlite.close(); },
   };
@@ -268,6 +290,20 @@ export async function directCapabilityResults(env) {
   results.set("browse_contracts", await executeContractsBrowse(
     workerProcurementContracts(env).browse,
     { vendor: contractsBrowseArgs.vendor, limit: contractsBrowseArgs.limit },
+  ));
+  const peopleGetArgs = argsFor("get_person_or_organization");
+  results.set("get_person_or_organization", await executePeopleGet(
+    workerPeopleOrganizations(env).get,
+    { entityId: peopleGetArgs.entity_id },
+  ));
+  const organizationsBrowseArgs = argsFor("browse_organizations");
+  results.set("browse_organizations", await executeOrganizationsBrowse(
+    workerPeopleOrganizations(env).browse,
+    {
+      kind: organizationsBrowseArgs.kind,
+      query: organizationsBrowseArgs.query,
+      limit: organizationsBrowseArgs.limit,
+    },
   ));
   return results;
 }

@@ -10,7 +10,9 @@
     "cited.passages.retrieve@1",
     "search.federated@1",
     "contract.get@1",
-    "contracts.browse@1"
+    "contracts.browse@1",
+    "people.get@1",
+    "organizations.browse@1"
   ],
   "tools": [
     {
@@ -410,6 +412,101 @@
         {
           "input": {
             "sourceSystem": "passport_public_contracts",
+            "limit": 25
+          },
+          "output": {
+            "availability": "complete",
+            "pagination": "cursor when more rows remain"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "get_person_or_organization",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity; relation states and source fields are preserved.",
+      "schema_reference": "people.get@1",
+      "capability_reference": "people.get@1",
+      "bounds": {
+        "input": {
+          "entityIdMaximumLength": 320,
+          "maximum": 1
+        },
+        "output": {
+          "oneRow": true
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "entityId": "official:example"
+          },
+          "output": {
+            "availability": "available",
+            "exactIdentity": true
+          }
+        },
+        {
+          "input": {
+            "entityId": "agency:id:not-published"
+          },
+          "output": {
+            "availability": "not_yet_public",
+            "error": "not-found"
+          }
+        }
+      ],
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "store_access": "provider-only"
+    },
+    {
+      "name": "browse_organizations",
+      "operation_class": "read",
+      "authority_class": "public_read",
+      "description": "Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.",
+      "schema_reference": "organizations.browse@1",
+      "capability_reference": "organizations.browse@1",
+      "bounds": {
+        "input": {
+          "queryMaximumLength": 240,
+          "kindMaximumLength": 80,
+          "cursorMaximumLength": 320,
+          "minimum": 1,
+          "maximum": 100,
+          "default": 25
+        },
+        "output": {
+          "maximumResults": 100
+        }
+      },
+      "examples": [
+        {
+          "input": {
+            "kind": "agency",
+            "limit": 10
+          },
+          "output": {
+            "availability": "complete",
+            "maximumResults": 10,
+            "oneRowPer": "exact read-model row id"
+          }
+        },
+        {
+          "input": {
+            "query": "community board",
             "limit": 25
           },
           "output": {

@@ -124,6 +124,10 @@ https://api.cityscroll.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinerg
 <p class="src" data-i18n-html="api_p_property_locations_html"><code>GET /property-locations</code> returns the latest Property Disposition notices with extracted site addresses, boroughs, tax lots, BBLs, and resolved map geometry where available. The daily view is cached at the edge for 30 minutes. City Record Online remains the source of truth.</p>
 <p class="src"><a href="https://api.cityscroll.org/property-locations">JSON</a></p>
 
+<h2 id="people-organizations">People and organizations</h2>
+<p class="src"><code>GET /people-organizations</code> exposes the same bounded typed snapshot used by Browse. Use <code>?id=</code> for one exact row, or <code>?q=</code>, <code>?kind=</code>, <code>?limit=</code>, and the returned opaque <code>?cursor=</code> for browse pages. Rows preserve exact identifiers, relation states (<code>published</code>, <code>empty</code>, or <code>unknown</code>), source fields, and the read-model freshness timestamp. Display names never mint identity. Staffing’s broader agency-scoped live query and presentation-only controls are not part of this contract.</p>
+<p class="src"><a href="https://api.cityscroll.org/people-organizations?kind=agency&amp;limit=25">JSON browse</a> · <a href="https://api.cityscroll.org/people-organizations?id=official%3Aexample">JSON exact row</a></p>
+
 <h2 id="agency-crosswalk" data-i18n="api_h_agencies">Agency-name crosswalk</h2>
 <p class="src" data-i18n-html="api_p_agencies_html"><code>GET /agencies</code> lists each agency name as written in City Record Open Data and connects it to one name used by this site. Add <code>?format=csv</code> for CSV. The endpoint needs no key, allows cross-site requests, and is cached for one day.</p>
 <p class="src"><a href="https://api.cityscroll.org/agencies">JSON</a> · <a href="https://api.cityscroll.org/agencies?format=csv">CSV</a></p>
@@ -199,6 +203,8 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Retrieve source passages with stable citations and exact source joins. Returns source text only. It does not generate an answer or infer civic relationships.</li>
   <li><code>get_contract</code> <span aria-hidden="true">·</span> read — Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.</li>
   <li><code>browse_contracts</code> <span aria-hidden="true">·</span> read — List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.</li>
+  <li><code>get_person_or_organization</code> <span aria-hidden="true">·</span> read — Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity. Relation states and source fields are preserved.</li>
+  <li><code>browse_organizations</code> <span aria-hidden="true">·</span> read — Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.</li>
   <li><code>preview_watch</code> <span aria-hidden="true">·</span> read — Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.</li>
   <li><code>create_watch</code> <span aria-hidden="true">·</span> mutation — Create a standing email watch from plain English. The watch starts immediately. The welcome email states its scope and includes manage and unsubscribe links.</li>
 </ul>

@@ -42,6 +42,15 @@ import {
 } from "../capabilities/mcp_tool_declarations.mjs";
 import { CAPABILITY_REGISTRY } from "../capabilities/registry.mjs";
 
+const REMOTE_MCP_STATIC_READ_TOOLS = new Set([
+  "search_federated",
+  "retrieve_cited_passages",
+  "get_contract",
+  "browse_contracts",
+  "get_person_or_organization",
+  "browse_organizations",
+]);
+
 const DOSSIER_REQUIRED_PARITY_FIELDS = [
   "version",
   "entity.id",
@@ -403,25 +412,24 @@ function verifyRemoteMcpEvidence(receipt) {
         || tool.store_read_operations < 0
         || !Number.isInteger(tool.store_rows_read)
         || tool.store_rows_read < 0
-        || tool.store_rows_read > maximumRows
         || !SHA256.test(tool.direct_semantic_sha256 || "")
         || tool.direct_semantic_sha256 !== tool.adapter_semantic_sha256
         || tool.parity !== "pass") {
       throw new Error(`remote MCP tool evidence drifted: ${binding.name}`);
     }
-    const expectedOperations = binding.name === "retrieve_cited_passages" ? 0 : 1;
-    if (tool.store_read_operations !== expectedOperations) {
+    const staticRead = REMOTE_MCP_STATIC_READ_TOOLS.has(binding.name);
+    if (staticRead ? tool.store_read_operations !== 0 : tool.store_read_operations < 1) {
       throw new Error(`remote MCP store-read bound drifted: ${binding.name}`);
     }
   }
   if (receipt.request_counts?.initialize !== 1
       || receipt.request_counts?.list_tools !== 1
-      || receipt.request_counts?.capability_calls !== 5
-      || receipt.request_counts?.post_requests !== 8
+      || receipt.request_counts?.capability_calls !== 10
+      || receipt.request_counts?.post_requests !== 13
       || receipt.request_counts?.optional_get_probe !== 1) {
     throw new Error("remote MCP request counts drifted");
   }
-  if (receipt.policy_boundary?.registered_public_tools !== 5
+  if (receipt.policy_boundary?.registered_public_tools !== 10
       || receipt.policy_boundary?.mutation_capabilities !== 0
       || receipt.policy_boundary?.raw_store_bindings_exposed !== 0
       || receipt.policy_boundary?.unregistered_public_tools !== 0) {

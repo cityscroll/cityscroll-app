@@ -45,6 +45,15 @@ import {
   CONTRACTS_BROWSE_LIMITS,
   CONTRACTS_BROWSE_PROVIDER_ID,
 } from "./contracts.mjs";
+import {
+  PEOPLE_GET_CAPABILITY_REFERENCE,
+  PEOPLE_GET_LIMITS,
+  PEOPLE_GET_PROVIDER_ID,
+  ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE,
+  ORGANIZATIONS_BROWSE_LIMITS,
+  ORGANIZATIONS_BROWSE_PROVIDER_ID,
+  PEOPLE_ORGANIZATION_ROW_KINDS,
+} from "./people_organizations.mjs";
 import { CITED_RETRIEVAL_OUTPUT_SCHEMA } from "../worker/src/cited_retrieval.mjs";
 import { SEMANTIC_SOURCE_FAMILIES } from "../worker/src/semantic_candidates.mjs";
 
@@ -140,6 +149,9 @@ export const MCP_CONTRACTS_BROWSE_ADAPTER = Object.freeze({
   surface: "MCP",
 });
 
+export const MCP_PEOPLE_GET_ADAPTER = Object.freeze({ id: "mcp.get_person_or_organization@1", capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, providerId: PEOPLE_GET_PROVIDER_ID, route: "POST /mcp", tool: "get_person_or_organization", surface: "MCP" });
+export const MCP_ORGANIZATIONS_BROWSE_ADAPTER = Object.freeze({ id: "mcp.browse_organizations@1", capabilityReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, providerId: ORGANIZATIONS_BROWSE_PROVIDER_ID, route: "POST /mcp", tool: "browse_organizations", surface: "MCP" });
+
 const NOTICE_SEARCH_OUTPUT_SCHEMA = Object.freeze({
   type: "object",
   additionalProperties: false,
@@ -222,6 +234,25 @@ const CONTRACTS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
     coverage: { type: ["object", "null"] },
     freshness: { type: ["object", "null"] },
     error: { type: ["string", "null"] },
+  },
+});
+const PEOPLE_GET_OUTPUT_SCHEMA = Object.freeze({
+  type: "object", additionalProperties: false,
+  required: ["capability_reference", "availability", "person_or_organization", "error"],
+  properties: {
+    capability_reference: { type: "string", const: PEOPLE_GET_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["available", "not_yet_public", "unavailable"] },
+    person_or_organization: { type: ["object", "null"] }, error: { type: ["string", "null"] },
+  },
+});
+const ORGANIZATIONS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
+  type: "object", additionalProperties: false,
+  required: ["capability_reference", "availability", "results", "total_matches", "pagination", "coverage", "freshness", "error"],
+  properties: {
+    capability_reference: { type: "string", const: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
+    results: { type: ["array", "null"], maxItems: ORGANIZATIONS_BROWSE_LIMITS.maximum, items: { type: "object" } },
+    total_matches: { type: ["integer", "null"], minimum: 0 }, pagination: { type: ["object", "null"] }, coverage: { type: ["object", "null"] }, freshness: { type: ["object", "null"] }, error: { type: ["string", "null"] },
   },
 });
 
@@ -391,6 +422,20 @@ export const MCP_TOOLS = [
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
+    name: "get_person_or_organization",
+    description: "Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity; relation states and source fields are preserved.",
+    inputSchema: { type: "object", additionalProperties: false, properties: { entity_id: { type: "string", minLength: 1, maxLength: PEOPLE_GET_LIMITS.entityIdMaximumLength, description: "Exact row id such as official:... or agency:id:..." } }, required: ["entity_id"] },
+    outputSchema: PEOPLE_GET_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
+    name: "browse_organizations",
+    description: "Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.",
+    inputSchema: { type: "object", additionalProperties: false, properties: { query: { type: "string", maxLength: ORGANIZATIONS_BROWSE_LIMITS.queryMaximumLength }, kind: { type: "string", enum: [...PEOPLE_ORGANIZATION_ROW_KINDS] }, limit: { type: "integer", minimum: 1, maximum: ORGANIZATIONS_BROWSE_LIMITS.maximum, default: ORGANIZATIONS_BROWSE_LIMITS.default }, cursor: { type: "string", maxLength: ORGANIZATIONS_BROWSE_LIMITS.cursorMaximumLength } } },
+    outputSchema: ORGANIZATIONS_BROWSE_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
     name: "preview_watch",
     description: "Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.",
     inputSchema: {
@@ -509,6 +554,8 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
     bounds: CONTRACTS_BROWSE_LIMITS,
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   }),
+  Object.freeze({ name: "get_person_or_organization", operationClass: "read", schemaReference: PEOPLE_GET_CAPABILITY_REFERENCE, capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, adapterId: MCP_PEOPLE_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: PEOPLE_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
+  Object.freeze({ name: "browse_organizations", operationClass: "read", schemaReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, capabilityReference: ORGANIZATIONS_BROWSE_CAPABILITY_REFERENCE, adapterId: MCP_ORGANIZATIONS_BROWSE_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: ORGANIZATIONS_BROWSE_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),
   Object.freeze({
     name: "preview_watch",
     operationClass: "read",

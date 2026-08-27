@@ -15,7 +15,7 @@
   "policy_boundary": {
     "mutation_capabilities": 0,
     "raw_store_bindings_exposed": 0,
-    "registered_public_tools": 8,
+    "registered_public_tools": 10,
     "unregistered_public_tools": 0
   },
   "protocol": {
@@ -236,14 +236,68 @@
       "store_access": "provider-only",
       "store_read_operations": 0,
       "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.get_person_or_organization@1",
+      "adapter_semantic_sha256": "9adf1e6c2b4bbccc250375298e2cd642fd215210bea35598393aea5a3f95df0b",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "entityIdMaximumLength": 320,
+        "maximum": 1
+      },
+      "calls": 1,
+      "capability_reference": "people.get@1",
+      "direct_semantic_sha256": "9adf1e6c2b4bbccc250375298e2cd642fd215210bea35598393aea5a3f95df0b",
+      "name": "get_person_or_organization",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.people-organizations.get",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
+    },
+    {
+      "adapter_id": "mcp.browse_organizations@1",
+      "adapter_semantic_sha256": "6c711ad80af770e43249011e9062d9b01458ff29c7a6aee468e36dffbebef582",
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "authority_class": "public_read",
+      "bounds": {
+        "cursorMaximumLength": 320,
+        "default": 25,
+        "kindMaximumLength": 80,
+        "maximum": 100,
+        "minimum": 1,
+        "queryMaximumLength": 240
+      },
+      "calls": 1,
+      "capability_reference": "organizations.browse@1",
+      "direct_semantic_sha256": "6c711ad80af770e43249011e9062d9b01458ff29c7a6aee468e36dffbebef582",
+      "name": "browse_organizations",
+      "operation_class": "read",
+      "parity": "pass",
+      "provider_id": "worker-static.people-organizations.browse",
+      "store_access": "provider-only",
+      "store_read_operations": 0,
+      "store_rows_read": 0
     }
   ],
   "request_counts": {
-    "capability_calls": 8,
+    "capability_calls": 10,
     "initialize": 1,
     "list_tools": 1,
     "optional_get_probe": 1,
-    "post_requests": 11
+    "post_requests": 13
   },
   "schema": "cityscroll.remote_mcp_public_adapter_receipt.v1",
   "source_scan": {
