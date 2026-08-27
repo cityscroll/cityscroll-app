@@ -39,11 +39,14 @@ import { PEOPLE_GET_HTTP_ADAPTER, ORGANIZATIONS_BROWSE_HTTP_ADAPTER } from "../w
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TOPOLOGY_PATH = join(ROOT, "architecture/generated/capability-topology.json");
 const MCP_CATALOG_PATH = join(ROOT, "site/data/mcp_tool_catalog.json");
+const API_CATALOG_PATH = join(ROOT, "site/data/api_capability_catalog.json");
 const API_HTML_PATH = join(ROOT, "site/api.html");
 const I18N_PATH = join(ROOT, "site/i18n.js");
 const ARCHITECTURE_PATH = join(ROOT, "docs/architecture.md");
 export const MCP_CATALOG_MARKER_START = "<!-- BEGIN GENERATED MCP TOOL CATALOG -->";
 export const MCP_CATALOG_MARKER_END = "<!-- END GENERATED MCP TOOL CATALOG -->";
+export const API_CATALOG_MARKER_START = "<!-- BEGIN GENERATED API CAPABILITY CATALOG -->";
+export const API_CATALOG_MARKER_END = "<!-- END GENERATED API CAPABILITY CATALOG -->";
 
 function serialize(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
@@ -164,12 +167,63 @@ export function buildMcpToolCatalog() {
         description: tool.description,
         schema_reference: binding.schemaReference,
         capability_reference: binding.capabilityReference || null,
+        input_schema: tool.inputSchema || null,
+        output_schema: tool.outputSchema || null,
         bounds: capabilities.get(binding.capabilityReference)?.bounds || binding.bounds || null,
         examples: capabilities.get(binding.capabilityReference)?.examples || null,
         annotations: tool.annotations || null,
         store_access: binding.storeAccess || null,
       };
     }),
+  };
+}
+
+function operationTitle(capability) {
+  return capability.id
+    .split(".")
+    .map((part) => part.replaceAll("_", " "))
+    .join(" ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function capabilityDescription(capability, toolsByCapability) {
+  const tool = toolsByCapability.get(capability.reference);
+  return tool?.description || `${operationTitle(capability)} public capability.`;
+}
+
+export function buildApiCapabilityCatalog(registry = CAPABILITY_REGISTRY) {
+  validateCapabilityRegistry(registry);
+  const toolsByCapability = new Map(
+    MCP_TOOL_BINDINGS
+      .filter(({ capabilityReference }) => capabilityReference)
+      .map((binding) => [binding.capabilityReference, MCP_TOOLS.find(({ name }) => name === binding.name)])
+      .filter(([, tool]) => tool),
+  );
+  return {
+    schema: "cityscroll.api_capability_catalog.v1",
+    generated_from: "capabilities/registry.mjs + capabilities/mcp_tool_declarations.mjs",
+    endpoint: "https://api.cityscroll.org",
+    operations: registry.map((capability) => ({
+      reference: capability.reference,
+      id: capability.id,
+      version: capability.version,
+      title: operationTitle(capability),
+      description: capabilityDescription(capability, toolsByCapability),
+      owner: capability.owner,
+      operation: capability.operation,
+      authority: capability.authority,
+      cost: capability.cost,
+      input_schema: capability.input.schema,
+      input_contract: capability.input,
+      output_schema: capability.output.schema,
+      output_contract: capability.output,
+      bounds: capability.bounds,
+      examples: capability.examples,
+      provenance: capability.provenance,
+      freshness: capability.freshness,
+      provider: capability.provider,
+      transports: capability.adapters,
+    })),
   };
 }
 
@@ -233,6 +287,18 @@ ${items}
 ${MCP_CATALOG_MARKER_END}`;
 }
 
+export function renderApiCapabilityCatalogHtml(catalog = buildApiCapabilityCatalog()) {
+  const catalogJson = JSON.stringify(catalog, null, 2).replaceAll("<", "\\u003c");
+  return `${API_CATALOG_MARKER_START}
+<section aria-labelledby="generated-capability-catalog">
+<h2 id="generated-capability-catalog">Capability API contracts</h2>
+<p class="src">This list uses the runtime registry. The JSON catalog has schemas, limits, examples, source, freshness, and delivery details.</p>
+<p class="src">See the <a href="data/api_capability_catalog.json"><code>JSON catalog</code></a> for contracts. HTTP, feeds, bulk exports, and model tools use separate paths.</p>
+<script type="application/json" id="api-capability-catalog">${catalogJson}</script>
+</section>
+${API_CATALOG_MARKER_END}`;
+}
+
 export function replaceGeneratedMcpCatalog(html, rendered = renderMcpCatalogHtml()) {
   const start = html.indexOf(MCP_CATALOG_MARKER_START);
   const end = html.indexOf(MCP_CATALOG_MARKER_END);
@@ -241,6 +307,31 @@ export function replaceGeneratedMcpCatalog(html, rendered = renderMcpCatalogHtml
   }
   const suffix = end + MCP_CATALOG_MARKER_END.length;
   return `${html.slice(0, start)}${rendered}${html.slice(suffix)}`;
+}
+
+export function replaceGeneratedApiCatalog(html, rendered = renderApiCapabilityCatalogHtml()) {
+  const start = html.indexOf(API_CATALOG_MARKER_START);
+  const end = html.indexOf(API_CATALOG_MARKER_END);
+  if (start === -1 || end === -1 || end < start) {
+    throw new Error("site/api.html is missing the generated API capability catalog markers");
+  }
+  const suffix = end + API_CATALOG_MARKER_END.length;
+  return `${html.slice(0, start)}${rendered}${html.slice(suffix)}`;
+}
+
+export function validateApiDocumentation(apiHtml, catalog = buildApiCapabilityCatalog()) {
+  const start = apiHtml.indexOf(API_CATALOG_MARKER_START);
+  const end = apiHtml.indexOf(API_CATALOG_MARKER_END);
+  if (start === -1 || end === -1 || end < start) {
+    throw new Error("site/api.html is missing the generated API capability catalog markers");
+  }
+  const suffix = end + API_CATALOG_MARKER_END.length;
+  const actual = apiHtml.slice(start, suffix);
+  const expected = renderApiCapabilityCatalogHtml(catalog);
+  if (actual !== expected) {
+    throw new Error("site/api.html capability catalog is undocumented or stale");
+  }
+  return true;
 }
 
 export function checkGeneratedFile(path, expected) {
@@ -262,8 +353,14 @@ function validateDocumentationReferences(apiHtml, i18n, architecture) {
   if (!apiHtml.includes("data/mcp_tool_catalog.json")) {
     throw new Error("site/api.html must link the generated MCP catalog");
   }
+  if (!apiHtml.includes("data/api_capability_catalog.json")) {
+    throw new Error("site/api.html must link the generated API capability catalog");
+  }
   if (!architecture.includes("site/data/mcp_tool_catalog.json")) {
     throw new Error("docs/architecture.md must reference the generated MCP catalog");
+  }
+  if (!architecture.includes("site/data/api_capability_catalog.json")) {
+    throw new Error("docs/architecture.md must reference the generated API capability catalog");
   }
   if (/double[- ]opt[- ]in/i.test(architecture)) {
     throw new Error("docs/architecture.md still describes the retired double-opt-in flow");
@@ -273,9 +370,12 @@ function validateDocumentationReferences(apiHtml, i18n, architecture) {
 export function buildOutputs() {
   const topology = serialize(buildCapabilityTopology());
   const catalog = serialize(buildMcpToolCatalog());
+  const apiCapabilityCatalog = serialize(buildApiCapabilityCatalog());
   const apiHtml = readFileSync(API_HTML_PATH, "utf8");
-  const renderedApiHtml = replaceGeneratedMcpCatalog(apiHtml);
-  return { topology, catalog, renderedApiHtml };
+  const renderedMcpHtml = replaceGeneratedMcpCatalog(apiHtml);
+  const renderedApiHtml = replaceGeneratedApiCatalog(renderedMcpHtml);
+  validateApiDocumentation(renderedApiHtml, JSON.parse(apiCapabilityCatalog));
+  return { topology, catalog, apiCapabilityCatalog, renderedApiHtml };
 }
 
 export function writeOrCheckCapabilityTopology({ check = false } = {}) {
@@ -286,13 +386,16 @@ export function writeOrCheckCapabilityTopology({ check = false } = {}) {
   if (check) {
     checkGeneratedFile(TOPOLOGY_PATH, outputs.topology);
     checkGeneratedFile(MCP_CATALOG_PATH, outputs.catalog);
+    checkGeneratedFile(API_CATALOG_PATH, outputs.apiCapabilityCatalog);
     checkGeneratedFile(API_HTML_PATH, outputs.renderedApiHtml);
     return outputs;
   }
   mkdirSync(dirname(TOPOLOGY_PATH), { recursive: true });
   mkdirSync(dirname(MCP_CATALOG_PATH), { recursive: true });
+  mkdirSync(dirname(API_CATALOG_PATH), { recursive: true });
   writeFileSync(TOPOLOGY_PATH, outputs.topology, "utf8");
   writeFileSync(MCP_CATALOG_PATH, outputs.catalog, "utf8");
+  writeFileSync(API_CATALOG_PATH, outputs.apiCapabilityCatalog, "utf8");
   writeFileSync(API_HTML_PATH, outputs.renderedApiHtml, "utf8");
   return outputs;
 }
@@ -305,10 +408,10 @@ if (invokedPath === fileURLToPath(import.meta.url)) {
     if (stdout) process.stdout.write(serialize(buildCapabilityTopology()));
     if (check) {
       writeOrCheckCapabilityTopology({ check: true });
-      if (!stdout) process.stdout.write("capability topology and MCP catalog are current\n");
+      if (!stdout) process.stdout.write("capability topology, API catalog, and MCP catalog are current\n");
     } else if (!stdout) {
       writeOrCheckCapabilityTopology();
-      process.stdout.write("wrote capability topology and MCP catalog\n");
+      process.stdout.write("wrote capability topology, API catalog, and MCP catalog\n");
     }
   } catch (error) {
     console.error(String(error?.message || error));
