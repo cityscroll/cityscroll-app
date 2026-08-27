@@ -162,51 +162,65 @@ function bindNLQResolvedActions(label, hash){
   bindSearchActions($("#nltrans"), label, hash);
 }
 async function nlTranslate(){
-  const text=$("#nlq").value.trim(); if(!text) return;
+  const output=$("#nltrans");
+  const text=$("#nlq")?.value.trim() || "";
+  if(!text){
+    if(output) output.innerHTML=renderInterpretPreview({state:"empty",empty:t("topic_search_bounded_empty"),escape:nlqEscape});
+    return;
+  }
   askPanel("money")?.setAttribute("open","");
-  const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
-  const p=await nlResolve(text, "money");
-  // Entity/forecast intents leave the list surface for the agency (or vendor) profile.
-  if(p.route==="agency" && p.name){
+  const btn=$("#nlgo");
+  if(btn) btn.disabled=true;
+  if(output) output.innerHTML=nlWorkingHTML();
+  try{
+    const p=await nlResolve(text, "money");
+    // Entity/forecast intents leave the list surface for the agency (or vendor) profile.
+    if(p.route==="agency" && p.name){
+      location.hash=agencyHref(p.name, p.tab||null);
+      return;
+    }
+    if(p.route==="vendor" && p.name){
+      location.hash=vendorHref(p.name, p.tab||null);
+      return;
+    }
+    const deepLink=buildMoneyDeepLink(p);
+    const wantsAward = !p.closingWeek && (p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount)));
+    moneyNlResolved={category:p.category||null, maxAmount:p.maxAmount||null, months:p.months||null,
+      noticeType:p.noticeType||null, excludeSpecial:!!p.excludeSpecial};
+    $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline";
+    $("#agency").value=""; forceSelect("#agency", p.agency);
+    $("#kw").value=(p.keywords||[]).join(" "); forceAmountSelect(p.minAmount);
+    closingWeek=!!p.closingWeek && !wantsAward;
+    $("#closingweek").classList.toggle("on", closingWeek);
+    $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
+    // Reset the previous result before the bounded search completes. If the source is
+    // unavailable, stale rows must never be presented as the new interpretation's matches.
+    currentRows=[];
+    const searchSucceeded=await search();
+    const preview=renderInterpretPreview({
+      query:text,
+      rows:currentRows,
+      renderRow:(row,index)=>moneyRowHTML(row,index,p.keywords||[]),
+      heading:t("preview_panel_heading"),
+      empty:t("topic_search_bounded_empty"),
+      error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
+      state:searchSucceeded?"ready":"error",
+      escape:nlqEscape,
+    });
+    if(output) output.innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
+    bindNLQResolvedActions(text, deepLink);
+    if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
+  }catch(_error){
+    currentRows=[];
+    if(output) output.innerHTML=renderInterpretPreview({
+      query:text,
+      state:"error",
+      error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
+      escape:nlqEscape,
+    });
+  }finally{
     if(btn) btn.disabled=false;
-    $("#nltrans").innerHTML="";
-    location.hash=agencyHref(p.name, p.tab||null);
-    return;
   }
-  if(p.route==="vendor" && p.name){
-    if(btn) btn.disabled=false;
-    $("#nltrans").innerHTML="";
-    location.hash=vendorHref(p.name, p.tab||null);
-    return;
-  }
-  const deepLink=buildMoneyDeepLink(p);
-  const wantsAward = !p.closingWeek && (p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount)));
-  moneyNlResolved={category:p.category||null, maxAmount:p.maxAmount||null, months:p.months||null,
-    noticeType:p.noticeType||null, excludeSpecial:!!p.excludeSpecial};
-  $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline";
-  $("#agency").value=""; forceSelect("#agency", p.agency);
-  $("#kw").value=(p.keywords||[]).join(" "); forceAmountSelect(p.minAmount);
-  closingWeek=!!p.closingWeek && !wantsAward;
-  $("#closingweek").classList.toggle("on", closingWeek);
-  $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
-  // Reset the previous result before the bounded search completes. If the source is
-  // unavailable, stale rows must never be presented as the new interpretation's matches.
-  currentRows=[];
-  const searchSucceeded=await search();
-  if(btn) btn.disabled=false;
-  const preview=renderInterpretPreview({
-    query:text,
-    rows:currentRows,
-    renderRow:(row,index)=>moneyRowHTML(row,index,p.keywords||[]),
-    heading:t("preview_panel_heading"),
-    empty:t("topic_search_bounded_empty"),
-    error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
-    state:searchSucceeded?"ready":"error",
-    escape:nlqEscape,
-  });
-  $("#nltrans").innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink);
-  bindNLQResolvedActions(text, deepLink);
-  if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
 }
 
 function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
