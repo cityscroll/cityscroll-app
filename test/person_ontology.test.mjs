@@ -33,7 +33,7 @@ test("registry registers the generic person projection and same_person link", ()
   const person = registry.object_types.find(({ id }) => id === "person");
   const samePerson = registry.link_types.find(({ id }) => id === "same_person");
 
-  assert.equal(registry.version, "0.6.0");
+  assert.equal(registry.version, "0.7.0");
   assert.equal(person.status, "registered");
   assert.equal(person.identity_contract.schema, PERSON_PROJECTION_SCHEMA);
   assert.equal(person.identity_contract.source_qualified, true);
