@@ -1,10 +1,12 @@
 import { calendarFeedUrlForScope, scopeFromRouteHash } from "./scope_v0.mjs";
+import { zoningHearingCalendarOccurrence } from "./zoning_hearing_calendar.mjs";
 
 export const CALENDAR_SUBSCRIPTION_LABEL = "Subscribe to calendar";
 
-const CALENDAR_LENSES = new Set(["money", "property", "rules", "meetings"]);
+const CALENDAR_LENSES = new Set(["money", "land", "property", "rules", "meetings"]);
 const CALENDAR_LENS_LABELS = Object.freeze({
   money: "Contracts",
+  land: "Zoning hearings",
   property: "Property",
   rules: "Rules",
   meetings: "Meetings",
@@ -32,6 +34,16 @@ function hasValidDate(value) {
  */
 export function calendarOccurrenceForRow(lens, row = {}) {
   if (!CALENDAR_LENSES.has(lens) || !row || typeof row !== "object") return null;
+  if (lens === "land") {
+    const occurrence = zoningHearingCalendarOccurrence(row._hearing || row, {
+      scope_ref: row.council_districts?.[0]
+        ? `council-district:${row.council_districts[0]}`
+        : row.community_districts?.[0]
+          ? `community-district:${row.community_districts[0]}`
+          : "land:hearings",
+    });
+    return occurrence ? { id: occurrence.uid, date: occurrence.starts_at || occurrence.date } : null;
+  }
   if (lens === "meetings") {
     return row.meeting_id && hasValidDate(row.event_date)
       ? { id: String(row.meeting_id), date: String(row.event_date) }

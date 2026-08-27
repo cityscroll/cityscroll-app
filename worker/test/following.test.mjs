@@ -12,6 +12,23 @@ const TEST_EMAIL = ["reader", "example.com"].join("@");
 const FIXTURE_NOW = new Date("2026-08-10T12:00:00.000Z");
 const FIXTURE_TODAY = FIXTURE_NOW.toISOString().slice(0, 10);
 const FIXTURE_UPCOMING_MEETING = new Date(FIXTURE_NOW.getTime() + 2 * 86400000).toISOString();
+const FIXTURE_HEARING = {
+  schema_version: 1,
+  source: "zap-api-milestones",
+  project_id: "2026Q0001",
+  project_name: "Known Rezoning",
+  milestone_id: "hearing-1",
+  milestone_title: "CPC Public Meeting - Public Hearing",
+  milestone_source_title: "CPC Public Meeting - Public Hearing",
+  event_class: "cpc_public_hearing",
+  representing: "City Planning Commission",
+  hearing_date: "2026-09-15",
+  hearing_at: "2026-09-15T22:30:00.000Z",
+  cc_district: "33",
+  venue_address: "123 Main Street, Queens",
+  portal_url: "https://zap.planning.nyc.gov/projects/2026Q0001",
+  provenance: { field: "dcp-reviewmeetingdate", source: "zap-api-milestones" },
+};
 
 function kv() {
   const values = new Map();
@@ -73,6 +90,27 @@ test("the edge Following renderer previews the shared materialized meeting scope
   assert.match(html, /LANDMARKS 2/);
   assert.match(html, /name="lens"[^>]+value="meetings"/);
   assert.match(html, /name="freq"[^>]+value="weekly"/);
+});
+
+test("the edge Following renderer previews district-scoped zoning hearings", async () => {
+  const filter = { councilDistrict: "33", futureAction: "hearing" };
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=land&filter=${encodeURIComponent(JSON.stringify(filter))}`,
+  ), { ALERT_STATE: { get: async () => JSON.stringify({
+    schema_version: 2,
+    generated_at: "2026-09-01T00:00:00.000Z",
+    hearings: [FIXTURE_HEARING],
+  }) } }, {}, {
+    todayISO: "2026-09-01",
+    fetchImpl: async () => new Response("unexpected", { status: 500 }),
+  });
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /Known Rezoning/);
+  assert.match(html, /Zoning hearing/);
+  assert.match(html, /2026-09-15/);
+  assert.match(html, /councilDistrict/);
 });
 
 test("the edge Following renderer preserves typed route facets in the watch form", async () => {

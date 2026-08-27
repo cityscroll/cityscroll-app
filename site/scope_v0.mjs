@@ -305,7 +305,7 @@ export function browseScopeIdentity(surfaceId) {
 const CALENDAR_FEED_LENSES = new Set(["money", "land", "property", "rules", "meetings", "entity"]);
 const CALENDAR_REPLAYABLE_FILTER_FIELDS = Object.freeze({
   money: new Set(["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "closingWeek", "procurement_id"]),
-  land: new Set(["keywords", "boro", "status", "communityDistrict", "councilDistrict", "procedure", "family", "regulatoryEffect", "geographies"]),
+  land: new Set(["keywords", "boro", "status", "communityDistrict", "councilDistrict", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"]),
   property: new Set(["keywords", "agency", "asset", "saleMethod", "priceBand", "geographies"]),
   rules: new Set(["keywords", "agency", "geographies"]),
   meetings: new Set(["keywords", "agency", "when", "dateWindow", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "communityBoard", "geographies"]),

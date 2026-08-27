@@ -55,6 +55,7 @@ import {
   buildLandRegulatoryEffectReportTarget,
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
+import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -264,8 +265,6 @@ async function resolveLandMapLocation(record, outcomeRecord, {propertyPayload, g
     return {status:"exact", precision:"exact", lat:geoPoint[0], lon:geoPoint[1], label: cleanText(record?.project_name || record?.borough || outcome?.project_name || outcome?.borough || ""), method:"authoritative_point"};
   }
   const bbls = collectProjectBbls(record, outcome, bblSnapshot?.rows).slice(0,25);
-  // Precedence: authoritative point → committed MapPLUTO BBL centroid → property geometry → address geocode → unresolved.
-  // MapPLUTO stays off the resident hot path; only the retained centroid table is consulted here.
   if(bbls.length && centroidLookup){
     const centroid = lookupBblCentroid(centroidLookup, bbls);
     if(centroid){
@@ -572,9 +571,9 @@ async function landSearchHearings(stale){
     const snap=await loadLandUpcomingHearings();
     if(stale()) return;
     const all=snap&&Array.isArray(snap.hearings)?snap.hearings:[];
-    const rows=filterLandHearingRows(all,{boro, mode, closingWeek:landClosingWeek, today:todayISO()});
+    landProjectInventory=await loadLandProjectsSnapshot();
+    const rows=zoningHearingRowsForScope(all,landProjectInventory||[],{boro,communityDistrict:landCommunityDistrict,councilDistrict:landCouncilDistrict,attendance:mode,keywords:kw?[kw]:[]},{today:todayISO(),closingWeek:landClosingWeek});
     lRows=rows.map(r=>({
-      // Keep enough project shape so landSelect can open a detail route.
       project_id:r.project_id,
       project_name:r.project_name,
       borough:r.borough,
@@ -582,6 +581,7 @@ async function landSearchHearings(stale){
       project_status:"Active",
       _hearing:r,
     }));
+    globalThis.syncCalendarSubscription?.("land", lRows);
     unbusy("#llist");
     setLandStatus();
     setLandResultCount(lRows.length);
@@ -614,8 +614,6 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect, statusM
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
   lRows=Array.isArray(rows)?rows:[]; landBanner=banner||"";
-  // The facet module is lazy so non-Land routes keep their cold path small; now
-  // that the inventory exists, repaint the status rail with its real options.
   syncLandLensControls();
   setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
@@ -658,6 +656,7 @@ async function landSearch(){
     }catch(_e){}
   }
   await syncLandLensControls();
+  if(futureAction==="hearing"){clearLandDetail();updateHash();busyList("#llist",3);await landSearchHearings(staleGuard("land"));return;}
   clearLandDetail();
   setLandStatus();
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
