@@ -537,7 +537,7 @@ function renderPerformanceEvidenceProjection(projectionRows, filters, performanc
     summaryElement.innerHTML=Object.values(PERFORMANCE_EVIDENCE_STATES).map((state)=>{
       const stat=summary.states[state];
       const href=performanceEvidenceDrillThroughHref({...filters,evidence_state:state});
-      return `<div class="contracts-analytics-evidence-stat"><dt>${escUiHtml(performanceEvidenceStateLabel(state))}</dt><dd>${stat.contract_count.toLocaleString("en-US")}</dd><small>${escUiHtml(formatRegisteredValue(stat.registered_value))} · <a href="${escUiHtml(href)}">${escUiHtml(t("analytics_evidence_view_contracts",{count:stat.contract_count.toLocaleString("en-US")}))}</a></small></div>`;
+      return `<div class="contracts-analytics-evidence-stat"><dt>${escUiHtml(performanceEvidenceStateLabel(state))}</dt><dd>${stat.contract_count.toLocaleString("en-US")}<small>${escUiHtml(formatRegisteredValue(stat.registered_value))} · <a href="${escUiHtml(href)}">${escUiHtml(t("analytics_evidence_view_contracts",{count:stat.contract_count.toLocaleString("en-US")}))}</a></small></dd></div>`;
     }).join("");
   }
   const statement=$("#contracts-analytics-performance-evidence-statement");
