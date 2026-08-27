@@ -128,6 +128,17 @@ https://api.cityscroll.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinerg
 <p class="src"><code>GET /people-organizations</code> exposes the same bounded typed snapshot used by Browse. Use <code>?id=</code> for one exact row, or <code>?q=</code>, <code>?kind=</code>, <code>?limit=</code>, and the returned opaque <code>?cursor=</code> for browse pages. Rows preserve exact identifiers, relation states (<code>published</code>, <code>empty</code>, or <code>unknown</code>), source fields, and the read-model freshness timestamp. Display names never mint identity. Staffing’s broader agency-scoped live query and presentation-only controls are not part of this contract.</p>
 <p class="src"><a href="https://api.cityscroll.org/people-organizations?kind=agency&amp;limit=25">JSON browse</a> · <a href="https://api.cityscroll.org/people-organizations?id=official%3Aexample">JSON exact row</a></p>
 
+<h2 id="contracts-analysis">Grouped Contracts analysis</h2>
+<p class="src"><code>GET /contracts/analysis</code> returns the grouped analysis shown in Contracts. Choose <code>group_by=agency|vendor|registration_fiscal_year|amount_band</code> and <code>measure=current|original|count</code>. The response gives a unit, denominator, filters, coverage, freshness, and exact contributing <code>contract_ids</code> for each group. Registered contract value is not payment data or total agency spending. The source is the committed normalized Checkbook registered-contract projection. AP-08 payment transactions are a separate fact. They are not mixed into this result.</p>
+<p class="src"><a href="https://api.cityscroll.org/contracts/analysis?group_by=agency&amp;measure=current&amp;limit=10">JSON agency analysis</a> · <a href="https://api.cityscroll.org/contracts/analysis?group_by=vendor&amp;measure=count&amp;agency=Department%20of%20Education">JSON vendor/count analysis</a></p>
+<table>
+  <tr><th scope="col">Param</th><th scope="col">Meaning</th></tr>
+  <tr><td><code>agency</code>, <code>vendor</code>, <code>fiscal_year</code></td><td>Filters for the selected registered-contract population. Fiscal year is the NYC registration fiscal year.</td></tr>
+  <tr><td><code>amount_band</code>, <code>min_amount</code>, <code>max_amount</code></td><td>Filters for current registered value. Amount bands are versioned.</td></tr>
+  <tr><td><code>retroactive</code>, <code>city_record_match</code></td><td>Filters for the published date comparison and exact City Record PIN-match state.</td></tr>
+  <tr><td><code>limit</code></td><td>Returns 1–100 ranked groups, with 10 by default. Each group keeps its full <code>contract_ids</code> list.</td></tr>
+</table>
+
 <h2 id="agency-crosswalk" data-i18n="api_h_agencies">Agency-name crosswalk</h2>
 <p class="src" data-i18n-html="api_p_agencies_html"><code>GET /agencies</code> lists each agency name as written in City Record Open Data and connects it to one name used by this site. Add <code>?format=csv</code> for CSV. The endpoint needs no key, allows cross-site requests, and is cached for one day.</p>
 <p class="src"><a href="https://api.cityscroll.org/agencies">JSON</a> · <a href="https://api.cityscroll.org/agencies?format=csv">CSV</a></p>
@@ -203,6 +214,7 @@ Per-IP and daily model-call ceilings apply. Machine-readable catalog: <code>JSON
   <li><code>retrieve_cited_passages</code> <span aria-hidden="true">·</span> read — Retrieve source passages with stable citations and exact source joins. Returns source text only. It does not generate an answer or infer civic relationships.</li>
   <li><code>get_contract</code> <span aria-hidden="true">·</span> read — Get one public contract by its exact ID. Uses the same Contracts record as CityScroll. Includes source links, coverage, freshness, amount validity, and lifecycle facts when available.</li>
   <li><code>browse_contracts</code> <span aria-hidden="true">·</span> read — List public Contracts records with bounded filters and pages. Results keep exact contract IDs separate, including records that share a PIN.</li>
+  <li><code>analyze_contracts</code> <span aria-hidden="true">·</span> read — Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.</li>
   <li><code>get_person_or_organization</code> <span aria-hidden="true">·</span> read — Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity. Relation states and source fields are preserved.</li>
   <li><code>browse_organizations</code> <span aria-hidden="true">·</span> read — Browse the bounded typed People and organizations snapshot with exact row-kind and token filters. Results retain published, empty, or unknown relation states and read-model freshness.</li>
   <li><code>preview_watch</code> <span aria-hidden="true">·</span> read — Preview what a plain-English standing watch would deliver, without subscribing. Lens: money (procurement), land (rezonings), property, rules, meetings, people.</li>

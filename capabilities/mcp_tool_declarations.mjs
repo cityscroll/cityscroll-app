@@ -46,6 +46,13 @@ import {
   CONTRACTS_BROWSE_PROVIDER_ID,
 } from "./contracts.mjs";
 import {
+  CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
+  CONTRACTS_ANALYSIS_GROUPS,
+  CONTRACTS_ANALYSIS_LIMITS,
+  CONTRACTS_ANALYSIS_MEASURES,
+  CONTRACTS_ANALYSIS_PROVIDER_ID,
+} from "./contracts_analysis.mjs";
+import {
   PEOPLE_GET_CAPABILITY_REFERENCE,
   PEOPLE_GET_LIMITS,
   PEOPLE_GET_PROVIDER_ID,
@@ -146,6 +153,15 @@ export const MCP_CONTRACTS_BROWSE_ADAPTER = Object.freeze({
   providerId: CONTRACTS_BROWSE_PROVIDER_ID,
   route: "POST /mcp",
   tool: "browse_contracts",
+  surface: "MCP",
+});
+
+export const MCP_CONTRACTS_ANALYSIS_ADAPTER = Object.freeze({
+  id: "mcp.analyze_contracts@1",
+  capabilityReference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
+  providerId: CONTRACTS_ANALYSIS_PROVIDER_ID,
+  route: "POST /mcp",
+  tool: "analyze_contracts",
   surface: "MCP",
 });
 
@@ -253,6 +269,23 @@ const ORGANIZATIONS_BROWSE_OUTPUT_SCHEMA = Object.freeze({
     availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
     results: { type: ["array", "null"], maxItems: ORGANIZATIONS_BROWSE_LIMITS.maximum, items: { type: "object" } },
     total_matches: { type: ["integer", "null"], minimum: 0 }, pagination: { type: ["object", "null"] }, coverage: { type: ["object", "null"] }, freshness: { type: ["object", "null"] }, error: { type: ["string", "null"] },
+  },
+});
+const CONTRACTS_ANALYSIS_OUTPUT_SCHEMA = Object.freeze({
+  type: "object", additionalProperties: false,
+  required: ["capability_reference", "availability", "group_by", "measure", "groups", "denominator", "population", "coverage", "filters", "freshness", "error"],
+  properties: {
+    capability_reference: { type: "string", const: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE },
+    availability: { type: "string", enum: ["complete", "empty", "unavailable"] },
+    group_by: { type: "string", enum: CONTRACTS_ANALYSIS_GROUPS },
+    measure: { type: "object" },
+    groups: { type: ["array", "null"], maxItems: CONTRACTS_ANALYSIS_LIMITS.maximumGroups, items: { type: "object" } },
+    denominator: { type: ["object", "null"] },
+    population: { type: ["object", "null"] },
+    coverage: { type: ["object", "null"] },
+    filters: { type: ["object", "null"] },
+    freshness: { type: ["object", "null"] },
+    error: { type: ["string", "null"] },
   },
 });
 
@@ -422,6 +455,28 @@ export const MCP_TOOLS = [
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   },
   {
+    name: "analyze_contracts",
+    description: "Rank groups by agency, vendor, fiscal year, or amount band. Uses the registered-contract population. Reports registered value or contract count, a scope denominator, coverage, and exact contract IDs. Does not report payments or spending.",
+    inputSchema: {
+      type: "object", additionalProperties: false,
+      properties: {
+        group_by: { type: "string", enum: CONTRACTS_ANALYSIS_GROUPS, default: "agency", description: "Grouping dimension." },
+        measure: { type: "string", enum: CONTRACTS_ANALYSIS_MEASURES, default: "current", description: "current or original registered contract value, or unique contract count." },
+        agency: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength },
+        vendor: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength },
+        fiscal_year: { type: "integer" },
+        amount_band: { type: "string", maxLength: CONTRACTS_ANALYSIS_LIMITS.filterMaximumLength },
+        min_amount: { type: "number" },
+        max_amount: { type: "number" },
+        retroactive: { type: "boolean" },
+        city_record_match: { type: "string", enum: ["exact", "none", "cannot_evaluate_missing_pin"] },
+        limit: { type: "integer", minimum: CONTRACTS_ANALYSIS_LIMITS.minimumGroups, maximum: CONTRACTS_ANALYSIS_LIMITS.maximumGroups, default: CONTRACTS_ANALYSIS_LIMITS.defaultGroups },
+      },
+    },
+    outputSchema: CONTRACTS_ANALYSIS_OUTPUT_SCHEMA,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  },
+  {
     name: "get_person_or_organization",
     description: "Get one exact typed person or organization row from the published People and organizations read model. Display names never create identity; relation states and source fields are preserved.",
     inputSchema: { type: "object", additionalProperties: false, properties: { entity_id: { type: "string", minLength: 1, maxLength: PEOPLE_GET_LIMITS.entityIdMaximumLength, description: "Exact row id such as official:... or agency:id:..." } }, required: ["entity_id"] },
@@ -552,6 +607,17 @@ export const MCP_TOOL_BINDINGS = Object.freeze([
     authorityClass: "public_read",
     storeAccess: "provider-only",
     bounds: CONTRACTS_BROWSE_LIMITS,
+    annotations: MCP_PUBLIC_READ_ANNOTATIONS,
+  }),
+  Object.freeze({
+    name: "analyze_contracts",
+    operationClass: "read",
+    schemaReference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
+    capabilityReference: CONTRACTS_ANALYSIS_CAPABILITY_REFERENCE,
+    adapterId: MCP_CONTRACTS_ANALYSIS_ADAPTER.id,
+    authorityClass: "public_read",
+    storeAccess: "provider-only",
+    bounds: CONTRACTS_ANALYSIS_LIMITS,
     annotations: MCP_PUBLIC_READ_ANNOTATIONS,
   }),
   Object.freeze({ name: "get_person_or_organization", operationClass: "read", schemaReference: PEOPLE_GET_CAPABILITY_REFERENCE, capabilityReference: PEOPLE_GET_CAPABILITY_REFERENCE, adapterId: MCP_PEOPLE_GET_ADAPTER.id, authorityClass: "public_read", storeAccess: "provider-only", bounds: PEOPLE_GET_LIMITS, annotations: MCP_PUBLIC_READ_ANNOTATIONS }),

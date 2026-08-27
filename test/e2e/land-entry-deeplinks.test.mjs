@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { landProjectDisplayTitle } from "../../site/display_title.mjs";
+import { landProjectPath } from "../../site/land_project_route.mjs";
 import {
   objectCardInteractionProjection,
   renderObjectCardCopy,
@@ -79,6 +80,7 @@ function loadLandPermalinkTools(location) {
     "t",
     "qrButtonHTML",
     "currentLanguageURL",
+    "landProjectPath",
     "landProjectDisplayTitle",
     "objectCardInteractionProjection",
     "renderObjectCardCopy",
@@ -93,6 +95,7 @@ function loadLandPermalinkTools(location) {
     (key) => ({ copy_link: "Copy link" })[key] || key,
     () => "",
     (url) => url,
+    landProjectPath,
     landProjectDisplayTitle,
     objectCardInteractionProjection,
     renderObjectCardCopy,
@@ -108,7 +111,7 @@ const {
 
 test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(parseLandHashSegment(ALLEN_STREET.project_id), ALLEN_STREET.project_id);
-  assert.equal(landLink(ALLEN_STREET.project_id), "https://cityscroll.org/#land/2023M0452");
+  assert.equal(landLink(ALLEN_STREET.project_id), "https://cityscroll.org/browse/zoning/#land/2023M0452");
 });
 
 test("#land/<project_id> continues to resolve and lands on the Land tab label", () => {
@@ -122,7 +125,7 @@ test("#land/<project_id> continues to resolve and lands on the Land tab label", 
 test("the Land detail exposes the same Copy link action shape as notice details", () => {
   const html = landPermalinkActionHTML(ALLEN_STREET);
   assert.match(html, /class="ui-object-card-copy"/);
-  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/#land\/2023M0452"/);
+  assert.match(html, /data-object-card-copy="https:\/\/cityscroll\.org\/browse\/zoning\/#land\/2023M0452"/);
   assert.match(html, />Copy link<\/button>/);
 });
 
