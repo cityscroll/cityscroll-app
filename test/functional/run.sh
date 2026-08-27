@@ -23,7 +23,7 @@ SERVER_READY_FILE=""
 if [ -z "${CROL_BASE:-}" ]; then
   SERVER_READY_FILE="$(mktemp "${TMPDIR:-/tmp}/crol-functional-site.XXXXXX")"
   python3 tools/local_site_server.py \
-    --directory site \
+    --directory _site \
     --port "${CROL_TEST_PORT:-0}" \
     --ready-file "$SERVER_READY_FILE" >/dev/null &
   SERVER_PID=$!
