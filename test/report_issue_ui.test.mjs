@@ -157,8 +157,12 @@ test("report module contains navigation teardown and submits the immutable targe
   assert.match(text, /hashchange/);
   assert.match(text, /report_target: activeTarget/);
   assert.match(text, /form\.dataset\.targetId !== activeTarget\.target_id/);
-  assert.doesNotMatch(text, /Which existing profile is this report about\?/);
-  assert.doesNotMatch(text, /Find a profile/);
-  assert.doesNotMatch(text, /data-report-identity/);
-  assert.doesNotMatch(styles, /report-identity/);
+  assert.match(text, /Which existing profile is this report about\?/);
+  assert.match(text, /Find a profile/);
+  assert.match(text, /data-report-identity/);
+  assert.match(text, /const comparisonAvailable = hasIdentityComparisonCandidates/);
+  assert.match(text, /identityPicker\.hidden = !comparisonAvailable/);
+  assert.match(text, /if \(isIdentity\) loadIdentityCandidates\(target\)/);
+  assert.match(styles, /\.report-identity-picker/);
+  assert.match(text, /activeTarget = buildReportTarget\(/);
 });

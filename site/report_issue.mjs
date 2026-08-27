@@ -77,13 +77,30 @@ function identityCanonicalUrl(ref, href) {
   return value;
 }
 
-/** Build a report target for an existing person or organization profile.
- * Identity hypotheses remain a separate target-builder contract below. */
+/** Keep comparison context explicit: a candidate for the current profile is
+ * not a comparison choice, and an object report has no identity picker. */
+export function identityComparisonCandidates(target, candidates = target?.identity_candidates) {
+  if (target?.claim_anchor?.claim_type !== "identity") return [];
+  const current = target.object_id;
+  return [...new Map((Array.isArray(candidates) ? candidates : [])
+    .filter((candidate) => candidate?.entity_id && candidate.entity_id !== current)
+    .map((candidate) => [candidate.entity_id, candidate])).values()];
+}
+
+export function hasIdentityComparisonCandidates(target, candidates = target?.identity_candidates) {
+  return identityComparisonCandidates(target, candidates).length > 0;
+}
+
+/** Build the initial identity-report target for an existing person or
+ * organization profile. The second profile is selected in the shared report
+ * dialog, then added to the final immutable target at submission time. */
 export function buildEntityProfileReportTarget({
   entity_ref,
   entity_id,
   canonical_url,
   object_label,
+  identity_lookup_href = "/data/people_organizations_read_model.json",
+  identity_candidates = null,
 } = {}) {
   const ref = identityRef(entity_ref || entity_id);
   const href = identityCanonicalUrl(ref, canonical_url);
@@ -95,6 +112,15 @@ export function buildEntityProfileReportTarget({
       object_id: ref,
       canonical_url: href,
       object_label: label,
+      claim_anchor: {
+        anchor: `${ref}#identity`,
+        claim_type: "identity",
+        field_or_semantic_key: "identity",
+        subject_id: ref,
+        subject_label: label,
+      },
+      identity_lookup_href,
+      identity_candidates,
     });
   } catch {
     return null;
@@ -554,6 +580,14 @@ function dialogHtml() {
         <input type="hidden" name="canonical_url">
         <label for="report-issue-category">Category</label>
         <select id="report-issue-category" name="category" required data-report-category></select>
+        <fieldset class="report-identity-picker" data-report-identity-picker hidden>
+          <legend>Which existing profile is this report about?</legend>
+          <p class="report-identity-help">Choose the other person or organization profile you are comparing. Selecting a profile records a hypothesis for review; it does not change either profile.</p>
+          <label for="report-identity-search">Find a profile</label>
+          <input id="report-identity-search" type="search" autocomplete="off" data-report-identity-search placeholder="Search names and organizations">
+          <div class="report-identity-results" role="list" aria-label="Existing people and organization profiles" data-report-identity-results></div>
+          <p class="report-identity-selected" data-report-identity-selected role="status" aria-live="polite"></p>
+        </fieldset>
         <label for="report-issue-message">What is wrong?</label>
         <textarea id="report-issue-message" name="message" required minlength="10" maxlength="2000" data-report-message></textarea>
         <label for="report-issue-evidence">Source or evidence <span class="report-issue-optional">— optional</span></label>
@@ -610,6 +644,64 @@ function installHandlers(dialog, documentRef) {
   const category = dialog.querySelector("[data-report-category]");
   const message = dialog.querySelector("[data-report-message]");
   const submit = dialog.querySelector("[data-report-submit]");
+  const identityPicker = dialog.querySelector("[data-report-identity-picker]");
+  const identitySearch = dialog.querySelector("[data-report-identity-search]");
+  const identityResults = dialog.querySelector("[data-report-identity-results]");
+  const identitySelected = dialog.querySelector("[data-report-identity-selected]");
+  let identityCandidates = [];
+  let selectedIdentity = null;
+  let identityLoadToken = 0;
+
+  function identityKindLabel(kind) {
+    return ({ official: "Person profile", agency: "Agency profile", vendor: "Organization profile" })[kind] || "Profile";
+  }
+
+  function renderIdentityCandidates() {
+    if (!identityResults) return;
+    const query = String(identitySearch?.value || "").trim().toLowerCase();
+    const shown = identityCandidates.filter((candidate) => !query
+      || `${candidate.label} ${identityKindLabel(candidate.kind)}`.toLowerCase().includes(query));
+    identityResults.innerHTML = shown.length
+        ? shown.map((candidate) => `<div class="report-identity-result" role="listitem">
+          <button type="button" data-report-identity-candidate="${esc(candidate.entity_id)}" data-report-identity-label="${esc(candidate.label)}" data-report-identity-href="${esc(candidate.href)}" data-report-identity-kind="${esc(candidate.kind || "profile")}">
+            <span>${esc(candidate.label)}</span><small>${esc(identityKindLabel(candidate.kind))}</small>
+          </button>
+          <a href="${esc(candidate.href)}" target="_blank" rel="noopener noreferrer"><span>Open profile</span><span class="sr-only"> (opens in new tab)</span></a>
+        </div>`).join("")
+      : `<p class="report-identity-empty" role="listitem">No matching existing profiles. Try a broader search; nothing is selected automatically.</p>`;
+  }
+
+  function setSelectedIdentity(candidate) {
+    selectedIdentity = candidate;
+    if (identitySelected) identitySelected.textContent = candidate
+      ? `Selected: ${candidate.label} (${identityKindLabel(candidate.kind)}).`
+      : "";
+    identityResults?.querySelectorAll("[data-report-identity-candidate]").forEach((button) => {
+      button.setAttribute("aria-pressed", button.dataset.reportIdentityCandidate === candidate?.entity_id ? "true" : "false");
+    });
+  }
+
+  async function loadIdentityCandidates(target) {
+    const token = ++identityLoadToken;
+    identityCandidates = Array.isArray(target.identity_candidates) ? target.identity_candidates : [];
+    if (!identityCandidates.length && target.identity_lookup_href) {
+      try {
+        const response = await fetch(target.identity_lookup_href, { cache: "force-cache", credentials: "omit" });
+        const model = response.ok ? await response.json() : null;
+        identityCandidates = Array.isArray(model?.rows) ? model.rows
+          .filter((row) => ["official", "agency", "vendor"].includes(row?.kind) && row?.entity_ref && row?.label && row?.href)
+          .map((row) => ({ entity_id: row.entity_ref, label: row.label, href: row.href, kind: row.kind })) : [];
+      } catch {
+        identityCandidates = [];
+      }
+    }
+    if (token !== identityLoadToken) return;
+    identityCandidates = identityComparisonCandidates(target, identityCandidates);
+    const comparisonAvailable = hasIdentityComparisonCandidates(target, identityCandidates);
+    identityPicker.hidden = !comparisonAvailable;
+    if (comparisonAvailable) renderIdentityCandidates();
+    else identityResults.innerHTML = "";
+  }
 
   function showFailureState() {
     activeTarget = null;
@@ -643,6 +735,13 @@ function installHandlers(dialog, documentRef) {
     form.elements.object_id.value = target.object_id;
     form.elements.canonical_url.value = target.canonical_url;
     category.innerHTML = categoryOptions(target);
+    const isIdentity = target.claim_anchor?.claim_type === "identity";
+    identityPicker.hidden = true;
+    selectedIdentity = null;
+    identitySearch.value = "";
+    identitySelected.textContent = "";
+    identityResults.innerHTML = "";
+    if (isIdentity) loadIdentityCandidates(target);
     message.value = "";
     form.elements.evidence.value = "";
     form.elements.email.value = "";
@@ -651,6 +750,21 @@ function installHandlers(dialog, documentRef) {
     showDialog(dialog);
     category.focus();
   }
+
+  category.addEventListener("change", () => {
+    if (activeTarget?.claim_anchor?.claim_type === "identity") setSelectedIdentity(selectedIdentity);
+  });
+  identitySearch?.addEventListener("input", renderIdentityCandidates);
+  identityResults?.addEventListener("click", (event) => {
+    const button = event.target?.closest?.("[data-report-identity-candidate]");
+    if (!button) return;
+    setSelectedIdentity({
+      entity_id: button.dataset.reportIdentityCandidate,
+      label: button.dataset.reportIdentityLabel,
+      href: button.dataset.reportIdentityHref,
+      kind: button.dataset.reportIdentityKind || "profile",
+    });
+  });
 
   documentRef.addEventListener("click", (event) => {
     const button = event.target?.closest?.("[data-report-target]");
@@ -671,6 +785,44 @@ function installHandlers(dialog, documentRef) {
     if (!activeTarget || form.dataset.targetId !== activeTarget.target_id) {
       showFailureState();
       return;
+    }
+    if (activeTarget.claim_anchor?.claim_type === "identity") {
+      if (selectedIdentity) {
+        const identityTarget = buildEntityIdentityReportTarget({
+          source_target: activeTarget,
+          other_entity_ref: selectedIdentity.entity_id,
+          other_entity_label: selectedIdentity.label,
+          identity_intent: category.value === "same_thing" ? "same_entity" : "different_entities",
+        });
+        if (!identityTarget) {
+          showFailureState();
+          return;
+        }
+        activeTarget = identityTarget;
+        form.dataset.targetId = identityTarget.target_id;
+        form.elements.report_target.value = serializeReportTarget(identityTarget);
+        form.elements.report_target_id.value = identityTarget.target_id;
+        form.elements.object_id.value = identityTarget.object_id;
+        form.elements.canonical_url.value = identityTarget.canonical_url;
+      } else if (identityCandidates.length) {
+        status.textContent = "Choose an existing profile before sending this identity report.";
+        identitySearch?.focus();
+        return;
+      } else {
+        // A profile report with no comparison context remains a normal
+        // current-subject report; only an explicit selection creates a
+        // same/different identity hypothesis.
+        activeTarget = buildReportTarget({
+          object_type: activeTarget.object_type,
+          object_id: activeTarget.object_id,
+          canonical_url: activeTarget.canonical_url,
+          object_label: activeTarget.object_label,
+          provenance: activeTarget.provenance,
+        });
+        form.dataset.targetId = activeTarget.target_id;
+        form.elements.report_target.value = serializeReportTarget(activeTarget);
+        form.elements.report_target_id.value = activeTarget.target_id;
+      }
     }
     const explanation = message.value.trim();
     if (explanation.length < 10) {

@@ -4,8 +4,10 @@ import test from "node:test";
 import {
   buildEntityIdentityReportTarget,
   buildEntityProfileReportTarget,
+  hasIdentityComparisonCandidates,
   renderReportIssueAffordance,
 } from "../site/report_issue.mjs";
+import { buildReportTarget } from "../site/report_target.mjs";
 import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 import { validateFeedback } from "../worker/src/lib/feedback.mjs";
 
@@ -81,21 +83,40 @@ test("split hypothesis is independently inspectable and never mutates the source
   assert.deepEqual(profiles.person, original);
 });
 
-test("profile affordance reports the current profile without comparison metadata", () => {
+test("profile affordance keeps the picker when comparison context has candidates", () => {
   const target = buildEntityProfileReportTarget({
     ...profiles.person,
-    identity_candidates: [profiles.organization],
+    identity_candidates: [{
+      ...profiles.organization,
+      entity_id: profiles.organization.entity_ref,
+      kind: "agency",
+      href: profiles.organization.canonical_url,
+      label: profiles.organization.object_label,
+    }],
   });
   const html = renderReportIssueAffordance(target);
   assert.match(html, /data-report-target=/);
-  assert.equal(target.claim_anchor, undefined);
-  assert.equal(target.identity_lookup_href, undefined);
+  assert.equal(target.claim_anchor.claim_type, "identity");
+  assert.equal(hasIdentityComparisonCandidates(target), true);
+  assert.match(JSON.stringify(target), /identity_candidates/);
+  assert.match(JSON.stringify(target), /parks-and-recreation/);
+});
+
+test("generic object reports have no comparison picker context", () => {
+  const profileWithoutCandidates = buildEntityProfileReportTarget(profiles.person);
+  assert.equal(hasIdentityComparisonCandidates(profileWithoutCandidates), false);
+  const target = buildReportTarget({
+    object_type: "entity",
+    object_id: profiles.person.entity_ref,
+    canonical_url: profiles.person.canonical_url,
+    object_label: profiles.person.object_label,
+  });
+  assert.equal(hasIdentityComparisonCandidates(target), false);
   assert.equal(validateFeedback({
     category: "information_wrong",
     message: "The current profile contains an incorrect fact.",
     report_target: target,
   }).ok, true);
-  assert.doesNotMatch(html, /identity_lookup_href|identity_candidates/);
 });
 
 test("lookup keeps ambiguous names as separate selectable profiles", () => {
