@@ -218,6 +218,42 @@ node warehouse/scripts/checkbook_contracts.mjs --from-fixture \
 node warehouse/scripts/checkbook_contracts.mjs --publish \
   --refresh --fiscal-years 2025,2026,2027 --page-size 999
 node warehouse/scripts/checkbook_contracts.mjs --check
+
+## AP-08: independent Checkbook payment population
+
+`checkbook_payment_population.mjs` is a separate acquisition contract from the
+bounded `checkbook_spending.mjs` graph-enrichment collector. It requests the
+citywide Checkbook Spending `c` (contract spending) category as complete
+fiscal-year partitions, retains the publisher fields and every transaction,
+and records negative check amounts as reversals. The receipt's publisher
+`record_count`, XML row count, normalized row count, and net amount must all
+reconcile before the run is complete. The source population is not a contract
+ID sample and must not be used to imply coverage for other fiscal years or
+spending categories.
+
+Offline proof:
+
+```bash
+node warehouse/scripts/checkbook_payment_population.mjs \
+  --from-fixture --fiscal-years 2026 --page-size 2 \
+  --stage-dir .generated/checkbook-payment-population-fixture \
+  --receipt .generated/checkbook-payment-population-fixture/receipt.json \
+  --output .generated/checkbook-payment-population-fixture/payments.csv
+```
+
+Convert a collected CSV with the warehouse's single-threaded DuckDB/Parquet
+path and retain its conversion receipt:
+
+```bash
+warehouse/.venv/bin/python warehouse/scripts/convert_checkbook_payment_population.py \
+  --csv warehouse/raw/checkbook-payment-population/payments.csv \
+  --parquet warehouse/parquet/checkbook-payment-population/payments.parquet \
+  --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json \
+  --receipt warehouse/receipts/checkbook-payment-population-conversion.json
+```
+
+The agency query proof is
+`warehouse/sql/examples/checkbook_payment_population_by_agency.sql`.
 ```
 
 The committed denominator and overlap receipt is

@@ -1,0 +1,2085 @@
+{
+  "schema": "cityscroll.checkbook_payment_population_receipt.v1",
+  "status": "complete",
+  "failure_state": null,
+  "population_contract": {
+    "id": "cityscroll.checkbook.payments.fiscal_year.v1",
+    "name": "Checkbook citywide contract-spending payments by fiscal year",
+    "source_system": "checkbook_payment_population",
+    "source_population": "Checkbook Spending API rows filtered by fiscal_year and spending_category=c",
+    "fiscal_years": [
+      2026
+    ],
+    "scope": "Citywide agencies; contract-spending category only; not a contract-ID sample"
+  },
+  "collector_boundary": {
+    "independent_of": "warehouse/scripts/checkbook_spending.mjs",
+    "bounded_collector_role": "contract-seeded payment retention for graph enrichment",
+    "population_collector_role": "independent fiscal-year payment denominator for analytical acquisition",
+    "no_graph_publication": true
+  },
+  "source": {
+    "publisher": "Office of the New York City Comptroller",
+    "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+    "endpoint": "https://www.checkbooknyc.com/api",
+    "type_of_data": "Spending",
+    "spending_category_code": "c",
+    "spending_category_label": "Contracts"
+  },
+  "paging": {
+    "strategy": "complete fiscal-year partitions; 1-based records_from; fixed page size; record_count stable per partition",
+    "page_size": 20000,
+    "pages": 90,
+    "count_drift_policy": "fail without publishing",
+    "page_manifest_sha256": "30e5c5dd4f7364a433fc7219be6a8c516e15ec798d26d087e046e5fd6e48281c"
+  },
+  "population": {
+    "publisher_record_count": 1783465,
+    "source_xml_rows": 1783465,
+    "normalized_rows": 1783465,
+    "unique_transaction_ids": 1633936,
+    "duplicate_transaction_rows": 149529,
+    "reversal_rows": 1616,
+    "null_amount_rows": 0,
+    "agency_grouping": [
+      {
+        "agency": "Department of Education",
+        "transaction_count": 1211750,
+        "net_check_amount": 13250741764.93
+      },
+      {
+        "agency": "Pension Contributions",
+        "transaction_count": 306,
+        "net_check_amount": 9812048327.19
+      },
+      {
+        "agency": "Department of Social Services",
+        "transaction_count": 33022,
+        "net_check_amount": 8924015731.76
+      },
+      {
+        "agency": "Department of Homeless Services",
+        "transaction_count": 19916,
+        "net_check_amount": 4398091123.06
+      },
+      {
+        "agency": "Department of Citywide Administrative Services",
+        "transaction_count": 19317,
+        "net_check_amount": 1714924166.2
+      },
+      {
+        "agency": "Department of Health and Mental Hygiene",
+        "transaction_count": 29863,
+        "net_check_amount": 1626244863.63
+      },
+      {
+        "agency": "Administration for Children's Services",
+        "transaction_count": 31936,
+        "net_check_amount": 1494619186.86
+      },
+      {
+        "agency": "Department of Youth and Community Development",
+        "transaction_count": 19543,
+        "net_check_amount": 1248673253.3
+      },
+      {
+        "agency": "Miscellaneous",
+        "transaction_count": 2756,
+        "net_check_amount": 1247501134.35
+      },
+      {
+        "agency": "Department of Environmental Protection",
+        "transaction_count": 55825,
+        "net_check_amount": 987878086.62
+      },
+      {
+        "agency": "OFFICE OF CRIMINAL JUSTICE",
+        "transaction_count": 1591,
+        "net_check_amount": 834982809.27
+      },
+      {
+        "agency": "Department of Sanitation",
+        "transaction_count": 40084,
+        "net_check_amount": 820063549.83
+      },
+      {
+        "agency": "Housing Preservation and Development",
+        "transaction_count": 40996,
+        "net_check_amount": 785672597.17
+      },
+      {
+        "agency": "Department of Information Technology and Telecommunications",
+        "transaction_count": 7190,
+        "net_check_amount": 729316859.84
+      },
+      {
+        "agency": "Department of Transportation",
+        "transaction_count": 35168,
+        "net_check_amount": 702488784.84
+      },
+      {
+        "agency": "Police Department",
+        "transaction_count": 49194,
+        "net_check_amount": 698678462.04
+      },
+      {
+        "agency": "Department for the Aging",
+        "transaction_count": 7243,
+        "net_check_amount": 512231485.71
+      },
+      {
+        "agency": "Fire Department",
+        "transaction_count": 13719,
+        "net_check_amount": 265574644.1
+      },
+      {
+        "agency": "Department of Small Business Services",
+        "transaction_count": 2728,
+        "net_check_amount": 251780073.12
+      },
+      {
+        "agency": "Department of Cultural Affairs",
+        "transaction_count": 4565,
+        "net_check_amount": 229484786.15
+      },
+      {
+        "agency": "New York Public Library",
+        "transaction_count": 207,
+        "net_check_amount": 188919284.5
+      },
+      {
+        "agency": "Department of Finance",
+        "transaction_count": 7111,
+        "net_check_amount": 167328746
+      },
+      {
+        "agency": "City University of New York",
+        "transaction_count": 49089,
+        "net_check_amount": 156223892.47
+      },
+      {
+        "agency": "Queens Borough Public Library",
+        "transaction_count": 20,
+        "net_check_amount": 148978331.69
+      },
+      {
+        "agency": "Brooklyn Public Library",
+        "transaction_count": 68,
+        "net_check_amount": 144231156.18
+      },
+      {
+        "agency": "Department of Correction",
+        "transaction_count": 17062,
+        "net_check_amount": 139178218.04
+      },
+      {
+        "agency": "Law Department",
+        "transaction_count": 14653,
+        "net_check_amount": 113173376.32
+      },
+      {
+        "agency": "Department of Parks and Recreation",
+        "transaction_count": 26622,
+        "net_check_amount": 104005263.76
+      },
+      {
+        "agency": "Board of Elections",
+        "transaction_count": 3340,
+        "net_check_amount": 102394052.65
+      },
+      {
+        "agency": "Financial Information Services Agency",
+        "transaction_count": 1119,
+        "net_check_amount": 64272859.31
+      },
+      {
+        "agency": "Mayoralty",
+        "transaction_count": 2906,
+        "net_check_amount": 48712882.3
+      },
+      {
+        "agency": "Office of the Comptroller",
+        "transaction_count": 1510,
+        "net_check_amount": 48255398.58
+      },
+      {
+        "agency": "Department of Emergency Management",
+        "transaction_count": 1507,
+        "net_check_amount": 45608023.03
+      },
+      {
+        "agency": "Campaign Finance Board",
+        "transaction_count": 1580,
+        "net_check_amount": 40623375.56
+      },
+      {
+        "agency": "Department of Consumer & Worker Protection",
+        "transaction_count": 1474,
+        "net_check_amount": 38368659.95
+      },
+      {
+        "agency": "New York Research Libraries",
+        "transaction_count": 49,
+        "net_check_amount": 35784800
+      },
+      {
+        "agency": "Department of Design and Construction",
+        "transaction_count": 1773,
+        "net_check_amount": 33885471.26
+      },
+      {
+        "agency": "City Council",
+        "transaction_count": 8059,
+        "net_check_amount": 26462818.62
+      },
+      {
+        "agency": "Department of Probation",
+        "transaction_count": 3363,
+        "net_check_amount": 25998892.33
+      },
+      {
+        "agency": "Department of Buildings",
+        "transaction_count": 1602,
+        "net_check_amount": 24244111.74
+      },
+      {
+        "agency": "Debt Service",
+        "transaction_count": 315,
+        "net_check_amount": 16804975.89
+      },
+      {
+        "agency": "NYC Taxi and Limousine Commission",
+        "transaction_count": 1120,
+        "net_check_amount": 16054984.31
+      },
+      {
+        "agency": "Department of City Planning",
+        "transaction_count": 956,
+        "net_check_amount": 12621947.68
+      },
+      {
+        "agency": "Office of Administrative Trials and Hearings",
+        "transaction_count": 1591,
+        "net_check_amount": 11981140.84
+      },
+      {
+        "agency": "HEALTH PAYMENTS",
+        "transaction_count": 25,
+        "net_check_amount": 9324538.28
+      },
+      {
+        "agency": "Department of Records and Information Services",
+        "transaction_count": 333,
+        "net_check_amount": 6811292.01
+      },
+      {
+        "agency": "City Clerk",
+        "transaction_count": 404,
+        "net_check_amount": 2384934.56
+      },
+      {
+        "agency": "Department of Veterans' Services",
+        "transaction_count": 262,
+        "net_check_amount": 2122744.17
+      },
+      {
+        "agency": "COMMISSION ON RACIAL EQUITY",
+        "transaction_count": 233,
+        "net_check_amount": 1866255.49
+      },
+      {
+        "agency": "Business Integrity Commission",
+        "transaction_count": 453,
+        "net_check_amount": 1774757.85
+      },
+      {
+        "agency": "Commission on Human Rights",
+        "transaction_count": 648,
+        "net_check_amount": 1553902.73
+      },
+      {
+        "agency": "Office of Payroll Administration",
+        "transaction_count": 167,
+        "net_check_amount": 1435443.37
+      },
+      {
+        "agency": "Independent Budget Office",
+        "transaction_count": 258,
+        "net_check_amount": 1042370.97
+      },
+      {
+        "agency": "Civilian Complaint Review Board",
+        "transaction_count": 649,
+        "net_check_amount": 1018143.27
+      },
+      {
+        "agency": "Landmarks Preservation Commission",
+        "transaction_count": 188,
+        "net_check_amount": 685986.88
+      },
+      {
+        "agency": "Borough President - Manhattan",
+        "transaction_count": 418,
+        "net_check_amount": 616843.6
+      },
+      {
+        "agency": "Office of the Actuary",
+        "transaction_count": 125,
+        "net_check_amount": 592759.56
+      },
+      {
+        "agency": "Borough President - Queens",
+        "transaction_count": 297,
+        "net_check_amount": 483450.64
+      },
+      {
+        "agency": "Borough President - Brooklyn",
+        "transaction_count": 250,
+        "net_check_amount": 338211.08
+      },
+      {
+        "agency": "Borough President - Bronx",
+        "transaction_count": 442,
+        "net_check_amount": 335299.06
+      },
+      {
+        "agency": "Public Advocate",
+        "transaction_count": 174,
+        "net_check_amount": 276713.32
+      },
+      {
+        "agency": "Board of Correction",
+        "transaction_count": 224,
+        "net_check_amount": 275186.95
+      },
+      {
+        "agency": "Public Administrator-Bronx County",
+        "transaction_count": 6,
+        "net_check_amount": 253371.63
+      },
+      {
+        "agency": "Office of Collective Bargaining",
+        "transaction_count": 158,
+        "net_check_amount": 253249.89
+      },
+      {
+        "agency": "Manhattan Community Board # 8",
+        "transaction_count": 52,
+        "net_check_amount": 206517.54
+      },
+      {
+        "agency": "Manhattan Community Board # 6",
+        "transaction_count": 30,
+        "net_check_amount": 195587.52
+      },
+      {
+        "agency": "Manhattan Community Board # 10",
+        "transaction_count": 54,
+        "net_check_amount": 194032.61
+      },
+      {
+        "agency": "Brooklyn Community Board # 17",
+        "transaction_count": 228,
+        "net_check_amount": 190911.98
+      },
+      {
+        "agency": "Bronx Community Board # 9",
+        "transaction_count": 20,
+        "net_check_amount": 189688.48
+      },
+      {
+        "agency": "OFFICE OF RACIAL EQUITY",
+        "transaction_count": 58,
+        "net_check_amount": 185340.58
+      },
+      {
+        "agency": "Manhattan Community Board # 3",
+        "transaction_count": 94,
+        "net_check_amount": 174459.11
+      },
+      {
+        "agency": "Brooklyn Community Board # 9",
+        "transaction_count": 108,
+        "net_check_amount": 153656.11
+      },
+      {
+        "agency": "Manhattan Community Board # 5",
+        "transaction_count": 56,
+        "net_check_amount": 144236.7
+      },
+      {
+        "agency": "Conflicts of Interest Board",
+        "transaction_count": 119,
+        "net_check_amount": 143143.71
+      },
+      {
+        "agency": "Manhattan Community Board # 12",
+        "transaction_count": 23,
+        "net_check_amount": 137859.37
+      },
+      {
+        "agency": "Manhattan Community Board # 9",
+        "transaction_count": 10,
+        "net_check_amount": 137469.31
+      },
+      {
+        "agency": "Borough President - Staten Island",
+        "transaction_count": 353,
+        "net_check_amount": 136196.47
+      },
+      {
+        "agency": "Manhattan Community Board # 2",
+        "transaction_count": 52,
+        "net_check_amount": 130179.28
+      },
+      {
+        "agency": "Manhattan Community Board # 7",
+        "transaction_count": 40,
+        "net_check_amount": 129084.74
+      },
+      {
+        "agency": "Office of Administrative Tax Appeals",
+        "transaction_count": 149,
+        "net_check_amount": 127736.83
+      },
+      {
+        "agency": "Brooklyn Community Board # 1",
+        "transaction_count": 93,
+        "net_check_amount": 127036.92
+      },
+      {
+        "agency": "Bronx Community Board # 1",
+        "transaction_count": 28,
+        "net_check_amount": 125914.68
+      },
+      {
+        "agency": "Manhattan Community Board # 11",
+        "transaction_count": 68,
+        "net_check_amount": 117587.82
+      },
+      {
+        "agency": "Brooklyn Community Board # 12",
+        "transaction_count": 93,
+        "net_check_amount": 109044.69
+      },
+      {
+        "agency": "Staten Island Community Board # 3",
+        "transaction_count": 45,
+        "net_check_amount": 107885.92
+      },
+      {
+        "agency": "Bronx Community Board # 8",
+        "transaction_count": 37,
+        "net_check_amount": 105795.41
+      },
+      {
+        "agency": "Brooklyn Community Board # 10",
+        "transaction_count": 64,
+        "net_check_amount": 101584.41
+      },
+      {
+        "agency": "Brooklyn Community Board # 14",
+        "transaction_count": 93,
+        "net_check_amount": 101343.49
+      },
+      {
+        "agency": "Brooklyn Community Board # 11",
+        "transaction_count": 98,
+        "net_check_amount": 96215.41
+      },
+      {
+        "agency": "Bronx Community Board # 2",
+        "transaction_count": 79,
+        "net_check_amount": 93372.9
+      },
+      {
+        "agency": "Brooklyn Community Board # 8",
+        "transaction_count": 86,
+        "net_check_amount": 85395.66
+      },
+      {
+        "agency": "Brooklyn Community Board # 4",
+        "transaction_count": 65,
+        "net_check_amount": 84261.61
+      },
+      {
+        "agency": "Bronx Community Board # 10",
+        "transaction_count": 74,
+        "net_check_amount": 78582.22
+      },
+      {
+        "agency": "Manhattan Community Board # 4",
+        "transaction_count": 2,
+        "net_check_amount": 75035.69
+      },
+      {
+        "agency": "Brooklyn Community Board # 13",
+        "transaction_count": 69,
+        "net_check_amount": 68582.83
+      },
+      {
+        "agency": "Staten Island Community Board # 1",
+        "transaction_count": 49,
+        "net_check_amount": 67028.36
+      },
+      {
+        "agency": "Equal Employment Practices Commission",
+        "transaction_count": 62,
+        "net_check_amount": 61494.05
+      },
+      {
+        "agency": "Staten Island Community Board # 2",
+        "transaction_count": 65,
+        "net_check_amount": 54275.17
+      },
+      {
+        "agency": "Manhattan Community Board # 1",
+        "transaction_count": 70,
+        "net_check_amount": 53701.27
+      },
+      {
+        "agency": "Brooklyn Community Board # 3",
+        "transaction_count": 22,
+        "net_check_amount": 49192.82
+      },
+      {
+        "agency": "Queens Community Board # 1",
+        "transaction_count": 60,
+        "net_check_amount": 42711.67
+      },
+      {
+        "agency": "Bronx Community Board # 5",
+        "transaction_count": 32,
+        "net_check_amount": 42636.61
+      },
+      {
+        "agency": "Bronx Community Board # 7",
+        "transaction_count": 26,
+        "net_check_amount": 41372.04
+      },
+      {
+        "agency": "Public Administrator-New York County",
+        "transaction_count": 66,
+        "net_check_amount": 41174.23
+      },
+      {
+        "agency": "Brooklyn Community Board # 18",
+        "transaction_count": 78,
+        "net_check_amount": 40643.35
+      },
+      {
+        "agency": "Queens Community Board # 3",
+        "transaction_count": 39,
+        "net_check_amount": 40213.1
+      },
+      {
+        "agency": "Bronx Community Board # 6",
+        "transaction_count": 113,
+        "net_check_amount": 35964.88
+      },
+      {
+        "agency": "Queens Community Board # 7",
+        "transaction_count": 29,
+        "net_check_amount": 34326
+      },
+      {
+        "agency": "Queens Community Board # 6",
+        "transaction_count": 76,
+        "net_check_amount": 33313.43
+      },
+      {
+        "agency": "Queens Community Board # 9",
+        "transaction_count": 56,
+        "net_check_amount": 25063.69
+      },
+      {
+        "agency": "Queens Community Board # 5",
+        "transaction_count": 45,
+        "net_check_amount": 22749.55
+      },
+      {
+        "agency": "Brooklyn Community Board # 7",
+        "transaction_count": 30,
+        "net_check_amount": 22228.14
+      },
+      {
+        "agency": "Bronx Community Board # 12",
+        "transaction_count": 16,
+        "net_check_amount": 22190.33
+      },
+      {
+        "agency": "Queens Community Board # 2",
+        "transaction_count": 50,
+        "net_check_amount": 21440.74
+      },
+      {
+        "agency": "Queens Community Board # 13",
+        "transaction_count": 29,
+        "net_check_amount": 19421.58
+      },
+      {
+        "agency": "Queens Community Board # 10",
+        "transaction_count": 59,
+        "net_check_amount": 18550.21
+      },
+      {
+        "agency": "Queens Community Board # 8",
+        "transaction_count": 60,
+        "net_check_amount": 18137.75
+      },
+      {
+        "agency": "Civil Service Commission",
+        "transaction_count": 69,
+        "net_check_amount": 15040.26
+      },
+      {
+        "agency": "Public Administrator-Kings County",
+        "transaction_count": 3,
+        "net_check_amount": 15000
+      },
+      {
+        "agency": "Brooklyn Community Board # 15",
+        "transaction_count": 38,
+        "net_check_amount": 14489.21
+      },
+      {
+        "agency": "Queens Community Board # 4",
+        "transaction_count": 71,
+        "net_check_amount": 13397.78
+      },
+      {
+        "agency": "Queens Community Board # 11",
+        "transaction_count": 31,
+        "net_check_amount": 12523.83
+      },
+      {
+        "agency": "Bronx Community Board # 11",
+        "transaction_count": 37,
+        "net_check_amount": 11671.38
+      },
+      {
+        "agency": "Brooklyn Community Board # 16",
+        "transaction_count": 3,
+        "net_check_amount": 10818.96
+      },
+      {
+        "agency": "Bronx Community Board # 4",
+        "transaction_count": 23,
+        "net_check_amount": 9775.55
+      },
+      {
+        "agency": "Brooklyn Community Board # 5",
+        "transaction_count": 14,
+        "net_check_amount": 8264.42
+      },
+      {
+        "agency": "Queens Community Board # 12",
+        "transaction_count": 25,
+        "net_check_amount": 7099.19
+      },
+      {
+        "agency": "Brooklyn Community Board # 6",
+        "transaction_count": 44,
+        "net_check_amount": 6756.77
+      },
+      {
+        "agency": "Queens Community Board # 14",
+        "transaction_count": 8,
+        "net_check_amount": 6603.82
+      },
+      {
+        "agency": "Brooklyn Community Board # 2",
+        "transaction_count": 4,
+        "net_check_amount": 2331.25
+      },
+      {
+        "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+        "transaction_count": 1,
+        "net_check_amount": -350
+      }
+    ],
+    "by_fiscal_year": [
+      {
+        "fiscal_year": 2026,
+        "source_record_count": 1783465,
+        "source_xml_rows": 1783465,
+        "normalized_rows": 1783465,
+        "source_net_check_amount": 52327564799.68,
+        "normalized_net_check_amount": 52327564799.68,
+        "reversal_rows": 1616,
+        "agency_grouping": [
+          {
+            "agency": "Department of Education",
+            "transaction_count": 1211750,
+            "net_check_amount": 13250741764.93
+          },
+          {
+            "agency": "Pension Contributions",
+            "transaction_count": 306,
+            "net_check_amount": 9812048327.19
+          },
+          {
+            "agency": "Department of Social Services",
+            "transaction_count": 33022,
+            "net_check_amount": 8924015731.76
+          },
+          {
+            "agency": "Department of Homeless Services",
+            "transaction_count": 19916,
+            "net_check_amount": 4398091123.06
+          },
+          {
+            "agency": "Department of Citywide Administrative Services",
+            "transaction_count": 19317,
+            "net_check_amount": 1714924166.2
+          },
+          {
+            "agency": "Department of Health and Mental Hygiene",
+            "transaction_count": 29863,
+            "net_check_amount": 1626244863.63
+          },
+          {
+            "agency": "Administration for Children's Services",
+            "transaction_count": 31936,
+            "net_check_amount": 1494619186.86
+          },
+          {
+            "agency": "Department of Youth and Community Development",
+            "transaction_count": 19543,
+            "net_check_amount": 1248673253.3
+          },
+          {
+            "agency": "Miscellaneous",
+            "transaction_count": 2756,
+            "net_check_amount": 1247501134.35
+          },
+          {
+            "agency": "Department of Environmental Protection",
+            "transaction_count": 55825,
+            "net_check_amount": 987878086.62
+          },
+          {
+            "agency": "OFFICE OF CRIMINAL JUSTICE",
+            "transaction_count": 1591,
+            "net_check_amount": 834982809.27
+          },
+          {
+            "agency": "Department of Sanitation",
+            "transaction_count": 40084,
+            "net_check_amount": 820063549.83
+          },
+          {
+            "agency": "Housing Preservation and Development",
+            "transaction_count": 40996,
+            "net_check_amount": 785672597.17
+          },
+          {
+            "agency": "Department of Information Technology and Telecommunications",
+            "transaction_count": 7190,
+            "net_check_amount": 729316859.84
+          },
+          {
+            "agency": "Department of Transportation",
+            "transaction_count": 35168,
+            "net_check_amount": 702488784.84
+          },
+          {
+            "agency": "Police Department",
+            "transaction_count": 49194,
+            "net_check_amount": 698678462.04
+          },
+          {
+            "agency": "Department for the Aging",
+            "transaction_count": 7243,
+            "net_check_amount": 512231485.71
+          },
+          {
+            "agency": "Fire Department",
+            "transaction_count": 13719,
+            "net_check_amount": 265574644.1
+          },
+          {
+            "agency": "Department of Small Business Services",
+            "transaction_count": 2728,
+            "net_check_amount": 251780073.12
+          },
+          {
+            "agency": "Department of Cultural Affairs",
+            "transaction_count": 4565,
+            "net_check_amount": 229484786.15
+          },
+          {
+            "agency": "New York Public Library",
+            "transaction_count": 207,
+            "net_check_amount": 188919284.5
+          },
+          {
+            "agency": "Department of Finance",
+            "transaction_count": 7111,
+            "net_check_amount": 167328746
+          },
+          {
+            "agency": "City University of New York",
+            "transaction_count": 49089,
+            "net_check_amount": 156223892.47
+          },
+          {
+            "agency": "Queens Borough Public Library",
+            "transaction_count": 20,
+            "net_check_amount": 148978331.69
+          },
+          {
+            "agency": "Brooklyn Public Library",
+            "transaction_count": 68,
+            "net_check_amount": 144231156.18
+          },
+          {
+            "agency": "Department of Correction",
+            "transaction_count": 17062,
+            "net_check_amount": 139178218.04
+          },
+          {
+            "agency": "Law Department",
+            "transaction_count": 14653,
+            "net_check_amount": 113173376.32
+          },
+          {
+            "agency": "Department of Parks and Recreation",
+            "transaction_count": 26622,
+            "net_check_amount": 104005263.76
+          },
+          {
+            "agency": "Board of Elections",
+            "transaction_count": 3340,
+            "net_check_amount": 102394052.65
+          },
+          {
+            "agency": "Financial Information Services Agency",
+            "transaction_count": 1119,
+            "net_check_amount": 64272859.31
+          },
+          {
+            "agency": "Mayoralty",
+            "transaction_count": 2906,
+            "net_check_amount": 48712882.3
+          },
+          {
+            "agency": "Office of the Comptroller",
+            "transaction_count": 1510,
+            "net_check_amount": 48255398.58
+          },
+          {
+            "agency": "Department of Emergency Management",
+            "transaction_count": 1507,
+            "net_check_amount": 45608023.03
+          },
+          {
+            "agency": "Campaign Finance Board",
+            "transaction_count": 1580,
+            "net_check_amount": 40623375.56
+          },
+          {
+            "agency": "Department of Consumer & Worker Protection",
+            "transaction_count": 1474,
+            "net_check_amount": 38368659.95
+          },
+          {
+            "agency": "New York Research Libraries",
+            "transaction_count": 49,
+            "net_check_amount": 35784800
+          },
+          {
+            "agency": "Department of Design and Construction",
+            "transaction_count": 1773,
+            "net_check_amount": 33885471.26
+          },
+          {
+            "agency": "City Council",
+            "transaction_count": 8059,
+            "net_check_amount": 26462818.62
+          },
+          {
+            "agency": "Department of Probation",
+            "transaction_count": 3363,
+            "net_check_amount": 25998892.33
+          },
+          {
+            "agency": "Department of Buildings",
+            "transaction_count": 1602,
+            "net_check_amount": 24244111.74
+          },
+          {
+            "agency": "Debt Service",
+            "transaction_count": 315,
+            "net_check_amount": 16804975.89
+          },
+          {
+            "agency": "NYC Taxi and Limousine Commission",
+            "transaction_count": 1120,
+            "net_check_amount": 16054984.31
+          },
+          {
+            "agency": "Department of City Planning",
+            "transaction_count": 956,
+            "net_check_amount": 12621947.68
+          },
+          {
+            "agency": "Office of Administrative Trials and Hearings",
+            "transaction_count": 1591,
+            "net_check_amount": 11981140.84
+          },
+          {
+            "agency": "HEALTH PAYMENTS",
+            "transaction_count": 25,
+            "net_check_amount": 9324538.28
+          },
+          {
+            "agency": "Department of Records and Information Services",
+            "transaction_count": 333,
+            "net_check_amount": 6811292.01
+          },
+          {
+            "agency": "City Clerk",
+            "transaction_count": 404,
+            "net_check_amount": 2384934.56
+          },
+          {
+            "agency": "Department of Veterans' Services",
+            "transaction_count": 262,
+            "net_check_amount": 2122744.17
+          },
+          {
+            "agency": "COMMISSION ON RACIAL EQUITY",
+            "transaction_count": 233,
+            "net_check_amount": 1866255.49
+          },
+          {
+            "agency": "Business Integrity Commission",
+            "transaction_count": 453,
+            "net_check_amount": 1774757.85
+          },
+          {
+            "agency": "Commission on Human Rights",
+            "transaction_count": 648,
+            "net_check_amount": 1553902.73
+          },
+          {
+            "agency": "Office of Payroll Administration",
+            "transaction_count": 167,
+            "net_check_amount": 1435443.37
+          },
+          {
+            "agency": "Independent Budget Office",
+            "transaction_count": 258,
+            "net_check_amount": 1042370.97
+          },
+          {
+            "agency": "Civilian Complaint Review Board",
+            "transaction_count": 649,
+            "net_check_amount": 1018143.27
+          },
+          {
+            "agency": "Landmarks Preservation Commission",
+            "transaction_count": 188,
+            "net_check_amount": 685986.88
+          },
+          {
+            "agency": "Borough President - Manhattan",
+            "transaction_count": 418,
+            "net_check_amount": 616843.6
+          },
+          {
+            "agency": "Office of the Actuary",
+            "transaction_count": 125,
+            "net_check_amount": 592759.56
+          },
+          {
+            "agency": "Borough President - Queens",
+            "transaction_count": 297,
+            "net_check_amount": 483450.64
+          },
+          {
+            "agency": "Borough President - Brooklyn",
+            "transaction_count": 250,
+            "net_check_amount": 338211.08
+          },
+          {
+            "agency": "Borough President - Bronx",
+            "transaction_count": 442,
+            "net_check_amount": 335299.06
+          },
+          {
+            "agency": "Public Advocate",
+            "transaction_count": 174,
+            "net_check_amount": 276713.32
+          },
+          {
+            "agency": "Board of Correction",
+            "transaction_count": 224,
+            "net_check_amount": 275186.95
+          },
+          {
+            "agency": "Public Administrator-Bronx County",
+            "transaction_count": 6,
+            "net_check_amount": 253371.63
+          },
+          {
+            "agency": "Office of Collective Bargaining",
+            "transaction_count": 158,
+            "net_check_amount": 253249.89
+          },
+          {
+            "agency": "Manhattan Community Board # 8",
+            "transaction_count": 52,
+            "net_check_amount": 206517.54
+          },
+          {
+            "agency": "Manhattan Community Board # 6",
+            "transaction_count": 30,
+            "net_check_amount": 195587.52
+          },
+          {
+            "agency": "Manhattan Community Board # 10",
+            "transaction_count": 54,
+            "net_check_amount": 194032.61
+          },
+          {
+            "agency": "Brooklyn Community Board # 17",
+            "transaction_count": 228,
+            "net_check_amount": 190911.98
+          },
+          {
+            "agency": "Bronx Community Board # 9",
+            "transaction_count": 20,
+            "net_check_amount": 189688.48
+          },
+          {
+            "agency": "OFFICE OF RACIAL EQUITY",
+            "transaction_count": 58,
+            "net_check_amount": 185340.58
+          },
+          {
+            "agency": "Manhattan Community Board # 3",
+            "transaction_count": 94,
+            "net_check_amount": 174459.11
+          },
+          {
+            "agency": "Brooklyn Community Board # 9",
+            "transaction_count": 108,
+            "net_check_amount": 153656.11
+          },
+          {
+            "agency": "Manhattan Community Board # 5",
+            "transaction_count": 56,
+            "net_check_amount": 144236.7
+          },
+          {
+            "agency": "Conflicts of Interest Board",
+            "transaction_count": 119,
+            "net_check_amount": 143143.71
+          },
+          {
+            "agency": "Manhattan Community Board # 12",
+            "transaction_count": 23,
+            "net_check_amount": 137859.37
+          },
+          {
+            "agency": "Manhattan Community Board # 9",
+            "transaction_count": 10,
+            "net_check_amount": 137469.31
+          },
+          {
+            "agency": "Borough President - Staten Island",
+            "transaction_count": 353,
+            "net_check_amount": 136196.47
+          },
+          {
+            "agency": "Manhattan Community Board # 2",
+            "transaction_count": 52,
+            "net_check_amount": 130179.28
+          },
+          {
+            "agency": "Manhattan Community Board # 7",
+            "transaction_count": 40,
+            "net_check_amount": 129084.74
+          },
+          {
+            "agency": "Office of Administrative Tax Appeals",
+            "transaction_count": 149,
+            "net_check_amount": 127736.83
+          },
+          {
+            "agency": "Brooklyn Community Board # 1",
+            "transaction_count": 93,
+            "net_check_amount": 127036.92
+          },
+          {
+            "agency": "Bronx Community Board # 1",
+            "transaction_count": 28,
+            "net_check_amount": 125914.68
+          },
+          {
+            "agency": "Manhattan Community Board # 11",
+            "transaction_count": 68,
+            "net_check_amount": 117587.82
+          },
+          {
+            "agency": "Brooklyn Community Board # 12",
+            "transaction_count": 93,
+            "net_check_amount": 109044.69
+          },
+          {
+            "agency": "Staten Island Community Board # 3",
+            "transaction_count": 45,
+            "net_check_amount": 107885.92
+          },
+          {
+            "agency": "Bronx Community Board # 8",
+            "transaction_count": 37,
+            "net_check_amount": 105795.41
+          },
+          {
+            "agency": "Brooklyn Community Board # 10",
+            "transaction_count": 64,
+            "net_check_amount": 101584.41
+          },
+          {
+            "agency": "Brooklyn Community Board # 14",
+            "transaction_count": 93,
+            "net_check_amount": 101343.49
+          },
+          {
+            "agency": "Brooklyn Community Board # 11",
+            "transaction_count": 98,
+            "net_check_amount": 96215.41
+          },
+          {
+            "agency": "Bronx Community Board # 2",
+            "transaction_count": 79,
+            "net_check_amount": 93372.9
+          },
+          {
+            "agency": "Brooklyn Community Board # 8",
+            "transaction_count": 86,
+            "net_check_amount": 85395.66
+          },
+          {
+            "agency": "Brooklyn Community Board # 4",
+            "transaction_count": 65,
+            "net_check_amount": 84261.61
+          },
+          {
+            "agency": "Bronx Community Board # 10",
+            "transaction_count": 74,
+            "net_check_amount": 78582.22
+          },
+          {
+            "agency": "Manhattan Community Board # 4",
+            "transaction_count": 2,
+            "net_check_amount": 75035.69
+          },
+          {
+            "agency": "Brooklyn Community Board # 13",
+            "transaction_count": 69,
+            "net_check_amount": 68582.83
+          },
+          {
+            "agency": "Staten Island Community Board # 1",
+            "transaction_count": 49,
+            "net_check_amount": 67028.36
+          },
+          {
+            "agency": "Equal Employment Practices Commission",
+            "transaction_count": 62,
+            "net_check_amount": 61494.05
+          },
+          {
+            "agency": "Staten Island Community Board # 2",
+            "transaction_count": 65,
+            "net_check_amount": 54275.17
+          },
+          {
+            "agency": "Manhattan Community Board # 1",
+            "transaction_count": 70,
+            "net_check_amount": 53701.27
+          },
+          {
+            "agency": "Brooklyn Community Board # 3",
+            "transaction_count": 22,
+            "net_check_amount": 49192.82
+          },
+          {
+            "agency": "Queens Community Board # 1",
+            "transaction_count": 60,
+            "net_check_amount": 42711.67
+          },
+          {
+            "agency": "Bronx Community Board # 5",
+            "transaction_count": 32,
+            "net_check_amount": 42636.61
+          },
+          {
+            "agency": "Bronx Community Board # 7",
+            "transaction_count": 26,
+            "net_check_amount": 41372.04
+          },
+          {
+            "agency": "Public Administrator-New York County",
+            "transaction_count": 66,
+            "net_check_amount": 41174.23
+          },
+          {
+            "agency": "Brooklyn Community Board # 18",
+            "transaction_count": 78,
+            "net_check_amount": 40643.35
+          },
+          {
+            "agency": "Queens Community Board # 3",
+            "transaction_count": 39,
+            "net_check_amount": 40213.1
+          },
+          {
+            "agency": "Bronx Community Board # 6",
+            "transaction_count": 113,
+            "net_check_amount": 35964.88
+          },
+          {
+            "agency": "Queens Community Board # 7",
+            "transaction_count": 29,
+            "net_check_amount": 34326
+          },
+          {
+            "agency": "Queens Community Board # 6",
+            "transaction_count": 76,
+            "net_check_amount": 33313.43
+          },
+          {
+            "agency": "Queens Community Board # 9",
+            "transaction_count": 56,
+            "net_check_amount": 25063.69
+          },
+          {
+            "agency": "Queens Community Board # 5",
+            "transaction_count": 45,
+            "net_check_amount": 22749.55
+          },
+          {
+            "agency": "Brooklyn Community Board # 7",
+            "transaction_count": 30,
+            "net_check_amount": 22228.14
+          },
+          {
+            "agency": "Bronx Community Board # 12",
+            "transaction_count": 16,
+            "net_check_amount": 22190.33
+          },
+          {
+            "agency": "Queens Community Board # 2",
+            "transaction_count": 50,
+            "net_check_amount": 21440.74
+          },
+          {
+            "agency": "Queens Community Board # 13",
+            "transaction_count": 29,
+            "net_check_amount": 19421.58
+          },
+          {
+            "agency": "Queens Community Board # 10",
+            "transaction_count": 59,
+            "net_check_amount": 18550.21
+          },
+          {
+            "agency": "Queens Community Board # 8",
+            "transaction_count": 60,
+            "net_check_amount": 18137.75
+          },
+          {
+            "agency": "Civil Service Commission",
+            "transaction_count": 69,
+            "net_check_amount": 15040.26
+          },
+          {
+            "agency": "Public Administrator-Kings County",
+            "transaction_count": 3,
+            "net_check_amount": 15000
+          },
+          {
+            "agency": "Brooklyn Community Board # 15",
+            "transaction_count": 38,
+            "net_check_amount": 14489.21
+          },
+          {
+            "agency": "Queens Community Board # 4",
+            "transaction_count": 71,
+            "net_check_amount": 13397.78
+          },
+          {
+            "agency": "Queens Community Board # 11",
+            "transaction_count": 31,
+            "net_check_amount": 12523.83
+          },
+          {
+            "agency": "Bronx Community Board # 11",
+            "transaction_count": 37,
+            "net_check_amount": 11671.38
+          },
+          {
+            "agency": "Brooklyn Community Board # 16",
+            "transaction_count": 3,
+            "net_check_amount": 10818.96
+          },
+          {
+            "agency": "Bronx Community Board # 4",
+            "transaction_count": 23,
+            "net_check_amount": 9775.55
+          },
+          {
+            "agency": "Brooklyn Community Board # 5",
+            "transaction_count": 14,
+            "net_check_amount": 8264.42
+          },
+          {
+            "agency": "Queens Community Board # 12",
+            "transaction_count": 25,
+            "net_check_amount": 7099.19
+          },
+          {
+            "agency": "Brooklyn Community Board # 6",
+            "transaction_count": 44,
+            "net_check_amount": 6756.77
+          },
+          {
+            "agency": "Queens Community Board # 14",
+            "transaction_count": 8,
+            "net_check_amount": 6603.82
+          },
+          {
+            "agency": "Brooklyn Community Board # 2",
+            "transaction_count": 4,
+            "net_check_amount": 2331.25
+          },
+          {
+            "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+            "transaction_count": 1,
+            "net_check_amount": -350
+          }
+        ],
+        "pages": 90,
+        "reconciled": true
+      }
+    ]
+  },
+  "reconciliation": {
+    "partitions": [
+      {
+        "fiscal_year": 2026,
+        "source_record_count": 1783465,
+        "source_xml_rows": 1783465,
+        "normalized_rows": 1783465,
+        "source_net_check_amount": 52327564799.68,
+        "normalized_net_check_amount": 52327564799.68,
+        "reversal_rows": 1616,
+        "agency_grouping": [
+          {
+            "agency": "Department of Education",
+            "transaction_count": 1211750,
+            "net_check_amount": 13250741764.93
+          },
+          {
+            "agency": "Pension Contributions",
+            "transaction_count": 306,
+            "net_check_amount": 9812048327.19
+          },
+          {
+            "agency": "Department of Social Services",
+            "transaction_count": 33022,
+            "net_check_amount": 8924015731.76
+          },
+          {
+            "agency": "Department of Homeless Services",
+            "transaction_count": 19916,
+            "net_check_amount": 4398091123.06
+          },
+          {
+            "agency": "Department of Citywide Administrative Services",
+            "transaction_count": 19317,
+            "net_check_amount": 1714924166.2
+          },
+          {
+            "agency": "Department of Health and Mental Hygiene",
+            "transaction_count": 29863,
+            "net_check_amount": 1626244863.63
+          },
+          {
+            "agency": "Administration for Children's Services",
+            "transaction_count": 31936,
+            "net_check_amount": 1494619186.86
+          },
+          {
+            "agency": "Department of Youth and Community Development",
+            "transaction_count": 19543,
+            "net_check_amount": 1248673253.3
+          },
+          {
+            "agency": "Miscellaneous",
+            "transaction_count": 2756,
+            "net_check_amount": 1247501134.35
+          },
+          {
+            "agency": "Department of Environmental Protection",
+            "transaction_count": 55825,
+            "net_check_amount": 987878086.62
+          },
+          {
+            "agency": "OFFICE OF CRIMINAL JUSTICE",
+            "transaction_count": 1591,
+            "net_check_amount": 834982809.27
+          },
+          {
+            "agency": "Department of Sanitation",
+            "transaction_count": 40084,
+            "net_check_amount": 820063549.83
+          },
+          {
+            "agency": "Housing Preservation and Development",
+            "transaction_count": 40996,
+            "net_check_amount": 785672597.17
+          },
+          {
+            "agency": "Department of Information Technology and Telecommunications",
+            "transaction_count": 7190,
+            "net_check_amount": 729316859.84
+          },
+          {
+            "agency": "Department of Transportation",
+            "transaction_count": 35168,
+            "net_check_amount": 702488784.84
+          },
+          {
+            "agency": "Police Department",
+            "transaction_count": 49194,
+            "net_check_amount": 698678462.04
+          },
+          {
+            "agency": "Department for the Aging",
+            "transaction_count": 7243,
+            "net_check_amount": 512231485.71
+          },
+          {
+            "agency": "Fire Department",
+            "transaction_count": 13719,
+            "net_check_amount": 265574644.1
+          },
+          {
+            "agency": "Department of Small Business Services",
+            "transaction_count": 2728,
+            "net_check_amount": 251780073.12
+          },
+          {
+            "agency": "Department of Cultural Affairs",
+            "transaction_count": 4565,
+            "net_check_amount": 229484786.15
+          },
+          {
+            "agency": "New York Public Library",
+            "transaction_count": 207,
+            "net_check_amount": 188919284.5
+          },
+          {
+            "agency": "Department of Finance",
+            "transaction_count": 7111,
+            "net_check_amount": 167328746
+          },
+          {
+            "agency": "City University of New York",
+            "transaction_count": 49089,
+            "net_check_amount": 156223892.47
+          },
+          {
+            "agency": "Queens Borough Public Library",
+            "transaction_count": 20,
+            "net_check_amount": 148978331.69
+          },
+          {
+            "agency": "Brooklyn Public Library",
+            "transaction_count": 68,
+            "net_check_amount": 144231156.18
+          },
+          {
+            "agency": "Department of Correction",
+            "transaction_count": 17062,
+            "net_check_amount": 139178218.04
+          },
+          {
+            "agency": "Law Department",
+            "transaction_count": 14653,
+            "net_check_amount": 113173376.32
+          },
+          {
+            "agency": "Department of Parks and Recreation",
+            "transaction_count": 26622,
+            "net_check_amount": 104005263.76
+          },
+          {
+            "agency": "Board of Elections",
+            "transaction_count": 3340,
+            "net_check_amount": 102394052.65
+          },
+          {
+            "agency": "Financial Information Services Agency",
+            "transaction_count": 1119,
+            "net_check_amount": 64272859.31
+          },
+          {
+            "agency": "Mayoralty",
+            "transaction_count": 2906,
+            "net_check_amount": 48712882.3
+          },
+          {
+            "agency": "Office of the Comptroller",
+            "transaction_count": 1510,
+            "net_check_amount": 48255398.58
+          },
+          {
+            "agency": "Department of Emergency Management",
+            "transaction_count": 1507,
+            "net_check_amount": 45608023.03
+          },
+          {
+            "agency": "Campaign Finance Board",
+            "transaction_count": 1580,
+            "net_check_amount": 40623375.56
+          },
+          {
+            "agency": "Department of Consumer & Worker Protection",
+            "transaction_count": 1474,
+            "net_check_amount": 38368659.95
+          },
+          {
+            "agency": "New York Research Libraries",
+            "transaction_count": 49,
+            "net_check_amount": 35784800
+          },
+          {
+            "agency": "Department of Design and Construction",
+            "transaction_count": 1773,
+            "net_check_amount": 33885471.26
+          },
+          {
+            "agency": "City Council",
+            "transaction_count": 8059,
+            "net_check_amount": 26462818.62
+          },
+          {
+            "agency": "Department of Probation",
+            "transaction_count": 3363,
+            "net_check_amount": 25998892.33
+          },
+          {
+            "agency": "Department of Buildings",
+            "transaction_count": 1602,
+            "net_check_amount": 24244111.74
+          },
+          {
+            "agency": "Debt Service",
+            "transaction_count": 315,
+            "net_check_amount": 16804975.89
+          },
+          {
+            "agency": "NYC Taxi and Limousine Commission",
+            "transaction_count": 1120,
+            "net_check_amount": 16054984.31
+          },
+          {
+            "agency": "Department of City Planning",
+            "transaction_count": 956,
+            "net_check_amount": 12621947.68
+          },
+          {
+            "agency": "Office of Administrative Trials and Hearings",
+            "transaction_count": 1591,
+            "net_check_amount": 11981140.84
+          },
+          {
+            "agency": "HEALTH PAYMENTS",
+            "transaction_count": 25,
+            "net_check_amount": 9324538.28
+          },
+          {
+            "agency": "Department of Records and Information Services",
+            "transaction_count": 333,
+            "net_check_amount": 6811292.01
+          },
+          {
+            "agency": "City Clerk",
+            "transaction_count": 404,
+            "net_check_amount": 2384934.56
+          },
+          {
+            "agency": "Department of Veterans' Services",
+            "transaction_count": 262,
+            "net_check_amount": 2122744.17
+          },
+          {
+            "agency": "COMMISSION ON RACIAL EQUITY",
+            "transaction_count": 233,
+            "net_check_amount": 1866255.49
+          },
+          {
+            "agency": "Business Integrity Commission",
+            "transaction_count": 453,
+            "net_check_amount": 1774757.85
+          },
+          {
+            "agency": "Commission on Human Rights",
+            "transaction_count": 648,
+            "net_check_amount": 1553902.73
+          },
+          {
+            "agency": "Office of Payroll Administration",
+            "transaction_count": 167,
+            "net_check_amount": 1435443.37
+          },
+          {
+            "agency": "Independent Budget Office",
+            "transaction_count": 258,
+            "net_check_amount": 1042370.97
+          },
+          {
+            "agency": "Civilian Complaint Review Board",
+            "transaction_count": 649,
+            "net_check_amount": 1018143.27
+          },
+          {
+            "agency": "Landmarks Preservation Commission",
+            "transaction_count": 188,
+            "net_check_amount": 685986.88
+          },
+          {
+            "agency": "Borough President - Manhattan",
+            "transaction_count": 418,
+            "net_check_amount": 616843.6
+          },
+          {
+            "agency": "Office of the Actuary",
+            "transaction_count": 125,
+            "net_check_amount": 592759.56
+          },
+          {
+            "agency": "Borough President - Queens",
+            "transaction_count": 297,
+            "net_check_amount": 483450.64
+          },
+          {
+            "agency": "Borough President - Brooklyn",
+            "transaction_count": 250,
+            "net_check_amount": 338211.08
+          },
+          {
+            "agency": "Borough President - Bronx",
+            "transaction_count": 442,
+            "net_check_amount": 335299.06
+          },
+          {
+            "agency": "Public Advocate",
+            "transaction_count": 174,
+            "net_check_amount": 276713.32
+          },
+          {
+            "agency": "Board of Correction",
+            "transaction_count": 224,
+            "net_check_amount": 275186.95
+          },
+          {
+            "agency": "Public Administrator-Bronx County",
+            "transaction_count": 6,
+            "net_check_amount": 253371.63
+          },
+          {
+            "agency": "Office of Collective Bargaining",
+            "transaction_count": 158,
+            "net_check_amount": 253249.89
+          },
+          {
+            "agency": "Manhattan Community Board # 8",
+            "transaction_count": 52,
+            "net_check_amount": 206517.54
+          },
+          {
+            "agency": "Manhattan Community Board # 6",
+            "transaction_count": 30,
+            "net_check_amount": 195587.52
+          },
+          {
+            "agency": "Manhattan Community Board # 10",
+            "transaction_count": 54,
+            "net_check_amount": 194032.61
+          },
+          {
+            "agency": "Brooklyn Community Board # 17",
+            "transaction_count": 228,
+            "net_check_amount": 190911.98
+          },
+          {
+            "agency": "Bronx Community Board # 9",
+            "transaction_count": 20,
+            "net_check_amount": 189688.48
+          },
+          {
+            "agency": "OFFICE OF RACIAL EQUITY",
+            "transaction_count": 58,
+            "net_check_amount": 185340.58
+          },
+          {
+            "agency": "Manhattan Community Board # 3",
+            "transaction_count": 94,
+            "net_check_amount": 174459.11
+          },
+          {
+            "agency": "Brooklyn Community Board # 9",
+            "transaction_count": 108,
+            "net_check_amount": 153656.11
+          },
+          {
+            "agency": "Manhattan Community Board # 5",
+            "transaction_count": 56,
+            "net_check_amount": 144236.7
+          },
+          {
+            "agency": "Conflicts of Interest Board",
+            "transaction_count": 119,
+            "net_check_amount": 143143.71
+          },
+          {
+            "agency": "Manhattan Community Board # 12",
+            "transaction_count": 23,
+            "net_check_amount": 137859.37
+          },
+          {
+            "agency": "Manhattan Community Board # 9",
+            "transaction_count": 10,
+            "net_check_amount": 137469.31
+          },
+          {
+            "agency": "Borough President - Staten Island",
+            "transaction_count": 353,
+            "net_check_amount": 136196.47
+          },
+          {
+            "agency": "Manhattan Community Board # 2",
+            "transaction_count": 52,
+            "net_check_amount": 130179.28
+          },
+          {
+            "agency": "Manhattan Community Board # 7",
+            "transaction_count": 40,
+            "net_check_amount": 129084.74
+          },
+          {
+            "agency": "Office of Administrative Tax Appeals",
+            "transaction_count": 149,
+            "net_check_amount": 127736.83
+          },
+          {
+            "agency": "Brooklyn Community Board # 1",
+            "transaction_count": 93,
+            "net_check_amount": 127036.92
+          },
+          {
+            "agency": "Bronx Community Board # 1",
+            "transaction_count": 28,
+            "net_check_amount": 125914.68
+          },
+          {
+            "agency": "Manhattan Community Board # 11",
+            "transaction_count": 68,
+            "net_check_amount": 117587.82
+          },
+          {
+            "agency": "Brooklyn Community Board # 12",
+            "transaction_count": 93,
+            "net_check_amount": 109044.69
+          },
+          {
+            "agency": "Staten Island Community Board # 3",
+            "transaction_count": 45,
+            "net_check_amount": 107885.92
+          },
+          {
+            "agency": "Bronx Community Board # 8",
+            "transaction_count": 37,
+            "net_check_amount": 105795.41
+          },
+          {
+            "agency": "Brooklyn Community Board # 10",
+            "transaction_count": 64,
+            "net_check_amount": 101584.41
+          },
+          {
+            "agency": "Brooklyn Community Board # 14",
+            "transaction_count": 93,
+            "net_check_amount": 101343.49
+          },
+          {
+            "agency": "Brooklyn Community Board # 11",
+            "transaction_count": 98,
+            "net_check_amount": 96215.41
+          },
+          {
+            "agency": "Bronx Community Board # 2",
+            "transaction_count": 79,
+            "net_check_amount": 93372.9
+          },
+          {
+            "agency": "Brooklyn Community Board # 8",
+            "transaction_count": 86,
+            "net_check_amount": 85395.66
+          },
+          {
+            "agency": "Brooklyn Community Board # 4",
+            "transaction_count": 65,
+            "net_check_amount": 84261.61
+          },
+          {
+            "agency": "Bronx Community Board # 10",
+            "transaction_count": 74,
+            "net_check_amount": 78582.22
+          },
+          {
+            "agency": "Manhattan Community Board # 4",
+            "transaction_count": 2,
+            "net_check_amount": 75035.69
+          },
+          {
+            "agency": "Brooklyn Community Board # 13",
+            "transaction_count": 69,
+            "net_check_amount": 68582.83
+          },
+          {
+            "agency": "Staten Island Community Board # 1",
+            "transaction_count": 49,
+            "net_check_amount": 67028.36
+          },
+          {
+            "agency": "Equal Employment Practices Commission",
+            "transaction_count": 62,
+            "net_check_amount": 61494.05
+          },
+          {
+            "agency": "Staten Island Community Board # 2",
+            "transaction_count": 65,
+            "net_check_amount": 54275.17
+          },
+          {
+            "agency": "Manhattan Community Board # 1",
+            "transaction_count": 70,
+            "net_check_amount": 53701.27
+          },
+          {
+            "agency": "Brooklyn Community Board # 3",
+            "transaction_count": 22,
+            "net_check_amount": 49192.82
+          },
+          {
+            "agency": "Queens Community Board # 1",
+            "transaction_count": 60,
+            "net_check_amount": 42711.67
+          },
+          {
+            "agency": "Bronx Community Board # 5",
+            "transaction_count": 32,
+            "net_check_amount": 42636.61
+          },
+          {
+            "agency": "Bronx Community Board # 7",
+            "transaction_count": 26,
+            "net_check_amount": 41372.04
+          },
+          {
+            "agency": "Public Administrator-New York County",
+            "transaction_count": 66,
+            "net_check_amount": 41174.23
+          },
+          {
+            "agency": "Brooklyn Community Board # 18",
+            "transaction_count": 78,
+            "net_check_amount": 40643.35
+          },
+          {
+            "agency": "Queens Community Board # 3",
+            "transaction_count": 39,
+            "net_check_amount": 40213.1
+          },
+          {
+            "agency": "Bronx Community Board # 6",
+            "transaction_count": 113,
+            "net_check_amount": 35964.88
+          },
+          {
+            "agency": "Queens Community Board # 7",
+            "transaction_count": 29,
+            "net_check_amount": 34326
+          },
+          {
+            "agency": "Queens Community Board # 6",
+            "transaction_count": 76,
+            "net_check_amount": 33313.43
+          },
+          {
+            "agency": "Queens Community Board # 9",
+            "transaction_count": 56,
+            "net_check_amount": 25063.69
+          },
+          {
+            "agency": "Queens Community Board # 5",
+            "transaction_count": 45,
+            "net_check_amount": 22749.55
+          },
+          {
+            "agency": "Brooklyn Community Board # 7",
+            "transaction_count": 30,
+            "net_check_amount": 22228.14
+          },
+          {
+            "agency": "Bronx Community Board # 12",
+            "transaction_count": 16,
+            "net_check_amount": 22190.33
+          },
+          {
+            "agency": "Queens Community Board # 2",
+            "transaction_count": 50,
+            "net_check_amount": 21440.74
+          },
+          {
+            "agency": "Queens Community Board # 13",
+            "transaction_count": 29,
+            "net_check_amount": 19421.58
+          },
+          {
+            "agency": "Queens Community Board # 10",
+            "transaction_count": 59,
+            "net_check_amount": 18550.21
+          },
+          {
+            "agency": "Queens Community Board # 8",
+            "transaction_count": 60,
+            "net_check_amount": 18137.75
+          },
+          {
+            "agency": "Civil Service Commission",
+            "transaction_count": 69,
+            "net_check_amount": 15040.26
+          },
+          {
+            "agency": "Public Administrator-Kings County",
+            "transaction_count": 3,
+            "net_check_amount": 15000
+          },
+          {
+            "agency": "Brooklyn Community Board # 15",
+            "transaction_count": 38,
+            "net_check_amount": 14489.21
+          },
+          {
+            "agency": "Queens Community Board # 4",
+            "transaction_count": 71,
+            "net_check_amount": 13397.78
+          },
+          {
+            "agency": "Queens Community Board # 11",
+            "transaction_count": 31,
+            "net_check_amount": 12523.83
+          },
+          {
+            "agency": "Bronx Community Board # 11",
+            "transaction_count": 37,
+            "net_check_amount": 11671.38
+          },
+          {
+            "agency": "Brooklyn Community Board # 16",
+            "transaction_count": 3,
+            "net_check_amount": 10818.96
+          },
+          {
+            "agency": "Bronx Community Board # 4",
+            "transaction_count": 23,
+            "net_check_amount": 9775.55
+          },
+          {
+            "agency": "Brooklyn Community Board # 5",
+            "transaction_count": 14,
+            "net_check_amount": 8264.42
+          },
+          {
+            "agency": "Queens Community Board # 12",
+            "transaction_count": 25,
+            "net_check_amount": 7099.19
+          },
+          {
+            "agency": "Brooklyn Community Board # 6",
+            "transaction_count": 44,
+            "net_check_amount": 6756.77
+          },
+          {
+            "agency": "Queens Community Board # 14",
+            "transaction_count": 8,
+            "net_check_amount": 6603.82
+          },
+          {
+            "agency": "Brooklyn Community Board # 2",
+            "transaction_count": 4,
+            "net_check_amount": 2331.25
+          },
+          {
+            "agency": "DCASDIVISION OF MUNICIPAL SUPPLY SERVICE",
+            "transaction_count": 1,
+            "net_check_amount": -350
+          }
+        ],
+        "pages": 90,
+        "reconciled": true
+      }
+    ],
+    "source_xml_rows": 1783465,
+    "normalized_rows": 1783465,
+    "source_net_check_amount": 52327564799.68,
+    "normalized_net_check_amount": 52327564799.68,
+    "reconciled": true
+  },
+  "conversion": {
+    "csv": {
+      "path": "warehouse/raw/checkbook-payment-population/payments.csv",
+      "row_count": 1783465,
+      "sha256": "cb10a93d48d11eb44128e158f6f7b572a4cb4df3033bfb633b82a4c7357582ae"
+    },
+    "receipt": "warehouse/receipts/proof/checkbook_payment_population_conversion_latest.json",
+    "next_step": "warehouse/scripts/convert_checkbook_payment_population.py --csv <payments.csv> --parquet <payments.parquet> --source-receipt warehouse/receipts/proof/checkbook_payment_population_latest.json",
+    "source_fields_preserved": [
+      "agency",
+      "associated_prime_vendor",
+      "budget_code",
+      "capital_project",
+      "contract_id",
+      "mocs_registered",
+      "contract_purpose",
+      "check_amount",
+      "department",
+      "document_id",
+      "expense_category",
+      "fiscal_year",
+      "industry",
+      "issue_date",
+      "mwbe_category",
+      "payee_name",
+      "spending_category",
+      "sub_contract_reference_id",
+      "sub_vendor",
+      "woman_owned_business",
+      "emerging_business"
+    ]
+  },
+  "checksums": {
+    "normalized_csv_sha256": "cb10a93d48d11eb44128e158f6f7b572a4cb4df3033bfb633b82a4c7357582ae"
+  },
+  "coverage_statement": "This receipt covers only the declared fiscal-year contract-spending partitions. It must not be used to infer payment coverage for other fiscal years or spending categories."
+}
