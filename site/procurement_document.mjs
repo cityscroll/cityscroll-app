@@ -18,6 +18,7 @@ import { procurementCanonicalHref } from "./procurement_object_contract.mjs";
 import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labels.mjs";
 import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
+import { renderCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -208,6 +209,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
 ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contracts", currentHref })}
 <header class="node-hero"><p class="ftype">Procurement</p><h1>${esc(facts.title)}</h1></header>
 ${procurementActions(object, facts)}
+${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({ heading: "Observed stages", body: stageList(object) })}

@@ -13,7 +13,7 @@
         ],
         "clocks": {
           "publisher_updated": {
-            "at": "2024-05-06T04:00:00.000Z",
+            "at": "2024-05-06T00:00:00.000Z",
             "state": "KNOWN",
             "basis": "warehouse_source_summary"
           },
@@ -102,7 +102,7 @@
             "status": "succeeded",
             "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
             "publisher_clock_basis": "warehouse_source_summary",
-            "publisher_updated_at": "2024-05-06T04:00:00.000Z",
+            "publisher_updated_at": "2024-05-06T00:00:00.000Z",
             "clock_kind": "acquisition"
           }
         ],
@@ -135,7 +135,7 @@
         ],
         "clocks": {
           "publisher_updated": {
-            "at": "2024-06-26T04:00:00.000Z",
+            "at": "2024-06-26T00:00:00.000Z",
             "state": "KNOWN",
             "basis": "warehouse_source_summary"
           },
@@ -224,7 +224,7 @@
             "status": "succeeded",
             "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json",
             "publisher_clock_basis": "warehouse_source_summary",
-            "publisher_updated_at": "2024-06-26T04:00:00.000Z",
+            "publisher_updated_at": "2024-06-26T00:00:00.000Z",
             "clock_kind": "acquisition"
           }
         ],
@@ -1689,7 +1689,7 @@
         ],
         "clocks": {
           "publisher_updated": {
-            "at": "2026-08-04T04:00:00.000Z",
+            "at": "2026-08-04T00:00:00.000Z",
             "state": "KNOWN",
             "basis": "warehouse_source_summary"
           },
@@ -1790,7 +1790,7 @@
             "status": "succeeded",
             "run_id": "warehouse/receipts/proof/city-record_bulk_latest.json",
             "publisher_clock_basis": "warehouse_source_summary",
-            "publisher_updated_at": "2026-08-04T04:00:00.000Z",
+            "publisher_updated_at": "2026-08-04T00:00:00.000Z",
             "clock_kind": "acquisition"
           }
         ],

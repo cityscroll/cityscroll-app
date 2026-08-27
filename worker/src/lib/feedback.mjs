@@ -19,6 +19,9 @@ export const REPORT_CATEGORIES = [
 ];
 const FIELD_REPORT_CATEGORIES = new Set(["information_wrong", "something_missing", "other"]);
 const RELATIONSHIP_REPORT_CATEGORIES = new Set(["connection_wrong", "something_missing", "other"]);
+const IDENTITY_REPORT_CATEGORIES = new Set(["same_thing", "different_things"]);
+const GROUPING_REPORT_CATEGORIES = new Set(["connection_wrong", "something_missing", "other"]);
+const INTERPRETATION_REPORT_CATEGORIES = new Set(["interpretation_wrong", "something_missing", "other"]);
 export const MSG_MIN = 10;
 export const MSG_MAX = 2000;
 export const EVIDENCE_MAX = 4000;
@@ -50,13 +53,19 @@ export function validateFeedback(body) {
   if (evidence.length > EVIDENCE_MAX) return { ok: false, reason: "bad-evidence" };
   const target = normalizeReportTargetForFeedback(b.report_target);
   if (!target) return { ok: false, reason: "bad-report-target" };
-  if (target.claim_anchor?.claim_type === "relationship"
-    && !RELATIONSHIP_REPORT_CATEGORIES.has(category)) {
-    return { ok: false, reason: "bad-report-category" };
-  }
-  if (target.claim_anchor?.claim_type !== "relationship"
-    && target.claim_anchor?.field_or_semantic_key === "vendor"
-    && !FIELD_REPORT_CATEGORIES.has(category)) {
+  const claimType = target.claim_anchor?.claim_type;
+  const categorySet = claimType === "relationship"
+    ? RELATIONSHIP_REPORT_CATEGORIES
+    : claimType === "identity"
+      ? IDENTITY_REPORT_CATEGORIES
+      : claimType === "grouping" || claimType === "lifecycle"
+        ? GROUPING_REPORT_CATEGORIES
+        : claimType === "interpretation"
+          ? INTERPRETATION_REPORT_CATEGORIES
+          : target.claim_anchor?.field_or_semantic_key === "vendor"
+            ? FIELD_REPORT_CATEGORIES
+            : null;
+  if (categorySet && !categorySet.has(category)) {
     return { ok: false, reason: "bad-report-category" };
   }
   return {
@@ -86,11 +95,21 @@ function normalizeReportTargetForFeedback(value) {
   const isEntity = target.object_type === "entity"
     && isPublicEntityRef(target.object_id)
     && isEntityProfileHref(target.object_id, target.canonical_url);
-  if (!isProcurement && !isLandProject && !isEntity) return null;
+  const isMeeting = target.object_type === "meeting"
+    && target.object_id.startsWith("meeting:")
+    && target.canonical_url.startsWith("/meetings/");
+  const isRulemaking = target.object_type === "rulemaking"
+    && target.object_id.startsWith("rulemaking:")
+    && (target.canonical_url === "/#rules" || target.canonical_url.startsWith("/rules/"));
+  if (!isProcurement && !isLandProject && !isEntity && !isMeeting && !isRulemaking) return null;
   const claim = target.claim_anchor;
   if (!claim) return target;
   if (claim.claim_type !== "relationship"
-    && !(isEntity && claim.claim_type === "identity")) return isProcurement ? target : null;
+    && !(isEntity && claim.claim_type === "identity")
+    && !(isMeeting && ["grouping", "lifecycle", "interpretation"].includes(claim.claim_type))
+    && !(isRulemaking && ["lifecycle", "grouping", "interpretation"].includes(claim.claim_type))
+    && !(isLandProject && claim.claim_type === "interpretation")
+    && !(isProcurement && claim.claim_type === "field")) return null;
   if (isEntity && claim.claim_type === "identity") {
     if (claim.field_or_semantic_key !== "identity"
       || claim.subject_id !== target.object_id
@@ -98,18 +117,26 @@ function normalizeReportTargetForFeedback(value) {
       || claim.object_id === target.object_id
       || !REPORT_IDENTITY_INTENTS.includes(claim.identity_intent)
       || !claim.object_label) return null;
-  } else if (!claim.relation_type || !claim.subject_id || !claim.object_id || !claim.field_or_semantic_key) return null;
-  if (isProcurement) {
-    if (claim.relation_type !== "named_vendor"
+  } else if (claim.claim_type === "relationship") {
+    if (!claim.relation_type || !claim.subject_id || !claim.object_id || !claim.field_or_semantic_key) return null;
+    if (isProcurement && (claim.relation_type !== "named_vendor"
       || claim.field_or_semantic_key !== "vendor"
       || claim.subject_id !== target.object_id
-      || !/^vendor:stem:[^\s]+$/.test(claim.object_id)) return null;
-  }
-  if (isLandProject) {
-    if (!['sited_on_parcel', 'sits_on_parcel'].includes(claim.relation_type)
-      || claim.field_or_semantic_key !== "parcel"
-      || claim.subject_id !== target.object_id
-      || !/^bbl:\d{10}$/.test(claim.object_id)) return null;
+      || !/^vendor:stem:[^\s]+$/.test(claim.object_id))) return null;
+    if (isLandProject) {
+      if (!['sited_on_parcel', 'sits_on_parcel'].includes(claim.relation_type)
+        || claim.field_or_semantic_key !== "parcel"
+        || claim.subject_id !== target.object_id
+        || !/^bbl:\d{10}$/.test(claim.object_id)) return null;
+    }
+    if (isMeeting && (!claim.relation_type || !claim.subject_id || !claim.object_id)) return null;
+  } else if (isLandProject && claim.claim_type === "interpretation") {
+    if (claim.field_or_semantic_key !== "regulatory-effect"
+      || claim.subject_id !== target.object_id) return null;
+  } else if (isMeeting && !["grouping", "lifecycle", "interpretation"].includes(claim.claim_type)) {
+    return null;
+  } else if (isRulemaking && !["lifecycle", "grouping", "interpretation"].includes(claim.claim_type)) {
+    return null;
   }
   return target;
 }
