@@ -1,0 +1,38 @@
+{
+  "route": "/browse/people/",
+  "query": "Bronx Community Board 1",
+  "captures": [
+    {
+      "state": "before",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/browse-people-cb-card/before-mobile.png"
+    },
+    {
+      "state": "before",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "file": "docs/screenshots/browse-people-cb-card/before-desktop.png"
+    },
+    {
+      "state": "after",
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "docs/screenshots/browse-people-cb-card/after-mobile.png"
+    },
+    {
+      "state": "after",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "file": "docs/screenshots/browse-people-cb-card/after-desktop.png"
+    }
+  ]
+}

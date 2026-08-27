@@ -1,3 +1,8 @@
 {
-  "captures": {}
+  "captures": {
+    "docs/screenshots/browse-people-cb-card/before-mobile.png": "Public before/after evidence for the Community Board card rendering fix.",
+    "docs/screenshots/browse-people-cb-card/before-desktop.png": "Public before/after evidence for the Community Board card rendering fix.",
+    "docs/screenshots/browse-people-cb-card/after-mobile.png": "Public before/after evidence for the Community Board card rendering fix.",
+    "docs/screenshots/browse-people-cb-card/after-desktop.png": "Public before/after evidence for the Community Board card rendering fix."
+  }
 }
