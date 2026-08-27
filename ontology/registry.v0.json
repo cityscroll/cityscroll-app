@@ -593,7 +593,8 @@
             "has_committee",
             "member_of",
             "hosts_meeting",
-            "issues_recommendation"
+            "issues_recommendation",
+            "governed_by"
           ],
           "publication": "unknown until sourced"
         }
@@ -633,6 +634,17 @@
             "retained_source_document"
           ],
           "semantics": "a recommendation explicitly issued by the board; no adoption or implementation implication"
+        },
+        "governed_by": {
+          "source_contract": "cityscroll.community_board_bylaw_source.v1",
+          "edge_schema": "cityscroll.community_board_governed_by_edge.v1",
+          "required_evidence": [
+            "exact_board_publisher_identity",
+            "publisher_document_identifier",
+            "retained_source_url",
+            "observed_receipt"
+          ],
+          "semantics": "a board-local bylaw version governs the board only when the publisher document is retained; missing rules remain source_does_not_establish"
         }
       },
       "backing": [
@@ -647,6 +659,40 @@
         "directory_url",
         "observed_on"
       ],
+      "grounding": "partial"
+    },
+    {
+      "id": "bylaw-version",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "A source-qualified version of one Community Board's governing bylaws. Versions retain effective or adoption dates when published, explicit supersession history, and material rule provenance; one board's rules never become a citywide default.",
+      "primary_key_pattern": "bylaw-version:{board_id}:{publisher_version_id}",
+      "families": [],
+      "backing": [
+        "community_board_bylaw_evidence",
+        "community_board_source_registry"
+      ],
+      "properties_ref": [
+        "board_id",
+        "source_url",
+        "publisher_document_id",
+        "effective_date",
+        "adoption_date",
+        "observed_on",
+        "supersedes",
+        "receipt",
+        "material_rules"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.community_board_bylaw_version.v1",
+        "source_qualified": true,
+        "publisher_document_required": true,
+        "board_local": true,
+        "material_rules_only": true,
+        "unknown_answer": "source_does_not_establish",
+        "superseded_versions_retained": true,
+        "cross_board_inference_forbidden": true
+      },
       "grounding": "partial"
     },
     {
@@ -1119,6 +1165,27 @@
         "community_board_source_registry"
       ],
       "label": "Has committee",
+      "grounding": "partial"
+    },
+    {
+      "id": "governed_by",
+      "status": "registered",
+      "from": "community-board",
+      "to": "bylaw-version",
+      "reason": "A Community Board is governed only by its own retained, publisher-identified bylaw version. Superseded versions remain linked for history and missing rules remain source_does_not_establish.",
+      "contract_ref": "cityscroll.community_board_bylaw_source.v1",
+      "edge_schema": "cityscroll.community_board_governed_by_edge.v1",
+      "required_evidence": [
+        "exact_board_publisher_identity",
+        "publisher_document_identifier",
+        "retained_source_url",
+        "observed_receipt"
+      ],
+      "backing": [
+        "community_board_bylaw_evidence",
+        "public_graph.edge"
+      ],
+      "label": "Governed by",
       "grounding": "partial"
     },
     {
