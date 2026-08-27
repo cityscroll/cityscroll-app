@@ -44,7 +44,7 @@ const LENS_LABELS = Object.freeze({
   rules: "Rules",
   meetings: "Hearings and meetings",
   district: "City Council District weekly",
-  entity: "Agency or vendor",
+  entity: "Agency, vendor, or project",
   mandates: "Mandates",
 });
 const FOLLOWING_FREQUENCY_LABELS = Object.freeze({
@@ -61,7 +61,7 @@ const LENS_SUMMARY_SUBJECT = Object.freeze({
   meetings: "new hearings and meetings",
   mandates: "new mandates",
   district: "City Council District activity",
-  entity: "new entity mentions",
+  entity: "new connected civic records",
 });
 
 function esc(value) {
@@ -467,6 +467,13 @@ export function composeWatchRuleSentence(lens, filter = {}, options = {}) {
     return `Notify me when ${who} mandates are published.`;
   }
   if (wanted === "entity") {
+    const projectRef = (Array.isArray(f.entity_refs_all) ? f.entity_refs_all : [])
+      .map((ref) => String(ref || "").trim())
+      .find((ref) => /^project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(ref));
+    if (projectRef) {
+      const project = f.name || projectRef.slice("project:".length);
+      return `Notify me when civic processes connected to project ${project} change.`;
+    }
     const kind = f.kind === "agency" ? "agency" : "vendor";
     const name = f.name || "this name";
     if (name === "an agency" || name === "a vendor") {

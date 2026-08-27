@@ -56,6 +56,7 @@ import {
   renderReportIssueAffordance,
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
+import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -854,6 +855,7 @@ async function landSelect(i, el){
   html+=`<div id="land-actions" class="next-action-rail-host"></div>
   <div class="actions" style="margin-top:12px">
     ${landPermalinkActionHTML(r)}
+    ${projectCalendarActions({projectId:r.project_id})}
     ${externalActionLink({href:`https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}`,label:t("zap_full_project"),className:"act",escape:escUiHtml,newTabLabel:t("ext_link_new_tab_sr")})}
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <span id="land-city-record-source"></span>
@@ -1572,10 +1574,8 @@ function landOutcomeSnapshotHTML(record,phaseTools,listRow){
   return `<section data-zap-outcomes-first-paint="1" data-zap-outcomes-state="present">${landOutcomesHTML(record,phaseTools,listRow||null)}</section>`;
 }
 
-/* Session cache + list prefetch for zap-outcomes. Daily edge prewarm keeps the Worker KV
-   warm (~50–200ms), but a same-tab revisit or list→detail click should not re-pay even that
-   when the payload is already in memory. Prefetch runs after the land list paints so the
-   first selected row (and neighbors) can render without the multi-second cold spinner. */
+/* Session cache + list prefetch for zap-outcomes; prefetch follows list paint so
+   the first selected row and its neighbors avoid a cold spinner. */
 const ZAP_OUTCOMES_MEM = new Map(), ZAP_OUTCOMES_MEM_TTL = 300000;
 let projectConnectionsToolsPromise=null;
 function ensureProjectConnectionsTools(){

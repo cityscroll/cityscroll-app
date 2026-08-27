@@ -30,6 +30,7 @@ import { RouteReadModelUnavailable, loadMeetingRows, loadNearYouActivity } from 
 import communityBoardDistricts from "../data/community_board_districts.json" with { type: "json" };
 import landDefaultFloor from "../../../site/data/land_default_ulurp.json" with { type: "json" };
 import { zoningHearingRowsForScope } from "../../../site/zoning_hearing_calendar.mjs";
+import { projectCalendarOccurrencesForRecord } from "../../../site/project_calendar.mjs";
 export { vendorStem };
 
 const EMPTY_PROCUREMENT_DIGEST = Object.freeze({ rows: Object.freeze([]) });
@@ -200,6 +201,19 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
       `${row.project_name || ""} ${row.project_id || ""} ${row.milestone_title || ""} ${row.representing || ""}`
         .toLowerCase().includes(keyword)
     )));
+  } else if (q.routeReadModel?.kind === "project-calendar") {
+    // A project feed is a dynamic projection of the current constellation. The
+    // source record is loaded on each replay; no project-owned event list is
+    // persisted, so removing an edge removes its occurrence on the next pull.
+    const { readZapOutcomeRecord } = await import("../zap_outcomes.mjs");
+    const { attachProjectConnections } = await import("../project_connections.mjs");
+    const record = await readZapOutcomeRecord(env, q.routeReadModel.project_id);
+    if (!record) {
+      rows = [];
+    } else {
+      const decorated = await attachProjectConnections(record, { db: env?.DB });
+      rows = projectCalendarOccurrencesForRecord(decorated, { as_of: q.routeReadModel.todayISO });
+    }
   } else if (typeof q.readRows === "function") rows = await Promise.resolve(q.readRows());
   else if (q.url === STAFFING_EXAMS) {
     const { record } = await loadStaffingExams(env);
@@ -421,6 +435,22 @@ export function compileSub(sub, todayISO) {
   }
 
   if (sub.lens === "entity") {
+    const projectRefs = Array.isArray(f.entity_refs_all)
+      ? f.entity_refs_all.filter((ref) => /^project:[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(String(ref || "")))
+      : [];
+    if (projectRefs.length) {
+      // A project scope is exact and singular. Multiple project refs would make
+      // the feed identity ambiguous, so fail closed rather than broadening it.
+      if (projectRefs.length !== 1 || f.name || f.kind) return null;
+      const projectId = projectRefs[0].slice("project:".length);
+      return {
+        url: null,
+        params: {},
+        idField: "uid",
+        kind: "project-calendar",
+        routeReadModel: { kind: "project-calendar", project_id: projectId, todayISO },
+      };
+    }
     // Follow-an-entity: every new City Record notice naming a vendor (any variant of the
     // name stem) or published by an agency (across ALL sections), plus CROL-negative
     // registered contracts from the shared procurement snapshot.

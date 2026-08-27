@@ -235,6 +235,23 @@ export function buildProjectConnectionEvidence({
         relation: "decides_land_project",
         confidence: publicConfidence(link.confidence),
         evidence: clean(link.method, 120) || "exact project reference",
+        ...(link.when ? {
+          calendar_record: {
+            object_ref: noticeId ? `notice:${noticeId}` : `project:${id}:hearing:${clean(link.from, 120)}`,
+            request_id: noticeId || null,
+            title: clean(link.label) || clean(link.agency_name) || "Project hearing",
+            event_date: clean(link.when, 40),
+            canonical_url: noticeId
+              ? `https://cityscroll.org/notices/${encodeURIComponent(noticeId)}`
+              : null,
+            source: link.source || {
+              system: "city_record",
+              record_id: noticeId || clean(link.from, 120) || null,
+              ...(noticeId ? { url: `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(noticeId)}` } : {}),
+            },
+            provenance: { basis: clean(link.method, 120) || "accepted_graph_edge", relation: "decides_land_project" },
+          },
+        } : {}),
       };
     }),
     ...exactNotices.filter((notice) => notice.event_date).map((notice) => ({
@@ -256,7 +273,8 @@ export function buildProjectConnectionEvidence({
   const dispositions = Array.isArray(joinedOutcome?.dispositions) ? joinedOutcome.dispositions : [];
   const documents = Array.isArray(joinedOutcome?.documents) ? joinedOutcome.documents : [];
   const decisions = groups.find((group) => group.id === "decisions");
-  decisions.items = dispositions.map((item) => ({
+  decisions.items = dispositions.map((item, index) => ({
+    ref: `project:${id}:decision:${clean(item.id, 120) || index}`,
     label: clean(item.representing || item.name) || "Published disposition",
     outcome: clean(item.community_board || item.borough_president || item.borough_board || item.status) || null,
     board_id: clean(item.board_id, 80) || null,
@@ -265,6 +283,24 @@ export function buildProjectConnectionEvidence({
     relation: "project_disposition",
     confidence: "strong",
     evidence: "ZAP disposition",
+    ...((item.hearing_at || item.hearing_date || item.vote_date) ? {
+      calendar_record: {
+        object_ref: `project:${id}:decision:${clean(item.id, 120) || index}`,
+        title: `${clean(item.representing) || "Project review"} — ${clean(project?.project_name) || id}`,
+        event_date: clean(item.hearing_at || item.hearing_date || item.vote_date, 40),
+        canonical_url: `https://cityscroll.org/#land/${encodeURIComponent(id)}`,
+        source: {
+          system: "zap-api-outcomes",
+          record_id: clean(item.id, 120) || `${id}:decision:${index}`,
+          ...(project?.portal_url ? { url: project.portal_url } : {}),
+        },
+        provenance: {
+          basis: "publisher_record",
+          source_fields: [item.hearing_at ? "hearing_at" : item.hearing_date ? "hearing_date" : "vote_date"],
+          relation: "project_disposition",
+        },
+      },
+    } : {}),
   }));
   decisions.documents = documents.map((document) => ({
     label: clean(document?.name) || "Decision document",
