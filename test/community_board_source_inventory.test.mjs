@@ -8,7 +8,7 @@ const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outco
 const inventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url), "utf8"));
 const receipt = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/verification_receipts/community_board_sources_2026-08-13.json", import.meta.url), "utf8"));
 const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
-const roles = ["upcoming_meetings", "minutes"];
+const roles = ["upcoming_meetings", "minutes", "committees", "roster", "bylaws"];
 
 test("the source registry enumerates the official 59-board roster", () => {
   const boards = registry.sources.filter((row) => row.body_type === "community_board");
@@ -105,12 +105,13 @@ test("adapter-gap boards keep machine-fetchable upcoming sources on the inventor
 test("calendar and minutes are separate receipt-backed source roles", () => {
   const registryById = new Map(registry.sources.map((row) => [row.body_id, row]));
   const receiptByKey = new Map(receipt.sources.map((row) => [`${row.board_id}:${row.role}`, row]));
-  assert.equal(receipt.sources.length, 118);
+  assert.equal(receipt.sources.length, 295);
 
   for (const board of inventory.boards) {
     const registryRow = registryById.get(board.id);
     assert.ok(registryRow, board.id);
-    for (const [role, value] of [["upcoming_meetings", board.upcoming], ["minutes", board.minutes]]) {
+    for (const role of roles) {
+      const value = board[role === "upcoming_meetings" ? "upcoming" : role];
       assert.equal(value.source_type, role);
       assert.ok(Object.hasOwn(value, "publisher"));
       assert.ok(Object.hasOwn(value, "url"));

@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Updated | 2026-08-14 (grounding states + design-matrix link catalog + community-board recommendation target) |
+| Updated | 2026-08-27 (community-board people and temporal role contract) |
 | Scope | Catalog + pure evaluation flywheel — no production graph store, no public route |
 | Product name | **Civic Graph** (object–link–action registry + evaluation harness) |
 | Supersedes | — |
@@ -54,6 +54,21 @@ source document. A separate target is necessary because a board recommendation h
 semantics and provenance from a meeting, matter, or member; using one of those existing objects
 would blur the relation contract and make an output look more certain than its source supports.
 The source contract therefore promotes no edge from names, titles, venues, or inference alone.
+
+### 1b. Community-board people and temporal roles
+
+Community Board people use a source-qualified identity, `community-board-person:{board_id}:{publisher_person_id|reviewed_local_id}`.
+This is intentionally distinct from `official:{PersonId}`, which remains the City Council/Legistar
+person identity and its Council-specific profile routes. A later generic `person` layer may attach
+only through explicit evidence; it is not required for this source identity.
+
+The person-role contract keeps `member_of`, `chairs`, `staffed_by`, and `works_for` as separate
+relationships and retains `valid_from`, `valid_to`, `observed_on`, and the source document and
+receipt. The role vocabulary is closed: `appointed_member`, `board_chair`, `board_officer`,
+`committee_chair`, `committee_member`, `public_committee_member`, `district_manager`, and `staff`.
+Board-local identity is never merged across boards, with Council officials, or by display-name
+equality. Employment and public committee participation do not establish board membership or
+voting power.
 
 ### 2. Zero production risk for v0
 

@@ -34,6 +34,7 @@ function sourceRows() {
   const scorecard = readJson("site/data/community_board_minutes_scorecard.json");
   const geography = readJson("site/data/community_board_geography_lookup.json");
   const committeeRegistry = readJson("site/data/non_council_outcome_sources/community_board_committees.json");
+  const people = readJson("site/data/community_board_people.json");
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -86,6 +87,13 @@ function sourceRows() {
     sourceRecords: meetingIndex.by_board,
     meetingDocuments: meetingIndex.meeting_documents,
     sourceReceipts: meetingIndex.receipts,
+    boardRelations: Object.fromEntries(Object.entries(people.boards || {}).map(([boardId, value]) => [
+      boardId,
+      {
+        ...value,
+        relationships: (value.relationships || []).map((row) => ({ ...row, board_id: row.board_id || boardId })),
+      },
+    ])),
     // The meeting index timestamp is a refresh/freshness clock and changes on
     // every rebuild. Constellation lookup summaries use the stable scorecard
     // date so the committed artifact remains byte-idempotent between changes.

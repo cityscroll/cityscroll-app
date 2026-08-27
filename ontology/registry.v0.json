@@ -561,7 +561,7 @@
             "exact_relation_date",
             "retained_source_document"
           ],
-          "semantics": "descriptive temporal service on a community board; no influence, support, control, or vote implication"
+          "semantics": "descriptive temporal service on a source-qualified Community Board person; no Council official identity or vote implication"
         },
         "hosts_meeting": {
           "source_contract": "cityscroll.community_board_hosts_meeting_source_contract.v1",
@@ -644,6 +644,33 @@
         "head_title",
         "agency_id"
       ],
+      "grounding": "partial"
+    },
+    {
+      "id": "community-board-person",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "A source-qualified person identity local to one Community Board. It is distinct from the Legistar/Council official object and may later attach to a generic person only through an explicit reviewed assertion.",
+      "primary_key_pattern": "community-board-person:{board_id}:{publisher_person_id|reviewed_local_id}",
+      "families": [],
+      "backing": [
+        "community_board_people",
+        "community_board_source_registry",
+        "public_graph.edge"
+      ],
+      "properties_ref": [
+        "board_id",
+        "publisher_person_id",
+        "person_name",
+        "canonical_person_ref"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.community_board_person_identity.v1",
+        "source_qualified": true,
+        "same_name_never_merges": true,
+        "council_official_cross_identity_requires_exact_proof": true,
+        "future_generic_person_attachment_optional": true
+      },
       "grounding": "partial"
     },
     {
@@ -851,9 +878,9 @@
     {
       "id": "member_of",
       "status": "registered",
-      "from": "official",
-      "to": "committee|community-board",
-      "reason": "Descriptive temporal role edge from exact publisher person and body keys. Committee observations are sourced from Legistar; community-board observations remain unknown until the board source inventory clears its publication bar.",
+      "from": "official|community-board-person",
+      "to": "committee|community-board|community-board-committee",
+      "reason": "Descriptive temporal role edge from exact publisher person and body keys. Legistar officials remain Council-specific; Community Board people use source-qualified community-board-person identities.",
       "backing": [
         "public_graph.edge",
         "nyc_legistar_office_records",
@@ -866,8 +893,8 @@
       "id": "has_member",
       "status": "unregistered",
       "from": "community-board|committee",
-      "to": "official",
-      "reason": "Organization-facing inverse membership family is declared for board and committee bodies. Community-board edges require the exact publisher identity, date, and retained source-document contract; no board edges are materialized here.",
+      "to": "official|community-board-person",
+      "reason": "Organization-facing inverse membership family is declared for board and committee bodies. Community-board edges require the exact publisher or reviewed local person identity, date, and retained source-document contract.",
       "contract_ref": "cityscroll.community_board_member_source_contract.v1",
       "backing": [
         "public_graph.edge",
@@ -876,6 +903,39 @@
       ],
       "label": "Has member",
       "grounding": "gap"
+    },
+    {
+      "id": "chairs",
+      "status": "registered",
+      "from": "community-board-person",
+      "to": "community-board|community-board-committee",
+      "reason": "Temporal chairship from a source-qualified board person to a board or board-local committee; chairship is not collapsed into ordinary membership.",
+      "contract_ref": "cityscroll.community_board_person_role_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_person_role_edge.v1",
+      "label": "Chairs",
+      "grounding": "partial"
+    },
+    {
+      "id": "staffed_by",
+      "status": "registered",
+      "from": "community-board",
+      "to": "community-board-person",
+      "reason": "Board staff relationship from an exact source-qualified person identity; district managers and staff are not board members.",
+      "contract_ref": "cityscroll.community_board_person_role_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_person_role_edge.v1",
+      "label": "Staffed by",
+      "grounding": "partial"
+    },
+    {
+      "id": "works_for",
+      "status": "registered",
+      "from": "community-board-person",
+      "to": "community-board",
+      "reason": "Employment/service relationship for a Community Board person; it remains distinct from membership.",
+      "contract_ref": "cityscroll.community_board_person_role_source_contract.v1",
+      "edge_schema": "cityscroll.community_board_person_role_edge.v1",
+      "label": "Works for",
+      "grounding": "partial"
     },
     {
       "id": "hosts_meeting",

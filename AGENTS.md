@@ -1,5 +1,10 @@
 # Project agent memory
 
+- **Community Board people and roles:** `site/community_board_relations.mjs` is the source-qualified,
+  board-local contract for `community-board-person` identities and temporal role edges. Keep these
+  distinct from Council `official` identities and routes; refresh the grounded CB people artifact
+  with the constellation builder and verify with `test/community_board_people.test.mjs`.
+
 - **Independent Checkbook payment population (AP-08):** `warehouse/payment_populations.v0.json`
   declares the fiscal-year `Spending` API acquisition separately from the bounded
   `warehouse/scripts/checkbook_spending.mjs` graph-enrichment collector. The acquisition script

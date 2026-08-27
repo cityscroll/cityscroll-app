@@ -37,7 +37,9 @@ test("only exact publisher identities, dates, and retained documents promote", (
   assert.equal(member.status, "promoted");
   assert.equal(member.promoted, true);
   assert.equal(member.edge_type, "has_member");
-  assert.equal(member.to, "official:7801");
+  assert.equal(member.to, "community-board-person:bronx-cb-01:7801");
+  assert.equal(member.target_kind, "community-board-person");
+  assert.equal(member.person_identity.canonical_person_ref, null);
   assert.equal(member.provenance.join_method, COMMUNITY_BOARD_RELATION_PROMOTION_METHOD);
   assert.equal(member.source_document.id, document.publisher_document_id);
   assert.equal(member.source_document.date, document.date);
@@ -93,9 +95,9 @@ test("board profile renders promoted relation records with provenance behind an 
   const html = renderCommunityBoardConstellationDocument(view);
   const readerHtml = html.replace(/<script[\s\S]*?<\/script>/gi, "");
   assert.match(readerHtml, /Published Member/);
-  assert.match(readerHtml, /href="\/officials\/7801\/"/);
+  assert.doesNotMatch(readerHtml, /\/officials\/7801\//);
   assert.match(readerHtml, /data-pivot-schema="cityscroll\.edge_summary\.v1"/);
-  assert.match(readerHtml, /data-pivot-target-kind="official"/);
+  assert.match(readerHtml, /data-pivot-target-kind="community-board-person"/);
   assert.match(readerHtml, /Support the neighborhood plan/);
   assert.match(readerHtml, /data-pivot-status="held"/);
   assert.doesNotMatch(readerHtml, /href="[^"]*REC-1/);

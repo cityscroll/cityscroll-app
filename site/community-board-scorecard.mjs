@@ -18,7 +18,16 @@ export const SCORECARD_SCHEMA = "cityscroll.community_board_minutes_scorecard.v1
 export const DETECTOR_SCHEMA = "cityscroll.community_board_minutes_gap_detector.v1";
 export const SOURCE_INVENTORY_SCHEMA = "cityscroll.community_board_source_inventory.v1";
 
-const SOURCE_ROLES = ["upcoming_meetings", "minutes"];
+const SOURCE_ROLES = ["upcoming_meetings", "minutes", "committees", "roster", "bylaws"];
+const COVERAGE_ROLES = ["upcoming_meetings", "minutes"];
+
+const SOURCE_ROLE_LABELS = Object.freeze({
+  upcoming_meetings: "Upcoming meetings",
+  minutes: "Minutes and records",
+  committees: "Committee directory",
+  roster: "Board roster",
+  bylaws: "Bylaws",
+});
 
 export const SOURCE_COVERAGE = Object.freeze({
   both: Object.freeze({
@@ -51,9 +60,9 @@ function sourceCheckFailed(source = {}) {
 /** Classify map color by source coverage while leaving role-level details intact. */
 export function sourceCoverage(row = {}) {
   const sources = row.sources || {};
-  if (SOURCE_ROLES.some((role) => sourceCheckFailed(sources[role]))) return "unknown";
-  const identified = SOURCE_ROLES.filter((role) => Boolean(sources[role]?.source_url));
-  if (identified.length === SOURCE_ROLES.length) return "both";
+  if (COVERAGE_ROLES.some((role) => sourceCheckFailed(sources[role]))) return "unknown";
+  const identified = COVERAGE_ROLES.filter((role) => Boolean(sources[role]?.source_url));
+  if (identified.length === COVERAGE_ROLES.length) return "both";
   if (identified.length === 1) return "one";
   return "neither";
 }
@@ -264,12 +273,12 @@ function formatObservedOn(value) {
 }
 
 function sourceRoleLabel(role) {
-  return role === "upcoming_meetings" ? "Upcoming meetings" : "Minutes and records";
+  return SOURCE_ROLE_LABELS[role] || role;
 }
 
 function sourceCard(source = {}, role) {
   const link = source.source_url
-    ? officialSourceLink({ href: source.source_url, label: role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "meeting-source-link", escape: esc })
+    ? officialSourceLink({ href: source.source_url, label: role === "upcoming_meetings" ? "Open official calendar" : `Open ${sourceRoleLabel(role).toLowerCase()}`, className: "meeting-source-link", escape: esc })
     : `<span class="scorecard-muted">Source not listed</span>`;
   const access = source.access_constraint === "browser_required"
     ? `<span class="scorecard-source-note">Browser access may be required.</span>`

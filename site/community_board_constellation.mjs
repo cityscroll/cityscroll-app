@@ -38,13 +38,16 @@ export const COMMUNITY_BOARD_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({ id: "sources", label: "Official source inventory", relation: "published_board_source", target_kind: "source" }),
   Object.freeze({ id: "committees", label: "Community Board committees", relation: "has_committee", target_kind: "community-board-committee" }),
   Object.freeze({ id: "meetings", label: "Meetings and hearings", relation: "hosts_meeting", target_kind: "meeting" }),
-  Object.freeze({ id: "members", label: "Board members", relation: "has_member", target_kind: "official" }),
+  Object.freeze({ id: "members", label: "Board members", relation: "has_member", target_kind: "community-board-person" }),
   Object.freeze({ id: "recommendations", label: "Board recommendations", relation: "issues_recommendation", target_kind: "recommendation" }),
 ]);
 
 const SOURCE_ROLE_LABELS = Object.freeze({
   upcoming_meetings: "Upcoming meetings",
   minutes: "Minutes and records",
+  committees: "Committee directory",
+  roster: "Board roster",
+  bylaws: "Bylaws",
 });
 
 const clean = (value, max = 500) => String(value ?? "")
@@ -175,14 +178,12 @@ function sourceRecordRows(records = []) {
 function relationItem(edge, kind) {
   return {
     ...edge,
-    href: kind === "member" && /^official:\d+$/.test(edge.to || "")
-      ? `/officials/${encodeURIComponent(edge.target_id)}/`
-      : kind === "meeting" && communityBoardMeetingEdgeAccepted(edge)
+    href: kind === "meeting" && communityBoardMeetingEdgeAccepted(edge)
         ? edge.href || edge.canonical_href || null
         : null,
     date: edge.relation_date || edge.meeting_date,
     source_document: edge.source_document,
-    label: edge.target_name || edge.target_id,
+    label: edge.person_name || edge.target_name || edge.target_id,
     state: communityBoardMeetingEdgeAccepted(edge) || kind !== "meeting" ? "official" : "held",
   };
 }
@@ -251,7 +252,9 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
   }
   if (spec.id === "members" || spec.id === "recommendations") {
     const kind = spec.id === "members" ? "member" : "recommendation";
-    const edges = relationEdges?.[spec.id] || [];
+    const edges = spec.id === "members"
+      ? [...(relationEdges?.members || []), ...(relationEdges?.person_roles || [])]
+      : (relationEdges?.[spec.id] || []);
     const availability = communityBoardRelationAvailability(sourceRowsForBoard, kind);
     return {
       ...spec,
@@ -398,7 +401,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
 
 function sourceMarkup(row) {
   const link = row.url
-    ? officialSourceLink({ href: row.url, label: row.role === "upcoming_meetings" ? "Open official calendar" : "Open minutes or records", className: "board-source-link", escape: esc })
+    ? officialSourceLink({ href: row.url, label: row.role === "upcoming_meetings" ? "Open official calendar" : `Open ${row.label.toLowerCase()}`, className: "board-source-link", escape: esc })
     : `<span class="node-muted">Source not listed</span>`;
   const state = {
     indexed: "Records found in the checked source",
@@ -424,14 +427,18 @@ function relationRecordMarkup(row, kind, source) {
     ? officialSourceLink({ href: document.url, label: "Open the source document", className: "board-source-link", escape: esc })
     : "";
   const date = row.date ? `Dated ${esc(row.date)}` : "Dated source record";
-  const subject = kind === "member" ? "Board member" : "Board recommendation";
+  const subject = kind === "member"
+    ? ({ district_manager: "District Manager", staff: "Community Board staff", public_committee_member: "Public committee member", committee_chair: "Committee chair", committee_member: "Committee member", board_chair: "Board chair", board_officer: "Board officer", appointed_member: "Board member" }[row.role] || "Community Board person")
+    : "Board recommendation";
   const evidence = kind === "member"
     ? "The board identity, member identity, date, and source document matched exactly."
     : "The board identity, recommendation identity, date, and source document matched exactly.";
   const target = renderEntityPivotLink({
     relation_label: kind === "member" ? "board member" : "board recommendation",
-    target_kind: row.target_kind || (kind === "member" ? "official" : "recommendation"),
-    target_id: row.target_id || row.to?.split(":").slice(1).join(":") || null,
+    target_kind: kind === "member" ? "community-board-person" : (row.target_kind || "recommendation"),
+    target_id: kind === "member"
+      ? row.person_ref || row.person_identity?.id || row.to || row.target_id || null
+      : row.target_id || row.to?.split(":").slice(1).join(":") || null,
     target_name: row.label,
     canonical_href: row.href,
     status: row.status === "held" || !row.href ? "held" : "accepted",
