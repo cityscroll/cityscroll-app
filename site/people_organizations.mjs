@@ -72,16 +72,16 @@ if (root && input && type && institution && role && summary && empty && list) {
   }
 
   function render({ reset = false, canonicalize = false } = {}) {
-    if (canonicalize) updateShareState();
     if (reset) shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
-    const { facet } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
+    const { query, facet, institution: institutionFilter, role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (type.value !== facet) type.value = facet;
-    const { institution: institutionFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (institution.value !== institutionFilter) institution.value = institutionFilter;
-    const { role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (role.value !== roleFilter) role.value = roleFilter;
-    const { query } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
     if (input.value !== query) input.value = query;
+    // Hydrate the controls from the incoming document URL before rewriting it;
+    // otherwise a legacy deep link such as #people?q=RODRIGUEZ is erased by
+    // canonicalization before the shared capability sees its query.
+    if (canonicalize) updateShareState();
     const capabilityResult = buildPeopleListCapabilityPage(model, location.search, { limit: shownLimit });
     filteredCount = capabilityResult.total_matches;
     list.dataset.browseListStatus = model.generated_at ? (allRows.length ? "published" : "empty") : "unknown";
