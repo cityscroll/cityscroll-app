@@ -44,7 +44,7 @@ const CLAIM_KEY_TYPES = Object.freeze({
   regulatory_effect: "interpretation",
 });
 
-function clean(value, max = 1_000) {
+function reportTargetClean(value, max = 1_000) {
   if (value == null) return null;
   const result = String(value)
     .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -55,7 +55,7 @@ function clean(value, max = 1_000) {
 }
 
 function required(value, name) {
-  const result = clean(value);
+  const result = reportTargetClean(value);
   if (!result) throw new TypeError(`${name} is required`);
   return result;
 }
@@ -66,7 +66,7 @@ function addProvenanceValue(out, field, value) {
     for (const item of value) addProvenanceValue(out, field, item);
     return;
   }
-  const cleaned = clean(value, 2_000);
+  const cleaned = reportTargetClean(value, 2_000);
   if (cleaned) out[field].add(cleaned);
 }
 
@@ -130,7 +130,7 @@ function claimTypeForKey(key) {
 }
 
 function canonicalClaimType(value, key) {
-  const normalized = clean(value)?.toLowerCase();
+  const normalized = reportTargetClean(value)?.toLowerCase();
   const claimType = CLAIM_TYPE_ALIASES[normalized] || normalized || claimTypeForKey(key);
   if (!REPORT_CLAIM_TYPES.includes(claimType)) {
     throw new TypeError(`unsupported report claim type: ${claimType}`);
@@ -160,18 +160,19 @@ function objectRefParts(objectRef) {
 export function parseReportClaimAnchor(value) {
   const parsed = parseAnchor(value);
   const parts = objectRefParts(parsed.object_ref);
-  const claim_type = canonicalClaimType(null, parsed.key);
+  const parcelAnchor = parsed.key.match(/^parcel(?::(\d{10}))?$/);
+  const claim_type = canonicalClaimType(null, parcelAnchor ? "parcel" : parsed.key);
   const claim = {
     anchor: parsed.anchor,
     object_ref: parsed.object_ref,
     claim_type,
-    field_or_semantic_key: parsed.key,
+    field_or_semantic_key: parcelAnchor ? "parcel" : parsed.key,
   };
 
-  if (parts.namespace === "landuse" && parsed.key === "parcel") {
+  if (parts.namespace === "landuse" && parcelAnchor) {
     claim.relation_type = "sits_on_parcel";
     claim.subject_id = `project:${parts.value}`;
-    claim.object_id = null;
+    claim.object_id = parcelAnchor[1] ? `bbl:${parcelAnchor[1]}` : null;
   } else if (parts.namespace === "contract") {
     claim.subject_id = `contract:${parts.value}`;
   } else if (parts.namespace === "entity") {
@@ -189,16 +190,19 @@ function normalizeClaimAnchor(value, defaults = {}) {
   const parsed = typeof value === "string"
     ? parseReportClaimAnchor(value)
     : (value.anchor ? parseReportClaimAnchor(value.anchor) : {});
-  const key = clean(value?.field_or_semantic_key || parsed.field_or_semantic_key);
+  const key = reportTargetClean(value?.field_or_semantic_key || parsed.field_or_semantic_key);
   const claimType = canonicalClaimType(value?.claim_type || parsed.claim_type, key);
   const claim = {
     ...(parsed.anchor ? { anchor: parsed.anchor } : {}),
     ...(parsed.object_ref ? { object_ref: parsed.object_ref } : {}),
     claim_type: claimType,
   };
-  for (const field of ["relation_type", "subject_id", "object_id", "field_or_semantic_key", "rendered_value"]) {
+  for (const field of [
+    "relation_type", "subject_id", "object_id", "field_or_semantic_key",
+    "rendered_value", "subject_label", "object_label",
+  ]) {
     const selected = value?.[field] ?? parsed[field] ?? defaults[field];
-    const normalized = clean(selected, field === "rendered_value" ? 2_000 : 500);
+    const normalized = reportTargetClean(selected, field === "rendered_value" ? 2_000 : 500);
     if (normalized) claim[field] = normalized;
   }
   if (claimType === "relationship" && !claim.relation_type && key === "parcel") {
@@ -233,12 +237,15 @@ function claimLabel(claim) {
 
 /** Resolve the machine target to the short text used by a future report form. */
 export function describeReportTarget(target) {
-  const label = clean(target?.object_label || target?.label) || `${target?.object_type || "Civic"} ${target?.object_id || "object"}`;
+  const label = reportTargetClean(target?.object_label || target?.label) || `${target?.object_type || "Civic"} ${target?.object_id || "object"}`;
   const claim = target?.claim_anchor;
   if (!claim) return label;
-  const rendered = clean(claim.rendered_value, 2_000);
+  const rendered = reportTargetClean(claim.rendered_value, 2_000);
   if (claim.claim_type === "relationship") {
-    return `${label}: ${claimLabel(claim)}${claim.object_id ? ` ${claim.object_id}` : ""}`;
+    if (rendered) return rendered;
+    const subject = reportTargetClean(claim.subject_label) || reportTargetClean(claim.subject_id) || label;
+    const object = reportTargetClean(claim.object_label) || reportTargetClean(claim.object_id) || "another civic record";
+    return `${subject} is connected to ${object}`;
   }
   if (claim.claim_type === "grouping") return `${label}: grouped notices`;
   if (claim.claim_type === "lifecycle") return `${label}: lifecycle`;
@@ -267,7 +274,7 @@ export function buildReportTarget({
     object_type: required(object_type, "object_type"),
     object_id: required(object_id, "object_id"),
     canonical_url: required(canonical_url, "canonical_url"),
-    ...(clean(object_label || label) ? { object_label: clean(object_label || label) } : {}),
+    ...(reportTargetClean(object_label || label) ? { object_label: reportTargetClean(object_label || label) } : {}),
     provenance: provenanceFromExisting(provenance, edge, source),
   };
   const normalizedClaim = normalizeClaimAnchor(claim_anchor);
@@ -275,6 +282,56 @@ export function buildReportTarget({
   target.target_id = reportTargetIdentity(target);
   target.description = describeReportTarget(target);
   return Object.freeze(target);
+}
+
+/**
+ * Build a report target for one accepted graph edge. Endpoint labels are
+ * display context only; the target identity remains the typed endpoint ids
+ * and semantic relation, so presentation order cannot change the target.
+ */
+export function buildRelationshipReportTarget({
+  object_type,
+  object_id,
+  canonical_url,
+  object_label = null,
+  anchor,
+  relation_type,
+  subject_id,
+  subject_label,
+  related_object_id,
+  related_object_label,
+  field_or_semantic_key,
+  provenance = null,
+  edge = null,
+  source = null,
+} = {}) {
+  const subject = required(subject_id, "relationship subject_id");
+  const related = required(related_object_id, "relationship object_id");
+  const relation = required(relation_type, "relationship relation_type");
+  const key = required(field_or_semantic_key, "relationship semantic key");
+  const stableAnchor = required(anchor, "relationship anchor");
+  const subjectDisplay = reportTargetClean(subject_label) || subject;
+  const relatedDisplay = reportTargetClean(related_object_label) || related;
+  return buildReportTarget({
+    object_type,
+    object_id,
+    canonical_url,
+    object_label,
+    claim_anchor: {
+      anchor: stableAnchor,
+      claim_type: "relationship",
+      relation_type: relation,
+      subject_id: subject,
+      object_id: related,
+      field_or_semantic_key: key,
+      subject_label: subjectDisplay,
+      object_label: relatedDisplay,
+      rendered_value: `${subjectDisplay} is connected to ${relatedDisplay}`,
+    },
+    provenance,
+    edge,
+    source,
+  });
 }
 
 function objectDescriptorFromContext(parsed, context) {
@@ -326,7 +383,7 @@ function objectDescriptorFromContext(parsed, context) {
 export function buildReportTargetFromAnchor(anchor, context = {}) {
   const parsed = parseReportClaimAnchor(anchor);
   const descriptor = objectDescriptorFromContext(parsed, context);
-  const parcelId = clean(context.bbl || context.parcel_id || context.edge?.to)?.replace(/^bbl:/, "") || null;
+  const parcelId = reportTargetClean(context.bbl || context.parcel_id || context.edge?.to)?.replace(/^bbl:/, "") || null;
   const claimDefaults = {
     subject_id: descriptor.object_id,
     ...(parsed.field_or_semantic_key === "parcel" && parcelId ? { object_id: `bbl:${parcelId}` } : {}),

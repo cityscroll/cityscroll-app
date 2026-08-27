@@ -3,6 +3,8 @@ import test from "node:test";
 
 import {
   buildContractReportTarget,
+  buildContractVendorRelationshipReportTarget,
+  buildProjectParcelRelationshipReportTarget,
   reportIssueAction,
   renderReportIssueAffordance,
   REPORT_CATEGORIES,
@@ -66,6 +68,35 @@ test("static Contract documents expose the same report target and browser module
   assert.match(html, />Report an issue<\/button>/);
   assert.match(html, /data-report-target=/);
   assert.match(html, /contract:CT123#vendor/);
+});
+
+test("relationship affordances show both civic endpoints without exposing schema terms", () => {
+  const contractTarget = buildContractVendorRelationshipReportTarget({
+    procurement_id: "procurement:contract:CT123",
+    canonical_href: "/procurements/procurement%3Acontract%3ACT123",
+    short_title: "Street repair contract",
+    vendor_name: "Acme Works",
+  });
+  const parcelTarget = buildProjectParcelRelationshipReportTarget({
+    project_id: "2026M0258",
+    project_name: "Avenue project",
+  }, {
+    ref: "bbl:1006440001",
+    label: "Manhattan — Block 644, Lot 1",
+    relation: "sited_on_parcel",
+  });
+
+  for (const [html, subject, object] of [
+    [renderReportIssueAffordance(contractTarget), "Street repair contract", "Acme Works"],
+    [renderReportIssueAffordance(parcelTarget), "Avenue project", "Manhattan — Block 644, Lot 1"],
+  ]) {
+    assert.match(html, />Report an issue<\/button>/);
+    assert.doesNotMatch(html, /aria-label=/);
+    assert.match(html, new RegExp(subject.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(html, new RegExp(object.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  assert.doesNotMatch(contractTarget.description, /relation_type|subject_id|object_id/);
+  assert.doesNotMatch(parcelTarget.description, /relation_type|subject_id|object_id/);
 });
 
 test("report module contains navigation teardown and submits the immutable target", async () => {

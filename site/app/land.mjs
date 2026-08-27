@@ -50,6 +50,10 @@ import {
 } from "../land_regulatory_effect.mjs";
 import { lookupBblCentroid } from "../bbl_mappluto_centroids.mjs";
 import { zapActionDisplayLabels } from "../zap_action_labels.mjs";
+import {
+  buildProjectParcelRelationshipReportTarget,
+  renderReportIssueAffordance,
+} from "../report_issue.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -1586,15 +1590,22 @@ function projectConnectionsCoverageHTML(coverage){
   // build rather than helping someone understand the project.
   return "";
 }
-function projectConnectionItemHTML(item, projectScope){
+function projectConnectionItemHTML(item, projectScope, evidence){
+  const relationshipTarget = item?.ref?.startsWith("bbl:")
+    ? buildProjectParcelRelationshipReportTarget(evidence, item)
+    : null;
+  const report = item?.ref?.startsWith("bbl:")
+    ? renderReportIssueAffordance(relationshipTarget)
+    : "";
   if(item.ref&&/^(?:agency:|vendor:stem:|entity:official:|bbl:)/.test(item.ref)){
-    return globalThis.CrolEntityPivots?.entityChipHTML({
+    const chip = globalThis.CrolEntityPivots?.entityChipHTML({
       ref:item.ref,
       label:item.label,
       link_confidence:item.confidence,
       relation:item.relation,
       evidence:item.evidence,
     },{scope:projectScope,surface:item.ref.startsWith("bbl:")?"property":"land"})||escUiHtml(item.label||"");
+    return `${chip}${report ? ` ${report}` : ""}`;
   }
   if(item.href&&String(item.href).startsWith("#")) return pivotA(item.href,cleanText(item.label)||item.href);
   if(item.href&&String(item.href).startsWith("/")) return `<a href="${escUiHtml(item.href)}">${escUiHtml(item.label||item.href)}</a>`;
@@ -1609,7 +1620,7 @@ function projectConnectionsHTML(evidence, tools){
   projectScope.facets.domains=["land"];
   const groups=view.groups.filter(group=>group.status==="matched").map(group=>{
     const itemRows=(group.items||[]).slice(0,12).map(item=>{
-      const label=projectConnectionItemHTML(item,projectScope);
+      const label=projectConnectionItemHTML(item,projectScope,evidence);
       const outcome=item.outcome?` <span class="pc-outcome">${escUiHtml(item.outcome)}</span>`:"";
       const when=item.when?` <span class="pc-when">${fdate(item.when)}</span>`:"";
       const sources=item.source_summary?` <span class="pc-source">${escUiHtml(item.source_summary)}</span>`:"";
