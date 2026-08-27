@@ -1,0 +1,289 @@
+{
+  "schema": "cityscroll.external_search_proof.v1",
+  "consumer": "external-search-proof",
+  "source": {
+    "interface": "documented public HTTP",
+    "capability_reference": "search.federated@1",
+    "route": "GET /search",
+    "origin": "https://api.cityscroll.org",
+    "captured_at": "2026-08-27T20:00:00Z",
+    "fixture_sha256": "261a5177db7f80359f8dea8a6547d5adc6d8942d4cc2857bdfa270abc7a8b350"
+  },
+  "bounds": {
+    "query_maximum_length": 240,
+    "maximum_results": 100,
+    "maximum_cards_per_lane": 8,
+    "cases": 2
+  },
+  "cases": [
+    {
+      "query": "parks",
+      "input": {
+        "http": "GET /search?q=parks"
+      },
+      "output": {
+        "capability_schema": "cityscroll.universal_search_federator.v1",
+        "result_count": 2,
+        "result_keys": [
+          "agency:agency:id:parks-and-recreation:/agencies/parks-and-recreation/",
+          "person:community-board-person:brooklyn:parks-example:/people/community-board-person-brooklyn-parks-example/"
+        ]
+      },
+      "comparison": {
+        "equivalent": true,
+        "compared_fields": [
+          "object_ref",
+          "object_type",
+          "canonical_href",
+          "result_order"
+        ],
+        "result_count": 2,
+        "result_keys": [
+          "agency:agency:id:parks-and-recreation:/agencies/parks-and-recreation/",
+          "person:community-board-person:brooklyn:parks-example:/people/community-board-person-brooklyn-parks-example/"
+        ]
+      },
+      "coverage": {
+        "notices": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 12,
+          "source": "fixture.notice-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "people": {
+          "state": "matched",
+          "matched_count": 1,
+          "indexed_count": 8,
+          "source": "fixture.people-index",
+          "as_of": "2026-08-27T18:01:00Z"
+        },
+        "agencies": {
+          "state": "matched",
+          "matched_count": 1,
+          "indexed_count": 4,
+          "source": "fixture.agency-index",
+          "as_of": "2026-08-27T18:02:00Z"
+        },
+        "vendors": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 6,
+          "source": "fixture.vendor-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "committees": {
+          "state": "partial",
+          "matched_count": 0,
+          "indexed_count": 2,
+          "source": "fixture.committee-index",
+          "as_of": "2026-08-27T17:00:00Z"
+        },
+        "community_boards": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 5,
+          "source": "fixture.board-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "exams": {
+          "state": "not_indexed",
+          "matched_count": 0,
+          "indexed_count": null,
+          "source": "fixture.exam-index",
+          "as_of": null
+        },
+        "parcels": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 3,
+          "source": "fixture.parcel-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "land": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 7,
+          "source": "fixture.land-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "meetings": {
+          "state": "provider_unavailable",
+          "matched_count": 0,
+          "indexed_count": null,
+          "source": "fixture.meeting-index",
+          "as_of": null
+        }
+      },
+      "provenance": [
+        {
+          "object_ref": "agency:id:parks-and-recreation",
+          "object_type": "agency",
+          "canonical_href": "/agencies/parks-and-recreation/",
+          "source_observation_refs": [
+            "agency:parks-and-recreation"
+          ],
+          "producer": "fixture.agency-search.v1",
+          "match_fields": [
+            {
+              "field": "title",
+              "matched_term": "parks",
+              "source_observation_ref": "agency:parks-and-recreation"
+            }
+          ]
+        },
+        {
+          "object_ref": "community-board-person:brooklyn:parks-example",
+          "object_type": "person",
+          "canonical_href": "/people/community-board-person-brooklyn-parks-example/",
+          "source_observation_refs": [
+            "community-board:brooklyn:parks-example"
+          ],
+          "producer": "fixture.community-board-people.v1",
+          "match_fields": [
+            {
+              "field": "summary",
+              "matched_term": "parks",
+              "source_observation_ref": "community-board:brooklyn:parks-example"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "query": "public hearing",
+      "input": {
+        "http": "GET /search?q=public%20hearing"
+      },
+      "output": {
+        "capability_schema": "cityscroll.universal_search_federator.v1",
+        "result_count": 2,
+        "result_keys": [
+          "meeting:meeting:city-record:public-hearing-example:/meetings/meeting%3Acity-record%3Apublic-hearing-example/",
+          "procurement:procurement:public-hearing-example:/browse/contracts/?mode=award&q=public-hearing-example"
+        ]
+      },
+      "comparison": {
+        "equivalent": true,
+        "compared_fields": [
+          "object_ref",
+          "object_type",
+          "canonical_href",
+          "result_order"
+        ],
+        "result_count": 2,
+        "result_keys": [
+          "meeting:meeting:city-record:public-hearing-example:/meetings/meeting%3Acity-record%3Apublic-hearing-example/",
+          "procurement:procurement:public-hearing-example:/browse/contracts/?mode=award&q=public-hearing-example"
+        ]
+      },
+      "coverage": {
+        "notices": {
+          "state": "matched",
+          "matched_count": 1,
+          "indexed_count": 12,
+          "source": "fixture.notice-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "people": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 8,
+          "source": "fixture.people-index",
+          "as_of": "2026-08-27T18:01:00Z"
+        },
+        "agencies": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 4,
+          "source": "fixture.agency-index",
+          "as_of": "2026-08-27T18:02:00Z"
+        },
+        "vendors": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 6,
+          "source": "fixture.vendor-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "committees": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 2,
+          "source": "fixture.committee-index",
+          "as_of": "2026-08-27T17:00:00Z"
+        },
+        "community_boards": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 5,
+          "source": "fixture.board-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "exams": {
+          "state": "not_indexed",
+          "matched_count": 0,
+          "indexed_count": null,
+          "source": "fixture.exam-index",
+          "as_of": null
+        },
+        "parcels": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 3,
+          "source": "fixture.parcel-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "land": {
+          "state": "empty",
+          "matched_count": 0,
+          "indexed_count": 7,
+          "source": "fixture.land-index",
+          "as_of": "2026-08-27T18:00:00Z"
+        },
+        "meetings": {
+          "state": "matched",
+          "matched_count": 1,
+          "indexed_count": 9,
+          "source": "fixture.meeting-index",
+          "as_of": "2026-08-27T18:03:00Z"
+        }
+      },
+      "provenance": [
+        {
+          "object_ref": "meeting:city-record:public-hearing-example",
+          "object_type": "meeting",
+          "canonical_href": "/meetings/meeting%3Acity-record%3Apublic-hearing-example/",
+          "source_observation_refs": [
+            "city-record:public-hearing-example"
+          ],
+          "producer": "fixture.meeting-search.v1",
+          "match_fields": [
+            {
+              "field": "title",
+              "matched_term": "public hearing",
+              "source_observation_ref": "city-record:public-hearing-example"
+            }
+          ]
+        },
+        {
+          "object_ref": "procurement:public-hearing-example",
+          "object_type": "procurement",
+          "canonical_href": "/browse/contracts/?mode=award&q=public-hearing-example",
+          "source_observation_refs": [
+            "notice:public-hearing-example"
+          ],
+          "producer": "fixture.notice-search.v1",
+          "match_fields": [
+            {
+              "field": "title",
+              "matched_term": "public hearing",
+              "source_observation_ref": "notice:public-hearing-example"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "stop_condition": "Reopen the parity workstream if this proof needs undocumented fields, private imports, rendered-page scraping, arbitrary queries, or a coupled new abstraction."
+}
