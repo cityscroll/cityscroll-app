@@ -22,7 +22,7 @@ export const ORGANIZATIONS_BROWSE_LIMITS = Object.freeze({
 });
 
 export const PEOPLE_ORGANIZATION_ROW_KINDS = Object.freeze([
-  "official", "exact-person-appointment", "notice-only-hire", "agency", "vendor", "committee", "community-board",
+  "official", "exact-person-appointment", "notice-only-hire", "agency", "vendor", "committee", "community-board", "community-board-person", "community-board-committee",
 ]);
 export const PEOPLE_RELATION_STATES = Object.freeze(["published", "empty", "unknown"]);
 export const PEOPLE_GET_AVAILABILITY = Object.freeze(["available", "not_yet_public", "unavailable"]);

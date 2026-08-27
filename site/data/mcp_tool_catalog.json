@@ -1711,7 +1711,9 @@
               "agency",
               "vendor",
               "committee",
-              "community-board"
+              "community-board",
+              "community-board-person",
+              "community-board-committee"
             ]
           },
           "limit": {

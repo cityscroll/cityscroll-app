@@ -1,6 +1,12 @@
 /** Shared contract helpers for static Browse lists with typed rows. */
 
 import { PEOPLE_ORGANIZATIONS_SURFACE } from "./browse_surface_contracts.mjs";
+import {
+  ORGANIZATIONS_BROWSE_LIMITS,
+  validateOrganizationsBrowseInput,
+  validateOrganizationsBrowseOutput,
+} from "../capabilities/people_organizations.mjs";
+import { organizationsBrowseFromModel } from "../capabilities/people_organizations_provider.mjs";
 
 export const PEOPLE_ORGANIZATIONS_BROWSE_CONFIG = Object.freeze({
   route: PEOPLE_ORGANIZATIONS_SURFACE.canonicalRoute,
@@ -38,6 +44,97 @@ function clean(value) {
   return String(value ?? "").trim();
 }
 
+function capabilityModel(rows, config) {
+  return {
+    rows: (Array.isArray(rows) ? rows : []).filter((row) => (
+      config.facetValues.includes(row?.[config.facetKey])
+    )).map((row, index) => ({
+      ...row,
+      // Build fixtures and older embedded documents may omit fields that are
+      // not needed by the renderer. Give the capability a typed identity
+      // without changing the original presentation row.
+      id: clean(row.id) || `ui-row:${index}`,
+      label: clean(row.label) || clean(row.search_text) || `row ${index}`,
+      relation_state: row.relation_state || "unknown",
+    })),
+  };
+}
+
+function scopedRows(rows, search, config) {
+  const { institution, role } = browseListParams(search, config);
+  return (Array.isArray(rows) ? rows : []).filter((row) => (
+    (!institution || row?.[config.institutionKey] === institution)
+    && (!role || row?.[config.roleKey] === role)
+  ));
+}
+
+function capabilityPage(rows, input, config) {
+  validateOrganizationsBrowseInput(input);
+  const sourceRows = (Array.isArray(rows) ? rows : []).filter((row) => config.facetValues.includes(row?.[config.facetKey]));
+  const preparedRows = capabilityModel(sourceRows, config).rows;
+  const result = validateOrganizationsBrowseOutput(
+    organizationsBrowseFromModel({ rows: preparedRows }, input),
+    input,
+  );
+  const originalRows = new Map(preparedRows.map((row, index) => [row.id, sourceRows[index]]));
+  return {
+    ...result,
+    // `search_text` is intentionally omitted by the public capability. Keep
+    // it available to the renderer as a presentation-only data attribute.
+    results: result.results.map((row) => {
+      const original = originalRows.get(row.id) || {};
+      const merged = { ...original, ...row };
+      return Object.fromEntries(Object.keys(original).map((field) => [field, merged[field]]));
+    }),
+  };
+}
+
+function capabilityRows(rows, search, config) {
+  const { query, facet } = browseListParams(search, config);
+  const sourceRows = scopedRows(rows, search, config);
+  const all = [];
+  let cursor = null;
+  do {
+    const page = capabilityPage(sourceRows, {
+      ...(query ? { query } : {}),
+      ...(facet ? { kind: facet } : {}),
+      limit: ORGANIZATIONS_BROWSE_LIMITS.maximum,
+      ...(cursor ? { cursor } : {}),
+    }, config);
+    if (page.availability === "unavailable") return [];
+    all.push(...page.results);
+    cursor = page.pagination.next_cursor;
+  } while (cursor);
+  return all;
+}
+
+/** Return only the visible page while retaining the capability total. */
+export function browseConfiguredPage(rows, search, config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG, limit = config.initialPageSize) {
+  const { query, facet } = browseListParams(search, config);
+  const pageSize = Math.max(1, Math.floor(Number(limit) || config.initialPageSize));
+  const sourceRows = scopedRows(rows, search, config);
+  const all = [];
+  let cursor = null;
+  let firstPage = null;
+  do {
+    const page = capabilityPage(sourceRows, {
+      ...(query ? { query } : {}),
+      ...(facet ? { kind: facet } : {}),
+      limit: Math.min(ORGANIZATIONS_BROWSE_LIMITS.maximum, pageSize),
+      ...(cursor ? { cursor } : {}),
+    }, config);
+    firstPage ||= page;
+    if (page.availability === "unavailable") return { ...page, rows: [], total_matches: 0 };
+    all.push(...page.results);
+    cursor = page.pagination.next_cursor;
+  } while (cursor && all.length < pageSize);
+  return {
+    ...firstPage,
+    rows: all.slice(0, pageSize),
+    total_matches: firstPage?.total_matches || 0,
+  };
+}
+
 export function browseListParams(search, config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG) {
   const params = search instanceof URLSearchParams ? search : new URLSearchParams(search);
   const query = clean(params.get(config.queryParam));
@@ -53,15 +150,7 @@ export function browseListParams(search, config = PEOPLE_ORGANIZATIONS_BROWSE_CO
 }
 
 export function filterConfiguredBrowseRows(rows, search, config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG) {
-  const { query, facet, institution, role } = browseListParams(search, config);
-  const normalizedQuery = query.toLocaleLowerCase();
-  return (Array.isArray(rows) ? rows : []).filter((row) => {
-    if (facet && row?.[config.facetKey] !== facet) return false;
-    if (institution && row?.[config.institutionKey] !== institution) return false;
-    if (role && row?.[config.roleKey] !== role) return false;
-    if (!normalizedQuery) return true;
-    return clean(row?.[config.searchKey]).toLocaleLowerCase().includes(normalizedQuery);
-  });
+  return capabilityRows(rows, search, config);
 }
 
 export function browseListShareSearch({ query = "", facet = "", institution = "", role = "" } = {}, config = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG) {

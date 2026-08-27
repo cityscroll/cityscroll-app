@@ -1,11 +1,13 @@
 import {
   browseListParams,
   browseListShareSearch,
-  filterConfiguredBrowseRows,
   PEOPLE_ORGANIZATIONS_BROWSE_CONFIG,
 } from "./browse_list_contract.mjs";
 import { renderBrowseView } from "./browse_view.mjs";
-import { buildPeopleListBrowseView } from "./people_organizations_surface.mjs";
+import {
+  buildPeopleListCapabilityPage,
+  buildPeopleListBrowseView,
+} from "./people_organizations_surface.mjs";
 import {
   parseSearchLensHandoff,
   renderSearchLensHandoffHtml,
@@ -51,8 +53,7 @@ if (root && input && type && institution && role && summary && empty && list) {
   const model = readModel();
   const allRows = Array.isArray(model.rows) ? model.rows : [];
   const initialSummary = summary.textContent;
-  let activeRows = allRows;
-  let filtered = [];
+  let filteredCount = allRows.length;
   let shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
 
   function updateSummary({ shownCount = null } = {}) {
@@ -61,38 +62,41 @@ if (root && input && type && institution && role && summary && empty && list) {
     if (!constrained) {
       summary.textContent = shownCount == null
         ? initialSummary
-        : `Showing ${shownCount.toLocaleString("en-US")} of ${activeRows.length.toLocaleString("en-US")} typed rows`;
+        : `Showing ${shownCount.toLocaleString("en-US")} of ${allRows.length.toLocaleString("en-US")} typed rows`;
     } else {
-      summary.textContent = `${filtered.length.toLocaleString("en-US")} matching typed row${filtered.length === 1 ? "" : "s"}`;
-      if (shownCount != null && filtered.length > shownCount) {
-        summary.textContent = `Showing ${shownCount.toLocaleString("en-US")} of ${filtered.length.toLocaleString("en-US")} matching typed rows`;
+      summary.textContent = `${filteredCount.toLocaleString("en-US")} matching typed row${filteredCount === 1 ? "" : "s"}`;
+      if (shownCount != null && filteredCount > shownCount) {
+        summary.textContent = `Showing ${shownCount.toLocaleString("en-US")} of ${filteredCount.toLocaleString("en-US")} matching typed rows`;
       }
     }
   }
 
   function render({ reset = false, canonicalize = false } = {}) {
-    filtered = filterConfiguredBrowseRows(allRows, location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
-    activeRows = filtered;
-    const { facet } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
-    if (type.value !== facet) type.value = facet;
-    const { institution: institutionFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
-    if (institution.value !== institutionFilter) institution.value = institutionFilter;
-    const { role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
-    if (role.value !== roleFilter) role.value = roleFilter;
-    const { query } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
-    if (input.value !== query) input.value = query;
-    if (canonicalize) updateShareState();
     if (reset) shownLimit = PEOPLE_ORGANIZATIONS_BROWSE_CONFIG.initialPageSize;
+    const { query, facet, institution: institutionFilter, role: roleFilter } = browseListParams(location.search, PEOPLE_ORGANIZATIONS_BROWSE_CONFIG);
+    if (type.value !== facet) type.value = facet;
+    if (institution.value !== institutionFilter) institution.value = institutionFilter;
+    if (role.value !== roleFilter) role.value = roleFilter;
+    if (input.value !== query) input.value = query;
+    // Hydrate the controls from the incoming document URL before rewriting it;
+    // otherwise a legacy deep link such as #people?q=RODRIGUEZ is erased by
+    // canonicalization before the shared capability sees its query.
+    if (canonicalize) updateShareState();
+    const capabilityResult = buildPeopleListCapabilityPage(model, location.search, { limit: shownLimit });
+    filteredCount = capabilityResult.total_matches;
     list.dataset.browseListStatus = model.generated_at ? (allRows.length ? "published" : "empty") : "unknown";
-    list.innerHTML = renderBrowseView(buildPeopleListBrowseView(model, location.search, { limit: shownLimit }));
-    const shownCount = Math.min(shownLimit, filtered.length);
+    list.innerHTML = renderBrowseView(buildPeopleListBrowseView(model, location.search, {
+      limit: shownLimit,
+      capabilityResult,
+    }));
+    const shownCount = Math.min(shownLimit, filteredCount);
     if (more) {
-      const remaining = Math.max(0, filtered.length - shownCount);
+      const remaining = Math.max(0, filteredCount - shownCount);
       more.hidden = remaining === 0;
       more.textContent = remaining ? `Show more (${remaining.toLocaleString("en-US")})` : "Show more";
     }
     updateSummary({ shownCount });
-    empty.hidden = filtered.length !== 0;
+    empty.hidden = filteredCount !== 0;
   }
 
   input.addEventListener("input", () => {
