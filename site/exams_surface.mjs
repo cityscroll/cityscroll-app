@@ -1,6 +1,7 @@
 import { buildBrowseView } from "./browse_view.mjs";
 import { EXAMS_SURFACE } from "./browse_surface_contracts.mjs";
 import { buildOwnedBrowseDocument } from "./primary_document_view.mjs";
+import { scopeFromLensState } from "./scope_v0.mjs";
 
 export const EXAMS_BROWSE_ROW_KIND = "civil_service_exam";
 
@@ -51,6 +52,10 @@ export function examBrowseRows(artifact = {}) {
     const status = examWindow(exam, asOf);
     return [{
       kind: EXAMS_BROWSE_ROW_KIND,
+      exam_number: id,
+      application_start: exam.application_start || null,
+      application_end: exam.application_end || null,
+      exam_date: exam.exam_date || exam.scheduled_exam_date || null,
       civic_object: {
         kind: "exam",
         kind_label: "Civil-service exam",
@@ -89,7 +94,7 @@ export function buildExamsBrowseView(artifact = {}, params = new URLSearchParams
     if (window === "actionable" && !["open", "upcoming"].includes(row.status)) return false;
     return true;
   });
-  return buildBrowseView("exams", { rows }, search, {
+  const view = buildBrowseView("exams", { rows }, search, {
     config: EXAMS_BROWSE_VIEW,
     rows,
     asOf: artifact.open_window_as_of
@@ -99,6 +104,15 @@ export function buildExamsBrowseView(artifact = {}, params = new URLSearchParams
     limit: options.limit ?? 24,
     handledFilters: ["interest", "window", "eligibility"],
   });
+  const agency = String(search.get("agency") || "").trim();
+  const interestArea = interests.length === 1 ? interests[0] : "";
+  view.scopeObject = scopeFromLensState("people", {
+    agency,
+    view: "guide",
+    ...(interestArea ? { interestArea } : {}),
+  });
+  view.calendarRows = rows;
+  return view;
 }
 
 export function buildExamsDocument(shell, artifact = {}) {

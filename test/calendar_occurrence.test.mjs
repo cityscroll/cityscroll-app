@@ -44,12 +44,12 @@ test("domain producers emit only meaningful semantic dates and preserve provenan
   const { occurrences, coverage } = projectCalendarOccurrences(fixture.records, { as_of: fixture.as_of });
   assert.equal(occurrences.length, 7);
   assert.equal(occurrences.filter((item) => item.kind === "event").length, 4);
-  assert.equal(occurrences.filter((item) => item.kind === "deadline").length, 1);
+  assert.equal(occurrences.filter((item) => item.kind === "deadline").length, 2);
   assert.equal(occurrences.filter((item) => item.kind === "window_open").length, 1);
-  assert.equal(occurrences.filter((item) => item.kind === "window_close").length, 1);
+  assert.equal(occurrences.filter((item) => item.kind === "window_close").length, 0);
   assert.equal(occurrences.find((item) => item.kind === "deadline").title, "Bids due — School roof repair");
   assert.equal(occurrences.find((item) => item.object_ref.includes("remote")).location, "Online — https://meet.example.gov/transportation");
-  assert.equal(occurrences.find((item) => item.kind === "window_close").title, "Applications close — Associate Staff Analyst exam");
+  assert.equal(occurrences.find((item) => item.object_ref.startsWith("exam:") && item.kind === "deadline").title, "Applications close — Associate Staff Analyst exam");
   assert.equal(occurrences.find((item) => item.status === "cancelled").status, "cancelled");
   assert.ok(occurrences.every((item) => item.canonical_url && item.source?.url && item.provenance));
   assert.equal(occurrences.some((item) => item.object_ref === "notice:20260827007"), false, "publication-only row emits zero occurrences");
@@ -63,6 +63,65 @@ test("domain producers emit only meaningful semantic dates and preserve provenan
     date_only: 3,
     withheld_for_ambiguity: 1,
   });
+});
+
+test("procurement milestones are independently typed, stable, and never publication proxies", () => {
+  const record = {
+    object_ref: "notice:solicitation-7",
+    scope_ref: "scope:procurement:parks",
+    title: "Parks playground repair",
+    start_date: "2026-08-20T12:00:00-04:00",
+    published_at: "2026-08-20T12:00:00-04:00",
+    due_date: "2026-09-11",
+    questions_due_date: "2026-09-04",
+    pre_bid_conference_date: "2026-09-02T10:00:00-04:00",
+    source_system: "city_record",
+    source_record_id: "solicitation-7",
+    source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/solicitation-7",
+    provenance: { basis: "publisher_record" },
+  };
+  const first = projectCalendarOccurrences([record], { kind: "rfp", as_of: "2026-08-27" }).occurrences;
+  const second = projectCalendarOccurrences([record], { kind: "rfp", as_of: "2026-08-27" }).occurrences;
+  assert.deepEqual(first.map((item) => [item.kind, item.date || item.starts_at]), [
+    ["deadline", "2026-09-11"],
+    ["deadline", "2026-09-04"],
+    ["milestone", "2026-09-02T10:00:00-04:00"],
+  ]);
+  assert.deepEqual(first.map((item) => item.uid), second.map((item) => item.uid));
+  assert.deepEqual(first.map((item) => item.uid), [
+    "notice:solicitation-7:deadline",
+    "notice:solicitation-7:questions_deadline",
+    "notice:solicitation-7:pre_bid_conference",
+  ]);
+  assert.ok(first.every((item) => item.source?.url && item.provenance));
+  assert.equal(first.some((item) => (item.date || item.starts_at).startsWith("2026-08-20")), false);
+});
+
+test("exam application close is a deadline and an exam date is emitted only when published", () => {
+  const applicationOnly = {
+    object_ref: "exam:7016",
+    scope_ref: "scope:exams:parks",
+    exam_number: "7016",
+    title: "Associate Staff Analyst",
+    application_start: "2026-09-01",
+    application_end: "2026-09-30",
+    source_system: "dcas",
+    source_record_id: "7016",
+    source_url: "https://www.nyc.gov/site/dcas/employment/exams.page",
+  };
+  const published = { ...applicationOnly, exam_date: "2026-11-14" };
+  const withoutDate = projectCalendarOccurrences([applicationOnly], { kind: "exam", as_of: "2026-08-27" }).occurrences;
+  const withDate = projectCalendarOccurrences([published], { kind: "exam", as_of: "2026-08-27" }).occurrences;
+  assert.deepEqual(withoutDate.map((item) => item.kind), ["window_open", "deadline"]);
+  assert.equal(withoutDate.some((item) => item.kind === "event"), false);
+  assert.equal(withoutDate.find((item) => item.kind === "deadline").title, "Applications close — Associate Staff Analyst");
+  assert.deepEqual(withDate.map((item) => item.kind), ["window_open", "deadline", "event"]);
+  assert.equal(withDate.find((item) => item.kind === "event").date, "2026-11-14");
+  assert.deepEqual(withDate.map((item) => item.uid), [
+    "exam:7016:window_open",
+    "exam:7016:deadline",
+    "exam:7016:event",
+  ]);
 });
 
 test("rescheduling retains the producer-owned UID while changing the time", () => {

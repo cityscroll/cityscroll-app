@@ -20,10 +20,24 @@ import { compileSub } from "../worker/src/lib/compile.mjs";
 import { sanitize } from "../worker/src/lib/filter.mjs";
 import { describeFilter } from "../worker/src/lib/confirm_email.mjs";
 import { formatSubjectRef, parseSubjectRef } from "../worker/src/lib/subject_registry.mjs";
+import { calendarSubscriptionHrefForBrowseView } from "../site/calendar_subscription.mjs";
+import { buildExamsBrowseView } from "../site/exams_surface.mjs";
 
 const require = createRequire(import.meta.url);
 const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
+
+test("exam browse exposes a people-scoped calendar subscription", () => {
+  const view = buildExamsBrowseView(artifact, new URLSearchParams("agency=Parks%20and%20Recreation"), { limit: 4 });
+  const href = calendarSubscriptionHrefForBrowseView(view);
+  assert.ok(href);
+  const url = new URL(href);
+  assert.equal(url.searchParams.get("lens"), "people");
+  assert.deepEqual(JSON.parse(url.searchParams.get("filter")), {
+    agency: "Parks and Recreation",
+    view: "guide",
+  });
+});
 
 test("exam documents have typed identity, attached context, and static-first affordances", () => {
   const exam = artifact.exams.find((row) => row.exam_number === "7016");

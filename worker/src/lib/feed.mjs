@@ -56,6 +56,22 @@ export function feedItems(kind, rows) {
         nextStep: r.event_date ? `Event ${d10(r.event_date)}` : null,
       };
     }
+    if (kind === "exam" && r.exam_number) {
+      const id = String(r.exam_number);
+      const date = r.application_end || r.application_start || r.exam_date || null;
+      return {
+        id: `exam:${id}`,
+        url: `https://cityscroll.org/exams/${encodeURIComponent(id)}/`,
+        title: r.title || `Civil-service exam ${id}`,
+        date,
+        summary: [r.interest_area, r.application_start && `opens ${d10(r.application_start)}`,
+          r.application_end && `closes ${d10(r.application_end)}`, r.exam_date && `exam ${d10(r.exam_date)}`]
+          .filter(Boolean).join(" · "),
+        eventDate: r.exam_date || r.application_end || r.application_start || null,
+        phase: r.exam_date ? "Exam date" : "Application deadline",
+        nextStep: r.application_end ? `Applications close ${d10(r.application_end)}` : null,
+      };
+    }
     if (r.procurement_id && !r.request_id) {
       const href = r.canonical_href
         ? `https://cityscroll.org${r.canonical_href}`
