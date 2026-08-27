@@ -1,0 +1,24 @@
+{
+  "schema": "cityscroll.public_performance_evidence_sources.v1",
+  "source_coverage": [
+    {
+      "source_id": "checkbook-contracts",
+      "label": "Checkbook registered contracts",
+      "role": "financial visibility",
+      "performance_evidence": false
+    },
+    {
+      "source_id": "city-record-awards",
+      "label": "City Record award notices",
+      "role": "public award-notice evidence",
+      "performance_evidence": true
+    },
+    {
+      "source_id": "passport-public",
+      "label": "PASSPort Public",
+      "role": "public procurement evidence",
+      "performance_evidence": true
+    }
+  ],
+  "rows": []
+}

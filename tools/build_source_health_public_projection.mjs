@@ -1,11 +1,14 @@
 #!/usr/bin/env node
 
 import { readFileSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
   buildPublicSourceHealthProjection,
+  publicSourceHealthEvidence,
   publicSourceHealthProjectionText,
+  validatePublicSourceHealthProjection,
 } from "../site/source_health_public_projection.mjs";
 
 export const CONTRACTS_PATH = fileURLToPath(
@@ -22,6 +25,17 @@ function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
 }
 
+function optionValue(argv, name, fallback) {
+  const index = argv.indexOf(name);
+  return index >= 0 ? argv[index + 1] : fallback;
+}
+
+function evidenceHash(projection) {
+  return createHash("sha256")
+    .update(JSON.stringify(publicSourceHealthEvidence(projection)), "utf8")
+    .digest("hex");
+}
+
 export function generatePublicSourceHealthProjection(options = {}) {
   const registry = options.registry || readJson(CONTRACTS_PATH);
   const observations = options.observations || readJson(OBSERVATIONS_PATH);
@@ -29,18 +43,61 @@ export function generatePublicSourceHealthProjection(options = {}) {
 }
 
 export function checkPublicSourceHealthProjection(options = {}) {
-  const expected = publicSourceHealthProjectionText(generatePublicSourceHealthProjection(options));
+  const expectedProjection = generatePublicSourceHealthProjection(options);
+  const outputPath = options.outputPath || OUTPUT_PATH;
   let actual = null;
-  try { actual = readFileSync(OUTPUT_PATH, "utf8"); } catch {}
-  return actual === expected ? [] : ["site/data/source_health_public.json is stale; rebuild it"];
+  try {
+    actual = readFileSync(outputPath, "utf8");
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return ["site/data/source_health_public.json is missing; generated source-health evidence cannot be delivered"];
+    }
+    return [`site/data/source_health_public.json cannot be read: ${error?.message || error}`];
+  }
+  let parsed = null;
+  try { parsed = JSON.parse(actual); } catch {}
+  if (!parsed) {
+    return ["site/data/source_health_public.json is invalid; generated source-health evidence cannot be checked"];
+  }
+  const validationErrors = validatePublicSourceHealthProjection(parsed, options.registry || readJson(CONTRACTS_PATH));
+  if (validationErrors.length) {
+    return [
+      "site/data/source_health_public.json is invalid; generated source-health evidence cannot be checked",
+      ...validationErrors,
+    ];
+  }
+  if (actual === publicSourceHealthProjectionText(expectedProjection)) return [];
+  const sameEvaluationTime = parsed.generated_at === expectedProjection.generated_at;
+  if (!sameEvaluationTime && evidenceHash(parsed) === evidenceHash(expectedProjection)) return [];
+
+  const generatedAt = parsed.generated_at || "missing generated_at";
+  const expectedAt = options.observations?.generated_at || "current source-health receipt";
+  return [
+    `site/data/source_health_public.json is stale: stable generated source-health evidence (${generatedAt}) does not match ${expectedAt}; expected evidence hash ${evidenceHash(expectedProjection)}, found ${evidenceHash(parsed)}`,
+  ];
 }
 
 function main(argv = process.argv.slice(2)) {
   const check = argv.includes("--check");
-  const unknown = argv.filter((arg) => arg !== "--check");
+  const contractsPath = optionValue(argv, "--contracts", CONTRACTS_PATH);
+  const observationsPath = optionValue(argv, "--observations", OBSERVATIONS_PATH);
+  const outputPath = optionValue(argv, "--output", OUTPUT_PATH);
+  const valueOptions = new Set(["--contracts", "--observations", "--output"]);
+  const unknown = argv.filter((arg, index) => (
+    arg !== "--check"
+    && !valueOptions.has(arg)
+    && argv[index - 1] !== "--contracts"
+    && argv[index - 1] !== "--observations"
+    && argv[index - 1] !== "--output"
+  ));
   if (unknown.length) throw new Error(`unknown argument(s): ${unknown.join(", ")}`);
+  const options = {
+    registry: readJson(contractsPath),
+    observations: readJson(observationsPath),
+    outputPath,
+  };
   if (check) {
-    const findings = checkPublicSourceHealthProjection();
+    const findings = checkPublicSourceHealthProjection(options);
     if (findings.length) {
       for (const finding of findings) console.error(finding);
       process.exitCode = 1;
@@ -49,8 +106,8 @@ function main(argv = process.argv.slice(2)) {
     console.log("public source health projection is current");
     return;
   }
-  const projection = generatePublicSourceHealthProjection();
-  writeFileSync(OUTPUT_PATH, publicSourceHealthProjectionText(projection));
+  const projection = generatePublicSourceHealthProjection(options);
+  writeFileSync(outputPath, publicSourceHealthProjectionText(projection));
   console.log(`wrote ${projection.source_count} public source health rows`);
 }
 

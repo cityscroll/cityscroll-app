@@ -15,6 +15,7 @@ import {
   discoverClientModuleGraph,
   repositoryRelativePath,
 } from "./client_module_graph.mjs";
+import { assertGeneratedOutputs } from "./generation_output_guard.mjs";
 
 const scriptRoot = dirname(fileURLToPath(import.meta.url));
 
@@ -119,4 +120,9 @@ if (siteDir === sourceDir || siteDir === siteSource || siteDir.startsWith(`${sou
 
 copyTree(siteSource, siteDir);
 publishClientCapabilityModules(sourceDir, siteSource, siteDir);
+assertGeneratedOutputs({
+  rootDir: cwd,
+  boundary: "public-site-generation",
+  outputs: [join(siteDir, "index.html")],
+});
 console.log(`Built public site from ${relative(cwd, siteSource) || "."} to ${relative(cwd, siteDir) || "."}`);

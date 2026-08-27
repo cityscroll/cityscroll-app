@@ -70,6 +70,28 @@ Board-local identity is never merged across boards, with Council officials, or b
 equality. Employment and public committee participation do not establish board membership or
 voting power.
 
+### 1c. Generic person projection and explicit same-person links
+
+The additive `cityscroll.person.v1` projection gives each immutable source identity a generic
+envelope, such as `person:legistar:7801` or
+`person:community-board:manhattan-cb-06:<publisher-key>`. The envelope retains issuer and source
+scope, and display-name equality never creates identity. Council `official:{PersonId}` and
+Community Board `community-board-person:{board}:{key}` remain the source identities consumed by
+their existing graph, search, and route contracts; the generic envelope is not a replacement.
+
+`person_identity_link.v1` is an explicit reviewed assertion between two generic source-qualified
+identities. It carries `candidate`, `accepted`, or `rejected` status, the fixed
+`explicit_reviewed_assertion` method, inspectable evidence, and observation/review clocks. Only an
+accepted link may populate `canonical_person_ref`; source identities and their edges remain
+addressable after acceptance. This increment does not materialize a merged view or a generic
+person route.
+
+Capability selection is allowlisted by object type and profile family. Generic `person` objects
+cannot select Council votes, committee memberships, lobbying, campaign finance, or the
+`/officials/{id}/` route. Those capabilities remain available only to the exact legacy
+`official:{PersonId}` object and its existing Council profile family. Community Board, agency,
+and vendor-contact profiles therefore remain separate even when their display names match.
+
 ### 2. Zero production risk for v0
 
 - No Worker route, no D1 migration, no dual-write flag change, no public API.

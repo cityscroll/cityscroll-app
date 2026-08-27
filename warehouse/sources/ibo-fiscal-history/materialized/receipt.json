@@ -1,0 +1,1379 @@
+{
+  "coverage": {
+    "alias_matched_label_count": 25,
+    "exact_matched_label_count": 33,
+    "fiscal_years": [
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1996,
+      1997,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "mapping_decisions": [
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "administration-for-childrens-services",
+        "canonical_agency_name": "Administration for Children's Services",
+        "source_agency_name": "Administration for Children's Services",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "board-of-correction",
+        "canonical_agency_name": "Board of Correction",
+        "source_agency_name": "Board of Correction",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "board-of-elections",
+        "canonical_agency_name": "Board of Elections",
+        "source_agency_name": "Board of Elections",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Board of Estimate - Bureau of Franchises",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Board of Estimate - Bureau of Secretary",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Board of Estimate - Franchises",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Board of Estimate - Secretary",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Board of Standards and Appeals",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "borough-president-bronx",
+        "canonical_agency_name": "Borough President - Bronx",
+        "source_agency_name": "Borough President - Bronx",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "borough-president-brooklyn",
+        "canonical_agency_name": "Borough President - Brooklyn",
+        "source_agency_name": "Borough President - Brooklyn",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "borough-president-manhattan",
+        "canonical_agency_name": "Borough President - Manhattan",
+        "source_agency_name": "Borough President - Manhattan",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "borough-president-queens",
+        "canonical_agency_name": "Borough President - Queens",
+        "source_agency_name": "Borough President - Queens",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "borough-president-staten-island",
+        "canonical_agency_name": "Borough President - Staten Island",
+        "source_agency_name": "Borough President - Staten Island",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Brooklyn Public Library",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "business-integrity-commission",
+        "canonical_agency_name": "Business Integrity Commission",
+        "source_agency_name": "Business Integrity Commission",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "CUNY - Community Colleges non-pedagogical",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "CUNY - Community Colleges pedagogical",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "CUNY - Senior Colleges",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "campaign-finance-board",
+        "canonical_agency_name": "Campaign Finance Board",
+        "source_agency_name": "Campaign Finance Board",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "city-clerk",
+        "canonical_agency_name": "City Clerk",
+        "source_agency_name": "City Clerk",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "city-council",
+        "canonical_agency_name": "City Council",
+        "source_agency_name": "City Council",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "city-planning",
+        "canonical_agency_name": "City Planning",
+        "source_agency_name": "City Planning",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "City Sheriff",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "City University",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "civil-service-commission",
+        "canonical_agency_name": "Civil Service Commission",
+        "source_agency_name": "Civil Service Commission",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "civilian-complaint-review-board",
+        "canonical_agency_name": "Civilian Complaint Review Board",
+        "source_agency_name": "Civilian Complaint Review Board",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "commission-on-human-rights",
+        "canonical_agency_name": "Commission on Human Rights",
+        "source_agency_name": "Commission on Human Rights",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Commission on Public Information",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Community Boards",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Conflicts of Interest Board",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Criminal Justice Coordinating Council",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Debt Service",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "aging",
+        "canonical_agency_name": "Aging",
+        "source_agency_name": "Department for the Aging",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "buildings",
+        "canonical_agency_name": "Buildings",
+        "source_agency_name": "Department of Buildings",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "consumer-and-worker-protection",
+        "canonical_agency_name": "Consumer and Worker Protection",
+        "source_agency_name": "Department of Consumer & Worker Protection",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "correction",
+        "canonical_agency_name": "Correction",
+        "source_agency_name": "Department of Correction",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Correction - Civilian",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Correction - Uniform",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "cultural-affairs",
+        "canonical_agency_name": "Cultural Affairs",
+        "source_agency_name": "Department of Cultural Affairs",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "design-and-construction",
+        "canonical_agency_name": "Design and Construction",
+        "source_agency_name": "Department of Design and Construction",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "education",
+        "canonical_agency_name": "Education",
+        "source_agency_name": "Department of Education",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "department-of-employment",
+        "canonical_agency_name": "Department Of Employment",
+        "source_agency_name": "Department of Employment",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "environmental-protection",
+        "canonical_agency_name": "Environmental Protection",
+        "source_agency_name": "Department of Environmental Protection",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "finance",
+        "canonical_agency_name": "Finance",
+        "source_agency_name": "Department of Finance",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "health-and-mental-hygiene",
+        "canonical_agency_name": "Health and Mental Hygiene",
+        "source_agency_name": "Department of Health and Mental Hygiene",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "homeless-services",
+        "canonical_agency_name": "Homeless Services",
+        "source_agency_name": "Department of Homeless Services",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "investigation",
+        "canonical_agency_name": "Investigation",
+        "source_agency_name": "Department of Investigation",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "juvenile-justice",
+        "canonical_agency_name": "Juvenile Justice",
+        "source_agency_name": "Department of Juvenile Justice",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "parks-and-recreation",
+        "canonical_agency_name": "Parks and Recreation",
+        "source_agency_name": "Department of Parks and Recreation",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Personnel",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Ports and Trade",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "probation",
+        "canonical_agency_name": "Probation",
+        "source_agency_name": "Department of Probation",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "sanitation",
+        "canonical_agency_name": "Sanitation",
+        "source_agency_name": "Department of Sanitation",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Sanitation - Civilian",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Sanitation - Uniform",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "small-business-services",
+        "canonical_agency_name": "Small Business Services",
+        "source_agency_name": "Department of Small Business Services",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "department-of-social-services",
+        "canonical_agency_name": "Department of Social Services",
+        "source_agency_name": "Department of Social Services",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Telecommunications / Energy",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "transportation",
+        "canonical_agency_name": "Transportation",
+        "source_agency_name": "Department of Transportation",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Department of Veterans' Affairs",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "citywide-administrative-services",
+        "canonical_agency_name": "Citywide Administrative Services",
+        "source_agency_name": "Dept. of Citywide Administrative Services",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Dept. of Education - non-pedagogical",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Dept. of Education - pedagogical",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Dept. of Info. Tech. and Telecommunications",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Dept. of Records and Info. Services",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "youth-and-community-development",
+        "canonical_agency_name": "Youth and Community Development",
+        "source_agency_name": "Dept. of Youth and Community Development",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "District Attorney - Bronx",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "District Attorney - Brooklyn",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "district-attorney-new-york-county",
+        "canonical_agency_name": "District Attorney - New York County",
+        "source_agency_name": "District Attorney - Manhattan",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "District Attorney - Queens",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "District Attorney - Staten Island",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "districting-commission",
+        "canonical_agency_name": "Districting Commission",
+        "source_agency_name": "Districting Commission",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "emergency-management",
+        "canonical_agency_name": "Emergency Management",
+        "source_agency_name": "Emergency Management",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Equal Employment Practices",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "financial-information-services-agency",
+        "canonical_agency_name": "Financial Information Services Agency",
+        "source_agency_name": "Financial Information Services Agency",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "fire-department",
+        "canonical_agency_name": "Fire Department",
+        "source_agency_name": "Fire Department",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Fire Department - Civilian",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Fire Department - EMS",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Fire Department - Uniform",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Firearms Control Board",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "housing-preservation-and-development",
+        "canonical_agency_name": "Housing Preservation and Development",
+        "source_agency_name": "Housing Preservation and Development",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "human-resources-administration",
+        "canonical_agency_name": "Human Resources Administration",
+        "source_agency_name": "Human Resources Administration",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Human Resources Administration & Employment",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "commission-on-human-rights",
+        "canonical_agency_name": "Commission on Human Rights",
+        "source_agency_name": "Human Rights Commission",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "independent-budget-office",
+        "canonical_agency_name": "Independent Budget Office",
+        "source_agency_name": "Independent Budget Office",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "landmarks-preservation-commission",
+        "canonical_agency_name": "Landmarks Preservation Commission",
+        "source_agency_name": "Landmarks Preservation Commission",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "law-department",
+        "canonical_agency_name": "Law Department",
+        "source_agency_name": "Law Department",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Legislative Office of Budget Review",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Mayoralty",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Mental Health, Retardation and Alcoholism",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Miscellaneous",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Municipal Assistance Corporation",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "NYC Employees Retirement System",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "NYC Gambling Control Commission",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "NYC Health and Hospital Corporation",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "NYC Taxi and Limousine Commission",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "New York Public Library",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Office of Administrative Trials & Hearings",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Office of Administrative Trials and Hearings",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "office-of-collective-bargaining",
+        "canonical_agency_name": "Office of Collective Bargaining",
+        "source_agency_name": "Office of Collective Bargaining",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Office of Payroll Administration",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Office of Prosecution - Special Narcotics",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "office-of-the-actuary",
+        "canonical_agency_name": "Office of The Actuary",
+        "source_agency_name": "Office of the Actuary",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "comptroller",
+        "canonical_agency_name": "Comptroller",
+        "source_agency_name": "Office of the Comptroller",
+        "status": "alias"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "payroll-administration",
+        "canonical_agency_name": "Payroll Administration",
+        "source_agency_name": "Payroll Administration",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Pension Contributions",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "police-department",
+        "canonical_agency_name": "Police Department",
+        "source_agency_name": "Police Department",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Police Department - Civilian",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Police Department - Housing",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Police Department - Transit",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Police Department - Uniform",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Public Administrator - Bronx",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Public Administrator - Brooklyn",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Public Administrator - Manhattan",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Public Administrator - Queens",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Public Administrator - Staten Island",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "public-advocate",
+        "canonical_agency_name": "Public Advocate",
+        "source_agency_name": "Public Advocate",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Queens Borough Public Library",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Research Libraries",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "tax-commission",
+        "canonical_agency_name": "Tax Commission",
+        "source_agency_name": "Tax Commission",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_canonical_surface",
+        "canonical_agency_id": "teachers-retirement-system",
+        "canonical_agency_name": "Teachers' Retirement System",
+        "source_agency_name": "Teachers Retirement System",
+        "status": "exact"
+      },
+      {
+        "basis": "shared_agency_identity_unmatched",
+        "canonical_agency_id": null,
+        "canonical_agency_name": null,
+        "source_agency_name": "Trade Waste Commission",
+        "status": "unresolved"
+      },
+      {
+        "basis": "shared_agency_identity_explicit_alias_or_successor_surface",
+        "canonical_agency_id": "nyc-department-of-veterans-services",
+        "canonical_agency_name": "NYC Department of Veterans' Services",
+        "source_agency_name": "Veterans' Services",
+        "status": "alias"
+      }
+    ],
+    "null_rates_by_measure": {
+      "full_time_positions": {
+        "null_count": 53,
+        "null_rate": 0.01245,
+        "row_count": 4257
+      },
+      "interfund_agreements": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 43
+      },
+      "less_intra_city": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 4343
+      },
+      "other_than_personal_services": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 4343
+      },
+      "personal_services": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 4343
+      },
+      "prior_year_adjustments": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 4343
+      },
+      "total_citywide_expenditures": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 43
+      },
+      "total_citywide_expenditures_less_interfund": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 43
+      },
+      "total_department_expenditures": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 4300
+      },
+      "total_full_time_positions": {
+        "null_count": 0,
+        "null_rate": 0.0,
+        "row_count": 43
+      }
+    },
+    "row_count": 26101,
+    "row_count_by_workbook": {
+      "ibo_agency_expenditures": 21801,
+      "ibo_full_time_positions": 4300
+    },
+    "source_label_count": 123,
+    "source_labels": [
+      "Administration for Children's Services",
+      "Board of Correction",
+      "Board of Elections",
+      "Board of Estimate - Bureau of Franchises",
+      "Board of Estimate - Bureau of Secretary",
+      "Board of Estimate - Franchises",
+      "Board of Estimate - Secretary",
+      "Board of Standards and Appeals",
+      "Borough President - Bronx",
+      "Borough President - Brooklyn",
+      "Borough President - Manhattan",
+      "Borough President - Queens",
+      "Borough President - Staten Island",
+      "Brooklyn Public Library",
+      "Business Integrity Commission",
+      "CUNY - Community Colleges non-pedagogical",
+      "CUNY - Community Colleges pedagogical",
+      "CUNY - Senior Colleges",
+      "Campaign Finance Board",
+      "City Clerk",
+      "City Council",
+      "City Planning",
+      "City Sheriff",
+      "City University",
+      "Civil Service Commission",
+      "Civilian Complaint Review Board",
+      "Commission on Human Rights",
+      "Commission on Public Information",
+      "Community Boards",
+      "Conflicts of Interest Board",
+      "Criminal Justice Coordinating Council",
+      "Debt Service",
+      "Department for the Aging",
+      "Department of Buildings",
+      "Department of Consumer & Worker Protection",
+      "Department of Correction",
+      "Department of Correction - Civilian",
+      "Department of Correction - Uniform",
+      "Department of Cultural Affairs",
+      "Department of Design and Construction",
+      "Department of Education",
+      "Department of Employment",
+      "Department of Environmental Protection",
+      "Department of Finance",
+      "Department of Health and Mental Hygiene",
+      "Department of Homeless Services",
+      "Department of Investigation",
+      "Department of Juvenile Justice",
+      "Department of Parks and Recreation",
+      "Department of Personnel",
+      "Department of Ports and Trade",
+      "Department of Probation",
+      "Department of Sanitation",
+      "Department of Sanitation - Civilian",
+      "Department of Sanitation - Uniform",
+      "Department of Small Business Services",
+      "Department of Social Services",
+      "Department of Telecommunications / Energy",
+      "Department of Transportation",
+      "Department of Veterans' Affairs",
+      "Dept. of Citywide Administrative Services",
+      "Dept. of Education - non-pedagogical",
+      "Dept. of Education - pedagogical",
+      "Dept. of Info. Tech. and Telecommunications",
+      "Dept. of Records and Info. Services",
+      "Dept. of Youth and Community Development",
+      "District Attorney - Bronx",
+      "District Attorney - Brooklyn",
+      "District Attorney - Manhattan",
+      "District Attorney - Queens",
+      "District Attorney - Staten Island",
+      "Districting Commission",
+      "Emergency Management",
+      "Equal Employment Practices",
+      "Financial Information Services Agency",
+      "Fire Department",
+      "Fire Department - Civilian",
+      "Fire Department - EMS",
+      "Fire Department - Uniform",
+      "Firearms Control Board",
+      "Housing Preservation and Development",
+      "Human Resources Administration",
+      "Human Resources Administration & Employment",
+      "Human Rights Commission",
+      "Independent Budget Office",
+      "Landmarks Preservation Commission",
+      "Law Department",
+      "Legislative Office of Budget Review",
+      "Mayoralty",
+      "Mental Health, Retardation and Alcoholism",
+      "Miscellaneous",
+      "Municipal Assistance Corporation",
+      "NYC Employees Retirement System",
+      "NYC Gambling Control Commission",
+      "NYC Health and Hospital Corporation",
+      "NYC Taxi and Limousine Commission",
+      "New York Public Library",
+      "Office of Administrative Trials & Hearings",
+      "Office of Administrative Trials and Hearings",
+      "Office of Collective Bargaining",
+      "Office of Payroll Administration",
+      "Office of Prosecution - Special Narcotics",
+      "Office of the Actuary",
+      "Office of the Comptroller",
+      "Payroll Administration",
+      "Pension Contributions",
+      "Police Department",
+      "Police Department - Civilian",
+      "Police Department - Housing",
+      "Police Department - Transit",
+      "Police Department - Uniform",
+      "Public Administrator - Bronx",
+      "Public Administrator - Brooklyn",
+      "Public Administrator - Manhattan",
+      "Public Administrator - Queens",
+      "Public Administrator - Staten Island",
+      "Public Advocate",
+      "Queens Borough Public Library",
+      "Research Libraries",
+      "Tax Commission",
+      "Teachers Retirement System",
+      "Trade Waste Commission",
+      "Veterans' Services"
+    ],
+    "unresolved_label_count": 65
+  },
+  "generated_from": {
+    "source_hashes": {
+      "ibo_agency_expenditures": "d2b8b8c464567c5a25b16e2c35123536cf24eb6f1163dd5d336205b68f199f30",
+      "ibo_full_time_positions": "0f226adeb38dd5cedc94386da0bbfeb274faabed81f081217dca0b2d191043c2"
+    },
+    "source_manifest": "warehouse/sources/ibo-fiscal-history/source_manifest.json"
+  },
+  "materialization": {
+    "duckdb": {
+      "catalog": "warehouse/duckdb/cityscroll.duckdb",
+      "columns": [
+        "record_type",
+        "source_workbook_id",
+        "source_workbook",
+        "source_sheet",
+        "source_vintage",
+        "source_agency_name",
+        "agency_identity_status",
+        "canonical_agency_id",
+        "canonical_agency_name",
+        "identity_mapping_basis",
+        "fiscal_year",
+        "measure",
+        "publisher_measure",
+        "source_cell",
+        "value",
+        "unit",
+        "unit_label",
+        "value_status",
+        "source_raw_value",
+        "source_footnote_markers",
+        "source_comment",
+        "value_in_usd",
+        "value_in_usd_status",
+        "conversion_factor"
+      ],
+      "row_count": 26101,
+      "status": "materialized",
+      "table": "ibo_fiscal_history"
+    },
+    "observations_csv": "warehouse/sources/ibo-fiscal-history/materialized/observations.csv",
+    "observations_jsonl": "warehouse/sources/ibo-fiscal-history/materialized/observations.jsonl"
+  },
+  "publisher_vintage": "FY2022",
+  "reconciliation": {
+    "expenditures": {
+      "meaning": "sum of source agency TOTAL DEPT. rows should equal publisher Total Citywide Expenditures; the less-interfund line is a separate publisher measure",
+      "publisher_citywide_less_interfund": {
+        "1980": 13493360.871,
+        "1981": 13970805.008,
+        "1982": 15075898.477,
+        "1983": 15698947.672,
+        "1984": 17012771.698,
+        "1985": 18795782.787,
+        "1986": 20012695.851,
+        "1987": 21382026.04,
+        "1988": 22415618.346,
+        "1989": 24483292.032,
+        "1990": 25931572.872,
+        "1991": 27476283.174,
+        "1992": 29017531.333,
+        "1993": 30151903.614,
+        "1994": 31347709.115,
+        "1995": 31585614.889,
+        "1996": 32066586.407,
+        "1997": 33736151.988,
+        "1998": 34923249.849,
+        "1999": 35858611.52,
+        "2000": 37879886.15,
+        "2001": 40226976.858,
+        "2002": 40859999.759,
+        "2003": 44340229.341,
+        "2004": 47292395.464,
+        "2005": 52789712.399,
+        "2006": 53999074.836,
+        "2007": 58705981.968,
+        "2008": 61970514.32,
+        "2009": 60166461.306,
+        "2010": 62808172.749,
+        "2011": 65314774.925,
+        "2012": 66976653.108,
+        "2013": 71024043.975,
+        "2014": 72875477.492,
+        "2015": 78030209.239,
+        "2016": 79981286.599,
+        "2017": 83463147.659,
+        "2018": 87931291.041,
+        "2019": 91779218.989,
+        "2020": 95098950.646,
+        "2021": 100000809.393,
+        "2022": 105924835.894
+      },
+      "publisher_citywide_total": {
+        "1980": 13548031.432,
+        "1981": 14033428.626,
+        "1982": 15150572.558,
+        "1983": 15780376.734,
+        "1984": 17116852.493,
+        "1985": 18911281.563,
+        "1986": 20142740.271,
+        "1987": 21514921.094,
+        "1988": 22561412.733,
+        "1989": 24664293.442,
+        "1990": 26141940.089,
+        "1991": 27692831.63,
+        "1992": 29231180.265,
+        "1993": 30364842.914,
+        "1994": 31585702.458,
+        "1995": 31818213.504,
+        "1996": 32310550.941,
+        "1997": 33981325.232,
+        "1998": 35174341.882,
+        "1999": 36107876.832,
+        "2000": 38119663.509,
+        "2001": 40511207.499,
+        "2002": 41164885.73,
+        "2003": 44640506.036,
+        "2004": 47619962.731,
+        "2005": 53135894.242,
+        "2006": 54363948.242,
+        "2007": 59126968.408,
+        "2008": 62425097.386,
+        "2009": 60641504.474,
+        "2010": 63390689.51,
+        "2011": 65876253.218,
+        "2012": 67527971.282,
+        "2013": 71562342.285,
+        "2014": 73410768.666,
+        "2015": 78581696.096,
+        "2016": 80538508.607,
+        "2017": 84095875.859,
+        "2018": 88568143.054,
+        "2019": 92431090.079,
+        "2020": 95748857.591,
+        "2021": 100635150.092,
+        "2022": 106579498.112
+      },
+      "sum_minus_publisher_total": {
+        "1980": 0.0,
+        "1981": 0.0,
+        "1982": 0.0,
+        "1983": 0.0,
+        "1984": 0.0,
+        "1985": 0.0,
+        "1986": 0.0,
+        "1987": 0.0,
+        "1988": 0.0,
+        "1989": 0.0,
+        "1990": 0.0,
+        "1991": 0.0,
+        "1992": 0.0,
+        "1993": 0.0,
+        "1994": 0.0,
+        "1995": 0.0,
+        "1996": 0.0,
+        "1997": 0.0,
+        "1998": 0.0,
+        "1999": 0.0,
+        "2000": 0.0,
+        "2001": 0.0,
+        "2002": 0.0,
+        "2003": 0.0,
+        "2004": 0.0,
+        "2005": 0.0,
+        "2006": 0.0,
+        "2007": 0.0,
+        "2008": 0.0,
+        "2009": 0.0,
+        "2010": 0.0,
+        "2011": 0.0,
+        "2012": 0.0,
+        "2013": 0.0,
+        "2014": 0.0,
+        "2015": 0.0,
+        "2016": 0.0,
+        "2017": 0.0,
+        "2018": 0.0,
+        "2019": 0.0,
+        "2020": 0.0,
+        "2021": 0.0,
+        "2022": 0.0
+      },
+      "sum_source_agency_total": {
+        "1980": 13548031.432,
+        "1981": 14033428.626,
+        "1982": 15150572.558,
+        "1983": 15780376.734,
+        "1984": 17116852.493,
+        "1985": 18911281.563,
+        "1986": 20142740.271,
+        "1987": 21514921.094,
+        "1988": 22561412.733,
+        "1989": 24664293.442,
+        "1990": 26141940.089,
+        "1991": 27692831.63,
+        "1992": 29231180.265,
+        "1993": 30364842.914,
+        "1994": 31585702.458,
+        "1995": 31818213.504,
+        "1996": 32310550.941,
+        "1997": 33981325.232,
+        "1998": 35174341.882,
+        "1999": 36107876.832,
+        "2000": 38119663.509,
+        "2001": 40511207.499,
+        "2002": 41164885.73,
+        "2003": 44640506.036,
+        "2004": 47619962.731,
+        "2005": 53135894.242,
+        "2006": 54363948.242,
+        "2007": 59126968.408,
+        "2008": 62425097.386,
+        "2009": 60641504.474,
+        "2010": 63390689.51,
+        "2011": 65876253.218,
+        "2012": 67527971.282,
+        "2013": 71562342.285,
+        "2014": 73410768.666,
+        "2015": 78581696.096,
+        "2016": 80538508.607,
+        "2017": 84095875.859,
+        "2018": 88568143.054,
+        "2019": 92431090.079,
+        "2020": 95748857.591,
+        "2021": 100635150.092,
+        "2022": 106579498.112
+      },
+      "unit": "USD_thousands"
+    },
+    "staffing": {
+      "meaning": "publisher total retained; component rows are not summed because the workbook publishes overlapping staffing components",
+      "publisher_total_positions": {
+        "1980": 195563.0,
+        "1981": 197865.0,
+        "1982": 203004.0,
+        "1983": 201577.0,
+        "1984": 208536.0,
+        "1985": 219946.0,
+        "1986": 228726.0,
+        "1987": 234099.0,
+        "1988": 241141.0,
+        "1989": 247469.0,
+        "1990": 252584.0,
+        "1991": 253112.0,
+        "1992": 244702.0,
+        "1993": 248850.0,
+        "1994": 246783.0,
+        "1995": 237300.0,
+        "1996": 235069.0,
+        "1997": 236952.0,
+        "1998": 242449.0,
+        "1999": 246636.0,
+        "2000": 250812.0,
+        "2001": 249824.0,
+        "2002": 247681.0,
+        "2003": 239616.0,
+        "2004": 262206.0,
+        "2005": 264061.0,
+        "2006": 266624.0,
+        "2007": 270839.0,
+        "2008": 280649.0,
+        "2009": 280614.0,
+        "2010": 274061.0,
+        "2011": 268308.0,
+        "2012": 267423.0,
+        "2013": 269774.0,
+        "2014": 271767.0,
+        "2015": 277173.0,
+        "2016": 287002.0,
+        "2017": 295455.0,
+        "2018": 298370.0,
+        "2019": 300442.0,
+        "2020": 300446.0,
+        "2021": 291101.0,
+        "2022": 282498.0
+      },
+      "unit": "positions"
+    }
+  },
+  "retrieval_timestamp": "2026-08-27T17:59:48Z",
+  "schema": "cityscroll.ibo_fiscal_history_receipt.v1"
+}

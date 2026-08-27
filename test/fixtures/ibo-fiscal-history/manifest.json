@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.ibo_fiscal_history_source_manifest.v1",
+  "publisher": "Fixture IBO",
+  "source_page_url": "https://example.invalid/ibo-fiscal-history",
+  "retrieval_timestamp": "2026-01-02T03:04:05Z",
+  "publisher_vintage": "fixture-v1",
+  "workbooks": [
+    {
+      "id": "ibo_agency_expenditures",
+      "title": "AGENCY EXPENDITURES",
+      "path": "AgencyExpenditures.xlsx",
+      "sha256": "9a61f79e1e7cf653fa6049890ce9a5681adf77cc473c4141d03a07e9a64841bd",
+      "publisher_vintage": "fixture-v1",
+      "sheets": [
+        "DETAIL",
+        "In $000's"
+      ],
+      "sheet": "In $000's",
+      "unit": "USD_thousands",
+      "unit_label": "In $000's",
+      "title_cell": "A1",
+      "source_note_cell": "A2",
+      "source_note_prefix": "Source:",
+      "header_row": 4,
+      "first_data_row": 6,
+      "fiscal_years": [
+        2022,
+        2021
+      ]
+    },
+    {
+      "id": "ibo_full_time_positions",
+      "title": "Actual Full-Time Positions",
+      "path": "FullTimePositions.xlsx",
+      "sha256": "7184a1e1ccec56ed8fb75b6fa722bb408f15255561c28363248b7458ca672a20",
+      "publisher_vintage": "fixture-v1",
+      "sheets": [
+        "ALL FUNDS"
+      ],
+      "sheet": "ALL FUNDS",
+      "unit": "positions",
+      "unit_label": "positions",
+      "title_cell": "A1",
+      "source_note_cell": "A3",
+      "source_note_prefix": "Source:",
+      "definition_cell": "A2",
+      "definition": "(reported as of June 30th for each year)",
+      "header_row": 5,
+      "first_data_row": 7,
+      "fiscal_years": [
+        2022,
+        2021
+      ]
+    }
+  ]
+}

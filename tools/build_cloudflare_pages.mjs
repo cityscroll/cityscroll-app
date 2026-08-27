@@ -64,6 +64,10 @@ runNode(sourceDir, "build_bbl_mappluto_centroids.mjs", ["--check"]);
 // yesterday's committed health clock.
 runNode(sourceDir, "build_source_health_observations.mjs");
 runNode(sourceDir, "build_source_health_observations.mjs", ["--check"]);
+// The public projection is a separate generated receipt consumed by the
+// data-health page. Check it here so an old projection cannot be copied into
+// the release artifact after current observations succeeded.
+runNode(sourceDir, "build_source_health_public_projection.mjs", ["--check"]);
 
 if (refresh) {
   runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--land-only"]);

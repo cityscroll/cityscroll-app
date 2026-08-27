@@ -256,6 +256,25 @@ test("externalAwardHTML: fuzzy ABO awards (real SCA fixture) render as a 'possib
   assert.match(html, /Source updated 2025-12-01/);
 });
 
+test("notice 20260713030 keeps ABO-only vendors plain instead of linking to empty City Record profiles", () => {
+  const externalAwardHTML = buildExternalAwardHTML();
+  const html = externalAwardHTML({
+    coverage: "fuzzy",
+    agencyAwards: [
+      { vendor: "Aqua Audit", description: "Water meter reading services", process: "Authority Contract - Competitive Bid", date: "2024-06-26T00:00:00.000", amount: 200000 },
+      { vendor: "Utilities Research Associates Group, Inc", description: "Eletric meter reading services", process: "Authority Contract - Competitive Bid", date: "2024-06-26T00:00:00.000", amount: 500000 },
+      { vendor: "NYCTA", description: "NYCT Force Account Agreement", process: "Authority Contract - Competitive Bid", date: "2024-06-20T00:00:00.000", amount: 350000 },
+    ],
+    source: { kind: "abo", dataset: "d84c-dk28", authority: "New York City Economic Development Corporation", refreshed: "2025-12-01" },
+  }, { request_id: "20260713030", type_of_notice_description: "Solicitation" });
+
+  for (const vendor of ["Aqua Audit", "Utilities Research Associates Group, Inc", "NYCTA"]) {
+    assert.match(html, new RegExp(vendor.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `notice preserves ${vendor}`);
+  }
+  assert.doesNotMatch(html, /\/vendors\//, "external-source vendors do not get City Record vendor routes");
+  assert.doesNotMatch(html, /aria-hidden="true">◆<\/span>/, "no misleading vendor diamond is rendered");
+});
+
 test("externalAwardHTML: covered ABO source with zero rows omits the award slot", () => {
   const externalAwardHTML = buildExternalAwardHTML();
   const resp = { coverage: "fuzzy", agencyAwards: [], source: { kind: "abo", dataset: "d84c-dk28", authority: "New York City Economic Development Corporation", refreshed: "2025-12-01" } };

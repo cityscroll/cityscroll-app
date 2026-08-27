@@ -34,6 +34,15 @@ import {
 import { classifyCheckbookCityRecordMatches, normalizeCheckbookContractRows } from "../warehouse/lib/checkbook_contracts.mjs";
 import { migrateLegacyUrl } from "../site/route_migration.mjs";
 import { routeHashFromScope, scopeFromRouteHash } from "../site/scope_v0.mjs";
+import {
+  PERFORMANCE_EVIDENCE_STATES,
+  assertNoPerformanceOverclaim,
+  filterPerformanceEvidenceCoverage,
+  groupPerformanceEvidenceCoverage,
+  performanceEvidenceCoverageSummary,
+  performanceEvidenceDrillThroughHref,
+  projectPerformanceEvidenceCoverage,
+} from "../site/analytical_performance_evidence.mjs";
 
 describe("registered contract analytical projection contract", () => {
   it("declares reader labels, source fields, and the registration-year guard", () => {
@@ -287,5 +296,63 @@ describe("committed analytical population artifact", () => {
     assert.equal(projection.registration_timing_summary.total_contract_count, projection.rows.length);
     assert.equal(projection.registration_timing_summary.missing_date_contract_count, projection.rows.length);
     assert.equal(projection.registration_timing_summary.retroactive_share, null);
+  });
+});
+
+describe("public performance-evidence coverage projection", () => {
+  const contractRows = [
+    { prime_contract_id: "CT-TERMS", agency: "Agency A", prime_vendor: "Vendor A", registration_fiscal_year: 2026, contract_amount_band: "Under $100,000", current_registered_amount: 100 },
+    { prime_contract_id: "CT-EVALUATION", agency: "Agency A", prime_vendor: "Vendor B", registration_fiscal_year: 2026, contract_amount_band: "Under $100,000", current_registered_amount: 200 },
+    { prime_contract_id: "CT-NONE", agency: "Agency B", prime_vendor: "Vendor C", registration_fiscal_year: 2027, contract_amount_band: "Under $100,000", current_registered_amount: 300 },
+    { prime_contract_id: "CT-INVALID", agency: "Agency B", prime_vendor: "Vendor D", registration_fiscal_year: 2027, contract_amount_band: "Under $100,000", current_registered_amount: 400 },
+  ];
+  const evidence = JSON.parse(readFileSync(new URL("./fixtures/analytical_projection/performance_evidence.json", import.meta.url))).rows;
+
+  it("counts exclusive evidence states while preserving exact source passages", () => {
+    const projection = projectPerformanceEvidenceCoverage(contractRows, evidence, { snapshot_date: "2026-08-26" });
+    const summary = performanceEvidenceCoverageSummary(projection.rows);
+    assert.deepEqual(Object.fromEntries(Object.entries(summary.states).map(([state, value]) => [state, value.contract_count])), {
+      [PERFORMANCE_EVIDENCE_STATES.TERMS]: 1,
+      [PERFORMANCE_EVIDENCE_STATES.EVALUATION]: 1,
+      [PERFORMANCE_EVIDENCE_STATES.NONE]: 2,
+    });
+    const terms = projection.rows.find((row) => row.prime_contract_id === "CT-TERMS");
+    assert.equal(terms.evidence_items[0].source_passage.document_id, "rfx-terms-1");
+    assert.equal(terms.evidence_items[0].source_passage.locator, "page 7, section 2.1");
+    assert.equal(terms.evidence_items[0].source_passage.url, "https://example.nyc.gov/rfx/terms.pdf");
+    const unresolved = projection.rows.find((row) => row.prime_contract_id === "CT-NONE");
+    assert.equal(unresolved.evidence_state, PERFORMANCE_EVIDENCE_STATES.NONE);
+    assert.equal(unresolved.unresolved, true);
+    assert.deepEqual(unresolved.evidence_items, []);
+  });
+
+  it("keeps aggregate groups linked to their composing contracts", () => {
+    const projection = projectPerformanceEvidenceCoverage(contractRows, evidence);
+    const grouped = groupPerformanceEvidenceCoverage(projection.rows, { groupBy: "agency" });
+    const agencyA = grouped.groups.find((group) => group.label === "Agency A");
+    assert.deepEqual(agencyA.states[PERFORMANCE_EVIDENCE_STATES.TERMS].contract_ids, ["CT-TERMS"]);
+    assert.deepEqual(agencyA.states[PERFORMANCE_EVIDENCE_STATES.EVALUATION].contract_ids, ["CT-EVALUATION"]);
+    const href = performanceEvidenceDrillThroughHref({ agency: "Agency A", evidence_state: PERFORMANCE_EVIDENCE_STATES.TERMS });
+    assert.equal(href, "/browse/contracts/?mode=award&ap_agency=Agency+A&ap_evidence_state=has-accessible-performance-terms");
+    assert.equal(filterPerformanceEvidenceCoverage(projection.rows, { evidence_state: PERFORMANCE_EVIDENCE_STATES.NONE }).length, 2);
+  });
+
+  it("does not turn financial visibility or unresolved evidence into a performance claim", () => {
+    const projection = projectPerformanceEvidenceCoverage(contractRows, evidence);
+    assertNoPerformanceOverclaim(projection);
+    assert.equal(projection.rows[0].financial_fact, "registered_contract");
+    assert.equal(projection.rows[0].evidence_state, PERFORMANCE_EVIDENCE_STATES.TERMS);
+    assert.equal(projection.rows.find((row) => row.prime_contract_id === "CT-INVALID").evidence_state, PERFORMANCE_EVIDENCE_STATES.NONE);
+    assert.match(projection.absence_scope, /does not establish.*vendor failed.*outcome/i);
+    assert.throws(() => assertNoPerformanceOverclaim({ evidence_state: PERFORMANCE_EVIDENCE_STATES.NONE, performance_score: 0 }), /forbidden field/);
+  });
+
+  it("rejects located evidence without an exact HTTPS source passage", () => {
+    const projection = projectPerformanceEvidenceCoverage(
+      [{ prime_contract_id: "CT-1", current_registered_amount: 10 }],
+      [{ prime_contract_id: "CT-1", evidence_items: [{ kind: "performance_terms", source_passage: { url: "https://example.test/a.pdf", locator: "", excerpt: "missing locator" } }] }],
+    );
+    assert.equal(projection.rows[0].evidence_state, PERFORMANCE_EVIDENCE_STATES.NONE);
+    assert.equal(projection.rows[0].unresolved, true);
   });
 });

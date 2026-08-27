@@ -1,0 +1,94 @@
+{
+  "current": {
+    "capability_reference": "contracts.analysis@1",
+    "availability": "complete",
+    "group_by": "vendor",
+    "measure": {
+      "key": "current",
+      "reader_label": "current registered contract value",
+      "unit": "USD",
+      "fact": "registered_contract",
+      "not_payment": true
+    },
+    "groups": [
+      {
+        "label": "Vendor B",
+        "value": 200,
+        "unit": "USD",
+        "contract_count": 1,
+        "contract_ids": ["CT-B"],
+        "drill_through": {
+          "href": "https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22vendor%3AVendor%20B%22%5D%7D"
+        }
+      },
+      {
+        "label": "Vendor A",
+        "value": 100,
+        "unit": "USD",
+        "contract_count": 1,
+        "contract_ids": ["CT-A"],
+        "drill_through": {
+          "href": "https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22vendor%3AVendor%20A%22%5D%7D"
+        }
+      }
+    ],
+    "denominator": {
+      "value": 300,
+      "unit": "USD",
+      "contract_count": 2
+    },
+    "coverage": {
+      "statement": "City Record exact-PIN match coverage for the selected registered-contract population: 1 of 2 eligible contracts; rows without a published PIN cannot be evaluated.",
+      "matched_contract_count": 1,
+      "eligible_contract_count": 2,
+      "missing_pin_contract_count": 0
+    },
+    "freshness": { "as_of": "2026-08-18T20:00:00Z" }
+  },
+  "count": {
+    "capability_reference": "contracts.analysis@1",
+    "availability": "complete",
+    "group_by": "vendor",
+    "measure": {
+      "key": "count",
+      "reader_label": "unique registered contracts",
+      "unit": "contracts",
+      "fact": "registered_contract",
+      "not_payment": true
+    },
+    "groups": [
+      {
+        "label": "Vendor B",
+        "value": 1,
+        "unit": "contracts",
+        "contract_count": 1,
+        "contract_ids": ["CT-B"],
+        "drill_through": {
+          "href": "https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22vendor%3AVendor%20B%22%5D%7D"
+        }
+      },
+      {
+        "label": "Vendor A",
+        "value": 1,
+        "unit": "contracts",
+        "contract_count": 1,
+        "contract_ids": ["CT-A"],
+        "drill_through": {
+          "href": "https://cityscroll.org/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22vendor%3AVendor%20A%22%5D%7D"
+        }
+      }
+    ],
+    "denominator": {
+      "value": 2,
+      "unit": "contracts",
+      "contract_count": 2
+    },
+    "coverage": {
+      "statement": "City Record exact-PIN match coverage for the selected registered-contract population: 1 of 2 eligible contracts; rows without a published PIN cannot be evaluated.",
+      "matched_contract_count": 1,
+      "eligible_contract_count": 2,
+      "missing_pin_contract_count": 0
+    },
+    "freshness": { "as_of": "2026-08-18T20:00:00Z" }
+  }
+}

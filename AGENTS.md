@@ -1,5 +1,12 @@
 # Project agent memory
 
+- **Generic person contract:** `ontology/person.mjs` owns the additive
+  `cityscroll.person.v1` source-qualified envelope and `person_identity_link.v1` reviewed
+  `same_person` relation. It never rewrites `official:{PersonId}` or
+  `community-board-person:{board}:{key}` identities and its capability allowlist keeps generic,
+  Community Board, agency, and vendor-contact profiles out of Council-only surfaces. No generic
+  person route or source adapter is implied; focused proof is `test/person_ontology.test.mjs`.
+
 - **Community Board people and roles:** `site/community_board_relations.mjs` is the source-qualified,
   board-local contract for `community-board-person` identities and temporal role edges. Keep these
   distinct from Council `official` identities and routes; refresh the grounded CB people artifact
@@ -22,6 +29,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- **Public-site generation postcondition:** `tools/build_public_site.mjs` calls
+  `tools/generation_output_guard.mjs` after copying the public tree. The guard requires a
+  non-empty `index.html`, writes `.artifacts/generation-output-receipt.json`, and fails before
+  delivery when the required entrypoint is missing; regression coverage is in
+  `test/generation_output_guard.test.mjs`.
+
 - **Registered-contract analytical projection:** `site/analytical_projection_contract.mjs` is the
   versioned AP-01 registry; `tools/build_analytical_registered_contracts.mjs` materializes the
   full normalized Checkbook population into `site/data/analytics_registered_contracts.json` and
@@ -36,6 +49,19 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   fiscal-year filters while visibly dropping fact-specific filters. Payment groups link to their
   payment transaction scope and related registered-contract scope; do not blend their dollar
   measures or use the bounded graph-enrichment payment rows as a population denominator.
+
+- **IBO agency fiscal history (AP-11):** `warehouse/scripts/ibo_fiscal_history.py` ingests the
+  checkpointed FY2022 IBO Agency Expenditures and Actual Full-Time Positions XLSX artifacts under
+  `warehouse/sources/ibo-fiscal-history/`. It keeps publisher units, fiscal-year-end staffing
+  semantics, source labels, and unresolved identity decisions; regenerate the deterministic
+  materialization and receipt with the command in `docs/ibo-fiscal-history.md`.
+
+- **Public performance-evidence coverage (AP-10):** `site/analytical_performance_evidence.mjs`
+  is the separate source-bounded projection for public performance terms and evaluation documents.
+  `tools/build_analytical_performance_evidence.mjs` materializes its contract-scoped states and
+  exact source passages. Missing passages remain `no-located-evidence` and unresolved; this state
+  never implies an outcome, vendor failure, or performance score. Keep the financial registered
+  contract and payment facts separate from this evidence-availability fact.
 
 - **Vendor concentration projection:** `vendorConcentration` in
   `site/analytical_projection.mjs` computes agency-scoped prime-vendor shares from the
@@ -140,6 +166,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   resolver. A `not_required` obligation requires an exact method-family, category, amount, and
   effective-date match. Publisher-label ambiguity or source absence remains `unknown` coverage,
   never a legal exemption. Focused proof: `test/procurement_policy_registry.test.mjs`.
+- **External award vendor links:** `site/app/money-history.mjs` keeps vendor labels in ABO/Checkbook
+  award panels as plain text because `/vendors/:name/` is a City Record award profile and cannot
+  show those external-source rows. Keep the external source link scoped to its source dataset or
+  contract record; do not reuse the generic vendor pivot without a cross-source profile join.
+  Focused proof: `test/external_awards.test.mjs`.
 - **Procurement coverage labels:** `site/procurement_coverage_labels.mjs` is the resident
   projector. Ordinary matched small-purchase rows may say public solicitation is not required;
   M/WBE award-notice absence renders only after `required` plus `source_checked_no_record`.

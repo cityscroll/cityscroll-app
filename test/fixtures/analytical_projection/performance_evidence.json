@@ -1,0 +1,54 @@
+{
+  "schema": "cityscroll.public_performance_evidence_sources.v1",
+  "rows": [
+    {
+      "prime_contract_id": "CT-TERMS",
+      "evidence_items": [
+        {
+          "kind": "performance_terms",
+          "label": "Service-level terms",
+          "source_passage": {
+            "source_id": "passport-public",
+            "document_id": "rfx-terms-1",
+            "url": "https://example.nyc.gov/rfx/terms.pdf",
+            "locator": "page 7, section 2.1",
+            "excerpt": "The provider must report service levels quarterly."
+          }
+        }
+      ]
+    },
+    {
+      "prime_contract_id": "CT-EVALUATION",
+      "evidence_items": [
+        {
+          "kind": "evaluation_doc",
+          "label": "Published evaluation",
+          "source_passage": {
+            "source_id": "city-record-awards",
+            "document_id": "award-evaluation-2",
+            "url": "https://example.nyc.gov/awards/evaluation.pdf",
+            "locator": "page 3, evaluation table",
+            "excerpt": "Quarterly review document published by the agency."
+          }
+        }
+      ]
+    },
+    {
+      "prime_contract_id": "CT-INVALID",
+      "evidence_items": [
+        {
+          "kind": "performance_terms",
+          "label": "Unusable claim",
+          "outcome": "successful",
+          "source_passage": {
+            "source_id": "passport-public",
+            "document_id": "missing-locator",
+            "url": "https://example.nyc.gov/missing.pdf",
+            "locator": "",
+            "excerpt": "This passage is not admitted without a locator."
+          }
+        }
+      ]
+    }
+  ]
+}
