@@ -63,7 +63,10 @@ function clean(value) {
 
 function validInstant(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)) return null;
-  const epoch = Date.parse(value);
+  const text = value.trim();
+  const epoch = Date.parse(
+    /T/.test(text) && !/[zZ]|[+-]\d{2}:?\d{2}$/.test(text) ? `${text}Z` : text,
+  );
   if (!Number.isFinite(epoch)) return null;
   const date = new Date(epoch);
   return date.getUTCFullYear() > 1970 ? date.toISOString() : null;
@@ -169,6 +172,24 @@ export function publicSourceHealthProjectionLeaks(value) {
   }
   inspect(value, "");
   return [...new Set(findings)].sort();
+}
+
+/**
+ * Return the portion of the public projection that represents source evidence.
+ * The evaluation timestamp and freshness labels are intentionally omitted:
+ * both are derived from the clock at which the canonical observations are
+ * rebuilt, rather than from a source or configuration change.
+ */
+export function publicSourceHealthEvidence(projection) {
+  const evidence = { ...(projection || {}) };
+  delete evidence.generated_at;
+  evidence.sources = (projection?.sources || []).map((source) => {
+    const health = { ...(source?.health || {}) };
+    delete health.status;
+    delete health.reason_codes;
+    return { ...source, health };
+  });
+  return evidence;
 }
 
 function unexpectedKeys(value, allowed, path, errors) {
