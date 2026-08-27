@@ -44,6 +44,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   payment transaction scope and related registered-contract scope; do not blend their dollar
   measures or use the bounded graph-enrichment payment rows as a population denominator.
 
+- **IBO agency fiscal history (AP-11):** `warehouse/scripts/ibo_fiscal_history.py` ingests the
+  checkpointed FY2022 IBO Agency Expenditures and Actual Full-Time Positions XLSX artifacts under
+  `warehouse/sources/ibo-fiscal-history/`. It keeps publisher units, fiscal-year-end staffing
+  semantics, source labels, and unresolved identity decisions; regenerate the deterministic
+  materialization and receipt with the command in `docs/ibo-fiscal-history.md`.
+
 - **Vendor concentration projection:** `vendorConcentration` in
   `site/analytical_projection.mjs` computes agency-scoped prime-vendor shares from the
   explicit selected-scope registered-value denominator. Named-vendor top-5/top-10 shares
