@@ -84,7 +84,7 @@ const CATALOG = new URL("../site/data/mcp_tool_catalog.json", import.meta.url);
 
 test("the registry is frozen, versioned, owned, and contains the federated search capability", () => {
   assert.equal(validateCapabilityRegistry(CAPABILITY_REGISTRY), CAPABILITY_REGISTRY);
-  assert.equal(CAPABILITY_REGISTRY.length, 8);
+  assert.equal(CAPABILITY_REGISTRY.length, 10);
   assert.equal(CAPABILITY_REGISTRY[0], NOTICE_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[1], NOTICE_GET_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[2], ENTITY_DOSSIER_CAPABILITY);
@@ -93,6 +93,8 @@ test("the registry is frozen, versioned, owned, and contains the federated searc
   assert.equal(CAPABILITY_REGISTRY[5], FEDERATED_SEARCH_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[6], CONTRACT_GET_CAPABILITY);
   assert.equal(CAPABILITY_REGISTRY[7], CONTRACTS_BROWSE_CAPABILITY);
+  assert.equal(CAPABILITY_REGISTRY[8].reference, "people.get@1");
+  assert.equal(CAPABILITY_REGISTRY[9].reference, "organizations.browse@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.reference, "notice.search@1");
   assert.equal(NOTICE_SEARCH_CAPABILITY.version, "1.0.0");
   assert.equal(NOTICE_SEARCH_CAPABILITY.owner, "notices");
@@ -300,6 +302,8 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "search.federated@1",
     "contract.get@1",
     "contracts.browse@1",
+    "people.get@1",
+    "organizations.browse@1",
   ]);
   assert.deepEqual(catalog.tools.map(({ name }) => name), [
     "search_federated",
@@ -310,10 +314,12 @@ test("topology and public MCP catalog are deterministic and committed", () => {
     "retrieve_cited_passages",
     "get_contract",
     "browse_contracts",
+    "get_person_or_organization",
+    "browse_organizations",
     "preview_watch",
     "create_watch",
   ]);
-  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 10);
+  assert.equal(renderMcpCatalogHtml(catalog).match(/<li>/g).length, 12);
 });
 
 test("the deterministic CLI check passes and --stdout is stable", () => {

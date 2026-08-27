@@ -19,6 +19,7 @@ import { readCommunityBoardMeetingIndex } from "./lib/community_board_meeting_in
 import { eligibleCityRecordMeetings } from "../site/city_record_meeting.mjs";
 import { normalizeHearing } from "../worker/src/lib/hearings.mjs";
 import { EXAMS_SURFACE, PEOPLE_ORGANIZATIONS_SURFACE, STAFFING_SURFACE } from "../site/browse_surface_contracts.mjs";
+import { buildPeopleOrganizationsReadModel } from "../site/people_organizations_read_model.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -181,6 +182,21 @@ export function primaryDocumentOutputs() {
   return outputs;
 }
 
+export function peopleOrganizationsOutputs() {
+  const model = buildPeopleOrganizationsReadModel({
+    people: json("/data/person_hub_lookup.json"),
+    committees: json("/data/committee_graph_lookup.json"),
+    agencies: json("/data/agency_constellation_lookup.json"),
+    awards: json("/data/ocp_awards_warehouse_lookup.json"),
+    places: json("/data/community_board_geography_lookup.json"),
+    hires: json("/data/staffing_default_hires.json"),
+  });
+  return [[
+    join(SITE, "data/people_organizations_read_model.json"),
+    `${JSON.stringify(model, null, 2)}\n`,
+  ]];
+}
+
 function buildSharedMeetingArtifacts() {
   const payloads = Object.fromEntries(Object.entries(BROWSE_FACETS).map(([facet, config]) => [facet, json(config.dataPath)]));
   const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
@@ -207,7 +223,7 @@ export function sharedMeetingOutputs() {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const check = process.argv.includes("--check");
   let stale = 0;
-  for (const [path, content] of [...primaryDocumentOutputs(), ...sharedMeetingOutputs()]) {
+  for (const [path, content] of [...primaryDocumentOutputs(), ...sharedMeetingOutputs(), ...peopleOrganizationsOutputs()]) {
     if (!existsSync(path)) {
       if (!check) {
         mkdirSync(dirname(path), { recursive: true });

@@ -58,6 +58,7 @@ import { handleNotice, prewarmNotices } from "./notice.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
 import { handleExternalAward, refreshAboAwards, prewarmNycha } from "./external_award.mjs";
 import { handleAgency } from "./agency.mjs";
+import { handlePeopleOrganizations } from "./people_organizations.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleInboundEmail } from "./inbound.mjs";
@@ -145,6 +146,7 @@ export default {
     if (pathname === "/cited-passages") return handleCitedPassages(request, env);
     if (pathname === "/contract") return handleContract(request, env);
     if (pathname === "/contracts") return handleContractsBrowse(request, env);
+    if (pathname === "/people-organizations") return handlePeopleOrganizations(request, env);
     if (pathname === "/search") return handleSearch(request, env);
     if (pathname === "/notice") return handleNotice(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
