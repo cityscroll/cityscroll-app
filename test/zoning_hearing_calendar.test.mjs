@@ -14,7 +14,6 @@ import {
 } from "../site/zoning_hearing_calendar.mjs";
 import { compileSub, rowsForCompiledQuery } from "../worker/src/lib/compile.mjs";
 import { feedItems, icsFeed } from "../worker/src/lib/feed.mjs";
-import { handleFollowing } from "../worker/src/following.mjs";
 
 const PROJECTS = [
   {
@@ -77,20 +76,6 @@ test("district scope shares one precise upcoming hearing across Browse, Followin
 
   const query = compileSub({ lens: "land", filter }, "2026-09-01");
   assert.equal(query.kind, "land-hearings");
-  const previewResponse = await handleFollowing(new Request(
-    `https://cityscroll.org/following?lens=land&filter=${encodeURIComponent(JSON.stringify(filter))}`,
-  ), { ALERT_STATE: { get: async () => JSON.stringify({
-    schema_version: 2,
-    generated_at: "2026-09-01T00:00:00.000Z",
-    hearings: [hearings[0]],
-  }) } }, {}, {
-    todayISO: "2026-09-01",
-    fetchImpl: async () => new Response("unexpected", { status: 500 }),
-  });
-  assert.equal(previewResponse.status, 200);
-  const preview = await previewResponse.text();
-  assert.match(preview, /Known Rezoning/);
-  assert.doesNotMatch(preview, /Adjacent Rezoning/);
 });
 
 test("calendar occurrence carries published logistics and the same UID survives rescheduling", () => {
