@@ -11,17 +11,18 @@ after the first paint rather than the initial document alone.
 The pre-change route started `ensureMoneyHistory()` and `ensureRules()`, then
 waited for both before rendering the client Notice body. It also waited for the
 Notice row and attachment metadata in series. The resident money snapshot is
-226,459 bytes on disk, but its fetch belongs to deferred Notice enrichment after
-the first context milestone; it was not the first-render blocker in the local
-resource trace.
+226,459 bytes on disk. Notice context now consumes the source-vintaged
+`notice_context_lookup.json` projection instead of fetching and scanning that
+full snapshot on the route. The lookup is 109,816 bytes in the current
+materialization and contains only the aggregates needed by the existing cards.
 
-The added browser Performance marks (`cityscroll.notice-context.*`) isolate route
-start, Notice read, attachment metadata, first context readiness, route-module
-completion, and final settlement without recording identifiers or expanding the
-RUM payload. In a controlled trace with 1.5-second delays on the route-module and
-attachment paths, the pre-change readiness boundary reached about 4,904 ms while
-the new `first-ready` mark occurred at about 1,720 ms; attachment settlement
-continued independently.
+The browser Performance marks (`cityscroll.notice-context.*` and
+`cityscroll.app-import.*`) isolate route start, Notice read, attachment metadata,
+lookup/branch timing, first context readiness, route-module completion, and final
+settlement without recording identifiers or expanding the RUM payload. A 30-sample
+deterministic microbenchmark measured the context input p75 at 0.695 ms before the
+projection and 0.370 ms after it; this is an implementation benchmark, not a field
+RUM savings forecast.
 
 ## Change
 
@@ -29,6 +30,11 @@ continued independently.
   available; route modules no longer gate Notice-context readiness.
 - Start attachment metadata after the primary row is available and hydrate its
   source card, extracted content, related notices, and tables progressively.
+- Materialize agency/vendor context aggregates in
+  `tools/build_notice_context_lookup.mjs` after the resident money snapshot and
+  load that bounded artifact from the Notice owner.
+- Start the Notice-context module immediately after core boot on Notice routes
+  and retain bounded branch/import marks for the next field investigation.
 - Keep the final `data-notice-context-settled` boundary open until late attachment
   hydration has settled, preserving content and terminal-state coverage.
 
