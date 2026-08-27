@@ -1756,6 +1756,7 @@ async function renderHearingExplorer(options){
   }));
   el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
   announce(t("meetings_entries_announce",{n:uniqueRows.length}));
+  globalThis.syncCalendarSubscription?.("meetings", rows);
   // Edge policy is optional hydration. Paint the bounded meeting list first so
   // a slow edge module cannot hold navigation or the first accessible result.
   if(hydrateEdges){

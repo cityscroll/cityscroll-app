@@ -109,7 +109,7 @@ export const FEDERATED_SEARCH_CAPABILITY = deepFreeze({
     coverageSemantics: {
       matched: "one or more admitted documents were observed",
       empty: "the participating indexed lens observed zero matches",
-      partial: "the lens participated but its source/index coverage is incomplete",
+      partial: "the lens participated using the available portion of its registered source index",
       stale: "the lens result is retained with an out-of-date source clock",
       not_indexed: "the lens has no registered served index for this request",
       provider_unavailable: "the registered lens provider failed; absence is not an empty result",
@@ -203,7 +203,7 @@ function validateCoverage(coverage) {
   for (const lens of FEDERATED_SEARCH_LENS_IDS) {
     const row = coverage.by_lens[lens];
     if (!row || row.lens !== lens || !COVERAGE_STATE_SET.has(row.state)) {
-      throw new TypeError(`search.federated coverage is incomplete for ${lens}`);
+      throw new TypeError(`search.federated coverage row is missing for ${lens}`);
     }
   }
 }
