@@ -267,7 +267,10 @@ def open_landing_actions(page: Page):
 
 
 def verify_interactions(browser: Browser) -> None:
-    with StaticServer(ROOT / "site") as base_url:
+    # Browser checks must use the Pages-shaped artifact because the homepage
+    # imports shared capability modules that are published beside site assets.
+    public_root = ROOT / "_site" if (ROOT / "_site" / "index.html").is_file() else ROOT / "site"
+    with StaticServer(public_root) as base_url:
         context = browser.new_context(
             viewport={"width": 390, "height": 844},
             permissions=["clipboard-read", "clipboard-write"],

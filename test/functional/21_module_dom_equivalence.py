@@ -21,6 +21,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).parents[2]
 SITE = ROOT / "site"
+PUBLIC_SITE = ROOT / "_site" if (ROOT / "_site" / "index.html").is_file() else SITE
 
 import sys
 
@@ -144,7 +145,18 @@ def flatten_helper(
         dependency = strip_module_exports(dependency)
         assert_no_module_exports(dependency, helper_name)
         nested_sources.append(dependency)
-    return "\n".join([*nested_sources, STATIC_LOCAL_IMPORT.sub("", source)])
+    for helper_name in STATIC_PARENT_IMPORT.findall(source):
+        helper_path = SITE / helper_name
+        if not helper_path.is_file():
+            helper_path = ROOT / helper_name
+        assert helper_path.is_file(), f"parent helper import missing: {helper_name}"
+        dependency = flatten_helper(helper_path, (*stack, path), flattened)
+        dependency = strip_module_exports(dependency)
+        assert_no_module_exports(dependency, helper_name)
+        nested_sources.append(dependency)
+    source = STATIC_LOCAL_IMPORT.sub("", source)
+    source = STATIC_PARENT_IMPORT.sub("", source)
+    return "\n".join([*nested_sources, source])
 
 
 def assert_calendar_occurrence_flattens() -> None:
@@ -314,7 +326,9 @@ def main() -> None:
     with tempfile.TemporaryDirectory(prefix="cityscroll-module-equivalence-") as temp:
         baseline = pathlib.Path(temp) / "site"
         reconstruct_inline_site(baseline)
-        modular_server, modular_base = start_server(SITE)
+        # The modular browser path must use the Pages-shaped artifact so imports
+        # of repository-level capability modules resolve exactly as deployed.
+        modular_server, modular_base = start_server(PUBLIC_SITE)
         baseline_server, baseline_base = start_server(baseline)
         try:
             with sync_playwright() as playwright:

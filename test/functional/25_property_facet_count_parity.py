@@ -16,11 +16,12 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[2]
 SITE = ROOT / "site"
+PUBLIC_SITE = ROOT / "_site" if (ROOT / "_site" / "index.html").is_file() else SITE
 
 
 class Handler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, directory=str(SITE), **kwargs)
+        super().__init__(*args, directory=str(PUBLIC_SITE), **kwargs)
 
     def log_message(self, *_args):
         return

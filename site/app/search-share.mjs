@@ -1,5 +1,7 @@
 import { renderAskCitedQuotesHtml } from "../ask_cited_synthesis.mjs";
 import { renderInterpretPreview } from "../interpret_preview.mjs";
+import { renderUniversalSearchResultHtml } from "../universal_search_relevance_ux.mjs";
+import { fetchFederatedSearch } from "../federated_search_client.mjs";
 import { walkEntryHref } from "../walk_entry.mjs";
 import {
   parseSearchLensHandoff,
@@ -199,29 +201,26 @@ async function nlTranslate(){
     closingWeek=!!p.closingWeek && !wantsAward;
     $("#closingweek").classList.toggle("on", closingWeek);
     $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
-    // Reset the previous result before the bounded search completes. If the source is
-    // unavailable, stale rows must never be presented as the new interpretation's matches.
-    currentRows=[];
-    const searchSucceeded=await search();
+    // The preview is a compact projection of the same federated capability used by /search.
+    // Keep the interpreted money deep link above, but do not narrow the preview to Contracts.
+    const federatedRows = await fetchFederatedSearch(text);
     const preview=renderInterpretPreview({
       query:text,
-      rows:currentRows,
-      renderRow:(row,index)=>moneyRowHTML(row,index,p.keywords||[]),
+      rows:federatedRows,
+      renderRow:(row)=>renderUniversalSearchResultHtml(row),
       heading:t("preview_panel_heading"),
-      empty:t("topic_search_bounded_empty"),
-      error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
-      state:searchSucceeded?"ready":"error",
+      empty:t("nl_no_matches_note"),
+      error:t("topic_search_coverage_provider_unavailable",{source:t("search_label")}),
+      state:"ready",
       escape:nlqEscape,
     });
     if(output) output.innerHTML=preview+askCitedQuotesHTML(p.cited_quotes)+nlqResolvedActionsHTML(deepLink)+recovery;
     bindNLQResolvedActions(text, deepLink);
-    if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
   }catch(_error){
-    currentRows=[];
     if(output) output.innerHTML=renderInterpretPreview({
       query:text,
       state:"error",
-      error:t("topic_search_coverage_provider_unavailable",{source:t("tab_money")}),
+      error:t("topic_search_coverage_provider_unavailable",{source:t("search_label")}),
       escape:nlqEscape,
     })+fullSpanSuggestionRecoveryHTML(text);
   }finally{
