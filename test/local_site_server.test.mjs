@@ -152,11 +152,11 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
   );
   assert.match(
     aggregate,
-    /needs\.a11y-pr-shard\.result != 'success' \|\| \(needs\.a11y-routes-focus-primary\.result != 'success' && needs\.a11y-routes-focus-retry\.result != 'success'\)[\s\S]*?exit 1/,
+    /needs\.a11y-pr-shard\.result != 'success' \|\| \(needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed != 'true' && needs\.a11y-routes-focus-retry\.result != 'success'\)[\s\S]*?exit 1/,
   );
   assert.match(
     aggregate,
-    /needs\.a11y-pr-shard\.result == 'success' && \(needs\.a11y-routes-focus-primary\.result == 'success' \|\| needs\.a11y-routes-focus-retry\.result == 'success'\)/,
+    /needs\.a11y-pr-shard\.result == 'success' && \(needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed == 'true' \|\| needs\.a11y-routes-focus-retry\.result == 'success'\)/,
   );
   assert.match(aggregate, /Routes-focus recovered on its one fresh-runner retry/);
   assert.doesNotMatch(
@@ -182,11 +182,15 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
   assert.match(routes, /a11y-routes-focus-primary:[\s\S]*?runs-on: ubuntu-latest/);
   assert.match(
     routes,
+    /a11y-routes-focus-primary:[\s\S]*?continue-on-error: true[\s\S]*?routes_focus_primary_passed: \$\{\{ steps\.routes-focus-primary-check\.outcome == 'success' \}\}/,
+  );
+  assert.match(
+    routes,
     /a11y-routes-focus-primary:[\s\S]*?Fail when the shared site artifact is unavailable[\s\S]*?needs\.browser-pr-site\.result != 'success'[\s\S]*?exit 1/,
   );
   assert.match(
     routes,
-    /a11y-routes-focus-retry:[\s\S]*?needs\.a11y-routes-focus-primary\.result == 'failure'[\s\S]*?runs-on: ubuntu-latest/,
+    /a11y-routes-focus-retry:[\s\S]*?needs\.a11y-routes-focus-primary\.outputs\.routes_focus_primary_passed != 'true'[\s\S]*?runs-on: ubuntu-latest/,
   );
   assert.match(routes, /tools\/run_a11y_ci_shard\.sh routes-focus primary/);
   assert.match(routes, /tools\/run_a11y_ci_shard\.sh routes-focus fresh-runner-retry/);
@@ -195,7 +199,6 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
     routes,
     /a11y-pr-shard-routes-focus-fresh-runner-retry-logs-\$\{\{ github\.run_id \}\}/,
   );
-  assert.doesNotMatch(routes, /continue-on-error/);
 
   assert.match(
     shardRunner,
@@ -207,14 +210,14 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
     "axe must remain a direct assertion rather than a retried functional check",
   );
 
-  const aggregateGreen = (matrix, primary, retry) => (
-    matrix === "success" && (primary === "success" || retry === "success")
+  const aggregateGreen = (matrix, primaryPassed, retry) => (
+    matrix === "success" && (primaryPassed || retry === "success")
   );
-  assert.equal(aggregateGreen("success", "success", "skipped"), true, "normal primary pass");
-  assert.equal(aggregateGreen("success", "failure", "success"), true, "fresh-runner recovery");
-  assert.equal(aggregateGreen("success", "failure", "failure"), false, "both routes attempts fail");
-  assert.equal(aggregateGreen("failure", "success", "skipped"), false, "a non-route shard fails");
-  assert.equal(aggregateGreen("success", "failure", "skipped"), false, "retry is missing");
+  assert.equal(aggregateGreen("success", true, "skipped"), true, "normal primary pass");
+  assert.equal(aggregateGreen("success", false, "success"), true, "fresh-runner recovery");
+  assert.equal(aggregateGreen("success", false, "failure"), false, "both routes attempts fail");
+  assert.equal(aggregateGreen("failure", true, "skipped"), false, "a non-route shard fails");
+  assert.equal(aggregateGreen("success", false, "skipped"), false, "retry is missing");
 });
 
 test("performance interaction waits for the canonical Contracts document URL", () => {
