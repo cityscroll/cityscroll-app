@@ -147,6 +147,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   resolver. A `not_required` obligation requires an exact method-family, category, amount, and
   effective-date match. Publisher-label ambiguity or source absence remains `unknown` coverage,
   never a legal exemption. Focused proof: `test/procurement_policy_registry.test.mjs`.
+- **External award vendor links:** `site/app/money-history.mjs` keeps vendor labels in ABO/Checkbook
+  award panels as plain text because `/vendors/:name/` is a City Record award profile and cannot
+  show those external-source rows. Keep the external source link scoped to its source dataset or
+  contract record; do not reuse the generic vendor pivot without a cross-source profile join.
+  Focused proof: `test/external_awards.test.mjs`.
 - **Procurement coverage labels:** `site/procurement_coverage_labels.mjs` is the resident
   projector. Ordinary matched small-purchase rows may say public solicitation is not required;
   M/WBE award-notice absence renders only after `required` plus `source_checked_no_record`.

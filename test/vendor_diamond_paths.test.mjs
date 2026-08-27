@@ -15,7 +15,8 @@ test("previously plain vendor paths use the shared typed pivot renderer", () => 
   assert.match(money, /globalThis\.v\?\..*escUiHtml/);
   assert.doesNotMatch(feed, /<b>\$\{escUiHtml\(guide\.vendor\)\}<\/b>/);
   assert.doesNotMatch(lifecycle, /<b lang="en" dir="ltr">\$\{escUiHtml\(d\.vendor\)\}<\/b>/);
-  assert.doesNotMatch(money, /<b lang="en" dir="ltr">\$\{escUiHtml\(c\.vendor\)\}<\/b>/);
+  assert.match(money, /<b lang="en" dir="ltr">\$\{escUiHtml\(c\.vendor\)\}<\/b>/, "external award vendor labels remain plain");
+  assert.doesNotMatch(money, /globalThis\.v\?\.\(c\.vendor\)/, "external award vendors do not reuse the City Record pivot");
 });
 
 test("vendor pivot confidence gate keeps review-only refs plain", () => {
