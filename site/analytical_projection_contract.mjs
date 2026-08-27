@@ -66,6 +66,17 @@ export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
       derivation: "reuses the existing exact-PIN Checkbook ↔ City Record join; no fuzzy matching",
       values: CITY_RECORD_MATCH_VALUES,
     }),
+    performance_evidence_state: Object.freeze({
+      label: "Public performance evidence state",
+      field: "performance_evidence_state",
+      source_field: "accepted public performance-evidence passage",
+      derivation: "separate AP-10 coverage projection; financial connectivity never creates evidence",
+      values: Object.freeze([
+        "has-accessible-performance-terms",
+        "has-evaluation-doc",
+        "no-located-evidence",
+      ]),
+    }),
   }),
   measures: Object.freeze({
     unique_contract_count: Object.freeze({
@@ -259,7 +270,7 @@ export const ANALYTICAL_FACTS = Object.freeze({
 
 export const ANALYTICAL_FACT_FILTERS = Object.freeze({
   common: Object.freeze(["agency", "prime_vendor", "fiscal_year", "contract_id"]),
-  registered_contract: Object.freeze(["contract_amount_band", "min_amount", "max_amount", "retroactive", "city_record_match"]),
+  registered_contract: Object.freeze(["contract_amount_band", "min_amount", "max_amount", "retroactive", "city_record_match", "performance_evidence_state"]),
   payment: Object.freeze([]),
 });
 

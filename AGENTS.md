@@ -62,6 +62,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   semantics, source labels, and unresolved identity decisions; regenerate the deterministic
   materialization and receipt with the command in `docs/ibo-fiscal-history.md`.
 
+- **Public performance-evidence coverage (AP-10):** `site/analytical_performance_evidence.mjs`
+  is the separate source-bounded projection for public performance terms and evaluation documents.
+  `tools/build_analytical_performance_evidence.mjs` materializes its contract-scoped states and
+  exact source passages. Missing passages remain `no-located-evidence` and unresolved; this state
+  never implies an outcome, vendor failure, or performance score. Keep the financial registered
+  contract and payment facts separate from this evidence-availability fact.
+
 - **Vendor concentration projection:** `vendorConcentration` in
   `site/analytical_projection.mjs` computes agency-scoped prime-vendor shares from the
   explicit selected-scope registered-value denominator. Named-vendor top-5/top-10 shares

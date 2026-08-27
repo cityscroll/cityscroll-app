@@ -2819,6 +2819,21 @@
     analytics_payment_transactions_unit: "payment transactions",
     analytics_payment_population_suffix: "Population: independent AP-08 Checkbook contract-payment records. Negative/reversal rows remain included.",
     analytics_payment_group_note: "Each amount is net actual payment activity; negative/reversal rows remain included.",
+    analytics_evidence_kicker: "Public evidence coverage",
+    analytics_evidence_heading: "What public performance evidence is available?",
+    analytics_evidence_deck: "Financial visibility and public performance evidence are separate. This view counts qualifying public terms and evaluation documents; it does not assess outcomes.",
+    analytics_evidence_population: "{count} registered contracts in this scope. Evidence states describe what CityScroll located in its declared public sources.",
+    analytics_evidence_terms: "Performance terms located",
+    analytics_evidence_evaluation: "Evaluation document located",
+    analytics_evidence_none: "No located evidence",
+    analytics_evidence_total: "Total",
+    analytics_evidence_view_contracts: "View {count} contracts",
+    analytics_evidence_statement: "{total} contracts in this scope: {located} have located public performance evidence and {unresolved} remain unresolved because no qualifying passage was located.",
+    analytics_evidence_table_caption: "Public performance-evidence state coverage by group. Each cell shows contracts and registered value.",
+    analytics_evidence_passages_heading: "Located source passages",
+    analytics_evidence_no_passages: "CityScroll located no qualifying source passages for this selection. This coverage state leaves service outcomes, vendor blame, and performance scores unresolved.",
+    analytics_evidence_note: "Coverage counts show whether declared CityScroll sources contain qualifying performance terms or evaluation documents. A no-located-evidence count identifies a source-coverage gap. Service outcomes, vendor blame, and performance scores remain unresolved.",
+    analytics_view_evidence: "Performance evidence",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
