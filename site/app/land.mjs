@@ -614,8 +614,6 @@ function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect, statusM
     ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
     : null;
   lRows=Array.isArray(rows)?rows:[]; landBanner=banner||"";
-  // The facet module is lazy so non-Land routes keep their cold path small; now
-  // that the inventory exists, repaint the status rail with its real options.
   syncLandLensControls();
   setExportBandVisibility(lRows.length, "land-export-band", "land-export-overflow");
   unbusy("#llist");
