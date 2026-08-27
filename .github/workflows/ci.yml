@@ -320,6 +320,11 @@ jobs:
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
         run: node --test test/*.test.mjs
+      - name: Community Board ontology regression gates
+        if: matrix.family == 'site-node'
+        # Keep this family named and independently visible in CI as the contract
+        # guard for board-local identity, provenance, coverage, rendering, and UI.
+        run: node --test test/community_board*.test.mjs test/people_organizations_community_boards.test.mjs
       - name: Resident-read zero-egress architecture gate
         if: matrix.family == 'site-node'
         run: node tools/no_live_external_reads.mjs --check
