@@ -26,14 +26,17 @@ test("shared browser artifact is exact-input cached and every consumer verifies 
   assert.match(producer, /steps\.site-identity\.outputs\.build-input-identity/);
   assert.match(producer, /site_artifact_identity\.mjs verify --commit-sha "\$GITHUB_SHA"/);
   assert.match(producer, /steps\.cached-site\.outputs\.ready != 'true'[\s\S]*?uses: \.\/\.github\/actions\/build-site/);
-  assert.match(producer, /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
+  assert.match(producer, /name: browser-pr-site-\$\{\{ github\.run_id \}\}/);
+  assert.match(producer, /overwrite: true/);
+  assert.doesNotMatch(producer, /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
   assert.match(producer, /_site\.sha256/);
   assert.match(producer, /_site\.identity\.json/);
 
   const consumers = workflow.match(/uses: \.\/\.github\/actions\/use-site-artifact/g) || [];
   assert.equal(consumers.length, 5);
-  const qualifiedNames = workflow.match(/artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/g) || [];
-  assert.equal(qualifiedNames.length, consumers.length);
+  const runScopedNames = workflow.match(/artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}/g) || [];
+  assert.equal(runScopedNames.length, consumers.length);
+  assert.doesNotMatch(workflow, /artifact-name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
 
   assert.match(consumer, /actions\/download-artifact@v4/);
   assert.match(consumer, /actions\/cache\/restore@v4/);
