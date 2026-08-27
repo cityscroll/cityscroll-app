@@ -18,7 +18,7 @@
         ],
         "clocks": {
           "publisher_updated": {
-            "at": "2024-05-06T04:00:00.000Z",
+            "at": "2024-05-06T00:00:00.000Z",
             "state": "KNOWN",
             "basis": "publisher_record"
           },
@@ -54,7 +54,7 @@
         ],
         "clocks": {
           "publisher_updated": {
-            "at": "2024-06-26T04:00:00.000Z",
+            "at": "2024-06-26T00:00:00.000Z",
             "state": "KNOWN",
             "basis": "publisher_record"
           },
@@ -588,7 +588,7 @@
         ],
         "clocks": {
           "publisher_updated": {
-            "at": "2026-08-04T04:00:00.000Z",
+            "at": "2026-08-04T00:00:00.000Z",
             "state": "KNOWN",
             "basis": "publisher_record"
           },
