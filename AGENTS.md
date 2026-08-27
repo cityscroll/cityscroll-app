@@ -5,6 +5,12 @@
   distinct from Council `official` identities and routes; refresh the grounded CB people artifact
   with the constellation builder and verify with `test/community_board_people.test.mjs`.
 
+- **Community Board search projections:** `site/board_search_producer.mjs` owns board-local
+  `community-board-committee` SearchDocuments; `site/community_board_people_search_producer.mjs`
+  owns grounded `community-board-person` documents. Both feed the keyword index as separate typed
+  objects with board context; keep `site/committee_search_producer.mjs` Council/Legistar-specific
+  and rebuild with `node tools/build_keyword_search_index.mjs`.
+
 - **Independent Checkbook payment population (AP-08):** `warehouse/payment_populations.v0.json`
   declares the fiscal-year `Spending` API acquisition separately from the bounded
   `warehouse/scripts/checkbook_spending.mjs` graph-enrichment collector. The acquisition script

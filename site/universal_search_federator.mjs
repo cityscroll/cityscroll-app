@@ -37,6 +37,8 @@ const TYPE_WEIGHTS = Object.freeze({
   agency: 1,
   vendor: 1,
   committee: 1,
+  "community-board-committee": 1,
+  "community-board-person": 1,
   community_board: 1,
   civil_service_exam: 1,
   parcel: 1,
