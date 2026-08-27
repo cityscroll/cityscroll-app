@@ -177,6 +177,8 @@
   .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:transparent;border:1px solid var(--rule);border-radius:8px;padding:10px 14px;margin-top:14px}
   .controls button{background:#fff;color:var(--ink);border:1px solid var(--rule);font-weight:600}
   .controls .watchbtn{color:var(--oxblood);border-color:var(--oxblood)}
+  .controls .calendar-subscribe-btn{display:inline-flex;align-items:center;min-height:18px;color:var(--oxblood);font:600 14px/1.2 ui-sans-serif,system-ui,sans-serif;text-decoration:underline;text-underline-offset:2px}
+  .controls .calendar-subscribe-btn[hidden]{display:none}
   .controls label{color:var(--muted)}
   .field{display:flex;flex-direction:column;gap:5px;flex:1 1 150px}
   .field.kw{flex:2 1 220px}
@@ -1816,6 +1818,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="money" data-calendar-subscription="scope" href="#" hidden aria-label="Subscribe to calendar for this scope">Subscribe to calendar</a>
       </div>
     </div>
     <input type="hidden" id="mode" value="open">
@@ -2054,6 +2057,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="land" data-calendar-subscription="scope" href="#" hidden aria-label="Subscribe to calendar for this scope">Subscribe to calendar</a>
       </div>
     </div>
     <select id="lstatus" hidden aria-hidden="true" aria-label="Status" data-i18n-aria="status_label"><option value="all" data-i18n="status_all">All</option><option value="active" selected data-i18n="status_active">In review / active</option><option value="hearings" data-i18n="land_status_upcoming_hearings">Upcoming hearings</option></select>
@@ -2208,6 +2212,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="property" data-calendar-subscription="scope" href="#" hidden aria-label="Subscribe to calendar for this scope">Subscribe to calendar</a>
       </div>
     </div>
     <div class="property-rail-label lens-primary-label" data-i18n="property_asset_rail_label">Item type</div>
@@ -2270,6 +2275,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="rules" data-calendar-subscription="scope" href="#" hidden aria-label="Subscribe to calendar for this scope">Subscribe to calendar</a>
       </div>
     </div>
     <div class="rules-rail-label lens-primary-label" id="rules-process-label" data-i18n="rules_process_rail_label">Includes phase</div>
@@ -2326,6 +2332,7 @@
           </div>
         </details>
         <button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Follow this search</button>
+        <a class="calendar-subscribe-btn" data-calendar-subscribe-lens="meetings" data-calendar-subscription="scope" href="#" hidden aria-label="Subscribe to calendar for this scope">Subscribe to calendar</a>
       </div>
     </div>
     <div class="meetings-rail-label lens-primary-label" id="meetings-process-label" data-i18n="meetings_process_rail_label">Current stage</div>

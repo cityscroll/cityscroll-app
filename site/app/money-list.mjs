@@ -786,6 +786,7 @@ async function search(){
 }
 function paintMoneyRows(rows, {autoSelect=true, narrowed=false, lineageRows=null,rumInteraction=null}={}){
   currentRows = rows;
+  globalThis.syncCalendarSubscription?.("money", rows);
   currentMoneyLineageRows = lineageRows || rows;
   currentMoneyNarrowed = narrowed;
   setExportBandVisibility(currentRows.length, "money-export-band", "money-export-overflow");
