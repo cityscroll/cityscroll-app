@@ -83,7 +83,7 @@ test("primary navigation is four real document links on every promoted shell", (
   ]);
   const peopleGroup = BROWSE_GROUPS.find((group) => group.id === "people-organizations");
   assert.equal(peopleGroup.children.find((child) => child.facet === "staffing").label, "Staffing");
-  assert.deepEqual(peopleGroup.children.filter((child) => ["vendors", "committees"].includes(child.id)).map((child) => child.label), ["Vendors", "Committees"]);
+  assert.deepEqual(peopleGroup.children.filter((child) => ["vendors", "committees"].includes(child.id)).map((child) => child.label), ["Vendors", "City Council committees"]);
   for (const [facet, config] of Object.entries(BROWSE_FACETS)) {
     const child = BROWSE_GROUPS.flatMap((group) => group.children).find((candidate) => candidate.facet === facet);
     assert.ok(child, `${facet} remains represented in the civic-object groups`);
@@ -415,7 +415,7 @@ test("Browse landing and every bounded child are exact build outputs with useful
     const html = output(`/site/browse/${kind}/index.html`);
     assert.match(html, new RegExp(`data-browse-concept="${kind}"`));
     assert.match(html, /data-build-rendered="browse-concept"/);
-    assert.match(html, kind === "people" ? /Officials/ : /Community boards/);
+    assert.match(html, kind === "people" ? /City Council members\/officials/ : /Community boards/);
   }
   for (const facet of Object.keys(BROWSE_FACETS)) {
     const html = output(`/site/browse/${facet}/index.html`);

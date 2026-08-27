@@ -266,7 +266,7 @@
     },
     {
       "adapter_id": "mcp.get_person_or_organization@1",
-      "adapter_semantic_sha256": "9adf1e6c2b4bbccc250375298e2cd642fd215210bea35598393aea5a3f95df0b",
+      "adapter_semantic_sha256": "9d14621ff8128f0d5958f92d9fb2984e5aabd193c7e4f28e1097ade2e095187d",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -280,7 +280,7 @@
       },
       "calls": 1,
       "capability_reference": "people.get@1",
-      "direct_semantic_sha256": "9adf1e6c2b4bbccc250375298e2cd642fd215210bea35598393aea5a3f95df0b",
+      "direct_semantic_sha256": "9d14621ff8128f0d5958f92d9fb2984e5aabd193c7e4f28e1097ade2e095187d",
       "name": "get_person_or_organization",
       "operation_class": "read",
       "parity": "pass",
@@ -291,7 +291,7 @@
     },
     {
       "adapter_id": "mcp.browse_organizations@1",
-      "adapter_semantic_sha256": "6c711ad80af770e43249011e9062d9b01458ff29c7a6aee468e36dffbebef582",
+      "adapter_semantic_sha256": "0a1ffbc9373d39607be8b73dffb6dd08581bb8e7bb9538d09b192bf18845ba51",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -309,7 +309,7 @@
       },
       "calls": 1,
       "capability_reference": "organizations.browse@1",
-      "direct_semantic_sha256": "6c711ad80af770e43249011e9062d9b01458ff29c7a6aee468e36dffbebef582",
+      "direct_semantic_sha256": "0a1ffbc9373d39607be8b73dffb6dd08581bb8e7bb9538d09b192bf18845ba51",
       "name": "browse_organizations",
       "operation_class": "read",
       "parity": "pass",

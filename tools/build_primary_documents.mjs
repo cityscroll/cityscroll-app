@@ -113,6 +113,8 @@ export function primaryDocumentOutputs() {
   const outcomes = json("/data/meeting_outcomes_snapshot.json");
   const people = json("/data/person_hub_lookup.json");
   const committees = json("/data/committee_graph_lookup.json");
+  const communityBoardPeople = json("/data/community_board_people.json");
+  const communityBoardCommittees = json("/data/non_council_outcome_sources/community_board_committees.json");
   const agencies = json("/data/agency_constellation_lookup.json");
   const places = json("/data/community_board_geography_lookup.json");
   const hires = json("/data/staffing_default_hires.json");
@@ -162,6 +164,8 @@ export function primaryDocumentOutputs() {
     awards,
     places,
     hires,
+    communityBoardPeople,
+    communityBoardCommittees,
   };
   for (const kind of Object.keys(BROWSE_CONCEPTS)) {
     const document = kind === "people"
@@ -190,6 +194,8 @@ export function peopleOrganizationsOutputs() {
     awards: json("/data/ocp_awards_warehouse_lookup.json"),
     places: json("/data/community_board_geography_lookup.json"),
     hires: json("/data/staffing_default_hires.json"),
+    communityBoardPeople: json("/data/community_board_people.json"),
+    communityBoardCommittees: json("/data/non_council_outcome_sources/community_board_committees.json"),
   });
   return [[
     join(SITE, "data/people_organizations_read_model.json"),
