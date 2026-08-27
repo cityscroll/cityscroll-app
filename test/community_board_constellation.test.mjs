@@ -52,13 +52,15 @@ test("board constellation uses typed summaries and holds unjoined governance edg
 
 test("board document keeps empty or unknown categories honest and resident-readable", () => {
   const html = renderCommunityBoardConstellationDocument(buildCommunityBoardConstellationView("bronx-cb-02", sources));
-  assert.match(html, /Connected board records/);
+  assert.match(html, /Connected civic objects/);
+  assert.match(html, /About this board/);
   assert.match(html, /District coverage/);
-  assert.match(html, /Official source inventory/);
-  assert.match(html, /Meetings and hearings \(Records not shown\)/);
-  assert.match(html, /Board members \(Records not shown\)/);
-  assert.match(html, /Board recommendations \(Records not shown\)/);
+  assert.match(html, /Sources &amp; coverage/);
+  assert.match(html, /Upcoming &amp; recent proceedings \(Records not shown\)/);
+  assert.match(html, /People \(Records not shown\)/);
+  assert.match(html, /Matters &amp; actions \(Records not shown\)/);
   assert.match(html, /Open official calendar/);
+  assert.doesNotMatch(html, /Board records from official sources/);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
   assert.doesNotMatch(html, /No meetings exist/);
 });
@@ -97,7 +99,7 @@ test("board profile renders receipt-backed records without counting them as acce
   assert.equal(view.categories.find((category) => category.id === "members").status, "unknown");
   const html = renderCommunityBoardConstellationDocument(view);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
-  assert.match(visible, /Board records from official sources/);
+  assert.match(visible, /Unjoined source records \(diagnostic\)/);
   assert.match(visible, /Full board minutes/);
   assert.match(visible, /Source observed/);
   assert.doesNotMatch(visible, /record_kind|source_record_id|observed_receipt|Source: Unavailable|Join method: Unavailable/);
@@ -113,7 +115,7 @@ test("indexed board events stay source records until accepted institution edges 
   assert.equal(meetings.count, null);
   assert.deepEqual(meetings.items, []);
   const html = renderCommunityBoardConstellationDocument(view);
-  assert.match(html, /Meetings and hearings \(Records not shown\)/);
+  assert.match(html, /Upcoming &amp; recent proceedings \(Records not shown\)/);
   assert.match(html, /Source observed/);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
   assert.doesNotMatch(visible, /upcoming_meetings/);
@@ -163,6 +165,48 @@ test("committee-hosted meeting is rendered through the board-local committee cat
   assert.equal(meetings.items[0].target_id, meetingEdge.target_id);
   assert.equal(view.edge_summary.find((edge) => edge.edge_type === "has_committee").target_kind, "community-board-committee");
   const visible = renderCommunityBoardConstellationDocument(view).replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<[^>]+>/g, " ");
-  assert.match(visible, /Community Board committees/);
+  assert.match(visible, /Committees/);
   assert.match(visible, /Transportation Committee Meeting/);
+});
+
+test("accepted meeting source rows render once through their semantic meeting object", () => {
+  const meetingId = "meeting:community_board:cb6-transport";
+  const meetingEdge = {
+    relation: "hosts_meeting",
+    edge_type: "hosts_meeting",
+    status: "promoted",
+    promoted: true,
+    from: "community-board-committee:manhattan-cb-06:transportation",
+    to: meetingId,
+    target_kind: "meeting",
+    target_id: meetingId,
+    target_name: "Transportation Committee Meeting",
+    href: "/meetings/meeting%3Acommunity_board%3Acb6-transport",
+    canonical_href: "/meetings/meeting%3Acommunity_board%3Acb6-transport",
+    committee_name: "Transportation Committee",
+    source_record_id: "cb6-transport",
+    join: { matched: true, event_date: "2026-09-02" },
+    source_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" },
+    provenance: { source_url: "https://cbsix.org/meetings-calendar/" },
+  };
+  const view = buildCommunityBoardConstellationView("manhattan-cb-06", {
+    ...sources,
+    sourceRecords: [{
+      record_kind: "event",
+      record_id: "cb6-transport",
+      source_record_id: "cb6-transport",
+      title: "Transportation Committee Meeting",
+      date: "2026-09-02",
+      source_role: "upcoming_meetings",
+      source_url: "https://cbsix.org/meetings-calendar/",
+    }],
+    institutionEdges: { "manhattan-cb-06": [meetingEdge] },
+  });
+  assert.equal(view.source_records.length, 0, "accepted event was removed from diagnostic source rows");
+  const visible = renderCommunityBoardConstellationDocument(view)
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<[^>]+>/g, " ");
+  assert.equal((visible.match(/Transportation Committee Meeting/g) || []).length, 1);
+  assert.match(visible, /Transportation Committee .*Published event/);
+  assert.doesNotMatch(visible, /Board records from official sources|Unjoined source records/);
 });
