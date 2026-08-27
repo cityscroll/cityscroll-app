@@ -9,9 +9,13 @@ import { buildBrowseView, renderBrowseView } from "../site/browse_view.mjs";
 import {
   joinCommunityBoardSourceRecord,
   joinCommunityBoardSourceRecords,
+  buildCommunityBoardInstitutionEdges,
   promoteCommunityBoardHostsMeetingEdge,
 } from "../site/community_board_institution_edges.mjs";
 import { normalizeEntityPivot } from "../site/edge_summary.mjs";
+import { readFileSync } from "node:fs";
+
+const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
 
 const meeting = {
   request_id: "20260814001",
@@ -95,4 +99,65 @@ test("accepted identity is shared by Browse and the board institution page", () 
   assert.equal(meetings.count, 1);
   assert.equal(meetings.items[0].href, edge.href);
   assert.match(renderCommunityBoardConstellationDocument(view), /\/meetings\/meeting%3Acity_record%3A20260814001/);
+});
+
+test("a reviewed committee inserts has_committee before the unchanged meeting identity", () => {
+  const sourceRecord = {
+    ...source,
+    board_id: "manhattan-cb-06",
+    body_id: "manhattan-cb-06",
+    date: "2026-08-12",
+    title: "Transportation Committee Meeting",
+    publisher_identifier: "cb6-event-1",
+    source_record_id: "cb6-event-1",
+    body_evidence: { board_id: "manhattan-cb-06", basis: "publisher_record" },
+  };
+  const meeting = {
+    source_system: "community_board",
+    meeting_id: "meeting:community_board:cb6-event-1",
+    board_id: "manhattan-cb-06",
+    publisher_identifier: "cb6-event-1",
+    event_date: "2026-08-12",
+    title: "Transportation Committee Meeting",
+  };
+  const edges = buildCommunityBoardInstitutionEdges([
+    { meeting, source_record: sourceRecord },
+  ], { committeeRegistry, asOf: "2026-08-14T12:00:00Z" });
+  assert.deepEqual(edges.map((edge) => [edge.relation, edge.from, edge.to]), [
+    ["has_committee", "community-board:manhattan-cb-06", "community-board-committee:manhattan-cb-06:transportation"],
+    ["hosts_meeting", "community-board-committee:manhattan-cb-06:transportation", "meeting:community_board:cb6-event-1"],
+  ]);
+  assert.equal(edges[1].parent_board_ref, "community-board:manhattan-cb-06");
+});
+
+test("full-board and unresolved joint meetings retain the board host without a synthetic committee", () => {
+  const base = {
+    meeting: {
+      source_system: "community_board",
+      meeting_id: "meeting:community_board:cb6-full",
+      board_id: "manhattan-cb-06",
+      publisher_identifier: "cb6-full",
+      event_date: "2026-08-12",
+      title: "Full Board Meeting",
+    },
+    source_record: {
+      ...source,
+      board_id: "manhattan-cb-06",
+      body_id: "manhattan-cb-06",
+      body_evidence: { board_id: "manhattan-cb-06", basis: "publisher_record" },
+      title: "Full Board Meeting",
+      date: "2026-08-12",
+      publisher_identifier: "cb6-full",
+      source_record_id: "cb6-full",
+    },
+  };
+  const full = buildCommunityBoardInstitutionEdges([base], { committeeRegistry, asOf: "2026-08-14T12:00:00Z" });
+  assert.equal(full[0].from, "community-board:manhattan-cb-06");
+  assert.equal(full.length, 1);
+  const joint = buildCommunityBoardInstitutionEdges([{
+    ...base,
+    source_record: { ...base.source_record, title: "Transportation & Housing Committees", publisher_identifier: "cb6-joint", source_record_id: "cb6-joint" },
+  }], { committeeRegistry, asOf: "2026-08-14T12:00:00Z" });
+  assert.equal(joint.length, 1);
+  assert.equal(joint[0].from, "community-board:manhattan-cb-06");
 });

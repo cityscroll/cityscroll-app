@@ -26,6 +26,8 @@ export const PUBLIC_GRAPH_NODE_TYPES = Object.freeze([
   "committee",
   // Community-board governance body from the bounded source registry.
   "community-board",
+  // Board-local committee identity; distinct from Legistar committee.
+  "community-board-committee",
   // Publisher-backed agency principal officer.
   "person-leader",
   "mandate",
@@ -52,6 +54,8 @@ export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
   "located_in",
   "covers",
   "intersects",
+  // community-board → community-board-committee.
+  "has_committee",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
@@ -67,6 +71,7 @@ export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
   located_in: "Located in",
   covers: "Covers",
   intersects: "Intersects",
+  has_committee: "Has committee",
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();

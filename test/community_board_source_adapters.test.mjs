@@ -21,6 +21,8 @@ import {
 } from "../site/community_board_source_adapters.mjs";
 import { meetingSourceFieldNames } from "../site/meeting_source_completeness.mjs";
 
+const committeeRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/community_board_committees.json", import.meta.url)));
+
 const receipt = { status: "ok", observed_at: "2026-08-14T12:00:00Z" };
 
 test("each heterogeneous source has a bounded explicit adapter contract", () => {
@@ -252,6 +254,28 @@ END:VCALENDAR`, {
   assert.equal(video[0].video_id, "video-1");
   assert.equal(video[0].publisher_identifier, "event-22");
   assert.equal(video[0].source_url, "https://video.example/feed.json");
+});
+
+test("source adapters preserve publisher committee fields and resolve only reviewed board-local identities", () => {
+  const records = parseGoogleCalendarSource(`BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:cb6-transport\nDTSTART:20260902T180000\nSUMMARY:Transportation Committee Meeting\nEND:VEVENT\nEND:VCALENDAR`, {
+    adapter: "google_calendar_v1", board_id: "manhattan-cb-06", url: "https://calendar.google.com/calendar/ical/example@example.com/public/basic.ics",
+  }, { receipt, committeeRegistry });
+  assert.equal(records[0].convening_body_label, "Transportation Committee");
+  assert.equal(records[0].convening_body_id, "community-board-committee:manhattan-cb-06:transportation");
+  assert.equal(records[0].convening_body_match.method, "reviewed_board_local_alias");
+
+  const explicit = parseGoogleCalendarSource(`BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:cb6-explicit\nDTSTART:20260903T180000\nSUMMARY:Published committee event\nX-COMMITTEE:Transportation Committee\nX-COMMITTEE-ID:publisher-transport\nEND:VEVENT\nEND:VCALENDAR`, {
+    adapter: "google_calendar_v1", board_id: "manhattan-cb-06", url: "https://calendar.google.com/calendar/ical/example@example.com/public/basic.ics",
+  }, { receipt, committeeRegistry: { committees: [{ ...committeeRegistry.committees[0], publisher_identifier: "publisher-transport" }] } });
+  assert.equal(explicit[0].committee.name, "Transportation Committee");
+  assert.equal(explicit[0].committee.publisher_identifier, "publisher-transport");
+  assert.equal(explicit[0].convening_body_publisher_identifier, "publisher-transport");
+  assert.equal(explicit[0].convening_body_match.method, "exact_publisher_committee_identifier");
+
+  const joint = parseGoogleCalendarSource(`BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:joint\nDTSTART:20260904T180000\nSUMMARY:Transportation & Housing Committees\nEND:VEVENT\nEND:VCALENDAR`, {
+    adapter: "google_calendar_v1", board_id: "manhattan-cb-06", url: "https://calendar.google.com/calendar/ical/example@example.com/public/basic.ics",
+  }, { receipt, committeeRegistry });
+  assert.equal(joint[0].convening_body_id, undefined);
 });
 
 test("fetch contract is bounded and records inaccessible sources as unknown", async () => {

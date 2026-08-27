@@ -36,6 +36,7 @@ export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellati
 export const COMMUNITY_BOARD_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({ id: "place", label: "District coverage", relation: "covers", target_kind: "community-district" }),
   Object.freeze({ id: "sources", label: "Official source inventory", relation: "published_board_source", target_kind: "source" }),
+  Object.freeze({ id: "committees", label: "Community Board committees", relation: "has_committee", target_kind: "community-board-committee" }),
   Object.freeze({ id: "meetings", label: "Meetings and hearings", relation: "hosts_meeting", target_kind: "meeting" }),
   Object.freeze({ id: "members", label: "Board members", relation: "has_member", target_kind: "official" }),
   Object.freeze({ id: "recommendations", label: "Board recommendations", relation: "issues_recommendation", target_kind: "recommendation" }),
@@ -218,8 +219,9 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
   }
   if (spec.id === "meetings") {
     const edges = Array.isArray(institutionEdges) ? institutionEdges : [];
-    const accepted = edges.filter(communityBoardMeetingEdgeAccepted);
-    const items = edges.map((edge) => relationItem(edge, "meeting"));
+    const meetingEdges = edges.filter((edge) => edge?.relation === "hosts_meeting");
+    const accepted = meetingEdges.filter(communityBoardMeetingEdgeAccepted);
+    const items = meetingEdges.map((edge) => relationItem(edge, "meeting"));
     return {
       ...spec,
       status: accepted.length ? "matched" : "unknown",
@@ -227,8 +229,23 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
       target_name: "Meetings and hearings",
       view_all_href: accepted[0]?.href || null,
       source: sourceHref,
-      provenance: accepted[0]?.provenance || edges[0]?.provenance || source?.provenance || null,
+      provenance: accepted[0]?.provenance || meetingEdges[0]?.provenance || source?.provenance || null,
       items,
+      institution_edges: meetingEdges,
+    };
+  }
+  if (spec.id === "committees") {
+    const edges = (Array.isArray(institutionEdges) ? institutionEdges : [])
+      .filter((edge) => edge?.relation === "has_committee");
+    return {
+      ...spec,
+      status: edges.length ? "matched" : "unknown",
+      count: edges.length || null,
+      target_name: "Community Board committees",
+      view_all_href: null,
+      source: sourceHref,
+      provenance: edges[0]?.provenance || source?.provenance || null,
+      items: edges.map((edge) => relationItem(edge, "committee")),
       institution_edges: edges,
     };
   }
@@ -274,8 +291,10 @@ export function buildCommunityBoardEdgeSummary(viewOrCategories) {
         ? "Official source inventory"
         : category.label,
     target_kind: category.target_kind,
-    target_id: ["place", "meetings"].includes(category.id) ? category.items?.[0]?.target_id || null : null,
-    target_name: category.target_name,
+    target_id: ["place", "meetings", "committees"].includes(category.id) ? category.items?.[0]?.target_id || null : null,
+    target_name: category.id === "committees"
+      ? category.items?.[0]?.label || category.target_name
+      : category.target_name,
     count: category.count,
     state: category.status,
     href: category.status === "matched" ? category.view_all_href : null,
@@ -425,7 +444,7 @@ function renderCategory(category, view) {
   const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
   const body = category.id === "sources"
     ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>`
-    : category.id === "meetings" && category.items?.length
+    : ["meetings", "committees"].includes(category.id) && category.items?.length
       ? `<ul class="node-record-list">${category.items.map(sourceRecordMarkup).join("")}</ul>`
       : ["members", "recommendations"].includes(category.id) && category.items?.length
         ? `<ul class="node-record-list">${category.items.map((row) => relationRecordMarkup(row, category.id === "members" ? "member" : "recommendation", {
