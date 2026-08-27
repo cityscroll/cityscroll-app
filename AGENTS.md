@@ -69,6 +69,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   never implies an outcome, vendor failure, or performance score. Keep the financial registered
   contract and payment facts separate from this evidence-availability fact.
 
+- **Agency procurement fiscal context (AP-12):** `site/agency_fiscal_context.mjs` joins the AP-03
+  registered-contract and AP-09 payment projections to AP-11 only through a matched canonical
+  agency identity. Its materialization is `site/data/agency_fiscal_context.json`, refreshed with
+  `node tools/build_agency_fiscal_context.mjs`; missing fiscal history stays `unknown`, and the
+  renderer keeps expenditure, staffing, registered value, and payments as separate measures with
+  source provenance and drill-through links. Focused proof is `test/agency_fiscal_context.test.mjs`.
+
 - **Vendor concentration projection:** `vendorConcentration` in
   `site/analytical_projection.mjs` computes agency-scoped prime-vendor shares from the
   explicit selected-scope registered-value denominator. Named-vendor top-5/top-10 shares
