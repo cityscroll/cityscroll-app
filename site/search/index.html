@@ -237,6 +237,18 @@
   .interpret-preview-note{margin:4px 0 0;color:var(--muted);font:12px/1.4 var(--font-interface)}
   .interpret-preview-results{margin-top:var(--space-2);border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--card);overflow:hidden}
   .interpret-preview-results .money-row-card:last-child{border-bottom:0}
+  .interpret-preview-results .topic-search-result{padding:11px 12px;border-bottom:1px solid var(--rule);min-width:0;overflow-wrap:anywhere}
+  .interpret-preview-results .topic-search-result:last-child{border-bottom:0}
+  .interpret-preview-results .topic-search-result h4{margin:0;color:var(--ink);font:700 15px/1.3 var(--font-body)}
+  .interpret-preview-results .topic-search-result h4 a{color:inherit;text-decoration-color:var(--rule-strong);text-underline-offset:3px}
+  .interpret-preview-results .topic-search-result-meta{display:flex;flex-wrap:wrap;gap:5px 8px;margin:5px 0 0;color:var(--muted);font:700 10px/1.25 var(--font-interface)}
+  .interpret-preview-results .topic-search-result-type{color:var(--oxblood);letter-spacing:.08em;text-transform:uppercase}
+  .interpret-preview-results .topic-search-result-lens{font-weight:600}
+  .interpret-preview-results .topic-search-result-lens::before{content:"·";margin-right:8px;color:var(--rule-strong)}
+  .interpret-preview-results .topic-search-result-evidence{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:5px 9px;margin:7px 0 0;color:var(--ink-soft);font:12px/1.4 var(--font-interface)}
+  .interpret-preview-results .topic-search-result-reason{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
+  .interpret-preview-results .topic-search-result-snippet{margin:6px 0 0;color:var(--ink-soft);font:12px/1.4 var(--font-body)}
+  .interpret-preview-results .topic-search-result mark{padding:0 .08em;background:#ffe7a3;color:inherit;border-radius:2px}
   .interpret-preview-empty{margin-top:var(--space-3);padding:var(--space-3);border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper-2);color:var(--ink-soft);font:13px/1.45 var(--font-interface)}
   .qr-dialog{width:min(92vw,520px);max-height:92vh;border:1px solid var(--rule-strong);border-radius:10px;background:var(--card);color:var(--ink);padding:22px;box-shadow:0 18px 60px #12181f80}
   .qr-dialog::backdrop{background:#12181fb8}

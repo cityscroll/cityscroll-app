@@ -48,7 +48,10 @@ def install_probe(context) -> None:
 
 
 def main() -> None:
-    handler = functools.partial(RouteAwareHandler, directory=str(ROOT / "site"))
+    # Browser checks must use the Pages-shaped artifact because the homepage
+    # imports shared capability modules that are published beside site assets.
+    public_root = ROOT / "_site" if (ROOT / "_site" / "index.html").is_file() else ROOT / "site"
+    handler = functools.partial(RouteAwareHandler, directory=str(public_root))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_port}/"
