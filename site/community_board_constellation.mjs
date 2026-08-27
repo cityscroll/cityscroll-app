@@ -27,7 +27,7 @@ import {
   communityBoardRelationAvailability,
   promotedCommunityBoardRelationEdges,
 } from "./community_board_relations.mjs";
-import { communityBoardPageHref } from "./community_board_links.mjs";
+import { communityBoardCommitteePageHref, communityBoardPageHref } from "./community_board_links.mjs";
 import { communityBoardMeetingEdgeAccepted } from "./community_board_institution_edges.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
@@ -35,11 +35,11 @@ export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellati
 
 export const COMMUNITY_BOARD_CONSTELLATION_CATEGORIES = Object.freeze([
   Object.freeze({ id: "place", label: "District coverage", relation: "covers", target_kind: "community-district" }),
-  Object.freeze({ id: "sources", label: "Official source inventory", relation: "published_board_source", target_kind: "source" }),
-  Object.freeze({ id: "committees", label: "Community Board committees", relation: "has_committee", target_kind: "community-board-committee" }),
-  Object.freeze({ id: "meetings", label: "Meetings and hearings", relation: "hosts_meeting", target_kind: "meeting" }),
-  Object.freeze({ id: "members", label: "Board members", relation: "has_member", target_kind: "community-board-person" }),
-  Object.freeze({ id: "recommendations", label: "Board recommendations", relation: "issues_recommendation", target_kind: "recommendation" }),
+  Object.freeze({ id: "sources", label: "Sources & coverage", relation: "published_board_source", target_kind: "source" }),
+  Object.freeze({ id: "committees", label: "Committees", relation: "has_committee", target_kind: "community-board-committee" }),
+  Object.freeze({ id: "meetings", label: "Upcoming & recent proceedings", relation: "hosts_meeting", target_kind: "meeting" }),
+  Object.freeze({ id: "members", label: "People", relation: "has_member", target_kind: "community-board-person" }),
+  Object.freeze({ id: "recommendations", label: "Matters & actions", relation: "issues_recommendation", target_kind: "recommendation" }),
 ]);
 
 const SOURCE_ROLE_LABELS = Object.freeze({
@@ -154,9 +154,36 @@ function boardNode(geography, id) {
     || null;
 }
 
-function sourceRecordRows(records = []) {
+function sourceRecordIdentityValues(record = {}) {
+  return [
+    record.record_id,
+    record.source_record_id,
+    record.meeting_id,
+    record.target_id,
+  ].map((value) => clean(value, 500)).filter(Boolean);
+}
+
+function acceptedMeetingIds(institutionEdges = []) {
+  return new Set((Array.isArray(institutionEdges) ? institutionEdges : [])
+    .filter((edge) => edge?.relation === "hosts_meeting" || edge?.edge_type === "hosts_meeting")
+    .filter(communityBoardMeetingEdgeAccepted)
+    .flatMap((edge) => [edge.to, edge.target_id, edge.source_record_id].map((value) => clean(value, 500)).filter(Boolean)));
+}
+
+function sourceRecordRows(records = [], options = {}) {
   const rows = Array.isArray(records) ? records : records?.records || [];
-  return rows.filter((record) => record && (record.record_id || record.source_record_id)).map((record) => ({
+  const acceptedIds = options.acceptedMeetingIds instanceof Set ? options.acceptedMeetingIds : new Set();
+  return rows.filter((record) => record && (record.record_id || record.source_record_id))
+    // An accepted event is already represented by its Meeting semantic object.
+    // Keep minutes and unmatched/diagnostic records available for provenance,
+    // but never create a second event universe from the same source row.
+    .filter((record) => {
+      const isEvent = record.record_kind === "event"
+        || record.source_role === "upcoming_meetings"
+        || record.object_type === "meeting";
+      return !(isEvent && sourceRecordIdentityValues(record).some((id) => acceptedIds.has(id)));
+    })
+    .map((record) => ({
     ...record,
     label: record.role === "minutes"
       ? "Minutes"
@@ -181,7 +208,7 @@ function relationItem(edge, kind) {
     href: kind === "meeting" && communityBoardMeetingEdgeAccepted(edge)
         ? edge.href || edge.canonical_href || null
         : null,
-    date: edge.relation_date || edge.meeting_date,
+    date: edge.relation_date || edge.meeting_date || edge.join?.event_date || edge.date,
     source_document: edge.source_document,
     label: edge.person_name || edge.target_name || edge.target_id,
     state: communityBoardMeetingEdgeAccepted(edge) || kind !== "meeting" ? "official" : "held",
@@ -211,9 +238,9 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
       ...spec,
       status: count ? "matched" : "empty",
       count,
-      target_name: "Official source inventory",
+      target_name: "Sources & coverage",
       view_all_href: communityBoardOutputHref(board.body_id),
-      source: { ...sourceHref, name: "Official source inventory", canonical_href: communityBoardOutputHref(board.body_id) },
+      source: { ...sourceHref, name: "Sources & coverage", canonical_href: communityBoardOutputHref(board.body_id) },
       provenance: source?.provenance || null,
       items: sourceRowsForBoard,
     };
@@ -227,7 +254,7 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
       ...spec,
       status: accepted.length ? "matched" : "unknown",
       count: accepted.length || null,
-      target_name: "Meetings and hearings",
+      target_name: "Upcoming & recent proceedings",
       view_all_href: accepted[0]?.href || null,
       source: sourceHref,
       provenance: accepted[0]?.provenance || meetingEdges[0]?.provenance || source?.provenance || null,
@@ -238,6 +265,8 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
   if (spec.id === "committees") {
     const edges = (Array.isArray(institutionEdges) ? institutionEdges : [])
       .filter((edge) => edge?.relation === "has_committee");
+    const meetings = (Array.isArray(institutionEdges) ? institutionEdges : [])
+      .filter((edge) => edge?.relation === "hosts_meeting" && communityBoardMeetingEdgeAccepted(edge));
     return {
       ...spec,
       status: edges.length ? "matched" : "unknown",
@@ -246,7 +275,25 @@ function buildCategory(spec, board, source, districtEdge, sourceRowsForBoard, re
       view_all_href: null,
       source: sourceHref,
       provenance: edges[0]?.provenance || source?.provenance || null,
-      items: edges.map((edge) => relationItem(edge, "committee")),
+      items: edges.map((edge) => {
+        const committeeRef = edge.to || edge.target_id;
+        const chair = (relationEdges?.person_roles || [])
+          .find((role) => role?.relation === "chairs" && (role.to === committeeRef || role.target_id === committeeRef));
+        const nextMeeting = meetings
+          .filter((meeting) => meeting.from === committeeRef || meeting.committee_ref === committeeRef)
+          .sort((a, b) => String(a.join?.event_date || a.meeting_date || a.date || "").localeCompare(String(b.join?.event_date || b.meeting_date || b.date || "")))[0];
+        return {
+          ...relationItem(edge, "committee"),
+          href: communityBoardCommitteePageHref(board.body_id, edge.committee_id || committeeRef?.split(":").at(-1)),
+          chair_name: chair?.person_name || chair?.label || chair?.target_name || null,
+          next_meeting: nextMeeting ? {
+            id: nextMeeting.target_id || nextMeeting.to,
+            label: nextMeeting.target_name || nextMeeting.label,
+            href: nextMeeting.href || nextMeeting.canonical_href || null,
+            date: nextMeeting.join?.event_date || nextMeeting.meeting_date || nextMeeting.date || null,
+          } : null,
+        };
+      }),
       institution_edges: edges,
     };
   }
@@ -291,7 +338,7 @@ export function buildCommunityBoardEdgeSummary(viewOrCategories) {
     relation_label: category.id === "place"
       ? "District coverage"
       : category.id === "sources"
-        ? "Official source inventory"
+        ? "Sources & coverage"
         : category.label,
     target_kind: category.target_kind,
     target_id: ["place", "meetings", "committees"].includes(category.id) ? category.items?.[0]?.target_id || null : null,
@@ -334,6 +381,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
   const inventoryRow = (sources.sourceInventory?.boards || []).find((row) => row?.id === requested || row?.body_id === requested);
   const boardReceipts = (sources.sourceReceipts || []).filter((row) => row?.board_id === requested);
   const boardSources = sourceRows(scorecardRow, inventoryRow || board, boardReceipts);
+  const suppliedInstitutionEdges = sources.institutionEdges?.[requested]
+    || sources.boardInstitutionEdges?.[requested]
+    || sources.meetingEdges?.[requested];
+  const institutionEdges = Array.isArray(suppliedInstitutionEdges) ? suppliedInstitutionEdges : null;
   const boardSourceRecords = sourceRecordRows(
     [
       ...(sources.sourceRecords?.[requested]
@@ -343,11 +394,8 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
         ? sources.meetingDocuments.filter((row) => row?.board_id === requested)
         : sources.meetingDocuments?.[requested] || []),
     ],
+    { acceptedMeetingIds: acceptedMeetingIds(institutionEdges) },
   );
-  const suppliedInstitutionEdges = sources.institutionEdges?.[requested]
-    || sources.boardInstitutionEdges?.[requested]
-    || sources.meetingEdges?.[requested];
-  const institutionEdges = Array.isArray(suppliedInstitutionEdges) ? suppliedInstitutionEdges : null;
   const relationInput = sources.boardRelations?.[requested]
     || sources.relations?.[requested]
     || {};
@@ -447,12 +495,62 @@ function relationRecordMarkup(row, kind, source) {
   return `<li class="node-record" data-board-relation="${esc(row.relation)}"><div class="node-record-main"><strong>${target}</strong></div><span class="muted node-muted">${esc(subject)} · ${date}</span><details class="inline-disclose board-relation-details"><summary>How confirmed</summary><div class="inline-disclose-body"><p>${esc(evidence)}</p><p>${link}</p></div></details></li>`;
 }
 
+function meetingHostLabel(row) {
+  if (row.committee_name) return row.committee_name;
+  if (String(row.from || "").startsWith("community-board-committee:")) return "Community Board committee";
+  if (/full board/i.test(String(row.target_name || row.label || ""))) return "Full Board";
+  return "Community Board";
+}
+
+function proceedingFormLabel(row) {
+  return {
+    public_hearing: "Public hearing",
+    special_meeting: "Special meeting",
+    meeting: "Meeting",
+  }[row.proceeding_form] || null;
+}
+
+function meetingRecordMarkup(row) {
+  const href = row.href || row.canonical_href || null;
+  const title = row.title || row.target_name || row.label || row.target_id;
+  const label = href ? `<a href="${esc(href)}">${esc(title)}</a>` : `<span>${esc(title)}</span>`;
+  const form = proceedingFormLabel(row);
+  const host = meetingHostLabel(row);
+  const date = row.date ? ` · ${esc(row.date)}` : "";
+  const sourceUrl = row.source_url || row.provenance?.source_url || null;
+  const sourceLink = sourceUrl
+    ? officialSourceLink({ href: sourceUrl, label: "Open official source", className: "board-source-link", escape: esc })
+    : "";
+  const checked = row.source_receipt?.observed_at || row.provenance?.observed_receipt?.observed_at || null;
+  const accepted = communityBoardMeetingEdgeAccepted(row);
+  const details = [
+    sourceLink ? `<p>${sourceLink}</p>` : "",
+    checked ? `<p>Source checked ${esc(residentDate(String(checked).slice(0, 10)))}</p>` : "",
+  ].filter(Boolean).join("");
+  return `<li class="node-record" data-semantic-object="meeting" data-meeting-id="${esc(row.target_id || row.to || row.source_record_id)}" data-meeting-state="${accepted ? "accepted" : "held"}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">${esc(host)}${form ? ` · ${esc(form)}` : ""}${date} · ${accepted ? "Published event" : "Connection not published"}</span>${details ? `<details class="inline-disclose board-meeting-source-details"><summary>Source details</summary><div class="inline-disclose-body">${details}</div></details>` : ""}</li>`;
+}
+
+function committeeRecordMarkup(row) {
+  const label = row.href
+    ? `<a href="${esc(row.href)}">${esc(row.label || row.target_name || row.target_id)}</a>`
+    : `<span>${esc(row.label || row.target_name || row.target_id)}</span>`;
+  const details = [
+    row.chair_name ? `Chair: ${esc(row.chair_name)}` : "",
+    row.next_meeting?.label ? `Next meeting: ${row.next_meeting.href
+      ? `<a href="${esc(row.next_meeting.href)}">${esc(row.next_meeting.label)}</a>`
+      : esc(row.next_meeting.label)}${row.next_meeting.date ? ` · ${esc(row.next_meeting.date)}` : ""}` : "",
+  ].filter(Boolean);
+  return `<li class="node-record" data-semantic-object="community-board-committee" data-committee-id="${esc(row.target_id || row.to)}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">Community Board committee${details.length ? ` · ${details.join(" · ")}` : ""}</span></li>`;
+}
+
 function renderCategory(category, view) {
   const availability = EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown;
   const body = category.id === "sources"
-    ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>`
-    : ["meetings", "committees"].includes(category.id) && category.items?.length
-      ? `<ul class="node-record-list">${category.items.map(sourceRecordMarkup).join("")}</ul>`
+    ? `<ul class="node-record-list">${category.items.map(sourceMarkup).join("")}</ul>${renderMinutesFreshnessMarkup(view)}`
+    : category.id === "meetings" && category.items?.length
+      ? `<ul class="node-record-list">${category.items.map(meetingRecordMarkup).join("")}</ul>`
+      : category.id === "committees" && category.items?.length
+        ? `<ul class="node-record-list">${category.items.map(committeeRecordMarkup).join("")}</ul>`
       : ["members", "recommendations"].includes(category.id) && category.items?.length
         ? `<ul class="node-record-list">${category.items.map((row) => relationRecordMarkup(row, category.id === "members" ? "member" : "recommendation", {
           kind: "community-board",
@@ -509,17 +607,17 @@ function sourceRecordMarkup(row) {
   return `<li class="node-record" data-source-record-kind="${esc(row.record_kind || "record")}"><div class="node-record-main"><strong>${label}</strong></div><span class="muted node-muted">${esc(row.label)}${date} · ${esc(state)}</span></li>`;
 }
 
-function renderSourceRecordSection(records = []) {
+function renderUnjoinedSourceSection(records = []) {
   if (!records.length) return "";
   return renderNodeSection({
-    heading: "Board records from official sources",
+    heading: "Unjoined source records (diagnostic)",
     extraClass: "node-card civic-object-section",
     attrs: { "data-community-board-source-records": "1" },
     body: `<ul class="node-record-list">${records.map(sourceRecordMarkup).join("")}</ul>`,
   });
 }
 
-function renderMinutesFreshnessSection(view) {
+function renderMinutesFreshnessMarkup(view) {
   const freshness = view?.minutes_freshness;
   if (!freshness) return "";
   const source = view.categories.find((category) => category.id === "sources")?.items
@@ -527,11 +625,23 @@ function renderMinutesFreshnessSection(view) {
   const sourceLink = source?.url
     ? officialSourceLink({ href: source.url, label: "Open minutes or records", className: "board-source-link", escape: esc })
     : "";
+  return `<div class="board-minutes-freshness" data-community-board-minutes="1" data-minutes-freshness="${esc(freshness.state)}"><p>${esc(freshness.label)}</p>${sourceLink ? `<p>${sourceLink}</p>` : ""}</div>`;
+}
+
+function renderAboutBoardSection(view) {
+  const board = view.board || {};
+  const place = view.categories.find((category) => category.id === "place");
+  const facts = [];
+  const district = place?.items?.[0]?.label;
+  if (district) facts.push(`<li>${esc(district)}</li>`);
+  if (board.homepage_url) facts.push(`<li><a href="${esc(board.homepage_url)}">Board homepage</a></li>`);
+  if (board.directory_url) facts.push(`<li><a href="${esc(board.directory_url)}">City directory entry</a></li>`);
+  if (!facts.length) return "";
   return renderNodeSection({
-    heading: "Minutes and records",
+    heading: "About this board",
     extraClass: "node-card civic-object-section",
-    attrs: { "data-community-board-minutes": "1", "data-minutes-freshness": freshness.state },
-    body: `<p>${esc(freshness.label)}</p>${sourceLink ? `<p>${sourceLink}</p>` : ""}`,
+    attrs: { "data-community-board-about": "1" },
+    body: `<ul class="node-record-list">${facts.join("")}</ul>`,
   });
 }
 
@@ -543,12 +653,12 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
   const institution = communityBoardInstitutionHref(view.body_id);
   const output = communityBoardOutputHref(view.body_id);
   const edgeRail = renderEdgeSummaryRail(view.edge_summary, {
-    heading: "Connected board records",
+    heading: "Connected civic objects",
     id: "community-board-edge-summary-heading",
     className: "community-board-edge-summary",
   });
   const local = renderLocalConstellationHTML(view.local_constellation, {
-    heading: "Nearby board records",
+    heading: "Nearby board connections",
     id: "community-board-local-constellation-heading",
   });
   const actions = renderNodeActions([
@@ -559,6 +669,10 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
     { kind: "button", label: "Print / save PDF", attrs: { "data-object-print": true }, className: "civic-object-action" },
     { kind: "button", label: "Download JSON", attrs: { "data-object-export": "json" }, className: "civic-object-action" },
   ], { ariaLabel: "Document actions", exportClass: "object_actions", extraClass: "civic-object-actions" });
+  const sectionOrder = ["committees", "meetings", "members", "recommendations", "sources"];
+  const semanticCategories = view.categories
+    .filter((category) => sectionOrder.includes(category.id))
+    .sort((a, b) => sectionOrder.indexOf(a.id) - sectionOrder.indexOf(b.id));
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   return `<!doctype html>
@@ -570,8 +684,8 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "civic-object-mast" })}
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
-<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board constellation</p><h1>${esc(title)}</h1><p class="node-lede">Public source records and the district this board covers, with institutional records shown when they are joined.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-  ${edgeRail}${local}${actions}${renderMinutesFreshnessSection(view)}${renderSourceRecordSection(view.source_records)}${view.categories.map((category) => renderCategory(category, view)).join("")}
+<header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
+  ${renderAboutBoardSection(view)}${semanticCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;
