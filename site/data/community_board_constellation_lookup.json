@@ -8519,7 +8519,7 @@
           "target_kind": "source",
           "target_id": null,
           "target_name": "Sources & coverage",
-          "count": 2,
+          "count": 3,
           "state": "matched",
           "href": "/community-boards/#board-manhattan-cb-02",
           "canonical_href": "/community-boards/#board-manhattan-cb-02",
@@ -8716,6 +8716,44 @@
             ],
             "join_method": null,
             "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-02",
+          "edge_type": "governed_by",
+          "relation_label": "Governing bylaws",
+          "label": null,
+          "target_kind": "bylaw-version",
+          "target_id": "bylaw-version:manhattan-cb-02:current",
+          "target_name": "By-laws - CB2 Manhattan Community Board",
+          "count": 1,
+          "state": "matched",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-02"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community-board",
+            "id": "manhattan-cb-02",
+            "name": "Community Board",
+            "canonical_href": "/community-boards/manhattan-cb-02/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "source_href": "https://cbmanhattan.cityofnewyork.us/cb2/about/by-laws/",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -9793,6 +9831,82 @@
             ],
             "join_method": null,
             "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-06",
+          "edge_type": "governed_by",
+          "relation_label": "Governing bylaws",
+          "label": null,
+          "target_kind": "bylaw-version",
+          "target_id": "bylaw-version:manhattan-cb-06:2020",
+          "target_name": "Bylaws of Manhattan Community Board Six",
+          "count": 1,
+          "state": "matched",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community-board",
+            "id": "manhattan-cb-06",
+            "name": "Community Board",
+            "canonical_href": "/community-boards/manhattan-cb-06/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "source_href": "https://cbsix.org/wp-content/uploads/2020/06/CB6-Bylaws.pdf",
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "manhattan-cb-06",
+          "edge_type": "governed_by",
+          "relation_label": "Governing bylaws",
+          "label": null,
+          "target_kind": "bylaw-version",
+          "target_id": "bylaw-version:manhattan-cb-06:2023-03-08",
+          "target_name": "Bylaws of Manhattan Community Board Six, amended March 8, 2023",
+          "count": 1,
+          "state": "matched",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "manhattan-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community-board",
+            "id": "manhattan-cb-06",
+            "name": "Community Board",
+            "canonical_href": "/community-boards/manhattan-cb-06/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "source_href": "https://cbsix.org/wp-content/uploads/2023/03/2023-03-13-Bylaws-March-2023-revision-FINAL-VERSION.pdf",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -12853,7 +12967,7 @@
           "target_kind": "source",
           "target_id": null,
           "target_name": "Sources & coverage",
-          "count": 2,
+          "count": 3,
           "state": "matched",
           "href": "/community-boards/#board-queens-cb-06",
           "canonical_href": "/community-boards/#board-queens-cb-06",
@@ -13050,6 +13164,44 @@
             ],
             "join_method": null,
             "observed_at": "2026-08-12T00:00:00.000Z",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": null,
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "community-board",
+          "source_id": "queens-cb-06",
+          "edge_type": "governed_by",
+          "relation_label": "Governing bylaws",
+          "label": null,
+          "target_kind": "bylaw-version",
+          "target_id": "bylaw-version:queens-cb-06:2024-10-09",
+          "target_name": "Bylaws of Queens Community Board 6",
+          "count": 1,
+          "state": "matched",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "board": "queens-cb-06"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "community-board",
+            "id": "queens-cb-06",
+            "name": "Community Board",
+            "canonical_href": "/community-boards/queens-cb-06/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "source_href": "https://www.nyc.gov/assets/queenscb6/pdf/2024/CB6-Bylaws-FINAL-Edited-10-9-24.pdf",
+            "observed_at": null,
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },

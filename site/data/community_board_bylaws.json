@@ -1,0 +1,294 @@
+{
+  "schema": "cityscroll.community_board_bylaw_source.v1",
+  "method": "community_board_bylaw_evidence_v1",
+  "observed_on": "2026-08-27",
+  "policy": {
+    "scope": "material governance rules only",
+    "unknown_answer": "source_does_not_establish",
+    "cross_board_inference": false,
+    "superseded_versions_retained": true
+  },
+  "versions": [
+    {
+      "id": "bylaw-version:manhattan-cb-06:2020",
+      "board_id": "manhattan-cb-06",
+      "source_url": "https://cbsix.org/wp-content/uploads/2020/06/CB6-Bylaws.pdf",
+      "publisher": "Manhattan Community Board Six",
+      "publisher_document_id": "CB6-Bylaws.pdf",
+      "publisher_document_title": "Bylaws of Manhattan Community Board Six",
+      "effective_date": null,
+      "adoption_date": null,
+      "observed_on": "2026-08-27",
+      "supersedes": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_bylaw_receipt.v1",
+        "source_url": "https://cbsix.org/wp-content/uploads/2020/06/CB6-Bylaws.pdf",
+        "observed_at": "2026-08-27T00:00:00Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "application/pdf",
+        "parser": "reviewed_bylaw_extract_v1"
+      },
+      "rules": [
+        {
+          "topic": "public_committee_member_voting",
+          "answer": "yes",
+          "statement": "The source grants appointed public committee members a vote in the committee to which they are appointed.",
+          "value": { "eligibility": "appointed public committee member", "scope": "appointed committee" },
+          "source_locator": "committee-membership section; public-member voting provision"
+        },
+        {
+          "topic": "committee_full_board_referral",
+          "answer": "yes",
+          "statement": "Committee resolutions are reported to the Full Board for board action.",
+          "value": { "action": "report resolution to Full Board" },
+          "source_locator": "committee procedures; resolution reporting provision"
+        }
+      ]
+    },
+    {
+      "id": "bylaw-version:manhattan-cb-06:2023-03-08",
+      "board_id": "manhattan-cb-06",
+      "source_url": "https://cbsix.org/wp-content/uploads/2023/03/2023-03-13-Bylaws-March-2023-revision-FINAL-VERSION.pdf",
+      "publisher": "Manhattan Community Board Six",
+      "publisher_document_id": "2023-03-13-Bylaws-March-2023-revision-FINAL-VERSION.pdf",
+      "publisher_document_title": "Bylaws of Manhattan Community Board Six, amended March 8, 2023",
+      "effective_date": "2023-03-08",
+      "adoption_date": "2023-03-08",
+      "observed_on": "2026-08-27",
+      "supersedes": "bylaw-version:manhattan-cb-06:2020",
+      "receipt": {
+        "schema": "cityscroll.community_board_bylaw_receipt.v1",
+        "source_url": "https://cbsix.org/wp-content/uploads/2023/03/2023-03-13-Bylaws-March-2023-revision-FINAL-VERSION.pdf",
+        "observed_at": "2026-08-27T00:00:00Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "application/pdf",
+        "parser": "reviewed_bylaw_extract_v1"
+      },
+      "rules": [
+        {
+          "topic": "officer_structure",
+          "answer": "yes",
+          "statement": "The board has a Chair, two Vice Chairs, Secretary, Assistant Secretary, Treasurer, and Assistant Treasurer.",
+          "value": { "offices": ["Chair", "First Vice Chair", "Second Vice Chair", "Secretary", "Assistant Secretary", "Treasurer", "Assistant Treasurer"] },
+          "source_locator": "page 2, Article II(A)"
+        },
+        {
+          "topic": "standing_committee_rules",
+          "answer": "yes",
+          "statement": "Standing committees continue from year to year and board members are generally expected to serve on at least two.",
+          "value": { "standing_committee_continuity": true, "expected_memberships": 2 },
+          "source_locator": "page 10, Article VIII(A)-(B)"
+        },
+        {
+          "topic": "committee_membership_eligibility",
+          "answer": "yes",
+          "statement": "The Chair appoints or reassigns board members to committees after consulting the respective committee chairs.",
+          "value": { "appointing_authority": "Board Chair", "consultation": "committee chairs" },
+          "source_locator": "page 10, Article VIII(B)"
+        },
+        {
+          "topic": "public_committee_member_eligibility",
+          "answer": "yes",
+          "statement": "A person with a residence or significant interest in the community may be included on a committee even when they are not a board member, except on the Executive Committee.",
+          "value": { "residence_or_interest_required": true, "executive_committee_excluded": true, "maximum_fraction": "one-third" },
+          "source_locator": "page 10, Article VIII(D)"
+        },
+        {
+          "topic": "public_committee_member_voting",
+          "answer": "yes",
+          "statement": "Public members may vote at meetings of the committee to which they have been appointed, but do not have a right to vote at Full Board business sessions.",
+          "value": { "committee_vote": true, "full_board_vote": false },
+          "source_locator": "pages 9-10, Article VII(A)(4) and Article VIII(D)"
+        },
+        {
+          "topic": "voting_eligibility",
+          "answer": "yes",
+          "statement": "A board member may vote only on a committee to which that member has been appointed; public committee members have the committee vote stated in Article VIII(D).",
+          "value": { "board_member_scope": "appointed committee", "public_member_scope": "appointed committee" },
+          "source_locator": "page 10, Article VIII(C)-(D)"
+        },
+        {
+          "topic": "quorum",
+          "answer": "yes",
+          "statement": "A majority of appointed board members constitutes a quorum for the Community Board.",
+          "value": { "threshold": "majority", "subject": "appointed board members" },
+          "source_locator": "page 8, Article VI(A)(1)"
+        },
+        {
+          "topic": "public_participation",
+          "answer": "yes",
+          "statement": "Regular meetings include a public session, and the public may attend and speak under the stated meeting procedures.",
+          "value": { "public_session": true },
+          "source_locator": "pages 8-9, Article VII(A)(3)-(4)"
+        },
+        {
+          "topic": "committee_full_board_referral",
+          "answer": "yes",
+          "statement": "Committee reports and proposed resolutions are presented to the Full Board; committee action outside the regular cycle is expressly non-binding on the Board.",
+          "value": { "full_board_action": "committee reports and proposed resolutions", "interim_committee_action_binding": false },
+          "source_locator": "pages 9-10, Article VIII(F)-(H)"
+        },
+        {
+          "topic": "parliamentary_authority",
+          "answer": "yes",
+          "statement": "The bylaws direct officers to use generally accepted rules of parliamentary procedure and identify Robert's Rules of Order for procedure questions.",
+          "value": { "authority": "Robert's Rules of Order, subject to the bylaws" },
+          "source_locator": "page 2, Article II(C)"
+        }
+      ]
+    },
+    {
+      "id": "bylaw-version:queens-cb-06:2024-10-09",
+      "board_id": "queens-cb-06",
+      "source_url": "https://www.nyc.gov/assets/queenscb6/pdf/2024/CB6-Bylaws-FINAL-Edited-10-9-24.pdf",
+      "publisher": "Queens Community Board 6",
+      "publisher_document_id": "CB6-Bylaws-FINAL-Edited-10-9-24.pdf",
+      "publisher_document_title": "Bylaws of Queens Community Board 6",
+      "effective_date": "2024-10-09",
+      "adoption_date": "2024-10-09",
+      "observed_on": "2026-08-27",
+      "supersedes": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_bylaw_receipt.v1",
+        "source_url": "https://www.nyc.gov/assets/queenscb6/pdf/2024/CB6-Bylaws-FINAL-Edited-10-9-24.pdf",
+        "observed_at": "2026-08-27T00:00:00Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "application/pdf",
+        "parser": "reviewed_bylaw_extract_v1"
+      },
+      "rules": [
+        {
+          "topic": "officer_structure",
+          "answer": "yes",
+          "statement": "The board's officer structure includes a Chair, three Vice Chairs, two secretaries, a Treasurer, and a Parliamentarian.",
+          "value": { "offices": ["Chair", "First Vice Chair", "Second Vice Chair", "Third Vice Chair", "Secretary of Administration", "Secretary of Finance and Personnel", "Parliamentarian"] },
+          "source_locator": "pages 3-4, Article IX"
+        },
+        {
+          "topic": "standing_committee_rules",
+          "answer": "yes",
+          "statement": "The bylaws name permanent standing committees and require them to meet at least every three months while the board is in session.",
+          "value": { "permanent_committees": true, "minimum_cadence": "every three months while board is in session" },
+          "source_locator": "page 9, Article XV(3)"
+        },
+        {
+          "topic": "committee_membership_eligibility",
+          "answer": "yes",
+          "statement": "The Chair appoints members of standing and special committees and designates their chairs.",
+          "value": { "appointing_authority": "Board Chair" },
+          "source_locator": "page 8, Article XV(1)(a)"
+        },
+        {
+          "topic": "public_committee_member_eligibility",
+          "answer": "yes",
+          "statement": "A person residing in or having a significant interest in the district may serve as a voting member of a standing or special committee by appointment of the Chair, while not serving as chair or co-chair.",
+          "value": { "residence_or_interest_required": true, "standing_or_special": true, "chair_role_excluded": true },
+          "source_locator": "page 3, Article VIII(1)"
+        },
+        {
+          "topic": "public_committee_member_voting",
+          "answer": "yes",
+          "statement": "The public committee member provision expressly describes the appointed person as a voting member of the standing or special committee.",
+          "value": { "committee_vote": true },
+          "source_locator": "page 3, Article VIII(1)"
+        },
+        {
+          "topic": "voting_eligibility",
+          "answer": "yes",
+          "statement": "The bylaws require board members to vote on matters before the Board when present, subject to conflict of interest.",
+          "value": { "presence_required": true, "conflict_exception": true },
+          "source_locator": "page 2, Article VII(2)"
+        },
+        {
+          "topic": "quorum",
+          "answer": "yes",
+          "statement": "A majority of all members appointed to a committee constitutes its quorum.",
+          "value": { "threshold": "majority", "subject": "appointed committee members" },
+          "source_locator": "page 8, Article XV(1)(b)"
+        },
+        {
+          "topic": "public_participation",
+          "answer": "yes",
+          "statement": "A committee may act only at a duly constituted meeting open to the public.",
+          "value": { "open_to_public": true },
+          "source_locator": "page 8, Article XV(1)(h)"
+        },
+        {
+          "topic": "committee_full_board_referral",
+          "answer": "yes",
+          "statement": "Committees must forward recommendations to the Board and obtain Board approval before acting in the Board's name.",
+          "value": { "forward_recommendations": true, "board_approval_before_board_action": true },
+          "source_locator": "page 8, Article XV(1)(d)"
+        },
+        {
+          "topic": "parliamentary_authority",
+          "answer": "source_does_not_establish",
+          "statement": "The reviewed provisions do not establish a parliamentary authority for this board.",
+          "value": null,
+          "source_locator": "reviewed document; no material parliamentary-authority provision identified"
+        }
+      ]
+    },
+    {
+      "id": "bylaw-version:manhattan-cb-02:current",
+      "board_id": "manhattan-cb-02",
+      "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/about/by-laws/",
+      "publisher": "Manhattan Community Board 2",
+      "publisher_document_id": "cb2-manhattan-by-laws-page",
+      "publisher_document_title": "By-laws - CB2 Manhattan Community Board",
+      "effective_date": null,
+      "adoption_date": null,
+      "observed_on": "2026-08-27",
+      "supersedes": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_bylaw_receipt.v1",
+        "source_url": "https://cbmanhattan.cityofnewyork.us/cb2/about/by-laws/",
+        "observed_at": "2026-08-27T00:00:00Z",
+        "status": "ok",
+        "fetch_status": "200",
+        "content_type": "text/html",
+        "parser": "reviewed_bylaw_extract_v1"
+      },
+      "rules": [
+        {
+          "topic": "standing_committee_rules",
+          "answer": "yes",
+          "statement": "The page establishes standing committees and permits other committees, working groups, and task forces.",
+          "value": { "standing_committees": true, "other_bodies": ["ad hoc committees", "working groups", "task forces"] },
+          "source_locator": "Article 7, Committees"
+        },
+        {
+          "topic": "public_committee_member_eligibility",
+          "answer": "yes",
+          "statement": "The Chair may appoint non-board members as public committee members, with stated exclusions and an application process.",
+          "value": { "non_board_members": true, "executive_committee_excluded": true, "annual_reapplication": true },
+          "source_locator": "Article 7, Public Committee Members"
+        },
+        {
+          "topic": "public_committee_member_voting",
+          "answer": "source_does_not_establish",
+          "statement": "The reviewed public-member provisions describe appointment and conduct but do not expressly establish a right to vote in committee meetings.",
+          "value": null,
+          "source_locator": "Article 7, Public Committee Members; reviewed page"
+        },
+        {
+          "topic": "public_participation",
+          "answer": "yes",
+          "statement": "Board and committee meetings are open to the public as observers except for stated executive-session matters.",
+          "value": { "open_to_public": true, "observer_role": true },
+          "source_locator": "Article 5, Meetings; Article 7, Committee Meetings"
+        },
+        {
+          "topic": "committee_full_board_referral",
+          "answer": "yes",
+          "statement": "Committee agendas are scheduled to allow the committee to recommend and the Board to act on recommendations.",
+          "value": { "committee_recommends": true, "board_acts": true },
+          "source_locator": "Article 7, Committee Meetings"
+        }
+      ]
+    }
+  ]
+}

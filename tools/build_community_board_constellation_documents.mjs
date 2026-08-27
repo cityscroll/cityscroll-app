@@ -35,6 +35,7 @@ function sourceRows() {
   const geography = readJson("site/data/community_board_geography_lookup.json");
   const committeeRegistry = readJson("site/data/non_council_outcome_sources/community_board_committees.json");
   const people = readJson("site/data/community_board_people.json");
+  const communityBoardBylaws = readJson("site/data/community_board_bylaws.json");
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -98,6 +99,7 @@ function sourceRows() {
     // every rebuild. Constellation lookup summaries use the stable scorecard
     // date so the committed artifact remains byte-idempotent between changes.
     generated_at: scorecard.as_of,
+    communityBoardBylaws,
     institutionEdges,
   };
 }
