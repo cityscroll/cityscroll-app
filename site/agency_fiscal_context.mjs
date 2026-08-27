@@ -5,7 +5,7 @@ import {
 } from "./analytical_payment_projection.mjs";
 
 export const AGENCY_FISCAL_CONTEXT_SCHEMA = "cityscroll.agency_fiscal_context.v1";
-export const AGENCY_FISCAL_CONTEXT_METHOD = "agency_fiscal_context_exact_id_join_v1";
+export const AGENCY_FISCAL_CONTEXT_METHOD = "agency_fiscal_context_ibo_authoritative_exact_id_join_v2";
 export const AGENCY_FISCAL_CONTEXT_URL = "data/agency_fiscal_context.json";
 export const IBO_FISCAL_HISTORY_SOURCE = Object.freeze({
   publisher: "New York City Independent Budget Office",
@@ -14,6 +14,11 @@ export const IBO_FISCAL_HISTORY_SOURCE = Object.freeze({
   fiscal_year_convention: "NYC fiscal year is named for the calendar year in which it ends; each column is the fiscal year ending June 30.",
   expenditure_workbook: "AgencyExpenditures.xlsx",
   staffing_workbook: "FullTimePositions.xlsx",
+});
+const LEGACY_FISCAL_CONTEXT_SOURCE = Object.freeze({
+  source_system: "agency-fiscal-context-legacy",
+  lineage: "inference_derived_fallback",
+  use_policy: "fallback only when no authoritative IBO agency history is available",
 });
 
 const EXPENDITURE_MEASURES = Object.freeze({
@@ -57,15 +62,21 @@ function addMeasure(target, key, row) {
 function fiscalHistoryByAgency(rows) {
   const byAgency = new Map();
   for (const row of Array.isArray(rows) ? rows : []) {
+    if (row?.record_type && row.record_type !== "agency_measure") continue;
     const agencyId = clean(row?.canonical_agency_id);
+    const identity = resolveAgencyIdentity(agencyId);
+    const identityStatus = clean(row?.agency_identity_status);
+    if (!agencyId || !identity?.matched || identity.canonical_id !== agencyId
+      || (identityStatus && !["exact", "alias"].includes(identityStatus))) continue;
     const fiscalYear = Number(row?.fiscal_year);
     if (!agencyId || !Number.isInteger(fiscalYear)) continue;
     if (!byAgency.has(agencyId)) {
       byAgency.set(agencyId, {
         agency_id: agencyId,
-        agency_name: clean(row.canonical_agency_name) || clean(row.source_agency_name) || agencyId,
+        agency_name: clean(row.canonical_agency_name) || identity.canonical_name || clean(row.source_agency_name) || agencyId,
         years: new Map(),
         source_labels: new Set(),
+        history_source: "ibo_authoritative",
       });
     }
     const agency = byAgency.get(agencyId);
@@ -92,6 +103,68 @@ function fiscalHistoryByAgency(rows) {
           definition: "Actual full-time positions reported as of June 30 for each year.",
         };
       }
+    }
+  }
+  return byAgency;
+}
+
+const FISCAL_VALUE_FIELDS = Object.freeze([
+  "ibo_actual_expenditures",
+  "ibo_personal_services",
+  "ibo_other_than_personal_services",
+  "ibo_staffing",
+]);
+
+function addLegacyMeasure(target, key, value, provenance = {}) {
+  const numeric = finite(value);
+  if (numeric == null) return;
+  target[key] = numeric;
+  target[`${key}_provenance`] = {
+    ...provenance,
+    ...LEGACY_FISCAL_CONTEXT_SOURCE,
+  };
+}
+
+function legacyRowsFromContext(context) {
+  const rows = [];
+  for (const [agencyId, agency] of Object.entries(context?.by_agency || {})) {
+    for (const row of Array.isArray(agency?.years) ? agency.years : []) {
+      rows.push({
+        agency_id: agencyId,
+        fiscal_year: row?.fiscal_year,
+        ...row,
+        measure_provenance: row?.measure_provenance,
+      });
+    }
+  }
+  return rows;
+}
+
+function legacyFiscalHistoryByAgency(rows, context) {
+  const sourceRows = Array.isArray(rows) && rows.length ? rows : legacyRowsFromContext(context);
+  const byAgency = new Map();
+  for (const row of sourceRows) {
+    const rawId = clean(row?.agency_id || row?.canonical_agency_id);
+    const identity = resolveAgencyIdentity(rawId);
+    if (!rawId || !identity?.matched || identity.canonical_id !== rawId) continue;
+    const fiscalYear = Number(row?.fiscal_year);
+    if (!Number.isInteger(fiscalYear)) continue;
+    if (!byAgency.has(identity.canonical_id)) {
+      byAgency.set(identity.canonical_id, {
+        agency_id: identity.canonical_id,
+        agency_name: clean(row?.agency_name) || identity.canonical_name,
+        years: new Map(),
+        source_labels: new Set(),
+        history_source: "inference_derived_fallback",
+      });
+    }
+    const agency = byAgency.get(identity.canonical_id);
+    const label = clean(row?.agency_name || row?.source_agency_name);
+    if (label) agency.source_labels.add(label);
+    if (!agency.years.has(fiscalYear)) agency.years.set(fiscalYear, { fiscal_year: fiscalYear });
+    const year = agency.years.get(fiscalYear);
+    for (const key of FISCAL_VALUE_FIELDS) {
+      if (row?.[key] != null) addLegacyMeasure(year, key, row[key], row?.measure_provenance?.[key]);
     }
   }
   return byAgency;
@@ -215,11 +288,14 @@ function makeRankingIndex(snapshot) {
 }
 
 function contextStatus(fiscal) {
-  return fiscal?.years?.size ? "matched" : "unknown";
+  if (!fiscal?.years?.size) return "unknown";
+  return fiscal.history_source === "ibo_authoritative" ? "matched" : "fallback";
 }
 
 export function buildAgencyFiscalContext({
   fiscalRows = [],
+  fallbackFiscalRows = [],
+  fallbackFiscalContext = null,
   registeredRows = [],
   paymentRows = [],
   iboReceipt = {},
@@ -228,11 +304,16 @@ export function buildAgencyFiscalContext({
   generatedAt = null,
 } = {}) {
   const fiscal = fiscalHistoryByAgency(fiscalRows);
+  const legacyFiscal = legacyFiscalHistoryByAgency(fallbackFiscalRows, fallbackFiscalContext);
+  for (const [agencyId, agency] of legacyFiscal) {
+    if (!fiscal.has(agencyId)) fiscal.set(agencyId, agency);
+  }
   const registeredResult = procurementByAgency(registeredRows);
   const registered = registeredResult.byAgency;
   const registeredNames = registeredResult.names;
   const payments = paymentsByAgency(paymentRows);
-  const fiscalYearMaps = new Map([...fiscal].map(([id, agency]) => [id, agency.years]));
+  const authoritativeFiscal = new Map([...fiscal].filter(([, agency]) => agency.history_source === "ibo_authoritative"));
+  const fiscalYearMaps = new Map([...authoritativeFiscal].map(([id, agency]) => [id, agency.years]));
   const fiscalYear = latestYear(fiscalYearMaps, (row) => row?.ibo_actual_expenditures);
   const staffingFiscalYear = latestYear(fiscalYearMaps, (row) => row?.ibo_staffing);
   const paymentFiscalYear = latestYear(payments, (row) => row?.actual_payment_amount);
@@ -259,6 +340,7 @@ export function buildAgencyFiscalContext({
   const agencyIds = new Set([...fiscal.keys(), ...registered.keys(), ...payments.keys()]);
   const byAgency = {};
   let exactJoinCount = 0;
+  let fallbackJoinCount = 0;
   let unknownFiscalCount = 0;
   for (const agencyId of [...agencyIds].sort()) {
     const fiscalAgency = fiscal.get(agencyId);
@@ -267,6 +349,7 @@ export function buildAgencyFiscalContext({
     const identity = resolveAgencyIdentity(agencyId);
     const fiscalStatus = contextStatus(fiscalAgency);
     if (fiscalStatus === "matched") exactJoinCount += 1;
+    else if (fiscalStatus === "fallback") fallbackJoinCount += 1;
     else unknownFiscalCount += 1;
     const years = sortedYears([
       ...(fiscalAgency?.years.keys() || []),
@@ -307,7 +390,8 @@ export function buildAgencyFiscalContext({
       agency_name: fiscalAgency?.agency_name || identity.canonical_name,
       procurement_agency_name: [...(registeredNames.get(agencyId) || [])].sort()[0] || null,
       status: fiscalStatus,
-      fiscal_history: fiscalStatus === "matched" ? {
+      fiscal_history: fiscalStatus !== "unknown" ? {
+        source: fiscalAgency.history_source,
         years: [...(fiscalAgency?.years.keys() || [])].sort((a, b) => a - b),
         source_labels: [...(fiscalAgency?.source_labels || [])].filter(Boolean).sort(),
       } : null,
@@ -318,7 +402,9 @@ export function buildAgencyFiscalContext({
         agency_identity_id: agencyId,
         identity_resolver: "site/agency_identity.mjs",
         fiscal_history_status: fiscalStatus,
-        fiscal_source: IBO_FISCAL_HISTORY_SOURCE,
+        fiscal_history_source: fiscalAgency?.history_source || null,
+        fiscal_source: fiscalStatus === "matched" ? IBO_FISCAL_HISTORY_SOURCE : null,
+        fallback_source: fiscalStatus === "fallback" ? LEGACY_FISCAL_CONTEXT_SOURCE : null,
         fiscal_receipt_schema: iboReceipt.schema || null,
         registered_contract_source: {
           projection_schema: contractProjection.schema || null,
@@ -338,7 +424,8 @@ export function buildAgencyFiscalContext({
       },
     };
   }
-  const fiscalYears = sortedYears(fiscalRows.map((row) => row?.fiscal_year));
+  const fiscalYears = sortedYears([...authoritativeFiscal.values()].flatMap((agency) => [...agency.years.keys()]));
+  const fallbackFiscalYears = sortedYears([...legacyFiscal.values()].flatMap((agency) => [...agency.years.keys()]));
   const registeredYears = sortedYears(registeredRows.map((row) => row?.registration_fiscal_year));
   const paymentYears = sortedYears(paymentRows.map((row) => row?.fiscal_year));
   return {
@@ -351,6 +438,7 @@ export function buildAgencyFiscalContext({
         receipt_schema: iboReceipt.schema || null,
         retrieval_timestamp: iboReceipt.retrieval_timestamp || null,
       },
+      fallback_fiscal_context: legacyFiscal.size ? LEGACY_FISCAL_CONTEXT_SOURCE : null,
       registered_contracts: {
         schema: contractProjection.schema || null,
         snapshot_date: contractProjection.snapshot_date || null,
@@ -366,8 +454,10 @@ export function buildAgencyFiscalContext({
     coverage: {
       agency_count: agencyIds.size,
       exact_fiscal_join_count: exactJoinCount,
+      fallback_fiscal_join_count: fallbackJoinCount,
       unknown_fiscal_context_count: unknownFiscalCount,
       fiscal_history_years: fiscalYears,
+      fallback_fiscal_history_years: fallbackFiscalYears,
       registered_contract_years: registeredYears,
       payment_years: paymentYears,
       overlapping_fiscal_years: fiscalYears.filter((year) => registeredYears.includes(year)),
@@ -411,9 +501,11 @@ export function renderAgencyFiscalContextSection(context) {
     || row.registered_contract_count != null
     || row.payment_transaction_count != null);
   const agency = context.procurement_agency_name || context.agency_name || context.agency_id || "this agency";
-  const unknownNotice = context.status !== "matched"
+  const unknownNotice = context.status === "unknown"
     ? `<p class="agency-fiscal-context-status" data-fiscal-context-status="unknown"><strong>Fiscal context: Unknown.</strong> No exact IBO agency identifier matched a fiscal-history record for this agency.</p>`
-    : `<p class="agency-fiscal-context-status" data-fiscal-context-status="matched">IBO fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}; publisher vintage FY2022. The table keeps fiscal scale, staffing, registered contract value, and payments as separate measures.</p>`;
+    : context.status === "matched"
+      ? `<p class="agency-fiscal-context-status" data-fiscal-context-status="matched">IBO fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}; publisher vintage FY2022. The table keeps fiscal scale, staffing, registered contract value, and payments as separate measures.</p>`
+      : `<p class="agency-fiscal-context-status" data-fiscal-context-status="fallback">Fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}. The table keeps fiscal scale, staffing, registered contract value, and payments as separate measures.</p>`;
   const table = rows.length ? `<div class="agency-fiscal-context-table-wrap"><table class="agency-fiscal-context-table"><caption>Agency fiscal context by fiscal year</caption><thead><tr><th scope="col">FY</th><th scope="col">IBO actual expenditures</th><th scope="col">IBO Personal Services</th><th scope="col">IBO Other Than Personal Services</th><th scope="col">IBO staffing</th><th scope="col">Current registered contract value</th><th scope="col">Registered contracts</th><th scope="col">Actual payments</th></tr></thead><tbody>${rows.map((row) => {
     const contractHref = row.registered_contract_count != null
       ? analyticalDrillThroughHref({ agency, registration_fiscal_year: row.fiscal_year }) : null;

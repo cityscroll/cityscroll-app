@@ -71,7 +71,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - **Agency procurement fiscal context (AP-12):** `site/agency_fiscal_context.mjs` joins the AP-03
   registered-contract and AP-09 payment projections to AP-11 only through a matched canonical
-  agency identity. Its materialization is `site/data/agency_fiscal_context.json`, refreshed with
+  agency identity. Authoritative IBO rows are accepted only for exact canonical IDs; an explicit
+  legacy context may fill an agency absent from IBO as an internal fallback and never enters IBO
+  rankings. Its materialization is `site/data/agency_fiscal_context.json`, refreshed with
   `node tools/build_agency_fiscal_context.mjs`; missing fiscal history stays `unknown`, and the
   renderer keeps expenditure, staffing, registered value, and payments as separate measures with
   source provenance and drill-through links. Focused proof is `test/agency_fiscal_context.test.mjs`.

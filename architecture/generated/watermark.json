@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-27T20:49:48-04:00",
-  "commit": "d3cdc32e3e5b4795330ddbdeafcc95d3f90e657f",
+  "generated_at": "2026-08-27T21:59:48-04:00",
+  "commit": "2b2f8ae7c63606be7bbf199579aeddc8c47c2c98",
   "observer_coverage_hash": "4b52bca29d2f4459dc159ec2e343c2fa1b9643a26433c75f85344a5c46a2f19e",
   "canaries": {
     "agency-constellation-model": {

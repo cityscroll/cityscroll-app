@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.agency_fiscal_context.v1",
-  "method": "agency_fiscal_context_exact_id_join_v1",
+  "method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
   "generated_at": "2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",
   "sources": {
     "fiscal_history": {
@@ -13,6 +13,7 @@
       "receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
       "retrieval_timestamp": "2026-08-27T17:59:48Z"
     },
+    "fallback_fiscal_context": null,
     "registered_contracts": {
       "schema": "cityscroll.analytics_registered_contracts.v1",
       "snapshot_date": "2026-08-18",
@@ -1085,6 +1086,7 @@
   "coverage": {
     "agency_count": 61,
     "exact_fiscal_join_count": 57,
+    "fallback_fiscal_join_count": 0,
     "unknown_fiscal_context_count": 4,
     "fiscal_history_years": [
       1980,
@@ -1131,6 +1133,7 @@
       2021,
       2022
     ],
+    "fallback_fiscal_history_years": [],
     "registered_contract_years": [
       2025,
       2026,
@@ -1149,6 +1152,7 @@
       "procurement_agency_name": "Administration for Children's Services",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -3825,10 +3829,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "administration-for-childrens-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -3837,6 +3842,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -3866,6 +3872,7 @@
       "procurement_agency_name": "Department for the Aging",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -6542,10 +6549,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "aging",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -6554,6 +6562,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -6583,6 +6592,7 @@
       "procurement_agency_name": "Board of Correction",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -9240,10 +9250,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "board-of-correction",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -9252,6 +9263,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -9280,6 +9292,7 @@
       "procurement_agency_name": "Board of Elections",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -11937,10 +11950,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "board-of-elections",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -11949,6 +11963,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -11977,6 +11992,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -14608,10 +14624,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "borough-president-bronx",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -14620,6 +14637,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -14645,6 +14663,7 @@
       "procurement_agency_name": "Borough President - Brooklyn",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -17321,10 +17340,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "borough-president-brooklyn",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -17333,6 +17353,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -17362,6 +17383,7 @@
       "procurement_agency_name": "Borough President - Manhattan",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -20019,10 +20041,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "borough-president-manhattan",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -20031,6 +20054,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -20058,6 +20082,7 @@
       "procurement_agency_name": "Borough President - Queens",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -22715,10 +22740,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "borough-president-queens",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -22727,6 +22753,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -22755,6 +22782,7 @@
       "procurement_agency_name": "Borough President - Staten Island",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -25412,10 +25440,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "borough-president-staten-island",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -25424,6 +25453,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -25452,6 +25482,7 @@
       "procurement_agency_name": "Department of Buildings",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -28128,10 +28159,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "buildings",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -28140,6 +28172,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -28169,6 +28202,7 @@
       "procurement_agency_name": "Business Integrity Commission",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -30807,10 +30841,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "business-integrity-commission",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -30819,6 +30854,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -30846,6 +30882,7 @@
       "procurement_agency_name": "Campaign Finance Board",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -33503,10 +33540,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "campaign-finance-board",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -33515,6 +33553,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -33543,6 +33582,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -36174,10 +36214,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "city-clerk",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -36186,6 +36227,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -36211,6 +36253,7 @@
       "procurement_agency_name": "City Council",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -38887,10 +38930,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "city-council",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -38899,6 +38943,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -38928,6 +38973,7 @@
       "procurement_agency_name": "Department of City Planning",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -41585,10 +41631,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "city-planning",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -41597,6 +41644,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -41625,6 +41673,7 @@
       "procurement_agency_name": "Department of Citywide Administrative Services",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -44301,10 +44350,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "citywide-administrative-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -44313,6 +44363,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -44342,6 +44393,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -46973,10 +47025,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "civil-service-commission",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -46985,6 +47038,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -47010,6 +47064,7 @@
       "procurement_agency_name": "Civilian Complaint Review Board",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -49686,10 +49741,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "civilian-complaint-review-board",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -49698,6 +49754,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -49727,6 +49784,7 @@
       "procurement_agency_name": "Commission on Human Rights",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -52404,10 +52462,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "commission-on-human-rights",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -52416,6 +52475,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -52483,18 +52543,13 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "commission-on-racial-equity",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "unknown",
-        "fiscal_source": {
-          "publisher": "New York City Independent Budget Office",
-          "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
-          "publisher_vintage": "FY2022",
-          "fiscal_year_convention": "NYC fiscal year is named for the calendar year in which it ends; each column is the fiscal year ending June 30.",
-          "expenditure_workbook": "AgencyExpenditures.xlsx",
-          "staffing_workbook": "FullTimePositions.xlsx"
-        },
+        "fiscal_history_source": null,
+        "fiscal_source": null,
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -52522,6 +52577,7 @@
       "procurement_agency_name": "Office of the Comptroller",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -55198,10 +55254,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "comptroller",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -55210,6 +55267,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -55239,6 +55297,7 @@
       "procurement_agency_name": "Department of Consumer & Worker Protection",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -57915,10 +57974,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "consumer-and-worker-protection",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -57927,6 +57987,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -57956,6 +58017,7 @@
       "procurement_agency_name": "Department of Correction",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -60195,10 +60257,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "correction",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -60207,6 +60270,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -60312,18 +60376,13 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "criminal-justice-coordinator",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "unknown",
-        "fiscal_source": {
-          "publisher": "New York City Independent Budget Office",
-          "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
-          "publisher_vintage": "FY2022",
-          "fiscal_year_convention": "NYC fiscal year is named for the calendar year in which it ends; each column is the fiscal year ending June 30.",
-          "expenditure_workbook": "AgencyExpenditures.xlsx",
-          "staffing_workbook": "FullTimePositions.xlsx"
-        },
+        "fiscal_history_source": null,
+        "fiscal_source": null,
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -60353,6 +60412,7 @@
       "procurement_agency_name": "Department of Cultural Affairs",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -63029,10 +63089,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "cultural-affairs",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -63041,6 +63102,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -63070,6 +63132,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -65238,10 +65301,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "department-of-employment",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -65250,6 +65314,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -65273,6 +65338,7 @@
       "procurement_agency_name": "Department of Social Services",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -67949,10 +68015,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "department-of-social-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -67961,6 +68028,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -67990,6 +68058,7 @@
       "procurement_agency_name": "Department of Design and Construction",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -70666,10 +70735,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "design-and-construction",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -70678,6 +70748,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -70707,6 +70778,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -73312,10 +73384,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "district-attorney-new-york-county",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -73324,6 +73397,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -73347,6 +73421,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -75952,10 +76027,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "districting-commission",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -75964,6 +76040,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -75987,6 +76064,7 @@
       "procurement_agency_name": "Department of Education",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -78226,10 +78304,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "education",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -78238,6 +78317,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -78267,6 +78347,7 @@
       "procurement_agency_name": "Department of Emergency Management",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -80943,10 +81024,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "emergency-management",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -80955,6 +81037,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -80984,6 +81067,7 @@
       "procurement_agency_name": "Department of Environmental Protection",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -83660,10 +83744,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "environmental-protection",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -83672,6 +83757,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -83701,6 +83787,7 @@
       "procurement_agency_name": "Department of Finance",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -86377,10 +86464,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "finance",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -86389,6 +86477,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -86418,6 +86507,7 @@
       "procurement_agency_name": "Financial Information Services Agency",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -89094,10 +89184,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "financial-information-services-agency",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -89106,6 +89197,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -89135,6 +89227,7 @@
       "procurement_agency_name": "Fire Department",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -91374,10 +91467,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "fire-department",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -91386,6 +91480,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -91415,6 +91510,7 @@
       "procurement_agency_name": "Department of Health and Mental Hygiene",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -94091,10 +94187,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "health-and-mental-hygiene",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -94103,6 +94200,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -94132,6 +94230,7 @@
       "procurement_agency_name": "Department of Homeless Services",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -96808,10 +96907,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "homeless-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -96820,6 +96920,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -96849,6 +96950,7 @@
       "procurement_agency_name": "Housing Preservation and Development",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -99525,10 +99627,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "housing-preservation-and-development",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -99537,6 +99640,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -99566,6 +99670,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -101734,10 +101839,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "human-resources-administration",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -101746,6 +101852,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -101769,6 +101876,7 @@
       "procurement_agency_name": "Independent Budget Office",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -104426,10 +104534,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "independent-budget-office",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -104438,6 +104547,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -104542,18 +104652,13 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "information-technology-and-telecommunications",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "unknown",
-        "fiscal_source": {
-          "publisher": "New York City Independent Budget Office",
-          "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
-          "publisher_vintage": "FY2022",
-          "fiscal_year_convention": "NYC fiscal year is named for the calendar year in which it ends; each column is the fiscal year ending June 30.",
-          "expenditure_workbook": "AgencyExpenditures.xlsx",
-          "staffing_workbook": "FullTimePositions.xlsx"
-        },
+        "fiscal_history_source": null,
+        "fiscal_source": null,
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -104583,6 +104688,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -107188,10 +107294,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "investigation",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -107200,6 +107307,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -107223,6 +107331,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -109828,10 +109937,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "juvenile-justice",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -109840,6 +109950,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -109863,6 +109974,7 @@
       "procurement_agency_name": "Landmarks Preservation Commission",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -112539,10 +112651,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "landmarks-preservation-commission",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -112551,6 +112664,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -112580,6 +112694,7 @@
       "procurement_agency_name": "Law Department",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -115256,10 +115371,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "law-department",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -115268,6 +115384,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -115297,6 +115414,7 @@
       "procurement_agency_name": "Department of Veterans' Services",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -116657,10 +116775,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "nyc-department-of-veterans-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -116669,6 +116788,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -116697,6 +116817,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -119328,10 +119449,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "office-of-collective-bargaining",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -119340,6 +119462,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -119365,6 +119488,7 @@
       "procurement_agency_name": "Office of the Actuary",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -122041,10 +122165,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "office-of-the-actuary",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -122053,6 +122178,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -122082,6 +122208,7 @@
       "procurement_agency_name": "Department of Parks and Recreation",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -124758,10 +124885,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "parks-and-recreation",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -124770,6 +124898,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -124799,6 +124928,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -126107,10 +126237,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "payroll-administration",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -126119,6 +126250,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -126142,6 +126274,7 @@
       "procurement_agency_name": "Police Department",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -128381,10 +128514,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "police-department",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -128393,6 +128527,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -128422,6 +128557,7 @@
       "procurement_agency_name": "Department of Probation",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -131098,10 +131234,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "probation",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -131110,6 +131247,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -131139,6 +131277,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -133770,10 +133909,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "public-advocate",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -133782,6 +133922,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -133883,18 +134024,13 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "records-and-information-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "unknown",
-        "fiscal_source": {
-          "publisher": "New York City Independent Budget Office",
-          "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
-          "publisher_vintage": "FY2022",
-          "fiscal_year_convention": "NYC fiscal year is named for the calendar year in which it ends; each column is the fiscal year ending June 30.",
-          "expenditure_workbook": "AgencyExpenditures.xlsx",
-          "staffing_workbook": "FullTimePositions.xlsx"
-        },
+        "fiscal_history_source": null,
+        "fiscal_source": null,
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -133924,6 +134060,7 @@
       "procurement_agency_name": "Department of Sanitation",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -136163,10 +136300,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "sanitation",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -136175,6 +136313,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -136204,6 +136343,7 @@
       "procurement_agency_name": "Department of Small Business Services",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -138880,10 +139020,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "small-business-services",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -138892,6 +139033,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -138921,6 +139063,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -141526,10 +141669,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "tax-commission",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -141538,6 +141682,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -141561,6 +141706,7 @@
       "procurement_agency_name": null,
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -144166,10 +144312,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "teachers-retirement-system",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -144178,6 +144325,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -144201,6 +144349,7 @@
       "procurement_agency_name": "Department of Transportation",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -146877,10 +147026,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "transportation",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -146889,6 +147039,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
@@ -146918,6 +147069,7 @@
       "procurement_agency_name": "Department of Youth and Community Development",
       "status": "matched",
       "fiscal_history": {
+        "source": "ibo_authoritative",
         "years": [
           1980,
           1981,
@@ -149594,10 +149746,11 @@
         }
       },
       "provenance": {
-        "join_method": "agency_fiscal_context_exact_id_join_v1",
+        "join_method": "agency_fiscal_context_ibo_authoritative_exact_id_join_v2",
         "agency_identity_id": "youth-and-community-development",
         "identity_resolver": "site/agency_identity.mjs",
         "fiscal_history_status": "matched",
+        "fiscal_history_source": "ibo_authoritative",
         "fiscal_source": {
           "publisher": "New York City Independent Budget Office",
           "source_page_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
@@ -149606,6 +149759,7 @@
           "expenditure_workbook": "AgencyExpenditures.xlsx",
           "staffing_workbook": "FullTimePositions.xlsx"
         },
+        "fallback_source": null,
         "fiscal_receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
         "registered_contract_source": {
           "projection_schema": "cityscroll.analytics_registered_contracts.v1",
