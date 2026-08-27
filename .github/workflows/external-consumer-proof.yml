@@ -1,0 +1,47 @@
+name: External consumer proof
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/external-consumer-proof.yml"
+      - "docs/api-parity-b-final.md"
+      - "docs/evidence/external-search-consumer/**"
+      - "examples/external-search-proof/**"
+      - "test/external_search_proof.test.mjs"
+      - "test/fixtures/external_search_proof.json"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/external-consumer-proof.yml"
+      - "docs/api-parity-b-final.md"
+      - "docs/evidence/external-search-consumer/**"
+      - "examples/external-search-proof/**"
+      - "test/external_search_proof.test.mjs"
+      - "test/fixtures/external_search_proof.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  proof:
+    name: Reproduce search workflow from public HTTP
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build deterministic provenance and bounds receipt
+        run: |
+          set -euo pipefail
+          node examples/external-search-proof/index.mjs \
+            --fixture test/fixtures/external_search_proof.json \
+            --receipt "$RUNNER_TEMP/external-search-proof-receipt.json" \
+            --json > "$RUNNER_TEMP/external-search-proof-output.json"
+          cmp "$RUNNER_TEMP/external-search-proof-receipt.json" \
+            docs/evidence/external-search-consumer/receipt.json
+      - name: Run independent consumer regression
+        run: node --test test/external_search_proof.test.mjs
