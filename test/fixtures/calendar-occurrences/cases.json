@@ -101,5 +101,72 @@
     "source_system": "city_record",
     "source_record_id": "20260827005",
     "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260827005"
+  },
+  "lifecycle": {
+    "published": {
+      "object_ref": "meeting:city_record:hearing-a",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Hearing A",
+      "calendar_occurrences": [{
+        "uid": "meeting:city_record:hearing-a",
+        "kind": "event",
+        "starts_at": "2026-09-15T18:00:00-04:00",
+        "lifecycle": "published",
+        "sequence": 0,
+        "last_modified": "2026-08-27T15:00:00Z"
+      }],
+      "source_system": "city_record",
+      "source_record_id": "hearing-a",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/hearing-a"
+    },
+    "scheduled": {
+      "object_ref": "meeting:city_record:hearing-a",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Hearing A",
+      "calendar_occurrences": [{
+        "uid": "meeting:city_record:hearing-a",
+        "kind": "event",
+        "starts_at": "2026-09-15T18:00:00-04:00",
+        "lifecycle": "scheduled",
+        "sequence": 0,
+        "last_modified": "2026-08-27T16:00:00Z"
+      }],
+      "source_system": "city_record",
+      "source_record_id": "hearing-a",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/hearing-a"
+    },
+    "rescheduled": {
+      "object_ref": "meeting:city_record:hearing-a",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Hearing A",
+      "calendar_occurrences": [{
+        "uid": "meeting:city_record:hearing-a",
+        "kind": "event",
+        "starts_at": "2026-09-15T19:00:00-04:00",
+        "lifecycle": "rescheduled",
+        "sequence": 1,
+        "last_modified": "2026-08-27T17:00:00Z"
+      }],
+      "source_system": "city_record",
+      "source_record_id": "hearing-a",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/hearing-a"
+    },
+    "cancelled": {
+      "object_ref": "meeting:city_record:hearing-a",
+      "scope_ref": "scope:meetings:district-33",
+      "title": "Hearing A",
+      "calendar_occurrences": [{
+        "uid": "meeting:city_record:hearing-a",
+        "kind": "event",
+        "starts_at": "2026-09-15T19:00:00-04:00",
+        "lifecycle": "cancelled",
+        "status": "cancelled",
+        "sequence": 2,
+        "last_modified": "2026-08-27T18:00:00Z"
+      }],
+      "source_system": "city_record",
+      "source_record_id": "hearing-a",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/hearing-a"
+    }
   }
 }

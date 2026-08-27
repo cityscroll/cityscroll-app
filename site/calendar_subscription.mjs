@@ -160,8 +160,8 @@ export function renderCalendarSubscriptionHandoff({ feedUrl, webcalUrl, scopeLab
       <details class="calendar-subscription-guidance" open>
         <summary>How to subscribe</summary>
         <ul>
-          <li><strong>Apple Calendar / native calendar:</strong> choose <em>Open calendar subscription</em> above. Your calendar will subscribe to the feed.</li>
-          <li><strong>Google Calendar:</strong> choose <em>Copy subscription URL</em>, then use <em>Other calendars → From URL</em> and paste the HTTPS URL. Google Calendar checks it for updates.</li>
+          <li><strong>Apple Calendar / native calendar:</strong> choose <em>Open calendar subscription</em> above, then set the subscription’s <em>Auto-refresh</em> frequency. Updates follow that client setting and are not instantaneous.</li>
+          <li><strong>Google Calendar:</strong> choose <em>Copy subscription URL</em>, then use <em>Other calendars → From URL</em> and paste the HTTPS URL. Google says changes to URL-based calendars may take up to 12 hours to appear, so do not rely on a subscribed calendar for last-minute changes.</li>
           <li><strong>Outlook:</strong> choose <em>Copy subscription URL</em>, then use <em>Add calendar → Subscribe from web</em> and paste the HTTPS URL.</li>
           <li><strong>Other calendars:</strong> look for <em>Subscribe from URL</em>, <em>Internet calendar</em>, or a <code>webcal:</code> link. Importing a downloaded file is a one-time copy, not a subscription.</li>
         </ul>

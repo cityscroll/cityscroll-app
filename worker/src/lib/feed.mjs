@@ -6,7 +6,10 @@
 import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
 import { landProjectDisplayTitle, noticeDisplayTitle } from "../../../site/display_title.mjs";
 import { calendarFeedUnsupportedFilterFields } from "../../../site/scope_v0.mjs";
-import { calendarOccurrenceFromLegacyFeedItem } from "../../../site/calendar_occurrence.mjs";
+import {
+  calendarOccurrenceFromLegacyFeedItem,
+  deduplicateCalendarOccurrences,
+} from "../../../site/calendar_occurrence.mjs";
 
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"']/g, (c) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
@@ -251,20 +254,24 @@ export function icsFeed({ title, occurrences, items }) {
     const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(value || ""));
     return match ? match.slice(1).join("") : null;
   };
+  const icsTimestamp = (value) => {
+    const parsed = new Date(String(value || ""));
+    return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+  };
   const nextDate = (value) => {
     const parsed = new Date(`${value}T00:00:00Z`);
     if (Number.isNaN(parsed.getTime())) return null;
     parsed.setUTCDate(parsed.getUTCDate() + 1);
     return parsed.toISOString().slice(0, 10).replace(/-/g, "");
   };
-  const asOccurrenceList = Array.isArray(occurrences)
+  const asOccurrenceList = deduplicateCalendarOccurrences(Array.isArray(occurrences)
     ? occurrences
     : (items || []).flatMap((item) => {
       // Legacy callers are upgraded at the producer boundary. The serializer
       // receives only occurrence objects and never selects a row timestamp.
       const occurrence = calendarOccurrenceFromLegacyFeedItem(item);
       return occurrence ? [occurrence] : [];
-    });
+    }));
   const formatDateTime = (occurrence, value) => {
     const when = dt(value);
     if (!when) return null;
@@ -286,6 +293,8 @@ export function icsFeed({ title, occurrences, items }) {
       "BEGIN:VEVENT",
       `UID:${escIcs(occurrence.uid)}@crol-list`,
       `DTSTAMP:${occurrence.observed_at ? new Date(occurrence.observed_at).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z") : when}`,
+      ...(occurrence.last_modified ? [`LAST-MODIFIED:${icsTimestamp(occurrence.last_modified)}`] : []),
+      ...(Number.isSafeInteger(occurrence.sequence) ? [`SEQUENCE:${occurrence.sequence}`] : []),
       ...(allDay
         ? [`DTSTART;VALUE=DATE:${when}`, `DTEND;VALUE=DATE:${end}`]
         : [formatDateTime(occurrence, occurrence.starts_at), occurrence.timezone

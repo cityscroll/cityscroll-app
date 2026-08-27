@@ -129,3 +129,27 @@ test("icsFeed: an RFP due date works as the event when no event_date exists", ()
   assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 1);
   assert.match(ics, /DTSTART:20260718T000000/);
 });
+
+test("icsFeed: duplicate source rows produce one same-UID event", () => {
+  const base = {
+    uid: "meeting:city_record:hearing-a",
+    object_ref: "meeting:city_record:hearing-a",
+    scope_ref: "scope:meetings:district-33",
+    kind: "event",
+    title: "Hearing A",
+    timezone: "America/New_York",
+    status: "scheduled",
+    lifecycle: "scheduled",
+    sequence: 0,
+    starts_at: "2026-09-15T18:00:00-04:00",
+    last_modified: "2026-08-27T16:00:00Z",
+  };
+  const ics = icsFeed({ title: "t", occurrences: [
+    base,
+    { ...base, starts_at: "2026-09-15T19:00:00-04:00", lifecycle: "rescheduled", sequence: 1, last_modified: "2026-08-27T17:00:00Z" },
+  ] });
+  assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 1);
+  assert.match(ics, /DTSTART;TZID=America\/New_York:20260915T190000/);
+  assert.doesNotMatch(ics, /20260915T180000/);
+  assert.match(ics, /SEQUENCE:1/);
+});

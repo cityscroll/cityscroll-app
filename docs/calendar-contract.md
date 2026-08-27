@@ -45,6 +45,26 @@ For standing feeds, only `eventDate` becomes a VEVENT. A row can have a `date` u
 display and still be absent from the calendar. In particular, an award with only `start_date` is
 not emitted. A due date is promoted for ordinary notice/RFP rows when there is no event date.
 
+## Update lifecycle
+
+An occurrence has a source-facing lifecycle of `published → scheduled → rescheduled → cancelled`.
+`rescheduled` changes the civic time without changing `uid`; the feed emits one VEVENT for that
+UID, so a refresh moves the event instead of leaving the old time beside the new one. A cancelled
+occurrence retains its UID and date and is emitted with `STATUS:CANCELLED` rather than silently
+disappearing.
+
+When a publisher supplies an integer revision/sequence and modification timestamp, the normalized
+occurrence carries them as `sequence` and `last_modified`, and ICS emits `SEQUENCE` and
+`LAST-MODIFIED`. Missing publisher clocks are left unknown rather than inferred from fetch time.
+Rows with the same UID are collapsed at the occurrence boundary, preferring the highest sequence,
+then the newest supplied modification/observation clock, with a same-UID cancellation preferred
+when no clock is available.
+
+Subscription clients pull on their own schedules. Apple Calendar exposes an Auto-refresh setting;
+Google Calendar documents that URL-based calendar changes may take up to 12 hours to appear. The
+feed’s stable UID and update metadata make refreshes correct when received, but cannot make a
+client refresh immediately.
+
 ## Characterization fixtures and evidence
 
 The exact CRLF payloads are locked in `test/fixtures/calendar-contract/`:

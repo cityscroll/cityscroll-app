@@ -131,5 +131,7 @@ test("handoff keeps HTTPS for copying and uses webcal for native subscription", 
   assert.match(handoff, /Google Calendar/);
   assert.match(handoff, /Outlook/);
   assert.match(handoff, /How to subscribe/);
+  assert.match(handoff, /Auto-refresh/);
+  assert.match(handoff, /up to 12 hours/);
   assert.doesNotMatch(handoff, /calendar_subscribed|Calendar: Active/);
 });

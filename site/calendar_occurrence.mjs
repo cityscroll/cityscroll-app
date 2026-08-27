@@ -22,6 +22,15 @@ const CALENDAR_OCCURRENCE_STATUSES = Object.freeze([
   "completed",
 ]);
 
+// Lifecycle is the source-facing history of an occurrence. `status` remains
+// the compact calendar status used by existing producers and ICS consumers.
+const CALENDAR_OCCURRENCE_LIFECYCLES = Object.freeze([
+  "published",
+  "scheduled",
+  "rescheduled",
+  "cancelled",
+]);
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const US_DATE = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?$/;
@@ -88,6 +97,17 @@ function sourceForRecord(record = {}) {
   });
 }
 
+function recordIsCancelled(record = {}) {
+  if (record.status === "cancelled" || record.lifecycle === "cancelled") return true;
+  // City Record cancellation notices often publish the cancellation in the
+  // notice title/body instead of a typed status field. Require explicit
+  // cancellation language; unrelated publication text remains unknown.
+  const sourceText = [record.title, record.short_title, record.type_of_notice_description,
+    record.notice_type, record.status_label, record.additional_description_1,
+    record.additional_description_2, record.cancellation_notice].filter(Boolean).join(" ");
+  return /\b(?:cancelled|canceled)\b/i.test(sourceText);
+}
+
 function canonicalUrlForRecord(record = {}) {
   const direct = safeUrl(record.canonical_url);
   if (direct) return direct;
@@ -119,6 +139,17 @@ function asOfDate(value) {
   const supplied = text(value);
   if (supplied && ISO_DATE.test(supplied)) return supplied;
   return new Date().toISOString().slice(0, 10);
+}
+
+function sequenceValue(value) {
+  if (value == null || String(value).trim() === "") return null;
+  const normalized = Number(value);
+  return Number.isSafeInteger(normalized) && normalized >= 0 ? normalized : null;
+}
+
+function timestampValue(value) {
+  const normalized = validDate(value);
+  return normalized && !dateIsOnly(normalized) ? normalized : null;
 }
 
 function isFuture(value, asOf) {
@@ -244,6 +275,11 @@ function createCalendarOccurrence(input = {}) {
   const uid = text(input.uid);
   const kind = text(input.kind);
   const status = text(input.status) || "scheduled";
+  const suppliedLifecycle = text(input.lifecycle || input.occurrence_lifecycle);
+  const lifecycle = suppliedLifecycle || (status === "cancelled" ? "cancelled" : "scheduled");
+  const sequence = sequenceValue(input.sequence);
+  const effectiveSequence = sequence ?? (lifecycle === "rescheduled" ? 1 : null);
+  const lastModified = timestampValue(input.last_modified || input.modified_at);
   const startsAt = validDate(input.starts_at);
   const date = validDate(input.date);
   const endsAt = validDate(input.ends_at);
@@ -253,6 +289,9 @@ function createCalendarOccurrence(input = {}) {
   }
   if (!CALENDAR_OCCURRENCE_KINDS.includes(kind)) throw new TypeError(`unsupported calendar occurrence kind: ${kind}`);
   if (!CALENDAR_OCCURRENCE_STATUSES.includes(status)) throw new TypeError(`unsupported calendar occurrence status: ${status}`);
+  if (!CALENDAR_OCCURRENCE_LIFECYCLES.includes(lifecycle)) throw new TypeError(`unsupported calendar occurrence lifecycle: ${lifecycle}`);
+  if (status === "cancelled" && lifecycle !== "cancelled") throw new TypeError("cancelled occurrences must have a cancelled lifecycle");
+  if (lifecycle === "cancelled" && status !== "cancelled") throw new TypeError("cancelled lifecycle requires cancelled status");
   if (startsAt && date) throw new TypeError("CalendarOccurrence cannot contain both starts_at and date");
   if (!startsAt && !date) throw new TypeError("CalendarOccurrence needs starts_at or date");
   if (endsAt && startsAt && dateIsOnly(endsAt)) throw new TypeError("CalendarOccurrence.ends_at must be a timestamp for timed occurrences");
@@ -275,6 +314,9 @@ function createCalendarOccurrence(input = {}) {
     ends_at: endsAt,
     timezone: text(input.timezone) || null,
     status,
+    lifecycle,
+    sequence: effectiveSequence,
+    last_modified: lastModified,
     location: input.location == null ? null : input.location,
     description: text(input.description) || null,
     canonical_url: canonicalUrl,
@@ -302,7 +344,14 @@ function occurrenceInput(record, fields, options) {
     ...(dateIsOnly(fields.when) ? { date: fields.when } : { starts_at: fields.when }),
     ends_at: fields.ends_at,
     timezone: fields.timezone || (Object.hasOwn(options, "timezone") ? options.timezone : record.timezone || "America/New_York"),
-    status: fields.status || record.status || "scheduled",
+    status: fields.status || record.status || (recordIsCancelled(record) ? "cancelled" : "scheduled"),
+    lifecycle: fields.lifecycle || record.lifecycle || record.occurrence_lifecycle
+      || (fields.status === "cancelled" || recordIsCancelled(record) ? "cancelled" : null),
+    sequence: fields.sequence ?? record.sequence ?? record.sequence_number ?? record.revision
+      ?? record.source_sequence ?? record.source_revision ?? record.provenance?.revision,
+    last_modified: fields.last_modified || fields.modified_at || record.last_modified
+      || record.modified_at || record.updated_at || record.source_modified_at
+      || record.source_last_modified,
     location: fields.location ?? locationForRecord(record),
     description: fields.description || options.description || record.calendar_description || record.description,
     canonical_url: fields.canonical_url || options.canonical_url || canonicalUrlForRecord(record),
@@ -372,7 +421,30 @@ function calendarOccurrenceFromLegacyFeedItem(item = {}) {
 }
 
 function calendarOccurrencesForRows(rows = [], options = {}) {
-  return rows.flatMap((record) => calendarOccurrencesForRecord(record, options));
+  return deduplicateCalendarOccurrences(rows.flatMap((record) => calendarOccurrencesForRecord(record, options)));
+}
+
+function deduplicateCalendarOccurrences(occurrences = []) {
+  const byUid = new Map();
+  occurrences.forEach((occurrence, index) => {
+    if (!occurrence?.uid) return;
+    const current = byUid.get(occurrence.uid);
+    if (!current || occurrenceIsNewer(occurrence, current, index)) byUid.set(occurrence.uid, occurrence);
+  });
+  return [...byUid.values()];
+}
+
+function occurrenceIsNewer(candidate, current, candidateIndex) {
+  const candidateSequence = candidate.sequence ?? -1;
+  const currentSequence = current.sequence ?? -1;
+  if (candidateSequence !== currentSequence) return candidateSequence > currentSequence;
+  const candidateModified = Date.parse(candidate.last_modified || candidate.observed_at || "") || -1;
+  const currentModified = Date.parse(current.last_modified || current.observed_at || "") || -1;
+  if (candidateModified !== currentModified) return candidateModified > currentModified;
+  // If a source sends a cancellation without a revision clock, retain the
+  // identity and prefer the cancellation over a same-UID scheduled copy.
+  if (candidate.status !== current.status) return candidate.status === "cancelled";
+  return candidateIndex > 0;
 }
 
 function semanticDateKeys() {
@@ -429,11 +501,13 @@ export {
   CALENDAR_OCCURRENCE_SCHEMA,
   CALENDAR_OCCURRENCE_KINDS,
   CALENDAR_OCCURRENCE_STATUSES,
+  CALENDAR_OCCURRENCE_LIFECYCLES,
   CalendarOccurrence,
   createCalendarOccurrence,
   calendarOccurrencesForRecord,
   calendarOccurrenceFromLegacyFeedItem,
   calendarOccurrencesForRows,
+  deduplicateCalendarOccurrences,
   calendarizationCoverage,
   projectCalendarOccurrences,
 };
