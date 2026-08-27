@@ -273,8 +273,12 @@ export const COMMUNITY_BOARD_RECOMMENDATION_SOURCE_CONTRACT = Object.freeze({
   edge_schema: COMMUNITY_BOARD_RECOMMENDATION_EDGE_SCHEMA,
   relation: "issues_recommendation",
   target_kind: "recommendation",
+  source_qualified: true,
+  explicit_statement_required: true,
+  discussion_is_not_recommendation: true,
+  canonical_matter_join: "exact_publisher_identifier_only",
   semantics: "a recommendation explicitly issued by the board in a dated publisher document; it does not imply adoption or implementation",
-  required_evidence: Object.freeze(["exact_board_publisher_identity", "exact_recommendation_publisher_identity", "exact_relation_date", "retained_source_document"]),
+  required_evidence: Object.freeze(["exact_board_publisher_identity", "exact_recommendation_publisher_identity", "exact_relation_date", "retained_source_document", "observed_receipt"]),
 });
 
 export const COMMUNITY_BOARD_RELATION_CONTRACTS = Object.freeze({
