@@ -44,10 +44,6 @@ import {
   paymentTransactionDrillThroughHref,
 } from "../analytical_payment_projection.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
-import {
-  createContractsAnalysisProvider,
-} from "../../capabilities/contracts_analysis_provider.mjs";
-import { executeContractsAnalysis } from "../../capabilities/contracts_analysis.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
 const MONEY_AGENCIES_SNAPSHOT_URL="data/money_procurement_agencies.json";
@@ -58,7 +54,6 @@ const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
 let analyticalProjectionPromise=null;
 let analyticalDroppedFilters=[];
-let analyticalRenderSequence=0;
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
@@ -364,34 +359,6 @@ function analyticalControlsFilters(){
     min_amount: $("#analytics-min")?.value || null,
     max_amount: $("#analytics-max")?.value || null,
   };
-}
-
-function contractsAnalysisCapabilityInput(filters, groupBy, measure){
-  return {
-    groupBy,
-    measure,
-    ...(filters.agency ? { agency: filters.agency } : {}),
-    ...(filters.prime_vendor ? { vendor: filters.prime_vendor } : {}),
-    ...(filters.registration_fiscal_year ? { fiscalYear: Number(filters.registration_fiscal_year) } : {}),
-    ...(filters.contract_amount_band ? { amountBand: filters.contract_amount_band } : {}),
-    ...(filters.min_amount ? { minAmount: Number(filters.min_amount) } : {}),
-    ...(filters.max_amount ? { maxAmount: Number(filters.max_amount) } : {}),
-    ...(filters.retroactive ? { retroactive: String(filters.retroactive).toLowerCase() === "true" } : {}),
-    ...(filters.city_record_match ? { cityRecordMatch: filters.city_record_match } : {}),
-    limit: 10,
-  };
-}
-
-async function registeredContractsAnalysis(projection, filters, groupBy, measure){
-  if(!projection) return null;
-  try{
-    return await executeContractsAnalysis(
-      createContractsAnalysisProvider(projection),
-      contractsAnalysisCapabilityInput(filters, groupBy, measure),
-    );
-  }catch(_error){
-    return null;
-  }
 }
 
 function syncAnalyticalFiscalYears(rows, fact="registered_contract"){
@@ -743,8 +710,7 @@ function renderAnalyticalPaymentProjection(projection, allProjection, urlFilters
   renderAnalyticalFactStatus();
 }
 
-async function renderAnalyticalProjection(rows){
-  const renderSequence=++analyticalRenderSequence;
+function renderAnalyticalProjection(rows){
   const panel=$("#contracts-analytics");
   if(!panel) return;
   panel.hidden=mode!=="award";
@@ -789,19 +755,7 @@ async function renderAnalyticalProjection(rows){
   const timingSummary=registrationTimingSummary(filtered);
   const groupBy=$("#analytics-group")?.value||"agency";
   const measure=$("#analytics-measure")?.value||"current";
-  const localGrouped=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
-  const capabilityResult=timingView ? null : await registeredContractsAnalysis(registeredProjection,filters,groupBy,measure);
-  if(renderSequence!==analyticalRenderSequence) return;
-  const grouped=capabilityResult && capabilityResult.availability !== "unavailable"
-    ? {
-      ...localGrouped,
-      shown_groups: capabilityResult.groups.map((group)=>({
-        ...group,
-        [valueKeyForMeasure(measure)]: group.value,
-      })),
-      capability: capabilityResult,
-    }
-    : localGrouped;
+  const grouped=groupAnalyticalContracts(filtered,{groupBy,measure,topN:10});
   const measureLabel=analyticalMeasureLabel(measure);
   renderAnalyticalVendorConcentration(filtered,filters,measure,urlFilters.agency);
   const population=$("#contracts-analytics-population");
@@ -815,7 +769,7 @@ async function renderAnalyticalProjection(rows){
   if(!list) return;
   list.hidden=!!urlFilters.agency && !urlFilters.prime_vendor;
   list.innerHTML=grouped.shown_groups.map((group,index)=>{
-    const href=group.capability?.drill_through?.href || analyticalDrillThroughHref({
+    const href=analyticalDrillThroughHref({
       [analyticalGroupDimension(groupBy)]: groupBy === "registration_fiscal_year" ? group.label.replace(/^FY/, "") : group.label,
       registration_fiscal_year: filters.registration_fiscal_year,
       contract_amount_band: groupBy === "amount_band" ? group.label : filters.contract_amount_band,

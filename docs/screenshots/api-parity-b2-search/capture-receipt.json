@@ -1,0 +1,41 @@
+{
+  "surface": "/search/?q=police",
+  "capability_reference": "search.federated@1",
+  "capture": {
+    "viewport": "390x844",
+    "runs_per_variant": 3,
+    "fixture": "test/functional/29_search_results.py",
+    "baseline_source": "main-parity Search document",
+    "after_source": "Search document with canonical coverage projection"
+  },
+  "performance_ms": {
+    "baseline": {
+      "fcp_median": 2084.0,
+      "lcp_median": 2084.0,
+      "search_settled_median": 2103.6
+    },
+    "after": {
+      "fcp_median": 2076.0,
+      "lcp_median": 2076.0,
+      "search_settled_median": 2092.0
+    },
+    "delta_after_minus_baseline": {
+      "fcp_median": -8.0,
+      "lcp_median": -8.0,
+      "search_settled_median": -11.6
+    },
+    "note": "Existing static shell/font startup is approximately 2.1s locally; the migration added no request and did not regress these measurements."
+  },
+  "cache": {
+    "endpoint": "GET https://api.cityscroll.org/search?q=police",
+    "cache_control": "public, max-age=60, stale-while-revalidate=300",
+    "sample_status": 200
+  },
+  "screenshots": {
+    "before_390": "before-390.png",
+    "after_390": "after-390.png",
+    "before_1440": "before-1440.png",
+    "after_1440": "after-1440.png",
+    "sha256_equal_pairs": true
+  }
+}

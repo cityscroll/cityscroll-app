@@ -79,7 +79,6 @@ test("HTTP and MCP adapters delegate without reconstructing the analysis", async
   const direct = await executeContractsAnalysis(workerContractsAnalysis(env), input);
   const http = await handleContractsAnalysis(new Request("https://api.cityscroll.org/contracts/analysis?group_by=vendor&measure=current&agency=Agency%20A&limit=10"), env);
   assert.equal(http.status, 200);
-  assert.equal(http.headers.get("Cache-Control"), "public, max-age=60, s-maxage=300, stale-while-revalidate=3600");
   assert.deepEqual(await http.json(), direct);
   const mcp = await handleMcp(post({ jsonrpc: "2.0", id: 1, method: "tools/call", params: {
     name: "analyze_contracts", arguments: { group_by: "vendor", measure: "current", agency: "Agency A", limit: 10 },

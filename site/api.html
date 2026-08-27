@@ -1538,8 +1538,8 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
       },
       "provider": {
         "id": "worker-static.procurement-contracts.analysis",
-        "module": "capabilities/contracts_analysis_provider.mjs",
-        "export": "createContractsAnalysisProvider",
+        "module": "worker/src/contracts.mjs",
+        "export": "workerContractsAnalysis",
         "store": "precomputed registered-contract analytical projection",
         "readModel": "site/data/analytics_registered_contracts.json"
       },
