@@ -34,6 +34,15 @@ import {
   vendorConcentration,
   registrationTimingSummary,
 } from "../analytical_projection.mjs";
+import { switchAnalyticalFact } from "../analytical_projection_contract.mjs";
+import {
+  PAYMENT_ANALYTICAL_PROJECTION_URL,
+  filterAnalyticalPayments,
+  groupAnalyticalPayments,
+  paymentPopulationSummary,
+  paymentRelatedContractDrillThroughHref,
+  paymentTransactionDrillThroughHref,
+} from "../analytical_payment_projection.mjs";
 import { buildContractReportTarget, renderReportIssueAffordance } from "../report_issue.mjs";
 
 const MONEY_DEFAULT_SNAPSHOT_URL="data/money_default_open.json";
@@ -44,6 +53,7 @@ const MONEY_PROCUREMENT_QUERY_URL="data/procurement_browse_query.json";
 const PIN_FAMILY_REVIEW_URL="data/pin_family_mismatch_review.json";
 let moneyDefaultSnapshotPromise=null,moneyAgenciesSnapshotPromise=null,moneyResidentSnapshotPromise=null,moneyActionLocationToolsPromise=null,moneyPinSiblingPromise=null,pinFamilyReviewPromise=null;
 let analyticalProjectionPromise=null;
+let analyticalDroppedFilters=[];
 const contractSearchDocumentPromises=new Map();
 let moneyLocationFilter={layer:"",basis:"",borough:"",communityDistrict:"",councilDistrict:""};
 function moneyActionLocationTools(){
@@ -156,9 +166,10 @@ function loadMoneyProcurementSnapshot(options={}, baseRows=[]){
 }
 function loadAnalyticalProjection(){
   if(!analyticalProjectionPromise){
-    analyticalProjectionPromise=fetch(ANALYTICAL_PROJECTION_URL)
-      .then(r=>r.ok?r.json():null)
-      .catch(()=>null);
+    analyticalProjectionPromise=Promise.all([
+      fetch(ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
+      fetch(PAYMENT_ANALYTICAL_PROJECTION_URL).then(r=>r.ok?r.json():null),
+    ]).then(([registered_contract, payment])=>({registered_contract, payment})).catch(()=>null);
   }
   return analyticalProjectionPromise;
 }
@@ -327,14 +338,18 @@ function bindFullHistorySearch(){
 function analyticalUrlFilters(){
   const params=new URLSearchParams(location.search);
   return {
+    fact: params.get("ap_fact") || null,
+    payment_view: params.get("ap_payment_view") || null,
     agency: params.get("ap_agency") || null,
     prime_vendor: params.get("ap_vendor") || null,
+    fiscal_year: params.get("ap_fy") || null,
     registration_fiscal_year: params.get("ap_fy") || null,
     contract_amount_band: params.get("ap_amount_band") || null,
     min_amount: params.get("ap_min") || null,
     max_amount: params.get("ap_max") || null,
     retroactive: params.get("retroactive") || null,
     city_record_match: params.get("ap_city_record_match") || null,
+    contract_id: params.get("ap_contract_id") || null,
   };
 }
 
@@ -346,11 +361,12 @@ function analyticalControlsFilters(){
   };
 }
 
-function syncAnalyticalFiscalYears(rows){
+function syncAnalyticalFiscalYears(rows, fact="registered_contract"){
   const select=$("#analytics-fy");
   if(!select) return;
   const current=select.value;
-  const years=[...new Set((rows||[]).map(row=>row.registration_fiscal_year).filter(Number.isInteger))].sort((a,b)=>b-a);
+  const field=fact === "payment" ? "fiscal_year" : "registration_fiscal_year";
+  const years=[...new Set((rows||[]).map(row=>row[field]).filter(Number.isInteger))].sort((a,b)=>b-a);
   select.innerHTML=`<option value="" data-i18n="analytics_all_years">${t("analytics_all_years")}</option>`+years.map(year=>`<option value="${year}">FY${year}</option>`).join("");
   if(years.includes(Number(current))) select.value=current;
 }
@@ -371,6 +387,28 @@ function analyticalMoneyRow(row){
     primary_stage: "registered",
     source_system: "analytics_registered_contracts",
     analytics_projection: true,
+  };
+}
+
+function analyticalPaymentMoneyRow(row){
+  const label = [row?.agency, row?.payee_name, row?.fiscal_year ? `FY${row.fiscal_year}` : ""].filter(Boolean).join(" · ");
+  return {
+    id: `payment:${label}`,
+    short_title: `${t("analytics_payment_activity_title")}: ${label || t("analytics_unknown_scope")}`,
+    agency_name: row?.agency,
+    vendor_name: row?.payee_name,
+    contract_id: row?.contract_id || (row?.contract_ids?.length === 1 ? row.contract_ids[0] : null),
+    contract_ids: Array.isArray(row?.contract_ids) ? row.contract_ids : [],
+    contract_amount: row?.actual_payment_amount,
+    start_date: null,
+    registration_date: null,
+    type_of_notice_description: t("analytics_payment_type"),
+    procurement_stages: ["payment"],
+    primary_stage: "payment",
+    source_system: "checkbook_payment_population",
+    analytics_projection: true,
+    payment_transaction_count: row?.transaction_count || 0,
+    actual_payment_amount: row?.actual_payment_amount || 0,
   };
 }
 
@@ -452,12 +490,13 @@ function renderAnalyticalCoverage(projectionRows, filters) {
 
 function analyticalGroupLabel(groupBy){
   if(groupBy === "vendor") return t("analytics_group_vendor").toLowerCase();
-  if(groupBy === "registration_fiscal_year") return t("analytics_group_fy").toLowerCase();
+  if(groupBy === "registration_fiscal_year" || groupBy === "fiscal_year") return t("analytics_group_fy").toLowerCase();
   if(groupBy === "amount_band") return t("analytics_group_amount_band").toLowerCase();
   return t("analytics_group_agency").toLowerCase();
 }
 
-function analyticalMeasureLabel(measure){
+function analyticalMeasureLabel(measure, fact="registered_contract"){
+  if(fact === "payment") return measure === "transactions" ? t("analytics_payment_measure_transactions") : t("analytics_payment_measure_amount");
   return measure === "original" ? t("analytics_measure_original") : measure === "count" ? t("analytics_measure_count") : t("analytics_measure_current");
 }
 
@@ -525,18 +564,31 @@ function analyticalGroupDimension(groupBy){
       : groupBy === "amount_band" ? "contract_amount_band" : "agency";
 }
 
-function syncAnalyticalViewControls(view){
+function syncAnalyticalViewControls(view, fact="registered_contract"){
   const timing = view === "timing";
   const measureField = document.querySelector("#analytics-measure")?.closest(".field");
   if(measureField) measureField.hidden = timing;
   const group = $("#analytics-group");
   if(!group) return;
   const current = group.value;
-  const options = timing
-    ? [["agency", t("analytics_group_agency")], ["registration_fiscal_year", t("analytics_group_fy")], ["amount_band", t("analytics_group_amount_band")]]
-    : [["agency", t("analytics_group_agency")], ["vendor", t("analytics_group_vendor")], ["registration_fiscal_year", t("analytics_group_fy")], ["amount_band", t("analytics_group_amount_band")]];
+  const options = fact === "payment"
+    ? [["agency", t("analytics_group_agency")], ["vendor", t("analytics_group_vendor")], ["fiscal_year", t("analytics_payment_group_fy")]]
+    : timing
+      ? [["agency", t("analytics_group_agency")], ["registration_fiscal_year", t("analytics_group_fy")], ["amount_band", t("analytics_group_amount_band")]]
+      : [["agency", t("analytics_group_agency")], ["vendor", t("analytics_group_vendor")], ["registration_fiscal_year", t("analytics_group_fy")], ["amount_band", t("analytics_group_amount_band")]];
   group.innerHTML = options.map(([value, label]) => `<option value="${value}">${escUiHtml(label)}</option>`).join("");
   group.value = options.some(([value]) => value === current) ? current : "agency";
+  if(measureField && fact === "payment") measureField.hidden = false;
+  const measure = $("#analytics-measure");
+  if(measure && fact === "payment") {
+    const selected = measure.value;
+    measure.innerHTML = `<option value="amount">${escUiHtml(t("analytics_payment_measure_amount"))}</option><option value="transactions">${escUiHtml(t("analytics_payment_measure_transactions"))}</option>`;
+    measure.value = ["amount", "transactions"].includes(selected) ? selected : "amount";
+  } else if(measure && fact !== "payment") {
+    const selected = measure.value;
+    measure.innerHTML = `<option value="current">${escUiHtml(t("analytics_measure_current"))}</option><option value="original">${escUiHtml(t("analytics_measure_original"))}</option><option value="count">${escUiHtml(t("analytics_measure_count"))}</option>`;
+    measure.value = ["current", "original", "count"].includes(selected) ? selected : "current";
+  }
 }
 
 function formatLagDays(value){
@@ -568,16 +620,117 @@ function renderRegistrationTimingSummary(summary, populationInfo){
   return headline;
 }
 
+function analyticalFilterLabel(key){
+  return {
+    contract_amount_band: t("analytics_group_amount_band"),
+    min_amount: t("analytics_min_current"),
+    max_amount: t("analytics_max_current"),
+    retroactive: t("analytics_view_timing"),
+    city_record_match: t("analytics_coverage_heading"),
+    contract_id: t("analytics_related_contract"),
+  }[key] || key;
+}
+
+function renderAnalyticalFactStatus(){
+  const status=$("#contracts-analytics-fact-status");
+  if(!status) return;
+  status.textContent=analyticalDroppedFilters.length
+    ? t("analytics_dropped_filters", { filters: analyticalDroppedFilters.map(analyticalFilterLabel).join(", ") })
+    : "";
+  status.hidden=!analyticalDroppedFilters.length;
+}
+
+function renderAnalyticalFactComparison(projection, filters){
+  const panel=$("#contracts-analytics-fact-comparison");
+  const cards=$("#contracts-analytics-fact-comparison-cards");
+  if(!panel || !cards) return;
+  const registered=projection?.registered_contract;
+  const payments=projection?.payment;
+  if(!registered || !payments) { panel.hidden=true; return; }
+  const registeredRows=filterAnalyticalContracts(registered.rows || [], {
+    agency:filters.agency, prime_vendor:filters.prime_vendor, fiscal_year:filters.fiscal_year,
+  });
+  const paymentRows=filterAnalyticalPayments(payments.rows || [], filters);
+  const registeredSummary=populationSummary(registeredRows);
+  const paymentSummary=paymentPopulationSummary(paymentRows, payments);
+  const registeredHref=analyticalDrillThroughHref({ agency:filters.agency, prime_vendor:filters.prime_vendor, registration_fiscal_year:filters.fiscal_year });
+  const paymentHref=paymentTransactionDrillThroughHref({ agency:filters.agency, prime_vendor:filters.prime_vendor, fiscal_year:filters.fiscal_year });
+  const contractHref=paymentRelatedContractDrillThroughHref({ agency:filters.agency, prime_vendor:filters.prime_vendor, fiscal_year:filters.fiscal_year });
+  cards.innerHTML=`<div class="contracts-analytics-fact-card"><span>${escUiHtml(t("analytics_fact_registered"))}</span><strong>${escUiHtml(formatRegisteredValue(registeredSummary.current_registered_value))}</strong><small>${escUiHtml(t("analytics_measure_current"))}</small><a href="${escUiHtml(registeredHref)}">${escUiHtml(t("analytics_view_contract_records"))}</a></div><div class="contracts-analytics-fact-card"><span>${escUiHtml(t("analytics_fact_payments"))}</span><strong>${escUiHtml(formatRegisteredValue(paymentSummary.actual_payment_amount))}</strong><small>${escUiHtml(t("analytics_payment_measure_amount"))}</small><a href="${escUiHtml(paymentHref)}">${escUiHtml(t("analytics_view_payment_transactions"))}</a><a href="${escUiHtml(contractHref)}">${escUiHtml(t("analytics_view_related_contracts"))}</a></div>`;
+  panel.hidden=false;
+}
+
+function paymentGroupDimension(groupBy){
+  return groupBy === "vendor" ? "payee_name" : groupBy === "fiscal_year" ? "fiscal_year" : "agency";
+}
+
+function renderAnalyticalPaymentProjection(projection, allProjection, urlFilters){
+  const rows=Array.isArray(projection?.rows) ? projection.rows : [];
+  const filters={ agency:urlFilters.agency, prime_vendor:urlFilters.prime_vendor, fiscal_year:urlFilters.fiscal_year, contract_id:urlFilters.contract_id };
+  const view="overview";
+  syncAnalyticalFiscalYears(rows, "payment");
+  syncAnalyticalViewControls(view, "payment");
+  if(urlFilters.fiscal_year && [...($("#analytics-fy")?.options || [])].some((option)=>option.value===urlFilters.fiscal_year)) $("#analytics-fy").value=urlFilters.fiscal_year;
+  const filtered=filterAnalyticalPayments(rows, filters);
+  const summary=paymentPopulationSummary(filtered, projection);
+  const groupBy=$("#analytics-group")?.value||"agency";
+  const measure=$("#analytics-measure")?.value||"amount";
+  const grouped=groupAnalyticalPayments(filtered,{groupBy,measure,topN:10});
+  const measureLabel=analyticalMeasureLabel(measure,"payment");
+  $("#contracts-analytics-kicker")?.replaceChildren(document.createTextNode(t("analytics_fact_payments")));
+  $("#contracts-analytics-heading")?.replaceChildren(document.createTextNode(t("analytics_payment_heading")));
+  const deck=$("#contracts-analytics-deck");
+  if(deck) deck.textContent=t("analytics_payment_deck");
+  const coverage=$("#contracts-analytics-coverage");
+  if(coverage) coverage.hidden=true;
+  const concentration=$("#contracts-analytics-concentration");
+  if(concentration) concentration.hidden=true;
+  const timing=$("#contracts-analytics-timing");
+  if(timing) timing.hidden=true;
+  const population=$("#contracts-analytics-population");
+  if(population) population.textContent=`${t("analytics_fact_payments")} — ${measureLabel}: ${measure==="transactions" ? summary.payment_transaction_count.toLocaleString("en-US") : formatRegisteredValue(summary.actual_payment_amount)} · ${summary.payment_transaction_count.toLocaleString("en-US")} ${t("analytics_payment_transactions_unit")} · ${summary.year_label}. ${t("analytics_payment_population_suffix")}`;
+  const list=$("#contracts-analytics-groups");
+  if(!list) return;
+  list.hidden=false;
+  list.innerHTML=grouped.shown_groups.map((group,index)=>{
+    const dimension=paymentGroupDimension(groupBy);
+    const scope={ agency:filters.agency, prime_vendor:filters.prime_vendor, fiscal_year:filters.fiscal_year };
+    if(dimension==="agency") scope.agency=group.label;
+    if(dimension==="payee_name") scope.prime_vendor=group.label;
+    if(dimension==="fiscal_year") scope.fiscal_year=group.label;
+    const contractId=group.contract_ids.length === 1 ? group.contract_ids[0] : null;
+    const transactionHref=paymentTransactionDrillThroughHref({...scope, contract_id:contractId});
+    const contractHref=paymentRelatedContractDrillThroughHref({...scope, contract_id:contractId});
+    const value=measure==="transactions" ? `${group.transaction_count.toLocaleString("en-US")} ${t("analytics_payment_transactions_unit")}` : `${formatRegisteredValue(group.actual_payment_amount)} ${measureLabel.toLowerCase()}`;
+    return `<li class="contracts-analytics-group"><a href="${escUiHtml(transactionHref)}" data-analytics-drill-through="${escUiHtml(group.label)}">${index+1}. ${escUiHtml(group.label)}</a><span class="contracts-analytics-group-meta">${escUiHtml(value)} · ${group.contract_count.toLocaleString("en-US")} ${escUiHtml(t("analytics_related_contracts_unit"))}<br><a class="contracts-analytics-payment-contracts" href="${escUiHtml(contractHref)}">${escUiHtml(t("analytics_view_related_contracts"))}</a></span></li>`;
+  }).join("");
+  const note=$("#contracts-analytics-note");
+  if(note){ const remaining=grouped.groups.length-grouped.shown_groups.length; note.hidden=false; note.textContent=remaining>0?t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")}):t("analytics_payment_group_note"); }
+  renderAnalyticalFactComparison(allProjection,filters);
+  renderAnalyticalFactStatus();
+}
+
 function renderAnalyticalProjection(rows){
   const panel=$("#contracts-analytics");
   if(!panel) return;
   panel.hidden=mode!=="award";
   if(mode!=="award") return;
-  const projection=Array.isArray(rows) ? { rows } : (rows || {});
-  const projectionRows=Array.isArray(projection.rows) ? projection.rows : [];
+  const projection=Array.isArray(rows) ? { registered_contract: { rows } } : (rows || {});
+  const urlFilters=analyticalUrlFilters();
+  const fact=urlFilters.fact === "payment" ? "payment" : "registered_contract";
+  const selectedControl=$("#analytics-fact");
+  if(selectedControl) selectedControl.value=fact;
+  const compatible=switchAnalyticalFact(fact === "payment" ? "registered_contract" : "payment", fact, analyticalFactFilters());
+  analyticalDroppedFilters=[...new Set([...analyticalDroppedFilters,...compatible.dropped])];
+  if(fact === "payment") {
+    renderAnalyticalPaymentProjection(projection.payment, projection, urlFilters);
+    return;
+  }
+  const registeredProjection=projection.registered_contract || projection;
+  const projectionRows=Array.isArray(registeredProjection.rows) ? registeredProjection.rows : [];
   syncAnalyticalFiscalYears(projectionRows);
   const view=$("#analytics-view")?.value||"overview";
-  syncAnalyticalViewControls(view);
+  syncAnalyticalViewControls(view,"registered_contract");
   const timingView=view === "timing";
   const kicker=$("#contracts-analytics-kicker");
   if(kicker) kicker.textContent=t(timingView ? "analytics_view_timing" : "analytics_compare_kicker");
@@ -586,7 +739,8 @@ function renderAnalyticalProjection(rows){
   if(deck) deck.textContent=t(timingView ? "analytics_timing_deck" : "analytics_overview_deck");
   const timingMetrics=$("#contracts-analytics-timing");
   if(timingMetrics) timingMetrics.hidden=!timingView;
-  const urlFilters=analyticalUrlFilters();
+  const coveragePanel=$("#contracts-analytics-coverage");
+  if(coveragePanel) coveragePanel.hidden=false;
   const controls=analyticalControlsFilters();
   if(urlFilters.registration_fiscal_year && [...($("#analytics-fy")?.options || [])].some((option)=>option.value===urlFilters.registration_fiscal_year)) $("#analytics-fy").value=urlFilters.registration_fiscal_year;
   const filters={...controls, agency:urlFilters.agency, prime_vendor:urlFilters.prime_vendor, contract_amount_band:urlFilters.contract_amount_band};
@@ -597,7 +751,7 @@ function renderAnalyticalProjection(rows){
   if(urlFilters.max_amount) filters.max_amount=urlFilters.max_amount;
   if(urlFilters.retroactive) filters.retroactive=urlFilters.retroactive;
   const filtered=filterAnalyticalContracts(projectionRows,filters);
-  const summary=populationSummary(filtered,{snapshot_date:projection.snapshot_date,population_definition:projection.population_definition});
+  const summary=populationSummary(filtered,{snapshot_date:registeredProjection.snapshot_date,population_definition:registeredProjection.population_definition});
   const timingSummary=registrationTimingSummary(filtered);
   const groupBy=$("#analytics-group")?.value||"agency";
   const measure=$("#analytics-measure")?.value||"current";
@@ -638,13 +792,58 @@ function renderAnalyticalProjection(rows){
       ? t("analytics_rank_note",{n:grouped.shown_groups.length,group:analyticalGroupLabel(groupBy),measure:measureLabel.toLowerCase(),remaining:remaining.toLocaleString("en-US")})
       : t("analytics_group_exact_note");
   renderAnalyticalCoverage(projectionRows, filters);
+  renderAnalyticalFactComparison(projection, { agency:filters.agency, prime_vendor:filters.prime_vendor, fiscal_year:filters.registration_fiscal_year });
+  renderAnalyticalFactStatus();
 }
 
 function valueKeyForMeasure(measure){
   return measure==="original" ? "sum_original_registered_amount" : measure==="count" ? "contract_count" : "sum_current_registered_amount";
 }
 
+function analyticalFactFilters(){
+  const filters=analyticalUrlFilters();
+  return {
+    agency:filters.agency,
+    prime_vendor:filters.prime_vendor,
+    fiscal_year:filters.fiscal_year,
+    contract_amount_band:filters.contract_amount_band,
+    min_amount:filters.min_amount,
+    max_amount:filters.max_amount,
+    retroactive:filters.retroactive,
+    city_record_match:filters.city_record_match,
+    contract_id:filters.contract_id,
+  };
+}
+
+function analyticalDropQueryKey(key){
+  return {
+    contract_amount_band:"ap_amount_band",
+    min_amount:"ap_min",
+    max_amount:"ap_max",
+    retroactive:"retroactive",
+    city_record_match:"ap_city_record_match",
+    contract_id:"ap_contract_id",
+  }[key] || key;
+}
+
+function changeAnalyticalFact(nextFact){
+  const currentFact=analyticalUrlFilters().fact || "registered_contract";
+  const switched=switchAnalyticalFact(currentFact,nextFact,analyticalFactFilters());
+  analyticalDroppedFilters=switched.dropped.filter((key)=>key!=="registration_fiscal_year");
+  const params=new URLSearchParams(location.search);
+  params.set("ap_fact",nextFact);
+  for(const key of switched.dropped) params.delete(analyticalDropQueryKey(key));
+  const query=params.toString();
+  history.replaceState(null,"",`${location.pathname}${query?`?${query}`:""}${location.hash}`);
+  analyticalProjectionPromise?.then(renderAnalyticalProjection).catch(()=>{});
+}
+
 function bindAnalyticalControls(){
+  const factControl=$("#analytics-fact");
+  if(factControl&&!factControl.dataset.analyticsBound){
+    factControl.dataset.analyticsBound="1";
+    factControl.addEventListener("change",()=>changeAnalyticalFact(factControl.value));
+  }
   ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
     const element=$(selector);
     if(!element || element.dataset.analyticsBound) return;
@@ -739,9 +938,12 @@ async function search(){
     bindAnalyticalControls();
     if (analyticsProjection) renderAnalyticalProjection(analyticsProjection);
     const analyticalScope = mode === "award" ? analyticalUrlFilters() : {};
-    const analyticalScopeActive = Object.values(analyticalScope).some((value) => value != null && value !== "");
+    const analyticalScopeActive = analyticalScope.fact === "payment"
+      || Object.entries(analyticalScope).some(([key, value]) => !["fact", "payment_view"].includes(key) && value != null && value !== "");
     const analyticalScopeRows = analyticalScopeActive
-      ? filterAnalyticalContracts(analyticsProjection?.rows || [], analyticalScope).map(analyticalMoneyRow)
+      ? analyticalScope.fact === "payment"
+        ? filterAnalyticalPayments(analyticsProjection?.payment?.rows || [], analyticalScope).map(analyticalPaymentMoneyRow)
+        : filterAnalyticalContracts(analyticsProjection?.registered_contract?.rows || [], analyticalScope).map(analyticalMoneyRow)
       : null;
     if (analyticalScopeActive) {
       if (stale()) return;

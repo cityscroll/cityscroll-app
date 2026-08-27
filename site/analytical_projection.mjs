@@ -14,8 +14,8 @@ export const ANALYTICAL_GROUPS = Object.freeze({
   amount_band: "contract_amount_band",
 });
 export const ANALYTICAL_PROJECTION_QUERY_KEYS = Object.freeze([
-  "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
-  "retroactive", "ap_city_record_match",
+  "ap_fact", "ap_payment_view", "ap_agency", "ap_vendor", "ap_fy", "ap_amount_band", "ap_min", "ap_max",
+  "retroactive", "ap_city_record_match", "ap_contract_id",
 ]);
 export const ANALYTICAL_MEASURES = Object.freeze({
   count: "unique_contract_count",
@@ -125,10 +125,12 @@ export function registrationLagDaysBetween(registrationDate, startDate) {
 export function filterAnalyticalContracts(rows, filters = {}) {
   const min = filters.min_amount == null || filters.min_amount === "" ? null : Number(filters.min_amount);
   const max = filters.max_amount == null || filters.max_amount === "" ? null : Number(filters.max_amount);
-  const fy = filters.registration_fiscal_year == null || filters.registration_fiscal_year === ""
-    ? null : Number(filters.registration_fiscal_year);
+  const fiscalYear = filters.fiscal_year ?? filters.registration_fiscal_year;
+  const fy = fiscalYear == null || fiscalYear === ""
+    ? null : Number(fiscalYear);
   const agency = filters.agency == null || filters.agency === "" ? null : String(filters.agency);
   const vendor = filters.prime_vendor == null || filters.prime_vendor === "" ? null : String(filters.prime_vendor);
+  const contractId = filters.contract_id == null || filters.contract_id === "" ? null : String(filters.contract_id);
   const amountBand = filters.contract_amount_band || null;
   const retroactive = filters.retroactive == null || filters.retroactive === ""
     ? null : String(filters.retroactive).toLowerCase() === "true";
@@ -138,6 +140,7 @@ export function filterAnalyticalContracts(rows, filters = {}) {
     if (fy != null && row.registration_fiscal_year !== fy) return false;
     if (agency != null && readerDimensionValue(row.agency) !== agency) return false;
     if (vendor != null && readerDimensionValue(row.prime_vendor) !== vendor) return false;
+    if (contractId != null && readerDimensionValue(row.prime_contract_id) !== contractId) return false;
     if (amountBand && readerDimensionValue(row.contract_amount_band) !== amountBand) return false;
     if (retroactive === true && row.registration_timing !== "retroactive") return false;
     if (retroactive === false && row.registration_timing !== "early_on_time") return false;

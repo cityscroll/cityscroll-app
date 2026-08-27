@@ -189,18 +189,115 @@ export const REGISTERED_CONTRACT_PROJECTION = Object.freeze({
   ]),
 });
 
+export const PAYMENT_PROJECTION = Object.freeze({
+  schema: ANALYTICAL_PROJECTION_SCHEMA,
+  fact: "payment",
+  source: {
+    system: "checkbook_payment_population",
+    identity_field: "transaction_id",
+    population_basis: "AP-08 independent Checkbook Spending contract-payment population",
+  },
+  dimensions: Object.freeze({
+    agency: Object.freeze({
+      label: "Agency",
+      field: "agency",
+      source_field: "agency",
+      null_label: UNKNOWN_DIMENSION_LABEL,
+      compatible_with: "registered_contract.agency",
+    }),
+    prime_vendor: Object.freeze({
+      label: "Payee / vendor",
+      field: "payee_name",
+      source_field: "payee_name",
+      null_label: UNKNOWN_DIMENSION_LABEL,
+      compatible_with: "registered_contract.prime_vendor",
+    }),
+    fiscal_year: Object.freeze({
+      label: "Payment fiscal year",
+      field: "fiscal_year",
+      source_field: "fiscal_year",
+      derivation: "publisher fiscal-year partition from AP-08",
+      null_label: UNKNOWN_DIMENSION_LABEL,
+      compatible_with: "registered_contract.registration_fiscal_year",
+    }),
+    contract_id: Object.freeze({
+      label: "Related contract",
+      field: "contract_id",
+      source_field: "contract_id",
+      null_label: UNKNOWN_DIMENSION_LABEL,
+    }),
+  }),
+  measures: Object.freeze({
+    payment_transaction_count: Object.freeze({
+      label: "Payment transactions",
+      reader_label: "Payment transactions",
+      aggregation: "count_rows",
+      source_field: "transaction_id",
+      facts: Object.freeze(["payment"]),
+    }),
+    sum_actual_payment_amount: Object.freeze({
+      label: "Actual payment amount",
+      reader_label: "Actual payments",
+      aggregation: "sum",
+      source_field: "check_amount",
+      facts: Object.freeze(["payment"]),
+      prohibited_labels: Object.freeze(["registered contract value", "contract value"]),
+    }),
+  }),
+  guards: Object.freeze([
+    "payment rows come from the independent AP-08 population, not the bounded graph-enrichment collector",
+    "negative check_amount rows are retained in actual payment totals",
+    "agency filters use the Civic Graph agency normalization",
+    "actual payments are not registered contract value",
+  ]),
+});
+
 export const ANALYTICAL_FACTS = Object.freeze({
   registered_contract: REGISTERED_CONTRACT_PROJECTION,
-  payment: Object.freeze({
-    fact: "payment",
-    status: "deferred",
-    measures: Object.freeze({}),
-  }),
+  payment: PAYMENT_PROJECTION,
 });
+
+export const ANALYTICAL_FACT_FILTERS = Object.freeze({
+  common: Object.freeze(["agency", "prime_vendor", "fiscal_year", "contract_id"]),
+  registered_contract: Object.freeze(["contract_amount_band", "min_amount", "max_amount", "retroactive", "city_record_match"]),
+  payment: Object.freeze([]),
+});
+
+export function compatibleAnalyticalFilters(fromFact, toFact, filters = {}) {
+  const source = ANALYTICAL_FACT_FILTERS[fromFact] || [];
+  const target = new Set([
+    ...(ANALYTICAL_FACT_FILTERS.common || []),
+    ...(ANALYTICAL_FACT_FILTERS[toFact] || []),
+  ]);
+  const normalized = { ...(filters || {}) };
+  if (normalized.fiscal_year == null && normalized.registration_fiscal_year != null) {
+    normalized.fiscal_year = normalized.registration_fiscal_year;
+  }
+  const next = {};
+  const dropped = [];
+  for (const [key, value] of Object.entries(normalized)) {
+    if (value == null || value === "") continue;
+    if (target.has(key)) {
+      next[key] = value;
+    } else if (source.includes(key) || Object.hasOwn(filters, key)) {
+      dropped.push(key);
+    }
+  }
+  // The URL uses one neutral fiscal-year key; each fact gives it its own
+  // published meaning (registration FY versus payment FY).
+  return { filters: next, dropped };
+}
+
+export function switchAnalyticalFact(fromFact, toFact, filters = {}) {
+  if (!ANALYTICAL_FACTS[fromFact] || !ANALYTICAL_FACTS[toFact]) {
+    throw new Error(`Unsupported analytical fact switch: ${fromFact} → ${toFact}`);
+  }
+  return { fact: toFact, ...compatibleAnalyticalFilters(fromFact, toFact, filters) };
+}
 
 export function assertSupportedProjection({ fact = "registered_contract", measure, dimension } = {}) {
   const definition = ANALYTICAL_FACTS[fact];
-  if (!definition || definition.status === "deferred") {
+  if (!definition) {
     throw new Error(`Unsupported analytical fact: ${fact}`);
   }
   const measureDefinition = definition.measures[measure];

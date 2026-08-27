@@ -1,13 +1,23 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { describe, it } from "node:test";
 
 import {
+  ANALYTICAL_FACTS,
+  PAYMENT_PROJECTION,
   REGISTERED_CONTRACT_PROJECTION,
   UNKNOWN_DIMENSION_LABEL,
   assertSupportedProjection,
+  compatibleAnalyticalFilters,
 } from "../site/analytical_projection_contract.mjs";
+import {
+  filterAnalyticalPayments,
+  groupAnalyticalPayments,
+  normalizeAnalyticalPaymentRow,
+  paymentRelatedContractDrillThroughHref,
+  paymentTransactionDrillThroughHref,
+} from "../site/analytical_payment_projection.mjs";
 import {
   cityRecordCoverage,
   analyticalDrillThroughHref,
@@ -34,8 +44,29 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(REGISTERED_CONTRACT_PROJECTION.dimensions.registration_timing.source_field, "registration_date, start_date");
     assert.equal(REGISTERED_CONTRACT_PROJECTION.dimensions.registration_fiscal_year.source_field, "prime_contract_registration_date");
     assert.match(REGISTERED_CONTRACT_PROJECTION.guards.join(" "), /source_fiscal_years.*provenance/i);
-    assert.throws(() => assertSupportedProjection({ fact: "payment", measure: "sum_current_registered_amount" }), /Unsupported analytical fact/);
+    assert.equal(ANALYTICAL_FACTS.payment, PAYMENT_PROJECTION);
+    assert.equal(PAYMENT_PROJECTION.measures.sum_actual_payment_amount.reader_label, "Actual payments");
+    assert.equal(assertSupportedProjection({ fact: "payment", measure: "sum_actual_payment_amount", dimension: "agency" }).fact, "payment");
+    assert.throws(() => assertSupportedProjection({ fact: "payment", measure: "sum_current_registered_amount" }), /Unsupported measure/);
     assert.throws(() => assertSupportedProjection({ measure: "sum_current_registered_amount", dimension: "industry" }), /Unsupported dimension/);
+  });
+
+  it("switches facts while preserving shared filters and reporting dropped filters", () => {
+    const result = compatibleAnalyticalFilters("registered_contract", "payment", {
+      agency: "DEPT OF PARKS & RECREATION",
+      prime_vendor: "Vendor A",
+      fiscal_year: 2026,
+      contract_id: "CT-1",
+      contract_amount_band: "Under $100,000",
+      min_amount: 1000,
+    });
+    assert.deepEqual(result.filters, {
+      agency: "DEPT OF PARKS & RECREATION",
+      prime_vendor: "Vendor A",
+      fiscal_year: 2026,
+      contract_id: "CT-1",
+    });
+    assert.deepEqual(result.dropped, ["contract_amount_band", "min_amount"]);
   });
 
   it("derives NYC registration fiscal years and versioned amount bands", () => {
@@ -198,6 +229,45 @@ describe("registered contract analytical projection contract", () => {
     const routingSource = readFileSync(new URL("../site/app/routing.mjs", import.meta.url), "utf8");
     assert.match(routingSource, /preserveAnalyticalProjectionQuery\("#"\+raw/);
     assert.match(routingSource, /ANALYTICAL_PROJECTION_QUERY_KEYS/);
+  });
+});
+
+describe("actual payment analytical projection", () => {
+  const rows = [
+    normalizeAnalyticalPaymentRow({ transaction_id: "TX-1", agency: "DEPT OF PARKS & RECREATION", payee_name: "Vendor A", fiscal_year: 2026, contract_id: "CT-1", check_amount: "125.50" }),
+    normalizeAnalyticalPaymentRow({ transaction_id: "TX-2", agency: "Department of Parks and Recreation", payee_name: "Vendor A", fiscal_year: 2026, contract_id: "CT-1", check_amount: "-25.50" }),
+    normalizeAnalyticalPaymentRow({ transaction_id: "TX-3", agency: "Department of Alpha", payee_name: "Vendor B", fiscal_year: 2026, contract_id: "CT-2", check_amount: "200" }),
+  ];
+
+  it("uses Civic Graph agency normalization and retains reversal amounts", () => {
+    const filtered = filterAnalyticalPayments(rows, { agency: "Parks and Recreation", prime_vendor: "Vendor A", fiscal_year: 2026 });
+    assert.equal(filtered.length, 2);
+    assert.equal(filterAnalyticalPayments(rows, { contract_id: "CT-1" }).length, 2);
+    const grouped = groupAnalyticalPayments(filtered, { groupBy: "agency", measure: "amount" });
+    assert.equal(grouped.groups[0].actual_payment_amount, 100);
+    assert.equal(grouped.groups[0].transaction_count, 2);
+  });
+
+  it("offers separate transaction and related-contract drill-throughs", () => {
+    const transactions = paymentTransactionDrillThroughHref({ agency: "Department of Alpha", prime_vendor: "Vendor B", fiscal_year: "FY2026" });
+    assert.match(transactions, /ap_fact=payment/);
+    assert.match(transactions, /ap_payment_view=transactions/);
+    assert.match(transactions, /ap_agency=Department\+of\+Alpha/);
+    assert.match(transactions, /ap_vendor=Vendor\+B/);
+    const contracts = paymentRelatedContractDrillThroughHref({ agency: "Department of Alpha", prime_vendor: "Vendor B", fiscal_year: 2026, contract_id: "CT-2" });
+    assert.equal(contracts, "/browse/contracts/?mode=award&ap_agency=Department+of+Alpha&ap_vendor=Vendor+B&ap_fy=2026&ap_contract_id=CT-2");
+  });
+
+  it("keeps the committed payment artifact separate from registered contracts", () => {
+    const projection = JSON.parse(readFileSync("site/data/analytics_payments.json", "utf8"));
+    assert.equal(projection.schema, "cityscroll.analytics_payments.v1");
+    assert.equal(projection.fact, "payment");
+    assert.equal(projection.source_population.source_receipt, "warehouse/receipts/proof/checkbook_payment_population_latest.json");
+    assert.equal(projection.population.actual_payment_amount, 52327564799.68);
+    assert.equal(projection.population.transaction_count, 1783465);
+    assert.ok(statSync("site/data/analytics_payments.json").size < 24 * 1024 * 1024);
+    assert.equal(projection.rows.find((row) => row.contract_id === "CT185620255400226")?.contract_count, 1);
+    assert.equal(Object.prototype.hasOwnProperty.call(projection, "current_registered_amount"), false);
   });
 });
 

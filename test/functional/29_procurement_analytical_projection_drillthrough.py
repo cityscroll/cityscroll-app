@@ -87,7 +87,24 @@ def main() -> None:
         wait_for_contracts(page)
         assert "retroactive=true" in page.url
 
-        print("PASS: analytical agency, vendor, and retroactive timing drill-throughs work from cold URLs and in-app links")
+        page.goto(f"{BASE}/browse/contracts/?{urlencode({'mode': 'award', 'ap_fact': 'payment', 'ap_agency': 'Department of Homeless Services', 'ap_fy': '2026'})}", wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_selector("#contracts-analytics-fact-comparison:not([hidden])", timeout=60000)
+        assert page.locator("#analytics-fact").input_value() == "payment"
+        assert "Actual payments" in page.locator("#contracts-analytics-population").inner_text()
+        transaction_href = page.locator("#contracts-analytics-fact-comparison-cards a").nth(1).get_attribute("href")
+        contract_href = page.locator("#contracts-analytics-fact-comparison-cards a").nth(2).get_attribute("href")
+        assert "ap_fact=payment" in transaction_href and "ap_payment_view=transactions" in transaction_href, transaction_href
+        assert "ap_agency=Department+of+Homeless+Services" in contract_href, contract_href
+
+        page.goto(f"{BASE}/browse/contracts/?{urlencode({'mode': 'award', 'ap_agency': AGENCY, 'ap_amount_band': 'Under $100,000'})}", wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_selector("#analytics-fact", timeout=60000)
+        page.select_option("#analytics-fact", "payment")
+        page.wait_for_selector("#contracts-analytics-fact-status:not([hidden])", timeout=60000)
+        assert "Under $100,000" not in page.url
+        assert "ap_agency=" in page.url
+        assert "not applied" in page.locator("#contracts-analytics-fact-status").inner_text().lower()
+
+        print("PASS: registered and payment facts preserve compatible scopes, drop incompatible filters, and drill through")
         browser.close()
 
 
