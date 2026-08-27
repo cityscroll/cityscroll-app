@@ -75,7 +75,8 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.match(shardRunner, /--readiness-timeout "\$server_readiness_timeout_seconds"/);
   assert.match(shardRunner, /a11y_readiness_outer_timeout/);
   assert.match(shardRunner, /a11y_wait_for_local_site/);
-  assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
+  assert.match(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}/);
+  assert.doesNotMatch(ci, /name: browser-pr-site-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/);
   assert.match(ci, /- name: Restore and verify exact-input site artifact\n\s+if: success\(\)/);
   assert.match(ci, /uses: \.\/\.github\/actions\/use-site-artifact/);
   assert.match(ci, /- name: Run isolated accessibility shard\n\s+if: success\(\)/);

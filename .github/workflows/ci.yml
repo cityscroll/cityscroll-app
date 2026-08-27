@@ -484,7 +484,7 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: ./.github/actions/use-site-artifact
         with:
-          artifact-name: browser-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          artifact-name: browser-pr-site-${{ github.run_id }}
       - uses: ./.github/actions/setup-playwright
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
       - name: Run serial 20-sample control
@@ -556,7 +556,7 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: ./.github/actions/use-site-artifact
         with:
-          artifact-name: browser-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          artifact-name: browser-pr-site-${{ github.run_id }}
       - uses: ./.github/actions/setup-playwright
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
       - name: Collect deterministic raw sample shard
@@ -772,12 +772,15 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: browser-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          # Keep the handoff stable when "rerun failed jobs" advances run_attempt
+          # without rerunning this already-successful producer job.
+          name: browser-pr-site-${{ github.run_id }}
           path: |
             _site
             _site.sha256
             _site.identity.json
           if-no-files-found: error
+          overwrite: true
           retention-days: 1
 
   # The matrix is deliberately not required by branch protection. Only a11y-pr above is
@@ -809,7 +812,7 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: ./.github/actions/use-site-artifact
         with:
-          artifact-name: browser-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          artifact-name: browser-pr-site-${{ github.run_id }}
       - uses: ./.github/actions/setup-playwright
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
       - name: Run isolated accessibility shard
@@ -853,7 +856,7 @@ jobs:
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
         uses: ./.github/actions/use-site-artifact
         with:
-          artifact-name: browser-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          artifact-name: browser-pr-site-${{ github.run_id }}
       - uses: ./.github/actions/setup-playwright
         if: success() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && needs.browser-pr-site.result == 'success'
       - name: Run routes-focus primary
@@ -884,7 +887,7 @@ jobs:
       - name: Restore and verify exact-input site artifact
         uses: ./.github/actions/use-site-artifact
         with:
-          artifact-name: browser-pr-site-${{ github.run_id }}-${{ github.run_attempt }}
+          artifact-name: browser-pr-site-${{ github.run_id }}
       - uses: ./.github/actions/setup-playwright
       - name: Retry routes-focus on a fresh hosted runner
         run: tools/run_a11y_ci_shard.sh routes-focus fresh-runner-retry
