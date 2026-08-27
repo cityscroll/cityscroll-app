@@ -19,6 +19,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   only in Recent Awards mode. Group links use `ap_agency` / `ap_vendor` plus optional FY and
   amount filters so the ordinary Contracts list can drill into the same population slice.
 
+- **Actual-payments analytical fact (AP-09):** `site/analytical_payment_projection.mjs` and
+  `site/data/analytics_payments.json` are the separate AP-08 payment fact. The Compare / Overview
+  view switches between registered-contract value and actual payments, preserving agency/vendor/
+  fiscal-year filters while visibly dropping fact-specific filters. Payment groups link to their
+  payment transaction scope and related registered-contract scope; do not blend their dollar
+  measures or use the bounded graph-enrichment payment rows as a population denominator.
+
 - **Vendor concentration projection:** `vendorConcentration` in
   `site/analytical_projection.mjs` computes agency-scoped prime-vendor shares from the
   explicit selected-scope registered-value denominator. Named-vendor top-5/top-10 shares
