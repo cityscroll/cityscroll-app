@@ -29,6 +29,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+- **Public-site generation postcondition:** `tools/build_public_site.mjs` calls
+  `tools/generation_output_guard.mjs` after copying the public tree. The guard requires a
+  non-empty `index.html`, writes `.artifacts/generation-output-receipt.json`, and fails before
+  delivery when the required entrypoint is missing; regression coverage is in
+  `test/generation_output_guard.test.mjs`.
+
 - **Registered-contract analytical projection:** `site/analytical_projection_contract.mjs` is the
   versioned AP-01 registry; `tools/build_analytical_registered_contracts.mjs` materializes the
   full normalized Checkbook population into `site/data/analytics_registered_contracts.json` and
