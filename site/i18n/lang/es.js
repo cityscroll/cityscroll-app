@@ -2803,8 +2803,8 @@
     analytics_evidence_statement: "{total} contracts in this scope: {located} have located public performance evidence and {unresolved} remain unresolved because no qualifying passage was located.",
     analytics_evidence_table_caption: "Public performance-evidence state coverage by group. Each cell shows contracts and registered value.",
     analytics_evidence_passages_heading: "Located source passages",
-    analytics_evidence_no_passages: "No located source passages in this scope. This is an unresolved coverage state, not a finding about service quality or vendor performance.",
-    analytics_evidence_note: "No located evidence is an unresolved coverage state within the declared CityScroll sources. It is not a vendor-failure claim, an outcome, or a performance score.",
+    analytics_evidence_no_passages: "CityScroll located no qualifying source passages for this selection. This coverage state leaves service outcomes, vendor blame, and performance scores unresolved.",
+    analytics_evidence_note: "Coverage counts show whether declared CityScroll sources contain qualifying performance terms or evaluation documents. A no-located-evidence count identifies a source-coverage gap. Service outcomes, vendor blame, and performance scores remain unresolved.",
     analytics_view_evidence: "Performance evidence",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
