@@ -94,7 +94,7 @@ test("production-like D1 keyword canary preserves exact-token evidence", async (
   const { sqlite, DB } = d1();
   try {
     const result = await searchKeywordFamilyFromD1(DB, "people", resolveKeywordQuery("Christopher Marte"));
-    assert.equal(result.family.indexed_count, 215);
+    assert.equal(result.family.indexed_count, 219);
     assert.equal(result.matches.length, 1);
     assert.equal(result.matches[0].object_ref, "person:7801");
     assert.deepEqual(result.matches[0].match_evidence.token_offsets, [0, 2]);
