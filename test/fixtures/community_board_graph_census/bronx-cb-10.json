@@ -1,0 +1,48 @@
+{
+  "schema": "cityscroll.community_board_graph_census_fixture.v1",
+  "fixture_id": "bronx-cb-10-pdf-calendar-filtered-identity-v1",
+  "board_id": "bronx-cb-10",
+  "board_name": "Bronx Community Board 10",
+  "source_structure": {
+    "upcoming_meetings": {
+      "adapter": "pdf_calendar_v1",
+      "format": "NYC HTML + calendar/agenda PDFs",
+      "url": "https://www.nyc.gov/site/bronxcb10/calendar/calendar.page",
+      "record_count": 6
+    },
+    "minutes": {
+      "adapter": "html_pdf_v1",
+      "publisher_kind": "nyc_official",
+      "url": "https://www.nyc.gov/site/bronxcb10/meetings/board-meeting-minutes.page",
+      "record_count": 0
+    }
+  },
+  "meeting_samples": [
+    {
+      "meeting_id": "meeting:community_board:pdf-calendar:bronx-cb-10:2026-09-17:full-board",
+      "source_record_id": "pdf-calendar:bronx-cb-10:2026-09-17:full-board",
+      "date": "2026-09-17",
+      "title": "Full Board",
+      "committee_field": null,
+      "title_committee_signal": false,
+      "typed_host_body": false
+    },
+    {
+      "meeting_id": "meeting:community_board:pdf-calendar:bronx-cb-10:2026-09-14:executive-board",
+      "source_record_id": "pdf-calendar:bronx-cb-10:2026-09-14:executive-board",
+      "date": "2026-09-14",
+      "title": "Executive Board",
+      "committee_field": null,
+      "title_committee_signal": false,
+      "typed_host_body": false
+    }
+  ],
+  "expected_census_measurements": {
+    "record_count": 6,
+    "records_explicitly_identifying_committee": 0,
+    "full_board_records": 3,
+    "explicit_public_hearing_records": 0,
+    "joint_committee_records": 0,
+    "records_without_typed_institution_host": 6
+  }
+}

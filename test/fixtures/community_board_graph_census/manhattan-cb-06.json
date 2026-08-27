@@ -1,0 +1,57 @@
+{
+  "schema": "cityscroll.community_board_graph_census_fixture.v1",
+  "fixture_id": "manhattan-cb-06-google-calendar-title-signals-v1",
+  "board_id": "manhattan-cb-06",
+  "board_name": "Manhattan Community Board 6",
+  "source_structure": {
+    "upcoming_meetings": {
+      "adapter": "google_calendar_v1",
+      "format": "board-owned HTML + Google Calendar/iCalendar",
+      "url": "https://cbsix.org/meetings-calendar/",
+      "record_count": 75
+    },
+    "minutes": {
+      "adapter": "airtable_v1",
+      "publisher_kind": "third_party_storage",
+      "url": "https://airtable.com/appgK5bKw7rWMRJEh/shrBzfHDWat4YMTHL/tblpioBcj0BVp5hBw",
+      "record_count": 0
+    }
+  },
+  "meeting_samples": [
+    {
+      "meeting_id": "meeting:community_board:0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-06-01",
+      "source_record_id": "0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-06-01",
+      "date": "2026-06-01",
+      "title": "Transportation Committee Meeting",
+      "committee_field": null,
+      "title_committee_signal": true,
+      "typed_host_body": false
+    },
+    {
+      "meeting_id": "meeting:community_board:598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-06-10",
+      "source_record_id": "598h8thfkslekvsh851uussla8_R20210114T000000@google.com::2026-06-10",
+      "date": "2026-06-10",
+      "title": "Full Board Meeting",
+      "committee_field": null,
+      "title_committee_signal": false,
+      "typed_host_body": false
+    }
+  ],
+  "projection_collision": {
+    "observed": true,
+    "source_record_id": "0n1p7v3lr9f46s4au90rbl58hl_R20210405T230000@google.com::2026-06-01",
+    "paths": [
+      "community_board_constellation.categories[meetings]",
+      "community_board_constellation.source_records"
+    ],
+    "meaning": "The event is a semantic meeting and its receipt is also retained as a generic source record; Card 1 records the duplication risk without changing the production projection."
+  },
+  "expected_census_measurements": {
+    "record_count": 75,
+    "records_explicitly_identifying_committee": 73,
+    "full_board_records": 2,
+    "explicit_public_hearing_records": 0,
+    "joint_committee_records": 0,
+    "records_without_typed_institution_host": 75
+  }
+}
