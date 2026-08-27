@@ -234,9 +234,10 @@ async function handleMeeting(request, env, meetingId) {
   const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
   const snapshot = await staticAsset(env, snapshotRequest, "/data/shared_meeting_read_model.json");
   let record = null;
+  let payload = null;
   if (snapshot.ok) {
     try {
-      const payload = await snapshot.json();
+      payload = await snapshot.json();
       const rows = Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.hearings) ? payload.hearings : [];
       record = rows.find((row) => row?.meeting_id === decoded) || null;
     } catch (_error) {
@@ -244,7 +245,7 @@ async function handleMeeting(request, env, meetingId) {
     }
   }
   if (record) {
-    const html = renderMeetingDocument(record);
+    const html = renderMeetingDocument(record, payload);
     if (isMeetingDocumentHtml(html, decoded)) {
       const headers = new Headers({
         "Content-Type": "text/html; charset=utf-8",

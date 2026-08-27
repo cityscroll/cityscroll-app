@@ -10,6 +10,7 @@ import { joinCommunityBoardSourceRecord } from "./community_board_source_join.mj
 import { meetingCalendarHasEventTime } from "./hearing_attend_pack.mjs";
 import { recognizedMeetingUrl } from "./hearing_logistics.mjs";
 import { cleanNoticeText } from "./text_clean.mjs";
+import { canonicalMeetingForRender } from "./meeting_capability_projection.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -465,7 +466,10 @@ function relatedLinksDetails(record) {
 }
 
 /** Render the source-qualified canonical meeting document used by every meeting card. */
-export function renderMeetingDocument(record = {}) {
+export function renderMeetingDocument(record = {}, readModel = {}) {
+  const canonicalRecord = canonicalMeetingForRender(record, readModel);
+  if (!canonicalRecord) return null;
+  record = canonicalRecord;
   const id = String(record.meeting_id || "").trim();
   const title = String(record.title || "Meeting").trim() || "Meeting";
   const canonical = `/meetings/${encodeURIComponent(id)}/`;
@@ -567,7 +571,7 @@ export function renderMeetingDocument(record = {}) {
 </head>
 <body>
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
-<main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" tabindex="-1">
+<main id="main" class="civic-document node-document meeting-document" data-civic-object-kind="meeting" data-meeting-id="${esc(id)}" data-source-record-id="${esc(record.source_record_id || "")}" data-capability-reference="meeting.get@1" tabindex="-1">
   <p class="node-back"><a href="/browse/meetings/">Browse meetings and hearings</a></p>
   <section class="node-hero civic-object-hero meeting-hero"><p class="node-kicker civic-object-kicker">${esc(record.source_system === "community_board" ? "Community board meeting" : "City Record meeting")}</p><h1>${esc(title)}</h1>${record.event_date ? `<p class="node-lede"><time datetime="${esc(record.event_date)}">${esc(record.event_date)}</time></p>` : ""}${record.event_end ? `<p class="node-muted">Ends <time datetime="${esc(record.event_end)}">${esc(record.event_end)}</time></p>` : ""}</section>
   ${actions ? `<div class="node-actions civic-object-actions meeting-actions">${actions}</div>` : ""}

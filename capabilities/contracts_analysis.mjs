@@ -41,7 +41,7 @@ export const CONTRACTS_ANALYSIS_REPRESENTATIONS = Object.freeze([
   }),
 ]);
 
-const INPUT_FIELDS = new Set([
+const CONTRACTS_ANALYSIS_INPUT_FIELDS = new Set([
   "groupBy", "measure", "agency", "vendor", "fiscalYear", "amountBand",
   "minAmount", "maxAmount", "retroactive", "cityRecordMatch", "limit",
 ]);
@@ -158,7 +158,7 @@ function finiteNumber(value, field) {
 export function validateContractsAnalysisInput(input) {
   assertObject(input, "contracts.analysis");
   for (const field of Object.keys(input)) {
-    if (!INPUT_FIELDS.has(field)) throw new TypeError(`contracts.analysis does not accept field: ${field}`);
+    if (!CONTRACTS_ANALYSIS_INPUT_FIELDS.has(field)) throw new TypeError(`contracts.analysis does not accept field: ${field}`);
   }
   if (input.groupBy !== undefined && !CONTRACTS_ANALYSIS_GROUPS.includes(input.groupBy)) throw new TypeError("groupBy is not a supported Contracts analysis grouping");
   if (input.measure !== undefined && !CONTRACTS_ANALYSIS_MEASURES.includes(input.measure)) throw new TypeError("measure is not a supported Contracts analysis measure");

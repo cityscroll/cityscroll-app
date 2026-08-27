@@ -10,6 +10,7 @@ import { FEDERATED_SEARCH_CAPABILITY } from "./federated_search.mjs";
 import { CONTRACT_GET_CAPABILITY, CONTRACTS_BROWSE_CAPABILITY } from "./contracts.mjs";
 import { CONTRACTS_ANALYSIS_CAPABILITY } from "./contracts_analysis.mjs";
 import { PEOPLE_GET_CAPABILITY, ORGANIZATIONS_BROWSE_CAPABILITY } from "./people_organizations.mjs";
+import { MEETING_GET_CAPABILITY } from "./meetings.mjs";
 
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 
@@ -72,6 +73,7 @@ export const CAPABILITY_REGISTRY = deepFreeze([
   CONTRACTS_ANALYSIS_CAPABILITY,
   PEOPLE_GET_CAPABILITY,
   ORGANIZATIONS_BROWSE_CAPABILITY,
+  MEETING_GET_CAPABILITY,
 ]);
 
 validateCapabilityRegistry(CAPABILITY_REGISTRY);

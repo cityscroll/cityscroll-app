@@ -17,6 +17,7 @@
         "group_by",
         "get_person_or_organization",
         "get_contract",
+        "get_meeting",
         "get_entity_dossier",
         "get_entity_relationships",
         "get_notice",

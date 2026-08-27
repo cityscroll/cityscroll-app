@@ -9,9 +9,24 @@ import { meetingCalendarICS } from "../../site/hearing_attend_pack.mjs";
 import { sourceSignalsFromHtml } from "../../site/hearing_logistics.mjs";
 import { buildSharedMeetingReadModel } from "../../site/shared_meeting_read_model.mjs";
 import { loadMeetingRecord, loadMeetingRows } from "./lib/route_read_model_kv.mjs";
+import {
+  MEETING_GET_CAPABILITY_REFERENCE,
+  MEETING_GET_PROVIDER_ID,
+  MEETING_GET_REPRESENTATIONS,
+  executeMeetingGet,
+  meetingGetFromModel,
+} from "../../capabilities/meetings.mjs";
 
 export const HEARINGS_KV_KEY = "hearings:location:v1";
 export const HEARINGS_SOURCE_EXTRACTION_VERSION = 2;
+export const MEETING_GET_HTTP_ADAPTER = Object.freeze({
+  id: "worker-http.meeting-get@1",
+  capabilityReference: MEETING_GET_CAPABILITY_REFERENCE,
+  providerId: MEETING_GET_PROVIDER_ID,
+  route: "GET /hearings?id=…",
+  surface: "Meeting detail",
+  representations: MEETING_GET_REPRESENTATIONS,
+});
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const GEOSEARCH = "https://geosearch.planninglabs.nyc/v2/search";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
@@ -24,6 +39,26 @@ export const CITY_RECORD_MEETING_SOURCE_FIELDS = Object.freeze([
   "contact_name", "contact_phone", "email", "address_to_request", "category_description",
   "selection_method_description",
 ]);
+
+/** Explicit provider for the bounded meeting detail capability. */
+export function workerMeetingGet(env, modelOverride = null) {
+  return Object.freeze({
+    capabilityReference: MEETING_GET_CAPABILITY_REFERENCE,
+    providerId: MEETING_GET_PROVIDER_ID,
+    async execute(input) {
+      let model = modelOverride;
+      if (!model) {
+        try {
+          const raw = env?.ALERT_STATE ? await env.ALERT_STATE.get(HEARINGS_KV_KEY) : null;
+          model = raw ? JSON.parse(raw) : null;
+        } catch {
+          model = null;
+        }
+      }
+      return meetingGetFromModel(model, input);
+    },
+  });
+}
 const SELECT = CITY_RECORD_MEETING_SOURCE_FIELDS.join(",");
 
 function materializedRows(payload) {
@@ -206,9 +241,14 @@ export async function handleHearings(request, env, _ctx) {
   ));
   if (!parsed) return response(JSON.stringify({ ok: false, reason: "snapshot-unavailable" }), 503);
   if (requestedMissing) return response(JSON.stringify({ ok: false, reason: "not-materialized" }), 404);
+  const requestedRecord = requestedId ? materializedMeetingForId(parsed.hearings, requestedId) : null;
+  const capability = requestedRecord
+    ? await executeMeetingGet(workerMeetingGet(env, parsed), { meetingId: requestedRecord.meeting_id })
+    : null;
   return response(JSON.stringify({
     ...parsed,
     stale: age > MAX_AGE_MS || parsed.source_extraction_version !== HEARINGS_SOURCE_EXTRACTION_VERSION,
+    ...(capability ? { capability } : {}),
   }));
 }
 
