@@ -28,6 +28,7 @@ const EXPENDITURE_MEASURES = Object.freeze({
 });
 
 const UNKNOWN = "Unknown";
+const MISSING = "—";
 
 function clean(value) {
   const text = String(value ?? "").replace(/\s+/g, " ").trim();
@@ -483,8 +484,8 @@ const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
 }[char]));
 
 function contextValue(value, kind, href = null) {
+  if (value == null || !Number.isFinite(Number(value))) return `<span class="agency-fiscal-context-unknown" data-fiscal-coverage="unknown">${MISSING}</span>`;
   const text = kind === "currency" ? currency(value) : integer(value);
-  if (value == null) return `<span class="agency-fiscal-context-unknown" data-fiscal-coverage="unknown">${UNKNOWN}</span>`;
   return href ? `<a href="${esc(href)}">${esc(text)}</a>` : esc(text);
 }
 
@@ -500,26 +501,52 @@ export function renderAgencyFiscalContextSection(context) {
   const rows = allRows.filter((row) => recentIboYears.has(row.fiscal_year)
     || row.registered_contract_count != null
     || row.payment_transaction_count != null);
+  const iboRows = rows.filter((row) => [
+    row.ibo_actual_expenditures,
+    row.ibo_personal_services,
+    row.ibo_other_than_personal_services,
+    row.ibo_staffing,
+  ].some((value) => value != null));
+  const procurementRows = rows.filter((row) => [
+    row.current_registered_value,
+    row.registered_contract_count,
+    row.actual_payment_amount,
+  ].some((value) => value != null));
+  const procurementPaymentYears = [...new Set([
+    ...(context.provenance?.registered_contract_years || []),
+    ...(context.provenance?.payment_years || []),
+  ].sort((left, right) => left - right))];
   const agency = context.procurement_agency_name || context.agency_name || context.agency_id || "this agency";
   const unknownNotice = context.status === "unknown"
     ? `<p class="agency-fiscal-context-status" data-fiscal-context-status="unknown"><strong>Fiscal context: Unknown.</strong> No exact IBO agency identifier matched a fiscal-history record for this agency.</p>`
     : context.status === "matched"
-      ? `<p class="agency-fiscal-context-status" data-fiscal-context-status="matched">IBO fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}; publisher vintage FY2022. The table keeps fiscal scale, staffing, registered contract value, and payments as separate measures.</p>`
-      : `<p class="agency-fiscal-context-status" data-fiscal-context-status="fallback">Fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}. The table keeps fiscal scale, staffing, registered contract value, and payments as separate measures.</p>`;
-  const table = rows.length ? `<div class="agency-fiscal-context-table-wrap"><table class="agency-fiscal-context-table"><caption>Agency fiscal context by fiscal year</caption><thead><tr><th scope="col">FY</th><th scope="col">IBO actual expenditures</th><th scope="col">IBO Personal Services</th><th scope="col">IBO Other Than Personal Services</th><th scope="col">IBO staffing</th><th scope="col">Current registered contract value</th><th scope="col">Registered contracts</th><th scope="col">Actual payments</th></tr></thead><tbody>${rows.map((row) => {
+      ? `<p class="agency-fiscal-context-status" data-fiscal-context-status="matched">IBO fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}; publisher vintage FY2022.</p>`
+      : `<p class="agency-fiscal-context-status" data-fiscal-context-status="fallback">Fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}.</p>`;
+  const renderTable = (tableRows, era, heading, caption, columns) => `<section class="agency-fiscal-context-era" data-fiscal-era="${era}" aria-labelledby="agency-fiscal-context-${era}-heading"><h3 id="agency-fiscal-context-${era}-heading">${heading}</h3><div class="agency-fiscal-context-table-wrap"><table class="agency-fiscal-context-table"><caption>${caption}</caption><thead><tr><th scope="col">FY</th>${columns.map((column) => `<th scope="col">${column.label}</th>`).join("")}</tr></thead><tbody>${tableRows.map((row) => {
     const contractHref = row.registered_contract_count != null
       ? analyticalDrillThroughHref({ agency, registration_fiscal_year: row.fiscal_year }) : null;
     const paymentHref = row.payment_transaction_count != null
       ? paymentTransactionDrillThroughHref({ agency, fiscal_year: row.fiscal_year }) : null;
-    return `<tr><th scope="row">FY${esc(row.fiscal_year)}</th><td>${contextValue(row.ibo_actual_expenditures, "currency")}</td><td>${contextValue(row.ibo_personal_services, "currency")}</td><td>${contextValue(row.ibo_other_than_personal_services, "currency")}</td><td>${contextValue(row.ibo_staffing, "integer")}</td><td>${contextValue(row.current_registered_value, "currency", contractHref)}</td><td>${contextValue(row.registered_contract_count, "integer", contractHref)}</td><td>${contextValue(row.actual_payment_amount, "currency", paymentHref)}</td></tr>`;
-  }).join("")}</tbody></table></div><p class="agency-fiscal-context-status">Showing the latest ten IBO fiscal years plus every current procurement/payment year; the full IBO history remains in the materialized source.</p>` : `<p class="agency-fiscal-context-status" data-fiscal-context-status="unknown">No fiscal-year observations are available for this agency.</p>`;
-  const provenance = `<div class="agency-fiscal-context-provenance"><h3>Sources and measure definitions</h3><ul><li><a href="${esc(IBO_FISCAL_HISTORY_SOURCE.source_page_url)}">IBO New York City Fiscal History</a>: actual department expenditures in publisher $000s, shown here in USD; staffing is actual full-time positions reported as of June 30. Publisher vintage FY2022.</li><li>CityScroll registered-contract measures use the AP-03 population snapshot and mean registered contract value, not actual spending.</li><li>Actual payments use the separate AP-08 Checkbook Spending population and are shown only as the AP-09 payment fact.</li></ul><p>These sources use different accounting and population scopes. Current snapshots have IBO fiscal years ${esc(yearsLabel(context.fiscal_history?.years || []))} and procurement/payment years ${esc(yearsLabel([...new Set([...(context.provenance?.registered_contract_years || []), ...(context.provenance?.payment_years || [])].sort((a, b) => a - b))]))}; a blank measure is labeled Unknown because the publisher does not report a value for that year. No outsourcing or efficiency score is calculated.</p></div>`;
+    const hrefs = { current_registered_value: contractHref, registered_contract_count: contractHref, actual_payment_amount: paymentHref };
+    return `<tr><th scope="row">FY${esc(row.fiscal_year)}</th>${columns.map((column) => `<td>${contextValue(row[column.key], column.kind, hrefs[column.key] || null)}</td>`).join("")}</tr>`;
+  }).join("")}</tbody></table></div></section>`;
+  const table = rows.length ? `<div class="agency-fiscal-context-tables">${iboRows.length ? renderTable(iboRows, "ibo-history", "IBO fiscal history", "IBO measures by fiscal year", [
+    { key: "ibo_actual_expenditures", label: "IBO actual expenditures", kind: "currency" },
+    { key: "ibo_personal_services", label: "IBO Personal Services", kind: "currency" },
+    { key: "ibo_other_than_personal_services", label: "IBO Other Than Personal Services", kind: "currency" },
+    { key: "ibo_staffing", label: "IBO staffing", kind: "integer" },
+  ]) : ""}${procurementRows.length ? renderTable(procurementRows, "procurement-payments", "Current procurement and payments", "Current procurement and payment measures by fiscal year", [
+    { key: "current_registered_value", label: "Current registered contract value", kind: "currency" },
+    { key: "registered_contract_count", label: "Registered contracts", kind: "integer" },
+    { key: "actual_payment_amount", label: "Actual payments", kind: "currency" },
+  ]) : ""}</div><p class="agency-fiscal-context-status agency-fiscal-context-footnote">Current snapshots cover IBO fiscal years ${esc(yearsLabel(context.fiscal_history?.years || []))} and procurement/payment years ${esc(yearsLabel(procurementPaymentYears))}. A dash means the publisher does not report that measure for that year.</p><p class="agency-fiscal-context-status">Showing the latest ten IBO fiscal years plus every current procurement/payment year; the full IBO history remains in the materialized source.</p>` : `<p class="agency-fiscal-context-status" data-fiscal-context-status="unknown">No fiscal-year observations are available for this agency.</p>`;
+  const provenance = `<div class="agency-fiscal-context-provenance"><h3>Sources and measure definitions</h3><ul><li><a href="${esc(IBO_FISCAL_HISTORY_SOURCE.source_page_url)}">IBO New York City Fiscal History</a>: actual department expenditures in publisher $000s, shown here in USD; staffing is actual full-time positions reported as of June 30. Publisher vintage FY2022.</li><li><a href="https://a0333-passportpublic.nyc.gov/contracts.html">PASSPort Public procurement records</a>: registered contract values and counts are a point-in-time snapshot of current registered value, not actual spending.</li><li><a href="https://www.checkbooknyc.com/">Checkbook NYC</a>, the Comptroller's spending ledger: actual payment amounts and transaction counts, not registered contract values.</li></ul><p>These sources use different accounting scopes.</p></div>`;
   const rankingEntries = [
     ["ibo_actual_expenditures", "IBO actual expenditures"],
     ["ibo_staffing", "IBO staffing measure"],
     ["registered_current_value", "Current registered contract value"],
     ["actual_payments", "Actual payments"],
   ].filter(([key]) => context.rankings?.[key]);
-  const rankings = rankingEntries.length ? `<div class="agency-fiscal-context-rankings"><h3>Separate agency rankings</h3><table><caption>Rankings are independent reference points, not a composite score</caption><thead><tr><th scope="col">Measure</th><th scope="col">Reference</th><th scope="col">Rank</th></tr></thead><tbody>${rankingEntries.map(([key, label]) => { const rank = context.rankings[key]; const reference = rank.fiscal_year ? `FY${rank.fiscal_year}` : (rank.snapshot_date ? `as of ${rank.snapshot_date}` : "reference point"); return `<tr><th scope="row">${esc(label)}</th><td>${esc(reference)}</td><td>${esc(`#${rank.rank} of ${rank.agency_count}`)}</td></tr>`; }).join("")}</tbody></table><p>Rank differences are descriptive leads for research; they do not establish causation or vendor reliance.</p></div>` : "";
+  const rankings = rankingEntries.length ? `<div class="agency-fiscal-context-rankings"><h3>Separate agency rankings</h3><table><caption>Separate reference rankings by measure</caption><thead><tr><th scope="col">Measure</th><th scope="col">Reference</th><th scope="col">Rank</th></tr></thead><tbody>${rankingEntries.map(([key, label]) => { const rank = context.rankings[key]; const reference = rank.fiscal_year ? `FY${rank.fiscal_year}` : (rank.snapshot_date ? `as of ${rank.snapshot_date}` : "reference point"); return `<tr><th scope="row">${esc(label)}</th><td>${esc(reference)}</td><td>${esc(`#${rank.rank} of ${rank.agency_count}`)}</td></tr>`; }).join("")}</tbody></table><p>These rankings are descriptive, not causal; they do not form a composite outsourcing or efficiency score or establish vendor reliance.</p></div>` : "";
   return `<section class="node-section node-card civic-object-section agency-fiscal-context" id="agency-fiscal-context" aria-labelledby="agency-fiscal-context-heading" data-agency-constellation-category="fiscal-context" data-fiscal-context-status="${esc(context.status)}"><h2 id="agency-fiscal-context-heading">Agency fiscal context</h2>${unknownNotice}${table}${rankings}${provenance}</section>`;
 }
