@@ -51,6 +51,7 @@ function loadSources() {
   const obligationsPath = join(SITE, "data/agency_obligations_lookup.json");
   const processConformancePath = join(SITE, "data/process_conformance_lookup.json");
   const agencyLifecycleConformancePath = join(SITE, "data/agency_lifecycle_conformance_lookup.json");
+  const fiscalContextPath = join(SITE, "data/agency_fiscal_context.json");
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const moneyOpenPath = join(SITE, "data/money_default_open.json");
@@ -73,6 +74,7 @@ function loadSources() {
     obligations: existsSync(obligationsPath) ? readJson(obligationsPath) : null,
     process_conformance: existsSync(processConformancePath) ? readJson(processConformancePath) : null,
     agency_lifecycle_conformance: existsSync(agencyLifecycleConformancePath) ? readJson(agencyLifecycleConformancePath) : null,
+    fiscal_context: existsSync(fiscalContextPath) ? readJson(fiscalContextPath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
@@ -253,6 +255,9 @@ function candidateAgencyIds(sources) {
   for (const row of sources.certification?.by_agency || []) {
     if (row?.agency_id) ids.add(reconcileAgencyIdentity(row.agency_id, sources.publisher_agency_rows).canonical_id);
   }
+  for (const agencyId of Object.keys(sources.fiscal_context?.by_agency || {})) {
+    ids.add(reconcileAgencyIdentity(agencyId, sources.publisher_agency_rows).canonical_id);
+  }
   for (const demo of DEMO_IDS) ids.add(reconcileAgencyIdentity(demo, sources.publisher_agency_rows).canonical_id);
   return [...ids].sort();
 }
@@ -356,6 +361,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.ocp_awards?.materialized_at,
     sources.passport_graph?.observed_on,
     sources.passport_graph?.published_graph?.selected_rows,
+    sources.fiscal_context?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
   const vendorRollups = buildAgencyVendorRollups(sources.ocp_awards?.rows || [], {
@@ -372,6 +378,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     const view = buildAgencyConstellationView(id, {
       ...reconciledSources,
       vendor_rollups: vendorRollups,
+      fiscal_context: sources.fiscal_context,
       generated_at: generatedAt,
     });
     if (!view) continue;
@@ -414,6 +421,8 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
           method: category.method,
         }]),
       ),
+      fiscal_context_status: view.fiscal_context?.status || "unknown",
+      fiscal_context_method: view.fiscal_context?.provenance?.join_method || null,
       edge_summary: view.edge_summary,
       top_vendors: view.categories.find((category) => category.id === "vendors")?.items || [],
     };
@@ -465,6 +474,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       vendor_rollup_window_start: vendorRollups.window_start,
       passport_graph_observed_on: sources.passport_graph?.observed_on || null,
       passport_graph_selected_rows: sources.passport_graph?.published_graph?.selected_rows || 0,
+      fiscal_context_generated_at: sources.fiscal_context?.generated_at || null,
       note: "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, process-conformance expected-vs-observed, and the sharded PASSPort EI graph.",
     },
   };

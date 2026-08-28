@@ -513,6 +513,79 @@ select {
   border-block-end: 1px solid var(--color-border);
 }
 
+.agency-fiscal-context {
+  overflow: hidden;
+}
+
+.agency-fiscal-context-status,
+.agency-fiscal-context-provenance p,
+.agency-fiscal-context-rankings p {
+  color: var(--ink-muted, #5d6672);
+  line-height: 1.55;
+}
+
+.agency-fiscal-context-table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.agency-fiscal-context-table,
+.agency-fiscal-context-rankings table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+
+.agency-fiscal-context-table th,
+.agency-fiscal-context-table td,
+.agency-fiscal-context-rankings th,
+.agency-fiscal-context-rankings td {
+  padding: .65rem .75rem;
+  border-bottom: 1px solid var(--line, #d9dee5);
+  text-align: right;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.agency-fiscal-context-table th:first-child,
+.agency-fiscal-context-table td:first-child,
+.agency-fiscal-context-rankings th:first-child,
+.agency-fiscal-context-rankings td:first-child {
+  text-align: left;
+}
+
+.agency-fiscal-context-table thead th,
+.agency-fiscal-context-rankings thead th {
+  color: var(--ink-muted, #5d6672);
+  font-size: .78rem;
+  letter-spacing: .02em;
+  white-space: normal;
+}
+
+.agency-fiscal-context-unknown {
+  color: var(--ink-muted, #5d6672);
+  font-style: italic;
+}
+
+.agency-fiscal-context-provenance,
+.agency-fiscal-context-rankings {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line, #d9dee5);
+}
+
+.agency-fiscal-context-provenance h3,
+.agency-fiscal-context-rankings h3 {
+  margin: 0 0 .5rem;
+  font-size: 1rem;
+}
+
+.agency-fiscal-context-provenance ul {
+  margin: .5rem 0 0;
+  padding-left: 1.2rem;
+}
+
 .civic-object-section[data-parcel-biography-domain] h2,
 .node-section.node-card h2,
 .civic-object-section.node-card h2 {

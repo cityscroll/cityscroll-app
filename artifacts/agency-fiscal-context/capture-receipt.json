@@ -1,0 +1,50 @@
+{
+  "schema": "cityscroll.agency-fiscal-context.capture.v1",
+  "agency": "parks-and-recreation",
+  "captures": [
+    {
+      "phase": "before",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "has_fiscal_context": false,
+      "heading": null,
+      "status": null,
+      "source_link_count": 0
+    },
+    {
+      "phase": "before",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "has_fiscal_context": false,
+      "heading": null,
+      "status": null,
+      "source_link_count": 0
+    },
+    {
+      "phase": "after",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "has_fiscal_context": true,
+      "heading": "Agency fiscal context",
+      "status": "matched",
+      "source_link_count": 8
+    },
+    {
+      "phase": "after",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "has_fiscal_context": true,
+      "heading": "Agency fiscal context",
+      "status": "matched",
+      "source_link_count": 8
+    }
+  ]
+}

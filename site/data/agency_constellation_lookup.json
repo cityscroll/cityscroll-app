@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18",
+  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -73,6 +73,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -725,6 +727,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -1371,6 +1375,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -2029,6 +2035,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -2574,6 +2582,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -3137,6 +3147,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -3682,6 +3694,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -4233,6 +4247,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -4784,6 +4800,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -5329,6 +5347,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -5880,6 +5900,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -6544,6 +6566,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -7125,6 +7149,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -7676,6 +7702,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -8221,6 +8249,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -8855,6 +8885,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -9406,6 +9438,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -9963,6 +9997,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -10594,6 +10630,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -11145,6 +11183,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -11690,6 +11730,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -12348,6 +12390,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -12929,6 +12973,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -13510,6 +13556,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -14055,6 +14103,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -14600,6 +14650,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -15258,6 +15310,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -15922,6 +15976,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -16574,6 +16630,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -17119,6 +17177,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -17765,6 +17825,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -18310,6 +18372,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -18956,6 +19020,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -19501,6 +19567,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -20046,6 +20114,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -20686,6 +20756,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -21231,6 +21303,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -21776,6 +21850,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -22321,6 +22397,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -22973,6 +23051,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -23619,6 +23699,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -24259,6 +24341,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -24917,6 +25001,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -25468,6 +25554,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -26132,6 +26220,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -26750,6 +26840,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -27408,6 +27500,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -28072,6 +28166,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -28724,6 +28820,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -29281,6 +29379,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -29945,6 +30045,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -30597,6 +30699,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -31148,6 +31252,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -31806,6 +31912,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -32392,6 +32500,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -32979,6 +33089,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -33598,6 +33710,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -34200,6 +34314,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -34803,6 +34919,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -35437,6 +35555,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -35982,6 +36102,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -36527,6 +36649,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -37113,6 +37237,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -37664,6 +37790,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -38209,6 +38337,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -38795,6 +38925,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -39358,6 +39490,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -40004,6 +40138,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -40668,6 +40804,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -41213,6 +41351,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -41871,6 +42011,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -42523,6 +42665,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -43068,6 +43212,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -43613,6 +43759,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -44188,6 +44336,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -44739,6 +44889,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -45403,6 +45555,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -46061,6 +46215,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -46612,6 +46768,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -47270,6 +47428,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -47821,6 +47981,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -48485,6 +48647,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -49030,6 +49194,8 @@
           "method": "publisher_certification_record_v1"
         }
       },
+      "fiscal_context_status": "matched",
+      "fiscal_context_method": "agency_fiscal_context_exact_id_join_v1",
       "edge_summary": [
         {
           "schema": "cityscroll.edge_summary.v1",
@@ -49649,6 +49815,7 @@
     "vendor_rollup_window_start": "2025-08-05",
     "passport_graph_observed_on": "2026-08-18",
     "passport_graph_selected_rows": 12783,
+    "fiscal_context_generated_at": "2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",
     "note": "Precomputed last-known-good rollup over entity-intelligence, exam certification edges, 12-month vendor awards, mandates, process-conformance expected-vs-observed, and the sharded PASSPort EI graph."
   }
 }
