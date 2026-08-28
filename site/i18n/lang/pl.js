@@ -649,6 +649,8 @@
     rules_siblings_label: "Same rulemaking",
     rules_action_agency_profile: "Open agency profile",
     rule_stage_unstaged: "Unstaged",
+    rule_stage_anticipated: "Anticipated",
+    rule_action_view_agenda: "View agenda item",
     rule_action_open_notice: "Open the rulemaking notice",
     rule_action_comment: "Comment on this proposed rule",
     rule_action_comment_closed: "Public comment is closed for this rule",

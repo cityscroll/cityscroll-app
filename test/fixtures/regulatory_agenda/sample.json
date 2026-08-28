@@ -1,0 +1,9 @@
+{
+  "index_url": "https://rules.cityofnewyork.us/view-agency-regulatory-agendas/",
+  "retrieved_at": "2026-08-28T00:00:00Z",
+  "index_html": "<script>var agency_agendas = [{\"submitting_agency\":\"DOT\",\"file_button\":\"<a href=\\\"https://rules.cityofnewyork.us/wp-content/uploads/2026/05/DOT-CAPA-REGULATORY-AGENDA-FY-2027-Final.pdf\\\">DOT - Annual Regulatory Agenda FY2027</a>\",\"publish_date\":\"May 1, 2026\"},{\"submitting_agency\":\"DOB\",\"file_button\":\"<a href=\\\"https://rules.cityofnewyork.us/wp-content/uploads/2026/05/CAPA-AGENDA-FY27-final.pdf\\\">DOB - Annual Regulatory Agenda FY2027</a>\",\"publish_date\":\"May 4, 2026\"}];</script>",
+  "documents": {
+    "DOT": "CAPA REGULATORY AGENDA FY 2027\nDEPARTMENT OF TRANSPORTATION\n1.\nSUBJECT: Cyclist Permission to Deviate from Some Traffic Control Devices\nA. Anticipated contents: Amend section 4-12(p) allowing cyclists to follow pedestrian control signals.\nB. Reason: Enhance safety for cyclists.\nC. Objectives: To formalize existing behavior and provide consistency.\nD. Legal basis: Section 2903(a) of the New York City Charter.\nE. Other relevant laws: Section 19-195.1 of the NYC Administrative Code.\nF. Types of individuals and entities likely to be affected: Cyclists, drivers, and the general public.\nG. Approximate schedule: Second Quarter of FY 2027.\n",
+    "DOB": "CAPA REGULATORY AGENDA FY 2027\nDEPARTMENT OF BUILDINGS\n1.\nSUBJECT: Rules necessary to add or amend fees\nA. Anticipated contents: Add or amend fees in the construction codes.\nB. Reason: Fees require periodic updates.\nC. Objectives: Keep fees current.\nD. Legal basis: Article 112 of Title 28 of the NYC Administrative Code.\nF. Types of individuals and entities likely to be affected: Property owners and construction professionals.\nG. Approximate schedule: First Quarter of FY 2027.\n"
+  }
+}

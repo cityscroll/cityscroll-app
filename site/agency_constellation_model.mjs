@@ -84,6 +84,7 @@ import {
 } from "./edge_summary.mjs";
 import { buildLocalConstellation } from "./local_constellation.mjs";
 import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
+import { buildAgencyHorizon } from "./regulatory_agenda.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -1034,6 +1035,17 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         passport_graph: sources.passport_graph,
       },
     ));
+  const rulesCategory = categories.find((category) => category.id === "rules");
+  if (rulesCategory) {
+    const horizon = buildAgencyHorizon(
+      sources.regulatory_agenda?.agenda_items || sources.regulatory_agenda?.items || [],
+      { agency: identity.canonical_name, now: sources.regulatory_agenda?.generated_at || null },
+    );
+    if (horizon.items.length) {
+      rulesCategory.horizon = horizon;
+      rulesCategory.horizon_items = horizon.items;
+    }
+  }
   const fiscalContext = sources.fiscal_context?.by_agency?.[identity.canonical_id] || null;
   for (const category of categories) {
     category.derived_feature_rollup = categoryDerivedFeatureRollup(category);
@@ -1064,10 +1076,10 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   // via agency identity; per-mandate observed filings when topic join hits.
   // Co-located graph neighbors (agency-scoped Rules/Meetings/Contracts) always
   // stamp onto mandate rows even when observed_links is 0 (mand-graph-01).
-  const rulesCategory = categories.find((category) => category.id === "rules") || null;
+  const rulesCategoryForGraph = categories.find((category) => category.id === "rules") || null;
   const meetingsCategory = categories.find((category) => category.id === "meetings") || null;
   const contractsCategory = categories.find((category) => category.id === "contracts") || null;
-  const rulesBrowseHref = rulesCategory?.view_all_href
+  const rulesBrowseHref = rulesCategoryForGraph?.view_all_href
     || agencyCategoryBrowseHref(identity.canonical_id, "rules");
   const meetingsBrowseHref = meetingsCategory?.view_all_href
     || agencyCategoryBrowseHref(identity.canonical_id, "meetings");
@@ -1083,8 +1095,8 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   }
   const mandatesRules = buildMandateRulesBridgeView(identity.canonical_id, {
     obligationsLookup: obligations,
-    rulesItems: rulesCategory?.items || [],
-    rulesCount: rulesCategory?.count || 0,
+    rulesItems: rulesCategoryForGraph?.items || [],
+    rulesCount: rulesCategoryForGraph?.count || 0,
     rulesBrowseHref,
     meetingsBrowseHref,
     contractsBrowseHref,
