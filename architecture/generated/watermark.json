@@ -41,8 +41,8 @@
     },
     "ontology-registry": {
       "path": "ontology/registry.v0.json",
-      "count": 138,
-      "fingerprint": "355579815805b027d033f9ad69ea84dc6bd6f4646b262bc7f40c536a4fb1bab2"
+      "count": 139,
+      "fingerprint": "f8e51de95d1067e7c67a93541b887cb333fd4b176f1618116a2b2179280bc68a"
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
@@ -84,7 +84,7 @@
     "schema": "cityscroll.ontology.registry.v0",
     "version": "0.7.0",
     "collection_counts": {
-      "object_types": 39,
+      "object_types": 40,
       "link_types": 50,
       "event_kinds": 37,
       "assertion_classifications": 2,
