@@ -7,6 +7,7 @@ import {
   renderNodeFooter,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { RULE_EVENT_META, RULES_PHASE_META } from "./rules_phase_spine.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -57,16 +58,46 @@ function phaseMarkup(phase) {
   </li>`;
 }
 
-export function renderRulemakingDocument(object, { currentHref = "" } = {}) {
+export function renderRulemakingDocument(object, { currentHref = "", now = null } = {}) {
   if (!object || object.schema !== "cityscroll.rulemaking.v1" || !object.rulemaking_id) return "";
   const title = clean(object.title, 500) || "Rulemaking";
   const agency = clean(object.agency, 300);
   const phases = Array.isArray(object.phases) ? object.phases : [];
   const sourceDocs = Array.isArray(object.source_documents) ? object.source_documents : [];
-  const interaction = object.interaction || {};
+  // The materialized object carries a build-time projection, but a cached page
+  // must still retire a deadline when it is rendered after that date.
+  const interaction = rulesCardInteractionProjection({
+    request_id: object.notices?.[0]?.request_id,
+    rulemaking_id: object.rulemaking_id,
+    title,
+    fine_stage: object.current_stage,
+    rule_url: object.nyc_rules?.url,
+    comment_url: object.nyc_rules?.comment_url,
+    comment_by_date: object.nyc_rules?.comment_by_date,
+    hearing_date: object.nyc_rules?.hearing_date,
+    events: object.events,
+    now: now || new Date().toISOString().slice(0, 10),
+    nyc_rules: object.nyc_rules,
+    source_documents: sourceDocs,
+    proposed_rule_url: object.proposed_rule_url || object.nyc_rules?.proposed_rule_url,
+    final_rule_url: object.final_rule_url || object.nyc_rules?.final_rule_url,
+    hearing_url: object.hearing_url,
+    hearing_record_url: object.hearing_record_url,
+    comments_url: object.comments_url,
+    comment_channel_url: object.comment_channel_url,
+    testimony_url: object.testimony_url,
+    petition_url: object.petition_url,
+    follow_href: object.follow_href,
+    history_url: object.history_url || object.canonical_href,
+  });
   const participationItems = (interaction.kinetic_actions || [])
     .filter((action) => action?.href && action?.label)
-    .map((action) => ({ kind: "link", href: action.href, label: action.label, primary: action.primary }));
+    .map((action) => ({
+      kind: /^https?:\/\//i.test(action.href) ? "source" : "link",
+      href: action.href,
+      label: action.label,
+      primary: action.primary,
+    }));
   const participation = participationItems.length
     ? renderNodeSection({
       heading: "What you can do",
@@ -78,6 +109,21 @@ export function renderRulemakingDocument(object, { currentHref = "" } = {}) {
   const officialHref = clean(object.nyc_rules?.url || object.nyc_rules?.comment_url);
   if (officialHref) actionItems.push({ kind: "source", href: officialHref, label: "Open official rule page" });
   const actions = renderNodeActions(actionItems, { ariaLabel: "Rulemaking actions", extraClass: "civic-object-actions" });
+  const lifecycleStatus = (() => {
+    const state = interaction.lifecycle_state;
+    const dates = interaction.lifecycle_dates || {};
+    if (state === "effective") {
+      return dates.effective_date ? `In effect since ${prettyDate(dates.effective_date)}` : "In effect";
+    }
+    if (state === "adopted") {
+      return dates.effective_date
+        ? `Adopted · Takes effect ${prettyDate(dates.effective_date)}`
+        : "Adopted";
+    }
+    if (state === "comment_hearing_open") return "Comment/hearing open";
+    if (state === "comment_closed_awaiting_action") return "Comment closed · Awaiting agency action";
+    return "Proposed";
+  })();
   const noticeItems = sourceDocs.filter((item) => item.kind === "city_record_notice").map((item) =>
     `<li><a href="${esc(item.href)}">${esc(item.role === "proposal" ? "Proposal" : item.role === "hearing" ? "Hearing" : item.role === "adoption" ? "Adoption" : "City Record notice")} · ${esc(item.request_id)}</a></li>`
   ).join("");
@@ -100,6 +146,7 @@ ${renderNodeBack({ href: "/browse/rules/", label: "Back to Rules", currentHref }
 <p class="node-kicker civic-object-kicker">Rulemaking case file</p>
 <h1>${esc(title)}</h1>
 ${agency ? `<p class="node-lede">${esc(agency)}</p>` : ""}
+<p class="rulemaking-lifecycle-status" data-rulemaking-lifecycle-state="${esc(interaction.lifecycle_state)}"><strong>${esc(lifecycleStatus)}</strong></p>
 <p class="node-lede">One case file for the published proposal, public process, adoption, and effective date.</p>
 </header>
 ${actions}
