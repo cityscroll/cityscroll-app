@@ -1,0 +1,531 @@
+{
+  "schema": "cityscroll.merge-throughput.per-required-check-receipts.v1",
+  "source_run_id": "fixture-merge-throughput-2026-08-28",
+  "receipts": [
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-101-attempt-1-Unit tests (site + worker)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 101,
+      "attempt": 1,
+      "required_check": "Unit tests (site + worker)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 600,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-101-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1011"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-101-attempt-1-Accessibility + language gate (axe on every PR)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 101,
+      "attempt": 1,
+      "required_check": "Accessibility + language gate (axe on every PR)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 1200,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-101-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1011"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-101-attempt-1-Reading-level ratchet gate (readable-or-else)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 101,
+      "attempt": 1,
+      "required_check": "Reading-level ratchet gate (readable-or-else)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 300,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-101-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1011"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-102-attempt-1-Unit tests (site + worker)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 102,
+      "attempt": 1,
+      "required_check": "Unit tests (site + worker)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 720,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-102-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1021"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-102-attempt-1-Accessibility + language gate (axe on every PR)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 102,
+      "attempt": 1,
+      "required_check": "Accessibility + language gate (axe on every PR)",
+      "status": "failure",
+      "duration_seconds": {
+        "value": 720,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": true,
+        "measurement": "measured",
+        "basis": "later attempt for same PR and check"
+      },
+      "source": {
+        "run_id": "fixture-run-102-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1021"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-102-attempt-1-Reading-level ratchet gate (readable-or-else)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 102,
+      "attempt": 1,
+      "required_check": "Reading-level ratchet gate (readable-or-else)",
+      "status": "unavailable",
+      "duration_seconds": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "missing or non-terminal source observation; not zero",
+        "denominator": 0
+      },
+      "failure": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "non-terminal or unavailable check observation",
+        "denominator": 0
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": null
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-102-attempt-2-Unit tests (site + worker)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 102,
+      "attempt": 2,
+      "required_check": "Unit tests (site + worker)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 720,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-102-2",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1022"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-102-attempt-2-Accessibility + language gate (axe on every PR)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 102,
+      "attempt": 2,
+      "required_check": "Accessibility + language gate (axe on every PR)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 1200,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-102-2",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1022"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-102-attempt-2-Reading-level ratchet gate (readable-or-else)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 102,
+      "attempt": 2,
+      "required_check": "Reading-level ratchet gate (readable-or-else)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 300,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-102-2",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1022"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-103-attempt-1-Unit tests (site + worker)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 103,
+      "attempt": 1,
+      "required_check": "Unit tests (site + worker)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 600,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-103-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1031"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-103-attempt-1-Accessibility + language gate (axe on every PR)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 103,
+      "attempt": 1,
+      "required_check": "Accessibility + language gate (axe on every PR)",
+      "status": "unavailable",
+      "duration_seconds": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "missing or non-terminal source observation; not zero",
+        "denominator": 0
+      },
+      "failure": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "non-terminal or unavailable check observation",
+        "denominator": 0
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": null
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-103-attempt-1-Reading-level ratchet gate (readable-or-else)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 103,
+      "attempt": 1,
+      "required_check": "Reading-level ratchet gate (readable-or-else)",
+      "status": "unavailable",
+      "duration_seconds": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "missing or non-terminal source observation; not zero",
+        "denominator": 0
+      },
+      "failure": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "non-terminal or unavailable check observation",
+        "denominator": 0
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": null
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-103-attempt-2-Unit tests (site + worker)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 103,
+      "attempt": 2,
+      "required_check": "Unit tests (site + worker)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 600,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-103-2",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1032"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-103-attempt-2-Accessibility + language gate (axe on every PR)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 103,
+      "attempt": 2,
+      "required_check": "Accessibility + language gate (axe on every PR)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 1200,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-103-2",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1032"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-103-attempt-2-Reading-level ratchet gate (readable-or-else)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 103,
+      "attempt": 2,
+      "required_check": "Reading-level ratchet gate (readable-or-else)",
+      "status": "success",
+      "duration_seconds": {
+        "value": 300,
+        "measurement": "measured",
+        "basis": "source timestamps",
+        "denominator": 1
+      },
+      "failure": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "source conclusion",
+        "denominator": 1
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-103-2",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1032"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-104-attempt-1-Unit tests (site + worker)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 104,
+      "attempt": 1,
+      "required_check": "Unit tests (site + worker)",
+      "status": "pending",
+      "duration_seconds": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "missing or non-terminal source observation; not zero",
+        "denominator": 0
+      },
+      "failure": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "non-terminal or unavailable check observation",
+        "denominator": 0
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": {
+        "run_id": "fixture-run-104-1",
+        "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1041"
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-104-attempt-1-Accessibility + language gate (axe on every PR)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 104,
+      "attempt": 1,
+      "required_check": "Accessibility + language gate (axe on every PR)",
+      "status": "unavailable",
+      "duration_seconds": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "missing or non-terminal source observation; not zero",
+        "denominator": 0
+      },
+      "failure": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "non-terminal or unavailable check observation",
+        "denominator": 0
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": null
+    },
+    {
+      "schema": "cityscroll.merge-throughput.required-check-receipt.v1",
+      "id": "pr-104-attempt-1-Reading-level ratchet gate (readable-or-else)",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "pull_request": 104,
+      "attempt": 1,
+      "required_check": "Reading-level ratchet gate (readable-or-else)",
+      "status": "unavailable",
+      "duration_seconds": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "missing or non-terminal source observation; not zero",
+        "denominator": 0
+      },
+      "failure": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "non-terminal or unavailable check observation",
+        "denominator": 0
+      },
+      "rerun_clears_it": {
+        "value": null,
+        "measurement": "unknown",
+        "basis": "no succeeding rerun observed"
+      },
+      "source": null
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "cityscroll.merge-throughput.telemetry.receipt.v1",
+  "telemetry_schema": "cityscroll.merge-throughput.telemetry.v1",
+  "repository": "cityscroll/cityscroll-app",
+  "source_run_id": "fixture-merge-throughput-2026-08-28",
+  "observed_at": "2026-08-27T00:00:00Z",
+  "source_measurement": "estimated",
+  "window": {
+    "started_at": "2026-08-24T00:00:00Z",
+    "ended_at": "2026-08-27T00:00:00Z"
+  },
+  "source_documents": [
+    {
+      "id": "incident-corpus",
+      "path": "data/incident-corpus.json",
+      "sha256": "d0599550b1895de74ea626f8b30c187dd171460121614b950426a585b5e344c3",
+      "role": "mt-0 source-linked incident taxonomy and baseline",
+      "verification": "verified"
+    },
+    {
+      "id": "merge-queue-ejection-report",
+      "path": "docs/evidence/merge-queue-cap/ejection-report.json",
+      "sha256": "6fece64ceaccba76ee69640a11c736cf2c6d16dd0ade0c2e4487a61742144987",
+      "role": "native merge-queue removal observations",
+      "verification": "verified"
+    }
+  ],
+  "artifact_hashes": {
+    "per_pr": "f11da23403f2bc198ffbd4873167c2bf1d9dc2e830be3101e2e3bb41b9f8eba3",
+    "per_attempt": "c4e1f680ead3aaeee43a0bbf1ae4cada917309d00c46a24e25f6db87ba78a907",
+    "per_required_check": "b67f0861e9b4ab98ba70f15a18b170682a68bccfb5818e8fa8949adca6618274",
+    "required_check_gauges": "c47a1a97db195b2450987011b4a542e4898a3d2825ed90c523055c52a3ccb09e",
+    "daily_gauges": "d29f2c662533ff52a90cab86e892fcd9cafe54a1b453de91c0fd433dc8dffd6f"
+  },
+  "denominators": {
+    "pull_requests": 4,
+    "attempts": 6,
+    "required_check_receipts": 18,
+    "daily_gauges": 3
+  },
+  "data_quality": {
+    "state": "incomplete",
+    "unavailable_required_check_receipts": 5,
+    "pending_required_check_receipts": 1,
+    "unavailable_source_documents": [],
+    "note": "Missing, pending, and unavailable observations are not zero or success."
+  },
+  "validation": "passed",
+  "receipt_sha256": "16d137743855dd6ee332425146d1187e1194673bcfec708fc7c29300912d8b76"
+}
