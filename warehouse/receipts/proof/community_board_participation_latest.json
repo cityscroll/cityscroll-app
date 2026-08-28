@@ -1,0 +1,90 @@
+{
+  "schema": "cityscroll.community_board_participation_receipt.v1",
+  "method": "community_board_participation_projection_v1",
+  "generated_at": "2026-08-27T00:00:00.000Z",
+  "source_registry": "site/data/non_council_outcome_sources/source_registry.json",
+  "bylaw_source": "site/data/community_board_bylaws.json",
+  "application_source_registry": "site/data/community_board_participation_sources.json",
+  "population": {
+    "board_count": 59,
+    "participation_rows": 177,
+    "application_sources": 5
+  },
+  "measurement": {
+    "scheduled_acquisition": true,
+    "resident_request_time_fetch": false,
+    "latest_known_good_governance": true,
+    "unknown_application_suppresses_cta": true,
+    "stale_application_suppresses_cta": true,
+    "cross_board_inference": false,
+    "source_scope_is_explicit": true
+  },
+  "source_receipts": [
+    {
+      "source_id": "participation-source:manhattan-bp:2026",
+      "board_ids": [
+        "manhattan-cb-02",
+        "manhattan-cb-06"
+      ],
+      "participation_kind": "full_board_membership",
+      "source_url": "https://www.manhattanbp.nyc.gov/2026-community-board-applications-open/",
+      "document_id": "manhattan-bp-2026-community-board-applications-open",
+      "locator": "Applications for the 2026 term; eligibility; appointment authority",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": "2026-03-03T00:00:00.000Z",
+      "receipt_status": "ok"
+    },
+    {
+      "source_id": "participation-source:bronx-bp:2026",
+      "board_ids": [
+        "bronx-cb-02"
+      ],
+      "participation_kind": "full_board_membership",
+      "source_url": "https://bronxboropres.nyc.gov/community/community_boards.php",
+      "document_id": "bronx-bp-community-boards-2026",
+      "locator": "2026 Community Board Application; Membership and the Appointment Process",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt_status": "ok"
+    },
+    {
+      "source_id": "participation-source:queens-bp:2026",
+      "board_ids": [
+        "queens-cb-06"
+      ],
+      "participation_kind": "full_board_membership",
+      "source_url": "https://www.queensbp.nyc.gov/community-boards/",
+      "document_id": "queens-bp-community-boards-2026",
+      "locator": "2026 Community Board application period",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt_status": "ok"
+    },
+    {
+      "source_id": "participation-source:staten-island-bp:current",
+      "board_ids": [
+        "staten-island-cb-02"
+      ],
+      "participation_kind": "full_board_membership",
+      "source_url": "https://www.statenislandusa.com/cbapplication.html",
+      "document_id": "staten-island-bp-community-board-membership-application",
+      "locator": "Community Board Membership Application; eligibility notice",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt_status": "ok"
+    },
+    {
+      "source_id": "participation-source:queens-cb-02:public-member",
+      "board_ids": [
+        "queens-cb-02"
+      ],
+      "participation_kind": "public_committee_membership",
+      "source_url": "https://www.nyc.gov/site/queenscb2/about/get-involved.page",
+      "document_id": "queens-cb-02-get-involved",
+      "locator": "Queens CB2 Public Committee Member; Apply to be a Public Member Online",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt_status": "ok"
+    }
+  ]
+}

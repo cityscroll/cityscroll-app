@@ -1,0 +1,187 @@
+{
+  "schema": "cityscroll.community_board_participation_sources.v1",
+  "generated_at": "2026-08-27T00:00:00.000Z",
+  "policy": {
+    "source_urls_are_explicit": true,
+    "board_scope_is_explicit": true,
+    "no_borough_defaulting": true,
+    "unknown_application_status_suppresses_cta": true,
+    "stale_application_status_suppresses_cta": true,
+    "cross_board_inference": false
+  },
+  "sources": [
+    {
+      "id": "participation-source:manhattan-bp:2026",
+      "participation_kind": "full_board_membership",
+      "applies_to_board_ids": ["manhattan-cb-02", "manhattan-cb-06"],
+      "eligibility": {
+        "value": {
+          "minimum_age": 16,
+          "district_connection": ["live", "work", "attend_school"],
+          "commitment_required": true,
+          "conflict_standards_apply": true
+        },
+        "statement": "Applicants must be at least 16 and live, work, or attend school in the community board district, with applicable conflict-of-interest standards."
+      },
+      "appointing_authority": {
+        "value": "Manhattan Borough President",
+        "statement": "The Borough President appoints Manhattan community board members; City Council members nominate half of the appointments."
+      },
+      "application_status": "closed",
+      "application_open_at": null,
+      "application_close_at": "2026-02-27T23:59:00.000Z",
+      "application_destination": "https://bpbhs.com/cb",
+      "application_cadence": "two-year terms; reapplication at term end",
+      "version": "2026",
+      "source_url": "https://www.manhattanbp.nyc.gov/2026-community-board-applications-open/",
+      "document_id": "manhattan-bp-2026-community-board-applications-open",
+      "document_title": "BP Hoylman-Sigal Opens Applications for 2026 Manhattan Community Boards",
+      "locator": "Applications for the 2026 term; eligibility; appointment authority",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": "2026-03-03T00:00:00.000Z",
+      "receipt": {
+        "schema": "cityscroll.community_board_participation_source_receipt.v1",
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00.000Z",
+        "fetch_status": "200",
+        "content_type": "text/html"
+      }
+    },
+    {
+      "id": "participation-source:bronx-bp:2026",
+      "participation_kind": "full_board_membership",
+      "applies_to_board_ids": ["bronx-cb-02"],
+      "eligibility": {
+        "value": {
+          "district_connection": ["reside", "work", "significant_interest"]
+        },
+        "statement": "Board members must reside, work, or have another significant interest in the community."
+      },
+      "appointing_authority": {
+        "value": "Bronx Borough President",
+        "statement": "The Borough President appoints board members, with half nominated by Council members representing the community district."
+      },
+      "application_status": "closed",
+      "application_open_at": null,
+      "application_close_at": "2026-03-01T23:59:00.000Z",
+      "application_destination": null,
+      "application_cadence": "applications reopen at the end of the year",
+      "version": "2026",
+      "source_url": "https://bronxboropres.nyc.gov/community/community_boards.php",
+      "document_id": "bronx-bp-community-boards-2026",
+      "document_title": "Membership and the Appointment Process",
+      "locator": "2026 Community Board Application; Membership and the Appointment Process",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_participation_source_receipt.v1",
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00.000Z",
+        "fetch_status": "200",
+        "content_type": "text/html"
+      }
+    },
+    {
+      "id": "participation-source:queens-bp:2026",
+      "participation_kind": "full_board_membership",
+      "applies_to_board_ids": ["queens-cb-06"],
+      "eligibility": {
+        "value": {
+          "district_connection": ["reside", "work", "significant_interest"]
+        },
+        "statement": "The application cycle is for qualified applicants interested in serving on their local Queens community board."
+      },
+      "appointing_authority": {
+        "value": "Queens Borough President",
+        "statement": "The Queens Borough President processes community board membership applications and appointments."
+      },
+      "application_status": "closed",
+      "application_open_at": null,
+      "application_close_at": "2026-02-13T23:59:00.000Z",
+      "application_destination": null,
+      "application_cadence": "application period",
+      "version": "2026",
+      "source_url": "https://www.queensbp.nyc.gov/community-boards/",
+      "document_id": "queens-bp-community-boards-2026",
+      "document_title": "Community Boards",
+      "locator": "2026 Community Board application period",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_participation_source_receipt.v1",
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00.000Z",
+        "fetch_status": "200",
+        "content_type": "text/html"
+      }
+    },
+    {
+      "id": "participation-source:staten-island-bp:current",
+      "participation_kind": "full_board_membership",
+      "applies_to_board_ids": ["staten-island-cb-02"],
+      "eligibility": {
+        "value": {
+          "nyc_resident_required": true
+        },
+        "statement": "The application page says an applicant must be a New York City resident."
+      },
+      "appointing_authority": {
+        "value": "Staten Island Borough President",
+        "statement": "The application is published by the Office of the Staten Island Borough President."
+      },
+      "application_status": "unknown",
+      "application_open_at": null,
+      "application_close_at": null,
+      "application_destination": "https://www.statenislandusa.com/cbapplication.html",
+      "application_cadence": null,
+      "version": null,
+      "source_url": "https://www.statenislandusa.com/cbapplication.html",
+      "document_id": "staten-island-bp-community-board-membership-application",
+      "document_title": "Community Board Membership Application",
+      "locator": "Community Board Membership Application; eligibility notice",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_participation_source_receipt.v1",
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00.000Z",
+        "fetch_status": "200",
+        "content_type": "text/html"
+      }
+    },
+    {
+      "id": "participation-source:queens-cb-02:public-member",
+      "participation_kind": "public_committee_membership",
+      "applies_to_board_ids": ["queens-cb-02"],
+      "eligibility": {
+        "value": {
+          "non_board_member": true
+        },
+        "statement": "Queens CB2 says non-board members may apply to become public committee members."
+      },
+      "appointing_authority": {
+        "value": "Queens Community Board 2 Chairperson",
+        "statement": "Queens CB2 says public members are appointed by the Chairperson."
+      },
+      "application_status": "unknown",
+      "application_open_at": null,
+      "application_close_at": null,
+      "application_destination": "https://forms.gle/RMhAwKYmjUXn1Vsh6",
+      "application_cadence": null,
+      "version": null,
+      "source_url": "https://www.nyc.gov/site/queenscb2/about/get-involved.page",
+      "document_id": "queens-cb-02-get-involved",
+      "document_title": "Get Involved - Queens Community Board 2",
+      "locator": "Queens CB2 Public Committee Member; Apply to be a Public Member Online",
+      "observed_at": "2026-08-27T00:00:00.000Z",
+      "effective_at": null,
+      "receipt": {
+        "schema": "cityscroll.community_board_participation_source_receipt.v1",
+        "status": "ok",
+        "observed_at": "2026-08-27T00:00:00.000Z",
+        "fetch_status": "200",
+        "content_type": "text/html"
+      }
+    }
+  ]
+}
