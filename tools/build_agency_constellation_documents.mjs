@@ -53,6 +53,7 @@ function loadSources() {
   const agencyLifecycleConformancePath = join(SITE, "data/agency_lifecycle_conformance_lookup.json");
   const fiscalContextPath = join(SITE, "data/agency_fiscal_context.json");
   const rulesDomainPath = join(SITE, "data/rules_domain_observations.json");
+  const regulatoryAgendaPath = join(SITE, "data/regulatory_agenda.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const moneyOpenPath = join(SITE, "data/money_default_open.json");
   const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
@@ -76,6 +77,7 @@ function loadSources() {
     agency_lifecycle_conformance: existsSync(agencyLifecycleConformancePath) ? readJson(agencyLifecycleConformancePath) : null,
     fiscal_context: existsSync(fiscalContextPath) ? readJson(fiscalContextPath) : null,
     rules_domain: existsSync(rulesDomainPath) ? readJson(rulesDomainPath) : null,
+    regulatory_agenda: existsSync(regulatoryAgendaPath) ? readJson(regulatoryAgendaPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,

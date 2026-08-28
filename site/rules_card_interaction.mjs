@@ -346,6 +346,7 @@ export function rulesCardInteractionProjection({
   petition_url = null,
   follow_href = null,
   history_url = null,
+  canonical_href = null,
   comment_label = "Comment",
   hearing_label = "Follow hearing",
   official_source_label = "Official rule",
@@ -395,11 +396,11 @@ export function rulesCardInteractionProjection({
     ? [{ label: text(official_source_label), href: ruleHref, kind: "official_source" }]
     : [];
   const projection = objectCardInteractionProjection({
-    target: text(title) && (rulemakingId || requestId)
+    target: text(title) && (text(canonical_href) || rulemakingId || requestId)
       ? {
-        href: rulemakingId
+        href: text(canonical_href) || (rulemakingId
           ? `/rules/${encodeURIComponent(rulemakingId)}`
-          : `/notices/${encodeURIComponent(requestId)}`,
+          : `/notices/${encodeURIComponent(requestId)}`),
         label: text(title),
       }
       : null,

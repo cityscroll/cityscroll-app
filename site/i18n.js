@@ -875,6 +875,8 @@ const STRINGS = {
     rules_siblings_label: "Same rulemaking",
     rules_action_agency_profile: "Open agency profile",
     rule_stage_unstaged: "Unstaged",
+    rule_stage_anticipated: "Anticipated",
+    rule_action_view_agenda: "View agenda item",
     rule_action_open_notice: "Open notice",
     rule_action_comment: "Comment",
     rule_action_comment_closed: "Public comment is closed for this rule",

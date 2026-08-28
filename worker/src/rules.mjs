@@ -15,6 +15,7 @@ import {
 import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
 import { classifyCityRecordRuleStage } from "../../site/rule_stage.mjs";
 import { buildRulemakingObjects } from "./lib/rulemaking.mjs";
+import regulatoryAgenda from "../../site/data/regulatory_agenda.json" with { type: "json" };
 
 export const RULES_KV_KEY = "rules:materialized:v2";
 /** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds.
@@ -23,8 +24,9 @@ export const RULES_KV_KEY = "rules:materialized:v2";
  *      section cite or title-core floor (false-merge hotfix).
  *  v6: normalize WordPress RSS endpoints to resident-facing NYC Rules pages.
  *  v7: classify unmatched City Record hearings/adoptions instead of defaulting to proposal.
- *  v8: materialize grounded multi-notice rulemaking objects alongside notices. */
-export const RULES_VIEW_VERSION = 8;
+ *  v8: materialize grounded multi-notice rulemaking objects alongside notices.
+ *  v9: carry the host-materialized regulatory agenda alongside formal rules. */
+export const RULES_VIEW_VERSION = 9;
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 /** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
  *  "Just a moment…" when the request has an empty or missing User-Agent
@@ -266,6 +268,8 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
     },
     counts,
     rulemakings,
+    agenda_items: Array.isArray(regulatoryAgenda?.agenda_items) ? regulatoryAgenda.agenda_items : [],
+    regulatory_agenda: regulatoryAgenda || null,
     rules: records,
   };
 }

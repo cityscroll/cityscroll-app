@@ -66,6 +66,7 @@ function loadRulesSemanticArtifact(){
 }
 const RULES_PHASE_IDS=["proposal","public_process","adoption","effective"];
 const RULES_PHASE_LABEL_KEYS={
+  anticipated:"rule_stage_anticipated",
   proposal:"rule_phase_proposal",
   public_process:"rule_phase_public_process",
   adoption:"rule_phase_adoption",
@@ -104,6 +105,7 @@ function rulesExplorerCardHTML(entry, terms){
     comment_url:entry.comment_url,
     comment_by_date:entry.comment_by_date,
     hearing_date:entry.hearing_date,
+    canonical_href:r.canonical_href,
     comment_label:commentLabel,
     hearing_label:hearingLabel,
     official_source_label:t("rule_event_official_source"),
@@ -160,7 +162,7 @@ function rulesActionBandTools(){
 function rulesProcessControlHTML(model){
   if(!model) return "";
   const button=(item,cls)=>`<button type="button" class="${cls}${item.pressed?" on":""}" data-rules-process="${escUiHtml(item.id)}" aria-pressed="${item.pressed?"true":"false"}">${escUiHtml(t(item.label_key))}<span class="ct">${item.count}</span></button>`;
-  const phases=model.lifecycle.map(item=>button(item,["chip","rules-stage-filter"].join(" "))).join("");
+  const phases=[model.anticipated?button(model.anticipated,["chip","rules-stage-filter","rules-stage-anticipated"].join(" ")):"",...model.lifecycle.map(item=>button(item,["chip","rules-stage-filter"].join(" ")))].join("");
   return `<div class="chiprow rules-stage-facets rules-stage-control">
     ${button(model.all,["chip","rules-stage-all"].join(" "))}
     ${phases}

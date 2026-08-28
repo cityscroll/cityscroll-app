@@ -226,6 +226,7 @@ test("RULES_PROCESS_STAGES is the ops-ontology rail (not a flat notice wall)", (
   const keys = RULES_PROCESS_STAGES.map(([k]) => k);
   assert.deepEqual(keys, [
     "all",
+    "anticipated",
     "proposal",
     "public_process",
     "adoption",
