@@ -1,0 +1,24 @@
+{
+  "pending_add": {
+    "matter": { "id": "79100", "matter_file": "Int 100-2026" },
+    "source_ref": "legistar:79100:proposed-text",
+    "source_text": "Section 20-912 is added to the administrative code."
+  },
+  "multi_target": {
+    "matter": { "id": "79101", "matter_file": "Int 101-2026" },
+    "source_ref": "legistar:79101:proposed-text",
+    "source_text": "Sections 16-120 and 20-912 of the administrative code are amended.\nSection 28-103.22 of the building code is repealed."
+  },
+  "enacted": {
+    "matter": { "id": "79102", "matter_file": "Int 102-2026" },
+    "local_law": {
+      "id": "local-law:123-2026",
+      "matter_id": "79102",
+      "local_law_number": "123",
+      "enacted_at": "2026-08-01",
+      "effective_at": "2026-11-01"
+    },
+    "source_ref": "council:local-law:123-2026",
+    "source_text": "Section 16-120 of the administrative code is amended to read as follows.\nSection 20-912 of the administrative code is REPEALED."
+  }
+}

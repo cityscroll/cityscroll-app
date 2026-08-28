@@ -8,6 +8,7 @@ import {
   renderNodeProvenance,
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
+import { renderLegalChangeSummary } from "./legal_change_edges.mjs";
 
 export const LEGISLATIVE_MATTER_SCHEMA = "cityscroll.legislative_matter_document.v1";
 
@@ -214,7 +215,7 @@ function appearanceMarkup(appearance) {
   </article>`;
 }
 
-export function renderLegislativeMatterDocument(view, { currentHref = "" } = {}) {
+export function renderLegislativeMatterDocument(view, { currentHref = "", legalChangeGraph = null } = {}) {
   if (!view?.id || !view?.title || view.schema !== LEGISLATIVE_MATTER_SCHEMA) return "";
   const matterSource = view.matter_href
     ? officialSourceLink({ href: view.matter_href, label: "Legistar matter record", className: "node-source-link", escape: esc })
@@ -237,5 +238,6 @@ export function renderLegislativeMatterDocument(view, { currentHref = "" } = {})
     exportClass: "matter_provenance",
   });
   const back = renderNodeBack({ href: "/browse/meetings/", label: "Browse meetings", currentHref });
-  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}<p class="civic-object-pivot">${matterSource}</p></div>${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
+  const legalChanges = renderLegalChangeSummary(legalChangeGraph);
+  return gateNodePageRender(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(view.matter_file || view.title)} · CityScroll</title><meta name="description" content="A source-backed City Council matter history with observed meetings, actions, votes, and official records."><link rel="canonical" href="https://cityscroll.org${esc(view.canonical_href)}"><meta property="og:url" content="https://cityscroll.org${esc(view.canonical_href)}">${renderCivicDocumentAssets("/")}</head><body><a class="skip" href="#main">Skip to content</a>${renderCivicDocumentMast({ current: "browse", surfaceClass: "matter-document-mast" })}<main id="main" class="node-document civic-object-document legislative-matter-document" data-node-document="1" data-civic-object-kind="legislative-matter" data-matter-id="${esc(view.id)}" data-subject-ref="${esc(view.ref)}"><div class="civic-object-hero">${back}<p class="node-kicker civic-object-kicker">New York City Council legislative matter</p><h1>${esc(view.title)}</h1>${identity}<p class="civic-object-pivot">${matterSource}</p></div>${legalChanges}${appearanceSection}${provenance}</main>${renderNodeFooter()}</body></html>`);
 }

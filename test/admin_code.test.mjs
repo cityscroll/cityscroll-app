@@ -66,6 +66,9 @@ test("legal-code search is bounded, typed, and admits exact citation documents",
 test("provision detail page is source-labeled and does not claim modeled history", () => {
   const row = rowFor(lookupAdminCodeCitation("20-912"));
   const html = renderAdminCodeProvisionDocument(row);
+  assert.match(html, /<a class="skip" href="#main">Skip to content<\/a>/);
+  assert.match(html, /<main id="main" tabindex="-1">/);
+  assert.match(html, /main:focus\{outline:3px solid/);
   assert.match(html, /Administrative Code § 20-912/);
   assert.match(html, /Current text/);
   assert.match(html, /American Legal Publishing/);
