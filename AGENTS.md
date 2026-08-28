@@ -3933,6 +3933,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   artifact manifest. Keep source age limits source-declared and do not turn provider deployment
   timestamps into source acknowledgements.
 
+- **Community Board money read model:** `site/community_board_money.mjs` joins the landed adopted
+  budget and payment actuals artifacts only by exact `board_id` plus fiscal year. Rebuild the shared
+  projection and measurement receipt with `node tools/build_community_board_money.mjs`; focused
+  proof is `test/community_board_money.test.mjs`. Missing, partial, unmatched, empty, and stale
+  source states remain explicit, and uncertified budget/payment ratios stay null.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

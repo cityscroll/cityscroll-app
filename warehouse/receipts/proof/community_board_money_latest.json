@@ -1,0 +1,816 @@
+{
+  "schema": "cityscroll.community_board_money_read_model_receipt.v1",
+  "workstream_card": "CB-MONEY-03",
+  "status": "complete",
+  "generated_at": "2026-08-28T01:47:21.524Z",
+  "inputs": {
+    "boards": "site/data/community_board_constellation_lookup.json",
+    "adopted_budget": "site/data/community_board_adopted_budget.json",
+    "adopted_budget_receipt": "warehouse/receipts/proof/community_board_adopted_budget_latest.json",
+    "payment_actuals": "site/data/community_board_payment_actuals.json",
+    "payment_actuals_receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+    "join_key": [
+      "board_id",
+      "fiscal_year"
+    ],
+    "forbidden_joins": [
+      "Community District",
+      "borough",
+      "vendor address",
+      "fuzzy publisher name"
+    ]
+  },
+  "measurement": {
+    "board_count": 59,
+    "fiscal_years": [
+      2026,
+      2027
+    ],
+    "board_fy_rows": 118,
+    "states": {
+      "budget_only": 59,
+      "spending_only": 58,
+      "unmatched_identity": 1
+    },
+    "source_statuses": {
+      "budget": "available",
+      "spending": "partial"
+    },
+    "canaries": {
+      "multi_borough": [
+        {
+          "label": "borough:bronx",
+          "state": "spending_only",
+          "board_id": "bronx-cb-01",
+          "fiscal_year": 2026,
+          "coverage": {
+            "budget": "unavailable",
+            "spending": "posted_through_source_vintage",
+            "binding": "exact",
+            "state": "spending_only"
+          },
+          "projection_inputs": {
+            "budget": {
+              "present": false,
+              "fiscal_year": null,
+              "adopted_amount": null,
+              "personnel_amount": null,
+              "otps_amount": null,
+              "current_amount": null,
+              "modified_amount": null,
+              "commitments_amount": null
+            },
+            "spending": {
+              "present": true,
+              "fiscal_year": 2026,
+              "posted_amount": 95914.68,
+              "payment_count": 22,
+              "distinct_payee_count": 9
+            }
+          },
+          "source_references": [
+            {
+              "role": "spending",
+              "source_system": "checkbook_payment_population",
+              "dataset_id": null,
+              "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+              "source_url": "https://www.checkbooknyc.com/api",
+              "artifact": "site/data/community_board_payment_actuals.json",
+              "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+              "source_native_key": null,
+              "source_native_key_field": null,
+              "source_vintage": {
+                "observed_at": null,
+                "payment_issue_date_through": "2026-06-30",
+                "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+              },
+              "observed_at": "2026-08-27T00:00:00.000Z",
+              "fiscal_year": 2026,
+              "publication_date": null,
+              "input_rows": 22
+            }
+          ]
+        },
+        {
+          "label": "borough:brooklyn",
+          "state": "spending_only",
+          "board_id": "brooklyn-cb-01",
+          "fiscal_year": 2026,
+          "coverage": {
+            "budget": "unavailable",
+            "spending": "posted_through_source_vintage",
+            "binding": "exact",
+            "state": "spending_only"
+          },
+          "projection_inputs": {
+            "budget": {
+              "present": false,
+              "fiscal_year": null,
+              "adopted_amount": null,
+              "personnel_amount": null,
+              "otps_amount": null,
+              "current_amount": null,
+              "modified_amount": null,
+              "commitments_amount": null
+            },
+            "spending": {
+              "present": true,
+              "fiscal_year": 2026,
+              "posted_amount": 127031.92,
+              "payment_count": 92,
+              "distinct_payee_count": 12
+            }
+          },
+          "source_references": [
+            {
+              "role": "spending",
+              "source_system": "checkbook_payment_population",
+              "dataset_id": null,
+              "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+              "source_url": "https://www.checkbooknyc.com/api",
+              "artifact": "site/data/community_board_payment_actuals.json",
+              "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+              "source_native_key": null,
+              "source_native_key_field": null,
+              "source_vintage": {
+                "observed_at": null,
+                "payment_issue_date_through": "2026-06-30",
+                "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+              },
+              "observed_at": "2026-08-27T00:00:00.000Z",
+              "fiscal_year": 2026,
+              "publication_date": null,
+              "input_rows": 92
+            }
+          ]
+        },
+        {
+          "label": "borough:manhattan",
+          "state": "spending_only",
+          "board_id": "manhattan-cb-01",
+          "fiscal_year": 2026,
+          "coverage": {
+            "budget": "unavailable",
+            "spending": "posted_through_source_vintage",
+            "binding": "exact",
+            "state": "spending_only"
+          },
+          "projection_inputs": {
+            "budget": {
+              "present": false,
+              "fiscal_year": null,
+              "adopted_amount": null,
+              "personnel_amount": null,
+              "otps_amount": null,
+              "current_amount": null,
+              "modified_amount": null,
+              "commitments_amount": null
+            },
+            "spending": {
+              "present": true,
+              "fiscal_year": 2026,
+              "posted_amount": 53477.8,
+              "payment_count": 67,
+              "distinct_payee_count": 9
+            }
+          },
+          "source_references": [
+            {
+              "role": "spending",
+              "source_system": "checkbook_payment_population",
+              "dataset_id": null,
+              "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+              "source_url": "https://www.checkbooknyc.com/api",
+              "artifact": "site/data/community_board_payment_actuals.json",
+              "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+              "source_native_key": null,
+              "source_native_key_field": null,
+              "source_vintage": {
+                "observed_at": null,
+                "payment_issue_date_through": "2026-06-30",
+                "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+              },
+              "observed_at": "2026-08-27T00:00:00.000Z",
+              "fiscal_year": 2026,
+              "publication_date": null,
+              "input_rows": 67
+            }
+          ]
+        },
+        {
+          "label": "borough:queens",
+          "state": "spending_only",
+          "board_id": "queens-cb-01",
+          "fiscal_year": 2026,
+          "coverage": {
+            "budget": "unavailable",
+            "spending": "posted_through_source_vintage",
+            "binding": "exact",
+            "state": "spending_only"
+          },
+          "projection_inputs": {
+            "budget": {
+              "present": false,
+              "fiscal_year": null,
+              "adopted_amount": null,
+              "personnel_amount": null,
+              "otps_amount": null,
+              "current_amount": null,
+              "modified_amount": null,
+              "commitments_amount": null
+            },
+            "spending": {
+              "present": true,
+              "fiscal_year": 2026,
+              "posted_amount": 41556.28,
+              "payment_count": 55,
+              "distinct_payee_count": 14
+            }
+          },
+          "source_references": [
+            {
+              "role": "spending",
+              "source_system": "checkbook_payment_population",
+              "dataset_id": null,
+              "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+              "source_url": "https://www.checkbooknyc.com/api",
+              "artifact": "site/data/community_board_payment_actuals.json",
+              "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+              "source_native_key": null,
+              "source_native_key_field": null,
+              "source_vintage": {
+                "observed_at": null,
+                "payment_issue_date_through": "2026-06-30",
+                "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+              },
+              "observed_at": "2026-08-27T00:00:00.000Z",
+              "fiscal_year": 2026,
+              "publication_date": null,
+              "input_rows": 55
+            }
+          ]
+        },
+        {
+          "label": "borough:staten-island",
+          "state": "spending_only",
+          "board_id": "staten-island-cb-01",
+          "fiscal_year": 2026,
+          "coverage": {
+            "budget": "unavailable",
+            "spending": "posted_through_source_vintage",
+            "binding": "exact",
+            "state": "spending_only"
+          },
+          "projection_inputs": {
+            "budget": {
+              "present": false,
+              "fiscal_year": null,
+              "adopted_amount": null,
+              "personnel_amount": null,
+              "otps_amount": null,
+              "current_amount": null,
+              "modified_amount": null,
+              "commitments_amount": null
+            },
+            "spending": {
+              "present": true,
+              "fiscal_year": 2026,
+              "posted_amount": 67028.36,
+              "payment_count": 49,
+              "distinct_payee_count": 7
+            }
+          },
+          "source_references": [
+            {
+              "role": "spending",
+              "source_system": "checkbook_payment_population",
+              "dataset_id": null,
+              "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+              "source_url": "https://www.checkbooknyc.com/api",
+              "artifact": "site/data/community_board_payment_actuals.json",
+              "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+              "source_native_key": null,
+              "source_native_key_field": null,
+              "source_vintage": {
+                "observed_at": null,
+                "payment_issue_date_through": "2026-06-30",
+                "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+              },
+              "observed_at": "2026-08-27T00:00:00.000Z",
+              "fiscal_year": 2026,
+              "publication_date": null,
+              "input_rows": 49
+            }
+          ]
+        }
+      ],
+      "both_sources": {
+        "label": "both_sources",
+        "state": "both_sources",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2026,
+        "coverage": {
+          "budget": "complete",
+          "spending": "posted_through_source_vintage",
+          "binding": "exact",
+          "state": "both_sources"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": true,
+            "fiscal_year": 2026,
+            "adopted_amount": 366943,
+            "personnel_amount": 268805,
+            "otps_amount": 98138,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": true,
+            "fiscal_year": 2026,
+            "posted_amount": 95914.68,
+            "payment_count": 22,
+            "distinct_payee_count": 9
+          }
+        },
+        "source_references": [
+          {
+            "role": "budget",
+            "source_system": "expense_budget",
+            "dataset_id": "mwzb-yiwb",
+            "source_contract": null,
+            "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+            "artifact": "site/data/community_board_adopted_budget.json",
+            "receipt": "warehouse/receipts/proof/community_board_adopted_budget_latest.json",
+            "source_native_key": "381",
+            "source_native_key_field": "agency_number",
+            "source_vintage": "2026-07-08",
+            "observed_at": "2026-08-28T01:47:21.524Z",
+            "fiscal_year": 2026,
+            "publication_date": "20260630",
+            "input_rows": 16
+          },
+          {
+            "role": "spending",
+            "source_system": "checkbook_payment_population",
+            "dataset_id": null,
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_native_key": null,
+            "source_native_key_field": null,
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "observed_at": "2026-08-27T00:00:00.000Z",
+            "fiscal_year": 2026,
+            "publication_date": null,
+            "input_rows": 22
+          },
+          {
+            "role": "fixture",
+            "source_system": "projection_test_input",
+            "source_artifact": "site/data/community_board_adopted_budget.json",
+            "source_receipt": "warehouse/receipts/proof/community_board_adopted_budget_latest.json"
+          }
+        ],
+        "fixture": "contract_fixture_reconciles_budget_and_spending_keys"
+      },
+      "budget_only": {
+        "label": "budget_only",
+        "state": "budget_only",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2027,
+        "coverage": {
+          "budget": "complete",
+          "spending": "unavailable",
+          "binding": "exact",
+          "state": "budget_only"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": true,
+            "fiscal_year": 2027,
+            "adopted_amount": 366943,
+            "personnel_amount": 268805,
+            "otps_amount": 98138,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": false,
+            "fiscal_year": null,
+            "posted_amount": null,
+            "payment_count": null,
+            "distinct_payee_count": null
+          }
+        },
+        "source_references": [
+          {
+            "role": "budget",
+            "source_system": "expense_budget",
+            "dataset_id": "mwzb-yiwb",
+            "source_contract": null,
+            "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+            "artifact": "site/data/community_board_adopted_budget.json",
+            "receipt": "warehouse/receipts/proof/community_board_adopted_budget_latest.json",
+            "source_native_key": "381",
+            "source_native_key_field": "agency_number",
+            "source_vintage": "2026-07-08",
+            "observed_at": "2026-08-28T01:47:21.524Z",
+            "fiscal_year": 2027,
+            "publication_date": "20260630",
+            "input_rows": 16
+          }
+        ]
+      },
+      "spending_only": {
+        "label": "spending_only",
+        "state": "spending_only",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2026,
+        "coverage": {
+          "budget": "unavailable",
+          "spending": "posted_through_source_vintage",
+          "binding": "exact",
+          "state": "spending_only"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": false,
+            "fiscal_year": null,
+            "adopted_amount": null,
+            "personnel_amount": null,
+            "otps_amount": null,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": true,
+            "fiscal_year": 2026,
+            "posted_amount": 95914.68,
+            "payment_count": 22,
+            "distinct_payee_count": 9
+          }
+        },
+        "source_references": [
+          {
+            "role": "spending",
+            "source_system": "checkbook_payment_population",
+            "dataset_id": null,
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_native_key": null,
+            "source_native_key_field": null,
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "observed_at": "2026-08-27T00:00:00.000Z",
+            "fiscal_year": 2026,
+            "publication_date": null,
+            "input_rows": 22
+          }
+        ]
+      },
+      "partial_source": {
+        "label": "partial_source",
+        "state": "spending_only",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2026,
+        "coverage": {
+          "budget": "unavailable",
+          "spending": "posted_through_source_vintage",
+          "binding": "exact",
+          "state": "spending_only"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": false,
+            "fiscal_year": null,
+            "adopted_amount": null,
+            "personnel_amount": null,
+            "otps_amount": null,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": true,
+            "fiscal_year": 2026,
+            "posted_amount": 95914.68,
+            "payment_count": 22,
+            "distinct_payee_count": 9
+          }
+        },
+        "source_references": [
+          {
+            "role": "spending",
+            "source_system": "checkbook_payment_population",
+            "dataset_id": null,
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_native_key": null,
+            "source_native_key_field": null,
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "observed_at": "2026-08-27T00:00:00.000Z",
+            "fiscal_year": 2026,
+            "publication_date": null,
+            "input_rows": 22
+          }
+        ],
+        "source_status": "partial",
+        "source_coverage": "partial"
+      },
+      "empty_source_result": {
+        "label": "empty_source_result",
+        "state": "empty_source_result",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2026,
+        "coverage": {
+          "budget": "unavailable",
+          "spending": "empty_source_result",
+          "binding": "exact",
+          "state": "empty_source_result"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": false,
+            "fiscal_year": null,
+            "adopted_amount": null,
+            "personnel_amount": null,
+            "otps_amount": null,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": true,
+            "fiscal_year": 2026,
+            "posted_amount": 0,
+            "payment_count": 0,
+            "distinct_payee_count": 0
+          }
+        },
+        "source_references": [
+          {
+            "role": "spending",
+            "source_system": "checkbook_payment_population",
+            "dataset_id": null,
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_native_key": null,
+            "source_native_key_field": null,
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "observed_at": "2026-08-27T00:00:00.000Z",
+            "fiscal_year": 2026,
+            "publication_date": null,
+            "input_rows": 0
+          }
+        ],
+        "fixture": "measured-empty-result-shape"
+      },
+      "unmatched_identity": {
+        "label": "unmatched_identity",
+        "state": "unmatched_identity",
+        "board_id": "bronx-cb-03",
+        "fiscal_year": 2026,
+        "coverage": {
+          "budget": "unavailable",
+          "spending": "identity_unobserved",
+          "binding": "unknown",
+          "state": "unmatched_identity"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": false,
+            "fiscal_year": null,
+            "adopted_amount": null,
+            "personnel_amount": null,
+            "otps_amount": null,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": true,
+            "fiscal_year": null,
+            "posted_amount": null,
+            "payment_count": null,
+            "distinct_payee_count": null
+          }
+        },
+        "source_references": [
+          {
+            "role": "spending",
+            "source_system": "checkbook_payment_population",
+            "dataset_id": null,
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_native_key": null,
+            "source_native_key_field": null,
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "observed_at": "2026-08-27T00:00:00.000Z",
+            "fiscal_year": 2026,
+            "publication_date": null,
+            "input_rows": 0
+          }
+        ],
+        "unmatched_agencies": []
+      },
+      "incomplete_current_fy": {
+        "label": "incomplete_current_fy",
+        "state": "budget_only",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2027,
+        "coverage": {
+          "budget": "complete",
+          "spending": "unavailable",
+          "binding": "exact",
+          "state": "budget_only"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": true,
+            "fiscal_year": 2027,
+            "adopted_amount": 366943,
+            "personnel_amount": 268805,
+            "otps_amount": 98138,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": false,
+            "fiscal_year": null,
+            "posted_amount": null,
+            "payment_count": null,
+            "distinct_payee_count": null
+          }
+        },
+        "source_references": [
+          {
+            "role": "budget",
+            "source_system": "expense_budget",
+            "dataset_id": "mwzb-yiwb",
+            "source_contract": null,
+            "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+            "artifact": "site/data/community_board_adopted_budget.json",
+            "receipt": "warehouse/receipts/proof/community_board_adopted_budget_latest.json",
+            "source_native_key": "381",
+            "source_native_key_field": "agency_number",
+            "source_vintage": "2026-07-08",
+            "observed_at": "2026-08-28T01:47:21.524Z",
+            "fiscal_year": 2027,
+            "publication_date": "20260630",
+            "input_rows": 16
+          }
+        ],
+        "current_fiscal_year": 2027,
+        "source_data_through": "2026-06-30",
+        "no_full_year_claim": true
+      },
+      "stale_source": {
+        "label": "stale_source",
+        "state": "stale_source",
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2026,
+        "coverage": {
+          "budget": "stale",
+          "spending": "stale",
+          "binding": "exact",
+          "state": "stale_source"
+        },
+        "projection_inputs": {
+          "budget": {
+            "present": false,
+            "fiscal_year": null,
+            "adopted_amount": null,
+            "personnel_amount": null,
+            "otps_amount": null,
+            "current_amount": null,
+            "modified_amount": null,
+            "commitments_amount": null
+          },
+          "spending": {
+            "present": true,
+            "fiscal_year": 2026,
+            "posted_amount": 95914.68,
+            "payment_count": 22,
+            "distinct_payee_count": 9
+          }
+        },
+        "source_references": [
+          {
+            "role": "spending",
+            "source_system": "checkbook_payment_population",
+            "dataset_id": null,
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_native_key": null,
+            "source_native_key_field": null,
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "observed_at": "2026-08-27T00:00:00.000Z",
+            "fiscal_year": 2026,
+            "publication_date": null,
+            "input_rows": 22
+          }
+        ],
+        "replay": true,
+        "checked_at": "2028-01-01T00:00:00.000Z",
+        "max_age_ms": 1,
+        "source_statuses": {
+          "budget": {
+            "source_system": "expense_budget",
+            "dataset_id": "mwzb-yiwb",
+            "artifact": "site/data/community_board_adopted_budget.json",
+            "receipt": "warehouse/receipts/proof/community_board_adopted_budget_latest.json",
+            "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+            "source_vintage": "2026-07-08",
+            "generated_at": "2026-08-28T01:47:21.524Z",
+            "status": "stale",
+            "freshness": "stale",
+            "coverage": "available",
+            "available": true,
+            "fiscal_years": [
+              2027
+            ],
+            "accepted_board_facts": 59,
+            "unmatched_rows": 0
+          },
+          "spending": {
+            "source_system": "checkbook_payment_population",
+            "source_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+            "artifact": "site/data/community_board_payment_actuals.json",
+            "receipt": "warehouse/receipts/proof/community_board_payment_actuals_latest.json",
+            "source_url": "https://www.checkbooknyc.com/api",
+            "source_vintage": {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            },
+            "generated_at": "2026-08-27T00:00:00.000Z",
+            "status": "stale",
+            "freshness": "stale",
+            "coverage": "partial",
+            "available": true,
+            "fiscal_years": [
+              2026
+            ],
+            "board_states": {
+              "observed": 58,
+              "empty": 0,
+              "identity_unobserved": 1
+            },
+            "unmatched_agencies": []
+          }
+        }
+      }
+    },
+    "provenance_carried_to_read_model": true,
+    "ratio_left_null": true,
+    "no_remaining_budget_derived": true
+  },
+  "hard_rules": {
+    "exact_board_fy_join_only": true,
+    "budget_and_spending_are_separate": true,
+    "current_modified_and_commitments_remain_distinct": true,
+    "no_remaining_budget_subtraction": true,
+    "uncertified_ratio_is_null": true,
+    "unknown_partial_empty_and_stale_states_explicit": true
+  },
+  "read_model": "site/data/community_board_money.json"
+}
