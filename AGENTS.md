@@ -548,6 +548,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   five-entry ceiling; an external seater may feed that train but does not define another cap.
   Refresh the repository-owned removal evidence with
   `node tools/report_merge_queue_ejections.mjs --write`.
+- Merge-throughput telemetry is normalized and replayed by
+  `tools/merge_throughput_telemetry.mjs`; it carries source/run-qualified per-PR, per-attempt, and
+  required-check receipts plus same-window Little's Law daily gauges. The committed fixture and
+  dashboard are under `test/fixtures/merge-throughput/`; verify with
+  `node tools/merge_throughput_telemetry.mjs --fixture test/fixtures/merge-throughput --check`.
 
 ## Shared node-page layout (static documents)
 
