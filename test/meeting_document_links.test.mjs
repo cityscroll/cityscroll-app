@@ -95,6 +95,42 @@ test("meeting detail renders the materialized civic object projection", () => {
   assert.doesNotMatch(html, /search_text|minutes_freshness|meeting_documents/);
 });
 
+test("meeting location composition deduplicates overlapping venue fields and preserves mode prefixes", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:community_board:duplicate-location",
+    source_system: "community_board",
+    title: "District Needs & Budget",
+    event_date: "2026-09-01",
+    venue: {
+      name: "  Video Conference, 1664 Park Avenue,\nNew York, NY 10035  ",
+      address: "via   Video Conference, 1664 Park Avenue, New York, NY 10035",
+      mode: "in-person",
+    },
+  });
+  const location = html.match(/<section class="node-section civic-object-section meeting-section meeting-location">[\s\S]*?<\/section>/)?.[0] || "";
+  assert.equal((location.match(/<li>/g) || []).length, 1);
+  assert.equal((location.match(/1664 Park Avenue/g) || []).length, 1);
+  assert.match(location, /via Video Conference, 1664 Park Avenue, New York, NY 10035/);
+});
+
+test("meeting location composition keeps distinct venue names and addresses", () => {
+  const html = renderMeetingDocument({
+    meeting_id: "meeting:community_board:distinct-location",
+    source_system: "community_board",
+    title: "Landmarks Committee",
+    event_date: "2026-09-02",
+    venue: {
+      name: "Board District Office",
+      address: "1664 Park Avenue, New York, NY 10035",
+      mode: "in-person",
+    },
+  });
+  const location = html.match(/<section class="node-section civic-object-section meeting-section meeting-location">[\s\S]*?<\/section>/)?.[0] || "";
+  assert.equal((location.match(/<li>/g) || []).length, 2);
+  assert.match(location, />Board District Office<\/span>/);
+  assert.match(location, />1664 Park Avenue, New York, NY 10035<\/span>/);
+});
+
 test("meeting affordances are progressive and shared across source systems", () => {
   const html = renderMeetingDocument({
     meeting_id: "meeting:city_record:20260814001",
