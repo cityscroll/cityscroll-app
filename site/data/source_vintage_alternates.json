@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.source_vintage_alternates.v1",
+  "alternates": [
+    {
+      "alternate_id": "comptroller-acfr",
+      "canonical_source_id": "ibo-fiscal-history",
+      "publisher": "New York City Comptroller",
+      "url": "https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/",
+      "artifact_url": "https://comptroller.nyc.gov/wp-content/uploads/2025/11/ACFR-2025.pdf",
+      "relation": "newer-official-context",
+      "semantic_scope": "official citywide financial statements; contextual to IBO staffing and expenditure history",
+      "replacement_warning": "Context only: not a drop-in replacement for IBO staffing or expenditure measure semantics.",
+      "replacement_eligible": false,
+      "observed_coverage": {
+        "max_fiscal_year": 2025,
+        "basis": "official Comptroller ACFR FY2025 publication"
+      },
+      "publisher_vintage": "FY2025",
+      "publisher_last_updated_at": null,
+      "evidence_at": "2026-08-28T00:00:00Z",
+      "evidence_basis": "official Comptroller ACFR index and linked FY2025 PDF",
+      "verification_state": "verified"
+    }
+  ]
+}

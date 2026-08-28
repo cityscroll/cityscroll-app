@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 export const SOURCE_VINTAGE_STATUS_SCHEMA = "cityscroll.source_vintage_status.v1";
@@ -271,11 +271,13 @@ export function sourceVintageStatusProjectionText(projection) {
 
 export function loadSourceVintageStatusInputs(root, options = {}) {
   const read = (path) => JSON.parse(readFileSync(path, "utf8"));
+  const alternatePath = join(root, "site/data/source_vintage_alternates.json");
   return {
     registry: options.registry || read(join(root, "site/data/source_contracts.json")),
     vintageObservations: options.vintageObservations || read(join(root, "site/data/source_vintage_observations.json")),
     healthObservations: options.healthObservations || read(join(root, "site/data/source_health_observations.json")),
-    alternateRegistry: options.alternateRegistry || null,
+    alternateRegistry: options.alternateRegistry
+      || (existsSync(alternatePath) ? read(alternatePath) : null),
     asOf: options.asOf || null,
   };
 }
