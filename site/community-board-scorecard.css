@@ -67,9 +67,44 @@
 .scorecard-coverage-legend small { color: #586174; line-height: 1.35; margin-top: 2px; }
 .scorecard [data-view-panel][hidden], .scorecard [data-board-detail][hidden] { display: none; }
 .scorecard tbody tr.is-selected { background: #eef4ff; box-shadow: inset 4px 0 #1b3a8f; }
+.scorecard-money-comparison { margin-top: 8px; }
+.scorecard-money-dek { max-width: 760px; }
+.scorecard-money-select, .scorecard-map-control-group label { align-items: center; color: #30394d; display: inline-flex; flex-wrap: wrap; font-size: .9rem; font-weight: 700; gap: 8px; margin: 8px 0 4px; }
+.scorecard-money-select select, .scorecard-map-control-group select { background: #fff; border: 1px solid #8b95a8; border-radius: 5px; color: #17233f; font: inherit; padding: 7px 28px 7px 9px; }
+.scorecard-money-panel[hidden] { display: none; }
+.scorecard-money-boundary { background: #fff6e8; border-left: 4px solid #e6aa42; color: #4c3a1e; margin: 16px 0 10px; padding: 10px 12px; }
+.scorecard-money-provenance { color: #586174; font-size: .86rem; margin: 8px 0 12px; }
+.scorecard-money-provenance summary { color: #30394d; cursor: pointer; font-weight: 700; }
+.scorecard-money-provenance ul { line-height: 1.5; margin: 8px 0 4px; padding-left: 20px; }
+.scorecard-money-provenance p { margin: 6px 0; }
+.scorecard-money-table-wrap { margin-top: 12px; }
+.scorecard-money-table { min-width: 900px !important; }
+.scorecard-money-table th, .scorecard-money-table td { padding: 12px 10px; }
+.scorecard-money-table thead th:not(:first-child) { min-width: 145px; }
+.scorecard-money-table thead button { align-items: center; background: transparent; border: 0; color: #30394d; cursor: pointer; display: flex; font: inherit; font-size: .78rem; font-weight: 700; gap: 7px; letter-spacing: .04em; padding: 0; text-align: left; text-transform: uppercase; }
+.scorecard-money-table thead button span { color: #586174; font-size: 1rem; }
+.scorecard-money-table tbody th { width: 27%; }
+.scorecard-money-table td { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scorecard-money-table td small { color: #586174; display: block; font-size: .76rem; line-height: 1.25; margin-top: 4px; white-space: normal; }
+.scorecard-map-controls { align-items: center; display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 12px 0 4px; }
+.scorecard-map-control-group { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.scorecard-map-control-label { color: #586174; font-size: .82rem; font-weight: 700; }
+.scorecard-map-control-group button { background: #fff; border: 1px solid #8b95a8; border-radius: 999px; color: #30394d; cursor: pointer; font: inherit; font-size: .82rem; padding: 6px 10px; }
+.scorecard-map-control-group button[aria-pressed="true"] { background: #1b3a8f; border-color: #1b3a8f; color: #fff; }
+.scorecard-map-control-group button:focus-visible, .scorecard-money-table button:focus-visible, .scorecard-money-select select:focus-visible, .scorecard-map-control-group select:focus-visible { outline: 3px solid #f0a13a; outline-offset: 2px; }
+.scorecard-map-money-controls { border-left: 1px solid #d8dce5; padding-left: 12px; }
+.scorecard-map-money-controls [data-money-map-label] { color: #586174; font-size: .8rem; font-style: italic; margin-left: 2px; }
+.scorecard[data-map-layer="money"] .community-board-boundary.scorecard-money-level-1 { fill: #e8f1fb; }
+.scorecard[data-map-layer="money"] .community-board-boundary.scorecard-money-level-2 { fill: #b9d4ef; }
+.scorecard[data-map-layer="money"] .community-board-boundary.scorecard-money-level-3 { fill: #78a8d8; }
+.scorecard[data-map-layer="money"] .community-board-boundary.scorecard-money-level-4 { fill: #3d76bc; }
+.scorecard[data-map-layer="money"] .community-board-boundary.scorecard-money-level-5 { fill: #1b3a8f; }
+.scorecard[data-map-layer="money"] .community-board-boundary.scorecard-money-no-data { fill: #e5e8ee; }
+.scorecard[data-map-layer="money"] .community-board-boundary:hover { fill: #f0a13a; }
 @media (max-width: 640px) { .scorecard { padding: 0 16px 48px; } .scorecard-hero { padding-top: 42px; } .scorecard-heading { align-items: start; flex-direction: column; gap: 8px; } }
 @media (max-width: 820px) {
   .scorecard-map-grid { grid-template-columns: minmax(0, 1fr); }
   .scorecard-detail-panel { order: 2; }
   .scorecard-coverage-legend ul { grid-template-columns: minmax(0, 1fr); }
+  .scorecard-map-money-controls { border-left: 0; padding-left: 0; }
 }

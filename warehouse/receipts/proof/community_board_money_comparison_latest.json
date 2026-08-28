@@ -1,0 +1,2249 @@
+{
+  "schema": "cityscroll.community_board_money_comparison_receipt.v1",
+  "workstream_card": "CB-MONEY-05",
+  "status": "complete",
+  "generated_at": "2026-08-28T01:47:21.524Z",
+  "retained_read_model": {
+    "artifact": "site/data/community_board_money.json",
+    "receipt": "warehouse/receipts/proof/community_board_money_latest.json",
+    "schema": "cityscroll.community_board_money_read_model.v1",
+    "version": 1,
+    "generated_at": "2026-08-28T01:47:21.524Z",
+    "checked_at": "2026-08-28T01:47:21.524Z",
+    "fiscal_years": [
+      2026,
+      2027
+    ]
+  },
+  "measurement": {
+    "board_count": 59,
+    "comparison_keys": [
+      "latest",
+      "fy2026",
+      "fy2027"
+    ],
+    "rows_per_comparison": {
+      "latest": 59,
+      "fy2026": 59,
+      "fy2027": 59
+    },
+    "source_as_of_boundaries": {
+      "latest": {
+        "budget": {
+          "source_system": "expense_budget",
+          "dataset_id": "mwzb-yiwb",
+          "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+          "source_vintage": "2026-07-08",
+          "source_vintages": [
+            "2026-07-08"
+          ],
+          "observed_at": "2026-08-28T01:47:21.524Z",
+          "fiscal_years": [
+            2027
+          ],
+          "publication_dates": [
+            "20260630"
+          ]
+        },
+        "spending": {
+          "source_system": "checkbook_payment_population",
+          "dataset_id": null,
+          "source_url": "https://www.checkbooknyc.com/api",
+          "source_vintage": {
+            "observed_at": null,
+            "payment_issue_date_through": "2026-06-30",
+            "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+          },
+          "source_vintages": [
+            {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            }
+          ],
+          "observed_at": "2026-08-27T00:00:00.000Z",
+          "fiscal_years": [
+            2026
+          ],
+          "publication_dates": []
+        }
+      },
+      "fy2026": {
+        "budget": {
+          "source_system": "expense_budget",
+          "dataset_id": "mwzb-yiwb",
+          "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+          "source_vintage": "2026-07-08",
+          "source_vintages": [
+            "2026-07-08"
+          ],
+          "observed_at": "2026-08-28T01:47:21.524Z",
+          "fiscal_years": [],
+          "publication_dates": []
+        },
+        "spending": {
+          "source_system": "checkbook_payment_population",
+          "dataset_id": null,
+          "source_url": "https://www.checkbooknyc.com/api",
+          "source_vintage": {
+            "observed_at": null,
+            "payment_issue_date_through": "2026-06-30",
+            "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+          },
+          "source_vintages": [
+            {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            }
+          ],
+          "observed_at": "2026-08-27T00:00:00.000Z",
+          "fiscal_years": [
+            2026
+          ],
+          "publication_dates": []
+        }
+      },
+      "fy2027": {
+        "budget": {
+          "source_system": "expense_budget",
+          "dataset_id": "mwzb-yiwb",
+          "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+          "source_vintage": "2026-07-08",
+          "source_vintages": [
+            "2026-07-08"
+          ],
+          "observed_at": "2026-08-28T01:47:21.524Z",
+          "fiscal_years": [
+            2027
+          ],
+          "publication_dates": [
+            "20260630"
+          ]
+        },
+        "spending": {
+          "source_system": "checkbook_payment_population",
+          "dataset_id": null,
+          "source_url": "https://www.checkbooknyc.com/api",
+          "source_vintage": {
+            "observed_at": null,
+            "payment_issue_date_through": "2026-06-30",
+            "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+          },
+          "source_vintages": [
+            {
+              "observed_at": null,
+              "payment_issue_date_through": "2026-06-30",
+              "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+            }
+          ],
+          "observed_at": "2026-08-27T00:00:00.000Z",
+          "fiscal_years": [],
+          "publication_dates": []
+        }
+      }
+    },
+    "row_retained_vintages_and_fiscal_years": {
+      "bronx-cb-01": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-01:2027",
+          "spending": "bronx-cb-01:2026"
+        }
+      },
+      "bronx-cb-02": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-02:2027",
+          "spending": "bronx-cb-02:2026"
+        }
+      },
+      "bronx-cb-03": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": null,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-03:2027",
+          "spending": "bronx-cb-03:2026"
+        }
+      },
+      "bronx-cb-04": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-04:2027",
+          "spending": "bronx-cb-04:2026"
+        }
+      },
+      "bronx-cb-05": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-05:2027",
+          "spending": "bronx-cb-05:2026"
+        }
+      },
+      "bronx-cb-06": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-06:2027",
+          "spending": "bronx-cb-06:2026"
+        }
+      },
+      "bronx-cb-07": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-07:2027",
+          "spending": "bronx-cb-07:2026"
+        }
+      },
+      "bronx-cb-08": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-08:2027",
+          "spending": "bronx-cb-08:2026"
+        }
+      },
+      "bronx-cb-09": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-09:2027",
+          "spending": "bronx-cb-09:2026"
+        }
+      },
+      "bronx-cb-10": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-10:2027",
+          "spending": "bronx-cb-10:2026"
+        }
+      },
+      "bronx-cb-11": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-11:2027",
+          "spending": "bronx-cb-11:2026"
+        }
+      },
+      "bronx-cb-12": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "bronx-cb-12:2027",
+          "spending": "bronx-cb-12:2026"
+        }
+      },
+      "brooklyn-cb-01": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-01:2027",
+          "spending": "brooklyn-cb-01:2026"
+        }
+      },
+      "brooklyn-cb-02": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-02:2027",
+          "spending": "brooklyn-cb-02:2026"
+        }
+      },
+      "brooklyn-cb-03": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-03:2027",
+          "spending": "brooklyn-cb-03:2026"
+        }
+      },
+      "brooklyn-cb-04": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-04:2027",
+          "spending": "brooklyn-cb-04:2026"
+        }
+      },
+      "brooklyn-cb-05": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-05:2027",
+          "spending": "brooklyn-cb-05:2026"
+        }
+      },
+      "brooklyn-cb-06": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-06:2027",
+          "spending": "brooklyn-cb-06:2026"
+        }
+      },
+      "brooklyn-cb-07": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-07:2027",
+          "spending": "brooklyn-cb-07:2026"
+        }
+      },
+      "brooklyn-cb-08": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-08:2027",
+          "spending": "brooklyn-cb-08:2026"
+        }
+      },
+      "brooklyn-cb-09": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-09:2027",
+          "spending": "brooklyn-cb-09:2026"
+        }
+      },
+      "brooklyn-cb-10": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-10:2027",
+          "spending": "brooklyn-cb-10:2026"
+        }
+      },
+      "brooklyn-cb-11": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-11:2027",
+          "spending": "brooklyn-cb-11:2026"
+        }
+      },
+      "brooklyn-cb-12": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-12:2027",
+          "spending": "brooklyn-cb-12:2026"
+        }
+      },
+      "brooklyn-cb-13": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-13:2027",
+          "spending": "brooklyn-cb-13:2026"
+        }
+      },
+      "brooklyn-cb-14": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-14:2027",
+          "spending": "brooklyn-cb-14:2026"
+        }
+      },
+      "brooklyn-cb-15": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-15:2027",
+          "spending": "brooklyn-cb-15:2026"
+        }
+      },
+      "brooklyn-cb-16": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-16:2027",
+          "spending": "brooklyn-cb-16:2026"
+        }
+      },
+      "brooklyn-cb-17": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-17:2027",
+          "spending": "brooklyn-cb-17:2026"
+        }
+      },
+      "brooklyn-cb-18": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "brooklyn-cb-18:2027",
+          "spending": "brooklyn-cb-18:2026"
+        }
+      },
+      "manhattan-cb-01": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-01:2027",
+          "spending": "manhattan-cb-01:2026"
+        }
+      },
+      "manhattan-cb-02": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-02:2027",
+          "spending": "manhattan-cb-02:2026"
+        }
+      },
+      "manhattan-cb-03": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-03:2027",
+          "spending": "manhattan-cb-03:2026"
+        }
+      },
+      "manhattan-cb-04": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-04:2027",
+          "spending": "manhattan-cb-04:2026"
+        }
+      },
+      "manhattan-cb-05": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-05:2027",
+          "spending": "manhattan-cb-05:2026"
+        }
+      },
+      "manhattan-cb-06": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-06:2027",
+          "spending": "manhattan-cb-06:2026"
+        }
+      },
+      "manhattan-cb-07": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-07:2027",
+          "spending": "manhattan-cb-07:2026"
+        }
+      },
+      "manhattan-cb-08": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-08:2027",
+          "spending": "manhattan-cb-08:2026"
+        }
+      },
+      "manhattan-cb-09": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-09:2027",
+          "spending": "manhattan-cb-09:2026"
+        }
+      },
+      "manhattan-cb-10": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-10:2027",
+          "spending": "manhattan-cb-10:2026"
+        }
+      },
+      "manhattan-cb-11": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-11:2027",
+          "spending": "manhattan-cb-11:2026"
+        }
+      },
+      "manhattan-cb-12": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "manhattan-cb-12:2027",
+          "spending": "manhattan-cb-12:2026"
+        }
+      },
+      "queens-cb-01": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-01:2027",
+          "spending": "queens-cb-01:2026"
+        }
+      },
+      "queens-cb-02": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-02:2027",
+          "spending": "queens-cb-02:2026"
+        }
+      },
+      "queens-cb-03": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-03:2027",
+          "spending": "queens-cb-03:2026"
+        }
+      },
+      "queens-cb-04": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-04:2027",
+          "spending": "queens-cb-04:2026"
+        }
+      },
+      "queens-cb-05": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-05:2027",
+          "spending": "queens-cb-05:2026"
+        }
+      },
+      "queens-cb-06": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-06:2027",
+          "spending": "queens-cb-06:2026"
+        }
+      },
+      "queens-cb-07": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-07:2027",
+          "spending": "queens-cb-07:2026"
+        }
+      },
+      "queens-cb-08": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-08:2027",
+          "spending": "queens-cb-08:2026"
+        }
+      },
+      "queens-cb-09": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-09:2027",
+          "spending": "queens-cb-09:2026"
+        }
+      },
+      "queens-cb-10": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-10:2027",
+          "spending": "queens-cb-10:2026"
+        }
+      },
+      "queens-cb-11": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-11:2027",
+          "spending": "queens-cb-11:2026"
+        }
+      },
+      "queens-cb-12": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-12:2027",
+          "spending": "queens-cb-12:2026"
+        }
+      },
+      "queens-cb-13": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-13:2027",
+          "spending": "queens-cb-13:2026"
+        }
+      },
+      "queens-cb-14": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "queens-cb-14:2027",
+          "spending": "queens-cb-14:2026"
+        }
+      },
+      "staten-island-cb-01": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "staten-island-cb-01:2027",
+          "spending": "staten-island-cb-01:2026"
+        }
+      },
+      "staten-island-cb-02": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "staten-island-cb-02:2027",
+          "spending": "staten-island-cb-02:2026"
+        }
+      },
+      "staten-island-cb-03": {
+        "budget_fiscal_year": 2027,
+        "budget_source_vintage": "2026-07-08",
+        "spending_fiscal_year": 2026,
+        "spending_source_vintage": {
+          "observed_at": null,
+          "payment_issue_date_through": "2026-06-30",
+          "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+        },
+        "read_model_row_keys": {
+          "budget": "staten-island-cb-03:2027",
+          "spending": "staten-island-cb-03:2026"
+        }
+      }
+    },
+    "explicit_exclusions_or_partial_states": {
+      "latest": [
+        {
+          "board_id": "bronx-cb-03",
+          "exclusions": [
+            "payment_identity_unobserved"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "identity_unobserved"
+          }
+        }
+      ],
+      "fy2026": [
+        {
+          "board_id": "bronx-cb-01",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-02",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-03",
+          "exclusions": [
+            "adopted_budget_unavailable",
+            "payment_identity_unobserved"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "identity_unobserved"
+          }
+        },
+        {
+          "board_id": "bronx-cb-04",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-05",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-06",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-07",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-08",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-09",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-10",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-11",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "bronx-cb-12",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-01",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-02",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-03",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-04",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-05",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-06",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-07",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-08",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-09",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-10",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-11",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-12",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-13",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-14",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-15",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-16",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-17",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-18",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-01",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-02",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-03",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-04",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-05",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-06",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-07",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-08",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-09",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-10",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-11",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-12",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-01",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-02",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-03",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-04",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-05",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-06",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-07",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-08",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-09",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-10",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-11",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-12",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-13",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "queens-cb-14",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "staten-island-cb-01",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "staten-island-cb-02",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        },
+        {
+          "board_id": "staten-island-cb-03",
+          "exclusions": [
+            "adopted_budget_unavailable"
+          ],
+          "states": {
+            "budget": "unavailable",
+            "spending": "available"
+          }
+        }
+      ],
+      "fy2027": [
+        {
+          "board_id": "bronx-cb-01",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-02",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-03",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-04",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-05",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-06",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-07",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-08",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-09",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-10",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-11",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "bronx-cb-12",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-01",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-02",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-03",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-04",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-05",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-06",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-07",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-08",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-09",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-10",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-11",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-12",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-13",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-14",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-15",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-16",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-17",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "brooklyn-cb-18",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-01",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-02",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-03",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-04",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-05",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-06",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-07",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-08",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-09",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-10",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-11",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "manhattan-cb-12",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-01",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-02",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-03",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-04",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-05",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-06",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-07",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-08",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-09",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-10",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-11",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-12",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-13",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "queens-cb-14",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "staten-island-cb-01",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "staten-island-cb-02",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        },
+        {
+          "board_id": "staten-island-cb-03",
+          "exclusions": [
+            "payments_unavailable"
+          ],
+          "states": {
+            "budget": "available",
+            "spending": "unavailable"
+          }
+        }
+      ]
+    },
+    "row_to_dossier_links": {
+      "bronx-cb-01": "/community-boards/bronx-cb-01/",
+      "bronx-cb-02": "/community-boards/bronx-cb-02/",
+      "bronx-cb-03": "/community-boards/bronx-cb-03/",
+      "bronx-cb-04": "/community-boards/bronx-cb-04/",
+      "bronx-cb-05": "/community-boards/bronx-cb-05/",
+      "bronx-cb-06": "/community-boards/bronx-cb-06/",
+      "bronx-cb-07": "/community-boards/bronx-cb-07/",
+      "bronx-cb-08": "/community-boards/bronx-cb-08/",
+      "bronx-cb-09": "/community-boards/bronx-cb-09/",
+      "bronx-cb-10": "/community-boards/bronx-cb-10/",
+      "bronx-cb-11": "/community-boards/bronx-cb-11/",
+      "bronx-cb-12": "/community-boards/bronx-cb-12/",
+      "brooklyn-cb-01": "/community-boards/brooklyn-cb-01/",
+      "brooklyn-cb-02": "/community-boards/brooklyn-cb-02/",
+      "brooklyn-cb-03": "/community-boards/brooklyn-cb-03/",
+      "brooklyn-cb-04": "/community-boards/brooklyn-cb-04/",
+      "brooklyn-cb-05": "/community-boards/brooklyn-cb-05/",
+      "brooklyn-cb-06": "/community-boards/brooklyn-cb-06/",
+      "brooklyn-cb-07": "/community-boards/brooklyn-cb-07/",
+      "brooklyn-cb-08": "/community-boards/brooklyn-cb-08/",
+      "brooklyn-cb-09": "/community-boards/brooklyn-cb-09/",
+      "brooklyn-cb-10": "/community-boards/brooklyn-cb-10/",
+      "brooklyn-cb-11": "/community-boards/brooklyn-cb-11/",
+      "brooklyn-cb-12": "/community-boards/brooklyn-cb-12/",
+      "brooklyn-cb-13": "/community-boards/brooklyn-cb-13/",
+      "brooklyn-cb-14": "/community-boards/brooklyn-cb-14/",
+      "brooklyn-cb-15": "/community-boards/brooklyn-cb-15/",
+      "brooklyn-cb-16": "/community-boards/brooklyn-cb-16/",
+      "brooklyn-cb-17": "/community-boards/brooklyn-cb-17/",
+      "brooklyn-cb-18": "/community-boards/brooklyn-cb-18/",
+      "manhattan-cb-01": "/community-boards/manhattan-cb-01/",
+      "manhattan-cb-02": "/community-boards/manhattan-cb-02/",
+      "manhattan-cb-03": "/community-boards/manhattan-cb-03/",
+      "manhattan-cb-04": "/community-boards/manhattan-cb-04/",
+      "manhattan-cb-05": "/community-boards/manhattan-cb-05/",
+      "manhattan-cb-06": "/community-boards/manhattan-cb-06/",
+      "manhattan-cb-07": "/community-boards/manhattan-cb-07/",
+      "manhattan-cb-08": "/community-boards/manhattan-cb-08/",
+      "manhattan-cb-09": "/community-boards/manhattan-cb-09/",
+      "manhattan-cb-10": "/community-boards/manhattan-cb-10/",
+      "manhattan-cb-11": "/community-boards/manhattan-cb-11/",
+      "manhattan-cb-12": "/community-boards/manhattan-cb-12/",
+      "queens-cb-01": "/community-boards/queens-cb-01/",
+      "queens-cb-02": "/community-boards/queens-cb-02/",
+      "queens-cb-03": "/community-boards/queens-cb-03/",
+      "queens-cb-04": "/community-boards/queens-cb-04/",
+      "queens-cb-05": "/community-boards/queens-cb-05/",
+      "queens-cb-06": "/community-boards/queens-cb-06/",
+      "queens-cb-07": "/community-boards/queens-cb-07/",
+      "queens-cb-08": "/community-boards/queens-cb-08/",
+      "queens-cb-09": "/community-boards/queens-cb-09/",
+      "queens-cb-10": "/community-boards/queens-cb-10/",
+      "queens-cb-11": "/community-boards/queens-cb-11/",
+      "queens-cb-12": "/community-boards/queens-cb-12/",
+      "queens-cb-13": "/community-boards/queens-cb-13/",
+      "queens-cb-14": "/community-boards/queens-cb-14/",
+      "staten-island-cb-01": "/community-boards/staten-island-cb-01/",
+      "staten-island-cb-02": "/community-boards/staten-island-cb-02/",
+      "staten-island-cb-03": "/community-boards/staten-island-cb-03/"
+    },
+    "map_layer_parity": {
+      "source": "comparison rows; map metric projection is computed from the same row values",
+      "metrics": [
+        "adopted_budget",
+        "posted_amount",
+        "payment_count",
+        "payee_count"
+      ],
+      "separate_projection": true,
+      "second_aggregation_path": false
+    },
+    "no_mixed_implicit_fiscal_year_ranking": true,
+    "ratio_certification": "not applicable; no ratio is exposed",
+    "per_capita_spending": "not included"
+  }
+}
