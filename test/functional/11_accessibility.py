@@ -151,6 +151,11 @@ def _wait_for_browse_route(page, tab):
         label=f"{tab} document route",
     )
     wait_for_locator(page.locator("section.tabpane.active"), label=f"{tab} browse document")
+    # Static Browse documents paint their server-rendered heading before the
+    # deferred application graph finishes. Route-specific globals (notably
+    # renderRulesExplorer) are registered by that graph, so markup visibility
+    # is not a sufficient readiness signal for the dynamic-state checks below.
+    wait_for_app_ready(page)
 
 
 def run_axe(page, state_name, failures, *, restore_url=None, restore_hash=None, retry=True):
