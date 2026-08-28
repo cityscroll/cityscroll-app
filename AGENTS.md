@@ -1629,6 +1629,14 @@ below usefulness** (2026-07-30): strict ULURP-token join on ZAP projects with no
 **0.25%** PDFs. Borough-scoped historical catalogs (91 + 88 rows). Source contracts
 `ulurp-recommendations` and `ulurp-recommendation-pdfs` are **live** for a **sparse** Borough President panel gated on the recommendation-row denominator (~88% hit rate), not ZAP-universe catalog coverage (0.54% contrast only). Lookup `site/data/ulurp_recommendations_lookup.json`; panel `site/ulurp_recommendation_panel.mjs`; gate policy `ontology/join_gate_policy.mjs`. **Wrong universe:** Property Disposition notices are not ZAP projects. Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`, `site/data/ulurp_recommendation_sources/`.
 
+**Land procedure profile contract:** `site/data/land_procedure_profiles.json` is the small,
+reviewed `cityscroll.land_procedure_profiles.v1` registry for §197-a/§197-c/§197-d/§197-e
+stage roles, effects, conditions, and windows. `site/land_procedure_profiles.mjs` is its
+closed consumer; `buildLandPhaseView` exposes the result as the additive `procedure_profile`
+normative sibling. It never creates or rewrites `record.spine` observations; milestone-only,
+mixed-action, and missing-procedure inputs remain unresolved. Focused proof:
+`test/land_procedure_profiles.test.mjs`.
+
 ## Land/ZAP event spine
 
 `GET /zap-outcomes?id=` returns `record.spine`: a date-normalized rail joining ZAP API
