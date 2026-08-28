@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "contract": "land_prediction_baseline_v1",
+  "version": "1.0.0",
+  "observed_at": "2026-08-27T00:00:00Z",
+  "purpose": "CARD 1 freeze and benchmark of the existing land-use predictor",
+  "model": {
+    "name": "zap_disposition_duration",
+    "version": "1.0.0",
+    "materialization": "site/data/zoning_statistics.json",
+    "source_receipt": "warehouse/receipts/proof/zap-zoning-statistics_latest.json"
+  },
+  "fixture_set": {
+    "path": "test/fixtures/land_prediction_baseline/v1.json",
+    "case_count": 8,
+    "retained_application_cases": 8,
+    "includes_elurp": true,
+    "note": "Cases are replay specimens assembled from committed retained application fixtures; individual modified and disapproved project records are not present in this retained set."
+  },
+  "metrics": {
+    "existing_materialization_backtest": {
+      "target": "land.zap_disposition timing",
+      "prediction_form": "p10/p50/p90 empirical duration window; probability=1",
+      "split_date": "2024-01-01",
+      "train_window": {
+        "from": "2016-08-08",
+        "to": "2023-12-31"
+      },
+      "prediction_count": 63,
+      "resolved_prediction_count": 63,
+      "resolution_rate": 1,
+      "interval_nominal": 0.8,
+      "interval_coverage": 0.7778,
+      "interval_coverage_hits": 49,
+      "interval_coverage_count": 63,
+      "median_absolute_error_p50_days": 35,
+      "ship_bar": {
+        "status": "pass",
+        "checks": {
+          "minimum_resolved": true,
+          "interval_coverage": true,
+          "occurrence_quintiles_monotone": true
+        },
+        "thresholds": {
+          "minimum_resolved": 50,
+          "interval_nominal": 0.8,
+          "interval_tolerance": 0.1,
+          "occurrence_quintiles_monotone": true
+        }
+      }
+    },
+    "representative_replay": {
+      "target": "land.zap_disposition timing",
+      "scored_cases": 2,
+      "interval_coverage": 1,
+      "interval_coverage_hits": 2,
+      "interval_coverage_count": 2,
+      "median_absolute_error_p50_days": 27,
+      "note": "Descriptive replay of the current materialized model, not a second out-of-time training split."
+    },
+    "outcome": {
+      "target": "land-use approval",
+      "project_probability_predictions": 0,
+      "accuracy": null,
+      "brier_score": null,
+      "log_loss": null,
+      "calibration": null,
+      "status": "not_available",
+      "reason": "The current public contract emits cohort outcome rates and, because applicant conditioning did not beat the existing base rate, descriptive applicant history rather than a project-level approval probability."
+    },
+    "status": {
+      "target": "public_status and procedural stage",
+      "output_kind": "categorical observed/current status",
+      "accuracy": null,
+      "calibration": null,
+      "status": "not_applicable",
+      "reason": "Status and stage classifiers describe observed process position; they do not forecast a terminal outcome."
+    }
+  },
+  "replay": [
+    {
+      "id": "2019K0147-pre-certification",
+      "project_id": "2019K0147",
+      "cohort": {
+        "cohort_id": "action-type-borough:zm:brooklyn",
+        "level": "action_type_borough",
+        "n": 85,
+        "duration_n": 78,
+        "approved_rate": 0.9294
+      },
+      "timing_prediction": null,
+      "actual_date": null,
+      "interval_hit": null,
+      "p50_absolute_error_days": null,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "2019K0190-cpc-public-review",
+      "project_id": "2019K0190",
+      "cohort": {
+        "cohort_id": "action-type-borough:zm:brooklyn",
+        "level": "action_type_borough",
+        "n": 85,
+        "duration_n": 78,
+        "approved_rate": 0.9294
+      },
+      "timing_prediction": {
+        "p10": "2026-08-06",
+        "p50": "2026-09-10",
+        "p90": "2026-10-07",
+        "probability": 1,
+        "status": "open"
+      },
+      "actual_date": null,
+      "interval_hit": null,
+      "p50_absolute_error_days": null,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "2022M0258-approved",
+      "project_id": "2022M0258",
+      "cohort": {
+        "cohort_id": "action-type-citywide:ha:citywide",
+        "level": "action_type_citywide",
+        "n": 31,
+        "duration_n": 23,
+        "approved_rate": 0.9677
+      },
+      "timing_prediction": {
+        "p10": "2024-01-11",
+        "p50": "2024-02-22",
+        "p90": "2024-03-19",
+        "probability": 1,
+        "status": "open"
+      },
+      "actual_date": "2024-03-07",
+      "interval_hit": true,
+      "p50_absolute_error_days": 14,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "P2018X0210-approved-legacy",
+      "project_id": "P2018X0210",
+      "cohort": {
+        "cohort_id": "action-type-citywide:all:citywide",
+        "level": "action_type_citywide",
+        "n": 571,
+        "duration_n": 60,
+        "approved_rate": 0.944
+      },
+      "timing_prediction": {
+        "p10": "2019-01-01",
+        "p50": "2019-06-06",
+        "p90": "2020-04-06",
+        "probability": 1,
+        "status": "open"
+      },
+      "actual_date": "2019-07-16",
+      "interval_hit": true,
+      "p50_absolute_error_days": 40,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "2022X0393-community-board",
+      "project_id": "2022X0393",
+      "cohort": {
+        "cohort_id": "action-type-citywide:zs:citywide",
+        "level": "action_type_citywide",
+        "n": 57,
+        "duration_n": 41,
+        "approved_rate": 0.9123
+      },
+      "timing_prediction": null,
+      "actual_date": null,
+      "interval_hit": null,
+      "p50_absolute_error_days": null,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "2024M0158-completed-multi-action",
+      "project_id": "2024M0158",
+      "cohort": {
+        "cohort_id": "action-type-citywide:zm:citywide",
+        "level": "action_type_citywide",
+        "n": 189,
+        "duration_n": 168,
+        "approved_rate": 0.9418
+      },
+      "timing_prediction": null,
+      "actual_date": null,
+      "interval_hit": null,
+      "p50_absolute_error_days": null,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "2024Q0419-elurp",
+      "project_id": "2024Q0419",
+      "cohort": {
+        "cohort_id": "action-type-citywide:all:citywide",
+        "level": "action_type_citywide",
+        "n": 571,
+        "duration_n": 60,
+        "approved_rate": 0.944
+      },
+      "timing_prediction": {
+        "p10": "2026-04-14",
+        "p50": "2026-09-17",
+        "p90": "2027-07-19",
+        "probability": 1,
+        "status": "open"
+      },
+      "actual_date": null,
+      "interval_hit": null,
+      "p50_absolute_error_days": null,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    },
+    {
+      "id": "withdrawn-ulurp",
+      "project_id": "WITHDRAWN001",
+      "cohort": {
+        "cohort_id": "action-type-citywide:all:citywide",
+        "level": "action_type_citywide",
+        "n": 571,
+        "duration_n": 60,
+        "approved_rate": 0.944
+      },
+      "timing_prediction": {
+        "p10": "2023-06-30",
+        "p50": "2023-12-03",
+        "p90": "2024-10-03",
+        "probability": 1,
+        "status": "open"
+      },
+      "actual_date": null,
+      "interval_hit": null,
+      "p50_absolute_error_days": null,
+      "outcome_output_kind": "descriptive_cohort_rate",
+      "approval_probability": null,
+      "applicant_prediction_emitted": false
+    }
+  ]
+}

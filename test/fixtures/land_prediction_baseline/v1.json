@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "contract": "land_prediction_baseline_v1",
+  "version": "1.0.0",
+  "model": {
+    "name": "zap_disposition_duration",
+    "version": "1.0.0",
+    "materialization": "site/data/zoning_statistics.json"
+  },
+  "cases": [
+    {
+      "id": "2019K0147-pre-certification",
+      "project_id": "2019K0147",
+      "source_fixtures": ["test/fixtures/land_phase_spine/2019K0147.json", "site/data/zap_projects_warehouse_lookup.json"],
+      "record": {
+        "project_id": "2019K0147",
+        "actions": "ZM; ZR",
+        "borough": "Brooklyn",
+        "public_status": "Noticed",
+        "project_status": "Active",
+        "current_milestone": "EAS - Project Readiness"
+      },
+      "expected_surface": {
+        "public_status": "Noticed",
+        "stage": "pre_certification",
+        "statutory_clock": "not_certified"
+      }
+    },
+    {
+      "id": "2019K0190-cpc-public-review",
+      "project_id": "2019K0190",
+      "source_fixtures": ["test/fixtures/land_phase_spine/2019K0190.json", "site/data/zap_projects_warehouse_lookup.json"],
+      "record": {
+        "project_id": "2019K0190",
+        "actions": "ZM; ZR",
+        "borough": "Brooklyn",
+        "public_status": "In Public Review",
+        "project_status": "Active",
+        "current_milestone": "- Review Session - Post Hearing Follow-Up / Future Votes",
+        "certified_referred": "2026-03-02"
+      },
+      "expected_surface": {
+        "public_status": "In Public Review",
+        "stage": "cpc",
+        "statutory_clock": "open"
+      }
+    },
+    {
+      "id": "2022M0258-approved",
+      "project_id": "2022M0258",
+      "source_fixtures": ["test/fixtures/zap_outcomes/joined_timbale_terrace.json", "test/fixtures/land_phase_spine/2022M0258.json", "warehouse/fixtures/zap-projects/product_seed.csv"],
+      "record": {
+        "project_id": "2022M0258",
+        "actions": "HA; PQ",
+        "borough": "Manhattan",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "HA - Project Completed",
+        "certified_referred": "2023-08-21",
+        "approval_date": "2024-03-07",
+        "action_statuses": ["Approved"]
+      },
+      "observed_outcome": "approved",
+      "observed_process_outcomes": ["conditional_favorable", "approved_with_conditions"],
+      "expected_surface": {
+        "public_status": "Completed",
+        "stage": "completed",
+        "statutory_clock": "completed"
+      }
+    },
+    {
+      "id": "P2018X0210-approved-legacy",
+      "project_id": "P2018X0210",
+      "source_fixtures": ["test/fixtures/zap_outcomes/thin_or_legacy.json", "test/fixtures/zap_outcomes/join_cases.json"],
+      "record": {
+        "project_id": "P2018X0210",
+        "borough": "Bronx",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "Project Completed",
+        "certified_referred": "2018-12-03",
+        "completed_date": "2019-07-16",
+        "action_statuses": ["Approved", "Approved", "Approved", "Approved"]
+      },
+      "observed_outcome": "approved",
+      "expected_surface": {
+        "public_status": "Completed",
+        "stage": "completed",
+        "statutory_clock": "completed"
+      }
+    },
+    {
+      "id": "2022X0393-community-board",
+      "project_id": "2022X0393",
+      "source_fixtures": ["test/fixtures/land_use_action_type/2022X0393.json", "site/data/zap_projects_warehouse_lookup.json"],
+      "record": {
+        "project_id": "2022X0393",
+        "actions": "ZS; ZC; LD; HA; ZA; ZA; ZA",
+        "borough": "Bronx",
+        "public_status": "In Public Review",
+        "project_status": "Active",
+        "current_milestone": "HA - Community Board Referral"
+      },
+      "expected_surface": {
+        "public_status": "In Public Review",
+        "stage": "community_board",
+        "statutory_clock": "not_certified"
+      }
+    },
+    {
+      "id": "2024M0158-completed-multi-action",
+      "project_id": "2024M0158",
+      "source_fixtures": ["test/fixtures/land_use_action_type/2024M0158.json", "site/data/zap_projects_warehouse_lookup.json"],
+      "record": {
+        "project_id": "2024M0158",
+        "actions": "ZM; ZS; ZR; PP; PC; PQ",
+        "borough": "Manhattan",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "Project Completed"
+      },
+      "expected_surface": {
+        "public_status": "Completed",
+        "stage": "completed",
+        "statutory_clock": "not_certified"
+      }
+    },
+    {
+      "id": "2024Q0419-elurp",
+      "project_id": "2024Q0419",
+      "source_fixtures": ["test/fixtures/ulurp_statutory_clock/certified_elurp_2024Q0419.json"],
+      "record": {
+        "project_id": "2024Q0419",
+        "borough": "Queens",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "current_milestone": "City Planning Commission Vote",
+        "certified_referred": "2026-03-16",
+        "open_data": {"ulurp_non": "ELURP"},
+        "milestones": [{"title": "Application Reviewed at City Planning Commission Review Session", "status": "Completed", "outcome": "Certified", "time": {"value": "2026-03-16"}}]
+      },
+      "expected_surface": {
+        "public_status": "Completed",
+        "stage": "completed",
+        "statutory_clock": "wrong_procedure"
+      }
+    },
+    {
+      "id": "withdrawn-ulurp",
+      "project_id": "WITHDRAWN001",
+      "source_fixtures": ["test/fixtures/ulurp_statutory_clock/withdrawn.json"],
+      "record": {
+        "project_id": "WITHDRAWN001",
+        "public_status": "Withdrawn",
+        "project_status": "Withdrawn",
+        "current_milestone": "HA - Project Withdrawn",
+        "certified_referred": "2023-06-01",
+        "milestones": [{"title": "Application Reviewed at City Planning Commission Review Session", "status": "Certified", "outcome": "Certified", "time": {"value": "2023-06-01"}}, {"title": "HA - Project Withdrawn", "status": "Withdrawn", "outcome": "Withdrawn", "time": {"value": "2023-08-15"}}]
+      },
+      "observed_outcome": "withdrawn",
+      "expected_surface": {
+        "public_status": "Withdrawn",
+        "stage": "completed",
+        "statutory_clock": "withdrawn"
+      }
+    }
+  ]
+}
