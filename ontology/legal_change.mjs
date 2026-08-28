@@ -54,6 +54,26 @@ function sourceEvidence(value = {}) {
   });
 }
 
+function materializationPatch(value = {}) {
+  const patch = value.patch || value.materialization_patch || {};
+  const before = text(
+    patch.before_text || patch.old_text || patch.before || value.before_text || value.old_text || value.before,
+    50_000,
+  );
+  const after = text(
+    patch.after_text || patch.new_text || patch.after || patch.replacement_text
+      || value.after_text || value.new_text || value.after || value.replacement_text || value.added_text,
+    50_000,
+  );
+  if (!before && !after) return null;
+  return immutable({
+    before_text: before,
+    after_text: after,
+    scope: text(patch.scope || patch.mode, 80),
+    source: text(patch.source || patch.basis, 240),
+  });
+}
+
 function canonicalTarget(value = {}) {
   const target = typeof value === "string" ? { id: value } : value;
   const corpusId = text(target.corpus_id || target.corpus, 120);
@@ -97,6 +117,13 @@ export function localLaw(value = {}) {
     enacted_at: text(value.enacted_at, 40),
     effective_at: text(value.effective_at, 40),
     effective_date_text: text(value.effective_date_text, 2_000),
+    effective_date_clauses: Array.isArray(value.effective_date_clauses)
+      ? immutable(value.effective_date_clauses.map((clause) => ({
+        text: text(clause?.text, 2_000),
+        date: text(clause?.date || clause?.effective_at, 40),
+        scope: text(clause?.scope, 240),
+      })))
+      : [],
     source: value.source ? sourceEvidence({ ...value.source, instruction_text: value.source.instruction_text || value.title || lawNumber }) : null,
   });
 }
@@ -123,8 +150,16 @@ export function codeChange(value = {}) {
     state: text(value.state, 40) || (instrumentId ? "enacted" : "prospective"),
     effective_at: text(value.effective_at, 40),
     effective_date_text: text(value.effective_date_text, 2_000),
+    effective_date_clauses: Array.isArray(value.effective_date_clauses)
+      ? immutable(value.effective_date_clauses.map((clause) => ({
+        text: text(clause?.text, 2_000),
+        date: text(clause?.date || clause?.effective_at, 40),
+        scope: text(clause?.scope, 240),
+      })))
+      : [],
     target,
     source: evidence,
+    patch: materializationPatch(value),
     change_basis: "source_stated",
     materialization_status: text(value.materialization_status, 40) || "unresolved",
     materialization_confidence: text(value.materialization_confidence, 40) || "unknown",
