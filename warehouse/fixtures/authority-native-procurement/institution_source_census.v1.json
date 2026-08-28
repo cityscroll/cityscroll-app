@@ -1,0 +1,487 @@
+{
+  "schema": "cityscroll.authority_native_source_census.v1",
+  "census_id": "anp-05",
+  "observed_on": "2026-08-28",
+  "scope": "Backstage source census only. No source in this file is admitted to a production adapter.",
+  "overlap_method": "Frozen identifiers were checked by exact equality against the committed served artifacts and, for the City Record control, an exact request_id/PIN query. Agency-name, vendor-name, title, amount, and fuzzy identifier similarity were not counted as overlap.",
+  "source_receipts": [
+    {
+      "source_id": "panynj-aem-opportunities",
+      "endpoint": "https://www.panynj.gov/content/port-authority/en/business-opportunities/solicitations-advertisements.model.json",
+      "observed_on": "2026-08-28",
+      "http_status": 200,
+      "content_type": "application/json",
+      "sha256": "f1127b3643c242b90f8be0927e9e6d523e378157f5309bd9ae7d2fae39246542"
+    },
+    {
+      "source_id": "panynj-aem-preliminary-results",
+      "endpoint": "https://www.panynj.gov/content/port-authority/en/business-opportunities/preliminary-bid-results.model.json",
+      "observed_on": "2026-08-28",
+      "http_status": 200,
+      "content_type": "application/json",
+      "sha256": "47446eafce2ab1ce37d2f6ea1f3ac22c191bf41fafbd04e02707a40c1ecdb8e7"
+    },
+    {
+      "source_id": "panynj-opportunity-6000003451",
+      "endpoint": "https://www.panynj.gov/content/dam/port-authority/pdfs/goods-and-services-pdfs/Bid_6000003451_AD.pdf",
+      "observed_on": "2026-08-28",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "sha256": "e58c2fd3937196274a28c2bc4af876ff5e05e6701d32d741dbbfb86b241d0e79"
+    },
+    {
+      "source_id": "panynj-bid-result-6000003424",
+      "endpoint": "https://www.panynj.gov/content/dam/port-authority/business-opportunities/pdf/results_6000003424.pdf",
+      "observed_on": "2026-08-28",
+      "http_status": 200,
+      "content_type": "application/pdf",
+      "sha256": "5e74039b1792ff8b03c12b64b31af31efc138e937e72f768c595eea4339a0edc"
+    },
+    {
+      "source_id": "sca-official-control-intent-20260414001",
+      "endpoint": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$select=request_id,start_date,end_date,agency_name,type_of_notice_description,category_description,short_title,selection_method_description,section_name,pin,due_date,address_to_request,contact_name,contact_phone,email&$where=request_id%20%3D%20%2220260414001%22&$order=request_id&$limit=1",
+      "observed_on": "2026-08-28",
+      "http_status": 200,
+      "content_type": "application/json",
+      "sha256": "5b7b251bb9f7abcfcfbd6e2cf59788fdd5101de2e175e50f0b581bd4c94c2b60"
+    }
+  ],
+  "disposition_vocabulary": [
+    "production-usable",
+    "validation-only",
+    "authenticated-only",
+    "rejected"
+  ],
+  "existing_snapshot": {
+    "generated_at": "2026-08-18T04:05:51.552Z",
+    "artifacts": {
+      "browse_rows": {
+        "path": "site/data/procurement_browse_rows.json",
+        "sha256": "8d48805a85a87eaa5bf7ca72e4a8842afc593cbbbe30aaf6054e37fc59265206",
+        "row_count": 13786
+      },
+      "spine_sources": {
+        "path": "site/data/procurement_spine_sources.json",
+        "sha256": "fd43095dfb620e7c0305954641cf0d676b5fe09e0a9017426b4d00a26047e922",
+        "passport_contract_rows": 12782
+      },
+      "shared_read_model": {
+        "path": "site/data/shared_procurement_read_model.json",
+        "sha256": "d65c70f54774c57772b68ccc374dc5f6da33ca20df5e880ed3ad8f9498b019de",
+        "object_count": 13786
+      }
+    },
+    "served_source_counts": {
+      "city_record": 12983,
+      "passport_public_contracts": 12782,
+      "checkbook_contracts": 1704
+    },
+    "interpretation": "Counts are the committed CityScroll snapshot, not a claim that any source is a complete citywide inventory."
+  },
+  "sources": [
+    {
+      "source_id": "sca-rfp-reports",
+      "institution": "SCA",
+      "publisher": "New York City School Construction Authority",
+      "official_endpoints": [
+        "https://www.nycsca.org/Doing-Business/Contracting-with-Us/Reports",
+        "https://www.nycsca.org/Doing-Business/Contracting-with-Us"
+      ],
+      "publication_stages": [
+        "opportunity",
+        "anticipated-opportunity"
+      ],
+      "identifiers": [
+        "SCA solicitation number (for example, 26-00107R)",
+        "RFP title",
+        "SCA contract number when later published"
+      ],
+      "access_requirements": "Public mutable HTML list. The RFP document is requested from SCA by email; no public award-result export was observed.",
+      "cadence": "Page supplies a data-as-of date and changes as procurements are posted; no fixed publication interval stated.",
+      "historical_depth": "Current RFP list only; no public archive or stable historical export observed.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 2350,
+        "city_record_earliest": "2003-01-10",
+        "city_record_latest": "2026-08-06",
+        "local_served_canonical_rows_agency_exact": 0,
+        "exact_fixture_identifier_in_city_record": false,
+        "interpretation": "The native SCA page is not represented by the current served procurement model; City Record provides an overlapping official control source for some SCA notices."
+      },
+      "disposition": "validation-only",
+      "reason": "The public list is useful for reconnaissance and opportunity validation, but its mutable HTML, email-requested documents, and absent public result history do not demonstrate a stable complete corpus for production ingestion."
+    },
+    {
+      "source_id": "sca-advertised-bids",
+      "institution": "SCA",
+      "publisher": "New York City School Construction Authority",
+      "official_endpoints": [
+        "https://www.nycsca.org/WS/Reports/type/advbids",
+        "https://scainfohub.azurewebsites.net/advertised-bids"
+      ],
+      "publication_stages": [
+        "opportunity",
+        "bid-opening"
+      ],
+      "identifiers": [
+        "SCA solicitation number",
+        "docs locator",
+        "bid-open date"
+      ],
+      "access_requirements": "Public browser page backed by an interactive Blazor/Telerik table; no stable public export was observed.",
+      "cadence": "As posted by SCA; page has live list behavior rather than a stated schedule.",
+      "historical_depth": "Current advertised/limited-bid view; no public historical archive observed.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 2350,
+        "local_served_canonical_rows_agency_exact": 0,
+        "exact_fixture_identifier_in_city_record": false,
+        "server_snapshot_observation": "No records available in the captured server-rendered table; the interactive client may load separately."
+      },
+      "disposition": "validation-only",
+      "reason": "The official page proves an SCA opportunity surface, but the observed interactive presentation did not expose a stable historical or machine-readable corpus and no public award-result linkage was demonstrated."
+    },
+    {
+      "source_id": "sca-bidset",
+      "institution": "SCA",
+      "publisher": "New York City School Construction Authority",
+      "official_endpoints": [
+        "https://www.nycsca.org/Vendor/Construction-Process"
+      ],
+      "publication_stages": [
+        "opportunity",
+        "bid-opening"
+      ],
+      "identifiers": [
+        "SCA solicitation number",
+        "bidset/project identifier"
+      ],
+      "access_requirements": "Vendor-facing BidSet/VAS workflow; credentials or vendor registration may be required for documents and submissions.",
+      "cadence": "Per solicitation.",
+      "historical_depth": "Unknown; no public historical corpus demonstrated.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 2350,
+        "local_served_canonical_rows_agency_exact": 0,
+        "exact_fixture_identifier_in_city_record": false
+      },
+      "disposition": "authenticated-only",
+      "reason": "This is an official vendor workflow, not a demonstrated public source corpus. It cannot be used as a public production input without an authenticated-access decision and a bounded retention contract."
+    },
+    {
+      "source_id": "sca-contract-payment-report",
+      "institution": "SCA",
+      "publisher": "New York City School Construction Authority",
+      "official_endpoints": [
+        "https://www.nycsca.org/Doing-Business/Contracting-with-Us/Contract-Payment-Report"
+      ],
+      "publication_stages": [
+        "payment"
+      ],
+      "identifiers": [
+        "SCA contract number"
+      ],
+      "access_requirements": "Public lookup, but a contract number is required.",
+      "cadence": "Unknown; lookup surface does not state a release schedule.",
+      "historical_depth": "Unknown and contract-keyed; not a procurement opportunity or award inventory.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 2350,
+        "local_served_canonical_rows_agency_exact": 0
+      },
+      "disposition": "rejected",
+      "reason": "A payment lookup cannot establish an opportunity, bid result, or award corpus and is not comparable to the existing procurement source populations."
+    },
+    {
+      "source_id": "city-record-sca-control",
+      "institution": "SCA",
+      "publisher": "City of New York, City Record",
+      "official_endpoints": [
+        "https://data.cityofnewyork.us/resource/dg92-zbpx.json"
+      ],
+      "publication_stages": [
+        "solicitation",
+        "intent-to-award",
+        "notice",
+        "public-hearing",
+        "meeting",
+        "vendor-list"
+      ],
+      "identifiers": [
+        "request_id",
+        "PIN"
+      ],
+      "access_requirements": "Public Socrata API.",
+      "cadence": "Observed live API; publication timing is controlled by City Record.",
+      "historical_depth": "2003-01-10 through 2026-08-06 for the exact agency label in the census query.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 2350,
+        "local_served_canonical_rows_agency_exact": 0,
+        "native_fixture_overlap": "26-00080R is present as request_id 20260414001; this is an official control fixture, not an SCA-native award result."
+      },
+      "disposition": "production-usable",
+      "reason": "Public, identifier-bearing official source already used by CityScroll. It is retained here only as the overlap/control population; this census does not propose a second adapter."
+    },
+    {
+      "source_id": "panynj-aem-opportunities",
+      "institution": "Port Authority of New York and New Jersey",
+      "publisher": "The Port Authority of New York and New Jersey",
+      "official_endpoints": [
+        "https://www.panynj.gov/content/port-authority/en/business-opportunities/solicitations-advertisements.model.json",
+        "https://www.panynj.gov/port-authority/en/business-opportunities/solicitations-advertisements.html"
+      ],
+      "publication_stages": [
+        "solicitation",
+        "opportunity"
+      ],
+      "identifiers": [
+        "solicitation number / bid number",
+        "RFP number",
+        "linked official PDF identifier"
+      ],
+      "access_requirements": "Public AEM model JSON and linked official PDFs. Electronic submission documents may route to Bonfire/Euna.",
+      "cadence": "Mutable current tables; the model response observed on 2026-08-28 carried current due dates and links.",
+      "historical_depth": "Current construction, goods/services, and professional-services tables; no complete public archive was demonstrated.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 460,
+        "city_record_earliest": "2003-01-07",
+        "city_record_latest": "2005-06-09",
+        "local_served_canonical_rows_agency_exact": 0,
+        "exact_fixture_ids_in_city_record": [],
+        "passport_or_checkbook_exact_fixture_ids": [],
+        "interpretation": "The current official PA opportunity tables are a demonstrated corpus absent from the served CityScroll snapshot; the old City Record rows do not cover the frozen current identifiers."
+      },
+      "disposition": "production-usable",
+      "reason": "Public structured endpoint, exact publisher identifiers, official linked documents, and current opportunity rows were demonstrated. Historical completeness remains bounded and must not be inferred."
+    },
+    {
+      "source_id": "panynj-aem-preliminary-results",
+      "institution": "Port Authority of New York and New Jersey",
+      "publisher": "The Port Authority of New York and New Jersey",
+      "official_endpoints": [
+        "https://www.panynj.gov/content/port-authority/en/business-opportunities/preliminary-bid-results.model.json",
+        "https://www.panynj.gov/port-authority/en/business-opportunities/preliminary-bid-results.html"
+      ],
+      "publication_stages": [
+        "bid-opening-result"
+      ],
+      "identifiers": [
+        "bid number",
+        "results PDF URL"
+      ],
+      "access_requirements": "Public AEM model JSON and public official result PDFs.",
+      "cadence": "Posted after bid due dates; no fixed interval stated.",
+      "historical_depth": "Current preliminary-result pages and linked PDFs; no complete public archive demonstrated.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 460,
+        "local_served_canonical_rows_agency_exact": 0,
+        "exact_fixture_ids_in_city_record": [],
+        "award_semantics": "Official page calls these preliminary raw price results; an apparent low bidder is not established as the awarded vendor."
+      },
+      "disposition": "production-usable",
+      "reason": "Public structured index plus stable official PDF evidence supplies an exact bid-result stage. The frozen fixture is deliberately not promoted to award."
+    },
+    {
+      "source_id": "panynj-bonfire",
+      "institution": "Port Authority of New York and New Jersey",
+      "publisher": "The Port Authority of New York and New Jersey",
+      "official_endpoints": [
+        "https://www.panynj.gov/content/dam/port-authority/pdfs/become-a-vendor/procurement-process-websites-and-portals.pdf"
+      ],
+      "publication_stages": [
+        "solicitation-document",
+        "submission"
+      ],
+      "identifiers": [
+        "Bonfire project/solicitation identifier"
+      ],
+      "access_requirements": "Vendor account/login for solicitation documents and electronic submission where the official instructions route the procurement to Bonfire.",
+      "cadence": "Per solicitation.",
+      "historical_depth": "Unknown; authenticated portal history was not measured.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 460,
+        "local_served_canonical_rows_agency_exact": 0
+      },
+      "disposition": "authenticated-only",
+      "reason": "The official portal is a submission/document workflow, not an unauthenticated public corpus. It is recorded for access planning and excluded from a public adapter claim."
+    },
+    {
+      "source_id": "panynj-paprocure",
+      "institution": "Port Authority of New York and New Jersey",
+      "publisher": "The Port Authority of New York and New Jersey",
+      "official_endpoints": [
+        "https://www.panynj.gov/content/dam/port-authority/pdfs/become-a-vendor/procurement-process-websites-and-portals.pdf"
+      ],
+      "publication_stages": [
+        "vendor-registration"
+      ],
+      "identifiers": [
+        "vendor profile identifier"
+      ],
+      "access_requirements": "Vendor registration/profile is required for vendor activity; no public procurement result corpus was demonstrated.",
+      "cadence": "Vendor lifecycle, not a procurement publication schedule.",
+      "historical_depth": "Unknown.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 460,
+        "local_served_canonical_rows_agency_exact": 0
+      },
+      "disposition": "authenticated-only",
+      "reason": "Registration data is not an opportunity or award/bid-result source and is not admitted as a procurement corpus."
+    },
+    {
+      "source_id": "nyscr-contract-reporter-pa-control",
+      "institution": "Port Authority of New York and New Jersey",
+      "publisher": "New York State Contract Reporter",
+      "official_endpoints": [
+        "https://www.nyscr.ny.gov/"
+      ],
+      "publication_stages": [
+        "solicitation"
+      ],
+      "identifiers": [
+        "NYSCR ad identifier"
+      ],
+      "access_requirements": "Public state publication; publisher identity and completeness for PA-native procurement require verification.",
+      "cadence": "Publisher schedule; not measured for PA in this census.",
+      "historical_depth": "Not measured.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 460,
+        "local_served_canonical_rows_agency_exact": 0
+      },
+      "disposition": "validation-only",
+      "reason": "It is a secondary advertisement surface rather than a Port Authority publisher system. It can validate discovery but cannot establish PA-native completeness or award status."
+    },
+    {
+      "source_id": "panynj-diversitysoftware",
+      "institution": "Port Authority of New York and New Jersey",
+      "publisher": "The Port Authority of New York and New Jersey",
+      "official_endpoints": [
+        "https://www.panynj.gov/content/dam/port-authority/pdfs/become-a-vendor/procurement-process-websites-and-portals.pdf"
+      ],
+      "publication_stages": [
+        "vendor-certification"
+      ],
+      "identifiers": [
+        "vendor/certification profile identifier"
+      ],
+      "access_requirements": "Vendor-facing certification/notification workflow.",
+      "cadence": "Vendor lifecycle.",
+      "historical_depth": "Unknown.",
+      "measured_overlap": {
+        "city_record_rows_agency_exact": 460,
+        "local_served_canonical_rows_agency_exact": 0
+      },
+      "disposition": "rejected",
+      "reason": "A certification and diversity notification directory is not a procurement opportunity or award/bid-result corpus. Government adjacency alone is not sufficient for admission."
+    }
+  ],
+  "fixtures": [
+    {
+      "fixture_id": "sca-opportunity-26-00107R",
+      "institution": "SCA",
+      "source_id": "sca-rfp-reports",
+      "source_system": "sca_public_rfp_reports",
+      "source_record_id": "26-00107R",
+      "observation_type": "opportunity",
+      "title": "Contingent & Temporary Staffing",
+      "selection_method": "Request for Proposals",
+      "not_to_exceed_amount_usd": 6000000,
+      "contract_count": 5,
+      "due_date": "2026-08-28",
+      "source_url": "https://www.nycsca.org/Doing-Business/Contracting-with-Us/Reports",
+      "frozen_on": "2026-08-28",
+      "freeze_note": "Fields frozen from the official SCA current RFP report page; the source page is mutable and no byte-level historical export was exposed.",
+      "is_overlap_fixture": false
+    },
+    {
+      "fixture_id": "sca-official-control-intent-20260414001",
+      "institution": "SCA",
+      "source_id": "city-record-sca-control",
+      "source_system": "city_record",
+      "source_record_id": "20260414001",
+      "source_record_identifier": "26-00080R",
+      "observation_type": "intent_to_award",
+      "title": "Construction Management Services in Connection with the SCA's Mentor Program",
+      "selection_method": "Request for Proposals",
+      "published_date": "2026-04-17",
+      "due_date": "2026-04-20",
+      "official_source_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+      "source_query": "$select=request_id,start_date,end_date,agency_name,type_of_notice_description,category_description,short_title,selection_method_description,section_name,pin,due_date,address_to_request,contact_name,contact_phone,email&$where=request_id%20%3D%20%2220260414001%22&$order=request_id&$limit=1",
+      "source_response_sha256": "5b7b251bb9f7abcfcfbd6e2cf59788fdd5101de2e175e50f0b581bd4c94c2b60",
+      "vendor": null,
+      "award_status": "intent_to_award_only",
+      "frozen_on": "2026-08-28",
+      "is_overlap_fixture": true,
+      "freeze_note": "Official City Record control fixture. It demonstrates an award-intent publication, not the identity of a winning vendor and not an SCA-native result endpoint."
+    },
+    {
+      "fixture_id": "panynj-opportunity-6000003451",
+      "institution": "Port Authority of New York and New Jersey",
+      "source_id": "panynj-aem-opportunities",
+      "source_system": "panynj_public_opportunities",
+      "source_record_id": "6000003451",
+      "observation_type": "opportunity",
+      "title": "Supply and Deliver Cover Stock and Specialty Paper - Three (3) Year Requirements Contract",
+      "solicitation_type": "Bid",
+      "due_date": "2026-09-08",
+      "official_source_url": "https://www.panynj.gov/content/dam/port-authority/pdfs/goods-and-services-pdfs/Bid_6000003451_AD.pdf",
+      "index_endpoint": "https://www.panynj.gov/content/port-authority/en/business-opportunities/solicitations-advertisements.model.json",
+      "source_response_sha256": "e58c2fd3937196274a28c2bc4af876ff5e05e6701d32d741dbbfb86b241d0e79",
+      "frozen_on": "2026-08-28",
+      "is_overlap_fixture": false,
+      "freeze_note": "Hash is the official linked PDF; the AEM index supplies the current listing and due date."
+    },
+    {
+      "fixture_id": "panynj-bid-result-6000003424",
+      "institution": "Port Authority of New York and New Jersey",
+      "source_id": "panynj-aem-preliminary-results",
+      "source_system": "panynj_preliminary_bid_results",
+      "source_record_id": "6000003424",
+      "observation_type": "bid_opening_result",
+      "title": "Supply and Deliver Rock Salt Bagged and Ice Melt Bagged to all Port Authority Warehouses in NY and NJ - Thirty (30) Months Requirements",
+      "bid_due_date": "2026-08-20",
+      "bidders": [
+        {"vendor_name": "CIRCLE JANITORIAL SUPPLIES, INC", "location": "Paterson, NJ", "total_usd": 941797.88},
+        {"vendor_name": "WHITE CAP LP", "location": "Orlando, FL", "total_usd": 1163956.87},
+        {"vendor_name": "DART SEASONAL PRODUCTS, INC", "location": "Chestnut Ridge, NY", "total_usd": 1385676.0},
+        {"vendor_name": "BL FLEET SERVICES, INC", "location": "Oakland, NJ", "total_usd": 3109559.0}
+      ],
+      "official_source_url": "https://www.panynj.gov/content/dam/port-authority/business-opportunities/pdf/results_6000003424.pdf",
+      "index_endpoint": "https://www.panynj.gov/content/port-authority/en/business-opportunities/preliminary-bid-results.model.json",
+      "source_response_sha256": "5e74039b1792ff8b03c12b64b31af31efc138e937e72f768c595eea4339a0edc",
+      "award_status": "not_established",
+      "frozen_on": "2026-08-28",
+      "is_overlap_fixture": false,
+      "freeze_note": "The official preliminary-results notice describes raw price data subject to verification. No bidder is promoted to award."
+    }
+  ],
+  "doe_missing_record_census": {
+    "source_snapshot_generated_at": "2026-08-18T04:05:51.552Z",
+    "agency_predicate": "agency_name matches /department of education|^education$|education admin|^doe$/i",
+    "source_row_counts": {
+      "city_record": 12983,
+      "passport_public_contracts": 12782,
+      "checkbook_contracts": 1704
+    },
+    "doe_canonical_rows": 618,
+    "doe_rows_by_source": {
+      "city_record": 436,
+      "passport_public_contracts": 438,
+      "checkbook_contracts": 182
+    },
+    "doe_source_combinations": {
+      "city_record+passport_public_contracts": 434,
+      "passport_public_contracts": 2,
+      "checkbook_contracts+city_record+passport_public_contracts": 2,
+      "checkbook_contracts": 180
+    },
+    "already_served_rows": {
+      "checkbook_only": 180,
+      "passport_only": 2,
+      "city_record_and_passport": 434,
+      "all_three": 2,
+      "total": 618
+    },
+    "demonstrated_missing_rows": 0,
+    "production_card_proposed": false,
+    "conclusion": "No distinct public DOE corpus is missing from the existing City Record, PASSPort, and Checkbook ingestion snapshot. The 180 Checkbook-only and 2 PASSPort-only rows are already served by those existing source families; no DOE production card is proposed."
+  },
+  "production_cards": [],
+  "production_adapter_change": false
+}
