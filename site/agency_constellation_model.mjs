@@ -85,6 +85,7 @@ import {
 import { buildLocalConstellation } from "./local_constellation.mjs";
 import { buildDerivedFeatureRollup } from "./derived_feature_rollup.mjs";
 import { buildAgencyHorizon } from "./regulatory_agenda.mjs";
+import { NYC_RULES_PETITION_SOURCES, buildPetitionHandoff } from "./rules_petition.mjs";
 
 export const AGENCY_CONSTELLATION_SCHEMA = "cityscroll.agency_constellation.v1";
 export const AGENCY_CONSTELLATION_METHOD = "agency_constellation_v1";
@@ -994,6 +995,25 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
   if (!identity?.canonical_id) return null;
 
   const ref = `agency:id:${identity.canonical_id}`;
+  const configuredResolution = sources.rules_petition_resolutions?.by_agency?.[identity.canonical_id]
+    || sources.rules_petition_resolutions?.[identity.canonical_id]
+    || null;
+  const petitionResolution = configuredResolution || (identity.matched
+    ? {
+      matched: true,
+      canonical_id: identity.canonical_id,
+      canonical_name: identity.canonical_name,
+      source_system: "nyc_rules",
+      source_url: NYC_RULES_PETITION_SOURCES.page_url,
+      basis: "cityscroll_nyc_rules_agency_crosswalk_v1",
+    }
+    : null);
+  const petitionHandoff = buildPetitionHandoff({
+    agency_resolution: petitionResolution,
+    contact: sources.rules_petition_contacts?.by_agency?.[identity.canonical_id]
+      || sources.rules_petition_contacts?.[identity.canonical_id]
+      || null,
+  });
   const intelligence = sources.intelligence?.by_ref?.[ref]
     || sources.intelligence?.by_subject_ref?.[ref]
     || (sources.intelligence?.root?.ref === ref ? sources.intelligence : null)
@@ -1265,6 +1285,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     canonical_id: identity.canonical_id,
     categories,
     identity_evidence: sources.identity_evidence || null,
+    petition_handoff: petitionHandoff,
     fiscal_context: fiscalContext,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,

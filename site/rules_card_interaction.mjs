@@ -226,6 +226,7 @@ export function rulemakingActionMatrix({
   comment_channel_url = null,
   testimony_url = null,
   petition_url = null,
+  petition_handoff = null,
   follow_href = null,
   history_url = null,
   comment_label = "Comment",
@@ -251,6 +252,11 @@ export function rulemakingActionMatrix({
   const commentUrl = sourceUrl(rules.comment_url) || sourceUrl(comments_url) || sourceUrl(rules.url);
   const testimonyUrlValue = sourceUrl(testimony_url) || sourceUrl(comment_channel_url);
   const followUrl = text(follow_href);
+  const petitionHref = sourceUrl(petition_url) || sourceUrl(petition_handoff?.official?.form_url);
+  const petitionAgency = text(petition_handoff?.agency?.name);
+  const petitionLabel = petitionAgency
+    ? `How to petition ${petitionAgency}`
+    : "Petition agency to amend or repeal";
   const watch = followUrl ? internalAction({ id: "watch_rulemaking", label: "Watch this rulemaking", href: followUrl }) : null;
   const out = [];
   const add = (item) => { if (item) out.push(item); };
@@ -294,14 +300,14 @@ export function rulemakingActionMatrix({
   } else if (state.state === "effective") {
     add(action({ id: "read_final", label: "Read final rule", href: finalUrl, primary: true }));
     add(internalAction({ id: "rulemaking_history", label: "View rulemaking history", href: history_url }));
-    add(action({ id: "petition", label: "Petition agency to amend or repeal", href: petition_url, kind: "petition" }));
+    add(action({ id: "petition", label: petitionLabel, href: petitionHref, kind: "petition" }));
   }
 
   const missing = [];
   if (state.state === "comment_hearing_open" && !state.comment_deadline) missing.push("comment_deadline");
   if (["comment_hearing_open", "comment_closed_awaiting_action"].includes(state.state) && !state.hearing_date) missing.push("hearing_date");
   if ((state.state === "adopted" || state.state === "effective") && !finalUrl) missing.push("final_rule");
-  if (state.state === "effective" && !sourceUrl(petition_url)) missing.push("petition_workflow");
+  if (state.state === "effective" && !petitionHref) missing.push("petition_workflow");
 
   return {
     state: state.state,
@@ -344,6 +350,7 @@ export function rulesCardInteractionProjection({
   comment_channel_url = null,
   testimony_url = null,
   petition_url = null,
+  petition_handoff = null,
   follow_href = null,
   history_url = null,
   canonical_href = null,
@@ -379,6 +386,7 @@ export function rulesCardInteractionProjection({
     comment_channel_url,
     testimony_url,
     petition_url,
+    petition_handoff,
     follow_href,
     history_url,
     comment_label,
