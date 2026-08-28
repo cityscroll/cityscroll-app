@@ -3972,6 +3972,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   proof is `test/community_board_money.test.mjs`. Missing, partial, unmatched, empty, and stale
   source states remain explicit, and uncertified budget/payment ratios stay null.
 
+- **Merge-gate audit:** `tools/merge_gate_audit.mjs` projects MT-1 required-check receipts into
+  catch, runner-minute, flake, ejection, and serialized wall-time metrics. Missing observations
+  remain unknown; the audit also records the shared architecture watermark serialization finding.
+  Focused proof is `test/merge_gate_audit.test.mjs`; replay the contract with
+  `node tools/merge_gate_audit.mjs --fixture test/fixtures/merge-throughput --check`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
