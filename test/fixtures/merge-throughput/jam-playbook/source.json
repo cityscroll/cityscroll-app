@@ -1,0 +1,104 @@
+{
+  "schema": "cityscroll.merge-throughput.jam-playbook.source.v1",
+  "repository": "cityscroll/cityscroll-app",
+  "source_run_id": "fixture-merge-jam-2026-08-28",
+  "observed_at": "2026-08-28T04:00:00Z",
+  "source_documents": [
+    {
+      "id": "incident-corpus",
+      "path": "data/incident-corpus.json",
+      "sha256": "d0599550b1895de74ea626f8b30c187dd171460121614b950426a585b5e344c3",
+      "role": "source-linked incident taxonomy and measured timeline observations"
+    },
+    {
+      "id": "merge-queue-policy",
+      "path": "tools/merge_queue_policy.json",
+      "sha256": "13ff32fc84f6a8771f182f7fa0f2b3c4ac97e5cddd3da840c6b94d2ddfd4e84c",
+      "role": "ALLGREEN batch and elder anti-starvation policy"
+    }
+  ],
+  "corpus_incident_ids": [
+    "mt-0-2026-08-27-a-source-health-clock-timezone",
+    "mt-0-2026-08-27-b-render-rules-explorer-readiness"
+  ],
+  "merge_group_log": {
+    "status": "failure",
+    "failure_signature": "source_health_public_projection.clock-or-timezone-sensitive",
+    "failed_check": "Unit tests (site + worker)",
+    "passed_shards": ["Accessibility + language gate (axe on every PR)", "Reading-level ratchet gate (readable-or-else)"],
+    "receipt": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks"
+  },
+  "main_state": {
+    "health": "broken",
+    "merge_state_status": "UNKNOWN",
+    "last_transition_at": "2026-08-28T03:52:00Z",
+    "unknown_settling_window_minutes": 15,
+    "evidence_refs": [
+      "https://github.com/cityscroll/cityscroll-app/pull/1331",
+      "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d"
+    ]
+  },
+  "same_test_across_prs": [
+    {
+      "pull_request": 1317,
+      "check": "Unit tests (site + worker)",
+      "outcome": "removed-and-reserviced",
+      "timeline": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+      "timeline_status": "measured timeline observation",
+      "receipt": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+      "attribution": "timeline correlation; no per-removal failed-check payload"
+    },
+    {
+      "pull_request": 1323,
+      "check": "Unit tests (site + worker)",
+      "outcome": "removed-and-reserviced",
+      "timeline": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1323/timeline",
+      "timeline_status": "measured timeline observation",
+      "receipt": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1323/timeline",
+      "attribution": "timeline correlation; no per-removal failed-check payload"
+    }
+  ],
+  "pr_local_checks": [],
+  "queue_branch": {
+    "ref": "refs/heads/gh-readonly-queue/main-0000000000000000000000000000000000000000-0000000",
+    "advertised_oid": "006e1f216c5aea6ce2734de94960641291a385cd",
+    "ls_remote": {
+      "status": "match",
+      "oid": "006e1f216c5aea6ce2734de94960641291a385cd",
+      "command": "git ls-remote https://github.com/cityscroll/cityscroll-app.git refs/heads/gh-readonly-queue/main-0000000000000000000000000000000000000000-0000000",
+      "receipt": "https://github.com/cityscroll/cityscroll-app/commit/006e1f216c5aea6ce2734de94960641291a385cd"
+    }
+  },
+  "rearm_history": [
+    { "transition": "rearm", "at": "2026-08-28T03:20:00Z", "receipt_id": "merge-group-receipt-1" },
+    { "transition": "branch-lock", "at": "2026-08-28T03:28:00Z", "receipt_id": "merge-group-receipt-1" },
+    { "transition": "rearm", "at": "2026-08-28T03:36:00Z", "receipt_id": "merge-group-receipt-1" }
+  ],
+  "required_check_observations": [
+    { "name": "Unit tests (site + worker)", "status": "success", "receipt": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks" },
+    { "name": "Accessibility + language gate (axe on every PR)", "status": "success", "receipt": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks" },
+    { "name": "Reading-level ratchet gate (readable-or-else)", "status": "success", "receipt": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks" }
+  ],
+  "elder_candidates": [
+    { "number": 1317, "ready": true, "age_hours": 7, "rebase_count": 1 },
+    { "number": 1323, "ready": true, "age_hours": 3, "rebase_count": 4 }
+  ],
+  "measured_delta": {
+    "before": {
+      "label": "cited incident timeline sample before the clock-gate fix",
+      "successful_dequeues": 0,
+      "removal_events": 5,
+      "ejections": 5
+    },
+    "after": {
+      "label": "committed queue baseline after the repair window",
+      "successful_dequeues": 544,
+      "removal_events": 680,
+      "ejections": 136
+    },
+    "drain_tactic": {
+      "minimum_successful_dequeues": 30,
+      "evidence": "data/incident-corpus.json queue_baseline.successful_dequeues_after_merge=544; tools/merge_queue_policy.json retains a five-entry ALLGREEN train"
+    }
+  }
+}

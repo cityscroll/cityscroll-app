@@ -1,0 +1,32 @@
+{
+  "schema": "cityscroll.merge-throughput.measured-delta.v1",
+  "before": {
+    "label": "cited incident timeline sample before the clock-gate fix",
+    "successful_dequeues": 0,
+    "removal_events": 5,
+    "ejections": 5,
+    "service_yield": 0
+  },
+  "after": {
+    "label": "committed queue baseline after the repair window",
+    "successful_dequeues": 544,
+    "removal_events": 680,
+    "ejections": 136,
+    "service_yield": 0.8
+  },
+  "service_yield_delta": {
+    "value": 0.8,
+    "measurement": "derived",
+    "basis": "successful post-merge dequeues divided by successful post-merge dequeues plus ejections",
+    "interpretation": "Directional only: the source cohorts and windows differ, so this is not a causal effect estimate."
+  },
+  "synchronized_batch_drain": {
+    "minimum_successful_dequeues": 30,
+    "observed_successful_dequeues_after_merge": 544,
+    "grouping_strategy": "ALLGREEN",
+    "max_entries_to_build": 5,
+    "max_entries_to_merge": 5,
+    "min_entries_to_merge_wait_minutes": 5,
+    "evidence": "data/incident-corpus.json queue_baseline.successful_dequeues_after_merge=544; tools/merge_queue_policy.json retains a five-entry ALLGREEN train"
+  }
+}
