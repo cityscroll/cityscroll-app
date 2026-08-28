@@ -1,0 +1,1272 @@
+{
+  "schema": "cityscroll.procurement_intent_radar.corpus_backtest.v1",
+  "backtest_version": "pir-corpus-backtest.v1",
+  "as_of": "2026-08-27",
+  "corpus": {
+    "source_artifact": "test/fixtures/procurement_intent_radar/gold_fixtures.v0.json",
+    "source_policy": "Council-attributable dated source spans only; official-source citations retained in fixtures",
+    "from": "2022-01-01",
+    "through": "2025-12-31",
+    "status": "bounded_gold_fixture_pack",
+    "full_corpus": false,
+    "measured_source_count": 5,
+    "measured_positive_assertions": 3,
+    "measured_negative_controls": 2,
+    "retained_app_corpus_council_text_rows": 0,
+    "coverage_note": "This is a measured fixture result, not an estimate of all Council material from 2022–2025."
+  },
+  "protocol": {
+    "kind": "per_assertion_temporal_cutoff",
+    "reconstruction_cutoff": "meeting observed_at; predictions generated on the next UTC day to satisfy the shared strict pre-split training rule",
+    "training_from": "2022-01-01",
+    "future_information_allowed": false,
+    "prediction_inputs": [
+      "source span",
+      "source metadata",
+      "source event clock"
+    ],
+    "excluded_from_prediction_inputs": [
+      "future EPIN/PIN",
+      "solicitation title",
+      "vendor",
+      "later coverage",
+      "future naming features"
+    ],
+    "resolution": "shared evaluatePredictionBacktest exact subject_ref + event_kind join",
+    "link_resolution": "retrospective matcher; publisher fields are scoring observations, not prediction features"
+  },
+  "assertions": [
+    {
+      "id": "compass-dycd-2025-05-19",
+      "kind": "positive",
+      "source": {
+        "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+        "source_event_id": "council:hearing:2025-05-19:dycd-fy2026-executive-budget",
+        "observed_at": "2025-05-19",
+        "source_type": "agency_testimony",
+        "citation_url": "https://legistar.council.nyc.gov/View.ashx?GUID=73A1E0BF-3D78-4A7F-9DEB-70D949A5751F&ID=14582598&M=F"
+      },
+      "extracted_intent": {
+        "assertion_id": "faa:compass-dycd-2025-05-19",
+        "agency": "agency:id:dycd",
+        "object_text": "COMPASS RFP",
+        "procurement_type": "RFP",
+        "expected_window": {
+          "earliest": "2025-09-01",
+          "latest": "2025-11-30",
+          "precision": "season",
+          "raw_text": "in the fall"
+        },
+        "modality": "anticipated",
+        "extraction_confidence": "high"
+      },
+      "expected_intent": {
+        "assertion_id": "faa:compass-dycd-2025-05-19",
+        "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+        "source_event_id": "council:hearing:2025-05-19:dycd-fy2026-executive-budget",
+        "source_span": "DYCD anticipates releasing a concept paper shortly, with the release of the long-awaited request for proposals in the fall.",
+        "observed_at": "2025-05-19",
+        "asserted_by_person_ref": "person:keith-howard",
+        "responsible_agency_ref": "agency:id:dycd",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "COMPASS RFP",
+        "program_refs": [
+          "program:dycd:compass"
+        ],
+        "procurement_type": "RFP",
+        "quantity_assertions": [],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [],
+        "expected_window": {
+          "earliest": "2025-09-01",
+          "latest": "2025-11-30",
+          "precision": "season",
+          "raw_text": "in the fall"
+        },
+        "modality": "anticipated",
+        "conditions": [],
+        "extraction_method": "human_seeded_gold",
+        "extraction_version": "pir-phase0.1",
+        "extraction_confidence": "high"
+      },
+      "extraction": {
+        "status": "candidate",
+        "candidate": true,
+        "confidence": "high"
+      },
+      "candidate_solicitations": [
+        {
+          "realization_ref": "procurement:city_record:26026P0003",
+          "published_at": "2025-10-01",
+          "title": "COMPASS Programs in Public Schools",
+          "source_system": "city_record",
+          "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250915017",
+          "decision": "auto_link",
+          "match_confidence": "extremely_high",
+          "score": 13,
+          "evidence": [
+            {
+              "kind": "strong",
+              "field": "program_refs",
+              "matched_terms": [
+                "compass"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "strong",
+              "field": "object_text",
+              "matched_terms": [
+                "COMPASS"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "object_text",
+              "matched_terms": [
+                "COMPASS"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "responsible_agency_ref",
+              "matched_terms": [
+                "dycd"
+              ],
+              "realization_fields": [
+                "agency",
+                "agency_name"
+              ]
+            }
+          ]
+        },
+        {
+          "realization_ref": "procurement:city_record:26026P0004",
+          "published_at": "2025-10-01",
+          "title": "COMPASS Center-Based and Non-Public School Site Programs",
+          "source_system": "city_record",
+          "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250915022",
+          "decision": "auto_link",
+          "match_confidence": "extremely_high",
+          "score": 13,
+          "evidence": [
+            {
+              "kind": "strong",
+              "field": "program_refs",
+              "matched_terms": [
+                "compass"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "strong",
+              "field": "object_text",
+              "matched_terms": [
+                "COMPASS"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "object_text",
+              "matched_terms": [
+                "COMPASS"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "responsible_agency_ref",
+              "matched_terms": [
+                "dycd"
+              ],
+              "realization_fields": [
+                "agency",
+                "agency_name"
+              ]
+            }
+          ]
+        }
+      ],
+      "chosen_realization": {
+        "realization_ref": "procurement:city_record:26026P0003",
+        "published_at": "2025-10-01",
+        "selection": "earliest accepted exact event"
+      },
+      "match": {
+        "status": "matched",
+        "confidence": "extremely_high",
+        "candidates": 2,
+        "automatic_edges": [
+          "procurement:city_record:26026P0003",
+          "procurement:city_record:26026P0004"
+        ],
+        "expected_edges": [
+          "procurement:city_record:26026P0003",
+          "procurement:city_record:26026P0004"
+        ],
+        "link_precision_inputs_are_retrospective_only": true
+      },
+      "outcomes": {
+        "occurrence": "hit",
+        "timing": "hit",
+        "lead_days": 135,
+        "timing_error": {
+          "status": "hit",
+          "signed_days_from_midpoint": -15,
+          "absolute_days_from_midpoint": 15,
+          "category": null
+        },
+        "resolution_status": "matched"
+      },
+      "scorecard": {
+        "metric": "prediction_calibration",
+        "version": "prediction_calibration_v1",
+        "domain": "procurement",
+        "model_name": "prospective_procurement",
+        "model_version": "0.1.0",
+        "split_date": "2025-05-20",
+        "grace_days": 0,
+        "train_window": {
+          "from": "2022-01-01",
+          "to": "2025-05-19"
+        },
+        "prediction_count": 2,
+        "resolved_backtest_predictions": 2,
+        "resolution_rate": 1,
+        "resolution_counts": {
+          "resolved_hit": 2,
+          "resolved_miss": 0,
+          "open": 0
+        },
+        "timing_prediction_count": 1,
+        "timing_realized_count": 1,
+        "timing_resolution_hits": 1,
+        "interval_nominal": 0.8,
+        "interval_coverage": 1,
+        "interval_coverage_hits": 1,
+        "interval_coverage_count": 1,
+        "median_absolute_error_p50_days": 15,
+        "occurrence_prediction_count": 1,
+        "occurrence_resolved_count": 1,
+        "occurrence_calibration": [
+          {
+            "quintile": 1,
+            "probability_min": 0,
+            "probability_max": 0.2,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 2,
+            "probability_min": 0.2,
+            "probability_max": 0.4,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 3,
+            "probability_min": 0.4,
+            "probability_max": 0.6,
+            "upper_inclusive": false,
+            "count": 1,
+            "predicted_probability_mean": 0.5,
+            "realized": 1,
+            "realized_frequency": 1
+          },
+          {
+            "quintile": 4,
+            "probability_min": 0.6,
+            "probability_max": 0.8,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 5,
+            "probability_min": 0.8,
+            "probability_max": 1,
+            "upper_inclusive": true,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          }
+        ],
+        "occurrence_quintiles_monotone": false,
+        "ship_bar": {
+          "status": "fail",
+          "checks": {
+            "minimum_resolved": false,
+            "interval_coverage": false,
+            "occurrence_quintiles_monotone": false
+          },
+          "thresholds": {
+            "minimum_resolved": 50,
+            "interval_nominal": 0.8,
+            "interval_tolerance": 0.1,
+            "occurrence_quintiles_monotone": true
+          }
+        },
+        "public_projection": "cohort_statistic_only"
+      },
+      "leakage": {
+        "passed": true,
+        "checked": [
+          "future EPIN/PIN",
+          "solicitation title",
+          "vendor",
+          "later coverage fields",
+          "future publication clock"
+        ],
+        "findings": [],
+        "historical_input_only": true,
+        "negative_control": false
+      },
+      "controls": {
+        "contains_rfp_baseline": true,
+        "extractor_rejected_baseline": false
+      }
+    },
+    {
+      "id": "hra-dv-beds-2024-10-09",
+      "kind": "positive",
+      "source": {
+        "source_record_id": "council:transcript:general-welfare:2024-10-09",
+        "source_event_id": "council:hearing:2024-10-09:general-welfare-dv-shelter",
+        "observed_at": "2024-10-09",
+        "source_type": "council_transcript",
+        "citation_url": "https://legistar.council.nyc.gov/View.ashx?GUID=55F96206-8A74-4F38-BF33-DCB6340E1BA7&ID=13400292&M=F"
+      },
+      "extracted_intent": {
+        "assertion_id": "faa:hra-dv-beds-2024-10-09",
+        "agency": "agency:id:dss",
+        "object_text": "additional emergency shelter beds for domestic-violence survivors",
+        "procurement_type": "RFP",
+        "expected_window": {
+          "earliest": null,
+          "latest": "2024-12-31",
+          "precision": "deadline",
+          "raw_text": "by the end of the year"
+        },
+        "modality": "hoped",
+        "extraction_confidence": "high"
+      },
+      "expected_intent": {
+        "assertion_id": "faa:hra-dv-beds-2024-10-09",
+        "source_record_id": "council:transcript:general-welfare:2024-10-09",
+        "source_event_id": "council:hearing:2024-10-09:general-welfare-dv-shelter",
+        "source_span": "We are actually in the midst of planning for the release of an RFP for additional emergency shelter beds, so we hope by the end of the year to be able to release an RFP seeking an additional 94 beds. And this RFP seeks to target single adult households of one and with a special emphasis on LGBTQIA survivors. The facilities can’t exclusively serve single adults that we’ve consulted with our oversight agency at the state OCFS and the facilities must always accept families if that’s a requirement of the shelter system but there is an emphasis on single adults and a special focus on LGBTQ survivors.",
+        "observed_at": "2024-10-09",
+        "asserted_by_person_ref": "person:john-rojas",
+        "responsible_agency_ref": "agency:id:dss",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "additional emergency shelter beds for domestic-violence survivors",
+        "program_refs": [],
+        "procurement_type": "RFP",
+        "quantity_assertions": [
+          {
+            "kind": "beds",
+            "value": 94,
+            "unit": "beds",
+            "raw_text": "additional 94 beds"
+          }
+        ],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [
+          "single adult households",
+          "families",
+          "LGBTQIA survivors"
+        ],
+        "expected_window": {
+          "earliest": null,
+          "latest": "2024-12-31",
+          "precision": "deadline",
+          "raw_text": "by the end of the year"
+        },
+        "modality": "hoped",
+        "conditions": [],
+        "extraction_method": "human_seeded_gold",
+        "extraction_version": "pir-phase0.1",
+        "extraction_confidence": "high"
+      },
+      "extraction": {
+        "status": "candidate",
+        "candidate": true,
+        "confidence": "high"
+      },
+      "candidate_solicitations": [
+        {
+          "realization_ref": "procurement:passport:06925P0010",
+          "published_at": "2025-03-07",
+          "title": "DVS 94 beds Emergency Shelter and Support Services Open Ended RFx",
+          "source_system": "passport",
+          "citation_url": "https://www.govcb.com/government-bids/P-DVS-BEDS-EMERGENCY-AND-22653149.htm",
+          "decision": "auto_link",
+          "match_confidence": "extremely_high",
+          "score": 10,
+          "evidence": [
+            {
+              "kind": "strong",
+              "field": "quantity_assertions",
+              "matched_terms": [
+                "94"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "object_text",
+              "matched_terms": [
+                "BEDS",
+                "EMERGENCY",
+                "SHELTER"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "responsible_agency_ref",
+              "matched_terms": [
+                "dss"
+              ],
+              "realization_fields": [
+                "agency",
+                "agency_name"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "procurement_type",
+              "matched_terms": [
+                "RFP"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            }
+          ]
+        }
+      ],
+      "chosen_realization": {
+        "realization_ref": "procurement:passport:06925P0010",
+        "published_at": "2025-03-07",
+        "selection": "earliest accepted exact event"
+      },
+      "match": {
+        "status": "matched",
+        "confidence": "extremely_high",
+        "candidates": 1,
+        "automatic_edges": [
+          "procurement:passport:06925P0010"
+        ],
+        "expected_edges": [
+          "procurement:passport:06925P0010"
+        ],
+        "link_precision_inputs_are_retrospective_only": true
+      },
+      "outcomes": {
+        "occurrence": "hit",
+        "timing": "miss",
+        "lead_days": 149,
+        "timing_error": {
+          "status": "miss",
+          "signed_days_from_midpoint": null,
+          "absolute_days_from_midpoint": null,
+          "category": "published_after_stated_window"
+        },
+        "resolution_status": "matched"
+      },
+      "scorecard": {
+        "metric": "prediction_calibration",
+        "version": "prediction_calibration_v1",
+        "domain": "procurement",
+        "model_name": "prospective_procurement",
+        "model_version": "0.1.0",
+        "split_date": "2024-10-10",
+        "grace_days": 0,
+        "train_window": {
+          "from": "2022-01-01",
+          "to": "2024-10-09"
+        },
+        "prediction_count": 2,
+        "resolved_backtest_predictions": 2,
+        "resolution_rate": 1,
+        "resolution_counts": {
+          "resolved_hit": 1,
+          "resolved_miss": 1,
+          "open": 0
+        },
+        "timing_prediction_count": 1,
+        "timing_realized_count": 1,
+        "timing_resolution_hits": 0,
+        "interval_nominal": 0.8,
+        "interval_coverage": 0,
+        "interval_coverage_hits": 0,
+        "interval_coverage_count": 1,
+        "median_absolute_error_p50_days": 108,
+        "occurrence_prediction_count": 1,
+        "occurrence_resolved_count": 1,
+        "occurrence_calibration": [
+          {
+            "quintile": 1,
+            "probability_min": 0,
+            "probability_max": 0.2,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 2,
+            "probability_min": 0.2,
+            "probability_max": 0.4,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 3,
+            "probability_min": 0.4,
+            "probability_max": 0.6,
+            "upper_inclusive": false,
+            "count": 1,
+            "predicted_probability_mean": 0.5,
+            "realized": 1,
+            "realized_frequency": 1
+          },
+          {
+            "quintile": 4,
+            "probability_min": 0.6,
+            "probability_max": 0.8,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 5,
+            "probability_min": 0.8,
+            "probability_max": 1,
+            "upper_inclusive": true,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          }
+        ],
+        "occurrence_quintiles_monotone": false,
+        "ship_bar": {
+          "status": "fail",
+          "checks": {
+            "minimum_resolved": false,
+            "interval_coverage": false,
+            "occurrence_quintiles_monotone": false
+          },
+          "thresholds": {
+            "minimum_resolved": 50,
+            "interval_nominal": 0.8,
+            "interval_tolerance": 0.1,
+            "occurrence_quintiles_monotone": true
+          }
+        },
+        "public_projection": "cohort_statistic_only"
+      },
+      "leakage": {
+        "passed": true,
+        "checked": [
+          "future EPIN/PIN",
+          "solicitation title",
+          "vendor",
+          "later coverage fields",
+          "future publication clock"
+        ],
+        "findings": [],
+        "historical_input_only": true,
+        "negative_control": false
+      },
+      "controls": {
+        "contains_rfp_baseline": true,
+        "extractor_rejected_baseline": false
+      }
+    },
+    {
+      "id": "acs-atd-2022-03-09",
+      "kind": "positive",
+      "source": {
+        "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+        "source_event_id": "council:document:acs-finance-briefing:2022-03-09",
+        "observed_at": "2022-03-09",
+        "source_type": "council_briefing_paper",
+        "citation_url": "https://council.nyc.gov/budget/wp-content/uploads/sites/54/2022/03/ACS.pdf"
+      },
+      "extracted_intent": {
+        "assertion_id": "faa:acs-atd-2022-03-09",
+        "agency": "agency:id:acs",
+        "object_text": "Alternative to Detention RFP",
+        "procurement_type": "RFP",
+        "expected_window": {
+          "earliest": "2022-06-01",
+          "latest": "2022-08-31",
+          "precision": "season",
+          "raw_text": "in the summer"
+        },
+        "modality": "planned",
+        "extraction_confidence": "high"
+      },
+      "expected_intent": {
+        "assertion_id": "faa:acs-atd-2022-03-09",
+        "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+        "source_event_id": "council:document:acs-finance-briefing:2022-03-09",
+        "source_span": "ACS released a concept paper for ATDs in February 2022, plans to release an RFP in the summer, and intends to put new contracts in place in Fiscal 2024, when program management moves to ACS from MOCJ.",
+        "observed_at": "2022-03-09",
+        "asserted_by_person_ref": null,
+        "responsible_agency_ref": "agency:id:acs",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "Alternative to Detention RFP",
+        "program_refs": [
+          "program:acs:alternative-to-detention"
+        ],
+        "procurement_type": "RFP",
+        "quantity_assertions": [],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [],
+        "expected_window": {
+          "earliest": "2022-06-01",
+          "latest": "2022-08-31",
+          "precision": "season",
+          "raw_text": "in the summer"
+        },
+        "modality": "planned",
+        "conditions": [],
+        "extraction_method": "human_seeded_gold",
+        "extraction_version": "pir-phase0.1",
+        "extraction_confidence": "high"
+      },
+      "extraction": {
+        "status": "candidate",
+        "candidate": true,
+        "confidence": "high"
+      },
+      "candidate_solicitations": [
+        {
+          "realization_ref": "procurement:city_record:06823P0002",
+          "published_at": "2022-10-14",
+          "title": "Alternative to Detention RFP",
+          "source_system": "city_record",
+          "citation_url": "https://www.nonprofitgrantwriters.com/wp-content/uploads/2022/11/Open-Human-Services-Opportunities-City-of-New-York.pdf",
+          "decision": "auto_link",
+          "match_confidence": "high",
+          "score": 10,
+          "evidence": [
+            {
+              "kind": "strong",
+              "field": "program_refs",
+              "matched_terms": [
+                "alternative to detention"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "object_text",
+              "matched_terms": [
+                "ALTERNATIVE",
+                "DETENTION"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "responsible_agency_ref",
+              "matched_terms": [
+                "acs"
+              ],
+              "realization_fields": [
+                "agency",
+                "agency_name"
+              ]
+            },
+            {
+              "kind": "medium",
+              "field": "procurement_type",
+              "matched_terms": [
+                "RFP"
+              ],
+              "realization_fields": [
+                "title",
+                "short_title",
+                "procurement_name",
+                "main_commodity",
+                "industry",
+                "description",
+                "additional_description_1",
+                "object_text",
+                "service",
+                "program_name",
+                "population",
+                "geography"
+              ]
+            }
+          ]
+        }
+      ],
+      "chosen_realization": {
+        "realization_ref": "procurement:city_record:06823P0002",
+        "published_at": "2022-10-14",
+        "selection": "earliest accepted exact event"
+      },
+      "match": {
+        "status": "matched",
+        "confidence": "high",
+        "candidates": 1,
+        "automatic_edges": [
+          "procurement:city_record:06823P0002"
+        ],
+        "expected_edges": [
+          "procurement:city_record:06823P0002"
+        ],
+        "link_precision_inputs_are_retrospective_only": true
+      },
+      "outcomes": {
+        "occurrence": "hit",
+        "timing": "miss",
+        "lead_days": 219,
+        "timing_error": {
+          "status": "miss",
+          "signed_days_from_midpoint": 90,
+          "absolute_days_from_midpoint": 90,
+          "category": "published_after_stated_window"
+        },
+        "resolution_status": "matched"
+      },
+      "scorecard": {
+        "metric": "prediction_calibration",
+        "version": "prediction_calibration_v1",
+        "domain": "procurement",
+        "model_name": "prospective_procurement",
+        "model_version": "0.1.0",
+        "split_date": "2022-03-10",
+        "grace_days": 0,
+        "train_window": {
+          "from": "2022-01-01",
+          "to": "2022-03-09"
+        },
+        "prediction_count": 2,
+        "resolved_backtest_predictions": 2,
+        "resolution_rate": 1,
+        "resolution_counts": {
+          "resolved_hit": 1,
+          "resolved_miss": 1,
+          "open": 0
+        },
+        "timing_prediction_count": 1,
+        "timing_realized_count": 1,
+        "timing_resolution_hits": 0,
+        "interval_nominal": 0.8,
+        "interval_coverage": 0,
+        "interval_coverage_hits": 0,
+        "interval_coverage_count": 1,
+        "median_absolute_error_p50_days": 90,
+        "occurrence_prediction_count": 1,
+        "occurrence_resolved_count": 1,
+        "occurrence_calibration": [
+          {
+            "quintile": 1,
+            "probability_min": 0,
+            "probability_max": 0.2,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 2,
+            "probability_min": 0.2,
+            "probability_max": 0.4,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 3,
+            "probability_min": 0.4,
+            "probability_max": 0.6,
+            "upper_inclusive": false,
+            "count": 1,
+            "predicted_probability_mean": 0.5,
+            "realized": 1,
+            "realized_frequency": 1
+          },
+          {
+            "quintile": 4,
+            "probability_min": 0.6,
+            "probability_max": 0.8,
+            "upper_inclusive": false,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          },
+          {
+            "quintile": 5,
+            "probability_min": 0.8,
+            "probability_max": 1,
+            "upper_inclusive": true,
+            "count": 0,
+            "predicted_probability_mean": null,
+            "realized": 0,
+            "realized_frequency": null
+          }
+        ],
+        "occurrence_quintiles_monotone": false,
+        "ship_bar": {
+          "status": "fail",
+          "checks": {
+            "minimum_resolved": false,
+            "interval_coverage": false,
+            "occurrence_quintiles_monotone": false
+          },
+          "thresholds": {
+            "minimum_resolved": 50,
+            "interval_nominal": 0.8,
+            "interval_tolerance": 0.1,
+            "occurrence_quintiles_monotone": true
+          }
+        },
+        "public_projection": "cohort_statistic_only"
+      },
+      "leakage": {
+        "passed": true,
+        "checked": [
+          "future EPIN/PIN",
+          "solicitation title",
+          "vendor",
+          "later coverage fields",
+          "future publication clock"
+        ],
+        "findings": [],
+        "historical_input_only": true,
+        "negative_control": false
+      },
+      "controls": {
+        "contains_rfp_baseline": true,
+        "extractor_rejected_baseline": false
+      }
+    },
+    {
+      "id": "negative-reported-recollection-2025-03-20",
+      "kind": "negative",
+      "source": {
+        "source_record_id": "council:transcript:children-youth:2025-03-20",
+        "source_event_id": "council:hearing:2025-03-20:children-youth-dycd",
+        "observed_at": "2025-03-20",
+        "source_type": "council_transcript",
+        "citation_url": "https://citymeetings.nyc/meetings/new-york-city-council/2025-03-20-1000-am-committee-on-children-and-youth/"
+      },
+      "extracted_intent": null,
+      "expected_intent": null,
+      "extraction": {
+        "status": "rejected",
+        "candidate": false,
+        "confidence": null
+      },
+      "candidate_solicitations": [],
+      "chosen_realization": null,
+      "match": {
+        "status": "not_scored",
+        "confidence": "not_applicable",
+        "candidates": [],
+        "automatic_edges": []
+      },
+      "outcomes": {
+        "occurrence": "not_applicable",
+        "timing": "not_applicable",
+        "lead_days": null,
+        "timing_error": null,
+        "resolution_status": "not_applicable"
+      },
+      "leakage": {
+        "passed": true,
+        "checked": [
+          "future EPIN/PIN",
+          "solicitation title",
+          "vendor",
+          "later coverage fields",
+          "future publication clock"
+        ],
+        "findings": [],
+        "historical_input_only": true,
+        "negative_control": true
+      },
+      "controls": {
+        "contains_rfp_baseline": true,
+        "extractor_rejected_baseline": true
+      }
+    },
+    {
+      "id": "negative-past-tense-rfp-2023-04-24",
+      "kind": "negative",
+      "source": {
+        "source_record_id": "council:transcript:oversight-public-safety-general-welfare:2023-04-24",
+        "source_event_id": "council:hearing:2023-04-24:family-courts",
+        "observed_at": "2023-04-24",
+        "source_type": "council_transcript",
+        "citation_url": "https://legistar.council.nyc.gov/View.ashx?GUID=031FAD04-4A78-467C-93F5-CFB41DDF474F&ID=11975422&M=F"
+      },
+      "extracted_intent": null,
+      "expected_intent": null,
+      "extraction": {
+        "status": "rejected",
+        "candidate": false,
+        "confidence": null
+      },
+      "candidate_solicitations": [],
+      "chosen_realization": null,
+      "match": {
+        "status": "not_scored",
+        "confidence": "not_applicable",
+        "candidates": [],
+        "automatic_edges": []
+      },
+      "outcomes": {
+        "occurrence": "not_applicable",
+        "timing": "not_applicable",
+        "lead_days": null,
+        "timing_error": null,
+        "resolution_status": "not_applicable"
+      },
+      "leakage": {
+        "passed": true,
+        "checked": [
+          "future EPIN/PIN",
+          "solicitation title",
+          "vendor",
+          "later coverage fields",
+          "future publication clock"
+        ],
+        "findings": [],
+        "historical_input_only": true,
+        "negative_control": true
+      },
+      "controls": {
+        "contains_rfp_baseline": true,
+        "extractor_rejected_baseline": true
+      }
+    }
+  ],
+  "metrics": {
+    "extraction": {
+      "value_type": "measured",
+      "reviewed_sources": 5,
+      "gold_assertions": 3,
+      "extracted_candidates": 3,
+      "true_positive": 3,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1,
+      "recall": 1,
+      "abstained": 2
+    },
+    "realization_link": {
+      "value_type": "measured",
+      "reviewed_pairs": 4,
+      "automatic_links": 4,
+      "true_positive": 4,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1,
+      "recall": 1,
+      "reviewed_precision": 1
+    },
+    "abstention": {
+      "value_type": "measured",
+      "extraction_count": 2,
+      "extraction_rate": 0.4,
+      "timing_not_scored_count": 0,
+      "review_or_unmatched_count": 0
+    },
+    "occurrence": {
+      "value_type": "measured",
+      "denominator": 3,
+      "scored": 3,
+      "abstained": 0,
+      "precision": 1,
+      "recall": 1,
+      "brier_score": 0.25,
+      "calibration": [
+        {
+          "range": [
+            0.5,
+            0.75
+          ],
+          "count": 3,
+          "predicted_rate": 0.5,
+          "observed_rate": 1,
+          "absolute_gap": 0.5
+        }
+      ],
+      "maximum_calibration_gap": 0.5,
+      "shared_forecast_evaluator": "worker/src/lib/forecast_calibration.mjs"
+    },
+    "timing": {
+      "value_type": "measured",
+      "assertions_scored": 3,
+      "window_hits": 1,
+      "window_misses": 2,
+      "window_hit_rate": 0.3333,
+      "error_categories": {
+        "published_after_stated_window": 2
+      }
+    },
+    "lead_time_days": {
+      "value_type": "measured",
+      "count": 3,
+      "mean": 167.7,
+      "p25": 142,
+      "median": 149,
+      "p75": 184,
+      "minimum": 135,
+      "maximum": 219
+    },
+    "false_positive_categories": {
+      "extraction": [],
+      "realization_link": [],
+      "occurrence": []
+    },
+    "false_negative_categories": {
+      "extraction": [],
+      "realization_link": [],
+      "occurrence": [],
+      "timing": [
+        {
+          "category": "published_after_or_before_stated_window",
+          "count": 2
+        }
+      ]
+    },
+    "unresolved_or_expired": [
+      {
+        "id": "compass-dycd-2025-05-19",
+        "status": "matched"
+      },
+      {
+        "id": "hra-dv-beds-2024-10-09",
+        "status": "matched"
+      },
+      {
+        "id": "acs-atd-2022-03-09",
+        "status": "matched"
+      },
+      {
+        "id": "negative-reported-recollection-2025-03-20",
+        "status": "not_applicable"
+      },
+      {
+        "id": "negative-past-tense-rfp-2023-04-24",
+        "status": "not_applicable"
+      }
+    ]
+  },
+  "temporal_integrity": {
+    "value_type": "measured",
+    "leakage_failures": [],
+    "tolerated_failures": 0,
+    "passed": true
+  },
+  "promotion": {
+    "status": "withheld",
+    "product_promotion_allowed": false,
+    "gates": {
+      "extraction_precision": {
+        "observed": 1,
+        "threshold": 0.9,
+        "passed": true
+      },
+      "automatic_realization_link_precision": {
+        "observed": 1,
+        "threshold": 0.95,
+        "passed": true
+      },
+      "median_positive_lead_days": {
+        "observed": 149,
+        "threshold": 30,
+        "passed": true
+      },
+      "temporal_integrity": {
+        "observed_failures": 0,
+        "threshold": 0,
+        "passed": true
+      },
+      "recurrent_corpus": {
+        "value_type": "measured",
+        "resolved_assertions": 3,
+        "sufficient_for_recurrent_corpus_claim": false,
+        "note": "The committed five-case gold pack is a contract fixture, not a full 2022–2025 corpus; no population estimate is emitted.",
+        "passed": false
+      }
+    },
+    "reason": "Precision and temporal checks pass on the bounded fixture pack, but it does not establish recurrence for the full 2022–2025 corpus; this result cannot authorize product promotion."
+  }
+}

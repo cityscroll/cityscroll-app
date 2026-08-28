@@ -53,6 +53,12 @@
   `test/procurement_intent_radar_fixtures.test.mjs`. Keep upstream source fields temporally
   sealed and keep `retained_data_present` false until exact EPIN rows are actually retained.
 
+- **Procurement Intent Radar corpus backtest:** `tools/backtest_procurement_intent_radar.mjs`
+  emits the deterministic JSON/report pair under `warehouse/fixtures/procurement-intent-radar/`
+  and `docs/evidence/procurement-intent-radar/`. It evaluates each assertion at its meeting-date
+  cutoff through the shared prediction evaluator; the current five-case gold pack is measured but
+  bounded, so promotion remains withheld until a recurrent 2022–2025 corpus is retained.
+
 - **Adopted Community Board budget facts (CB-MONEY-01):** `site/community_board_adopted_budget.mjs`
   materializes the pinned Expense Budget fiscal-year/publication slice only after exact
   `site/data/community_board_financial_identity_crosswalk.json` resolution. Rebuild the source-
