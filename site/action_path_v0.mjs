@@ -7,7 +7,7 @@
  * It does not create watches, infer participation, or fetch source data.
  */
 
-import actionRegistry from "./action_registry.js";
+import * as actionRegistryModule from "./action_registry.js";
 import { normalizeScope, SCOPE_SCHEMA, SCOPE_VERSION } from "./scope_v0.mjs";
 
 export const ACTION_PATH_SCHEMA = "cityscroll.civic_action_path.v0";
@@ -47,6 +47,17 @@ const ACTOR_FIELDS = new Set([
 
 const REF_PATTERN = /^[A-Za-z][A-Za-z0-9_-]*:[^\s]+$/;
 const ACTION_PATH_COPY_FIELDS = Object.freeze(["label", "reason"]);
+
+// action_registry.js is intentionally a classic browser script because the public
+// shell uses its global CrolActions API. Resolve that same API lazily instead of
+// importing it as an ES module (which would fail before any page can render).
+function actionRegistry() {
+  const registry = globalThis.CrolActions || actionRegistryModule.default || actionRegistryModule;
+  if (!registry || typeof registry.validateAction !== "function") {
+    throw new TypeError("Action Registry is unavailable");
+  }
+  return registry;
+}
 
 function isRecord(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -271,7 +282,7 @@ export function validateActionPath(path) {
   if (Number(path.version) !== ACTION_PATH_VERSION) throw new TypeError("unsupported Action Path version");
   assertNoActorFields(path, "path", true);
   assertActionHasNoActorFields(path.action);
-  const action = actionRegistry.validateAction(path.action);
+  const action = actionRegistry().validateAction(path.action);
   if (action !== path.action) throw new TypeError("Action Path action must remain the validated action object");
   requiredRef(path.subject_ref, "subject_ref");
   requiredRef(path.target_ref, "target_ref");
@@ -315,7 +326,7 @@ export function buildActionPath(input = {}) {
   if (!isRecord(input)) throw new TypeError("Action Path input must be an object");
   assertNoActorFields(input, "input", true);
   assertActionHasNoActorFields(input.action);
-  const action = actionRegistry.validateAction(input.action);
+  const action = actionRegistry().validateAction(input.action);
   const subjectRef = requiredRef(input.subject_ref || input.subject, "subject_ref");
   const targetRef = requiredRef(input.target_ref || input.target, "target_ref");
   const evidence = normalizeEvidence(input.evidence || input.provenance);

@@ -18,6 +18,8 @@ import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
 import { renderCouncilHearingMatterContinuation } from "../council_hearing_matter_continuation.mjs";
+import { buildActionPath } from "../action_path_v0.mjs";
+import { buildCouncilHearingActionPath } from "../council_hearing_action_path.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import {
   communityBoardIdFromRow,
@@ -455,6 +457,61 @@ function participationLinksHTML(record){
     return `<a class="act" href="${escUiHtml(link.url)}" ${EXT_ATTRS}>${t(key)}${extSR()}</a>`;
   }).join("");
 }
+function typedRef(type,value){ return `${type}:${value}`; }
+function exactRulemakingActionPath(r, ruleRecord){
+  const subjectRef=String(ruleRecord?.rulemaking_subject_ref||"").trim();
+  const join=ruleRecord?.rulemaking_join;
+  const related=Array.isArray(ruleRecord?.related_notices)?ruleRecord.related_notices:[];
+  if(!r?.request_id || !/^rulemaking:[^\s]+$/.test(subjectRef)
+    || join?.matched!==true || join?.confidence!=="high" || Number(join?.notice_count||0)<=1
+    || !related.length || related.some(rel=>rel?.join?.matched!==true||rel?.join?.confidence!=="high"||!rel.request_id)) return null;
+  const requestIds=[r.request_id,...related.map(rel=>rel.request_id)]
+    .map(value=>String(value||"").trim()).filter(Boolean).sort();
+  const unique=[...new Set(requestIds)];
+  const joinedIds=Array.isArray(join.request_ids)
+    ? [...new Set(join.request_ids.map(value=>String(value||"").trim()).filter(Boolean))].sort()
+    : [];
+  if(unique.length<2 || unique.length!==Number(join.notice_count)
+    || joinedIds.length!==unique.length || joinedIds.some((id,index)=>id!==unique[index])) return null;
+  const filter=encodeURIComponent(JSON.stringify({request_ids:unique}));
+  return {
+    path:buildActionPath({
+      subject_ref:typedRef("notice",r.request_id),
+      target_ref:typedRef("notice",r.request_id),
+      action:{type:"document",delivery:"local",destination:null,confirmation_required:false},
+      evidence:[{source_ref:typedRef("notice",r.request_id),receipt_ref:join.method||"rulemaking_join"}],
+      continuation:{kind:"subject",subject_ref:subjectRef},
+    }),
+    href:`/following/?lens=rules&filter=${filter}`,
+  };
+}
+
+function exactLandActionPath(r){
+  const projectId=String(r?._zap_project_id||"").trim();
+  const join=r?._notice_land_join;
+  if(!r?.request_id || !/^[A-Za-z0-9_-]{4,40}$/.test(projectId) || !join?.method) return null;
+  return {
+    path:buildActionPath({
+      subject_ref:typedRef("notice",r.request_id),
+      target_ref:typedRef("notice",r.request_id),
+      action:{type:"document",delivery:"local",destination:null,confirmation_required:false},
+      evidence:[{source_ref:typedRef("notice",r.request_id),receipt_ref:join.method}],
+      continuation:{kind:"subject",subject_ref:typedRef("project",projectId)},
+    }),
+    href:`#land/${encodeURIComponent(projectId)}`,
+  };
+}
+
+function exactHearingActionPath(r){
+  const record=r?.meeting_record || r?.hearing;
+  if(!record?.meeting_id || !record?.meeting_outcome) return null;
+  const path=buildCouncilHearingActionPath({...record,request_id:r.request_id||record.request_id});
+  const subject=path?.continuation?.subject_ref;
+  if(!path?.continuation_cta || !/^matter:[A-Za-z0-9._-]+$/.test(String(subject||""))) return null;
+  const matterId=String(subject).replace(/^matter:/,"");
+  return {path,href:`/matters/${encodeURIComponent(matterId)}/`};
+}
+
 function noticeActionMatter(r, ruleRecord, lifecycleData){
   const hearing=r.hearing||isMeetingOutcomesEligible(r)&&normalizeHearingRow(r);
   const participation=((hearing&&hearing.participation&&hearing.participation.links)||[])
@@ -487,6 +544,9 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
   const timeline=lifecycleData&&Array.isArray(lifecycleData.timeline)?lifecycleData.timeline:[];
   const stageOf=name=>timeline.find(e=>e&&e.stage===name)||null;
   const franchiseHearingStage=franchiseStage==="public_hearing"||franchiseStage==="committee_meeting";
+  const exact=kind==="rule" ? exactRulemakingActionPath(r,ruleRecord)
+    : kind==="hearing" ? exactHearingActionPath(r)
+    : exactLandActionPath(r);
   return {
     kind,
     section_name:r.section_name,
@@ -555,6 +615,9 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     zip_code:r.zip_code||null,
     project_url:zapParticipation?participation:null,
     bbl:propBbl,
+    project_id:r._zap_project_id||r.project_id||null,
+    action_path:exact?.path||r.action_path||null,
+    continuation_href:exact?.href||r.continuation_href||null,
     owner_name:r._property_owner||null,
     // Surplus-buyer commercial payload (item / price / bid steps) when extracted.
     commercial:isProperty?(r.commercial||null):null,

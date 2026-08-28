@@ -656,6 +656,12 @@ async function loadMeetingOutcomes(r, el){
     return;
   }
   if(!eligible && !(data.record.join && data.record.join.matched)) return;
+  // Keep the strict meeting/outcome join available to the notice action rail.
+  // The rail will expose a matter only when the Action Path compiler returns one.
+  r.meeting_record=data.record;
+  if(typeof globalThis.mountNoticeActionRail==="function" && $("#nactions")){
+    try{ globalThis.mountNoticeActionRail($("#nactions"),r); }catch(_e){}
+  }
   const phaseTools = await ensureMeetingPhaseSpineTools();
   if(!document.contains(el)) return;
   const liveHTML=meetingOutcomesHTML(data.record, r, phaseTools);
