@@ -218,7 +218,10 @@ function agencyExplanation(document, text) {
 export function normalizeRuleVersionDocument(document = {}, context = {}) {
   const source = sourceId(document);
   const text = clean(document.text || document.extracted_text || document.source_text, 50_000);
-  const textStatus = text ? "available" : clean(document.text_status, 40) || "not_acquired";
+  const declaredTextStatus = clean(document.text_status, 40).toLowerCase();
+  const textStatus = declaredTextStatus && declaredTextStatus !== "available"
+    ? declaredTextStatus
+    : text ? "available" : declaredTextStatus || "not_acquired";
   const kind = versionKind(document, text);
   const rulemakingId = clean(document.rulemaking_id || context.rulemaking_id, 700) || null;
   const evidence = extractRuleEvidenceStamp({

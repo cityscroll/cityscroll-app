@@ -139,6 +139,15 @@ test("non-text and ambiguous or unpaired versions stay explicitly unavailable", 
   }, { rulemaking_id: RULEMAKING });
   assert.equal(buildRuleVersionDiff(scanned, adopted).reason_code, "non_text_proposed");
 
+  const scannedWithOcr = normalizeRuleVersionDocument({
+    source_id: "scanned-with-ocr",
+    version_kind: "proposed",
+    text_status: "scanned",
+    text: "OCR text is present, but the retained document remains scanned.",
+  }, { rulemaking_id: RULEMAKING });
+  assert.equal(scannedWithOcr.text_status, "scanned");
+  assert.equal(buildRuleVersionDiff(scannedWithOcr, adopted).reason_code, "non_text_proposed");
+
   const projection = buildRuleVersionsProjection([
     { source_id: "p1", version_kind: "proposed", pairing_key: "ambiguous", text: "Same." },
     { source_id: "p2", version_kind: "proposed", pairing_key: "ambiguous", text: "Same." },
