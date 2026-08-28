@@ -56,6 +56,7 @@ function loadSources() {
   const regulatoryAgendaPath = join(SITE, "data/regulatory_agenda.json");
   const meetingsDomainPath = join(SITE, "data/meetings_domain_observations.json");
   const moneyOpenPath = join(SITE, "data/money_default_open.json");
+  const procurementBrowsePath = join(SITE, "data/procurement_browse_rows.json");
   const landProjectsPath = join(SITE, "data/zap_projects_warehouse_lookup.json");
   const crossSpineGatePath = join(SITE, "data/cross_spine_edge_gate.json");
   const ocpAwardsPath = join(SITE, "data/ocp_awards_warehouse_lookup.json");
@@ -80,6 +81,7 @@ function loadSources() {
     regulatory_agenda: existsSync(regulatoryAgendaPath) ? readJson(regulatoryAgendaPath) : null,
     meetings_domain: existsSync(meetingsDomainPath) ? readJson(meetingsDomainPath) : null,
     money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
+    procurement_browse: existsSync(procurementBrowsePath) ? readJson(procurementBrowsePath) : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
     ocp_awards: existsSync(ocpAwardsPath) ? readJson(ocpAwardsPath) : null,
@@ -359,6 +361,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.process_conformance?.generated_at,
     sources.money_open?.generated_at,
     sources.money_open?.open_as_of,
+    sources.procurement_browse?.generated_at,
     sources.meetings_domain?.retrieved_at,
     sources.ocp_awards?.materialized_at,
     sources.passport_graph?.observed_on,
@@ -381,6 +384,8 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       ...reconciledSources,
       vendor_rollups: vendorRollups,
       fiscal_context: sources.fiscal_context,
+      procurement_browse: sources.procurement_browse,
+      native_procurements: sources.procurement_browse,
       generated_at: generatedAt,
     });
     if (!view) continue;

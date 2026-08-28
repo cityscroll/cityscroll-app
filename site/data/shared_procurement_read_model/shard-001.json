@@ -6,6 +6,104 @@
     {
       "object_type": "procurement",
       "schema": "cityscroll.procurement_object.v1",
+      "procurement_id": "procurement:contract:CT107220268801910",
+      "canonical_id": "procurement:contract:CT107220268801910",
+      "source_observation_refs": [
+        "city_record:20250818017",
+        "passport_public_contracts:contract:07225W0046001:5475096"
+      ],
+      "stages": [
+        {
+          "stage": "award",
+          "source_observation_refs": [
+            "city_record:20250818017"
+          ]
+        },
+        {
+          "stage": "registered",
+          "source_observation_refs": [
+            "passport_public_contracts:contract:07225W0046001:5475096"
+          ]
+        }
+      ],
+      "identity_keys": {
+        "contract_ids": [
+          "CT107220268801910"
+        ],
+        "epins": [
+          "07225W0046001"
+        ]
+      },
+      "identity_edges": [
+        {
+          "schema": "cityscroll.procurement_identity_edge.v1",
+          "status": "accepted",
+          "source_observation_ref": "passport_public_contracts:contract:07225W0046001:5475096",
+          "procurement_id": "procurement:contract:CT107220268801910",
+          "basis": "exact_contract_id",
+          "matched_value": "CT107220268801910"
+        }
+      ],
+      "lifecycle": null,
+      "compatibility": {
+        "canonical_href": "/procurements/procurement%3Acontract%3ACT107220268801910",
+        "city_record_notice_hrefs": [
+          "/notices/20250818017"
+        ]
+      }
+    },
+    {
+      "object_type": "procurement",
+      "schema": "cityscroll.procurement_object.v1",
+      "procurement_id": "procurement:contract:CT107220268802069",
+      "canonical_id": "procurement:contract:CT107220268802069",
+      "source_observation_refs": [
+        "city_record:20250917010",
+        "passport_public_contracts:contract:07225S0002001:5472901"
+      ],
+      "stages": [
+        {
+          "stage": "award",
+          "source_observation_refs": [
+            "city_record:20250917010"
+          ]
+        },
+        {
+          "stage": "registered",
+          "source_observation_refs": [
+            "passport_public_contracts:contract:07225S0002001:5472901"
+          ]
+        }
+      ],
+      "identity_keys": {
+        "contract_ids": [
+          "CT107220268802069"
+        ],
+        "epins": [
+          "07225S0002001"
+        ]
+      },
+      "identity_edges": [
+        {
+          "schema": "cityscroll.procurement_identity_edge.v1",
+          "status": "accepted",
+          "source_observation_ref": "passport_public_contracts:contract:07225S0002001:5472901",
+          "procurement_id": "procurement:contract:CT107220268802069",
+          "basis": "exact_contract_id",
+          "matched_value": "CT107220268802069"
+        }
+      ],
+      "lifecycle": null,
+      "compatibility": {
+        "canonical_href": "/procurements/procurement%3Acontract%3ACT107220268802069",
+        "city_record_notice_hrefs": [
+          "/notices/20250917010"
+        ]
+      }
+    },
+    {
+      "object_type": "procurement",
+      "schema": "cityscroll.procurement_object.v1",
       "procurement_id": "procurement:contract:CT107220268802279",
       "canonical_id": "procurement:contract:CT107220268802279",
       "source_observation_refs": [
@@ -316807,107 +316905,93 @@
           "/notices/20240429114"
         ]
       }
-    },
-    {
-      "object_type": "procurement",
-      "schema": "cityscroll.procurement_object.v1",
-      "procurement_id": "procurement:contract:CT182620248807498",
-      "canonical_id": "procurement:contract:CT182620248807498",
-      "source_observation_refs": [
-        "city_record:20240516104",
-        "passport_public_contracts:contract:82624U0011001:5143830"
-      ],
-      "stages": [
-        {
-          "stage": "award",
-          "source_observation_refs": [
-            "city_record:20240516104"
-          ]
-        },
-        {
-          "stage": "registered",
-          "source_observation_refs": [
-            "passport_public_contracts:contract:82624U0011001:5143830"
-          ]
-        }
-      ],
-      "identity_keys": {
-        "contract_ids": [
-          "CT182620248807498"
-        ],
-        "epins": [
-          "82624U0011001"
-        ]
-      },
-      "identity_edges": [
-        {
-          "schema": "cityscroll.procurement_identity_edge.v1",
-          "status": "accepted",
-          "source_observation_ref": "passport_public_contracts:contract:82624U0011001:5143830",
-          "procurement_id": "procurement:contract:CT182620248807498",
-          "basis": "exact_contract_id",
-          "matched_value": "CT182620248807498"
-        }
-      ],
-      "lifecycle": null,
-      "compatibility": {
-        "canonical_href": "/procurements/procurement%3Acontract%3ACT182620248807498",
-        "city_record_notice_hrefs": [
-          "/notices/20240516104"
-        ]
-      }
-    },
-    {
-      "object_type": "procurement",
-      "schema": "cityscroll.procurement_object.v1",
-      "procurement_id": "procurement:contract:CT182620248807499",
-      "canonical_id": "procurement:contract:CT182620248807499",
-      "source_observation_refs": [
-        "city_record:20240429113",
-        "passport_public_contracts:contract:82624W0070001:5182271"
-      ],
-      "stages": [
-        {
-          "stage": "award",
-          "source_observation_refs": [
-            "city_record:20240429113"
-          ]
-        },
-        {
-          "stage": "registered",
-          "source_observation_refs": [
-            "passport_public_contracts:contract:82624W0070001:5182271"
-          ]
-        }
-      ],
-      "identity_keys": {
-        "contract_ids": [
-          "CT182620248807499"
-        ],
-        "epins": [
-          "82624W0070001"
-        ]
-      },
-      "identity_edges": [
-        {
-          "schema": "cityscroll.procurement_identity_edge.v1",
-          "status": "accepted",
-          "source_observation_ref": "passport_public_contracts:contract:82624W0070001:5182271",
-          "procurement_id": "procurement:contract:CT182620248807499",
-          "basis": "exact_contract_id",
-          "matched_value": "CT182620248807499"
-        }
-      ],
-      "lifecycle": null,
-      "compatibility": {
-        "canonical_href": "/procurements/procurement%3Acontract%3ACT182620248807499",
-        "city_record_notice_hrefs": [
-          "/notices/20240429113"
-        ]
-      }
     }
   ],
   "observations": [
+    {
+      "source_observation_ref": "city_record:20250818017",
+      "source_system": "city_record",
+      "source_system_id": "20250818017",
+      "ingested_at": "2026-08-05T10:40:50.286Z",
+      "snapshot": {
+        "request_id": "20250818017",
+        "start_date": "2025-08-25",
+        "agency_name": "Correction",
+        "type_of_notice_description": "Award",
+        "short_title": "Sanitation Services at various NYC DOC Locations",
+        "pin": "07225W0046001",
+        "contract_amount": "1500000",
+        "vendor_name": "Lina Vivas Maintenance Inc."
+      }
+    },
+    {
+      "source_observation_ref": "passport_public_contracts:contract:07225W0046001:5475096",
+      "source_system": "passport_public_contracts",
+      "source_system_id": "contract:07225W0046001:5475096",
+      "ingested_at": "2026-08-18T04:05:51.552Z",
+      "snapshot": {
+        "ctr_id": "5475096",
+        "epin": "07225W0046001",
+        "epin_norm": "07225W0046001",
+        "contract_id": "CT1-072-20268801910",
+        "agency": "DEPARTMENT OF CORRECTION",
+        "vendor": "LINA VIVAS MAINTENANCE INC",
+        "status": "Registered",
+        "award_amount": 1500000,
+        "current_amount": 1500000,
+        "encumbered_amount": 1475543.05,
+        "paid_amount": 1474550.9,
+        "start_date": "07/01/2025",
+        "end_date": "03/31/2026",
+        "registration_date": "08/15/2025",
+        "title": "Sanitation Services at various NYC DOC Locations",
+        "procurement_method": "MWBE Non Competitive Small Purchase",
+        "program": "Facility Maintenance & Repair Division (FMRD)",
+        "industry": "Professional Services"
+      }
+    },
+    {
+      "source_observation_ref": "city_record:20250917010",
+      "source_system": "city_record",
+      "source_system_id": "20250917010",
+      "ingested_at": "2026-08-05T10:40:50.286Z",
+      "snapshot": {
+        "request_id": "20250917010",
+        "start_date": "2025-09-23",
+        "agency_name": "Correction",
+        "type_of_notice_description": "Award",
+        "short_title": "Interactive Journaling Curricula",
+        "pin": "07225S0002001",
+        "contract_amount": "58726",
+        "vendor_name": "Change Companies Inc."
+      }
+    },
+    {
+      "source_observation_ref": "passport_public_contracts:contract:07225S0002001:5472901",
+      "source_system": "passport_public_contracts",
+      "source_system_id": "contract:07225S0002001:5472901",
+      "ingested_at": "2026-08-18T04:05:51.552Z",
+      "snapshot": {
+        "ctr_id": "5472901",
+        "epin": "07225S0002001",
+        "epin_norm": "07225S0002001",
+        "contract_id": "CT1-072-20268802069",
+        "agency": "DEPARTMENT OF CORRECTION",
+        "vendor": "Change Companies Inc",
+        "status": "Registered",
+        "award_amount": 58725.63,
+        "current_amount": 58725.63,
+        "encumbered_amount": 58725.63,
+        "paid_amount": 58725.63,
+        "start_date": "08/01/2025",
+        "end_date": "12/31/2025",
+        "registration_date": "09/16/2025",
+        "title": "INTERACTIVE JOURNALING CURRICULA",
+        "procurement_method": "Sole Source",
+        "program": "Adult Programs",
+        "industry": "Goods"
+      }
+    },
     {
       "source_observation_ref": "city_record:20251001012",
       "source_system": "city_record",
@@ -505454,90 +505538,6 @@
         "end_date": "04/24/2025",
         "registration_date": "04/29/2024",
         "title": "BWS Swagelok Valves 4012097X",
-        "procurement_method": "MWBE Non Competitive Small Purchase",
-        "program": "WATER SUPPLY",
-        "industry": "Goods"
-      }
-    },
-    {
-      "source_observation_ref": "city_record:20240516104",
-      "source_system": "city_record",
-      "source_system_id": "20240516104",
-      "ingested_at": "2026-08-05T10:40:50.286Z",
-      "snapshot": {
-        "request_id": "20240516104",
-        "start_date": "2024-05-22",
-        "agency_name": "Environmental Protection",
-        "type_of_notice_description": "Award",
-        "short_title": "ODHR Executive Essentials Training 4084067X",
-        "pin": "82624U0011001",
-        "contract_amount": "99500",
-        "vendor_name": "Executive Essentials LLC"
-      }
-    },
-    {
-      "source_observation_ref": "passport_public_contracts:contract:82624U0011001:5143830",
-      "source_system": "passport_public_contracts",
-      "source_system_id": "contract:82624U0011001:5143830",
-      "ingested_at": "2026-08-18T04:05:51.552Z",
-      "snapshot": {
-        "ctr_id": "5143830",
-        "epin": "82624U0011001",
-        "epin_norm": "82624U0011001",
-        "contract_id": "CT1-826-20248807498",
-        "agency": "DEPARTMENT OF ENVIRONMENTAL PROTECTION",
-        "vendor": "EXECUTIVE ESSENTIALS LLC",
-        "status": "Registered",
-        "award_amount": 99500,
-        "current_amount": 99500,
-        "encumbered_amount": 99500,
-        "paid_amount": 99500,
-        "start_date": "05/20/2024",
-        "end_date": "06/30/2025",
-        "registration_date": "05/15/2024",
-        "title": "ODHR Executive Essentials Training 4084067X",
-        "procurement_method": "Subscription",
-        "program": "EXECUTIVE ADMINISTRATION",
-        "industry": "Standard Services"
-      }
-    },
-    {
-      "source_observation_ref": "city_record:20240429113",
-      "source_system": "city_record",
-      "source_system_id": "20240429113",
-      "ingested_at": "2026-08-05T10:40:50.286Z",
-      "snapshot": {
-        "request_id": "20240429113",
-        "start_date": "2024-05-06",
-        "agency_name": "Environmental Protection",
-        "type_of_notice_description": "Award",
-        "short_title": "BWS Blueye X3 Underwater Drone 4018075X",
-        "pin": "82624W0070001",
-        "contract_amount": "87310",
-        "vendor_name": "Itegix LLC"
-      }
-    },
-    {
-      "source_observation_ref": "passport_public_contracts:contract:82624W0070001:5182271",
-      "source_system": "passport_public_contracts",
-      "source_system_id": "contract:82624W0070001:5182271",
-      "ingested_at": "2026-08-18T04:05:51.552Z",
-      "snapshot": {
-        "ctr_id": "5182271",
-        "epin": "82624W0070001",
-        "epin_norm": "82624W0070001",
-        "contract_id": "CT1-826-20248807499",
-        "agency": "DEPARTMENT OF ENVIRONMENTAL PROTECTION",
-        "vendor": "ITEGIX LLC",
-        "status": "Registered",
-        "award_amount": 87310,
-        "current_amount": 87310,
-        "encumbered_amount": 87310,
-        "paid_amount": 87310,
-        "start_date": "04/24/2024",
-        "end_date": "04/24/2025",
-        "registration_date": "04/29/2024",
-        "title": "BWS Blueye X3 Underwater Drone 4018075X",
         "procurement_method": "MWBE Non Competitive Small Purchase",
         "program": "WATER SUPPLY",
         "industry": "Goods"

@@ -443,7 +443,7 @@ test("ABO Worker KV weekly refresh and GET /externalaward are observed as the se
   for (const id of ["abo-local-authorities", "abo-local-development-corporations", "abo-state-authorities", "checkbook-contracts"]) {
     assert.equal(served.has(id), true, id);
   }
-  assert.equal(served.has("checkbook-nycha-contracts"), false);
+  assert.equal(served.has("checkbook-nycha-contracts"), true);
 
   const withReceipt = aboExternalAwardObservations(root, registry);
   // Production KV last_refresh is not in git; do not invent it. A dated receipt fills clocks.

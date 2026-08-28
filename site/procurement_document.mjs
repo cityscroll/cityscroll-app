@@ -54,6 +54,8 @@ function factsFor(object, observations) {
     method: first("selection_method_description", "procurement_method"),
     program: first("program"),
     industry: first("industry"),
+    start_date: first("start", "start_date", "contract_start_date"),
+    end_date: first("end", "end_date", "contract_end_date"),
   };
 }
 
@@ -129,6 +131,8 @@ function checkbookOfficialSource(object, rows) {
     return null;
   };
   const agid = first("agid", "original_agreement_id");
+  const direct = first("official_url", "source_url");
+  if (direct) return { href: direct, label: "Checkbook NYC" };
   const contractId = object?.identity_keys?.contract_ids?.[0] || first("id", "contract_id", "contractId", "prime_contract_id");
   const vendor = first("vendor", "vendor_name", "prime_vendor", "payee_name");
   if (/^\d+$/.test(agid || "")) {
@@ -184,9 +188,9 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
     const rfx = rows.find((entry) => entry.source_system === "passport_public_rfx");
     add(passportPublicOfficialSource("rfx", rfx?.snapshot || {}));
   }
-  if (systems.has("checkbook_contracts") || systems.has("checkbook_spending")) {
+  if (systems.has("checkbook_contracts") || systems.has("checkbook_nycha_contracts") || systems.has("checkbook_spending")) {
     add(checkbookOfficialSource(object, rows.filter((entry) =>
-      entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_spending")));
+      entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_nycha_contracts" || entry.source_system === "checkbook_spending")));
   }
   return items;
 }
@@ -197,7 +201,7 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
   const facts = factsFor(object, observations);
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Method", facts.method],
-    ["Program", facts.program], ["Industry", facts.industry],
+    ["Program", facts.program], ["Industry", facts.industry], ["Start date", facts.start_date], ["End date", facts.end_date],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
   ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
   const sourceItems = procurementOfficialSourceItems(object, observations);

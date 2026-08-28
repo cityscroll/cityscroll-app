@@ -218,7 +218,7 @@ test("served sources stay when clocks are unknown; only unused disabled sources 
   assert.doesNotMatch(html, /checkbook-nycha-contracts|Source checkbook-nycha-contracts/);
 });
 
-test("committed ABO family and checkbook-contracts stay on the page with real clocks", () => {
+test("committed contract sources stay on the page with honest clock states", () => {
   const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
   const committedView = buildDataHealthView(committed);
   const committedCards = committedView.groups.flatMap((group) => group.sources);
@@ -242,11 +242,15 @@ test("committed ABO family and checkbook-contracts stay on the page with real cl
       `${id} must not fabricate an epoch date`,
     );
   }
+  const nycha = byId["checkbook-nycha-contracts"];
+  assert.ok(nycha, "checkbook-nycha-contracts must stay on the Data health page");
+  assert.equal(nycha.health_status, "UNKNOWN");
+  assert.ok(nycha.clocks.every((clock) => clock.state === "UNKNOWN"));
   const rendered = renderDataHealthPage(committed);
   assert.match(rendered, /NYS Authorities Budget Office/);
   assert.match(rendered, /Checkbook NYC registered contracts/);
+  assert.match(rendered, /Checkbook NYC NYCHA contracts/);
   assert.match(rendered, /City Record Online/);
-  assert.doesNotMatch(rendered, /Checkbook NYC NYCHA contracts/);
 });
 
 test("historical and manual composite states render, and degraded names the failure plus retained serving", () => {

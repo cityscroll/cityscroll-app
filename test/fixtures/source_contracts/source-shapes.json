@@ -163,7 +163,8 @@
     {
       "id": "checkbook-nycha-contracts",
       "kind": "checkbook",
-      "identifier": "Contracts_NYCHA",
+    "identifier": "Contracts_NYCHA",
+    "source_system": "checkbook_nycha_contracts",
       "response_type": "xml-recordset",
       "fields": [
         "contract_id",

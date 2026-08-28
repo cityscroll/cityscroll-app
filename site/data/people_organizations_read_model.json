@@ -52868,7 +52868,7 @@
       "href": "/agencies/housing-authority/",
       "entity_ref": "agency:id:housing-authority",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52876,12 +52876,12 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
-          "method": "agency_browse_snapshot_v1"
+          "count": 9,
+          "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -58723,6 +58723,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:VITAL%20PLUMBING",
+      "label": "VITAL PLUMBING INC",
+      "href": "/vendors/VITAL%20PLUMBING/",
+      "entity_ref": "vendor:stem:VITAL%20PLUMBING",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:housing-authority"
+      ],
+      "award_count": 1,
+      "search_text": "VITAL PLUMBING INC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
       "label": "Volunteers of America Greater New York Inc",
       "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
@@ -63752,6 +63770,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:VITAL%20PLUMBING",
+      "label": "VITAL PLUMBING INC",
+      "href": "/vendors/VITAL%20PLUMBING/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
       "label": "Volunteers of America Greater New York Inc",
       "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
@@ -63892,7 +63916,7 @@
     "exact-person-appointment": 558,
     "committee": 96,
     "agency": 83,
-    "vendor": 271,
+    "vendor": 272,
     "notice-only-hire": 80
   },
   "relation_states": [

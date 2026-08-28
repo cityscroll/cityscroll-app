@@ -64,6 +64,22 @@
   ],
   "candidate_crosswalks": [
     {
+      "id": "checkbook-nycha-contracts-x-city-record-via-PIN",
+      "worth_materializing": "yes",
+      "score": 6,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
       "id": "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
       "worth_materializing": "yes",
       "score": 5,
@@ -81,6 +97,37 @@
     },
     {
       "id": "checkbook-contracts-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-rfx-via-PIN",
       "worth_materializing": "yes",
       "score": 5,
       "key_path": [
@@ -127,6 +174,20 @@
     },
     {
       "id": "checkbook-contracts-x-ocp-recent-contract-awards-via-PIN",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-ocp-recent-contract-awards-via-PIN",
       "worth_materializing": "yes",
       "score": 4,
       "key_path": [
@@ -254,6 +315,20 @@
       ]
     },
     {
+      "id": "checkbook-contracts-x-checkbook-nycha-contracts-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
       "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
       "worth_materializing": "yes",
       "score": 3,
@@ -269,6 +344,33 @@
     },
     {
       "id": "checkbook-contracts-x-current-solicitations-ocp-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-checkbook-spending-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-current-solicitations-ocp-via-PIN",
       "worth_materializing": "maybe",
       "score": 3,
       "key_path": [
@@ -1068,6 +1170,8 @@
     "passport_checkbook_candidates": [
       "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
       "checkbook-contracts-x-passport-public-rfx-via-PIN",
+      "checkbook-nycha-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "checkbook-nycha-contracts-x-passport-public-rfx-via-PIN",
       "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
       "checkbook-spending-x-passport-public-rfx-via-PIN"
     ]
@@ -1080,5 +1184,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "cc9c1b1165f551f0ed14d7eaa34e2bb2ea7804bab128d8a873591ab2d844b45d"
+  "registry_sha256": "64d1d739d075f20186cadaec07976c2577c5ec070005c4900a86b8d1f4cb8d08"
 }

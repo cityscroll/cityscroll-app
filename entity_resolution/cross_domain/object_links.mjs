@@ -394,7 +394,7 @@ export function observationFromMoneyRow(row, opts = {}) {
   const typeDesc = clean(row.type_of_notice_description).toLowerCase();
   const contractObservation = opts.objectKind === "contract"
     || row.object_kind === "contract"
-    || /passport|checkbook_contracts/i.test(sourceSystem);
+    || /passport|checkbook_contracts|checkbook_nycha_contracts/i.test(sourceSystem);
   let object_kind = contractObservation ? "contract" : "award";
   if (typeDesc.includes("solicit")) object_kind = "solicitation";
   else if (typeDesc.includes("intent to award")) object_kind = "intent_to_award";
@@ -467,6 +467,21 @@ export function observationFromCheckbookContractRow(row, opts = {}) {
       objectKind: "contract",
     },
   );
+}
+
+/** Shape the source-native NYCHA Checkbook contract as a contract subject. */
+export function observationFromCheckbookNychaContractRow(row, opts = {}) {
+  const observation = observationFromCheckbookContractRow({
+    ...row,
+    id: null,
+    request_id: null,
+    agency_name: row.agency_name || "New York City Housing Authority",
+  }, {
+    ...opts,
+    sourceSystem: "checkbook_nycha_contracts",
+  });
+  if (observation && row.source_record_id) observation.source_record_id = row.source_record_id;
+  return observation;
 }
 
 /**
@@ -2786,6 +2801,9 @@ export function buildIntelligenceCorpus(observations, opts = {}) {
     (opts.mandate_agency_refs || opts.reserved_root_refs || [])
       .filter((ref) => typeof ref === "string" && ref),
   );
+  const priorityRootRefs = new Set(
+    (opts.priority_root_refs || []).filter((ref) => typeof ref === "string" && ref),
+  );
   // Single pass index — corpus no longer re-scans observations per entity.
   const index = opts.index || indexObservationsByRoot(observations);
 
@@ -2842,9 +2860,11 @@ export function buildIntelligenceCorpus(observations, opts = {}) {
   const richnessFill = entities.filter(
     (entity) => !isMultiDomain(entity) && !isMandateAgency(entity),
   );
+  const priority = entities.filter((entity) => priorityRootRefs.has(entity.root?.ref));
+  const withoutPriority = (rows) => rows.filter((entity) => !priorityRootRefs.has(entity.root?.ref));
   const ranked = preferMultiDomain
-    ? [...multi, ...mandateReserve, ...richnessFill]
-    : entities;
+    ? [...priority, ...withoutPriority(multi), ...withoutPriority(mandateReserve), ...withoutPriority(richnessFill)]
+    : [...priority, ...withoutPriority(entities)];
   const sliced = ranked.slice(0, maxEntities);
   const selectedMulti = sliced.filter(isMultiDomain);
   const selectedMandateReserve = sliced.filter(
