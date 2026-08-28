@@ -3985,6 +3985,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Focused proof is `test/merge_gate_audit.test.mjs`; replay the contract with
   `node tools/merge_gate_audit.mjs --fixture test/fixtures/merge-throughput --check`.
 
+- **Check-mode determinism:** `tools/determinism_lint.mjs --check` follows explicit `--check`
+  commands in pull-request/merge-group workflows through local helpers and rejects ambient clock,
+  timezone, random, live-network, external-data, and write dependencies. Schedule-only workflows
+  are monitor roots; line-local waivers require a reasoned `determinism-lint: allow|inject` note.
+  Focused proof is `test/determinism_lint.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
