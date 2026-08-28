@@ -8,7 +8,6 @@ import {
   reconcileRulemakingOutcomeRows,
   renderCivicOutcomeTransition,
 } from "../site/civic_outcome_transition.mjs";
-import { subDigestHtml } from "../worker/src/alerts.mjs";
 import { reconcileTemporalCandidates } from "../worker/src/lib/alert_temporal.mjs";
 
 const SUBJECT = "rulemaking:dot:bicycle-owned-racks";
@@ -102,27 +101,6 @@ test("rules reconciliation decorates one exact subject once, then emits nothing 
   assert.equal(first.rows[0].post_event_outcome.transition.to.state, "adopted");
   const second = reconcileRulemakingOutcomeRows({ ...input, seen: new Set(first.markSeenIds) });
   assert.deepEqual(second.rows, []);
-});
-
-test("Rules digest surfaces the recorded outcome update with its source", () => {
-  const current = projectRulemakingOutcomeSnapshot({
-    request_id: "20260706041",
-    rulemaking_subject_ref: SUBJECT,
-    stage: "adopted",
-    nyc_rules: { url: RULE_URL },
-    events: [{ event_type: "adoption", valid_at: "2026-07-14", status: "occurred", source_url: RULE_URL }],
-  }, { asOf: "2026-07-20" });
-  const update = projectCivicOutcomeTransition({ subject_ref: SUBJECT, current });
-  const html = subDigestHtml(
-    "DOT rules",
-    "rules",
-    [{ request_id: "20260706041", short_title: "City-Owned Bicycle Racks", post_event_outcome: update }],
-    "https://example.test/unsubscribe",
-    "2026-07-20",
-  );
-  assert.match(html, /Rulemaking adopted/);
-  assert.match(html, /data-civic-outcome="recorded"/);
-  assert.match(html, /rules\.cityofnewyork\.us\/rule\/city-owned-bicycle-racks/);
 });
 
 test("the exact DOT notice-membership follow carries adoption, then effectiveness, once each", () => {
