@@ -1,0 +1,239 @@
+{
+  "schema": "cityscroll.merge-throughput.source.v1",
+  "repository": "cityscroll/cityscroll-app",
+  "source_run_id": "fixture-merge-throughput-2026-08-28",
+  "measurement": "estimated",
+  "observed_at": "2026-08-27T00:00:00Z",
+  "window": {
+    "started_at": "2026-08-24T00:00:00Z",
+    "ended_at": "2026-08-27T00:00:00Z"
+  },
+  "required_checks": [
+    "Unit tests (site + worker)",
+    "Accessibility + language gate (axe on every PR)",
+    "Reading-level ratchet gate (readable-or-else)"
+  ],
+  "source_documents": [
+    {
+      "id": "incident-corpus",
+      "path": "data/incident-corpus.json",
+      "sha256": "d0599550b1895de74ea626f8b30c187dd171460121614b950426a585b5e344c3",
+      "role": "mt-0 source-linked incident taxonomy and baseline"
+    },
+    {
+      "id": "merge-queue-ejection-report",
+      "path": "docs/evidence/merge-queue-cap/ejection-report.json",
+      "sha256": "6fece64ceaccba76ee69640a11c736cf2c6d16dd0ade0c2e4487a61742144987",
+      "role": "native merge-queue removal observations"
+    }
+  ],
+  "pull_requests": [
+    {
+      "number": 101,
+      "url": "https://github.com/cityscroll/cityscroll-app/pull/101",
+      "opened_at": "2026-08-24T00:00:00Z",
+      "queued_at": "2026-08-24T00:00:00Z",
+      "dequeued_at": "2026-08-24T12:00:00Z",
+      "merged_at": "2026-08-24T12:05:00Z"
+    },
+    {
+      "number": 102,
+      "url": "https://github.com/cityscroll/cityscroll-app/pull/102",
+      "opened_at": "2026-08-24T06:00:00Z",
+      "queued_at": "2026-08-24T06:00:00Z",
+      "dequeued_at": "2026-08-26T00:00:00Z",
+      "merged_at": "2026-08-26T00:05:00Z"
+    },
+    {
+      "number": 103,
+      "url": "https://github.com/cityscroll/cityscroll-app/pull/103",
+      "opened_at": "2026-08-25T00:00:00Z",
+      "queued_at": "2026-08-25T00:00:00Z",
+      "dequeued_at": "2026-08-26T06:00:00Z",
+      "merged_at": "2026-08-26T06:05:00Z"
+    },
+    {
+      "number": 104,
+      "url": "https://github.com/cityscroll/cityscroll-app/pull/104",
+      "opened_at": "2026-08-26T12:00:00Z",
+      "queued_at": "2026-08-26T12:00:00Z",
+      "dequeued_at": null,
+      "merged_at": null
+    }
+  ],
+  "attempts": [
+    {
+      "pull_request": 101,
+      "attempt": 1,
+      "queued_at": "2026-08-24T00:00:00Z",
+      "ejected_at": null,
+      "ejection_cause": null,
+      "failure_class": null,
+      "dequeued_at": "2026-08-24T12:00:00Z"
+    },
+    {
+      "pull_request": 102,
+      "attempt": 1,
+      "queued_at": "2026-08-24T06:00:00Z",
+      "ejected_at": "2026-08-25T01:00:00Z",
+      "ejection_cause": "failed_checks",
+      "failure_class": "flaky-shard-ejection",
+      "dequeued_at": null
+    },
+    {
+      "pull_request": 102,
+      "attempt": 2,
+      "queued_at": "2026-08-25T02:00:00Z",
+      "ejected_at": null,
+      "ejection_cause": null,
+      "failure_class": null,
+      "dequeued_at": "2026-08-26T00:00:00Z"
+    },
+    {
+      "pull_request": 103,
+      "attempt": 1,
+      "queued_at": "2026-08-25T00:00:00Z",
+      "ejected_at": "2026-08-25T03:00:00Z",
+      "ejection_cause": "merge_conflict",
+      "failure_class": "generated-file-conflict",
+      "dequeued_at": null
+    },
+    {
+      "pull_request": 103,
+      "attempt": 2,
+      "queued_at": "2026-08-25T04:00:00Z",
+      "ejected_at": null,
+      "ejection_cause": null,
+      "failure_class": null,
+      "dequeued_at": "2026-08-26T06:00:00Z"
+    },
+    {
+      "pull_request": 104,
+      "attempt": 1,
+      "queued_at": "2026-08-26T12:00:00Z",
+      "ejected_at": null,
+      "ejection_cause": null,
+      "failure_class": null,
+      "dequeued_at": null
+    }
+  ],
+  "checks": [
+    {
+      "pull_request": 101,
+      "attempt": 1,
+      "name": "Unit tests (site + worker)",
+      "status": "success",
+      "started_at": "2026-08-24T00:10:00Z",
+      "completed_at": "2026-08-24T00:20:00Z",
+      "source": { "run_id": "fixture-run-101-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1011" }
+    },
+    {
+      "pull_request": 101,
+      "attempt": 1,
+      "name": "Accessibility + language gate (axe on every PR)",
+      "status": "success",
+      "started_at": "2026-08-24T00:20:00Z",
+      "completed_at": "2026-08-24T00:40:00Z",
+      "source": { "run_id": "fixture-run-101-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1011" }
+    },
+    {
+      "pull_request": 101,
+      "attempt": 1,
+      "name": "Reading-level ratchet gate (readable-or-else)",
+      "status": "success",
+      "started_at": "2026-08-24T00:40:00Z",
+      "completed_at": "2026-08-24T00:45:00Z",
+      "source": { "run_id": "fixture-run-101-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1011" }
+    },
+    {
+      "pull_request": 102,
+      "attempt": 1,
+      "name": "Unit tests (site + worker)",
+      "status": "success",
+      "started_at": "2026-08-24T06:10:00Z",
+      "completed_at": "2026-08-24T06:22:00Z",
+      "source": { "run_id": "fixture-run-102-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1021" }
+    },
+    {
+      "pull_request": 102,
+      "attempt": 1,
+      "name": "Accessibility + language gate (axe on every PR)",
+      "status": "failure",
+      "started_at": "2026-08-24T06:22:00Z",
+      "completed_at": "2026-08-24T06:34:00Z",
+      "source": { "run_id": "fixture-run-102-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1021" }
+    },
+    {
+      "pull_request": 102,
+      "attempt": 2,
+      "name": "Unit tests (site + worker)",
+      "status": "success",
+      "started_at": "2026-08-25T02:10:00Z",
+      "completed_at": "2026-08-25T02:22:00Z",
+      "source": { "run_id": "fixture-run-102-2", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1022" }
+    },
+    {
+      "pull_request": 102,
+      "attempt": 2,
+      "name": "Accessibility + language gate (axe on every PR)",
+      "status": "success",
+      "started_at": "2026-08-25T02:22:00Z",
+      "completed_at": "2026-08-25T02:42:00Z",
+      "source": { "run_id": "fixture-run-102-2", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1022" }
+    },
+    {
+      "pull_request": 102,
+      "attempt": 2,
+      "name": "Reading-level ratchet gate (readable-or-else)",
+      "status": "success",
+      "started_at": "2026-08-25T02:42:00Z",
+      "completed_at": "2026-08-25T02:47:00Z",
+      "source": { "run_id": "fixture-run-102-2", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1022" }
+    },
+    {
+      "pull_request": 103,
+      "attempt": 1,
+      "name": "Unit tests (site + worker)",
+      "status": "success",
+      "started_at": "2026-08-25T00:10:00Z",
+      "completed_at": "2026-08-25T00:20:00Z",
+      "source": { "run_id": "fixture-run-103-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1031" }
+    },
+    {
+      "pull_request": 103,
+      "attempt": 2,
+      "name": "Unit tests (site + worker)",
+      "status": "success",
+      "started_at": "2026-08-25T04:10:00Z",
+      "completed_at": "2026-08-25T04:20:00Z",
+      "source": { "run_id": "fixture-run-103-2", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1032" }
+    },
+    {
+      "pull_request": 103,
+      "attempt": 2,
+      "name": "Accessibility + language gate (axe on every PR)",
+      "status": "success",
+      "started_at": "2026-08-25T04:20:00Z",
+      "completed_at": "2026-08-25T04:40:00Z",
+      "source": { "run_id": "fixture-run-103-2", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1032" }
+    },
+    {
+      "pull_request": 103,
+      "attempt": 2,
+      "name": "Reading-level ratchet gate (readable-or-else)",
+      "status": "success",
+      "started_at": "2026-08-25T04:40:00Z",
+      "completed_at": "2026-08-25T04:45:00Z",
+      "source": { "run_id": "fixture-run-103-2", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1032" }
+    },
+    {
+      "pull_request": 104,
+      "attempt": 1,
+      "name": "Unit tests (site + worker)",
+      "status": "pending",
+      "started_at": "2026-08-26T12:10:00Z",
+      "completed_at": null,
+      "source": { "run_id": "fixture-run-104-1", "url": "https://github.com/cityscroll/cityscroll-app/actions/runs/1041" }
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+{
+  "schema": "cityscroll.merge-throughput.daily-gauges.v1",
+  "source_run_id": "fixture-merge-throughput-2026-08-28",
+  "window": {
+    "started_at": "2026-08-24T00:00:00Z",
+    "ended_at": "2026-08-27T00:00:00Z"
+  },
+  "days": [
+    {
+      "schema": "cityscroll.merge-throughput.daily-gauge.v1",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "date": "2026-08-24",
+      "window": {
+        "started_at": "2026-08-24T00:00:00.000Z",
+        "ended_at": "2026-08-25T00:00:00.000Z"
+      },
+      "open_pr_inventory": {
+        "start": 0,
+        "end": 1,
+        "average": {
+          "value": 1.25,
+          "measurement": "measured",
+          "basis": "time-weighted queued PR interval"
+        }
+      },
+      "arrivals": {
+        "value": 2,
+        "measurement": "measured",
+        "basis": "PR opened_at timestamps",
+        "denominator": 2
+      },
+      "successful_dequeues": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "PR dequeued_at timestamps",
+        "denominator": 1
+      },
+      "arrival_rate_per_day": {
+        "value": 2,
+        "measurement": "measured",
+        "basis": "arrivals divided by this day window"
+      },
+      "successful_dequeue_service_rate_per_day": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "successful dequeues divided by this day window"
+      },
+      "ejections": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "attempt ejection timestamps",
+        "denominator": 0
+      },
+      "time_in_queue_minutes": {
+        "value": 720,
+        "measurement": "measured",
+        "basis": "PR queue intervals ending in this day",
+        "denominator": 1
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.daily-gauge.v1",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "date": "2026-08-25",
+      "window": {
+        "started_at": "2026-08-25T00:00:00.000Z",
+        "ended_at": "2026-08-26T00:00:00.000Z"
+      },
+      "open_pr_inventory": {
+        "start": 1,
+        "end": 1,
+        "average": {
+          "value": 2,
+          "measurement": "measured",
+          "basis": "time-weighted queued PR interval"
+        }
+      },
+      "arrivals": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "PR opened_at timestamps",
+        "denominator": 1
+      },
+      "successful_dequeues": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "PR dequeued_at timestamps",
+        "denominator": 0
+      },
+      "arrival_rate_per_day": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "arrivals divided by this day window"
+      },
+      "successful_dequeue_service_rate_per_day": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "successful dequeues divided by this day window"
+      },
+      "ejections": {
+        "value": 2,
+        "measurement": "measured",
+        "basis": "attempt ejection timestamps",
+        "denominator": 2
+      },
+      "time_in_queue_minutes": {
+        "value": 2520,
+        "measurement": "measured",
+        "basis": "PR queue intervals ending in this day",
+        "denominator": 1
+      }
+    },
+    {
+      "schema": "cityscroll.merge-throughput.daily-gauge.v1",
+      "source_run_id": "fixture-merge-throughput-2026-08-28",
+      "date": "2026-08-26",
+      "window": {
+        "started_at": "2026-08-26T00:00:00.000Z",
+        "ended_at": "2026-08-27T00:00:00.000Z"
+      },
+      "open_pr_inventory": {
+        "start": 1,
+        "end": 1,
+        "average": {
+          "value": 0.75,
+          "measurement": "measured",
+          "basis": "time-weighted queued PR interval"
+        }
+      },
+      "arrivals": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "PR opened_at timestamps",
+        "denominator": 1
+      },
+      "successful_dequeues": {
+        "value": 2,
+        "measurement": "measured",
+        "basis": "PR dequeued_at timestamps",
+        "denominator": 2
+      },
+      "arrival_rate_per_day": {
+        "value": 1,
+        "measurement": "measured",
+        "basis": "arrivals divided by this day window"
+      },
+      "successful_dequeue_service_rate_per_day": {
+        "value": 2,
+        "measurement": "measured",
+        "basis": "successful dequeues divided by this day window"
+      },
+      "ejections": {
+        "value": 0,
+        "measurement": "measured",
+        "basis": "attempt ejection timestamps",
+        "denominator": 0
+      },
+      "time_in_queue_minutes": {
+        "value": 1260,
+        "measurement": "measured",
+        "basis": "PR queue intervals ending in this day",
+        "denominator": 2
+      }
+    }
+  ],
+  "totals": {
+    "arrivals": {
+      "value": 4,
+      "measurement": "measured",
+      "basis": "PR opened_at timestamps"
+    },
+    "successful_dequeues": {
+      "value": 3,
+      "measurement": "measured",
+      "basis": "PR dequeued_at timestamps"
+    },
+    "ejections": {
+      "value": 2,
+      "measurement": "measured",
+      "basis": "attempt ejection receipts"
+    },
+    "open_pr_inventory_start": {
+      "value": 0,
+      "measurement": "measured",
+      "basis": "queue interval state at window start"
+    },
+    "open_pr_inventory_end": {
+      "value": 1,
+      "measurement": "measured",
+      "basis": "queue interval state at window end"
+    },
+    "net_inventory_change": {
+      "value": 1,
+      "measurement": "measured",
+      "basis": "window-end inventory minus window-start inventory"
+    }
+  },
+  "rates": {
+    "arrival_rate_per_day": {
+      "value": 1.3333,
+      "measurement": "measured",
+      "basis": "arrivals divided by the shared observation window",
+      "denominator": 4,
+      "window_days": 3
+    },
+    "successful_dequeue_service_rate_per_day": {
+      "value": 1,
+      "measurement": "measured",
+      "basis": "successful dequeues divided by the shared observation window",
+      "denominator": 3,
+      "window_days": 3
+    }
+  },
+  "queueing_decomposition": {
+    "model": "Little's Law",
+    "observation_window_days": 3,
+    "queue_inventory_pr_days": {
+      "value": 4,
+      "measurement": "measured",
+      "basis": "sum of each PR queued interval, right-censored at observed_at"
+    },
+    "average_open_pr_inventory": {
+      "value": 1.3333,
+      "measurement": "measured",
+      "basis": "queue inventory PR-days divided by the shared observation window"
+    },
+    "average_time_in_queue_days": {
+      "value": 1,
+      "measurement": "measured",
+      "basis": "mean queued interval over the same PR cohort"
+    },
+    "arrival_rate_per_day": {
+      "value": 1.3333,
+      "measurement": "measured",
+      "basis": "same-window arrivals divided by window days"
+    },
+    "implied_inventory": {
+      "value": 1.3333,
+      "measurement": "derived",
+      "basis": "arrival rate multiplied by mean queue time"
+    },
+    "residual": {
+      "value": 0,
+      "measurement": "derived",
+      "basis": "observed inventory minus Little's Law implied inventory"
+    },
+    "identity_holds": true,
+    "denominators": {
+      "arrival_prs": 4,
+      "queue_intervals": 4,
+      "window_days": 3
+    }
+  },
+  "diagnosis": {
+    "inventory_growth": {
+      "state": "arrivals_exceed_successful_dequeues",
+      "measurement": "measured",
+      "basis": "compare arrivals with successful dequeues in the same observation window",
+      "net_change": 1
+    },
+    "gate_service_rate_signal": {
+      "state": "particular_gate_candidate_observed",
+      "measurement": "measured",
+      "attribution": "candidate signal only; a failed check or ejection is not by itself proof of root cause",
+      "candidates": [
+        "Accessibility + language gate (axe on every PR)"
+      ]
+    }
+  }
+}
