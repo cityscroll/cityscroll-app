@@ -63,6 +63,13 @@
   preserve one district/officeholder row per location. Focused proof is
   `worker/test/land_prediction_actor_resolution.test.mjs`.
 
+- **Project-specific Council stance (LUP2-C4):**
+  `worker/src/lib/land_prediction_member_stance.mjs` is the source-preserving application/member
+  evidence contract. Its resolver keeps confidence separate from direction, makes latest-clock
+  conflicts explicit as `mixed_or_unclear`, preserves superseded history, and never turns unknown
+  or political proxies into a stance. Focused proof is
+  `worker/test/land_prediction_member_stance.test.mjs`.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
