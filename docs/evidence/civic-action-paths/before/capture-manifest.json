@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "capture_mode": "headless_playwright_loopback_static_server",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "captures": [
+    {
+      "fixture": "strict_matter_join",
+      "route": "#notice/20260707022",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/strict_matter_join-desktop.png"
+    },
+    {
+      "fixture": "multi_matter_join",
+      "route": "#notice/20260707021",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/multi_matter_join-desktop.png"
+    },
+    {
+      "fixture": "no_matter_join",
+      "route": "#notice/20260728026",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/no_matter_join-desktop.png"
+    },
+    {
+      "fixture": "cb_source_backed",
+      "route": "/community-boards/manhattan-cb-06/",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/cb_source_backed-desktop.png"
+    },
+    {
+      "fixture": "cb_unknown",
+      "route": "/community-boards/manhattan-cb-02/",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/cb_unknown-desktop.png"
+    },
+    {
+      "fixture": "cb_source_map_surface",
+      "route": "/community-boards/",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/cb-source-map-desktop.png"
+    },
+    {
+      "fixture": "dot_bicycle_racks_rulemaking",
+      "route": "#rules",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-rules-desktop.png"
+    },
+    {
+      "fixture": "dot_bicycle_racks_rulemaking",
+      "route": "#notice/20260706041",
+      "viewport": "desktop",
+      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-lifecycle-desktop.png"
+    },
+    {
+      "fixture": "strict_matter_join",
+      "route": "#notice/20260707022",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/strict_matter_join-mobile.png"
+    },
+    {
+      "fixture": "multi_matter_join",
+      "route": "#notice/20260707021",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/multi_matter_join-mobile.png"
+    },
+    {
+      "fixture": "no_matter_join",
+      "route": "#notice/20260728026",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/no_matter_join-mobile.png"
+    },
+    {
+      "fixture": "cb_source_backed",
+      "route": "/community-boards/manhattan-cb-06/",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/cb_source_backed-mobile.png"
+    },
+    {
+      "fixture": "cb_unknown",
+      "route": "/community-boards/manhattan-cb-02/",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/cb_unknown-mobile.png"
+    },
+    {
+      "fixture": "cb_source_map_surface",
+      "route": "/community-boards/",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/cb-source-map-mobile.png"
+    },
+    {
+      "fixture": "dot_bicycle_racks_rulemaking",
+      "route": "#rules",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-rules-mobile.png"
+    },
+    {
+      "fixture": "dot_bicycle_racks_rulemaking",
+      "route": "#notice/20260706041",
+      "viewport": "mobile",
+      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-lifecycle-mobile.png"
+    }
+  ]
+}
