@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-28T10:38:00-04:00",
-  "commit": "145122260d0eb9f7e3ff54618e2a2ad0e835a3d8",
-  "observer_coverage_hash": "dc405414fefca9f535f6b1cceee8b3e348c671990c78aeed5861d062699df1c2",
+  "generated_at": "2026-08-28T15:19:44Z",
+  "commit": "00e76a98c7f1ab2ac27d41290f29c407d1e23a1d",
+  "observer_coverage_hash": "3533a674b33763e033ceca0f9351380c22f3d3ac5faa2a1d1b292b8c6f05a2da",
   "canaries": {
     "agency-constellation-model": {
       "path": "site/agency_constellation_model.mjs",
@@ -73,6 +73,16 @@
       "path": "worker/src/search.mjs",
       "count": 6,
       "fingerprint": "e52234de65c55e08b8cda2c1a21d3702ea1ab0a12deac4a9970cc7a88e39ef2d"
+    },
+    "rule-version-materializer": {
+      "path": "tools/build_rule_versions.mjs",
+      "count": 1,
+      "fingerprint": "352cfe5725c93f3101723af93b5cf57bb3809bb0f4ee75115f321fbae44c7928"
+    },
+    "rule-version-projection": {
+      "path": "site/rule_versions.mjs",
+      "count": 1,
+      "fingerprint": "7106777c2c2334d1aae9091256e312c0ad2abb6430bec7dd83b76206e1c66f95"
     },
     "worker-bindings": {
       "path": "worker/wrangler.toml",

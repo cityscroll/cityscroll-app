@@ -48,6 +48,16 @@
       "why": "Pages-edge document renderer. Search, Browse, and Pages-edge sit outside the observer's closed source set."
     },
     {
+      "id": "rule-version-projection",
+      "path": "site/rule_versions.mjs",
+      "why": "Source-qualified rule versions, exact citation spans, and legal-effect projection drive the rulemaking case-file contract."
+    },
+    {
+      "id": "rule-version-materializer",
+      "path": "tools/build_rule_versions.mjs",
+      "why": "Bounded Tier-2 rule-document materialization records the characterization gate and bridge-specific receipt metrics."
+    },
+    {
       "id": "pages-edge-routes",
       "path": "site/_routes.json",
       "why": "Pages worker invocation boundary. A route family handled in the edge renderer but missing from this include list never reaches the worker."

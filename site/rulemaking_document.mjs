@@ -92,6 +92,64 @@ function historyTimelineMarkup(object) {
   </div>`;
 }
 
+const VERSION_LABELS = Object.freeze({
+  proposed: "Proposed version",
+  revised: "Revised proposed version",
+  adopted: "Adopted version",
+  emergency: "Emergency version",
+});
+
+function versionDateMarkup(version) {
+  if (version.effective_date) {
+    const basis = version.effective_date_basis === "source_stated" ? "Source-stated" : "Observed";
+    return `<div><dt>Effective date</dt><dd>${esc(prettyDate(version.effective_date))} <span class="muted">(${esc(basis)})</span></dd></div>`;
+  }
+  return `<div><dt>Effective date</dt><dd>Not stated in the retained version source</dd></div>`;
+}
+
+function versionMarkup(version) {
+  const source = version.source_url
+    ? `<a class="ui-official-source-link" href="${esc(version.source_url)}" target="_blank" rel="noopener noreferrer">Open source document<span aria-hidden="true">↗</span></a>`
+    : `<span class="muted">Source link not retained</span>`;
+  const text = version.text_status === "available"
+    ? `<details class="rule-version-text"><summary>Read retained text</summary><p>${esc(version.text)}</p></details>`
+    : `<p class="muted">Version text not acquired; the source remains visible as an incomplete document record.</p>`;
+  const authority = (version.authority || []).map((item) => `<li>${esc(item.label)} <span class="muted">· source-stated</span></li>`).join("");
+  const effects = (version.legal_effects || []).map((effect) => {
+    const target = effect.target || {};
+    const targetMarkup = target.href
+      ? `<a href="${esc(target.href)}">${esc(target.label)}</a>`
+      : `<span>${esc(target.label || "Legal-code target")}</span>`;
+    return `<li><strong>${esc(effect.kind)}</strong> ${targetMarkup} <span class="muted">· source-stated</span></li>`;
+  }).join("");
+  const held = (version.held_references || []).length
+    ? `<p class="muted">${version.held_references.length} citation/effect reference${version.held_references.length === 1 ? "" : "s"} held because the source did not provide an exact supported target.</p>`
+    : "";
+  return `<article class="rule-version" data-version-kind="${esc(version.kind)}" data-text-status="${esc(version.text_status)}">
+    <header><p class="node-kicker">${esc(VERSION_LABELS[version.kind] || "Rule version")}</p><h3>${esc(version.source_label || VERSION_LABELS[version.kind] || "Rule version")}</h3></header>
+    <dl class="rule-version-facts"><div><dt>Published</dt><dd>${esc(version.published_at ? prettyDate(version.published_at) : "Date not stated")}</dd></div>${versionDateMarkup(version)}</dl>
+    ${version.text_preview ? `<p class="rule-version-preview">${esc(version.text_preview)}</p>` : ""}
+    ${text}
+    ${authority ? `<section class="rule-version-authority"><h4>Authority stated in source</h4><ul>${authority}</ul></section>` : ""}
+    ${effects ? `<section class="rule-version-effects"><h4>What this version changes</h4><ul>${effects}</ul></section>` : ""}
+    ${held}${source}
+  </article>`;
+}
+
+function ruleVersionsMarkup(object) {
+  const versions = Array.isArray(object.versions) ? object.versions : [];
+  const effects = Array.isArray(object.legal_effects) ? object.legal_effects : [];
+  if (!versions.length) {
+    return `<p class="muted" data-rule-version-state="not_yet_acquired">No proposed or adopted rule documents are retained for this case file yet.</p>`;
+  }
+  const coverage = object.version_coverage || {};
+  const coverageNote = `${coverage.proposed_documents || 0} proposed, ${coverage.adopted_documents || 0} adopted; ${coverage.paired_versions || 0} paired version${coverage.paired_versions === 1 ? "" : "s"}.`;
+  return `<div class="rule-versions" data-rule-version-count="${versions.length}" data-legal-effect-count="${effects.length}">
+    <p class="rule-version-coverage">${esc(coverageNote)} Exact source citations are shown only when retained in the version document.</p>
+    ${versions.map(versionMarkup).join("")}
+  </div>`;
+}
+
 export function renderRulemakingDocument(object, { currentHref = "", now = null } = {}) {
   if (!object || object.schema !== "cityscroll.rulemaking.v1" || !object.rulemaking_id) return "";
   const title = clean(object.title, 500) || "Rulemaking";
@@ -182,6 +240,7 @@ ${agency ? `<p class="node-lede">${esc(agency)}</p>` : ""}
 </header>
 ${actions}
 ${renderNodeSection({ heading: "What the agency proposes", body: object.proposal_summary ? `<p>${esc(object.proposal_summary)}</p>` : "" })}
+${renderNodeSection({ heading: "What this changes", body: ruleVersionsMarkup(object), extraClass: "rulemaking-versions" })}
 ${participation}
 ${renderNodeSection({ heading: "Process", body: timeline, extraClass: "rulemaking-process" })}
 ${renderNodeSection({ heading: "Source documents", body: `<ul>${noticeItems}${ruleItems}</ul>` })}
