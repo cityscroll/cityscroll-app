@@ -15,6 +15,7 @@ import {
   renderCivicTimeLedgerPanel,
 } from "./civic_time_ledger.mjs";
 import {
+  mountEdgeProvenanceClient,
   renderWhyBelieveControl,
   sourceSystemReaderLabel,
 } from "./graph_edge_provenance.mjs";
@@ -314,6 +315,7 @@ async function loadAgencyView(href) {
 }
 
 function wireAgencyDocument(main, nowView, { viewHref = null } = {}) {
+  mountEdgeProvenanceClient(main.ownerDocument || document);
   const initial = parseAsOfFromSearch(location.search);
   if (!nowView) {
     const loader = main.__civicAgencyViewLoader || (() => loadAgencyView(viewHref || main.dataset.civicObjectViewHref));

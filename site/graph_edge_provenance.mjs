@@ -637,6 +637,77 @@ export function renderEdgeProvenancePanel(claims = [], { activeClaimId = null } 
   </section>`;
 }
 
+/**
+ * Mount the provenance inspector after a deferred document has supplied its
+ * panel. Static documents may run the inline client before that panel exists.
+ */
+export function mountEdgeProvenanceClient(root = document) {
+  const panel = root?.querySelector?.("[data-edge-provenance-panel]");
+  const body = panel?.querySelector("[data-edge-prov-body]");
+  const claimsEl = root?.getElementById?.("edge-provenance-claims")
+    || root?.querySelector?.("#edge-provenance-claims");
+  if (!panel || !body || !claimsEl) return false;
+  if (panel.dataset.edgeProvenanceClient === "1") return true;
+  panel.dataset.edgeProvenanceClient = "1";
+  const locationObject = root.defaultView?.location || globalThis.location;
+  const historyObject = root.defaultView?.history || globalThis.history;
+  const cssObject = root.defaultView?.CSS || globalThis.CSS;
+  const params = new URLSearchParams(locationObject?.search || "");
+  const claimId = (params.get("claim") || "").trim();
+  let entries = [];
+  try { entries = JSON.parse(claimsEl.textContent || "[]"); } catch { entries = []; }
+  const byId = new Map(entries.map((entry) => [entry.claim_id, entry]));
+
+  const render = (entry) => {
+    if (!entry) {
+      body.replaceChildren();
+      panel.hidden = true;
+      panel.removeAttribute("data-active-claim");
+      return;
+    }
+    panel.hidden = false;
+    const escapedId = cssObject?.escape
+      ? cssObject.escape(entry.claim_id)
+      : String(entry.claim_id).replace(/[^a-zA-Z0-9_-]/g, "\\$&");
+    const existing = root.querySelector(`#claim-${escapedId}`);
+    if (existing && existing.closest("[data-edge-prov-body]")) {
+      existing.open = true;
+      panel.setAttribute("data-active-claim", entry.claim_id);
+      existing.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      return;
+    }
+    body.innerHTML = entry.html;
+    panel.setAttribute("data-active-claim", entry.claim_id);
+    body.querySelector(".edge-prov-inspector")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  };
+
+  const selectClaim = (id, { push = false } = {}) => {
+    const entry = byId.get(id) || null;
+    render(entry);
+    root.querySelectorAll("[data-edge-claim].edge-prov-why").forEach((el) => {
+      el.setAttribute("aria-current", el.getAttribute("data-edge-claim") === id ? "true" : "false");
+    });
+    if (push && historyObject && locationObject) {
+      const url = new URL(locationObject.href);
+      if (entry) url.searchParams.set("claim", entry.claim_id);
+      else url.searchParams.delete("claim");
+      historyObject.replaceState({}, "", url.pathname + url.search + url.hash);
+    }
+  };
+
+  root.addEventListener("click", (event) => {
+    const link = event.target.closest?.("a[data-edge-claim]");
+    if (!link || !panel.contains(link) && !link.classList.contains("edge-prov-why")) return;
+    if (link.hasAttribute("data-edge-claim-share")) return;
+    if (!link.classList.contains("edge-prov-why")) return;
+    event.preventDefault();
+    selectClaim(link.getAttribute("data-edge-claim"), { push: true });
+  });
+
+  if (claimId && byId.has(claimId)) selectClaim(claimId);
+  return true;
+}
+
 /** Client boot for static documents — select claim from ?claim= and keep URL shareable. */
 export function edgeProvenanceClientScript() {
   return `(() => {
@@ -646,6 +717,8 @@ export function edgeProvenanceClientScript() {
   const body = panel?.querySelector("[data-edge-prov-body]");
   const claimsEl = document.getElementById("edge-provenance-claims");
   if (!panel || !body || !claimsEl) return;
+  if (panel.dataset.edgeProvenanceClient === "1") return;
+  panel.dataset.edgeProvenanceClient = "1";
   let entries = [];
   try { entries = JSON.parse(claimsEl.textContent || "[]"); } catch { entries = []; }
   const byId = new Map(entries.map((entry) => [entry.claim_id, entry]));
