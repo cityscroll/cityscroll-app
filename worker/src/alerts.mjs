@@ -1047,13 +1047,20 @@ export async function processOneSub(env, s, ctx) {
             }
             throw error;
           }
-          await ctx.onSent();
+          if (providerAccepted && ctx.advanceState !== false) {
+            await recordConfirmedWatchSend(env, {
+              key: s.key,
+              day: ctx.today,
+              seenId: s.key,
+              seenIds: reconciled.markSeenIds,
+            });
+          }
           delivery = reservation?.reserved
             ? await finalizeOutboxDelivery(env, reservation, s.subscriber_id, ctx, includedOutboxItems, providerAccepted, null)
             : null;
+          await ctx.onSent();
         }
         if (providerAccepted && ctx.advanceState !== false) {
-          await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
           await bumpStatAllTime(env.ALERT_STATE, "digest");
           await bumpHistDay(env.ALERT_STATE, "digest", new Date());
           if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
@@ -1066,11 +1073,6 @@ export async function processOneSub(env, s, ctx) {
       }
     }
 
-    // Mark seen ONLY on a real send — advancing the seen set without delivery was the
-    // watermark-poisoning bug (dry-run, quiet, or any path where send stays false).
-    if (providerAccepted && ctx.advanceState !== false && reconciled.markSeenIds.length) {
-      await markSeen(env, s.key, reconciled.markSeenIds);
-    }
     // Multi-day lag after a delivery outage: stamp traffic_class so desk ops can exempt
     // day-scoped phantom_send without treating a normal daily match as recovery.
     // Resident copy names the coverage range when lastsent is older than one period.
@@ -1262,17 +1264,24 @@ export async function processAccountRollup(env, subs, ctx) {
             }
             throw error;
           }
-          await ctx.onSent();
+          if (providerAccepted && ctx.advanceState !== false) {
+            for (const sec of sections) {
+              if (sec.subKey && sectionWantsSend(sec)) {
+                await recordConfirmedWatchSend(env, {
+                  key: sec.subKey,
+                  day: ctx.today,
+                  seenId: sec.seenId,
+                  seenIds: sec.markSeenIds,
+                });
+              }
+            }
+          }
           delivery = reservation?.reserved
             ? await finalizeOutboxDelivery(env, reservation, subscriberId, ctx, includedOutboxItems, providerAccepted, partialError ? { message: "one or more digest sections failed" } : null)
             : null;
+          await ctx.onSent();
         }
         if (providerAccepted && ctx.advanceState !== false) {
-          for (const sec of sections) {
-            if (sec.subKey && sectionWantsSend(sec)) {
-              await setLastSent(env, sec.subKey, ctx.today);
-            }
-          }
           await bumpStatAllTime(env.ALERT_STATE, "digest");
           await bumpHistDay(env.ALERT_STATE, "digest", new Date());
           for (const sec of sections) {
@@ -1283,15 +1292,6 @@ export async function processAccountRollup(env, subs, ctx) {
       } else {
         if (!ctx.previewOnly) logDryRunEmail(payload);
         if (ctx.onDryRun) await ctx.onDryRun();
-      }
-    }
-
-    // Mark seen ONLY on a real send (same watermark-poisoning fix as single-sub path).
-    if (providerAccepted && ctx.advanceState !== false) {
-      for (const sec of sections) {
-        if (sec.markSeenIds?.length && sec.seenId) {
-          await markSeen(env, sec.seenId, sec.markSeenIds);
-        }
       }
     }
 
@@ -1542,9 +1542,16 @@ export async function processAwardSub(env, s, ctx) {
       const payload = emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       if (ctx.capturePreviews) preview = { subject, html, listUnsubscribe: `<${unsubUrl}>` };
       if (send) {
-        await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+        const providerAccepted = await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+        if (providerAccepted && ctx.advanceState !== false) {
+          await recordConfirmedWatchSend(env, {
+            key: s.key,
+            day: ctx.today,
+            seenId,
+            seenIds: candidates.map((c) => c.key).filter(Boolean),
+          });
+        }
         await ctx.onSent();
-        await setLastSent(env, s.key, ctx.today);
         await bumpStatAllTime(env.ALERT_STATE, "digest");
         await bumpHistDay(env.ALERT_STATE, "digest", new Date());
         await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
@@ -1554,9 +1561,6 @@ export async function processAwardSub(env, s, ctx) {
         if (ctx.onDryRun) await ctx.onDryRun();
       }
     }
-
-    // Mark seen ONLY on a real send — same watermark-poisoning fix as the other lenses.
-    if (send && candidates.length) await markSeen(env, seenId, candidates.map((c) => c.key).filter(Boolean));
 
     return {
       sub: s.key,
@@ -2533,6 +2537,17 @@ async function getLastSent(env, id) {
 async function setLastSent(env, id, date) {
   if (!env.ALERT_STATE) return;
   try { await env.ALERT_STATE.put(`lastsent:${id}`, date); } catch { /* ignore */ }
+}
+
+// Provider acceptance is the delivery commit point. Persist the per-watch watermark and seen
+// identities before any later bookkeeping can fail; KV puts are idempotent, so retries of the
+// same confirmed send converge on the same state without reopening the delivery window.
+async function recordConfirmedWatchSend(env, { key, day, seenId = null, seenIds = [] } = {}) {
+  if (!key || !day) return;
+  await setLastSent(env, key, day);
+  if (seenId && Array.isArray(seenIds) && seenIds.length) {
+    await markSeen(env, seenId, seenIds);
+  }
 }
 
 // ---- confirmed subscriptions (SUBS KV) -----------------------------------

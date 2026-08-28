@@ -12,6 +12,8 @@ const migration = readFileSync(new URL("../migrations/0018_digest_outbox.sql", i
 const NOW = new Date("2026-08-10T13:00:00.000Z");
 const DAY = "2026-08-10";
 const LAST_SENT = "2026-08-05";
+const NEXT_NOW = new Date("2026-08-11T13:00:00.000Z");
+const NEXT_DAY = "2026-08-11";
 
 function kv() {
   const values = new Map();
@@ -166,6 +168,75 @@ test("processOneSub folds a multi-day owed backlog into the next digest and labe
   sqlite.close();
 });
 
+test("provider-confirmed catch-up survives a post-send failure and advances the next window", async () => {
+  const state = kv();
+  const key = "sub:partial-catch-up";
+  const watch = sub(key, "money", { minAmount: 500000, keywords: ["construction"] });
+  await state.put(`lastsent:${key}`, LAST_SENT);
+  const firstRows = [{
+    request_id: "20260810001",
+    start_date: "2026-08-10T00:00:00.000",
+    agency_name: "DDC",
+    short_title: "Backlog construction project",
+    contract_amount: "900000",
+    section_name: "Procurement",
+  }];
+  const secondRows = [...firstRows, {
+    request_id: "20260811001",
+    start_date: "2026-08-11T00:00:00.000",
+    agency_name: "DDC",
+    short_title: "New construction project",
+    contract_amount: "800000",
+    section_name: "Procurement",
+  }];
+  const firstCtx = {
+    ...runCtx(),
+    today: DAY,
+    now: NOW,
+    onSent: async () => { throw new Error("send counter unavailable"); },
+  };
+  const secondCtx = {
+    ...runCtx(),
+    today: NEXT_DAY,
+    now: NEXT_NOW,
+  };
+  const sent = [];
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    const target = String(url);
+    if (target.includes("api.resend.com/emails")) {
+      sent.push(JSON.parse(options.body));
+      return { ok: true, json: async () => ({ id: `provider:${sent.length}` }) };
+    }
+    return { ok: true, json: async () => (target.includes("data.cityofnewyork.us") ? firstRows : []) };
+  };
+  try {
+    const first = await processOneSub(env(undefined, state), watch, firstCtx);
+    assert.equal(first.error, "send counter unavailable");
+    assert.equal(sent.length, 1, "the provider accepted the catch-up email before the later failure");
+    assert.equal(await state.get(`lastsent:${key}`), DAY, "confirmed send must advance the watermark");
+
+    globalThis.fetch = async (url, options) => {
+      const target = String(url);
+      if (target.includes("api.resend.com/emails")) {
+        sent.push(JSON.parse(options.body));
+        return { ok: true, json: async () => ({ id: `provider:${sent.length}` }) };
+      }
+      return { ok: true, json: async () => (target.includes("data.cityofnewyork.us") ? secondRows : []) };
+    };
+    const second = await processOneSub(env(undefined, state), watch, secondCtx);
+    assert.equal(second.error, undefined, second.error || "next digest should complete");
+    assert.equal(second.new, 1, "the next window starts at the confirmed catch-up watermark");
+    assert.equal(sent.length, 2);
+    const secondText = sent[1].html.replace(/<[^>]+>/g, "");
+    assert.match(secondText, /New construction project/);
+    assert.doesNotMatch(secondText, /Backlog construction project/);
+    assert.equal(await state.get(`lastsent:${key}`), NEXT_DAY);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
 test("processAccountRollup folds owed items for every watch and drops none since the watermark", async () => {
   const { sqlite, DB } = makeDb();
   const first = sub("sub:land", "land", { status: "all" });
@@ -215,6 +286,8 @@ test("processAccountRollup folds owed items for every watch and drops none since
     assert.equal(result.new, expected.length);
     assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_items WHERE status = 'owed'").get().n, 0);
     assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM digest_outbox_items WHERE status = 'delivered'").get().n, expected.length);
+    assert.equal(await state.get(`lastsent:${first.key}`), DAY, "land watch watermark advances after rollup send");
+    assert.equal(await state.get(`lastsent:${second.key}`), DAY, "money watch watermark advances after rollup send");
     assert.match(sent[0].subject, /catching up/i);
     assert.match(sent[0].subject, /Aug 5|last digest/i);
     assert.match(html, /data-digest-coverage="catch-up"/);
