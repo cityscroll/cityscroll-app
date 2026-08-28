@@ -5,6 +5,7 @@ import {
   stitchRulemakingRecord,
 } from "../../../site/rules_phase_spine.mjs";
 import { rulesCardInteractionProjection } from "../../../site/rules_card_interaction.mjs";
+import { buildRuleVersionsProjection } from "../../../site/rule_versions.mjs";
 
 export const RULEMAKING_OBJECT_SCHEMA = "cityscroll.rulemaking.v1";
 
@@ -138,7 +139,21 @@ function representative(rows) {
   })[0] || null;
 }
 
-function objectForRows(rows, { now = null } = {}) {
+function ruleVersionDocuments(rows, options = {}) {
+  const byRequestId = options.ruleVersionDocumentsByRequestId || {};
+  return rows.flatMap((row) => {
+    const requestId = recordRequestId(row);
+    const configured = requestId && byRequestId[requestId];
+    return [
+      ...(Array.isArray(row.rule_version_documents) ? row.rule_version_documents : []),
+      ...(Array.isArray(row.rule_documents) ? row.rule_documents : []),
+      ...(Array.isArray(row.nyc_rules?.rule_version_documents) ? row.nyc_rules.rule_version_documents : []),
+      ...(Array.isArray(configured) ? configured : []),
+    ].map((document) => ({ ...document, request_id: document.request_id || requestId }));
+  });
+}
+
+function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} } = {}) {
   const ids = new Set(rows.map(recordRequestId).filter(Boolean));
   if (ids.size < 2 || !rows.every(isGrounded)) return null;
   const subject = clean(rows[0].rulemaking_subject_ref, 700);
@@ -150,6 +165,13 @@ function objectForRows(rows, { now = null } = {}) {
   events = mergeRulemakingEvents(noticeLifecycleEvents(rows, events));
   const phaseView = buildRulesPhaseView({ ...stitched, events }, { skipStitch: true, now });
   const nycRules = stitched?.nyc_rules || rows.find((row) => row.nyc_rules)?.nyc_rules || null;
+  const title = clean(nycRules?.title || primary?.title || primary?.city_record?.title) || "Rulemaking";
+  const versionProjection = buildRuleVersionsProjection(ruleVersionDocuments(rows, { ruleVersionDocumentsByRequestId }), {
+    rulemaking_id: subject,
+    title,
+    effective_date: nycRules?.effective_date,
+    nyc_rules: nycRules,
+  });
   const documents = sourceDocuments(rows, nycRules);
   const followHref = exactFollowingHref(rows);
   const notices = rows
@@ -198,7 +220,7 @@ function objectForRows(rows, { now = null } = {}) {
     rulemaking_id: subject,
     canonical_href: `/rules/${encodeURIComponent(subject)}/`,
     agency: clean(primary?.agency || primary?.city_record?.agency) || null,
-    title: clean(nycRules?.title || primary?.title || primary?.city_record?.title) || "Rulemaking",
+    title,
     proposal_summary: clean(nycRules?.summary, 4_000) || null,
     current_stage: clean(stitched?.stage, 80) || null,
     lifecycle_state: interaction.lifecycle_state,
@@ -208,6 +230,11 @@ function objectForRows(rows, { now = null } = {}) {
     phases: phaseView.phases,
     source_documents: documents,
     nyc_rules: nycRules,
+    versions: versionProjection.versions,
+    legal_effects: versionProjection.legal_effects,
+    held_references: versionProjection.held_references,
+    version_pairs: versionProjection.pairs,
+    version_coverage: versionProjection.coverage,
     interaction,
     history_timeline: phaseView.history_timeline,
     // Subject-level following is not replayable by the rules scope compiler.
