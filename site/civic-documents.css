@@ -636,6 +636,13 @@ select {
   margin-block-start: var(--space-1);
 }
 
+.board-coverage-note {
+  max-width: var(--measure);
+  margin-block: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--color-border);
+}
+
 .rulemaking-document .rulemaking-phases {
   display: grid;
   gap: var(--space-3);

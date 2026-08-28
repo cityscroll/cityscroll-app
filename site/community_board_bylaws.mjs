@@ -261,10 +261,12 @@ export function renderCommunityBoardBylawPanel(governance = {}) {
     : "";
   const versionLabel = current
     ? `${escapeHtml(current.publisher_document_title || current.publisher_document_id)} · observed ${escapeHtml(current.observed_on)}`
-    : "No board-specific bylaw version is available in the checked sources.";
+    : `<span data-bylaw-answer="source_does_not_establish">No board-specific bylaw version is available in the checked sources.</span>`;
   const rules = current?.rules?.length
     ? `<ul class="node-record-list">${current.rules.map((rule) => `<li class="node-record" data-bylaw-rule="${escapeHtml(rule.topic)}"><div class="node-record-main"><strong>${escapeHtml(rule.topic.replaceAll("_", " "))}</strong> <span class="bylaw-answer bylaw-answer-${escapeHtml(rule.answer)}">${escapeHtml(answerLabel(rule.answer))}</span></div><span class="muted node-muted">${escapeHtml(rule.statement)}</span><span class="muted node-muted">${escapeHtml(rule.source_locator)} · <a href="${escapeHtml(current.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(current.publisher_document_id)}</a></span></li>`).join("")}</ul>`
-    : `<p class="node-muted" data-bylaw-answer="source_does_not_establish">Source does not establish material rules for this board.</p>`;
+    : current
+      ? `<p class="node-muted" data-bylaw-answer="source_does_not_establish">No material board rules are listed in this source.</p>`
+      : "";
   const history = current && governance.versions?.length > 1
     ? `<details class="inline-disclose board-bylaw-history"><summary>Version history</summary><div class="inline-disclose-body"><ul>${governance.versions.filter((version) => version.board_id === current.board_id).map((version) => `<li><a href="${escapeHtml(version.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(version.publisher_document_title || version.publisher_document_id)}</a>${version.id === current.id ? " (current)" : " (superseded)"}</li>`).join("")}</ul></div></details>`
     : "";
