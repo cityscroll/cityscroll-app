@@ -103,7 +103,7 @@ test("in-public-review rezoning with hearing extracts join, testimony, venue, an
   assert.equal(actions[0].label_key, "join_online");
   assert.equal(actions[0].destination, "https://zoom.us/j/123456789");
   assert.equal(actions[0].guide?.system, "zoning_extracted");
-  assert.equal(actions[2].label_key, "next_action_watch_rezone");
+  assert.equal(actions[2].label_key, "next_action_watch_land_general");
 });
 
 test("completed rezoning closes comment without inventing a hearing", () => {

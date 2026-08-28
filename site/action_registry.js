@@ -181,7 +181,7 @@
     });
   }
 
-  function local(type, labelKey, fallbackLabel, destination, deadline) {
+  function local(type, labelKey, fallbackLabel, destination, deadline, extra) {
     return validateAction({
       type,
       label_key: labelKey,
@@ -190,6 +190,7 @@
       destination: destination || null,
       deadline: deadline || null,
       confirmation_required: type === "watch",
+      ...(extra || {}),
     });
   }
 
@@ -1657,16 +1658,91 @@
     return "https://cityscroll.org/following?" + params.toString();
   }
 
+  function continuationHref(value) {
+    const href = String(value || "").trim();
+    if (!href) return null;
+    if (href.startsWith("/") || href.startsWith("#")) return href;
+    try {
+      const url = new URL(href);
+      return url.protocol === "https:" && url.hostname === "cityscroll.org" ? url.href : null;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function exactContinuationWatch(matter) {
+    const path = matter && (matter.action_path || matter.actionPath);
+    const continuation = path && path.continuation;
+    // Action Path is the source of truth for exact continuations. A path without
+    // a replayable destination remains fail-closed instead of becoming a guessed URL.
+    if (!path || path.schema !== "cityscroll.civic_action_path.v0"
+      || path.continuation_cta !== true || path.continuation_state !== "available"
+      || path.ambiguity !== "none" || !continuation
+      || continuation.kind !== "subject" || !continuation.subject_ref) return null;
+    const destination = continuationHref(matter.continuation_href || path.continuation_href);
+    if (!destination) return null;
+    const subjectRef = String(continuation.subject_ref);
+    const labelKey = /^rulemaking:/i.test(subjectRef) ? "next_action_watch_rulemaking"
+      : /^matter:/i.test(subjectRef) ? "next_action_watch_matter"
+      : /^project:/i.test(subjectRef) ? "next_action_watch_project"
+      : "next_action_watch_subject";
+    const fallback = labelKey === "next_action_watch_rulemaking" ? "Follow this rulemaking"
+      : labelKey === "next_action_watch_matter" ? "Follow this matter"
+      : labelKey === "next_action_watch_project" ? "Follow this project"
+      : "Follow this proceeding";
+    return local("watch", labelKey, fallback, destination, null, {
+      subject_ref: subjectRef,
+      action_path: path,
+    });
+  }
+
+  function watchAction(matter) {
+    const exact = exactContinuationWatch(matter);
+    if (exact) return exact;
+    const m = matter || {};
+    const agency = String(m.agency_name || "").trim();
+    const borough = String(m.borough || m.boro || "").trim();
+    const section = String(m.section_name || "");
+    const type = String(m.type_of_notice_description || "");
+    const kind = String(m.kind || "").toLowerCase();
+    if (kind === "zoning" || m.project_id) {
+      return local("watch", borough ? "next_action_watch_land" : "next_action_watch_land_general",
+        borough ? `Follow ${borough} land-use activity` : "Follow land-use activity",
+        watchDestination(m), null, borough ? {label_vars: {borough}} : null);
+    }
+    if (kind === "hearing" || section === "Public Hearings and Meetings") {
+      return local("watch", agency ? "next_action_watch_hearings" : "next_action_watch_hearings_general",
+        agency ? `Follow ${agency} hearings` : "Follow public hearings",
+        watchDestination(m), null, agency ? {label_vars: {agency}} : null);
+    }
+    if (kind === "rule" || section === "Agency Rules") {
+      return local("watch", agency ? "next_action_watch_rules" : "next_action_watch_rules_general",
+        agency ? `Follow ${agency} rules` : "Follow published rules",
+        watchDestination(m), null, agency ? {label_vars: {agency}} : null);
+    }
+    if (kind === "property" || section === "Property Disposition") {
+      return local("watch", agency ? "next_action_watch_property" : "next_action_watch_property_general",
+        agency ? `Follow ${agency} property notices` : "Follow property notices",
+        watchDestination(m), null, agency ? {label_vars: {agency}} : null);
+    }
+    if (kind === "solicitation" || type === "Solicitation" || kind === "award"
+      || /Award|Intent to Negotiate|Vendor List/i.test(type)) {
+      return local("watch", agency ? "next_action_watch_contracts" : "next_action_watch_contracts_general",
+        agency ? `Follow ${agency} contracts` : "Follow city contracts",
+        watchDestination(m), null, agency ? {label_vars: {agency}} : null);
+    }
+    return local("watch", agency ? "next_action_watch_notices" : "next_action_watch_notices_general",
+      agency ? `Follow ${agency} City Record notices` : "Follow City Record notices",
+      watchDestination(m), null, agency ? {label_vars: {agency}} : null);
+  }
+
   function compileActionRail(matter, options) {
     const opts = options || {};
     const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
     const kind = kindFor(matter || {});
     const stage = String(matter.lifecycle_stage || "").toLowerCase();
     const deadline = matter.deadline || null;
-    // The destination carries the matter's related-record scope, not a durable
-    // subscription to this single notice. Keep that distinction visible in the
-    // promise: the watch reports matching records when they arrive.
-    const watch = local("watch", "next_action_watch", "Get updates about related records", watchDestination(matter), null);
+    const watch = watchAction(matter);
     const calendar = local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, deadline);
     const notice = () => official("document", "read_official_notice", "Read the official notice", matter.official_notice_url, deadline);
     let actions;
@@ -1821,7 +1897,7 @@
     } else if (kind === "zoning") {
       const handoff = zoningHandoff(matter, {today});
       const actionDeadline = deadline || handoff.deadline || null;
-      const landWatch = local("watch", "next_action_watch_rezone", "Get updates about related land-use activity", watchDestination(matter), null);
+      const landWatch = watchAction(matter);
       // Rail keeps at most 3 actions (slice below). Prefer:
       //   join platform → [join, calendar, watch] (maps stay in guide steps)
       //   ZAP hybrid logistics → [maps attend, watch live, calendar|watch]
@@ -2087,6 +2163,7 @@
     isOasysGenericHub,
     compileActionRail,
     watchDestination,
+    watchAction,
     solicitationHandoff,
     awardHandoff,
     hearingHandoff,
