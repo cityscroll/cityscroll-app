@@ -77,6 +77,20 @@ function identityCanonicalUrl(ref, href) {
   return value;
 }
 
+/** Keep comparison context explicit: a candidate for the current profile is
+ * not a comparison choice, and an object report has no identity picker. */
+export function identityComparisonCandidates(target, candidates = target?.identity_candidates) {
+  if (target?.claim_anchor?.claim_type !== "identity") return [];
+  const current = target.object_id;
+  return [...new Map((Array.isArray(candidates) ? candidates : [])
+    .filter((candidate) => candidate?.entity_id && candidate.entity_id !== current)
+    .map((candidate) => [candidate.entity_id, candidate])).values()];
+}
+
+export function hasIdentityComparisonCandidates(target, candidates = target?.identity_candidates) {
+  return identityComparisonCandidates(target, candidates).length > 0;
+}
+
 /** Build the initial identity-report target for an existing person or
  * organization profile. The second profile is selected in the shared report
  * dialog, then added to the final immutable target at submission time. */
@@ -671,7 +685,6 @@ function installHandlers(dialog, documentRef) {
     const token = ++identityLoadToken;
     identityCandidates = Array.isArray(target.identity_candidates) ? target.identity_candidates : [];
     if (!identityCandidates.length && target.identity_lookup_href) {
-      if (identityResults) identityResults.innerHTML = `<p class="report-identity-empty" role="listitem">Loading existing profiles…</p>`;
       try {
         const response = await fetch(target.identity_lookup_href, { cache: "force-cache", credentials: "omit" });
         const model = response.ok ? await response.json() : null;
@@ -683,11 +696,11 @@ function installHandlers(dialog, documentRef) {
       }
     }
     if (token !== identityLoadToken) return;
-    const current = target.object_id;
-    identityCandidates = [...new Map(identityCandidates
-      .filter((candidate) => candidate?.entity_id && candidate.entity_id !== current)
-      .map((candidate) => [candidate.entity_id, candidate])).values()];
-    renderIdentityCandidates();
+    identityCandidates = identityComparisonCandidates(target, identityCandidates);
+    const comparisonAvailable = hasIdentityComparisonCandidates(target, identityCandidates);
+    identityPicker.hidden = !comparisonAvailable;
+    if (comparisonAvailable) renderIdentityCandidates();
+    else identityResults.innerHTML = "";
   }
 
   function showFailureState() {
@@ -723,11 +736,11 @@ function installHandlers(dialog, documentRef) {
     form.elements.canonical_url.value = target.canonical_url;
     category.innerHTML = categoryOptions(target);
     const isIdentity = target.claim_anchor?.claim_type === "identity";
-    identityPicker.hidden = !isIdentity;
+    identityPicker.hidden = true;
     selectedIdentity = null;
     identitySearch.value = "";
     identitySelected.textContent = "";
-    identityResults.innerHTML = isIdentity ? `<p class="report-identity-empty" role="listitem">Loading existing profiles…</p>` : "";
+    identityResults.innerHTML = "";
     if (isIdentity) loadIdentityCandidates(target);
     message.value = "";
     form.elements.evidence.value = "";
@@ -774,27 +787,42 @@ function installHandlers(dialog, documentRef) {
       return;
     }
     if (activeTarget.claim_anchor?.claim_type === "identity") {
-      if (!selectedIdentity) {
+      if (selectedIdentity) {
+        const identityTarget = buildEntityIdentityReportTarget({
+          source_target: activeTarget,
+          other_entity_ref: selectedIdentity.entity_id,
+          other_entity_label: selectedIdentity.label,
+          identity_intent: category.value === "same_thing" ? "same_entity" : "different_entities",
+        });
+        if (!identityTarget) {
+          showFailureState();
+          return;
+        }
+        activeTarget = identityTarget;
+        form.dataset.targetId = identityTarget.target_id;
+        form.elements.report_target.value = serializeReportTarget(identityTarget);
+        form.elements.report_target_id.value = identityTarget.target_id;
+        form.elements.object_id.value = identityTarget.object_id;
+        form.elements.canonical_url.value = identityTarget.canonical_url;
+      } else if (identityCandidates.length) {
         status.textContent = "Choose an existing profile before sending this identity report.";
         identitySearch?.focus();
         return;
+      } else {
+        // A profile report with no comparison context remains a normal
+        // current-subject report; only an explicit selection creates a
+        // same/different identity hypothesis.
+        activeTarget = buildReportTarget({
+          object_type: activeTarget.object_type,
+          object_id: activeTarget.object_id,
+          canonical_url: activeTarget.canonical_url,
+          object_label: activeTarget.object_label,
+          provenance: activeTarget.provenance,
+        });
+        form.dataset.targetId = activeTarget.target_id;
+        form.elements.report_target.value = serializeReportTarget(activeTarget);
+        form.elements.report_target_id.value = activeTarget.target_id;
       }
-      const identityTarget = buildEntityIdentityReportTarget({
-        source_target: activeTarget,
-        other_entity_ref: selectedIdentity.entity_id,
-        other_entity_label: selectedIdentity.label,
-        identity_intent: category.value === "same_thing" ? "same_entity" : "different_entities",
-      });
-      if (!identityTarget) {
-        showFailureState();
-        return;
-      }
-      activeTarget = identityTarget;
-      form.dataset.targetId = identityTarget.target_id;
-      form.elements.report_target.value = serializeReportTarget(identityTarget);
-      form.elements.report_target_id.value = identityTarget.target_id;
-      form.elements.object_id.value = identityTarget.object_id;
-      form.elements.canonical_url.value = identityTarget.canonical_url;
     }
     const explanation = message.value.trim();
     if (explanation.length < 10) {
