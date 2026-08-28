@@ -79,6 +79,7 @@ export function primaryDocumentOutputs() {
   };
   const rulesSemanticLane = json("/data/rules_semantic_lane.json");
   const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
+  const outcomes = json("/data/meeting_outcomes_snapshot.json");
   // Keep previously published meeting identities while the current, rich
   // notice materialization supplies the complete eligible window. The rich
   // rows come first so an exact id is upgraded rather than duplicated.
@@ -87,6 +88,7 @@ export function primaryDocumentOutputs() {
   const sharedMeetings = buildSharedMeetingReadModel({
     cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
+    meetingOutcomes: outcomes,
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,
   });
@@ -114,7 +116,6 @@ export function primaryDocumentOutputs() {
   const property = json("/data/property_domain_observations.json");
   const obligations = json("/data/agency_obligations_lookup.json");
   const meetings = payloads.meetings;
-  const outcomes = json("/data/meeting_outcomes_snapshot.json");
   const people = json("/data/person_hub_lookup.json");
   const committees = json("/data/committee_graph_lookup.json");
   const communityBoardPeople = json("/data/community_board_people.json");
@@ -214,11 +215,13 @@ function buildSharedMeetingArtifacts() {
     hearings: json("/data/land_upcoming_hearings.json").hearings || [],
   };
   const { materialization, rows: cityRecordMeetings } = cityRecordMeetingRows();
+  const outcomes = json("/data/meeting_outcomes_snapshot.json");
   const cityRecordRows = [...cityRecordMeetings, ...(payloads.meetings.rows || [])];
   const communityBoardMeetings = json("/data/community_board_meeting_index.json");
   const sharedMeetings = buildSharedMeetingReadModel({
     cityRecordRows,
     communityBoardIndex: communityBoardMeetings,
+    meetingOutcomes: outcomes,
     generatedAt: materialization.generated_at,
     now: communityBoardMeetings.generated_at || materialization.generated_at,
   });

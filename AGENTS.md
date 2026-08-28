@@ -10,6 +10,12 @@
   `rules.request_ids` membership; matter and broad/body-level fallbacks remain unsupported. Proof
   is `worker/test/continuation_replay.test.mjs`.
 
+- **Council hearing matter continuation:** `site/council_hearing_matter_continuation.mjs` projects
+  only the materialized `exact_date_body_tokens` City Record → Council join; it preserves every
+  exact matter, keeps multiple matters as choices, and omits continuation for unmatched/no-matter
+  cases. `site/council_hearing_action_path.mjs` composes that projection through Action Path v0;
+  proof is `test/council_hearing_matter_continuation.test.mjs`.
+
 - **Generic person contract:** `ontology/person.mjs` owns the additive
   `cityscroll.person.v1` source-qualified envelope and `person_identity_link.v1` reviewed
   `same_person` relation. It never rewrites `official:{PersonId}` or

@@ -40967,6 +40967,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260728026",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -41097,6 +41105,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260709020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -41232,6 +41248,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260714002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -41362,6 +41386,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260723022",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -47025,6 +47057,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260714029",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -48627,6 +48667,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260715041",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -49925,6 +49973,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260708002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -52404,6 +52460,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260729019",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -52528,6 +52592,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260713006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -52656,6 +52728,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260729005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -52780,6 +52860,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260729020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -53316,6 +53404,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260727031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -54754,6 +54850,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260723005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -54850,6 +54954,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260706044",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -55793,6 +55905,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260710032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -55930,6 +56050,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618040",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -56026,6 +56154,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260721023",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -57324,6 +57460,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260709028",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -57449,6 +57593,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260716022",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -57599,6 +57751,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260723030",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -58665,6 +58825,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260626036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -58803,6 +58971,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260716009",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -58902,6 +59078,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260716025",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -59541,6 +59725,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260626034",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -60732,6 +60924,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -60828,6 +61028,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260714001",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -63094,6 +63302,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260708015",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -63554,6 +63770,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260624001",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -63652,6 +63876,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260707029",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -63736,6 +63968,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260624005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -63834,6 +64074,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260707004",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -65255,6 +65503,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260629003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -65727,6 +65983,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260616058",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -65823,6 +66087,45 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260707022",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22509",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "date": "2026-07-22",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22509&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79200",
+            "matter_file": "LU 0114-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+            "title": "Landmarks, Queens CD 2 Walk to Park Site Selection/Acquisition, Queens (C 260089 PCQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -66095,6 +66398,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260623060",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -66193,6 +66504,97 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260707021",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22502",
+          "name": "Subcommittee on Zoning and Franchises",
+          "date": "2026-07-21",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22502_A_Subcommittee_on_Zoning_and_Franchises_26-07-21_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22502_M_Subcommittee_on_Zoning_and_Franchises_26-07-21_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79201",
+            "matter_file": "LU 0115-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+            "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79203",
+            "matter_file": "LU 0117-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+            "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79202",
+            "matter_file": "LU 0116-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+            "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79204",
+            "matter_file": "LU 0118-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+            "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79205",
+            "matter_file": "LU 0119-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+            "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -66289,6 +66691,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260630005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -66638,6 +67048,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260713032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -66718,6 +67136,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260609003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -66858,6 +67284,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260624036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -66989,6 +67423,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260617040",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -67118,6 +67560,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260617042",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -67569,6 +68019,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260625034",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -67665,6 +68123,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260624002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -68125,6 +68591,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260106033",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -68225,6 +68699,387 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260706036",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22526",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "date": "2026-07-14",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-14_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-14_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79193",
+            "matter_file": "LU 0112-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79193",
+            "title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79194",
+            "matter_file": "LU 0113-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79194",
+            "title": "Landmarks, NEW, APPROXIMATELY 801-SEAT HIGH SCHOOL WITH DISTRICT 75 PROGRAM, Staten Island (G 260002 SCR).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79163",
+            "matter_file": "LU 0110-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79163",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260003 NUM).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79164",
+            "matter_file": "LU 0111-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79164",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260004 XAM).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Approved by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79062",
+            "matter_file": "LU 0091-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+            "title": "Landmarks, Public School 15 Annex, Brooklyn (N 260340 HIK).",
+            "outcome": "Approved by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Approved by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79063",
+            "matter_file": "LU 0092-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79063",
+            "title": "Landmarks, Church of Saint Mary, Manhattan (N 260338 HIM).",
+            "outcome": "Approved by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Approved by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79064",
+            "matter_file": "LU 0093-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79064",
+            "title": "Landmarks, Lithuanian Alliance Building, Manhattan (N 260339 HIM).",
+            "outcome": "Approved by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -68321,6 +69176,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260623006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -68643,6 +69506,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260612028",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -68725,6 +69596,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260602003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -68801,6 +69680,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260605058",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -68899,6 +69786,317 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260625040",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22567",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "date": "2026-07-09",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22567_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-09_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22567_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-09_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79062",
+            "matter_file": "LU 0091-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+            "title": "Landmarks, Public School 15 Annex, Brooklyn (N 260340 HIK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79063",
+            "matter_file": "LU 0092-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79063",
+            "title": "Landmarks, Church of Saint Mary, Manhattan (N 260338 HIM).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79064",
+            "matter_file": "LU 0093-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79064",
+            "title": "Landmarks, Lithuanian Alliance Building, Manhattan (N 260339 HIM).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Laid Over by Comm"
+            ],
+            "documents": [],
+            "matter_id": "79163",
+            "matter_file": "LU 0110-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79163",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260003 NUM).",
+            "outcome": "P-C Item Laid Over by Comm",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Laid Over by Comm"
+            ],
+            "documents": [],
+            "matter_id": "79164",
+            "matter_file": "LU 0111-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79164",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260004 XAM).",
+            "outcome": "P-C Item Laid Over by Comm",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -69221,6 +70419,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618050",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -69317,6 +70523,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260629046",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -69457,6 +70671,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260605007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -69553,6 +70775,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260522007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -69709,6 +70939,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618037",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -69805,6 +71043,162 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260617039",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22566",
+          "name": "Subcommittee on Zoning and Franchises",
+          "date": "2026-07-01",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22566_A_Subcommittee_on_Zoning_and_Franchises_26-07-01_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22566_M_Subcommittee_on_Zoning_and_Franchises_26-07-01_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79109",
+            "matter_file": "LU 0100-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79109",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250248 ZMK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79110",
+            "matter_file": "LU 0101-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79110",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (N 250249 ZRK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79111",
+            "matter_file": "LU 0102-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79111",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250215 ZSK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79112",
+            "matter_file": "LU 0103-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79112",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250250 ZSK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79113",
+            "matter_file": "LU 0104-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79113",
+            "title": "Zoning, 63-02 Fresh Pond Road Rezoning, Queens (C 260155 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79114",
+            "matter_file": "LU 0105-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79114",
+            "title": "Zoning, 63-02 Fresh Pond Road Rezoning, Queens (N 260156 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79115",
+            "matter_file": "LU 0106-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79115",
+            "title": "Zoning, 1160 Pugsley Avenue Rezoning, Bronx (C 250245 ZMX).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79116",
+            "matter_file": "LU 0107-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79116",
+            "title": "Zoning, 1160 Pugsley Avenue Rezoning, Bronx (N 250246 ZRX).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79117",
+            "matter_file": "LU 0108-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79117",
+            "title": "Zoning, 1166 Bedford Avenue Rezoning, Brooklyn (C 260162 ZMK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79118",
+            "matter_file": "LU 0109-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79118",
+            "title": "Zoning, 1166 Bedford Avenue Rezoning, Brooklyn (N 260163 ZRK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -69905,6 +71299,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260522008",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -69998,6 +71400,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260609065",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -70096,6 +71506,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260610012",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -70916,6 +72334,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260610007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -71012,6 +72438,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260605045",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -71137,6 +72571,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260623048",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -71293,6 +72735,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -71431,6 +72881,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260605006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -72247,6 +73705,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260610067",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -72378,6 +73844,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260521020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -72474,6 +73948,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -72623,6 +74105,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260601045",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -72757,6 +74247,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260603002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -72894,6 +74392,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260604005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -72993,6 +74499,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260603039",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -73804,6 +75318,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260602006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -75037,6 +76559,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260612036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -75500,6 +77030,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260527017",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -75637,6 +77175,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260512036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -76651,6 +78197,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260610003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -76749,6 +78303,110 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260603052",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22437",
+          "name": "Subcommittee on Zoning and Franchises",
+          "date": "2026-06-17",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/6/22437_A_Subcommittee_on_Zoning_and_Franchises_26-06-17_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/6/22437_M_Subcommittee_on_Zoning_and_Franchises_26-06-17_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79065",
+            "matter_file": "LU 0094-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79065",
+            "title": "Zoning, 164th Street Rezoning, Queens (C 250290 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79066",
+            "matter_file": "LU 0095-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79066",
+            "title": "Zoning, 164th Street Rezoning, Queens (N 250291 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79067",
+            "matter_file": "LU 0096-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79067",
+            "title": "Zoning, 50-20 108th Street Rezoning, Queens (C 250253 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79068",
+            "matter_file": "LU 0097-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79068",
+            "title": "Zoning, 50-20 108th Street Rezoning, Queens (N 250254 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79069",
+            "matter_file": "LU 0098-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79069",
+            "title": "Zoning, 198-208 Richmond Terrace, Staten Island (C 260169 ZMR).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79070",
+            "matter_file": "LU 0099-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79070",
+            "title": "Zoning, 198-208 Richmond Terrace, Staten Island (N 260170 ZRR).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -76845,6 +78503,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -78217,6 +79883,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260513035",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -78886,6 +80560,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260528031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -79033,6 +80715,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260608005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -79503,6 +81193,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260513034",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -79599,6 +81297,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528021",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -79716,6 +81422,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260512007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -79815,6 +81529,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260429031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -79966,6 +81688,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528018",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -80969,6 +82699,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260527036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81100,6 +82838,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260601042",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -81195,6 +82941,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260428020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -82055,6 +83809,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260603044",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82162,6 +83924,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260106032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -82258,6 +84028,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260519007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -82898,6 +84676,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260513033",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -83723,6 +85509,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260513032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -83819,6 +85613,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260529027",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -83922,6 +85724,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260504025",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -84021,6 +85831,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260512004",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -84651,6 +86469,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260518031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -84735,6 +86561,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260515001",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -84836,6 +86670,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260521019",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -84916,6 +86758,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260512014",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -85580,6 +87430,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260518003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -85715,6 +87573,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260518025",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -87597,6 +89463,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260522019",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -130400,6 +132274,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260728026",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -130530,6 +132412,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260709020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -130665,6 +132555,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260714002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -130795,6 +132693,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260723022",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -136458,6 +138364,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260714029",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -138060,6 +139974,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260715041",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -139358,6 +141280,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260708002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -141837,6 +143767,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260729019",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -141961,6 +143899,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260713006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -142089,6 +144035,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260729005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -142213,6 +144167,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260729020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -142749,6 +144711,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260727031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -144187,6 +146157,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260723005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -144283,6 +146261,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260706044",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -145226,6 +147212,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260710032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -145363,6 +147357,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618040",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -145459,6 +147461,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260721023",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -146757,6 +148767,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260709028",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -146882,6 +148900,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260716022",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -147032,6 +149058,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260723030",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -148098,6 +150132,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260626036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -148236,6 +150278,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260716009",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -148335,6 +150385,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260716025",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -148974,6 +151032,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260626034",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -150165,6 +152231,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -150261,6 +152335,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260714001",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -152527,6 +154609,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260708015",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -152987,6 +155077,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260624001",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -153085,6 +155183,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260707029",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -153169,6 +155275,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260624005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -153267,6 +155381,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260707004",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -154688,6 +156810,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260629003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -155160,6 +157290,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260616058",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -155256,6 +157394,45 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260707022",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22509",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "date": "2026-07-22",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22509&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22509_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-22_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79200",
+            "matter_file": "LU 0114-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79200",
+            "title": "Landmarks, Queens CD 2 Walk to Park Site Selection/Acquisition, Queens (C 260089 PCQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -155528,6 +157705,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260623060",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -155626,6 +157811,97 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260707021",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22502",
+          "name": "Subcommittee on Zoning and Franchises",
+          "date": "2026-07-21",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22502&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22502_A_Subcommittee_on_Zoning_and_Franchises_26-07-21_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22502_M_Subcommittee_on_Zoning_and_Franchises_26-07-21_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79201",
+            "matter_file": "LU 0115-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79201",
+            "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (C 260149 ZMK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79203",
+            "matter_file": "LU 0117-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79203",
+            "title": "Zoning, Flatiron NoMad Major Concessions, Manhattan (C 260123 MCM).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79202",
+            "matter_file": "LU 0116-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79202",
+            "title": "Zoning, 200 Kent Avenue Rezoning, Brooklyn (N 260150 ZRK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79204",
+            "matter_file": "LU 0118-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79204",
+            "title": "Zoning, 47-03 108th Street Rezoning, Queens (C 260147 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79205",
+            "matter_file": "LU 0119-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79205",
+            "title": "Zoning, 47-03 108th Street Rezoning, Queens (N 260148 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -155722,6 +157998,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260630005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -156071,6 +158355,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260713032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -156151,6 +158443,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260609003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -156291,6 +158591,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260624036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -156422,6 +158730,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260617040",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -156551,6 +158867,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260617042",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -157002,6 +159326,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260625034",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -157098,6 +159430,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260624002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -157558,6 +159898,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260106033",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -157658,6 +160006,387 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260706036",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22526",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "date": "2026-07-14",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-14_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-14_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79193",
+            "matter_file": "LU 0112-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79193",
+            "title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79194",
+            "matter_file": "LU 0113-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79194",
+            "title": "Landmarks, NEW, APPROXIMATELY 801-SEAT HIGH SCHOOL WITH DISTRICT 75 PROGRAM, Staten Island (G 260002 SCR).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79163",
+            "matter_file": "LU 0110-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79163",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260003 NUM).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Approved by Subcommittee with Companion Resolution"
+            ],
+            "documents": [],
+            "matter_id": "79164",
+            "matter_file": "LU 0111-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79164",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260004 XAM).",
+            "outcome": "P-C Item Approved by Subcommittee with Companion Resolution",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Approved by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79062",
+            "matter_file": "LU 0091-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+            "title": "Landmarks, Public School 15 Annex, Brooklyn (N 260340 HIK).",
+            "outcome": "Approved by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Approved by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79063",
+            "matter_file": "LU 0092-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79063",
+            "title": "Landmarks, Church of Saint Mary, Manhattan (N 260338 HIM).",
+            "outcome": "Approved by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Approved by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79064",
+            "matter_file": "LU 0093-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79064",
+            "title": "Landmarks, Lithuanian Alliance Building, Manhattan (N 260339 HIM).",
+            "outcome": "Approved by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -157754,6 +160483,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260623006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -158076,6 +160813,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260612028",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -158158,6 +160903,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260602003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -158234,6 +160987,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260605058",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -158332,6 +161093,317 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260625040",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22567",
+          "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "date": "2026-07-09",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22567&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22567_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-09_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22567_M_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-07-09_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79062",
+            "matter_file": "LU 0091-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+            "title": "Landmarks, Public School 15 Annex, Brooklyn (N 260340 HIK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79063",
+            "matter_file": "LU 0092-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79063",
+            "title": "Landmarks, Church of Saint Mary, Manhattan (N 260338 HIM).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79064",
+            "matter_file": "LU 0093-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79064",
+            "title": "Landmarks, Lithuanian Alliance Building, Manhattan (N 260339 HIM).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Laid Over by Comm"
+            ],
+            "documents": [],
+            "matter_id": "79163",
+            "matter_file": "LU 0110-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79163",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260003 NUM).",
+            "outcome": "P-C Item Laid Over by Comm",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          },
+          {
+            "actions": [
+              "Hearing on P-C Item by Comm",
+              "P-C Item Laid Over by Comm"
+            ],
+            "documents": [],
+            "matter_id": "79164",
+            "matter_file": "LU 0111-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79164",
+            "title": "Landmarks, 511 West 171 Street ANCP Cluster, Manhattan (G 260004 XAM).",
+            "outcome": "P-C Item Laid Over by Comm",
+            "votes": {
+              "result": "Passed",
+              "yes": 6,
+              "no": 0,
+              "abstain": 1,
+              "vote_identity": "roll_call",
+              "person_count": 7,
+              "by_person": [
+                {
+                  "person_id": "7801",
+                  "person_name": "Christopher Marte",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7825",
+                  "person_name": "Alexa Avilés",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7798",
+                  "person_name": "Oswald J. Feliz",
+                  "vote_bucket": "abstain"
+                },
+                {
+                  "person_id": "7832",
+                  "person_name": "Kamillah Hanks",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7824",
+                  "person_name": "Sandy Nurse",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7823",
+                  "person_name": "Chi A. Ossé",
+                  "vote_bucket": "aye"
+                },
+                {
+                  "person_id": "7898",
+                  "person_name": "Shanel Thomas-Henry",
+                  "vote_bucket": "aye"
+                }
+              ]
+            }
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -158654,6 +161726,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618050",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -158750,6 +161830,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260629046",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -158890,6 +161978,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260605007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -158986,6 +162082,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260522007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -159142,6 +162246,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618037",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -159238,6 +162350,162 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260617039",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22566",
+          "name": "Subcommittee on Zoning and Franchises",
+          "date": "2026-07-01",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22566&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22566_A_Subcommittee_on_Zoning_and_Franchises_26-07-01_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/7/22566_M_Subcommittee_on_Zoning_and_Franchises_26-07-01_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79109",
+            "matter_file": "LU 0100-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79109",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250248 ZMK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79110",
+            "matter_file": "LU 0101-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79110",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (N 250249 ZRK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79111",
+            "matter_file": "LU 0102-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79111",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250215 ZSK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79112",
+            "matter_file": "LU 0103-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79112",
+            "title": "Zoning, 2950 West 24th Street Rezoning, Brooklyn (C 250250 ZSK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79113",
+            "matter_file": "LU 0104-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79113",
+            "title": "Zoning, 63-02 Fresh Pond Road Rezoning, Queens (C 260155 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79114",
+            "matter_file": "LU 0105-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79114",
+            "title": "Zoning, 63-02 Fresh Pond Road Rezoning, Queens (N 260156 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79115",
+            "matter_file": "LU 0106-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79115",
+            "title": "Zoning, 1160 Pugsley Avenue Rezoning, Bronx (C 250245 ZMX).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79116",
+            "matter_file": "LU 0107-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79116",
+            "title": "Zoning, 1160 Pugsley Avenue Rezoning, Bronx (N 250246 ZRX).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79117",
+            "matter_file": "LU 0108-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79117",
+            "title": "Zoning, 1166 Bedford Avenue Rezoning, Brooklyn (C 260162 ZMK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79118",
+            "matter_file": "LU 0109-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79118",
+            "title": "Zoning, 1166 Bedford Avenue Rezoning, Brooklyn (N 260163 ZRK).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -159338,6 +162606,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260522008",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -159431,6 +162707,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260609065",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -159529,6 +162813,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260610012",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -160349,6 +163641,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260610007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -160445,6 +163745,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260605045",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -160570,6 +163878,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260623048",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -160726,6 +164042,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260618032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -160864,6 +164188,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260605006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -161680,6 +165012,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260610067",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -161811,6 +165151,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260521020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -161907,6 +165255,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -162056,6 +165412,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260601045",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -162190,6 +165554,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260603002",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -162327,6 +165699,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260604005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -162426,6 +165806,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260603039",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -163237,6 +166625,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260602006",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -164470,6 +167866,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260612036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -164933,6 +168337,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260527017",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -165070,6 +168482,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260512036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -166084,6 +169504,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260610003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -166182,6 +169610,110 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260603052",
+        "snapshot_state": "present",
+        "event": {
+          "event_id": "22437",
+          "name": "Subcommittee on Zoning and Franchises",
+          "date": "2026-06-17",
+          "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22437&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+          "documents": [
+            {
+              "name": "Agenda",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/6/22437_A_Subcommittee_on_Zoning_and_Franchises_26-06-17_Committee_Agenda.pdf"
+            },
+            {
+              "name": "Minutes",
+              "url": "https://nyc.legistar1.com/nyc/meetings/2026/6/22437_M_Subcommittee_on_Zoning_and_Franchises_26-06-17_Meeting_Minutes.pdf"
+            }
+          ]
+        },
+        "matters": [
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79065",
+            "matter_file": "LU 0094-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79065",
+            "title": "Zoning, 164th Street Rezoning, Queens (C 250290 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79066",
+            "matter_file": "LU 0095-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79066",
+            "title": "Zoning, 164th Street Rezoning, Queens (N 250291 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79067",
+            "matter_file": "LU 0096-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79067",
+            "title": "Zoning, 50-20 108th Street Rezoning, Queens (C 250253 ZMQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79068",
+            "matter_file": "LU 0097-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79068",
+            "title": "Zoning, 50-20 108th Street Rezoning, Queens (N 250254 ZRQ).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79069",
+            "matter_file": "LU 0098-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79069",
+            "title": "Zoning, 198-208 Richmond Terrace, Staten Island (C 260169 ZMR).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          },
+          {
+            "actions": [
+              "Hearing Held by Committee",
+              "Laid Over by Subcommittee"
+            ],
+            "documents": [],
+            "matter_id": "79070",
+            "matter_file": "LU 0099-2026",
+            "matter_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79070",
+            "title": "Zoning, 198-208 Richmond Terrace, Staten Island (N 260170 ZRR).",
+            "outcome": "Laid Over by Subcommittee",
+            "votes": null
+          }
+        ],
+        "join": {
+          "matched": true,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -166278,6 +169810,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -167650,6 +171190,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260513035",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -168319,6 +171867,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260528031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -168466,6 +172022,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260608005",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -168936,6 +172500,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260513034",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -169032,6 +172604,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528021",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -169149,6 +172729,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260512007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -169248,6 +172836,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260429031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -169399,6 +172995,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260528018",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -170402,6 +174006,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260527036",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -170533,6 +174145,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260601042",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -170628,6 +174248,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260428020",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -171488,6 +175116,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260603044",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -171595,6 +175231,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260106032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -171691,6 +175335,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260519007",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -172331,6 +175983,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260513033",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -173156,6 +176816,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260513032",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -173252,6 +176920,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260529027",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -173355,6 +177031,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260504025",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -173454,6 +177138,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260512004",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -174084,6 +177776,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260518031",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -174168,6 +177868,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260515001",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -174269,6 +177977,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260521019",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -174349,6 +178065,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260512014",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -175013,6 +178737,14 @@
           "reason": null
         }
       },
+      "meeting_outcome": {
+        "request_id": "20260518003",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
+        }
+      },
       "minutes_freshness": {
         "status": "not_published",
         "latest_date": null,
@@ -175148,6 +178880,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260518025",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {
@@ -177030,6 +180770,14 @@
           "status": "ok",
           "fetch_status": "snapshot",
           "reason": null
+        }
+      },
+      "meeting_outcome": {
+        "request_id": "20260522019",
+        "snapshot_state": "absent",
+        "join": {
+          "matched": false,
+          "method": "exact_date_body_tokens"
         }
       },
       "minutes_freshness": {

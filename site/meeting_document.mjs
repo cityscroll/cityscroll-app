@@ -11,6 +11,8 @@ import { meetingCalendarHasEventTime } from "./hearing_attend_pack.mjs";
 import { recognizedMeetingUrl } from "./hearing_logistics.mjs";
 import { cleanNoticeText } from "./text_clean.mjs";
 import { canonicalMeetingForRender } from "./meeting_capability_projection.mjs";
+import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs";
+import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -539,6 +541,12 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   const participationSection = participationRows.length || meetingMode
     ? `<section class="node-section civic-object-section meeting-section meeting-participation"><h2>How to participate</h2>${meetingMode ? `<p>Format: ${esc(meetingMode)}.</p>` : ""}${participationRows.length ? `<ul>${participationRows.join("")}</ul>` : ""}</section>`
     : "";
+  const councilMatterPath = record.source_system === "city_record"
+    ? buildCouncilHearingActionPath(record)
+    : null;
+  const matterContinuationSection = councilMatterPath
+    ? renderCouncilHearingMatterContinuation(record)
+    : "";
   const noticeMeta = [
     ["Type", readerEnum(record.type_of_notice_description, {
       upcoming_meetings: "Upcoming meeting",
@@ -601,6 +609,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${contactSection}
   ${relatedLinksSection}
   ${participationSection}
+  ${matterContinuationSection}
   ${documents}
   ${minutesSection}
   ${sourceDetails ? `<details class="node-section meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}

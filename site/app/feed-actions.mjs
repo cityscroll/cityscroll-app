@@ -17,6 +17,7 @@ import {
 import { meetingOriginLabel } from "../meeting_origin.mjs";
 import { canonicalMeetingsForRender } from "../meeting_capability_projection.mjs";
 import { meetingsCardInteractionProjection } from "../meetings_card_interaction.mjs";
+import { renderCouncilHearingMatterContinuation } from "../council_hearing_matter_continuation.mjs";
 import { communityBoardPageHref } from "../community_board_links.mjs";
 import {
   communityBoardIdFromRow,
@@ -1472,6 +1473,9 @@ function meetingsExplorerCardHTML(entry, terms=[]){
     escape:escUiHtml,
     newTabLabel:t("ext_link_new_tab_sr"),
   });
+  const matterContinuation=renderCouncilHearingMatterContinuation(record, null, {
+    sectionClass: "meeting-matter-card",
+  });
   const utilities=[];
   if(record.event_date) utilities.push(`<button class="act" type="button" data-ev="meetings:${escUiHtml(meetingKey)}">${t("calendar_ics")}</button>`);
   if(venue.address) utilities.push(externalActionLink({
@@ -1507,6 +1511,7 @@ function meetingsExplorerCardHTML(entry, terms=[]){
       ${digEvidenceHTML(ev)}
       ${officialHandoffs?`<div class="ui-object-card-handoffs">${officialHandoffs}</div>`:""}
       ${actionRail}
+      ${matterContinuation}
       ${utilityHTML}
     </article>`;
 }
