@@ -45,3 +45,27 @@ The review dataset is
 `warehouse/fixtures/procurement-intent-radar/candidate_review.v0.json`.
 It contains the candidate sentence, source identifiers, citation, trigger
 matches, rejection reasons, and structured assertion for every reviewed span.
+
+## Historical realization bridge
+
+`warehouse/lib/procurement_intent_realization_matcher.mjs` is the retrospective
+reconciliation seam for PIR-2 processes. It searches only later publisher rows
+within an 18-month, equivalent-agency horizon. Structured evidence is separated
+into strong signals (program, project, quantity, and population) and medium
+signals (agency, service, geography, money, and method). Chronology gates the
+horizon but cannot establish a match by itself.
+
+Only very strong, agency-consistent pairs produce `realized_by` edges. Other
+same-agency candidates remain review leads, and an empty candidate set remains
+unmatched. Accepted rows produce an exact
+`procurement.notice_published` event for the PIR-2 provisional subject so the
+existing prediction resolver can consume the bridge without becoming fuzzy.
+The feature object deliberately excludes publisher identifiers and vendor
+fields; those values are outputs of the later observation, not hindsight inputs
+to the historical intent.
+
+Focused proof:
+
+```sh
+node --test test/procurement_intent_realization_matcher.test.mjs
+```
