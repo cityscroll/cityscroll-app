@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-08-27T17:59:48.000Z",
   "available": true,
-  "source_count": 55,
+  "source_count": 58,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -1255,6 +1255,78 @@
       }
     },
     {
+      "source_id": "mta-bid-results",
+      "name": "MTA Construction & Development bid results",
+      "publisher": "Metropolitan Transportation Authority",
+      "official_url": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+      "expected_cadence": "As bid openings are published",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "mta-current-opportunities",
+      "name": "MTA Construction & Development current opportunities",
+      "publisher": "Metropolitan Transportation Authority",
+      "official_url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+      "expected_cadence": "As opportunities and addenda change",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
       "source_id": "non-council-board-minutes",
       "name": "Community board and borough president minutes",
       "publisher": "NYC community boards and borough president offices",
@@ -1609,6 +1681,42 @@
       "relationship_coverage": {
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nys-contract-reporter",
+      "name": "New York State Contract Reporter",
+      "publisher": "New York State Office of General Services",
+      "official_url": "https://www.nyscr.ny.gov/Ads/Search",
+      "expected_cadence": "Daily advertised procurement opportunities",
+      "mode": "periodic",
+      "health": {
+        "status": "UNKNOWN",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
         "reason_codes": []
       }
     },

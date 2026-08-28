@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
   "generated_at": "2026-08-27T17:59:48.000Z",
-  "contract_count": 60,
+  "contract_count": 63,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -3984,6 +3984,180 @@
       }
     },
     {
+      "source_id": "mta-bid-results",
+      "contract_fingerprint": "b9ba57eb2b6ca2eb8e8e1b41e772ebd8fdbff99a9fe133b5a00ca64e7a40f2b7",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing"
+        ],
+        "source_contract_id": "mta-bid-results",
+        "observed_at": "2026-08-27T17:59:48.000Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": null,
+          "cadence_days": null,
+          "age_days": null
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "mta-bid-results",
+            "observed_at": "2026-08-27T17:59:48.000Z",
+            "status": "failed",
+            "run_id": "missing:mta-bid-results:2026-08-27T17-59",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          }
+        ]
+      },
+      "operator": {
+        "clocks": {
+          "checked": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "mta-current-opportunities",
+      "contract_fingerprint": "dbf147583a48833ac0a47fea0b8748f24bb2ca6fa10c04f3b8b9855432c1440a",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing"
+        ],
+        "source_contract_id": "mta-current-opportunities",
+        "observed_at": "2026-08-27T17:59:48.000Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": null,
+          "cadence_days": null,
+          "age_days": null
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "mta-current-opportunities",
+            "observed_at": "2026-08-27T17:59:48.000Z",
+            "status": "failed",
+            "run_id": "missing:mta-current-opportunities:2026-08-27T17-59",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          }
+        ]
+      },
+      "operator": {
+        "clocks": {
+          "checked": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
+    },
+    {
       "source_id": "non-council-board-minutes",
       "contract_fingerprint": "59bdc37ba0cdb6986a410de3122b077507af8e7a95a21f4d80036a3be9371869",
       "health": {
@@ -4857,6 +5031,105 @@
             "publisher_updated_at": null,
             "event_kind": "scheduler-heartbeat",
             "state": "monitor-missing"
+          }
+        ]
+      },
+      "operator": {
+        "clocks": {
+          "checked": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "nys-contract-reporter",
+      "contract_fingerprint": "d0824175458e53a13a22ce1dabaf5a93568cd46c0c2dea9286cde8029dd40caf",
+      "health": {
+        "status": "Source-unavailable",
+        "reason_codes": [
+          "acquisition-status-unknown"
+        ],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing",
+          "acquisition-missing"
+        ],
+        "source_contract_id": "nys-contract-reporter",
+        "observed_at": "2026-08-27T17:59:48.000Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": null,
+          "cadence_days": 1,
+          "age_days": null
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nys-contract-reporter",
+            "observed_at": "2026-08-27T17:59:48.000Z",
+            "status": "failed",
+            "run_id": "missing:nys-contract-reporter:2026-08-27T17-59",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          },
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nys-contract-reporter",
+            "observed_at": "2026-08-27T17:59:48.000Z",
+            "status": "held",
+            "run_id": "missing:nys-contract-reporter:2026-08-27T17-59",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "acquisition-cadence",
+            "state": "acquisition-missing"
           }
         ]
       },
