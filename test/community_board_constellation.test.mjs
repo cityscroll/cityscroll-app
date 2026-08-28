@@ -53,13 +53,19 @@ test("board constellation uses typed summaries and holds unjoined governance edg
 
 test("board document keeps empty or unknown categories honest and resident-readable", () => {
   const html = renderCommunityBoardConstellationDocument(buildCommunityBoardConstellationView("bronx-cb-02", sources));
+  const categorySections = html.split('<section class="edge-summary-rail')[0];
+  const categoryText = categorySections.replace(/<[^>]+>/g, "");
   assert.match(html, /Connected civic objects/);
   assert.match(html, /About this board/);
   assert.match(html, /District coverage/);
   assert.match(html, /Sources &amp; coverage/);
-  assert.match(html, /Upcoming &amp; recent proceedings \(Records not shown\)/);
-  assert.match(html, /People \(Records not shown\)/);
-  assert.match(html, /Matters &amp; actions \(Records not shown\)/);
+  assert.match(categorySections, /data-community-board-empty-coverage="1"/);
+  assert.match(categoryText, /Not yet established from checked sources: committees, proceedings, people, and matters &amp; actions\./);
+  for (const id of ["committees", "meetings", "members", "recommendations"]) {
+    assert.match(categorySections, new RegExp(`data-community-board-constellation-category="${id}"`));
+  }
+  assert.doesNotMatch(categorySections, /Committees \(Records not shown\)|Upcoming &amp; recent proceedings \(Records not shown\)|People \(Records not shown\)|Matters &amp; actions \(Records not shown\)/);
+  assert.doesNotMatch(categorySections, /<section[^>]+data-community-board-constellation-category="(committees|meetings|members|recommendations)"/);
   assert.match(html, /Open official calendar/);
   assert.doesNotMatch(html, /Board records from official sources/);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
@@ -79,6 +85,30 @@ test("board dossier embeds the exact read-model money card without changing its 
   assert.match(html, /Payments posted through June 30, 2026/);
   assert.match(html, /Sources and coverage/);
   assert.match(html, /data-community-board-constellation-category="committees"/);
+});
+
+test("populated committee data keeps its category section and source-backed record", () => {
+  const html = renderCommunityBoardConstellationDocument(buildCommunityBoardConstellationView("bronx-cb-01", {
+    ...sources,
+    institutionEdges: {
+      "bronx-cb-01": [{
+        relation: "has_committee",
+        edge_type: "has_committee",
+        status: "promoted",
+        promoted: true,
+        from: "community-board:bronx-cb-01",
+        to: "community-board-committee:bronx-cb-01:land-use",
+        target_kind: "community-board-committee",
+        target_id: "community-board-committee:bronx-cb-01:land-use",
+        committee_id: "land-use",
+        target_name: "Land Use Committee",
+        provenance: { source_url: "https://board.example/committees", observed_on: "2026-08-27" },
+      }],
+    },
+  }));
+  assert.match(html, /<section[^>]+data-community-board-constellation-category="committees"[^>]*><h2>Committees \(Available: 1 record\)<\/h2>/);
+  assert.match(html, /Land Use Committee/);
+  assert.match(html, /data-community-board-empty-coverage="1"/);
 });
 
 test("minutes freshness keeps an unchecked source in resident language", () => {
@@ -131,7 +161,9 @@ test("indexed board events stay source records until accepted institution edges 
   assert.equal(meetings.count, null);
   assert.deepEqual(meetings.items, []);
   const html = renderCommunityBoardConstellationDocument(view);
-  assert.match(html, /Upcoming &amp; recent proceedings \(Records not shown\)/);
+  assert.match(html, /data-community-board-empty-coverage="1"/);
+  assert.match(html, /proceedings/);
+  assert.doesNotMatch(html, /Upcoming &amp; recent proceedings \(Records not shown\)/);
   assert.match(html, /Source observed/);
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<[^>]+>/g, " ");
   assert.doesNotMatch(visible, /upcoming_meetings/);

@@ -632,6 +632,23 @@ function renderCategory(category, view) {
   });
 }
 
+const EMPTY_COVERAGE_CATEGORY_LABELS = Object.freeze({
+  committees: "committees",
+  meetings: "proceedings",
+  members: "people",
+  recommendations: "matters & actions",
+});
+
+function renderEmptyCoverageNote(categories) {
+  const empty = categories.filter((category) => Object.hasOwn(EMPTY_COVERAGE_CATEGORY_LABELS, category.id) && !category.items?.length);
+  if (!empty.length) return "";
+  const labels = empty.map((category) => `<span class="board-coverage-category" data-community-board-constellation-category="${esc(category.id)}" data-edge-state="${esc(category.status)}" data-edge-availability="${esc(EDGE_SUMMARY_STATE_MEANINGS[category.status] || EDGE_SUMMARY_STATE_MEANINGS.unknown)}"${category.source_state ? ` data-edge-source-state="${esc(category.source_state)}"` : ""}>${esc(EMPTY_COVERAGE_CATEGORY_LABELS[category.id])}</span>`);
+  const joined = labels.length === 1
+    ? labels[0]
+    : `${labels.slice(0, -1).join(", ")}, and ${labels.at(-1)}`;
+  return `<p class="node-muted board-coverage-note" data-community-board-empty-coverage="1" data-edge-state="unknown" data-edge-availability="unknown">Not yet established from checked sources: ${joined}.</p>`;
+}
+
 function sourceRecordMarkup(row) {
   const institutionEdge = row.edge_type === "hosts_meeting";
   if (institutionEdge) {
@@ -732,6 +749,8 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
   const semanticCategories = view.categories
     .filter((category) => sectionOrder.includes(category.id))
     .sort((a, b) => sectionOrder.indexOf(a.id) - sectionOrder.indexOf(b.id));
+  const renderedCategories = semanticCategories.filter((category) => category.id === "sources" || category.items?.length);
+  const emptyCoverageCategories = semanticCategories.filter((category) => Object.hasOwn(EMPTY_COVERAGE_CATEGORY_LABELS, category.id) && !category.items?.length);
   const assetPrefix = options.assetPrefix || "/";
   const prefix = assetPrefix.endsWith("/") ? assetPrefix : `${assetPrefix}/`;
   return `<!doctype html>
@@ -744,7 +763,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-  ${renderAboutBoardSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardBylawPanel(view.governance)}${semanticCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardBylawPanel(view.governance)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;
