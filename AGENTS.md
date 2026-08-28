@@ -36,6 +36,13 @@
   `test/procurement_intent_radar_fixtures.test.mjs`. Keep upstream source fields temporally
   sealed and keep `retained_data_present` false until exact EPIN rows are actually retained.
 
+- **Adopted Community Board budget facts (CB-MONEY-01):** `site/community_board_adopted_budget.mjs`
+  materializes the pinned Expense Budget fiscal-year/publication slice only after exact
+  `site/data/community_board_financial_identity_crosswalk.json` resolution. Rebuild the source-
+  qualified read model and receipt with `node tools/build_community_board_adopted_budget.mjs`;
+  `--check` verifies the CB-MONEY-00 artifact hash and slice. Components are published only when
+  the source P/O indicator semantics reconcile; unmatched rows remain in the receipt.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
