@@ -61,7 +61,22 @@ export function renderAgencyCategorySection(category, source = {}) {
   if (!category) return "";
 
   const items = Array.isArray(category.items) ? category.items : [];
-  if (category.status === "empty" && !items.length && !category.conformance?.items?.length) return "";
+  const horizonItems = category.id === "rules" && Array.isArray(category.horizon_items)
+    ? category.horizon_items
+    : [];
+  if (category.status === "empty" && !items.length && !category.conformance?.items?.length && !horizonItems.length) return "";
+
+  const horizon = horizonItems.length
+    ? `<section class="agency-rules-horizon" data-agency-rules-horizon="anticipated" aria-labelledby="agency-rules-horizon-heading">
+      <h3 id="agency-rules-horizon-heading">On the horizon</h3>
+      <p class="muted">These are agency planning signals, not formal rulemaking proceedings.</p>
+      <ul class="node-record-list">${horizonItems.slice(0, 12).map((item) => `<li class="node-record" data-agenda-item-id="${esc(item.id)}" data-lifecycle-stage="anticipated">
+        <div class="node-record-main"><a class="agency-edge-link" href="${esc(item.canonical_href || item.href || "")}">${esc(item.subject || item.label || item.id)}</a></div>
+        <span class="muted node-muted">${esc(item.approximate_schedule || "Schedule not stated")} · Anticipated</span>
+        <p class="node-inline-actions civic-object-inline-actions"><a class="node-action civic-object-action" href="${esc(item.follow_href || "/following/")}">Follow anticipated topic</a></p>
+      </li>`).join("")}</ul>
+    </section>`
+    : "";
 
   if (category.id === "obligations" && category.conformance?.items?.length) {
     const refine = [
@@ -151,6 +166,7 @@ export function renderAgencyCategorySection(category, source = {}) {
     refine,
   ].filter(Boolean).join("");
   const body = [
+    horizon,
     stateNotice,
     category.status !== "matched" && category.note ? `<p class="node-muted muted">${esc(category.note)}</p>` : "",
     honesty,

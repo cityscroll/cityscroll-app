@@ -22,12 +22,14 @@ import {
   cityRecordRuleStageRecord,
   classifyCityRecordRuleStage,
 } from "./rule_stage.mjs";
+import { agendaItemHref } from "./regulatory_agenda.mjs";
 
-export const RULES_EXPLORER_SCHEMA_VERSION = 1;
+export const RULES_EXPLORER_SCHEMA_VERSION = 2;
 
 /** Process-stage filter chips for the Rules domain rail (ops ontology). */
 export const RULES_PROCESS_STAGES = Object.freeze([
   ["all", "stage_all"],
+  ["anticipated", "rule_stage_anticipated"],
   ["proposal", "rule_phase_proposal"],
   ["public_process", "rule_phase_public_process"],
   ["adoption", "rule_phase_adoption"],
@@ -50,6 +52,7 @@ export function rulesProcessControlModel(counts = {}, selected = "all") {
     lifecycle: RULES_PROCESS_STAGES
       .filter(([id]) => RULES_PHASES.includes(id))
       .map(item),
+    anticipated: item(RULES_PROCESS_STAGES.find(([id]) => id === "anticipated")),
     // Unstaged is residue, not a lifecycle step; hide it when classification is complete.
     unstaged: Number(counts.unstaged) > 0
       ? item(RULES_PROCESS_STAGES.find(([id]) => id === "unstaged"))
@@ -59,6 +62,7 @@ export function rulesProcessControlModel(counts = {}, selected = "all") {
 
 /** Fine materialization stage → process phase. */
 export const RULE_STAGE_TO_PHASE = Object.freeze({
+  anticipated: "anticipated",
   proposed: "proposal",
   "comment-open": "public_process",
   hearing: "public_process",
@@ -71,6 +75,7 @@ const PHASE_ORDER = new Map(RULES_PHASES.map((id, i) => [id, i]));
 
 const STAGE_RANK = Object.freeze({
   unknown: 0,
+  anticipated: 1,
   proposed: 1,
   "comment-open": 2,
   hearing: 3,
@@ -154,6 +159,7 @@ export function pickLaterRuleStage(a, b) {
  */
 export function rulesProcessActionKey(phase, fineStage = null) {
   const fine = normalizeRuleStage(fineStage);
+  if (fine === "anticipated") return "rule_action_view_agenda";
   if (fine === "comment-open") return "rule_action_comment";
   if (fine === "hearing") return "rule_action_attend_hearing";
   // Closed comment is status data, not a control label. The card renders that
@@ -458,6 +464,46 @@ export function buildRulesExplorerEntries(notices, rulesView, opts = {}) {
       comment_by_date: links.comment_by_date,
       hearing_date: links.hearing_date,
       sibling_notices: [],
+    });
+  }
+
+  const agendaItems = Array.isArray(rulesView?.agenda_items) ? rulesView.agenda_items : [];
+  for (const item of agendaItems) {
+    if (!item || item.lifecycle_stage !== "anticipated" || !item.id) continue;
+    const title = clean(item.subject) || "Anticipated rulemaking topic";
+    const agendaRow = {
+      ...item,
+      request_id: null,
+      agency_name: clean(item.agency),
+      short_title: title,
+      title,
+      type_of_notice_description: "Regulatory agenda",
+      additional_description_1: clean(item.justification || item.anticipated_content),
+      canonical_href: item.canonical_href || agendaItemHref(item.id),
+    };
+    entries.push({
+      kind: "agenda",
+      schema_version: RULES_EXPLORER_SCHEMA_VERSION,
+      subject_ref: item.id,
+      primary: agendaRow,
+      members: [agendaRow],
+      notice_count: 1,
+      stitched: null,
+      process_stage: "anticipated",
+      process_filter: "anticipated",
+      fine_stage: "anticipated",
+      action_key: "rule_action_view_agenda",
+      agency: clean(item.agency),
+      title,
+      excerpt: clean(item.justification || item.anticipated_content, 600),
+      join_method: "regulatory_agenda_item",
+      matched_phases: [],
+      rule_url: item.publisher_document || item.source?.document_url || null,
+      comment_url: null,
+      comment_by_date: null,
+      hearing_date: null,
+      sibling_notices: [],
+      agenda_item: item,
     });
   }
 

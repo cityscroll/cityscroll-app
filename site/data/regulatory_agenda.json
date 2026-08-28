@@ -1,0 +1,222 @@
+{
+  "schema": "cityscroll.regulatory_agenda.v1",
+  "schema_version": 1,
+  "generated_at": "2026-08-28T00:00:00Z",
+  "source": {
+    "system": "nyc_rules",
+    "index_url": "https://rules.cityofnewyork.us/view-agency-regulatory-agendas/",
+    "index_retrieved_at": "2026-08-28T00:00:00Z",
+    "acquisition_tier": 1,
+    "resident_time_fetch": false,
+    "documents": [
+      {
+        "agency": "Transportation",
+        "fiscal_year": "FY2027",
+        "url": "https://rules.cityofnewyork.us/wp-content/uploads/2026/05/DOT-CAPA-REGULATORY-AGENDA-FY-2027-Final.pdf",
+        "publish_date": "2026-05-01",
+        "retrieval_status": "available"
+      },
+      {
+        "agency": "Buildings",
+        "fiscal_year": "FY2027",
+        "url": "https://rules.cityofnewyork.us/wp-content/uploads/2026/05/CAPA-AGENDA-FY27-final.pdf",
+        "publish_date": "2026-05-04",
+        "retrieval_status": "available"
+      }
+    ]
+  },
+  "counts": {
+    "agencies": 2,
+    "items": 2,
+    "anticipated": 2,
+    "documents": 2
+  },
+  "agenda_items": [
+    {
+      "schema": "cityscroll.regulatory_agenda_item.v1",
+      "id": "regulatory-agenda-item:transportation:fy2027:dot-fy2027-1-1",
+      "object_type": "regulatory-agenda-item",
+      "agency": "Transportation",
+      "agency_code": "DOT",
+      "fiscal_year": "FY2027",
+      "subject": "Cyclist Permission to Deviate from Some Traffic Control Devices",
+      "justification": "Enhance safety for cyclists.",
+      "anticipated_content": "Amend section 4-12(p) allowing cyclists to follow pedestrian control signals.",
+      "objective": "To formalize existing behavior and provide consistency.",
+      "legal_basis": "Section 2903(a) of the New York City Charter.",
+      "affected_groups": "Cyclists, drivers, and the general public.",
+      "approximate_schedule": "Second Quarter of FY 2027.",
+      "relevant_laws": "Section 19-195.1 of the NYC Administrative Code.",
+      "lifecycle_stage": "anticipated",
+      "formal_rulemaking": false,
+      "publisher_document": "https://rules.cityofnewyork.us/wp-content/uploads/2026/05/DOT-CAPA-REGULATORY-AGENDA-FY-2027-Final.pdf",
+      "publisher_page": null,
+      "source": {
+        "system": "nyc_rules",
+        "index_url": "https://rules.cityofnewyork.us/view-agency-regulatory-agendas/",
+        "document_url": "https://rules.cityofnewyork.us/wp-content/uploads/2026/05/DOT-CAPA-REGULATORY-AGENDA-FY-2027-Final.pdf",
+        "publisher_item_id": "DOT-FY2027-1-1",
+        "published_at": "2026-05-01",
+        "retrieved_at": "2026-08-28T00:00:00Z"
+      },
+      "field_availability": {
+        "subject": "published",
+        "justification": "published",
+        "anticipated_content": "published",
+        "objective": "published",
+        "legal_basis": "published",
+        "affected_groups": "published",
+        "approximate_schedule": "published",
+        "publisher_document": "published",
+        "publisher_page": "not_yet_acquired"
+      },
+      "canonical_href": "/rules/agenda/regulatory-agenda-item%3Atransportation%3Afy2027%3Adot-fy2027-1-1/"
+    },
+    {
+      "schema": "cityscroll.regulatory_agenda_item.v1",
+      "id": "regulatory-agenda-item:buildings:fy2027:dob-fy2027-2-1",
+      "object_type": "regulatory-agenda-item",
+      "agency": "Buildings",
+      "agency_code": "DOB",
+      "fiscal_year": "FY2027",
+      "subject": "Rules necessary to add or amend fees",
+      "justification": "Fees require periodic updates.",
+      "anticipated_content": "Add or amend fees in the construction codes.",
+      "objective": "Keep fees current.",
+      "legal_basis": "Article 112 of Title 28 of the NYC Administrative Code.",
+      "affected_groups": "Property owners and construction professionals.",
+      "approximate_schedule": "First Quarter of FY 2027.",
+      "relevant_laws": null,
+      "lifecycle_stage": "anticipated",
+      "formal_rulemaking": false,
+      "publisher_document": "https://rules.cityofnewyork.us/wp-content/uploads/2026/05/CAPA-AGENDA-FY27-final.pdf",
+      "publisher_page": null,
+      "source": {
+        "system": "nyc_rules",
+        "index_url": "https://rules.cityofnewyork.us/view-agency-regulatory-agendas/",
+        "document_url": "https://rules.cityofnewyork.us/wp-content/uploads/2026/05/CAPA-AGENDA-FY27-final.pdf",
+        "publisher_item_id": "DOB-FY2027-2-1",
+        "published_at": "2026-05-04",
+        "retrieved_at": "2026-08-28T00:00:00Z"
+      },
+      "field_availability": {
+        "subject": "published",
+        "justification": "published",
+        "anticipated_content": "published",
+        "objective": "published",
+        "legal_basis": "published",
+        "affected_groups": "published",
+        "approximate_schedule": "published",
+        "publisher_document": "published",
+        "publisher_page": "not_yet_acquired"
+      },
+      "canonical_href": "/rules/agenda/regulatory-agenda-item%3Abuildings%3Afy2027%3Adob-fy2027-2-1/"
+    }
+  ],
+  "agenda_link_bridge": {
+    "schema": "cityscroll.regulatory_agenda_bridge.v1",
+    "candidates": [],
+    "links": [],
+    "metrics": {
+      "candidate_rate": 0,
+      "candidate_count": 0,
+      "accepted_link_count": 0,
+      "accepted_link_precision": "no_accepted_links",
+      "unlinked_but_plausible_count": 0
+    }
+  },
+  "checks": {
+    "schema": "cityscroll.regulatory_agenda_extraction_checks.v1",
+    "agencies_represented": [
+      "Buildings",
+      "Transportation"
+    ],
+    "agency_count": 2,
+    "structured_items": 2,
+    "item_count": 2,
+    "field_availability": {
+      "subject": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "justification": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "anticipated_content": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "objective": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "legal_basis": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "affected_groups": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "approximate_schedule": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "publisher_document": {
+        "published": 2,
+        "source_not_published": 0,
+        "not_yet_acquired": 0,
+        "parse_failed": 0,
+        "empty": 0
+      },
+      "publisher_page": {
+        "published": 0,
+        "source_not_published": 0,
+        "not_yet_acquired": 2,
+        "parse_failed": 0,
+        "empty": 0
+      }
+    },
+    "schedule_precision": {
+      "date": 0,
+      "month": 0,
+      "quarter": 2,
+      "season": 0,
+      "fiscal_year": 0,
+      "unspecified": 0,
+      "not_stated": 0
+    },
+    "documents": {
+      "indexed": 2,
+      "retrieval_failures": 0,
+      "index_retrieved_at": "2026-08-28T00:00:00Z",
+      "source_vintages": [
+        "2026-05-01",
+        "2026-05-04"
+      ],
+      "index_url": "https://rules.cityofnewyork.us/view-agency-regulatory-agendas/"
+    }
+  }
+}

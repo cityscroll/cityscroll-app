@@ -28,6 +28,8 @@ import {
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
 import { renderRulemakingDocument } from "./rulemaking_document.mjs";
+import { renderRegulatoryAgendaDocument } from "./regulatory_agenda_document.mjs";
+import regulatoryAgenda from "./data/regulatory_agenda.json" with { type: "json" };
 import { buildRulemakingObjects, rulemakingObjectForId } from "../worker/src/lib/rulemaking.mjs";
 import { buildCommitteeDocumentView, renderCommitteeDocument } from "./committee_document.mjs";
 import { buildLegislativeMatterDocument, renderLegislativeMatterDocument } from "./legislative_matter_document.mjs";
@@ -91,6 +93,17 @@ function safeRulemaking(pathname) {
   try {
     const id = decodeURIComponent(match[1]);
     return id.startsWith("rulemaking:") && id.length <= 700 ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+function safeRegulatoryAgendaItem(pathname) {
+  const match = pathname.match(/^\/rules\/agenda\/([^/?#]{1,700})\/?$/);
+  if (!match) return null;
+  try {
+    const id = decodeURIComponent(match[1]);
+    return id.startsWith("regulatory-agenda-item:") && id.length <= 700 ? match[1] : null;
   } catch {
     return null;
   }
@@ -199,6 +212,7 @@ function entityDocument(pathname) {
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (assertionTarget(url)) return "assertion";
+  if (safeRegulatoryAgendaItem(url.pathname)) return "regulatory-agenda-item";
   if (safeRulemaking(url.pathname)) return "rulemaking";
   if (safeId(url.pathname)) return "notice";
   if (safeMandate(url.pathname)) return "mandate";
@@ -791,6 +805,27 @@ async function handleRulemaking(request, encodedId) {
   return request.method === "HEAD" ? new Response(null, { status: 200, headers }) : new Response(html, { status: 200, headers });
 }
 
+function agendaItemUnavailableResponse() {
+  return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Agenda item not found · CityScroll</title></head><body><main><h1>Agenda item not found</h1><p><a href=\"/browse/rules/\">Browse Rules</a></p></main></body></html>", {
+    status: 404,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
+  });
+}
+
+async function handleRegulatoryAgendaItem(request, encodedId) {
+  let id;
+  try { id = decodeURIComponent(encodedId); } catch { return agendaItemUnavailableResponse(); }
+  const item = (regulatoryAgenda?.agenda_items || []).find((row) => row?.id === id) || null;
+  const html = renderRegulatoryAgendaDocument(item, { currentHref: request.url });
+  if (!html) return agendaItemUnavailableResponse();
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD" ? new Response(null, { status: 200, headers }) : new Response(html, { status: 200, headers });
+}
+
 async function handleProcurement(request, env, encodedId) {
   let id;
   try { id = decodeURIComponent(encodedId); } catch { return new Response("Invalid procurement link", { status: 400 }); }
@@ -1092,6 +1127,8 @@ export default {
     const url = new URL(request.url);
     const assertion = assertionTarget(url);
     if (assertion) return handleAssertion(request, env, assertion);
+    const agendaItem = safeRegulatoryAgendaItem(url.pathname);
+    if (agendaItem) return handleRegulatoryAgendaItem(request, agendaItem);
     const rulemaking = safeRulemaking(url.pathname);
     if (rulemaking) return handleRulemaking(request, rulemaking);
     const id = safeId(url.pathname);
