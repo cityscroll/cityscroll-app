@@ -2419,6 +2419,16 @@
         ],
         "grounding": "built"
       }
+    ],
+    "capabilities": [
+      {
+        "id": "action_path_v0",
+        "status": "registered",
+        "backing": [
+          "site/action_path_v0.mjs"
+        ],
+        "grounding": "partial"
+      }
     ]
   },
   "er_type_families": [
