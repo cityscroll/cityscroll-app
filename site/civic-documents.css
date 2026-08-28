@@ -636,6 +636,77 @@ select {
   margin-block-start: var(--space-1);
 }
 
+.rulemaking-document .rulemaking-phases {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: rulemaking-phase;
+}
+
+.rulemaking-document .rulemaking-phase {
+  counter-increment: rulemaking-phase;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-inline-start: 4px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas);
+}
+
+.rulemaking-document .rulemaking-phase::before {
+  content: counter(rulemaking-phase);
+  display: inline-grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-inline-end: var(--space-2);
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.rulemaking-document .rulemaking-phase-current {
+  border-inline-start-color: var(--color-action);
+}
+
+.rulemaking-document .rulemaking-phase-current::before {
+  background: var(--color-action);
+  color: #fff;
+}
+
+.rulemaking-document .rulemaking-phase-heading {
+  display: inline-flex;
+  gap: var(--space-2);
+  vertical-align: middle;
+}
+
+.rulemaking-document .rulemaking-phase-heading span {
+  color: var(--color-text-muted);
+}
+
+.rulemaking-document .rulemaking-events {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rulemaking-document .rulemaking-event {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.rulemaking-document .rulemaking-event span {
+  color: var(--color-text-muted);
+}
+
 .legislative-matter-document .matter-appearance {
   margin-block: var(--space-5);
   padding: var(--space-5);

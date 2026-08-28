@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.architecture.watermark.v1",
-  "generated_at": "2026-08-27T21:59:48-04:00",
-  "commit": "2b2f8ae7c63606be7bbf199579aeddc8c47c2c98",
+  "generated_at": "2026-08-27T23:32:13-04:00",
+  "commit": "d07bbe21e7c044bfe7c57ecab174a1f317c28e0b",
   "observer_coverage_hash": "4b52bca29d2f4459dc159ec2e343c2fa1b9643a26433c75f85344a5c46a2f19e",
   "canaries": {
     "agency-constellation-model": {
@@ -46,23 +46,23 @@
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
-      "count": 15,
-      "fingerprint": "77a3a75b07485c28fc7991706fc2cd9bc896aa09ba66744de0f2f230f1139fe0"
+      "count": 16,
+      "fingerprint": "595f404fb585e0d79e7414479b77079c6a6121cc46f221a1d9e6de29ad163a9d"
     },
     "pages-edge-routes": {
       "path": "site/_routes.json",
-      "count": 16,
-      "fingerprint": "5f489c4eaf023f9d98f056996900852998b9324277173f888fb4119e4e481b9a"
+      "count": 17,
+      "fingerprint": "a03a57be7dd848d3c68167f433173f269061df6efef0d6ceab8ef970fb01bcec"
     },
     "performance-observability-builder": {
       "path": "tools/build_performance_observability.mjs",
       "count": 3,
-      "fingerprint": "34b40fa7218102ab6d01232ee950f3b375ce7c537785d739bb86e2587363ae21"
+      "fingerprint": "ea331b8f904c4548f5aae3108f1bb9ca5ac506db06b9ec9e314dcd2c64890a8d"
     },
     "performance-observability-registry": {
       "path": "architecture/performance-observability.v1.json",
-      "count": 56,
-      "fingerprint": "a184f909a46e516956aad47704c421e16769343c2ea24ae4f681841c10d5b858"
+      "count": 57,
+      "fingerprint": "97f91383e3d8863b4fbc2b4dd69966e67a35237a66db7e4443bdb619c95b001c"
     },
     "primary-document-materializer": {
       "path": "tools/build_primary_documents.mjs",
@@ -140,18 +140,18 @@
       "schema": "cityscroll.performance_observability.v1",
       "version": "1.0.0",
       "metric_count": 13,
-      "registry_hash": "d92268d3bd023924ef5b8b1c53b7bff04885e614129c72c71e293f905dcc72f4"
+      "registry_hash": "35353472a6794f7482d84beb60936d92bb6356da14b5fd2f71b99584784ff886"
     },
     "registry": {
       "version": "1.0.0",
       "manifest_version": "rum-surfaces-v1",
-      "surface_count": 36,
+      "surface_count": 37,
       "component_count": 20,
       "classifications": {
         "surfaces": {
           "instrumented": 6,
           "registered_no_data": 0,
-          "planned": 30,
+          "planned": 31,
           "not_user_facing": 0,
           "not_performance_relevant": 0,
           "intentionally_unmeasured": 0,

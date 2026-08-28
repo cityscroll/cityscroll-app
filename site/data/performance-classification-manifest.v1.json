@@ -2,7 +2,7 @@
   "schema": "cityscroll.performance.browser_manifest.v1",
   "manifest_version": "rum-surfaces-v1",
   "registry_version": "1.0.0",
-  "registry_hash": "d92268d3bd023924ef5b8b1c53b7bff04885e614129c72c71e293f905dcc72f4",
+  "registry_hash": "35353472a6794f7482d84beb60936d92bb6356da14b5fd2f71b99584784ff886",
   "collector": {
     "collector_version": "rum-browser-v1",
     "library_name": "web-vitals",
@@ -970,6 +970,31 @@
         }
       ],
       "delivery_class": "hybrid",
+      "applicable_metric_ids": [
+        "cls_score",
+        "content_ready_ms",
+        "fcp_ms",
+        "inp_ms",
+        "lcp_ms",
+        "ttfb_ms"
+      ],
+      "semantic_readiness_contract": "page-content-ready-v1",
+      "lifecycle_state": "planned",
+      "aliases": [],
+      "introduced_version": "1.0.0"
+    },
+    {
+      "surface_id": "rulemaking",
+      "kind": "surface",
+      "parent": null,
+      "route_family": "rulemaking",
+      "public_safe_matcher": [
+        {
+          "kind": "segment_template",
+          "pathname": "/rules/{record}"
+        }
+      ],
+      "delivery_class": "pages_edge",
       "applicable_metric_ids": [
         "cls_score",
         "content_ready_ms",

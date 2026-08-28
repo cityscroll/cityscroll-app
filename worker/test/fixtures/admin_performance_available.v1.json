@@ -17,7 +17,7 @@
     "schema": "cityscroll.performance.operator_inventory.v1",
     "manifest_version": "rum-surfaces-v1",
     "registry_version": "1.0.0",
-    "registry_hash": "d92268d3bd023924ef5b8b1c53b7bff04885e614129c72c71e293f905dcc72f4",
+    "registry_hash": "35353472a6794f7482d84beb60936d92bb6356da14b5fd2f71b99584784ff886",
     "metrics": [
       {
         "metric_id": "cls_score",
@@ -1225,6 +1225,39 @@
         "owner_source_path": "site/stats.html"
       },
       {
+        "surface_id": "rulemaking",
+        "operator_label": "Rulemaking case file",
+        "kind": "surface",
+        "parent": null,
+        "route_family": "rulemaking",
+        "architecture_container_ref": "browser_site",
+        "delivery_class": "pages_edge",
+        "applicable_metric_ids": [
+          "cls_score",
+          "content_ready_ms",
+          "fcp_ms",
+          "inp_ms",
+          "lcp_ms",
+          "ttfb_ms"
+        ],
+        "semantic_readiness": {
+          "contract_id": "page-content-ready-v1",
+          "metric_id": "content_ready_ms",
+          "terminal_result_states": [
+            "content",
+            "empty",
+            "unavailable",
+            "error"
+          ],
+          "definition": "The surface has meaningful primary content or an honest empty, unavailable, or error state. DOM presence and spinner removal alone are insufficient."
+        },
+        "lifecycle_state": "planned",
+        "aliases": [],
+        "supersedes": [],
+        "introduced_version": "1.0.0",
+        "owner_source_path": "site/rulemaking_document.mjs"
+      },
+      {
         "surface_id": "search",
         "operator_label": "Universal search",
         "kind": "surface",
@@ -1911,10 +1944,10 @@
   "coverage": {
     "status": "available",
     "registered": {
-      "surface_count": 36,
+      "surface_count": 37,
       "component_count": 20,
       "surfaces_by_state": {
-        "planned": 30,
+        "planned": 31,
         "instrumented": 6
       },
       "components_by_state": {

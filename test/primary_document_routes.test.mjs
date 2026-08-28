@@ -824,6 +824,7 @@ test("notice response renderer includes a known meeting outcome or honest absenc
 test("Pages edge routing is a narrow waist and explicitly excludes the public Stats document", () => {
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/"), "asset");
   assert.equal(edgeRequestKind("https://cityscroll.org/notices/20240515016"), "notice");
+  assert.equal(edgeRequestKind("https://cityscroll.org/rules/rulemaking%3Adot%3Abicycle-racks"), "rulemaking");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/rules/?q=air"), "browse");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/people/"), "browse");
   assert.equal(edgeRequestKind("https://cityscroll.org/browse/places/"), "browse");
@@ -841,6 +842,7 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.ok(!routes.exclude.includes("/meeting.ics"));
   assert.ok(routes.include.length <= 100, "Pages Functions route include limit");
   assert.ok(routes.include.includes("/notices/*"));
+  assert.ok(routes.include.includes("/rules/*"));
   // Without this include, Pages never invokes the worker for mandate documents
   // and the route falls back to the blank SPA shell (live defect 64116-001).
   assert.ok(routes.include.includes("/mandates/*"));
