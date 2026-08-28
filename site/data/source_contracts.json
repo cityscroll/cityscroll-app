@@ -3,6 +3,62 @@
   "generated_document": "docs/data-sources.md",
   "contracts": [
     {
+      "id": "ibo-fiscal-history",
+      "name": "NYC Independent Budget Office fiscal history",
+      "owner": "New York City Independent Budget Office",
+      "status": "build-time",
+      "scope": "warehouse",
+      "kind": "html",
+      "landing_page": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
+      "publisher_cadence": "Annual fiscal-history workbook releases",
+      "product_freshness": "The checkpointed IBO fiscal-history family contains FY1980–FY2022 only. Its source-vintage observation records the measured frontier separately from retrieval health; no later fiscal year is inferred.",
+      "used_for": "Authoritative IBO agency-expenditure and fiscal-year-end staffing context in the agency fiscal context projection.",
+      "code_references": [
+        {
+          "path": "warehouse/scripts/ibo_fiscal_history.py",
+          "contains": "ibo_fiscal_history"
+        },
+        {
+          "path": "tools/build_agency_fiscal_context.mjs",
+          "contains": "iboReceipt"
+        },
+        {
+          "path": "site/agency_fiscal_context.mjs",
+          "contains": "ibo-fiscal-history"
+        },
+        {
+          "path": "docs/ibo-fiscal-history.md",
+          "contains": "IBO fiscal-history source contract"
+        }
+      ],
+      "delivery_tier": "inline-at-build",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 550,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 550,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "backstage-only",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      },
+      "source_family": {
+        "id": "ibo-fiscal-history",
+        "component_artifact_ids": [
+          "ibo_agency_expenditures",
+          "ibo_full_time_positions"
+        ]
+      },
+      "downstream_consumer_ids": [
+        "agency-fiscal-context"
+      ],
+      "alternate_source_ids": [
+        "comptroller-acfr"
+      ]
+    },
+    {
       "id": "nyc-administrative-code",
       "name": "NYC Administrative Code (American Legal Publishing bulk XML)",
       "owner": "NYC Law Department / American Legal Publishing",

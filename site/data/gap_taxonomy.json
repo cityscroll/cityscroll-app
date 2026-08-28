@@ -764,6 +764,16 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "ibo-fiscal-history",
+      "name": "NYC Independent Budget Office fiscal history",
+      "source_contract_id": "ibo-fiscal-history",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "legacy-dob-job-filings",
       "name": "Legacy DOB job application filings",
       "source_contract_id": "legacy-dob-job-filings",
@@ -3589,7 +3599,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-28",
-    "source_contracts_fingerprint": "c225881f7b4fd0224481b010e937aaf7cea04b5074a2769845a1cab84d0f63a3",
+    "source_contracts_fingerprint": "cce5d39c8ad7a5cd64db21c8d5330af25fad047a4c8e71bab9a27cd556e2d851",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 84,
     "class_changes": 0,

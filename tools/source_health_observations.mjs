@@ -706,6 +706,38 @@ function geographyReceipts(root) {
   return rows;
 }
 
+function iboFiscalHistoryReceipts(root) {
+  const receiptPath = join(root, "warehouse/sources/ibo-fiscal-history/materialized/receipt.json");
+  const manifestPath = join(root, "warehouse/sources/ibo-fiscal-history/source_manifest.json");
+  if (!existsSync(receiptPath) || !existsSync(manifestPath)) return [];
+  let receipt;
+  let manifest;
+  try {
+    receipt = readJson(receiptPath);
+    manifest = readJson(manifestPath);
+  } catch {
+    return [];
+  }
+  if (receipt?.schema !== "cityscroll.ibo_fiscal_history_receipt.v1") return [];
+  const observedAt = validAt(receipt.retrieval_timestamp || manifest.retrieval_timestamp);
+  if (!observedAt) return [];
+  const publisherUpdatedAt = newestAt((manifest.workbooks || []).map((workbook) => (
+    workbook?.http_last_modified || workbook?.publisher_file_last_modified
+  )));
+  const succeeded = receipt?.materialization?.duckdb?.status === "materialized";
+  return [{
+    source_id: "ibo-fiscal-history",
+    observed_at: observedAt,
+    publisher_updated_at: publisherUpdatedAt,
+    publisher_clock_basis: publisherUpdatedAt ? "ibo_workbook_http_last_modified" : null,
+    status: succeeded ? "succeeded" : "failed",
+    path: relative(root, receiptPath),
+    adapter: "ibo-fiscal-history-receipt",
+    run_id: `ibo-fiscal-history:${observedAt}`,
+    exact_error: succeeded ? null : "IBO fiscal-history materialization is not marked materialized",
+  }];
+}
+
 function serveObservations(root, registry) {
   const rows = [];
   const seenPaths = new Set();
@@ -1014,6 +1046,7 @@ export function loadSourceHealthInputs(root, registry, options = {}) {
     warehouseReceipts: [
       ...warehouseReceipts(root, registry),
       ...geographyReceipts(root),
+      ...iboFiscalHistoryReceipts(root),
       ...aboRuntime.acquisitions,
     ],
     serveObservations: [
