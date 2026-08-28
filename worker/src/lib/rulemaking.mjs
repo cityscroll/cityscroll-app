@@ -99,6 +99,7 @@ function noticeLifecycleEvents(rows, existingEvents) {
       source_url: noticeUrl(recordRequestId(proposal)),
       source_system: "city_record",
       status: "occurred",
+      request_id: recordRequestId(proposal),
       derived_from_notice_date: true,
     });
   }
@@ -121,6 +122,7 @@ function noticeLifecycleEvents(rows, existingEvents) {
       source_url: noticeUrl(recordRequestId(adoption)),
       source_system: "city_record",
       status: "occurred",
+      request_id: recordRequestId(adoption),
       derived_from_notice_date: true,
     });
   }
@@ -207,6 +209,7 @@ function objectForRows(rows, { now = null } = {}) {
     source_documents: documents,
     nyc_rules: nycRules,
     interaction,
+    history_timeline: phaseView.history_timeline,
     // Subject-level following is not replayable by the rules scope compiler.
     // Keep the exact notice target available until CAP-2 adds that capability.
     follow: {

@@ -8,7 +8,7 @@ import {
   renderNodeSection,
 } from "./civic_document_chrome.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
-import { RULE_EVENT_META, RULES_PHASE_META } from "./rules_phase_spine.mjs";
+import { buildRulesPhaseView } from "./rules_phase_spine.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -34,35 +34,68 @@ function prettyDate(value) {
   });
 }
 
-function eventLabel(event) {
-  const meta = RULE_EVENT_META[event?.event_type];
-  const labels = {
-    proposal_published: "Proposal published",
-    public_hearing: "Public hearing",
-    comment_close: "Comments due",
-    adoption: "Adoption published",
-    effective: "Takes effect",
-  };
-  return labels[event?.event_type] || meta?.label_key || "Process event";
+function hrefAttrs(href) {
+  return /^https?:\/\//i.test(href)
+    ? ' target="_blank" rel="noopener noreferrer"'
+    : "";
 }
 
-function phaseMarkup(phase) {
-  const meta = RULES_PHASE_META[phase.id];
-  const events = (phase.events || []).map((event) => `<li class="rulemaking-event" data-event-type="${esc(event.event_type)}">
-    <strong>${esc(eventLabel(event))}</strong><span>${esc(prettyDate(event.valid_at || event.published_at))}</span>
-  </li>`).join("");
-  const state = phase.state === "passed" ? "Completed" : phase.state === "current" ? "Current" : "Upcoming";
-  return `<li class="rulemaking-phase rulemaking-phase-${esc(phase.state)}" data-phase="${esc(phase.id)}">
-    <div class="rulemaking-phase-heading"><strong>${esc(meta?.short || phase.id)}</strong><span>${esc(state)}</span></div>
-    ${events ? `<ul class="rulemaking-events">${events}</ul>` : `<p class="muted">No dated event in the published record.</p>`}
+function historyEventMarkup(event) {
+  if (!event?.trace_href) return "";
+  const dateMarkup = event.date_state === "known"
+    ? prettyDate(event.observed_date)
+    : event.unknown_date_label;
+  const recordLink = event.record_href && event.record_href !== event.trace_href
+    ? ` · <a href="${esc(event.record_href)}">${esc(event.record_label)}</a>`
+    : "";
+  const sourceDetail = [event.source_label, event.source_field].filter(Boolean).join(" · ");
+  return `<li class="rule-history-event" data-event-kind="observed" data-date-state="${esc(event.date_state)}" data-event-type="${esc(event.event_type)}">
+    <div class="rule-history-event-heading">
+      <span class="tag rule-history-marker">${esc(event.marker)}</span>
+      <strong><a href="${esc(event.trace_href)}"${hrefAttrs(event.trace_href)}>${esc(event.label)}</a></strong>
+      <time class="rule-history-date" datetime="${esc(event.observed_date || "")}">${esc(dateMarkup)}</time>
+    </div>
+    <p class="rule-history-event-meta">${esc(sourceDetail)} · <a href="${esc(event.trace_href)}"${hrefAttrs(event.trace_href)}>${esc(event.trace_label)}</a>${recordLink}</p>
   </li>`;
+}
+
+function derivedHistoryMarkup(derived) {
+  if (!derived) return "";
+  const basis = (derived.basis_event_refs || []).filter((ref) => ref?.href).map((ref) =>
+    `<li><a href="${esc(ref.href)}"${hrefAttrs(ref.href)}>${esc(ref.label)}</a></li>`
+  ).join("");
+  return `<li class="rule-history-event rule-history-derived" data-event-kind="derived">
+    <div class="rule-history-event-heading">
+      <span class="tag rule-history-marker">${esc(derived.marker || "Derived")}</span>
+      <strong>${esc(derived.label)}</strong>
+    </div>
+    <p class="rule-history-event-meta">${esc(derived.basis)}</p>
+    ${basis ? `<p class="rule-history-basis-label">${esc(derived.basis_label)}</p><ul class="rule-history-basis">${basis}</ul>` : ""}
+  </li>`;
+}
+
+function historyTimelineMarkup(object) {
+  const model = object.history_timeline || buildRulesPhaseView(object, { skipStitch: true }).history_timeline;
+  if (!model) return "";
+  const events = (model.events || []).map(historyEventMarkup).filter(Boolean).join("");
+  const missing = (model.missing_events || []).map((event) => event.label).join(", ");
+  const coverage = model.coverage || {};
+  const missingMarkup = missing
+    ? `<p class="rule-history-missing" data-missing-events="${esc((coverage.missing_event_types || []).join(","))}">${esc(coverage.missing_note)}</p>`
+    : "";
+  return `<div class="rule-history" data-history-coverage="${esc(coverage.state || "unknown")}">
+    <p class="rule-history-coverage">${esc(coverage.note)}</p>
+    <ol class="rule-history-timeline" aria-label="${esc(model.label)}">
+      ${events}${derivedHistoryMarkup(model.derived)}
+    </ol>
+    ${missingMarkup}
+  </div>`;
 }
 
 export function renderRulemakingDocument(object, { currentHref = "", now = null } = {}) {
   if (!object || object.schema !== "cityscroll.rulemaking.v1" || !object.rulemaking_id) return "";
   const title = clean(object.title, 500) || "Rulemaking";
   const agency = clean(object.agency, 300);
-  const phases = Array.isArray(object.phases) ? object.phases : [];
   const sourceDocs = Array.isArray(object.source_documents) ? object.source_documents : [];
   // The materialized object carries a build-time projection, but a cached page
   // must still retire a deadline when it is rendered after that date.
@@ -130,9 +163,7 @@ export function renderRulemakingDocument(object, { currentHref = "", now = null 
   const ruleItems = sourceDocs.filter((item) => item.kind === "nyc_rules").map((item) =>
     `<li><a class="ui-official-source-link" href="${esc(item.href)}" target="_blank" rel="noopener noreferrer">${esc(item.label)}<span aria-hidden="true">↗</span></a></li>`
   ).join("");
-  const timeline = phases.length
-    ? `<ol class="rulemaking-phases">${phases.map(phaseMarkup).join("")}</ol>`
-    : "";
+  const timeline = historyTimelineMarkup(object);
   const html = `<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
