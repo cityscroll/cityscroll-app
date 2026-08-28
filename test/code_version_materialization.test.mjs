@@ -57,6 +57,7 @@ test("AMEND preserves identity and creates an effective-date version boundary", 
   assert.equal(previous.text, provision.current_text);
   assert.match(result.diff.text, /- Old statutory text/);
   assert.match(result.diff.text, /\+ New statutory text/);
+  assert.equal(next.content_hash, "sha256:ae631416cc61354e03118519ac1eb26de26ecc46ba7f5a21d795b125e9d5e27d");
   assert.notEqual(previous.content_hash, next.content_hash);
 });
 
