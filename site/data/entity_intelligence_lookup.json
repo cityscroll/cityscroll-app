@@ -3,9 +3,9 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-28T16:21:02.037Z",
-  "observation_count": 3549,
-  "entity_count": 201,
+  "generated_at": "2026-08-28T16:31:37.977Z",
+  "observation_count": 3548,
+  "entity_count": 200,
   "multi_domain_count": 37,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
@@ -124026,74 +124026,6 @@
         },
         {
           "type": "published_by_agency",
-          "from": "contract:CT106820278800018",
-          "to": "agency:id:administration-for-childrens-services",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:06820P8206KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Administration for Children's Services",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:06820P8206KXLR002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "input_value": "Administration for Children's Services"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT106820278800018",
-          "to": "pin:06820P8206KXLR002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:06820P8206KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "06820P8206KXLR002",
-            "join_key": "pin",
-            "join_value": "06820P8206KXLR002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:06820P8206KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "06820P8206KXLR002",
-            "join_key": "pin",
-            "join_value": "06820P8206KXLR002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "published_by_agency",
           "from": "contract:CT106820278800023",
           "to": "agency:id:administration-for-childrens-services",
           "method": "agency_canonical_v1",
@@ -133059,7 +132991,7 @@
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 194,
+        "deterministic": 193,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -133071,8 +133003,8 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
         "total_linked_objects": 6,
-        "link_count": 342,
-        "join_key_link_count": 194,
+        "link_count": 340,
+        "join_key_link_count": 193,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -347539,492 +347471,6 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-        "id": "stem:MIVILA%20CORP%20MIVILA%20FOODS",
-        "stem": "MIVILA CORP MIVILA FOODS",
-        "display_name": "MIVILA CORP. MIVILA FOODS"
-      },
-      "domains": {
-        "money": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "contract:MA185720278801340",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MIVILA CORP. MIVILA FOODS",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "85726B0049002",
-              "contract_id": "MA185720278801340",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:85726B0049002",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MIVILA CORP. MIVILA FOODS"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:MA185720278801259",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MIVILA CORP. MIVILA FOODS",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "85726B0052001",
-              "contract_id": "MA185720278801259",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:85726B0052001",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MIVILA CORP. MIVILA FOODS"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:MA185720278801289",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MIVILA CORP. MIVILA FOODS",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "85726B0048001",
-              "contract_id": "MA185720278801289",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:85726B0048001",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MIVILA CORP. MIVILA FOODS"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:MA185720278801261",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MIVILA CORP. MIVILA FOODS",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "85726B0054001",
-              "contract_id": "MA185720278801261",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:85726B0054001",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MIVILA CORP. MIVILA FOODS"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 4
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "franchise": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No franchise objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "named_vendor",
-          "from": "contract:MA185720278801259",
-          "to": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0052001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0052001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:MA185720278801259",
-          "to": "pin:85726B0052001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0052001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0052001",
-            "join_key": "pin",
-            "join_value": "85726B0052001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0052001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0052001",
-            "join_key": "pin",
-            "join_value": "85726B0052001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:MA185720278801261",
-          "to": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0054001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0054001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:MA185720278801261",
-          "to": "pin:85726B0054001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0054001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0054001",
-            "join_key": "pin",
-            "join_value": "85726B0054001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0054001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0054001",
-            "join_key": "pin",
-            "join_value": "85726B0054001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:MA185720278801289",
-          "to": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0048001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0048001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:MA185720278801289",
-          "to": "pin:85726B0048001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0048001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0048001",
-            "join_key": "pin",
-            "join_value": "85726B0048001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0048001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0048001",
-            "join_key": "pin",
-            "join_value": "85726B0048001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:MA185720278801340",
-          "to": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0049002",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0049002",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MIVILA CORP. MIVILA FOODS"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:MA185720278801340",
-          "to": "pin:85726B0049002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0049002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0049002",
-            "join_key": "pin",
-            "join_value": "85726B0049002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:85726B0049002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "85726B0049002",
-            "join_key": "pin",
-            "join_value": "85726B0049002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        }
-      ],
-      "shadow_edges": [],
-      "edge_routing": {
-        "deterministic": 4,
-        "public_inferred": 0,
-        "evidence_only": 0,
-        "no_edge": 0
-      },
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 7,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 8,
-        "join_key_link_count": 4,
-        "cross_spine_shadow_count": 0,
-        "coverage_rate": 0.14285714285714285
-      }
-    },
     "vendor:stem:VITAL%20PLUMBING": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
@@ -360728,13 +360174,6 @@
         "confidence": "strong"
       }
     ],
-    "contract:CT106820278800018": [
-      {
-        "entity_ref": "agency:id:administration-for-childrens-services",
-        "relation": "published_by_agency",
-        "confidence": "strong"
-      }
-    ],
     "contract:CT106820278800023": [
       {
         "entity_ref": "agency:id:administration-for-childrens-services",
@@ -365194,22 +364633,12 @@
         "entity_ref": "agency:id:dcasdivision-of-municipal-supply-service",
         "relation": "published_by_agency",
         "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-        "relation": "named_vendor",
-        "confidence": "strong"
       }
     ],
     "contract:MA185720278801261": [
       {
         "entity_ref": "agency:id:dcasdivision-of-municipal-supply-service",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -365246,11 +364675,6 @@
         "entity_ref": "agency:id:dcasdivision-of-municipal-supply-service",
         "relation": "published_by_agency",
         "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-        "relation": "named_vendor",
-        "confidence": "strong"
       }
     ],
     "contract:MA185720278801297": [
@@ -365285,11 +364709,6 @@
       {
         "entity_ref": "agency:id:dcasdivision-of-municipal-supply-service",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -373863,7 +373282,7 @@
         "committed_slice_rows": 2000,
         "selected_rows": 500,
         "cap": 500,
-        "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id"
+        "strategy": "population-measured Checkbook slice capped for entity intelligence; one row per exact prime_contract_id; Contracts_NYCHA rows reserve slots in the shared Checkbook budget"
       },
       "ocp_awards": {
         "joined_available": 1878,
@@ -375464,14 +374883,6 @@
       "ref": "vendor:stem:MARSH",
       "kind": "vendor",
       "display_name": "MARSH USA LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 4,
-      "coverage_rate": 0.14285714285714285
-    },
-    {
-      "ref": "vendor:stem:MIVILA%20CORP%20MIVILA%20FOODS",
-      "kind": "vendor",
-      "display_name": "MIVILA CORP. MIVILA FOODS",
       "domains_matched": 1,
       "total_linked_objects": 4,
       "coverage_rate": 0.14285714285714285
