@@ -1,0 +1,272 @@
+{
+  "schema": "cityscroll.procurement_intent_radar.fixtures.v0",
+  "fixture_version": "0.1.0",
+  "cases": [
+    {
+      "id": "compass-dycd-2025-05-19",
+      "kind": "positive",
+      "source": {
+        "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+        "source_event_id": "council:hearing:2025-05-19:dycd-fy2026-executive-budget",
+        "observed_at": "2025-05-19",
+        "observed_at_precision": "day",
+        "speaker": { "person_ref": "person:keith-howard", "display_name": "Keith Howard", "role": "DYCD Commissioner" },
+        "source_type": "agency_testimony",
+        "source_title": "Council FY2026 Executive Budget hearing",
+        "source_span_text": "DYCD anticipates releasing a concept paper shortly, with the release of the long-awaited request for proposals in the fall.",
+        "span_text_status": "verbatim",
+        "citations": [
+          { "label": "Council transcript", "url": "https://legistar.council.nyc.gov/View.ashx?GUID=73A1E0BF-3D78-4A7F-9DEB-70D949A5751F&ID=14582598&M=F", "authority": "nyc_council" }
+        ]
+      },
+      "expected_future_action_assertion": {
+        "assertion_id": "faa:compass-dycd-2025-05-19",
+        "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+        "source_event_id": "council:hearing:2025-05-19:dycd-fy2026-executive-budget",
+        "source_span": "DYCD anticipates releasing a concept paper shortly, with the release of the long-awaited request for proposals in the fall.",
+        "observed_at": "2025-05-19",
+        "asserted_by_person_ref": "person:keith-howard",
+        "responsible_agency_ref": "agency:id:dycd",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "COMPASS RFP",
+        "program_refs": ["program:dycd:compass"],
+        "procurement_type": "RFP",
+        "quantity_assertions": [],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [],
+        "expected_window": { "earliest": "2025-09-01", "latest": "2025-11-30", "precision": "season", "raw_text": "in the fall" },
+        "modality": "anticipated",
+        "conditions": [],
+        "extraction_method": "human_seeded_gold",
+        "extraction_version": "pir-phase0.1",
+        "extraction_confidence": "high"
+      },
+      "expected_outcome": {
+        "occurrence": "hit",
+        "timing": "hit",
+        "cardinality": { "intent_count": 1, "realized_count": 2, "relation": "one_to_many" },
+        "lead_days": 135,
+        "match_confidence": "extremely_high",
+        "realization": {
+          "realized_at": "2025-10-01",
+          "realized_procurements": [
+            { "epin": "26026P0003", "title": "COMPASS Programs in Public Schools", "source_system": "city_record", "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250915017" },
+            { "epin": "26026P0004", "title": "COMPASS Center-Based and Non-Public School Site Programs", "source_system": "city_record", "citation_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20250915022" }
+          ],
+          "retained_data_present": false,
+          "retained_data_checked_at": "2026-08-27",
+          "retained_data_checked_artifacts": [
+            { "path": "site/data/procurement_browse_rows.json", "identifier_field": "epin/pin", "exact_identifier_found": false },
+            { "path": "site/data/shared_procurement_read_model.json", "identifier_field": "epin/pin/procurement_id", "exact_identifier_found": false },
+            { "path": "site/data/procurement_spine_sources.json", "identifier_field": "epin/pin", "exact_identifier_found": false }
+          ]
+        }
+      },
+      "match_evidence_anchors": [
+        { "anchor": "agency family", "upstream_value": "DYCD", "realization_value": "DYCD", "upstream_field": "responsible_agency_ref", "realization_field": "source_system/agency" },
+        { "anchor": "program", "upstream_value": "COMPASS", "realization_value": "COMPASS", "upstream_field": "program_refs/object_text", "realization_field": "title" },
+        { "anchor": "release date", "upstream_value": "fall 2025", "realization_value": "2025-10-01", "upstream_field": "expected_window", "realization_field": "realized_at" }
+      ]
+    },
+    {
+      "id": "hra-dv-beds-2024-10-09",
+      "kind": "positive",
+      "source": {
+        "source_record_id": "council:transcript:general-welfare:2024-10-09",
+        "source_event_id": "council:hearing:2024-10-09:general-welfare-dv-shelter",
+        "observed_at": "2024-10-09",
+        "observed_at_precision": "day",
+        "speaker": { "person_ref": "person:john-rojas", "display_name": "John Rojas", "role": "HRA official" },
+        "source_type": "council_transcript",
+        "source_title": "Committee on General Welfare and Committee on Women and Gender Equity hearing",
+        "source_span_text": "We are actually in the midst of planning for the release of an RFP for additional emergency shelter beds, so we hope by the end of the year to be able to release an RFP seeking an additional 94 beds. And this RFP seeks to target single adult households of one and with a special emphasis on LGBTQIA survivors. The facilities can’t exclusively serve single adults that we’ve consulted with our oversight agency at the state OCFS and the facilities must always accept families if that’s a requirement of the shelter system but there is an emphasis on single adults and a special focus on LGBTQ survivors.",
+        "span_text_status": "verbatim",
+        "citations": [
+          { "label": "Council transcript", "url": "https://legistar.council.nyc.gov/View.ashx?GUID=55F96206-8A74-4F38-BF33-DCB6340E1BA7&ID=13400292&M=F", "authority": "nyc_council" }
+        ]
+      },
+      "expected_future_action_assertion": {
+        "assertion_id": "faa:hra-dv-beds-2024-10-09",
+        "source_record_id": "council:transcript:general-welfare:2024-10-09",
+        "source_event_id": "council:hearing:2024-10-09:general-welfare-dv-shelter",
+        "source_span": "We are actually in the midst of planning for the release of an RFP for additional emergency shelter beds, so we hope by the end of the year to be able to release an RFP seeking an additional 94 beds. And this RFP seeks to target single adult households of one and with a special emphasis on LGBTQIA survivors. The facilities can’t exclusively serve single adults that we’ve consulted with our oversight agency at the state OCFS and the facilities must always accept families if that’s a requirement of the shelter system but there is an emphasis on single adults and a special focus on LGBTQ survivors.",
+        "observed_at": "2024-10-09",
+        "asserted_by_person_ref": "person:john-rojas",
+        "responsible_agency_ref": "agency:id:dss",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "additional emergency shelter beds for domestic-violence survivors",
+        "program_refs": [],
+        "procurement_type": "RFP",
+        "quantity_assertions": [ { "kind": "beds", "value": 94, "unit": "beds", "raw_text": "additional 94 beds" } ],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": ["single adult households", "families", "LGBTQIA survivors"],
+        "expected_window": { "earliest": null, "latest": "2024-12-31", "precision": "deadline", "raw_text": "by the end of the year" },
+        "modality": "hoped",
+        "conditions": [],
+        "extraction_method": "human_seeded_gold",
+        "extraction_version": "pir-phase0.1",
+        "extraction_confidence": "high"
+      },
+      "expected_outcome": {
+        "occurrence": "hit",
+        "timing": "miss",
+        "cardinality": { "intent_count": 1, "realized_count": 1, "relation": "one_to_one" },
+        "lead_days": 149,
+        "match_confidence": "extremely_high",
+        "realization": {
+          "realized_at": "2025-03-07",
+          "realized_procurements": [ { "epin": "06925P0010", "title": "DVS 94 beds Emergency Shelter and Support Services Open Ended RFx", "source_system": "passport", "citation_url": "https://www.govcb.com/government-bids/P-DVS-BEDS-EMERGENCY-AND-22653149.htm" } ],
+          "retained_data_present": false,
+          "retained_data_checked_at": "2026-08-27",
+          "retained_data_checked_artifacts": [
+            { "path": "site/data/procurement_browse_rows.json", "identifier_field": "epin/pin", "exact_identifier_found": false },
+            { "path": "site/data/shared_procurement_read_model.json", "identifier_field": "epin/pin/procurement_id", "exact_identifier_found": false },
+            { "path": "site/data/procurement_spine_sources.json", "identifier_field": "epin/pin", "exact_identifier_found": false }
+          ]
+        }
+      },
+      "match_evidence_anchors": [
+        { "anchor": "agency family", "upstream_value": "DSS/HRA", "realization_value": "DSS/HRA", "upstream_field": "responsible_agency_ref", "realization_field": "agency" },
+        { "anchor": "exact quantity", "upstream_value": 94, "realization_value": 94, "upstream_field": "quantity_assertions", "realization_field": "title" },
+        { "anchor": "DV shelter", "upstream_value": "emergency shelter beds", "realization_value": "Emergency Shelter", "upstream_field": "object_text", "realization_field": "title" },
+        { "anchor": "populations", "upstream_value": ["single adult households", "families", "LGBTQIA survivors"], "realization_value": "single Adults and Families / Domestic Violence Survivors", "upstream_field": "population_terms", "realization_field": "title/description" }
+      ]
+    },
+    {
+      "id": "acs-atd-2022-03-09",
+      "kind": "positive",
+      "source": {
+        "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+        "source_event_id": "council:document:acs-finance-briefing:2022-03-09",
+        "observed_at": "2022-03-09",
+        "observed_at_precision": "day",
+        "speaker": { "person_ref": null, "display_name": "NYC Council Finance Division", "role": "briefing paper author" },
+        "source_type": "council_briefing_paper",
+        "source_title": "Report on the Fiscal 2023 Preliminary Plan and the Fiscal 2022 Mayor’s Management Report for ACS",
+        "source_span_text": "ACS released a concept paper for ATDs in February 2022, plans to release an RFP in the summer, and intends to put new contracts in place in Fiscal 2024, when program management moves to ACS from MOCJ.",
+        "span_text_status": "verbatim",
+        "citations": [
+          { "label": "Council Finance Division briefing paper", "url": "https://council.nyc.gov/budget/wp-content/uploads/sites/54/2022/03/ACS.pdf", "authority": "nyc_council" }
+        ]
+      },
+      "expected_future_action_assertion": {
+        "assertion_id": "faa:acs-atd-2022-03-09",
+        "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+        "source_event_id": "council:document:acs-finance-briefing:2022-03-09",
+        "source_span": "ACS released a concept paper for ATDs in February 2022, plans to release an RFP in the summer, and intends to put new contracts in place in Fiscal 2024, when program management moves to ACS from MOCJ.",
+        "observed_at": "2022-03-09",
+        "asserted_by_person_ref": null,
+        "responsible_agency_ref": "agency:id:acs",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "Alternative to Detention RFP",
+        "program_refs": ["program:acs:alternative-to-detention"],
+        "procurement_type": "RFP",
+        "quantity_assertions": [],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [],
+        "expected_window": { "earliest": "2022-06-01", "latest": "2022-08-31", "precision": "season", "raw_text": "in the summer" },
+        "modality": "planned",
+        "conditions": [],
+        "extraction_method": "human_seeded_gold",
+        "extraction_version": "pir-phase0.1",
+        "extraction_confidence": "high"
+      },
+      "expected_outcome": {
+        "occurrence": "hit",
+        "timing": "miss",
+        "cardinality": { "intent_count": 1, "realized_count": 1, "relation": "one_to_one" },
+        "lead_days": 219,
+        "match_confidence": "high",
+        "realization": {
+          "realized_at": "2022-10-14",
+          "realized_procurements": [ { "epin": "06823P0002", "title": "Alternative to Detention RFP", "source_system": "city_record", "citation_url": "https://www.nonprofitgrantwriters.com/wp-content/uploads/2022/11/Open-Human-Services-Opportunities-City-of-New-York.pdf" } ],
+          "retained_data_present": false,
+          "retained_data_checked_at": "2026-08-27",
+          "retained_data_checked_artifacts": [
+            { "path": "site/data/procurement_browse_rows.json", "identifier_field": "epin/pin", "exact_identifier_found": false },
+            { "path": "site/data/shared_procurement_read_model.json", "identifier_field": "epin/pin/procurement_id", "exact_identifier_found": false },
+            { "path": "site/data/procurement_spine_sources.json", "identifier_field": "epin/pin", "exact_identifier_found": false }
+          ]
+        }
+      },
+      "match_evidence_anchors": [
+        { "anchor": "agency", "upstream_value": "ACS", "realization_value": "ACS", "upstream_field": "responsible_agency_ref", "realization_field": "title/agency" },
+        { "anchor": "program", "upstream_value": "Alternative to Detention / ATD", "realization_value": "Alternative to Detention", "upstream_field": "program_refs/object_text", "realization_field": "title" },
+        { "anchor": "procurement type", "upstream_value": "RFP", "realization_value": "RFP", "upstream_field": "procurement_type", "realization_field": "title" }
+      ]
+    },
+    {
+      "id": "negative-reported-recollection-2025-03-20",
+      "kind": "negative",
+      "source": {
+        "source_record_id": "council:transcript:children-youth:2025-03-20",
+        "source_event_id": "council:hearing:2025-03-20:children-youth-dycd",
+        "observed_at": "2025-03-20",
+        "observed_at_precision": "day",
+        "speaker": { "person_ref": "person:althea-stevens", "display_name": "Althea V. Stevens", "role": "Council Committee Chair" },
+        "source_type": "council_transcript",
+        "source_title": "Committee on Children and Youth preliminary budget hearing",
+        "source_span_text": "Chair Stevens recalls that Commissioner Howard had previously said an RFP would be out by September; Commissioner Howard responds that circumstances changed and makes no comparable new release-date commitment.",
+        "span_text_status": "seeded_description",
+        "citations": [
+          { "label": "Council hearing record", "url": "https://citymeetings.nyc/meetings/new-york-city-council/2025-03-20-1000-am-committee-on-children-and-youth/", "authority": "public_index" }
+        ]
+      },
+      "expected_future_action_assertion": null,
+      "expected_outcome": {
+        "occurrence": "not_applicable",
+        "timing": "not_applicable",
+        "cardinality": { "intent_count": 0, "realized_count": 0, "relation": "none" },
+        "lead_days": null,
+        "match_confidence": "not_applicable",
+        "realization": {
+          "realized_at": null,
+          "realized_procurements": [],
+          "retained_data_present": false,
+          "retained_data_checked_at": "2026-08-27",
+          "retained_data_checked_artifacts": []
+        }
+      },
+      "match_evidence_anchors": [],
+      "rejection_reasons": ["reported_speech", "historical_commitment", "revised_plans", "no_current_agency_commitment"]
+    },
+    {
+      "id": "negative-past-tense-rfp-2023-04-24",
+      "kind": "negative",
+      "source": {
+        "source_record_id": "council:transcript:oversight-public-safety-general-welfare:2023-04-24",
+        "source_event_id": "council:hearing:2023-04-24:family-courts",
+        "observed_at": "2023-04-24",
+        "observed_at_precision": "day",
+        "speaker": { "person_ref": null, "display_name": "ACS witness", "role": "agency witness; speaker not specified in seeded excerpt" },
+        "source_type": "council_transcript",
+        "source_title": "Joint hearing on operational challenges facing Family Court",
+        "source_span_text": "ACS issued the RFP for the ATD programs and recently announced recommended awards.",
+        "span_text_status": "verbatim",
+        "citations": [
+          { "label": "Council transcript", "url": "https://legistar.council.nyc.gov/View.ashx?GUID=031FAD04-4A78-467C-93F5-CFB41DDF474F&ID=11975422&M=F", "authority": "nyc_council" }
+        ]
+      },
+      "expected_future_action_assertion": null,
+      "expected_outcome": {
+        "occurrence": "not_applicable",
+        "timing": "not_applicable",
+        "cardinality": { "intent_count": 0, "realized_count": 0, "relation": "none" },
+        "lead_days": null,
+        "match_confidence": "not_applicable",
+        "realization": {
+          "realized_at": null,
+          "realized_procurements": [],
+          "retained_data_present": false,
+          "retained_data_checked_at": "2026-08-27",
+          "retained_data_checked_artifacts": []
+        }
+      },
+      "match_evidence_anchors": [],
+      "rejection_reasons": ["past_tense", "completed_action", "not_future_intent", "contains_rfp_baseline_must_fail"]
+    }
+  ]
+}
