@@ -46,8 +46,8 @@
     },
     "pages-edge-renderer": {
       "path": "site/pages_edge.mjs",
-      "count": 17,
-      "fingerprint": "6884b9aa6a0595a14a4f898672b8a6366a693ebf1446a90c5f6689ec4b203b18"
+      "count": 18,
+      "fingerprint": "b95baf55b2173633b4de0a45f24d2eda9c6a8bfd05a9ea04d845df7e6c179a31"
     },
     "pages-edge-routes": {
       "path": "site/_routes.json",
