@@ -89,6 +89,14 @@
   proof and the contract shape are in `worker/test/land_prediction_features.test.mjs` and
   `docs/land-use-prediction-features-v1.md`.
 
+- **Interpretable land-use predictor (LUP2-C6):**
+  `worker/src/lib/land_prediction_predictor.mjs` fits a deterministic, regularized logistic model
+  only from outcome-after-cutoff C5 vectors, measures Brier/log-loss calibration, and emits
+  evidence-linked feature-state explanations. It remains `shadow_only_until_backtest_gate`; the
+  incumbent `land_prediction_baseline_v1` is retained through `predictLandUse` fallback behavior.
+  Focused proof is `worker/test/land_prediction_predictor.test.mjs` and usage is documented in
+  `docs/land-use-prediction-predictor-v2.md`.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
