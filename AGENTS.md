@@ -48,6 +48,15 @@
   `--check` verifies the CB-MONEY-00 artifact hash and slice. Components are published only when
   the source P/O indicator semantics reconcile; unmatched rows remain in the receipt.
 
+- **Historical land-use Council actor resolution (LUP2-C3):**
+  `worker/src/lib/land_prediction_actor_resolution.mjs` joins each application location to a
+  temporally valid Council boundary and the person hub's historical `terms[]`, emitting only exact
+  `official:{PersonId}` identities. It never uses `current_term` or a current district as a
+  historical fallback; missing, conflicting, and unqualified boundary/term evidence remains
+  explicit `unknown`, while source-backed vacancy records emit `vacant`. Multi-location results
+  preserve one district/officeholder row per location. Focused proof is
+  `worker/test/land_prediction_actor_resolution.test.mjs`.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
