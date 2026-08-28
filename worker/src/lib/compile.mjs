@@ -230,6 +230,16 @@ export async function rowsForCompiledQuery(q, env, fetchImpl = fetch) {
 export function compileSub(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
+  const requestIds = Array.isArray(f.request_ids)
+    ? [...new Set(f.request_ids.map((value) => String(value || "").trim())
+      .filter((value) => /^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(value)))].sort()
+    : [];
+  // Exact notice membership is the only relation-backed continuation currently
+  // supported by both compiler paths. A malformed or cross-lens request-id
+  // constraint must not disappear into a broad query.
+  if (Object.prototype.hasOwnProperty.call(f, "request_ids")
+      && (sub.lens !== "rules" || !requestIds.length
+        || requestIds.length !== (Array.isArray(f.request_ids) ? f.request_ids.length : 0))) return null;
   const requestedBoard = f.communityBoard;
   const hasRequestedBoard = requestedBoard !== undefined && requestedBoard !== null
     && String(requestedBoard).trim() !== "";
@@ -486,6 +496,9 @@ export function compileSub(sub, todayISO) {
     let where = sub.lens === "meetings"
       ? "(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL))"
       : `section_name='${SECTION_BY_LENS[sub.lens]}'`;
+    if (sub.lens === "rules" && requestIds.length) {
+      where += ` AND request_id IN (${requestIds.map((id) => `'${id.replace(/'/g, "''")}'`).join(",")})`;
+    }
     const agency = typeof f.agency === "string" && f.agency.trim() ? f.agency.trim().replace(/'/g, "''") : null;
     if (agency) where += ` AND agency_name='${agency}'`;
     let order = "start_date DESC";

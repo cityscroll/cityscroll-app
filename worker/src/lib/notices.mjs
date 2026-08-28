@@ -72,6 +72,15 @@ function buildStructuredFilters(opts = {}, alias = "") {
   if (opts.agency) { where.push(`lower(${col("agency")}) LIKE ?`); params.push("%" + String(opts.agency).toLowerCase() + "%"); }
   if (opts.category) { where.push(`${col("category")} = ?`); params.push(opts.category); }
   if (opts.noticeType) { where.push(`${col("type_of_notice")} = ?`); params.push(opts.noticeType); }
+  if (Object.prototype.hasOwnProperty.call(opts, "requestIds")) {
+    const ids = Array.isArray(opts.requestIds) ? opts.requestIds
+      .map((value) => String(value || "").trim())
+      .filter((value) => /^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(value)) : [];
+    if (ids.length && ids.length === opts.requestIds.length) {
+      where.push(`${col("request_id")} IN (${ids.map(() => "?").join(",")})`);
+      params.push(...ids);
+    } else where.push("1 = 0");
+  }
 
   const hasAmount = opts.minAmount != null || opts.maxAmount != null;
   if (hasAmount) {

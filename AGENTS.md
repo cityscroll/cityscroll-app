@@ -5,6 +5,11 @@
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
   lossy scope continuations; focused proof is `test/action_path_v0.test.mjs`.
 
+- **Exact continuation replay:** `worker/src/lib/continuation_replay.mjs` is the pure fail-closed
+  capability over scope-v0, Following, SODA, and D1. The current exact relation family is bounded
+  `rules.request_ids` membership; matter and broad/body-level fallbacks remain unsupported. Proof
+  is `worker/test/continuation_replay.test.mjs`.
+
 - **Generic person contract:** `ontology/person.mjs` owns the additive
   `cityscroll.person.v1` source-qualified envelope and `person_identity_link.v1` reviewed
   `same_person` relation. It never rewrites `official:{PersonId}` or
