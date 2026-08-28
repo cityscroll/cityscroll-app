@@ -120,7 +120,7 @@ export function renderAgencyCategorySection(category, source = {}) {
         <span class="muted node-muted">${esc(obligationMeta(item))}</span>
       </li>`;
     }
-    const meta = [sourceSystemReaderLabel(item.source) || item.source, item.date]
+    const meta = [item.operating_entity_name || sourceSystemReaderLabel(item.source) || item.source, item.date]
       .filter(Boolean).join(" · ");
     return `<li class="node-record" data-edge-claim-row="${esc(item.claim?.claim_id || item.subject_ref || item.id)}" data-warrant-class="${esc(warrant)}">
       <div class="node-record-main">${itemLink(item, source)}${why ? ` ${why}` : ""}</div>

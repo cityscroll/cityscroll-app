@@ -10,9 +10,10 @@
 import { createHash } from "node:crypto";
 
 export const PROCUREMENT_INDEX_COHERENCE_SCHEMA = "cityscroll.procurement_index_coherence.v1";
-export const SOURCE_MODEL_FINGERPRINT_VERSION = "cityscroll.procurement_source_model.v1";
+export const SOURCE_MODEL_FINGERPRINT_VERSION = "cityscroll.procurement_source_model.v2";
 export const SPINE_SOURCE_PATH = "site/data/procurement_spine_sources.json";
 export const AWARDS_SOURCE_PATH = "site/data/ocp_awards_warehouse_lookup.json";
+export const MTA_SOURCE_PATH = "site/data/mta_procurement_sources.json";
 export const READ_MODEL_PATH = "site/data/shared_procurement_read_model.json";
 export const KEYWORD_INDEX_PATH = "worker/src/data/keyword_search_index.json";
 
@@ -24,13 +25,15 @@ export function sha256Text(value) {
   return sha256Bytes(String(value ?? ""));
 }
 
-export function sourceModelFingerprint({ spineBytes, awardsBytes }) {
+export function sourceModelFingerprint({ spineBytes, awardsBytes, mtaBytes }) {
   if (spineBytes == null || awardsBytes == null) return null;
-  return sha256Text([
+  const sourceHashes = [
     SOURCE_MODEL_FINGERPRINT_VERSION,
     sha256Bytes(spineBytes),
     sha256Bytes(awardsBytes),
-  ].join("\n"));
+  ];
+  if (mtaBytes != null) sourceHashes.push(sha256Bytes(mtaBytes));
+  return sha256Text(sourceHashes.join("\n"));
 }
 
 export function servedProcurementIds(readModel) {
@@ -123,6 +126,7 @@ export function checkProcurementIndexCoherence({
   keywordIndex,
   spineBytes,
   awardsBytes,
+  mtaBytes,
 } = {}) {
   const advertised = advertisedProcurementRefs(keywordIndex);
   const served = servedProcurementIds(readModel);
@@ -135,7 +139,7 @@ export function checkProcurementIndexCoherence({
     selectedRowCount,
   });
   const sourceFingerprint = spineBytes != null && awardsBytes != null
-    ? sourceModelFingerprint({ spineBytes, awardsBytes })
+    ? sourceModelFingerprint({ spineBytes, awardsBytes, mtaBytes })
     : (readModel?.coherence_receipt?.source_model_fingerprint
       || keywordIndex?.coherence_receipt?.source_model_fingerprint
       || null);

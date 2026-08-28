@@ -56,26 +56,31 @@ export function buildAgencyBrowseContract({
 /** Convert a Browse row into the agency document's existing edge-object shape. */
 export function agencyBrowseRowObject(row, { facet, relation, sourceSystem = "city_record" } = {}) {
   const requestId = clean(row?.request_id || row?.id, 80);
-  if (!requestId) return null;
+  const procurementId = clean(row?.procurement_id, 320);
+  if (!requestId && !procurementId) return null;
   const type = clean(row?.type_of_notice_description, 80).toLowerCase();
+  const stage = clean(row?.primary_stage, 80).toLowerCase();
   const objectKind = facet === "meetings"
     ? (type.includes("hearing") ? "hearing" : "meeting")
-    : (type.includes("award") ? "award" : "solicitation");
+    : (stage === "award" || type.includes("award") ? "award" : "contract");
   const when = clean(row?.event_date || row?.start_date || row?.date, 40) || null;
   return {
-    subject_ref: `notice:${requestId}`,
-    request_id: requestId,
+    subject_ref: requestId ? `notice:${requestId}` : procurementId,
+    ...(requestId ? { request_id: requestId } : {}),
     object_kind: objectKind,
-    label: clean(row?.short_title || row?.title || requestId, 240),
+    label: clean(row?.short_title || row?.title || row?.procurement_description || procurementId || requestId, 240),
     when,
-    href: `/notices/${encodeURIComponent(requestId)}`,
+    href: procurementId ? clean(row?.canonical_href, 500) : `/notices/${encodeURIComponent(requestId)}`,
     link_type: relation,
     confidence: "strong",
     method: "agency_browse_snapshot_v1",
+    ...(row?.agency_name ? { operating_entity_name: clean(row.agency_name, 240) } : {}),
     provenance: {
       source_system: clean(row?.source_system || sourceSystem, 120) || "city_record",
-      source_record_id: `${clean(row?.source_system || sourceSystem, 120) || "city_record"}:${requestId}`,
-      source_fields: ["agency_name"],
+      source_record_id: procurementId
+        ? (Array.isArray(row?.source_observation_refs) ? row.source_observation_refs[0] : procurementId)
+        : `${clean(row?.source_system || sourceSystem, 120) || "city_record"}:${requestId}`,
+      source_fields: ["agency_name", ...(procurementId ? ["procuring_institution_id"] : [])],
       basis: `${facet}_agency_name_browse_snapshot`,
       observed_at: when,
       input_value: clean(row?.agency_name, 240) || null,

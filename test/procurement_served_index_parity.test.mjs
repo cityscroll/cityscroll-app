@@ -15,12 +15,16 @@ const awards = JSON.parse(readFileSync(
   new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url),
   "utf8",
 ));
+const mtaSources = JSON.parse(readFileSync(
+  new URL("../site/data/mta_procurement_sources.json", import.meta.url),
+  "utf8",
+));
 const indexed = JSON.parse(readFileSync(
   new URL("../worker/src/data/keyword_search_index.json", import.meta.url),
   "utf8",
 ));
 
-const { model, browse } = buildProcurementArtifacts(spine, awards);
+const { model, browse } = buildProcurementArtifacts(spine, awards, { mtaSources });
 const corpus = buildProcurementSearchDocuments(model);
 const modelArtifacts = buildSharedProcurementReadModelShardArtifacts(model);
 
@@ -113,7 +117,7 @@ test("reported canonical identities resolve to one source-backed object", async 
     const html = await response.text();
     assert.match(html, /data-civic-object-kind="procurement"/);
     assert.match(html, new RegExp(expected.vendor));
-    assert.match(html, new RegExp(String(expected.amount)));
+    assert.match(html, new RegExp(expected.amount.toLocaleString("en-US")));
   }
 
   const moving = browse.rows.find((row) => row.contract_id === "CT100220218800028");
