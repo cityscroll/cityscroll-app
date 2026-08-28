@@ -313,6 +313,8 @@ function check() {
   const receipt = json(RECEIPT);
   const validation = validateCommunityBoardFinancialIdentity(registry, receipt);
   if (!validation.ok) throw new Error(validation.errors.join("; "));
+  const expectedHash = sha256(`${JSON.stringify(registry, null, 2)}\n`);
+  if (receipt.artifact_sha256 !== expectedHash) throw new Error("identity artifact hash does not match receipt");
   if (receipt.measurement?.acceptance_gate !== true) throw new Error("identity acceptance gate is not clear");
   console.log(`community board financial identity ok: boards=${registry.boards.length} bindings=${registry.bindings.length} precision=${receipt.measurement.reviewed_precision}`);
 }

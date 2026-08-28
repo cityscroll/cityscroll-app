@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 
@@ -35,4 +36,42 @@ test("publisher code resolves source-scoped identities and unknown keys abstain"
 test("the generic Community Boards agency grouping remains unchanged", () => {
   assert.equal(resolveAgencyIdentity("Brooklyn Community Board #15").canonical_name, "Community Boards");
   assert.equal(resolveAgencyIdentity("Manhattan Community Board #6").canonical_name, "Community Boards");
+});
+
+test("the receipt is source-complete and the landed financial read models use its exact bindings", () => {
+  const budget = JSON.parse(readFileSync("site/data/community_board_adopted_budget.json", "utf8"));
+  const payments = JSON.parse(readFileSync("site/data/community_board_payment_actuals.json", "utf8"));
+  const expectedHash = createHash("sha256").update(`${JSON.stringify(registry, null, 2)}\n`).digest("hex");
+  assert.equal(receipt.artifact_sha256, expectedHash);
+  for (const source of ["expense_budget", "checkbook_contracts", "checkbook_spending"]) {
+    assert.equal(receipt.sources[source].source_system, source);
+    assert.ok(receipt.sources[source].source_vintage);
+    assert.ok(Array.isArray(receipt.sources[source].identities));
+    assert.equal(receipt.accepted_bindings[source], registry.bindings.filter((binding) => binding.source_system === source).length);
+  }
+  for (const row of budget.rows) {
+    assert.equal(resolveCommunityBoardFinancialIdentity(registry, "expense_budget", row.source_native_key), row.board_id);
+  }
+  for (const row of payments.rows) {
+    for (const observation of row.observations) {
+      assert.equal(resolveCommunityBoardFinancialIdentity(
+        registry,
+        "checkbook_spending",
+        observation.identity.source_native_board_key,
+      ), row.board_id);
+      assert.equal(observation.identity.publisher_identity, registry.bindings.find((binding) =>
+        binding.source_system === "checkbook_spending"
+          && binding.source_native_board_key === observation.identity.source_native_board_key)?.publisher_identity);
+    }
+  }
+});
+
+test("the validator rejects an incomplete or downgraded receipt", () => {
+  const incomplete = structuredClone(receipt);
+  delete incomplete.sources.checkbook_spending.source_vintage;
+  assert.equal(validateCommunityBoardFinancialIdentity(registry, incomplete).ok, false);
+
+  const ambiguous = structuredClone(receipt);
+  ambiguous.ambiguous_identities = [{ source_system: "checkbook_spending", source_native_board_key: "485" }];
+  assert.equal(validateCommunityBoardFinancialIdentity(registry, ambiguous).ok, false);
 });
