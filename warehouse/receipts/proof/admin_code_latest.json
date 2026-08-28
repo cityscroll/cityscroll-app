@@ -1,0 +1,15 @@
+{
+  "schema": "cityscroll.source_acquisition_receipt.v1",
+  "source_contract_id": "nyc-administrative-code",
+  "source_system": "american_legal_publishing",
+  "source_url": "https://files.amlegal.com/pdffiles/NewYorkCity/Admin/XML.zip",
+  "observed_at": "2026-08-24T08:25:03.900Z",
+  "status": "succeeded",
+  "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z",
+  "publisher_clock_basis": null,
+  "publisher_updated_at": null,
+  "bytes": 65464446,
+  "content_hash": "sha256:516028f853930773763a1ffcc40316445b8505ad092945be58c435a704d643ca",
+  "delivery": "build_time_only",
+  "resident_time_publisher_fetch": false
+}

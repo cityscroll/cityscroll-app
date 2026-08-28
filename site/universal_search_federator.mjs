@@ -21,6 +21,7 @@ export const UNIVERSAL_SEARCH_RESULT_SCHEMA = FEDERATED_SEARCH_RESULT_SCHEMA;
 export const UNIVERSAL_SEARCH_COVERAGE_SCHEMA = FEDERATED_SEARCH_COVERAGE_SCHEMA;
 
 export const UNIVERSAL_SEARCH_LENS_IDS = FEDERATED_SEARCH_LENS_IDS;
+export const UNIVERSAL_SEARCH_AUXILIARY_LENS_IDS = Object.freeze(["legal_code"]);
 
 const COVERAGE_STATES = new Set(FEDERATED_SEARCH_COVERAGE_STATES);
 
@@ -42,6 +43,9 @@ const TYPE_WEIGHTS = Object.freeze({
   community_board: 1,
   civil_service_exam: 1,
   parcel: 1,
+  // Legal-code search is intentionally capped by its provider and carries a
+  // lower cross-lens weight so a broad text term cannot flood civic results.
+  legal_code: 0.82,
   // Evidence-only notices remain findable without outranking a canonical
   // civic object solely because their local corpus was smaller.
   unclassified: 0.92,
@@ -384,7 +388,7 @@ export async function federateUniversalSearch({ query, lenses = {}, limit = 40 }
   const normalized = normalizeUniversalSearchQuery(query);
   const tokens = normalized ? normalized.split(/\s+/) : [];
   const boundedLimit = Math.max(0, Math.min(100, Number(limit) || 0));
-  const queried = await Promise.all(UNIVERSAL_SEARCH_LENS_IDS.map((lensId) => (
+  const queried = await Promise.all([...UNIVERSAL_SEARCH_LENS_IDS, ...UNIVERSAL_SEARCH_AUXILIARY_LENS_IDS].map((lensId) => (
     queryLens(lensId, lenses?.[lensId], normalized, tokens, boundedLimit)
   )));
   const coverageByLens = Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lensId, index) => (
@@ -396,7 +400,7 @@ export async function federateUniversalSearch({ query, lenses = {}, limit = 40 }
 
   const results = merged.slice(0, boundedLimit).map(({ winner, matches }, index) => {
     const document = winner.document;
-    const matchedLenses = UNIVERSAL_SEARCH_LENS_IDS.filter((lensId) => (
+    const matchedLenses = [...UNIVERSAL_SEARCH_LENS_IDS, ...UNIVERSAL_SEARCH_AUXILIARY_LENS_IDS].filter((lensId) => (
       matches.some((match) => match.lens === lensId)
     ));
     return deepFreeze({
