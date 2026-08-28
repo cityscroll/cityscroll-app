@@ -141,7 +141,11 @@ export function procurementSourceRecordsFromMaterializations(spine, awards, nati
 }
 
 export function buildProcurementArtifacts(spine, awards, options = {}) {
-  const nativeFixtures = options.nativeFixtures || JSON.parse(readFileSync(MTA_FIXTURES, "utf8"));
+  const nativeFixtures = options.nativeFixtures ?? (
+    Array.isArray(spine?.rows?.passport_contracts) && spine.rows.passport_contracts.length
+      ? JSON.parse(readFileSync(MTA_FIXTURES, "utf8"))
+      : { fixtures: [] }
+  );
   const sourceRecords = procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures);
   const publication = describeCrolAwardPublication({
     now: spine?.generated_at || null,
