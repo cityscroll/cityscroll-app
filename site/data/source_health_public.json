@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-08-24T08:25:03.900Z",
   "available": true,
-  "source_count": 54,
+  "source_count": 55,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -1276,6 +1276,40 @@
             "at": null,
             "state": "UNKNOWN",
             "basis": null
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      }
+    },
+    {
+      "source_id": "nyc-administrative-code",
+      "name": "NYC Administrative Code (American Legal Publishing bulk XML)",
+      "publisher": "NYC Law Department / American Legal Publishing",
+      "official_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
+      "expected_cadence": "Publisher supplement cadence; refreshed at build time",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
           },
           "cityscroll_serving": {
             "at": null,

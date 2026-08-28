@@ -92,6 +92,10 @@ def main() -> None:
         rel = path.relative_to(ROOT)
         if rel.name == Path(__file__).name:
             continue
+        # Source-preserving legal corpora quote publisher text verbatim. Their
+        # statements describe the law, not CityScroll's affiliation.
+        if rel.parts[:3] == ("site", "data", "legal_code"):
+            continue
         m = SELF_CLAIM.search(text)
         if m:
             failures.append(f"{rel}: possible official-affiliation self-claim: {m.group(0)!r}")

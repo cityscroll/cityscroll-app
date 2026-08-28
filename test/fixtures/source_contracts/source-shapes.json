@@ -3,6 +3,13 @@
   "observed_on": "2026-08-11",
   "sources": [
     {
+      "id": "nyc-administrative-code",
+      "kind": "html",
+      "identifier": "0-0-0-1",
+      "response_type": "text/html",
+      "fields": ["section", "heading", "text", "hierarchy", "source_ref", "observed_at", "content_hash"]
+    },
+    {
       "id": "mandatory-inclusionary-housing",
       "kind": "socrata",
       "identifier": "m79g-k9r4",

@@ -46,6 +46,9 @@ const DESTINATIONS = Object.freeze({
   exams: Object.freeze({
     family: "exams", surface: EXAMS_SURFACE.surfaceId, route: EXAMS_SURFACE.canonicalRoute, label: EXAMS_SURFACE.label,
   }),
+  legal: Object.freeze({
+    family: "legal-code", surface: "legal-code", route: "/administrative-code/", label: "Administrative Code",
+  }),
 });
 
 const OBJECT_DESTINATIONS = Object.freeze({
@@ -71,6 +74,7 @@ const DOMAIN_DESTINATIONS = Object.freeze({
   rules: DESTINATIONS.rules,
   meetings: DESTINATIONS.meetings,
   staffing: DESTINATIONS.exams,
+  legal: DESTINATIONS.legal,
 });
 
 const PEOPLE_TYPES = Object.freeze({
@@ -142,7 +146,8 @@ export function searchDestinationForResult(record = {}) {
 }
 
 export function searchFamilyForResult(record = {}) {
-  return destinationForResult(record)?.family || null;
+  const destination = destinationForResult(record);
+  return record?.domain === "legal" ? "rules" : destination?.family || null;
 }
 
 function normalizedTerms(response = {}) {

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.source_health_observations.v1",
   "generated_at": "2026-08-24T08:25:03.900Z",
-  "contract_count": 58,
+  "contract_count": 59,
   "observations": [
     {
       "source_id": "abo-local-authorities",
@@ -3947,6 +3947,120 @@
             "at": null,
             "state": "UNKNOWN",
             "basis": null
+          },
+          "scheduler_heartbeat": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "nyc-administrative-code",
+      "contract_fingerprint": "18463d32f8debe151b554764821a62d4c77a12cc723e39ac83fb0ca4b17361e4",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "not-declared",
+        "join_status": "unknown",
+        "row_count": null,
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "evidence": [
+        {
+          "kind": "warehouse-acquisition-receipt",
+          "path": "warehouse/receipts/proof/admin_code_latest.json",
+          "at": "2026-08-24T08:25:03.900Z",
+          "status": "succeeded"
+        }
+      ],
+      "freshness_watchdog": {
+        "status": "STALE",
+        "reason_codes": [
+          "monitor-missing"
+        ],
+        "source_contract_id": "nyc-administrative-code",
+        "observed_at": "2026-08-24T08:25:03.900Z",
+        "scheduler_heartbeat": {
+          "observed_at": null,
+          "status": "monitor-missing",
+          "run_id": null,
+          "age_days": null,
+          "expected_slots": 2
+        },
+        "acquisition": {
+          "observed_at": "2026-08-24T08:25:03.900Z",
+          "cadence_days": null,
+          "age_days": 0
+        },
+        "receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nyc-administrative-code",
+            "observed_at": "2026-08-24T08:25:03.900Z",
+            "status": "failed",
+            "run_id": "missing:nyc-administrative-code:2026-08-24T08-25",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "event_kind": "scheduler-heartbeat",
+            "state": "monitor-missing"
+          }
+        ]
+      },
+      "operator": {
+        "runs": [
+          {
+            "adapter": "warehouse-acquisition-receipt",
+            "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z",
+            "at": "2026-08-24T08:25:03.900Z",
+            "status": "succeeded",
+            "receipt_ref": "warehouse/receipts/proof/admin_code_latest.json",
+            "exact_error": null
+          }
+        ],
+        "acquisition_receipts": [
+          {
+            "schema": "cityscroll.source_acquisition_receipt.v1",
+            "source_contract_id": "nyc-administrative-code",
+            "observed_at": "2026-08-24T08:25:03.900Z",
+            "status": "succeeded",
+            "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z",
+            "publisher_clock_basis": null,
+            "publisher_updated_at": null,
+            "clock_kind": "acquisition"
+          }
+        ],
+        "clocks": {
+          "checked": {
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "checked_at"
+          },
+          "acquired": {
+            "at": "2026-08-24T08:25:03.900Z",
+            "state": "KNOWN",
+            "basis": "acquired_at"
           },
           "scheduler_heartbeat": {
             "at": null,

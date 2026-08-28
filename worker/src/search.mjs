@@ -23,6 +23,10 @@ import {
   federateUniversalSearch,
 } from "../../site/universal_search_federator.mjs";
 import {
+  adminCodeSearchDocuments,
+  searchAdminCodeDocuments,
+} from "../../site/admin_code_search.mjs";
+import {
   matchKeywordDocument,
   resolveKeywordQuery,
 } from "../../site/keyword_matcher.mjs";
@@ -84,6 +88,50 @@ const EXTRA_RESULT_LANES = Object.freeze(
     !LANE_ORDER.includes(lens) && lens !== "people" && lens !== "vendors"
   )),
 );
+
+async function loadAdminCodeSearchIndex(env) {
+  if (typeof env?.ASSETS?.fetch !== "function") return null;
+  try {
+    const response = await env.ASSETS.fetch(new Request("https://cityscroll-assets.invalid/data/legal_code/search.json"));
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+function legalCodeFederatedProvider(env) {
+  return Object.freeze({
+    async search({ query, limit }) {
+      const normalizedQuery = String(query || "").toLocaleLowerCase("en-US");
+      const citation = /\d+\s+\d|\d+-/.test(normalizedQuery);
+      const index = await loadAdminCodeSearchIndex(env);
+      const indexedDocuments = index ? adminCodeSearchDocuments(index) : [];
+      const documents = normalizedQuery.length < 4 && !citation
+        ? []
+        : searchAdminCodeDocuments(query, { limit: Math.min(3, limit * 2), index });
+      return {
+        candidates: documents.slice(0, 3).map((document, index) => ({
+          document,
+          local_score: index + 1,
+          match_fields: [{
+            field: /\d+\s+\d/.test(normalizedQuery) || /§|\d+-/.test(query) ? "identifier" : "search_text",
+            matched_term: query,
+            source_observation_ref: document.source_observation_refs[0],
+          }],
+        })),
+        coverage: {
+          state: documents.length ? "matched" : "empty",
+          indexed_count: indexedDocuments.length || null,
+          as_of: indexedDocuments[0]?.provenance?.source_freshness?.observed_at || null,
+          source: "American Legal Publishing current NYC Administrative Code",
+          method: "bounded_admin_code_citation_and_keyword_v1",
+          details: { result_cap: 3, corpus_id: "nyc-administrative-code" },
+        },
+      };
+    },
+  });
+}
 
 function cleanQuery(value) {
   return String(value ?? "")
@@ -605,6 +653,7 @@ function productionFederatedProviders(env) {
     land: landFederatedProvider(env),
     meetings: keywordFamilyProvider("meetings", env),
     exams: keywordFamilyProvider("exams", env),
+    legal_code: legalCodeFederatedProvider(env),
   });
 }
 
