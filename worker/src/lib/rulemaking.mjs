@@ -72,6 +72,18 @@ function sourceDocuments(rows, nycRules) {
   return [...cityRecord, ...official];
 }
 
+/**
+ * CAP-2's exact continuation wire. This is a Following destination, not a
+ * watch mutation: the replay capability validates the bounded member set
+ * before a consumer can create or reopen a subscription.
+ */
+function exactFollowingHref(rows) {
+  const requestIds = [...new Set(rows.map(recordRequestId).filter(Boolean))].sort();
+  if (!requestIds.length) return null;
+  const filter = encodeURIComponent(JSON.stringify({ request_ids: requestIds }));
+  return `/following/?lens=rules&filter=${filter}`;
+}
+
 function noticeLifecycleEvents(rows, existingEvents) {
   let events = Array.isArray(existingEvents) ? existingEvents.slice() : [];
   const hasProposal = events.some((event) => event?.event_type === "proposal_published" && eventDate(event));
@@ -136,6 +148,8 @@ function objectForRows(rows, { now = null } = {}) {
   events = mergeRulemakingEvents(noticeLifecycleEvents(rows, events));
   const phaseView = buildRulesPhaseView({ ...stitched, events }, { skipStitch: true, now });
   const nycRules = stitched?.nyc_rules || rows.find((row) => row.nyc_rules)?.nyc_rules || null;
+  const documents = sourceDocuments(rows, nycRules);
+  const followHref = exactFollowingHref(rows);
   const notices = rows
     .map((row) => {
       const id = recordRequestId(row);
@@ -161,6 +175,20 @@ function objectForRows(rows, { now = null } = {}) {
     comment_url: nycRules?.comment_url,
     comment_by_date: nycRules?.comment_by_date,
     hearing_date: nycRules?.hearing_date,
+    events,
+    now,
+    nyc_rules: nycRules,
+    source_documents: documents,
+    proposed_rule_url: nycRules?.proposed_rule_url,
+    final_rule_url: nycRules?.final_rule_url,
+    hearing_url: primary?.hearing_url,
+    hearing_record_url: primary?.hearing_record_url,
+    comments_url: primary?.comments_url,
+    comment_channel_url: primary?.comment_channel_url,
+    testimony_url: primary?.testimony_url,
+    petition_url: primary?.petition_url,
+    follow_href: followHref,
+    history_url: `/rules/${encodeURIComponent(subject)}/`,
   });
   return {
     schema: RULEMAKING_OBJECT_SCHEMA,
@@ -171,11 +199,12 @@ function objectForRows(rows, { now = null } = {}) {
     title: clean(nycRules?.title || primary?.title || primary?.city_record?.title) || "Rulemaking",
     proposal_summary: clean(nycRules?.summary, 4_000) || null,
     current_stage: clean(stitched?.stage, 80) || null,
-    current_phase: phaseView.current_phase?.id || null,
+    lifecycle_state: interaction.lifecycle_state,
+    current_phase: phaseView.current?.phase_id || null,
     notices,
     events,
     phases: phaseView.phases,
-    source_documents: sourceDocuments(rows, nycRules),
+    source_documents: documents,
     nyc_rules: nycRules,
     interaction,
     // Subject-level following is not replayable by the rules scope compiler.
@@ -184,6 +213,8 @@ function objectForRows(rows, { now = null } = {}) {
       state: "notice_fallback",
       request_id: recordRequestId(primary),
     },
+    follow_href: followHref,
+    history_url: `/rules/${encodeURIComponent(subject)}/`,
     generated_at: clean(rows[0].generated_at, 80) || null,
   };
 }
