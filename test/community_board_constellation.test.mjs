@@ -18,6 +18,7 @@ const sourceRegistry = JSON.parse(readFileSync(new URL("../site/data/non_council
 const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/board_source_inventory.json", import.meta.url)));
 const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url)));
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
+const communityBoardMoney = JSON.parse(readFileSync(new URL("../site/data/community_board_money.json", import.meta.url)));
 const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
@@ -63,6 +64,21 @@ test("board document keeps empty or unknown categories honest and resident-reada
   assert.doesNotMatch(html, /Board records from official sources/);
   assert.doesNotMatch(html, /matter_title_place|venue_line|boro_cd|Source: Unavailable|Join method: Unavailable/);
   assert.doesNotMatch(html, /No meetings exist/);
+});
+
+test("board dossier embeds the exact read-model money card without changing its architecture", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-01", {
+    ...sources,
+    communityBoardMoney,
+  });
+  assert.equal(view.money.board_id, "bronx-cb-01");
+  assert.equal(view.money.state, "separate_fiscal_years");
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.match(html, /data-community-board-money="1"/);
+  assert.match(html, /Budget &amp; spending/);
+  assert.match(html, /Payments posted through June 30, 2026/);
+  assert.match(html, /Sources and coverage/);
+  assert.match(html, /data-community-board-constellation-category="committees"/);
 });
 
 test("minutes freshness keeps an unchecked source in resident language", () => {

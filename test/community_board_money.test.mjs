@@ -4,6 +4,8 @@ import test from "node:test";
 
 import {
   buildCommunityBoardMoneyReadModel,
+  buildCommunityBoardMoneyCardView,
+  renderCommunityBoardMoneyCard,
   moneyReadModelSourceStatus,
   validateCommunityBoardMoneyReadModel,
 } from "../site/community_board_money.mjs";
@@ -87,4 +89,94 @@ test("committed read model and measurement receipt carry all required coverage e
   assert.equal(receipt.measurement.canaries.stale_source.replay, true);
   assert.equal(receipt.measurement.provenance_carried_to_read_model, true);
   assert.equal(receipt.measurement.ratio_left_null, true);
+});
+
+test("resident card renders same-FY facts, top payees, provenance, and the institutional boundary", () => {
+  const model = buildCommunityBoardMoneyReadModel({
+    boards: [{ board_id: "bronx-cb-01" }],
+    adoptedBudget: {
+      ...budget,
+      source: { ...budget.source, pinned_slice: { fiscal_year: 2026, publication_date: "20260630" } },
+      rows: [{ ...budget.rows[0], fiscal_year: 2026, provenance: { ...budget.rows[0].provenance, fiscal_year: 2026 } }],
+    },
+    paymentActuals: {
+      ...payments,
+      rows: [{ ...payments.rows[0], top_payees: [{ payee_name: "Example Vendor", posted_payment_amount: 82000 }] }],
+    },
+    generatedAt: "2026-08-27T00:00:00Z",
+    now: "2026-08-27T00:00:00Z",
+  });
+  const card = buildCommunityBoardMoneyCardView(model, "bronx-cb-01");
+  const html = renderCommunityBoardMoneyCard(card);
+  assert.equal(card.state, "both_sources");
+  assert.match(html, /Budget &amp; spending <span>FY2026<\/span>/);
+  assert.match(html, /Adopted budget/);
+  assert.match(html, /Payments posted through June 30, 2026/);
+  assert.match(html, /Example Vendor/);
+  assert.match(html, /NYC Expense Budget/);
+  assert.match(html, /Checkbook NYC/);
+  assert.match(html, /Community District spending is a separate measure/);
+  assert.doesNotMatch(html, /not spending inside its Community District/);
+  assert.doesNotMatch(html, /remaining|progress|View payments/i);
+});
+
+test("resident card preserves separate fiscal years and does not manufacture a ratio", () => {
+  const model = JSON.parse(readFileSync("site/data/community_board_money.json", "utf8"));
+  const card = buildCommunityBoardMoneyCardView(model, "bronx-cb-01");
+  const html = renderCommunityBoardMoneyCard(card);
+  assert.equal(card.state, "separate_fiscal_years");
+  assert.deepEqual(card.fiscal_years, [2027, 2026]);
+  assert.match(html, /Available fiscal facts/);
+  assert.match(html, /FY2027/);
+  assert.match(html, /FY2026/);
+  assert.match(html, /different fiscal years/);
+  assert.doesNotMatch(html, /%|remaining budget|progress/i);
+});
+
+test("resident card uses explicit unavailable copy for budget-only, unmatched, empty, and stale states", () => {
+  const budgetOnlyModel = buildCommunityBoardMoneyReadModel({
+    boards: [{ board_id: "bronx-cb-01" }],
+    adoptedBudget: budget,
+    paymentActuals: null,
+    generatedAt: "2026-08-27T00:00:00Z",
+    now: "2026-08-27T00:00:00Z",
+  });
+  assert.equal(buildCommunityBoardMoneyCardView(budgetOnlyModel, "bronx-cb-01").state, "budget_only");
+  assert.match(renderCommunityBoardMoneyCard(buildCommunityBoardMoneyCardView(budgetOnlyModel, "bronx-cb-01")), /Payments are unavailable from the current source/);
+
+  const emptyModel = buildCommunityBoardMoneyReadModel({
+    boards: [{ board_id: "bronx-cb-01" }],
+    adoptedBudget: null,
+    paymentActuals: {
+      ...payments,
+      rows: [{ ...payments.rows[0], posted_payment_amount: 0, payment_count: 0, distinct_payee_count: 0, coverage_status: "empty_source_result", top_payees: [] }],
+    },
+    generatedAt: "2026-08-27T00:00:00Z",
+    now: "2026-08-27T00:00:00Z",
+  });
+  const emptyCard = buildCommunityBoardMoneyCardView(emptyModel, "bronx-cb-01");
+  assert.equal(emptyCard.state, "empty_source_result");
+  assert.match(renderCommunityBoardMoneyCard(emptyCard), /No posted payments were returned/);
+  assert.doesNotMatch(renderCommunityBoardMoneyCard(emptyCard), /\$0/);
+
+  const unmatchedCard = buildCommunityBoardMoneyCardView(buildCommunityBoardMoneyReadModel({
+    boards: [{ board_id: "bronx-cb-01" }],
+    adoptedBudget: null,
+    paymentActuals: { ...payments, rows: [{ ...payments.rows[0], coverage_status: "identity_unobserved" }] },
+    generatedAt: "2026-08-27T00:00:00Z",
+    now: "2026-08-27T00:00:00Z",
+  }), "bronx-cb-01");
+  assert.equal(unmatchedCard.state, "unmatched_identity");
+  assert.match(renderCommunityBoardMoneyCard(unmatchedCard), /does not establish an accepted exact financial identity/);
+
+  const staleCard = buildCommunityBoardMoneyCardView(buildCommunityBoardMoneyReadModel({
+    boards: [{ board_id: "bronx-cb-01" }],
+    adoptedBudget: budget,
+    paymentActuals: payments,
+    generatedAt: "2026-08-27T00:00:00Z",
+    now: "2028-01-01T00:00:00Z",
+    maxAgeMs: 1,
+  }), "bronx-cb-01");
+  assert.equal(staleCard.state, "stale_source");
+  assert.match(renderCommunityBoardMoneyCard(staleCard), /need a fresh check/);
 });

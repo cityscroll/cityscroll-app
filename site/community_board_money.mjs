@@ -1,3 +1,5 @@
+import { officialSourceLink } from "./affordance_grammar.mjs";
+
 /**
  * Resident-ready financial projection for specific Community Boards.
  *
@@ -359,4 +361,212 @@ export function moneyReadModelRows(value) {
 
 export function moneyReadModelSourceStatus(value, source) {
   return value?.sources?.[source]?.status || "unavailable";
+}
+
+const CARD_STATES = new Set([
+  "both_sources",
+  "separate_fiscal_years",
+  "budget_only",
+  "spending_only",
+  "unmatched_identity",
+  "empty_source_result",
+  "stale_source",
+  "unavailable",
+]);
+
+const htmlEsc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
+  "<": "&lt;",
+  ">": "&gt;",
+  "&": "&amp;",
+  '"': "&quot;",
+  "'": "&#39;",
+}[char]));
+
+function cardCurrency(value) {
+  return value == null
+    ? null
+    : new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(value);
+}
+
+function cardCount(value) {
+  return value == null ? null : new Intl.NumberFormat("en-US").format(value);
+}
+
+function cardFiscalYear(value) {
+  return integer(value) == null ? null : `FY${integer(value)}`;
+}
+
+function cardDate(value) {
+  const raw = text(value);
+  if (!raw) return null;
+  const parsed = new Date(`${raw}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime())
+    ? raw
+    : new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }).format(parsed);
+}
+
+function paymentThroughDate(spending, model) {
+  const vintage = spending?.source_vintage;
+  const sourceVintage = model?.sources?.spending?.source_vintage;
+  return cardDate(
+    (vintage && typeof vintage === "object" ? vintage.payment_issue_date_through : null)
+      || (sourceVintage && typeof sourceVintage === "object" ? sourceVintage.payment_issue_date_through : null),
+  );
+}
+
+function cardRows(model, boardId) {
+  return moneyReadModelRows(model)
+    .filter((row) => row?.board_id === boardId)
+    .sort((left, right) => Number(right.fiscal_year || 0) - Number(left.fiscal_year || 0));
+}
+
+function usableBudget(row) {
+  return Boolean(row?.budget?.source_ref && row.budget.adopted_amount != null && row.budget.fiscal_year != null);
+}
+
+function usableSpending(row, model) {
+  return Boolean(
+    row?.spending?.source_ref
+      && row.spending.posted_amount != null
+      && row.spending.fiscal_year != null
+      && row.spending.coverage !== "identity_unobserved"
+      && row.spending.coverage !== "empty_source_result"
+      && paymentThroughDate(row.spending, model),
+  );
+}
+
+function staleRow(row, model) {
+  return row?.coverage?.state === "stale_source"
+    || row?.coverage?.budget === "stale"
+    || row?.coverage?.spending === "stale"
+    || model?.sources?.budget?.status === "stale"
+    || model?.sources?.spending?.status === "stale";
+}
+
+/**
+ * Select the exact board facts needed by the resident card. A same-FY row is
+ * preferred; otherwise budget and payments remain visibly separate facts.
+ */
+export function buildCommunityBoardMoneyCardView(model, boardId) {
+  if (!model || !boardId) return null;
+  const rows = cardRows(model, boardId);
+  if (!rows.length) return {
+    board_id: boardId,
+    state: "unavailable",
+    fiscal_years: [],
+    budget: null,
+    spending: null,
+    source_refs: [],
+  };
+
+  const both = rows.find((row) => usableBudget(row) && usableSpending(row, model));
+  const budgetRow = both || rows.find(usableBudget) || null;
+  const spendingRow = both || rows.find((row) => usableSpending(row, model)) || null;
+  const emptyRow = rows.find((row) => row?.spending?.coverage === "empty_source_result") || null;
+  const unmatchedRow = rows.find((row) => row?.spending?.coverage === "identity_unobserved") || null;
+  const budget = budgetRow?.budget || null;
+  const spending = spendingRow?.spending || null;
+  const budgetFiscalYear = budget?.fiscal_year ?? null;
+  const spendingFiscalYear = spending?.fiscal_year ?? null;
+  const stale = staleRow(budgetRow || spendingRow, model);
+  let state = "unavailable";
+  if (stale) state = "stale_source";
+  else if (both) state = "both_sources";
+  else if (emptyRow && !spending) state = "empty_source_result";
+  else if (unmatchedRow && !spending) state = "unmatched_identity";
+  else if (budget && spending) state = "separate_fiscal_years";
+  else if (budget) state = unmatchedRow ? "unmatched_identity" : "budget_only";
+  else if (spending) state = "spending_only";
+  else if (unmatchedRow) state = "unmatched_identity";
+
+  const sourceRefs = [budget?.source_ref, spending?.source_ref].filter(Boolean);
+  const fiscalYears = [...new Set([budgetFiscalYear, spendingFiscalYear].filter((year) => year != null))];
+  return {
+    board_id: boardId,
+    state,
+    fiscal_year: both?.fiscal_year ?? null,
+    fiscal_years: fiscalYears,
+    separate_fiscal_years: budgetFiscalYear != null && spendingFiscalYear != null && budgetFiscalYear !== spendingFiscalYear,
+    budget,
+    spending,
+    source_refs: [...new Map([
+      ...sourceRefs,
+      ...(emptyRow?.spending?.source_ref ? [emptyRow.spending.source_ref] : []),
+      ...(unmatchedRow?.spending?.source_ref ? [unmatchedRow.spending.source_ref] : []),
+    ].map((ref) => [`${ref.role}:${ref.source_system}`, ref])).values()],
+    payment_through: paymentThroughDate(spending, model),
+    stale,
+    identity_unobserved: Boolean(unmatchedRow),
+    empty_source_result: Boolean(emptyRow),
+    model_checked_at: model.checked_at || null,
+  };
+}
+
+function sourceLink(ref, label) {
+  if (!ref?.source_url) return htmlEsc(label);
+  return officialSourceLink({
+    href: ref.source_url,
+    label,
+    className: "community-board-money-source-link",
+    escape: htmlEsc,
+  });
+}
+
+function sourceLabel(ref) {
+  return ref?.role === "budget" ? "NYC Expense Budget" : "Checkbook NYC";
+}
+
+function stateCopy(card) {
+  if (card.state === "stale_source") return "These figures were observed, but one or more sources need a fresh check.";
+  if (card.state === "separate_fiscal_years") return "The available budget and payment facts are from different fiscal years and are shown separately.";
+  if (card.state === "budget_only") return `${card.payment_through ? `Payments posted through ${card.payment_through} are` : "Payments are"} unavailable from the current source for this fiscal year.`;
+  if (card.state === "spending_only") return "The adopted budget is unavailable from the current source for this fiscal year.";
+  if (card.state === "unmatched_identity") return `The current source does not establish an accepted exact financial identity for this board's payments${card.payment_through ? ` through ${card.payment_through}` : ""}.`;
+  if (card.state === "empty_source_result") return `No posted payments were returned for this board in the checked source${card.payment_through ? ` through ${card.payment_through}` : ""}.`;
+  if (card.state === "unavailable") return "Budget and spending facts are unavailable from the current sources.";
+  return "Budget and posted payment facts are available for this board.";
+}
+
+function metric(label, value, detail = "") {
+  if (value == null && !detail) return "";
+  return `<div class="community-board-money-metric"><dt>${htmlEsc(label)}</dt><dd>${value == null ? "Unavailable" : htmlEsc(value)}</dd>${detail ? `<small>${htmlEsc(detail)}</small>` : ""}</div>`;
+}
+
+function spendingDetail(card) {
+  if (!card.spending) return "";
+  const facts = [
+    card.spending.payment_count != null ? `${cardCount(card.spending.payment_count)} payments` : "",
+    card.spending.distinct_payee_count != null ? `${cardCount(card.spending.distinct_payee_count)} payees` : "",
+  ].filter(Boolean);
+  return facts.join(" · ");
+}
+
+function topPayees(card) {
+  const payees = Array.isArray(card.spending?.top_payees) ? card.spending.top_payees.slice(0, 3) : [];
+  if (!payees.length) return "";
+  return `<div class="community-board-money-top-payees"><h3>Top payees</h3><ul>${payees.map((payee) => `<li><span>${htmlEsc(payee.payee_name || "Unnamed payee")}</span><strong>${htmlEsc(cardCurrency(payee.posted_payment_amount))}</strong></li>`).join("")}</ul></div>`;
+}
+
+/** Render the small financial module embedded in a Community Board dossier. */
+export function renderCommunityBoardMoneyCard(card) {
+  if (!card || !CARD_STATES.has(card.state)) return "";
+  const sourceRefs = Array.isArray(card.source_refs) ? card.source_refs : [];
+  const budgetYear = cardFiscalYear(card.budget?.fiscal_year);
+  const spendingYear = cardFiscalYear(card.spending?.fiscal_year);
+  const headingDetail = card.state === "both_sources" && budgetYear ? budgetYear : "Available fiscal facts";
+  const budgetDetail = budgetYear || "Fiscal year not provided";
+  const through = card.payment_through;
+  const spendingLabel = through
+    ? `Payments posted through ${through}`
+    : card.spending
+      ? "Payments posted through a date not provided by the current source"
+      : "Payments posted";
+  const spendingDetailCopy = [spendingYear, spendingDetail(card)].filter(Boolean).join(" · ");
+  const provenance = sourceRefs.length
+    ? `<details class="community-board-money-provenance"><summary>Sources and coverage</summary><div><ul>${sourceRefs.map((ref) => `<li>${sourceLink(ref, sourceLabel(ref))}${ref.fiscal_year ? ` · ${htmlEsc(cardFiscalYear(ref.fiscal_year))}` : ""}${ref.source_vintage?.payment_issue_date_through ? ` · through ${htmlEsc(cardDate(ref.source_vintage.payment_issue_date_through))}` : ""}</li>`).join("")}</ul><p>This card reports funds budgeted to and payments posted by this Community Board. Community District spending is a separate measure.</p></div></details>`
+    : "";
+  const identityNote = card.identity_unobserved && card.state !== "unmatched_identity"
+    ? `<p class="community-board-money-note">The source has no accepted payment identity for this board, so no payment total is shown.</p>`
+    : "";
+  return `<section id="community-board-money" class="node-section node-card civic-object-section community-board-money-card" data-community-board-money="1" data-money-state="${htmlEsc(card.state)}" aria-labelledby="community-board-money-heading"><div class="community-board-money-heading"><div><p class="community-board-money-kicker">Board finances</p><h2 id="community-board-money-heading">Budget &amp; spending <span>${htmlEsc(headingDetail)}</span></h2></div></div><p class="community-board-money-boundary">Money budgeted to and paid by this Community Board. Community District spending is a separate measure.</p><p class="community-board-money-state">${htmlEsc(stateCopy(card))}</p><dl class="community-board-money-metrics">${card.budget?.adopted_amount != null ? metric("Adopted budget", cardCurrency(card.budget.adopted_amount), budgetDetail) : ""}${card.spending?.posted_amount != null && card.payment_through ? metric(spendingLabel, cardCurrency(card.spending.posted_amount), spendingDetailCopy) : ""}</dl>${card.spending?.posted_amount != null && !card.payment_through ? `<p class="community-board-money-unavailable">${htmlEsc(spendingLabel)}: unavailable</p>` : ""}${topPayees(card)}${identityNote}${provenance}</section>`;
 }
