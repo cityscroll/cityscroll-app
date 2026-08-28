@@ -48,6 +48,27 @@ test("current bylaw selection keeps superseded rules out of the current projecti
   assert.equal(projection.participation.some((row) => row.source?.bylaw_version_id === "bylaw-version:manhattan-cb-06:2020"), false);
 });
 
+test("Manhattan CB2 keeps its board-local participation facts and source vintage", () => {
+  const projection = projectCommunityBoardParticipation({
+    board_id: "manhattan-cb-02",
+    bylaws,
+    application_sources: sources.sources,
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  const committee = projection.participation.find((row) => row.participation_kind === "public_committee_membership");
+  const fullBoard = projection.participation.find((row) => row.participation_kind === "full_board_membership");
+  assert.equal(projection.governance.current_bylaw_version_id, "bylaw-version:manhattan-cb-02:current");
+  assert.equal(committee.eligibility.value.non_board_members, true);
+  assert.equal(committee.appointing_authority.status, COMMUNITY_BOARD_PARTICIPATION_UNKNOWN);
+  assert.equal(committee.source.document_id, "cb2-manhattan-by-laws-page");
+  assert.equal(committee.source.locator, "Article 7, Public Committee Members");
+  assert.equal(fullBoard.appointing_authority.value, "Manhattan Borough President");
+  assert.equal(fullBoard.application_status, "closed");
+  assert.equal(fullBoard.application_cta, false);
+  assert.equal(fullBoard.source.source_id, "participation-source:manhattan-bp:2026");
+  assert.equal(projection.cross_board_inference, false);
+});
+
 test("application sources require explicit board scope and never leak to another board", () => {
   const projection = projectCommunityBoardParticipation({
     board_id: "queens-cb-06",
