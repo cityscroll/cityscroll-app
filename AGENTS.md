@@ -70,6 +70,13 @@
   or political proxies into a stance. Focused proof is
   `worker/test/land_prediction_member_stance.test.mjs`.
 
+- **Stage-aware institutional feature vector (LUP2-C5):**
+  `worker/src/lib/land_prediction_features.mjs` adapts the C2 snapshot and C4 stance contracts
+  into one cutoff-aware layer with explicit sparse-feature unknowns, evidence traces, and a
+  learnable local-member-by-stage interaction. It supplies no coefficients or veto rule; focused
+  proof and the contract shape are in `worker/test/land_prediction_features.test.mjs` and
+  `docs/land-use-prediction-features-v1.md`.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
