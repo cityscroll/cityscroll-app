@@ -1,0 +1,278 @@
+import { compactCitationLawKeys, extractRuleEvidenceStamp } from "./rule_evidence_stamps.mjs";
+import { adminCodeHref, lookupAdminCodeCitation } from "./admin_code.mjs";
+
+export const RULE_VERSIONS_SCHEMA = "cityscroll.rule_versions.v1";
+export const RULE_VERSION_SCHEMA = "cityscroll.rule_version.v1";
+export const RULE_EFFECT_SCHEMA = "cityscroll.rule_effect.v1";
+export const RULE_VERSION_KINDS = Object.freeze(["proposed", "revised", "adopted", "emergency"]);
+export const RULE_EFFECT_KINDS = Object.freeze(["adds", "amends", "repeals"]);
+
+const KIND_ORDER = Object.freeze({ proposed: 0, revised: 1, adopted: 2, emergency: 3 });
+const clean = (value, max = 50_000) => String(value ?? "")
+  .replace(/[\u0000-\u001f\u007f]/g, " ")
+  .replace(/\s+/g, " ")
+  .trim()
+  .slice(0, max);
+
+function isoDay(value) {
+  const match = clean(value, 100).match(/^(\d{4}-\d{2}-\d{2})/);
+  return match?.[1] || null;
+}
+
+function slug(value) {
+  return clean(value, 300).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "unknown";
+}
+
+function sourceId(document) {
+  return clean(document.source_id || document.document_id || document.id || document.request_id, 300) || null;
+}
+
+function sourceUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return url.protocol === "https:" && ["rules.cityofnewyork.us", "a856-cityrecord.nyc.gov"].includes(url.hostname)
+      ? url.href
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function versionKind(document, text) {
+  const explicit = clean(document.version_kind || document.kind, 40).toLowerCase();
+  if (RULE_VERSION_KINDS.includes(explicit)) return explicit;
+  const haystack = `${clean(document.title, 400)} ${clean(text, 1_500)}`;
+  if (/\bemergency\s+rule\b/i.test(haystack)) return "emergency";
+  if (/\bfinal\s+rule\b|\bnotice\s+of\s+adoption\b|\badopt(?:ed|ing)\b/i.test(haystack)) return "adopted";
+  if (/\brevised\s+(?:proposed\s+)?rule\b|\brevision\b/i.test(haystack)) return "revised";
+  return "proposed";
+}
+
+function versionHref(source) {
+  const href = sourceUrl(source.source_url || source.url);
+  return href || null;
+}
+
+function sourceSpan(text, start, end, field = "document_text") {
+  const value = clean(String(text || "").slice(start, end), 1_200);
+  return value ? { field, start, end, text: value } : null;
+}
+
+function citationLabel(key) {
+  const [family, ...parts] = String(key || "").split(":");
+  const citation = parts.join(":");
+  if (family === "rcny") return `RCNY § ${citation.replace(/^\d+:/, "")}`;
+  if (family === "nyc-admin-code") return `NYC Administrative Code § ${citation}`;
+  if (family === "nyc-charter") return `NYC Charter § ${citation}`;
+  return citation ? `${family} ${citation}` : key;
+}
+
+function citationTarget(key) {
+  const value = clean(key, 200).toLowerCase();
+  if (!value) return null;
+  const [family, ...parts] = value.split(":");
+  const citation = parts.join(":");
+  if (!citation || !["rcny", "nyc-admin-code", "nyc-charter"].includes(family)) return null;
+  if (family === "nyc-admin-code") {
+    const lookup = lookupAdminCodeCitation(`§ ${citation}`);
+    return {
+      ref: `legal-code:${family}:${citation}`,
+      kind: family,
+      citation,
+      label: citationLabel(value),
+      href: lookup ? adminCodeHref(lookup.citation) : null,
+      resolution: lookup ? "resolved" : "unresolved",
+    };
+  }
+  return {
+    ref: `legal-code:${family}:${citation}`,
+    kind: family,
+    citation,
+    label: citationLabel(value),
+    href: null,
+    resolution: "unresolved",
+  };
+}
+
+function exactCitationKeys(keys = []) {
+  const values = [...new Set(keys.map((key) => clean(key, 200).toLowerCase()).filter(Boolean))];
+  return values.filter((key) => !values.some((other) => other !== key
+    && other.startsWith(`${key}(`)));
+}
+
+function authorityObservations(text, evidence) {
+  const out = [];
+  const seen = new Set();
+  const add = (key, span) => {
+    const target = citationTarget(key);
+    if (!target || seen.has(target.ref)) return;
+    seen.add(target.ref);
+    out.push({
+      ...target,
+      basis: "source_stated",
+      source_span: span,
+      evidence: "The source document states this authority.",
+    });
+  };
+  for (const match of String(text || "").matchAll(/(?:authoriz|pursuant|under|authority|based on)[^.]{0,260}/gi)) {
+    const span = sourceSpan(text, match.index, match.index + match[0].length);
+    for (const key of exactCitationKeys(compactCitationLawKeys(match[0], { limit: 16 }))) add(key, span);
+  }
+  return out;
+}
+
+function explicitEffects(text) {
+  const effects = [];
+  const held = [];
+  const seen = new Set();
+  const effectPattern = /\b(add(?:s|ed|ing)?|amend(?:s|ed|ing)?|repeal(?:s|ed|ing)?)\b/gi;
+  const matches = [...String(text || "").matchAll(effectPattern)];
+  for (const [index, match] of matches.entries()) {
+    const verb = match[1].toLowerCase();
+    const kind = verb.startsWith("add") ? "adds" : verb.startsWith("amend") ? "amends" : "repeals";
+    const nextVerb = matches[index + 1]?.index;
+    const sentenceEnd = String(text || "").slice(match.index).search(/[.!?\n]/);
+    const end = nextVerb != null
+      ? nextVerb
+      : sentenceEnd >= 0 ? match.index + sentenceEnd : Math.min(String(text || "").length, match.index + 280);
+    const span = sourceSpan(text, match.index, Math.min(end, match.index + 280));
+    const keys = exactCitationKeys(compactCitationLawKeys(String(text || "").slice(match.index, Math.min(end, match.index + 280)), { limit: 16 }))
+      .filter((key) => /^(rcny|nyc-admin-code):/.test(key));
+    if (!keys.length) {
+      if (span) held.push({ status: "held_ambiguous", reason: "effect verb has no exact supported legal-code citation", source_span: span });
+      continue;
+    }
+    for (const key of keys) {
+      const target = citationTarget(key);
+      if (!target) continue;
+      const dedupe = `${kind}:${target.ref}`;
+      if (seen.has(dedupe)) continue;
+      seen.add(dedupe);
+      effects.push({
+        schema: RULE_EFFECT_SCHEMA,
+        kind,
+        target,
+        status: "published",
+        basis: "source_stated",
+        source_span: span,
+      });
+    }
+  }
+  return { effects, held };
+}
+
+function effectiveDateFor(document, evidence, context) {
+  const explicit = isoDay(document.effective_date || document.effective_on || evidence.effective_date);
+  if (explicit) return { value: explicit, basis: "source_stated", source_field: document.effective_date ? "effective_date" : "document_text" };
+  const fallback = isoDay(context.effective_date || context.nyc_rules?.effective_date);
+  if (fallback && ["adopted", "emergency"].includes(context.version_kind)) {
+    return { value: fallback, basis: "lifecycle_observation", source_field: "nyc_rules.effective_date" };
+  }
+  return { value: null, basis: "unknown", source_field: null };
+}
+
+export function normalizeRuleVersionDocument(document = {}, context = {}) {
+  const source = sourceId(document);
+  const text = clean(document.text || document.extracted_text || document.source_text, 50_000);
+  const textStatus = text ? "available" : clean(document.text_status, 40) || "not_acquired";
+  const kind = versionKind(document, text);
+  const rulemakingId = clean(document.rulemaking_id || context.rulemaking_id, 700) || null;
+  const evidence = extractRuleEvidenceStamp({
+    short_title: document.title || context.title,
+    type_of_notice_description: document.document_type,
+    additional_description_1: text,
+  });
+  const effective = effectiveDateFor(document, evidence, { ...context, version_kind: kind });
+  const effects = explicitEffects(text);
+  const authority = authorityObservations(text, evidence);
+  const versionId = rulemakingId && source
+    ? `rule-version:${rulemakingId}:${kind}:${slug(source)}`
+    : null;
+  return {
+    schema: RULE_VERSION_SCHEMA,
+    id: versionId,
+    rulemaking_id: rulemakingId,
+    kind,
+    source_id: source,
+    source_url: versionHref(document),
+    source_label: clean(document.source_label || document.title, 300) || null,
+    published_at: isoDay(document.published_at || document.publication_date || document.notice_date),
+    effective_date: effective.value,
+    effective_date_basis: effective.basis,
+    effective_date_source_field: effective.source_field,
+    text_status: textStatus,
+    text: text || null,
+    text_preview: text ? text.slice(0, 480).trim() + (text.length > 480 ? "…" : "") : null,
+    authority,
+    legal_effects: effects.effects,
+    held_references: effects.held,
+    pairing_key: clean(document.pairing_key, 300) || null,
+    source_span: document.source_span || null,
+  };
+}
+
+export function pairRuleVersions(versions = []) {
+  const byKey = new Map();
+  for (const version of versions) {
+    if (!version?.pairing_key) continue;
+    const key = `${version.rulemaking_id || ""}:${version.pairing_key}`;
+    if (!byKey.has(key)) byKey.set(key, []);
+    byKey.get(key).push(version);
+  }
+  const pairs = [];
+  for (const group of byKey.values()) {
+    const proposed = group.find((version) => version.kind === "proposed" || version.kind === "revised");
+    const adopted = group.find((version) => version.kind === "adopted" || version.kind === "emergency");
+    if (!proposed || !adopted) continue;
+    proposed.superseded_by = adopted.id;
+    adopted.supersedes = proposed.id;
+    pairs.push({ proposed: proposed.id, adopted: adopted.id, basis: "shared_source_pairing_key" });
+  }
+  return pairs;
+}
+
+export function buildRuleVersionsProjection(documents = [], context = {}) {
+  const versions = documents
+    .map((document) => normalizeRuleVersionDocument(document, context))
+    .filter((version) => version.id || version.source_id)
+    .sort((left, right) => (KIND_ORDER[left.kind] ?? 9) - (KIND_ORDER[right.kind] ?? 9) || String(left.source_id).localeCompare(String(right.source_id)));
+  const pairs = pairRuleVersions(versions);
+  const legalEffects = versions.flatMap((version) => (version.legal_effects || []).map((effect) => ({
+    ...effect,
+    version_id: version.id,
+    source_id: version.source_id,
+  })));
+  const held = versions.flatMap((version) => (version.held_references || []).map((reference) => ({
+    ...reference,
+    version_id: version.id,
+    source_id: version.source_id,
+  })));
+  return {
+    schema: RULE_VERSIONS_SCHEMA,
+    rulemaking_id: context.rulemaking_id || null,
+    versions,
+    legal_effects: legalEffects,
+    held_references: held,
+    pairs,
+    coverage: {
+      documents: documents.length,
+      proposed_documents: versions.filter((version) => version.kind === "proposed" || version.kind === "revised").length,
+      adopted_documents: versions.filter((version) => version.kind === "adopted" || version.kind === "emergency").length,
+      paired_versions: pairs.length,
+      acquisition_failures: versions.filter((version) => version.text_status !== "available").length,
+      exact_citations: versions.reduce((sum, version) => sum + version.authority.length + version.legal_effects.length, 0),
+      resolvable_targets: legalEffects.filter((effect) => effect.target.resolution === "resolved").length,
+      ambiguous_references: held.length,
+    },
+  };
+}
+
+export function attachRuleVersionsToRulemaking(object, documents = []) {
+  const projection = buildRuleVersionsProjection(documents, {
+    rulemaking_id: object?.rulemaking_id,
+    title: object?.title,
+    effective_date: object?.nyc_rules?.effective_date,
+    nyc_rules: object?.nyc_rules,
+  });
+  return { ...object, ...projection };
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "cityscroll.rule_versions_receipt.v1",
+  "generated_at": "2026-08-28T00:00:00Z",
+  "source_contract": {
+    "tier": 2,
+    "source": "NYC Rules detail pages and linked City Record documents",
+    "characterization_completed": "2026-08-28T00:00:00Z",
+    "collector_started_after_characterization": true,
+    "observations": [
+      {
+        "agency": "Transportation",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "city-owned-bicycle-racks",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "explicit_source_pairing_key",
+        "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
+      },
+      {
+        "agency": "Transportation",
+        "lifecycle_stage": "adopted",
+        "rule_page_id": "city-owned-bicycle-racks",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "explicit_source_pairing_key",
+        "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
+      },
+      {
+        "agency": "Buildings",
+        "lifecycle_stage": "hearing",
+        "rule_page_id": "incomplete-inspections",
+        "document_placement": "city_record_attachment",
+        "link_stability": "stable_request_detail_url",
+        "authority_location": "not_yet_acquired",
+        "citation_extractability": "not_yet_acquired",
+        "proposed_adopted_pairability": "not_yet_acquired",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026"
+      },
+      {
+        "agency": "Sanitation",
+        "lifecycle_stage": "effective",
+        "rule_page_id": "commercial-waste-zones",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "source_ids_unpairable",
+        "source_url": "https://rules.cityofnewyork.us/"
+      }
+    ]
+  },
+  "checks": {
+    "characterization": {
+      "sample_count": 4,
+      "agencies": [
+        "Buildings",
+        "Sanitation",
+        "Transportation"
+      ],
+      "lifecycle_stages": [
+        "adopted",
+        "effective",
+        "hearing",
+        "proposed"
+      ],
+      "required_fields_present": true
+    },
+    "rule_documents": {
+      "proposed_documents": 1,
+      "adopted_documents": 1,
+      "paired_versions": 1,
+      "acquisition_failures": 0
+    },
+    "legal_citations": {
+      "exact_citation_count": 4,
+      "exact_citation_precision": {
+        "numerator": 4,
+        "denominator": 4,
+        "value": 1,
+        "basis": "source_sample_expected_citation_keys"
+      },
+      "resolvable_targets": 0,
+      "ambiguous_references": 2
+    },
+    "version_pairing": {
+      "proposed_adopted_pairs": 1,
+      "source_id_pairing_evidence": [
+        "shared_source_pairing_key"
+      ],
+      "unpairable_or_non_text_cases": 0
+    }
+  }
+}

@@ -1,0 +1,315 @@
+{
+  "schema": "cityscroll.rule_versions_materialization.v1",
+  "schema_version": 1,
+  "generated_at": "2026-08-28T00:00:00Z",
+  "source_contract": {
+    "tier": 2,
+    "source": "NYC Rules detail pages and linked City Record documents",
+    "characterization_completed": "2026-08-28T00:00:00Z",
+    "collector_started_after_characterization": true,
+    "observations": [
+      {
+        "agency": "Transportation",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "city-owned-bicycle-racks",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "explicit_source_pairing_key",
+        "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
+      },
+      {
+        "agency": "Transportation",
+        "lifecycle_stage": "adopted",
+        "rule_page_id": "city-owned-bicycle-racks",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "explicit_source_pairing_key",
+        "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/"
+      },
+      {
+        "agency": "Buildings",
+        "lifecycle_stage": "hearing",
+        "rule_page_id": "incomplete-inspections",
+        "document_placement": "city_record_attachment",
+        "link_stability": "stable_request_detail_url",
+        "authority_location": "not_yet_acquired",
+        "citation_extractability": "not_yet_acquired",
+        "proposed_adopted_pairability": "not_yet_acquired",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260728026"
+      },
+      {
+        "agency": "Sanitation",
+        "lifecycle_stage": "effective",
+        "rule_page_id": "commercial-waste-zones",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "source_ids_unpairable",
+        "source_url": "https://rules.cityofnewyork.us/"
+      }
+    ]
+  },
+  "documents": [
+    {
+      "source_id": "city_record:20260708002",
+      "request_id": "20260708002",
+      "version_kind": "proposed",
+      "pairing_key": "dsny-commercial-waste-zones",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
+      "source_label": "City Record proposed rule attachment",
+      "published_at": "2026-07-15",
+      "expected_citation_keys": [
+        "nyc-charter:753",
+        "nyc-charter:1043(g)"
+      ],
+      "text_fixture": "20260708002",
+      "text": "New York City Department of Sanitation\nNotice of Public Hearing and Opportunity to Comment on Proposed Rules\nWhat are we proposing? The Department of Sanitation (DSNY) is proposing\nto amend its rules regarding commercial waste to include the\nimplementation schedule for Commercial Waste Zones (CWZs).\nWhat authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York\nCity Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make\nthis proposed rule.\nIn 2019, New York City enacted Local Law 199 requiring the establishment of a new\nprogram for the collection of commercial waste. The program, known as the Commercial Waste\nZones (CWZ) program.\n"
+    },
+    {
+      "source_id": "city_record:20260605008",
+      "request_id": "20260605008",
+      "version_kind": "adopted",
+      "pairing_key": "dsny-commercial-waste-zones",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
+      "source_label": "City Record adopted rule attachment",
+      "published_at": "2026-06-11",
+      "effective_date": "2026-08-13",
+      "expected_citation_keys": [
+        "nyc-charter:753",
+        "nyc-charter:1043(g)"
+      ],
+      "text_fixture": "20260605008",
+      "text": "New York City Department of Sanitation\nNotice of Public Hearing and Opportunity to Comment on Final Rules\nWhat are we adopting? The Department of Sanitation (DSNY) is proposing\nto amend its rules regarding commercial waste to include the\nimplementation schedule for Commercial Waste Zones (CWZs).\nWhat authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York\nCity Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make\nthis proposed rule.\nIn 2019, New York City enacted Local Law 199 requiring the establishment of a new\nprogram for the collection of commercial waste. The program, known as the Commercial Waste\nZones (CWZ) program.\n"
+    }
+  ],
+  "projections": [
+    {
+      "schema": "cityscroll.rule_versions.v1",
+      "rulemaking_id": "rulemaking:dsny:commercial-waste-zones",
+      "versions": [
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "rulemaking_id": "rulemaking:dsny:commercial-waste-zones",
+          "kind": "proposed",
+          "source_id": "city_record:20260708002",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002",
+          "source_label": "City Record proposed rule attachment",
+          "published_at": "2026-07-15",
+          "effective_date": null,
+          "effective_date_basis": "unknown",
+          "effective_date_source_field": null,
+          "text_status": "available",
+          "text": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Proposed Rules What are we proposing? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule. In 2019, New York City enacted Local Law 199 requiring the establishment of a new program for the collection of commercial waste. The program, known as the Commercial Waste Zones (CWZ) program.",
+          "text_preview": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Proposed Rules What are we proposing? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make…",
+          "authority": [
+            {
+              "ref": "legal-code:nyc-charter:753",
+              "kind": "nyc-charter",
+              "citation": "753",
+              "label": "NYC Charter § 753",
+              "href": null,
+              "resolution": "unresolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 306,
+                "end": 499,
+                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+              },
+              "evidence": "The source document states this authority."
+            },
+            {
+              "ref": "legal-code:nyc-charter:1043(g)",
+              "kind": "nyc-charter",
+              "citation": "1043(g)",
+              "label": "NYC Charter § 1043(g)",
+              "href": null,
+              "resolution": "unresolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 306,
+                "end": 499,
+                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+              },
+              "evidence": "The source document states this authority."
+            }
+          ],
+          "legal_effects": [],
+          "held_references": [
+            {
+              "status": "held_ambiguous",
+              "reason": "effect verb has no exact supported legal-code citation",
+              "source_span": {
+                "field": "document_text",
+                "start": 184,
+                "end": 299,
+                "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+              }
+            }
+          ],
+          "pairing_key": "dsny-commercial-waste-zones",
+          "source_span": null,
+          "superseded_by": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008"
+        },
+        {
+          "schema": "cityscroll.rule_version.v1",
+          "id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "rulemaking_id": "rulemaking:dsny:commercial-waste-zones",
+          "kind": "adopted",
+          "source_id": "city_record:20260605008",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008",
+          "source_label": "City Record adopted rule attachment",
+          "published_at": "2026-06-11",
+          "effective_date": "2026-08-13",
+          "effective_date_basis": "source_stated",
+          "effective_date_source_field": "effective_date",
+          "text_status": "available",
+          "text": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Final Rules What are we adopting? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule. In 2019, New York City enacted Local Law 199 requiring the establishment of a new program for the collection of commercial waste. The program, known as the Commercial Waste Zones (CWZ) program.",
+          "text_preview": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Final Rules What are we adopting? The Department of Sanitation (DSNY) is proposing to amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs). What authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make thi…",
+          "authority": [
+            {
+              "ref": "legal-code:nyc-charter:753",
+              "kind": "nyc-charter",
+              "citation": "753",
+              "label": "NYC Charter § 753",
+              "href": null,
+              "resolution": "unresolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 302,
+                "end": 495,
+                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+              },
+              "evidence": "The source document states this authority."
+            },
+            {
+              "ref": "legal-code:nyc-charter:1043(g)",
+              "kind": "nyc-charter",
+              "citation": "1043(g)",
+              "label": "NYC Charter § 1043(g)",
+              "href": null,
+              "resolution": "unresolved",
+              "basis": "source_stated",
+              "source_span": {
+                "field": "document_text",
+                "start": 302,
+                "end": 495,
+                "text": "authorizes DSNY to make this rule? Section 753 and Section 1043(g) of the New York City Charter and Title 16-B of the New York City Administrative Code authorize DSNY to make this proposed rule"
+              },
+              "evidence": "The source document states this authority."
+            }
+          ],
+          "legal_effects": [],
+          "held_references": [
+            {
+              "status": "held_ambiguous",
+              "reason": "effect verb has no exact supported legal-code citation",
+              "source_span": {
+                "field": "document_text",
+                "start": 180,
+                "end": 295,
+                "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+              }
+            }
+          ],
+          "pairing_key": "dsny-commercial-waste-zones",
+          "source_span": null,
+          "supersedes": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002"
+        }
+      ],
+      "legal_effects": [],
+      "held_references": [
+        {
+          "status": "held_ambiguous",
+          "reason": "effect verb has no exact supported legal-code citation",
+          "source_span": {
+            "field": "document_text",
+            "start": 184,
+            "end": 299,
+            "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "source_id": "city_record:20260708002"
+        },
+        {
+          "status": "held_ambiguous",
+          "reason": "effect verb has no exact supported legal-code citation",
+          "source_span": {
+            "field": "document_text",
+            "start": 180,
+            "end": 295,
+            "text": "amend its rules regarding commercial waste to include the implementation schedule for Commercial Waste Zones (CWZs)"
+          },
+          "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "source_id": "city_record:20260605008"
+        }
+      ],
+      "pairs": [
+        {
+          "proposed": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "adopted": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "basis": "shared_source_pairing_key"
+        }
+      ],
+      "coverage": {
+        "documents": 2,
+        "proposed_documents": 1,
+        "adopted_documents": 1,
+        "paired_versions": 1,
+        "acquisition_failures": 0,
+        "exact_citations": 4,
+        "resolvable_targets": 0,
+        "ambiguous_references": 2
+      }
+    }
+  ],
+  "checks": {
+    "characterization": {
+      "sample_count": 4,
+      "agencies": [
+        "Buildings",
+        "Sanitation",
+        "Transportation"
+      ],
+      "lifecycle_stages": [
+        "adopted",
+        "effective",
+        "hearing",
+        "proposed"
+      ],
+      "required_fields_present": true
+    },
+    "rule_documents": {
+      "proposed_documents": 1,
+      "adopted_documents": 1,
+      "paired_versions": 1,
+      "acquisition_failures": 0
+    },
+    "legal_citations": {
+      "exact_citation_count": 4,
+      "exact_citation_precision": {
+        "numerator": 4,
+        "denominator": 4,
+        "value": 1,
+        "basis": "source_sample_expected_citation_keys"
+      },
+      "resolvable_targets": 0,
+      "ambiguous_references": 2
+    },
+    "version_pairing": {
+      "proposed_adopted_pairs": 1,
+      "source_id_pairing_evidence": [
+        "shared_source_pairing_key"
+      ],
+      "unpairable_or_non_text_cases": 0
+    }
+  }
+}

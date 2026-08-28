@@ -537,6 +537,29 @@ function buildMaterializerFacts() {
   };
 }
 
+function buildRuleVersionFacts() {
+  const projectionPath = "site/rule_versions.mjs";
+  const materializerPath = "tools/build_rule_versions.mjs";
+  const projection = text(projectionPath);
+  const materializer = text(materializerPath);
+  return {
+    sources: [projectionPath, materializerPath],
+    projection: {
+      path: projectionPath,
+      schemas: [...projection.matchAll(/export const (RULE_(?:VERSIONS|VERSION|EFFECT)_SCHEMA)\s*=\s*["']([^"']+)["']/g)]
+        .map((match) => ({ name: match[1], schema: match[2] })),
+      source: source(projectionPath, lineOf(projection, "buildRuleVersionsProjection")),
+    },
+    materializer: {
+      path: materializerPath,
+      output: materializer.includes("site/data/rule_versions.json") ? "site/data/rule_versions.json" : null,
+      receipt: materializer.includes("warehouse/receipts/proof/rule_versions_latest.json")
+        ? "warehouse/receipts/proof/rule_versions_latest.json" : null,
+      source: source(materializerPath, lineOf(materializer, "function materialize")),
+    },
+  };
+}
+
 function buildCivicGeographyFacts() {
   const registryModulePath = "site/civic_geography_registry.mjs";
   const artifactPath = "site/data/geography/layer_registry.json";
@@ -804,6 +827,7 @@ function buildFacts({
   const exams = buildExamsFacts();
   const pagesEdge = buildPagesEdgeFacts();
   const materializers = buildMaterializerFacts();
+  const ruleVersions = buildRuleVersionFacts();
   const civicGeography = buildCivicGeographyFacts();
   const performanceObservability = buildPerformanceObservabilityFacts({
     ...(performanceCandidatePaths ? { candidatePathnames: performanceCandidatePaths } : {}),
@@ -814,6 +838,7 @@ function buildFacts({
     ...exams.sources,
     ...pagesEdge.sources,
     ...materializers.sources,
+    ...ruleVersions.sources,
     ...civicGeography.sources,
     ...performanceObservability.sources,
   ]) {
@@ -867,6 +892,7 @@ function buildFacts({
     materializers: {
       primary_documents: materializers.primary_documents,
     },
+    rule_versions: ruleVersions,
     civic_geography: civicGeography.registry,
     performance_observability: {
       catalog: performanceObservability.catalog,

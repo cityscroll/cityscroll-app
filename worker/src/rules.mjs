@@ -16,6 +16,7 @@ import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
 import { classifyCityRecordRuleStage } from "../../site/rule_stage.mjs";
 import { buildRulemakingObjects } from "./lib/rulemaking.mjs";
 import regulatoryAgenda from "../../site/data/regulatory_agenda.json" with { type: "json" };
+import ruleVersions from "../../site/data/rule_versions.json" with { type: "json" };
 
 export const RULES_KV_KEY = "rules:materialized:v2";
 /** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds.
@@ -215,7 +216,20 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       subject_links: subjects.subject_links,
     };
   });
-  const rulemakings = buildRulemakingObjects(records, { now: now.toISOString().slice(0, 10) });
+  const ruleVersionDocumentsByRequestId = Object.fromEntries(
+    (Array.isArray(ruleVersions?.documents) ? ruleVersions.documents : [])
+      .filter((document) => document?.request_id)
+      .reduce((entries, document) => {
+        const key = String(document.request_id);
+        if (!entries.has(key)) entries.set(key, []);
+        entries.get(key).push(document);
+        return entries;
+      }, new Map()),
+  );
+  const rulemakings = buildRulemakingObjects(records, {
+    now: now.toISOString().slice(0, 10),
+    ruleVersionDocumentsByRequestId,
+  });
 
   const byStage = {};
   for (const record of records) {
