@@ -2318,6 +2318,12 @@ header say `Catching up: N items since your last digest on <date>`. Desk
 `traffic_class: catch_up` stays on `isMultiDayLagRecovery` (lag >1 with fresh
 rows). Proof: `worker/test/watermark_backlog_digest.test.mjs`.
 
+**Confirmed-send ordering:** after the provider accepts an email, the single-watch,
+account-rollup, and award-watch paths persist `lastsent` and seen identities before
+later outbox, counter, or statistics bookkeeping. Keep this ordering so a partial
+post-send failure cannot reopen the already-delivered window; `advanceState: false`
+continues to suppress these writes for previews and test sends.
+
 **Catch-up evaluation** (`runCatchUpDigests`) is evaluation-only: it enqueues
 owed identities into the outbox and does not send. The next regular digest is
 the drain. Admin `POST /admin/digest-catchup` and `DIGEST_CATCH_UP=1` still
