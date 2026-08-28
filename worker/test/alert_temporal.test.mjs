@@ -244,3 +244,31 @@ test("without a spine event, digests still cite the flattened comment_by_date as
   assert.equal(reconciled.fresh[0].temporal_action.trigger_field, "valid_at");
   assert.equal(reconciled.fresh[0].temporal_action.event_type, "comment_close");
 });
+
+test("Rules digest surfaces a recorded outcome update with its source", () => {
+  const html = subDigestHtml(
+    "DOT rules",
+    "rules",
+    [{
+      request_id: "20260706041",
+      short_title: "City-Owned Bicycle Racks",
+      post_event_outcome: {
+        outcome_state: "recorded",
+        transition: {
+          event: {
+            type: "adoption",
+            value: "Notice of Adoption",
+            valid_at: "2026-07-14",
+            source_url: "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+          },
+        },
+        evidence: [{ source_url: "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/" }],
+      },
+    }],
+    "https://example.test/unsubscribe",
+    "2026-07-20",
+  );
+  assert.match(html, /Rulemaking adopted/);
+  assert.match(html, /data-civic-outcome="recorded"/);
+  assert.match(html, /rules\.cityofnewyork\.us\/rule\/city-owned-bicycle-racks/);
+});

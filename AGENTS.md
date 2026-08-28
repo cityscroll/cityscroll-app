@@ -5,6 +5,12 @@
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
   lossy scope continuations; focused proof is `test/action_path_v0.test.mjs`.
 
+- **Post-event outcome transitions:** `site/civic_outcome_transition.mjs` is the pure,
+  source-backed projection for consequential rulemaking adoption/effectiveness and Council
+  matter action/vote updates. `worker/src/lib/alert_temporal.mjs` reconciles exact Rules follow
+  subjects with one-shot transition keys; unchanged refreshes stay silent. Focused proof is
+  `test/civic_outcome_transition.test.mjs`.
+
 - **Exact continuation replay:** `worker/src/lib/continuation_replay.mjs` is the pure fail-closed
   capability over scope-v0, Following, SODA, and D1. The current exact relation family is bounded
   `rules.request_ids` membership; matter and broad/body-level fallbacks remain unsupported. Proof
