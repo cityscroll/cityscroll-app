@@ -115,7 +115,8 @@ test("resident card renders same-FY facts, top payees, provenance, and the insti
   assert.match(html, /Example Vendor/);
   assert.match(html, /NYC Expense Budget/);
   assert.match(html, /Checkbook NYC/);
-  assert.match(html, /not spending inside its Community District/);
+  assert.match(html, /Community District spending is a separate measure/);
+  assert.doesNotMatch(html, /not spending inside its Community District/);
   assert.doesNotMatch(html, /remaining|progress|View payments/i);
 });
 
