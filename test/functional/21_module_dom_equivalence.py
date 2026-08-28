@@ -38,6 +38,10 @@ STATIC_LOCAL_IMPORT = re.compile(
     r'import\s+\{[^}]+\}\s+from\s+["\']\./([^"\']+)["\'];?',
     re.MULTILINE,
 )
+NAMESPACE_LOCAL_IMPORT = re.compile(
+    r'import\s+\*\s+as\s+([A-Za-z_$][\w$]*)\s+from\s+["\']\./([^"\']+)["\'];?',
+    re.MULTILINE,
+)
 JSON_MODULE_IMPORT = re.compile(
     r'import\s+([A-Za-z_$][\w$]*)\s+from\s+["\']([^"\']+\.json)["\']'
     r'\s+with\s+\{\s*type:\s*["\']json["\']\s*\}\s*;?',
@@ -154,6 +158,16 @@ def flatten_helper(
     # browser module's data dependency by materializing JSON module imports as
     # values while flattening, rather than leaving ESM syntax in the fixture.
     source = JSON_MODULE_IMPORT.sub(inline_json_import, source)
+
+    def inline_namespace_import(match: re.Match[str]) -> str:
+        assert match.group(2) == "action_registry.js", (
+            f"unsupported namespace helper import: {match.group(2)}"
+        )
+        # action_registry.js is loaded as a classic script by the public shell;
+        # the inline comparison fixture must use that same browser global.
+        return f"const {match.group(1)} = globalThis.CrolActions || {{}};"
+
+    source = NAMESPACE_LOCAL_IMPORT.sub(inline_namespace_import, source)
     nested_sources = []  # Source: local helper imports matched by STATIC_LOCAL_IMPORT.
     for helper_name in STATIC_LOCAL_IMPORT.findall(source):
         helper_path = path.parent / helper_name
