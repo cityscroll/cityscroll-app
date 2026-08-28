@@ -1,8 +1,8 @@
 export const watchLabelForNotice = row => {
   const agency = String(row?.agency_name || "").trim() || null;
   return {
-    label_key: agency ? "scope" : "next_action_watch",
-    label_vars: agency ? { agency, lens: "Rules" } : null,
+    label_key: agency ? "next_action_watch_rules" : "next_action_watch_rules_general",
+    label_vars: agency ? { agency } : null,
   };
 };
 

@@ -14,6 +14,7 @@ import {
 } from "../worker/src/lib/action_registry.mjs";
 import { hearingCalendarICS } from "../site/hearing_attend_pack.mjs";
 import { watchLabelForNotice } from "../site/notice-read.mjs";
+import { buildActionPath } from "../site/action_path_v0.mjs";
 
 const require = createRequire(import.meta.url);
 const { normalizeHearingRow } = require("../site/hearing_location.js");
@@ -319,26 +320,79 @@ test("open rule comments and upcoming hearings use their joined deadlines and ha
   assert.equal(hearing[0].guide?.system, "hearing_extracted");
 });
 
-test("rule watch CTA names the subscribed agency and lens", () => {
+test("unsupported rule notice watch CTA names the subscribed agency and lens", () => {
   const actions = compileActionRail({
     kind: "rule",
     section_name: "Agency Rules",
     agency_name: "Health and Mental Hygiene",
   }, { today: "2026-08-12" });
   const watch = actions.find((action) => action.type === "watch");
-  assert.equal(watch?.label_key, "next_action_watch");
+  assert.equal(watch?.label_key, "next_action_watch_rules");
+  assert.equal(watch?.label, "Follow Health and Mental Hygiene rules");
   assert.match(watch?.destination || "", /lens=rules/);
   assert.match(watch?.destination || "", /Health(%20|\+|%20and%20)and/);
 });
 
-test("notice hydration derives the watch label from the scoped Rules subscription", () => {
+test("notice hydration derives the truthful label from the scoped Rules subscription", () => {
   assert.deepEqual(
     watchLabelForNotice({ agency_name: "Health and Mental Hygiene" }),
     {
-      label_key: "scope",
-      label_vars: { agency: "Health and Mental Hygiene", lens: "Rules" },
+      label_key: "next_action_watch_rules",
+      label_vars: { agency: "Health and Mental Hygiene" },
     },
   );
+});
+
+test("an exact Action Path continuation takes precedence over a broad rule watch", () => {
+  const actionPath = buildActionPath({
+    subject_ref: "notice:20260707022",
+    target_ref: "notice:20260707022",
+    action: {type: "document", delivery: "local", destination: null, confirmation_required: false},
+    evidence: [{source_ref: "notice:20260707022", receipt_ref: "rules:rulemaking_join"}],
+    continuation: {
+      kind: "subject",
+      subject_ref: "rulemaking:dot:bicycle-owned-racks",
+      label: "Follow this rulemaking",
+    },
+  });
+  const actions = compileActionRail({
+    kind: "rule",
+    section_name: "Agency Rules",
+    agency_name: "Transportation",
+    action_path: actionPath,
+    continuation_href: "/following/?lens=rules&filter=%7B%22request_ids%22%3A%5B%2220260707022%22%5D%7D",
+  });
+  const watch = actions.find((action) => action.type === "watch");
+  assert.equal(watch?.label_key, "next_action_watch_rulemaking");
+  assert.equal(watch?.label, "Follow this rulemaking");
+  assert.match(watch?.destination || "", /request_ids/);
+  assert.doesNotMatch(JSON.stringify(actions), /related records/i);
+});
+
+test("unsupported notices keep only a truthfully scoped watch", () => {
+  const hearing = compileActionRail({
+    kind: "hearing",
+    section_name: "Public Hearings and Meetings",
+    agency_name: "Transportation",
+  });
+  const watch = hearing.find((action) => action.type === "watch");
+  assert.equal(watch?.label_key, "next_action_watch_hearings");
+  assert.equal(watch?.label, "Follow Transportation hearings");
+  assert.doesNotMatch(JSON.stringify(hearing), /related records/i);
+
+  const liveNotice = compileActionRail({
+    kind: "solicitation",
+    agency_name: "Economic Development Corporation",
+    request_id: "20260713030",
+  });
+  const liveWatch = liveNotice.find((action) => action.type === "watch");
+  assert.equal(liveWatch?.label, "Follow Economic Development Corporation contracts");
+  assert.doesNotMatch(JSON.stringify(liveNotice), /related records/i);
+});
+
+test("the retired related-records copy is absent from the English catalog", () => {
+  const english = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
+  assert.doesNotMatch(english, /Get updates about related records/i);
 });
 
 test("a dated Agency Rules hearing carries normalized online access into the rule guide", () => {
