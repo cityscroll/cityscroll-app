@@ -1,5 +1,3 @@
-import { matterCanonicalHref } from "./legislative_matter_document.mjs";
-
 export const COUNCIL_HEARING_MATTER_CONTINUATION_SCHEMA = "cityscroll.council_hearing_matter_continuation.v1";
 export const STRICT_COUNCIL_MEETING_JOIN_METHOD = "exact_date_body_tokens";
 
@@ -14,6 +12,11 @@ function safeHttps(value) {
   } catch {
     return null;
   }
+}
+
+function matterCanonicalHref(value) {
+  const id = text(value, 80).replace(/^matter:/, "");
+  return /^\d+$/.test(id) ? `/matters/${encodeURIComponent(id)}/` : null;
 }
 
 function strictJoin(outcome) {
