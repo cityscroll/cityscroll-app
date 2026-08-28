@@ -1,0 +1,108 @@
+{
+  "schema": "cityscroll.merge-throughput.known-flake-source.v1",
+  "repository": "cityscroll/cityscroll-app",
+  "source_run_id": "fixture-known-flake-rerun-2026-08-28",
+  "telemetry_source": "test/fixtures/merge-throughput/known-flake-telemetry-source.json",
+  "observations": [
+    {
+      "pull_request": 1367,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 1,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1367-primary", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "success", "source_run_id": "mt4-1367-retry", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1373,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 2,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1373-primary", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "success", "source_run_id": "mt4-1373-retry", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1374,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 3,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1374-primary", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "success", "source_run_id": "mt4-1374-retry", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1361,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 4,
+      "signature": { "id": "routes-focus.primary.actual-regression", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-deterministic-regression" },
+      "original": { "result": "failure", "source_run_id": "mt4-1361-primary", "failure_signature": "routes-focus-deterministic-regression", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": null,
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1400,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 5,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1400-primary-1", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "failure", "source_run_id": "mt4-1400-retry-1", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1400,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 2,
+      "sequence": 6,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1400-primary-2", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "failure", "source_run_id": "mt4-1400-retry-2", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1400,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 3,
+      "sequence": 7,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1400-primary-3", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": null,
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1401,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 8,
+      "signature": { "id": "routes-focus.primary.unknown", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "unclassified-browser-failure" },
+      "original": { "result": "failure", "source_run_id": "mt4-1401-primary", "failure_signature": "unclassified-browser-failure", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": null,
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1402,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 9,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1402-primary", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "success", "source_run_id": "mt4-1402-retry", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    },
+    {
+      "pull_request": 1403,
+      "check": "Accessibility + language shard (routes-focus primary)",
+      "merge_group_attempt": 1,
+      "sequence": 10,
+      "signature": { "id": "routes-focus.primary.transient-browser-state", "class": "flaky-shard-ejection", "check": "Accessibility + language shard (routes-focus primary)", "failure_signature": "routes-focus-fresh-runner-recoverable" },
+      "original": { "result": "failure", "source_run_id": "mt4-1403-primary", "failure_signature": "routes-focus-fresh-runner-recoverable", "input_identity": null, "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 600, "ejected": true },
+      "retry": { "result": "success", "source_run_id": "mt4-1403-retry", "runner": "fresh-hosted-runner", "job": "a11y-routes-focus-retry", "input_identity": null, "artifact_identity": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "duration_seconds": 590 },
+      "aggregate": { "other_required_checks_green": true, "required_check_count": 3 }
+    }
+  ]
+}
