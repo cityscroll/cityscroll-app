@@ -25,6 +25,12 @@
   committed receipt and agency proof are under `warehouse/receipts/proof/`. Do not use the
   contract-enrichment row count as a spending denominator.
 
+- **Procurement Intent Radar Phase 0:** `test/fixtures/procurement_intent_radar/gold_fixtures.v0.json`
+  and `test/fixtures/procurement_intent_radar/schema.v0.json` are the versioned gold/negative
+  contract for future-action extraction; the executable gate is
+  `test/procurement_intent_radar_fixtures.test.mjs`. Keep upstream source fields temporally
+  sealed and keep `retained_data_present` false until exact EPIN rows are actually retained.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
