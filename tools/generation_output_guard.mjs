@@ -54,11 +54,13 @@ export function writeGenerationOutputReceipt({
   status,
   expectedArtifacts,
   findings = [],
+  sourceCommitSha = process.env.GITHUB_SHA || process.env.SOURCE_COMMIT_SHA || null,
 } = {}) {
   const receipt = {
     schema: GENERATION_OUTPUT_RECEIPT_SCHEMA,
     boundary: boundary || "unknown",
     status,
+    source_commit_sha: sourceCommitSha || null,
     expected_artifacts: expectedArtifacts,
     findings,
     generated_at: new Date().toISOString(),
