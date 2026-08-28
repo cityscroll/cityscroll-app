@@ -1,0 +1,642 @@
+{
+  "schema": "cityscroll.procurement_intent_radar.prospective_ontology.v0",
+  "ontology_version": "0.1.0",
+  "source_policy": "prospective-only; source and assertion supplied by PIR-1; no solicitation acquisition, realization joins, or downstream identity lookup",
+  "input_artifact": "warehouse/fixtures/procurement-intent-radar/candidate_review.v0.json",
+  "process_count": 3,
+  "processes": [
+    {
+      "schema": "cityscroll.prospective_procurement_process.v0",
+      "object_type": "prospective_procurement_process",
+      "process_ref": "procurement-intent:dycd-compass-2025",
+      "status": "open",
+      "source_record": {
+        "schema": "cityscroll.source_record.v0",
+        "object_type": "source_record",
+        "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+        "source_record_ref": "source_record:council:testimony:dycd-fy2026-executive-budget",
+        "source_event_id": "council:hearing:2025-05-19:dycd-fy2026-executive-budget",
+        "observed_at": "2025-05-19",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:keith-howard",
+          "display_name": "Keith Howard",
+          "role": "DYCD Commissioner"
+        },
+        "source_type": "agency_testimony",
+        "source_title": "Council FY2026 Executive Budget hearing",
+        "source_span_text": "DYCD anticipates releasing a concept paper shortly, with the release of the long-awaited request for proposals in the fall.",
+        "span_text_status": "unknown",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?GUID=73A1E0BF-3D78-4A7F-9DEB-70D949A5751F&ID=14582598&M=F",
+            "authority": "nyc_council"
+          }
+        ]
+      },
+      "stated_intent": {
+        "schema": "cityscroll.future_action_assertion.v0",
+        "object_type": "stated_intent",
+        "assertion_id": "faa:compass-dycd-2025-05-19",
+        "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+        "source_event_id": "council:hearing:2025-05-19:dycd-fy2026-executive-budget",
+        "source_span": "DYCD anticipates releasing a concept paper shortly, with the release of the long-awaited request for proposals in the fall.",
+        "observed_at": "2025-05-19",
+        "asserted_by_person_ref": "person:keith-howard",
+        "responsible_agency_ref": "agency:id:dycd",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "COMPASS RFP",
+        "program_refs": [
+          "program:dycd:compass"
+        ],
+        "procurement_type": "RFP",
+        "quantity_assertions": [],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [],
+        "expected_window": {
+          "earliest": "2025-09-01",
+          "latest": "2025-11-30",
+          "precision": "season",
+          "raw_text": "in the fall"
+        },
+        "modality": "anticipated",
+        "conditions": [],
+        "extraction_method": "deterministic_rules_v1",
+        "extraction_version": "pir-phase1.0",
+        "extraction_confidence": "high"
+      },
+      "procurement_identity": {
+        "schema": "cityscroll.provisional_procurement_identity.v0",
+        "object_type": "procurement_identity",
+        "identity_kind": "provisional_procurement_intent",
+        "subject_ref": "procurement-intent:dycd-compass-2025",
+        "status": "prospective",
+        "epin": null,
+        "pin": null,
+        "procurement_id": null,
+        "publisher_identity": null,
+        "realized_by": [],
+        "superseded_by": [],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ]
+      },
+      "edges": [
+        {
+          "relation": "asserted_in",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": "source_record:council:testimony:dycd-fy2026-executive-budget",
+          "target_type": "source_record",
+          "status": "accepted",
+          "basis": "source_record_id"
+        },
+        {
+          "relation": "asserted_by",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": "person:keith-howard",
+          "target_type": "person",
+          "status": "accepted",
+          "basis": "source speaker identity"
+        },
+        {
+          "relation": "owned_by",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": "agency:id:dycd",
+          "target_type": "agency",
+          "status": "accepted",
+          "basis": "responsible_agency_ref"
+        },
+        {
+          "relation": "expects_event",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": "procurement.notice_published",
+          "target_type": "event_kind",
+          "status": "accepted",
+          "basis": "action_kind"
+        },
+        {
+          "relation": "realized_by",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": null,
+          "target_type": "procurement",
+          "status": "not_yet_observed",
+          "basis": "publisher identity absent at creation"
+        },
+        {
+          "relation": "superseded_by",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": null,
+          "target_type": "procurement-intent",
+          "status": "not_observed",
+          "basis": "no later intent supplied"
+        },
+        {
+          "relation": "concerns",
+          "from": "procurement-intent:dycd-compass-2025",
+          "to": "program:dycd:compass",
+          "target_type": "program",
+          "status": "accepted",
+          "basis": "program_refs"
+        }
+      ],
+      "predictions": {
+        "occurrence": {
+          "subject_ref": "procurement-intent:dycd-compass-2025",
+          "predicted_event_kind": "procurement.notice_published",
+          "claim": "occurrence",
+          "predicted_window": {
+            "p10": "2025-09-01",
+            "p50": "2025-10-16",
+            "p90": "2025-11-30"
+          },
+          "probability": 0.5,
+          "basis": {
+            "method": "base_rate",
+            "n": 1,
+            "train_from": "2025-05-19",
+            "train_to": "2025-05-19",
+            "cohort": "pir.explicit_future_procurement",
+            "evidence_event_ids": [
+              "council:hearing:2025-05-19:dycd-fy2026-executive-budget"
+            ],
+            "statute_ref": null
+          },
+          "model_name": "prospective_procurement_occurrence",
+          "model_version": "0.1.0",
+          "generated_at": "2025-05-19T00:00:00.000Z",
+          "supersedes_prediction_id": null,
+          "status": "open",
+          "resolved_by_event_id": null,
+          "schema_version": 1,
+          "prediction_id": "pred:d85638a1ee204205c0e3ee26"
+        },
+        "timing": {
+          "subject_ref": "procurement-intent:dycd-compass-2025",
+          "predicted_event_kind": "procurement.notice_published",
+          "claim": "timing",
+          "predicted_window": {
+            "p10": "2025-09-01",
+            "p50": "2025-10-16",
+            "p90": "2025-11-30"
+          },
+          "probability": 0.5,
+          "basis": {
+            "method": "base_rate",
+            "n": 1,
+            "train_from": "2025-05-19",
+            "train_to": "2025-05-19",
+            "cohort": "pir.explicit_future_procurement",
+            "evidence_event_ids": [
+              "council:hearing:2025-05-19:dycd-fy2026-executive-budget"
+            ],
+            "statute_ref": null
+          },
+          "model_name": "prospective_procurement_timing",
+          "model_version": "0.1.0",
+          "generated_at": "2025-05-19T00:00:00.000Z",
+          "supersedes_prediction_id": null,
+          "status": "open",
+          "resolved_by_event_id": null,
+          "schema_version": 1,
+          "prediction_id": "pred:f1be6859a130036474242520"
+        }
+      },
+      "unknowns": [
+        "publisher_native_procurement_identity",
+        "realized_procurement_records",
+        "realization_cardinality",
+        "superseding_intent"
+      ]
+    },
+    {
+      "schema": "cityscroll.prospective_procurement_process.v0",
+      "object_type": "prospective_procurement_process",
+      "process_ref": "procurement-intent:hra-dv-94-beds-2024",
+      "status": "open",
+      "source_record": {
+        "schema": "cityscroll.source_record.v0",
+        "object_type": "source_record",
+        "source_record_id": "council:transcript:general-welfare:2024-10-09",
+        "source_record_ref": "source_record:council:transcript:general-welfare:2024-10-09",
+        "source_event_id": "council:hearing:2024-10-09:general-welfare-dv-shelter",
+        "observed_at": "2024-10-09",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": "person:john-rojas",
+          "display_name": "John Rojas",
+          "role": "HRA official"
+        },
+        "source_type": "council_transcript",
+        "source_title": "Committee on General Welfare and Committee on Women and Gender Equity hearing",
+        "source_span_text": "We are actually in the midst of planning for the release of an RFP for additional emergency shelter beds, so we hope by the end of the year to be able to release an RFP seeking an additional 94 beds. And this RFP seeks to target single adult households of one and with a special emphasis on LGBTQIA survivors. The facilities can’t exclusively serve single adults that we’ve consulted with our oversight agency at the state OCFS and the facilities must always accept families if that’s a requirement of the shelter system but there is an emphasis on single adults and a special focus on LGBTQ survivors.",
+        "span_text_status": "unknown",
+        "citations": [
+          {
+            "label": "Council transcript",
+            "url": "https://legistar.council.nyc.gov/View.ashx?GUID=55F96206-8A74-4F38-BF33-DCB6340E1BA7&ID=13400292&M=F",
+            "authority": "nyc_council"
+          }
+        ]
+      },
+      "stated_intent": {
+        "schema": "cityscroll.future_action_assertion.v0",
+        "object_type": "stated_intent",
+        "assertion_id": "faa:hra-dv-beds-2024-10-09",
+        "source_record_id": "council:transcript:general-welfare:2024-10-09",
+        "source_event_id": "council:hearing:2024-10-09:general-welfare-dv-shelter",
+        "source_span": "We are actually in the midst of planning for the release of an RFP for additional emergency shelter beds, so we hope by the end of the year to be able to release an RFP seeking an additional 94 beds. And this RFP seeks to target single adult households of one and with a special emphasis on LGBTQIA survivors. The facilities can’t exclusively serve single adults that we’ve consulted with our oversight agency at the state OCFS and the facilities must always accept families if that’s a requirement of the shelter system but there is an emphasis on single adults and a special focus on LGBTQ survivors.",
+        "observed_at": "2024-10-09",
+        "asserted_by_person_ref": "person:john-rojas",
+        "responsible_agency_ref": "agency:id:dss",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "additional emergency shelter beds for domestic-violence survivors",
+        "program_refs": [],
+        "procurement_type": "RFP",
+        "quantity_assertions": [
+          {
+            "kind": "beds",
+            "value": 94,
+            "unit": "beds",
+            "raw_text": "additional 94 beds"
+          }
+        ],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [
+          "single adult households",
+          "families",
+          "LGBTQIA survivors"
+        ],
+        "expected_window": {
+          "earliest": null,
+          "latest": "2024-12-31",
+          "precision": "deadline",
+          "raw_text": "by the end of the year"
+        },
+        "modality": "hoped",
+        "conditions": [],
+        "extraction_method": "deterministic_rules_v1",
+        "extraction_version": "pir-phase1.0",
+        "extraction_confidence": "high"
+      },
+      "procurement_identity": {
+        "schema": "cityscroll.provisional_procurement_identity.v0",
+        "object_type": "procurement_identity",
+        "identity_kind": "provisional_procurement_intent",
+        "subject_ref": "procurement-intent:hra-dv-94-beds-2024",
+        "status": "prospective",
+        "epin": null,
+        "pin": null,
+        "procurement_id": null,
+        "publisher_identity": null,
+        "realized_by": [],
+        "superseded_by": [],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ]
+      },
+      "edges": [
+        {
+          "relation": "asserted_in",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": "source_record:council:transcript:general-welfare:2024-10-09",
+          "target_type": "source_record",
+          "status": "accepted",
+          "basis": "source_record_id"
+        },
+        {
+          "relation": "asserted_by",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": "person:john-rojas",
+          "target_type": "person",
+          "status": "accepted",
+          "basis": "source speaker identity"
+        },
+        {
+          "relation": "owned_by",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": "agency:id:dss",
+          "target_type": "agency",
+          "status": "accepted",
+          "basis": "responsible_agency_ref"
+        },
+        {
+          "relation": "expects_event",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": "procurement.notice_published",
+          "target_type": "event_kind",
+          "status": "accepted",
+          "basis": "action_kind"
+        },
+        {
+          "relation": "realized_by",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": null,
+          "target_type": "procurement",
+          "status": "not_yet_observed",
+          "basis": "publisher identity absent at creation"
+        },
+        {
+          "relation": "superseded_by",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": null,
+          "target_type": "procurement-intent",
+          "status": "not_observed",
+          "basis": "no later intent supplied"
+        },
+        {
+          "relation": "concerns",
+          "from": "procurement-intent:hra-dv-94-beds-2024",
+          "to": null,
+          "target_type": "program",
+          "status": "unknown",
+          "basis": "no program reference in source assertion"
+        }
+      ],
+      "predictions": {
+        "occurrence": {
+          "subject_ref": "procurement-intent:hra-dv-94-beds-2024",
+          "predicted_event_kind": "procurement.notice_published",
+          "claim": "occurrence",
+          "predicted_window": {
+            "p10": "2024-10-09",
+            "p50": "2024-11-19",
+            "p90": "2024-12-31"
+          },
+          "probability": 0.5,
+          "basis": {
+            "method": "base_rate",
+            "n": 1,
+            "train_from": "2024-10-09",
+            "train_to": "2024-10-09",
+            "cohort": "pir.explicit_future_procurement",
+            "evidence_event_ids": [
+              "council:hearing:2024-10-09:general-welfare-dv-shelter"
+            ],
+            "statute_ref": null
+          },
+          "model_name": "prospective_procurement_occurrence",
+          "model_version": "0.1.0",
+          "generated_at": "2024-10-09T00:00:00.000Z",
+          "supersedes_prediction_id": null,
+          "status": "open",
+          "resolved_by_event_id": null,
+          "schema_version": 1,
+          "prediction_id": "pred:003330ff52c24832362d5982"
+        },
+        "timing": {
+          "subject_ref": "procurement-intent:hra-dv-94-beds-2024",
+          "predicted_event_kind": "procurement.notice_published",
+          "claim": "timing",
+          "predicted_window": {
+            "p10": "2024-10-09",
+            "p50": "2024-11-19",
+            "p90": "2024-12-31"
+          },
+          "probability": 0.5,
+          "basis": {
+            "method": "base_rate",
+            "n": 1,
+            "train_from": "2024-10-09",
+            "train_to": "2024-10-09",
+            "cohort": "pir.explicit_future_procurement",
+            "evidence_event_ids": [
+              "council:hearing:2024-10-09:general-welfare-dv-shelter"
+            ],
+            "statute_ref": null
+          },
+          "model_name": "prospective_procurement_timing",
+          "model_version": "0.1.0",
+          "generated_at": "2024-10-09T00:00:00.000Z",
+          "supersedes_prediction_id": null,
+          "status": "open",
+          "resolved_by_event_id": null,
+          "schema_version": 1,
+          "prediction_id": "pred:661de34c3c14c5266fd83ce8"
+        }
+      },
+      "unknowns": [
+        "publisher_native_procurement_identity",
+        "realized_procurement_records",
+        "realization_cardinality",
+        "superseding_intent"
+      ]
+    },
+    {
+      "schema": "cityscroll.prospective_procurement_process.v0",
+      "object_type": "prospective_procurement_process",
+      "process_ref": "procurement-intent:acs-atd-2022",
+      "status": "open",
+      "source_record": {
+        "schema": "cityscroll.source_record.v0",
+        "object_type": "source_record",
+        "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+        "source_record_ref": "source_record:council:finance-briefing:acs-fy2023-preliminary",
+        "source_event_id": "council:document:acs-finance-briefing:2022-03-09",
+        "observed_at": "2022-03-09",
+        "observed_at_precision": "day",
+        "speaker": {
+          "person_ref": null,
+          "display_name": "NYC Council Finance Division",
+          "role": "briefing paper author"
+        },
+        "source_type": "council_briefing_paper",
+        "source_title": "Report on the Fiscal 2023 Preliminary Plan and the Fiscal 2022 Mayor’s Management Report for ACS",
+        "source_span_text": "ACS released a concept paper for ATDs in February 2022, plans to release an RFP in the summer, and intends to put new contracts in place in Fiscal 2024, when program management moves to ACS from MOCJ.",
+        "span_text_status": "unknown",
+        "citations": [
+          {
+            "label": "Council Finance Division briefing paper",
+            "url": "https://council.nyc.gov/budget/wp-content/uploads/sites/54/2022/03/ACS.pdf",
+            "authority": "nyc_council"
+          }
+        ]
+      },
+      "stated_intent": {
+        "schema": "cityscroll.future_action_assertion.v0",
+        "object_type": "stated_intent",
+        "assertion_id": "faa:acs-atd-2022-03-09",
+        "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+        "source_event_id": "council:document:acs-finance-briefing:2022-03-09",
+        "source_span": "ACS released a concept paper for ATDs in February 2022, plans to release an RFP in the summer, and intends to put new contracts in place in Fiscal 2024, when program management moves to ACS from MOCJ.",
+        "observed_at": "2022-03-09",
+        "asserted_by_person_ref": null,
+        "responsible_agency_ref": "agency:id:acs",
+        "action_kind": "procurement.solicitation_publish",
+        "object_text": "Alternative to Detention RFP",
+        "program_refs": [
+          "program:acs:alternative-to-detention"
+        ],
+        "procurement_type": "RFP",
+        "quantity_assertions": [],
+        "money_assertions": [],
+        "geography_refs": [],
+        "population_terms": [],
+        "expected_window": {
+          "earliest": "2022-06-01",
+          "latest": "2022-08-31",
+          "precision": "season",
+          "raw_text": "in the summer"
+        },
+        "modality": "planned",
+        "conditions": [],
+        "extraction_method": "deterministic_rules_v1",
+        "extraction_version": "pir-phase1.0",
+        "extraction_confidence": "high"
+      },
+      "procurement_identity": {
+        "schema": "cityscroll.provisional_procurement_identity.v0",
+        "object_type": "procurement_identity",
+        "identity_kind": "provisional_procurement_intent",
+        "subject_ref": "procurement-intent:acs-atd-2022",
+        "status": "prospective",
+        "epin": null,
+        "pin": null,
+        "procurement_id": null,
+        "publisher_identity": null,
+        "realized_by": [],
+        "superseded_by": [],
+        "unknowns": [
+          "publisher_native_procurement_identity",
+          "realized_procurement_records",
+          "realization_cardinality",
+          "superseding_intent"
+        ]
+      },
+      "edges": [
+        {
+          "relation": "asserted_in",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": "source_record:council:finance-briefing:acs-fy2023-preliminary",
+          "target_type": "source_record",
+          "status": "accepted",
+          "basis": "source_record_id"
+        },
+        {
+          "relation": "asserted_by",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": null,
+          "target_type": "person",
+          "status": "unknown",
+          "basis": "source speaker identity"
+        },
+        {
+          "relation": "owned_by",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": "agency:id:acs",
+          "target_type": "agency",
+          "status": "accepted",
+          "basis": "responsible_agency_ref"
+        },
+        {
+          "relation": "expects_event",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": "procurement.notice_published",
+          "target_type": "event_kind",
+          "status": "accepted",
+          "basis": "action_kind"
+        },
+        {
+          "relation": "realized_by",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": null,
+          "target_type": "procurement",
+          "status": "not_yet_observed",
+          "basis": "publisher identity absent at creation"
+        },
+        {
+          "relation": "superseded_by",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": null,
+          "target_type": "procurement-intent",
+          "status": "not_observed",
+          "basis": "no later intent supplied"
+        },
+        {
+          "relation": "concerns",
+          "from": "procurement-intent:acs-atd-2022",
+          "to": "program:acs:alternative-to-detention",
+          "target_type": "program",
+          "status": "accepted",
+          "basis": "program_refs"
+        }
+      ],
+      "predictions": {
+        "occurrence": {
+          "subject_ref": "procurement-intent:acs-atd-2022",
+          "predicted_event_kind": "procurement.notice_published",
+          "claim": "occurrence",
+          "predicted_window": {
+            "p10": "2022-06-01",
+            "p50": "2022-07-16",
+            "p90": "2022-08-31"
+          },
+          "probability": 0.5,
+          "basis": {
+            "method": "base_rate",
+            "n": 1,
+            "train_from": "2022-03-09",
+            "train_to": "2022-03-09",
+            "cohort": "pir.explicit_future_procurement",
+            "evidence_event_ids": [
+              "council:document:acs-finance-briefing:2022-03-09"
+            ],
+            "statute_ref": null
+          },
+          "model_name": "prospective_procurement_occurrence",
+          "model_version": "0.1.0",
+          "generated_at": "2022-03-09T00:00:00.000Z",
+          "supersedes_prediction_id": null,
+          "status": "open",
+          "resolved_by_event_id": null,
+          "schema_version": 1,
+          "prediction_id": "pred:5f738f1bf6fdd1b5a86cd507"
+        },
+        "timing": {
+          "subject_ref": "procurement-intent:acs-atd-2022",
+          "predicted_event_kind": "procurement.notice_published",
+          "claim": "timing",
+          "predicted_window": {
+            "p10": "2022-06-01",
+            "p50": "2022-07-16",
+            "p90": "2022-08-31"
+          },
+          "probability": 0.5,
+          "basis": {
+            "method": "base_rate",
+            "n": 1,
+            "train_from": "2022-03-09",
+            "train_to": "2022-03-09",
+            "cohort": "pir.explicit_future_procurement",
+            "evidence_event_ids": [
+              "council:document:acs-finance-briefing:2022-03-09"
+            ],
+            "statute_ref": null
+          },
+          "model_name": "prospective_procurement_timing",
+          "model_version": "0.1.0",
+          "generated_at": "2022-03-09T00:00:00.000Z",
+          "supersedes_prediction_id": null,
+          "status": "open",
+          "resolved_by_event_id": null,
+          "schema_version": 1,
+          "prediction_id": "pred:d9a95c5336a5133a83a7449b"
+        }
+      },
+      "unknowns": [
+        "publisher_native_procurement_identity",
+        "realized_procurement_records",
+        "realization_cardinality",
+        "superseding_intent"
+      ]
+    }
+  ]
+}
