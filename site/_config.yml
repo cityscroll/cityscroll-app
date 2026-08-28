@@ -15,6 +15,7 @@ exclude:
   - PAPERCUTS.md
   - backlog
   - data/source_health_observations.json
+  - data/source_vintage_observations.json
   - experimental
   - internal
   - node_modules

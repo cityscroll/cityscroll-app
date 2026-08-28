@@ -3,6 +3,13 @@
   "observed_on": "2026-08-11",
   "sources": [
     {
+      "id": "ibo-fiscal-history",
+      "kind": "html",
+      "identifier": "fiscalhistory.html",
+      "response_type": "text/html",
+      "fields": []
+    },
+    {
       "id": "nyc-administrative-code",
       "kind": "html",
       "identifier": "0-0-0-1",

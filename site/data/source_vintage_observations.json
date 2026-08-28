@@ -1,0 +1,1877 @@
+{
+  "schema": "cityscroll.source_vintage_observations.v1",
+  "generated_at": "2026-08-27T17:59:48.000Z",
+  "contract_count": 60,
+  "observations": [
+    {
+      "source_id": "abo-local-authorities",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2024-05-06T00:00:00.000Z",
+      "publisher_last_update_basis": "warehouse_source_summary",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json"
+      },
+      "expected_cadence": "Publisher cadence not stated in dataset metadata",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "abo-local-development-corporations",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2024-06-26T00:00:00.000Z",
+      "publisher_last_update_basis": "warehouse_source_summary",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json"
+      },
+      "expected_cadence": "Publisher cadence not stated in dataset metadata",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "abo-state-authorities",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/abo_residual_2026-08-04.json"
+      },
+      "expected_cadence": "Publisher cadence not stated in dataset metadata",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "active-civil-service-list",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Frequent list updates",
+      "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "annual-examination-schedule",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
+      "expected_lag_tolerance_days": 45,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "bid-tabulations-historical",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Historical / irregular (publisher labels the view historical; openings end 2021-03-24; rows last modified 2023-09-16)",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "business-improvement-district-boundaries",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2024-10-08T15:54:16.000Z",
+      "publisher_last_update_basis": "geography_source_receipt",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-18T16:00:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "business_improvement_district:2024-10-08"
+      },
+      "expected_cadence": "Publisher-managed; no fixed cadence is declared",
+      "expected_lag_tolerance_days": 730,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "capital-projects",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Periodic capital dashboard refresh (time-series by date_reported_as_of)",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "capital-projects-dashboard",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Three times a year after OMB commitment-plan releases (January, May, and September)",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "cfb-campaign-contributions",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Periodic CFB disclosure filings",
+      "expected_lag_tolerance_days": 30,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "checkbook-contracts",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-18T04:05:51.552Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"
+      },
+      "expected_cadence": "Ongoing registrations and spending updates",
+      "expected_lag_tolerance_days": 45,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "checkbook-nycha-contracts",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Ongoing contract updates",
+      "expected_lag_tolerance_days": 45,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "checkbook-spending",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-11T19:25:33.574Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/checkbook_spending_population_latest.json"
+      },
+      "expected_cadence": "Ongoing spending and payment updates",
+      "expected_lag_tolerance_days": 45,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "city-clerk-elobbyist",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Lobbying registrations and periodic reports",
+      "expected_lag_tolerance_days": 30,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "city-council-committee-membership",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Historical export updated when committee membership records are revised",
+      "expected_lag_tolerance_days": 365,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "city-council-district-boundaries",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Updated when City Council district lines are redrawn or geometry is corrected",
+      "expected_lag_tolerance_days": 730,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "city-council-meetings-open-data",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Historical series labeled 1999 to 2024; meetings end 2024-12-19; resource Last-Modified 2025-12-30",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "city-record",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2026-08-04T00:00:00.000Z",
+      "publisher_last_update_basis": "warehouse_source_summary",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-05T10:41:44.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/city-record_bulk_latest.json"
+      },
+      "expected_cadence": "Daily",
+      "expected_lag_tolerance_days": 7,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "citywide-payroll",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Fiscal-year releases",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "civil-service-list-certification",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Frequent certification updates",
+      "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "civil-service-titles",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Periodic DCAS title-table updates",
+      "expected_lag_tolerance_days": 90,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "community-district-boundaries",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Updated when community district lines are redrawn or geometry is corrected",
+      "expected_lag_tolerance_days": 730,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dcas-annual-exam-outcomes",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Annual outcomes publication with potential corrections during the fiscal-year outcomes cycle",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dcas-eligible-list-utilization",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Annual Local Law 50 report with corrections or refreshed publication rows as DCAS updates the report",
+      "expected_lag_tolerance_days": 400,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dcas-exam-notices",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Monthly schedule posts with mid-cycle Notice of Examination amendments; re-check daily while any application window is open",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dcas-vehicle-auction-list",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Weekly",
+      "expected_lag_tolerance_days": 21,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dcp-nta2020-boundaries",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2026-05-04T00:00:00.000Z",
+      "publisher_last_update_basis": "geography_source_receipt",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-18T16:00:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "nta2020:26B"
+      },
+      "expected_cadence": "Quarterly DCP BYTES release",
+      "expected_lag_tolerance_days": 180,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dcp-police-precinct-boundaries",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2026-05-04T00:00:00.000Z",
+      "publisher_last_update_basis": "geography_source_receipt",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-18T16:00:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "police_precinct:26B"
+      },
+      "expected_cadence": "Quarterly DCP BYTES release",
+      "expected_lag_tolerance_days": 180,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dob-certificate-of-occupancy",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Ongoing DOB certificate and issue updates",
+      "expected_lag_tolerance_days": 30,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dob-now-job-filings",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Frequent filing updates",
+      "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dof-tax-lien-sale-lists",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-03T04:27:32.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/dof-tax-lien-sale-lists_bulk_latest.json"
+      },
+      "expected_cadence": "Irregular lien-sale cycles; dataset metadata says every six months",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "doing-business-entities",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-24T08:25:03.900Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "doing-business-entities:2026-08-24T08:25:03.900Z"
+      },
+      "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
+      "expected_lag_tolerance_days": 400,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "dsny-district-boundaries",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": "2024-04-10T10:00:05.000Z",
+      "publisher_last_update_basis": "geography_source_receipt",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-18T16:00:00.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "sanitation_district:2024-04-10"
+      },
+      "expected_cadence": "Publisher-managed; no fixed cadence is declared",
+      "expected_lag_tolerance_days": 730,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "expense-budget",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Fiscal-year budget releases",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "ibo-fiscal-history",
+      "source_family": {
+        "id": "ibo-fiscal-history",
+        "component_artifact_ids": [
+          "ibo_agency_expenditures",
+          "ibo_full_time_positions"
+        ]
+      },
+      "observed_coverage": {
+        "max_fiscal_year": 2022,
+        "max_date": null,
+        "fiscal_year_count": 43,
+        "row_count": 26101,
+        "basis": "ibo_fiscal_history_receipt.coverage.fiscal_years"
+      },
+      "publisher_vintage": "FY2022",
+      "publisher_vintage_basis": "ibo_fiscal_history_source_manifest.publisher_vintage",
+      "publisher_last_updated_at": "2023-06-14T13:40:02.000Z",
+      "publisher_last_update_basis": "workbook http_last_modified (latest retained component)",
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-27T17:59:48.000Z",
+        "receipt_ref": "warehouse/sources/ibo-fiscal-history/materialized/receipt.json",
+        "receipt_schema": "cityscroll.ibo_fiscal_history_receipt.v1",
+        "run_id": "ibo-fiscal-history:2026-08-27T17:59:48.000Z"
+      },
+      "expected_cadence": "Annual fiscal-history workbook releases",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": "fiscal_years",
+        "basis": "not-computed-in-sv-0"
+      },
+      "downstream_consumer_ids": [
+        "agency-fiscal-context"
+      ],
+      "alternate_source_ids": [
+        "comptroller-acfr"
+      ]
+    },
+    {
+      "source_id": "legacy-dob-job-filings",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Frequent filing updates",
+      "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "mandatory-inclusionary-housing",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Monthly (Open Data metadata; 31-day working cadence)",
+      "expected_lag_tolerance_days": 120,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "mappluto",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Periodic PLUTO releases",
+      "expected_lag_tolerance_days": 120,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "mocs-ll1-plans",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Annual plans with in-year agency spreadsheet updates",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "mocs-ll63-plans",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Annual plans with in-year agency spreadsheet updates",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "non-council-board-minutes",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Heterogeneous; usually monthly for verified full-board minutes pages",
+      "expected_lag_tolerance_days": 45,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-administrative-code",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-24T08:25:03.900Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "nyc-administrative-code:2026-08-24T08:25:03.900Z"
+      },
+      "expected_cadence": "Publisher supplement cadence; refreshed at build time",
+      "expected_lag_tolerance_days": 60,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-agencies",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Slow-changing organizational data",
+      "expected_lag_tolerance_days": 120,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-council-legistar",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Updated as meetings, agenda items, and votes change",
+      "expected_lag_tolerance_days": 7,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-council-members",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Council membership roster; term rows accumulate over time",
+      "expected_lag_tolerance_days": 90,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-geosearch",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "No upstream data timestamp is published",
+      "expected_lag_tolerance_days": 30,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-jobs-postings",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Ongoing job-posting updates",
+      "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-property-address-directory",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Quarterly",
+      "expected_lag_tolerance_days": 120,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nyc-rules-rss",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
+      "expected_lag_tolerance_days": 45,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "nycida-build-nyc-projects",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Annual project workbook plus authority board-document publication cadence",
+      "expected_lag_tolerance_days": 550,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "ocp-current-solicitations",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Daily (Open Data automation metadata)",
+      "expected_lag_tolerance_days": 7,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "ocp-recent-contract-awards",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-05T10:36:28.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json"
+      },
+      "expected_cadence": "Frequent (Open Data metadata)",
+      "expected_lag_tolerance_days": 14,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "passport-public-contracts",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
+      "expected_lag_tolerance_days": 3,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "passport-public-rfx",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
+      "expected_lag_tolerance_days": 3,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "suitability-city-owned-leased-property-ll48",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Periodic civic-data updates",
+      "expected_lag_tolerance_days": 365,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "ulurp-recommendation-pdfs",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Historical / irregular PDF companion letters (resource Last-Modified 2018-01-25; 88 rows)",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "ulurp-recommendations",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Historical / irregular Brooklyn Borough President recommendations (resource Last-Modified 2021-06-29; 91 rows)",
+      "expected_lag_tolerance_days": 0,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "zap-api-outcomes",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "unknown",
+        "retrieved_at": null,
+        "receipt_ref": null,
+        "receipt_schema": null,
+        "run_id": null
+      },
+      "expected_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
+      "expected_lag_tolerance_days": 7,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "zap-bbl",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-05T10:36:34.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/zap-bbl_bulk_latest.json"
+      },
+      "expected_cadence": "Periodic project updates",
+      "expected_lag_tolerance_days": 120,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    },
+    {
+      "source_id": "zap-projects",
+      "source_family": null,
+      "observed_coverage": {
+        "max_fiscal_year": null,
+        "max_date": null,
+        "fiscal_year_count": null,
+        "row_count": null,
+        "basis": null
+      },
+      "publisher_vintage": null,
+      "publisher_vintage_basis": null,
+      "publisher_last_updated_at": null,
+      "publisher_last_update_basis": null,
+      "cityscroll_retrieval": {
+        "status": "succeeded",
+        "retrieved_at": "2026-08-03T05:05:03.000Z",
+        "receipt_ref": null,
+        "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
+        "run_id": "warehouse/receipts/proof/zap-projects_bulk_latest.json"
+      },
+      "expected_cadence": "Periodic project updates",
+      "expected_lag_tolerance_days": 120,
+      "current_lag": {
+        "value": null,
+        "unit": null,
+        "basis": null
+      },
+      "downstream_consumer_ids": [],
+      "alternate_source_ids": []
+    }
+  ]
+}
