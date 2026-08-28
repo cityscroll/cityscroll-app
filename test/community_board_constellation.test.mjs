@@ -169,6 +169,34 @@ test("committee-hosted meeting is rendered through the board-local committee cat
   assert.match(visible, /Transportation Committee Meeting/);
 });
 
+test("board people constellation items expose generic refs without changing board-local identity", () => {
+  const sourceDocument = {
+    publisher_document_id: "cb6-roster-2026-08-25",
+    document_url: "https://cbsix.org/about-us/board-members-and-staff/",
+    date: "2026-08-25",
+    observed_receipt: { status: "ok", observed_at: "2026-08-25T12:00:00Z" },
+  };
+  const view = buildCommunityBoardConstellationView("manhattan-cb-06", {
+    ...sources,
+    boardRelations: {
+      "manhattan-cb-06": {
+        relationships: [{
+          board_id: "manhattan-cb-06",
+          publisher_person_id: "jane-001",
+          person_name: "Jane Doe",
+          relation: "member_of",
+          role: "appointed_member",
+          relation_date: "2026-08-25",
+          source_document: sourceDocument,
+        }],
+      },
+    },
+  });
+  const member = view.categories.find((category) => category.id === "members").items[0];
+  assert.equal(member.person_ref, "community-board-person:manhattan-cb-06:jane-001");
+  assert.equal(member.generic_person_ref, "person:community-board:manhattan-cb-06:jane-001");
+});
+
 test("accepted meeting source rows render once through their semantic meeting object", () => {
   const meetingId = "meeting:community_board:cb6-transport";
   const meetingEdge = {

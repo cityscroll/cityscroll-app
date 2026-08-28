@@ -176,6 +176,11 @@ function acceptedMeetingIds(institutionEdges = []) {
     .flatMap((edge) => [edge.to, edge.target_id, edge.source_record_id].map((value) => clean(value, 500)).filter(Boolean)));
 }
 
+function genericCommunityBoardPersonRef(value) {
+  const match = clean(value, 500).match(/^community-board-person:([^:]+):(.+)$/);
+  return match ? `person:community-board:${match[1]}:${match[2]}` : null;
+}
+
 function sourceRecordRows(records = [], options = {}) {
   const rows = Array.isArray(records) ? records : records?.records || [];
   const acceptedIds = options.acceptedMeetingIds instanceof Set ? options.acceptedMeetingIds : new Set();
@@ -209,8 +214,10 @@ function sourceRecordRows(records = [], options = {}) {
 }
 
 function relationItem(edge, kind) {
+  const sourcePersonIdentity = edge.person_identity?.id || edge.person_ref || edge.to;
   return {
     ...edge,
+    generic_person_ref: kind === "member" ? genericCommunityBoardPersonRef(sourcePersonIdentity) : null,
     href: kind === "meeting" && communityBoardMeetingEdgeAccepted(edge)
         ? edge.href || edge.canonical_href || null
         : null,
