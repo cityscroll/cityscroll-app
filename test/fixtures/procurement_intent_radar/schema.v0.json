@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cityscroll.procurement_intent_radar.fixtures.v0",
+  "title": "Procurement Intent Radar Phase 0 fixture pack",
+  "type": "object",
+  "required": ["schema", "fixture_version", "cases"],
+  "properties": {
+    "schema": { "const": "cityscroll.procurement_intent_radar.fixtures.v0" },
+    "fixture_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "cases": {
+      "type": "array",
+      "minItems": 5,
+      "items": { "$ref": "#/$defs/case" }
+    }
+  },
+  "$defs": {
+    "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "source": {
+      "type": "object",
+      "required": ["source_record_id", "source_event_id", "observed_at", "speaker", "source_type", "source_span_text", "citations"],
+      "properties": {
+        "source_record_id": { "type": "string", "minLength": 1 },
+        "source_event_id": { "type": "string", "minLength": 1 },
+        "observed_at": { "$ref": "#/$defs/date" },
+        "observed_at_precision": { "enum": ["day", "month", "unknown"] },
+        "speaker": { "type": "object", "required": ["display_name"], "properties": { "person_ref": { "type": ["string", "null"] }, "display_name": { "type": "string", "minLength": 1 }, "role": { "type": "string" } } },
+        "source_type": { "enum": ["agency_testimony", "council_transcript", "council_briefing_paper"] },
+        "source_title": { "type": "string", "minLength": 1 },
+        "source_span_text": { "type": "string", "minLength": 1 },
+        "span_text_status": { "enum": ["verbatim", "seeded_description"] },
+        "citations": { "type": "array", "items": { "$ref": "#/$defs/citation" } }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "required": ["label", "url", "authority"],
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "authority": { "enum": ["nyc_council", "nyc_agency", "public_index", "secondary_index"] }
+      }
+    },
+    "assertion": {
+      "type": "object",
+      "required": ["assertion_id", "source_record_id", "source_event_id", "source_span", "observed_at", "asserted_by_person_ref", "responsible_agency_ref", "action_kind", "object_text", "program_refs", "procurement_type", "quantity_assertions", "money_assertions", "geography_refs", "population_terms", "expected_window", "modality", "conditions", "extraction_method", "extraction_version", "extraction_confidence"],
+      "properties": {
+        "assertion_id": { "type": "string", "minLength": 1 },
+        "source_record_id": { "type": "string", "minLength": 1 },
+        "source_event_id": { "type": "string", "minLength": 1 },
+        "source_span": { "type": "string", "minLength": 1 },
+        "observed_at": { "$ref": "#/$defs/date" },
+        "asserted_by_person_ref": { "type": ["string", "null"] },
+        "responsible_agency_ref": { "type": "string", "minLength": 1 },
+        "action_kind": { "const": "procurement.solicitation_publish" },
+        "object_text": { "type": "string", "minLength": 1 },
+        "program_refs": { "type": "array", "items": { "type": "string" } },
+        "procurement_type": { "const": "RFP" },
+        "quantity_assertions": { "type": "array", "items": { "type": "object" } },
+        "money_assertions": { "type": "array", "items": { "type": "object" } },
+        "geography_refs": { "type": "array", "items": { "type": "string" } },
+        "population_terms": { "type": "array", "items": { "type": "string" } },
+        "expected_window": { "type": ["object", "null"] },
+        "modality": { "enum": ["committed", "planned", "anticipated", "preparing", "hoped", "conditional", "reported"] },
+        "conditions": { "type": "array", "items": { "type": "string" } },
+        "extraction_method": { "type": "string", "minLength": 1 },
+        "extraction_version": { "type": "string", "minLength": 1 },
+        "extraction_confidence": { "enum": ["high", "medium", "low"] }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "required": ["occurrence", "timing", "cardinality", "lead_days", "match_confidence", "realization"],
+      "properties": {
+        "occurrence": { "enum": ["hit", "miss", "not_applicable"] },
+        "timing": { "enum": ["hit", "miss", "not_applicable"] },
+        "cardinality": { "type": "object", "required": ["intent_count", "realized_count", "relation"], "properties": { "intent_count": { "type": "integer", "minimum": 0 }, "realized_count": { "type": "integer", "minimum": 0 }, "relation": { "enum": ["one_to_one", "one_to_many", "none"] } } },
+        "lead_days": { "type": ["integer", "null"], "minimum": 0 },
+        "match_confidence": { "enum": ["extremely_high", "high", "not_applicable"] },
+        "realization": { "type": "object", "required": ["realized_at", "realized_procurements", "retained_data_present", "retained_data_checked_at", "retained_data_checked_artifacts"], "properties": { "realized_at": { "type": ["string", "null"] }, "realized_procurements": { "type": "array", "items": { "type": "object" } }, "retained_data_present": { "type": "boolean" }, "retained_data_checked_at": { "$ref": "#/$defs/date" }, "retained_data_checked_artifacts": { "type": "array", "items": { "type": "object" } } } }
+      }
+    },
+    "case": {
+      "type": "object",
+      "required": ["id", "kind", "source", "expected_future_action_assertion", "expected_outcome", "match_evidence_anchors"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["positive", "negative"] },
+        "source": { "$ref": "#/$defs/source" },
+        "expected_future_action_assertion": { "type": ["object", "null"] },
+        "expected_outcome": { "$ref": "#/$defs/outcome" },
+        "match_evidence_anchors": { "type": "array", "items": { "type": "object" } },
+        "rejection_reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}
