@@ -60,6 +60,8 @@ test("money map layer and comparison table use the same row values", () => {
   assert.match(html, /Payments posted · FY2026/);
   assert.match(html, /Latest retained facts/);
   assert.match(html, /data-scorecard-map-layer="money"/);
+  assert.match(html, /<svg class="community-board-map" role="group"/);
+  assert.doesNotMatch(html, /<svg class="community-board-map" role="img"/);
   assert.equal((html.match(/data-money-row=/g) || []).length, 177);
   assert.match(html, /data-money-projection=/);
   assert.doesNotMatch(html, /per-capita|remaining budget|posted share/i);
