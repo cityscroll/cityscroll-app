@@ -1,0 +1,231 @@
+{
+  "action_only": {
+    "subject_ref": "notice:20260827001",
+    "target_ref": "meeting:city_record:20260827001",
+    "action": {
+      "type": "attend",
+      "delivery": "official_handoff",
+      "destination": "https://www.nyc.gov/events",
+      "destination_label": "NYC event information",
+      "confirmation_required": false,
+      "deadline": "2026-09-01"
+    },
+    "evidence": [
+      {
+        "source_ref": "notice:20260827001",
+        "basis": "retained meeting record"
+      }
+    ]
+  },
+  "single_continuation": {
+    "subject_ref": "meeting:city_record:20260707022",
+    "target_ref": "meeting:city_record:20260707022",
+    "process_ref": "matter:79200",
+    "action": {
+      "type": "attend",
+      "delivery": "official_handoff",
+      "destination": "https://council.nyc.gov/testify",
+      "destination_label": "Council testimony information",
+      "confirmation_required": false,
+      "deadline": "2026-09-10"
+    },
+    "continuation": {
+      "kind": "subject",
+      "subject_ref": "matter:79200",
+      "label": "Follow what happens next",
+      "reason": "This hearing has an exact Council matter join."
+    },
+    "evidence": [
+      {
+        "source_ref": "meeting:city_record:20260707022",
+        "receipt_ref": "meeting-outcomes:strict-matter-join"
+      }
+    ]
+  },
+  "multiple_candidates": {
+    "subject_ref": "meeting:city_record:20260707021",
+    "target_ref": "meeting:city_record:20260707021",
+    "action": {
+      "type": "attend",
+      "delivery": "official_handoff",
+      "destination": "https://council.nyc.gov/testify",
+      "destination_label": "Council testimony information",
+      "confirmation_required": false,
+      "deadline": null
+    },
+    "continuation": {
+      "label": "Choose a matter to follow",
+      "reason": "This hearing has multiple exact matter joins.",
+      "candidates": [
+        { "kind": "subject", "subject_ref": "matter:79201" },
+        { "kind": "subject", "subject_ref": "matter:79203" },
+        { "kind": "subject", "subject_ref": "matter:79202" },
+        { "kind": "subject", "subject_ref": "matter:79204" },
+        { "kind": "subject", "subject_ref": "matter:79205" }
+      ]
+    },
+    "evidence": [
+      {
+        "source_ref": "meeting:city_record:20260707021",
+        "receipt_ref": "meeting-outcomes:multi-matter-join"
+      }
+    ]
+  },
+  "unsupported_lossy": {
+    "subject_ref": "meeting:city_record:20260707022",
+    "target_ref": "meeting:city_record:20260707022",
+    "action": {
+      "type": "attend",
+      "delivery": "official_handoff",
+      "destination": "https://council.nyc.gov/testify",
+      "destination_label": "Council testimony information",
+      "confirmation_required": false,
+      "deadline": null
+    },
+    "continuation": {
+      "kind": "scope",
+      "replayable": false,
+      "lossy": true,
+      "scope": {
+        "schema": "cityscroll.scope",
+        "version": 0,
+        "facets": { "domains": ["meetings"] }
+      }
+    },
+    "evidence": [
+      {
+        "source_ref": "meeting:city_record:20260707022",
+        "receipt_ref": "scope-capability:unsupported"
+      }
+    ]
+  },
+  "invalid_evidence": {
+    "subject_ref": "notice:20260827001",
+    "target_ref": "meeting:city_record:20260827001",
+    "action": {
+      "type": "document",
+      "delivery": "local",
+      "destination": null,
+      "deadline": null,
+      "confirmation_required": false
+    },
+    "evidence": [
+      { "claim": "unattributed assertion" }
+    ]
+  },
+  "unavailable_action": {
+    "subject_ref": "notice:20260827002",
+    "target_ref": "notice:20260827002",
+    "action": {
+      "type": "comment",
+      "delivery": "unavailable",
+      "destination": null,
+      "deadline": "2026-08-01",
+      "confirmation_required": false
+    },
+    "evidence": [
+      {
+        "source_ref": "notice:20260827002",
+        "basis": "publisher handoff not retained"
+      }
+    ]
+  },
+  "dot_bicycle_racks": {
+    "t1_before_hearing": {
+      "snapshot": {
+        "as_of": "2026-04-01",
+        "rulemaking_state": "hearing",
+        "next_event": "public_hearing"
+      },
+      "subject_ref": "notice:20260317026",
+      "target_ref": "notice:20260317026",
+      "process_ref": "rulemaking:dot:bicycle-owned-racks",
+      "action": {
+        "type": "comment",
+        "delivery": "official_handoff",
+        "destination": "https://rules.cityofnewyork.us/comment",
+        "destination_label": "NYC Rules comment information",
+        "confirmation_required": true,
+        "deadline": "2026-04-24"
+      },
+      "continuation": {
+        "kind": "subject",
+        "subject_ref": "rulemaking:dot:bicycle-owned-racks",
+        "label": "Follow this rulemaking",
+        "reason": "The proposal and public hearing are retained in the same rulemaking stitch."
+      },
+      "evidence": [
+        {
+          "source_ref": "notice:20260317026",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260317026",
+          "receipt_ref": "rulemaking_sibling_stitch_2026-08-02:bicycle_racks_proposal_adoption",
+          "basis": "title_agency_window"
+        }
+      ]
+    },
+    "t2_after_adoption": {
+      "snapshot": {
+        "as_of": "2026-07-20",
+        "rulemaking_state": "adopted",
+        "next_event": "adoption"
+      },
+      "subject_ref": "notice:20260706041",
+      "target_ref": "notice:20260706041",
+      "process_ref": "rulemaking:dot:bicycle-owned-racks",
+      "action": {
+        "type": "document",
+        "delivery": "official_handoff",
+        "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
+        "destination_label": "City Record adoption notice",
+        "confirmation_required": false,
+        "deadline": null
+      },
+      "continuation": {
+        "kind": "subject",
+        "subject_ref": "rulemaking:dot:bicycle-owned-racks",
+        "label": "Follow this rulemaking",
+        "reason": "The retained rulemaking is now adopted; the effective date remains its next consequential event."
+      },
+      "evidence": [
+        {
+          "source_ref": "notice:20260706041",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
+          "receipt_ref": "rulemaking_sibling_stitch_2026-08-02:bicycle_racks_proposal_adoption",
+          "basis": "title_agency_window"
+        }
+      ]
+    },
+    "t3_after_effective_date": {
+      "snapshot": {
+        "as_of": "2026-08-20",
+        "rulemaking_state": "effective",
+        "next_event": "effective"
+      },
+      "subject_ref": "notice:20260706041",
+      "target_ref": "notice:20260706041",
+      "process_ref": "rulemaking:dot:bicycle-owned-racks",
+      "action": {
+        "type": "document",
+        "delivery": "official_handoff",
+        "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
+        "destination_label": "City Record adoption notice",
+        "confirmation_required": false,
+        "deadline": null
+      },
+      "continuation": {
+        "kind": "subject",
+        "subject_ref": "rulemaking:dot:bicycle-owned-racks",
+        "label": "Follow this rulemaking",
+        "reason": "The retained rulemaking is effective as of August 13, 2026."
+      },
+      "evidence": [
+        {
+          "source_ref": "notice:20260706041",
+          "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260706041",
+          "receipt_ref": "rulemaking_sibling_stitch_2026-08-02:bicycle_racks_proposal_adoption",
+          "basis": "retained effective date"
+        }
+      ]
+    }
+  }
+}

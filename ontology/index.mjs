@@ -3,6 +3,7 @@ export {
   ONTOLOGY_REGISTRY_RELATIVE,
   loadOntologyRegistry,
   validateRegistryShape,
+  KINETIC_CATALOG_ARRAYS,
   indexById,
   idsWithStatus,
   requireCataloged,

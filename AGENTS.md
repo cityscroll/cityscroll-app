@@ -1,5 +1,10 @@
 # Project agent memory
 
+- **Action Path v0:** `site/action_path_v0.mjs` is the pure, actorless projection over the
+  authoritative `site/action_registry.js` action object. It requires provenance-bearing evidence,
+  preserves multiple continuation candidates without selecting one, and suppresses unsupported or
+  lossy scope continuations; focused proof is `test/action_path_v0.test.mjs`.
+
 - **Generic person contract:** `ontology/person.mjs` owns the additive
   `cityscroll.person.v1` source-qualified envelope and `person_identity_link.v1` reviewed
   `same_person` relation. It never rewrites `official:{PersonId}` or
