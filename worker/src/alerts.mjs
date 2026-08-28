@@ -75,6 +75,7 @@ import { CUTOVER_COPY, UNSUB_IMMEDIATE_COPY } from "./lib/prefs.mjs";
 import { RULES_KV_KEY } from "./rules.mjs";
 import { buildHearingView, HEARINGS_KV_KEY } from "./hearings.mjs";
 import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
+import { renderCivicOutcomeTransition } from "../../site/civic_outcome_transition.mjs";
 import {
   SECTION_STATUS,
   enqueueEvaluatedSection,
@@ -2760,10 +2761,12 @@ export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https:
     const propertyStage = itemKind === "property" && r.property_watch
       ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
       : "";
+    const outcome = itemKind === "rules" ? renderCivicOutcomeTransition(r.post_event_outcome) : "";
     return `<li data-digest-item="1"${itemClass} style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b>
       ${evidenceLineHtml(ev, esc, lang)}
       <span style="color:#555;font-size:13px">${meta}</span><br>
       ${propertyStage}
+      ${outcome}
       ${temporalActionHtml(r, esc, lang, { kind: itemKind, today })}
       ${digestMeetingDetailsHtml(r, esc, base)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
@@ -3007,10 +3010,12 @@ export function rollupDigestHtml({
       const propertyStage = itemKind === "property" && r.property_watch
         ? `<span style="color:#555;font-size:13px"><b>Matched at:</b> ${esc(propertyWatchStageLabel(r.property_watch.matched_at_stage))}${r.property_watch.transition ? ` · <b>${esc(r.property_watch.transition.label)}</b>` : ""}</span><br>`
         : "";
+      const outcome = itemKind === "rules" ? renderCivicOutcomeTransition(r.post_event_outcome) : "";
       return `<li data-digest-item="1"${itemClass} style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b>
         ${evidenceLineHtml(ev, esc, lang)}
         <span style="color:#555;font-size:13px">${meta}</span><br>
         ${propertyStage}
+        ${outcome}
         ${temporalActionHtml(r, esc, lang, { kind: rowKind, today })}
         ${digestMeetingDetailsHtml(r, esc, base)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
