@@ -68,7 +68,7 @@ export function validateRegistryGrounding(registry, opts = {}) {
   }
   if (opts.kinetic !== false && registry.kinetic_action_types) {
     const kinetic = registry.kinetic_action_types;
-    for (const key of ["reader_actions", "action_deliveries", "product_method_log", "outcomes"]) {
+    for (const key of ["reader_actions", "action_deliveries", "product_method_log", "outcomes", "capabilities"]) {
       for (const entry of kinetic[key] || []) {
         validateEntryGrounding(entry, `kinetic_action_types.${key}`);
       }

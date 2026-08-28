@@ -9,6 +9,13 @@ import { validateRegistryGrounding } from "./grounding.mjs";
 
 export const ONTOLOGY_REGISTRY_SCHEMA = "cityscroll.ontology.registry.v0";
 export const ONTOLOGY_REGISTRY_RELATIVE = "ontology/registry.v0.json";
+export const KINETIC_CATALOG_ARRAYS = Object.freeze([
+  "reader_actions",
+  "action_deliveries",
+  "product_method_log",
+  "outcomes",
+  "capabilities",
+]);
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_PATH = join(ROOT, ONTOLOGY_REGISTRY_RELATIVE);
@@ -40,7 +47,7 @@ export function validateRegistryShape(registry) {
     if (!(key in registry)) throw new TypeError(`ontology registry missing ${key}`);
   }
   const kinetic = registry.kinetic_action_types;
-  for (const key of ["reader_actions", "action_deliveries", "product_method_log", "outcomes"]) {
+  for (const key of KINETIC_CATALOG_ARRAYS) {
     if (!Array.isArray(kinetic[key])) {
       throw new TypeError(`kinetic_action_types.${key} must be an array`);
     }
