@@ -8,6 +8,7 @@ primary_document_routes.test.mjs, so DOM equivalence no longer owns those render
 from __future__ import annotations
 
 import functools
+import json
 import pathlib
 import re
 import shutil
@@ -35,6 +36,11 @@ STATIC_PARENT_IMPORT = re.compile(
 )
 STATIC_LOCAL_IMPORT = re.compile(
     r'import\s+\{[^}]+\}\s+from\s+["\']\./([^"\']+)["\'];?',
+    re.MULTILINE,
+)
+JSON_MODULE_IMPORT = re.compile(
+    r'import\s+([A-Za-z_$][\w$]*)\s+from\s+["\']([^"\']+\.json)["\']'
+    r'\s+with\s+\{\s*type:\s*["\']json["\']\s*\}\s*;?',
     re.MULTILINE,
 )
 NAMESPACE_PARENT_IMPORT = re.compile(
@@ -137,6 +143,17 @@ def flatten_helper(
         return ""
     flattened.add(path)
     source = path.read_text()
+
+    def inline_json_import(match: re.Match[str]) -> str:
+        json_path = (path.parent / match.group(2)).resolve()
+        assert json_path.is_file(), f"JSON module import missing: {match.group(2)}"
+        value = json.loads(json_path.read_text())
+        return f"const {match.group(1)} = {json.dumps(value, separators=(',', ':'))};"
+
+    # The comparison fixture is deliberately classic JavaScript. Preserve the
+    # browser module's data dependency by materializing JSON module imports as
+    # values while flattening, rather than leaving ESM syntax in the fixture.
+    source = JSON_MODULE_IMPORT.sub(inline_json_import, source)
     nested_sources = []  # Source: local helper imports matched by STATIC_LOCAL_IMPORT.
     for helper_name in STATIC_LOCAL_IMPORT.findall(source):
         helper_path = path.parent / helper_name

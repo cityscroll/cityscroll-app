@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { discoverClientModuleGraph } from "./client_module_graph.mjs";
 
 const JAVASCRIPT_CONTENT_TYPE = /(?:^|\/)javascript(?:;|$)/i;
+const JSON_CONTENT_TYPE = /(?:^|\/)json(?:;|$)/i;
 
 function parseArgs(argv) {
   const options = { siteDir: "_site", origin: null };
@@ -30,6 +31,7 @@ function parseArgs(argv) {
 
 function localContentType(urlPath) {
   if (/\.m?js$/i.test(urlPath)) return "application/javascript; charset=utf-8";
+  if (/\.json$/i.test(urlPath)) return "application/json; charset=utf-8";
   if (/\.html?$/i.test(urlPath)) return "text/html; charset=utf-8";
   return "application/octet-stream";
 }
@@ -65,7 +67,8 @@ function startArtifactServer(siteDir) {
 async function checkModule(url, origin) {
   const response = await fetch(new URL(url, `${origin}/`));
   const contentType = response.headers.get("content-type") || "";
-  if (!response.ok || !JAVASCRIPT_CONTENT_TYPE.test(contentType)) {
+  const expectedContentType = /\.json(?:$|[?#])/i.test(url) ? JSON_CONTENT_TYPE : JAVASCRIPT_CONTENT_TYPE;
+  if (!response.ok || !expectedContentType.test(contentType)) {
     throw new Error(`${url}: HTTP ${response.status}, content-type=${contentType || "<missing>"}`);
   }
   await response.arrayBuffer();
