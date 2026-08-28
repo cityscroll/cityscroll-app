@@ -1,0 +1,213 @@
+{
+  "schema": "cityscroll.merge-throughput.jam-playbook.v1",
+  "repository": "cityscroll/cityscroll-app",
+  "source_run_id": "fixture-merge-jam-2026-08-28",
+  "observed_at": "2026-08-28T04:00:00Z",
+  "source_documents": [
+    {
+      "id": "incident-corpus",
+      "path": "data/incident-corpus.json",
+      "sha256": "d0599550b1895de74ea626f8b30c187dd171460121614b950426a585b5e344c3",
+      "role": "source-linked incident taxonomy and measured timeline observations",
+      "verification": "verified"
+    },
+    {
+      "id": "merge-queue-policy",
+      "path": "tools/merge_queue_policy.json",
+      "sha256": "13ff32fc84f6a8771f182f7fa0f2b3c4ac97e5cddd3da840c6b94d2ddfd4e84c",
+      "role": "ALLGREEN batch and elder anti-starvation policy",
+      "verification": "verified"
+    }
+  ],
+  "classify": {
+    "class": {
+      "id": "shared-gate-rot",
+      "label": "shared-gate-rot",
+      "evidence_kind": "documented fix behavior",
+      "confidence": "high",
+      "attribution": "inference anchored by the fix PR; the public timeline does not expose a per-removal failed-check payload"
+    },
+    "next_action": "Wait through the UNKNOWN settling window, then re-read mergeStateStatus and the queue branch receipt; do not arm.",
+    "decision_tree": [
+      {
+        "order": 1,
+        "name": "merge-group-log",
+        "result": "observed",
+        "evidence": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks",
+        "finding": "Unit tests (site + worker): source_health_public_projection.clock-or-timezone-sensitive"
+      },
+      {
+        "order": 2,
+        "name": "same-test-across-prs",
+        "result": "correlated-not-causal",
+        "evidence": [
+          "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+          "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1323/timeline"
+        ],
+        "finding": "The cited timelines show repeated service loss for more than one pull request; they do not expose a per-removal failed-check payload."
+      },
+      {
+        "order": 3,
+        "name": "broken-main-classification",
+        "result": "broken",
+        "evidence": [
+          "https://github.com/cityscroll/cityscroll-app/pull/1331",
+          "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d"
+        ],
+        "finding": "The source-backed fix identifies a shared clock/timezone gate condition rather than a PR-local change."
+      },
+      {
+        "order": 4,
+        "name": "pr-local-check-diagnosis",
+        "result": "not-needed-for-shared-gate-class",
+        "evidence": [],
+        "finding": "Inspect PR-local checks only after the merge-group and shared-main questions are answered."
+      }
+    ]
+  },
+  "detector_receipt": {
+    "schema": "cityscroll.merge-throughput.jam-detector-receipt.v1",
+    "detector": "merge-group-first-jam-classifier",
+    "source_run_id": "fixture-merge-jam-2026-08-28",
+    "observed_at": "2026-08-28T04:00:00Z",
+    "incident_ids": [
+      "mt-0-2026-08-27-a-source-health-clock-timezone",
+      "mt-0-2026-08-27-b-render-rules-explorer-readiness"
+    ],
+    "evidence": {
+      "merge_group_log": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks",
+      "same_test_across_prs": [
+        "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+        "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1323/timeline"
+      ],
+      "main_fix": [
+        "https://github.com/cityscroll/cityscroll-app/pull/1331",
+        "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d"
+      ]
+    },
+    "classification": {
+      "id": "shared-gate-rot",
+      "label": "shared-gate-rot",
+      "evidence_kind": "documented fix behavior",
+      "confidence": "high",
+      "attribution": "inference anchored by the fix PR; the public timeline does not expose a per-removal failed-check payload"
+    },
+    "attribution_boundary": "Timeline removal is observed service loss; it is not by itself proof of a named root cause.",
+    "validation": "passed"
+  },
+  "fix_card": {
+    "schema": "cityscroll.merge-throughput.jam-fix-card.v1",
+    "action": "root-fix",
+    "class": "shared-gate-rot",
+    "title": "Make source health projection checks deterministic",
+    "fix_reference": {
+      "pull_request": 1331,
+      "url": "https://github.com/cityscroll/cityscroll-app/pull/1331",
+      "commit": "d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d",
+      "merged_at": "2026-08-27T22:49:08Z",
+      "checks_at_merge": "26 passed, 0 failed, 3 skipped, 29 total"
+    },
+    "root_cause": {
+      "summary": "Evidence hashes and freshness labels depended on evaluation time, and offset-less source timestamps were not normalized as UTC. The result was a deterministic-gate failure caused by the clock or build timezone rather than by a source/config change.",
+      "evidence_kind": "documented fix behavior",
+      "confidence": "high",
+      "evidence_refs": [
+        "https://github.com/cityscroll/cityscroll-app/pull/1331",
+        "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d"
+      ]
+    },
+    "verification": "Re-run the clock boundary and UTC/America-New_York byte-identity checks, then obtain a fresh merge-group receipt before re-arming.",
+    "approval_required": false
+  },
+  "measured_delta": {
+    "schema": "cityscroll.merge-throughput.measured-delta.v1",
+    "before": {
+      "label": "cited incident timeline sample before the clock-gate fix",
+      "successful_dequeues": 0,
+      "removal_events": 5,
+      "ejections": 5,
+      "service_yield": 0
+    },
+    "after": {
+      "label": "committed queue baseline after the repair window",
+      "successful_dequeues": 544,
+      "removal_events": 680,
+      "ejections": 136,
+      "service_yield": 0.8
+    },
+    "service_yield_delta": {
+      "value": 0.8,
+      "measurement": "derived",
+      "basis": "successful post-merge dequeues divided by successful post-merge dequeues plus ejections",
+      "interpretation": "Directional only: the source cohorts and windows differ, so this is not a causal effect estimate."
+    },
+    "synchronized_batch_drain": {
+      "minimum_successful_dequeues": 30,
+      "observed_successful_dequeues_after_merge": 544,
+      "grouping_strategy": "ALLGREEN",
+      "max_entries_to_build": 5,
+      "max_entries_to_merge": 5,
+      "min_entries_to_merge_wait_minutes": 5,
+      "evidence": "data/incident-corpus.json queue_baseline.successful_dequeues_after_merge=544; tools/merge_queue_policy.json retains a five-entry ALLGREEN train"
+    }
+  },
+  "arm_guard": {
+    "can_arm": false,
+    "reasons": [
+      "mergeStateStatus is UNKNOWN inside the settling window",
+      "re-arm/branch-lock transitions repeat without a new receipt"
+    ],
+    "settling": {
+      "state": "UNKNOWN",
+      "meaning": "GitHub has not settled or could not report mergeability; it is not a failure and is not permission to arm.",
+      "elapsed_since_transition_minutes": 8,
+      "settling_window_minutes": 15,
+      "settling": true,
+      "unknown": true,
+      "unstable": false
+    },
+    "queue_branch": {
+      "state": "match",
+      "advertised_oid": "006e1f216c5aea6ce2734de94960641291a385cd",
+      "ls_remote_oid": "006e1f216c5aea6ce2734de94960641291a385cd",
+      "basis": "exact object-id equality from git ls-remote"
+    },
+    "repeated_transition_guard": {
+      "blocked": true,
+      "receipt_id": "merge-group-receipt-1",
+      "transitions": [
+        "rearm",
+        "branch-lock",
+        "rearm"
+      ]
+    },
+    "branch_action": {
+      "action": "wait",
+      "reason": "mergeability is not stable"
+    }
+  },
+  "policy_proof": {
+    "required_checks": [
+      "Unit tests (site + worker)",
+      "Accessibility + language gate (axe on every PR)",
+      "Reading-level ratchet gate (readable-or-else)"
+    ],
+    "required_checks_unchanged": true,
+    "grouping_strategy": "ALLGREEN",
+    "allgreen_unchanged": true,
+    "elder_anti_starvation": {
+      "policy_module": "tools/elder_merge_slot.mjs",
+      "enabled": true,
+      "reserve_next_slot_for_elder": true,
+      "seat_holder": {
+        "number": 1317,
+        "ready": true,
+        "age_hours": 7,
+        "rebase_count": 1
+      },
+      "reason": "reserve next seat for PR #1317 (age_hours=7, rebase_count=1)"
+    }
+  },
+  "validation": "passed",
+  "playbook_sha256": "21e6b668df1b9bb77ba4bf2cf21ac8e534e3c365bd6241b3250687e8c4aac0f8"
+}
