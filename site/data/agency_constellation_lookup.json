@@ -2,7 +2,7 @@
   "schema": "cityscroll.agency_constellation.v1",
   "method": "agency_constellation_v1",
   "er_match_basis": "agency_canonical_v1+publisher_certification_record_v1+statute_actor_alias_v1",
-  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",
+  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-28T16:31:37.977Z",
   "iteration": "v1",
   "demo_ids": [
     "parks-and-recreation",
@@ -28785,18 +28785,18 @@
         "schema": "cityscroll.civic_institution_identity_evidence.v1",
         "institution_ref": "civic-institution:housing-authority",
         "status": "matched",
-        "source_observation_count": 13
+        "source_observation_count": 12
       },
-      "matched_categories": 3,
+      "matched_categories": 4,
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
-          "method": "agency_browse_snapshot_v1"
+          "count": 9,
+          "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -28833,17 +28833,17 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 8,
+          "count": 9,
           "state": "matched",
-          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
-          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-15",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open",
           "scope": {
             "facet": null,
             "universe": "open",
             "mode": "open",
             "entity_ref": "agency:id:housing-authority"
           },
-          "as_of": "2026-08-15",
+          "as_of": "2026-08-18T04:05:51.552Z",
           "source": {
             "kind": "agency",
             "id": "housing-authority",
@@ -28855,7 +28855,7 @@
             "source_record_id": null,
             "source_fields": null,
             "join_method": null,
-            "observed_at": "2026-08-15",
+            "observed_at": "2026-08-18T04:05:51.552Z",
             "cross_spine_confidence": "unmatched",
             "cross_spine_explicit": false
           },
@@ -28864,7 +28864,7 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "8",
+              "total": "9",
               "materialized": "8",
               "dated": "8",
               "undated": "0",
@@ -28877,14 +28877,14 @@
             },
             "spans": {
               "valid": {
-                "start": "2026-06-26",
+                "start": "2025-01-14",
                 "end": "2026-08-11"
               },
               "observed": {
                 "start": null,
                 "end": null
               },
-              "valid_days": "46",
+              "valid_days": "574",
               "observed_days": null
             },
             "lifecycle": {
@@ -28896,14 +28896,14 @@
               "by_stage": {
                 "unknown": "8"
               },
-              "complete": "true"
+              "complete": "false"
             },
             "freshness": {
-              "reference_day": "2026-08-15",
-              "snapshot_day": "2026-08-15",
+              "reference_day": "2026-08-18",
+              "snapshot_day": "2026-08-18",
               "latest_day": "2026-08-11",
               "latest_source": "published_record",
-              "age_days": "4",
+              "age_days": "7",
               "max_age_days": null,
               "status": "known"
             }
@@ -28921,10 +28921,10 @@
           "target_kind": "vendor",
           "target_id": null,
           "target_name": "Top vendors by award $ (last 12 mo)",
-          "count": 0,
-          "state": "empty",
-          "href": null,
-          "canonical_href": null,
+          "count": 1,
+          "state": "matched",
+          "href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-05",
+          "canonical_href": "/browse/contracts/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Ahousing-authority%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&mode=open&as_of=2026-08-05",
           "scope": {
             "facet": null,
             "universe": null,
@@ -28952,12 +28952,16 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "0",
-              "materialized": "0",
+              "total": "1",
+              "materialized": "1",
               "dated": "0",
-              "undated": "0",
-              "by_state": {},
-              "by_relation": {}
+              "undated": "1",
+              "by_state": {
+                "matched": "1"
+              },
+              "by_relation": {
+                "top_vendor_by_award_12mo": "1"
+              }
             },
             "spans": {
               "valid": {
@@ -28975,9 +28979,11 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "0"
+                "unknown": "1"
               },
-              "by_stage": {},
+              "by_stage": {
+                "unknown": "1"
+              },
               "complete": "true"
             },
             "freshness": {
@@ -29334,7 +29340,19 @@
           "cross_spine_explicit": false
         }
       ],
-      "top_vendors": []
+      "top_vendors": [
+        {
+          "id": "vendor:stem:VITAL%20PLUMBING",
+          "subject_ref": "vendor:stem:VITAL%20PLUMBING",
+          "label": "VITAL PLUMBING INC",
+          "href": "/vendors/VITAL%20PLUMBING/",
+          "award_count": 1,
+          "award_total": 4348681.74,
+          "confidence": "strong",
+          "relation": "top_vendor_by_award_12mo",
+          "method": "agency_vendor_awards_12mo_v1"
+        }
+      ]
     },
     "housing-preservation-and-development": {
       "subject_ref": "agency:id:housing-preservation-and-development",
@@ -49807,7 +49825,7 @@
     }
   },
   "provenance": {
-    "intelligence_generated_at": "2026-08-12T16:01:38.473Z",
+    "intelligence_generated_at": "2026-08-28T16:31:37.977Z",
     "certification_generated_at": "2026-08-06T00:00:00Z",
     "obligations_generated_at": "2026-08-07T23:52:53.226Z",
     "process_conformance_generated_at": "2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z",

@@ -11,6 +11,7 @@ import {
   observationFromMoneyRow,
   observationFromPassportContractRow,
   observationFromCheckbookContractRow,
+  observationFromCheckbookNychaContractRow,
   observationFromPaymentRow,
   observationFromLandRow,
   observationFromRulesRow,
@@ -902,11 +903,26 @@ export function collectProcurementSpineObservations(root, opts = {}) {
   const passportSelection = selectPassportContractsForMaterialization(doc, {
     cap: opts.passport_contract_cap || DEFAULT_PASSPORT_CONTRACT_MATERIALIZATION_CAP,
   });
+  const checkbookCap = opts.checkbook_contract_cap || DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP;
+  const nativeCheckbookRows = Array.isArray(doc.rows.checkbook_nycha_contracts)
+    ? doc.rows.checkbook_nycha_contracts.slice(0, checkbookCap)
+    : [];
   const checkbookSelection = selectCheckbookContractsForMaterialization(doc, {
-    cap: opts.checkbook_contract_cap || DEFAULT_CHECKBOOK_CONTRACT_MATERIALIZATION_CAP,
+    // The source-native Contracts_NYCHA rows share the EI Checkbook contract
+    // budget; reserve their slots so the combined feed remains bounded.
+    cap: Math.max(1, checkbookCap - nativeCheckbookRows.length),
   });
   add(passportSelection.rows, observationFromPassportContractRow, "passport-public-contracts");
   add(checkbookSelection.rows, observationFromCheckbookContractRow, "checkbook-contracts");
+  add(nativeCheckbookRows, observationFromCheckbookNychaContractRow, "checkbook_nycha_contracts");
+
+  const combinedCheckbookSelection = {
+    ...checkbookSelection,
+    rows: [...checkbookSelection.rows, ...nativeCheckbookRows],
+    selected_rows: checkbookSelection.rows.length + nativeCheckbookRows.length,
+    cap: checkbookCap,
+    strategy: `${checkbookSelection.strategy}; Contracts_NYCHA rows reserve slots in the shared Checkbook budget`,
+  };
   add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
 
   return {
@@ -916,7 +932,7 @@ export function collectProcurementSpineObservations(root, opts = {}) {
     passport_rows: passportSelection.rows,
     materialization: {
       passport_contracts: passportSelection,
-      checkbook_contracts: checkbookSelection,
+      checkbook_contracts: combinedCheckbookSelection,
     },
     row_counts: Object.fromEntries(
       Object.entries(doc.rows).map(([name, rows]) => [name, Array.isArray(rows) ? rows.length : 0]),
@@ -1295,6 +1311,45 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     max_entities: opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP,
     mandate_agency_refs: mandateAgencyRefs,
   });
+  // Source-native contract vendors must remain addressable even when the
+  // bounded cross-domain richness census is full. This is an additive route
+  // for the admitted native population, not a broader vendor-name census.
+  const nativeCorpus = buildIntelligenceCorpus(
+    observations.filter((row) => row?.source_system === "checkbook_nycha_contracts"),
+    { max_per_domain: opts.max_per_domain || 6, max_entities: 20, prefer_multi_domain: false },
+  );
+  const nativeAdditions = nativeCorpus.entities.filter((entity) => !corpus.by_ref?.[entity.root?.ref]);
+  if (nativeAdditions.length) {
+    // Keep the published document at its hard cap while reserving space for
+    // source-native vendors. Only richness-fill roots may be displaced;
+    // multi-domain and mandate-agency roots remain protected by the corpus
+    // selection order.
+    const entityCap = opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP;
+    const retainedCount = Math.max(0, entityCap - nativeAdditions.length);
+    corpus.entities = [...corpus.entities.slice(0, retainedCount), ...nativeAdditions];
+    corpus.by_ref = Object.fromEntries(corpus.entities.map((entity) => [entity.root.ref, entity]));
+    corpus.entity_count = corpus.entities.length;
+    corpus.multi_domain_count = corpus.entities.filter((entity) => (entity.metrics?.domains_matched || 0) >= 2).length;
+    const isMultiDomain = (entity) => (entity.metrics?.domains_matched || 0) >= 2;
+    const isMandateAgency = (entity) =>
+      entity.root?.kind === "agency" && mandateAgencyRefs.includes(entity.root?.ref);
+    corpus.selection = {
+      ...corpus.selection,
+      cap: entityCap,
+      reason_counts: {
+        multi_domain: corpus.entities.filter(isMultiDomain).length,
+        mandate_agency_reserve: corpus.entities.filter(
+          (entity) => !isMultiDomain(entity) && isMandateAgency(entity),
+        ).length,
+        richness_fill: corpus.entities.filter(
+          (entity) => !isMultiDomain(entity) && !isMandateAgency(entity),
+        ).length,
+      },
+      mandate_agency_selected: corpus.entities.filter(isMandateAgency).length,
+      mandate_agency_omitted: corpus.selection.mandate_agency_candidates
+        - corpus.entities.filter(isMandateAgency).length,
+    };
+  }
   const vendorFootprint = buildVendorFootprintCoverage(
     corpus,
     ocpLookup || {},

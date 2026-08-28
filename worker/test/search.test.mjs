@@ -421,7 +421,7 @@ test("Vendors uses its complete production provider for worker recall and covera
   }, {
     participated: true,
     state: "matched",
-    indexed_count: 132,
+    indexed_count: 133,
   });
 
   const vendorsCoverage = buildUniversalSearchCoverageView(body.coverage).lenses
@@ -431,6 +431,34 @@ test("Vendors uses its complete production provider for worker recall and covera
     renderUniversalSearchCoverageHtml(body.coverage),
     /data-coverage-lens="vendors"|Coverage by collection/,
   );
+});
+
+test("NYCHA-native contract search returns one canonical result and vendor recall reaches it", async () => {
+  const { sqlite, DB } = database([]);
+  try {
+    const exactResponse = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=BA2335819"),
+      { DB },
+      {},
+    );
+    assert.equal(exactResponse.status, 200);
+    const exact = await exactResponse.json();
+    const exactMatches = exact.results.filter((result) => result.object_ref === "procurement:contract:BA2335819");
+    assert.equal(exactMatches.length, 1);
+    assert.equal(exactMatches[0].canonical_href, "/procurements/procurement%3Acontract%3ABA2335819");
+    assert.equal(exactMatches[0].provenance.browse_record.vendor_name, "VITAL PLUMBING INC");
+
+    const vendorResponse = await worker.fetch(
+      new Request("https://api.cityscroll.org/search?q=VITAL%20PLUMBING%20INC"),
+      { DB },
+      {},
+    );
+    assert.equal(vendorResponse.status, 200);
+    const vendor = await vendorResponse.json();
+    assert.ok(vendor.results.some((result) => result.object_ref === "procurement:contract:BA2335819"));
+  } finally {
+    sqlite.close();
+  }
 });
 
 test("Parcels use the exact-BBL production corpus for worker recall and coverage", async () => {

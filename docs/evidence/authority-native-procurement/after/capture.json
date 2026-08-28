@@ -1,0 +1,63 @@
+{
+  "schema": "cityscroll.anp.after_capture.v1",
+  "captured_at": "2026-08-28T15:47:20Z",
+  "fixture_contract_id": "BA2335819",
+  "paths": [
+    {
+      "label": "nycha-agency",
+      "path": "/agencies/housing-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/nycha-agency.png",
+      "body_excerpt": "Skip to content CityScroll NOW NEAR YOU FOLLOWING BROWSE \u2039 \u21ba Back to agencies AGENCY CONSTELLATION New York City Housing Authority Explore 4 kinds of public record connected with this agency. Records updated 2026-08-02 \u00b7 As of 2024-06-01 Follow this agency View contracts Connection evidence Report an issue PUBLIC RELATIONSHIPS Connected records 4 kinds of connected records Contracts 9 records published by this agency View contracts \u2192 Top vendors 1 vendor received awards from this agency View vendors \u2192 Meetings & hearings 3 meetings involving this agency View meetings \u2192 Staffing exams 37 exams certified to this agency View staffing exams \u2192 As of day ? Filter this agency\u2019s linked records by date. As of Apply Clear Pick a day to keep only records published or dated on or before that day. Source identity These source observations resolve to this profile through exact publisher identity evide"
+    },
+    {
+      "label": "mta-agency",
+      "path": "/agencies/metropolitan-transportation-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/mta-agency.png",
+      "body_excerpt": "Skip to content Agency profile: Metropolitan Transportation Authority English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. SEARCH What are you looking for? Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Want email updates on this? Choose what to follow Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics CIVIC OBJECTS CONTRACTS PEOPLE + ORGANIZATIONS LAND RULES MEETINGS EXAMS \u2190 Browse CityScroll Agency profile \u00b7 City Record on record METROPOLITAN TRANSPORTATION AUTHORITY This agency files its contract awards with NYS Authorities Budget Office (opens in new tab) , not the City Record. 0 OPEN RFPS RIGHT NOW CONNECTIONS Filter by this agency Cros"
+    },
+    {
+      "label": "nyct-agency",
+      "path": "/agencies/n-y-c-transit-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/nyct-agency.png",
+      "body_excerpt": "Skip to content CityScroll NOW NEAR YOU FOLLOWING BROWSE \u2039 \u21ba Back to agencies AGENCY CONSTELLATION N.Y.C. Transit Authority Explore 1 kind of public record connected with this agency. Records updated 2026-08-02 \u00b7 As of 2024-06-01 Follow this agency View staffing exams Connection evidence Report an issue PUBLIC RELATIONSHIPS Connected records 1 kind of connected record Staffing exams 26 exams certified to this agency View staffing exams \u2192 As of day ? Filter this agency\u2019s linked records by date. As of Apply Clear Pick a day to keep only records published or dated on or before that day. Staffing exams (26 linked) \u25c6 Administrative Architect certified to the agency details Civil Service List certification (Open Data) \u00b7 2026-06-26 \u25c6 Administrative Community Relations Specialist certified to the agency details Civil Service List certification (Open Data) \u00b7 2026-06-26 \u25c6 Stationary Engineer certi"
+    },
+    {
+      "label": "tbta-agency",
+      "path": "/agencies/triborough-bridge-and-tunnel-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/tbta-agency.png",
+      "body_excerpt": "Skip to content CityScroll NOW NEAR YOU FOLLOWING BROWSE \u2039 \u21ba Back to agencies AGENCY CONSTELLATION Triborough Bridge and Tunnel Authority Explore 1 kind of public record connected with this agency. Records updated 2026-08-02 \u00b7 As of 2024-06-01 Follow this agency View staffing exams Connection evidence Report an issue PUBLIC RELATIONSHIPS Connected records 1 kind of connected record Staffing exams 5 exams certified to this agency View staffing exams \u2192 As of day ? Filter this agency\u2019s linked records by date. As of Apply Clear Pick a day to keep only records published or dated on or before that day. Staffing exams (5 linked) \u25c6 Heating Plant Technician (Housing Authority) certified to the agency details Civil Service List certification (Open Data) \u00b7 2021-02-18 \u25c6 Auto Mechanic (Diesel) certified to the agency details Civil Service List certification (Open Data) \u00b7 2018-06-14 \u25c6 Construction Lab"
+    },
+    {
+      "label": "nycha-contract-search",
+      "path": "/search/?q=BA2335819",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/nycha-contract-search.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics SEARCH Results for \u201cBA2335819\u201d Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Contracts UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. People + organizations UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Land UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Rules UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Meetings UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Exams UNAVAILABLE The latest CityScroll snapshot is unavailable. Ret"
+    },
+    {
+      "label": "vital-vendor",
+      "path": "/vendors/VITAL%20PLUMBING/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/vital-vendor.png",
+      "body_excerpt": "Skip to content Vendor profile: VITAL PLUMBING INC English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. SEARCH What are you looking for? Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Want email updates on this? Choose what to follow Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics CIVIC OBJECTS CONTRACTS PEOPLE + ORGANIZATIONS LAND RULES MEETINGS EXAMS \u2190 Browse CityScroll Vendor profile \u00b7 2 name variants resolved VITAL PLUMBING INC \u00b7 3 \u00b7 $12.90M VITAL PLUMBING INC. \u00b7 2 \u00b7 $366K VITAL PLUMBING INC $13.27M TOTAL AWARDED, ON RECORD 5 AWARD NOTICES 2009-06-16 \u2013 2024-08-29 FIRST / LATEST AWARD PUBLISHED Totals are published under this name, not"
+    },
+    {
+      "label": "a37703-search",
+      "path": "/search/?q=A37703",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/a37703-search.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics SEARCH Results for \u201cA37703\u201d Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Contracts UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. People + organizations UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Land UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Rules UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Meetings UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Exams UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry."
+    },
+    {
+      "label": "s48020-search",
+      "path": "/search/?q=0000541781",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/after/s48020-search.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics SEARCH Results for \u201c0000541781\u201d Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Contracts UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. People + organizations UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Land UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Rules UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Meetings UNAVAILABLE The latest CityScroll snapshot is unavailable. Retry. Exams UNAVAILABLE The latest CityScroll snapshot is unavailable. Re"
+    }
+  ]
+}

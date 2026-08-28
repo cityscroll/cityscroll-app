@@ -327,7 +327,7 @@
       "scope": "runtime",
       "kind": "checkbook",
       "endpoint": "https://www.checkbooknyc.com/api",
-      "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+      "landing_page": "https://www.checkbooknyc.com/contract-api",
       "data_type": "Contracts",
       "required_fields": [
         "prime_contract_id",
@@ -509,8 +509,9 @@
       "id": "checkbook-nycha-contracts",
       "name": "Checkbook NYC NYCHA contracts",
       "owner": "Office of the New York City Comptroller",
-      "status": "disabled",
-      "scope": "runtime",
+      "status": "live",
+      "scope": "build-time",
+      "source_system": "checkbook_nycha_contracts",
       "kind": "checkbook",
       "endpoint": "https://www.checkbooknyc.com/api",
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
@@ -521,9 +522,17 @@
         "vendor",
         "pin"
       ],
+      "adapter_contract": {
+        "source_system": "checkbook_nycha_contracts",
+        "source_dataset": "Contracts_NYCHA",
+        "paging": "records_from offsets with a fixed max_records page size and first record_count retained",
+        "minimum_delay_ms": 1100,
+        "raw_retention": "raw response plus retrieval timestamp and SHA-256 hash",
+        "official_url_template": "https://www.checkbooknyc.com/nycha_contract_details/agency/162/datasource/checkbook_nycha/contract/{contract_id}"
+      },
       "publisher_cadence": "Ongoing contract updates",
-      "product_freshness": "Disabled for dense product materialization of exact solicitation\u2192award matches after join measurement below usefulness. On-demand PIN lookup may still run; empty answers expire so later awards are not permanently sticky.",
-      "used_for": "No current dense product output. Ranked exact-PIN NYCHA award join was measured; temporal join usefulness is below the materialization threshold.",
+      "product_freshness": "Continuous source acquisition with deterministic records_from paging, a minimum 1.1 second inter-request delay, and retained raw response hashes.",
+      "used_for": "Source-native NYCHA contract observations and canonical procurement objects; not an ordinary citywide Contracts observation and not a City Record lifecycle substitute.",
       "gap": "Strict temporal exact-PIN joins from City Record Housing Authority solicitations to Checkbook Contracts_NYCHA cover 0% of the modern product notice window (23 PIN-bearing solicitations; 0 non-empty external_award_matches on 2026-08-01) and 0% of a 30-notice historical sample before Checkbook WAF limits. City Record RFQ-style pins and Checkbook pin values largely do not share a joinable key; PIN reuse yields pre-solicitation agreements the temporal filter correctly rejects. Exact solicitation\u2192award matches remain not-yet-ingested as a product surface until a higher-coverage key or source ships or usefulness is re-measured above threshold.",
       "join_keys": [
         "pin"
@@ -548,7 +557,7 @@
           }
         },
         "usefulness_threshold": 0.3,
-        "verdict": "Below usefulness threshold (~30%) on the modern product universe (0% temporal exact-PIN join). Ship measured reconnaissance + disabled source contract; do not claim dense exact NYCHA award matches as a live product surface."
+        "verdict": "Below usefulness threshold (~30%) for the modern solicitation-to-award cross-source join (0% temporal exact-PIN join). Keep the source-native Contracts_NYCHA contract surface separate and do not claim dense exact NYCHA award matches."
       },
       "code_references": [
         {

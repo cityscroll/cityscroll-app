@@ -58,13 +58,18 @@ test("verification receipt records modern temporal rate at 0%", () => {
   assert.equal(receipt.curl_verified.api_result, "success");
 });
 
-test("source contract is registered as disabled with join_measurement", () => {
+test("source contract is live at build time with adapter and join_measurement", () => {
   const registry = loadSourceContracts();
   const contract = registry.contracts.find((c) => c.id === "checkbook-nycha-contracts");
   assert.ok(contract, "checkbook-nycha-contracts contract missing");
-  assert.equal(contract.status, "disabled");
+  assert.equal(contract.status, "live");
+  assert.equal(contract.scope, "build-time");
+  assert.equal(contract.source_system, "checkbook_nycha_contracts");
   assert.equal(contract.kind, "checkbook");
   assert.equal(contract.data_type, "Contracts_NYCHA");
+  assert.equal(contract.adapter_contract.source_system, "checkbook_nycha_contracts");
+  assert.equal(contract.adapter_contract.source_dataset, "Contracts_NYCHA");
+  assert.equal(contract.adapter_contract.minimum_delay_ms, 1100);
   assert.ok(contract.gap);
   assert.match(contract.gap, /not-yet-ingested|below/i);
   assert.ok(contract.join_measurement);

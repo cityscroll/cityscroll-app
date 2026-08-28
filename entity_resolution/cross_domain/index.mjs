@@ -29,6 +29,7 @@ export {
   observationFromMoneyRow,
   observationFromPassportContractRow,
   observationFromCheckbookContractRow,
+  observationFromCheckbookNychaContractRow,
   observationFromPaymentRow,
   procurementContractLinksForObservations,
   observationFromLandRow,

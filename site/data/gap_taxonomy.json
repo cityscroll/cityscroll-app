@@ -394,7 +394,7 @@
       "id": "checkbook-nycha-contracts",
       "name": "Checkbook NYC NYCHA contracts",
       "source_contract_id": "checkbook-nycha-contracts",
-      "status": "disabled",
+      "status": "live-only",
       "join_keys": [
         "PIN",
         "contract_id"
@@ -408,7 +408,7 @@
           "observed_on": "2026-08-01",
           "universe": null,
           "strategy": "exact_pin_temporal — Agreement.pin equals notice.pin and (approved_date || start_date) > notice.start_date. PIN-reuse without temporal rejected.",
-          "verdict": "Below usefulness threshold (~30%) on the modern product universe (0% temporal exact-PIN join). Ship measured reconnaissance + disabled source contract; do not claim dense exact NYCHA award matches as a live product surface.",
+          "verdict": "Below usefulness threshold (~30%) for the modern solicitation-to-award cross-source join (0% temporal exact-PIN join). Keep the source-native Contracts_NYCHA contract surface separate and do not claim dense exact NYCHA award matches.",
           "source": "source_contracts.join_measurement"
         }
       },
@@ -1557,6 +1557,27 @@
       ]
     },
     {
+      "id": "checkbook-nycha-contracts-x-city-record-via-PIN",
+      "source_a": "checkbook-nycha-contracts",
+      "source_b": "city-record",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ],
+      "score": 6,
+      "evidence": "Shared keys PIN; 6 taxonomy gap(s) could close."
+    },
+    {
       "id": "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
       "source_a": "checkbook-contracts",
       "source_b": "passport-public-contracts",
@@ -1580,6 +1601,47 @@
     {
       "id": "checkbook-contracts-x-passport-public-rfx-via-PIN",
       "source_a": "checkbook-contracts",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 5,
+      "evidence": "Shared keys PIN; 5 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "source_a": "checkbook-nycha-contracts",
+      "source_b": "passport-public-contracts",
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 5,
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-rfx-via-PIN",
+      "source_a": "checkbook-nycha-contracts",
       "source_b": "passport-public-rfx",
       "key_path": [
         "PIN"
@@ -1641,6 +1703,25 @@
     {
       "id": "checkbook-contracts-x-ocp-recent-contract-awards-via-PIN",
       "source_a": "checkbook-contracts",
+      "source_b": "ocp-recent-contract-awards",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 4,
+      "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-ocp-recent-contract-awards-via-PIN",
+      "source_a": "checkbook-nycha-contracts",
       "source_b": "ocp-recent-contract-awards",
       "key_path": [
         "PIN"
@@ -1812,6 +1893,25 @@
       "evidence": "Shared keys project_id; 4 taxonomy gap(s) could close."
     },
     {
+      "id": "checkbook-contracts-x-checkbook-nycha-contracts-via-PIN+contract_id",
+      "source_a": "checkbook-contracts",
+      "source_b": "checkbook-nycha-contracts",
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ],
+      "score": 3,
+      "evidence": "Shared keys PIN, contract_id; 3 taxonomy gap(s) could close."
+    },
+    {
       "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
       "source_a": "checkbook-contracts",
       "source_b": "checkbook-spending",
@@ -1833,6 +1933,43 @@
     {
       "id": "checkbook-contracts-x-current-solicitations-ocp-via-PIN",
       "source_a": "checkbook-contracts",
+      "source_b": "current-solicitations-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ],
+      "score": 3,
+      "evidence": "Shared keys PIN; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-checkbook-spending-via-PIN+contract_id",
+      "source_a": "checkbook-nycha-contracts",
+      "source_b": "checkbook-spending",
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ],
+      "score": 3,
+      "evidence": "Shared keys PIN, contract_id; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-current-solicitations-ocp-via-PIN",
+      "source_a": "checkbook-nycha-contracts",
       "source_b": "current-solicitations-ocp",
       "key_path": [
         "PIN"
@@ -3599,9 +3736,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-08-28",
-    "source_contracts_fingerprint": "cce5d39c8ad7a5cd64db21c8d5330af25fad047a4c8e71bab9a27cd556e2d851",
+    "source_contracts_fingerprint": "dca90c29f08f73b727ecc9abd6edf2094006198bd980a36853affe10ad2e3f41",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 84,
+    "candidate_crosswalks": 91,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

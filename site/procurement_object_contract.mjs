@@ -21,6 +21,7 @@ export const PROCUREMENT_CONSTRUCTOR_SOURCES = Object.freeze([
   "passport_public_contracts",
   "passport_public_rfx",
   "checkbook_contracts",
+  "checkbook_nycha_contracts",
   "checkbook_spending",
 ]);
 
@@ -109,6 +110,10 @@ function identityKeys(record, row = snapshot(record)) {
     contractId = exactKey(row.id || row.contract_id || row.contractId || row.prime_contract_id);
     epin = exactKey(row.pin || row.epin);
     publisherId = contractId;
+  } else if (system === "checkbook_nycha_contracts") {
+    contractId = exactKey(row.id || row.contract_id || row.contractId);
+    epin = exactKey(row.pin || row.epin);
+    publisherId = contractId;
   } else if (system === "checkbook_spending") {
     contractId = exactKey(row.contractId || row.contract_id || row.prime_contract_id);
     publisherId = exactKey(row.documentId || row.document_id || row.id || row.spendingId || row.transactionId);
@@ -124,7 +129,7 @@ function stageFor(record, row = snapshot(record)) {
   const system = sourceSystem(record);
   if (system === "passport_public_rfx") return "solicitation";
   if (system === "checkbook_spending") return "payment";
-  if (system === "passport_public_contracts" || system === "checkbook_contracts") {
+  if (system === "passport_public_contracts" || system === "checkbook_contracts" || system === "checkbook_nycha_contracts") {
     const status = text(row.status)?.toLowerCase();
     if (status?.includes("pending")) return "pending";
     if (status?.includes("register") || row.registration_date || row.registered) return "registered";

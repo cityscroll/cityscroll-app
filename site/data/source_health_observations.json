@@ -1125,11 +1125,11 @@
     },
     {
       "source_id": "checkbook-nycha-contracts",
-      "contract_fingerprint": "a8f52c1738b89045db1b314129578a33de04ff95bdff21aacf909058c6f6de91",
+      "contract_fingerprint": "0fbc20ba27ec93eb3d6b82702edda30dbc49f08e296aa3a29957c6e7d489e164",
       "health": {
         "status": "Source-unavailable",
         "reason_codes": [
-          "source-disabled"
+          "acquisition-status-unknown"
         ],
         "clocks": {
           "publisher_updated": {

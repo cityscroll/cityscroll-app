@@ -330,7 +330,7 @@
       "source_id": "checkbook-contracts",
       "name": "Checkbook NYC registered contracts",
       "publisher": "Office of the New York City Comptroller",
-      "official_url": "https://www.checkbooknyc.com/data-feeds/api",
+      "official_url": "https://www.checkbooknyc.com/contract-api",
       "expected_cadence": "Ongoing registrations and spending updates",
       "mode": "continuous",
       "health": {
@@ -368,9 +368,9 @@
       "expected_cadence": "Ongoing contract updates",
       "mode": "continuous",
       "health": {
-        "status": "Source-unavailable",
+        "status": "UNKNOWN",
         "reason_codes": [
-          "source-disabled"
+          "acquisition-status-unknown"
         ],
         "clocks": {
           "publisher_updated": {
