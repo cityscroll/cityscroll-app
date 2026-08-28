@@ -27,14 +27,30 @@ jobs:
         run: |
           set -euo pipefail
           set +e
-          findings="$(node tools/check_served_artifact_freshness.mjs --origin https://cityscroll.org --expected-manifest _site/artifact-manifest.json 2>&1)"
+          mkdir -p .artifacts
+          findings="$(node tools/check_release_surface_reconciliation.mjs \
+            --expected-manifest _site/artifact-manifest.json \
+            --live-origin https://cityscroll.org \
+            --required-stages generation_output,served_artifact_freshness \
+            --output .artifacts/release-surface-receipt.json 2>&1)"
           status=$?
           set -e
           if [ "$status" -eq 0 ]; then exit 0; fi
-          : "${CITYSCROLL_ADMIN_KEY:?CITYSCROLL_ADMIN_KEY is required}"
+          if [ -z "${CITYSCROLL_ADMIN_KEY:-}" ]; then
+            echo "CITYSCROLL_ADMIN_KEY is required to deliver the freshness alarm" >&2
+            echo "$findings" >&2
+            exit "$status"
+          fi
           FINDINGS="$findings" curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/ops-alert" \
             -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY" \
             -H "content-type: application/json" \
             --data "$(FINDINGS="$findings" node -e 'console.log(JSON.stringify({guard:"served-artifact-freshness", subject:"Served artifact freshness check failed", text:process.env.FINDINGS||"The served artifact is stale or mismatched."}))')"
           echo "$findings"
           exit 1
+      - name: Retain freshness release-surface receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: served-artifact-freshness-${{ github.run_id }}
+          path: .artifacts/release-surface-receipt.json
+          if-no-files-found: warn

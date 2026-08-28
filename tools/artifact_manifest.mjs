@@ -34,13 +34,28 @@ export async function writeArtifactManifest(siteDir, {
   sourceCommitSha = process.env.GITHUB_SHA || process.env.SOURCE_COMMIT_SHA || null,
   generatedAt = new Date().toISOString(),
   deploymentAt = new Date().toISOString(),
+  sourceReceiptPath = join(siteDir, "data/source_health_observations.json"),
 } = {}) {
+  let sourceReceipt = null;
+  try {
+    const sourceReceiptText = await readFile(sourceReceiptPath, "utf8");
+    const parsed = JSON.parse(sourceReceiptText);
+    sourceReceipt = {
+      schema: parsed.schema || null,
+      generated_at: parsed.generated_at || null,
+      sha256: createHash("sha256").update(sourceReceiptText, "utf8").digest("hex"),
+    };
+  } catch {
+    // Some provider-neutral fixture sites have no source-health projection.
+    // Their manifest remains valid; production builds carry this receipt.
+  }
   const manifest = {
     schema: ARTIFACT_MANIFEST_SCHEMA,
     source_commit_sha: sourceCommitSha || null,
     generated_at: generatedAt,
     artifact_hash: await artifactHash(siteDir),
     deployment_at: deploymentAt,
+    ...(sourceReceipt ? { source_receipt: sourceReceipt } : {}),
   };
   await writeFile(join(siteDir, ARTIFACT_MANIFEST), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   return manifest;
@@ -51,6 +66,15 @@ export function freshnessFindings(live, expected, { now = new Date(), maxAgeMs =
   if (!live || live.schema !== ARTIFACT_MANIFEST_SCHEMA) findings.push("live manifest missing or invalid");
   if (expected && live?.artifact_hash !== expected.artifact_hash) findings.push("artifact hash mismatch");
   if (expected && live?.source_commit_sha !== expected.source_commit_sha) findings.push("source commit mismatch");
+  if (expected?.source_receipt) {
+    if (!live?.source_receipt) findings.push("source receipt missing");
+    else {
+      if (live.source_receipt.schema !== expected.source_receipt.schema) findings.push("source receipt schema mismatch");
+      if (live.source_receipt.sha256 !== expected.source_receipt.sha256) findings.push("source receipt hash mismatch");
+      if (live.source_receipt.generated_at !== expected.source_receipt.generated_at) findings.push("source receipt timestamp mismatch");
+      if (!Number.isFinite(Date.parse(live.source_receipt.generated_at || ""))) findings.push("source receipt timestamp missing or invalid");
+    }
+  }
   const deploymentMs = Date.parse(live?.deployment_at || "");
   if (!Number.isFinite(deploymentMs)) findings.push("deployment timestamp missing or invalid");
   else if (now.getTime() - deploymentMs > maxAgeMs) findings.push("deployment is older than one release window");
@@ -65,9 +89,11 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(new URL(import.meta.
     return index >= 0 ? args[index + 1] || fallback : fallback;
   };
   const siteDir = value("--site-dir", "_site");
+  const sourceReceiptPath = value("--source-receipt");
   const manifest = await writeArtifactManifest(siteDir, {
     sourceCommitSha: value("--source-commit") || undefined,
     deploymentAt: value("--deployment-at") || undefined,
+    sourceReceiptPath: sourceReceiptPath || undefined,
   });
   process.stdout.write(`${JSON.stringify(manifest, null, 2)}\n`);
 }

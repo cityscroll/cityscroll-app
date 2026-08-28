@@ -55,4 +55,15 @@ runs:
         fi
         node "$SOURCE_DIR/tools/build_cloudflare_pages.mjs" "${args[@]}"
         node "$SOURCE_DIR/tools/check_pages_bundle_sizes.mjs" --site-dir "$SITE_DIR"
-        node "$SOURCE_DIR/tools/artifact_manifest.mjs" --site-dir "$SITE_DIR" --source-commit "${GITHUB_SHA:-$COMMIT_SHA}"
+        node "$SOURCE_DIR/tools/artifact_manifest.mjs" \
+          --site-dir "$SITE_DIR" \
+          --source-receipt "$SOURCE_DIR/site/data/source_health_observations.json" \
+          --source-commit "${GITHUB_SHA:-$COMMIT_SHA}"
+        node "$SOURCE_DIR/tools/check_release_surface_reconciliation.mjs" \
+          --generation-receipt .artifacts/generation-output-receipt.json \
+          --expected-manifest "$SITE_DIR/artifact-manifest.json" \
+          --source-receipt "$SOURCE_DIR/site/data/source_health_observations.json" \
+          --max-age-days 7 \
+          --source-commit "${GITHUB_SHA:-$COMMIT_SHA}" \
+          --required-stages generation_output,generated_evidence_freshness \
+          --output .artifacts/release-surface-receipt.json

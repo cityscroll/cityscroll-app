@@ -3899,6 +3899,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 - Community Board committee identity is owned by `site/data/non_council_outcome_sources/community_board_committees.json` and `site/community_board_committees.mjs`. It is board-local and source-qualified; `site/community_board_institution_edges.mjs` projects `has_committee` and refined `hosts_meeting` edges without using the Legistar committee graph.
 
+- **Release-surface evidence:** `tools/release_surface_reconciliation.mjs` is the shared receipt
+  contract for generation output, card/projection inventory parity, generated-evidence freshness,
+  and served-artifact checks. `tools/check_release_surface_reconciliation.mjs` writes the durable
+  `.artifacts/release-surface-receipt.json`; Pages CI uploads it with the generation receipt and
+  artifact manifest. Keep source age limits source-declared and do not turn provider deployment
+  timestamps into source acknowledgements.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

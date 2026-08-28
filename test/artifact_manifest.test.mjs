@@ -19,6 +19,23 @@ test("artifact manifest records a stable content hash and healthy freshness", as
   assert.deepEqual(freshnessFindings(manifest, manifest, { now: new Date("2026-08-25T11:00:00Z") }), []);
 });
 
+test("artifact manifest carries the source-health receipt identity without publishing its contents", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "cityscroll-manifest-source-receipt-"));
+  const sourceReceipt = join(dir, "source-health.json");
+  await writeFile(join(dir, "index.html"), "<main>CityScroll</main>");
+  await writeFile(sourceReceipt, JSON.stringify({
+    schema: "cityscroll.source_health_observations.v1",
+    generated_at: "2026-08-25T10:00:00.000Z",
+    observations: [],
+  }) + "\n");
+  const manifest = await writeArtifactManifest(dir, { sourceReceiptPath: sourceReceipt });
+  assert.deepEqual(manifest.source_receipt, {
+    schema: "cityscroll.source_health_observations.v1",
+    generated_at: "2026-08-25T10:00:00.000Z",
+    sha256: "14194203e923595a522740cacbbef0e49ee407ef0b39572a01df70dce8c4c665",
+  });
+});
+
 test("freshness watchdog fires on a planted stale and mismatched manifest", () => {
   const live = {
     schema: ARTIFACT_MANIFEST_SCHEMA,

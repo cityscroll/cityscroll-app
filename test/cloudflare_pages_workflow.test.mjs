@@ -74,6 +74,17 @@ test("deploy uses the shared verified build action", () => {
   assert.match(workflow, /secrets\.CLOUDFLARE_API_TOKEN/);
 });
 
+test("Pages deploy retains and binds release-surface evidence", () => {
+  const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  const action = read(".github/actions/build-site/action.yml");
+  assert.match(action, /check_release_surface_reconciliation\.mjs/);
+  assert.match(action, /source_health_observations\.json/);
+  assert.match(workflow, /update_release_surface_receipt\.mjs/);
+  assert.match(workflow, /actions\/upload-artifact@v4/);
+  assert.match(workflow, /cloudflare-pages-release-evidence-\$\{\{ github\.run_id \}\}/);
+  assert.match(workflow, /if-no-files-found: warn/);
+});
+
 test("production Pages deploys automatically for every main push", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.match(workflow, /workflow_dispatch:/);
