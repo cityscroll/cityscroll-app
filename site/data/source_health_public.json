@@ -368,9 +368,9 @@
       "expected_cadence": "Ongoing contract updates",
       "mode": "continuous",
       "health": {
-        "status": "Source-unavailable",
+        "status": "UNKNOWN",
         "reason_codes": [
-          "source-disabled"
+          "acquisition-status-unknown"
         ],
         "clocks": {
           "publisher_updated": {
