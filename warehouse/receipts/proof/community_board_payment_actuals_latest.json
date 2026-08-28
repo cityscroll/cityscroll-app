@@ -1,0 +1,72 @@
+{
+  "schema": "cityscroll.community_board_payment_actuals_receipt.v1",
+  "workstream_card": "CB-MONEY-02",
+  "generated_at": "2026-08-27T00:00:00.000Z",
+  "source": {
+    "population_contract": "cityscroll.checkbook.payments.fiscal_year.v1",
+    "source_system": "checkbook_payment_population",
+    "source_receipt": "warehouse/receipts/proof/checkbook_payment_population_latest.json",
+    "source_vintage": {
+      "observed_at": null,
+      "payment_issue_date_through": "2026-06-30",
+      "basis": "latest_retained_payment_issue_date; upstream receipt has no fetch timestamp"
+    },
+    "source_data_through": "2026-06-30",
+    "input": "warehouse/raw/checkbook-payment-population/payments.csv"
+  },
+  "identity": {
+    "source_system": "checkbook_spending",
+    "location": "spending observation agency publisher identity",
+    "join_method": "exact_reviewed_publisher_identity_to_cb_money_00_binding",
+    "accepted_binding_count": 58,
+    "accepted_board_count": 58,
+    "geographic_attribution": false
+  },
+  "join": {
+    "identity_location": "spending observation agency",
+    "identity_method": "exact reviewed publisher identity matched to CB-MONEY-00 checkbook_spending binding",
+    "contract_relation": "exact contract_id from Spending observation to Checkbook Contracts contract_id",
+    "forbidden_fallbacks": [
+      "vendor address",
+      "project location",
+      "description text",
+      "Community District",
+      "fuzzy name matching"
+    ]
+  },
+  "measurement": {
+    "candidate_payment_rows": 1783465,
+    "retained_payment_rows": 2961,
+    "duplicate_rows_suppressed": 102,
+    "invalid_rows": 0,
+    "unmatched_agencies": [],
+    "inspectable_source_references": 2961,
+    "board_fy_rows": 59,
+    "board_coverage": {
+      "observed": 58,
+      "empty": 0,
+      "identity_unobserved": 1
+    },
+    "coverage_status": "partial_board_identity_coverage"
+  },
+  "semantics": {
+    "through_date": "2026-08-27",
+    "through_date_copy": "Payments posted through August 27, 2026",
+    "no_full_year_claim": true,
+    "generic_community_boards_aggregate_preserved": true,
+    "procurement_lifecycle_changed": false
+  },
+  "source_observation_contract": {
+    "source_system": "checkbook_payment_population",
+    "source_system_id": "transaction_id",
+    "inspectable_fields": [
+      "transaction_id",
+      "document_id",
+      "contract_id",
+      "issue_date",
+      "fiscal_year",
+      "payee_name",
+      "check_amount"
+    ]
+  }
+}
