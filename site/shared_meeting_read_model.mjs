@@ -88,7 +88,23 @@ function sourceEnvelope({ source, generatedAt, now, maxAgeMs, rows, index, reaso
   };
 }
 
-function normalizeRecord(row, source, observedAt) {
+function meetingOutcomeFor(row, source, meetingOutcomes) {
+  if (source !== "city_record" || !meetingOutcomes?.by_notice) return null;
+  const requestId = text(row.request_id);
+  const outcome = requestId ? meetingOutcomes.by_notice[requestId] : null;
+  if (!outcome) return null;
+  return {
+    ...outcome,
+    // `present` is emitted only after the strict join in
+    // worker/src/lib/meeting_outcomes.mjs. Keep that method explicit at the
+    // shared read boundary for downstream Action Path consumers.
+    join: outcome.snapshot_state === "present"
+      ? { matched: true, method: "exact_date_body_tokens" }
+      : { matched: false, method: "exact_date_body_tokens" },
+  };
+}
+
+function normalizeRecord(row, source, observedAt, meetingOutcomes) {
   const normalized = source === "city_record"
     ? normalizeCityRecordMeeting(row)
     : normalizeCommunityBoardMeeting(row);
@@ -103,6 +119,8 @@ function normalizeRecord(row, source, observedAt) {
       || (source === "city_record" ? normalized.request_id : normalized.publisher_identifier),
     source_record: sourceRecord({ ...row, ...normalized }, source, receipt),
   };
+  const meetingOutcome = meetingOutcomeFor({ ...row, ...normalized }, source, meetingOutcomes);
+  if (meetingOutcome) record.meeting_outcome = meetingOutcome;
   record.meeting_documents = (Array.isArray(row.meeting_documents) ? row.meeting_documents : [])
     .map((document) => normalizeMeetingDocument(document));
   if (source === "community_board") {
@@ -203,11 +221,12 @@ function materializeMeetingDetails(row, checkedAt) {
 export function buildSharedMeetingReadModel({
   cityRecordRows = [],
   communityBoardIndex = null,
+  meetingOutcomes = null,
   generatedAt = null,
   now = generatedAt || new Date().toISOString(),
   communityBoardMaxAgeMs = COMMUNITY_BOARD_MAX_AGE_MS,
 } = {}) {
-  const cityRows = dedupeRows(asRows(cityRecordRows).map((row) => normalizeRecord(row, "city_record", generatedAt || now)));
+  const cityRows = dedupeRows(asRows(cityRecordRows).map((row) => normalizeRecord(row, "city_record", generatedAt || now, meetingOutcomes)));
   const boardRows = dedupeRows(asRows(communityBoardIndex?.rows)
     .filter((row) => row.source_system === "community_board" || !row.source_system)
     .map((row) => normalizeRecord(row, "community_board", communityBoardIndex?.generated_at || generatedAt || now)));
