@@ -1,5 +1,9 @@
 import { compactCitationLawKeys, extractRuleEvidenceStamp } from "./rule_evidence_stamps.mjs";
 import { adminCodeHref, lookupAdminCodeCitation } from "./admin_code.mjs";
+import {
+  buildRuleVersionDiff,
+  unavailableRuleVersionDiff,
+} from "./rule_version_diff.mjs";
 
 export const RULE_VERSIONS_SCHEMA = "cityscroll.rule_versions.v1";
 export const RULE_VERSION_SCHEMA = "cityscroll.rule_version.v1";
@@ -171,6 +175,46 @@ function effectiveDateFor(document, evidence, context) {
   return { value: null, basis: "unknown", source_field: null };
 }
 
+function commentObservation(document, context) {
+  const raw = document.comments_observed ?? document.comment_count ?? context.comment_count ?? context.nyc_rules?.comment_count;
+  if (raw == null || raw === "") return null;
+  if (typeof raw === "object") {
+    const count = raw.count != null && raw.count !== "" && Number.isFinite(Number(raw.count))
+      ? Number(raw.count)
+      : null;
+    return {
+      status: "observed",
+      count,
+      source_field: clean(raw.source_field || (document.comment_count != null || context.comment_count != null ? "comment_count" : "comments_observed"), 80),
+      source_span: raw.source_span || null,
+    };
+  }
+  const count = typeof raw === "boolean" ? null : Number(raw);
+  return {
+    status: "observed",
+    count: Number.isFinite(count) && count >= 0 ? count : null,
+    source_field: document.comment_count != null || context.comment_count != null ? "comment_count" : "comments_observed",
+    source_span: null,
+  };
+}
+
+function agencyExplanation(document, text) {
+  const raw = document.agency_explanation ?? document.agency_explanation_text;
+  const value = typeof raw === "object" ? raw.text : raw;
+  const explanation = clean(value, 2_000);
+  if (!explanation) return null;
+  const start = String(text || "").indexOf(explanation);
+  return {
+    status: "published",
+    text: explanation,
+    source_field: typeof raw === "object" ? clean(raw.source_field || "agency_explanation", 80) : "agency_explanation",
+    source_span: typeof raw === "object" && raw.source_span
+      ? raw.source_span
+      : start >= 0 ? sourceSpan(text, start, start + explanation.length) : null,
+    explicit_source_statement: true,
+  };
+}
+
 export function normalizeRuleVersionDocument(document = {}, context = {}) {
   const source = sourceId(document);
   const text = clean(document.text || document.extracted_text || document.source_text, 50_000);
@@ -206,13 +250,25 @@ export function normalizeRuleVersionDocument(document = {}, context = {}) {
     authority,
     legal_effects: effects.effects,
     held_references: effects.held,
+    comment_observation: commentObservation(document, context),
+    agency_explanation: agencyExplanation(document, text),
     pairing_key: clean(document.pairing_key, 300) || null,
     source_span: document.source_span || null,
   };
 }
 
 export function pairRuleVersions(versions = []) {
+  return pairRuleVersionsDetailed(versions).pairs;
+}
+
+function pairRuleVersionsDetailed(versions = []) {
   const byKey = new Map();
+  const unpaired = versions.filter((version) => !version?.pairing_key).map((version) => ({
+    reason_code: "unpaired_versions",
+    pairing_key: null,
+    proposed_version_ids: ["proposed", "revised"].includes(version.kind) ? [version.id] : [],
+    adopted_version_ids: ["adopted", "emergency"].includes(version.kind) ? [version.id] : [],
+  }));
   for (const version of versions) {
     if (!version?.pairing_key) continue;
     const key = `${version.rulemaking_id || ""}:${version.pairing_key}`;
@@ -220,15 +276,26 @@ export function pairRuleVersions(versions = []) {
     byKey.get(key).push(version);
   }
   const pairs = [];
+  const issues = [...unpaired];
   for (const group of byKey.values()) {
-    const proposed = group.find((version) => version.kind === "proposed" || version.kind === "revised");
-    const adopted = group.find((version) => version.kind === "adopted" || version.kind === "emergency");
-    if (!proposed || !adopted) continue;
-    proposed.superseded_by = adopted.id;
-    adopted.supersedes = proposed.id;
-    pairs.push({ proposed: proposed.id, adopted: adopted.id, basis: "shared_source_pairing_key" });
+    const proposed = group.filter((version) => version.kind === "proposed" || version.kind === "revised");
+    const adopted = group.filter((version) => version.kind === "adopted" || version.kind === "emergency");
+    if (proposed.length !== 1 || adopted.length !== 1) {
+      issues.push({
+        reason_code: proposed.length && adopted.length ? "ambiguous_pairing" : "unpaired_versions",
+        pairing_key: group[0]?.pairing_key || null,
+        proposed_version_ids: proposed.map((version) => version.id),
+        adopted_version_ids: adopted.map((version) => version.id),
+      });
+      continue;
+    }
+    const proposedVersion = proposed[0];
+    const adoptedVersion = adopted[0];
+    proposedVersion.superseded_by = adoptedVersion.id;
+    adoptedVersion.supersedes = proposedVersion.id;
+    pairs.push({ proposed: proposedVersion.id, adopted: adoptedVersion.id, basis: "shared_source_pairing_key" });
   }
-  return pairs;
+  return { pairs, issues };
 }
 
 export function buildRuleVersionsProjection(documents = [], context = {}) {
@@ -236,7 +303,23 @@ export function buildRuleVersionsProjection(documents = [], context = {}) {
     .map((document) => normalizeRuleVersionDocument(document, context))
     .filter((version) => version.id || version.source_id)
     .sort((left, right) => (KIND_ORDER[left.kind] ?? 9) - (KIND_ORDER[right.kind] ?? 9) || String(left.source_id).localeCompare(String(right.source_id)));
-  const pairs = pairRuleVersions(versions);
+  const pairing = pairRuleVersionsDetailed(versions);
+  const pairs = pairing.pairs;
+  const byId = new Map(versions.map((version) => [version.id, version]));
+  const diffs = pairs.map((pair) => buildRuleVersionDiff(byId.get(pair.proposed), byId.get(pair.adopted), pair));
+  for (const issue of pairing.issues) {
+    const proposed = byId.get(issue.proposed_version_ids[0]) || null;
+    const adopted = byId.get(issue.adopted_version_ids[0]) || null;
+    diffs.push(unavailableRuleVersionDiff(issue.reason_code, proposed, adopted, {
+      basis: "pairing_key",
+      pairing_key: issue.pairing_key,
+      proposed_version_ids: issue.proposed_version_ids,
+      adopted_version_ids: issue.adopted_version_ids,
+    }));
+  }
+  if (!diffs.length && versions.some((version) => version.kind === "proposed" || version.kind === "revised" || version.kind === "adopted" || version.kind === "emergency")) {
+    diffs.push(unavailableRuleVersionDiff("unpaired_versions"));
+  }
   const legalEffects = versions.flatMap((version) => (version.legal_effects || []).map((effect) => ({
     ...effect,
     version_id: version.id,
@@ -254,6 +337,19 @@ export function buildRuleVersionsProjection(documents = [], context = {}) {
     legal_effects: legalEffects,
     held_references: held,
     pairs,
+    diffs,
+    comment_observations: versions.filter((version) => version.comment_observation).map((version) => ({
+      version_id: version.id,
+      source_id: version.source_id,
+      ...version.comment_observation,
+    })),
+    agency_explanations: versions.filter((version) => version.agency_explanation).map((version) => ({
+      version_id: version.id,
+      source_id: version.source_id,
+      source_url: version.source_url,
+      ...version.agency_explanation,
+    })),
+    pairing_issues: pairing.issues,
     coverage: {
       documents: documents.length,
       proposed_documents: versions.filter((version) => version.kind === "proposed" || version.kind === "revised").length,
@@ -263,6 +359,26 @@ export function buildRuleVersionsProjection(documents = [], context = {}) {
       exact_citations: versions.reduce((sum, version) => sum + version.authority.length + version.legal_effects.length, 0),
       resolvable_targets: legalEffects.filter((effect) => effect.target.resolution === "resolved").length,
       ambiguous_references: held.length,
+      unpaired_versions: pairing.issues.filter((issue) => issue.reason_code === "unpaired_versions").length,
+      ambiguous_pairings: pairing.issues.filter((issue) => issue.reason_code === "ambiguous_pairing").length,
+      version_diff: {
+        pairs_considered: pairs.length + pairing.issues.length,
+        usable_version_pairs: diffs.filter((diff) => diff.status === "available").length,
+        text_extraction: {
+          available_versions: versions.filter((version) => version.text_status === "available").length,
+          unavailable_versions: versions.filter((version) => version.text_status !== "available").length,
+          non_text_failures: versions.filter((version) => /scan|non.?text|image|pdf/i.test(String(version.text_status || ""))).length,
+        },
+        section_alignment: {
+          deterministic_pairs: diffs.filter((diff) => diff.status === "available" && diff.alignment?.deterministic).length,
+          comparable_pairs: diffs.filter((diff) => diff.status === "available" && diff.alignment).length,
+          rate: pairs.length ? diffs.filter((diff) => diff.status === "available" && diff.alignment?.deterministic).length / pairs.length : null,
+        },
+        non_text_failures: diffs.filter((diff) => diff.reason_code?.startsWith("non_text_")).length,
+        changed_regions: diffs.reduce((sum, diff) => sum + (Number.isFinite(diff.changed_region_count) ? diff.changed_region_count : 0), 0),
+        observed_comments: versions.filter((version) => version.comment_observation).length,
+        published_agency_explanations: versions.filter((version) => version.agency_explanation).length,
+      },
     },
   };
 }

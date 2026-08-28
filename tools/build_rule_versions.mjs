@@ -73,6 +73,7 @@ function materialize() {
       source_id_pairing_evidence: projections.pairs.map((pair) => pair.basis),
       unpairable_or_non_text_cases: documents.filter((document) => !document.text || !document.pairing_key).length,
     },
+    version_diff: projections.coverage.version_diff,
   };
   return {
     schema: "cityscroll.rule_versions_materialization.v1",

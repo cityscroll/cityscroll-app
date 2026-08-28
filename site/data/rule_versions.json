@@ -154,6 +154,8 @@
               }
             }
           ],
+          "comment_observation": null,
+          "agency_explanation": null,
           "pairing_key": "dsny-commercial-waste-zones",
           "source_span": null,
           "superseded_by": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008"
@@ -220,6 +222,8 @@
               }
             }
           ],
+          "comment_observation": null,
+          "agency_explanation": null,
           "pairing_key": "dsny-commercial-waste-zones",
           "source_span": null,
           "supersedes": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002"
@@ -259,6 +263,120 @@
           "basis": "shared_source_pairing_key"
         }
       ],
+      "diffs": [
+        {
+          "schema": "cityscroll.rule_version_diff.v1",
+          "status": "available",
+          "reason_code": null,
+          "pair": {
+            "proposed": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+            "adopted": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+            "basis": "shared_source_pairing_key"
+          },
+          "proposed_version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+          "adopted_version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+          "source_links": [
+            {
+              "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+              "kind": "proposed",
+              "label": "Proposed source",
+              "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+            },
+            {
+              "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+              "kind": "adopted",
+              "label": "Adopted source",
+              "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+            }
+          ],
+          "changed_region_count": 2,
+          "alignment": {
+            "status": "aligned",
+            "method": "ordered-section-lcs",
+            "proposed_sections": 6,
+            "adopted_sections": 6,
+            "aligned_sections": 6,
+            "deterministic": true
+          },
+          "regions": [
+            {
+              "id": "change-region:rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002:rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008:1",
+              "kind": "changed",
+              "section_index": 0,
+              "section_label": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Propos",
+              "proposed_span": {
+                "field": "text",
+                "start": 94,
+                "end": 102,
+                "text": "Proposed",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                "source_id": "city_record:20260708002",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+              },
+              "adopted_span": {
+                "field": "text",
+                "start": 94,
+                "end": 99,
+                "text": "Final",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+                "source_id": "city_record:20260605008",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+              },
+              "source_links": [
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                  "source_id": "city_record:20260708002",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+                },
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+                  "source_id": "city_record:20260605008",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+                }
+              ]
+            },
+            {
+              "id": "change-region:rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002:rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008:2",
+              "kind": "changed",
+              "section_index": 0,
+              "section_label": "New York City Department of Sanitation Notice of Public Hearing and Opportunity to Comment on Propos",
+              "proposed_span": {
+                "field": "text",
+                "start": 121,
+                "end": 131,
+                "text": "proposing?",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                "source_id": "city_record:20260708002",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+              },
+              "adopted_span": {
+                "field": "text",
+                "start": 118,
+                "end": 127,
+                "text": "adopting?",
+                "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+                "source_id": "city_record:20260605008",
+                "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+              },
+              "source_links": [
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:proposed:city-record-20260708002",
+                  "source_id": "city_record:20260708002",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708002"
+                },
+                {
+                  "version_id": "rule-version:rulemaking:dsny:commercial-waste-zones:adopted:city-record-20260605008",
+                  "source_id": "city_record:20260605008",
+                  "href": "https://a856-cityrecord.nyc.gov/RequestDetail/20260605008"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "comment_observations": [],
+      "agency_explanations": [],
+      "pairing_issues": [],
       "coverage": {
         "documents": 2,
         "proposed_documents": 1,
@@ -267,7 +385,27 @@
         "acquisition_failures": 0,
         "exact_citations": 4,
         "resolvable_targets": 0,
-        "ambiguous_references": 2
+        "ambiguous_references": 2,
+        "unpaired_versions": 0,
+        "ambiguous_pairings": 0,
+        "version_diff": {
+          "pairs_considered": 1,
+          "usable_version_pairs": 1,
+          "text_extraction": {
+            "available_versions": 2,
+            "unavailable_versions": 0,
+            "non_text_failures": 0
+          },
+          "section_alignment": {
+            "deterministic_pairs": 1,
+            "comparable_pairs": 1,
+            "rate": 1
+          },
+          "non_text_failures": 0,
+          "changed_regions": 2,
+          "observed_comments": 0,
+          "published_agency_explanations": 0
+        }
       }
     }
   ],
@@ -310,6 +448,24 @@
         "shared_source_pairing_key"
       ],
       "unpairable_or_non_text_cases": 0
+    },
+    "version_diff": {
+      "pairs_considered": 1,
+      "usable_version_pairs": 1,
+      "text_extraction": {
+        "available_versions": 2,
+        "unavailable_versions": 0,
+        "non_text_failures": 0
+      },
+      "section_alignment": {
+        "deterministic_pairs": 1,
+        "comparable_pairs": 1,
+        "rate": 1
+      },
+      "non_text_failures": 0,
+      "changed_regions": 2,
+      "observed_comments": 0,
+      "published_agency_explanations": 0
     }
   }
 }

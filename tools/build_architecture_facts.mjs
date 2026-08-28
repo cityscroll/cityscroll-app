@@ -539,16 +539,24 @@ function buildMaterializerFacts() {
 
 function buildRuleVersionFacts() {
   const projectionPath = "site/rule_versions.mjs";
+  const diffPath = "site/rule_version_diff.mjs";
   const materializerPath = "tools/build_rule_versions.mjs";
   const projection = text(projectionPath);
+  const diff = text(diffPath);
   const materializer = text(materializerPath);
   return {
-    sources: [projectionPath, materializerPath],
+    sources: [projectionPath, diffPath, materializerPath],
     projection: {
       path: projectionPath,
       schemas: [...projection.matchAll(/export const (RULE_(?:VERSIONS|VERSION|EFFECT)_SCHEMA)\s*=\s*["']([^"']+)["']/g)]
         .map((match) => ({ name: match[1], schema: match[2] })),
       source: source(projectionPath, lineOf(projection, "buildRuleVersionsProjection")),
+    },
+    diff: {
+      path: diffPath,
+      schemas: [...diff.matchAll(/export const (RULE_VERSION_DIFF_SCHEMA)\s*=\s*["']([^"']+)["']/g)]
+        .map((match) => ({ name: match[1], schema: match[2] })),
+      source: source(diffPath, lineOf(diff, "buildRuleVersionDiff")),
     },
     materializer: {
       path: materializerPath,
