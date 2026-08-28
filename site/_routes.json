@@ -4,6 +4,7 @@
     "/meeting.ics",
     "/data-health*",
     "/notices/*",
+    "/rules/*",
     "/mandates/*",
     "/matters/*",
     "/meetings/*",

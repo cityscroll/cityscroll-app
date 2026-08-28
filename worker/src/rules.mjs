@@ -14,6 +14,7 @@ import {
 } from "./lib/rules.mjs";
 import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
 import { classifyCityRecordRuleStage } from "../../site/rule_stage.mjs";
+import { buildRulemakingObjects } from "./lib/rulemaking.mjs";
 
 export const RULES_KV_KEY = "rules:materialized:v2";
 /** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds.
@@ -21,8 +22,9 @@ export const RULES_KV_KEY = "rules:materialized:v2";
  *  v5: demote generic Title-N / bare-sections refs; shared_reference needs exact
  *      section cite or title-core floor (false-merge hotfix).
  *  v6: normalize WordPress RSS endpoints to resident-facing NYC Rules pages.
- *  v7: classify unmatched City Record hearings/adoptions instead of defaulting to proposal. */
-export const RULES_VIEW_VERSION = 7;
+ *  v7: classify unmatched City Record hearings/adoptions instead of defaulting to proposal.
+ *  v8: materialize grounded multi-notice rulemaking objects alongside notices. */
+export const RULES_VIEW_VERSION = 8;
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 /** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
  *  "Just a moment…" when the request has an empty or missing User-Agent
@@ -211,6 +213,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       subject_links: subjects.subject_links,
     };
   });
+  const rulemakings = buildRulemakingObjects(records, { now: now.toISOString().slice(0, 10) });
 
   const byStage = {};
   for (const record of records) {
@@ -240,6 +243,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
     city_record_notices: notices.length,
     /** Notices that participate in a multi-notice rulemaking group. */
     multi_notice_notices: multiNoticeNoticeCount,
+    rulemakings: rulemakings.length,
   };
 
   return {
@@ -261,6 +265,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       },
     },
     counts,
+    rulemakings,
     rules: records,
   };
 }

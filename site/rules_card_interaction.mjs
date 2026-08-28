@@ -6,11 +6,14 @@ function text(value) {
 
 /**
  * Map Rules producer fields into the shared object-card interaction contract.
- * A rule card always has one canonical notice target. Only dated, destination-
- * backed comment and hearing transitions qualify as kinetic actions.
+ * A rule card has one canonical rulemaking target when the materialization has
+ * a grounded multi-notice subject. Unjoined records retain their notice target.
+ * Only dated, destination-backed comment and hearing transitions qualify as
+ * kinetic actions.
  */
 export function rulesCardInteractionProjection({
   request_id,
+  rulemaking_id = null,
   title,
   fine_stage = null,
   rule_url = null,
@@ -23,6 +26,7 @@ export function rulesCardInteractionProjection({
   relations = [],
 } = {}) {
   const requestId = text(request_id);
+  const rulemakingId = text(rulemaking_id);
   const ruleHref = text(rule_url);
   const commentHref = text(comment_url) || ruleHref;
   const commentDate = text(comment_by_date);
@@ -54,8 +58,13 @@ export function rulesCardInteractionProjection({
     : [];
 
   return objectCardInteractionProjection({
-    target: requestId && text(title)
-      ? { href: `/notices/${encodeURIComponent(requestId)}`, label: text(title) }
+    target: text(title) && (rulemakingId || requestId)
+      ? {
+        href: rulemakingId
+          ? `/rules/${encodeURIComponent(rulemakingId)}`
+          : `/notices/${encodeURIComponent(requestId)}`,
+        label: text(title),
+      }
       : null,
     relations,
     external_handoffs: officialHandoffs,

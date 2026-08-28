@@ -861,17 +861,24 @@
       "grounding": "partial"
     },
     {
-      "id": "rule",
-      "status": "unregistered",
+      "id": "rulemaking",
+      "status": "registered",
       "layer": "semantic",
-      "reason": "Rules spine exists as product events; no first-class rule object id in ER or public graph.",
-      "primary_key_pattern": "rule:{rule_id|notice_id}",
+      "reason": "High-confidence City Record sibling stitches materialize one source-qualified rulemaking case file while retaining notice evidence.",
+      "primary_key_pattern": "rulemaking:{rulemaking_subject_ref}",
       "families": [],
       "backing": [
-        "rules_spine"
+        "rules_spine",
+        "rulemaking_materialization"
       ],
-      "properties_ref": [],
-      "grounding": "partial"
+      "properties_ref": [
+        "agency",
+        "title",
+        "proposal_summary",
+        "events",
+        "source_documents"
+      ],
+      "grounding": "built"
     },
     {
       "id": "property_site",
