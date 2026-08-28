@@ -35,6 +35,15 @@ function clean(value, max = 50_000) {
     .slice(0, max);
 }
 
+function legalText(value, max = 50_000) {
+  return String(value ?? "")
+    .replace(/\u0000/g, "")
+    .replace(/[\u0001-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+    .replace(/\r\n?/g, "\n")
+    .trim()
+    .slice(0, max);
+}
+
 function freeze(value) {
   if (Array.isArray(value)) return Object.freeze(value.map(freeze));
   if (!value || typeof value !== "object") return value;
@@ -91,6 +100,9 @@ function effectiveDateClause(change, options) {
     change?.effective_on,
     options?.effective_at,
     options?.effective_date,
+    law.effective_at,
+    law.effective_date,
+    law.effective_on,
   ];
   for (const candidate of candidates) {
     const date = validDate(candidate);
@@ -105,7 +117,7 @@ function effectiveDateClause(change, options) {
     return { effective_at: null, basis: "source_stated", resolution: "unresolved", reason: "multiple effective-date clauses require clause-level assignment" };
   }
 
-  const text = clean(change?.effective_date_text || options?.effective_date_text, 2_000);
+  const text = clean(change?.effective_date_text || options?.effective_date_text || law.effective_date_text, 2_000);
   if (!text) return { effective_at: null, basis: "unknown", resolution: "unresolved", reason: "no operative effective date" };
   if (/\b(?:conditional|conditioned|upon|unless|subject to|if|except|provided|different|separate|respectively|subdivision|paragraph)\b/i.test(text)) {
     return { effective_at: null, basis: "source_stated", resolution: "unresolved", reason: "conditional effective date" };
@@ -139,11 +151,11 @@ export function resolveCodeChangeEffectiveDate(change = {}, options = {}) {
 
 function patchFor(change = {}) {
   const patch = change.patch || change.materialization_patch || {};
-  const before = clean(
+  const before = legalText(
     patch.before_text || patch.old_text || patch.before || change.before_text || change.old_text || change.before,
     50_000,
   ) || null;
-  const after = clean(
+  const after = legalText(
     patch.after_text || patch.new_text || patch.after || patch.replacement_text
       || change.after_text || change.new_text || change.after || change.replacement_text || change.added_text,
     50_000,

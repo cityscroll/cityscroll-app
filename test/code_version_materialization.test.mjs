@@ -60,6 +60,32 @@ test("AMEND preserves identity and creates an effective-date version boundary", 
   assert.notEqual(previous.content_hash, next.content_hash);
 });
 
+test("multiline statutory patches preserve exact line structure through normalization", () => {
+  const result = materializeCodeChange(change("amend", {
+    patch: {
+      before_text: "Old statutory text.\nSecond paragraph.",
+      after_text: "New statutory text.\nSecond paragraph amended.",
+    },
+  }), { provision });
+  assert.equal(result.materialization_status, "materialized");
+  assert.equal(result.after_text, "New statutory text.\nSecond paragraph amended.");
+  assert.equal(result.versions.find((version) => version.valid_from)?.text, result.after_text);
+  assert.match(result.diff.text, /- Old statutory text\.\n- Second paragraph\./);
+  assert.match(result.diff.text, /\+ New statutory text\.\n\+ Second paragraph amended\./);
+});
+
+test("effective dates may be supplied by the Local Law envelope", () => {
+  const result = materializeCodeChange(change("amend", {
+    effective_at: null,
+    patch: { before_text: "Old statutory text.", after_text: "New statutory text." },
+  }), {
+    provision,
+    local_law: { effective_at: "2027-01-15" },
+  });
+  assert.equal(result.materialization_status, "materialized");
+  assert.equal(result.effective_at, "2027-01-15");
+});
+
 test("REPEAL closes the active version without deleting the provision", () => {
   const result = materializeCodeChange(change("repeal"), { provision });
   assert.equal(result.materialization_status, "materialized");

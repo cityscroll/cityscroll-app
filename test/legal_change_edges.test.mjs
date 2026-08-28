@@ -11,6 +11,7 @@ import {
   renderLegalChangeList,
 } from "../site/legal_change_edges.mjs";
 import { renderAdminCodeProvisionDocument } from "../site/admin_code.mjs";
+import { codeChange } from "../ontology/legal_change.mjs";
 
 const fixtures = JSON.parse(readFileSync(new URL("./fixtures/legal_change_edges.json", import.meta.url), "utf8"));
 
@@ -131,4 +132,27 @@ test("an explicit read-as-follows clause carries a whole-provision patch", () =>
   assert.match(rendered, /After/);
   assert.match(rendered, /New complete section text/);
   assert.match(rendered, /data-materialization-status="materialized"/);
+});
+
+test("CodeChange normalization preserves multiline statutory patch text", () => {
+  const normalized = codeChange({
+    id: "fixture:multiline-patch",
+    matter_id: "79106",
+    operation: "amend",
+    target: {
+      corpus_id: "nyc-administrative-code",
+      provision_id: "nyc-administrative-code:16-120",
+      citation: "§ 16-120",
+    },
+    source: {
+      source_ref: "fixture:multiline-patch",
+      instruction_text: "Section 16-120 is amended.",
+    },
+    patch: {
+      before_text: "Old line one.\nOld line two.",
+      after_text: "New line one.\nNew line two.",
+    },
+  });
+  assert.equal(normalized.patch.before_text, "Old line one.\nOld line two.");
+  assert.equal(normalized.patch.after_text, "New line one.\nNew line two.");
 });

@@ -28,6 +28,15 @@ function text(value, max = 2_000) {
   return result || null;
 }
 
+function legalText(value, max = 50_000) {
+  return String(value ?? "")
+    .replace(/\u0000/g, "")
+    .replace(/[\u0001-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+    .replace(/\r\n?/g, "\n")
+    .trim()
+    .slice(0, max) || null;
+}
+
 function immutable(value) {
   if (Array.isArray(value)) return Object.freeze(value.map(immutable));
   if (!value || typeof value !== "object") return value;
@@ -56,11 +65,11 @@ function sourceEvidence(value = {}) {
 
 function materializationPatch(value = {}) {
   const patch = value.patch || value.materialization_patch || {};
-  const before = text(
+  const before = legalText(
     patch.before_text || patch.old_text || patch.before || value.before_text || value.old_text || value.before,
     50_000,
   );
-  const after = text(
+  const after = legalText(
     patch.after_text || patch.new_text || patch.after || patch.replacement_text
       || value.after_text || value.new_text || value.after || value.replacement_text || value.added_text,
     50_000,
