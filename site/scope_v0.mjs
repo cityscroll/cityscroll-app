@@ -308,7 +308,7 @@ const CALENDAR_REPLAYABLE_FILTER_FIELDS = Object.freeze({
   people: new Set(["keywords", "agency", "view", "interest", "interestArea", "examNumber", "subject_refs_all"]),
   land: new Set(["keywords", "boro", "status", "communityDistrict", "councilDistrict", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"]),
   property: new Set(["keywords", "agency", "asset", "saleMethod", "priceBand", "geographies"]),
-  rules: new Set(["keywords", "agency", "geographies"]),
+  rules: new Set(["keywords", "agency", "geographies", "request_ids"]),
   meetings: new Set(["keywords", "agency", "when", "dateWindow", "borough", "neighborhood", "communityDistrict", "councilDistrict", "locationScope", "communityBoard", "geographies"]),
   entity: new Set(["name", "kind", "entity_refs_all"]),
 });

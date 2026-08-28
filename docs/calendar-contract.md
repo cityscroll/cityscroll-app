@@ -110,6 +110,13 @@ The following fields are carried by the canonical scope/watch or an existing sur
 currently replayed by `compileSub()` for the corresponding feed lens, so the calendar projection
 does not advertise those scopes:
 
+The one exact relation exception is `rules.request_ids`: a continuation with an accepted
+rulemaking relation may carry the bounded member notice IDs, and both compilers constrain on those
+IDs. `worker/src/lib/continuation_replay.mjs` additionally requires a lossless Following reopen
+and exact subject delivery proof before publishing that continuation. A subject-only matter
+candidate, title/agency query, or body-level relation remains unsupported and returns no
+continuation.
+
 - money: `mode`, `excludeSpecial`, `borough`, `route`, `name`, `tab`, `entity_refs_all`, and
   `connection_relation`;
 - land: `agency`, `action`/`actions`, `stage`, `futureAction`, `attendance`, `sort`,

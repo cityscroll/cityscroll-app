@@ -44,7 +44,7 @@ export const LENSES = {
   people:   ["keywords", "lookupType", "view", "interest", "interestArea", "interestLabel", "examNumber", "subject_refs_all"],
   land:     ["keywords", "boro", "status", "communityDistrict", "councilDistrict", "nearMe", "procedure", "family", "regulatoryEffect", "futureAction", "attendance", "geographies"],
   property: ["keywords", "agency", "process", "stage", "asset", "saleMethod", "priceBand", "sort", "borough", "neighborhood", "communityDistrict", "nearMe", "geographies"],
-  rules:    ["keywords", "agency", "process", "geographies"],
+  rules:    ["keywords", "agency", "process", "geographies", "request_ids"],
   meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow", "process", "nearMe", "geographies", "communityBoard"],
   district: ["councilDistrict"],
   entity:   ["name", "kind", "tab", "entity_refs_all"],
@@ -88,6 +88,11 @@ function clampField(name, v) {
     case "geographies":
       return Array.isArray(v)
         ? [...new Set(v.map(normalizeGeographyKey).filter(Boolean))].sort().slice(0, 8)
+        : [];
+    case "request_ids":
+      return Array.isArray(v)
+        ? [...new Set(v.map((value) => String(value || "").trim())
+          .filter((value) => /^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(value)))].sort().slice(0, 24)
         : [];
     case "communityBoard":
       return normalizeCommunityBoardRef(v);
@@ -279,6 +284,7 @@ export function sanitize(lens, input) {
   // The geography dimension is additive. Omit an empty value so legacy filters,
   // subscription identities, and /nl response envelopes remain byte-compatible.
   if (!out.geographies?.length) delete out.geographies;
+  if (!out.request_ids?.length) delete out.request_ids;
   if (!out.procurement_id) delete out.procurement_id;
   if (!out.interest) delete out.interest;
   return out;

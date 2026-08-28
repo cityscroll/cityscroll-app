@@ -25,6 +25,13 @@ export function subToD1Opts(sub, todayISO) {
   const f = (sub && sub.filter) || {};
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
   const lens = sub.lens;
+  const requestIds = Array.isArray(f.request_ids)
+    ? [...new Set(f.request_ids.map((value) => String(value || "").trim())
+      .filter((value) => /^[A-Za-z0-9][A-Za-z0-9_-]{0,80}$/.test(value)))].sort()
+    : [];
+  if (Object.prototype.hasOwnProperty.call(f, "request_ids")
+      && (lens !== "rules" || !requestIds.length
+        || requestIds.length !== (Array.isArray(f.request_ids) ? f.request_ids.length : 0))) return null;
 
   // land (ZAP) and unknown lenses are not in the mirror — explicit, not accidental.
   if (OFF_MIRROR_LENSES.has(lens)) return null;
@@ -37,13 +44,14 @@ export function subToD1Opts(sub, todayISO) {
   };
   if (SECTION_NAME[lens]) {
     const opts = { section: SECTION_NAME[lens], limit: 25 };
+    if (lens === "rules" && requestIds.length) opts.requestIds = requestIds;
     if (f.agency) opts.agency = f.agency;
     if (kws.length) opts.termGroups = [kws];
     if (lens === "meetings") {
       // meetings: upcoming events only, soonest-first — mirrors compile.mjs
       opts.openOnly = true;
       opts.today = todayISO;
-    } else {
+    } else if (!requestIds.length) {
       // property / rules: recent 30-day window avoids returning stale archive rows
       if (todayISO) opts.sinceDate = subtractDays(todayISO, 30);
     }
