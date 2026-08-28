@@ -1,0 +1,245 @@
+{
+  "schema": "cityscroll.merge-throughput.incident-corpus.v1",
+  "observed_at": "2026-08-28",
+  "repository": "cityscroll/cityscroll-app",
+  "inspection": {
+    "mode": "read-only",
+    "method": "Git history and GitHub PR, timeline, check, and Actions records",
+    "causal_boundary": "Timeline removal is an observed service-loss event; it is not by itself proof of the named root cause."
+  },
+  "queue_baseline": {
+    "observed_at": "2026-08-16T21:30:00Z",
+    "window": {
+      "started_at": "2026-08-04T02:42:09Z",
+      "ended_at": "2026-08-16T21:30:00Z"
+    },
+    "source": "docs/evidence/merge-queue-cap/ejection-report.json@df5b61acc06d43cbfeef87ea2683ed1cbc76a5ed",
+    "pull_requests_scanned": 573,
+    "removal_events_observed": 680,
+    "successful_dequeues_after_merge": 544,
+    "ejections": 136,
+    "automatic_ejections": 121,
+    "manual_removals": 15,
+    "ejections_by_reason": {
+      "failed_checks": 71,
+      "git_tree_invalid": 1,
+      "manual": 15,
+      "merge_conflict": 49
+    },
+    "interpretation": "Measured removal history is a service-rate-loss signal, not evidence that one check caused every removal."
+  },
+  "incidents": [
+    {
+      "id": "mt-0-2026-08-27-a-source-health-clock-timezone",
+      "class": "shared-gate-rot",
+      "signature": {
+        "id": "source_health_public_projection.clock-or-timezone-sensitive",
+        "check": "source_health_public_projection",
+        "symptoms": [
+          "An unchanged source-health projection could change at an evaluation-time freshness boundary.",
+          "Offset-less source timestamps could serialize differently under UTC and America/New_York."
+        ],
+        "match_rule": "A source-health public-projection result changes across evaluation time or build timezone without source/config drift."
+      },
+      "affected_checks": [
+        {
+          "name": "Unit tests (site + worker)",
+          "role": "required check containing the source-health regression suite",
+          "receipt": "https://github.com/cityscroll/cityscroll-app/pull/1331/checks"
+        },
+        {
+          "name": "test/source_health_public_projection.test.mjs",
+          "role": "focused fixture and byte-identity coverage",
+          "receipt": "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d"
+        }
+      ],
+      "detection_story": {
+        "summary": "PR #1331 describes the merge-path jam and adds a 48-hour fake-clock test plus UTC/New York byte-identity coverage. The public timeline shows pre-fix queue removals followed by re-service for PRs #1317 and #1323; those events establish repeated service loss, not check-specific causation.",
+        "ejected_and_reserviced": [
+          {
+            "pull_request": 1317,
+            "timeline": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+            "removed_at": "2026-08-27T19:05:35Z",
+            "readded_at": "2026-08-28T00:35:21Z",
+            "merged_at": "2026-08-28T01:39:02Z",
+            "status": "measured timeline observation"
+          },
+          {
+            "pull_request": 1323,
+            "timeline": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1323/timeline",
+            "removed_at": [
+              "2026-08-27T19:17:47Z",
+              "2026-08-27T19:47:17Z",
+              "2026-08-27T19:58:15Z",
+              "2026-08-27T20:15:23Z"
+            ],
+            "readded_at": "2026-08-27T23:00:56Z",
+            "merged_at": "2026-08-27T23:32:21Z",
+            "status": "measured timeline observation"
+          }
+        ],
+        "evidence_refs": [
+          "https://github.com/cityscroll/cityscroll-app/pull/1331",
+          "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d",
+          "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+          "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1323/timeline"
+        ],
+        "attribution": "inference anchored by the fix PR; the public timeline does not expose a per-removal failed-check payload"
+      },
+      "root_cause": {
+        "summary": "Evidence hashes and freshness labels depended on evaluation time, and offset-less source timestamps were not normalized as UTC. The result was a deterministic-gate failure caused by the clock or build timezone rather than by a source/config change.",
+        "evidence_kind": "documented fix behavior",
+        "confidence": "high",
+        "evidence_refs": [
+          "https://github.com/cityscroll/cityscroll-app/pull/1331",
+          "https://github.com/cityscroll/cityscroll-app/commit/d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d"
+        ]
+      },
+      "fix_pr": {
+        "number": 1331,
+        "title": "Make source health projection checks deterministic",
+        "url": "https://github.com/cityscroll/cityscroll-app/pull/1331",
+        "commit": "d7a7ebd14a43dfa1c6003ee65213fb8c94653a2d",
+        "committed_at": "2026-08-27T20:34:36Z",
+        "merged_at": "2026-08-27T22:49:08Z",
+        "checks_at_merge": "26 passed, 0 failed, 3 skipped, 29 total"
+      },
+      "time_to_detection": {
+        "minutes": 89.0167,
+        "measurement": "estimated",
+        "from": "2026-08-27T19:05:35Z",
+        "to": "2026-08-27T20:34:36Z",
+        "basis": "First observed pre-fix removal in the affected timeline to the first public fix commit; the removal is a proxy signal, not a directly timestamped source-health failure."
+      },
+      "time_to_fix": {
+        "minutes": 134.5333,
+        "measurement": "measured",
+        "from": "2026-08-27T20:34:36Z",
+        "to": "2026-08-27T22:49:08Z",
+        "basis": "Public commit timestamp to public merge timestamp."
+      }
+    },
+    {
+      "id": "mt-0-2026-08-27-b-render-rules-explorer-readiness",
+      "class": "flaky-shard-ejection",
+      "signature": {
+        "id": "browser-a11y.renderRulesExplorer-before-module-readiness",
+        "check": "Accessibility + language shard (browser-a11y)",
+        "symptoms": [
+          "TypeError: globalThis.renderRulesExplorer is not a function",
+          "The failure occurs when the accessibility shard invokes renderRulesExplorer before the route module is ready."
+        ],
+        "match_rule": "The browser-a11y shard fails at renderRulesExplorer readiness/module loading, while other accessibility states pass."
+      },
+      "affected_checks": [
+        {
+          "name": "Accessibility + language shard (browser-a11y)",
+          "role": "failing shard",
+          "receipts": [
+            "https://github.com/cityscroll/cityscroll-app/actions/runs/33104958413",
+            "https://github.com/cityscroll/cityscroll-app/actions/runs/33124737622"
+          ]
+        },
+        {
+          "name": "Accessibility + language gate (axe on every PR)",
+          "role": "aggregate required check that propagated the shard failure",
+          "receipt": "https://github.com/cityscroll/cityscroll-app/actions/runs/33124737622"
+        }
+      ],
+      "detection_story": {
+        "summary": "The first public failure receipt records the exact renderRulesExplorer TypeError at 2026-08-27T19:03:27Z on run 33104958413. The same signature recurs at 2026-08-27T23:28:01Z on merge-group run 33124737622; the failed aggregate reports the browser-a11y shard while the other listed shards pass.",
+        "ejected_and_reserviced": [
+          {
+            "pull_request": 1317,
+            "timeline": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+            "removed_at": "2026-08-27T19:05:35Z",
+            "readded_at": "2026-08-28T00:35:21Z",
+            "merged_at": "2026-08-28T01:39:02Z",
+            "status": "measured timeline observation"
+          },
+          {
+            "pull_request": 1332,
+            "timeline": "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1332/timeline",
+            "removed_at": "2026-08-27T23:33:48Z",
+            "readded_at": "2026-08-27T23:43:50Z",
+            "merged_at": "2026-08-28T00:30:26Z",
+            "status": "measured timeline observation"
+          }
+        ],
+        "evidence_refs": [
+          "https://github.com/cityscroll/cityscroll-app/actions/runs/33104958413",
+          "https://github.com/cityscroll/cityscroll-app/actions/runs/33124737622",
+          "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1317/timeline",
+          "https://api.github.com/repos/cityscroll/cityscroll-app/issues/1332/timeline"
+        ],
+        "attribution": "measured signature recurrence plus timeline correlation; a shard failure alone is not proof of a root cause"
+      },
+      "root_cause": {
+        "summary": "The accessibility harness exercised a route-specific renderer before the application had completed loading its module graph. PR #1347 moves the check behind completed application boot and adds a structural ordering assertion, identifying the race as module readiness rather than an accessibility violation.",
+        "evidence_kind": "documented fix behavior",
+        "confidence": "high",
+        "evidence_refs": [
+          "https://github.com/cityscroll/cityscroll-app/pull/1347",
+          "https://github.com/cityscroll/cityscroll-app/commit/6afc3d88df1422c95bcccc9b33c1f789a61da066"
+        ]
+      },
+      "fix_pr": {
+        "number": 1347,
+        "title": "Wait for route modules before accessibility checks",
+        "url": "https://github.com/cityscroll/cityscroll-app/pull/1347",
+        "commit": "6afc3d88df1422c95bcccc9b33c1f789a61da066",
+        "committed_at": "2026-08-28T03:04:59Z",
+        "merged_at": "2026-08-28T03:37:25Z",
+        "checks_at_merge": "24 passed, 0 failed, 3 skipped, 27 total"
+      },
+      "time_to_detection": {
+        "minutes": 0,
+        "measurement": "measured",
+        "from": "2026-08-27T19:03:27Z",
+        "to": "2026-08-27T19:03:27Z",
+        "basis": "The failed-run log timestamp is the detection receipt for the exact signature."
+      },
+      "time_to_fix": {
+        "minutes": 241.5333,
+        "measurement": "measured",
+        "from": "2026-08-27T19:03:27Z",
+        "to": "2026-08-28T03:04:59Z",
+        "basis": "First exact-signature log timestamp to the root-fix commit timestamp; merge completion was 273.9667 minutes after detection at 2026-08-28T03:37:25Z."
+      }
+    }
+  ],
+  "history_records": [
+    { "class": "shared-gate-rot", "ref": "b23db5a2d411a9ec37b099cf1fb014b2c7359027", "pr": 375, "title": "Stabilize date-sensitive test baselines", "evidence": "Fixed fixture dates and wall-clock audit coverage." },
+    { "class": "shared-gate-rot", "ref": "f5baee116c2eb65e275f15b4964d99433a723296", "pr": 1091, "title": "Commit a compact architecture watermark as the reconciler baseline", "evidence": "Committed compact baseline replaces self-comparison." },
+    { "class": "shared-gate-rot", "ref": "cb137ff63d7377828111ad1d1eec577231c21c3c", "pr": 1098, "title": "Make watermark-vs-facts drift advisory and replay frozen architecture canaries", "evidence": "Watermark drift is kept separate from observer completeness." },
+    { "class": "live-external-coupling", "ref": "9b03c9ba42fa5c112609d1c3ba4b5485d0c338d5", "pr": 422, "title": "Decouple PR gates from live production origins", "evidence": "Demo-link checks use a local server; production sampling is scheduled." },
+    { "class": "live-external-coupling", "ref": "1a474fc7a16869620fd91232866bd1fb71614e87", "pr": 864, "title": "Make preset fallback self-healing and harden browser guard", "evidence": "Check and refresh modes are separated." },
+    { "class": "flaky-shard-ejection", "ref": "751c1f53a4895e8bf3396064ea9c167a7b813da4", "pr": 1323, "title": "Count recovered routes-focus retries in the merge gate", "evidence": "One bounded fresh-runner retry is counted without weakening the aggregate." },
+    { "class": "flaky-shard-ejection", "ref": "9487aee74eaf4f23e5b84e7c34062a925309bb43", "pr": 971, "title": "Retry accessibility route checks on a fresh runner", "evidence": "Fresh-runner retry resets the browser-process failure domain." },
+    { "class": "flaky-shard-ejection", "ref": "33b8b4d5d5eec69baf57d5b43c36dd1125d92348", "pr": 860, "title": "Stabilize flaky CI browser and preset gates", "evidence": "History records recurring browser and preset instability." },
+    { "class": "flaky-shard-ejection", "ref": "6d3604b6071ba9e47518bad071263fbb2a2f4345", "pr": 668, "title": "Harden merge-group browser gate stability", "evidence": "Merge-group browser readiness retry and cold module-graph coverage." },
+    { "class": "long-pole-serial-check", "ref": "87ac4222f36e2deba2a42f03b562ec7a5c891caf", "pr": 951, "title": "Parallelize performance sample collection", "evidence": "Four shards collect twenty samples before aggregation." },
+    { "class": "long-pole-serial-check", "ref": "386dd3e790478a2474c8bafa0a8b3639fa89149f", "pr": 297, "title": "Path-filter performance budgets away from data-only PRs", "evidence": "Irrelevant data-only changes skip the performance browser contract." },
+    { "class": "generated-file-conflict", "ref": "fcdc4b340e224f23c5a02ded86502555fc2e6bcd", "pr": 837, "title": "Add generated architecture facts extractor", "evidence": "Generated facts and source inventories are shared-file surfaces." },
+    { "class": "generated-file-conflict", "ref": "78489f269aa9e8dd5663acdb380d70e9d002a468", "pr": 664, "title": "Fix i18n stamping for generated documents", "evidence": "Generated documents and i18n stamps need merge-safe producer ownership." },
+    { "class": "runner-pool-contention", "ref": "df5b61acc06d43cbfeef87ea2683ed1cbc76a5ed", "pr": 1006, "title": "Reconcile native merge train capacity", "evidence": "Committed ruleset retains a five-entry build and merge ceiling." },
+    { "class": "arm-time-thrash", "ref": "ec347b6dd5b8b0ef31ad39b46854dc037af4b704", "pr": 922, "title": "Add merge pipeline stall guard", "evidence": "Guard classifies stalled queue state transitions." },
+    { "class": "arm-time-thrash", "ref": "15dc19aa7eb3a67d23bece1138a2a29dbb1fda36", "pr": 449, "title": "Reconcile elder reservation thresholds", "evidence": "Elder handling separates detection, reservation, and rebase churn." }
+  ],
+  "taxonomy": [
+    { "id": "arm-time-thrash", "label": "Arm-time thrash", "service_rate_mechanism": "Repeated arm, update, and re-arm transitions consume attempts without a successful dequeue." },
+    { "id": "flaky-shard-ejection", "label": "Flaky-shard ejection", "service_rate_mechanism": "A transient shard failure discards a service attempt and returns the PR to the queue." },
+    { "id": "generated-file-conflict", "label": "Generated-file conflict", "service_rate_mechanism": "Shared generated outputs make otherwise independent changes collide and require rework." },
+    { "id": "live-external-coupling", "label": "Live-external coupling", "service_rate_mechanism": "A gate depends on mutable production, credentials, or external data." },
+    { "id": "long-pole-serial-check", "label": "Long-pole serial check", "service_rate_mechanism": "A serial check sets a service-time floor even when observations are independent or irrelevant." },
+    { "id": "runner-pool-contention", "label": "Runner-pool contention", "service_rate_mechanism": "A saturated hosted-runner pool stretches shard wall time and reduces completed trains." },
+    { "id": "shared-gate-rot", "label": "Shared-gate rot", "service_rate_mechanism": "A valid change becomes red after time, timezone, or baseline movement and must be serviced again." }
+  ],
+  "fixture_contract": {
+    "deterministic_sort": "incidents by id; history_records by class then ref; taxonomy by id",
+    "required_incident_fields": ["id", "class", "signature", "affected_checks", "detection_story", "root_cause", "fix_pr", "time_to_detection", "time_to_fix"],
+    "causal_claim_rule": "Every root_cause and attribution claim must carry evidence_refs and evidence_kind or attribution.",
+    "invalid_examples_rejected": ["missing refs", "unknown class id", "malformed class identifier", "causal claim without citation"],
+    "receipt": "A validator must emit a canonical JSON receipt from this contract without using wall-clock time."
+  }
+}
