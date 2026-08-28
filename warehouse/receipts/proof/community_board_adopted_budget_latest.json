@@ -1,0 +1,1477 @@
+{
+  "schema": "cityscroll.community_board_adopted_budget_receipt.v1",
+  "workstream_card": "CB-MONEY-01",
+  "status": "complete",
+  "generated_at": "2026-08-28T01:47:21.524Z",
+  "source": {
+    "source_system": "expense_budget",
+    "dataset_id": "mwzb-yiwb",
+    "source_url": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+    "source_native_key_field": "agency_number",
+    "amount_field": "adopted_budget_amount",
+    "source_vintage": "2026-07-08",
+    "observed_at": "2026-08-28T01:47:21.524Z",
+    "pinned_slice": {
+      "fiscal_year": 2027,
+      "publication_date": "20260630"
+    },
+    "identity_artifact": "site/data/community_board_financial_identity_crosswalk.json"
+  },
+  "identity_artifact": {
+    "path": "site/data/community_board_financial_identity_crosswalk.json",
+    "sha256": "e3286e2257bbe324a9a53c31d12c9a2dee9d766172da165eed65074f723b4074",
+    "receipt_schema": "cityscroll.community_board_financial_identity_receipt.v1",
+    "identity_source_slice": {
+      "fiscal_year": 2027,
+      "publication_date": "20260630"
+    }
+  },
+  "measurement": {
+    "candidate_rows": 1208,
+    "pinned_slice_rows": 1208,
+    "accepted_rows": 1208,
+    "accepted_board_facts": 59,
+    "board_fy_coverage": [
+      {
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2027,
+        "adopted_amount": 366943
+      },
+      {
+        "board_id": "bronx-cb-02",
+        "fiscal_year": 2027,
+        "adopted_amount": 399815
+      },
+      {
+        "board_id": "bronx-cb-03",
+        "fiscal_year": 2027,
+        "adopted_amount": 340425
+      },
+      {
+        "board_id": "bronx-cb-04",
+        "fiscal_year": 2027,
+        "adopted_amount": 313241
+      },
+      {
+        "board_id": "bronx-cb-05",
+        "fiscal_year": 2027,
+        "adopted_amount": 282857
+      },
+      {
+        "board_id": "bronx-cb-06",
+        "fiscal_year": 2027,
+        "adopted_amount": 297220
+      },
+      {
+        "board_id": "bronx-cb-07",
+        "fiscal_year": 2027,
+        "adopted_amount": 398834
+      },
+      {
+        "board_id": "bronx-cb-08",
+        "fiscal_year": 2027,
+        "adopted_amount": 365715
+      },
+      {
+        "board_id": "bronx-cb-09",
+        "fiscal_year": 2027,
+        "adopted_amount": 453870
+      },
+      {
+        "board_id": "bronx-cb-10",
+        "fiscal_year": 2027,
+        "adopted_amount": 383130
+      },
+      {
+        "board_id": "bronx-cb-11",
+        "fiscal_year": 2027,
+        "adopted_amount": 372726
+      },
+      {
+        "board_id": "bronx-cb-12",
+        "fiscal_year": 2027,
+        "adopted_amount": 296002
+      },
+      {
+        "board_id": "brooklyn-cb-01",
+        "fiscal_year": 2027,
+        "adopted_amount": 393231
+      },
+      {
+        "board_id": "brooklyn-cb-02",
+        "fiscal_year": 2027,
+        "adopted_amount": 365767
+      },
+      {
+        "board_id": "brooklyn-cb-03",
+        "fiscal_year": 2027,
+        "adopted_amount": 320444
+      },
+      {
+        "board_id": "brooklyn-cb-04",
+        "fiscal_year": 2027,
+        "adopted_amount": 345739
+      },
+      {
+        "board_id": "brooklyn-cb-05",
+        "fiscal_year": 2027,
+        "adopted_amount": 292874
+      },
+      {
+        "board_id": "brooklyn-cb-06",
+        "fiscal_year": 2027,
+        "adopted_amount": 399467
+      },
+      {
+        "board_id": "brooklyn-cb-07",
+        "fiscal_year": 2027,
+        "adopted_amount": 301427
+      },
+      {
+        "board_id": "brooklyn-cb-08",
+        "fiscal_year": 2027,
+        "adopted_amount": 380585
+      },
+      {
+        "board_id": "brooklyn-cb-09",
+        "fiscal_year": 2027,
+        "adopted_amount": 421418
+      },
+      {
+        "board_id": "brooklyn-cb-10",
+        "fiscal_year": 2027,
+        "adopted_amount": 392890
+      },
+      {
+        "board_id": "brooklyn-cb-11",
+        "fiscal_year": 2027,
+        "adopted_amount": 383858
+      },
+      {
+        "board_id": "brooklyn-cb-12",
+        "fiscal_year": 2027,
+        "adopted_amount": 383723
+      },
+      {
+        "board_id": "brooklyn-cb-13",
+        "fiscal_year": 2027,
+        "adopted_amount": 414056
+      },
+      {
+        "board_id": "brooklyn-cb-14",
+        "fiscal_year": 2027,
+        "adopted_amount": 425845
+      },
+      {
+        "board_id": "brooklyn-cb-15",
+        "fiscal_year": 2027,
+        "adopted_amount": 280971
+      },
+      {
+        "board_id": "brooklyn-cb-16",
+        "fiscal_year": 2027,
+        "adopted_amount": 313065
+      },
+      {
+        "board_id": "brooklyn-cb-17",
+        "fiscal_year": 2027,
+        "adopted_amount": 403279
+      },
+      {
+        "board_id": "brooklyn-cb-18",
+        "fiscal_year": 2027,
+        "adopted_amount": 292201
+      },
+      {
+        "board_id": "manhattan-cb-01",
+        "fiscal_year": 2027,
+        "adopted_amount": 302305
+      },
+      {
+        "board_id": "manhattan-cb-02",
+        "fiscal_year": 2027,
+        "adopted_amount": 391085
+      },
+      {
+        "board_id": "manhattan-cb-03",
+        "fiscal_year": 2027,
+        "adopted_amount": 451596
+      },
+      {
+        "board_id": "manhattan-cb-04",
+        "fiscal_year": 2027,
+        "adopted_amount": 449041
+      },
+      {
+        "board_id": "manhattan-cb-05",
+        "fiscal_year": 2027,
+        "adopted_amount": 421019
+      },
+      {
+        "board_id": "manhattan-cb-06",
+        "fiscal_year": 2027,
+        "adopted_amount": 481762
+      },
+      {
+        "board_id": "manhattan-cb-07",
+        "fiscal_year": 2027,
+        "adopted_amount": 476493
+      },
+      {
+        "board_id": "manhattan-cb-08",
+        "fiscal_year": 2027,
+        "adopted_amount": 473952
+      },
+      {
+        "board_id": "manhattan-cb-09",
+        "fiscal_year": 2027,
+        "adopted_amount": 431952
+      },
+      {
+        "board_id": "manhattan-cb-10",
+        "fiscal_year": 2027,
+        "adopted_amount": 514822
+      },
+      {
+        "board_id": "manhattan-cb-11",
+        "fiscal_year": 2027,
+        "adopted_amount": 410575
+      },
+      {
+        "board_id": "manhattan-cb-12",
+        "fiscal_year": 2027,
+        "adopted_amount": 450041
+      },
+      {
+        "board_id": "queens-cb-01",
+        "fiscal_year": 2027,
+        "adopted_amount": 341878
+      },
+      {
+        "board_id": "queens-cb-02",
+        "fiscal_year": 2027,
+        "adopted_amount": 416566
+      },
+      {
+        "board_id": "queens-cb-03",
+        "fiscal_year": 2027,
+        "adopted_amount": 401524
+      },
+      {
+        "board_id": "queens-cb-04",
+        "fiscal_year": 2027,
+        "adopted_amount": 361481
+      },
+      {
+        "board_id": "queens-cb-05",
+        "fiscal_year": 2027,
+        "adopted_amount": 353468
+      },
+      {
+        "board_id": "queens-cb-06",
+        "fiscal_year": 2027,
+        "adopted_amount": 385645
+      },
+      {
+        "board_id": "queens-cb-07",
+        "fiscal_year": 2027,
+        "adopted_amount": 394912
+      },
+      {
+        "board_id": "queens-cb-08",
+        "fiscal_year": 2027,
+        "adopted_amount": 407127
+      },
+      {
+        "board_id": "queens-cb-09",
+        "fiscal_year": 2027,
+        "adopted_amount": 292231
+      },
+      {
+        "board_id": "queens-cb-10",
+        "fiscal_year": 2027,
+        "adopted_amount": 340680
+      },
+      {
+        "board_id": "queens-cb-11",
+        "fiscal_year": 2027,
+        "adopted_amount": 377984
+      },
+      {
+        "board_id": "queens-cb-12",
+        "fiscal_year": 2027,
+        "adopted_amount": 371442
+      },
+      {
+        "board_id": "queens-cb-13",
+        "fiscal_year": 2027,
+        "adopted_amount": 358205
+      },
+      {
+        "board_id": "queens-cb-14",
+        "fiscal_year": 2027,
+        "adopted_amount": 305806
+      },
+      {
+        "board_id": "staten-island-cb-01",
+        "fiscal_year": 2027,
+        "adopted_amount": 369744
+      },
+      {
+        "board_id": "staten-island-cb-02",
+        "fiscal_year": 2027,
+        "adopted_amount": 325687
+      },
+      {
+        "board_id": "staten-island-cb-03",
+        "fiscal_year": 2027,
+        "adopted_amount": 432660
+      }
+    ],
+    "duplicate_rows_suppressed": 0,
+    "unmatched_rows": [],
+    "unmatched_rows_reported": true,
+    "component_semantic_checks": [
+      {
+        "board_id": "bronx-cb-01",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 1,
+        "otps_rows": 15,
+        "adopted_total": 366943,
+        "component_total": 366943,
+        "components": {
+          "P": 268805,
+          "O": 98138
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-02",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 21,
+        "adopted_total": 399815,
+        "component_total": 399815,
+        "components": {
+          "P": 255652,
+          "O": 144163
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-03",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 13,
+        "adopted_total": 340425,
+        "component_total": 340425,
+        "components": {
+          "P": 262292,
+          "O": 78133
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-04",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 10,
+        "adopted_total": 313241,
+        "component_total": 313241,
+        "components": {
+          "P": 282445,
+          "O": 30796
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-05",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 10,
+        "adopted_total": 282857,
+        "component_total": 282857,
+        "components": {
+          "P": 244884,
+          "O": 37973
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-06",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 18,
+        "adopted_total": 297220,
+        "component_total": 297220,
+        "components": {
+          "P": 275093,
+          "O": 22127
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-07",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 21,
+        "adopted_total": 398834,
+        "component_total": 398834,
+        "components": {
+          "P": 263716,
+          "O": 135118
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-08",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 20,
+        "adopted_total": 365715,
+        "component_total": 365715,
+        "components": {
+          "P": 260050,
+          "O": 105665
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-09",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 8,
+        "adopted_total": 453870,
+        "component_total": 453870,
+        "components": {
+          "P": 294779,
+          "O": 159091
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-10",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 24,
+        "adopted_total": 383130,
+        "component_total": 383130,
+        "components": {
+          "P": 268389,
+          "O": 114741
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-11",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 5,
+        "otps_rows": 16,
+        "adopted_total": 372726,
+        "component_total": 372726,
+        "components": {
+          "P": 286925,
+          "O": 85801
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "bronx-cb-12",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 17,
+        "adopted_total": 296002,
+        "component_total": 296002,
+        "components": {
+          "P": 275995,
+          "O": 20007
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-01",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 21,
+        "adopted_total": 393231,
+        "component_total": 393231,
+        "components": {
+          "P": 270669,
+          "O": 122562
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-02",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 18,
+        "adopted_total": 365767,
+        "component_total": 365767,
+        "components": {
+          "P": 272964,
+          "O": 92803
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-03",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 1,
+        "otps_rows": 21,
+        "adopted_total": 320444,
+        "component_total": 320444,
+        "components": {
+          "P": 226307,
+          "O": 94137
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-04",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 27,
+        "adopted_total": 345739,
+        "component_total": 345739,
+        "components": {
+          "P": 256628,
+          "O": 89111
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-05",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 17,
+        "adopted_total": 292874,
+        "component_total": 292874,
+        "components": {
+          "P": 274829,
+          "O": 18045
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-06",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 13,
+        "adopted_total": 399467,
+        "component_total": 399467,
+        "components": {
+          "P": 276536,
+          "O": 122931
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-07",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 10,
+        "adopted_total": 301427,
+        "component_total": 301427,
+        "components": {
+          "P": 278228,
+          "O": 23199
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-08",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 21,
+        "adopted_total": 380585,
+        "component_total": 380585,
+        "components": {
+          "P": 270469,
+          "O": 110116
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-09",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 31,
+        "adopted_total": 421418,
+        "component_total": 421418,
+        "components": {
+          "P": 258006,
+          "O": 163412
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-10",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 21,
+        "adopted_total": 392890,
+        "component_total": 392890,
+        "components": {
+          "P": 279760,
+          "O": 113130
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-11",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 25,
+        "adopted_total": 383858,
+        "component_total": 383858,
+        "components": {
+          "P": 249540,
+          "O": 134318
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-12",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 21,
+        "adopted_total": 383723,
+        "component_total": 383723,
+        "components": {
+          "P": 262600,
+          "O": 121123
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-13",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 23,
+        "adopted_total": 414056,
+        "component_total": 414056,
+        "components": {
+          "P": 285516,
+          "O": 128540
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-14",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 26,
+        "adopted_total": 425845,
+        "component_total": 425845,
+        "components": {
+          "P": 284666,
+          "O": 141179
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-15",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 11,
+        "adopted_total": 280971,
+        "component_total": 280971,
+        "components": {
+          "P": 234785,
+          "O": 46186
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-16",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 18,
+        "adopted_total": 313065,
+        "component_total": 313065,
+        "components": {
+          "P": 241040,
+          "O": 72025
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-17",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 1,
+        "otps_rows": 28,
+        "adopted_total": 403279,
+        "component_total": 403279,
+        "components": {
+          "P": 273274,
+          "O": 130005
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "brooklyn-cb-18",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 16,
+        "adopted_total": 292201,
+        "component_total": 292201,
+        "components": {
+          "P": 251809,
+          "O": 40392
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-01",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 20,
+        "adopted_total": 302305,
+        "component_total": 302305,
+        "components": {
+          "P": 275060,
+          "O": 27245
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-02",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 1,
+        "otps_rows": 13,
+        "adopted_total": 391085,
+        "component_total": 391085,
+        "components": {
+          "P": 279985,
+          "O": 111100
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-03",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 16,
+        "adopted_total": 451596,
+        "component_total": 451596,
+        "components": {
+          "P": 295073,
+          "O": 156523
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-04",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 12,
+        "adopted_total": 449041,
+        "component_total": 449041,
+        "components": {
+          "P": 283594,
+          "O": 165447
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-05",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 1,
+        "otps_rows": 15,
+        "adopted_total": 421019,
+        "component_total": 421019,
+        "components": {
+          "P": 280449,
+          "O": 140570
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-06",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 14,
+        "adopted_total": 481762,
+        "component_total": 481762,
+        "components": {
+          "P": 283085,
+          "O": 198677
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-07",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 12,
+        "adopted_total": 476493,
+        "component_total": 476493,
+        "components": {
+          "P": 284769,
+          "O": 191724
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-08",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 14,
+        "adopted_total": 473952,
+        "component_total": 473952,
+        "components": {
+          "P": 284230,
+          "O": 189722
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-09",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 10,
+        "adopted_total": 431952,
+        "component_total": 431952,
+        "components": {
+          "P": 251436,
+          "O": 180516
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-10",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 9,
+        "adopted_total": 514822,
+        "component_total": 514822,
+        "components": {
+          "P": 238428,
+          "O": 276394
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-11",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 21,
+        "adopted_total": 410575,
+        "component_total": 410575,
+        "components": {
+          "P": 277325,
+          "O": 133250
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "manhattan-cb-12",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 15,
+        "adopted_total": 450041,
+        "component_total": 450041,
+        "components": {
+          "P": 268718,
+          "O": 181323
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-01",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 20,
+        "adopted_total": 341878,
+        "component_total": 341878,
+        "components": {
+          "P": 244829,
+          "O": 97049
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-02",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 23,
+        "adopted_total": 416566,
+        "component_total": 416566,
+        "components": {
+          "P": 275476,
+          "O": 141090
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-03",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 23,
+        "adopted_total": 401524,
+        "component_total": 401524,
+        "components": {
+          "P": 271303,
+          "O": 130221
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-04",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 23,
+        "adopted_total": 361481,
+        "component_total": 361481,
+        "components": {
+          "P": 285104,
+          "O": 76377
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-05",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 26,
+        "adopted_total": 353468,
+        "component_total": 353468,
+        "components": {
+          "P": 280173,
+          "O": 73295
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-06",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 24,
+        "adopted_total": 385645,
+        "component_total": 385645,
+        "components": {
+          "P": 289469,
+          "O": 96176
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-07",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 15,
+        "adopted_total": 394912,
+        "component_total": 394912,
+        "components": {
+          "P": 284113,
+          "O": 110799
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-08",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 16,
+        "adopted_total": 407127,
+        "component_total": 407127,
+        "components": {
+          "P": 277838,
+          "O": 129289
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-09",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 13,
+        "adopted_total": 292231,
+        "component_total": 292231,
+        "components": {
+          "P": 256637,
+          "O": 35594
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-10",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 2,
+        "otps_rows": 21,
+        "adopted_total": 340680,
+        "component_total": 340680,
+        "components": {
+          "P": 260873,
+          "O": 79807
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-11",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 18,
+        "adopted_total": 377984,
+        "component_total": 377984,
+        "components": {
+          "P": 276555,
+          "O": 101429
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-12",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 15,
+        "adopted_total": 371442,
+        "component_total": 371442,
+        "components": {
+          "P": 273306,
+          "O": 98136
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-13",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 17,
+        "adopted_total": 358205,
+        "component_total": 358205,
+        "components": {
+          "P": 255220,
+          "O": 102985
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "queens-cb-14",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 16,
+        "adopted_total": 305806,
+        "component_total": 305806,
+        "components": {
+          "P": 248628,
+          "O": 57178
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "staten-island-cb-01",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 14,
+        "adopted_total": 369744,
+        "component_total": 369744,
+        "components": {
+          "P": 285191,
+          "O": 84553
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "staten-island-cb-02",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 4,
+        "otps_rows": 19,
+        "adopted_total": 325687,
+        "component_total": 325687,
+        "components": {
+          "P": 269630,
+          "O": 56057
+        },
+        "reconciles": true,
+        "failures": []
+      },
+      {
+        "board_id": "staten-island-cb-03",
+        "fiscal_year": 2027,
+        "status": "verified",
+        "indicator_field": "personal_service_other_than_personal_service_indicator",
+        "appropriation_field": "unit_appropriation_name",
+        "personal_indicator": "P",
+        "otps_indicator": "O",
+        "personal_rows": 3,
+        "otps_rows": 12,
+        "adopted_total": 432660,
+        "component_total": 432660,
+        "components": {
+          "P": 287496,
+          "O": 145164
+        },
+        "reconciles": true,
+        "failures": []
+      }
+    ],
+    "reproducible_aggregation": {
+      "grouping": [
+        "board_id",
+        "fiscal_year"
+      ],
+      "source_amount": "adopted_budget_amount",
+      "duplicate_key": "sha256-equivalent stable JSON of all non-metadata source fields",
+      "duplicate_publication_policy": "one explicit fiscal_year/publication_date slice"
+    },
+    "provenance_carried_to_read_model": true
+  },
+  "hard_rules": {
+    "exact_cb_money_00_binding_required": true,
+    "adopted_distinct_from_current_modified": true,
+    "one_explicit_fiscal_year_publication_slice": true,
+    "duplicate_source_rows_do_not_double_count": true,
+    "unmatched_rows_are_reported_not_dropped": true,
+    "unsupported_components_are_not_published_as_verified": true
+  },
+  "read_model": "site/data/community_board_adopted_budget.json"
+}
