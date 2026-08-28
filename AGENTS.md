@@ -3998,6 +3998,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   proof is `test/community_board_money.test.mjs`. Missing, partial, unmatched, empty, and stale
   source states remain explicit, and uncertified budget/payment ratios stay null.
 
+- **Community Board money comparison:** `site/community_board_money_comparison.mjs` is the
+  selection-only projection for the 59-board comparison. Run
+  `node tools/build_community_board_money_comparison.mjs` to refresh its artifact and receipt; the
+  existing `/community-boards/` map/table shell consumes it for labeled fiscal-year views,
+  sortable metrics, dossier links, and the parity-tested map layer. It never re-aggregates the
+  CB-MONEY-03 read model or introduces ratios/per-capita metrics.
+
 - **Merge-gate audit:** `tools/merge_gate_audit.mjs` projects MT-1 required-check receipts into
   catch, runner-minute, flake, ejection, and serialized wall-time metrics. Missing observations
   remain unknown; the audit also records the shared architecture watermark serialization finding.

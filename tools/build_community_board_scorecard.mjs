@@ -12,6 +12,7 @@ const OUTCOME_LOOKUP = join(ROOT, "site/data/non_council_outcome_lookup.json");
 const DETECTOR = join(ROOT, "site/data/community_board_minutes_gap.json");
 const MEETING_INDEX = join(ROOT, "site/data/community_board_meeting_index.json");
 const BOUNDARIES = join(ROOT, "site/data/district_boundaries.json");
+const MONEY_COMPARISON = join(ROOT, "site/data/community_board_money_comparison.json");
 const JSON_OUT = join(ROOT, "site/data/community_board_minutes_scorecard.json");
 const HTML_OUT = join(ROOT, "site/community-boards/index.html");
 const check = process.argv.includes("--check");
@@ -23,6 +24,7 @@ const scorecard = buildScorecard({
   sourceInventory: JSON.parse(readFileSync(SOURCE_INVENTORY, "utf8")),
   meetingIndex,
   joinedLookup: JSON.parse(readFileSync(OUTCOME_LOOKUP, "utf8")),
+  moneyComparison: JSON.parse(readFileSync(MONEY_COMPARISON, "utf8")),
 });
 const json = `${JSON.stringify(scorecard, null, 2)}\n`;
 const html = `${renderScorecardPage(scorecard, { boundaries: JSON.parse(readFileSync(BOUNDARIES, "utf8")) })}\n`;
