@@ -700,6 +700,18 @@ function rowHref(facet, row) {
   return `/notices/${encodeURIComponent(id)}`;
 }
 
+function groundedRulemakingId(row) {
+  const record = row?._ruleStage || row;
+  const subject = String(record?.rulemaking_subject_ref || record?.rulemaking_id || "").trim();
+  const join = record?.rulemaking_join;
+  return subject
+    && join?.matched === true
+    && join?.confidence === "high"
+    && Number(join?.notice_count) > 1
+    ? subject
+    : null;
+}
+
 function corpus(row) {
   return Object.values(row || {}).flatMap((value) => {
     if (value == null) return [];
@@ -1274,7 +1286,11 @@ export function renderBrowseView(view) {
         source_label: meetingOriginLabel(row.meeting_origin),
       })
       : view.facet === "rules"
-        ? rulesCardInteractionProjection({ request_id: rowId(view.facet, row), title })
+        ? rulesCardInteractionProjection({
+          request_id: rowId(view.facet, row),
+          rulemaking_id: groundedRulemakingId(row),
+          title,
+        })
         : objectCardInteractionProjection({ target: href ? { href, label: title } : null });
     const titleMarkup = interaction.target
       ? renderObjectCardTitle(interaction, {

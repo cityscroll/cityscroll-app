@@ -97,6 +97,7 @@ function rulesExplorerCardHTML(entry, terms){
     : t("rule_action_attend_hearing_dated");
   const interaction=rulesCardInteractionProjection({
     request_id:r.request_id,
+    rulemaking_id:entry.kind === "rulemaking" ? entry.subject_ref : null,
     title,
     fine_stage:fineStage,
     rule_url:entry.rule_url,

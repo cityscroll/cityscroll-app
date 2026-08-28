@@ -27,6 +27,8 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
+import { renderRulemakingDocument } from "./rulemaking_document.mjs";
+import { buildRulemakingObjects, rulemakingObjectForId } from "../worker/src/lib/rulemaking.mjs";
 import { buildCommitteeDocumentView, renderCommitteeDocument } from "./committee_document.mjs";
 import { buildLegislativeMatterDocument, renderLegislativeMatterDocument } from "./legislative_matter_document.mjs";
 import { renderNoticeBitemporalHistory } from "./civic_time_ledger.mjs";
@@ -43,6 +45,7 @@ import {
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
+const RULES_READ_MODEL = "https://api.cityscroll.org/rules";
 const NOTICE_FIELDS = [
   "request_id", "start_date", "event_date", "due_date", "agency_name",
   "type_of_notice_description", "section_name", "short_title", "pin",
@@ -75,6 +78,17 @@ function firstNoticeAttachmentUrl(row) {
 function safeId(pathname) {
   const match = pathname.match(/^\/notices\/([A-Za-z0-9_-]{1,80})\/?$/);
   return match ? match[1] : null;
+}
+
+function safeRulemaking(pathname) {
+  const match = pathname.match(/^\/rules\/([^/?#]{1,700})\/?$/);
+  if (!match) return null;
+  try {
+    const id = decodeURIComponent(match[1]);
+    return id.startsWith("rulemaking:") && id.length <= 700 ? id : null;
+  } catch {
+    return null;
+  }
 }
 
 function safeMeeting(pathname) {
@@ -175,6 +189,7 @@ function entityDocument(pathname) {
 export function edgeRequestKind(urlValue) {
   const url = new URL(urlValue);
   if (assertionTarget(url)) return "assertion";
+  if (safeRulemaking(url.pathname)) return "rulemaking";
   if (safeId(url.pathname)) return "notice";
   if (safeMandate(url.pathname)) return "mandate";
   if (safeMatter(url.pathname)) return "matter";
@@ -688,6 +703,48 @@ async function noticeRow(id) {
   return Array.isArray(rows) ? { row: rows[0] || null, civic_time: null } : { row: null, civic_time: null };
 }
 
+function rulemakingUnavailableResponse() {
+  return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Rulemaking not found · CityScroll</title></head><body><main><h1>Rulemaking not found</h1><p><a href=\"/browse/rules/\">Browse Rules</a></p></main></body></html>", {
+    status: 404,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=60" },
+  });
+}
+
+async function handleRulemaking(request, encodedId) {
+  let id;
+  try { id = decodeURIComponent(encodedId); } catch { return rulemakingUnavailableResponse(); }
+  let object = null;
+  try {
+    const response = await fetch(RULES_READ_MODEL, {
+      headers: { Accept: "application/json" },
+      cf: { cacheTtl: 900, cacheEverything: true },
+    });
+    if (response.ok) {
+      const payload = await response.json();
+      object = Array.isArray(payload?.rulemakings)
+        ? payload.rulemakings.find((row) => row?.rulemaking_id === id) || null
+        : rulemakingObjectForId(payload?.rules || [], id, { now: new Date().toISOString().slice(0, 10) });
+      // A materialized object is authoritative; this fallback only supports a
+      // young API snapshot while the v8 view rolls out.
+      if (!object && Array.isArray(payload?.rules)) {
+        object = buildRulemakingObjects(payload.rules, { now: new Date().toISOString().slice(0, 10) })
+          .find((row) => row.rulemaking_id === id) || null;
+      }
+    }
+  } catch (_error) {
+    object = null;
+  }
+  if (!object) return rulemakingUnavailableResponse();
+  const html = renderRulemakingDocument(object, { currentHref: request.url });
+  if (!html) return rulemakingUnavailableResponse();
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD" ? new Response(null, { status: 200, headers }) : new Response(html, { status: 200, headers });
+}
+
 async function handleProcurement(request, env, encodedId) {
   let id;
   try { id = decodeURIComponent(encodedId); } catch { return new Response("Invalid procurement link", { status: 400 }); }
@@ -989,6 +1046,8 @@ export default {
     const url = new URL(request.url);
     const assertion = assertionTarget(url);
     if (assertion) return handleAssertion(request, env, assertion);
+    const rulemaking = safeRulemaking(url.pathname);
+    if (rulemaking) return handleRulemaking(request, rulemaking);
     const id = safeId(url.pathname);
     if (id) return handleNotice(request, env, id);
     const mandateId = safeMandate(url.pathname);
