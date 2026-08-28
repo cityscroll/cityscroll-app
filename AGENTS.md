@@ -4004,6 +4004,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   proof is `test/community_board_money.test.mjs`. Missing, partial, unmatched, empty, and stale
   source states remain explicit, and uncertified budget/payment ratios stay null.
 
+- **Community Board money follow feasibility:** `site/community_board_money_follow_feasibility.mjs`
+  measures CB-MONEY-02 payment observations by exact retained transaction identity and calendar
+  month, then stops without shipping follow replay while only one source snapshot exists. Refresh
+  the deterministic measurement receipt with `node tools/build_community_board_money_follow_feasibility.mjs`
+  (`--check` verifies it); focused proof is `test/community_board_money_follow_feasibility.test.mjs`.
+
 - **Community Board money comparison:** `site/community_board_money_comparison.mjs` is the
   selection-only projection for the 59-board comparison. Run
   `node tools/build_community_board_money_comparison.mjs` to refresh its artifact and receipt; the
