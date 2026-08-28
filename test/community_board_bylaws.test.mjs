@@ -137,6 +137,15 @@ test("governance question panel links the answer to the exact bylaw version", ()
   assert.match(html, /bylaw-version:manhattan-cb-06:2023-03-08/);
 });
 
+test("a current bylaw version with no material rules states that gap once", () => {
+  const graph = buildCommunityBoardBylawGraph({ versions: [baseVersion()] });
+  const question = answerCommunityBoardGovernanceQuestion(graph, "bronx-cb-01");
+  const html = renderCommunityBoardBylawPanel({ question, versions: graph.versions });
+  assert.match(html, /No material board rules are listed in this source/);
+  assert.equal((html.match(/Source does not establish/g) || []).length, 1);
+  assert.match(html, /data-bylaw-answer="source_does_not_establish"/);
+});
+
 test("board page renders a board-specific yes answer and no-bylaw unknown", () => {
   const registry = JSON.parse(readFileSync(new URL("../site/data/non_council_outcome_sources/source_registry.json", import.meta.url), "utf8"));
   const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url), "utf8"));
@@ -148,4 +157,7 @@ test("board page renders a board-specific yes answer and no-bylaw unknown", () =
   assert.match(yesHtml, /Governing bylaws/);
   assert.match(unknownHtml, /data-governance-answer="source_does_not_establish"/);
   assert.match(unknownHtml, /No board-specific bylaw version is available/);
+  const governance = unknownHtml.match(/<section id="community-board-governance"[\s\S]*?<\/section>/)?.[0] || "";
+  assert.equal((governance.match(/Source does not establish/g) || []).length, 1);
+  assert.doesNotMatch(governance, /Source does not establish material rules/);
 });
