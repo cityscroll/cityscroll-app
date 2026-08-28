@@ -1296,8 +1296,6 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     // Keep the edge document bounded while retaining a useful densified corpus.
     max_entities: opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP,
     mandate_agency_refs: mandateAgencyRefs,
-    priority_root_refs: (procurementSpine.observations || [])
-      .flatMap((row) => row?.vendor_name ? [`vendor:stem:${encodeURIComponent(vendorStem(row.vendor_name))}`] : []),
   });
   // Source-native contract vendors must remain addressable even when the
   // bounded cross-domain richness census is full. This is an additive route
