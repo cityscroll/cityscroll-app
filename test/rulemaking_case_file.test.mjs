@@ -57,6 +57,11 @@ test("DOT City-Owned Bicycle Racks is one case file with four dated stages", () 
   assert.match(html, /April 24, 2026/);
   assert.match(html, /July 14, 2026/);
   assert.match(html, /August 13, 2026/);
+  assert.match(html, /data-history-coverage="partial"/);
+  assert.match(html, /data-event-kind="observed"/);
+  assert.match(html, /data-event-kind="derived"/);
+  assert.match(html, /Derived from the observed event dates and statuses/);
+  assert.match(html, /data-missing-events="comment_close"/);
   assert.match(html, /\/notices\/20260317026/);
   assert.match(html, /\/notices\/20260706041/);
   assert.doesNotMatch(html, /rulemaking_subject_ref|multi_notice/);

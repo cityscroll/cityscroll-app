@@ -13,6 +13,7 @@ import {
   RULES_PHASES,
   RULE_EVENT_TYPES,
   aggregatePhaseEvents,
+  buildRuleHistoryTimeline,
   buildRulesPhaseView,
   dedupePhaseSourceLinks,
   eventDate,
@@ -225,6 +226,50 @@ test("unmatched notice: empty spine stays on proposal with gap slots", () => {
     else assert.equal(p.state, "future");
     assert.equal(p.event_count, 0);
   }
+});
+
+test("rule history timeline separates observed events, derived state, and unknown gaps", () => {
+  const view = buildRulesPhaseView({
+    request_id: "PROP-1",
+    stage: "adopted",
+    nyc_rules: { url: "https://rules.cityofnewyork.us/rule/fixture/" },
+    events: [
+      {
+        event_type: "proposal_published",
+        valid_at: "2026-03-25",
+        source_system: "city_record",
+        source_field: "notice_date",
+        source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/PROP-1",
+        request_id: "PROP-1",
+        status: "occurred",
+      },
+      {
+        event_type: "adoption",
+        valid_at: null,
+        source_system: "city_record",
+        source_field: "notice_date",
+        request_id: "ADOPT-1",
+        status: "occurred",
+      },
+    ],
+  }, { skipStitch: true });
+
+  const timeline = buildRuleHistoryTimeline(view, {
+    nyc_rules: { url: "https://rules.cityofnewyork.us/rule/fixture/" },
+  });
+  assert.equal(timeline.schema_version, 1);
+  assert.equal(timeline.coverage.state, "partial");
+  assert.deepEqual(timeline.coverage.missing_event_types, ["public_hearing", "comment_close", "effective"]);
+  assert.equal(timeline.events[0].kind, "observed");
+  assert.equal(timeline.events[0].date_state, "known");
+  assert.equal(timeline.events[0].source_label, "City Record");
+  assert.equal(timeline.events[0].trace_href, "https://a856-cityrecord.nyc.gov/RequestDetail/PROP-1");
+  assert.equal(timeline.events[1].date_state, "unknown");
+  assert.equal(timeline.events[1].trace_href, "/notices/ADOPT-1");
+  assert.equal(timeline.derived.kind, "derived");
+  assert.ok(timeline.derived.basis_event_refs.length >= 1);
+  assert.ok(timeline.derived.basis_event_refs.every((ref) => ref.href));
+  assert.equal(timeline.traceability.unresolved_events, 0);
 });
 
 test("public Rules detail template uses phase spine surface", () => {

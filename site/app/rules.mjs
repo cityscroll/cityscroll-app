@@ -589,6 +589,39 @@ function ruleSiblingsHTML(view){
   </div>`;
 }
 
+function ruleHistoryTimelineHTML(view){
+  const model=view&&view.history_timeline;
+  if(!model) return "";
+  const link=(href,label)=>href
+    ? `<a href="${escUiHtml(href)}" ${/^https?:\/\//i.test(href)?EXT_ATTRS:""}>${escUiHtml(label)}</a>`
+    : "";
+  const events=(model.events||[]).map(event=>{
+    if(!event||!event.trace_href) return "";
+    const date=event.date_state==="known"?ruleDateLabel(event.observed_date):event.unknown_date_label;
+    const record=event.record_href&&event.record_href!==event.trace_href
+      ? ` · ${link(event.record_href,event.record_label)}`:"";
+    const source=[event.source_label,event.source_field].filter(Boolean).join(" · ");
+    return `<li class="rule-history-event" data-event-kind="observed" data-date-state="${escUiHtml(event.date_state||"unknown")}">
+      <div class="rule-history-event-heading"><span class="tag rule-history-marker">${escUiHtml(event.marker)}</span><strong>${link(event.trace_href,event.label)}</strong><time class="rule-history-date" datetime="${escUiHtml(event.observed_date||"")}">${escUiHtml(date)}</time></div>
+      <p class="rule-history-event-meta">${escUiHtml(source)} · ${link(event.trace_href,event.trace_label)}${record}</p>
+    </li>`;
+  }).filter(Boolean).join("");
+  const derived=model.derived;
+  const derivedHtml=derived?`<li class="rule-history-event rule-history-derived" data-event-kind="derived">
+    <div class="rule-history-event-heading"><span class="tag rule-history-marker">${escUiHtml(derived.marker)}</span><strong>${escUiHtml(derived.label)}</strong></div>
+    <p class="rule-history-event-meta">${escUiHtml(derived.basis||"")}</p>
+    ${(derived.basis_event_refs||[]).filter(ref=>ref&&ref.href).length?`<p class="rule-history-basis-label">${escUiHtml(derived.basis_label)}</p><ul class="rule-history-basis">${(derived.basis_event_refs||[]).filter(ref=>ref&&ref.href).map(ref=>`<li>${link(ref.href,ref.label)}</li>`).join("")}</ul>`:""}
+  </li>`:"";
+  const coverage=model.coverage||{};
+  const missing=(model.missing_events||[]).map(event=>event.label).filter(Boolean).join(", ");
+  const missingHtml=missing?`<p class="rule-history-missing">${escUiHtml(coverage.missing_note)}</p>`:"";
+  return `<div class="rule-history" data-history-coverage="${escUiHtml(coverage.state||"unknown")}">
+    <p class="rule-history-coverage">${escUiHtml(coverage.note)}</p>
+    <ol class="rule-history-timeline" aria-label="${escUiHtml(model.label)}">${events}${derivedHtml}</ol>
+    ${missingHtml}
+  </div>`;
+}
+
 function ruleAdoptionEstimateHTML(estimate){
   if(!estimate||!estimate.pattern_line) return "";
   const chip=`<span class="tag renewal">${escUiHtml(t("cadence_estimate_tag"))}</span>`;
@@ -610,6 +643,7 @@ function ruleEventSpineHTMLPhase(view, rec){
   if(!view) return "";
   const lead=rulePhaseLeadHTML(view, rec);
   const siblings=ruleSiblingsHTML(view);
+  const history=ruleHistoryTimelineHTML(view);
   const stepper=rulePhaseStepperHTML(view);
   const estimate=ruleAdoptionEstimateHTML(view.adoption_lag_estimate||null);
   const currentPanel=(view.phases||[]).filter(p=>p.state==="current")
@@ -626,6 +660,7 @@ function ruleEventSpineHTMLPhase(view, rec){
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
     ${lead}
     ${siblings}
+    ${history}
     ${stepper}
     ${currentPanel}
     ${estimate}

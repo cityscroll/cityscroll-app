@@ -115,6 +115,44 @@ export const RULE_EVENT_META = Object.freeze({
   },
 });
 
+export const RULE_HISTORY_TIMELINE_SCHEMA_VERSION = 1;
+
+const HISTORY_EVENT_LABELS = Object.freeze({
+  proposal_published: "Proposal published",
+  public_hearing: "Public hearing",
+  comment_close: "Comment period closes",
+  adoption: "Adoption published",
+  effective: "Takes effect",
+});
+
+const HISTORY_EVENT_ROLES = Object.freeze({
+  proposal_published: "proposal",
+  public_hearing: "hearing",
+  adoption: "adoption",
+});
+
+const HISTORY_PHASE_LABELS = Object.freeze({
+  proposal: "Proposed",
+  public_process: "Public process",
+  adoption: "Adopted",
+  effective: "Effective",
+});
+
+function derivedLifecycleLabel(view) {
+  const phase = view?.current?.phase_id;
+  if (phase === "public_process") {
+    const stage = view?.current?.stage || view?.stage;
+    const commentClosed = stage === "comment-closed"
+      || (view?.chronological || []).some((event) => (
+        event?.event_type === "comment_close" && event?.status !== "scheduled"
+      ));
+    return commentClosed
+      ? "Comment closed · Awaiting agency action"
+      : "Comment/hearing open";
+  }
+  return HISTORY_PHASE_LABELS[phase] || phase || "Rulemaking status";
+}
+
 function clean(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
@@ -136,6 +174,121 @@ function normalizeKey(value) {
     .toLowerCase()
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function historySourceLabel(event) {
+  const source = clean(event?.source_system || event?.provenance?.source);
+  if (source === "city_record") return "City Record";
+  if (source === "nyc_rules") return "NYC Rules";
+  const url = clean(event?.source_url || event?.source?.url) || "";
+  if (/cityrecord\.nyc\.gov/i.test(url)) return "City Record";
+  if (/rules\.cityofnewyork\.us/i.test(url)) return "NYC Rules";
+  return source || "Published source";
+}
+
+function historyRecordHref(requestId) {
+  const id = clean(requestId, 80);
+  return id ? `/notices/${encodeURIComponent(id)}` : null;
+}
+
+function historyDocumentForEvent(event, record) {
+  const role = HISTORY_EVENT_ROLES[event?.event_type];
+  if (!role) return null;
+  const documents = Array.isArray(record?.source_documents)
+    ? record.source_documents
+    : [];
+  return documents.find((document) => (
+    document?.kind === "city_record_notice" && document.role === role
+  )) || null;
+}
+
+function historyEventId(event, index) {
+  const type = clean(event?.event_type) || "event";
+  const day = eventDate(event) || "unknown";
+  return `rule-history-${type}-${day}-${index}`.replace(/[^a-z0-9-]/gi, "-");
+}
+
+/**
+ * Turn retained event observations into the auditable rule-history contract.
+ * Missing event types are represented as unknown metadata, never as negative
+ * events. The derived current label is separate from source observations.
+ *
+ * @param {object|null|undefined} view - result of buildRulesPhaseView
+ * @param {object|null|undefined} record - source/read-model record
+ */
+export function buildRuleHistoryTimeline(view, record = null) {
+  const observed = (view?.chronological || []).map((event, index) => {
+    const sourceUrl = clean(event?.source_url || event?.source?.url) || null;
+    const requestId = clean(event?.request_id || event?.provenance?.request_id) || null;
+    const sourceDocument = historyDocumentForEvent(event, record);
+    const recordHref = historyRecordHref(requestId) || clean(sourceDocument?.href) || null;
+    const officialHref = sourceUrl || clean(record?.nyc_rules?.url) || clean(view?.official_url) || null;
+    const traceHref = sourceUrl || recordHref || officialHref || null;
+    return {
+      id: historyEventId(event, index),
+      kind: "observed",
+      event_type: clean(event?.event_type) || null,
+      label: HISTORY_EVENT_LABELS[event?.event_type] || "Process event",
+      marker: "Observed",
+      observed_date: eventDate(event),
+      date_state: eventDate(event) ? "known" : "unknown",
+      unknown_date_label: "Date unknown",
+      status: clean(event?.status) || "unknown",
+      source_label: historySourceLabel(event),
+      source_system: clean(event?.source_system || event?.provenance?.source) || null,
+      source_field: clean(event?.source_field) || null,
+      source_url: sourceUrl,
+      record_href: recordHref,
+      record_label: "CityScroll record",
+      trace_href: traceHref,
+      trace_kind: sourceUrl ? "official_source" : recordHref ? "cityscroll_record" : null,
+      trace_label: "Open source",
+      trace_status: traceHref ? "traceable" : "unresolved",
+    };
+  });
+
+  const knownTypes = [...new Set(observed.map((event) => event.event_type).filter(Boolean))];
+  const missingTypes = RULE_EVENT_TYPES.filter((type) => !knownTypes.includes(type));
+  const basisEvents = observed.filter((event) => event.trace_href);
+  const currentPhase = view?.current?.phase_id || null;
+  const derived = basisEvents.length && currentPhase
+    ? {
+      id: "rule-history-derived-current-state",
+      kind: "derived",
+      label: `Derived lifecycle: ${derivedLifecycleLabel(view)}`,
+      marker: "Derived",
+      basis: "Derived from the observed event dates and statuses shown in this history.",
+      basis_label: "Based on these source events:",
+      basis_event_refs: basisEvents.map((event) => ({
+        id: event.id,
+        label: event.label,
+        href: event.trace_href,
+      })),
+    }
+    : null;
+
+  return {
+    schema_version: RULE_HISTORY_TIMELINE_SCHEMA_VERSION,
+    label: "Rule history",
+    events: observed,
+    derived,
+    missing_events: missingTypes.map((eventType) => ({
+      event_type: eventType,
+      label: HISTORY_EVENT_LABELS[eventType] || "Process event",
+      state: "unknown",
+    })),
+    coverage: {
+      state: observed.length ? (missingTypes.length ? "partial" : "complete") : "unknown",
+      known_event_types: knownTypes,
+      missing_event_types: missingTypes,
+      note: "Known events are shown from retained source observations; this history may be incomplete.",
+      missing_note: "Historical coverage is partial; use the linked sources above, and treat unlisted events as unknown.",
+    },
+    traceability: {
+      traceable_events: observed.filter((event) => event.trace_status === "traceable").length,
+      unresolved_events: observed.filter((event) => event.trace_status === "unresolved").length,
+    },
+  };
 }
 
 /**
@@ -757,7 +910,7 @@ export function buildRulesPhaseView(rec, opts = {}) {
     : [];
   const multiNotice = !!base?.multi_notice && siblingNotices.length > 1;
 
-  return {
+  const view = {
     schema_version: RULES_PHASE_SPINE_SCHEMA_VERSION,
     request_id: requestId,
     joined,
@@ -802,4 +955,6 @@ export function buildRulesPhaseView(rec, opts = {}) {
       : 1,
     stitched: !!base?.stitched && multiNotice,
   };
+  view.history_timeline = buildRuleHistoryTimeline(view, base);
+  return view;
 }
