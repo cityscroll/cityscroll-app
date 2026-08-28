@@ -129,12 +129,34 @@ test("unresolved agency labels never mint a fiscal join", () => {
 test("rendered context names separate measures and warns on non-overlapping years", () => {
   const html = renderAgencyFiscalContextSection(fiscalContextForAgency(build(), "Parks and Recreation"));
   assert.match(html, /Agency fiscal context/);
+  assert.match(html, /data-fiscal-era="ibo-history"/);
+  assert.match(html, /data-fiscal-era="procurement-payments"/);
+  assert.match(html, /class="agency-fiscal-context-table-wrap" tabindex="0" aria-label="IBO measures by fiscal year"/);
+  assert.match(html, /class="agency-fiscal-context-table-wrap" tabindex="0" aria-label="Current procurement and payment measures by fiscal year"/);
   assert.match(html, /IBO Personal Services/);
   assert.match(html, /Current registered contract value/);
   assert.match(html, /Actual payments/);
-  assert.match(html, /different accounting and population scopes/);
-  assert.match(html, /No outsourcing or efficiency score is calculated/);
+  assert.match(html, /PASSPort Public procurement records/);
+  assert.match(html, /Checkbook NYC.*Comptroller's spending ledger/);
+  assert.match(html, /different accounting scopes/);
+  assert.match(html, /A dash means the publisher does not report that measure for that year/);
+  assert.equal((html.match(/agency-fiscal-context-footnote/g) || []).length, 1);
+  assert.match(html, /descriptive, not causal/);
+  assert.match(html, /composite outsourcing or efficiency score/);
+  assert.doesNotMatch(html, /AP-\d+/);
+  assert.doesNotMatch(html, />Unknown<\/span>/);
   assert.match(html, /data-fiscal-coverage="unknown"/);
   assert.match(html, /IBO New York City Fiscal History/);
   assert.match(html, /ap_agency=Department\+of\+Parks\+and\+Recreation/);
+
+  const iboTable = html.match(/data-fiscal-era="ibo-history"[\s\S]*?<table[\s\S]*?<\/table>/)?.[0];
+  const procurementTable = html.match(/data-fiscal-era="procurement-payments"[\s\S]*?<table[\s\S]*?<\/table>/)?.[0];
+  assert.ok(iboTable);
+  assert.ok(procurementTable);
+  assert.doesNotMatch(iboTable, /Current registered contract value|Actual payments/);
+  assert.doesNotMatch(procurementTable, /IBO actual expenditures|IBO staffing/);
+  for (const row of html.matchAll(/<tr>([\s\S]*?)<\/tr>/g)) {
+    const text = row[1].replace(/<[^>]+>/g, " ");
+    assert.ok((text.match(/—(?:\s+—)*/g) || []).length <= 1);
+  }
 });
