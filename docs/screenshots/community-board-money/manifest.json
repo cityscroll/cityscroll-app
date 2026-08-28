@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "route": "/community-boards/bronx-cb-01/",
+  "before_revision": "0c7818a4c84a",
+  "canary_board": "bronx-cb-01",
+  "captures": [
+    {
+      "state": "before",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "route": "/community-boards/bronx-cb-01/",
+      "file": "docs/screenshots/community-board-money/before-desktop.png",
+      "money_card": false,
+      "money_state": null,
+      "overflow_px": 0,
+      "card_text": null
+    },
+    {
+      "state": "after",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "route": "/community-boards/bronx-cb-01/",
+      "file": "docs/screenshots/community-board-money/after-desktop.png",
+      "money_card": true,
+      "money_state": "separate_fiscal_years",
+      "overflow_px": 0,
+      "card_text": "BOARD FINANCES\n\nBudget & spending Available fiscal facts\n\nMoney budgeted to and paid by this Community Board \u2014 not spending inside its Community District.\n\nThe available budget and payment facts are from different fiscal years and are shown separately.\n\nAdopted budget\n$366,943.00\nFY2027\nPayments posted through June 30, 2026\n$95,914.68\nFY2026 \u00b7 22 payments \u00b7 9 payees\nTop payees\nRELATED RETAIL HUB LLC\n$77,979.45\nCANON SOLUTIONS AMERICA INC\n$4,493.00\nCABLEVISION SYSTEMS CORPORATION\n$4,444.73\nSources and coverage"
+    },
+    {
+      "state": "before",
+      "viewport": [
+        390,
+        844
+      ],
+      "route": "/community-boards/bronx-cb-01/",
+      "file": "docs/screenshots/community-board-money/before-mobile.png",
+      "money_card": false,
+      "money_state": null,
+      "overflow_px": 0,
+      "card_text": null
+    },
+    {
+      "state": "after",
+      "viewport": [
+        390,
+        844
+      ],
+      "route": "/community-boards/bronx-cb-01/",
+      "file": "docs/screenshots/community-board-money/after-mobile.png",
+      "money_card": true,
+      "money_state": "separate_fiscal_years",
+      "overflow_px": 0,
+      "card_text": "BOARD FINANCES\n\nBudget & spending\nAvailable fiscal facts\n\nMoney budgeted to and paid by this Community Board \u2014 not spending inside its Community District.\n\nThe available budget and payment facts are from different fiscal years and are shown separately.\n\nAdopted budget\n$366,943.00\nFY2027\nPayments posted through June 30, 2026\n$95,914.68\nFY2026 \u00b7 22 payments \u00b7 9 payees\nTop payees\nRELATED RETAIL HUB LLC\n$77,979.45\nCANON SOLUTIONS AMERICA INC\n$4,493.00\nCABLEVISION SYSTEMS CORPORATION\n$4,444.73\nSources and coverage"
+    }
+  ]
+}
