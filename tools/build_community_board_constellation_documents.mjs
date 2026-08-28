@@ -36,6 +36,7 @@ function sourceRows() {
   const committeeRegistry = readJson("site/data/non_council_outcome_sources/community_board_committees.json");
   const people = readJson("site/data/community_board_people.json");
   const communityBoardBylaws = readJson("site/data/community_board_bylaws.json");
+  const communityBoardMoney = readJson("site/data/community_board_money.json");
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -100,6 +101,7 @@ function sourceRows() {
     // date so the committed artifact remains byte-idempotent between changes.
     generated_at: scorecard.as_of,
     communityBoardBylaws,
+    communityBoardMoney,
     institutionEdges,
   };
 }
