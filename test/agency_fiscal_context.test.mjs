@@ -131,6 +131,8 @@ test("rendered context names separate measures and warns on non-overlapping year
   assert.match(html, /Agency fiscal context/);
   assert.match(html, /data-fiscal-era="ibo-history"/);
   assert.match(html, /data-fiscal-era="procurement-payments"/);
+  assert.match(html, /class="agency-fiscal-context-table-wrap" tabindex="0" aria-label="IBO measures by fiscal year"/);
+  assert.match(html, /class="agency-fiscal-context-table-wrap" tabindex="0" aria-label="Current procurement and payment measures by fiscal year"/);
   assert.match(html, /IBO Personal Services/);
   assert.match(html, /Current registered contract value/);
   assert.match(html, /Actual payments/);

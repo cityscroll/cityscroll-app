@@ -522,7 +522,7 @@ export function renderAgencyFiscalContextSection(context) {
     : context.status === "matched"
       ? `<p class="agency-fiscal-context-status" data-fiscal-context-status="matched">IBO fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}; publisher vintage FY2022.</p>`
       : `<p class="agency-fiscal-context-status" data-fiscal-context-status="fallback">Fiscal history: ${esc(yearsLabel(context.fiscal_history?.years || []))}.</p>`;
-  const renderTable = (tableRows, era, heading, caption, columns) => `<section class="agency-fiscal-context-era" data-fiscal-era="${era}" aria-labelledby="agency-fiscal-context-${era}-heading"><h3 id="agency-fiscal-context-${era}-heading">${heading}</h3><div class="agency-fiscal-context-table-wrap"><table class="agency-fiscal-context-table"><caption>${caption}</caption><thead><tr><th scope="col">FY</th>${columns.map((column) => `<th scope="col">${column.label}</th>`).join("")}</tr></thead><tbody>${tableRows.map((row) => {
+  const renderTable = (tableRows, era, heading, caption, columns) => `<section class="agency-fiscal-context-era" data-fiscal-era="${era}" aria-labelledby="agency-fiscal-context-${era}-heading"><h3 id="agency-fiscal-context-${era}-heading">${heading}</h3><div class="agency-fiscal-context-table-wrap" tabindex="0" aria-label="${caption}"><table class="agency-fiscal-context-table"><caption>${caption}</caption><thead><tr><th scope="col">FY</th>${columns.map((column) => `<th scope="col">${column.label}</th>`).join("")}</tr></thead><tbody>${tableRows.map((row) => {
     const contractHref = row.registered_contract_count != null
       ? analyticalDrillThroughHref({ agency, registration_fiscal_year: row.fiscal_year }) : null;
     const paymentHref = row.payment_transaction_count != null
