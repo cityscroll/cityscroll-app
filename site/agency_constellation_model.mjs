@@ -1034,6 +1034,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         passport_graph: sources.passport_graph,
       },
     ));
+  const fiscalContext = sources.fiscal_context?.by_agency?.[identity.canonical_id] || null;
   for (const category of categories) {
     category.derived_feature_rollup = categoryDerivedFeatureRollup(category);
   }
@@ -1195,6 +1196,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
     canonical_id: identity.canonical_id,
     categories,
     identity_evidence: sources.identity_evidence || null,
+    fiscal_context: fiscalContext,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
     derived_feature_rollup: constellationDerivedFeatureRollup(categories),
@@ -1261,6 +1263,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         MANDATE_REPORTS_RECEIPT_METHOD,
         MANDATE_PREDICTION_METHOD,
         ...(mandatesContracts?.status === "matched" ? [MANDATE_CONTRACTS_METHOD] : []),
+        ...(fiscalContext ? ["agency_fiscal_context_exact_id_join_v1"] : []),
         AGENCY_CONSTELLATION_METHOD,
         "graph_edge_provenance_v1",
       ],
