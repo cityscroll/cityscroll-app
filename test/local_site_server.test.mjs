@@ -142,6 +142,7 @@ test("outer readiness wait accepts publication near the scaled inner deadline", 
 test("accessibility aggregate accepts only a green matrix and a green routes-focus attempt", () => {
   const ci = read(".github/workflows/ci.yml");
   const shardRunner = read("tools/run_a11y_ci_shard.sh");
+  const accessibility = read("test/functional/11_accessibility.py");
   const aggregate = ci.slice(ci.indexOf("  a11y-pr:\n"), ci.indexOf("  browser-pr-site:\n"));
   const shards = ci.slice(ci.indexOf("  a11y-pr-shard:\n"), ci.indexOf("  a11y-routes-focus-primary:\n"));
   const routes = ci.slice(ci.indexOf("  a11y-routes-focus-primary:\n"), ci.indexOf("  reading-level:\n"));
@@ -208,6 +209,16 @@ test("accessibility aggregate accepts only a green matrix and a green routes-foc
     shardRunner,
     /run_a11y_functional_check\.sh[^\n]*11_accessibility\.py/,
     "axe must remain a direct assertion rather than a retried functional check",
+  );
+  assert.match(
+    accessibility,
+    /from ci_waits import wait_for_app_ready, wait_for_function, wait_for_locator/,
+    "the axe walk must use the application boot readiness helper",
+  );
+  assert.match(
+    accessibility,
+    /def _wait_for_browse_route\(page, tab\):[\s\S]*?wait_for_locator\(page\.locator\("section\.tabpane\.active"\)[\s\S]*?wait_for_app_ready\(page\)/,
+    "Browse markup must not be treated as ready before deferred route globals register",
   );
 
   const aggregateGreen = (matrix, primaryPassed, retry) => (
