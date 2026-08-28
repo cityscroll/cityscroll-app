@@ -1,0 +1,14 @@
+{
+  "schema": "cityscroll.source_vintage_proving_fixture.v1",
+  "source_id": "ibo-fiscal-history",
+  "observed_coverage": {
+    "max_fiscal_year": 2022,
+    "fiscal_year_count": 43,
+    "row_count": 26101
+  },
+  "publisher_vintage": "FY2022",
+  "alternate_source_id": "comptroller-acfr",
+  "alternate_observed_coverage": {
+    "max_fiscal_year": 2025
+  }
+}
