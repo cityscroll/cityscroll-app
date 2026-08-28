@@ -1,5 +1,7 @@
 // Digest temporal reconciliation.
 //
+import { reconcileRulemakingOutcomeRows } from "../../../site/civic_outcome_transition.mjs";
+
 // A source record has several clocks. Event time says when the civic action happens;
 // publication time says when the publisher asserted it; recorded time says when this
 // Worker observed/materialized it. None is a safe delivery identity. Delivery is keyed
@@ -91,5 +93,17 @@ export function reconcileTemporalCandidates({ lens, rows = [], seen = new Set(),
     markSeenIds.push(id);
     if (action) markSeenIds.push(action.key);
   }
+  const outcomes = reconcileRulemakingOutcomeRows({
+    rows,
+    rulesView,
+    seen,
+    asOf: rulesView?.generated_at || null,
+  });
+  for (const row of outcomes.rows) {
+    const existing = fresh.findIndex((candidate) => String(candidate?.[idField] || "") === String(row?.[idField] || ""));
+    if (existing >= 0) fresh[existing] = { ...fresh[existing], post_event_outcome: row.post_event_outcome };
+    else fresh.push(row);
+  }
+  markSeenIds.push(...outcomes.markSeenIds);
   return { fresh, markSeenIds };
 }
