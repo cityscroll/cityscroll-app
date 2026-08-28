@@ -14,12 +14,14 @@ import { buildProcurementSearchDocuments } from "../site/procurement_search_prod
 import { buildSharedProcurementReadModel } from "../site/shared_procurement_read_model.mjs";
 import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
+import { recordsFromMtaOpportunityFixtures } from "../warehouse/lib/mta_opportunities.mjs";
 import {
   attachCoherenceReceipt,
   sourceModelFingerprint,
 } from "./lib/procurement_index_coherence.mjs";
 
 const SPINE = new URL("../site/data/procurement_spine_sources.json", import.meta.url);
+const MTA_FIXTURES = new URL("../warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", import.meta.url);
 const AWARDS = new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url);
 const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", import.meta.url);
 const MODEL_SHARD_DIR = new URL("../site/data/shared_procurement_read_model/", import.meta.url);
@@ -105,7 +107,7 @@ function cityRecord(row, generatedAt) {
   return record("city_record", String(row.request_id), row, generatedAt);
 }
 
-export function procurementSourceRecordsFromMaterializations(spine, awards) {
+export function procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures = null) {
   const generatedAt = spine?.generated_at || spine?.observed_on || null;
   const checkbookRows = Array.isArray(spine?.rows?.checkbook_contracts)
     ? spine.rows.checkbook_contracts.filter((row) => (
@@ -127,17 +129,20 @@ export function procurementSourceRecordsFromMaterializations(spine, awards) {
   }
   const awardRows = (Array.isArray(awards?.rows) ? awards.rows : [])
     .filter((row) => selectedPins.has(norm(row.pin)) && row.request_id);
+  const nativeRecords = recordsFromMtaOpportunityFixtures(nativeFixtures || {});
   return [
     ...(Array.isArray(spine?.rows?.checkbook_nycha_contracts)
       ? spine.rows.checkbook_nycha_contracts.map((row) => checkbookNychaRecord(row, generatedAt)) : []),
     ...checkbookRows.map((row) => checkbookRecord(row, generatedAt)),
     ...passportRows.map((row) => passportRecord(row, generatedAt)),
     ...awardRows.map((row) => cityRecord(row, awards?.materialized_at || generatedAt)),
+    ...nativeRecords,
   ];
 }
 
 export function buildProcurementArtifacts(spine, awards, options = {}) {
-  const sourceRecords = procurementSourceRecordsFromMaterializations(spine, awards);
+  const nativeFixtures = options.nativeFixtures || JSON.parse(readFileSync(MTA_FIXTURES, "utf8"));
+  const sourceRecords = procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures);
   const publication = describeCrolAwardPublication({
     now: spine?.generated_at || null,
     selected: sourceRecords.length,
@@ -281,10 +286,11 @@ function checkOrWriteBrowseQueryArtifacts(browse, sourceModelFingerprint) {
 function main() {
   const spineBytes = readFileSync(SPINE);
   const awardsBytes = readFileSync(AWARDS);
+  const nativeFixturesBytes = readFileSync(MTA_FIXTURES);
   const { model, browse, digest } = buildProcurementArtifacts(
     JSON.parse(spineBytes.toString("utf8")),
     JSON.parse(awardsBytes.toString("utf8")),
-    { spineBytes, awardsBytes },
+    { spineBytes, awardsBytes, nativeFixtures: JSON.parse(nativeFixturesBytes.toString("utf8")) },
   );
   const outputs = [
     [BROWSE_OUT, serialized(browse)],

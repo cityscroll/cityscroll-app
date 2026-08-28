@@ -320,6 +320,68 @@
       }
     },
     {
+      "id": "nys-contract-reporter",
+      "name": "New York State Contract Reporter",
+      "owner": "New York State Office of General Services",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "html",
+      "landing_page": "https://www.nyscr.ny.gov/Ads/Search",
+      "required_fields": ["cr_number", "agency", "title", "issue_date", "due_date", "category", "ad_type", "location"],
+      "publisher_cadence": "Daily advertised procurement opportunities",
+      "product_freshness": "Retained Contract Reporter observations carry the publisher URL, retrieval timestamp, and raw-response hash. Source values remain separate from normalized procurement fields.",
+      "used_for": "Source-qualified admission of advertised MTA opportunities into the shared procurement search and follow surfaces.",
+      "code_references": [
+        {"path": "warehouse/lib/mta_opportunities.mjs", "contains": "nys_contract_reporter"},
+        {"path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", "contains": "2138505"},
+        {"path": "test/mta_opportunities.test.mjs", "contains": "Contract Reporter"}
+      ],
+      "delivery_tier": "edge-materialized",
+      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 7, "serve_contract_id": null},
+      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+    },
+    {
+      "id": "mta-current-opportunities",
+      "name": "MTA Construction & Development current opportunities",
+      "owner": "Metropolitan Transportation Authority",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "html",
+      "landing_page": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+      "required_fields": ["solicitation_number", "event_number", "agency", "title", "opening_date"],
+      "publisher_cadence": "As opportunities and addenda change",
+      "product_freshness": "Retained MTA opportunity observations carry the official page URL, retrieval timestamp, and raw-response hash; source identifiers are exact-only join keys.",
+      "used_for": "MTA Construction & Development solicitation admission and inspectable current-opportunity facts.",
+      "code_references": [
+        {"path": "warehouse/lib/mta_opportunities.mjs", "contains": "mta_current_opportunities"},
+        {"path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", "contains": "S48020"}
+      ],
+      "delivery_tier": "edge-materialized",
+      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 7, "serve_contract_id": null},
+      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+    },
+    {
+      "id": "mta-bid-results",
+      "name": "MTA Construction & Development bid results",
+      "owner": "Metropolitan Transportation Authority",
+      "status": "live",
+      "scope": "warehouse",
+      "kind": "html",
+      "landing_page": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+      "required_fields": ["auc_id", "auc_name", "opening_date", "bidder", "bid_amount"],
+      "publisher_cadence": "As bid openings are published",
+      "product_freshness": "Bid-result observations retain bidder and bid amount as opening evidence only. They never populate award or winning-vendor fields without a separate exact award observation.",
+      "used_for": "Distinct MTA bid-opening-result stage evidence in procurement documents and search.",
+      "code_references": [
+        {"path": "warehouse/lib/mta_opportunities.mjs", "contains": "mta_bid_results"},
+        {"path": "warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json", "contains": "AW-9Y"},
+        {"path": "test/mta_opportunities.test.mjs", "contains": "bid_opening_result"}
+      ],
+      "delivery_tier": "edge-materialized",
+      "freshness_contract": {"mode": "periodic", "max_stale_days": 7, "clock_basis": "checked_acquired", "serving_max_age_days": 7, "serve_contract_id": null},
+      "health_policy": {"public_visibility": "public", "backstage_detail": "receipts-and-errors", "relationship_coverage": "separate"}
+    },
+    {
       "id": "checkbook-contracts",
       "name": "Checkbook NYC registered contracts",
       "owner": "Office of the New York City Comptroller",
