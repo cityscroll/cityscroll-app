@@ -1,30 +1,15 @@
 {
   "schema": "cityscroll.agency_route_identity_report.v1",
-  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-12T16:01:38.473Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z",
+  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-28T15:53:15.766Z",
   "method": "exact_publisher_crosswalk_with_reviewed_route_dispositions_v1",
   "publisher_canonical_count": 116,
-  "constellation_only_source_count": 22,
+  "constellation_only_source_count": 12,
   "classification_counts": {
-    "alias_to_canonical": 16,
-    "legitimate_non_crosswalk_entity": 4,
-    "unresolved": 2
+    "alias_to_canonical": 9,
+    "legitimate_non_crosswalk_entity": 3,
+    "unresolved": 0
   },
   "cases": [
-    {
-      "source_id": "board-meetings",
-      "names": [
-        "Board Meetings"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "board-meetings",
-      "canonical_name": "Board Meetings",
-      "canonical_path": "/agencies/board-meetings/",
-      "redirect_from": "/agencies/board-meetings/",
-      "basis": "generic publisher label"
-    },
     {
       "source_id": "board-of-corrections",
       "names": [
@@ -39,36 +24,6 @@
       "canonical_path": "/agencies/board-of-correction/",
       "redirect_from": "/agencies/board-of-corrections/",
       "basis": "punctuation-insensitive singular/plural publisher alias"
-    },
-    {
-      "source_id": "dcasdivision-of-municipal-supply-service",
-      "names": [
-        "Dcasdivision Of Municipal Supply Service"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "citywide-administrative-services",
-      "canonical_name": "Department of Citywide Administrative Services",
-      "canonical_path": "/agencies/citywide-administrative-services/",
-      "redirect_from": "/agencies/dcasdivision-of-municipal-supply-service/",
-      "basis": "named DCAS division"
-    },
-    {
-      "source_id": "department-of-social-services",
-      "names": [
-        "Department of Social Services"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "legitimate_non_crosswalk_entity",
-      "canonical_id": "department-of-social-services",
-      "canonical_name": "Department of Social Services",
-      "canonical_path": "/agencies/department-of-social-services/",
-      "redirect_from": null,
-      "basis": "publisher body retained separately from its HRA and Homeless Services components"
     },
     {
       "source_id": "district-attorney-special-narcotics",
@@ -99,21 +54,6 @@
       "canonical_path": "/agencies/human-resources-administration/",
       "redirect_from": "/agencies/hra-department-of-social-services/",
       "basis": "publisher crosswalk variant"
-    },
-    {
-      "source_id": "mayoralty",
-      "names": [
-        "Mayoralty"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "office-of-the-mayor",
-      "canonical_name": "Office of the Mayor",
-      "canonical_path": "/agencies/office-of-the-mayor/",
-      "redirect_from": "/agencies/mayoralty/",
-      "basis": "publisher budget-code identity"
     },
     {
       "source_id": "n-y-c-housing-authority",
@@ -161,21 +101,6 @@
       "basis": "distinct pension fund absent from the publisher identity set"
     },
     {
-      "source_id": "new-york-city-police-department",
-      "names": [
-        "New York City Police Department"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "police-department",
-      "canonical_name": "New York City Police Department",
-      "canonical_path": "/agencies/police-department/",
-      "redirect_from": "/agencies/new-york-city-police-department/",
-      "basis": "publisher crosswalk canonical name"
-    },
-    {
       "source_id": "nyc-employees-retirement-system",
       "names": [
         "Nyc Employees' Retirement System"
@@ -221,27 +146,11 @@
       "basis": "publisher crosswalk canonical name"
     },
     {
-      "source_id": "nyc-taxi-and-limousine-commission",
-      "names": [
-        "Nyc Taxi And Limousine Commission"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "unresolved",
-      "canonical_id": "nyc-taxi-and-limousine-commission",
-      "canonical_name": "nyc-taxi-and-limousine-commission",
-      "canonical_path": "/agencies/nyc-taxi-and-limousine-commission/",
-      "redirect_from": null,
-      "basis": "no exact publisher-crosswalk identity"
-    },
-    {
       "source_id": "office-of-administrative-trials-and-hearings",
       "names": [
         "Office Of Administrative Trials And Hearings"
       ],
       "sources": [
-        "entity_intelligence",
         "exam_certification"
       ],
       "classification": "alias_to_canonical",
@@ -250,51 +159,6 @@
       "canonical_path": "/agencies/administrative-trials-and-hearings/",
       "redirect_from": "/agencies/office-of-administrative-trials-and-hearings/",
       "basis": "department-prefix publisher alias"
-    },
-    {
-      "source_id": "office-of-contract-services",
-      "names": [
-        "Office Of Contract Services"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "mayors-office-of-contract-services",
-      "canonical_name": "Mayor's Office of Contract Services",
-      "canonical_path": "/agencies/mayors-office-of-contract-services/",
-      "redirect_from": "/agencies/office-of-contract-services/",
-      "basis": "publisher crosswalk canonical office"
-    },
-    {
-      "source_id": "office-of-criminal-justice-002",
-      "names": [
-        "Office Of Criminal Justice (002)"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "mayors-office-of-criminal-justice",
-      "canonical_name": "Mayor's Office of Criminal Justice",
-      "canonical_path": "/agencies/mayors-office-of-criminal-justice/",
-      "redirect_from": "/agencies/office-of-criminal-justice-002/",
-      "basis": "publisher budget-code identity"
-    },
-    {
-      "source_id": "office-of-criminal-justice-128",
-      "names": [
-        "Office Of Criminal Justice (128)"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "unresolved",
-      "canonical_id": "office-of-criminal-justice-128",
-      "canonical_name": "office-of-criminal-justice-128",
-      "canonical_path": "/agencies/office-of-criminal-justice-128/",
-      "redirect_from": null,
-      "basis": "no exact publisher-crosswalk identity"
     },
     {
       "source_id": "office-of-payroll-administration",
@@ -309,21 +173,6 @@
       "canonical_name": "Office of Payroll Administration",
       "canonical_path": "/agencies/payroll-administration/",
       "redirect_from": "/agencies/office-of-payroll-administration/",
-      "basis": "department-prefix publisher alias"
-    },
-    {
-      "source_id": "office-of-the-chief-medical-examiner",
-      "names": [
-        "Office Of The Chief Medical Examiner"
-      ],
-      "sources": [
-        "entity_intelligence"
-      ],
-      "classification": "alias_to_canonical",
-      "canonical_id": "chief-medical-examiner",
-      "canonical_name": "Office of the Chief Medical Examiner",
-      "canonical_path": "/agencies/chief-medical-examiner/",
-      "redirect_from": "/agencies/office-of-the-chief-medical-examiner/",
       "basis": "department-prefix publisher alias"
     },
     {
@@ -344,22 +193,10 @@
   ],
   "aliases": [
     {
-      "from": "/agencies/board-meetings/",
-      "to": "/agencies/board-meetings/",
-      "source_id": "board-meetings",
-      "canonical_id": "board-meetings"
-    },
-    {
       "from": "/agencies/board-of-corrections/",
       "to": "/agencies/board-of-correction/",
       "source_id": "board-of-corrections",
       "canonical_id": "board-of-correction"
-    },
-    {
-      "from": "/agencies/dcasdivision-of-municipal-supply-service/",
-      "to": "/agencies/citywide-administrative-services/",
-      "source_id": "dcasdivision-of-municipal-supply-service",
-      "canonical_id": "citywide-administrative-services"
     },
     {
       "from": "/agencies/district-attorney-special-narcotics/",
@@ -374,22 +211,10 @@
       "canonical_id": "human-resources-administration"
     },
     {
-      "from": "/agencies/mayoralty/",
-      "to": "/agencies/office-of-the-mayor/",
-      "source_id": "mayoralty",
-      "canonical_id": "office-of-the-mayor"
-    },
-    {
       "from": "/agencies/n-y-c-housing-authority/",
       "to": "/agencies/housing-authority/",
       "source_id": "n-y-c-housing-authority",
       "canonical_id": "housing-authority"
-    },
-    {
-      "from": "/agencies/new-york-city-police-department/",
-      "to": "/agencies/police-department/",
-      "source_id": "new-york-city-police-department",
-      "canonical_id": "police-department"
     },
     {
       "from": "/agencies/nyc-employees-retirement-system/",
@@ -416,28 +241,10 @@
       "canonical_id": "administrative-trials-and-hearings"
     },
     {
-      "from": "/agencies/office-of-contract-services/",
-      "to": "/agencies/mayors-office-of-contract-services/",
-      "source_id": "office-of-contract-services",
-      "canonical_id": "mayors-office-of-contract-services"
-    },
-    {
-      "from": "/agencies/office-of-criminal-justice-002/",
-      "to": "/agencies/mayors-office-of-criminal-justice/",
-      "source_id": "office-of-criminal-justice-002",
-      "canonical_id": "mayors-office-of-criminal-justice"
-    },
-    {
       "from": "/agencies/office-of-payroll-administration/",
       "to": "/agencies/payroll-administration/",
       "source_id": "office-of-payroll-administration",
       "canonical_id": "payroll-administration"
-    },
-    {
-      "from": "/agencies/office-of-the-chief-medical-examiner/",
-      "to": "/agencies/chief-medical-examiner/",
-      "source_id": "office-of-the-chief-medical-examiner",
-      "canonical_id": "chief-medical-examiner"
     }
   ],
   "collisions": {

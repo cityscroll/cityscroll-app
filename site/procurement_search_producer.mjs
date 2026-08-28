@@ -57,7 +57,7 @@ function orderedObservations(object, index) {
     .filter(Boolean);
   const priority = new Map([
     ["city_record", 0], ["passport_public_contracts", 1], ["passport_public_rfx", 2],
-    ["checkbook_contracts", 3], ["checkbook_spending", 4],
+    ["checkbook_nycha_contracts", 3], ["checkbook_contracts", 4], ["checkbook_spending", 5],
   ]);
   return observations.sort((left, right) => (
     (priority.get(left.source_system) ?? 9) - (priority.get(right.source_system) ?? 9)
@@ -114,12 +114,15 @@ function browseRecord(object, observations, stages, evidence, facts) {
     source_observation_refs: Object.freeze([...object.source_observation_refs]),
     ...(requestId ? { request_id: requestId } : {}),
     start_date: facts.startDate,
+    end_date: facts.endDate,
+    agency_id: first(observations.map((entry) => entry.snapshot || {}), ["agency_id", "procuring_institution_id"], 200),
     agency_name: facts.agency,
     short_title: facts.title,
     pin: object.identity_keys?.epins?.[0] || null,
     contract_id: object.identity_keys?.contract_ids?.[0] || null,
     contract_amount: facts.amount,
     vendor_name: facts.vendor,
+    official_url: first(observations.map((entry) => entry.snapshot || {}), ["official_url", "source_url"], 600),
     selection_method_description: facts.method,
     notice_evidence: Object.freeze(evidence),
     source_systems: Object.freeze([...new Set(observations.map((entry) => entry.source_system))]),
@@ -146,7 +149,8 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
       snapshotsForPublicAmount(object, observations),
       ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"],
     ),
-    startDate: first(rows, ["start_date", "registered", "registration_date", "issue_date", "date"], 40),
+    startDate: first(rows, ["start_date", "start", "registered", "registration_date", "issue_date", "date"], 40),
+    endDate: first(rows, ["end_date", "end", "contract_end_date"], 40),
     method: first(rows, ["selection_method_description", "procurement_method"], 240),
     program: first(rows, ["program"], 240),
     industry: first(rows, ["industry"], 120),

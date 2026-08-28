@@ -1,0 +1,56 @@
+{
+  "schema": "cityscroll.anp.before_capture.v1",
+  "captured_at": "2026-08-28T15:18:44Z",
+  "fixture_contract_id": "BA2335819",
+  "paths": [
+    {
+      "label": "nycha-agency",
+      "path": "/agencies/housing-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/nycha-agency.png",
+      "body_excerpt": "Skip to content CityScroll NOW NEAR YOU FOLLOWING BROWSE \u2039 \u21ba Back to agencies AGENCY CONSTELLATION New York City Housing Authority Explore 3 kinds of public record connected with this agency. Records updated 2026-08-02 \u00b7 As of 2024-06-01 Follow this agency View contracts Connection evidence Report an issue PUBLIC RELATIONSHIPS Connected records 3 kinds of connected records Contracts 8 records published by this agency View contracts \u2192 Meetings & hearings 3 meetings involving this agency View meet"
+    },
+    {
+      "label": "mta-agency",
+      "path": "/agencies/metropolitan-transportation-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/mta-agency.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. SEARCH What are you looking for? Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Want email updates on this? Choose what to follow Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics"
+    },
+    {
+      "label": "nyct-agency",
+      "path": "/agencies/n-y-c-transit-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/nyct-agency.png",
+      "body_excerpt": "Skip to content CityScroll NOW NEAR YOU FOLLOWING BROWSE \u2039 \u21ba Back to agencies AGENCY CONSTELLATION N.Y.C. Transit Authority Explore 1 kind of public record connected with this agency. Records updated 2026-08-02 \u00b7 As of 2024-06-01 Follow this agency View staffing exams Connection evidence Report an issue PUBLIC RELATIONSHIPS Connected records 1 kind of connected record Staffing exams 26 exams certified to this agency View staffing exams \u2192 As of day ? Filter this agency\u2019s linked records by date. A"
+    },
+    {
+      "label": "tbta-agency",
+      "path": "/agencies/triborough-bridge-and-tunnel-authority/",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/tbta-agency.png",
+      "body_excerpt": "Skip to content CityScroll NOW NEAR YOU FOLLOWING BROWSE \u2039 \u21ba Back to agencies AGENCY CONSTELLATION Triborough Bridge and Tunnel Authority Explore 1 kind of public record connected with this agency. Records updated 2026-08-02 \u00b7 As of 2024-06-01 Follow this agency View staffing exams Connection evidence Report an issue PUBLIC RELATIONSHIPS Connected records 1 kind of connected record Staffing exams 5 exams certified to this agency View staffing exams \u2192 As of day ? Filter this agency\u2019s linked recor"
+    },
+    {
+      "label": "nycha-contract-search",
+      "path": "/search/?q=BA2335819",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/nycha-contract-search.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics SEARCH What are you looking for? Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Searching\u2026 Contracts WAITING Enter a topic to sea"
+    },
+    {
+      "label": "a37703-search",
+      "path": "/search/?q=A37703",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/a37703-search.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics SEARCH What are you looking for? Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Searching\u2026 Contracts WAITING Enter a topic to sea"
+    },
+    {
+      "label": "s48020-search",
+      "path": "/search/?q=0000541781",
+      "status": 200,
+      "screenshot": "docs/evidence/authority-native-procurement/before/s48020-search.png",
+      "body_excerpt": "Skip to content English Espa\u00f1ol \u4e2d\u6587\uff08\u7b80\u4f53\uff09 \u0420\u0443\u0441\u0441\u043a\u0438\u0439 \u09ac\u09be\u0982\u09b2\u09be Krey\u00f2l ayisyen \ud55c\uad6d\uc5b4 Fran\u00e7ais Polski \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0627\u0631\u062f\u0648 CityScroll Subscribe to NYC contracts, rezonings, and hearings that interest you. Now See deadlines and upcoming events Near you Keep these filters. Add a place. Following Open your watches Browse Explore city topics SEARCH What are you looking for? Search NYC records by topic. Results stay grouped by civic object. What are you looking for? Search Searching\u2026 Contracts WAITING Enter a topic to sea"
+    }
+  ]
+}

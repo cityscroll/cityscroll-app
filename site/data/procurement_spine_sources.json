@@ -131,6 +131,21 @@
         "basis": "publisher contract_id equals seed / exact spine id; seed mismatches are false positives; pin_prefix_of_epin accepted only for residual pin joins"
       },
       "failure_state": null
+    },
+    "checkbook_nycha_contracts": {
+      "source_system": "checkbook_nycha_contracts",
+      "source_dataset": "Contracts_NYCHA",
+      "coverage_status": "measured",
+      "population_backed": false,
+      "endpoint": "https://www.checkbooknyc.com/api",
+      "landing_page": "https://www.checkbooknyc.com/contract-api",
+      "retrieved_at": "2026-08-28T15:26:36.048Z",
+      "population": {
+        "retained_observations": 1,
+        "selected_fixture": "BA2335819",
+        "raw_response_sha256": "09d09976f8affa31e5718dc8c24c637bf81c6805b0e5980493d44862624e5c7c"
+      },
+      "identity": "exact source contract_id; no cross-source join asserted"
     }
   },
   "rows": {
@@ -319453,6 +319468,109 @@
         "award_amount": 64500,
         "current_amount": 64500,
         "registration_date": null
+      }
+    ],
+    "checkbook_nycha_contracts": [
+      {
+        "id": "BA2335819",
+        "contract_id": "BA2335819",
+        "pin": "19056829",
+        "title": "Citywide with Borough of Brooklyn Focus - Requirements Contract for Replacement of Motorized Steam Control Zone Valve Stations & Heating Control Panels_(HEATIN062518 - R. Frias)",
+        "vendor": "VITAL PLUMBING INC",
+        "vendor_code": null,
+        "agency": "NYCHA",
+        "agency_id": "agency:id:housing-authority",
+        "current": 4348681.74,
+        "original": 4348681.74,
+        "invoiced": 174937.72,
+        "start": "2025-01-14",
+        "end": "2028-01-13",
+        "approved": null,
+        "contract_type": "Heating Repairs Miscellaneous",
+        "award_method": "SEALED BID",
+        "industry": "Service",
+        "record_type": "Agreement",
+        "observation_type": "contract",
+        "source_system": "checkbook_nycha_contracts",
+        "source_dataset": "Contracts_NYCHA",
+        "source_record_id": "BA2335819:Agreement",
+        "publisher_institution_id": "checkbooknyc",
+        "procuring_institution_id": "agency:id:housing-authority",
+        "source_agency_code": "162",
+        "source_agency_label": "NYCHA",
+        "source_vendor_name": "VITAL PLUMBING INC",
+        "source_vendor_code": null,
+        "identifiers": {
+          "contract_id": "BA2335819",
+          "pin": "19056829",
+          "release_number": null,
+          "line_number": null
+        },
+        "purpose": "Citywide with Borough of Brooklyn Focus - Requirements Contract for Replacement of Motorized Steam Control Zone Valve Stations & Heating Control Panels_(HEATIN062518 - R. Frias)",
+        "amount": {
+          "value": 4348681.74,
+          "currency": "USD",
+          "source_field": "contract_current_amount"
+        },
+        "relevant_dates": {
+          "start_date": "2025-01-14",
+          "end_date": "2028-01-13",
+          "approved_date": null
+        },
+        "official_url": "https://www.checkbooknyc.com/nycha_contract_details/agency/162/datasource/checkbook_nycha/contract/BA2335819",
+        "retrieval_timestamp": "2026-08-28T15:26:36.048Z",
+        "raw_response_hash": "09d09976f8affa31e5718dc8c24c637bf81c6805b0e5980493d44862624e5c7c",
+        "raw_page": {
+          "from": 1,
+          "max_records": 20
+        },
+        "source_values": {
+          "contract_id": "BA2335819",
+          "record_type": "Agreement",
+          "purchase_order_type": "BLANKET AGREEMENT",
+          "vendor": "VITAL PLUMBING INC",
+          "pin": "19056829",
+          "purpose": "Citywide with Borough of Brooklyn Focus - Requirements Contract for Replacement of Motorized Steam Control Zone Valve Stations & Heating Control Panels_(HEATIN062518 - R. Frias)",
+          "contract_type": "Heating Repairs Miscellaneous",
+          "award_method": "SEALED BID",
+          "industry": "Service",
+          "start_date": "2025-01-14",
+          "end_date": "2028-01-13",
+          "approved_date": "",
+          "current_amount": "4348681.74",
+          "original_amount": "4348681.74",
+          "invoiced_amount": "174937.72",
+          "number_of_releases": "4",
+          "release_number": "",
+          "line_number": ""
+        },
+        "raw_observation": {
+          "source_system": "checkbook_nycha_contracts",
+          "source_dataset": "Contracts_NYCHA",
+          "source_record_id": "BA2335819:Agreement",
+          "retrieved_at": "2026-08-28T15:26:36.048Z",
+          "raw_response_hash": "09d09976f8affa31e5718dc8c24c637bf81c6805b0e5980493d44862624e5c7c",
+          "raw_row": {
+            "contract_id": "BA2335819",
+            "record_type": "Agreement",
+            "purchase_order_type": "BLANKET AGREEMENT",
+            "vendor": "VITAL PLUMBING INC",
+            "pin": "19056829",
+            "purpose": "Citywide with Borough of Brooklyn Focus - Requirements Contract for Replacement of Motorized Steam Control Zone Valve Stations & Heating Control Panels_(HEATIN062518 - R. Frias)",
+            "contract_type": "Heating Repairs Miscellaneous",
+            "award_method": "SEALED BID",
+            "industry": "Service",
+            "start_date": "2025-01-14",
+            "end_date": "2028-01-13",
+            "approved_date": "",
+            "current_amount": "4348681.74",
+            "original_amount": "4348681.74",
+            "invoiced_amount": "174937.72",
+            "number_of_releases": "4",
+            "release_number": "",
+            "line_number": ""
+          }
+        }
       }
     ]
   },

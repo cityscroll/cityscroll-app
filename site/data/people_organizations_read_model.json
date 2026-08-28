@@ -50433,57 +50433,12 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:board-meetings",
-      "label": "Board Meetings",
-      "href": "/agencies/board-meetings/",
-      "entity_ref": "agency:id:board-meetings",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Board Meetings agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 10,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:board-of-correction",
       "label": "Board of Correction",
       "href": "/agencies/board-of-correction/",
       "entity_ref": "agency:id:board-of-correction",
       "relation_state": "published",
-      "detail": "4 linked record categories",
+      "detail": "3 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -50505,8 +50460,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -50557,51 +50512,6 @@
         "obligations": {
           "status": "matched",
           "count": 57,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
-      "id": "agency:id:board-of-standards-and-appeals",
-      "label": "Board of Standards and Appeals",
-      "href": "/agencies/board-of-standards-and-appeals/",
-      "entity_ref": "agency:id:board-of-standards-and-appeals",
-      "relation_state": "published",
-      "detail": "2 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Board of Standards and Appeals agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
           "method": "mandate_expected_vs_observed_v1"
         },
         "staffing": {
@@ -50708,7 +50618,7 @@
       "href": "/agencies/business-integrity-commission/",
       "entity_ref": "agency:id:business-integrity-commission",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -50730,8 +50640,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -50753,7 +50663,7 @@
       "href": "/agencies/campaign-finance-board/",
       "entity_ref": "agency:id:campaign-finance-board",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "1 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -50775,8 +50685,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -50793,57 +50703,12 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:charter-revision-commission",
-      "label": "Charter Revision Commission",
-      "href": "/agencies/charter-revision-commission/",
-      "entity_ref": "agency:id:charter-revision-commission",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Charter Revision Commission agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 7,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:commission-on-human-rights",
       "label": "City Commission on Human Rights",
       "href": "/agencies/commission-on-human-rights/",
       "entity_ref": "agency:id:commission-on-human-rights",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -50865,8 +50730,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -50883,102 +50748,12 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:city-planning-commission",
-      "label": "City Planning Commission",
-      "href": "/agencies/city-planning-commission/",
-      "entity_ref": "agency:id:city-planning-commission",
-      "relation_state": "published",
-      "detail": "2 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "City Planning Commission agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 6,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
-      "id": "agency:id:city-university",
-      "label": "City University of New York",
-      "href": "/agencies/city-university/",
-      "entity_ref": "agency:id:city-university",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "City University of New York agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 1,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:civilian-complaint-review-board",
       "label": "Civilian Complaint Review Board",
       "href": "/agencies/civilian-complaint-review-board/",
       "entity_ref": "agency:id:civilian-complaint-review-board",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51000,8 +50775,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51063,51 +50838,6 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:community-boards",
-      "label": "Community Boards",
-      "href": "/agencies/community-boards/",
-      "entity_ref": "agency:id:community-boards",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Community Boards agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 5,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:criminal-justice-coordinator",
       "label": "Criminal Justice Coordinator",
       "href": "/agencies/criminal-justice-coordinator/",
@@ -51158,7 +50888,7 @@
       "href": "/agencies/aging/",
       "entity_ref": "agency:id:aging",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51180,8 +50910,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51203,7 +50933,7 @@
       "href": "/agencies/buildings/",
       "entity_ref": "agency:id:buildings",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51225,8 +50955,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 6,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51248,7 +50978,7 @@
       "href": "/agencies/city-planning/",
       "entity_ref": "agency:id:city-planning",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51270,8 +51000,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51338,7 +51068,7 @@
       "href": "/agencies/consumer-and-worker-protection/",
       "entity_ref": "agency:id:consumer-and-worker-protection",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51360,8 +51090,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 6,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51518,7 +51248,7 @@
       "href": "/agencies/environmental-protection/",
       "entity_ref": "agency:id:environmental-protection",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51540,8 +51270,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51563,7 +51293,7 @@
       "href": "/agencies/finance/",
       "entity_ref": "agency:id:finance",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51585,8 +51315,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 6,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51608,7 +51338,7 @@
       "href": "/agencies/health-and-mental-hygiene/",
       "entity_ref": "agency:id:health-and-mental-hygiene",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51630,8 +51360,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 6,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51698,7 +51428,7 @@
       "href": "/agencies/housing-preservation-and-development/",
       "entity_ref": "agency:id:housing-preservation-and-development",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51720,8 +51450,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51788,7 +51518,7 @@
       "href": "/agencies/parks-and-recreation/",
       "entity_ref": "agency:id:parks-and-recreation",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51810,8 +51540,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 4,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -51923,7 +51653,7 @@
       "href": "/agencies/small-business-services/",
       "entity_ref": "agency:id:small-business-services",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -51945,8 +51675,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52098,51 +51828,6 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:economic-development-corporation",
-      "label": "Economic Development Corporation",
-      "href": "/agencies/economic-development-corporation/",
-      "entity_ref": "agency:id:economic-development-corporation",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Economic Development Corporation agency organization",
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 3,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:employees-retirement-system",
       "label": "Employees' Retirement System",
       "href": "/agencies/employees-retirement-system/",
@@ -52283,7 +51968,7 @@
       "href": "/agencies/fire-department/",
       "entity_ref": "agency:id:fire-department",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52305,8 +51990,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 3,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52418,7 +52103,7 @@
       "href": "/agencies/landmarks-preservation-commission/",
       "entity_ref": "agency:id:landmarks-preservation-commission",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52440,8 +52125,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52508,7 +52193,7 @@
       "href": "/agencies/mayors-office-of-contract-services/",
       "entity_ref": "agency:id:mayors-office-of-contract-services",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52530,8 +52215,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52542,51 +52227,6 @@
         "staffing": {
           "status": "matched",
           "count": 1,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
-      "id": "agency:id:mayors-office-of-criminal-justice",
-      "label": "Mayor's Office of Criminal Justice",
-      "href": "/agencies/mayors-office-of-criminal-justice/",
-      "entity_ref": "agency:id:mayors-office-of-criminal-justice",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Mayor's Office of Criminal Justice agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "matched",
-          "count": 8,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -52733,7 +52373,7 @@
       "href": "/agencies/sanitation/",
       "entity_ref": "agency:id:sanitation",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52755,8 +52395,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 6,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52778,7 +52418,7 @@
       "href": "/agencies/transportation/",
       "entity_ref": "agency:id:transportation",
       "relation_state": "published",
-      "detail": "6 linked record categories",
+      "detail": "5 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52800,8 +52440,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 5,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -52868,7 +52508,7 @@
       "href": "/agencies/housing-authority/",
       "entity_ref": "agency:id:housing-authority",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -52876,12 +52516,12 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 8,
-          "method": "agency_browse_snapshot_v1"
+          "count": 9,
+          "method": "checkbook_nycha_contracts_adapter_v1"
         },
         "vendors": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -53138,7 +52778,7 @@
       "href": "/agencies/taxi-and-limousine-commission/",
       "entity_ref": "agency:id:taxi-and-limousine-commission",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -53160,8 +52800,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53228,7 +52868,7 @@
       "href": "/agencies/administrative-trials-and-hearings/",
       "entity_ref": "agency:id:administrative-trials-and-hearings",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -53250,8 +52890,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53408,7 +53048,7 @@
       "href": "/agencies/information-technology-and-telecommunications/",
       "entity_ref": "agency:id:information-technology-and-telecommunications",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -53430,8 +53070,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53583,57 +53223,12 @@
     },
     {
       "kind": "agency",
-      "id": "agency:id:chief-medical-examiner",
-      "label": "Office of the Chief Medical Examiner",
-      "href": "/agencies/chief-medical-examiner/",
-      "entity_ref": "agency:id:chief-medical-examiner",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Office of the Chief Medical Examiner agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "matched",
-          "count": 8,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
       "id": "agency:id:city-clerk",
       "label": "Office of the City Clerk",
       "href": "/agencies/city-clerk/",
       "entity_ref": "agency:id:city-clerk",
       "relation_state": "published",
-      "detail": "2 linked record categories",
+      "detail": "1 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -53655,8 +53250,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 1,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53678,7 +53273,7 @@
       "href": "/agencies/office-of-the-mayor/",
       "entity_ref": "agency:id:office-of-the-mayor",
       "relation_state": "published",
-      "detail": "3 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -53700,8 +53295,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53723,7 +53318,7 @@
       "href": "/agencies/comptroller/",
       "entity_ref": "agency:id:comptroller",
       "relation_state": "published",
-      "detail": "5 linked record categories",
+      "detail": "4 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
@@ -53745,8 +53340,8 @@
           "method": "agency_browse_snapshot_v1"
         },
         "rules": {
-          "status": "matched",
-          "count": 2,
+          "status": "empty",
+          "count": 0,
           "method": "agency_canonical_v1"
         },
         "obligations": {
@@ -53937,51 +53532,6 @@
         "staffing": {
           "status": "matched",
           "count": 2,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
-      "id": "agency:id:rent-guidelines-board",
-      "label": "Rent Guidelines Board",
-      "href": "/agencies/rent-guidelines-board/",
-      "entity_ref": "agency:id:rent-guidelines-board",
-      "relation_state": "published",
-      "detail": "2 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "Rent Guidelines Board agency organization",
-      "categories": {
-        "contracts": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "matched",
-          "count": 5,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "matched",
-          "count": 2,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
           "method": "publisher_certification_record_v1"
         }
       }
@@ -54340,24 +53890,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:AMAZONAS%20PAINTING",
-      "label": "Amazonas Painting Corp",
-      "href": "/vendors/AMAZONAS%20PAINTING/",
-      "entity_ref": "vendor:stem:AMAZONAS%20PAINTING",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 1,
-      "search_text": "Amazonas Painting Corp vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:AMERICA%20WORKS",
       "label": "America Works of New York Inc.",
       "href": "/vendors/AMERICA%20WORKS/",
@@ -54504,24 +54036,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:AVANTI%20MECHANICAL",
-      "label": "Avanti Mechanical LLC",
-      "href": "/vendors/AVANTI%20MECHANICAL/",
-      "entity_ref": "vendor:stem:AVANTI%20MECHANICAL",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 1,
-      "search_text": "Avanti Mechanical LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:AWE-HUH%20CREATIVE%20SERVICES",
       "label": "Awe-Huh Creative Services LLC",
       "href": "/vendors/AWE-HUH%20CREATIVE%20SERVICES/",
@@ -54572,24 +54086,6 @@
       ],
       "award_count": 1,
       "search_text": "BA Global Construction Corp. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:BECKMAN%20COULTER",
-      "label": "Beckman Coulter Inc",
-      "href": "/vendors/BECKMAN%20COULTER/",
-      "entity_ref": "vendor:stem:BECKMAN%20COULTER",
-      "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 2,
-      "search_text": "Beckman Coulter Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -54716,24 +54212,6 @@
       ],
       "award_count": 1,
       "search_text": "Brooklyn Community Housing & Services, Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:BROOKLYN%20DEFENDER%20SERVICES",
-      "label": "Brooklyn Defender Services",
-      "href": "/vendors/BROOKLYN%20DEFENDER%20SERVICES/",
-      "entity_ref": "vendor:stem:BROOKLYN%20DEFENDER%20SERVICES",
-      "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 2,
-      "search_text": "Brooklyn Defender Services vendor organization",
       "agency_count": 1
     },
     {
@@ -54932,24 +54410,6 @@
       ],
       "award_count": 5,
       "search_text": "Catholic Guardian Services vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES",
-      "label": "Center for Alternative Sentencing and Employment Services Inc.",
-      "href": "/vendors/CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES/",
-      "entity_ref": "vendor:stem:CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 1,
-      "search_text": "Center for Alternative Sentencing and Employment Services Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -56459,24 +55919,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:JUSTICE%20INNOVATION",
-      "label": "Justice Innovation Inc",
-      "href": "/vendors/JUSTICE%20INNOVATION/",
-      "entity_ref": "vendor:stem:JUSTICE%20INNOVATION",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 1,
-      "search_text": "Justice Innovation Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:KEEFE%20GROUP",
       "label": "Keefe Group LLC",
       "href": "/vendors/KEEFE%20GROUP/",
@@ -56803,42 +56245,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
-      "label": "National Medical Services, Inc.",
-      "href": "/vendors/NATIONAL%20MEDICAL%20SERVICES/",
-      "entity_ref": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 1,
-      "search_text": "National Medical Services, Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:NEIGHBORHOOD%20DEFENDER%20SERVICE",
-      "label": "Neighborhood Defender Service Inc",
-      "href": "/vendors/NEIGHBORHOOD%20DEFENDER%20SERVICE/",
-      "entity_ref": "vendor:stem:NEIGHBORHOOD%20DEFENDER%20SERVICE",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 1,
-      "search_text": "Neighborhood Defender Service Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS",
       "label": "Neighborhood Trust Financial Partners Inc.",
       "href": "/vendors/NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS/",
@@ -56907,24 +56313,6 @@
       ],
       "award_count": 2,
       "search_text": "New York City Economic Development Corporation vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES",
-      "label": "New York County Defender Services",
-      "href": "/vendors/NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES/",
-      "entity_ref": "vendor:stem:NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 1,
-      "search_text": "New York County Defender Services vendor organization",
       "agency_count": 1
     },
     {
@@ -57039,24 +56427,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:NICHEVISION%20FORENSICS",
-      "label": "NicheVision Forensics LLC",
-      "href": "/vendors/NICHEVISION%20FORENSICS/",
-      "entity_ref": "vendor:stem:NICHEVISION%20FORENSICS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 1,
-      "search_text": "NicheVision Forensics LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:NORTON%20ROSE%20FULBRIGHT%20US",
       "label": "Norton Rose Fulbright US LLP",
       "href": "/vendors/NORTON%20ROSE%20FULBRIGHT%20US/",
@@ -57107,24 +56477,6 @@
       ],
       "award_count": 1,
       "search_text": "NY Speaks Speech Language Pathology PLLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
-      "label": "Olympic Plumbing & Heating Services, Inc.",
-      "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
-      "entity_ref": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 1,
-      "search_text": "Olympic Plumbing & Heating Services, Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -57962,21 +57314,20 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:SPRUCE%20TECHNOLOGY",
-      "label": "Spruce Technology Inc.",
+      "label": "Spruce Technology Inc",
       "href": "/vendors/SPRUCE%20TECHNOLOGY/",
       "entity_ref": "vendor:stem:SPRUCE%20TECHNOLOGY",
       "relation_state": "published",
-      "detail": "4 linked awards across 2 agencies",
+      "detail": "3 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:chief-medical-examiner",
         "agency:id:information-technology-and-telecommunications"
       ],
-      "award_count": 4,
-      "search_text": "Spruce Technology Inc. vendor organization",
-      "agency_count": 2
+      "award_count": 3,
+      "search_text": "Spruce Technology Inc vendor organization",
+      "agency_count": 1
     },
     {
       "kind": "vendor",
@@ -58106,24 +57457,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:THE%20BRONX%20DEFENDERS",
-      "label": "The Bronx Defenders",
-      "href": "/vendors/THE%20BRONX%20DEFENDERS/",
-      "entity_ref": "vendor:stem:THE%20BRONX%20DEFENDERS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 1,
-      "search_text": "The Bronx Defenders vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:THE%20CHILD%20CENTER",
       "label": "The Child Center of NY Inc",
       "href": "/vendors/THE%20CHILD%20CENTER/",
@@ -58202,18 +57535,17 @@
       "href": "/vendors/THE%20FORTUNE%20SOCIETY/",
       "entity_ref": "vendor:stem:THE%20FORTUNE%20SOCIETY",
       "relation_state": "published",
-      "detail": "6 linked awards across 3 agencies",
+      "detail": "5 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:correction",
-        "agency:id:health-and-mental-hygiene",
-        "agency:id:mayors-office-of-criminal-justice"
+        "agency:id:health-and-mental-hygiene"
       ],
-      "award_count": 6,
+      "award_count": 5,
       "search_text": "The Fortune Society, Inc. vendor organization",
-      "agency_count": 3
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -58285,24 +57617,6 @@
       ],
       "award_count": 4,
       "search_text": "The Jewish Association for Services for the Aged vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
-      "label": "The Legal Aid Society",
-      "href": "/vendors/THE%20LEGAL%20AID%20SOCIETY/",
-      "entity_ref": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-criminal-justice"
-      ],
-      "award_count": 1,
-      "search_text": "The Legal Aid Society vendor organization",
       "agency_count": 1
     },
     {
@@ -58723,6 +58037,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:VITAL%20PLUMBING",
+      "label": "VITAL PLUMBING INC",
+      "href": "/vendors/VITAL%20PLUMBING/",
+      "entity_ref": "vendor:stem:VITAL%20PLUMBING",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:housing-authority"
+      ],
+      "award_count": 1,
+      "search_text": "VITAL PLUMBING INC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
       "label": "Volunteers of America Greater New York Inc",
       "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
@@ -58971,24 +58303,6 @@
       ],
       "award_count": 1,
       "search_text": "Y and S Technologies, Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:YSKOUD",
-      "label": "YSKOUD LLC",
-      "href": "/vendors/YSKOUD/",
-      "entity_ref": "vendor:stem:YSKOUD",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:chief-medical-examiner"
-      ],
-      "award_count": 1,
-      "search_text": "YSKOUD LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -60614,12 +59928,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:AMAZONAS%20PAINTING",
-      "label": "Amazonas Painting Corp",
-      "href": "/vendors/AMAZONAS%20PAINTING/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:AMERICA%20WORKS",
       "label": "America Works of New York Inc.",
       "href": "/vendors/AMERICA%20WORKS/",
@@ -60734,12 +60042,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:AVANTI%20MECHANICAL",
-      "label": "Avanti Mechanical LLC",
-      "href": "/vendors/AVANTI%20MECHANICAL/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:AWE-HUH%20CREATIVE%20SERVICES",
       "label": "Awe-Huh Creative Services LLC",
       "href": "/vendors/AWE-HUH%20CREATIVE%20SERVICES/",
@@ -60762,12 +60064,6 @@
       "label": "Barry S. Grodenchik",
       "href": "/officials/7691/",
       "kind": "official"
-    },
-    {
-      "entity_id": "vendor:stem:BECKMAN%20COULTER",
-      "label": "Beckman Coulter Inc",
-      "href": "/vendors/BECKMAN%20COULTER/",
-      "kind": "vendor"
     },
     {
       "entity_id": "entity:official:7632",
@@ -60806,12 +60102,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "agency:id:board-meetings",
-      "label": "Board Meetings",
-      "href": "/agencies/board-meetings/",
-      "kind": "agency"
-    },
-    {
       "entity_id": "agency:id:board-of-correction",
       "label": "Board of Correction",
       "href": "/agencies/board-of-correction/",
@@ -60821,12 +60111,6 @@
       "entity_id": "agency:id:board-of-elections",
       "label": "Board of Elections",
       "href": "/agencies/board-of-elections/",
-      "kind": "agency"
-    },
-    {
-      "entity_id": "agency:id:board-of-standards-and-appeals",
-      "label": "Board of Standards and Appeals",
-      "href": "/agencies/board-of-standards-and-appeals/",
       "kind": "agency"
     },
     {
@@ -60863,12 +60147,6 @@
       "entity_id": "vendor:stem:BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES",
       "label": "Brooklyn Community Housing & Services, Inc.",
       "href": "/vendors/BROOKLYN%20COMMUNITY%20HOUSING%20SERVICES/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:BROOKLYN%20DEFENDER%20SERVICES",
-      "label": "Brooklyn Defender Services",
-      "href": "/vendors/BROOKLYN%20DEFENDER%20SERVICES/",
       "kind": "vendor"
     },
     {
@@ -60974,12 +60252,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES",
-      "label": "Center for Alternative Sentencing and Employment Services Inc.",
-      "href": "/vendors/CENTER%20FOR%20ALTERNATIVE%20SENTENCING%20AND%20EMPLOYMENT%20SERVICES/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES",
       "label": "Center for Employment Opportunities Inc",
       "href": "/vendors/CENTER%20FOR%20EMPLOYMENT%20OPPORTUNITIES/",
@@ -61002,12 +60274,6 @@
       "label": "Charles Barron",
       "href": "/officials/5288/",
       "kind": "official"
-    },
-    {
-      "entity_id": "agency:id:charter-revision-commission",
-      "label": "Charter Revision Commission",
-      "href": "/agencies/charter-revision-commission/",
-      "kind": "agency"
     },
     {
       "entity_id": "vendor:stem:CHECKR",
@@ -61058,18 +60324,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "agency:id:city-planning-commission",
-      "label": "City Planning Commission",
-      "href": "/agencies/city-planning-commission/",
-      "kind": "agency"
-    },
-    {
-      "entity_id": "agency:id:city-university",
-      "label": "City University of New York",
-      "href": "/agencies/city-university/",
-      "kind": "agency"
-    },
-    {
       "entity_id": "agency:id:civilian-complaint-review-board",
       "label": "Civilian Complaint Review Board",
       "href": "/agencies/civilian-complaint-review-board/",
@@ -61092,12 +60346,6 @@
       "label": "Common Ground Management Corp",
       "href": "/vendors/COMMON%20GROUND%20MANAGEMENT/",
       "kind": "vendor"
-    },
-    {
-      "entity_id": "agency:id:community-boards",
-      "label": "Community Boards",
-      "href": "/agencies/community-boards/",
-      "kind": "agency"
     },
     {
       "entity_id": "vendor:stem:COMMUNITY%20REINVESTMENT%20FUND",
@@ -61458,12 +60706,6 @@
       "label": "ECCO III Enterprises Inc",
       "href": "/vendors/ECCO%20III%20ENTERPRISES/",
       "kind": "vendor"
-    },
-    {
-      "entity_id": "agency:id:economic-development-corporation",
-      "label": "Economic Development Corporation",
-      "href": "/agencies/economic-development-corporation/",
-      "kind": "agency"
     },
     {
       "entity_id": "vendor:stem:EDUCATIONAL%20DATA%20SYSTEMS",
@@ -62150,12 +61392,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:JUSTICE%20INNOVATION",
-      "label": "Justice Innovation Inc",
-      "href": "/vendors/JUSTICE%20INNOVATION/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:7897",
       "label": "Justin E. Sanchez",
       "href": "/officials/7897/",
@@ -62462,12 +61698,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "agency:id:mayors-office-of-criminal-justice",
-      "label": "Mayor's Office of Criminal Justice",
-      "href": "/agencies/mayors-office-of-criminal-justice/",
-      "kind": "agency"
-    },
-    {
       "entity_id": "agency:id:management-and-budget",
       "label": "Mayor's Office of Management and Budget",
       "href": "/agencies/management-and-budget/",
@@ -62588,18 +61818,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:NATIONAL%20MEDICAL%20SERVICES",
-      "label": "National Medical Services, Inc.",
-      "href": "/vendors/NATIONAL%20MEDICAL%20SERVICES/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:NEIGHBORHOOD%20DEFENDER%20SERVICE",
-      "label": "Neighborhood Defender Service Inc",
-      "href": "/vendors/NEIGHBORHOOD%20DEFENDER%20SERVICE/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS",
       "label": "Neighborhood Trust Financial Partners Inc.",
       "href": "/vendors/NEIGHBORHOOD%20TRUST%20FINANCIAL%20PARTNERS/",
@@ -62690,12 +61908,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "vendor:stem:NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES",
-      "label": "New York County Defender Services",
-      "href": "/vendors/NEW%20YORK%20COUNTY%20DEFENDER%20SERVICES/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:NEW%20YORK%20EDGE",
       "label": "New York Edge Inc.",
       "href": "/vendors/NEW%20YORK%20EDGE/",
@@ -62729,12 +61941,6 @@
       "entity_id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
       "label": "Newtown Creek CSO Partners A Joint Venture",
       "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:NICHEVISION%20FORENSICS",
-      "label": "NicheVision Forensics LLC",
-      "href": "/vendors/NICHEVISION%20FORENSICS/",
       "kind": "vendor"
     },
     {
@@ -62816,12 +62022,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "agency:id:chief-medical-examiner",
-      "label": "Office of the Chief Medical Examiner",
-      "href": "/agencies/chief-medical-examiner/",
-      "kind": "agency"
-    },
-    {
       "entity_id": "agency:id:city-clerk",
       "label": "Office of the City Clerk",
       "href": "/agencies/city-clerk/",
@@ -62850,12 +62050,6 @@
       "label": "Office of the Special Narcotics Prosecutor",
       "href": "/agencies/office-of-special-narcotics-prosecutor/",
       "kind": "agency"
-    },
-    {
-      "entity_id": "vendor:stem:OLYMPIC%20PLUMBING%20HEATING%20SERVICES",
-      "label": "Olympic Plumbing & Heating Services, Inc.",
-      "href": "/vendors/OLYMPIC%20PLUMBING%20HEATING%20SERVICES/",
-      "kind": "vendor"
     },
     {
       "entity_id": "entity:official:7798",
@@ -63060,12 +62254,6 @@
       "label": "Raj Somas DBA Rusd Solutions",
       "href": "/vendors/RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS/",
       "kind": "vendor"
-    },
-    {
-      "entity_id": "agency:id:rent-guidelines-board",
-      "label": "Rent Guidelines Board",
-      "href": "/agencies/rent-guidelines-board/",
-      "kind": "agency"
     },
     {
       "entity_id": "vendor:stem:REPLICATIONS",
@@ -63363,7 +62551,7 @@
     },
     {
       "entity_id": "vendor:stem:SPRUCE%20TECHNOLOGY",
-      "label": "Spruce Technology Inc.",
+      "label": "Spruce Technology Inc",
       "href": "/vendors/SPRUCE%20TECHNOLOGY/",
       "kind": "vendor"
     },
@@ -63452,12 +62640,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:THE%20BRONX%20DEFENDERS",
-      "label": "The Bronx Defenders",
-      "href": "/vendors/THE%20BRONX%20DEFENDERS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:THE%20CHILD%20CENTER",
       "label": "The Child Center of NY Inc",
       "href": "/vendors/THE%20CHILD%20CENTER/",
@@ -63509,12 +62691,6 @@
       "entity_id": "vendor:stem:THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED",
       "label": "The Jewish Association for Services for the Aged",
       "href": "/vendors/THE%20JEWISH%20ASSOCIATION%20FOR%20SERVICES%20FOR%20THE%20AGED/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:THE%20LEGAL%20AID%20SOCIETY",
-      "label": "The Legal Aid Society",
-      "href": "/vendors/THE%20LEGAL%20AID%20SOCIETY/",
       "kind": "vendor"
     },
     {
@@ -63752,6 +62928,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:VITAL%20PLUMBING",
+      "label": "VITAL PLUMBING INC",
+      "href": "/vendors/VITAL%20PLUMBING/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK",
       "label": "Volunteers of America Greater New York Inc",
       "href": "/vendors/VOLUNTEERS%20OF%20AMERICA%20GREATER%20NEW%20YORK/",
@@ -63854,12 +63036,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:YSKOUD",
-      "label": "YSKOUD LLC",
-      "href": "/vendors/YSKOUD/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:7866",
       "label": "Yusef Salaam",
       "href": "/officials/7866/",
@@ -63891,8 +63067,8 @@
     "official": 215,
     "exact-person-appointment": 558,
     "committee": 96,
-    "agency": 83,
-    "vendor": 271,
+    "agency": 73,
+    "vendor": 258,
     "notice-only-hire": 80
   },
   "relation_states": [

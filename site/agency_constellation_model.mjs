@@ -576,9 +576,19 @@ function categoryFromDomain(
   vendorRollups = null,
   browseSources = {},
 ) {
+  const nativeRows = (browseSources.native_procurements?.rows || []).filter((row) =>
+    row?.agency_id === `agency:id:${identity.canonical_id}`);
   if (spec.id === "vendors") {
     const rollup = vendorRollups?.by_id?.[identity.canonical_id] || [];
-    const items = rollup.map((vendor) => ({
+    const nativeVendors = [...new Map(nativeRows.map((row) => [String(row.vendor_name || "").toUpperCase(), {
+      subject_ref: entityRouteRef("vendor", row.vendor_name),
+      label: clean(row.vendor_name, 320),
+      award_count: 1,
+      award_total: Number(row.contract_amount),
+      href: entityHref({ ref: entityRouteRef("vendor", row.vendor_name), label: row.vendor_name }),
+      method: "checkbook_nycha_contracts_adapter_v1",
+    }])).values()].filter((row) => row.subject_ref && row.href && Number.isFinite(row.award_total));
+    const items = [...rollup, ...nativeVendors].map((vendor) => ({
       id: vendor.subject_ref,
       subject_ref: vendor.subject_ref,
       label: clean(vendor.label, 320),
@@ -685,6 +695,51 @@ function categoryFromDomain(
   }
 
   if (spec.id === "contracts") {
+    if (nativeRows.length) {
+      const nativeItems = nativeRows.map((row) => ({
+        id: row.procurement_id,
+        subject_ref: row.procurement_id,
+        label: clean(row.short_title || row.contract_id, 320),
+        href: clean(row.canonical_href, 500),
+        date: clean(row.start_date, 40) || null,
+        source: "checkbook_nycha_contracts",
+        relation: spec.relation,
+        confidence: "strong",
+        method: "checkbook_nycha_contracts_adapter_v1",
+        object_kind: "contract",
+        vendor_name: clean(row.vendor_name, 240) || null,
+        contract_id: clean(row.contract_id, 120) || null,
+        provenance: {
+          source_system: "checkbook_nycha_contracts",
+          source_record_id: row.source_observation_refs?.[0] || null,
+          source_fields: ["contract_id", "vendor", "purpose", "contract_current_amount", "contract_start_date", "contract_end_date"],
+          join_method: "exact_source_agency_contract_observation",
+          observed_at: row.start_date || null,
+        },
+      }));
+      const base = browseSources.money_open ? buildAgencyBrowseContract({
+        facet: spec.browse_facet, identity, payload: browseSources.money_open,
+        relation: spec.relation, mode: "open", limit: AGENCY_BROWSE_PREVIEW_LIMIT,
+      }) : null;
+      const ordinary = (base?.rows || []).map((row) => agencyBrowseRowObject(row, {
+        facet: spec.browse_facet, relation: spec.relation,
+        sourceSystem: browseSources.money_open?.source?.system || "city_record",
+      })).filter(Boolean);
+      // Keep source-native rows visible in the short agency preview; the
+      // category count still includes the complete open Browse universe.
+      const items = [...nativeItems, ...ordinary].slice(0, AGENCY_BROWSE_PREVIEW_LIMIT);
+      const total = (Number(base?.total) || 0) + nativeRows.length;
+      return {
+        id: spec.id, label: spec.label, relation: spec.relation, status: "matched",
+        gap_class: null, note: null, count: total, total_count: total, items,
+        as_of: browseSources.procurement_browse?.generated_at || base?.asOf || null,
+        universe: "open", warrant_summary: summarizeCategoryWarrants(items),
+        method: "checkbook_nycha_contracts_adapter_v1",
+        view_all_href: agencyCategoryBrowseHref(identity.canonical_id, spec.id, { mode: "open" }),
+        archive_href: agencyCategoryArchiveHref(identity.canonical_id, spec.id),
+        follow_href: agencyCategoryFollowHref(identity.canonical_id, spec.id),
+      };
+    }
     const graph = passportGraphAgencyEntry(browseSources.passport_graph, identity.canonical_id);
     if (graph && graph.selected_rows > 0) {
       const claimed = (graph.preview || []).map((object) => {
@@ -1033,6 +1088,8 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
         money_open: sources.money_open,
         meetings_domain: sources.meetings_domain,
         passport_graph: sources.passport_graph,
+        native_procurements: sources.native_procurements || sources.procurement_browse,
+        procurement_browse: sources.procurement_browse,
       },
     ));
   const rulesCategory = categories.find((category) => category.id === "rules");

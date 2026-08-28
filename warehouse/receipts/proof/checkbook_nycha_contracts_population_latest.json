@@ -1,0 +1,24 @@
+{
+  "schema": "cityscroll.checkbook_nycha_contracts.receipt.v1",
+  "source_system": "checkbook_nycha_contracts",
+  "source_dataset": "Contracts_NYCHA",
+  "endpoint": "https://www.checkbooknyc.com/api",
+  "query": {
+    "type_of_data": "Contracts_NYCHA",
+    "contract_id": "BA2335819",
+    "records_from": 1,
+    "max_records": 20
+  },
+  "deterministic_paging": true,
+  "minimum_delay_ms": 1100,
+  "retrieved_at": "2026-08-28T15:26:36.048Z",
+  "pages": [
+    {
+      "from": 1,
+      "max_records": 20,
+      "record_count": 9,
+      "raw_response_hash": "09d09976f8affa31e5718dc8c24c637bf81c6805b0e5980493d44862624e5c7c",
+      "retrieved_at": "2026-08-28T15:26:36.048Z"
+    }
+  ]
+}

@@ -9,6 +9,7 @@
       "passport_public_contracts": "available",
       "passport_public_rfx": "available",
       "checkbook_contracts": "available",
+      "checkbook_nycha_contracts": "available",
       "checkbook_spending": "available",
       "city_record": "available"
     }
@@ -38,6 +39,14 @@
       "row_count": 1704,
       "reason": null
     },
+    "checkbook_nycha_contracts": {
+      "source_system": "checkbook_nycha_contracts",
+      "status": "available",
+      "available": true,
+      "generated_at": "2026-08-18T04:05:51.552Z",
+      "row_count": 1,
+      "reason": null
+    },
     "checkbook_spending": {
       "source_system": "checkbook_spending",
       "status": "available",
@@ -57,8 +66,8 @@
   },
   "identity_gate": {
     "schema": "cityscroll.procurement_identity_audit.v1",
-    "selected_source_rows": 14486,
-    "stable_source_id_rows": 14486,
+    "selected_source_rows": 14487,
+    "stable_source_id_rows": 14487,
     "stable_source_id_rate": 1,
     "minimum_stable_source_id_rate": 0.95,
     "accepted_exact_joins": 689,
@@ -13699,6 +13708,14 @@
       "procurement_id": "procurement:contract:MMA185820278801731",
       "basis": "exact_contract_id",
       "matched_value": "MMA185820278801731"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
+      "source_observation_ref": "checkbook_nycha_contracts:contract:BA2335819:Agreement",
+      "procurement_id": "procurement:contract:BA2335819",
+      "basis": "exact_contract_id",
+      "matched_value": "BA2335819"
     },
     {
       "schema": "cityscroll.procurement_identity_edge.v1",
@@ -122161,9 +122178,9 @@
     }
   ],
   "counts": {
-    "total": 13785,
-    "source_observations": 27469,
-    "identity_edges": 14486,
+    "total": 13786,
+    "source_observations": 27470,
+    "identity_edges": 14487,
     "cross_source_identity_joins": 689,
     "lifecycle_rows": 0
   },
@@ -122176,20 +122193,21 @@
     "floor": "2025-08-18",
     "row_cap": null,
     "coverage": "City Record Award window (valid amount, last 365 days); not a citywide inventory",
-    "selected_rows": 27469,
+    "selected_rows": 27470,
     "census_rows": {
       "passport_contracts": 12782,
-      "checkbook_contracts": 2000
+      "checkbook_contracts": 2000,
+      "checkbook_nycha_contracts": 1
     }
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "7db6cc2562a7d6a3a1a79724b5fc748c25db915bb97ab45bacae23fb988f92e1",
+    "source_model_fingerprint": "32ca31ceb8899af45aec458780ce7c3f6993e74f15501d9216e5175ae592342d",
     "generated_at": "2026-08-18T04:05:51.552Z",
-    "selected_row_count": 27469,
+    "selected_row_count": 27470,
     "artifact_hashes": {
-      "shared_procurement_read_model": "6d3bb49c5d11a09ce23d7dfd591267395e6be04f1141f3432f78c603fbbf4003",
-      "keyword_search_procurements": "ef8b8fb843f307d78a6df56de10a8cabc193a59d9aff11d87f9484f4cf3623fa"
+      "shared_procurement_read_model": "1ab3b1cc7a5c952f2a5b91908eef1797e0a7fbb4253955c724d1667f0f31218a",
+      "keyword_search_procurements": "4aa32d9ea4a59fce42d18be4a5cd81b705b3a44323992025efba1a38370fadfa"
     }
   },
   "representation": "sharded",
@@ -122197,25 +122215,26 @@
   "shards": [
     {
       "path": "shared_procurement_read_model/shard-000.json",
-      "bytes": 18828194,
-      "row_count": 4556,
-      "observation_count": 9231
+      "bytes": 18827984,
+      "row_count": 4555,
+      "observation_count": 9228
     },
     {
       "path": "shared_procurement_read_model/shard-001.json",
-      "bytes": 18829260,
+      "bytes": 18829279,
       "row_count": 4487,
       "observation_count": 8941
     },
     {
       "path": "shared_procurement_read_model/shard-002.json",
-      "bytes": 17089768,
-      "row_count": 4742,
-      "observation_count": 9297
+      "bytes": 17095943,
+      "row_count": 4744,
+      "observation_count": 9301
     }
   ],
   "procurement_shard_by_id": {
     "procurement:contract:20211201861": "shared_procurement_read_model/shard-000.json",
+    "procurement:contract:BA2335819": "shared_procurement_read_model/shard-000.json",
     "procurement:contract:CT100220218800001": "shared_procurement_read_model/shard-000.json",
     "procurement:contract:CT100220218800028": "shared_procurement_read_model/shard-000.json",
     "procurement:contract:CT100220218800034": "shared_procurement_read_model/shard-000.json",
@@ -126769,8 +126788,8 @@
     "procurement:contract:CT107220268801377": "shared_procurement_read_model/shard-000.json",
     "procurement:contract:CT107220268801547": "shared_procurement_read_model/shard-000.json",
     "procurement:contract:CT107220268801679": "shared_procurement_read_model/shard-000.json",
-    "procurement:contract:CT107220268801910": "shared_procurement_read_model/shard-000.json",
-    "procurement:contract:CT107220268802069": "shared_procurement_read_model/shard-000.json",
+    "procurement:contract:CT107220268801910": "shared_procurement_read_model/shard-001.json",
+    "procurement:contract:CT107220268802069": "shared_procurement_read_model/shard-001.json",
     "procurement:contract:CT107220268802279": "shared_procurement_read_model/shard-001.json",
     "procurement:contract:CT107220268802282": "shared_procurement_read_model/shard-001.json",
     "procurement:contract:CT107220268802745": "shared_procurement_read_model/shard-001.json",
@@ -131256,8 +131275,8 @@
     "procurement:contract:CT182620248807306": "shared_procurement_read_model/shard-001.json",
     "procurement:contract:CT182620248807308": "shared_procurement_read_model/shard-001.json",
     "procurement:contract:CT182620248807465": "shared_procurement_read_model/shard-001.json",
-    "procurement:contract:CT182620248807498": "shared_procurement_read_model/shard-001.json",
-    "procurement:contract:CT182620248807499": "shared_procurement_read_model/shard-001.json",
+    "procurement:contract:CT182620248807498": "shared_procurement_read_model/shard-002.json",
+    "procurement:contract:CT182620248807499": "shared_procurement_read_model/shard-002.json",
     "procurement:contract:CT182620248807540": "shared_procurement_read_model/shard-002.json",
     "procurement:contract:CT182620248807550": "shared_procurement_read_model/shard-002.json",
     "procurement:contract:CT182620248807647": "shared_procurement_read_model/shard-002.json",
@@ -137706,6 +137725,7 @@
     "checkbook_contracts:contract:registered:MMA185820268807623:CITIZENS COMMITTEE FOR NEW YORK CITY INC:prime-vendor:2026-07-09",
     "checkbook_contracts:contract:registered:MMA185820278801727:DELOITTE & TOUCHE LLP:prime-vendor:2026-08-04",
     "checkbook_contracts:contract:registered:MMA185820278801731:DELOITTE & TOUCHE LLP:prime-vendor:2026-08-04",
+    "checkbook_nycha_contracts:contract:BA2335819:Agreement",
     "city_record:20181128018",
     "city_record:20181128019",
     "city_record:20201016111",

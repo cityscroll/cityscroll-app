@@ -11,6 +11,7 @@ import {
   observationFromMoneyRow,
   observationFromPassportContractRow,
   observationFromCheckbookContractRow,
+  observationFromCheckbookNychaContractRow,
   observationFromPaymentRow,
   observationFromLandRow,
   observationFromRulesRow,
@@ -907,6 +908,7 @@ export function collectProcurementSpineObservations(root, opts = {}) {
   });
   add(passportSelection.rows, observationFromPassportContractRow, "passport-public-contracts");
   add(checkbookSelection.rows, observationFromCheckbookContractRow, "checkbook-contracts");
+  add(doc.rows.checkbook_nycha_contracts, observationFromCheckbookNychaContractRow, "checkbook_nycha_contracts");
   add(doc.rows.checkbook_spending, observationFromPaymentRow, "checkbook-spending");
 
   return {
@@ -1294,7 +1296,23 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     // Keep the edge document bounded while retaining a useful densified corpus.
     max_entities: opts.max_entities || DEFAULT_ENTITY_MATERIALIZATION_CAP,
     mandate_agency_refs: mandateAgencyRefs,
+    priority_root_refs: (procurementSpine.observations || [])
+      .flatMap((row) => row?.vendor_name ? [`vendor:stem:${encodeURIComponent(vendorStem(row.vendor_name))}`] : []),
   });
+  // Source-native contract vendors must remain addressable even when the
+  // bounded cross-domain richness census is full. This is an additive route
+  // for the admitted native population, not a broader vendor-name census.
+  const nativeCorpus = buildIntelligenceCorpus(
+    observations.filter((row) => row?.source_system === "checkbook_nycha_contracts"),
+    { max_per_domain: opts.max_per_domain || 6, max_entities: 20, prefer_multi_domain: false },
+  );
+  const nativeAdditions = nativeCorpus.entities.filter((entity) => !corpus.by_ref?.[entity.root?.ref]);
+  if (nativeAdditions.length) {
+    corpus.entities = [...corpus.entities, ...nativeAdditions];
+    corpus.by_ref = Object.fromEntries(corpus.entities.map((entity) => [entity.root.ref, entity]));
+    corpus.entity_count = corpus.entities.length;
+    corpus.multi_domain_count = corpus.entities.filter((entity) => (entity.metrics?.domains_matched || 0) >= 2).length;
+  }
   const vendorFootprint = buildVendorFootprintCoverage(
     corpus,
     ocpLookup || {},

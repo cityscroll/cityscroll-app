@@ -73,6 +73,23 @@ function checkbookRecord(row, generatedAt) {
   return record("checkbook_contracts", id, snapshot, generatedAt);
 }
 
+function checkbookNychaRecord(row, generatedAt) {
+  const snapshot = {
+    ...row,
+    id: row.contract_id || row.id,
+    contract_id: row.contract_id || row.id,
+    vendor: row.vendor || row.source_vendor_name,
+    agency: row.agency || row.source_agency_label,
+    current: row.current ?? row.amount?.value ?? null,
+    original: row.original ?? null,
+    start: row.start || row.relevant_dates?.start_date || null,
+    end: row.end || row.relevant_dates?.end_date || null,
+    official_url: row.official_url || row.source_url || null,
+  };
+  const id = `contract:${snapshot.id}:${snapshot.record_type || "Agreement"}`;
+  return record("checkbook_nycha_contracts", id, snapshot, row.retrieval_timestamp || generatedAt);
+}
+
 function passportRecord(row, generatedAt) {
   const epin = norm(row.epin_norm || row.epin);
   const snapshot = attachPassportPublicFields({ ...row, epin_norm: epin }, row);
@@ -111,6 +128,8 @@ export function procurementSourceRecordsFromMaterializations(spine, awards) {
   const awardRows = (Array.isArray(awards?.rows) ? awards.rows : [])
     .filter((row) => selectedPins.has(norm(row.pin)) && row.request_id);
   return [
+    ...(Array.isArray(spine?.rows?.checkbook_nycha_contracts)
+      ? spine.rows.checkbook_nycha_contracts.map((row) => checkbookNychaRecord(row, generatedAt)) : []),
     ...checkbookRows.map((row) => checkbookRecord(row, generatedAt)),
     ...passportRows.map((row) => passportRecord(row, generatedAt)),
     ...awardRows.map((row) => cityRecord(row, awards?.materialized_at || generatedAt)),
@@ -125,6 +144,7 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
     census: {
       passport_contracts: Array.isArray(spine?.rows?.passport_contracts) ? spine.rows.passport_contracts.length : 0,
       checkbook_contracts: Array.isArray(spine?.rows?.checkbook_contracts) ? spine.rows.checkbook_contracts.length : 0,
+      checkbook_nycha_contracts: Array.isArray(spine?.rows?.checkbook_nycha_contracts) ? spine.rows.checkbook_nycha_contracts.length : 0,
     },
   });
   const checkbookLookupRows = Array.isArray(spine?.rows?.checkbook_contracts)
