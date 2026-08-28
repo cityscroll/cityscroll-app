@@ -32,6 +32,7 @@ export const SEARCH_DOCUMENT_OBJECT_TYPES = Object.freeze([
   "community-board-person",
   "community_board",
   "civil_service_exam",
+  "legal_code",
   "parcel",
   "unclassified",
 ]);
@@ -46,6 +47,7 @@ export const SEARCH_DOCUMENT_DOMAINS = Object.freeze([
   "places",
   "staffing",
   "property",
+  "legal",
 ]);
 
 const TYPE_DOMAINS = Object.freeze({
@@ -63,6 +65,7 @@ const TYPE_DOMAINS = Object.freeze({
   "community-board-person": Object.freeze(["people"]),
   community_board: Object.freeze(["people", "places"]),
   civil_service_exam: Object.freeze(["staffing"]),
+  legal_code: Object.freeze(["legal"]),
   parcel: Object.freeze(["property", "zoning"]),
   unclassified: Object.freeze([]),
 });
@@ -81,6 +84,7 @@ const SAFE_ROUTE_ROOTS = Object.freeze([
   "/parcels/",
   "/people/",
   "/procurements/",
+  "/administrative-code/",
   "/vendors/",
 ]);
 

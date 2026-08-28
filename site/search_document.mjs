@@ -37,6 +37,7 @@ const DOMAIN_LANES = Object.freeze({
   people: "People and organizations",
   places: "Community boards",
   staffing: "Civil-service exams",
+  legal: "Administrative Code",
   property: "Properties",
   zoning: "Land use",
 });

@@ -3,6 +3,40 @@
   "generated_document": "docs/data-sources.md",
   "contracts": [
     {
+      "id": "nyc-administrative-code",
+      "name": "NYC Administrative Code (American Legal Publishing bulk XML)",
+      "owner": "NYC Law Department / American Legal Publishing",
+      "status": "build-time",
+      "scope": "warehouse",
+      "kind": "html",
+      "domain": "https://codelibrary.amlegal.com",
+      "landing_page": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
+      "bulk_url": "https://files.amlegal.com/pdffiles/NewYorkCity/Admin/XML.zip",
+      "required_fields": ["section", "heading", "text", "hierarchy", "source_ref", "observed_at", "content_hash"],
+      "publisher_cadence": "Publisher supplement cadence; refreshed at build time",
+      "product_freshness": "A scheduled/build-time acquisition records the official bulk XML bytes, observed-at timestamp, and SHA-256 hash. Public routes serve only committed shards and never fetch the publisher.",
+      "used_for": "Addressable current NYC Administrative Code provisions, deterministic citation lookup, legal-code search, and provision detail pages.",
+      "code_references": [
+        {"path": "tools/build_admin_code.mjs", "contains": "american_legal_publishing"},
+        {"path": "warehouse/scripts/admin_code_acquisition.mjs", "contains": "XML.zip"},
+        {"path": "site/admin_code.mjs", "contains": "nyc-administrative-code"}
+      ],
+      "landing_probe": "skip",
+      "freshness_contract": {
+        "mode": "periodic",
+        "max_stale_days": 60,
+        "clock_basis": "checked_acquired",
+        "serving_max_age_days": 60,
+        "serve_contract_id": null
+      },
+      "health_policy": {
+        "public_visibility": "public",
+        "backstage_detail": "receipts-and-errors",
+        "relationship_coverage": "separate"
+      },
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "city-record",
       "name": "City Record Online",
       "owner": "NYC Department of Citywide Administrative Services",

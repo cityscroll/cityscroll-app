@@ -862,6 +862,16 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "nyc-administrative-code",
+      "name": "NYC Administrative Code (American Legal Publishing bulk XML)",
+      "source_contract_id": "nyc-administrative-code",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1",
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "nyc-agencies",
       "name": "NYC Agencies and Governance Organizations",
       "source_contract_id": "nyc-agencies",
@@ -3578,8 +3588,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-19",
-    "source_contracts_fingerprint": "b0b18c7d2fce91a4a122178be2825e8bcd5ba8c19bc975ff9755e37b38fc6e4e",
+    "observed_on": "2026-08-28",
+    "source_contracts_fingerprint": "c225881f7b4fd0224481b010e937aaf7cea04b5074a2769845a1cab84d0f63a3",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 84,
     "class_changes": 0,

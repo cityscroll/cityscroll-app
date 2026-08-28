@@ -42,6 +42,11 @@ import {
   isDataHealthPath,
   renderDataHealthUnavailableDocument,
 } from "./data_health_navigation.mjs";
+import {
+  ADMIN_CODE_MANIFEST,
+  lookupAdminCodeCitation,
+  renderAdminCodeProvisionDocument,
+} from "./admin_code.mjs";
 
 const CITY_RECORD_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const NOTICE_READ_MODEL = "https://api.cityscroll.org/notice";
@@ -151,6 +156,11 @@ function safeCommittee(pathname) {
   return match ? match[1] : null;
 }
 
+function safeAdminCode(pathname) {
+  const match = pathname.match(/^\/administrative-code\/([^/?#]{1,80})\/?$/);
+  return match ? match[1] : null;
+}
+
 export function browseFacet(pathname) {
   const match = pathname.match(/^\/browse(?:\/([^/]+))?\/?$/);
   if (!match) return null;
@@ -200,10 +210,46 @@ export function edgeRequestKind(urlValue) {
   if (safeDistrictDigest(url.pathname)) return "district-digest";
   if (safeParcel(url.pathname)) return "parcel";
   if (safeCommittee(url.pathname)) return "committee";
+  if (safeAdminCode(url.pathname)) return "legal-code";
   if (browseFacet(url.pathname) || browseConcept(url.pathname) || browseObject(url.pathname)) return "browse";
   if (entityDocument(url.pathname)) return "entity";
   if (isDataHealthPath(url.pathname)) return "data-health";
   return "asset";
+}
+
+function adminCodeUnavailableResponse(request, status = 404) {
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=60, s-maxage=60",
+    "X-Content-Type-Options": "nosniff",
+  };
+  const body = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Administrative Code provision not found · CityScroll</title></head><body><main><h1>Administrative Code provision not found</h1><p><a href=\"/\">Back to CityScroll</a></p></main></body></html>";
+  return request.method === "HEAD" ? new Response(null, { status, headers }) : new Response(body, { status, headers });
+}
+
+async function handleAdminCode(request, env, encodedCitation) {
+  let citation;
+  try { citation = decodeURIComponent(encodedCitation); } catch (_error) { return adminCodeUnavailableResponse(request, 400); }
+  const entry = lookupAdminCodeCitation(citation, ADMIN_CODE_MANIFEST);
+  if (!entry) return adminCodeUnavailableResponse(request);
+  const snapshotRequest = request.method === "HEAD" ? new Request(request, { method: "GET" }) : request;
+  const response = await staticAsset(env, snapshotRequest, `/data/legal_code/${entry.shard}`);
+  if (!response.ok) return adminCodeUnavailableResponse(request, 503);
+  let row = null;
+  try {
+    const payload = await response.json();
+    row = Array.isArray(payload?.rows) ? payload.rows.find((candidate) => candidate.id === entry.id) : null;
+  } catch (_error) {
+    row = null;
+  }
+  if (!row) return adminCodeUnavailableResponse(request);
+  const html = renderAdminCodeProvisionDocument(row, { currentHref: request.url });
+  const headers = {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=86400",
+    "X-Content-Type-Options": "nosniff",
+  };
+  return request.method === "HEAD" ? new Response(null, { status: 200, headers }) : new Response(html, { status: 200, headers });
 }
 
 async function handleAssertion(request, env, selector) {
@@ -1074,6 +1120,8 @@ export default {
     }
     const committee = safeCommittee(url.pathname);
     if (committee) return handleCommittee(request, env, committee);
+    const adminCode = safeAdminCode(url.pathname);
+    if (adminCode) return handleAdminCode(request, env, adminCode);
     const browse = browseRoute(url.pathname);
     if (browse.kind === "facet") return handleBrowse(request, env, browse.facet);
     if (browse.kind === "concept") return handleBrowseConcept(request, env, browse.concept);
