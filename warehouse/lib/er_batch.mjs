@@ -48,6 +48,230 @@ export const AGENCY_METHOD = "agency_canonical_v1";
 export const AGENCY_MATCHER_VERSION = "1";
 export const PAIR_METHOD = "conventional_pair_v1";
 export const ER_PROVENANCE_POLICY_VERSION = POLICIES_VERSION;
+export const MAX_LIVE_OCP_ROWS = 200;
+export const OCP_BULK_PROOF_RELATIVE =
+  "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json";
+export const IDENTITY_EVIDENCE_MATCHES = Object.freeze([
+  "exact_stem",
+  "agency_canonical",
+  "pair_same",
+]);
+export const ER_BATCH_STAGE_FILES = Object.freeze([
+  "entity_link.jsonl",
+  "canonical_entity.jsonl",
+  "resolution_run.jsonl",
+  "pair_receipt.jsonl",
+  "entity_link_supersession.jsonl",
+  "metrics.json",
+]);
+
+/**
+ * Deterministic warehouse slice used by WH-04 replay.
+ * Newest award first, then request_id, so a pinned snapshot + limit is resumable.
+ */
+export function sqlWarehouseOcpSlice(table, limit) {
+  const n = Math.max(1, Math.floor(Number(limit)));
+  const cols = [
+    "request_id",
+    "start_date",
+    "agency_name",
+    "type_of_notice_description",
+    "pin",
+    "contract_amount",
+    "vendor_name",
+    "short_title",
+  ].join(", ");
+  return (
+    `SELECT ${cols} FROM ${table} ` +
+    `WHERE vendor_name IS NOT NULL AND CAST(vendor_name AS VARCHAR) <> '' ` +
+    `ORDER BY start_date DESC NULLS LAST, CAST(request_id AS VARCHAR) DESC ` +
+    `LIMIT ${n}`
+  );
+}
+
+/**
+ * Pin an ER batch to a WH-02 OCP receipt (bulk or bounded fetch).
+ * @param {object} receipt
+ * @param {string} sourceReceiptPath repo-relative receipt path
+ */
+export function pinnedOcpSnapshotFromReceipt(receipt, sourceReceiptPath) {
+  const raw = receipt && typeof receipt === "object" ? receipt.raw || {} : {};
+  const hash = String(raw.sha256 || "").trim().toLowerCase();
+  const rows = Number(raw.row_count);
+  if (!/^[0-9a-f]{64}$/.test(hash) || !Number.isInteger(rows) || rows < 1) {
+    throw new Error(
+      "OCP snapshot receipt lacks a valid raw source checksum and row count"
+    );
+  }
+  const parquetRows = Number((receipt.parquet || {}).row_count);
+  if (Number.isInteger(parquetRows) && parquetRows !== rows) {
+    throw new Error(
+      `OCP raw/Parquet row-count mismatch: ${rows} vs ${parquetRows}`
+    );
+  }
+  return {
+    source_snapshot_hash: hash,
+    source_row_count: rows,
+    snapshot_date: receipt.snapshot_date || null,
+    source_receipt: sourceReceiptPath || null,
+    socrata_dataset_id: receipt.socrata_dataset_id || null,
+    source_contract_id: receipt.source_contract_id || OCP_SOURCE_SYSTEM,
+    mode: raw.mode || null,
+  };
+}
+
+export function batchReportFromMetrics(metrics, runtimeMs) {
+  const m = metrics && typeof metrics === "object" ? metrics : {};
+  return {
+    candidates: Number(m.pair_candidates) || 0,
+    accepted: Number(m.pair_same) || 0,
+    unresolved: Number(m.pair_unresolved) || 0,
+    rejected: Number(m.pair_different) || 0,
+    runtime_ms: runtimeMs,
+  };
+}
+
+export function promotionDecision({
+  limit,
+  liveCap = MAX_LIVE_OCP_ROWS,
+  precisionReviewBeyondCap = false,
+} = {}) {
+  const cap = Number(liveCap);
+  const requested = Number(limit);
+  if (requested > cap && precisionReviewBeyondCap) {
+    return {
+      allowed: true,
+      live_ocp_cap: cap,
+      reason:
+        "A measured precision review beyond the 200-row proof authorized this expansion.",
+    };
+  }
+  return {
+    allowed: false,
+    live_ocp_cap: cap,
+    reason:
+      "The 200-row reviewed slice is not a full-corpus precision measurement. Wider replay stays blocked until a separate precision review covers that expansion.",
+  };
+}
+
+export function publicationGate() {
+  return {
+    identity_decisions: ["auto_link"],
+    unresolved_published_as_identity: false,
+    rejected_published_as_identity: false,
+    accepted_same_requires_evidence: true,
+  };
+}
+
+function linkEvidence(link) {
+  if (link && link.evidence && typeof link.evidence === "object") return link.evidence;
+  if (link && link.evidence_json) {
+    try {
+      return JSON.parse(link.evidence_json);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * Fail-closed identity publication: unresolved/different pairs never become
+ * canonical identity, and every accepted auto_link keeps evidence.
+ */
+export function identityPublicationFindings(batch = {}) {
+  const findings = [];
+  const links = Array.isArray(batch.entity_links) ? batch.entity_links : [];
+  const pairs = Array.isArray(batch.pair_receipts) ? batch.pair_receipts : [];
+  const sameKeys = new Set();
+  for (const pair of pairs) {
+    if (pair.decision === "same") {
+      sameKeys.add(`${pair.left_source_record_id}|${pair.right_source_record_id}`);
+    }
+  }
+  for (const link of links) {
+    if (link.decision !== DECISION.AUTO_LINK) {
+      findings.push(
+        `non-identity decision published as a link: ${link.decision || "(missing)"}`
+      );
+      continue;
+    }
+    const evidence = linkEvidence(link);
+    if (!evidence || !evidence.match) {
+      findings.push(
+        `accepted link ${link.id || link.source_record_id} is missing evidence`
+      );
+      continue;
+    }
+    if (!IDENTITY_EVIDENCE_MATCHES.includes(evidence.match)) {
+      findings.push(
+        `accepted link ${link.id || link.source_record_id} uses unpublished evidence match ${evidence.match}`
+      );
+    }
+    if (evidence.match === "pair_same") {
+      const key = `${evidence.left_source_record_id}|${evidence.right_source_record_id}`;
+      const reversed = `${evidence.right_source_record_id}|${evidence.left_source_record_id}`;
+      if (!sameKeys.has(key) && !sameKeys.has(reversed)) {
+        findings.push(
+          "a pair_same identity link is not backed by an accepted same pair"
+        );
+      }
+    }
+  }
+  return findings;
+}
+
+export function buildErBatchCheckpoint({
+  snapshot,
+  limit,
+  metrics,
+  query,
+  created_at,
+} = {}) {
+  return {
+    schema_version: 1,
+    phase: "WH-04",
+    er_batch_version: ER_BATCH_VERSION,
+    resumable: true,
+    source_snapshot_hash: snapshot?.source_snapshot_hash || null,
+    snapshot_date: snapshot?.snapshot_date || null,
+    limit,
+    query: query || null,
+    metrics: {
+      pair_candidates: metrics?.pair_candidates ?? null,
+      pair_same: metrics?.pair_same ?? null,
+      pair_unresolved: metrics?.pair_unresolved ?? null,
+      pair_different: metrics?.pair_different ?? null,
+    },
+    stage_files: [...ER_BATCH_STAGE_FILES],
+    created_at: created_at || null,
+  };
+}
+
+export function erBatchCheckpointFindings(
+  checkpoint,
+  { snapshot, limit, missingFiles = [] } = {}
+) {
+  if (!checkpoint || typeof checkpoint !== "object") {
+    return ["checkpoint missing"];
+  }
+  const errors = [];
+  if (checkpoint.er_batch_version !== ER_BATCH_VERSION) {
+    errors.push("checkpoint ER version changed");
+  }
+  if (
+    checkpoint.source_snapshot_hash !== snapshot?.source_snapshot_hash
+  ) {
+    errors.push("checkpoint source snapshot hash changed");
+  }
+  if (Number(checkpoint.limit) !== Number(limit)) {
+    errors.push("checkpoint limit changed");
+  }
+  for (const file of missingFiles) {
+    errors.push(`checkpoint stage file missing: ${file}`);
+  }
+  return errors;
+}
 
 /** FNV-1a 32-bit opaque id (same shape as entity_link.mjs). */
 export function opaqueId(prefix, parts) {
@@ -475,6 +699,10 @@ export function runErBatch(input = {}) {
     pair_same: samePairs.length,
     pair_unresolved: unresolvedPairs.length,
     pair_different: differentPairs.length,
+    candidates: pairs.length,
+    accepted: samePairs.length,
+    unresolved: unresolvedPairs.length,
+    rejected: differentPairs.length,
     entity_link_rows: allCases.length,
     canonical_entities: entities.length,
     unique_vendor_entities: uniqueVendorEntities,
@@ -600,7 +828,7 @@ export function runErBatch(input = {}) {
     created_at: now,
   }));
 
-  return {
+  const published = {
     resolution_run: runRow,
     entity_links: annotatedEntityLinkRows,
     canonical_entities: canonicalRows,
@@ -610,6 +838,13 @@ export function runErBatch(input = {}) {
     metrics,
     observations: vendorObs,
   };
+  const publicationFindings = identityPublicationFindings(published);
+  if (publicationFindings.length) {
+    throw new Error(
+      `WH-04 identity publication gate failed: ${publicationFindings.join("; ")}`
+    );
+  }
+  return published;
 }
 
 /**

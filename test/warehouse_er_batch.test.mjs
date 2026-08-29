@@ -22,6 +22,14 @@ import {
   VENDOR_STEM_METHOD,
   DECISION,
   sqlVerifyVendorResolution,
+  sqlWarehouseOcpSlice,
+  pinnedOcpSnapshotFromReceipt,
+  batchReportFromMetrics,
+  promotionDecision,
+  identityPublicationFindings,
+  buildErBatchCheckpoint,
+  erBatchCheckpointFindings,
+  MAX_LIVE_OCP_ROWS as LIB_LIVE_CAP,
 } from "../warehouse/lib/er_batch.mjs";
 import {
   MAX_LIVE_OCP_ROWS,
@@ -189,6 +197,133 @@ describe("WH-04 pure ER batch (reuse entity_resolution)", () => {
     assert.match(sql, /ocp_recent_contract_awards/);
     assert.match(sql, /canonical_entity_id/);
   });
+
+  it("keeps accepted same links evidenced and unresolved pairs unpublished as identity", () => {
+    const batch = runErBatch({
+      ocpRows: [
+        {
+          request_id: "ER001",
+          vendor_name: "ACME WIDGETS INC",
+          agency_name: "DCAS",
+        },
+        {
+          request_id: "ER002",
+          vendor_name: "Acme Widgets Incorporated",
+          agency_name: "DCAS",
+        },
+        {
+          request_id: "ER003",
+          vendor_name: "UNRELATED HOLDINGS LLC",
+          agency_name: "DOT",
+        },
+      ],
+      now: "2026-08-02T00:00:00.000Z",
+    });
+    assert.equal(identityPublicationFindings(batch).length, 0);
+    assert.ok(batch.metrics.pair_same >= 1);
+    assert.ok(batch.metrics.unresolved === batch.metrics.pair_unresolved);
+    const sameLinks = batch.entity_links.filter((link) => {
+      const evidence = JSON.parse(link.evidence_json);
+      return evidence.match === "pair_same";
+    });
+    for (const link of sameLinks) {
+      const evidence = JSON.parse(link.evidence_json);
+      assert.ok(evidence.left_source_record_id);
+      assert.ok(evidence.right_source_record_id);
+      assert.ok(evidence.stem);
+    }
+    for (const pair of batch.pair_receipts) {
+      if (pair.decision === "unresolved" || pair.decision === "different") {
+        const leaked = batch.entity_links.some((link) => {
+          const evidence = JSON.parse(link.evidence_json);
+          return (
+            evidence.match === "pair_same" &&
+            evidence.left_source_record_id === pair.left_source_record_id &&
+            evidence.right_source_record_id === pair.right_source_record_id
+          );
+        });
+        assert.equal(leaked, false);
+      }
+    }
+    const leakedUnresolved = identityPublicationFindings({
+      entity_links: [
+        {
+          id: "link_bad",
+          decision: DECISION.AUTO_LINK,
+          source_record_id: "ocp:1",
+          evidence_json: JSON.stringify({
+            match: "pair_same",
+            left_source_record_id: "ocp:1",
+            right_source_record_id: "ocp:2",
+          }),
+        },
+      ],
+      pair_receipts: [
+        {
+          decision: "unresolved",
+          left_source_record_id: "ocp:1",
+          right_source_record_id: "ocp:2",
+        },
+      ],
+    });
+    assert.ok(leakedUnresolved.length >= 1);
+  });
+
+  it("pins warehouse replay to a WH-02 receipt and keeps promotion blocked", () => {
+    const snapshot = pinnedOcpSnapshotFromReceipt(
+      {
+        snapshot_date: "2026-08-05",
+        socrata_dataset_id: "qyyg-4tf5",
+        source_contract_id: "ocp-recent-contract-awards",
+        raw: { sha256: "a".repeat(64), row_count: 53251, mode: "soda_bulk" },
+        parquet: { row_count: 53251 },
+      },
+      "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json"
+    );
+    assert.equal(snapshot.source_row_count, 53251);
+    assert.equal(snapshot.source_snapshot_hash, "a".repeat(64));
+    const sql = sqlWarehouseOcpSlice("ocp_recent_contract_awards", 200);
+    assert.match(sql, /ORDER BY start_date DESC NULLS LAST/);
+    assert.match(sql, /CAST\(request_id AS VARCHAR\) DESC/);
+    assert.match(sql, /LIMIT 200/);
+    const report = batchReportFromMetrics(
+      { pair_candidates: 562, pair_same: 45, pair_unresolved: 517, pair_different: 0 },
+      1453.742
+    );
+    assert.deepEqual(report, {
+      candidates: 562,
+      accepted: 45,
+      unresolved: 517,
+      rejected: 0,
+      runtime_ms: 1453.742,
+    });
+    assert.equal(promotionDecision({ limit: 200 }).allowed, false);
+    assert.equal(promotionDecision({ limit: 201 }).allowed, false);
+    assert.equal(
+      promotionDecision({ limit: 201, precisionReviewBeyondCap: true }).allowed,
+      true
+    );
+    assert.equal(LIB_LIVE_CAP, 200);
+  });
+
+  it("refuses to resume when the source snapshot hash changed", () => {
+    const snapshot = {
+      source_snapshot_hash: "b".repeat(64),
+      snapshot_date: "2026-08-05",
+    };
+    const checkpoint = buildErBatchCheckpoint({
+      snapshot: { ...snapshot, source_snapshot_hash: "c".repeat(64) },
+      limit: 200,
+      metrics: { pair_candidates: 1, pair_same: 0, pair_unresolved: 1, pair_different: 0 },
+      query: sqlWarehouseOcpSlice("ocp_recent_contract_awards", 200),
+      created_at: "2026-08-05T00:00:00.000Z",
+    });
+    const findings = erBatchCheckpointFindings(checkpoint, {
+      snapshot,
+      limit: 200,
+    });
+    assert.ok(findings.some((line) => /snapshot hash changed/.test(line)));
+  });
 });
 
 describe("WH-04 fixtures + capped runner layout", () => {
@@ -196,6 +331,10 @@ describe("WH-04 fixtures + capped runner layout", () => {
     assert.equal(
       parseArgs(["node", "er_batch.mjs", "--limit", "200"]).limit,
       MAX_LIVE_OCP_ROWS
+    );
+    assert.equal(
+      parseArgs(["node", "er_batch.mjs", "--limit", "200", "--resume"]).resume,
+      true
     );
     assert.throws(
       () =>
@@ -227,7 +366,22 @@ describe("WH-04 fixtures + capped runner layout", () => {
       existsSync(join(WAREHOUSE_DIR, "sql", "examples", "er_entity_links_verify.sql"))
     );
     assert.ok(existsSync(join(WAREHOUSE_DIR, "lib", "er_batch.mjs")));
+    assert.ok(
+      existsSync(join(WAREHOUSE_DIR, "scripts", "verify_er_batch_receipt.py"))
+    );
     assert.equal(ER_BATCH_VERSION, "wh04_er_batch_v1");
+  });
+
+  it("verifies the committed 200-row receipt without requiring local parquet", () => {
+    const python = pyBin() || "python3";
+    const r = spawnSync(
+      python,
+      [join(WAREHOUSE_DIR, "scripts", "verify_er_batch_receipt.py"), "--check"],
+      { cwd: ROOT, encoding: "utf8" }
+    );
+    assert.equal(r.status, 0, `${r.stdout || ""}\n${r.stderr || ""}`);
+    assert.match(`${r.stdout || ""}\n${r.stderr || ""}`, /OK WH-04 receipt verified/);
+    assert.match(`${r.stdout || ""}\n${r.stderr || ""}`, /not present in this checkout/);
   });
 });
 
@@ -315,15 +469,20 @@ describe("WH-04 end-to-end fixture materialization", () => {
     const proof = join(
       WAREHOUSE_DIR,
       "receipts",
-      "proof",
-      "wh04_er_batch_latest.json"
+      "wh04_er_batch_fixture.json"
     );
     assert.ok(existsSync(proof));
     const receipt = JSON.parse(readFileSync(proof, "utf8"));
     assert.equal(receipt.phase, "WH-04");
+    assert.equal(receipt.mode, "fixture");
+    assert.equal(receipt.promotion.allowed, false);
+    assert.equal(receipt.publication_gate.unresolved_published_as_identity, false);
+    assert.match(receipt.source_snapshot.source_snapshot_hash, /^[a-f0-9]{64}$/);
+    assert.equal(receipt.batch_report.candidates, receipt.metrics.pair_candidates);
     assert.ok(receipt.metrics.unique_vendor_entities >= 1);
     assert.ok(receipt.metrics.cross_source_stem_hits >= 1);
     assert.ok(receipt.cpu_discipline.single_job_lock);
+    assert.ok(receipt.cpu_discipline.resumable);
     assert.ok(receipt.runner?.cpu_discipline?.single_job_lock);
 
     // Gold matcher harness still green (no ER package regression).

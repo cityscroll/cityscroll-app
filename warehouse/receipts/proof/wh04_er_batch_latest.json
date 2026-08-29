@@ -9,6 +9,34 @@
   "limit": 200,
   "live_ocp_cap": 200,
   "runtime_ms": 1453.742084,
+  "resumed": false,
+  "source_snapshot": {
+    "source_snapshot_hash": "db380e85baa57b06643040933a9387a7d7ed9a012326922392eb19033429dfc5",
+    "source_row_count": 200,
+    "snapshot_date": "2026-08-05",
+    "source_receipt": "warehouse/receipts/ocp-recent-contract-awards_2026-08-05.json",
+    "socrata_dataset_id": "qyyg-4tf5",
+    "source_contract_id": "ocp-recent-contract-awards",
+    "mode": "soda_limit"
+  },
+  "batch_report": {
+    "candidates": 562,
+    "accepted": 45,
+    "unresolved": 517,
+    "rejected": 0,
+    "runtime_ms": 1453.742084
+  },
+  "publication_gate": {
+    "identity_decisions": ["auto_link"],
+    "unresolved_published_as_identity": false,
+    "rejected_published_as_identity": false,
+    "accepted_same_requires_evidence": true
+  },
+  "promotion": {
+    "allowed": false,
+    "live_ocp_cap": 200,
+    "reason": "The 200-row reviewed slice is not a full-corpus precision measurement. Wider replay stays blocked until a separate precision review covers that expansion."
+  },
   "source_fetch": {
     "receipt": "warehouse/receipts/ocp-recent-contract-awards_2026-08-05.json",
     "observed_at": "2026-08-05T06:15:39Z",
@@ -38,6 +66,10 @@
     "pair_same": 45,
     "pair_unresolved": 517,
     "pair_different": 0,
+    "candidates": 562,
+    "accepted": 45,
+    "unresolved": 517,
+    "rejected": 0,
     "entity_link_rows": 403,
     "canonical_entities": 199,
     "unique_vendor_entities": 173,
@@ -51,6 +83,7 @@
   },
   "resolution_run_id": "run_0e894087_5e",
   "stage_dir": "warehouse/raw/er-batch/snapshot_date=2026-08-05",
+  "checkpoint": "warehouse/raw/er-batch/snapshot_date=2026-08-05/checkpoint.json",
   "materialize": {
     "catalog": "warehouse/duckdb/cityscroll.duckdb",
     "snapshot_date": "2026-08-05",
@@ -90,7 +123,8 @@
     "duckdb_threads": 1,
     "default_limit": 200,
     "live_ocp_hard_cap": 200,
-    "incremental": true
+    "incremental": true,
+    "resumable": true
   },
   "reuse": {
     "entity_resolution": [
