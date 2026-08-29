@@ -500,6 +500,30 @@ select {
   line-height: 1.1;
 }
 
+.node-section.procurement-process ol.procurement-process-events {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.node-section.procurement-process li {
+  padding: 0;
+}
+
+.node-section.procurement-process summary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-action);
+  font-weight: 600;
+}
+
+.node-section.procurement-process details p {
+  margin: var(--space-2) 0 0;
+}
+
 /* Card-styled source groups on parcel / pack / digest documents. */
 .civic-object-section[data-parcel-biography-domain],
 .node-section.node-card,
