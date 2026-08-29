@@ -133,6 +133,59 @@ test("resident card preserves separate fiscal years and does not manufacture a r
   assert.doesNotMatch(html, /%|remaining budget|progress/i);
 });
 
+test("Bronx CB3 keeps budget facts while leaving payment identity unobserved", () => {
+  const model = JSON.parse(readFileSync("site/data/community_board_money.json", "utf8"));
+  const card = buildCommunityBoardMoneyCardView(model, "bronx-cb-03");
+  const html = renderCommunityBoardMoneyCard(card);
+  assert.equal(card.state, "unmatched_identity");
+  assert.equal(card.budget.adopted_amount, 340425);
+  assert.equal(card.spending, null);
+  assert.match(html, /\$340,425\.00/);
+  assert.match(html, /does not establish an accepted exact financial identity/);
+  assert.match(html, /Sources and coverage/);
+  assert.doesNotMatch(html, /\$0|remaining|progress|View payments|Spending in your district/i);
+});
+
+test("acceptance captures cover Bronx CB1 populated and Bronx CB3 partial states at both widths", () => {
+  const manifest = JSON.parse(readFileSync("docs/screenshots/community-board-money/manifest.json", "utf8"));
+  const required = [
+    { board: "bronx-cb-01", width: 1440, state: "after", money_state: "separate_fiscal_years" },
+    { board: "bronx-cb-01", width: 390, state: "after", money_state: "separate_fiscal_years" },
+    { board: "bronx-cb-03", width: 1440, state: "after", money_state: "unmatched_identity" },
+    { board: "bronx-cb-03", width: 390, state: "after", money_state: "unmatched_identity" },
+  ];
+  for (const want of required) {
+    const capture = (manifest.captures || []).find((row) => (
+      row.state === want.state
+      && row.viewport?.[0] === want.width
+      && String(row.route || "").includes(want.board)
+    ));
+    assert.ok(capture, `missing ${want.board} ${want.state} ${want.width} capture`);
+    assert.equal(capture.money_card, true);
+    assert.equal(capture.money_state, want.money_state);
+    assert.equal(capture.overflow_px, 0);
+    assert.match(String(capture.card_text || ""), /Sources and coverage/);
+    assert.match(String(capture.card_text || ""), /Community District spending is a separate measure|not spending inside its Community District/);
+    assert.doesNotMatch(String(capture.card_text || ""), /Spending in your district|View payments|remaining budget/i);
+    if (want.board === "bronx-cb-01") {
+      assert.match(String(capture.card_text || ""), /\$366,943/);
+      assert.match(String(capture.card_text || ""), /\$95,914\.68/);
+      assert.match(String(capture.card_text || ""), /22 payments/);
+    } else {
+      assert.match(String(capture.card_text || ""), /\$340,425/);
+      assert.match(String(capture.card_text || ""), /accepted exact financial identity|no accepted payment identity/i);
+      assert.doesNotMatch(String(capture.card_text || ""), /\$0/);
+    }
+    const before = (manifest.captures || []).find((row) => (
+      row.state === "before"
+      && row.viewport?.[0] === want.width
+      && String(row.route || "").includes(want.board)
+    ));
+    assert.ok(before, `missing ${want.board} before ${want.width} capture`);
+    assert.equal(before.money_card, false);
+  }
+});
+
 test("resident card uses explicit unavailable copy for budget-only, unmatched, empty, and stale states", () => {
   const budgetOnlyModel = buildCommunityBoardMoneyReadModel({
     boards: [{ board_id: "bronx-cb-01" }],
