@@ -3,7 +3,6 @@
   "id": "pr-1076-constellation-ceiling",
   "pr": 1076,
   "title": "PASSPort constellation graph ceiling raise",
-  "card": "cityscroll-kraken/cs-living-architecture-la11-history-backtest",
   "source": "https://github.com/cityscroll/cityscroll-app/pull/1076",
   "expected_finding_types": [
     "unmapped_surface",

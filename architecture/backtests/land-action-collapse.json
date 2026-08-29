@@ -2,8 +2,7 @@
   "schema": "cityscroll.architecture.backtest_case.v1",
   "id": "land-action-collapse",
   "title": "Land action-ontology collapse",
-  "card": "cityscroll-kraken/cs-living-architecture-observer-land-action-collapse",
-  "source": "data/scout-landuse-action-ontology-extension/report.md section 8",
+  "source": "architecture/backtests/land-action-collapse.json",
   "expected_finding_types": [
     "primary_collapse",
     "wrong_procedure_clock",

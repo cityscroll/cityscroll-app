@@ -1,10 +1,3 @@
----
-card_standard: kraken-v1
-id: cityscroll-procurement-observability/p8-digest-watch-parity-without-notice
-title: "p8 · Digest and Watch parity for procurement ids without a City Record notice"
-status: implemented
----
-
 ## Story
 
 A resident can watch a PASSPort-only or Checkbook-only procurement object. Following counts, the Watch control, digest compile, outbox identity, and email delivery share that `procurement_id`.

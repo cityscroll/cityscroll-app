@@ -201,11 +201,11 @@ test("two independent card updates produce non-overlapping file sets", () => {
   assert.equal(merged.cards["crol-list/card-two"].status, "fixed");
 });
 
-test("repo ledger store folds committed cards with stable schema", () => {
-  assert.ok(existsSync(join(ROOT, "ontology/queue/ledger/cards")));
+test("repo ledger pointer remains a public-safe empty fixture", () => {
+  assert.equal(existsSync(join(ROOT, "ontology/queue/ledger/cards")), false);
   const ledger = loadLedgerStore(REPO_LEDGER);
   assert.equal(ledger.schema, LEDGER_SCHEMA);
-  assert.ok(Object.keys(ledger.cards).length >= 80);
+  assert.deepEqual(ledger.cards, {});
   const pointer = JSON.parse(readFileSync(REPO_LEDGER, "utf8"));
   assert.equal(pointer.storage, LEDGER_STORAGE_VERSION);
   assert.ok(!pointer.cards || Object.keys(pointer.cards).length === 0);
@@ -263,9 +263,11 @@ test("updateLedger preserves ledger note and prior fixed fields", () => {
   assert.equal(next.cards["crol-list/z"].fixed_note, "done");
 });
 
-test("migrateMonolithicLedger is idempotent on the repo store", () => {
-  const once = migrateMonolithicLedger(REPO_LEDGER);
-  assert.ok(once.reason === "already_per_card" || once.migrated === true);
-  const n = Object.keys(loadLedgerStore(REPO_LEDGER).cards).length;
-  assert.ok(n >= 80);
+test("migrateMonolithicLedger preserves an empty public fixture", () => {
+  const dir = mkdtempSync(join(tmpdir(), "cs-ledger-migrate-"));
+  const ledgerPath = join(dir, "ledger.json");
+  writeFileSync(ledgerPath, readFileSync(REPO_LEDGER));
+  const once = migrateMonolithicLedger(ledgerPath);
+  assert.equal(once.migrated, true);
+  assert.deepEqual(loadLedgerStore(ledgerPath).cards, {});
 });
