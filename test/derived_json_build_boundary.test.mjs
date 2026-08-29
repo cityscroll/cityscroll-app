@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -29,6 +29,15 @@ test("derived JSON manifest pins static delivery and a retained source snapshot"
     assert.ok(family.source_paths.length);
     assert.ok(family.output_paths.length);
   }
+});
+
+test("keyword search boundary tracks the committed sharded output tree", () => {
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, "utf8"));
+  const family = manifest.generated_families.find(({ id }) => id === "keyword-search");
+  assert.ok(family);
+  assert.deepEqual(family.output_paths, ["worker/src/data/keyword_search_index_shards"]);
+  assert.ok(existsSync(path.join(ROOT, family.output_paths[0])));
+  assert.equal(existsSync(path.join(ROOT, "worker/src/data/keyword_search_index.json")), false);
 });
 
 test("the retained source snapshot validation fails closed before generation", () => {
