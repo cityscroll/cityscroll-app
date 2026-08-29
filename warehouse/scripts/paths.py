@@ -24,6 +24,11 @@ def warehouse_root() -> Path:
     return WAREHOUSE_DIR
 
 
+def lock_path() -> Path:
+    """Return the single-job lock beside the selected warehouse root."""
+    return warehouse_root() / ".ingest.lock"
+
+
 def raw_dir(dataset_id: str, snapshot_date: str) -> Path:
     return warehouse_root() / "raw" / dataset_id / f"snapshot_date={snapshot_date}"
 

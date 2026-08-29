@@ -143,6 +143,61 @@ describe("WH-02 bulk CLI contracts", () => {
     const out = `${r.stdout || ""}\n${r.stderr || ""}`;
     assert.match(out, /Cannot combine/);
   });
+
+  it("ships a receipt gate that distinguishes retained evidence from local artifacts", () => {
+    const verifier = join(WAREHOUSE_DIR, "scripts", "verify_bulk_receipts.py");
+    assert.ok(existsSync(verifier));
+    const r = spawnSync(pyBin(), [verifier, "--check"], {
+      cwd: ROOT,
+      encoding: "utf8",
+    });
+    assert.equal(r.status, 0, `${r.stdout || ""}\n${r.stderr || ""}`);
+    assert.match(`${r.stdout || ""}\n${r.stderr || ""}`, /local bulk artifacts present=false/);
+    assert.match(`${r.stdout || ""}\n${r.stderr || ""}`, /not present in this checkout/);
+  });
+
+  it("refuses a changed checkpoint page instead of assembling an unverified snapshot", () => {
+    const r = spawnSync(
+      pyBin(),
+      [
+        "-c",
+        `
+import hashlib
+import json
+import sys
+import tempfile
+from pathlib import Path
+sys.path.insert(0, "warehouse/scripts")
+from socrata_fetch import fetch_paged_csv_to_file
+with tempfile.TemporaryDirectory() as tmp:
+    root = Path(tmp)
+    dest = root / "rows.csv"
+    page = root / "rows.pages" / "offset-000000000.csv"
+    page.parent.mkdir()
+    page.write_text("id\\n1\\n", encoding="utf-8")
+    checkpoint = {
+        "schema_version": 1, "dataset_id": "abcd-1234", "page_size": 1,
+        "order": "id ASC", "complete": True,
+        "pages": [{"offset": 0, "path": str(page), "row_count": 1,
+                    "bytes": page.stat().st_size, "sha256": "0" * 64}],
+    }
+    dest.with_suffix(".checkpoint.json").write_text(json.dumps(checkpoint), encoding="utf-8")
+    try:
+        fetch_paged_csv_to_file("https://example.test", "abcd-1234", dest,
+                                page_size=1, order="id ASC", timeout=1,
+                                heartbeat_every_s=0, polite_delay_s=0, resume=True)
+    except SystemExit as exc:
+        assert "checksum changed" in str(exc)
+    else:
+        raise AssertionError("changed checkpoint page was accepted")
+print("OK")
+`,
+      ],
+      { cwd: ROOT, encoding: "utf8" },
+    );
+    assert.equal(r.status, 0, r.stderr || r.stdout);
+    assert.match(r.stdout, /OK/);
+  });
 });
 
 describe("WH-07 City Record resumable paging", () => {

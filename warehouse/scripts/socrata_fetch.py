@@ -365,6 +365,23 @@ def fetch_paged_csv_to_file(
         write_json(checkpoint_path, checkpoint)
 
     pages_dir.mkdir(parents=True, exist_ok=True)
+    expected_offset = 0
+    for page in checkpoint.get("pages") or []:
+        if int(page.get("offset", -1)) != expected_offset:
+            raise SystemExit("Paged bulk checkpoint has a non-contiguous page offset")
+        page_path = Path(page.get("path") or "")
+        if not page_path.is_file():
+            raise SystemExit(f"Paged bulk checkpoint page is missing: {page_path}")
+        if page_path.stat().st_size != int(page.get("bytes", -1)):
+            raise SystemExit(f"Paged bulk checkpoint page byte count changed: {page_path}")
+        if _sha256_file(page_path) != page.get("sha256"):
+            raise SystemExit(f"Paged bulk checkpoint page checksum changed: {page_path}")
+        if _count_csv_rows(page_path) != int(page.get("row_count", -1)):
+            raise SystemExit(f"Paged bulk checkpoint page row count changed: {page_path}")
+        expected_offset += int(page["row_count"])
+    if checkpoint.get("complete") and checkpoint.get("pages"):
+        if int(checkpoint["pages"][-1].get("row_count", 0)) >= page_size:
+            raise SystemExit("Paged bulk checkpoint is marked complete at a full page")
     started = time.time()
     while not checkpoint.get("complete"):
         offset = sum(int(page["row_count"]) for page in checkpoint["pages"])

@@ -18,6 +18,7 @@ Examples:
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import json
 import sys
@@ -56,6 +57,62 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: f.read(1024 * 1024), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def csv_row_count(path: Path) -> int:
+    """Count data records without assuming that records fit on one line."""
+    with path.open("r", encoding="utf-8", errors="replace", newline="") as f:
+        reader = csv.reader(f)
+        next(reader, None)
+        return sum(1 for _ in reader)
+
+
+def _raw_meta_is_usable(meta: dict) -> bool:
+    path_value = meta.get("path")
+    if not path_value:
+        return False
+    path = Path(path_value)
+    if not path.is_file() or path.stat().st_size <= 0:
+        return False
+    expected_bytes = meta.get("bytes")
+    expected_sha = meta.get("sha256")
+    if expected_bytes is not None:
+        try:
+            if int(expected_bytes) != path.stat().st_size:
+                return False
+        except (TypeError, ValueError):
+            return False
+    if expected_sha and expected_sha != sha256_file(path):
+        return False
+    expected_rows = meta.get("row_count")
+    if expected_rows is None:
+        return True
+    try:
+        return int(expected_rows) == csv_row_count(path)
+    except (TypeError, ValueError):
+        return False
+
+
+def _parquet_meta_is_usable(meta: dict, raw_meta: dict) -> bool:
+    path_value = meta.get("parquet_path")
+    if not path_value:
+        return False
+    path = Path(path_value)
+    if not path.is_file() or path.stat().st_size <= 0:
+        return False
+    expected_bytes = meta.get("bytes")
+    expected_rows = meta.get("row_count")
+    raw_rows = raw_meta.get("row_count")
+    raw_sha = raw_meta.get("sha256")
+    source_sha = meta.get("source_sha256")
+    if raw_sha and source_sha != raw_sha:
+        return False
+    try:
+        bytes_match = expected_bytes is None or int(expected_bytes) == path.stat().st_size
+        rows_match = expected_rows is None or raw_rows is None or int(expected_rows) == int(raw_rows)
+    except (TypeError, ValueError):
+        return False
+    return bytes_match and rows_match
 
 
 def snapshot_date_utc() -> str:
@@ -229,6 +286,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.bulk and args.from_fixture:
         raise SystemExit("Cannot combine --bulk and --from-fixture")
+    if args.bulk and args.force_headroom:
+        raise SystemExit("--force-headroom is only permitted for tiny fixture proofs, not bulk ingest")
 
     require_bulk_ack(bulk=args.bulk, ack_large=args.ack_large)
 
@@ -259,28 +318,38 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     with IngestLock():
-        hr = check_headroom(force=args.force_headroom)
+        hr = check_headroom(force=args.force_headroom, required=args.bulk)
         print(f"headroom={hr.get('status')}")
         hr_snap = _headroom_snapshot(hr)
 
         # --- raw ---
         raw_meta_path = raw_dir(ds["id"], snap) / "raw_meta.json"
         if args.resume and raw_meta_path.is_file():
-            raw_meta = json.loads(raw_meta_path.read_text(encoding="utf-8"))
-            print(f"raw: resume {raw_meta.get('path')}")
-        elif args.from_fixture:
+            try:
+                saved_raw_meta = json.loads(raw_meta_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                saved_raw_meta = None
+            raw_meta = saved_raw_meta if isinstance(saved_raw_meta, dict) else None
+            if raw_meta is not None and _raw_meta_is_usable(raw_meta):
+                print(f"raw: resume {raw_meta.get('path')}")
+            else:
+                print("raw: saved metadata is stale or incomplete; resuming the raw stage", file=sys.stderr)
+                raw_meta = None
+        else:
+            raw_meta = None
+        if raw_meta is None and args.from_fixture:
             assert limit is not None
             raw_meta = stage_raw_from_fixture(ds["id"], snap, limit)
             write_json(raw_meta_path, raw_meta)
             print(f"raw: fixture → {raw_meta['path']} rows={raw_meta['row_count']}")
-        elif args.bulk:
+        elif raw_meta is None and args.bulk:
             raw_meta = stage_raw_from_bulk(ds, snap, reg_defaults, resume=args.resume)
             write_json(raw_meta_path, raw_meta)
             print(
                 f"raw: bulk → {raw_meta['path']} rows={raw_meta['row_count']} "
                 f"bytes={raw_meta['bytes']} sha256={raw_meta.get('sha256', '')[:12]}…"
             )
-        else:
+        elif raw_meta is None:
             assert limit is not None
             raw_meta = stage_raw_from_socrata(ds, snap, limit)
             write_json(raw_meta_path, raw_meta)
@@ -292,7 +361,7 @@ def main(argv: list[str] | None = None) -> int:
 
         # Re-check headroom before heavy convert on bulk jobs
         if args.bulk or (limit is not None and limit > 1000):
-            hr2 = check_headroom(force=args.force_headroom)
+            hr2 = check_headroom(force=args.force_headroom, required=args.bulk)
             print(f"headroom_pre_convert={hr2.get('status')}")
             hr_snap["pre_convert"] = _headroom_snapshot(hr2)
 
@@ -302,9 +371,19 @@ def main(argv: list[str] | None = None) -> int:
         pq_meta_path = pq_dir / "parquet_meta.json"
         column_map = _load_column_map(raw_meta)
         if args.resume and pq_path.is_file() and pq_meta_path.is_file():
-            pq_meta = json.loads(pq_meta_path.read_text(encoding="utf-8"))
-            print(f"parquet: resume {pq_meta.get('parquet_path')}")
+            try:
+                saved_pq_meta = json.loads(pq_meta_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                saved_pq_meta = None
+            pq_meta = saved_pq_meta if isinstance(saved_pq_meta, dict) else None
+            if pq_meta is not None and _parquet_meta_is_usable(pq_meta, raw_meta):
+                print(f"parquet: resume {pq_meta.get('parquet_path')}")
+            else:
+                print("parquet: saved metadata is stale or incomplete; rebuilding", file=sys.stderr)
+                pq_meta = None
         else:
+            pq_meta = None
+        if pq_meta is None:
             # Prefer wrapped subprocess for live/bulk (CPU yield); fixtures stay in-process.
             if args.from_fixture:
                 pq_meta = convert_step_simple(csv_path, ds["id"], snap, column_map=column_map)
@@ -326,13 +405,14 @@ def main(argv: list[str] | None = None) -> int:
                     cmd.extend(["--column-map", str(raw_meta["column_map_path"])])
                 proc = run_capped(cmd)
                 if proc.returncode != 0:
-                    # Fallback in-process if wrap/helper fails
-                    print("parquet: wrap convert failed, falling back in-process", file=sys.stderr)
-                    pq_meta = convert_step_simple(
-                        csv_path, ds["id"], snap, column_map=column_map
+                    raise SystemExit(
+                        f"parquet: capped conversion failed with exit {proc.returncode}; "
+                        "refusing an uncapped fallback"
                     )
                 else:
                     pq_meta = json.loads(pq_meta_path.read_text(encoding="utf-8"))
+            pq_meta["source_sha256"] = raw_meta.get("sha256")
+            pq_meta["parquet_sha256"] = sha256_file(Path(pq_meta["parquet_path"]))
             write_json(pq_meta_path, pq_meta)
             print(
                 f"parquet: {pq_meta['parquet_path']} rows={pq_meta['row_count']} "
