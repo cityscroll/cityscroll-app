@@ -9,7 +9,7 @@
 // re-deriving the 0.5/0.34 score bars by hand), this compares site vs. worker output directly for
 // both tiers — the two must agree on the RESULT, whatever it is.
 //
-//   node --test test/contract/prior_cycle.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/prior_cycle.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

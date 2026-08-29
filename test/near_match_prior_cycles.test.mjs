@@ -21,7 +21,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // signal was found within the research budget for this card — the test says so rather than
 // mislabeling synthetic data as observed.
 //
-//   node --test test/near_match_prior_cycles.test.mjs   (from the crol-list/ dir)
+//   node --test test/near_match_prior_cycles.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

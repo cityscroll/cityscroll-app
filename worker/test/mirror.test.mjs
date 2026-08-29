@@ -197,7 +197,7 @@ test("field case: site-root restructure must not serve unsubstituted __I18N_ASSE
   assert.match(source, /SITE_FALLBACK_ORIGIN = "https:\/\/cityscroll\.pages\.dev\/"/);
   assert.doesNotMatch(
     source,
-    /SITE_FALLBACK_ORIGIN = "https:\/\/raw\.githubusercontent\.com\/cityscroll\/crol-list\/main\/site\/"/,
+    /SITE_FALLBACK_ORIGIN = "https:\/\/raw\.githubusercontent\.com\/cityscroll\/cityscroll-app\/main\/site\/"/,
   );
 });
 

@@ -1111,7 +1111,7 @@ function stableJson(value) {
 }
 
 async function fetchJson(url) {
-  const response = await fetch(url, { headers: { "user-agent": "crol-list-build/1.0" } });
+  const response = await fetch(url, { headers: { "user-agent": "cityscroll-build/1.0" } });
   if (!response.ok) throw new Error(`${response.status} ${response.statusText}: ${url}`);
   return response.json();
 }

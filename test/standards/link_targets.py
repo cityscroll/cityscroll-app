@@ -71,7 +71,7 @@ OWN_HOSTS = {
 }
 # The project's own GitHub repo counts as "own" too (crol-extlinks2-y8 product ruling) — a
 # governance-file link isn't the kind of mid-task research round-trip this rule targets.
-OWN_HREF_PREFIXES = ("https://github.com/jimdc/crol-list",)
+OWN_HREF_PREFIXES = ("https://github.com/cityscroll/cityscroll-app",)
 
 # JS-templated (`${...}`) hrefs known to resolve to CityScroll's own domain / an in-app hash
 # route / a non-navigating scheme (tel:, mailto:) — audited against every call site as of

@@ -1,6 +1,6 @@
 // Fixture-driven equal/distinct matrix for vendor stems + agency aliases (er-03).
 //
-//   node --test test/normalize_fixtures.test.mjs   (from crol-list/worker/)
+//   node --test test/normalize_fixtures.test.mjs   (from worker/)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -48,7 +48,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // overwhelmingly annual-or-longer option-year cycles, not quarterly recompetes. Marked
 // synthetic below rather than mislabeled as observed.
 //
-//   node --test test/cadence_estimate.test.mjs   (from the crol-list/ dir)
+//   node --test test/cadence_estimate.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

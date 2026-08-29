@@ -161,7 +161,7 @@ export function buildMergeQueueEjectionReport({
     scope: {
       included: "GitHub native merge-queue ruleset and pull-request removal events",
       excluded:
-        "External scheduler/seater implementation and telemetry; that control-plane decision is outside the crol-list app lane.",
+        "External scheduler/seater implementation and telemetry; that control-plane decision is outside the CityScroll app lane.",
     },
     ejection_events: ejections,
   };

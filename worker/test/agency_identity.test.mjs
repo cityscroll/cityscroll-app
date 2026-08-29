@@ -11,7 +11,7 @@
 //   - a possessive 's in a canonical name doesn't leave a stray token
 //   - an agency string the crosswalk never resolved degrades gracefully (matched:false)
 //
-//   node --test test/agency_identity.test.mjs   (from crol-list/worker/)
+//   node --test test/agency_identity.test.mjs   (from worker/)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -10,7 +10,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // dg92-zbpx), not invented — same sourcing discipline as test/pin_chain.test.mjs and
 // test/cadence_estimate.test.mjs.
 //
-//   node --test test/past_winners.test.mjs   (from the crol-list/ dir)
+//   node --test test/past_winners.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

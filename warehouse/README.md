@@ -7,7 +7,7 @@ warehouse is the factory; the Worker is the shop window.
 Design authority: estate vision report
 `cityscroll-data-warehouse-vision` (cards WH-01…WH-05). Project constraints:
 
-1. **Inside crol-list** — `warehouse/` (not a sibling repo).
+1. **Inside CityScroll** — `warehouse/` (not a sibling repo).
 2. **Incremental** — WH-01 scaffold; WH-02 packs **one** full Socrata export at
    a time (never parallel City Record + payroll + ZAP).
 3. **CPU-disciplined** — never repeat the OpenL3 full-blast CPU hog. Ingest is

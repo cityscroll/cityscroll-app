@@ -20,7 +20,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // excluding the rest of the pool, and trychipHTML() renders the subtle indicator class(es) +
 // an accessible sr-only hint only for a chip whose signal is actually known.
 //
-//   node --test test/suggestions_render.test.mjs   (from the crol-list/ dir)
+//   node --test test/suggestions_render.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

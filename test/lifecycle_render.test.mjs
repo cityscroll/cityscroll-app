@@ -5,7 +5,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // <script> (same pattern as test/forecast_render.test.mjs) so a change to the output is
 // caught here, not in production.
 //
-//   node --test test/lifecycle_render.test.mjs   (from the crol-list/ dir)
+//   node --test test/lifecycle_render.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

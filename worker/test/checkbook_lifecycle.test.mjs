@@ -10,7 +10,7 @@
 //   - SOURCE TIMESTAMPS: each stage carries the upstream event date
 //   - FAILURE: Checkbook/WAF error → ok:false, not cached
 //
-//   node --test   (from crol-list/worker/)
+//   node --test   (from worker/)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
