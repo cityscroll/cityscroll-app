@@ -273,35 +273,6 @@ def open_landing_actions(page: Page):
     return actions
 
 
-def assert_land_page_rendered(page: Page) -> None:
-    """The required canary: the Queens land page renders its fixture-backed content."""
-    page.locator("#searchactions-land [data-search-copy]").wait_for(state="visible")
-    text = page.locator("body").inner_text()
-    for expected in LAND_CANARY_COPY:
-        assert expected in text, f"land page is missing fixture copy: {expected}"
-
-
-def verify_land_canary(browser: Browser) -> None:
-    """Run only the cheap, source-tree land render check used by required preflight."""
-    # The source tree intentionally keeps client capability modules beside site/;
-    # make the tiny Pages-shaped tree needed by this canary in a fresh temp dir.
-    # This avoids consuming any stale or previously prepared checkout artifact.
-    with tempfile.TemporaryDirectory(prefix="crol-land-canary-") as temp:
-        canary_tree = Path(temp)
-        shutil.copytree(ROOT / "site", canary_tree / "site")
-        shutil.copytree(ROOT / "capabilities", canary_tree / "site" / "capabilities")
-        with StaticServer(canary_tree) as base_url:
-            page = browser.new_page(viewport={"width": 390, "height": 844})
-            errors: list[str] = []
-            page.on("pageerror", lambda error: errors.append(str(error)))
-            install_routes(page)
-            seed_presets(page)
-            page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
-            assert_land_page_rendered(page)
-            assert not errors, errors
-            page.close()
-
-
 def verify_interactions(browser: Browser) -> None:
     # Browser checks must use the Pages-shaped artifact because the homepage
     # imports shared capability modules that are published beside site assets.
@@ -341,24 +312,17 @@ def verify_interactions(browser: Browser) -> None:
         # QR's standard quiet zone is four modules per side, hence eight overall.
         assert viewbox == [0, 0, matrix_size + 8, matrix_size + 8]  # source: qr_share.js QUIET_ZONE
         assert_accessible(page)
-
-        # The explicit trap wraps both directions, and Escape restores the opener.
         page.keyboard.press("Tab")
-        assert page.locator("#qr-share-dialog").evaluate(
-            "dialog => dialog.contains(document.activeElement)"
-        )
+        assert page.locator("#qr-share-dialog").evaluate("dialog => dialog.contains(document.activeElement)")
         page.keyboard.press("Shift+Tab")
-        assert page.locator("#qr-share-dialog").evaluate(
-            "dialog => dialog.contains(document.activeElement)"
-        )
+        assert page.locator("#qr-share-dialog").evaluate("dialog => dialog.contains(document.activeElement)")
         page.keyboard.press("Escape")
         assert not dialog.is_visible()
         assert page.evaluate("document.activeElement.matches('[data-qr-share]')")
-
         trigger.click()
         with page.expect_download() as download_info:
             dialog.locator(".qr-dialog-actions button").first.click()
-        assert download_info.value.suggested_filename == "crol" + "-list-qr.png"
+        assert download_info.value.suggested_filename == "crol-list-qr.png"
         dialog.locator(".qr-dialog-actions button").last.click()
 
         page.select_option("#langSelect", "es")
@@ -447,6 +411,35 @@ def main() -> None:
     print("QR share browser checks passed.")
     for asset in sorted(OUTPUT.glob("*.png")):
         print(f"  {asset.relative_to(ROOT)}  {asset.stat().st_size / 1024:.1f} KiB")
+
+
+def assert_land_page_rendered(page: Page) -> None:
+    """The required canary: the Queens land page renders its fixture-backed content."""
+    page.locator("#searchactions-land [data-search-copy]").wait_for(state="visible")
+    text = page.locator("body").inner_text()
+    for expected in LAND_CANARY_COPY:
+        assert expected in text, f"land page is missing fixture copy: {expected}"
+
+
+def verify_land_canary(browser: Browser) -> None:
+    """Run only the cheap, source-tree land render check used by required preflight."""
+    # The source tree intentionally keeps client capability modules beside site/;
+    # make the tiny Pages-shaped tree needed by this canary in a fresh temp dir.
+    # This avoids consuming any stale or previously prepared checkout artifact.
+    with tempfile.TemporaryDirectory(prefix="crol-land-canary-") as temp:
+        canary_tree = Path(temp)
+        shutil.copytree(ROOT / "site", canary_tree / "site")
+        shutil.copytree(ROOT / "capabilities", canary_tree / "site" / "capabilities")
+        with StaticServer(canary_tree) as base_url:
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            errors: list[str] = []
+            page.on("pageerror", lambda error: errors.append(str(error)))
+            install_routes(page)
+            seed_presets(page)
+            page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
+            assert_land_page_rendered(page)
+            assert not errors, errors
+            page.close()
 
 
 if __name__ == "__main__":
