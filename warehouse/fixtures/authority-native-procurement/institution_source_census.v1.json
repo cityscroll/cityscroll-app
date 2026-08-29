@@ -57,8 +57,8 @@
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "110a5bd93783d580bf5b9a4a9f6c9099c0f51e8a68aa95b50d1b79dbcd87167a",
-        "row_count": 13789
+        "sha256": "57d58a76f62f71b08a205a2038317650934f792b04ab6d25df65650f20f1091e",
+        "row_count": 13791
       },
       "spine_sources": {
         "path": "site/data/procurement_spine_sources.json",
@@ -67,8 +67,8 @@
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "fba2fb5cfa859587aa41e42b901d59b748f76ad5681998aafba2da6a4a36acbd",
-        "object_count": 13789
+        "sha256": "76a4b4dd27e3690ff92a5b6c2b01ae17ed6161696cd6b64117c6fbe0c89e0b57",
+        "object_count": 13791
       }
     },
     "served_source_counts": {

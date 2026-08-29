@@ -1,8 +1,48 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
   "generated_at": "2026-08-18T04:05:51.552Z",
-  "row_count": 1082,
+  "row_count": 1084,
   "rows": [
+    {
+      "procurement_id": "procurement:contract:8000000863",
+      "digest_id": "procurement:contract:8000000863",
+      "canonical_href": "/procurements/procurement%3Acontract%3A8000000863",
+      "short_title": "PMC for LIRR 3T",
+      "agency_name": "Long Island Rail Road",
+      "vendor_name": "ARUP JACOBS JV",
+      "contract_amount": 65333757,
+      "start_date": null,
+      "pin": null,
+      "contract_id": "8000000863",
+      "procurement_stages": [
+        "contract"
+      ],
+      "primary_stage": "contract",
+      "source_systems": [
+        "mta_annual_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract:A37703",
+      "digest_id": "procurement:contract:A37703",
+      "canonical_href": "/procurements/procurement%3Acontract%3AA37703",
+      "short_title": "A37703 Flood Protection of Selected NYCT Vulnerabilities in the Boroughs of Brooklyn, Manhattan and Queens",
+      "agency_name": "MTA Construction & Development",
+      "vendor_name": "Gramercy Group, Inc.",
+      "contract_amount": 10713000,
+      "start_date": null,
+      "pin": null,
+      "contract_id": "A37703",
+      "procurement_stages": [
+        "award"
+      ],
+      "primary_stage": "award",
+      "source_systems": [
+        "mta_cd_awards"
+      ],
+      "type_of_notice_description": null
+    },
     {
       "procurement_id": "procurement:contract:BA2335819",
       "digest_id": "procurement:contract:BA2335819",

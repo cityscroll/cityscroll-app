@@ -6988,6 +6988,164 @@
           "/notices/20230301126"
         ]
       }
+    },
+    {
+      "object_type": "procurement",
+      "schema": "cityscroll.procurement_object.v1",
+      "procurement_id": "procurement:contract_reporter_number:2138505",
+      "canonical_id": "procurement:contract_reporter_number:2138505",
+      "source_observation_refs": [
+        "nys_contract_reporter:contract-reporter:2138505"
+      ],
+      "stages": [
+        {
+          "stage": "solicitation",
+          "source_observation_refs": [
+            "nys_contract_reporter:contract-reporter:2138505"
+          ]
+        }
+      ],
+      "identity_keys": {
+        "contract_ids": [],
+        "epins": [],
+        "contract_reporter_numbers": [
+          "2138505"
+        ],
+        "solicitation_ids": [],
+        "event_ids": []
+      },
+      "institution_keys": {
+        "publisher_institution_ids": [
+          "nys-contract-reporter"
+        ],
+        "procuring_institution_ids": [
+          "mta-nyct"
+        ],
+        "source_agency_labels": [
+          "MTA - NYC Transit (NYCT)"
+        ]
+      },
+      "identity_edges": [
+        {
+          "schema": "cityscroll.procurement_identity_edge.v1",
+          "status": "accepted",
+          "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+          "procurement_id": "procurement:contract_reporter_number:2138505",
+          "basis": "exact_contract_reporter_number",
+          "matched_value": "2138505"
+        }
+      ],
+      "lifecycle": null,
+      "compatibility": {
+        "canonical_href": "/procurements/procurement%3Acontract_reporter_number%3A2138505",
+        "city_record_notice_hrefs": []
+      }
+    },
+    {
+      "object_type": "procurement",
+      "schema": "cityscroll.procurement_object.v1",
+      "procurement_id": "procurement:solicitation:AW9Y",
+      "canonical_id": "procurement:solicitation:AW9Y",
+      "source_observation_refs": [
+        "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC"
+      ],
+      "stages": [
+        {
+          "stage": "bid_opening_result",
+          "source_observation_refs": [
+            "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC"
+          ]
+        }
+      ],
+      "identity_keys": {
+        "contract_ids": [],
+        "epins": [],
+        "contract_reporter_numbers": [],
+        "solicitation_ids": [
+          "AW9Y"
+        ],
+        "event_ids": [
+          "AW9Y"
+        ]
+      },
+      "institution_keys": {
+        "publisher_institution_ids": [
+          "mta"
+        ],
+        "procuring_institution_ids": [
+          "mta-construction-development"
+        ],
+        "source_agency_labels": []
+      },
+      "identity_edges": [
+        {
+          "schema": "cityscroll.procurement_identity_edge.v1",
+          "status": "accepted",
+          "source_observation_ref": "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+          "procurement_id": "procurement:solicitation:AW9Y",
+          "basis": "exact_solicitation_id",
+          "matched_value": "AW9Y"
+        }
+      ],
+      "lifecycle": null,
+      "compatibility": {
+        "canonical_href": "/procurements/procurement%3Asolicitation%3AAW9Y",
+        "city_record_notice_hrefs": []
+      }
+    },
+    {
+      "object_type": "procurement",
+      "schema": "cityscroll.procurement_object.v1",
+      "procurement_id": "procurement:solicitation:S48020",
+      "canonical_id": "procurement:solicitation:S48020",
+      "source_observation_refs": [
+        "mta_current_opportunities:mta-current:S48020:0000541781"
+      ],
+      "stages": [
+        {
+          "stage": "solicitation",
+          "source_observation_refs": [
+            "mta_current_opportunities:mta-current:S48020:0000541781"
+          ]
+        }
+      ],
+      "identity_keys": {
+        "contract_ids": [],
+        "epins": [],
+        "contract_reporter_numbers": [],
+        "solicitation_ids": [
+          "S48020"
+        ],
+        "event_ids": [
+          "0000541781"
+        ]
+      },
+      "institution_keys": {
+        "publisher_institution_ids": [
+          "mta"
+        ],
+        "procuring_institution_ids": [
+          "mta-construction-development"
+        ],
+        "source_agency_labels": [
+          "MTA Construction & Development"
+        ]
+      },
+      "identity_edges": [
+        {
+          "schema": "cityscroll.procurement_identity_edge.v1",
+          "status": "accepted",
+          "source_observation_ref": "mta_current_opportunities:mta-current:S48020:0000541781",
+          "procurement_id": "procurement:solicitation:S48020",
+          "basis": "exact_solicitation_id",
+          "matched_value": "S48020"
+        }
+      ],
+      "lifecycle": null,
+      "compatibility": {
+        "canonical_href": "/procurements/procurement%3Asolicitation%3AS48020",
+        "city_record_notice_hrefs": []
+      }
     }
   ],
   "observations": [
@@ -11299,6 +11457,147 @@
         "procurement_method": "Assignment",
         "program": "DCAS - Citywide Procurement",
         "industry": "Goods - IT Related"
+      }
+    },
+    {
+      "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+      "source_system": "nys_contract_reporter",
+      "source_system_id": "contract-reporter:2138505",
+      "ingested_at": "2026-08-28T14:00:00.000Z",
+      "snapshot": {
+        "source_system": "nys_contract_reporter",
+        "source_dataset": "nys-contract-reporter",
+        "source_record_id": "contract-reporter:2138505",
+        "observation_type": "opportunity",
+        "publisher_institution_id": "nys-contract-reporter",
+        "procuring_institution_id": "mta-nyct",
+        "agency": "MTA - NYC Transit (NYCT)",
+        "source_agency_label": "MTA - NYC Transit (NYCT)",
+        "source_vendor_name": null,
+        "contract_reporter_number": "2138505",
+        "solicitation_id": null,
+        "event_id": null,
+        "title": "MPM-360: Bridge Preservation at the Marine Parkway-Gil Hodges Memorial Bridge and the Cross Bay-Veterans Memorial Bridge.",
+        "purpose": null,
+        "amount": null,
+        "currency": "USD",
+        "issue_date": "8/27/2026",
+        "due_date": "10/2/2026",
+        "opening_date": null,
+        "category": "Construction Horizontal: Highways & Roadways; Maintenance, Repair & New Construction",
+        "ad_type": "General",
+        "location": "New York",
+        "official_url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open",
+        "source_values": {
+          "cr_number": "2138505",
+          "agency": "MTA - NYC Transit (NYCT)",
+          "title": "MPM-360: Bridge Preservation at the Marine Parkway-Gil Hodges Memorial Bridge and the Cross Bay-Veterans Memorial Bridge.",
+          "issue_date": "8/27/2026",
+          "due_date": "10/2/2026",
+          "category": "Construction Horizontal: Highways & Roadways; Maintenance, Repair & New Construction",
+          "ad_type": "General",
+          "location": "New York",
+          "status": "Open"
+        },
+        "source_receipt": {
+          "url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open",
+          "retrieved_at": "2026-08-28T14:00:00.000Z",
+          "raw_response_sha256": "87240ea3e576a35f781140e37a0fe22b830cc032b23f2b07061699c41e5f7248"
+        }
+      }
+    },
+    {
+      "source_observation_ref": "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+      "source_system": "mta_bid_results",
+      "source_system_id": "mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+      "ingested_at": "2026-08-28T14:00:00.000Z",
+      "snapshot": {
+        "source_system": "mta_bid_results",
+        "source_dataset": "mta-cd-bid-results",
+        "source_record_id": "mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+        "observation_type": "bid_opening_result",
+        "publisher_institution_id": "mta",
+        "procuring_institution_id": "mta-construction-development",
+        "agency": null,
+        "source_agency_label": null,
+        "source_vendor_name": "TDP ASSOCIATES INC",
+        "contract_reporter_number": null,
+        "solicitation_id": "AW-9Y",
+        "event_id": "AW-9Y",
+        "title": "AW-9Y Security Upgrades at CBB and MPB",
+        "purpose": null,
+        "amount": "$18521000.0000",
+        "currency": "USD",
+        "issue_date": null,
+        "due_date": "2026-08-12T14:00:00.000000-0400",
+        "opening_date": "2026-08-12T14:00:00.000000-0400",
+        "category": null,
+        "ad_type": null,
+        "location": null,
+        "official_url": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+        "source_values": {
+          "auc_id": "AW-9Y",
+          "auc_name": "AW-9Y Security Upgrades at CBB and MPB",
+          "opening_date": "2026-08-12T14:00:00.000000-0400",
+          "bidder": "TDP ASSOCIATES INC",
+          "bid_amount": "$18521000.0000",
+          "comments": "AW-9Y Security Upgrades at the Cross Bay Bridge and the Marine Parkway Bridge."
+        },
+        "source_receipt": {
+          "url": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+          "retrieved_at": "2026-08-28T14:00:00.000Z",
+          "raw_response_sha256": "fb670489b628fc3112ae340d60f940387cfed91cc5a7af9e0fe33ee1c5560c79"
+        }
+      }
+    },
+    {
+      "source_observation_ref": "mta_current_opportunities:mta-current:S48020:0000541781",
+      "source_system": "mta_current_opportunities",
+      "source_system_id": "mta-current:S48020:0000541781",
+      "ingested_at": "2026-08-28T14:00:00.000Z",
+      "snapshot": {
+        "source_system": "mta_current_opportunities",
+        "source_dataset": "mta-cd-current-opportunities",
+        "source_record_id": "mta-current:S48020:0000541781",
+        "observation_type": "opportunity",
+        "publisher_institution_id": "mta",
+        "procuring_institution_id": "mta-construction-development",
+        "agency": "MTA Construction & Development",
+        "source_agency_label": "MTA Construction & Development",
+        "source_vendor_name": null,
+        "contract_reporter_number": null,
+        "solicitation_id": "S48020",
+        "event_id": "0000541781",
+        "title": "CBTC for 6th Ave Line, 63rd St Line and DeKalb Interlocking",
+        "purpose": null,
+        "amount": "$100M+",
+        "currency": "USD",
+        "issue_date": "5/21/2026",
+        "due_date": "10/16/2026",
+        "opening_date": "10/16/2026",
+        "category": null,
+        "ad_type": null,
+        "location": null,
+        "official_url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+        "source_values": {
+          "solicitation_number": "S48020",
+          "event_number": "0000541781",
+          "agency": "MTA Construction & Development",
+          "title": "CBTC for 6th Ave Line, 63rd St Line and DeKalb Interlocking",
+          "document_availability_date": "5/21/2026",
+          "opening_date": "10/16/2026",
+          "funding": "100% MTA",
+          "goals": "MBE: 7% WBE: 7% SDVOB:1%",
+          "estimated_value": "$100M+",
+          "contract_term": "2900 Calendar Days",
+          "current_addenda": "9",
+          "status": "Current opportunity"
+        },
+        "source_receipt": {
+          "url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+          "retrieved_at": "2026-08-28T14:00:00.000Z",
+          "raw_response_sha256": "92d9409d5c4d41cd894f3f7543d44273de27debabb21335bcbbe2f4dd8cf18d6"
+        }
       }
     },
     {

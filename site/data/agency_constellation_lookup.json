@@ -8,7 +8,7 @@
     "parks-and-recreation",
     "housing-preservation-and-development"
   ],
-  "agency_count": 86,
+  "agency_count": 87,
   "multi_category_count": 60,
   "verified_demo": "agency:id:parks-and-recreation",
   "aliases": {
@@ -36638,7 +36638,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 1,
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -36680,7 +36680,7 @@
           "target_kind": "contract",
           "target_id": null,
           "target_name": "Contracts",
-          "count": 1,
+          "count": 2,
           "state": "matched",
           "href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-08-18",
           "canonical_href": "/browse/contracts/?mode=award&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-and-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-08-18",
@@ -36711,15 +36711,15 @@
             "method": "derived_feature_rollup_incremental_v1",
             "version": "1",
             "counts": {
-              "total": "1",
-              "materialized": "1",
+              "total": "2",
+              "materialized": "2",
               "dated": "0",
-              "undated": "1",
+              "undated": "2",
               "by_state": {
-                "matched": "1"
+                "matched": "2"
               },
               "by_relation": {
-                "published_by_agency": "1"
+                "published_by_agency": "2"
               }
             },
             "spans": {
@@ -36738,10 +36738,10 @@
               "by_bucket": {
                 "current": "0",
                 "historical": "0",
-                "unknown": "1"
+                "unknown": "2"
               },
               "by_stage": {
-                "unknown": "1"
+                "unknown": "2"
               },
               "complete": "true"
             },
@@ -37112,6 +37112,553 @@
             "id": "mta-construction-and-development",
             "name": "MTA Construction & Development",
             "canonical_href": "/agencies/mta-construction-and-development/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        }
+      ],
+      "top_vendors": []
+    },
+    "mta-construction-development": {
+      "subject_ref": "agency:id:mta-construction-development",
+      "display_name": "mta-construction-development",
+      "path": "/agencies/mta-construction-development/",
+      "identity_evidence": {
+        "schema": "cityscroll.civic_institution_identity_evidence.v1",
+        "institution_ref": "civic-institution:mta-construction-development",
+        "status": "unknown",
+        "source_observation_count": 0
+      },
+      "matched_categories": 1,
+      "categories": {
+        "contracts": {
+          "status": "matched",
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      },
+      "fiscal_context_status": "unknown",
+      "fiscal_context_method": null,
+      "edge_summary": [
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mta-construction-development",
+          "edge_type": "published_by_agency",
+          "relation_label": "published by this agency",
+          "label": "Contracts: published by this agency",
+          "target_kind": "contract",
+          "target_id": null,
+          "target_name": "Contracts",
+          "count": 2,
+          "state": "matched",
+          "href": "/browse/contracts/?mode=award&agency=mta-construction-development&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-08-18",
+          "canonical_href": "/browse/contracts/?mode=award&agency=mta-construction-development&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-development%22%5D%2C%22connection_relation%22%3A%22published_by_agency%22%7D&as_of=2026-08-18",
+          "scope": {
+            "facet": null,
+            "universe": "open",
+            "mode": "open",
+            "entity_ref": "agency:id:mta-construction-development"
+          },
+          "as_of": "2026-08-18",
+          "source": {
+            "kind": "agency",
+            "id": "mta-construction-development",
+            "name": "mta-construction-development",
+            "canonical_href": "/agencies/mta-construction-development/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-08-18",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "2",
+              "materialized": "2",
+              "dated": "0",
+              "undated": "2",
+              "by_state": {
+                "matched": "2"
+              },
+              "by_relation": {
+                "published_by_agency": "2"
+              }
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "2"
+              },
+              "by_stage": {
+                "unknown": "2"
+              },
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-08-18",
+              "snapshot_day": "2026-08-18",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mta-construction-development",
+          "edge_type": "top_vendor_by_award_12mo",
+          "relation_label": "top vendors by award value",
+          "label": "Top vendors by award $ (last 12 mo): top vendors by award value",
+          "target_kind": "vendor",
+          "target_id": null,
+          "target_name": "Top vendors by award $ (last 12 mo)",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mta-construction-development"
+          },
+          "as_of": "2026-08-05",
+          "source": {
+            "kind": "agency",
+            "id": "mta-construction-development",
+            "name": "mta-construction-development",
+            "canonical_href": "/agencies/mta-construction-development/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-08-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-08-05",
+              "snapshot_day": "2026-08-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mta-construction-development",
+          "edge_type": "hosts_meeting",
+          "relation_label": "related meetings and hearings",
+          "label": "Meetings and hearings: related meetings and hearings",
+          "target_kind": "meeting",
+          "target_id": null,
+          "target_name": "Meetings and hearings",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": "linked",
+            "mode": null,
+            "entity_ref": "agency:id:mta-construction-development"
+          },
+          "as_of": "2026-08-05",
+          "source": {
+            "kind": "agency",
+            "id": "mta-construction-development",
+            "name": "mta-construction-development",
+            "canonical_href": "/agencies/mta-construction-development/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": "2026-08-05",
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": "2026-08-05",
+              "snapshot_day": "2026-08-05",
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mta-construction-development",
+          "edge_type": "issued_rule",
+          "relation_label": "issued rule",
+          "label": "Rules: issued rule",
+          "target_kind": "rule",
+          "target_id": null,
+          "target_name": "Rules",
+          "count": 0,
+          "state": "empty",
+          "href": null,
+          "canonical_href": null,
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mta-construction-development"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "mta-construction-development",
+            "name": "mta-construction-development",
+            "canonical_href": "/agencies/mta-construction-development/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mta-construction-development",
+          "edge_type": "statute_duty",
+          "relation_label": "statutory mandates",
+          "label": "Mandates: statutory mandates",
+          "target_kind": "mandate",
+          "target_id": null,
+          "target_name": "Mandates",
+          "count": 0,
+          "state": "empty",
+          "href": "/agencies/mta-construction-development/#mandates-conformance",
+          "canonical_href": "/agencies/mta-construction-development/#mandates-conformance",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mta-construction-development"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "mta-construction-development",
+            "name": "mta-construction-development",
+            "canonical_href": "/agencies/mta-construction-development/"
+          },
+          "provenance": {
+            "source_system": null,
+            "source_record_id": null,
+            "source_fields": null,
+            "join_method": null,
+            "observed_at": null,
+            "cross_spine_confidence": "unmatched",
+            "cross_spine_explicit": false
+          },
+          "derived_feature_rollup": {
+            "schema": "cityscroll.derived_feature_rollup.v1",
+            "method": "derived_feature_rollup_incremental_v1",
+            "version": "1",
+            "counts": {
+              "total": "0",
+              "materialized": "0",
+              "dated": "0",
+              "undated": "0",
+              "by_state": {},
+              "by_relation": {}
+            },
+            "spans": {
+              "valid": {
+                "start": null,
+                "end": null
+              },
+              "observed": {
+                "start": null,
+                "end": null
+              },
+              "valid_days": null,
+              "observed_days": null
+            },
+            "lifecycle": {
+              "by_bucket": {
+                "current": "0",
+                "historical": "0",
+                "unknown": "0"
+              },
+              "by_stage": {},
+              "complete": "true"
+            },
+            "freshness": {
+              "reference_day": null,
+              "snapshot_day": null,
+              "latest_day": null,
+              "latest_source": null,
+              "age_days": null,
+              "max_age_days": null,
+              "status": "unknown"
+            }
+          },
+          "cross_spine_confidence": "unmatched",
+          "cross_spine_explicit": false
+        },
+        {
+          "schema": "cityscroll.edge_summary.v1",
+          "source_kind": "agency",
+          "source_id": "mta-construction-development",
+          "edge_type": "certified_to_agency",
+          "relation_label": "certified to the agency",
+          "label": "Staffing exams: certified to the agency",
+          "target_kind": "exam",
+          "target_id": null,
+          "target_name": "Staffing exams",
+          "count": 0,
+          "state": "empty",
+          "href": "/browse/exams/?agency=mta-construction-development&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "canonical_href": "/browse/exams/?agency=mta-construction-development&facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Amta-construction-development%22%5D%2C%22connection_relation%22%3A%22certified_to_agency%22%7D",
+          "scope": {
+            "facet": null,
+            "universe": null,
+            "mode": null,
+            "entity_ref": "agency:id:mta-construction-development"
+          },
+          "as_of": null,
+          "source": {
+            "kind": "agency",
+            "id": "mta-construction-development",
+            "name": "mta-construction-development",
+            "canonical_href": "/agencies/mta-construction-development/"
           },
           "provenance": {
             "source_system": null,
