@@ -420,7 +420,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/reliability/digest",
     methods: ["GET"],
     auth: "ADMIN_KEY",
-    description: "Digest dead-man check including mail-leg receipts; returns 503 and GitHub-red when unhealthy. Operations email is skipped when the mail rail itself is the finding.",
+    description: "Digest dead-man check including consecutive-delivery watermark staleness and mail-leg receipts; returns 503 and GitHub-red when unhealthy. Operations email is skipped when the mail rail itself is the finding.",
   },
   {
     path: "/admin/reliability/scheduler",
