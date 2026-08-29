@@ -1260,8 +1260,9 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql
 ```
 
-**WH-03 OCP serve:** materialize warehouse OCP into
-`site/data/ocp_awards_warehouse_lookup.json` (+ Worker twin). Replaces live SODA
+**WH-03 OCP serve:** materialize warehouse OCP into the canonical
+`site/data/ocp_awards_warehouse_lookup.json`. Worker D1 deployment SQL consumes
+that site copy directly; no Worker duplicate is committed. Replaces live SODA
 in `fetchOcpAwardRows` for materialization hits; live SODA remains the miss
 fallback. Rebuild + speed receipt:
 

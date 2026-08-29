@@ -18,6 +18,7 @@
 
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -33,7 +34,7 @@ import {
 } from "../warehouse/lib/ocp_lookup.mjs";
 import { queryWarehouse } from "../warehouse/lib/query.mjs";
 import {
-  assertServePublishTwins,
+  assertServePublishLookup,
   SERVE_LOOKUP_CONTRACTS,
 } from "../warehouse/lib/serve_publish_contract.mjs";
 import {
@@ -43,7 +44,7 @@ import {
 
 const ROOT = REPO_ROOT;
 const OUT_SITE = path.join(ROOT, "site", "data", "ocp_awards_warehouse_lookup.json");
-const OUT_WORKER = path.join(
+const LEGACY_OUT_WORKER = path.join(
   ROOT,
   "worker",
   "src",
@@ -77,6 +78,10 @@ function parseArgs(argv) {
 
 function stableStringify(value) {
   return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
 }
 
 function loadSampleCsvRows() {
@@ -307,28 +312,25 @@ async function bench(rows) {
 
 function writeOutputs(doc, check) {
   const rendered = stableStringify(doc);
-  const targets = [OUT_SITE, OUT_WORKER];
+  const targets = [OUT_SITE];
   if (check) {
-    for (const filePath of targets) {
-      let existing = null;
-      try {
-        existing = readFileSync(filePath, "utf8");
-      } catch {
-        existing = null;
-      }
-      // Compare row set + meta without brittle timestamp equality
-      const existingDoc = existing ? JSON.parse(existing) : null;
-      assert.ok(existingDoc, `missing ${path.relative(ROOT, filePath)}`);
-      assert.equal(existingDoc.schema_version, doc.schema_version);
-      assert.equal(existingDoc.row_count, doc.row_count);
-      assert.deepEqual(existingDoc.rows, doc.rows);
+    let existing = null;
+    try {
+      existing = readFileSync(OUT_SITE, "utf8");
+    } catch {
+      existing = null;
     }
+    // Compare row set + meta without brittle timestamp equality.
+    const existingDoc = existing ? JSON.parse(existing) : null;
+    assert.ok(existingDoc, `missing ${path.relative(ROOT, OUT_SITE)}`);
+    assert.equal(existingDoc.schema_version, doc.schema_version);
+    assert.equal(existingDoc.row_count, doc.row_count);
+    assert.deepEqual(existingDoc.rows, doc.rows);
+    assertLegacyOutputParity(existing);
     return { status: "ok", targets };
   }
-  for (const filePath of targets) {
-    mkdirSync(path.dirname(filePath), { recursive: true });
-    writeFileSync(filePath, rendered);
-  }
+  mkdirSync(path.dirname(OUT_SITE), { recursive: true });
+  writeFileSync(OUT_SITE, rendered);
   return {
     status: "wrote",
     targets: targets.map((t) => path.relative(ROOT, t)),
@@ -338,12 +340,24 @@ function writeOutputs(doc, check) {
   };
 }
 
+function assertLegacyOutputParity(canonicalText) {
+  if (!existsSync(LEGACY_OUT_WORKER)) return;
+  const legacyText = readFileSync(LEGACY_OUT_WORKER, "utf8");
+  assert.equal(
+    legacyText,
+    canonicalText,
+    `OCP legacy Worker copy diverges from canonical output (canonical sha256=${sha256(canonicalText)}, legacy sha256=${sha256(legacyText)})`,
+  );
+}
+
 function checkCommittedServe() {
   assert.ok(existsSync(OUT_SITE), `missing ${path.relative(ROOT, OUT_SITE)}`);
-  assert.ok(existsSync(OUT_WORKER), `missing ${path.relative(ROOT, OUT_WORKER)}`);
-  const site = JSON.parse(readFileSync(OUT_SITE, "utf8"));
-  const worker = JSON.parse(readFileSync(OUT_WORKER, "utf8"));
-  assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.ocp_awards);
+  const siteText = readFileSync(OUT_SITE, "utf8");
+  const site = JSON.parse(siteText);
+  assertServePublishLookup(site, SERVE_LOOKUP_CONTRACTS.ocp_awards, {
+    now: site.materialized_at,
+  });
+  assertLegacyOutputParity(siteText);
   return site;
 }
 
@@ -365,11 +379,11 @@ async function main() {
   });
   assert.ok(rows.length >= 1, "expected at least one OCP row to materialize");
 
-  // Freeze materialized_at when --check by reading existing worker copy if present
+  // Freeze materialized_at when --check by reading the canonical site copy.
   let now = new Date().toISOString();
-  if (args.check && existsSync(OUT_WORKER)) {
+  if (args.check && existsSync(OUT_SITE)) {
     try {
-      now = JSON.parse(readFileSync(OUT_WORKER, "utf8")).materialized_at || now;
+      now = JSON.parse(readFileSync(OUT_SITE, "utf8")).materialized_at || now;
     } catch {
       /* keep now */
     }

@@ -419,9 +419,9 @@ Worker lookup).
 
 **Path now:**
 
-1. **Build/ops** queries DuckDB (or fixture seed) → materializes
-   `site/data/ocp_awards_warehouse_lookup.json` + twin under
-   `worker/src/data/` (imported by the Worker).
+1. **Build/ops** queries DuckDB (or fixture seed) → materializes the canonical
+   `site/data/ocp_awards_warehouse_lookup.json`. Worker D1 deployment SQL reads
+   that same file; no duplicate is committed under `worker/src/data/`.
 2. **Edge** looks up the materialization **first** (in-process, sub-ms).
 3. **Live SODA** only when the materialization lacks that row.
 
