@@ -154,10 +154,14 @@ function main() {
   }
 
   const elapsedMs = performance.now() - startedAt;
-  const budgetSeconds = Number(manifest.ci_time_budget?.seconds);
-  if (!Number.isFinite(budgetSeconds) || budgetSeconds <= 0) throw new Error("derived JSON CI time budget is missing or invalid");
+  // This boundary runs only when generated artifacts are rebuilt. Its elapsed time
+  // therefore measures the cold build; cached artifact jobs do not invoke it.
+  const budget = manifest.ci_time_budget;
+  if (budget?.mode !== "cold-build") throw new Error("derived JSON CI time budget must be explicitly marked cold-build");
+  const budgetSeconds = Number(budget.seconds);
+  if (!Number.isFinite(budgetSeconds) || budgetSeconds <= 0) throw new Error("derived JSON cold-build CI time budget is missing or invalid");
   if (elapsedMs > budgetSeconds * 1000) {
-    throw new Error(`derived JSON build boundary exceeded CI time budget: ${(elapsedMs / 1000).toFixed(2)}s > ${budgetSeconds}s`);
+    throw new Error(`derived JSON cold build boundary exceeded CI time budget: ${(elapsedMs / 1000).toFixed(2)}s > ${budgetSeconds}s`);
   }
   const receiptPath = resolve(args.receipt || join(sourceDir, ".artifacts/derived-json-build-receipt.json"));
   mkdirSync(resolve(receiptPath, ".."), { recursive: true });
@@ -165,6 +169,7 @@ function main() {
     schema: SCHEMA,
     source_snapshot: sourceSnapshot,
     public_delivery: "site/data",
+    ci_time_budget_mode: budget.mode,
     ci_time_budget_seconds: budgetSeconds,
     elapsed_ms: Math.round(elapsedMs),
     families,
