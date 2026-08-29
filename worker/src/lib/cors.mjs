@@ -1,7 +1,6 @@
 // Frontend-origin contract shared by browser-facing Worker routes.
 //
-// Review origins are accepted only by the beta environment. Production keeps
-// its existing stable, mirror, legacy, and local-development origin set.
+// Production keeps its stable, mirror, legacy, and local-development origin set.
 
 const STABLE_ORIGINS = new Set([
   "https://cityscroll.org",
@@ -28,28 +27,10 @@ function isLocalDevelopmentOrigin(origin) {
   }
 }
 
-function isReviewOrigin(origin) {
-  if (origin === "https://beta.cityscroll.org") return true;
-  try {
-    const url = new URL(origin);
-    return (
-      url.protocol === "https:"
-      && (
-        url.hostname === "crol-list-beta.pages.dev"
-        || url.hostname.endsWith(".crol-list-beta.pages.dev")
-      )
-      && url.port === ""
-    );
-  } catch {
-    return false;
-  }
-}
-
-export function isAllowedRequestOrigin(origin, env = {}) {
+export function isAllowedRequestOrigin(origin, _env = {}) {
   if (!origin) return true;
   if (STABLE_ORIGINS.has(origin)) return true;
-  if (isLocalDevelopmentOrigin(origin)) return true;
-  return env?.DEPLOYMENT_CHANNEL === "beta" && isReviewOrigin(origin);
+  return isLocalDevelopmentOrigin(origin);
 }
 
 export function corsHeaders(

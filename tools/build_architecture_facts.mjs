@@ -193,7 +193,6 @@ function nullableRecords(records) {
 
 function parseBindings(wrangler) {
   const productionVars = sectionValues(wrangler, "vars");
-  const betaVars = sectionValues(wrangler, "env.beta.vars");
   const environments = {
     production: {
       vars: Object.fromEntries(productionVars.map(({ key, value, source: itemSource }) => [key, { value, source: itemSource }])),
@@ -205,14 +204,6 @@ function parseBindings(wrangler) {
       d1_databases: nullableRecords(tableRecords(wrangler, "d1_databases")),
       kv_namespaces: nullableRecords(tableRecords(wrangler, "kv_namespaces")),
       r2_buckets: nullableRecords(tableRecords(wrangler, "r2_buckets")),
-    },
-    beta: {
-      vars: Object.fromEntries(betaVars.map(({ key, value, source: itemSource }) => [key, { value, source: itemSource }])),
-      analytics_engine_datasets: null,
-      queues: { producers: null, consumers: null },
-      d1_databases: null,
-      kv_namespaces: null,
-      r2_buckets: null,
     },
   };
   return { environments };

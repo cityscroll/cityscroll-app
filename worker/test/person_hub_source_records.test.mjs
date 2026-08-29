@@ -143,9 +143,8 @@ test("empty bags skip without failing", async () => {
   assert.equal(result.failed, false);
 });
 
-test("wrangler production enables person-hub dual-write; beta stays off", () => {
+test("wrangler production enables person-hub dual-write", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
-  const [production, beta = ""] = wrangler.split("[env.beta.vars]");
-  assert.match(production, /PERSON_HUB_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
-  assert.match(beta, /PERSON_HUB_SOURCE_RECORD_DUAL_WRITE\s*=\s*"false"/);
+  assert.match(wrangler, /PERSON_HUB_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
+  assert.doesNotMatch(wrangler, /\[env\.beta/);
 });

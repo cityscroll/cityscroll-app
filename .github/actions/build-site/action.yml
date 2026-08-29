@@ -15,12 +15,8 @@ inputs:
     description: Destination for the built artifact.
     required: false
     default: "_site"
-  review-channel:
-    description: Optional public review channel name.
-    required: false
-    default: ""
   commit-sha:
-    description: Exact source commit represented by a review artifact.
+    description: Exact source commit represented by the built artifact.
     required: false
     default: ""
   refresh-decision-outcomes:
@@ -41,7 +37,6 @@ runs:
       env:
         SOURCE_DIR: ${{ inputs.source-dir }}
         SITE_DIR: ${{ inputs.site-dir }}
-        REVIEW_CHANNEL: ${{ inputs.review-channel }}
         COMMIT_SHA: ${{ inputs.commit-sha }}
         REFRESH_DECISION_OUTCOMES: ${{ inputs.refresh-decision-outcomes }}
       run: |
@@ -49,9 +44,6 @@ runs:
         args=(--source-dir "$SOURCE_DIR" --site-dir "$SITE_DIR")
         if [ "$REFRESH_DECISION_OUTCOMES" = "true" ]; then
           args+=(--refresh-decision-outcomes)
-        fi
-        if [ -n "$REVIEW_CHANNEL" ]; then
-          args+=(--review-channel "$REVIEW_CHANNEL" --commit-sha "$COMMIT_SHA")
         fi
         node "$SOURCE_DIR/tools/build_cloudflare_pages.mjs" "${args[@]}"
         node "$SOURCE_DIR/tools/check_pages_bundle_sizes.mjs" --site-dir "$SITE_DIR"

@@ -961,6 +961,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 - Cloudflare Pages remains the origin for `cityscroll.org` and `www.cityscroll.org`. Bounded
   Worker zone routes serve canonical `/near-you*`, `/following*`, and `/prefs*` documents;
   Worker custom domains remain `api.cityscroll.org` and the `api.crol-list.org` compatibility alias.
+- The unused public review lane is retired from the repository. Restore it from
+  `docs/beta-rebuild-recipe.md`; Cloudflare Pages and DNS teardown is a separate hosting step.
+  In-bundle `?beta=<slug>` flags remain.
 
 ## Digest shadow delivery holds
 
@@ -2688,8 +2691,8 @@ No LLM matching as primary matcher. No public consumer reads link tables yet.
 
 **source_records dual-write (er-02):** migration `worker/migrations/0008_source_records.sql`;
 flags `CITY_RECORD_SOURCE_RECORD_DUAL_WRITE=true` and `ENTITY_LINK_DUAL_WRITE=true` in the
-production Worker vars enable the fail-soft shadow path on City Record ingest; beta explicitly
-sets both false. Integration characterization: `node --test worker/test/er_ingest_integration.test.mjs`.
+production Worker vars enable the fail-soft shadow path on City Record ingest.
+Integration characterization: `node --test worker/test/er_ingest_integration.test.mjs`.
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
 **Source-observation coverage (er-22 + Checkbook + Legistar):** machine-checked importer

@@ -33,14 +33,7 @@ compatibility, including `crol-list.jimdc.com` (a GitHub Pages CNAME to
 ```
 
 The frontend defaults to `https://api.cityscroll.org` through `window.CROL_API_ORIGIN`.
-Review builds set that value to `https://api-beta.cityscroll.org` before page scripts
-run. An unavailable Worker leaves the site in its client-side degraded mode.
-
-The beta Worker is a separate, manually deployed Wrangler environment. It
-inherits no production secrets, storage bindings, queues, or cron trigger;
-stateful and delivery routes fail closed. Its CORS policy accepts beta review
-origins only when `DEPLOYMENT_CHANNEL=beta`, while the production environment
-continues to reject those origins. See `../docs/beta-channel.md`.
+An unavailable Worker leaves the site in its client-side degraded mode.
 
 ## Routes
 

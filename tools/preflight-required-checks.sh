@@ -201,14 +201,6 @@ finish_preflight() {
 }
 trap finish_preflight EXIT
 
-# The beta contract normally receives GitHub's event payload. A deterministic draft
-# payload keeps the same validator executable locally without depending on GitHub.
-if [[ -z "${GITHUB_EVENT_PATH:-}" ]]; then
-  LOCAL_EVENT_PATH="$(mktemp "${TMPDIR:-/tmp}/crol-beta-review-event.XXXXXX")"
-  printf '%s\n' '{"pull_request":{"number":0,"draft":true,"labels":[],"body":""}}' > "$LOCAL_EVENT_PATH"
-  export GITHUB_EVENT_PATH="$LOCAL_EVENT_PATH"
-fi
-
 run_banner "Unit tests (site + worker)" "Syntax + i18n + static lint" \
   "python3 test/standards/{js_syntax,i18n_keys,i18n_refs,i18n_fallback_sync,es_diacritics,i18n_glossary,attribution,link_text,control_labels,outline_guard,form_border_contrast,nyc_copy_lint,reader_register,public_surface_vocab,claim_first_prediction,page_metadata,brand_identity,no_official_marks,canonical_domain,link_targets,heading_punctuation,genai_disclosure,nl_input_clarity,demo_links}.py"
 run_and_fail python3 test/standards/js_syntax.py
@@ -246,10 +238,6 @@ run_and_fail python3 test/standards/demo_links.py
 run_and_fail node tools/check_stale_repo_name.mjs
 run_and_fail python3 test/functional/a11y_gate_test.py
 run_and_fail python3 test/functional/ci_waits_test.py
-
-run_banner "Unit tests (site + worker)" "Beta preview alias contract" \
-  "node tools/check_beta_review_contract.mjs"
-run_and_fail node tools/check_beta_review_contract.mjs
 
 run_banner "Unit tests (site + worker)" "Site + worker metadata/unit suites + joins" \
   "node tools/generate_source_docs.mjs --check"

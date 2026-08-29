@@ -48,7 +48,9 @@ test("extractor records active config and dispatch evidence", () => {
   const productionAlias = ["api.", "crol", "-", "list", ".org"].join("");
   const retiredBetaAlias = ["api-beta.", "crol", "-", "list", ".org"].join("");
   assert.ok(routes.some((route) => route.pattern === productionAlias && route.custom_domain === true && route.environment === "production"));
-  assert.ok(routes.some((route) => route.pattern === "api-beta.cityscroll.org" && route.custom_domain === true && route.environment === "beta"));
+  const retiredBetaWorker = ["api-beta.", "cityscroll.org"].join("");
+  assert.equal(routes.some((route) => route.pattern === retiredBetaWorker), false);
+  assert.equal(routes.some((route) => route.environment === "beta"), false);
   assert.equal(routes.some((route) => route.pattern === retiredBetaAlias), false);
   assert.ok(dispatch.some((route) => route.path === "/hearings" && route.handler === "handleHearings"));
   assert.ok(dispatch.some((route) => route.path === "/land-upcoming-hearings" && route.handler === "handleLandUpcomingHearings"));
@@ -58,8 +60,7 @@ test("extractor records active config and dispatch evidence", () => {
 test("absent bindings remain explicit nulls", () => {
   const bindings = parseBindings(wrangler).environments;
   assert.equal(bindings.production.r2_buckets, null);
-  assert.equal(bindings.beta.d1_databases, null);
-  assert.equal(bindings.beta.kv_namespaces, null);
+  assert.equal("beta" in bindings, false);
   assert.equal(bindings.production.queues.producers[0].binding, "DIGEST_QUEUE");
 });
 
