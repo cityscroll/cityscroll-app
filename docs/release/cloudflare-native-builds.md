@@ -18,7 +18,9 @@ selected `main` revision; it is not required for normal merges.
 
 The site owner must connect the repository to the existing `crol-worker` Worker
 through Workers Builds, set its root directory to `worker`, and configure the
-production and preview commands from the JSON contract. The Worker build token
+production and preview commands from the JSON contract. Those commands stamp
+`GIT_COMMIT_SHA` and `WRANGLER_ENV` onto `GET /health` so a later route-parity
+probe can tell which deployment answered. The Worker build token
 authorizes deployment; `LEGISTAR_API_TOKEN` remains a separately managed
 Cloudflare secret and is never written by the build.
 

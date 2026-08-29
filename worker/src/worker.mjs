@@ -48,6 +48,7 @@ import { handleStats, countActiveSubs, prewarmStats } from "./stats.mjs";
 import { handleSourceHealth } from "./source_health.mjs";
 import { handleEvent } from "./events.mjs";
 import { handlePerformanceEvents } from "./performance_events.mjs";
+import { handleWorkerHealth } from "./lib/worker_health.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
@@ -224,7 +225,7 @@ export default {
     if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
     if (pathname === "/admin/attachment-metadata") return handleAdminAttachmentMetadata(request, env);
     if (pathname === "/" || pathname === "/health") {
-      return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });
+      return handleWorkerHealth(env);
     }
     return new Response("Not found", { status: 404, headers: { "Content-Type": "text/plain" } });
   },
