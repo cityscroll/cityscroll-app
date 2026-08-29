@@ -1,6 +1,9 @@
 # Every entry is path + exact line number + base64 of the exact line + a reason comment.
 # The encoded line makes an allowed exception narrow: moving, changing, or adding a
 # matching line requires an explicit review and a new allowlist entry.
+future:docs/evidence/procurement-lifecycle-actions/README.md	4	KipDYXJkIHN0YW5kYXJkOioqIGBrcmFrZW4tdjFg	# [K] Banned vocabulary already present in a newer default-branch card index; preserve this exact line until that index is synchronized.
+future:docs/evidence/procurement-lifecycle-actions/README.md	325	OS4gKipVc2UgdGhlIGFwcC1uYXRpdmUgZXZpZGVuY2UgaG9tZS4qKiBUaGlzIHJlcG9zaXRvcnkgaGFzIG5vIHRvcC1sZXZlbCBLcmFrZW4gd29ya3N0cmVhbQ==	# [K] Banned vocabulary already present in a newer default-branch card index; preserve this exact line until that index is synchronized.
+future:docs/evidence/procurement-lifecycle-actions/README.md	326	ICAgcmVnaXN0cnksIGBzZXJ2aWNlLmpzb25gLCBgd2F2ZXMuaHRtbGAsIG9yIGNhcmQgaW5kZXguIEV4aXN0aW5nIGBrcmFrZW4tdjFgIGNhcmRzIGxpdmUgdW5kZXI=	# [K] Banned vocabulary already present in a newer default-branch card index; preserve this exact line until that index is synchronized.
 future:docs/evidence/procurement-lifecycle-actions/cards/proposed/pla-01-promote-passport-rfx-procedural-state.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in a newer default-branch card; preserve this exact line until that card is synchronized.
 future:docs/evidence/procurement-lifecycle-actions/cards/proposed/pla-01-promote-passport-rfx-procedural-state.md	26	dGFyZ2V0OiBjcm9sLWxpc3Q=	# [C] Merge-tree compatibility line from a newer default-branch card; preserve this exact line until that card is synchronized.
 future:docs/evidence/procurement-lifecycle-actions/cards/proposed/pla-02-unified-procurement-journey.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in a newer default-branch card; preserve this exact line until that card is synchronized.
