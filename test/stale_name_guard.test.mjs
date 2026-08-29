@@ -1,17 +1,34 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, unlinkSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 const ROOT = new URL("../", import.meta.url);
+const ROOT_PATH = fileURLToPath(ROOT);
 const GUARD = new URL("../tools/check_stale_repo_name.mjs", import.meta.url);
+const ALLOWLIST = new URL("../.github/legacy-name-allowlist.txt", import.meta.url);
 const PROBE = new URL("../.legacy-name-guard-probe.txt", import.meta.url);
 const legacyName = ["crol", "-", "list"].join("");
 const bannedVocabulary = ["kra", "ken"].join("");
 const reservedMarker = ["card-seal", "5rk8-qj2m-xv91"].join(":");
 
-function runGuard() {
-  return execFileSync(process.execPath, [GUARD.pathname], { cwd: ROOT, encoding: "utf8", stdio: "pipe" });
+function runGuard(env) {
+  return execFileSync(process.execPath, [GUARD.pathname], { cwd: ROOT, encoding: "utf8", stdio: "pipe", env: { ...process.env, ...env } });
+}
+
+function headSha() {
+  return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT_PATH, encoding: "utf8" }).trim();
+}
+
+function withAllowlist(mutate, fn) {
+  const original = readFileSync(ALLOWLIST, "utf8");
+  writeFileSync(ALLOWLIST, mutate(original));
+  try {
+    return fn();
+  } finally {
+    writeFileSync(ALLOWLIST, original);
+  }
 }
 
 test("the checked-in compatibility inventory is accepted", () => {
@@ -55,4 +72,82 @@ test("allowlist rewrite refuses a novel occurrence", () => {
   } finally {
     if (existsSync(PROBE)) unlinkSync(PROBE);
   }
+});
+
+// --- Allowlist growth guard: an entry may only cover content already present
+// at the merge-base of main (PR 1417 added banned lines and the allowlist
+// entries covering them in the same change; the guard passed it). ---
+
+test("a same-PR allowlist entry covering a same-PR new line fails the guard", () => {
+  writeFileSync(PROBE, `new ${legacyName} reference\n`);
+  const probeName = ".legacy-name-guard-probe.txt";
+  const digest = Buffer.from(`new ${legacyName} reference`, "utf8").toString("base64");
+  try {
+    withAllowlist(
+      (original) => `${original}${probeName}\t1\t${digest}\t# test: same-PR cover attempt.\n`,
+      () => {
+        assert.throws(
+          () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() }),
+          /covers content that does not exist at the merge-base of main/,
+        );
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("a 'future:' entry covering a same-PR new line still fails the guard", () => {
+  writeFileSync(PROBE, `new ${bannedVocabulary} reference\n`);
+  const probeName = ".legacy-name-guard-probe.txt";
+  const digest = Buffer.from(`new ${bannedVocabulary} reference`, "utf8").toString("base64");
+  try {
+    withAllowlist(
+      (original) => `${original}future:${probeName}\t1\t${digest}\t# test: future-prefixed same-PR cover attempt.\n`,
+      () => {
+        assert.throws(
+          () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() }),
+          /covers content that does not exist at the merge-base of main/,
+        );
+      },
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
+
+test("an allowlist entry covering a pre-existing line passes and prints a growth summary", () => {
+  const targetPath = "README.md";
+  const existingLine = readFileSync(new URL(`../${targetPath}`, import.meta.url), "utf8").split(/\r?\n/)[0];
+  const digest = Buffer.from(existingLine, "utf8").toString("base64");
+  withAllowlist(
+    (original) => `${original}future:${targetPath}\t1\t${digest}\t# test: pre-existing line, legitimate legacy exception.\n`,
+    () => {
+      const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() });
+      assert.match(output, /guard passed/i);
+      assert.match(output, /ALLOWLIST GROWTH: 1 new entry added, covering 1 file/);
+      assert.match(output, new RegExp(`\\+ ${targetPath}:1`));
+    },
+  );
+});
+
+test("a PR that does not touch the allowlist is unaffected by the growth guard", () => {
+  const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() });
+  assert.match(output, /guard passed/i);
+  assert.doesNotMatch(output, /ALLOWLIST GROWTH/);
+});
+
+test("growth guard fails closed when the merge-base cannot be resolved", () => {
+  const targetPath = "README.md";
+  const existingLine = readFileSync(new URL(`../${targetPath}`, import.meta.url), "utf8").split(/\r?\n/)[0];
+  const digest = Buffer.from(existingLine, "utf8").toString("base64");
+  withAllowlist(
+    (original) => `${original}future:${targetPath}\t1\t${digest}\t# test: unresolved base.\n`,
+    () => {
+      assert.throws(
+        () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: "0000000000000000000000000000000000000000" }),
+        /unable to resolve a merge-base/,
+      );
+    },
+  );
 });

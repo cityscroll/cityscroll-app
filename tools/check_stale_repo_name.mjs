@@ -79,6 +79,91 @@ function trackedFiles() {
   return result.stdout.split("\0").filter(Boolean);
 }
 
+// Growth guard: an allowlist entry is only legitimate for content that already
+// existed on the merge-base of main. Without this, a single PR can add both a
+// banned line and the allowlist entry that covers it, self-certifying its own
+// exception. See docs comment above ALLOWLIST_PATH's header for the full rule.
+function resolveMergeBase(baseSha) {
+  const result = spawnSync("git", ["merge-base", "HEAD", baseSha], { cwd: ROOT, encoding: "utf8" });
+  if (result.status !== 0) return null;
+  return result.stdout.trim() || null;
+}
+
+function readFileAtRevision(rev, path) {
+  const result = spawnSync("git", ["show", `${rev}:${path}`], { cwd: ROOT, encoding: "utf8" });
+  if (result.status !== 0) return null;
+  return result.stdout;
+}
+
+function fileExistsAtRevision(rev, path) {
+  const result = spawnSync("git", ["cat-file", "-e", `${rev}:${path}`], { cwd: ROOT, encoding: "utf8" });
+  return result.status === 0;
+}
+
+function parseAllowlistKeys(text) {
+  const keys = new Set();
+  if (text === null) return keys;
+  for (const raw of text.split(/\r?\n/)) {
+    const line = raw.trim();
+    if (!line || line.startsWith("#")) continue;
+    let [encodedPath, lineNumber, digest] = raw.split("\t");
+    let path = encodedPath?.startsWith("future:") ? encodedPath.slice("future:".length) : encodedPath;
+    if (path?.startsWith("path64:")) {
+      try {
+        path = Buffer.from(path.slice("path64:".length), "base64").toString("utf8");
+      } catch {
+        path = "";
+      }
+    }
+    if (!path || !lineNumber || !digest) continue;
+    keys.add(`${path}\0${lineNumber}\0${digest}`);
+  }
+  return keys;
+}
+
+function lineDigestMatches(line, digest) {
+  if (digest === Buffer.from(line, "utf8").toString("base64")) return true;
+  return digest === `sha256:${createHash("sha256").update(line, "utf8").digest("hex")}`;
+}
+
+function entryContentExistsAtMergeBase(record, mergeBase, baseFileLinesCache) {
+  if (record.lineNumber === "*") return fileExistsAtRevision(mergeBase, record.path);
+  if (!baseFileLinesCache.has(record.path)) {
+    const text = readFileAtRevision(mergeBase, record.path);
+    baseFileLinesCache.set(record.path, text === null ? null : text.split(/\r?\n/));
+  }
+  const baseLines = baseFileLinesCache.get(record.path);
+  if (!baseLines) return false;
+  // Content-addressed, not line-pinned: legitimate reflowing that shifts an
+  // already-allowlisted line elsewhere in the same file must not read as "new".
+  return baseLines.some((line) => lineDigestMatches(line, record.digest));
+}
+
+function checkAllowlistGrowth(records, baseSha) {
+  const mergeBase = resolveMergeBase(baseSha);
+  if (!mergeBase) {
+    return { ok: false, reason: `unable to resolve a merge-base with ${baseSha}; cannot validate allowlist growth` };
+  }
+  const baseKeys = parseAllowlistKeys(readFileAtRevision(mergeBase, ALLOWLIST_RELATIVE_PATH));
+  const added = records.filter((record) => !baseKeys.has(record.key));
+  const baseFileLinesCache = new Map();
+  const invalid = added.filter((record) => !entryContentExistsAtMergeBase(record, mergeBase, baseFileLinesCache));
+  return { ok: true, mergeBase, added, invalid };
+}
+
+function printAllowlistGrowthSummary(added) {
+  const filesCovered = new Set(added.map((record) => record.path));
+  const banner = "=".repeat(72);
+  console.log(banner);
+  console.log(
+    `ALLOWLIST GROWTH: ${added.length} new entr${added.length === 1 ? "y" : "ies"} added, covering ${filesCovered.size} file${filesCovered.size === 1 ? "" : "s"}`,
+  );
+  for (const record of added) {
+    console.log(`  + ${record.path}:${record.lineNumber}  ${record.comment}`);
+  }
+  console.log(banner);
+}
+
 function digestIndex(records) {
   const byDigest = new Map();
   for (const record of records) {
@@ -163,6 +248,22 @@ function main() {
   }
   const staleAllowlist = [...allowed.keys()].filter((key) => !seen.has(key) && !deferredEntries.has(key) && !remapped.has(key));
   if (!write && staleAllowlist.length) violations.push(`${ALLOWLIST_RELATIVE_PATH}: stale entries: ${staleAllowlist.length}`);
+
+  const baseSha = process.env.LEGACY_ALLOWLIST_BASE_SHA?.trim();
+  if (!write && baseSha) {
+    const growth = checkAllowlistGrowth(records, baseSha);
+    if (!growth.ok) {
+      violations.push(`${ALLOWLIST_RELATIVE_PATH}: ${growth.reason}`);
+    } else {
+      if (growth.added.length) printAllowlistGrowthSummary(growth.added);
+      for (const record of growth.invalid) {
+        violations.push(
+          `${ALLOWLIST_RELATIVE_PATH}: new entry for ${record.path}:${record.lineNumber} covers content that does not exist at the merge-base of main (${growth.mergeBase}); allowlisting only covers legacy lines already on main, never material introduced in the same change`,
+        );
+      }
+    }
+  }
+
   if (violations.length) {
     fail(violations.join("\n"));
     return;
