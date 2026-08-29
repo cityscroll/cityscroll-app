@@ -414,6 +414,12 @@ test("a recovered pending watch becomes enrolled when a later digest send proces
   }
 
   assert.equal(await env.ALERT_STATE.get(`lastsent:${key}`), "2026-08-24");
+  for (const name of [...env.SUBS.data.keys()].filter((item) => item.startsWith("recovery:"))) {
+    await env.SUBS.delete(name);
+  }
+  const again = await recover(env);
+  assert.ok(again.already_recovered + again.recovered + again.already_enrolled >= 1);
+  assert.equal(await env.ALERT_STATE.get(`lastsent:${key}`), "2026-08-24");
   const ops = await (await handleAdminSubs(new Request("https://worker/admin/subs?key=secret"), env)).json();
   const row = ops.subs.find((item) => item.email === "ninodepaola@gmail.com");
   assert.equal(row.status, SIGNUP_LIFECYCLE.ENROLLED);

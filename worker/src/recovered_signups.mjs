@@ -200,7 +200,11 @@ async function recoverOne(env, row, recoveredAt) {
     recovery_explanation: RECOVERY_EXPLANATION,
   };
   await env.SUBS.put(key, JSON.stringify(record));
-  await env.ALERT_STATE.put(`lastsent:${key}`, recoveryTime.slice(0, 10));
+  let currentLastSent = null;
+  try { currentLastSent = (await env.ALERT_STATE.get(`lastsent:${key}`)) || null; } catch { currentLastSent = null; }
+  if (!currentLastSent) {
+    await env.ALERT_STATE.put(`lastsent:${key}`, recoveryTime.slice(0, 10));
+  }
   for (const extra of recoveredDupes) {
     if (extra.key !== key) await deleteWatch(env, extra.key);
   }
