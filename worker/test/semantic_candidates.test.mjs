@@ -234,6 +234,7 @@ test("candidate endpoint rejects invalid scope rather than weakening it", async 
   assert.deepEqual(await impossibleDate.json(), { ok: false, reason: "invalid-published-to" });
 });
 
-test("production and beta declare the typed-candidate kill switch", () => {
-  assert.equal((WRANGLER.match(/SEMANTIC_CANDIDATES_ENABLED = "true"/g) || []).length, 2);
+test("production declares the typed-candidate kill switch", () => {
+  assert.match(WRANGLER, /^SEMANTIC_CANDIDATES_ENABLED = "true"$/m);
+  assert.doesNotMatch(WRANGLER, /\[env\.beta/);
 });
