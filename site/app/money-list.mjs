@@ -463,7 +463,14 @@ function coverageCell(stat, valueKey) {
   return `${count.toLocaleString("en-US")} · ${formatRegisteredValue(value)}`;
 }
 
+function openCoverageDestination(panel) {
+  if (!panel || panel.tagName !== "DETAILS") return;
+  if (location.hash === "#contracts-analytics-coverage") panel.open = true;
+}
+
 function renderAnalyticalCoverage(projectionRows, filters) {
+  const panel = $("#contracts-analytics-coverage");
+  openCoverageDestination(panel);
   const controls = analyticalCoverageControls();
   const coverageFilters = {
     min_amount: controls.threshold,
@@ -474,6 +481,19 @@ function renderAnalyticalCoverage(projectionRows, filters) {
   const coverage = cityRecordCoverage(projectionRows, coverageFilters);
   const grouped = groupCityRecordCoverage(projectionRows, { groupBy: "agency", ...coverageFilters });
   const summary = $("#contracts-analytics-coverage-summary");
+  const statement = $("#contracts-analytics-coverage-statement");
+  const table = $("#contracts-analytics-coverage-groups");
+  const tableWrap = table?.closest(".table-scroll");
+  const note = $("#contracts-analytics-coverage-note");
+  if (!coverage.eligible_contract_count) {
+    if (summary) summary.innerHTML = "";
+    if (statement) statement.textContent = t("analytics_coverage_empty");
+    if (table) table.innerHTML = "";
+    if (tableWrap) tableWrap.hidden = true;
+    if (note) note.textContent = "";
+    return;
+  }
+  if (tableWrap) tableWrap.hidden = false;
   if (summary) {
     summary.innerHTML = [
       ["analytics_coverage_eligible", coverage.eligible_contract_count, coverage.eligible_registered_value],
@@ -482,23 +502,21 @@ function renderAnalyticalCoverage(projectionRows, filters) {
       ["analytics_coverage_missing_pin", coverage.missing_pin_contract_count, coverage.missing_pin_registered_value],
     ].map(([key, count, value]) => `<div class="contracts-analytics-coverage-stat"><dt>${escUiHtml(t(key))}</dt><dd>${Number(count).toLocaleString("en-US")}</dd><small>${escUiHtml(formatRegisteredValue(value))}</small></div>`).join("");
   }
-  const statement = $("#contracts-analytics-coverage-statement");
   if (statement) {
-    statement.innerHTML = `${escUiHtml(t("analytics_coverage_statement", {
+    statement.textContent = `${t("analytics_coverage_statement", {
       matched: coverage.matched_contract_count.toLocaleString("en-US"),
       eligible: coverage.eligible_contract_count.toLocaleString("en-US"),
       rate: coveragePercent(coverage.match_rate),
       value: formatRegisteredValue(coverage.matched_registered_value),
       total: formatRegisteredValue(coverage.eligible_registered_value),
-    }))} ${escUiHtml(t("analytics_coverage_missing_sentence", {
+    })} ${t("analytics_coverage_missing_sentence", {
       count: coverage.missing_pin_contract_count.toLocaleString("en-US"),
       value: formatRegisteredValue(coverage.missing_pin_registered_value),
-    }))}`;
+    })}`;
   }
-  const table = $("#contracts-analytics-coverage-groups");
   if (!table) return;
   table.innerHTML = grouped.groups.map((group) => {
-    const link = (bucket, label) => analyticalDrillThroughHref({
+    const link = (bucket) => analyticalDrillThroughHref({
       agency: group.label,
       registration_fiscal_year: filters.registration_fiscal_year,
       contract_amount_band: controls.contract_amount_band,
@@ -510,7 +528,6 @@ function renderAnalyticalCoverage(projectionRows, filters) {
     const missing = group.buckets.cannot_evaluate_missing_pin;
     return `<tr><th scope="row"><a href="${escUiHtml(analyticalDrillThroughHref({ agency: group.label, registration_fiscal_year: filters.registration_fiscal_year, contract_amount_band: controls.contract_amount_band, min_amount: controls.threshold }))}">${escUiHtml(group.label)}</a></th><td>${group.eligible_contract_count.toLocaleString("en-US")} · ${escUiHtml(formatRegisteredValue(group.eligible_registered_value))}</td><td><a href="${escUiHtml(link("exact"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("exact")}`)}">${escUiHtml(coverageCell(exact))}</a></td><td><a href="${escUiHtml(link("none"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("none")}`)}">${escUiHtml(coverageCell(none))}</a></td><td><a href="${escUiHtml(link("cannot_evaluate_missing_pin"))}" aria-label="${escUiHtml(`${group.label}: ${coverageBucketLabel("cannot_evaluate_missing_pin")}`)}">${escUiHtml(coverageCell(missing))}</a></td></tr>`;
   }).join("");
-  const note = $("#contracts-analytics-coverage-note");
   if (note) note.textContent = t("analytics_coverage_note", {
     evaluable: coverage.evaluable_match_rate == null ? "—" : coveragePercent(coverage.evaluable_match_rate),
   });
@@ -990,6 +1007,11 @@ function bindAnalyticalControls(){
   if(factControl&&!factControl.dataset.analyticsBound){
     factControl.dataset.analyticsBound="1";
     factControl.addEventListener("change",()=>changeAnalyticalFact(factControl.value));
+  }
+  const coveragePanel=$("#contracts-analytics-coverage");
+  if(coveragePanel&&!coveragePanel.dataset.coverageHashBound){
+    coveragePanel.dataset.coverageHashBound="1";
+    addEventListener("hashchange",()=>openCoverageDestination($("#contracts-analytics-coverage")));
   }
   ["#analytics-view","#analytics-group","#analytics-measure","#analytics-fy","#analytics-min","#analytics-max","#analytics-coverage-threshold","#analytics-coverage-band"].forEach((selector)=>{
     const element=$(selector);

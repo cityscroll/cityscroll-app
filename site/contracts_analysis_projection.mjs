@@ -147,7 +147,7 @@ export function analyzeContractsProjection(projection, input = {}) {
         snapshot_date: projection.snapshot_date || null,
       },
       coverage: {
-        statement: `City Record exact-PIN match coverage for the selected registered-contract population: ${coverage.matched_contract_count.toLocaleString("en-US")} of ${coverage.eligible_contract_count.toLocaleString("en-US")} eligible contracts; rows without a published PIN cannot be evaluated.`,
+        statement: `CityScroll found an exact City Record notice for ${coverage.matched_contract_count.toLocaleString("en-US")} of ${coverage.eligible_contract_count.toLocaleString("en-US")} eligible registered contracts; contracts without a PIN cannot be evaluated and stay a separate count.`,
         basis: "existing exact normalized Checkbook PIN ↔ City Record award PIN overlap",
         eligible_contract_count: coverage.eligible_contract_count,
         matched_contract_count: coverage.matched_contract_count,
