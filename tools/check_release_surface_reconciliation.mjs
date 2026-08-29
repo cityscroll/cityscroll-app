@@ -7,13 +7,22 @@ import { freshnessFindings } from "./artifact_manifest.mjs";
 import { checkServedArtifactFreshness } from "./check_served_artifact_freshness.mjs";
 import {
   buildReleaseSurfaceReceipt,
+  evaluateAlertDelivery,
+  evaluateDataPublication,
   evaluateGeneratedEvidenceFreshness,
   evaluateGenerationReceipt,
+  evaluateLiveProbe,
+  evaluateMonitorState,
+  evaluatePagesDeployment,
   evaluateServedArtifactFreshness,
+  evaluateWorkerRelease,
+  evaluateWorkerStartup,
+  evaluateWorkerTriggerCoverage,
   reconcileCardProjection,
   sha256Text,
   writeReleaseSurfaceReceipt,
 } from "./release_surface_reconciliation.mjs";
+import { verifyWorkerTriggerCoverage } from "./worker_trigger_coverage.mjs";
 
 const DEFAULT_OUTPUT = ".artifacts/release-surface-receipt.json";
 
@@ -51,11 +60,26 @@ function loadReceipt(path) {
 }
 
 function requiredStages(argv) {
-  const value = argument(argv, "--required-stages", "generation_output,card_reconciliation,generated_evidence_freshness,served_artifact_freshness");
+  const value = argument(argv, "--required-stages", "generation_output,card_reconciliation,generated_evidence_freshness,served_artifact_freshness,pages_deployment,worker_trigger_coverage,worker_startup,worker_release,data_publication,live_smoke,watchdog,scheduler,alert_delivery");
   return value.split(",").map((stage) => stage.trim()).filter(Boolean);
 }
 
 async function main(argv = process.argv.slice(2)) {
+  const checkOnly = argv.includes("--check");
+  const evidenceFlags = [
+    "--generation-receipt", "--expected-manifest", "--source-receipt", "--live-manifest",
+    "--live-origin", "--pages-evidence", "--worker-evidence", "--publication-evidence",
+    "--monitor-evidence", "--live-probe", "--alert-evidence", "--startup-report",
+    "--startup-ms", "--source-cards", "--generated-board",
+  ];
+  if (checkOnly && !evidenceFlags.some((flag) => argv.includes(flag))) {
+    const coverage = verifyWorkerTriggerCoverage({ rootDir: process.cwd() });
+    if (coverage.status !== "PASS") {
+      throw new Error(coverage.reason);
+    }
+    process.stdout.write("Release surface reconciliation contract OK\n");
+    return;
+  }
   const generationPath = argument(argv, "--generation-receipt", ".artifacts/generation-output-receipt.json");
   const outputPath = argument(argv, "--output", DEFAULT_OUTPUT);
   const sourceCommitSha = argument(argv, "--source-commit", process.env.GITHUB_SHA || process.env.SOURCE_COMMIT_SHA || null);
@@ -128,6 +152,49 @@ async function main(argv = process.argv.slice(2)) {
       evidence: {},
     };
   }
+
+  const pagesEvidencePath = argument(argv, "--pages-evidence");
+  stages.pages_deployment = pagesEvidencePath
+    ? evaluatePagesDeployment(json(pagesEvidencePath))
+    : { status: "UNKNOWN", findings: ["Pages deployment evidence was not supplied"], evidence: {} };
+
+  const coveragePath = argument(argv, "--worker-coverage");
+  const coverage = coveragePath
+    ? json(coveragePath)
+    : verifyWorkerTriggerCoverage({ rootDir: process.cwd() });
+  stages.worker_trigger_coverage = evaluateWorkerTriggerCoverage(coverage);
+
+  const startupReportPath = argument(argv, "--startup-report");
+  const startupReport = startupReportPath ? readFileSync(resolve(startupReportPath), "utf8") : undefined;
+  stages.worker_startup = evaluateWorkerStartup({
+    startupMs: argument(argv, "--startup-ms"),
+    startupReport,
+  });
+
+  const workerEvidencePath = argument(argv, "--worker-evidence");
+  stages.worker_release = workerEvidencePath
+    ? evaluateWorkerRelease(json(workerEvidencePath))
+    : { status: "UNKNOWN", findings: ["Worker provider/build evidence was not supplied"], evidence: {} };
+
+  const publicationPath = argument(argv, "--publication-evidence");
+  stages.data_publication = publicationPath
+    ? evaluateDataPublication(json(publicationPath))
+    : { status: "UNKNOWN", findings: ["data publication evidence was not supplied"], evidence: {} };
+
+  const monitorPath = argument(argv, "--monitor-evidence");
+  const monitorEvidence = monitorPath ? json(monitorPath) : {};
+  stages.watchdog = evaluateMonitorState({ watchdog: monitorEvidence.watchdog });
+  stages.scheduler = evaluateMonitorState({ scheduler: monitorEvidence.scheduler });
+
+  const liveProbePath = argument(argv, "--live-probe");
+  stages.live_smoke = liveProbePath
+    ? evaluateLiveProbe(json(liveProbePath))
+    : { status: "UNKNOWN", findings: ["live probe evidence was not supplied"], evidence: {} };
+
+  const alertPath = argument(argv, "--alert-evidence");
+  stages.alert_delivery = alertPath
+    ? evaluateAlertDelivery(json(alertPath))
+    : { status: "UNKNOWN", findings: ["alert-delivery evidence was not supplied"], evidence: {} };
 
   const receipt = buildReleaseSurfaceReceipt({ sourceCommitSha, stages, requiredStages: requiredStages(argv) });
   writeReleaseSurfaceReceipt(receipt, outputPath);
