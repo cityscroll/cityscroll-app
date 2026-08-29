@@ -26,6 +26,8 @@ export const PROCUREMENT_CONSTRUCTOR_SOURCES = Object.freeze([
   "nys_contract_reporter",
   "mta_current_opportunities",
   "mta_bid_results",
+  "mta_annual_contracts",
+  "mta_cd_awards",
 ]);
 
 const CITY_RECORD_SOURCES = new Set([
@@ -135,6 +137,12 @@ function identityKeys(record, row = snapshot(record)) {
   } else if (system === "checkbook_spending") {
     contractId = exactKey(row.contractId || row.contract_id || row.prime_contract_id);
     publisherId = exactKey(row.documentId || row.document_id || row.id || row.spendingId || row.transactionId);
+  } else if (system === "mta_annual_contracts") {
+    contractId = exactKey(row.transaction_number || row.contract_id || row.contract_number);
+    publisherId = contractId;
+  } else if (system === "mta_cd_awards") {
+    contractId = exactKey(row.contract_number || row.contract_id || row.transaction_number);
+    publisherId = contractId;
   } else if (CITY_RECORD_SOURCES.has(system)) {
     epin = exactKey(row.pin || row.epin);
     publisherId = exactKey(row.request_id || sourceId(record));
@@ -176,6 +184,8 @@ function stageFor(record, row = snapshot(record)) {
     if (status?.includes("register") || row.registration_date || row.registered) return "registered";
     return "contract";
   }
+  if (system === "mta_cd_awards") return "award";
+  if (system === "mta_annual_contracts") return "contract";
   if (CITY_RECORD_SOURCES.has(system)) {
     const type = text(row.type_of_notice_description || row.type_of_notice || row.stage)?.toLowerCase() || "";
     if (type.includes("intent to negotiate")) return "intent_to_negotiate";
@@ -245,6 +255,9 @@ function componentFor(record, basis, matchedValue) {
     contract_ids: new Set(),
     epins: new Set(),
     native_keys: new Map(),
+    publisher_institution_ids: new Set(),
+    procuring_institution_ids: new Set(),
+    source_agency_labels: new Set(),
   };
 }
 
@@ -257,6 +270,10 @@ function addRecord(component, record) {
     if (!component.native_keys.has(field)) component.native_keys.set(field, new Set());
     component.native_keys.get(field).add(value);
   }
+  const row = snapshot(record);
+  if (row.publisher_institution_id) component.publisher_institution_ids.add(String(row.publisher_institution_id));
+  if (row.procuring_institution_id) component.procuring_institution_ids.add(String(row.procuring_institution_id));
+  if (row.source_agency_label) component.source_agency_labels.add(String(row.source_agency_label));
 }
 
 function nativeBasis(field) {
@@ -479,6 +496,11 @@ function createObject(component, edges) {
     source_observation_refs: objectEdges.map((edge) => edge.source_observation_ref).sort(),
     stages: sortedStages(stageRefs),
     identity_keys: identity,
+    institution_keys: {
+      publisher_institution_ids: [...component.publisher_institution_ids].sort(),
+      procuring_institution_ids: [...component.procuring_institution_ids].sort(),
+      source_agency_labels: [...component.source_agency_labels].sort(),
+    },
     identity_edges: objectEdges,
     lifecycle: null,
     compatibility: {

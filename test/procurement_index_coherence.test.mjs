@@ -103,18 +103,20 @@ test("the committed procurement model and keyword index stay coherent", () => {
   ));
   const spineBytes = readFileSync(new URL("../site/data/procurement_spine_sources.json", import.meta.url));
   const awardsBytes = readFileSync(new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url));
+  const mtaBytes = readFileSync(new URL("../site/data/mta_procurement_sources.json", import.meta.url));
   const result = checkProcurementIndexCoherence({
     readModel,
     keywordIndex,
     spineBytes,
     awardsBytes,
+    mtaBytes,
   });
   assert.equal(result.ok, true, format(result));
   assert.equal(readModel.coherence_receipt.schema, PROCUREMENT_INDEX_COHERENCE_SCHEMA);
   assert.deepEqual(readModel.coherence_receipt, keywordIndex.coherence_receipt);
   assert.equal(
     readModel.coherence_receipt.source_model_fingerprint,
-    sourceModelFingerprint({ spineBytes, awardsBytes }),
+    sourceModelFingerprint({ spineBytes, awardsBytes, mtaBytes }),
   );
   assert.equal(
     advertisedProcurementRefs(keywordIndex).length,
