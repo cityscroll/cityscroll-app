@@ -27,6 +27,15 @@ test("Worker budget guard fires on compressed and startup ceilings", async () =>
   assert.throws(() => inspectBundle(meta), /compressed budget/);
 });
 
+test("Worker budget guard rejects a successful profiler with no numeric startup output", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "cityscroll-budget-"));
+  const meta = join(dir, "meta.json");
+  await writeFile(meta, JSON.stringify({
+    outputs: { "bundle.js": { entryPoint: "worker/src/worker.mjs", bytes: 100, compressedBytes: 100, inputs: {} } },
+  }));
+  assert.throws(() => inspectBundle(meta), /startup measurement is missing/);
+});
+
 test("KV budget guard fires on a published value over 25 MiB", async () => {
   const dir = await mkdtemp(join(tmpdir(), "cityscroll-budget-"));
   const value = "x".repeat(25 * 1024 * 1024 + 1);

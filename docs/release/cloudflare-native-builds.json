@@ -21,7 +21,7 @@
     "build_command": "npm ci",
     "deploy_command": "npx wrangler d1 migrations apply crol-notices --remote && npx wrangler deploy",
     "preview_deploy_command": "npx wrangler versions upload",
-    "path_includes": ["worker/**"],
+    "path_includes": ["worker/**", "capabilities/**", "entity_resolution/**", "ontology/**", "site/**", "tools/**", "warehouse/**"],
     "manual_fallback_workflow": ".github/workflows/deploy-worker.yml"
   }
 }
