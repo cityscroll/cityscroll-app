@@ -83,7 +83,7 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
-| `/` `/health` | GET | liveness | none |
+| `/` `/health` | GET | liveness JSON (`status` remains `crol-worker ok`) plus deploy `commit` SHA and wrangler `environment` | none |
 
 ## The daily digest (ZAP lookup + hearings + exams `0 8 * * *`; shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
 
@@ -294,12 +294,15 @@ migrations** (`wrangler d1 migrations apply
 crol-notices --remote`) before `wrangler deploy`, so schema changes under `migrations/` land
 with the code that needs them. Skipping that step left the PASSPort tables uncreated and every
 lifecycle PASSPort lookup returning `lookup_status=error`. The deploy is still **code-only**
-for secrets — no `secrets:`/`vars:` inputs on the action — because Cloudflare will silently
+for secrets — no `secrets:` or bulk `vars:` inputs on the action — because Cloudflare will silently
 overwrite a live secret with a `[vars]` entry of the same name on deploy; keep secrets going
 through `wrangler secret put` by hand (above) and never add one to `wrangler.toml`'s `[vars]`
-block or to the workflow. A `concurrency: worker-deploy` group (no cancel-in-progress) makes
-two quick merges deploy in order rather than racing. `npx wrangler deploy` from a laptop
-remains the escape hatch for an emergency deploy outside the merge flow (pair it with
+block or to the workflow's bulk `vars:` input. Identity for `GET /health` is the exception:
+`wrangler deploy --var GIT_COMMIT_SHA:<sha> --var WRANGLER_ENV:production` injects only that
+pair. Workers Builds uses `WORKERS_CI_COMMIT_SHA` the same way. A `concurrency: worker-deploy` group (no cancel-in-progress) makes
+two quick merges deploy in order rather than racing. `npm run deploy` from a laptop
+remains the escape hatch for an emergency deploy outside the merge flow and stamps
+the same health identity pair (pair it with
 `npx wrangler d1 migrations apply crol-notices --remote` when schema changed).
 
 Requires a `CLOUDFLARE_API_TOKEN` repository secret for GitHub Actions. Prefer a

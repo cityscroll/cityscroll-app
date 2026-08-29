@@ -36,6 +36,32 @@ requireCheck(config.pages?.build_command?.includes("build_cloudflare_pages.mjs")
 requireCheck(config.worker?.root_directory === "worker", "Worker Builds root directory must remain worker");
 requireCheck(config.worker?.deploy_command?.includes("wrangler deploy"), "Worker Builds must deploy through Wrangler");
 requireCheck(config.worker?.deploy_command?.includes("d1 migrations apply"), "Worker Builds must apply D1 migrations before deploy");
+requireCheck(
+  config.worker?.deploy_command?.includes("--var GIT_COMMIT_SHA:${WORKERS_CI_COMMIT_SHA}")
+    && config.worker?.deploy_command?.includes("--var WRANGLER_ENV:production"),
+  "Worker Builds production deploy must stamp GIT_COMMIT_SHA and WRANGLER_ENV",
+);
+requireCheck(
+  config.worker?.preview_deploy_command?.includes("--var GIT_COMMIT_SHA:${WORKERS_CI_COMMIT_SHA}")
+    && config.worker?.preview_deploy_command?.includes("--var WRANGLER_ENV:preview"),
+  "Worker Builds preview deploy must stamp GIT_COMMIT_SHA and WRANGLER_ENV",
+);
+const workerDeployStep = workerWorkflow.slice(
+  workerWorkflow.indexOf("- name: Deploy"),
+  workerWorkflow.indexOf("- name: Record Worker provider and publication evidence"),
+);
+requireCheck(
+  /command:\s*deploy\s+--var GIT_COMMIT_SHA:\$\{\{\s*github\.sha\s*\}\}\s+--var WRANGLER_ENV:production/.test(workerDeployStep),
+  "GitHub Actions Worker deploy must stamp GIT_COMMIT_SHA and WRANGLER_ENV via wrangler --var",
+);
+requireCheck(!/^\s+vars:/m.test(workerDeployStep), "GitHub Actions Worker deploy must not use the wrangler-action bulk vars input");
+const workerPackage = JSON.parse(read("worker/package.json"));
+requireCheck(
+  typeof workerPackage.scripts?.deploy === "string"
+    && workerPackage.scripts.deploy.includes("--var GIT_COMMIT_SHA:")
+    && workerPackage.scripts.deploy.includes("--var WRANGLER_ENV:production"),
+  "worker npm deploy script must stamp GIT_COMMIT_SHA and WRANGLER_ENV",
+);
 requireCheck(!sharedBuild.includes("actions/jekyll-build-pages@"), "shared build must not depend on the Jekyll GitHub Action");
 requireCheck(sharedBuild.includes("build_cloudflare_pages.mjs"), "shared build must call the provider-neutral build script");
 deployOnMainPush(pagesWorkflow, "Cloudflare Pages workflow");
