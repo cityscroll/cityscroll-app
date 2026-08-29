@@ -19,7 +19,7 @@ const KEYWORD_INDEX = readKeywordSearchIndexFromShards(new URL(
   "../../worker/src/data/keyword_search_index_shards/manifest.json",
   import.meta.url,
 ));
-const OCP_LOOKUP = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
+const OCP_LOOKUP = JSON.parse(readFileSync(new URL("../../site/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 
 function installReadModels(sqlite) {
   sqlite.exec(READ_MODEL_SCHEMA);

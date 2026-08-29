@@ -89,15 +89,17 @@ describe("WH-03 pure OCP materialization index", () => {
 });
 
 describe("WH-03 committed materialization + speed receipt", () => {
-  it("ships twin lookup artifacts with product demos", () => {
+  it("ships one canonical lookup artifact with product demos", () => {
     assert.ok(existsSync(LOOKUP_SITE), "site/data lookup missing — run build script");
-    assert.ok(existsSync(LOOKUP_WORKER), "worker/src/data lookup missing");
     const site = JSON.parse(readFileSync(LOOKUP_SITE, "utf8"));
-    const worker = JSON.parse(readFileSync(LOOKUP_WORKER, "utf8"));
     assert.equal(site.schema_version, 1);
     assert.equal(site.phase, "WH-03");
     assert.ok(site.row_count >= 3);
-    assert.deepEqual(site.rows, worker.rows);
+    assert.equal(existsSync(LOOKUP_WORKER), false, "Worker OCP duplicate must not be committed");
+    const tracked = spawnSync("git", ["ls-files", "--", "site/data/ocp_awards_warehouse_lookup.json", "worker/src/data/ocp_awards_warehouse_lookup.json"], { encoding: "utf8" });
+    assert.equal(tracked.status, 0, tracked.stderr);
+    const presentTracked = tracked.stdout.trim().split(/\r?\n/).filter((file) => file && existsSync(join(ROOT, file)));
+    assert.deepEqual(presentTracked, ["site/data/ocp_awards_warehouse_lookup.json"]);
     const ids = new Set(site.rows.map((r) => r.request_id));
     assert.ok(ids.has("20260723031"), "catering field-case must be materializable");
   });

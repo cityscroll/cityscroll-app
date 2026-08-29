@@ -18,7 +18,7 @@ const keyword = readKeywordSearchIndexFromShards(new URL(
   "../../worker/src/data/keyword_search_index_shards/manifest.json",
   import.meta.url,
 ));
-const ocp = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
+const ocp = JSON.parse(readFileSync(new URL("../../site/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 
 function d1() {
   const sqlite = new DatabaseSync(":memory:");
