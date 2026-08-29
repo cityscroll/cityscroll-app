@@ -38,6 +38,49 @@ tasks/
 backlog/
 *.local.md
 
+# Non-product working material; keep operational records outside product sources.
+data/*-full-reconcile/
+data/flywheel-reeval-*/
+data/rum-observatory-handoff/
+data/incident-corpus*.json
+data/known-flake-signatures.v1.json
+docs/evidence/procurement-lifecycle-actions/
+docs/evidence/overnight-quality-sweep/*
+!docs/evidence/overnight-quality-sweep/BREAKFAST_LEDGER.md
+docs/evidence/digest-preview-ops-parity/
+docs/evidence/merge-queue-cap/ejection-report.json
+docs/evidence/person-ontology/
+docs/evidence/pin-family-verify/p7-verify-pin-family-mismatches.md
+docs/evidence/pin-family-verify/receipt.json
+docs/evidence/two-tier-precision-elimination-ledger.md
+docs/merge-jam-playbook.md
+docs/merge-throughput-gate-audit.md
+docs/merge-throughput-telemetry.md
+docs/merge-train-policy.md
+docs/multi-flywheel.md
+docs/performance-query-adapter.md
+docs/rum-observatory.md
+docs/rum-production-pilot.md
+ontology/queue/ledger/
+test/fixtures/merge-throughput/
+test/known_flake_rerun.test.mjs
+test/merge_gate_audit.test.mjs
+test/merge_jam_playbook.test.mjs
+test/merge_throughput_telemetry.test.mjs
+test/merge_train_policy.test.mjs
+test/merge_queue_ejection_report.test.mjs
+test/rum_observatory_handoff.test.mjs
+tests/test_*_card_fitness.py
+tools/known_flake_rerun.mjs
+tools/merge_gate_audit.mjs
+tools/merge_jam_playbook.mjs
+tools/merge_throughput_telemetry.mjs
+tools/merge_train_policy.mjs
+tools/render_preview_ops_parity_evidence.mjs
+tools/rum_observatory_handoff.mjs
+tools/validate_incident_corpus.py
+tools/report_merge_queue_ejections.mjs
+
 # Local editor / agent helper files
 # AGENTS.md is committed (standing project contracts for contributors).
 CLAUDE.md

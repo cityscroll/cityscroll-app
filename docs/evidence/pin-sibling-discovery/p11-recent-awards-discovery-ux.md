@@ -1,28 +1,3 @@
----
-card_standard: kraken-v1
-richness_profile: micro
-group: enforced
-needs_james: null
-id: cityscroll-procurement-observability/p11-recent-awards-discovery-ux
-title: "p11 · Discovery UX for Recent Awards as the small-purchase path plus PIN-sibling grouping"
-status: implemented
-wave: procurement-observability-w3
-spec: "waves.html#card-status-heading"
-small_card_reason: "This is a discovery and grouping slice that depends on p7 precision review and does not change ingest, digest compile, or the Checkbook publication cap."
-builds_on:
-  - cityscroll-procurement-observability/p6-restore-passport-public-fields
-  - cityscroll-procurement-observability/p7-verify-pin-family-mismatches
-related:
-  - cityscroll-procurement-observability/p4-search-browse-follow
-context:
-  - site/browse_view.mjs
-  - site/app/money-list.mjs
-  - site/pin_sibling_grouping.mjs
-  - test/procurement_browse_parity.test.mjs
-  - test/pin_sibling_grouping.test.mjs
-verify: "node --test test/pin_sibling_grouping.test.mjs test/procurement_browse_parity.test.mjs test/contracts_lens_organization.test.mjs; python3 test/standards/no_disclaimer_slop.py"
----
-
 ## Story
 
 Default Open RFPs hides registered PASSPort-only rows by design, so a resident looking for small purchases has to know to open Recent Awards, and the same vendor can appear as a City Record award beside a PASSPort-only registration with no related-instrument treatment.

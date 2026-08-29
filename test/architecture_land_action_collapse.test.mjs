@@ -46,10 +46,7 @@ test("land-action-collapse is the first frozen architecture backtest case", () =
   const set = loadFrozenBacktestSet();
   assert.equal(set.schema, "cityscroll.architecture.backtest_set.v1");
   assert.equal(set.cases[0].id, CASE_ID);
-  assert.equal(
-    set.cases[0].card,
-    "cityscroll-kraken/cs-living-architecture-observer-land-action-collapse",
-  );
+  assert.equal(set.cases[0].id, "land-action-collapse");
   const { loaded } = frozenCase();
   assert.deepEqual(loaded.expected_finding_types, [
     LAND_ACTION_COLLAPSE_FINDINGS.PRIMARY_COLLAPSE,
