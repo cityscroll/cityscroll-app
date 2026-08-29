@@ -816,7 +816,14 @@
   .contracts-analytics-concentration-contracts{color:var(--oxblood);font:700 12px/1.35 ui-sans-serif,system-ui,sans-serif;white-space:nowrap}
   .contracts-analytics-concentration-note{margin-top:11px;font-size:11.5px}
   @media(max-width:680px){.contracts-analytics-concentration-summaries{grid-template-columns:1fr}.contracts-analytics-concentration-vendor{grid-template-columns:minmax(0,1fr) auto}.contracts-analytics-concentration-vendor-meta{grid-column:1;text-align:start}.contracts-analytics-concentration-contracts{grid-column:2;grid-row:1 / span 2}}
-  .contracts-analytics-coverage{margin-top:22px;padding-top:17px;border-top:1px solid var(--rule)}
+  .contracts-analytics-coverage{margin-top:14px;padding-top:0;border-top:none}
+  .contracts-analytics-coverage[hidden]{display:none}
+  .contracts-analytics-coverage>summary{cursor:pointer;color:var(--ink-soft);font:650 13px/1.4 ui-sans-serif,system-ui,sans-serif;list-style:none}
+  .contracts-analytics-coverage>summary::-webkit-details-marker{display:none}
+  .contracts-analytics-coverage>summary::after{content:" ▾";font-size:11px}
+  .contracts-analytics-coverage[open]>summary::after{content:" ▴"}
+  .contracts-analytics-coverage[open]{margin-top:22px;padding-top:17px;border-top:1px solid var(--rule)}
+  .contracts-analytics-coverage-body{margin-top:12px}
   .contracts-analytics-coverage h3{margin:0 0 5px;font:700 1.15rem/1.2 var(--font-display);color:var(--ink)}
   .contracts-analytics-coverage-deck,.contracts-analytics-coverage-note{margin:0;color:var(--ink-soft);font:13px/1.45 ui-sans-serif,system-ui,sans-serif}
   .contracts-analytics-coverage-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:12px 0}
@@ -1958,18 +1965,21 @@
       <div class="contracts-analytics-timing" id="contracts-analytics-timing" hidden role="group" aria-labelledby="contracts-analytics-heading"></div>
       <ol class="contracts-analytics-groups" id="contracts-analytics-groups"></ol>
       <p class="contracts-analytics-note" id="contracts-analytics-note"></p>
-      <section class="contracts-analytics-coverage" id="contracts-analytics-coverage" aria-labelledby="contracts-analytics-coverage-heading">
-        <h3 id="contracts-analytics-coverage-heading" data-i18n="analytics_coverage_heading">City Record match coverage</h3>
-        <p class="contracts-analytics-coverage-deck" data-i18n="analytics_coverage_deck">This measures whether CityScroll found an exact matching City Record Recent Contract Award for a registered contract. It does not establish legal noncompliance.</p>
-        <div class="contracts-analytics-coverage-controls" role="group" aria-label="City Record coverage controls" data-i18n-aria="analytics_coverage_controls_aria">
-          <div class="field"><label for="analytics-coverage-threshold" data-i18n="analytics_coverage_threshold">Minimum registered value</label><select id="analytics-coverage-threshold"><option value="100000" selected data-i18n="analytics_coverage_over_100k">$100,000 and over</option><option value="0" data-i18n="analytics_coverage_all_values">All registered values</option></select></div>
-          <div class="field"><label for="analytics-coverage-band" data-i18n="analytics_coverage_amount_band">Amount band</label><select id="analytics-coverage-band"><option value="" data-i18n="analytics_all_amount_bands">All amount bands</option><option value="Under $100,000">Under $100,000</option><option value="$100,000–$999,999">$100,000–$999,999</option><option value="$1 million–$9.99 million">$1 million–$9.99 million</option><option value="$10 million or more">$10 million or more</option></select></div>
+      <details class="contracts-analytics-coverage" id="contracts-analytics-coverage">
+        <summary id="contracts-analytics-coverage-disclosure" data-i18n="analytics_coverage_disclosure">Data coverage/methodology</summary>
+        <div class="contracts-analytics-coverage-body">
+          <h3 id="contracts-analytics-coverage-heading" data-i18n="analytics_coverage_heading">City Record match coverage</h3>
+          <p class="contracts-analytics-coverage-deck" data-i18n="analytics_coverage_deck">CityScroll found or did not find an exact City Record award notice for each registered contract. Contracts without a PIN remain a separate missing-evaluation state.</p>
+          <div class="contracts-analytics-coverage-controls" role="group" aria-label="City Record coverage controls" data-i18n-aria="analytics_coverage_controls_aria">
+            <div class="field"><label for="analytics-coverage-threshold" data-i18n="analytics_coverage_threshold">Minimum registered value</label><select id="analytics-coverage-threshold"><option value="100000" selected data-i18n="analytics_coverage_over_100k">$100,000 and over</option><option value="0" data-i18n="analytics_coverage_all_values">All registered values</option></select></div>
+            <div class="field"><label for="analytics-coverage-band" data-i18n="analytics_coverage_amount_band">Amount band</label><select id="analytics-coverage-band"><option value="" data-i18n="analytics_all_amount_bands">All amount bands</option><option value="Under $100,000">Under $100,000</option><option value="$100,000–$999,999">$100,000–$999,999</option><option value="$1 million–$9.99 million">$1 million–$9.99 million</option><option value="$10 million or more">$10 million or more</option></select></div>
+          </div>
+          <dl class="contracts-analytics-coverage-summary" id="contracts-analytics-coverage-summary"></dl>
+          <p class="contracts-analytics-coverage-statement" id="contracts-analytics-coverage-statement" role="status"></p>
+          <div class="table-scroll"><table class="contracts-analytics-coverage-table"><caption class="sr-only" data-i18n="analytics_coverage_table_caption">Whether CityScroll found an exact City Record notice, by agency. Each cell shows contracts and registered value.</caption><thead><tr><th scope="col" data-i18n="analytics_group_agency">Agency</th><th scope="col" data-i18n="analytics_coverage_eligible">Eligible</th><th scope="col" data-i18n="analytics_coverage_exact">Exact notice found</th><th scope="col" data-i18n="analytics_coverage_none">No exact notice found</th><th scope="col" data-i18n="analytics_coverage_missing_pin">Missing PIN</th></tr></thead><tbody id="contracts-analytics-coverage-groups"></tbody></table></div>
+          <p class="contracts-analytics-coverage-note" id="contracts-analytics-coverage-note"></p>
         </div>
-        <dl class="contracts-analytics-coverage-summary" id="contracts-analytics-coverage-summary"></dl>
-        <p class="contracts-analytics-coverage-statement" id="contracts-analytics-coverage-statement" role="status"></p>
-        <div class="table-scroll"><table class="contracts-analytics-coverage-table"><caption class="sr-only" data-i18n="analytics_coverage_table_caption">City Record exact-PIN match coverage by agency. Each cell shows contracts and registered value.</caption><thead><tr><th scope="col" data-i18n="analytics_group_agency">Agency</th><th scope="col" data-i18n="analytics_coverage_eligible">Eligible</th><th scope="col" data-i18n="analytics_coverage_exact">Exact match</th><th scope="col" data-i18n="analytics_coverage_none">No exact match</th><th scope="col" data-i18n="analytics_coverage_missing_pin">Missing PIN</th></tr></thead><tbody id="contracts-analytics-coverage-groups"></tbody></table></div>
-        <p class="contracts-analytics-coverage-note" id="contracts-analytics-coverage-note"></p>
-      </section>
+      </details>
       <div class="contracts-analytics-performance-evidence" id="contracts-analytics-performance-evidence" hidden>
         <h3 id="contracts-analytics-performance-evidence-heading" data-i18n="analytics_evidence_heading">What public performance evidence is available?</h3>
         <p class="contracts-analytics-performance-evidence-deck" data-i18n="analytics_evidence_deck">Financial visibility and public performance evidence are separate. This view counts qualifying public terms and evaluation documents, and it does not assess outcomes.</p>

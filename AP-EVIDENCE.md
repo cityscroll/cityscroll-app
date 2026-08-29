@@ -17,12 +17,13 @@ The timing view defines `lag_days` as the published registration date minus the 
 
 The fixture proof covers before-start (−2 days), same-day (0), after-start (+11), and missing-start rows. Its independently computed SQL result matches the reader aggregation: 1 of 3 eligible contracts retroactive, with median lag 0 days, p75 11 days, and p90 11 days. Timing group links append `retroactive=true` to the ordinary Contracts route.
 
-## AP-06 — City Record publication coverage
+## AP-06 — City Record match coverage
 
-The coverage view uses the existing exact normalized Checkbook PIN ↔ City Record award-PIN join. It reports whether CityScroll found an exact matching award notice; it does not establish legal noncompliance. Contracts without a PIN remain a separately visible `cannot_evaluate_missing_pin` denominator failure.
+The coverage view uses the existing exact normalized Checkbook PIN ↔ City Record award-PIN join. It reports whether CityScroll found or did not find an exact award notice. Contracts without a PIN remain a separately visible `cannot_evaluate_missing_pin` denominator. Historical agency/vendor exploration leads the Recent Awards path; the matrix is reached through the Data coverage/methodology disclosure at `#contracts-analytics-coverage`.
 
-- Before: `artifacts/procurement-city-record-coverage/before-390.png` and `before-1440.png`.
-- After: `artifacts/procurement-city-record-coverage/after-390.png` and `after-1440.png`.
+- First paint (closed disclosure): `artifacts/procurement-city-record-coverage/after-390.png` and `after-1440.png`.
+- Opened coverage matrix: `artifacts/procurement-city-record-coverage/after-open-390.png` and `after-open-1440.png`.
+- Empty intersection (threshold $100,000 and over with amount band Under $100,000): `artifacts/procurement-city-record-coverage/after-empty-390.png` and `after-empty-1440.png`.
 - Default threshold: registered value of $100,000 and over; the view can switch to all registered values and filter by registration FY and amount band.
 - Coverage receipt: `artifacts/procurement-city-record-coverage/capture-receipt.json`.
 - The current materialized population contains 12,382 eligible contracts over $100,000: 3,413 exact matches, 1,724 with no exact match, and 7,245 missing PINs. These are registered values, not actual spending.

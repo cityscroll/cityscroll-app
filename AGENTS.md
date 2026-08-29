@@ -152,6 +152,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   Contracts Compare / Overview panel in `site/app/money-list.mjs` reads that precomputed artifact
   only in Recent Awards mode. Group links use `ap_agency` / `ap_vendor` plus optional FY and
   amount filters so the ordinary Contracts list can drill into the same population slice.
+  City Record exact/none/missing-PIN coverage is a closed Data coverage/methodology disclosure
+  at `#contracts-analytics-coverage`, not first-paint matrix chrome; copy reports whether
+  CityScroll found an exact notice.
 
 - **Actual-payments analytical fact (AP-09):** `site/analytical_payment_projection.mjs` and
   `site/data/analytics_payments.json` are the separate AP-08 payment fact. The Compare / Overview
