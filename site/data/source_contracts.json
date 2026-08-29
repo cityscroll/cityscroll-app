@@ -551,7 +551,7 @@
       "warehouse_snapshot": {
         "status": "materialized",
         "artifact": "site/data/ocp_awards_warehouse_lookup.json",
-        "materialized_at": "2026-08-05T10:40:50.286Z",
+        "materialized_at": "2026-08-29T11:43:49.474Z",
         "row_count": 53245
       },
       "freshness_contract": {

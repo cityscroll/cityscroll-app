@@ -123,7 +123,7 @@ test("newer-data projection is explicit and never mutates the frozen package", (
   const current = structuredClone(storySignals.signals[0]);
   current.signal_id = `${current.signal_id}:refresh-2`;
   current.fact_id = `${current.fact_id}:refresh-2`;
-  current.generated_at = "2026-08-20T12:00:00.000Z";
+  current.generated_at = "2026-08-30T12:00:00.000Z";
   current.comparison_receipt.receipt_id = current.fact_id;
   current.comparison_receipt.generated_at = current.generated_at;
   current.comparison_receipt.peer_basis.source_vintages[0].materialized_at = current.generated_at;
