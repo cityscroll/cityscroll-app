@@ -1,7 +1,7 @@
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -14,11 +14,16 @@ const { coarseLandFilter } = require("../site/location_awareness.js");
 const { buildSearchDeepLink, canonicalSearchURL } = require("../site/nl_deeplink.js");
 const indexSource = SITE_SOURCE;
 const qrSource = readFileSync(join(ROOT, "site", "qr_share.js"), "utf8");
-const browserHarnessAvailable = spawnSync(
-  "python3",
-  ["-c", "import playwright"],
-  { cwd: ROOT },
-).status === 0;
+// The functional capture-verify check needs a Pages-shaped built site (_site)
+// in place before it runs; the CI accessibility job (tools/run_a11y_ci_shard.sh)
+// builds that in an earlier job and only then invokes this check directly, so
+// it declares CI_A11Y_JOB=1 for itself. Gate on that explicit marker instead
+// of sniffing whether some system python3 happens to have Playwright
+// installed — that sniff false-positived on hosts with an unrelated global
+// Playwright install, running this check against an unprepared site tree.
+// Run it locally by building the site first (tools/prepare_functional_site.sh)
+// and then setting CI_A11Y_JOB=1 yourself.
+const inA11yJob = process.env.CI_A11Y_JOB === "1";
 const sandbox = {};
 vm.createContext(sandbox);
 vm.runInContext(qrSource, sandbox);
@@ -174,7 +179,7 @@ test("QR stays composed with Excel and print controls in notice action rows", ()
 
 test("headless interaction checks and committed 390/1440 captures pass", {
   timeout: 120_000,
-  skip: browserHarnessAvailable ? false : "Playwright runs in the accessibility job",
+  skip: inA11yJob ? false : "Playwright runs in the accessibility job (set CI_A11Y_JOB=1 to opt in locally)",
 }, () => {
   execFileSync("python3", ["test/functional/capture_qr_share.py", "--verify-only"], {
     cwd: ROOT,

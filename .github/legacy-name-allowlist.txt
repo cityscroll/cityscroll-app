@@ -1,6 +1,19 @@
 # Every entry is path + exact line number + base64 of the exact line + a reason comment.
 # The encoded line makes an allowed exception narrow: moving, changing, or adding a
 # matching line requires an explicit review and a new allowlist entry.
+#
+# Growth rule (tools/check_stale_repo_name.mjs): a new entry is only valid for
+# content that already exists at the merge-base of main. A change cannot add a
+# banned line and the entry that covers it in the same PR. The `future:` prefix
+# no longer exempts an entry from that rule: it used to let an entry pre-allow
+# content that did not exist anywhere yet, which is exactly the self-certifying
+# gap PR 1417 exploited (new files, new lines, and matching allowlist entries
+# added together). `future:` now only means "this line is not in my current
+# tree" for stale-entry bookkeeping; the line must still already be present on
+# main's merge-base or the entry is rejected. A wildcard entry (line number `*`,
+# digest `*`) exempts a whole file, so a new one is only valid when the change
+# leaves that file completely untouched: its content at the merge-base must be
+# byte-identical to its current content.
 future:docs/evidence/procurement-lifecycle-actions/README.md	4	KipDYXJkIHN0YW5kYXJkOioqIGByZWxlYXNlLWNvbnRyb2wtdjFg	# [K] Banned vocabulary already present in a newer default-branch card index; preserve this exact line until that index is synchronized.
 future:docs/evidence/procurement-lifecycle-actions/README.md	325	OS4gKipVc2UgdGhlIGFwcC1uYXRpdmUgZXZpZGVuY2UgaG9tZS4qKiBUaGlzIHJlcG9zaXRvcnkgaGFzIG5vIHRvcC1sZXZlbCBSZWxlYXNlLWNvbnRyb2wgd29ya3N0cmVhbQ==	# [K] Banned vocabulary already present in a newer default-branch card index; preserve this exact line until that index is synchronized.
 future:docs/evidence/procurement-lifecycle-actions/README.md	326	ICAgcmVnaXN0cnksIGBzZXJ2aWNlLmpzb25gLCBgd2F2ZXMuaHRtbGAsIG9yIGNhcmQgaW5kZXguIEV4aXN0aW5nIGByZWxlYXNlLWNvbnRyb2wtdjFgIGNhcmRzIGxpdmUgdW5kZXI=	# [K] Banned vocabulary already present in a newer default-branch card index; preserve this exact line until that index is synchronized.

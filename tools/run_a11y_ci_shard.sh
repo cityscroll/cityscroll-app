@@ -83,6 +83,10 @@ echo "local site ready at $CROL_BASE"
 
 case "$shard" in
   browser-a11y)
+    # Declares "this is the accessibility job" for gates (e.g.
+    # test/qr_share.test.mjs) that key their own optional local Playwright
+    # coverage off this marker instead of sniffing system python3.
+    export CI_A11Y_JOB=1
     # QR dialog/capture coverage is useful diagnostic evidence but is not a
     # merge requirement; the land render canary is required in preflight.
     if ! tools/run_a11y_functional_check.sh qr-share python3 test/functional/capture_qr_share.py --verify-only; then
