@@ -9,7 +9,16 @@ import {
 } from "./lib/public_payload_integrity.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const payloadRoots = [path.join(ROOT, "site/data"), path.join(ROOT, "worker/src/data")];
+
+function argumentValue(name) {
+  const index = process.argv.indexOf(name);
+  return index >= 0 ? process.argv[index + 1] || null : null;
+}
+
+const siteDir = argumentValue("--site-dir");
+const payloadRoots = siteDir
+  ? [path.resolve(siteDir, "data")]
+  : [path.join(ROOT, "site/data"), path.join(ROOT, "worker/src/data")];
 
 function readerSurfaceFiles(root) {
   const files = [];
@@ -22,7 +31,7 @@ function readerSurfaceFiles(root) {
   return files;
 }
 
-const surfaceFiles = readerSurfaceFiles(path.join(ROOT, "site"));
+const surfaceFiles = readerSurfaceFiles(siteDir ? path.resolve(siteDir) : path.join(ROOT, "site"));
 
 const findings = publicPayloadTreeFindings(payloadRoots, { repoRoot: ROOT });
 for (const file of surfaceFiles) {
