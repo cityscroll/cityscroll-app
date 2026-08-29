@@ -20,7 +20,9 @@ import {
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = resolve(ROOT, "worker", ".d1-read-models");
 const SEARCH_SHARD_DIR = resolve(ROOT, "worker", "src", "data", "keyword_search_index_shards");
-const OCP_INPUT = resolve(ROOT, "worker", "src", "data", "ocp_awards_warehouse_lookup.json");
+// OCP has one committed public read model. The Worker deployment SQL consumes
+// it directly instead of maintaining a second 18.5 MB bundle input.
+const OCP_INPUT = resolve(ROOT, "site", "data", "ocp_awards_warehouse_lookup.json");
 const ENTITY_INPUT = resolve(ROOT, "worker", "src", "data", "entity_intelligence_lookup.json");
 
 function sqlString(value) {

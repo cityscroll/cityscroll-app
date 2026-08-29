@@ -13,12 +13,14 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const COMMITTED_SERVES = Object.freeze({
-  ocp_awards: "ocp_awards_warehouse_lookup.json",
   zap_projects: "zap_projects_warehouse_lookup.json",
   zap_bbl: "zap_bbl_warehouse_lookup.json",
   doing_business: "doing_business_warehouse_lookup.json",
   city_record_pin_chain: "city_record_pin_chain_warehouse_lookup.json",
   payroll_title: "payroll_title_warehouse_lookup.json",
+});
+const COMMITTED_CANONICAL_SERVES = Object.freeze({
+  ocp_awards: "ocp_awards_warehouse_lookup.json",
 });
 
 function canaryDoc(contract, stamped = "2026-08-18T00:00:00.000Z") {
@@ -51,7 +53,7 @@ describe("warehouse serve publish contract", () => {
   it("declares an age window and named canaries for every committed serve", () => {
     assert.deepEqual(
       Object.keys(SERVE_LOOKUP_CONTRACTS).sort(),
-      Object.keys(COMMITTED_SERVES).sort(),
+      [...Object.keys(COMMITTED_SERVES), ...Object.keys(COMMITTED_CANONICAL_SERVES)].sort(),
     );
     for (const contract of Object.values(SERVE_LOOKUP_CONTRACTS)) {
       assert.ok(Number.isFinite(contract.max_age_days));
@@ -100,6 +102,15 @@ describe("warehouse serve publish contract", () => {
       const now = referenceNowFromTwins(site, worker, contract.timestamp_field);
       assertServePublishTwins(site, worker, contract, { now });
     }
+  });
+
+  it("accepts the canonical OCP output without a committed Worker duplicate", () => {
+    const site = JSON.parse(
+      readFileSync(join(ROOT, "site/data", COMMITTED_CANONICAL_SERVES.ocp_awards), "utf8"),
+    );
+    assertServePublishLookup(site, SERVE_LOOKUP_CONTRACTS.ocp_awards, {
+      now: site.materialized_at,
+    });
   });
 
   it("fails a twin stamped truly in the future or older than max_age_days relative to derived now", () => {
