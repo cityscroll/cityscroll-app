@@ -1,0 +1,101 @@
+# cityscroll-worker — the renamed clone of crol-worker (naming-migration stage W1).
+#
+# Deployed with `npx wrangler deploy -c wrangler.cityscroll.toml`. This is a separate
+# config file, not a wrangler environment, so nothing can be inherited from
+# wrangler.toml by accident: at this stage the clone must be UNROUTED, CONSUMERLESS,
+# and CRONLESS — it exists to prove the deploy path and binding parity while serving
+# zero traffic and consuming zero queue messages.
+#
+#   - NO routes / custom domains (workers.dev only)
+#   - NO [triggers] crons — no scheduled work, so no digest sends, no double-execution
+#   - NO [[queues.consumers]] — crol-worker remains the only consumer of crol-digests;
+#     this config binds the producer side only (an unused producer binding is inert)
+#   - Secrets are NOT installed here; secret-gated endpoints fail closed by design
+#
+# The resource bindings below are IDENTICAL to wrangler.toml — same D1 database id,
+# same KV namespace ids, same Analytics Engine datasets, same queue name. Parity is
+# proven by binding the same resources, never by renaming or duplicating them.
+# Later migration stages attach domains and move traffic; do not add routes, crons,
+# or consumers to this file before those stages authorize it.
+
+name = "cityscroll-worker"
+main = "src/worker.mjs"
+compatibility_date = "2026-07-27"
+
+workers_dev = true
+
+# Same non-secret vars as wrangler.toml [vars] — binding parity includes config parity.
+# QUEUE_DIGESTS remains "true": it only changes behavior inside the cron path, which
+# never runs here (no triggers).
+[vars]
+ALERTS_LIVE = "true"
+ANALYTICS_ENVIRONMENT = "production"
+RUM_INGEST_ENABLED = "true"
+CITY_RECORD_SOURCE_RECORD_DUAL_WRITE = "true"
+PASSPORT_SOURCE_RECORD_DUAL_WRITE = "true"
+CHECKBOOK_SOURCE_RECORD_DUAL_WRITE = "true"
+LEGISTAR_SOURCE_RECORD_DUAL_WRITE = "true"
+PERSON_HUB_SOURCE_RECORD_DUAL_WRITE = "true"
+ULURP_RECOMMENDATION_PDF_SOURCE_RECORD_DUAL_WRITE = "true"
+ULURP_RECOMMENDATION_SOURCE_RECORD_DUAL_WRITE = "true"
+ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE = "true"
+ENTITY_LINK_DUAL_WRITE = "true"
+CIVIC_TIME_EVENT_WRITE = "false"
+CONFIRM_BASE = "https://api.cityscroll.org"
+ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"
+ALERTS_REPLY_TO = "alerts@crol-list.org"
+MAX_PER_RUN = "25"
+MAX_SENDS_PER_DAY = "50"
+HEARTBEAT_DAYS = "14"
+DIGEST_SHADOW_DARK_DAYS = "3"
+DIGEST_SHADOW_ALERTS = "true"
+FEEDBACK_TO = "feedback@cityscroll.org"
+SUBSCRIBE_ADDRESS = "subscribe@crol-list.org"
+INBOUND_MAX_PER_DAY = "100"
+MCP_MAX_CALLS_PER_DAY = "200"
+MCP_MAX_PER_IP_DAY = "300"
+TRANSLATE_MAX_CALLS_PER_DAY = "150"
+QUEUE_DIGESTS = "true"
+ANALYTICS_ACCOUNT_ID = "8162581cb1d97e20a172031adb8a13af"
+ANALYTICS_DATASET = "crol_usage_events_v1"
+ANALYTICS_MEASURED_SINCE = "2026-07-27"
+RUM_ANALYTICS_DATASET = "crol_rum_observations_v1"
+RUM_MEASURED_SINCE = "2026-08-19"
+RUM_MIN_SAMPLED_ROWS = "30"
+SOURCE_VAULT_ENABLED = "false"
+SEMANTIC_CANDIDATES_ENABLED = "true"
+
+[[analytics_engine_datasets]]
+binding = "USAGE_ANALYTICS"
+dataset = "crol_usage_events_v1"
+
+[[analytics_engine_datasets]]
+binding = "RUM_ANALYTICS"
+dataset = "crol_rum_observations_v1"
+
+# Producer binding only — see the header note; the consumer stays on crol-worker.
+[[queues.producers]]
+binding = "DIGEST_QUEUE"
+queue = "crol-digests"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "crol-notices"
+database_id = "df70a39c-6465-4b4a-b108-a792c79e74e8"
+migrations_dir = "migrations"
+
+[[kv_namespaces]]
+binding = "NL_METER"
+id = "f410ee870b954e2980ee646312704014"
+
+[[kv_namespaces]]
+binding = "ALERT_STATE"
+id = "451ce64e616b49b6837682e75cb07756"
+
+[[kv_namespaces]]
+binding = "SUBS"
+id = "a7addee904774e7c90f9be447f927b20"
+
+[[kv_namespaces]]
+binding = "FEEDBACK"
+id = "75d85d23ec914d8ea44bc3e9bb540afd"
