@@ -10,7 +10,7 @@ test("beta deploy targets a distinct Worker and custom domain", () => {
 
   assert.match(beta, /^\[env\.beta\]$/m);
   assert.match(beta, /api-beta\.cityscroll\.org/);
-  assert.match(beta, /api-beta\.crol-list\.org/);
+  assert.doesNotMatch(beta, /api-beta\.crol-list\.org/);
   assert.match(beta, /custom_domain = true/);
   assert.match(beta, /workers_dev = true/);
   assert.match(beta, /^\[env\.beta\.vars\]$/m);

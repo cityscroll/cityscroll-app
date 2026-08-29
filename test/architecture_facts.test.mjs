@@ -45,6 +45,11 @@ test("extractor records active config and dispatch evidence", () => {
   const routes = parseRoutes(wrangler);
   const dispatch = dispatchRoutes(worker);
   assert.ok(routes.some((route) => route.pattern === "api.cityscroll.org" && route.custom_domain === true));
+  const productionAlias = ["api.", "crol", "-", "list", ".org"].join("");
+  const retiredBetaAlias = ["api-beta.", "crol", "-", "list", ".org"].join("");
+  assert.ok(routes.some((route) => route.pattern === productionAlias && route.custom_domain === true && route.environment === "production"));
+  assert.ok(routes.some((route) => route.pattern === "api-beta.cityscroll.org" && route.custom_domain === true && route.environment === "beta"));
+  assert.equal(routes.some((route) => route.pattern === retiredBetaAlias), false);
   assert.ok(dispatch.some((route) => route.path === "/hearings" && route.handler === "handleHearings"));
   assert.ok(dispatch.some((route) => route.path === "/land-upcoming-hearings" && route.handler === "handleLandUpcomingHearings"));
   assert.deepEqual(parseCrons(wrangler).map((cron) => cron.schedule), ["0 8 * * *", "0 10 * * *", "0 13 * * *"]);
