@@ -9,6 +9,7 @@ import io
 import json
 from pathlib import Path
 import subprocess
+import shutil
 import tarfile
 import tempfile
 import threading
@@ -38,6 +39,12 @@ LAND_NOTICE = {
     "current_milestone_date": "2026-08-12T00:00:00.000",
     "ulurp_numbers": "260012ZMQ",
 }
+LAND_CANARY_COPY = (
+    "2-28 Beach 87th Street Rezoning",
+    "Noticed",
+    "Queens",
+    "Rezonificación",
+)
 VENDOR_PROFILE = {
     "ok": True,
     "generated": "2026-07-27T20:00:00Z",
@@ -266,6 +273,35 @@ def open_landing_actions(page: Page):
     return actions
 
 
+def assert_land_page_rendered(page: Page) -> None:
+    """The required canary: the Queens land page renders its fixture-backed content."""
+    page.locator("#searchactions-land [data-search-copy]").wait_for(state="visible")
+    text = page.locator("body").inner_text()
+    for expected in LAND_CANARY_COPY:
+        assert expected in text, f"land page is missing fixture copy: {expected}"
+
+
+def verify_land_canary(browser: Browser) -> None:
+    """Run only the cheap, source-tree land render check used by required preflight."""
+    # The source tree intentionally keeps client capability modules beside site/;
+    # make the tiny Pages-shaped tree needed by this canary in a fresh temp dir.
+    # This avoids consuming any stale or previously prepared checkout artifact.
+    with tempfile.TemporaryDirectory(prefix="crol-land-canary-") as temp:
+        canary_tree = Path(temp)
+        shutil.copytree(ROOT / "site", canary_tree / "site")
+        shutil.copytree(ROOT / "capabilities", canary_tree / "site" / "capabilities")
+        with StaticServer(canary_tree) as base_url:
+            page = browser.new_page(viewport={"width": 390, "height": 844})
+            errors: list[str] = []
+            page.on("pageerror", lambda error: errors.append(str(error)))
+            install_routes(page)
+            seed_presets(page)
+            page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
+            assert_land_page_rendered(page)
+            assert not errors, errors
+            page.close()
+
+
 def verify_interactions(browser: Browser) -> None:
     # Browser checks must use the Pages-shaped artifact because the homepage
     # imports shared capability modules that are published beside site assets.
@@ -332,7 +368,7 @@ def verify_interactions(browser: Browser) -> None:
         assert "Código QR" in (page.locator("#landing-share-actions").text_content() or "")
 
         page.goto(base_url + "?lang=es" + LAND_HASH, wait_until="domcontentloaded")
-        page.locator("#searchactions-land [data-search-copy]").wait_for(state="visible")
+        assert_land_page_rendered(page)
         land_url = assert_copy_matches_qr(
             page,
             "#searchactions-land [data-search-copy]",
@@ -368,11 +404,23 @@ def main() -> None:
         action="store_true",
         help="Run browser behavior checks without regenerating committed review captures.",
     )
+    parser.add_argument(
+        "--land-canary",
+        action="store_true",
+        help="Run only the cheap Queens land-page render canary against site/.",
+    )
     args = parser.parse_args()
-    OUTPUT.mkdir(parents=True, exist_ok=True)
+    if args.land_canary and args.verify_only:
+        parser.error("--land-canary cannot be combined with --verify-only")
+    if not args.land_canary:
+        OUTPUT.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         try:
+            if args.land_canary:
+                verify_land_canary(browser)
+                print("Queens land-page render canary passed.")
+                return
             if args.verify_only:
                 expected = [  # source: VIEWPORTS and the before/after capture matrix above
                     OUTPUT / f"{state}-{width}{suffix}.png"
@@ -382,6 +430,9 @@ def main() -> None:
                 ]
                 assert all(path.exists() and path.stat().st_size > 10_000 for path in expected)
             else:
+                # Full captures are self-preparing so generated Pages-shaped artifacts
+                # cannot come from a stale prior run.
+                subprocess.run(["tools/prepare_functional_site.sh"], cwd=ROOT, check=True)
                 with tempfile.TemporaryDirectory(prefix="crol-qr-share-") as temp:
                     before_tree = Path(temp) / "before"
                     before_tree.mkdir()
