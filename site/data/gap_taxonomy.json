@@ -850,6 +850,26 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "mta-bid-results",
+      "name": "MTA Construction & Development bid results",
+      "source_contract_id": "mta-bid-results",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "mta-current-opportunities",
+      "name": "MTA Construction & Development current opportunities",
+      "source_contract_id": "mta-current-opportunities",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "non-council-board-minutes",
       "name": "Community board and borough president minutes",
       "source_contract_id": "non-council-board-minutes",
@@ -1020,6 +1040,16 @@
       "join_coverage": {},
       "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
       "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "nys-contract-reporter",
+      "name": "New York State Contract Reporter",
+      "source_contract_id": "nys-contract-reporter",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyscr.ny.gov/Ads/Search",
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "ocp-current-solicitations",
@@ -3735,8 +3765,8 @@
     "August 5 reconciliation: landed collectors remain as closure-receipted inventory history and are excluded from the forward-ranked ingest list; census residuals are 212/340 Money, 9/119 Meetings after the bounded source review, and 1/139 Property parcel keys."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-28",
-    "source_contracts_fingerprint": "dca90c29f08f73b727ecc9abd6edf2094006198bd980a36853affe10ad2e3f41",
+    "observed_on": "2026-08-29",
+    "source_contracts_fingerprint": "c2ae7ba852485dcac98b229a565c70437dc709f0573f07c7a8c524c0ea9ff87a",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 91,
     "class_changes": 0,
