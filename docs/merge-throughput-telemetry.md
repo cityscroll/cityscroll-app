@@ -49,3 +49,22 @@ The output directory contains `per-pr-receipts.json`,
 `per-attempt-receipts.json`, `per-required-check-receipts.json`,
 `required-check-gauges.json`, `daily-gauges.json`, `receipt.json`, and
 `dashboard.html`.
+
+## Known flaky-shard reruns
+
+`tools/known_flake_rerun.mjs` is the bounded policy projection for the existing
+routes-focus fresh-runner retry job. It reads the corpus-derived registry in
+`data/known-flake-signatures.v1.json`, joins each observation to MT-1's
+per-attempt and required-check receipts, and emits an auditable original/retry
+receipt. Matching is exact on the typed signature, check, source identity, and
+browser-artifact identity. Unknown signatures and changed or missing identities
+stay visible without an automatic rerun. A third consistent failure escalates
+as a real failure; it does not receive another automatic retry.
+
+Replay the committed policy fixture with:
+
+```sh
+node tools/known_flake_rerun.mjs \
+  --fixture test/fixtures/merge-throughput --check
+node --test test/known_flake_rerun.test.mjs
+```

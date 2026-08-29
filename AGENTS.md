@@ -608,6 +608,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   required-check receipts plus same-window Little's Law daily gauges. The committed fixture and
   dashboard are under `test/fixtures/merge-throughput/`; verify with
   `node tools/merge_throughput_telemetry.mjs --fixture test/fixtures/merge-throughput --check`.
+- Known flaky-shard reruns are projected by `tools/known_flake_rerun.mjs`; its registry is
+  source-linked to the incident corpus, joins MT-1 receipts, permits one existing fresh-runner
+  retry only for exact signatures and unchanged identities, and escalates three consistent
+  failures. Verify with `node tools/known_flake_rerun.mjs --fixture test/fixtures/merge-throughput --check`.
 
 ## Shared node-page layout (static documents)
 
