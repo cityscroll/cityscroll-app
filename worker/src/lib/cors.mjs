@@ -10,7 +10,7 @@ const STABLE_ORIGINS = new Set([
   "https://www.crol-list.org",
   // Parallel Cloudflare Pages host (Phase 1); API calls from pages.dev during soak.
   "https://cityscroll.pages.dev",
-  "https://crol-list.jimdc.com",
+  "https://crol-list.jimdc.com", // GitHub Pages CNAME, not a Worker route
   "https://jimdc.github.io",
 ]);
 const LOCAL_DEVELOPMENT_PORTS = new Set(["8000", "8787", "8888"]);

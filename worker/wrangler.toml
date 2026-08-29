@@ -175,7 +175,6 @@ id = "75d85d23ec914d8ea44bc3e9bb540afd"
 [env.beta]
 routes = [
   { pattern = "api-beta.cityscroll.org", custom_domain = true },
-  { pattern = "api-beta.crol-list.org", custom_domain = true },
 ]
 workers_dev = true
 

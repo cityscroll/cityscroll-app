@@ -44,3 +44,15 @@ test("the reserved content marker always fails the guard", () => {
     if (existsSync(PROBE)) unlinkSync(PROBE);
   }
 });
+
+test("allowlist rewrite refuses a novel occurrence", () => {
+  writeFileSync(PROBE, `new ${legacyName} reference\n`);
+  try {
+    assert.throws(
+      () => execFileSync(process.execPath, [GUARD.pathname, "--write"], { cwd: ROOT, encoding: "utf8", stdio: "pipe" }),
+      new RegExp(`legacy-name-guard-probe.*${legacyName}`),
+    );
+  } finally {
+    if (existsSync(PROBE)) unlinkSync(PROBE);
+  }
+});
