@@ -16,7 +16,7 @@ import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs
 export const PROCUREMENT_SEARCH_PRODUCER_SCHEMA = "cityscroll.procurement_search_producer.v1";
 
 const ROLE_ORDER = Object.freeze([
-  "solicitation", "intent_to_negotiate", "vendor_list", "intent_to_award",
+  "solicitation", "bid_opening_result", "intent_to_negotiate", "vendor_list", "intent_to_award",
   "award", "pending", "registered", "payment", "contract", "unknown",
 ]);
 
@@ -58,6 +58,7 @@ function orderedObservations(object, index) {
   const priority = new Map([
     ["city_record", 0], ["passport_public_contracts", 1], ["passport_public_rfx", 2],
     ["checkbook_nycha_contracts", 3], ["checkbook_contracts", 4], ["checkbook_spending", 5],
+    ["nys_contract_reporter", 6], ["mta_current_opportunities", 7], ["mta_bid_results", 8],
   ]);
   return observations.sort((left, right) => (
     (priority.get(left.source_system) ?? 9) - (priority.get(right.source_system) ?? 9)
@@ -120,6 +121,12 @@ function browseRecord(object, observations, stages, evidence, facts) {
     short_title: facts.title,
     pin: object.identity_keys?.epins?.[0] || null,
     contract_id: object.identity_keys?.contract_ids?.[0] || null,
+    ...(object.identity_keys?.contract_reporter_numbers?.[0]
+      ? { contract_reporter_number: object.identity_keys.contract_reporter_numbers[0] } : {}),
+    ...(object.identity_keys?.solicitation_ids?.[0]
+      ? { solicitation_id: object.identity_keys.solicitation_ids[0] } : {}),
+    ...(object.identity_keys?.event_ids?.[0]
+      ? { event_id: object.identity_keys.event_ids[0] } : {}),
     contract_amount: facts.amount,
     vendor_name: facts.vendor,
     official_url: first(observations.map((entry) => entry.snapshot || {}), ["official_url", "source_url"], 600),
@@ -150,7 +157,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
       ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"],
     ),
     startDate: first(rows, ["start_date", "start", "registered", "registration_date", "issue_date", "date"], 40),
-    endDate: first(rows, ["end_date", "end", "contract_end_date"], 40),
+    endDate: first(rows, ["end_date", "end", "contract_end_date", "due_date", "closing_date", "opening_date"], 40),
     method: first(rows, ["selection_method_description", "procurement_method"], 240),
     program: first(rows, ["program"], 240),
     industry: first(rows, ["industry"], 120),
@@ -158,7 +165,10 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   const summary = [facts.agency, facts.vendor, facts.amount == null ? null : `$${facts.amount.toLocaleString("en-US")}`]
     .filter(Boolean).join(" · ") || null;
   const searchText = clean([
-    facts.title, summary, contractId, epin, facts.method, facts.program, facts.industry, ...stages,
+    facts.title, summary, contractId, epin,
+    object.identity_keys?.contract_reporter_numbers?.[0],
+    object.identity_keys?.solicitation_ids?.[0], object.identity_keys?.event_ids?.[0],
+    facts.method, facts.program, facts.industry, ...stages,
     ...evidence.map((entry) => entry.additional_description_1),
   ].filter(Boolean).join(" "), SEARCH_TEXT_MAX_LENGTH);
   const admitted = admitSearchDocument({

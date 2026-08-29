@@ -11,6 +11,9 @@
       "checkbook_contracts": "available",
       "checkbook_nycha_contracts": "available",
       "checkbook_spending": "available",
+      "nys_contract_reporter": "available",
+      "mta_current_opportunities": "available",
+      "mta_bid_results": "available",
       "city_record": "available"
     }
   },
@@ -55,6 +58,30 @@
       "row_count": 0,
       "reason": null
     },
+    "nys_contract_reporter": {
+      "source_system": "nys_contract_reporter",
+      "status": "available",
+      "available": true,
+      "generated_at": "2026-08-18T04:05:51.552Z",
+      "row_count": 1,
+      "reason": null
+    },
+    "mta_current_opportunities": {
+      "source_system": "mta_current_opportunities",
+      "status": "available",
+      "available": true,
+      "generated_at": "2026-08-18T04:05:51.552Z",
+      "row_count": 1,
+      "reason": null
+    },
+    "mta_bid_results": {
+      "source_system": "mta_bid_results",
+      "status": "available",
+      "available": true,
+      "generated_at": "2026-08-18T04:05:51.552Z",
+      "row_count": 1,
+      "reason": null
+    },
     "city_record": {
       "source_system": "city_record",
       "status": "available",
@@ -66,8 +93,8 @@
   },
   "identity_gate": {
     "schema": "cityscroll.procurement_identity_audit.v1",
-    "selected_source_rows": 14487,
-    "stable_source_id_rows": 14487,
+    "selected_source_rows": 14490,
+    "stable_source_id_rows": 14490,
     "stable_source_id_rate": 1,
     "minimum_stable_source_id_rate": 0.95,
     "accepted_exact_joins": 689,
@@ -13716,6 +13743,30 @@
       "procurement_id": "procurement:contract:BA2335819",
       "basis": "exact_contract_id",
       "matched_value": "BA2335819"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
+      "source_observation_ref": "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+      "procurement_id": "procurement:solicitation:AW9Y",
+      "basis": "exact_solicitation_id",
+      "matched_value": "AW9Y"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
+      "source_observation_ref": "mta_current_opportunities:mta-current:S48020:0000541781",
+      "procurement_id": "procurement:solicitation:S48020",
+      "basis": "exact_solicitation_id",
+      "matched_value": "S48020"
+    },
+    {
+      "schema": "cityscroll.procurement_identity_edge.v1",
+      "status": "accepted",
+      "source_observation_ref": "nys_contract_reporter:contract-reporter:2138505",
+      "procurement_id": "procurement:contract_reporter_number:2138505",
+      "basis": "exact_contract_reporter_number",
+      "matched_value": "2138505"
     },
     {
       "schema": "cityscroll.procurement_identity_edge.v1",
@@ -122178,9 +122229,9 @@
     }
   ],
   "counts": {
-    "total": 13786,
-    "source_observations": 27470,
-    "identity_edges": 14487,
+    "total": 13789,
+    "source_observations": 27473,
+    "identity_edges": 14490,
     "cross_source_identity_joins": 689,
     "lifecycle_rows": 0
   },
@@ -122193,7 +122244,7 @@
     "floor": "2025-08-18",
     "row_cap": null,
     "coverage": "City Record Award window (valid amount, last 365 days); not a citywide inventory",
-    "selected_rows": 27470,
+    "selected_rows": 27473,
     "census_rows": {
       "passport_contracts": 12782,
       "checkbook_contracts": 2000,
@@ -122204,10 +122255,10 @@
     "schema": "cityscroll.procurement_index_coherence.v1",
     "source_model_fingerprint": "32ca31ceb8899af45aec458780ce7c3f6993e74f15501d9216e5175ae592342d",
     "generated_at": "2026-08-18T04:05:51.552Z",
-    "selected_row_count": 27470,
+    "selected_row_count": 27473,
     "artifact_hashes": {
-      "shared_procurement_read_model": "1ab3b1cc7a5c952f2a5b91908eef1797e0a7fbb4253955c724d1667f0f31218a",
-      "keyword_search_procurements": "4aa32d9ea4a59fce42d18be4a5cd81b705b3a44323992025efba1a38370fadfa"
+      "shared_procurement_read_model": "c81cd206ae223aa04dc09fd3855d77eaec082aa676f8c3b3023489e6b12938c5",
+      "keyword_search_procurements": "d7233f1d1294c82a9ee5f92faf16e1c0cbc1582295d72b64664715876275522a"
     }
   },
   "representation": "sharded",
@@ -122227,9 +122278,9 @@
     },
     {
       "path": "shared_procurement_read_model/shard-002.json",
-      "bytes": 17095943,
-      "row_count": 4744,
-      "observation_count": 9301
+      "bytes": 17106397,
+      "row_count": 4747,
+      "observation_count": 9304
     }
   ],
   "procurement_shard_by_id": {
@@ -136018,7 +136069,10 @@
     "procurement:epin:82724P0001016": "shared_procurement_read_model/shard-002.json",
     "procurement:epin:82724P0001018": "shared_procurement_read_model/shard-002.json",
     "procurement:epin:85723N0006001": "shared_procurement_read_model/shard-002.json",
-    "procurement:epin:85723X8348001": "shared_procurement_read_model/shard-002.json"
+    "procurement:epin:85723X8348001": "shared_procurement_read_model/shard-002.json",
+    "procurement:contract_reporter_number:2138505": "shared_procurement_read_model/shard-002.json",
+    "procurement:solicitation:AW9Y": "shared_procurement_read_model/shard-002.json",
+    "procurement:solicitation:S48020": "shared_procurement_read_model/shard-002.json"
   },
   "observation_order": [
     "checkbook_contracts:contract:registered:CT100220268808241:EMPIRE ELECTRONICS INC:prime-vendor:2026-06-04",
@@ -163490,6 +163544,9 @@
     "passport_public_contracts:contract:86626W0004001:5533595",
     "passport_public_contracts:contract:86626W0006001:5535033",
     "passport_public_contracts:contract:86626W0008001:5610659",
-    "passport_public_contracts:contract:86626W0010001:5745979"
+    "passport_public_contracts:contract:86626W0010001:5745979",
+    "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+    "mta_current_opportunities:mta-current:S48020:0000541781",
+    "nys_contract_reporter:contract-reporter:2138505"
   ]
 }

@@ -4047,6 +4047,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   are monitor roots; line-local waivers require a reasoned `determinism-lint: allow|inject` note.
   Focused proof is `test/determinism_lint.test.mjs`.
 
+- **Authority-native procurement admission (ANP-03):** `warehouse/lib/mta_opportunities.mjs` and
+  `warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json` preserve the
+  Contract Reporter/MTA source rows and receipts. `node tools/build_shared_procurement_read_model.mjs`
+  materializes them; exact solicitation/event/CR identifiers are the only native joins, and bid
+  results remain the `bid_opening_result` stage. Focused proof is `test/mta_opportunities.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

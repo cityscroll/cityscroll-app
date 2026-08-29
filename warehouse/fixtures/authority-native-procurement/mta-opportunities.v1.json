@@ -1,0 +1,84 @@
+{
+  "schema": "cityscroll.authority_native_procurement_fixtures.v1",
+  "retrieved_at": "2026-08-28T14:00:00.000Z",
+  "fixtures": [
+    {
+      "id": "contract-reporter-2138505",
+      "source_system": "nys_contract_reporter",
+      "source_dataset": "nys-contract-reporter",
+      "source_record_id": "contract-reporter:2138505",
+      "observation_type": "opportunity",
+      "publisher_institution_id": "nys-contract-reporter",
+      "procuring_institution_id": "mta-nyct",
+      "retrieved_at": "2026-08-28T14:00:00.000Z",
+      "source_row": {
+        "cr_number": "2138505",
+        "agency": "MTA - NYC Transit (NYCT)",
+        "title": "MPM-360: Bridge Preservation at the Marine Parkway-Gil Hodges Memorial Bridge and the Cross Bay-Veterans Memorial Bridge.",
+        "issue_date": "8/27/2026",
+        "due_date": "10/2/2026",
+        "category": "Construction Horizontal: Highways & Roadways; Maintenance, Repair & New Construction",
+        "ad_type": "General",
+        "location": "New York",
+        "status": "Open"
+      },
+      "receipt": {
+        "url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open",
+        "retrieved_at": "2026-08-28T14:00:00.000Z",
+        "raw_response_sha256": "87240ea3e576a35f781140e37a0fe22b830cc032b23f2b07061699c41e5f7248"
+      }
+    },
+    {
+      "id": "mta-s48020-0000541781",
+      "source_system": "mta_current_opportunities",
+      "source_dataset": "mta-cd-current-opportunities",
+      "source_record_id": "mta-current:S48020:0000541781",
+      "observation_type": "opportunity",
+      "publisher_institution_id": "mta",
+      "procuring_institution_id": "mta-construction-development",
+      "retrieved_at": "2026-08-28T14:00:00.000Z",
+      "source_row": {
+        "solicitation_number": "S48020",
+        "event_number": "0000541781",
+        "agency": "MTA Construction & Development",
+        "title": "CBTC for 6th Ave Line, 63rd St Line and DeKalb Interlocking",
+        "document_availability_date": "5/21/2026",
+        "opening_date": "10/16/2026",
+        "funding": "100% MTA",
+        "goals": "MBE: 7% WBE: 7% SDVOB:1%",
+        "estimated_value": "$100M+",
+        "contract_term": "2900 Calendar Days",
+        "current_addenda": "9",
+        "status": "Current opportunity"
+      },
+      "receipt": {
+        "url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+        "retrieved_at": "2026-08-28T14:00:00.000Z",
+        "raw_response_sha256": "92d9409d5c4d41cd894f3f7543d44273de27debabb21335bcbbe2f4dd8cf18d6"
+      }
+    },
+    {
+      "id": "mta-bid-result-aw-9y",
+      "source_system": "mta_bid_results",
+      "source_dataset": "mta-cd-bid-results",
+      "source_record_id": "mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC",
+      "observation_type": "bid_opening_result",
+      "publisher_institution_id": "mta",
+      "procuring_institution_id": "mta-construction-development",
+      "retrieved_at": "2026-08-28T14:00:00.000Z",
+      "source_row": {
+        "auc_id": "AW-9Y",
+        "auc_name": "AW-9Y Security Upgrades at CBB and MPB",
+        "opening_date": "2026-08-12T14:00:00.000000-0400",
+        "bidder": "TDP ASSOCIATES INC",
+        "bid_amount": "$18521000.0000",
+        "comments": "AW-9Y Security Upgrades at the Cross Bay Bridge and the Marine Parkway Bridge."
+      },
+      "receipt": {
+        "url": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+        "retrieved_at": "2026-08-28T14:00:00.000Z",
+        "raw_response_sha256": "fb670489b628fc3112ae340d60f940387cfed91cc5a7af9e0fe33ee1c5560c79"
+      }
+    }
+  ]
+}
