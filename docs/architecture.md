@@ -28,10 +28,7 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source vault retains approved public documents by content hash and
   preserves their official source links.
-  A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
-  and an owner-triggered pointer to one exact reviewed commit without changing
-  the stable production site.
-updated: 2026-08-18
+updated: 2026-08-29
 sources:
   - README.md
   - site/index.html
@@ -63,13 +60,9 @@ sources:
   - test/functional/29_snapshot_only_resident_reads.py
   - test/fixtures/source_contracts/source-shapes.json
   - tools/stamp_i18n_assets.py
-  - tools/ensure_beta_pages.mjs
   - .github/actions/build-site/action.yml
   - .github/workflows/deploy-cloudflare-pages.yml
   - .github/workflows/deploy-worker.yml
-  - .github/workflows/deploy-beta-preview.yml
-  - .github/workflows/promote-beta.yml
-  - .github/workflows/deploy-worker-beta.yml
   - .github/workflows/ci.yml
   - .github/workflows/source-contracts-live.yml
   - tools/live_url_smoke.mjs
@@ -104,7 +97,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 36dafedc9070ef82f058d3e74305bcc482ffce72cc65a6692649b9c5ce5ba87c
+sources_hash: 595fad1b4566d6eee49943039cdc30cdeb4e37babbf51d35f62b18b11c34ec0e
 ---
 
 # CityScroll — architecture
@@ -178,12 +171,6 @@ R2: SOURCE_VAULT — content-addressed custody for approved public documents
 Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
   and optional post-action prompt events; enumerated dimensions only, with no
   matter ids, free text, cookies, or visitor identifiers
-
-Public review channel (Cloudflare Pages project "crol-list-beta")
-  draft PR + preview:beta label → stable pr-<number> alias
-  owner workflow + exact SHA → beta production pointer → beta.cityscroll.org
-  optional owner workflow + exact SHA → isolated api-beta.cityscroll.org Worker
-  same verified Jekyll + deploy-time i18n stamp pipeline as stable
 ```
 
 Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground truth, and scheduled acquisition jobs copy the supported corpus into CityScroll-owned projections. Browser modules under `site/app/` read committed artifacts or snapshot-only Worker endpoints; they never query publisher data APIs. The worker holds secrets (Claude, Resend), shared state (subscriptions, counters), scheduled acquisition and delivery jobs, and typed resident read models. The Wave-5 forecasting layer sits inside the worker because it needs both a retained projection and the cron.
@@ -211,13 +198,11 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 ## Serving & deploy
 
 - The public tree under `site/` is built and deployed to Cloudflare Pages through the provider-neutral build contract in `docs/release/cloudflare-native-builds.json`. The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The Pages release derives one cache stamp from `site/i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
-- Cloudflare Pages also hosts public review artifacts. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.cityscroll.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
-- Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
 - Worker deployed via `wrangler deploy` from `worker/` to the custom domains `api.cityscroll.org` and `api.crol-list.org` (already dual-homed; this is not a pending rename). `crol-list.jimdc.com` is a GitHub Pages CNAME to `jimdc.github.io`, not a Worker route. workers.dev is retained for compatibility. Bounded zone routes serve `/near-you*`, `/following*`, and `/prefs*` on canonical `cityscroll.org`; API-host versions of those reader documents permanently redirect to the canonical host. Changes under `worker/**` deploy from `main` through Cloudflare Workers Builds; `.github/workflows/deploy-worker.yml` remains a manual, non-required fallback. Cron triggers refresh land upcoming hearings at `0 8 * * *`, run the delivery-free digest shadow at `0 10 * * *`, and deliver at `0 13 * * *` (~9am ET). The 13:00 advisory chain also refreshes the payroll title mart into `ALERT_STATE`. The versioned D1 shadow-hold lease gates only redlined `affected_digest_ids` from 12:45–14:00 UTC and fails open when no digest-specific scope exists. D1 schema is versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts served by Cloudflare Pages, with bounded Worker routes layered where needed. The mirror retains `crol-list.org` as a compatibility origin; if it redirects back to CityScroll, the stamped `cityscroll.pages.dev` artifact is the full-site failover, while raw repository content is used only for `/docs/*` and `/README.md`.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query. The mirror's independent redirect-loop failover keeps the canonical site available if an origin fetch is redirected back at the Worker. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org` with Reply-To `alerts@crol-list.org` (still-routable). Public feedback notifies `feedback@cityscroll.org` (`FEEDBACK_TO`); subscribe-by-email inbound remains on `subscribe@crol-list.org` until inbound routing is migrated.
-- Secrets are stored outside the repository (Wrangler secret bindings). Bindings referenced by code include `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. The production analytics write gate `ANALYTICS_ENVIRONMENT=production` is a non-secret var in `wrangler.toml` (beta overrides it to `preview`); a missing or non-production value drops Analytics Engine writes. The developer key authenticates short-lived HMAC exclusions. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` fails closed (503) without `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` (no CAPTCHA on this path); `/feedback` fails closed without `RESEND_API_KEY` + `FEEDBACK` (rate limits only; no CAPTCHA).
+- Secrets are stored outside the repository (Wrangler secret bindings). Bindings referenced by code include `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. The production analytics write gate `ANALYTICS_ENVIRONMENT=production` is a non-secret var in `wrangler.toml`; a missing or non-production value drops Analytics Engine writes. The developer key authenticates short-lived HMAC exclusions. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` fails closed (503) without `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` (no CAPTCHA on this path); `/feedback` fails closed without `RESEND_API_KEY` + `FEEDBACK` (rate limits only; no CAPTCHA).
 - GitHub Actions is path-filtered in `CI` using `dorny/paths-filter`; worker/docs/frontend jobs run only when their lanes changed.
   PR and merge tests include source-contract verification against committed fixtures:
   `tools/verify_source_contracts.mjs`, plus a blocking 20-sample p95 browser-performance

@@ -285,11 +285,10 @@ test("CROL-negative Checkbook rows promote exact contract/payment observations w
   sqlite.close();
 });
 
-test("Checkbook observation capture is production-on / beta-off", () => {
+test("Checkbook observation capture is enabled in production", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
-  const [production, beta = ""] = wrangler.split("[env.beta.vars]");
-  assert.match(production, /CHECKBOOK_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
-  assert.match(beta, /CHECKBOOK_SOURCE_RECORD_DUAL_WRITE\s*=\s*"false"/);
+  assert.match(wrangler, /CHECKBOOK_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
+  assert.doesNotMatch(wrangler, /\[env\.beta/);
 });
 
 test("flag off leaves lifecycle intact without observations", async () => {

@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import pathlib
+import re
 import struct
 import subprocess
 import sys
@@ -21,6 +22,9 @@ OUT = ROOT / "docs" / "screenshots" / "browse-interaction-grammar"
 RECEIPT = OUT / "capture-receipt.json"
 VIEWPORTS = ((390, 844), (1440, 1000))
 SCHEMA = "cityscroll.browse-interaction-grammar-capture.v1"
+EVIDENCE_OBJECT_URL = re.compile(
+    r"^backstage://cityscroll-evidence/objects/sha256/[0-9a-f]{2}/[0-9a-f]{64}\.webp$",
+)
 sys.path.insert(0, str(ASSETS))
 
 from browse_interaction_grammar import LENSES, assert_lens_grammar, open_lens  # noqa: E402
@@ -68,13 +72,20 @@ def verify_receipt() -> None:
     )
     for row in captures:
         relative = row.get("file")
-        assert isinstance(relative, str) and relative.startswith("docs/screenshots/browse-interaction-grammar/"), (
+        assert isinstance(relative, str), f"capture path is missing: {relative!r}"
+        expected_size = (row.get("pixel_size", {}).get("width"), row.get("pixel_size", {}).get("height"))
+        if relative.startswith("backstage://"):
+            assert EVIDENCE_OBJECT_URL.match(relative), f"capture path is not an evidence object: {relative!r}"
+            assert all(isinstance(value, int) and value > 0 for value in expected_size), (
+                f"{relative}: receipt pixel_size is incomplete"
+            )
+            continue
+        assert relative.startswith("docs/screenshots/browse-interaction-grammar/"), (
             f"capture path is not repository-relative: {relative!r}"
         )
         path = ROOT / relative
         assert path.is_file(), f"missing screenshot: {relative}"
         size = png_size(path)
-        expected_size = (row.get("pixel_size", {}).get("width"), row.get("pixel_size", {}).get("height"))
         assert size == expected_size, f"{relative}: PNG size {size} differs from receipt {expected_size}"
     print(f"Browse interaction screenshot receipt OK: {len(captures)} captures")
 

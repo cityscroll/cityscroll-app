@@ -168,32 +168,3 @@ id = "a7addee904774e7c90f9be447f927b20"
 [[kv_namespaces]]
 binding = "FEEDBACK"
 id = "75d85d23ec914d8ea44bc3e9bb540afd"
-
-# The beta Worker is a separate, manually deployed environment. Environment
-# bindings are non-inheritable, so this intentionally has no production KV,
-# D1, R2, Analytics Engine, Queue, cron, or secret configuration.
-[env.beta]
-routes = [
-  { pattern = "api-beta.cityscroll.org", custom_domain = true },
-]
-workers_dev = true
-
-[env.beta.vars]
-DEPLOYMENT_CHANNEL = "beta"
-ALERTS_LIVE = "false"
-CITY_RECORD_SOURCE_RECORD_DUAL_WRITE = "false"
-PASSPORT_SOURCE_RECORD_DUAL_WRITE = "false"
-CHECKBOOK_SOURCE_RECORD_DUAL_WRITE = "false"
-LEGISTAR_SOURCE_RECORD_DUAL_WRITE = "false"
-PERSON_HUB_SOURCE_RECORD_DUAL_WRITE = "false"
-ULURP_RECOMMENDATION_PDF_SOURCE_RECORD_DUAL_WRITE = "false"
-ULURP_RECOMMENDATION_SOURCE_RECORD_DUAL_WRITE = "false"
-ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE = "false"
-ENTITY_LINK_DUAL_WRITE = "false"
-CIVIC_TIME_EVENT_WRITE = "false"
-QUEUE_DIGESTS = "false"
-ANALYTICS_ENVIRONMENT = "preview"
-RUM_INGEST_ENABLED = "false"
-SOURCE_VAULT_ENABLED = "false"
-SEMANTIC_CANDIDATES_ENABLED = "true"
-CONFIRM_BASE = "https://api-beta.cityscroll.org"

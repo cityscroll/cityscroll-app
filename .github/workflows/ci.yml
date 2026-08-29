@@ -9,7 +9,7 @@ on:
     # Machine changelog data commits do not need the pull-request suite.
     paths-ignore:
       - site/changelog-data.json
-    types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
+    types: [opened, synchronize, reopened]
   merge_group:
   push:
     branches: [main]
@@ -59,8 +59,6 @@ jobs:
               - '.github/actions/build-site/**'
               - '.github/actions/setup-playwright/**'
               - '.github/workflows/deploy-cloudflare-pages.yml'
-              - '.github/workflows/deploy-beta-preview.yml'
-              - '.github/workflows/promote-beta.yml'
             # Subset of frontend that can move the static 20-sample budget.
             # Excludes site/data/** (receipts, join JSON), pure Markdown under site/,
             # and deploy workflow metadata that a11y still wants as frontend.
@@ -185,9 +183,6 @@ jobs:
           cache: npm
           cache-dependency-path: worker/package-lock.json
 
-      - name: Beta preview alias contract
-        if: matrix.family == 'static-standards' && github.event_name == 'pull_request'
-        run: node tools/check_beta_review_contract.mjs
       - name: Legacy repository-name guard
         if: matrix.family == 'static-standards'
         run: node tools/check_stale_repo_name.mjs

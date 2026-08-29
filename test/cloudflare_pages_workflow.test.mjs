@@ -1,5 +1,15 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
@@ -70,8 +80,40 @@ test("post-deploy smoke renders real civil-service exam rows on the deploy targe
 
 test("deploy uses the shared verified build action", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
+  const action = read(".github/actions/build-site/action.yml");
   assert.match(workflow, /uses: \.\/\.github\/actions\/build-site/);
   assert.match(workflow, /secrets\.CLOUDFLARE_API_TOKEN/);
+  assert.match(action, /tools\/build_cloudflare_pages\.mjs/);
+  assert.doesNotMatch(action, /review-channel/);
+  const stamp = read("tools/build_cloudflare_pages.mjs").indexOf("stamp_i18n_assets.py");
+  const verify = read("tools/build_cloudflare_pages.mjs").indexOf("i18n_refs.py");
+  const boundary = read("tools/build_cloudflare_pages.mjs").indexOf("verify_public_artifact.py");
+  assert.ok(stamp >= 0 && verify >= 0 && boundary >= 0);
+});
+
+test("public artifact gate rejects repository-only paths", () => {
+  const root = mkdtempSync(join(tmpdir(), "crol-public-artifact-"));
+  try {
+    writeFileSync(join(root, "index.html"), "<!doctype html><title>Public</title><body>Public</body>");
+    let result = spawnSync(
+      "python3",
+      ["tools/verify_public_artifact.py", "--site-root", root],
+      { encoding: "utf8" },
+    );
+    assert.equal(result.status, 0, result.stderr);
+
+    mkdirSync(join(root, "internal"));
+    writeFileSync(join(root, "internal", "notes.txt"), "not public");
+    result = spawnSync(
+      "python3",
+      ["tools/verify_public_artifact.py", "--site-root", root],
+      { encoding: "utf8" },
+    );
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /repository-only path/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("Pages deploy retains and binds release-surface evidence", () => {

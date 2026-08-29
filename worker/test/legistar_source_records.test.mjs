@@ -165,11 +165,10 @@ test("Legistar source keys preserve event, item, person-vote, and attachment ide
   );
 });
 
-test("Legistar observation capture is production-on / beta-off", () => {
+test("Legistar observation capture is enabled in production", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
-  const [production, beta = ""] = wrangler.split("[env.beta.vars]");
-  assert.match(production, /LEGISTAR_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
-  assert.match(beta, /LEGISTAR_SOURCE_RECORD_DUAL_WRITE\s*=\s*"false"/);
+  assert.match(wrangler, /LEGISTAR_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
+  assert.doesNotMatch(wrangler, /\[env\.beta/);
 });
 
 test("flag off leaves meeting view intact without observations", async () => {
