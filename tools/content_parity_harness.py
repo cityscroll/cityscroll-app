@@ -34,6 +34,18 @@ from urllib.parse import urljoin
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / ".artifacts" / "content-parity"
+DEFAULT_EVIDENCE_STORE = ROOT / ".artifacts" / "evidence-store"
+if str(ROOT / "tools") not in sys.path:
+    sys.path.insert(0, str(ROOT / "tools"))
+
+from evidence_store import (  # noqa: E402
+    default_commit,
+    default_pr_number,
+    phase_for_ref,
+    record_capture,
+    stable_artifact_base,
+    validate_url,
+)
 VIEWPORTS = {
     "mobile": {"width": 390, "height": 844},
     "desktop": {"width": 1440, "height": 900},
@@ -257,11 +269,16 @@ def capture_viewport(
     runs: int,
     timeout_ms: int,
     use_fixtures: bool,
+    evidence: dict[str, Any],
+    evidence_root: Path,
+    gate_receipt_path: str,
+    retention_days: int,
 ) -> dict[str, Any]:
     config = SURFACES[surface]
     samples: list[dict[str, Any]] = []
     content: dict[str, Any] | None = None
     screenshot = output / ref / surface / f"{viewport_name}.png"
+    compressed_screenshot = output / ref / surface / f"{viewport_name}.webp"
     screenshot.parent.mkdir(parents=True, exist_ok=True)
 
     for run in range(runs):
@@ -290,6 +307,7 @@ def capture_viewport(
                 "controlSelector": config["controls"],
             })
             page.screenshot(path=str(screenshot), full_page=True)
+            page.screenshot(path=str(compressed_screenshot), type="webp", quality=82, full_page=True)
         context.close()
 
     assert content is not None
@@ -297,11 +315,30 @@ def capture_viewport(
     p75 = {name: percentile([float(sample[name]) for sample in samples if isinstance(sample.get(name), (int, float))])
            for name in metric_names}
     content["fingerprint"] = fingerprint(content)
+    viewport = VIEWPORTS[viewport_name]
+    evidence_row = record_capture(
+        compressed_screenshot,
+        root=evidence_root,
+        pr_number=evidence["pr_number"],
+        card_id=evidence["card_id"],
+        capture_kind=evidence["capture_kind"],
+        surface=surface,
+        phase=evidence["phase"],
+        viewport_width=viewport["width"],
+        viewport_height=viewport["height"],
+        commit=evidence["commit"],
+        artifact_base=evidence["artifact_base"],
+        gate_receipt_path=gate_receipt_path,
+        artifact_name=evidence["artifact_name"],
+        run_id=evidence["run_id"],
+        retention_days=retention_days,
+    )
     return {
         "viewport": viewport_name,
         "screenshot": str(screenshot.relative_to(output)),
         "content": content,
         "metrics": {"p75": p75, "samples": samples},
+        "evidence": evidence_row,
     }
 
 
@@ -313,6 +350,26 @@ def capture(args: argparse.Namespace) -> int:
         raise SystemExit("--base or CROL_BASE is required")
     surfaces = selected_surfaces(args.surfaces)
     output = Path(args.output).resolve()
+    evidence_root = Path(args.evidence_store).resolve()
+    run_id = os.environ.get("GITHUB_RUN_ID") or None
+    artifact_name = args.artifact_name or os.environ.get("EVIDENCE_ARTIFACT_NAME")
+    if not artifact_name and run_id:
+        artifact_name = f"content-parity-{run_id}"
+    evidence = {
+        "phase": args.phase or phase_for_ref(args.ref),
+        "pr_number": args.pr_number if args.pr_number is not None else default_pr_number(),
+        "card_id": args.card_id or os.environ.get("CROL_CARD_ID") or "content-parity",
+        "capture_kind": args.capture_kind,
+        "commit": args.commit or default_commit(),
+        "artifact_base": stable_artifact_base(args.artifact_url),
+        "artifact_name": artifact_name,
+        "run_id": run_id,
+    }
+    capture_receipt_path = output / args.ref / "capture.json"
+    try:
+        gate_receipt_path = str(capture_receipt_path.relative_to(ROOT))
+    except ValueError:
+        gate_receipt_path = f"capture/{args.ref}/capture.json"
     output.mkdir(parents=True, exist_ok=True)
     manifest = {
         "schema": "cityscroll.content_parity_capture_manifest.v1",
@@ -322,6 +379,13 @@ def capture(args: argparse.Namespace) -> int:
         "runs": args.runs,
         "viewports": list(VIEWPORTS),
         "surfaces": {},
+        "phase": evidence["phase"],
+        "evidence_store": {
+            "schema": "cityscroll.evidence_store.v1",
+            "artifact_name": evidence["artifact_name"],
+            "run_id": evidence["run_id"],
+            "capture_count": len(surfaces) * len(VIEWPORTS),
+        },
     }
     from playwright.sync_api import sync_playwright
 
@@ -332,7 +396,8 @@ def capture(args: argparse.Namespace) -> int:
                 manifest["surfaces"][surface] = {
                     viewport: capture_viewport(
                         browser, surface, args.ref, base, output, viewport, args.runs,
-                        args.timeout_ms, not args.no_fixtures,
+                        args.timeout_ms, not args.no_fixtures, evidence, evidence_root,
+                        gate_receipt_path, args.retention_days,
                     )
                     for viewport in VIEWPORTS
                 }
@@ -460,6 +525,32 @@ def visual_diff(before_path: Path, after_path: Path, threshold: float) -> dict[s
     }
 
 
+def validate_capture_evidence(capture: dict[str, Any], ref: str, surfaces: list[str]) -> list[str]:
+    """Ensure every selected surface has both full-page evidence dimensions."""
+    errors: list[str] = []
+    expected_phase = phase_for_ref(ref)
+    for surface in surfaces:
+        for viewport_name, viewport in VIEWPORTS.items():
+            item = capture.get("surfaces", {}).get(surface, {}).get(viewport_name)
+            label = f"{ref}/{surface}/{viewport_name}"
+            if not item or not item.get("evidence"):
+                errors.append(f"missing evidence receipt: {label}")
+                continue
+            evidence = item["evidence"]
+            if evidence.get("phase") != expected_phase:
+                errors.append(f"wrong evidence phase for {label}: {evidence.get('phase')!r}")
+            if evidence.get("viewport_width") != viewport["width"] or evidence.get("viewport_height") != viewport["height"]:
+                errors.append(f"wrong evidence viewport for {label}")
+            if evidence.get("media_type") not in {"image/webp", "image/avif"}:
+                errors.append(f"uncompressed evidence for {label}")
+            for field in ("url", "gate_receipt"):
+                try:
+                    validate_url(evidence.get(field), field=field)
+                except ValueError as exc:
+                    errors.append(f"{label}: {exc}")
+    return errors
+
+
 def read_png_rgb(path: Path, sample_stride: int = 1) -> tuple[tuple[int, int], list[tuple[int, int, int]]]:
     """Read the 8-bit PNGs emitted by Playwright without a third-party image package."""
     raw = path.read_bytes()
@@ -565,6 +656,10 @@ def compare(args: argparse.Namespace) -> int:
     after = load_capture(output, args.after)
     allowed = load_allow_file(args.allow_file)
     surfaces = selected_surfaces(args.surfaces)
+    evidence_errors = validate_capture_evidence(before, args.before, surfaces)
+    evidence_errors.extend(validate_capture_evidence(after, args.after, surfaces))
+    if evidence_errors:
+        raise SystemExit("evidence store gate failed: " + "; ".join(evidence_errors))
     report: dict[str, Any] = {"schema": "cityscroll.content_parity_report.v1", "before": args.before, "after": args.after, "surfaces": {}}
     failed = False
     for surface in surfaces:
@@ -616,6 +711,15 @@ def parser() -> argparse.ArgumentParser:
     capture_parser.add_argument("--runs", type=int, default=3)
     capture_parser.add_argument("--timeout-ms", type=int, default=45_000)
     capture_parser.add_argument("--no-fixtures", action="store_true", help="allow upstreams instead of repository fixtures")
+    capture_parser.add_argument("--evidence-store", default=str(DEFAULT_EVIDENCE_STORE))
+    capture_parser.add_argument("--card-id", help="owner tracking card identifier")
+    capture_parser.add_argument("--capture-kind", default="content-parity-full-page")
+    capture_parser.add_argument("--phase", choices=("before", "after", "release", "release-evidence", "accepted-release"))
+    capture_parser.add_argument("--pr-number", type=int)
+    capture_parser.add_argument("--commit")
+    capture_parser.add_argument("--artifact-url", help="stable CI artifact or hosted review URL")
+    capture_parser.add_argument("--artifact-name")
+    capture_parser.add_argument("--retention-days", type=int, default=90)
     capture_parser.set_defaults(func=capture)
     compare_parser = sub.add_parser("compare", help="compare two captures and write the batch report")
     compare_parser.add_argument("--before", required=True)

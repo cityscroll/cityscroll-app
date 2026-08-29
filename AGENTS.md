@@ -123,6 +123,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   delivery when the required entrypoint is missing; regression coverage is in
   `test/generation_output_guard.test.mjs`.
 
+- **Owner-proof evidence store:** `tools/evidence_store.py` writes immutable WebP/AVIF captures
+  to SHA-256 content-addressed objects and a PR/card/phase/viewport receipt index; the
+  content-parity harness records both required full-page viewports and rejects local-only URLs.
+  Verify the store with `node tools/verify_evidence_store.mjs --check`; functional goldens stay
+  in-repo and CI installs `tools/requirements-evidence-store.txt` for the DuckDB index backend.
+
 - **Registered-contract analytical projection:** `site/analytical_projection_contract.mjs` is the
   versioned AP-01 registry; `tools/build_analytical_registered_contracts.mjs` materializes the
   full normalized Checkbook population into `site/data/analytics_registered_contracts.json` and
