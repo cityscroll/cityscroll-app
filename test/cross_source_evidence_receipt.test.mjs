@@ -70,8 +70,22 @@ test("exact procurement joins produce a source-named receipt with per-fact prove
   assert.deepEqual(amount.assertions.map((assertion) => assertion.assertion), ["$100,000", "$102,500"]);
   assert.ok(amount.assertions.every((assertion) => assertion.provenance.source_record_id));
   assert.ok(amount.assertions.every((assertion) => assertion.provenance.as_of === "2026-08-20T12:00:00Z"));
-  assert.match(renderCrossSourceEvidenceReceipt(receipt), /Each publisher's value is shown as reported/);
-  assert.match(renderCrossSourceEvidenceReceipt(receipt), /publisher field: current_amount/);
+  const html = renderCrossSourceEvidenceReceipt(receipt);
+  assert.match(html, /\$100,000/);
+  assert.match(html, /\$102,500/);
+  assert.match(html, /PASSPort Public contracts/);
+  assert.match(html, /Checkbook NYC/);
+  assert.match(html, /publisher field: current_amount/);
+  assert.match(html, /publisher field: current/);
+  assert.match(html, /as of 2026-08-20T12:00:00Z/);
+  assert.match(html, /CityScroll interpretation: different amount values/);
+  assert.match(html, /Resolution unresolved \(no derived conclusion\)/);
+  assert.match(html, /data-claim="source_assertion"/);
+  assert.match(html, /data-claim="cityscroll_interpretation"/);
+  assert.doesNotMatch(html, /data-claim="derived_conclusion"/);
+  assert.equal(amount.claim_layer.interpretation.resolution, "unresolved");
+  assert.equal(amount.claim_layer.derived_conclusion, null);
+  assert.ok(!Object.hasOwn(amount.claim_layer.interpretation, "selected_value"));
 });
 
 test("OCP exact request-id joins retain both source assertions without collapsing disagreements", () => {
@@ -104,20 +118,103 @@ test("OCP exact request-id joins retain both source assertions without collapsin
   ]);
 });
 
-test("fuzzy, rejected, ambiguous, and unknown observations never get the same-record receipt", () => {
+test("fuzzy, rejected, ambiguous, review, related-instrument, and unknown observations never get the same-record receipt", () => {
   const cases = [
     { status: "accepted", basis: "vendor_amount_date" },
     { status: "needs_review", basis: "exact_contract_id" },
     { status: "ambiguous", basis: "exact_request_id" },
     { status: "unknown", basis: "exact_request_id" },
+    { status: "rejected", basis: "exact_contract_id" },
+    { status: "related_instrument", basis: "exact_contract_id" },
+    { status: "accepted", basis: "exact_contract_id", identity_class: "related_instrument" },
+    { status: "accepted", basis: "pin_family" },
   ];
   for (const state of cases) {
     assert.equal(buildCrossSourceEvidenceReceipt({
       object: { procurement_id: "procurement:contract:CT1" },
       observations: [passport, checkbook],
       acceptedJoins: [{ ...exactJoin, ...state }],
-    }), null, `${state.status}/${state.basis} must stay out of the receipt`);
+    }), null, `${JSON.stringify(state)} must stay out of the receipt`);
   }
+});
+
+test("agreement stays a compact source-labeled confirmation without a disagreement panel", () => {
+  const aligned = observation("checkbook_contracts", "registered:CT-1", {
+    id: "CT-1",
+    pin: "EPIN-1",
+    title: "Bridge inspection",
+    vendor: "HNTB Corporation",
+    current: 100000,
+    registered: "2026-07-20",
+  });
+  const receipt = buildCrossSourceEvidenceReceipt({
+    object: { procurement_id: "procurement:contract:CT1" },
+    observations: [passport, aligned],
+    acceptedJoins: [exactJoin],
+  });
+  assert.equal(receipt.status, "corroborated");
+  assert.ok(receipt.facts.every((fact) => fact.status === "agrees"));
+  const html = renderCrossSourceEvidenceReceipt(receipt);
+  assert.match(html, /Also recorded in PASSPort Public contracts and Checkbook NYC/);
+  assert.match(html, /Amount — .*PASSPort Public contracts.*\$100,000.*Checkbook NYC.*\$100,000/s);
+  assert.match(html, /class="cross-source-evidence-agreement"/);
+  assert.doesNotMatch(html, /Sources disagree/);
+  assert.doesNotMatch(html, /Resolution unresolved/);
+  assert.doesNotMatch(html, /warning|methodology|always-on/i);
+  assert.doesNotMatch(html, /data-claim="derived_conclusion"/);
+});
+
+test("PIN and date conflicts name both assertions, the field, and the publisher date basis", () => {
+  const other = observation("checkbook_contracts", "registered:CT-1", {
+    id: "CT-1",
+    pin: "EPIN-9",
+    title: "Bridge inspection",
+    vendor: "HNTB Corporation",
+    current: 100000,
+    registered: "2026-08-01",
+  });
+  const receipt = buildCrossSourceEvidenceReceipt({
+    object: { procurement_id: "procurement:contract:CT1" },
+    observations: [passport, other],
+    acceptedJoins: [exactJoin],
+  });
+  const pin = receipt.facts.find((fact) => fact.key === "pin");
+  const date = receipt.facts.find((fact) => fact.key === "date");
+  assert.equal(pin.status, "disagrees");
+  assert.deepEqual(pin.assertions.map((assertion) => assertion.assertion), ["EPIN-1", "EPIN-9"]);
+  assert.equal(date.status, "disagrees");
+  assert.deepEqual(date.assertions.map((assertion) => assertion.assertion), ["2026-07-20", "2026-08-01"]);
+  const html = renderCrossSourceEvidenceReceipt(receipt);
+  assert.match(html, /publisher field: epin/);
+  assert.match(html, /publisher field: pin/);
+  assert.match(html, /publisher field: start_date/);
+  assert.match(html, /publisher field: registered/);
+  assert.match(html, /different pin \/ epin values/);
+  assert.match(html, /different date values/);
+  assert.match(html, /Resolution unresolved \(no derived conclusion\)/);
+});
+
+test("identity-policy corroboration stays related-instrument and does not mint a disagreement panel", () => {
+  const receipt = buildCrossSourceEvidenceReceipt({
+    object: {
+      procurement_id: "procurement:contract:CT185020228802305",
+      checkbook_corroboration: {
+        status: "related_instrument",
+        identity_class: "related_instrument",
+        join_method: "pin_family",
+        passport_contract_id: "CT1-850-20228802305",
+        checkbook_contract_id: "CT185020218800001",
+        passport_pin: "85021B0087001C011",
+        checkbook_pin: "85021B0087001C010",
+        passport_amount: 26112.93,
+        checkbook_amount: 1779343.45,
+      },
+    },
+    observations: [passport],
+    acceptedJoins: [],
+  });
+  assert.equal(receipt, null);
+  assert.equal(renderCrossSourceEvidenceReceipt(receipt), "");
 });
 
 test("the shared procurement model materializes and serves the receipt on the canonical page", () => {
@@ -135,4 +232,10 @@ test("the shared procurement model materializes and serves the receipt on the ca
   assert.match(html, /data-cross-source-evidence-receipt="1"/);
   assert.match(html, /Also recorded in PASSPort Public contracts and Checkbook NYC/);
   assert.match(html, /Sources disagree/);
+  assert.match(html, /\$100,000/);
+  assert.match(html, /\$102,500/);
+  assert.match(html, /Resolution unresolved \(no derived conclusion\)/);
+  assert.match(html, /data-claim="cityscroll_interpretation"/);
+  assert.doesNotMatch(html, /data-claim="derived_conclusion"/);
+  assert.doesNotMatch(html, /selected a winning|corrected amount|canonical winner/i);
 });
