@@ -370,7 +370,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   # one another's server. CROL_TEST_PORT remains an explicit debugging override.
   SERVER_READY_FILE="$(mktemp "${TMPDIR:-/tmp}/crol-preflight-site.XXXXXX")"
   python3 tools/local_site_server.py \
-    --directory site \
+    --directory _site \
     --port "${CROL_TEST_PORT:-0}" \
     --ready-file "${SERVER_READY_FILE}" &
   SERVER_PID=$!

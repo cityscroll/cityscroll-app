@@ -43,6 +43,8 @@ test("full preflight and CI use the route-aware server without touching existing
   assert.ok(preflightBuild >= 0 && preflightBuild < preflightServer,
     "full preflight must build primary documents before starting its functional server");
   assert.match(source, /tools\/local_site_server\.py/);
+  assert.match(source, /tools\/local_site_server\.py[\s\\]*\n\s*--directory _site[\s\\]*\n\s*--port/,
+    "full preflight must serve the prepared public artifact so client modules resolve");
   assert.match(source, /CROL_TEST_PORT:-0/);
   assert.match(source, /export CROL_BASE/);
   assert.doesNotMatch(source, /lsof -tiTCP:8000|freeing port 8000/);
