@@ -12,12 +12,12 @@
   "before_captures": [
     {
       "viewport_width": 1440,
-      "file": "before-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/b2/b23b6fe3a2b2eb2d84a6e3f7eb29591de212d8376b9e54f47f586db5b78a9874.webp",
       "sha256": "3e31d687060bb6d7ce4b8f267e426354065a196a71c9793e126acf64c59da451"
     },
     {
       "viewport_width": 390,
-      "file": "before-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/fa/fa71aea7505a4be0505f5db2aefe1ad2d305f6faa80ccca3d2c3ff6c9d84b376.webp",
       "sha256": "41494bce1da159ed3abaf8346844fc2d6f0a4bf822c9b0418494bfd6497ec511"
     }
   ],
@@ -52,7 +52,7 @@
         "land:2026X0001:2026-08-09": "",
         "property:now-property:auction:2026-08-10": ""
       },
-      "file": "after-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/ba/ba4305dc31e4d5ffa34f9ecddb6dc1d28b5aeed0d92224b2fd914db58f4019e4.webp",
       "sha256": "fc1d040ee264b03581b22310194a7e60dc884f9c8a45290662e8715f3bf6dd1e"
     },
     {
@@ -85,7 +85,7 @@
         "land:2026X0001:2026-08-09": "",
         "property:now-property:auction:2026-08-10": ""
       },
-      "file": "after-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/af/aff51a185e1e7ff7fca59d85a0eed5fecacbc24035db2449c75ff3bd0fcdc364.webp",
       "sha256": "aac18d6d11f751881656a8217c4aae6e5ef1f05e367f6ed450a4d6b5ded9009d"
     }
   ],

@@ -249,6 +249,7 @@ def record_capture(
     run_id: str | None = None,
     retention_days: int = DEFAULT_RETENTION_DAYS,
     media_type: str = "image/webp",
+    capture_id: str | None = None,
 ) -> dict[str, Any]:
     media_type = media_type.lower().strip()
     if media_type not in MEDIA_TYPES:
@@ -279,7 +280,7 @@ def record_capture(
     validate_url(url)
     receipt = gate_receipt or (f"{artifact_base}#gate-receipt" if artifact_base else f"backstage://cityscroll-evidence/gates/{phase}/{surface}.json")
     validate_url(receipt, field="gate receipt")
-    capture_id = ":".join((str(pr_number or "none"), card_id, capture_kind, surface, phase, str(viewport_width), digest))
+    capture_id = capture_id or ":".join((str(pr_number or "none"), card_id, capture_kind, surface, phase, str(viewport_width), digest))
     row = {
         "schema": SCHEMA,
         "capture_id": capture_id,
@@ -415,7 +416,7 @@ def command_record(args: argparse.Namespace) -> int:
         viewport_width=args.viewport_width, viewport_height=args.viewport_height, captured_at=args.captured_at,
         commit=args.commit, artifact_base=args.artifact_url, gate_receipt=args.gate_receipt,
         gate_receipt_path=args.gate_receipt_path, artifact_name=args.artifact_name, run_id=args.run_id,
-        retention_days=args.retention_days, media_type=args.media_type,
+        retention_days=args.retention_days, media_type=args.media_type, capture_id=args.capture_id,
     )
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
@@ -447,6 +448,7 @@ def parser() -> argparse.ArgumentParser:
     record.add_argument("--run-id")
     record.add_argument("--retention-days", type=int, default=DEFAULT_RETENTION_DAYS)
     record.add_argument("--media-type", default="image/webp")
+    record.add_argument("--capture-id")
     record.set_defaults(func=command_record)
     return root
 

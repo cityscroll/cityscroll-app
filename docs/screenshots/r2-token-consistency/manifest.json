@@ -9,15 +9,15 @@
     1440
   ],
   "before": [
-    "before-near-you-390.png",
-    "before-near-you-1440.png",
-    "before-following-390.png",
-    "before-following-1440.png"
+    "backstage://cityscroll-evidence/objects/sha256/93/93918b8a9dd0447b0e15ed7fcb172bc223bba9ca134f8a223b081521e4c14cd4.webp",
+    "backstage://cityscroll-evidence/objects/sha256/e1/e14686494c9759d50ebfe7fedb49f457b87383a112d23274aa76c643361d6bd7.webp",
+    "backstage://cityscroll-evidence/objects/sha256/72/72cbb193071e7fdc52139f1bb96f49e51b3706a74e9e79f9016290e6b42ebb14.webp",
+    "backstage://cityscroll-evidence/objects/sha256/39/39b738c67ede58a61702402aba9d5875a86bd3560d6011930a58a03015100206.webp"
   ],
   "after": [
-    "after-near-you-390.png",
-    "after-near-you-1440.png",
-    "after-following-390.png",
-    "after-following-1440.png"
+    "backstage://cityscroll-evidence/objects/sha256/51/518dd2fb95b870fb36e2b601794981a608607d177975a8c753f9b556219e4602.webp",
+    "backstage://cityscroll-evidence/objects/sha256/c1/c10efc76d6045938ba89d9357985a30baefff5f2245ae5f3a6eb17c5dd47e914.webp",
+    "backstage://cityscroll-evidence/objects/sha256/c2/c28d4c3ab6c1dd30388f3094b3fcfd0cdadf26d56adad07630e904a09d71e678.webp",
+    "backstage://cityscroll-evidence/objects/sha256/eb/ebb6423d56aac192c2f17ec918be2ea1291b0d4108add985786b4f8f38d0939f.webp"
   ]
 }

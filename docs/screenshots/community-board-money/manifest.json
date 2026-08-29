@@ -11,7 +11,7 @@
         1000
       ],
       "route": "/community-boards/bronx-cb-01/",
-      "file": "docs/screenshots/community-board-money/before-desktop.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/af/affce5cf148d8f579dd4675317c577566ef4b22e09a5fa0b6a1659f8977cacb3.webp",
       "money_card": false,
       "money_state": null,
       "overflow_px": 0,
@@ -24,7 +24,7 @@
         1000
       ],
       "route": "/community-boards/bronx-cb-01/",
-      "file": "docs/screenshots/community-board-money/after-desktop.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/8f/8fea386fbca017fa196cc0b62b4c764e3e7775cd3dc2ab10347b7cd7e774a1e7.webp",
       "money_card": true,
       "money_state": "separate_fiscal_years",
       "overflow_px": 0,
@@ -37,7 +37,7 @@
         844
       ],
       "route": "/community-boards/bronx-cb-01/",
-      "file": "docs/screenshots/community-board-money/before-mobile.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/93/93aa83fb09fd56a9dba52f47919ffa8b36631628ddb16acaa8d2ced7cedd93a9.webp",
       "money_card": false,
       "money_state": null,
       "overflow_px": 0,
@@ -50,7 +50,7 @@
         844
       ],
       "route": "/community-boards/bronx-cb-01/",
-      "file": "docs/screenshots/community-board-money/after-mobile.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/06/06e7b8da3e7620266f3e68931eaf47d118a1e95651297b4472c35c5c2a74a513.webp",
       "money_card": true,
       "money_state": "separate_fiscal_years",
       "overflow_px": 0,

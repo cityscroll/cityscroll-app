@@ -43,10 +43,10 @@ publisher lookup.
 The visual surface is intentionally unchanged. Existing headless before/after
 pairs cover the migrated routes:
 
-- [Search, 390px before/after](screenshots/api-parity-b2-search/before-390.png) · [after](screenshots/api-parity-b2-search/after-390.png)
-- [Search, 1440px before/after](screenshots/api-parity-b2-search/before-1440.png) · [after](screenshots/api-parity-b2-search/after-1440.png)
-- [Meeting detail, community-board before/after](screenshots/meeting-rendering-parity/before-community-board-detail.png) · [after](screenshots/meeting-rendering-parity/after-community-board-detail.png)
-- [Meeting card, community-board before/after](screenshots/meeting-rendering-parity/before-community-board-card.png) · [after](screenshots/meeting-rendering-parity/after-community-board-card.png)
+- [Search, 390px before/after](backstage://cityscroll-evidence/objects/sha256/d8/d8561a5ff9afe7f17b0c4531fe3f2bb3735a7b0e9a763d6fae8d5eaeb0194269.webp) · [after](backstage://cityscroll-evidence/objects/sha256/d8/d8561a5ff9afe7f17b0c4531fe3f2bb3735a7b0e9a763d6fae8d5eaeb0194269.webp)
+- [Search, 1440px before/after](backstage://cityscroll-evidence/objects/sha256/7f/7f05abf331eb7c5edf02c15e15c04250e160ea9385e4e4116a3df925f19438b5.webp) · [after](backstage://cityscroll-evidence/objects/sha256/7f/7f05abf331eb7c5edf02c15e15c04250e160ea9385e4e4116a3df925f19438b5.webp)
+- [Meeting detail, community-board before/after](backstage://cityscroll-evidence/objects/sha256/c6/c6775ab67766c4c5c7d49000f675a606b956af9c3498d99deda5492cf1bc7043.webp) · [after](backstage://cityscroll-evidence/objects/sha256/9f/9f06f574c3d200075fdaeba0426ea24dad80fae300a85333137b74783a2480a7.webp)
+- [Meeting card, community-board before/after](backstage://cityscroll-evidence/objects/sha256/32/32325065d482d1958d532140f4ad37fe6120b11bf11386ff9b6f1a06271519a0.webp) · [after](backstage://cityscroll-evidence/objects/sha256/89/890ba330c2e3917bc93011406b7456efbe8ac29f1595034ff9306e1395ba149a.webp)
 
 The focused adapter tests prove positive identity/provenance, negative
 not-found and malformed-snapshot states, shared analytical denominators and

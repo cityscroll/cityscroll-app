@@ -33,9 +33,9 @@
       "before_surfaces": "docs/screenshots/docs-capability-refresh/data-sources-surfaces-before.txt",
       "after_surfaces": "docs/screenshots/docs-capability-refresh/data-sources-surfaces-after.txt",
       "screenshots": [
-        "docs/screenshots/docs-capability-refresh/data-sources-graph-after-1440.png",
-        "docs/screenshots/docs-capability-refresh/data-sources-graph-after-390.png",
-        "docs/screenshots/docs-capability-refresh/data-sources-table-officials-after-1440.png"
+        "backstage://cityscroll-evidence/objects/sha256/e4/e43d864821e847135f83af89b9ddf688f012af9fc9bb72cad426117da0b8ffb1.webp",
+        "backstage://cityscroll-evidence/objects/sha256/b5/b5ec1abf3102016cf455ee4c97cbb5d993e3586c2282b7e0525d406f27309d3e.webp",
+        "backstage://cityscroll-evidence/objects/sha256/45/452fc9ba70fbac82af776ac404d124a8097a24873aafd3c8c688cf7da13e5086.webp"
       ]
     },
     "desk_capabilities": {

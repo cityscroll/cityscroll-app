@@ -1,15 +1,15 @@
 {
   "feature": "near-you-static-first",
   "before": {
-    "390": "../map-exploration/after-borough-390.png",
-    "1440": "../map-exploration/after-borough-1440.png"
+    "390": "backstage://cityscroll-evidence/objects/sha256/f0/f07c9c9e3c89f484f21f4f13672c5a00facad9a2d3e3c42cbcb79a3df8be2129.webp",
+    "1440": "backstage://cityscroll-evidence/objects/sha256/15/159e7494552bea60fc9936335c1aa292e4cd35ef9052d35c506af4d45ff96af3.webp"
   },
   "after": [
-    "after-summary-390.png",
-    "after-summary-1440.png",
-    "after-map-390.png",
-    "after-map-1440.png",
-    "after-map-no-js-390.png"
+    "backstage://cityscroll-evidence/objects/sha256/93/93918b8a9dd0447b0e15ed7fcb172bc223bba9ca134f8a223b081521e4c14cd4.webp",
+    "backstage://cityscroll-evidence/objects/sha256/e1/e14686494c9759d50ebfe7fedb49f457b87383a112d23274aa76c643361d6bd7.webp",
+    "backstage://cityscroll-evidence/objects/sha256/69/6994597d0b73da4f239a4dbecc91321af286809d882cafbe3a0578577fc1cba3.webp",
+    "backstage://cityscroll-evidence/objects/sha256/5d/5d8330aba5f29c3522b7c48b4611b6bbe518b46a7d6c0ef5cf42347bd16c1cb1.webp",
+    "backstage://cityscroll-evidence/objects/sha256/69/6994597d0b73da4f239a4dbecc91321af286809d882cafbe3a0578577fc1cba3.webp"
   ],
   "scope": "/near-you/borough/queens/",
   "count_contract": "SVG paths, equivalent area links, and the server record list"
