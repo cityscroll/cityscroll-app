@@ -3873,6 +3873,17 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   private. Contract details: `entity_resolution/README.md`. Verify:
   `node --test test/evidence_bearing_provenance_graph.test.mjs`.
 
+- **Source disagreement ledger:** `site/cross_source_evidence_receipt.mjs` is the
+  reader grammar for accepted exact cross-source field conflicts. Amount, date,
+  and PIN disagreements keep both source assertions, the publisher field, and
+  the as-of basis, and label the CityScroll comparison `unresolved`; agreement
+  stays a compact source-labeled confirmation. Exact Checkbook corroboration may
+  supply evidence-only assertions, but related-instrument, review, ambiguous,
+  rejected, and unknown identity states stay out of the same-record receipt.
+  Canonical object amounts and dates are not rewritten. OCP lifecycle
+  disagreement remains the notice-side regression fixture. Focused proof:
+  `test/cross_source_evidence_receipt.test.mjs`.
+
 ## Snapshot-only citywide address geocoder
 
 - `site/precomputed_address_geocoder.mjs` is the exact full-address → BBL read boundary over the 64-shard official PAD artifact in `site/data/address-index/`. Only real and vanity PAD ranges are admitted; pseudo-addresses, ambiguity, and misses stay `unknown`. Refresh with `node tools/build_geocoder_address_index.mjs --from-live`; verify the complete committed snapshot with `--check` and `test/geocoder_snapshot.test.mjs`.

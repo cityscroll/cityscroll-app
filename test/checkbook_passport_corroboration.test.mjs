@@ -245,6 +245,13 @@ test("shared read model and search/document projection keep the PASSPort amount"
   assert.equal(document.provenance.browse_record.contract_amount, 49689.78);
   assert.doesNotMatch(document.summary, /208,687/);
   const html = renderProcurementDocument(object, model.observations);
+  assert.match(html, /<dt>Amount<\/dt><dd>\$49,689\.78<\/dd>/);
   assert.match(html, /49,689\.78/);
-  assert.doesNotMatch(html, /208687/);
+  assert.match(html, /208,687\.62/);
+  assert.match(html, /PASSPort Public contracts/);
+  assert.match(html, /Checkbook NYC/);
+  assert.match(html, /Resolution unresolved \(no derived conclusion\)/);
+  assert.match(html, /data-claim="cityscroll_interpretation"/);
+  assert.doesNotMatch(html, /data-claim="derived_conclusion"/);
+  assert.doesNotMatch(html, /<dt>Amount<\/dt><dd>\$208,687\.62<\/dd>/);
 });

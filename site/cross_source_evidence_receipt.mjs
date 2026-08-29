@@ -7,6 +7,7 @@
  */
 
 import { residentOfficialSource } from "./provenance_disclosure.mjs";
+import { contractIdKey, pinKey } from "./pin_sibling_grouping.mjs";
 
 export const CROSS_SOURCE_EVIDENCE_RECEIPT_SCHEMA =
   "cityscroll.cross_source_evidence_receipt.v1";
@@ -45,14 +46,14 @@ const FACT_DEFINITIONS = Object.freeze([
     key: "contract_id",
     label: "Contract ID",
     fields: ["contract_id", "contractId", "id", "prime_contract_id"],
-    normalize: (value) => exactText(value),
+    normalize: (value) => contractIdKey(exactText(value) || "") || null,
     display: (value) => exactText(value),
   },
   {
     key: "pin",
     label: "PIN / EPIN",
     fields: ["epin", "epin_norm", "pin", "prime_contract_pin"],
-    normalize: (value) => exactText(value),
+    normalize: (value) => pinKey(exactText(value) || "") || null,
     display: (value) => exactText(value),
   },
   {
@@ -140,11 +141,130 @@ function observationRef(observation) {
       : null);
 }
 
+const IDENTITY_POLICY_BLOCKED = new Set([
+  "related_instrument",
+  "needs_review",
+  "needs-review",
+  "ambiguous",
+  "rejected",
+  "unknown",
+  "no_edge",
+  "no-edge",
+]);
+
 function acceptedJoin(join) {
   const status = looseText(join?.status)?.toLowerCase();
+  const identity = looseText(join?.identity_class || join?.relation)?.toLowerCase();
   const basis = looseText(join?.basis || join?.join_method || join?.join_key)?.toLowerCase();
+  if (IDENTITY_POLICY_BLOCKED.has(status) || IDENTITY_POLICY_BLOCKED.has(identity)) return false;
   return (status === "accepted" || status === "corroborated" || (status === "matched" && EXACT_JOIN_BASIS.has(basis)))
     && EXACT_JOIN_BASIS.has(basis);
+}
+
+function exactCorroborationJoin(object) {
+  const receipt = object?.checkbook_corroboration;
+  if (!receipt || typeof receipt !== "object") return null;
+  const status = looseText(receipt.status)?.toLowerCase();
+  const identity = looseText(receipt.identity_class)?.toLowerCase();
+  const basis = looseText(receipt.join_method)?.toLowerCase();
+  if (status !== "corroborated" || identity !== "same_contract" || !EXACT_JOIN_BASIS.has(basis)) {
+    return null;
+  }
+  return { receipt, basis };
+}
+
+/**
+ * Project already-classified exact Checkbook corroboration into the receipt
+ * without constructing a procurement object or minting a route.
+ */
+function attachExactCorroboration(object, observations, acceptedJoins) {
+  const classified = exactCorroborationJoin(object);
+  if (!classified) return { observations, acceptedJoins };
+  const systems = new Set((Array.isArray(observations) ? observations : []).map(sourceSystem).filter(Boolean));
+  if (systems.has("checkbook_contracts")) return { observations, acceptedJoins };
+  const passport = (Array.isArray(observations) ? observations : [])
+    .find((row) => sourceSystem(row) === "passport_public_contracts");
+  const passportRef = observationRef(passport);
+  if (!passportRef) return { observations, acceptedJoins };
+  const { receipt, basis } = classified;
+  const nativeId = looseText(receipt.checkbook_contract_id) || "checkbook-corroboration";
+  const checkbookRef = `checkbook_contracts:${nativeId}`;
+  const checkbook = {
+    source_system: "checkbook_contracts",
+    source_system_id: nativeId,
+    source_observation_ref: checkbookRef,
+    ingested_at: looseText(object?.generated_at) || looseText(passport?.ingested_at),
+    coverage: "available",
+    snapshot: {
+      id: receipt.checkbook_contract_id,
+      contract_id: receipt.checkbook_contract_id,
+      pin: receipt.checkbook_pin,
+      current: receipt.checkbook_amount,
+      registered: receipt.checkbook_registered || receipt.registered,
+    },
+  };
+  return {
+    observations: [...observations, checkbook],
+    acceptedJoins: [...acceptedJoins, {
+      status: "accepted",
+      basis,
+      matched_value: looseText(receipt.passport_contract_id || receipt.passport_pin),
+      procurement_id: looseText(object?.procurement_id || object?.object_ref),
+      left_source_observation_ref: passportRef,
+      right_source_observation_ref: checkbookRef,
+    }],
+  };
+}
+
+function claimLayerForFact(definition, assertions, agrees) {
+  const asserted = assertions.filter((assertion) => assertion.assertion != null);
+  if (agrees) {
+    return Object.freeze({
+      version: "claim_layer_v1",
+      fact: definition.key,
+      label: definition.label,
+      assertions: asserted.map((assertion) => ({
+        classification: "source_assertion",
+        source_system: assertion.source_system,
+        source_field: assertion.field,
+        value: assertion.assertion,
+        source_system_id: assertion.source_native_id,
+        source_url: assertion.source_href,
+        recorded_at: assertion.provenance?.as_of || null,
+      })),
+      interpretation: {
+        classification: "cityscroll_interpretation",
+        status: "agree",
+        resolution: "agrees",
+        summary: `Sources agree on ${definition.label.toLowerCase()}.`,
+        comparison_values: asserted.map((assertion) => assertion.assertion),
+      },
+      derived_conclusion: null,
+    });
+  }
+  const label = definition.label.toLowerCase();
+  return Object.freeze({
+    version: "claim_layer_v1",
+    fact: definition.key,
+    label: definition.label,
+    assertions: asserted.map((assertion) => ({
+      classification: "source_assertion",
+      source_system: assertion.source_system,
+      source_field: assertion.field,
+      value: assertion.assertion,
+      source_system_id: assertion.source_native_id,
+      source_url: assertion.source_href,
+      recorded_at: assertion.provenance?.as_of || null,
+    })),
+    interpretation: {
+      classification: "cityscroll_interpretation",
+      status: "conflict",
+      resolution: "unresolved",
+      summary: `CityScroll interpretation: different ${label} values. Resolution unresolved (no derived conclusion).`,
+      comparison_values: asserted.map((assertion) => assertion.assertion),
+    },
+    derived_conclusion: null,
+  });
 }
 
 function joinRefs(join) {
@@ -249,10 +369,15 @@ export function buildCrossSourceEvidenceReceipt({
   factDefinitions = FACT_DEFINITIONS,
 } = {}) {
   const objectId = looseText(object?.procurement_id || object?.object_ref || object?.subject_ref);
-  const byRef = new Map((Array.isArray(observations) ? observations : [])
+  const attached = attachExactCorroboration(
+    object,
+    Array.isArray(observations) ? observations : [],
+    Array.isArray(acceptedJoins) ? acceptedJoins : [],
+  );
+  const byRef = new Map(attached.observations
     .map((observation) => [observationRef(observation), observation])
     .filter(([ref]) => ref));
-  const joins = (Array.isArray(acceptedJoins) ? acceptedJoins : [])
+  const joins = attached.acceptedJoins
     .filter((join) => acceptedJoin(join))
     .filter((join) => !objectId || !join?.procurement_id || join.procurement_id === objectId)
     .map((join) => ({
@@ -308,6 +433,7 @@ export function buildCrossSourceEvidenceReceipt({
       label: definition.label,
       status: agrees ? "agrees" : "disagrees",
       assertions,
+      claim_layer: claimLayerForFact(definition, assertions, agrees),
     });
   }
   if (!facts.length) return null;
@@ -359,18 +485,38 @@ function sourceLink(source) {
     : `${esc(source.source_name)}${id}`;
 }
 
-function factHtml(fact) {
-  const stateLabel = fact.status === "disagrees" ? "Sources disagree" : "Sources agree";
-  const assertionItems = fact.assertions.map((assertion) => {
-    const value = assertion.assertion == null ? assertion.assertion_label : assertion.assertion;
-    const metadata = [
-      assertion.provenance.coverage_label,
-      assertion.provenance.as_of ? `as of ${assertion.provenance.as_of}` : null,
-      assertion.field ? `publisher field: ${assertion.field}` : null,
-    ].filter(Boolean).join(" · ");
-    return `<li class="cross-source-evidence-assertion" data-source-system="${esc(assertion.source_system)}"><div><strong>${esc(assertion.source_name)}</strong> <span class="cross-source-evidence-assertion-value">${esc(value)}</span> <span class="cross-source-evidence-assertion-kind">source assertion</span></div><div class="cross-source-evidence-provenance">${sourceLink(assertion)}${metadata ? ` · ${esc(metadata)}` : ""}</div></li>`;
+function assertionBasis(assertion) {
+  return [
+    assertion.field ? `publisher field: ${assertion.field}` : null,
+    assertion.provenance?.as_of ? `as of ${assertion.provenance.as_of}` : null,
+  ].filter(Boolean).join(" · ");
+}
+
+function compactAgreementHtml(facts) {
+  const agrees = (Array.isArray(facts) ? facts : []).filter((fact) => fact.status === "agrees");
+  if (!agrees.length) return "";
+  const items = agrees.map((fact) => {
+    const values = fact.assertions
+      .filter((assertion) => assertion.assertion != null)
+      .map((assertion) => `<span data-claim="source_assertion" data-source-system="${esc(assertion.source_system)}"><strong>${esc(assertion.source_name)}</strong> ${esc(assertion.assertion)}</span>`)
+      .join(" · ");
+    return `<p class="cross-source-evidence-agreement" data-fact-key="${esc(fact.key)}">${esc(fact.label)} — ${values}</p>`;
   }).join("");
-  return `<article class="cross-source-evidence-fact cross-source-evidence-fact-${esc(fact.status)}" data-fact-key="${esc(fact.key)}"><h3>${esc(fact.label)} <span class="cross-source-evidence-state">${esc(stateLabel)}</span></h3><ul>${assertionItems}</ul>${fact.status === "disagrees" ? `<p class="cross-source-evidence-honesty">Each publisher's value is shown as reported; CityScroll has not selected a winning value.</p>` : ""}</article>`;
+  return `<div class="cross-source-evidence-agreements">${items}</div>`;
+}
+
+function disagreementHtml(fact) {
+  const assertionItems = fact.assertions
+    .filter((assertion) => assertion.assertion != null)
+    .map((assertion) => {
+      const basis = assertionBasis(assertion);
+      const coverage = assertion.provenance?.coverage_label || null;
+      const metadata = [coverage, basis].filter(Boolean).join(" · ");
+      return `<li class="cross-source-evidence-assertion" data-source-system="${esc(assertion.source_system)}" data-claim="source_assertion"><div><strong>${esc(assertion.source_name)}</strong> <span class="cross-source-evidence-assertion-value">${esc(assertion.assertion)}</span> <span class="cross-source-evidence-assertion-kind">source assertion</span></div><div class="cross-source-evidence-provenance">${sourceLink(assertion)}${metadata ? ` · ${esc(metadata)}` : ""}</div></li>`;
+    }).join("");
+  const summary = fact.claim_layer?.interpretation?.summary
+    || `CityScroll interpretation: different ${String(fact.label || "field").toLowerCase()} values. Resolution unresolved (no derived conclusion).`;
+  return `<article class="cross-source-evidence-fact cross-source-evidence-fact-disagrees" data-fact-key="${esc(fact.key)}" data-claim-layer="claim_layer_v1"><h3>${esc(fact.label)} <span class="cross-source-evidence-state">Sources disagree</span></h3><ul>${assertionItems}</ul><p class="cross-source-evidence-honesty" data-claim="cityscroll_interpretation">${esc(summary)}</p></article>`;
 }
 
 /** Render the receipt without creating a request-time source lookup. */
@@ -379,8 +525,14 @@ export function renderCrossSourceEvidenceReceipt(receipt) {
       || !Array.isArray(receipt.facts) || !receipt.facts.length) return "";
   const sourceNames = receipt.sources.map((source) => source.source_name).join(" and ");
   const methods = [...new Set((receipt.joins || []).map((join) => join.basis_label).filter(Boolean))].join("; ");
-  const sourceCards = receipt.sources.map((source) => `<li class="cross-source-evidence-source"><strong>${sourceLink(source)}</strong><span>${esc(source.coverage_label || source.coverage || "Coverage not stated")}</span><span>${source.as_of ? `As of ${esc(source.as_of)}` : "As-of date not published"}</span><span>Accepted join: ${esc((source.accepted_join_methods || []).map((method) => method.label).join("; ") || methods || "Exact identifier")}</span><span>Fields in receipt: ${esc((source.field_scope || []).join(", ") || "Not published")}</span></li>`).join("");
-  return `<section class="node-section node-card cross-source-evidence-receipt" data-cross-source-evidence-receipt="1" data-receipt-status="${esc(receipt.status)}" aria-labelledby="cross-source-evidence-heading"><h2 id="cross-source-evidence-heading">Cross-source evidence</h2><p class="cross-source-evidence-lead"><strong>Also recorded in ${esc(sourceNames)}</strong>. These records are linked by an accepted exact identifier; the fields below keep each publisher's assertion visible.</p><ul class="cross-source-evidence-sources">${sourceCards}</ul><div class="cross-source-evidence-facts">${receipt.facts.map(factHtml).join("")}</div></section>`;
+  const sourceCards = receipt.sources.map((source) => `<li class="cross-source-evidence-source"><strong>${sourceLink(source)}</strong><span>${esc(source.coverage_label || source.coverage || "Coverage not stated")}</span><span>${source.as_of ? `As of ${esc(source.as_of)}` : "As-of date not stated"}</span><span>Accepted join: ${esc((source.accepted_join_methods || []).map((method) => method.label).join("; ") || methods || "Exact identifier")}</span><span>Fields in receipt: ${esc((source.field_scope || []).join(", ") || "none named")}</span></li>`).join("");
+  const disagrees = receipt.facts.filter((fact) => fact.status === "disagrees");
+  const agrees = receipt.facts.filter((fact) => fact.status === "agrees");
+  const factsHtml = `${compactAgreementHtml(agrees)}${disagrees.map(disagreementHtml).join("")}`;
+  const lead = disagrees.length
+    ? `<strong>Also recorded in ${esc(sourceNames)}</strong>. These records are linked by an accepted exact identifier. Where publishers differ, each source assertion stays visible and the comparison stays unresolved.`
+    : `<strong>Also recorded in ${esc(sourceNames)}</strong>. These records are linked by an accepted exact identifier.`;
+  return `<section class="node-section node-card cross-source-evidence-receipt" data-cross-source-evidence-receipt="1" data-receipt-status="${esc(receipt.status)}" aria-labelledby="cross-source-evidence-heading"><h2 id="cross-source-evidence-heading">Cross-source evidence</h2><p class="cross-source-evidence-lead">${lead}</p><ul class="cross-source-evidence-sources">${sourceCards}</ul><div class="cross-source-evidence-facts">${factsHtml}</div></section>`;
 }
 
 export const crossSourceEvidenceReceiptFacts = FACT_DEFINITIONS;
