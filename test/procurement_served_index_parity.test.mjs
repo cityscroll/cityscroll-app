@@ -6,6 +6,7 @@ import edgeWorker from "../site/pages_edge.mjs";
 import { buildProcurementSearchDocuments } from "../site/procurement_search_producer.mjs";
 import { buildSharedProcurementReadModelShardArtifacts } from "../site/procurement_read_model_shards.mjs";
 import { buildProcurementArtifacts } from "../tools/build_shared_procurement_read_model.mjs";
+import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
 
 const spine = JSON.parse(readFileSync(
   new URL("../site/data/procurement_spine_sources.json", import.meta.url),
@@ -19,9 +20,9 @@ const mtaSources = JSON.parse(readFileSync(
   new URL("../site/data/mta_procurement_sources.json", import.meta.url),
   "utf8",
 ));
-const indexed = JSON.parse(readFileSync(
-  new URL("../worker/src/data/keyword_search_index.json", import.meta.url),
-  "utf8",
+const indexed = readKeywordSearchIndexFromShards(new URL(
+  "../worker/src/data/keyword_search_index_shards/manifest.json",
+  import.meta.url,
 ));
 
 const { model, browse } = buildProcurementArtifacts(spine, awards, { mtaSources });

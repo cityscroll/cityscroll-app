@@ -14,6 +14,7 @@ import {
   formatCoherenceFindings,
 } from "./lib/procurement_index_coherence.mjs";
 import { readSharedProcurementReadModel } from "./lib/procurement_read_model_io.mjs";
+import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
 
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 
@@ -29,6 +30,8 @@ function readTarget(relativeOrAbsolute, fallbackRelative) {
     path,
     value: path === resolve(ROOT, READ_MODEL_PATH)
       ? readSharedProcurementReadModel(path)
+      : path === resolve(ROOT, KEYWORD_INDEX_PATH)
+        ? readKeywordSearchIndexFromShards(path)
       : JSON.parse(readFileSync(path, "utf8")),
   };
 }

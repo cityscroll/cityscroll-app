@@ -428,9 +428,7 @@ function buildSearchFacts() {
       path: indexPath,
       schema: index.match(/\bschema:\s*["'](cityscroll\.keyword_search_index(?:\.[^"']+)?)["']/)?.[1] ?? null,
       families,
-      output: index.match(/["']([^"']*keyword_search_index\.json)["']/)?.[1]
-        ? "worker/src/data/keyword_search_index.json"
-        : null,
+      output: "worker/src/data/keyword_search_index_shards/manifest.json",
       source: source(indexPath, lineOf(index, "families:")),
     },
     producers,

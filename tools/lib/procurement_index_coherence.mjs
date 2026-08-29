@@ -15,7 +15,7 @@ export const SPINE_SOURCE_PATH = "site/data/procurement_spine_sources.json";
 export const AWARDS_SOURCE_PATH = "site/data/ocp_awards_warehouse_lookup.json";
 export const MTA_SOURCE_PATH = "site/data/mta_procurement_sources.json";
 export const READ_MODEL_PATH = "site/data/shared_procurement_read_model.json";
-export const KEYWORD_INDEX_PATH = "worker/src/data/keyword_search_index.json";
+export const KEYWORD_INDEX_PATH = "worker/src/data/keyword_search_index_shards/manifest.json";
 
 export function sha256Bytes(value) {
   return createHash("sha256").update(value).digest("hex");

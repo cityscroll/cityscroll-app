@@ -11,9 +11,13 @@ import {
   resetEntityIntelligenceReadModelCache,
 } from "../src/lib/entity_intelligence_read_model.mjs";
 import { entityIntelligenceD1 } from "./helpers/entity_intelligence_d1.mjs";
+import { readKeywordSearchIndexFromShards } from "../../site/keyword_search_index_shards.mjs";
 
 const SCHEMA = readFileSync(new URL("../migrations/0025_search_and_ocp_read_models.sql", import.meta.url), "utf8");
-const keyword = JSON.parse(readFileSync(new URL("../src/data/keyword_search_index.json", import.meta.url), "utf8"));
+const keyword = readKeywordSearchIndexFromShards(new URL(
+  "../../worker/src/data/keyword_search_index_shards/manifest.json",
+  import.meta.url,
+));
 const ocp = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 
 function d1() {
