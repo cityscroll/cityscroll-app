@@ -7,9 +7,10 @@
     "request_time_source_reads": false
   },
   "ci_time_budget": {
-    "seconds": 900,
+    "seconds": 1200,
+    "mode": "cold-build",
     "scope": "derived-json-build-boundary",
-    "basis": "Measured full Pages build upper bound of 852.30 seconds"
+    "basis": "Measured cold build upper bound of 1062 seconds with 138 seconds headroom"
   },
   "source_snapshot": {
     "path": "warehouse/manifests/wh02_load_manifest.json",

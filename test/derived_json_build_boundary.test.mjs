@@ -15,7 +15,9 @@ test("derived JSON manifest pins static delivery and a retained source snapshot"
   assert.equal(manifest.delivery.public_tree, "site/data");
   assert.equal(manifest.delivery.mode, "materialized-static");
   assert.equal(manifest.delivery.request_time_source_reads, false);
-  assert.equal(manifest.ci_time_budget.seconds, 900);
+  assert.equal(manifest.ci_time_budget.seconds, 1200);
+  assert.equal(manifest.ci_time_budget.mode, "cold-build");
+  assert.ok(manifest.ci_time_budget.seconds >= 1062);
   assert.equal(manifest.ci_time_budget.scope, "derived-json-build-boundary");
   assert.match(manifest.source_snapshot.sha256, /^[a-f0-9]{64}$/);
   assert.ok(manifest.source_snapshot.required_receipts.length >= 4);
