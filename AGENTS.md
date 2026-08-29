@@ -5,6 +5,11 @@
   raw/Parquet artifacts are absent locally. `warehouse/scripts/ingest.py --resume` revalidates
   stage metadata and checkpoint page hashes before reuse; bulk runs require a real headroom probe.
 
+- **WH-04 ER replay:** `warehouse/lib/er_batch.mjs` pins warehouse batches to the WH-02 OCP
+  snapshot, resumes only after checkpoint hash/limit/stage revalidation, and keeps unresolved
+  or rejected pairs out of identity. Promotion past the 200-row proof stays blocked.
+  `warehouse/scripts/verify_er_batch_receipt.py --check` validates the committed receipt.
+
 - **Action Path v0:** `site/action_path_v0.mjs` is the pure, actorless projection over the
   authoritative `site/action_registry.js` action object. It requires provenance-bearing evidence,
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
@@ -1392,15 +1397,22 @@ taskpolicy wrap as ingest):
 python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
 warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --from-fixture --limit 25 --force-headroom
 warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200   # warehouse OCP slice
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200 --resume
 warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/er_entity_links_verify.sql
 ```
+
+Warehouse replay reads the retained WH-02 OCP snapshot (not a live API slice),
+writes a stage checkpoint, and refuses `--resume` when the snapshot hash or
+limit changed. Accepted `same` pair links keep evidence; unresolved and
+rejected pairs stay off identity. The 200-row cap remains; a wider run needs a
+precision review beyond that proof.
 
 Materialized views: `er_entity_link`, `er_canonical_entity`, `er_resolution_run`,
 `er_pair_receipt`, `er_ocp_vendor_resolved`. Pure lib:
 `warehouse/lib/er_batch.mjs`. Proof:
 `warehouse/receipts/proof/wh04_er_batch_latest.json`. Verify:
-`node --test test/warehouse_er_batch.test.mjs`.
+`node --test test/warehouse_er_batch.test.mjs && python3 warehouse/scripts/verify_er_batch_receipt.py --check`.
 
 ## Map exploration surface (cs-geo-04)
 

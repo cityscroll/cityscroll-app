@@ -542,8 +542,11 @@ warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py \
   --from-fixture --limit 25 --force-headroom
 
 # Incremental warehouse slice (after WH-01/02 OCP load; hard limit 200)
-warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200 \
-  --review-receipt warehouse/receipts/proof/wh04_er_batch_live_review_2026-08-05.json
+# Pins to the committed WH-02 OCP bulk snapshot, not a live API fetch.
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200
+
+# Resume an interrupted snapshot-pinned stage after hash revalidation
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200 --resume
 
 warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/er_entity_links_verify.sql
@@ -555,6 +558,9 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
 | **Headroom gate** | Refuses when CONSTRAINED unless `--force-headroom` (fixture only) |
 | **taskpolicy / nice** | Warehouse slices go through `headroom.py wrap`; tiny fixture may skip wrap |
 | **Live OCP hard limit** | 200 rows; neither headroom override nor another flag widens it |
+| **Snapshot pin** | Warehouse mode binds `source_snapshot_hash` to the WH-02 OCP bulk receipt |
+| **Resume** | `--resume` reuses stage JSONL only when checkpoint hash, version, and limit match |
+| **Identity publication** | Unresolved / rejected pairs stay in `er_pair_receipt`; they never become identity |
 | **DuckDB threads** | 1 on materialize |
 
 ### Materialized views
@@ -568,10 +574,12 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
 | `er_ocp_vendor_resolved` | OCP awards LEFT JOIN vendor links (when OCP view present) |
 
 Parquet under `warehouse/parquet/er_*/` (gitignored). The proof receipt at
-`warehouse/receipts/proof/wh04_er_batch_latest.json` copies the bounded source
-fetch metadata, runtime, candidate/accept/ambiguity counts, and an optional
-source-hash-gated quality review. The 200-row evidence is not a full-corpus
-precision or resource-safety claim.
+`warehouse/receipts/proof/wh04_er_batch_latest.json` copies the snapshot pin,
+runtime, candidate/accepted/unresolved/rejected counts, identity publication
+gate, and an optional source-hash-gated quality review. Promotion past the
+200-row proof stays blocked. Verify with
+`python3 warehouse/scripts/verify_er_batch_receipt.py --check`. The 200-row
+evidence is not a full-corpus precision or resource-safety claim.
 
 Pure lib: `warehouse/lib/er_batch.mjs` (imports `entity_resolution/` +
 `worker/src/lib/entity_link.mjs` exact-stem builder). Identity is never
