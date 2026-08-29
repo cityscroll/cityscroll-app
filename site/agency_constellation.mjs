@@ -30,6 +30,7 @@ import {
 } from "./civic_time_ledger.mjs";
 import { buildAgencyEdgeSummary } from "./agency_constellation_model.mjs";
 import { buildEntityProfileReportTarget, renderReportIssueAffordance } from "./report_issue.mjs";
+import { renderPetitionHandoff } from "./rules_petition.mjs";
 
 const clean = (value, max = 500) => String(value ?? "")
   .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -230,8 +231,13 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     effectiveAsOf,
     showAsOf,
   });
+  const petitionAction = view.petition_handoff?.state === "ready"
+    && view.petition_handoff?.official?.form_url
+    ? { kind: "link", label: "Petition this agency", href: view.petition_handoff.official.form_url, primary: false, className: "civic-object-action" }
+    : null;
   const primaryActions = renderNodeActions([
     { kind: "link", label: "Follow this agency", href: view.follow_href, primary: true, className: "civic-object-action" },
+    petitionAction,
     primaryRecordAction(surfaceEdgeSummary),
     { kind: "link", label: "Connection evidence", href: "#edge-provenance", className: "civic-object-action agency-evidence-action" },
   ].filter(Boolean), {
@@ -253,6 +259,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
     effectiveAsOf ? `Showing records as of ${effectiveAsOf}` : (updatedDay ? `Records updated ${updatedDay}` : ""),
     showAsOf ? `<a href="${esc(asOfHref(view.path, DEMO_AS_OF_DAY))}" data-ctl-demo-as-of>As of ${DEMO_AS_OF_DAY}</a>` : "",
   ].filter(Boolean).join(" <span aria-hidden=\"true\">·</span> ");
+  const petition = renderPetitionHandoff(view.petition_handoff, { mode: "agency" });
   return gateNodePageRender(`<!doctype html>
 <html lang="en">
 <head>
@@ -277,6 +284,7 @@ export function renderAgencyConstellationDocument(view, options = {}) {
       ${metadata ? `<p class="agency-hero-meta">${metadata}</p>` : ""}
     </header>
     ${primaryActions}
+    ${petition}
     ${identityReport ? `<div class="agency-identity-report civic-object-actions">${identityReport}</div>` : ""}
     ${initialLedger}
     <div data-civic-object-deferred data-civic-object-deferred-state="loading" role="status">Loading public relationships…</div>

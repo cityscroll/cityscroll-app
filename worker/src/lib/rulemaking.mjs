@@ -6,6 +6,11 @@ import {
 } from "../../../site/rules_phase_spine.mjs";
 import { rulesCardInteractionProjection } from "../../../site/rules_card_interaction.mjs";
 import { buildRuleVersionsProjection } from "../../../site/rule_versions.mjs";
+import { resolveAgencyIdentity } from "../../../site/agency_identity.mjs";
+import {
+  NYC_RULES_PETITION_SOURCES,
+  buildPetitionHandoff,
+} from "../../../site/rules_petition.mjs";
 
 export const RULEMAKING_OBJECT_SCHEMA = "cityscroll.rulemaking.v1";
 
@@ -153,6 +158,27 @@ function ruleVersionDocuments(rows, options = {}) {
   });
 }
 
+function petitionAgencyResolution(row) {
+  const explicit = row?.agency_resolution || row?.nyc_rules?.agency_resolution;
+  if (explicit) return explicit;
+  // A City Record agency label is discovery evidence, not an explicit
+  // CityScroll↔NYC Rules resolution. Only the NYC Rules agency field may
+  // populate this fallback, and its page URL remains the source anchor.
+  const nycRules = row?.nyc_rules;
+  const identity = resolveAgencyIdentity(nycRules?.agency_name || nycRules?.agency_abbr);
+  if (!identity?.matched || !identity.canonical_id || !identity.canonical_name) return null;
+  const sourceUrl = nycRules?.url;
+  if (!sourceUrl) return null;
+  return {
+    matched: true,
+    canonical_id: identity.canonical_id,
+    canonical_name: identity.canonical_name,
+    source_system: "nyc_rules",
+    source_url: sourceUrl,
+    basis: "cityscroll_nyc_rules_agency_name_exact_crosswalk_v1",
+  };
+}
+
 function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} } = {}) {
   const ids = new Set(rows.map(recordRequestId).filter(Boolean));
   if (ids.size < 2 || !rows.every(isGrounded)) return null;
@@ -174,6 +200,11 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
   });
   const documents = sourceDocuments(rows, nycRules);
   const followHref = exactFollowingHref(rows);
+  const petitionHandoff = buildPetitionHandoff({
+    agency_resolution: petitionAgencyResolution(primary),
+    contact: primary?.petition_contact || nycRules?.petition_contact,
+    target: "amend_repeal",
+  });
   const notices = rows
     .map((row) => {
       const id = recordRequestId(row);
@@ -211,6 +242,7 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
     comment_channel_url: primary?.comment_channel_url,
     testimony_url: primary?.testimony_url,
     petition_url: primary?.petition_url,
+    petition_handoff: petitionHandoff,
     follow_href: followHref,
     history_url: `/rules/${encodeURIComponent(subject)}/`,
   });
@@ -236,6 +268,7 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
     version_pairs: versionProjection.pairs,
     version_coverage: versionProjection.coverage,
     interaction,
+    petition_handoff: petitionHandoff,
     history_timeline: phaseView.history_timeline,
     // Subject-level following is not replayable by the rules scope compiler.
     // Keep the exact notice target available until CAP-2 adds that capability.

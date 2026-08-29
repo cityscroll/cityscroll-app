@@ -490,8 +490,9 @@ test("shared agency template leads with compact actions and connected-record car
   assert.doesNotMatch(html, /class="node-pivot civic-object-pivot"/);
   assert.match(html, /class="agency-hero-meta"/);
   assert.match(primaryActions, /aria-label="Primary agency actions"/);
-  assert.equal((primaryActions.match(/<a class="node-action/g) || []).length, 3);
+  assert.equal((primaryActions.match(/<a class="node-action/g) || []).length, 4);
   assert.match(primaryActions, />Follow this agency<\/a>/);
+  assert.match(primaryActions, />Petition this agency<\/a>/);
   assert.match(primaryActions, />View contracts<\/a>/);
   assert.match(primaryActions, /href="#edge-provenance"[^>]*>Connection evidence<\/a>/);
   assert.doesNotMatch(primaryActions, /Expected mandate events|Report mandates|Rulemaking mandates|Interactive profile|Copy link|Print|Download/);
