@@ -19,6 +19,7 @@ import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labe
 import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 import { renderCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
+import { renderProcurementProcessEvents } from "./procurement_process_events.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -45,18 +46,23 @@ function factsFor(object, observations) {
     .map((entry) => [entry?.source_observation_ref, entry]));
   const observed = (object?.source_observation_refs || []).map((ref) => index.get(ref)).filter(Boolean);
   const rows = snapshotsForPublicAmount(object, observed);
-  const first = (...fields) => {
-    for (const row of rows) for (const field of fields) {
+  const vendorRows = observed
+    .filter((entry) => !(entry.source_system === "passport_public_rfx"
+      && String(entry.snapshot?.rfx_status || "").trim().toLowerCase() === "selections made"))
+    .map((entry) => entry.snapshot || {});
+  const firstIn = (sourceRows, ...fields) => {
+    for (const row of sourceRows) for (const field of fields) {
       const value = clean(row?.[field]);
       if (value) return value;
     }
     return null;
   };
+  const first = (...fields) => firstIn(rows, ...fields);
   return {
     title: first("short_title", "title", "description")
       || `Contract ${object?.identity_keys?.contract_ids?.[0] || object?.identity_keys?.epins?.[0] || "record"}`,
     agency: first("agency_name", "agency"),
-    vendor: first("vendor_name", "vendor", "prime_vendor", "payee_name"),
+    vendor: firstIn(vendorRows, "vendor_name", "vendor", "prime_vendor", "payee_name"),
     amount: formatAmount(first("contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount")),
     contractNumber: first("contract_number", "transaction_number", "contract_id"),
     awardDate: first("award_date"),
@@ -265,6 +271,7 @@ ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
 ${renderProcurementObjectCoverageHtml(object, observations)}
+${renderNodeSection({ heading: "Observed process state", body: renderProcurementProcessEvents(object?.process_events) })}
 ${renderNodeSection({ heading: "Observed stages", body: stageList(object) })}
 ${renderNodeProvenance({ heading: sourceItems.length ? "Official records" : "", sourceItems })}
 </main>${renderNodeFooter({})}</body></html>`;
