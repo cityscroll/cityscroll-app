@@ -1,6 +1,24 @@
 # Every entry is path + exact line number + base64 of the exact line + a reason comment.
 # The encoded line makes an allowed exception narrow: moving, changing, or adding a
 # matching line requires an explicit review and a new allowlist entry.
+architecture/backtests/frozen-set.json	8	ICAgICAgImNhcmQiOiAiY2l0eXNjcm9sbC1rcmFrZW4vY3MtbGl2aW5nLWFyY2hpdGVjdHVyZS1vYnNlcnZlci1sYW5kLWFjdGlvbi1jb2xsYXBzZSIs	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/frozen-set.json	17	ICAgICAgImNhcmQiOiAiY2l0eXNjcm9sbC1rcmFrZW4vY3MtbGl2aW5nLWFyY2hpdGVjdHVyZS1sYTExLWhpc3RvcnktYmFja3Rlc3QiLA==	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/frozen-set.json	26	ICAgICAgImNhcmQiOiAiY2l0eXNjcm9sbC1rcmFrZW4vY3MtbGl2aW5nLWFyY2hpdGVjdHVyZS1sYTExLWhpc3RvcnktYmFja3Rlc3QiLA==	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/frozen-set.json	35	ICAgICAgImNhcmQiOiAiY2l0eXNjcm9sbC1rcmFrZW4vY3MtbGl2aW5nLWFyY2hpdGVjdHVyZS1sYTExLWhpc3RvcnktYmFja3Rlc3QiLA==	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/land-action-collapse.json	5	ICAiY2FyZCI6ICJjaXR5c2Nyb2xsLWtyYWtlbi9jcy1saXZpbmctYXJjaGl0ZWN0dXJlLW9ic2VydmVyLWxhbmQtYWN0aW9uLWNvbGxhcHNlIiw=	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/pr-1056-exams-eligibility.json	6	sha256:4fdd7e01d3f6d29f1fb1917d7f245609d5f6d831096f16d16746db150416fabd	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/pr-1058-committees-search.json	6	sha256:4fdd7e01d3f6d29f1fb1917d7f245609d5f6d831096f16d16746db150416fabd	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+architecture/backtests/pr-1076-constellation-ceiling.json	6	sha256:4fdd7e01d3f6d29f1fb1917d7f245609d5f6d831096f16d16746db150416fabd	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+data/kraken-full-reconcile/undelivered.md	1	IyBLcmFrZW4gZnVsbCByZWNvbmNpbGUg4oCUIGdlbnVpbmVseSB1bmRlbGl2ZXJlZA==	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/ebcg-er-accuracy/receipt.json	3	ICAidGFzayI6ICJjaXR5c2Nyb2xsLWtyYWtlbi9lYmNnLTAxLWVyLWFjY3VyYWN5LWNvdmVyYWdlIiw=	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/p8-digest-watch-parity.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/person-ontology/cbo-c12-person-route-vocabulary.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/person-ontology/cbo-c13-person-identity-review.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/person-ontology/cbo-c14-keyed-person-source-adapters.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/pin-family-verify/p7-verify-pin-family-mismatches.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+docs/evidence/pin-sibling-discovery/p11-recent-awards-discovery-ux.md	2	Y2FyZF9zdGFuZGFyZDoga3Jha2VuLXYx	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+test/architecture_land_action_collapse.test.mjs	51	ICAgICJjaXR5c2Nyb2xsLWtyYWtlbi9jcy1saXZpbmctYXJjaGl0ZWN0dXJlLW9ic2VydmVyLWxhbmQtYWN0aW9uLWNvbGxhcHNlIiw=	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
+tools/build_constellation_er_accuracy_receipt.mjs	60	ICAgIHRhc2s6ICJjaXR5c2Nyb2xsLWtyYWtlbi9lYmNnLTAxLWVyLWFjY3VyYWN5LWNvdmVyYWdlIiw=	# [K] Banned vocabulary already present in retained evidence; preserve this exact line until owner review.
 docs/evidence/calendar-contract/before/meetings-feed.ics	*	*	# [B] Historical feed evidence; every line preserves the stable calendar namespace for provenance.
 test/fixtures/calendar-contract/keyword-agency-feed.ics	*	*	# [B] Historical feed fixture; preserve the stable calendar namespace so subscribers do not duplicate events.
 test/fixtures/calendar-contract/meeting-feed.ics	*	*	# [B] Historical feed fixtures; preserve the stable calendar namespace so subscribers do not duplicate events.
