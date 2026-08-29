@@ -129,6 +129,20 @@ proof receipt (`receipts/proof/*_bulk_latest.json`), small `bulk_sample.csv`,
 and the load manifest (sha256 + row counts + remaining queue). Re-run the
 commands above on Mini or a green MacBook to materialize bulk data.
 
+Verify the durable manifest and receipts from a normal checkout with:
+
+```bash
+python3 warehouse/scripts/verify_bulk_receipts.py --check
+```
+
+The check validates source URL/clock/checksum, raw and Parquet counts, the
+recorded schema, catalog table, CPU policy, and Git tracking policy. If the
+ignored raw/Parquet files are not retained on the current machine, it reports
+that fact as a warning; it never presents receipt metadata as a local snapshot.
+On `--resume`, raw and Parquet metadata are revalidated before a stage is
+skipped, and a failed capped conversion stops rather than falling back to an
+uncapped conversion.
+
 **Do not** start the next dataset until headroom is still green after the
 previous pack. Loaded: OCP + `zap-projects` + `zap-bbl`. Next: `city-record`.
 
