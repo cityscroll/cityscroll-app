@@ -1,0 +1,142 @@
+{
+  "schema": "cityscroll.mta_procurement_sources.v1",
+  "generated_at": "2026-08-28T16:00:00.000Z",
+  "retrieval": {
+    "annual_contracts": "2026-08-28T15:58:00.000Z",
+    "cd_awards": "2026-08-28T15:59:00.000Z"
+  },
+  "annual_snapshot_metadata": {
+    "source_dataset": "twsw-2mqa",
+    "source_url": "https://data.ny.gov/Transportation/MTA-Procurements-Beginning-2018/twsw-2mqa",
+    "dataset_name": "MTA Procurements: Beginning 2018",
+    "rows_updated_at": 1775052776,
+    "retrieval_mode": "socrata_json_export",
+    "corpus_semantics": "annual_contract_corpus_not_live_feed"
+  },
+  "cd_awards_snapshot_metadata": {
+    "source_dataset": "mta-cd-recent-awards",
+    "source_url": "https://www.mta.info/agency/construction-and-development/contracting/recent-awards",
+    "page_updated": "2026-08-12",
+    "award_year": "2026"
+  },
+  "annual_contracts": [
+    {
+      "source_record_id": "8000000863",
+      "content_hash": "4b3b6e1f168899d4ba999aa64801d3ea1a3d4ea3854d5670fbb8701112c2bfc7",
+      "retrieved_at": "2026-08-28T15:58:00.000Z",
+      "raw_snapshot": {
+        "fiscal_year_end_date": "2018-12-31T00:00:00.000",
+        "vendor_name": "ARUP JACOBS JV",
+        "transaction_number": "8000000863",
+        "procurement_description": "PMC for LIRR 3T",
+        "status": "Open",
+        "type_of_procurement": "Consulting Services",
+        "award_process": "Authority Contract - Competitive Bid",
+        "award_date": "2017-12-26T00:00:00.000",
+        "begin_date": "2018-06-19T00:00:00.000",
+        "end_date": "2018-12-31T00:00:00.000",
+        "contract_amount": "65333757.00",
+        "amount_expended_for_fiscal_year": "11081279.66",
+        "amount_expended_to_date": "11081279.66",
+        "current_or_outstanding_balance": "54252477.34",
+        "number_of_bids_or_proposals_received": "4",
+        "vendor_is_nys_or_fbe": "NYS",
+        "vendor_is_a_mwbe": "N",
+        "solicited_mwbe": "Y",
+        "number_of_mwbe_proposals": "0",
+        "exempt_from_article_4c": "N",
+        "address_line_1": "501 N BROADWAY",
+        "city": "ST LOUIS",
+        "state": "MO",
+        "postal_code": "63102",
+        "country": "USA"
+      },
+      "normalized_snapshot": {
+        "fiscal_year_end_date": "2018-12-31T00:00:00.000",
+        "vendor_name": "ARUP JACOBS JV",
+        "transaction_number": "8000000863",
+        "procurement_description": "PMC for LIRR 3T",
+        "status": "Open",
+        "type_of_procurement": "Consulting Services",
+        "award_process": "Authority Contract - Competitive Bid",
+        "award_date": "2017-12-26T00:00:00.000",
+        "begin_date": "2018-06-19T00:00:00.000",
+        "end_date": "2018-12-31T00:00:00.000",
+        "contract_amount": 65333757,
+        "source_system": "mta_annual_contracts",
+        "source_dataset": "twsw-2mqa",
+        "source_record_id": "8000000863",
+        "observation_type": "contract",
+        "publisher_institution_id": "metropolitan-transportation-authority",
+        "procuring_institution_id": "long-island-rail-road",
+        "source_agency_label": "Long Island Rail Road",
+        "agency_name": "Long Island Rail Road",
+        "contract_id": "8000000863",
+        "title": "PMC for LIRR 3T",
+        "official_source_url": "https://data.ny.gov/Transportation/MTA-Procurements-Beginning-2018/twsw-2mqa",
+        "retrieved_at": "2026-08-28T15:58:00.000Z",
+        "snapshot_metadata": {
+          "source_dataset": "twsw-2mqa",
+          "dataset_name": "MTA Procurements: Beginning 2018",
+          "rows_updated_at": 1775052776,
+          "retrieval_mode": "socrata_json_export",
+          "corpus_semantics": "annual_contract_corpus_not_live_feed"
+        },
+        "mta_parent_institution_id": "metropolitan-transportation-authority",
+        "entity_refs_all": [
+          "agency:id:long-island-rail-road",
+          "agency:id:metropolitan-transportation-authority"
+        ]
+      }
+    }
+  ],
+  "cd_awards": [
+    {
+      "source_record_id": "A37703",
+      "content_hash": "1cd8cb6a8645a8e0164009f9c8b97c65be039351b91d458bf2a9527b872bf3aa",
+      "retrieved_at": "2026-08-28T15:59:00.000Z",
+      "raw_snapshot": {
+        "page_url": "https://www.mta.info/agency/construction-and-development/contracting/recent-awards",
+        "award_year": "2026",
+        "contract_number": "A37703",
+        "title": "A37703 Flood Protection of Selected NYCT Vulnerabilities in the Boroughs of Brooklyn, Manhattan and Queens",
+        "firm": "Gramercy Group, Inc.",
+        "award_date": "July 20, 2026",
+        "award_amount": "$10,713,000",
+        "enter_goals": "No Goals"
+      },
+      "normalized_snapshot": {
+        "source_system": "mta_cd_awards",
+        "source_dataset": "mta-cd-recent-awards",
+        "source_record_id": "A37703",
+        "observation_type": "award",
+        "publisher_institution_id": "metropolitan-transportation-authority",
+        "procuring_institution_id": "mta-construction-and-development",
+        "source_agency_label": "MTA Construction & Development",
+        "agency_name": "MTA Construction & Development",
+        "contract_number": "A37703",
+        "contract_id": "A37703",
+        "title": "A37703 Flood Protection of Selected NYCT Vulnerabilities in the Boroughs of Brooklyn, Manhattan and Queens",
+        "procurement_description": "A37703 Flood Protection of Selected NYCT Vulnerabilities in the Boroughs of Brooklyn, Manhattan and Queens",
+        "vendor_name": "Gramercy Group, Inc.",
+        "award_date": "July 20, 2026",
+        "award_amount": 10713000,
+        "contract_amount": 10713000,
+        "award_year": "2026",
+        "official_source_url": "https://www.mta.info/agency/construction-and-development/contracting/recent-awards",
+        "retrieved_at": "2026-08-28T15:59:00.000Z",
+        "snapshot_metadata": {
+          "source_dataset": "mta-cd-recent-awards",
+          "source_url": "https://www.mta.info/agency/construction-and-development/contracting/recent-awards",
+          "page_updated": "2026-08-12",
+          "award_year": "2026"
+        },
+        "mta_parent_institution_id": "metropolitan-transportation-authority",
+        "entity_refs_all": [
+          "agency:id:mta-construction-and-development",
+          "agency:id:metropolitan-transportation-authority"
+        ]
+      }
+    }
+  ]
+}
