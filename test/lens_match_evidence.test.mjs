@@ -18,7 +18,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // AND contract_amount >= 1000 AND contract_amount < 10000000000, $q=childcare) that this notice is
 // a real, current result -- not a hypothetical.
 //
-//   node --test test/lens_match_evidence.test.mjs   (from the crol-list/ dir)
+//   node --test test/lens_match_evidence.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

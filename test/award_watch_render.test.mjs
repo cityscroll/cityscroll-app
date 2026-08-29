@@ -4,7 +4,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // notice id (never on the agency-level, notice-less call site), and the preview panel tells
 // the reader plainly what's about to happen — or that nothing's watched yet.
 //
-//   node --test test/award_watch_render.test.mjs   (from the crol-list/ dir)
+//   node --test test/award_watch_render.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

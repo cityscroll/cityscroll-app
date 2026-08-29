@@ -106,6 +106,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/civic_institution.test.mjs` and `test/civic_institution_profile.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
+- **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local
+  check-runner gate; retained compatibility and historical lines are documented in
+  `.github/legacy-name-allowlist.txt`, with focused proof in
+  `test/stale_name_guard.test.mjs`.
 
 - **Public-site generation postcondition:** `tools/build_public_site.mjs` calls
   `tools/generation_output_guard.mjs` after copying the public tree. The guard requires a
@@ -1972,7 +1976,7 @@ person hub / lobby / CFB map to **Officials**, not Land (avoid bare `district` i
 rule). Coverage prefers `join_measurement.verdict` when present. Blocked-source nodes are
 declared only in `site/data/gap_taxonomy.json` under `partnership_blocked_sources`;
 downstream authenticated-desk consumers should regenerate from `data-source-graph-dir`
-after updating their crol-list revision. `DATA_SOURCE_GRAPH_SCHEMA_VERSION` in
+after updating their repository revision. `DATA_SOURCE_GRAPH_SCHEMA_VERSION` in
 `tools/data_source_graph.mjs` and `data/data-source-graph-desk-contract.v1.json`
 are the desk pin: bump both together, and do not ship a producer version the
 authenticated desk consumer has not added to its supported set. This repository

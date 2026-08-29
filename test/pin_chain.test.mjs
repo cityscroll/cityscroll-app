@@ -8,7 +8,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // length 1 for the renewal notice, and fired the "only this notice is on record so far" note
 // even though earlier/later stages existed under the base PIN.
 //
-//   node --test test/pin_chain.test.mjs   (from the crol-list/ dir)
+//   node --test test/pin_chain.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

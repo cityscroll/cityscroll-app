@@ -5,7 +5,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // contract awards published") for an agency that simply doesn't publish awards. Both call sites
 // now go through a shared numeric guard and fall back to an honest sentence instead.
 //
-//   node --test           (from the crol-list/ dir)
+//   node --test           (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

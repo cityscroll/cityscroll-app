@@ -6,7 +6,7 @@
 // uses) so a genuinely new award notifies once, a re-surfacing one never re-notifies, and a
 // malformed watch or a lookup failure never breaks digest compilation.
 //
-//   node --test test/award_watch.test.mjs   (from crol-list/worker/)
+//   node --test test/award_watch.test.mjs   (from worker/)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

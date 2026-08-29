@@ -25,7 +25,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 //   DHS "Homeless Shelter", PIN base 07106R0045CNV, agency "Homeless Services"
 //   Sanitation blanket code 82714CC00040, agency "Sanitation" (6 of 21 real same-day rows)
 //
-//   node --test test/lineage_indicator.test.mjs   (from the crol-list/ dir)
+//   node --test test/lineage_indicator.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

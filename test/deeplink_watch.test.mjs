@@ -13,7 +13,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // worker/test/digest_match_evidence_render.test.mjs's comptrollerRow so both halves of the fix
 // are proven against the identical real-world case.
 //
-//   node --test test/deeplink_watch.test.mjs   (from the crol-list/ dir)
+//   node --test test/deeplink_watch.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -4,7 +4,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // showAgency()/showVendor() forecast blocks into one shared builder, and routing every string
 // through t() — is provably a MOVE, not a rewrite of what a forecast timeline item renders.
 //
-//   node --test test/forecast_render.test.mjs   (from the crol-list/ dir)
+//   node --test test/forecast_render.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

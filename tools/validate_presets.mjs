@@ -70,7 +70,7 @@ async function fetchJSON(url, options) {
     try {
       const response = await fetch(url, {
         ...options,
-        headers: { "User-Agent": "crol-list-preset-validation/1.0", ...options?.headers },
+        headers: { "User-Agent": "cityscroll-preset-validation/1.0", ...options?.headers },
         signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
       });
       if (!response.ok) {

@@ -1,4 +1,4 @@
-// Prior-cycle / near-match precompute + cache (crol-list Phase 1a).
+// Prior-cycle / near-match precompute + cache (CityScroll Phase 1a).
 //
 // Moves the two live SODA calls that index.html's priorCycleAwards()/nearMatchCandidates() fired
 // from the browser off the client and into the worker. For a given notice we run the SAME two

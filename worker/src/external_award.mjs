@@ -1,4 +1,4 @@
-// Awards published outside the City Record — precompute + cache + endpoint (crol-list).
+// Awards published outside the City Record — precompute + cache + endpoint (CityScroll).
 //
 // Public authorities post solicitations in the City Record but file their awards elsewhere as
 // open data. AWARD_SOURCE_REGISTRY (lib/external_award.mjs) records, per agency, whether an open

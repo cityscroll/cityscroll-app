@@ -295,7 +295,7 @@ async function publishHeartbeat(stateDir, now, dueJobs) {
 async function main() {
   const jobs = await loadJobs();
   const stateDir = arg("--state-dir") || process.env.CROL_EXTERNAL_SCHEDULE_STATE_DIR || join(ROOT, ".external-schedule-state");
-  const github = createGitHubClient({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN, owner: "cityscroll", repo: "crol-list", apiBase: process.env.GITHUB_API_URL });
+  const github = createGitHubClient({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN, owner: "cityscroll", repo: "cityscroll-app", apiBase: process.env.GITHUB_API_URL });
   const replayBefore = await replayOutbox({ stateDir, github });
   const selected = arg("--job");
   const now = new Date();

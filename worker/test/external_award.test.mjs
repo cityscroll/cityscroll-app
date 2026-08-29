@@ -9,7 +9,7 @@
 // Before this feature the two live fetches happened in the browser; an unguarded server port would
 // have cached a transient failure as a confident "no awards".
 //
-//   node --test test/external_award.test.mjs   (from crol-list/worker/)
+//   node --test test/external_award.test.mjs   (from worker/)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

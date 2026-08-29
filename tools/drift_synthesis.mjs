@@ -74,7 +74,7 @@ function buildPrompt({ repo, prNumber, inventory, diff }) {
     `REPO: ${repo}`,
     `PR NUMBER: ${prNumber}`,
     "",
-    "crol-list is a static site (site/index.html and site/i18n.js/site/nl_parse.js/",
+    "CityScroll is a static site (site/index.html and site/i18n.js/site/nl_parse.js/",
     "site/external_awards.js) plus a Cloudflare Worker (worker/src/). The two can't share code across",
     "that boundary, so a fixed set of rules is implemented independently on both sides \"by",
     "hand\" — the document below (docs/drift-inventory.md) is the committed list of every place",

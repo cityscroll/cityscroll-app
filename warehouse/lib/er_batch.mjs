@@ -1,7 +1,7 @@
 /**
  * WH-04: batch entity-resolution over warehouse rows.
  *
- * Reuses crol-list `entity_resolution/` (vendorStem, token_v0 candidates,
+ * Reuses CityScroll `entity_resolution/` (vendorStem, token_v0 candidates,
  * conventional matcher) and the pure exact-stem auto-link builder from
  * `worker/src/lib/entity_link.mjs`. Does not reinvent matchers in SQL.
  *

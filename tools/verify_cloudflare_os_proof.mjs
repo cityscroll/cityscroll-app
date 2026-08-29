@@ -105,6 +105,7 @@ function validateDeployment(deployment, sourcePath) {
 function scanSource(sourcePath) {
   const paths = sourceFiles(sourcePath);
   const source = readFileSync(paths.gadget, "utf8");
+  const oldRepositoryName = new RegExp(["crol", "[-_]?", "list"].join(""), "i");
   const forbidden = [
     /(?:^|[^\w])(?:D1|KV|R2)(?:[^\w]|$)/i,
     /(?:@cloudflare|cloudflare:|wrangler)/i,
@@ -112,7 +113,8 @@ function scanSource(sourcePath) {
     /(?:fetch\s*\(|https?:\/\/|WebSocket|XMLHttpRequest)/i,
     /(?:\bllm\b|openai|anthropic|ai_gateway)/i,
     /(?:entity_resolution|public_relationship_graph|source_records|worker\/src|capabilities\/)/i,
-    /(?:site\/|crol-list|\/Users\/|resident_path)/i,
+    /(?:site\/|\/Users\/|resident_path)/i,
+    oldRepositoryName,
     /(?:create_watch|preview_watch|get_notice)/i,
   ];
   for (const pattern of forbidden) assert(!pattern.test(source), `Gadget source matches forbidden pattern ${pattern}`);
