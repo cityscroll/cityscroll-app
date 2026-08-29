@@ -969,6 +969,14 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `docs/beta-rebuild-recipe.md`; Cloudflare Pages and DNS teardown is a separate hosting step.
   In-bundle `?beta=<slug>` flags remain.
 
+- **Mail-leg health:** inbound Email Routing and outbound Resend are separate rails.
+  `worker/src/reliability_watchdogs.mjs` records Worker-consumer receipts and operations-mailbox
+  sends. `GET /admin/reliability/mail` plus the digest/scheduler watchdogs return 503 / GitHub-red
+  when a canary is unmatched; they do not email a dead alert rail. The Gmail forward stays
+  dashboard-gated. Gate: `node tools/check_mail_legs.mjs` (`--live` is operator-only). Proof:
+  `test/mail_legs.test.mjs` and `worker/test/reliability_watchdogs.test.mjs`. See
+  `docs/mail-leg-health.md`.
+
 ## Digest shadow delivery holds
 
 - `worker/src/digest_shadow_hold.mjs` is the single policy layer for scoped 09:00 delivery

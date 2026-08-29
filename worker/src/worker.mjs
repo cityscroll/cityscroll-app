@@ -38,6 +38,7 @@ import {
   handleAdminOpsAlert,
   handleAdminDigestWatchdog,
   handleAdminSchedulerHeartbeat,
+  handleAdminMailWatchdog,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
@@ -50,7 +51,7 @@ import { handlePerformanceEvents } from "./performance_events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
-import { recordDigestDeliveryReceipt, recordDigestQueueFailure, recordDigestShadowReceipt } from "./reliability_watchdogs.mjs";
+import { recordDigestDeliveryReceipt, recordDigestQueueFailure, recordDigestShadowReceipt, recordInboundEmailReceipt } from "./reliability_watchdogs.mjs";
 import { redactEmail } from "./lib/subscriptions.mjs";
 import { recoverDeprecatedDoubleOptIn } from "./recovered_signups.mjs";
 import { ingestNotices } from "./ingest.mjs";
@@ -214,6 +215,7 @@ export default {
     if (pathname === "/admin/ops-alert") return handleAdminOpsAlert(request, env);
     if (pathname === "/admin/reliability/digest") return handleAdminDigestWatchdog(request, env);
     if (pathname === "/admin/reliability/scheduler") return handleAdminSchedulerHeartbeat(request, env);
+    if (pathname === "/admin/reliability/mail") return handleAdminMailWatchdog(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/meeting-outcomes-refresh") return handleAdminMeetingOutcomesRefresh(request, env);
@@ -478,7 +480,11 @@ export default {
 
   // Inbound subscribe-by-email (Cloudflare Email Routing route → this Worker).
   async email(message, env, ctx) {
-    ctx.waitUntil(handleInboundEmail(message, env));
+    ctx.waitUntil((async () => {
+      try { await recordInboundEmailReceipt(env, message); }
+      catch (error) { console.error("inbound receipt failed:", String(error?.message || error)); }
+      await handleInboundEmail(message, env);
+    })());
   },
 
   // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).

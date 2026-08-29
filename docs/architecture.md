@@ -154,7 +154,7 @@ Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
 English → LLM-parsed immediate watch + welcome reply (metered, loop-guarded).
 Outbound worker email to users comes from `alerts@cityscroll.org` (set by `ALERTS_FROM`),
 with Reply-To `alerts@crol-list.org` (`ALERTS_REPLY_TO`) so human replies land on a
-mailbox that still has MX (cityscroll.org apex has none).
+mailbox that still has MX (cityscroll.org apex has none). See `docs/mail-leg-health.md`.
 
 Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-cycle
   pre-warm for the freshly-ingested Award notices (bounded, fail-soft), (3) rebuild

@@ -30,8 +30,11 @@ import {
 import {
   digestWatchdogSnapshot,
   emitOpsAlertOnce,
+  mailWatchdogHasMailFindings,
+  mailWatchdogSnapshot,
   recordSchedulerHeartbeat,
   schedulerWatchdogSnapshot,
+  sendInboundWorkerCanary,
 } from "./reliability_watchdogs.mjs";
 import {
   INVESTIGATION_WORKSPACE_VERSION,
@@ -129,12 +132,15 @@ export async function handleAdminDigestWatchdog(req, env, { now = new Date() } =
   if (!auth.ok) return auth.res;
   if (req.method !== "GET") return json({ error: "method" }, 405);
   const snapshot = await digestWatchdogSnapshot(env, { now });
-  if (!snapshot.ok) await emitOpsAlertOnce(env, {
-    guard: "digest-dead-mans-switch",
-    fingerprint: `${snapshot.day}:${snapshot.findings.join("|")}`,
-    subject: "Digest dead-man switch failed",
-    text: snapshot.findings.join("; "),
-  });
+  // A dead mail rail must alarm through HTTP/GitHub-red, not through itself.
+  if (!snapshot.ok && !mailWatchdogHasMailFindings(snapshot.findings)) {
+    await emitOpsAlertOnce(env, {
+      guard: "digest-dead-mans-switch",
+      fingerprint: `${snapshot.day}:${snapshot.findings.join("|")}`,
+      subject: "Digest dead-man switch failed",
+      text: snapshot.findings.join("; "),
+    });
+  }
   return json(snapshot, snapshot.ok ? 200 : 503);
 }
 
@@ -148,13 +154,41 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
   }
   if (req.method !== "GET") return json({ error: "method" }, 405);
   const snapshot = await schedulerWatchdogSnapshot(env, { now });
-  if (!snapshot.ok) await emitOpsAlertOnce(env, {
-    guard: "scheduler-heartbeat",
-    fingerprint: snapshot.findings.join("|"),
-    subject: "External scheduler heartbeat failed",
-    text: snapshot.findings.join("; "),
-  });
+  if (!snapshot.ok && !mailWatchdogHasMailFindings(snapshot.findings)) {
+    await emitOpsAlertOnce(env, {
+      guard: "scheduler-heartbeat",
+      fingerprint: snapshot.findings.join("|"),
+      subject: "External scheduler heartbeat failed",
+      text: snapshot.findings.join("; "),
+    });
+  }
   return json(snapshot, snapshot.ok ? 200 : 503);
+}
+
+export async function handleAdminMailWatchdog(req, env, { now = new Date(), fetchImpl = globalThis.fetch } = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method === "POST") {
+    let body;
+    try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
+    if (body?.action !== "canary") return json({ error: "action-canary-required" }, 400);
+    const inboundWorker = await sendInboundWorkerCanary(env, { now, fetchImpl });
+    const outboundOps = await emitOpsAlertOnce(env, {
+      guard: "mail-leg-canary",
+      fingerprint: dayStamp(now),
+      subject: "CityScroll mail-leg canary",
+      text: `Outbound operations mailbox probe for ${dayStamp(now)}.`,
+    });
+    const snapshot = await mailWatchdogSnapshot(env, { now });
+    return json({ ok: true, inbound_worker: inboundWorker, outbound_ops: outboundOps, snapshot }, 200);
+  }
+  if (req.method !== "GET") return json({ error: "method" }, 405);
+  const snapshot = await mailWatchdogSnapshot(env, { now });
+  return json(snapshot, snapshot.ok ? 200 : 503);
+}
+
+function dayStamp(now) {
+  return new Date(now).toISOString().slice(0, 10);
 }
 
 // Extracts the operator key exactly the way the shared gates do: ?key= query param or an

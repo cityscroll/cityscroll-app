@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "findings": [],
+  "inbound": {
+    "schema": "cityscroll.mail-inbound-receipt.v1",
+    "observed_at": "2026-08-29T14:10:20.000Z",
+    "to": "subscribe@crol-list.org",
+    "canary_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "outbound_ops": {
+    "schema": "cityscroll.mail-outbound-ops-receipt.v1",
+    "observed_at": "2026-08-29T14:10:05.000Z",
+    "accepted": true,
+    "reason": null,
+    "provider_id": "ops-canary"
+  },
+  "canary": {
+    "schema": "cityscroll.mail-canary.v1",
+    "token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sent_at": "2026-08-29T14:10:00.000Z",
+    "target": "subscribe@crol-list.org",
+    "resend_accepted": true,
+    "reason": null,
+    "provider_id": "inbound-canary"
+  },
+  "canary_inbound": {
+    "schema": "cityscroll.mail-inbound-receipt.v1",
+    "observed_at": "2026-08-29T14:10:20.000Z",
+    "to": "subscribe@crol-list.org",
+    "canary_token": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "gmail_forward": {
+    "status": "unprobed",
+    "reason": "dashboard-gated"
+  }
+}

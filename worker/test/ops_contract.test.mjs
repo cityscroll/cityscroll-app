@@ -55,6 +55,8 @@ test("buildOpsContract: stable id/version and required sections", () => {
   assert.deepEqual(doc.performance.states, PERFORMANCE_CONTRACT.states);
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/next-digest-preview"));
   assert.ok(doc.admin_routes.some((r) => r.path === "/admin/digest-shadow"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/reliability/mail"));
+  assert.ok(doc.admin_routes.some((r) => r.path === "/admin/reliability/digest"));
   assert.equal(doc.digest_shadow.contract, "digest-shadow.v1");
   assert.equal(doc.digest_shadow.hold.contract, "digest-shadow-hold.v1");
   assert.equal(doc.digest_shadow.hold.cutoff_utc, "12:45");
@@ -82,7 +84,7 @@ test("committed fixture matches builder (desk CI pin)", () => {
 
 test("performance discovery advertises the cross-repository Desk consumer handoff", () => {
   const doc = buildOpsContract({ generated_at: "2026-08-01T00:00:00.000Z" });
-  assert.equal(doc.version, "1.8.0", "PIN-family verify route is additive on the existing ops-contract");
+  assert.equal(doc.version, "1.9.0", "mail-leg reliability routes are additive on the existing ops-contract");
   assert.equal(doc.signup_lifecycle.contract, "cityscroll.signup_lifecycle.v1");
   assert.equal(doc.signup_lifecycle.endpoint, "/admin/subs");
   assert.deepEqual(doc.signup_lifecycle.states.map((state) => state.id), [

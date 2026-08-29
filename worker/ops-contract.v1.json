@@ -1,6 +1,6 @@
 {
   "contract": "ops-contract.v1",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "generated_at": "2026-08-05T13:55:23.589Z",
   "min_compatible_version": "1.0.0",
   "note": "Machine-readable ops contract for desk panels. No secrets. Not served on public /stats.",
@@ -632,6 +632,40 @@
       "description": "GET reads the rehearsal, hold state, or rendered preview; GET also accepts the read-only SHADOW_STATUS_KEY. POST reruns after repair or overrides named affected digest holds (ADMIN_KEY only)."
     },
     {
+      "path": "/admin/ops-alert",
+      "methods": [
+        "POST"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint."
+    },
+    {
+      "path": "/admin/reliability/digest",
+      "methods": [
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Digest dead-man check including mail-leg receipts; returns 503 and GitHub-red when unhealthy. Operations email is skipped when the mail rail itself is the finding."
+    },
+    {
+      "path": "/admin/reliability/scheduler",
+      "methods": [
+        "POST",
+        "GET"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Records an external scheduler heartbeat or checks heartbeat age, pending outbox, and mail-leg receipts; returns 503 when unhealthy."
+    },
+    {
+      "path": "/admin/reliability/mail",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "auth": "ADMIN_KEY",
+      "description": "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → subscribe@ worker consumer and the operations mailbox. GET returns 503 when a canary is unmatched or outbound send failed. GitHub-red is the independent alarm; this route does not email a dead mail rail. The Gmail forward leg stays dashboard-gated."
+    },
+    {
       "path": "/admin/digest-send-test",
       "methods": [
         "POST"
@@ -803,6 +837,22 @@
         {
           "prefix": "fc:",
           "semantics": "Forecast cache keys."
+        },
+        {
+          "prefix": "ops:digest:",
+          "semantics": "Digest shadow/delivery watchdog receipts."
+        },
+        {
+          "prefix": "ops:scheduler:",
+          "semantics": "External scheduler heartbeat."
+        },
+        {
+          "prefix": "ops:alert:",
+          "semantics": "Deduped operations-alert fingerprints."
+        },
+        {
+          "prefix": "ops:mail:",
+          "semantics": "Inbound worker-consumer and outbound operations-mailbox receipts."
         }
       ]
     },

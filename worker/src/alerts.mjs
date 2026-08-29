@@ -2464,14 +2464,27 @@ function logDryRunEmail(payload) {
 }
 
 export async function sendOpsAlert(env, { guard, subject, text, observedAt = new Date().toISOString() } = {}) {
-  if (!env?.RESEND_API_KEY) return { accepted: false, reason: "resend-not-configured" };
+  const { recordOutboundOpsSendReceipt } = await import("./reliability_watchdogs.mjs");
+  if (!env?.RESEND_API_KEY) {
+    const result = { accepted: false, reason: "resend-not-configured" };
+    await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
+    return result;
+  }
   const safeGuard = String(guard || "reliability").slice(0, 80);
   const safeGuardHtml = safeGuard.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   const body = `<h1>${safeGuardHtml}</h1><p>${String(text || "Reliability check failed.")
     .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")}</p><p>Observed at ${observedAt}</p>`;
-  const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
-    subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false);
-  return { accepted: true, provider: accepted };
+  try {
+    const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
+      subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false);
+    const result = { accepted: true, provider: accepted };
+    await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
+    return result;
+  } catch (error) {
+    const result = { accepted: false, reason: "resend-rejected", error: String(error?.message || error) };
+    await recordOutboundOpsSendReceipt(env, result, new Date(observedAt));
+    throw error;
+  }
 }
 
 async function sendEmail(env, from, to, subject, html, listUnsub, oneClick) {

@@ -3,6 +3,13 @@ import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
 export const DIGEST_SHADOW_LEDGER_PREFIX = "ops:digest:shadow:";
 export const DIGEST_DELIVERY_LEDGER_PREFIX = "ops:digest:delivery:";
 export const SCHEDULER_HEARTBEAT_KEY = "ops:scheduler:heartbeat";
+export const MAIL_INBOUND_LATEST_KEY = "ops:mail:inbound:latest";
+export const MAIL_OUTBOUND_LATEST_KEY = "ops:mail:outbound:latest";
+export const MAIL_CANARY_LATEST_KEY = "ops:mail:canary:latest";
+export const MAIL_CANARY_SUBJECT_PREFIX = "[cityscroll-mail-canary]";
+export const MAIL_CANARY_PENDING_MS = 10 * 60 * 1000;
+export const MAIL_CANARY_STALE_MS = 36 * 60 * 60 * 1000;
+export const DEFAULT_SUBSCRIBE_ADDRESS = "subscribe@crol-list.org";
 
 const day = (value) => new Date(value).toISOString().slice(0, 10);
 const key = (prefix, value) => `${prefix}${day(value)}`;
@@ -146,11 +153,145 @@ async function watermarkStalenessFromStore(env, today, priorDay, delivery) {
   });
 }
 
+export function mailCanaryInboundKey(token) {
+  return `ops:mail:canary:inbound:${String(token || "").toLowerCase()}`;
+}
+
+export function mailCanaryTokenFromSubject(subject) {
+  const match = String(subject || "").match(/\[cityscroll-mail-canary\]\s*([0-9a-f]{32})\b/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
+function headerValue(headers, name) {
+  if (!headers) return "";
+  if (typeof headers.get === "function") {
+    return headers.get(name) || headers.get(String(name).toLowerCase()) || headers.get(String(name).toUpperCase()) || "";
+  }
+  return headers[name] || headers[String(name).toLowerCase()] || "";
+}
+
+function newMailCanaryToken() {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+export function mailLegFindings(state = {}, { now = new Date(), pendingMs = MAIL_CANARY_PENDING_MS, staleMs = MAIL_CANARY_STALE_MS } = {}) {
+  const findings = [];
+  const outbound = state.outbound_ops || null;
+  const canary = state.canary || null;
+  const inboundMatch = state.canary_inbound || null;
+  if (outbound && outbound.accepted === false) {
+    findings.push("ops mailbox send was not accepted");
+  }
+  if (canary) {
+    const sentAt = Date.parse(canary.sent_at || "");
+    const ageMs = Number.isFinite(sentAt) ? now.getTime() - sentAt : Number.POSITIVE_INFINITY;
+    if (canary.resend_accepted === false) findings.push("inbound-worker canary send was not accepted");
+    else if (!inboundMatch?.canary_token || inboundMatch.canary_token !== canary.token) {
+      if (ageMs > pendingMs) findings.push("inbound-worker canary was not received");
+    } else if (Number.isFinite(sentAt) && ageMs > staleMs) {
+      findings.push("inbound-worker canary is stale");
+    }
+  }
+  return findings;
+}
+
+export function mailWatchdogHasMailFindings(findings = []) {
+  return findings.some((item) => String(item).startsWith("mail: ") || /canary|ops mailbox send|mail-leg/i.test(item));
+}
+
+export async function recordInboundEmailReceipt(env, message, now = new Date()) {
+  const subject = headerValue(message?.headers, "subject");
+  const token = mailCanaryTokenFromSubject(subject);
+  const receipt = {
+    schema: "cityscroll.mail-inbound-receipt.v1",
+    observed_at: now.toISOString(),
+    to: String(message?.to || "").toLowerCase(),
+    canary_token: token,
+  };
+  await putJson(env?.ALERT_STATE, MAIL_INBOUND_LATEST_KEY, receipt);
+  if (token) await putJson(env?.ALERT_STATE, mailCanaryInboundKey(token), receipt);
+  return receipt;
+}
+
+export async function recordOutboundOpsSendReceipt(env, result = {}, now = new Date()) {
+  const receipt = {
+    schema: "cityscroll.mail-outbound-ops-receipt.v1",
+    observed_at: now.toISOString(),
+    accepted: result.accepted === true,
+    reason: result.reason || null,
+    provider_id: result.provider?.id || null,
+  };
+  await putJson(env?.ALERT_STATE, MAIL_OUTBOUND_LATEST_KEY, receipt);
+  return receipt;
+}
+
+export async function sendInboundWorkerCanary(env, { now = new Date(), token, fetchImpl = globalThis.fetch } = {}) {
+  const canaryToken = token || newMailCanaryToken();
+  const target = env?.SUBSCRIBE_ADDRESS || DEFAULT_SUBSCRIBE_ADDRESS;
+  const from = env?.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
+  let resendAccepted = false;
+  let reason = null;
+  let providerId = null;
+  if (!env?.RESEND_API_KEY) {
+    reason = "resend-not-configured";
+  } else {
+    const response = await fetchImpl("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
+      body: JSON.stringify({
+        from,
+        to: target,
+        subject: `${MAIL_CANARY_SUBJECT_PREFIX} ${canaryToken}`,
+        text: "CityScroll mail-leg health probe. This message is not a watch request.",
+      }),
+    });
+    resendAccepted = response.ok === true;
+    reason = resendAccepted ? null : `resend-${response.status}`;
+    if (resendAccepted && typeof response.json === "function") {
+      try { providerId = (await response.json())?.id || null; } catch { providerId = null; }
+    }
+  }
+  const receipt = {
+    schema: "cityscroll.mail-canary.v1",
+    token: canaryToken,
+    sent_at: now.toISOString(),
+    target,
+    resend_accepted: resendAccepted,
+    reason,
+    provider_id: providerId,
+  };
+  await putJson(env?.ALERT_STATE, MAIL_CANARY_LATEST_KEY, receipt);
+  return receipt;
+}
+
+export async function mailWatchdogSnapshot(env, { now = new Date(), pendingMs = MAIL_CANARY_PENDING_MS, staleMs = MAIL_CANARY_STALE_MS } = {}) {
+  const canary = await readJson(env?.ALERT_STATE, MAIL_CANARY_LATEST_KEY);
+  const inbound = await readJson(env?.ALERT_STATE, MAIL_INBOUND_LATEST_KEY);
+  const outboundOps = await readJson(env?.ALERT_STATE, MAIL_OUTBOUND_LATEST_KEY);
+  const canaryInbound = canary?.token ? await readJson(env?.ALERT_STATE, mailCanaryInboundKey(canary.token)) : null;
+  const findings = mailLegFindings(
+    { outbound_ops: outboundOps, canary, canary_inbound: canaryInbound },
+    { now, pendingMs, staleMs },
+  );
+  return {
+    ok: findings.length === 0,
+    findings,
+    inbound,
+    outbound_ops: outboundOps,
+    canary,
+    canary_inbound: canaryInbound,
+    gmail_forward: { status: "unprobed", reason: "dashboard-gated" },
+  };
+}
+
 export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHour = 14 } = {}) {
   const today = day(now);
   const shadow = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
   const delivery = await readJson(env?.ALERT_STATE, `${DIGEST_DELIVERY_LEDGER_PREFIX}${today}`);
   const dlq = Number(await env?.ALERT_STATE?.get?.(`digest:dlq:${today}`)) || 0;
+  const mail = await mailWatchdogSnapshot(env, { now });
   const findings = [];
   let watermark = { ok: true, findings: [], stuck: [] };
   if (!shadow) findings.push("shadow READY receipt missing");
@@ -166,6 +307,7 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
     }
   }
   if (dlq > 0) findings.push(`digest DLQ is non-empty (${dlq})`);
+  for (const item of mail.findings) findings.push(`mail: ${item}`);
   return {
     ok: findings.length === 0,
     day: today,
@@ -174,17 +316,20 @@ export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHo
     delivery,
     dlq,
     watermark_stuck: watermark.stuck?.length || 0,
+    mail,
   };
 }
 
 export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeMs = 90 * 60 * 1000 } = {}) {
   const heartbeat = await readJson(env?.ALERT_STATE, SCHEDULER_HEARTBEAT_KEY);
+  const mail = await mailWatchdogSnapshot(env, { now });
   const findings = [];
   const observed = Date.parse(heartbeat?.observed_at || "");
   if (!heartbeat || !Number.isFinite(observed)) findings.push("scheduler heartbeat missing");
   else if (now.getTime() - observed > maxAgeMs) findings.push("scheduler heartbeat expired");
   if (heartbeat?.pending_outbox > 0) findings.push(`scheduler outbox has ${heartbeat.pending_outbox} pending item(s)`);
-  return { ok: findings.length === 0, findings, heartbeat };
+  for (const item of mail.findings) findings.push(`mail: ${item}`);
+  return { ok: findings.length === 0, findings, heartbeat, mail };
 }
 
 export async function emitOpsAlertOnce(env, { guard, fingerprint, subject, text } = {}) {
