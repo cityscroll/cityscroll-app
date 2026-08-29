@@ -84,20 +84,15 @@ function trackedFiles() {
 // banned line and the allowlist entry that covers it, self-certifying its own
 // exception. See docs comment above ALLOWLIST_PATH's header for the full rule.
 function resolveMergeBase(baseSha) {
-  const result = spawnSync("git", ["merge-base", "HEAD", baseSha], { cwd: ROOT, encoding: "utf8" });
+  const result = spawnSync("git", ["merge-base", "HEAD", baseSha], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   if (result.status !== 0) return null;
   return result.stdout.trim() || null;
 }
 
 function readFileAtRevision(rev, path) {
-  const result = spawnSync("git", ["show", `${rev}:${path}`], { cwd: ROOT, encoding: "utf8" });
+  const result = spawnSync("git", ["show", `${rev}:${path}`], { cwd: ROOT, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   if (result.status !== 0) return null;
   return result.stdout;
-}
-
-function fileExistsAtRevision(rev, path) {
-  const result = spawnSync("git", ["cat-file", "-e", `${rev}:${path}`], { cwd: ROOT, encoding: "utf8" });
-  return result.status === 0;
 }
 
 function parseAllowlistKeys(text) {
@@ -127,7 +122,20 @@ function lineDigestMatches(line, digest) {
 }
 
 function entryContentExistsAtMergeBase(record, mergeBase, baseFileLinesCache) {
-  if (record.lineNumber === "*") return fileExistsAtRevision(mergeBase, record.path);
+  if (record.lineNumber === "*") {
+    // A wildcard entry exempts the whole file, so it is only legitimate for a
+    // file this change does not touch at all: the merge-base content must be
+    // byte-identical to the current content, not merely present.
+    const baseText = readFileAtRevision(mergeBase, record.path);
+    if (baseText === null) return false;
+    let currentText;
+    try {
+      currentText = readFileSync(join(ROOT, record.path), "utf8");
+    } catch {
+      return false;
+    }
+    return baseText === currentText;
+  }
   if (!baseFileLinesCache.has(record.path)) {
     const text = readFileAtRevision(mergeBase, record.path);
     baseFileLinesCache.set(record.path, text === null ? null : text.split(/\r?\n/));

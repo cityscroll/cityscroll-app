@@ -131,6 +131,38 @@ test("an allowlist entry covering a pre-existing line passes and prints a growth
   );
 });
 
+test("a same-PR wildcard entry covering a modified pre-existing file fails the guard", () => {
+  const targetPath = "README.md";
+  const targetUrl = new URL(`../${targetPath}`, import.meta.url);
+  const original = readFileSync(targetUrl, "utf8");
+  writeFileSync(targetUrl, `${original}new ${bannedVocabulary} reference\n`);
+  try {
+    withAllowlist(
+      (allowlist) => `${allowlist}${targetPath}\t*\t*\t# test: same-PR wildcard cover attempt.\n`,
+      () => {
+        assert.throws(
+          () => runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() }),
+          /covers content that does not exist at the merge-base of main/,
+        );
+      },
+    );
+  } finally {
+    writeFileSync(targetUrl, original);
+  }
+});
+
+test("a wildcard entry covering an untouched pre-existing file passes the growth guard", () => {
+  const targetPath = "README.md";
+  withAllowlist(
+    (original) => `${original}future:${targetPath}\t*\t*\t# test: untouched pre-existing file, whole-file exemption.\n`,
+    () => {
+      const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() });
+      assert.match(output, /guard passed/i);
+      assert.match(output, /ALLOWLIST GROWTH: 1 new entry added, covering 1 file/);
+    },
+  );
+});
+
 test("a PR that does not touch the allowlist is unaffected by the growth guard", () => {
   const output = runGuard({ LEGACY_ALLOWLIST_BASE_SHA: headSha() });
   assert.match(output, /guard passed/i);
