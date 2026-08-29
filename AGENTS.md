@@ -128,6 +128,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   payment transaction scope and related registered-contract scope; do not blend their dollar
   measures or use the bounded graph-enrichment payment rows as a population denominator.
 
+- **Newer and alternate source registry (SV-2):** `site/data/source_vintage_alternates.json` is the
+  source-qualified registry for verified newer or alternate official publication paths. Validate it
+  with `node tools/verify_source_vintage_registry.mjs`; `tools/source_vintage_status.mjs` consumes
+  the registry through `loadSourceVintageStatusInputs`. The founding Comptroller ACFR entry is
+  contextual evidence for IBO and is never a drop-in replacement for IBO staffing semantics.
+
 - **IBO agency fiscal history (AP-11):** `warehouse/scripts/ibo_fiscal_history.py` ingests the
   checkpointed FY2022 IBO Agency Expenditures and Actual Full-Time Positions XLSX artifacts under
   `warehouse/sources/ibo-fiscal-history/`. It keeps publisher units, fiscal-year-end staffing
