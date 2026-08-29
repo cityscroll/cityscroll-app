@@ -21,6 +21,7 @@ function fail(message) {
 
 function loadAllowlist() {
   const entries = new Map();
+  const deferredEntries = new Set();
   for (const [index, raw] of readFileSync(ALLOWLIST_PATH, "utf8").split(/\r?\n/).entries()) {
     const line = raw.trim();
     if (!line || line.startsWith("#")) continue;
@@ -28,6 +29,8 @@ function loadAllowlist() {
       throw new Error(`reserved content marker cannot be allowlisted at ${ALLOWLIST_RELATIVE_PATH}:${index + 1}`);
     }
     let [path, lineNumber, digest, ...comment] = raw.split("\t");
+    const deferred = path?.startsWith("future:");
+    if (deferred) path = path.slice("future:".length);
     if (path?.startsWith("path64:")) {
       try {
         path = Buffer.from(path.slice("path64:".length), "base64").toString("utf8");
@@ -38,9 +41,11 @@ function loadAllowlist() {
     if (!path || (!/^\d+$/.test(lineNumber || "") && lineNumber !== "*") || (lineNumber !== "*" && !/^(?:[A-Za-z0-9+/]+={0,2}|sha256:[a-f0-9]{64})$/.test(digest || "")) || (lineNumber === "*" && digest !== "*") || !comment.join("\t").trim()) {
       throw new Error(`malformed allowlist entry at ${ALLOWLIST_RELATIVE_PATH}:${index + 1}`);
     }
-    entries.set(`${path}\0${lineNumber}\0${digest}`, comment.join("\t").trim());
+    const key = `${path}\0${lineNumber}\0${digest}`;
+    entries.set(key, comment.join("\t").trim());
+    if (deferred) deferredEntries.add(key);
   }
-  return entries;
+  return { entries, deferredEntries };
 }
 
 function trackedFiles() {
@@ -53,7 +58,7 @@ function trackedFiles() {
 }
 
 function main() {
-  const allowed = loadAllowlist();
+  const { entries: allowed, deferredEntries } = loadAllowlist();
   const seen = new Set();
   const violations = [];
   let occurrences = 0;
@@ -85,7 +90,7 @@ function main() {
       }
     });
   }
-  const staleAllowlist = [...allowed.keys()].filter((key) => !seen.has(key));
+  const staleAllowlist = [...allowed.keys()].filter((key) => !seen.has(key) && !deferredEntries.has(key));
   if (staleAllowlist.length) violations.push(`${ALLOWLIST_RELATIVE_PATH}: stale entries: ${staleAllowlist.length}`);
   if (violations.length) {
     fail(violations.join("\n"));
