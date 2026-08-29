@@ -6,6 +6,7 @@ import {
   buildFollowingViewModel,
   renderFollowingDocument,
 } from "../site/following_view.mjs";
+import { followingManagementUrl } from "../site/following_personal_state.mjs";
 
 test("Following keeps a scoped watch's canonical return path visible without a token", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({
@@ -60,6 +61,16 @@ test("Following preview enhancement keeps refined criteria in the shareable URL"
   assert.match(following, /data-following-preview-status.*msg\("msgPreviewReady"\)|replaceChildren\(msg\("msgPreviewReady"\)\)/);
   assert.match(following, /addEventListener\("popstate"/);
   assert.match(following, /restoreFromLocation/);
+});
+
+test("manage-watches recovery stays on the canonical Following route", () => {
+  assert.equal(followingManagementUrl({ pathname: "/following/", search: "" }), "/following/#your-following");
+  const following = readFileSync(new URL("../site/app/following.mjs", import.meta.url), "utf8");
+  assert.match(following, /popstate/);
+  assert.match(following, /markManagementDestination/);
+  assert.match(following, /data-personal-retry/);
+  assert.match(following, /keepExisting: true/);
+  assert.doesNotMatch(following, /\/prefs\/new|\/alerts\/manage/);
 });
 
 test("district watches make the Community Board picker discoverable", () => {

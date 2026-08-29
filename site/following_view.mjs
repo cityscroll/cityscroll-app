@@ -32,6 +32,7 @@ import {
   previewItemMatchesFocus,
   reviewedFollowingLens,
 } from "./following_preview_handoff.mjs";
+import { followingPersonalIslandHtml } from "./following_personal_state.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -981,7 +982,7 @@ function personalSectionHtml(view) {
   // dead weight above the criteria → matches → create flow. Client promotes
   // this section when a recognized session has one or more watches.
   const demoted = !!view.requested;
-  const list = `<div data-personal-watch-list><p>Open a CityScroll email to see your watches.</p></div><p data-personal-status role="status" aria-live="polite"></p>`;
+  const list = `<div data-personal-watch-list data-personal-state="unrecognized">${followingPersonalIslandHtml("unrecognized")}</div><p data-personal-status role="status" aria-live="polite"></p>`;
   if (demoted) {
     return `<section id="your-following" class="following-personal following-personal--demoted" data-following-panel="watches" data-following-personal-mode="demoted" aria-labelledby="following-personal-heading">
       <details class="following-personal-details">
@@ -1034,6 +1035,8 @@ export function renderFollowingBody(view) {
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
+    data-msg-personal-load-error="Could not load saved watches. Try again."
+    data-msg-personal-retry="Try again"
     data-following-lens="${esc(view.lens || "")}"
     data-following-filter="${esc(JSON.stringify(view.filter || {}))}"
     data-following-scope-status="${esc(view.scopeStatus || "ok")}"

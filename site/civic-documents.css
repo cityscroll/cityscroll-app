@@ -2735,6 +2735,22 @@ select {
 .following-personal [data-personal-watch-list] {
   display: grid;
   gap: var(--space-3);
+  min-width: 0;
+}
+
+.following-personal [data-personal-state] {
+  min-width: 0;
+}
+
+.following-personal-recovery {
+  margin: 0;
+}
+
+.following-personal-retry,
+.following-personal [data-following-create-recovery] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .following-subscribe [role="status"] {
