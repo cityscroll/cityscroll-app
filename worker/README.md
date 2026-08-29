@@ -283,6 +283,18 @@ counters / last-sent clocks), `ALERTS_FROM`, `ALERTS_REPLY_TO`, `MAX_PER_RUN`,
 locally by hitting `/__scheduled?cron=0+10+*+*+*` or `/__scheduled?cron=0+13+*+*+*` under
 `wrangler dev`.
 
+### The `cityscroll-worker` clone config
+
+`wrangler.cityscroll.toml` deploys the same source as `cityscroll-worker`
+(`npx wrangler deploy -c wrangler.cityscroll.toml`) — the first step of retiring the
+`crol-worker` service name. It is a standalone config file (not a wrangler environment)
+so nothing leaks in from `wrangler.toml`: identical D1/KV/Analytics Engine ids and the
+`crol-digests` producer binding, but **no routes, no custom domains, no crons, and no
+queue consumers** — the clone serves only its workers.dev hostname and does nothing on
+its own. Secret-gated endpoints fail closed until secrets are installed on it. Later
+migration steps attach the API domains and move traffic; don't add routes, crons, or
+consumers to that file ahead of them.
+
 ### Automatic deploys
 
 `.github/workflows/deploy-worker.yml` deploys the Worker automatically on every push to `main`
