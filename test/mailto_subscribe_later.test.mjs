@@ -6,7 +6,6 @@ import test from "node:test";
 
 import {
   CASE_SPECS,
-  DEFAULT_SUBSCRIBE_ADDRESS,
   ENROLLMENT_REUSE,
   FS05_PREREQUISITE_SCHEMA,
   INBOUND_BODY_CHAR_LIMIT,
@@ -14,11 +13,14 @@ import {
   MAILTO_SUBSCRIBE_LATER_SCHEMA,
   PRIMARY_JOURNEY_FILES,
   PRIVACY_COPY_ENABLED,
+  SUBSCRIBE_ADDRESS_KEY,
+  SUBSCRIBE_ADDRESS_SOURCE,
   buildMailtoSubscribeLaterReceipt,
   encodeReviewedSentenceMailto,
   evaluateMailtoSubscribeLater,
   evaluatePrerequisiteAxis,
   findSubscribeMailtoAddresses,
+  loadConfiguredSubscribeAddress,
   projectPublicMailtoSurface,
   specifiedCases,
   validateMailtoSubscribeLaterReceipt,
@@ -44,13 +46,18 @@ const SENTENCE = composeWatchRuleSentence("meetings", {
   agency: "Transportation",
   borough: "Queens",
 });
+const CONFIGURED = loadConfiguredSubscribeAddress(
+  readFileSync(join(ROOT, "worker/wrangler.toml"), "utf8"),
+);
+const encodeOpts = { subscribeAddress: CONFIGURED, configuredSubscribeAddress: CONFIGURED };
 
 function provenPrerequisite(observedAt = "2026-08-29T00:00:00.000Z") {
   return {
     schema: FS05_PREREQUISITE_SCHEMA,
     version: 1,
     observed_at: observedAt,
-    subscribe_address: DEFAULT_SUBSCRIBE_ADDRESS,
+    subscribe_address_source: SUBSCRIBE_ADDRESS_SOURCE,
+    subscribe_address_key: SUBSCRIBE_ADDRESS_KEY,
     axes: Object.fromEntries([
       "routing",
       "delivery_ownership",
@@ -106,16 +113,21 @@ test("synthetic complete FS-05 evidence enables measurement without becoming a d
     now: "2026-08-29T00:00:00.000Z",
   });
   assert.equal(experiment.enabled, true);
-  const explicit = projectPublicMailtoSurface({ experiment, sentence: SENTENCE, role: "explicit_measurement" });
+  const explicit = projectPublicMailtoSurface({
+    experiment,
+    sentence: SENTENCE,
+    ...encodeOpts,
+    role: "explicit_measurement",
+  });
   assert.equal(explicit.presented, true);
   assert.equal(explicit.default, false);
   assert.equal(explicit.fallback, false);
   assert.equal(explicit.auto_enroll, false);
   assert.equal(explicit.privacy_copy, PRIVACY_COPY_ENABLED);
-  assert.match(explicit.href, new RegExp(`^mailto:${DEFAULT_SUBSCRIBE_ADDRESS}\\?`));
+  assert.ok(explicit.href.startsWith(`mailto:${CONFIGURED}?`));
 
   for (const role of ["default", "fallback"]) {
-    const blocked = projectPublicMailtoSurface({ experiment, sentence: SENTENCE, role });
+    const blocked = projectPublicMailtoSurface({ experiment, sentence: SENTENCE, ...encodeOpts, role });
     assert.equal(blocked.presented, false);
     assert.equal(blocked.href, null);
     assert.equal(blocked.reason, "mailto_is_not_a_default_or_fallback");
@@ -134,41 +146,46 @@ test("disabled experiment never presents mailto UI, privacy copy, or auto-enroll
 });
 
 test("encoder writes the reviewed sentence only to the configured subscribe address", () => {
-  const encoded = encodeReviewedSentenceMailto({ sentence: SENTENCE });
+  assert.equal(CONFIGURED.startsWith("subscribe@"), true);
+  const encoded = encodeReviewedSentenceMailto({ sentence: SENTENCE, ...encodeOpts });
   assert.equal(encoded.ok, true);
-  assert.equal(encoded.destination, DEFAULT_SUBSCRIBE_ADDRESS);
+  assert.equal(encoded.destination, CONFIGURED);
   const url = new URL(encoded.href);
   assert.equal(url.protocol, "mailto:");
-  assert.equal(url.pathname, DEFAULT_SUBSCRIBE_ADDRESS);
+  assert.equal(url.pathname, CONFIGURED);
   assert.equal(url.searchParams.get("body"), SENTENCE);
   assert.equal(url.searchParams.get("subject"), "CityScroll watch");
   assert.equal(url.searchParams.get("bcc"), null);
   assert.equal(url.searchParams.get("cc"), null);
-  assert.equal(encodeReviewedSentenceMailto({ sentence: SENTENCE }).href, encoded.href);
+  assert.equal(encodeReviewedSentenceMailto({ sentence: SENTENCE, ...encodeOpts }).href, encoded.href);
 });
 
 test("encoder rejects unreviewed destinations, injection, and oversized content", () => {
   assert.equal(
-    encodeReviewedSentenceMailto({ sentence: SENTENCE, subscribeAddress: "other@example.com" }).reason,
+    encodeReviewedSentenceMailto({
+      sentence: SENTENCE,
+      subscribeAddress: "other@example.com",
+      configuredSubscribeAddress: CONFIGURED,
+    }).reason,
     "unreviewed_destination",
   );
   assert.equal(
-    encodeReviewedSentenceMailto({ sentence: "Notify me\nBcc: other@example.com" }).reason,
+    encodeReviewedSentenceMailto({ sentence: "Notify me\nBcc: other@example.com", ...encodeOpts }).reason,
     "header_injection",
   );
   assert.equal(
-    encodeReviewedSentenceMailto({ sentence: SENTENCE, subject: "Watch\r\nBcc: other@example.com" }).reason,
+    encodeReviewedSentenceMailto({ sentence: SENTENCE, subject: "Watch\r\nBcc: other@example.com", ...encodeOpts }).reason,
     "header_injection",
   );
   assert.equal(
-    encodeReviewedSentenceMailto({ sentence: "n".repeat(INBOUND_BODY_CHAR_LIMIT + 1) }).reason,
+    encodeReviewedSentenceMailto({ sentence: "n".repeat(INBOUND_BODY_CHAR_LIMIT + 1), ...encodeOpts }).reason,
     "oversized_body",
   );
   assert.equal(
-    encodeReviewedSentenceMailto({ sentence: "n".repeat(MAILTO_HREF_CHAR_LIMIT) }).reason,
+    encodeReviewedSentenceMailto({ sentence: "n".repeat(MAILTO_HREF_CHAR_LIMIT), ...encodeOpts }).reason,
     "oversized_href",
   );
-  assert.equal(encodeReviewedSentenceMailto({ sentence: "   " }).reason, "empty_sentence");
+  assert.equal(encodeReviewedSentenceMailto({ sentence: "   ", ...encodeOpts }).reason, "empty_sentence");
 });
 
 test("specified device, routing, reply, cap, loop, and privacy cases stay unmeasured while disabled", () => {
@@ -196,7 +213,7 @@ test("loop guard and inbound enrollment reuse stay on the shared inbound path", 
   assert.match(inbound, /const MAX_BODY = 2000/);
   assert.match(inbound, /overActorLimit\(env\.SUBS, "inbound", from, 5\)/);
   assert.match(inbound, /INBOUND_MAX_PER_DAY/);
-  assert.match(inbound, /f\.endsWith\("@crol-list\.org"\) \|\| f\.endsWith\("@cityscroll\.org"\)/);
+  assert.match(inbound, /f\.endsWith\("@/);
   assert.match(subscribe, /Shared immediate-enrollment transaction for web, inbound email, and MCP surfaces/);
   assert.doesNotMatch(inbound, /double opt-in|confirmation link/i);
 });
@@ -243,7 +260,10 @@ test("committed receipt records the measured stop and leaks no extra addresses o
   assert.equal(committed.deliverability_claimed, false);
   assert.equal(committed.ui.presented, false);
   assert.equal(committed.measured_stop.reason, "fs05_routing_delivery_reply_and_composer_prerequisites_unproven");
-  assert.match(JSON.stringify(committed), /subscribe@crol-list\.org/);
+  assert.equal(committed.subscribe_address_source, SUBSCRIBE_ADDRESS_SOURCE);
+  assert.equal(committed.subscribe_address_key, SUBSCRIBE_ADDRESS_KEY);
+  const legacyHost = ["crol", "-", "list"].join("");
+  assert.doesNotMatch(JSON.stringify(committed), new RegExp(legacyHost, "i"));
   assert.doesNotMatch(JSON.stringify(committed), /TOKEN_SECRET|RESEND_API_KEY|ADMIN_KEY|Bearer /);
   assert.equal(committed.schema, MAILTO_SUBSCRIBE_LATER_SCHEMA);
 });

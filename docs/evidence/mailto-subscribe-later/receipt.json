@@ -6,12 +6,11 @@
   "experiment_state": "disabled_prerequisites_unproven",
   "enabled": false,
   "removable_harness_shipped": false,
-  "subscribe_address": "subscribe@crol-list.org",
+  "subscribe_address_source": "worker/wrangler.toml",
+  "subscribe_address_key": "SUBSCRIBE_ADDRESS",
   "encoding": {
     "method": "rfc6068_mailto_subject_body",
-    "destination_allowlist": [
-      "subscribe@crol-list.org"
-    ],
+    "destination": "configured_SUBSCRIBE_ADDRESS_only",
     "inbound_body_char_limit": 2000,
     "href_char_limit": 1800
   },
@@ -44,7 +43,7 @@
       "routing": {
         "status": "incomplete",
         "evidence_id": null,
-        "reason": "Inbound Email Routing still targets subscribe@crol-list.org. No named FS-05 routing proof is retained."
+        "reason": "Inbound Email Routing still targets the configured Worker SUBSCRIBE_ADDRESS. No named FS-05 routing proof is retained."
       },
       "delivery_ownership": {
         "status": "absent",
@@ -135,7 +134,7 @@
     "credentials_present": false,
     "resident_addresses_present": false,
     "destination_addresses": [
-      "subscribe@crol-list.org"
+      "configured_SUBSCRIBE_ADDRESS"
     ],
     "sentence_copied_to_mail_client": false
   },

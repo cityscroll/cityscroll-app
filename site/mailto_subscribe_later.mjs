@@ -10,7 +10,8 @@
 export const MAILTO_SUBSCRIBE_LATER_SCHEMA = "cityscroll.mailto_subscribe_later.v1";
 export const MAILTO_SUBSCRIBE_LATER_VERSION = 1;
 export const FS05_PREREQUISITE_SCHEMA = "cityscroll.fs05_email_domain_prerequisite.v1";
-export const DEFAULT_SUBSCRIBE_ADDRESS = "subscribe@crol-list.org";
+export const SUBSCRIBE_ADDRESS_SOURCE = "worker/wrangler.toml";
+export const SUBSCRIBE_ADDRESS_KEY = "SUBSCRIBE_ADDRESS";
 export const INBOUND_BODY_CHAR_LIMIT = 2000;
 export const MAILTO_HREF_CHAR_LIMIT = 1800;
 export const PREREQUISITE_MAX_AGE_DAYS = 90;
@@ -112,6 +113,12 @@ function normalizeAddress(value) {
   return clean(value, 320).toLowerCase();
 }
 
+export function loadConfiguredSubscribeAddress(wranglerText) {
+  const match = String(wranglerText ?? "").match(/^\s*SUBSCRIBE_ADDRESS\s*=\s*"([^"]+)"/m);
+  const address = normalizeAddress(match?.[1]);
+  return address.startsWith("subscribe@") ? address : null;
+}
+
 function instant(value) {
   const parsed = Date.parse(clean(value, 80));
   return Number.isFinite(parsed) ? parsed : null;
@@ -168,18 +175,20 @@ export function evaluateMailtoSubscribeLater(prerequisite, { now = null } = {}) 
     enabled,
     stop_reasons: stopReasons,
     axes,
-    subscribe_address: DEFAULT_SUBSCRIBE_ADDRESS,
+    subscribe_address_source: SUBSCRIBE_ADDRESS_SOURCE,
     removable_harness: enabled && MAILTO_LATER_HARNESS_SHIPPED,
   };
 }
 
 export function encodeReviewedSentenceMailto({
   sentence,
-  subscribeAddress = DEFAULT_SUBSCRIBE_ADDRESS,
+  subscribeAddress,
+  configuredSubscribeAddress,
   subject = "CityScroll watch",
 } = {}) {
   const destination = normalizeAddress(subscribeAddress);
-  if (destination !== DEFAULT_SUBSCRIBE_ADDRESS) {
+  const configured = normalizeAddress(configuredSubscribeAddress);
+  if (!destination || !configured || destination !== configured || !configured.startsWith("subscribe@")) {
     return { ok: false, href: null, reason: "unreviewed_destination" };
   }
   const body = clean(sentence, INBOUND_BODY_CHAR_LIMIT + 1);
@@ -202,6 +211,8 @@ export function encodeReviewedSentenceMailto({
 export function projectPublicMailtoSurface({
   experiment,
   sentence,
+  subscribeAddress,
+  configuredSubscribeAddress,
   role = "explicit_measurement",
 } = {}) {
   const withheld = {
@@ -222,7 +233,11 @@ export function projectPublicMailtoSurface({
   if (role !== "explicit_measurement") {
     return { ...withheld, role, reason: "unsupported_presentation_role" };
   }
-  const encoded = encodeReviewedSentenceMailto({ sentence });
+  const encoded = encodeReviewedSentenceMailto({
+    sentence,
+    subscribeAddress,
+    configuredSubscribeAddress,
+  });
   if (!encoded.ok) {
     return { ...withheld, reason: encoded.reason };
   }
@@ -276,7 +291,8 @@ export function validateMailtoSubscribeLaterReceipt(receipt) {
   if (receipt?.ui?.default !== false || receipt?.ui?.fallback !== false || receipt?.ui?.presented !== false) {
     errors.push("ui_must_stay_closed");
   }
-  if (receipt?.subscribe_address !== DEFAULT_SUBSCRIBE_ADDRESS) errors.push("subscribe_address");
+  if (receipt?.subscribe_address_source !== SUBSCRIBE_ADDRESS_SOURCE) errors.push("subscribe_address_source");
+  if (receipt?.subscribe_address_key !== SUBSCRIBE_ADDRESS_KEY) errors.push("subscribe_address_key");
   if (!Array.isArray(receipt?.primary_journey_subscribe_mailto) || receipt.primary_journey_subscribe_mailto.length) {
     errors.push("primary_journey_must_omit_subscribe_mailto");
   }
@@ -288,8 +304,7 @@ export function validateMailtoSubscribeLaterReceipt(receipt) {
   for (const term of FORBIDDEN_RECEIPT_TERMS) {
     if (serialized.includes(term)) errors.push(`credential_term:${term.trim()}`);
   }
-  const extra = receiptEmails(receipt).filter((address) => address !== DEFAULT_SUBSCRIBE_ADDRESS);
-  if (extra.length) errors.push("address_leakage");
+  if (receiptEmails(receipt).length) errors.push("address_leakage");
   if (receipt?.enabled === true && receipt?.experiment_state !== "enabled_for_measurement") {
     errors.push("enabled_state_mismatch");
   }
@@ -314,10 +329,11 @@ export function buildMailtoSubscribeLaterReceipt({
     experiment_state: "disabled_prerequisites_unproven",
     enabled: false,
     removable_harness_shipped: MAILTO_LATER_HARNESS_SHIPPED,
-    subscribe_address: DEFAULT_SUBSCRIBE_ADDRESS,
+    subscribe_address_source: SUBSCRIBE_ADDRESS_SOURCE,
+    subscribe_address_key: SUBSCRIBE_ADDRESS_KEY,
     encoding: {
       method: "rfc6068_mailto_subject_body",
-      destination_allowlist: [DEFAULT_SUBSCRIBE_ADDRESS],
+      destination: "configured_SUBSCRIBE_ADDRESS_only",
       inbound_body_char_limit: INBOUND_BODY_CHAR_LIMIT,
       href_char_limit: MAILTO_HREF_CHAR_LIMIT,
     },
@@ -341,7 +357,7 @@ export function buildMailtoSubscribeLaterReceipt({
     privacy: {
       credentials_present: false,
       resident_addresses_present: false,
-      destination_addresses: [DEFAULT_SUBSCRIBE_ADDRESS],
+      destination_addresses: ["configured_SUBSCRIBE_ADDRESS"],
       sentence_copied_to_mail_client: false,
     },
     measured_stop: {

@@ -2,14 +2,15 @@
   "schema": "cityscroll.fs05_email_domain_prerequisite.v1",
   "version": 1,
   "observed_at": "2026-08-29T00:00:00.000Z",
-  "subscribe_address": "subscribe@crol-list.org",
-  "notes": "Inbound subscribe remains on subscribe@crol-list.org. Mail-leg inbound canaries are operations health and are not FS-05 routing, delivery-ownership, reply-handling, or composer proof. This record does not send mail, alter DNS, or claim deliverability.",
+  "subscribe_address_source": "worker/wrangler.toml",
+  "subscribe_address_key": "SUBSCRIBE_ADDRESS",
+  "notes": "Inbound subscribe remains on the configured Worker SUBSCRIBE_ADDRESS. Mail-leg inbound canaries are operations health and are not FS-05 routing, delivery-ownership, reply-handling, or composer proof. This record does not send mail, alter DNS, or claim deliverability.",
   "axes": {
     "routing": {
       "status": "incomplete",
       "evidence_id": null,
       "observed_at": "2026-08-29T00:00:00.000Z",
-      "reason": "Inbound Email Routing still targets subscribe@crol-list.org. No named FS-05 routing proof is retained."
+      "reason": "Inbound Email Routing still targets the configured Worker SUBSCRIBE_ADDRESS. No named FS-05 routing proof is retained."
     },
     "delivery_ownership": {
       "status": "absent",
