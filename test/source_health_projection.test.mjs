@@ -75,7 +75,7 @@ function observation(overrides = {}) {
 
 test("canonical contracts declare structured freshness and public/backstage health policy", () => {
   const registry = loadSourceContracts();
-  assert.equal(registry.contracts.length, 60);
+  assert.equal(registry.contracts.length, 63);
   assert.deepEqual(validateSourceContracts(registry), []);
   for (const source of registry.contracts) {
     assert.ok(source.freshness_contract, source.id);

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
   "generated_at": "2026-08-18T04:05:51.552Z",
-  "row_count": 1079,
+  "row_count": 1082,
   "rows": [
     {
       "procurement_id": "procurement:contract:BA2335819",
@@ -21580,6 +21580,66 @@
       "primary_stage": "registered",
       "source_systems": [
         "checkbook_contracts"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:contract_reporter_number:2138505",
+      "digest_id": "procurement:contract_reporter_number:2138505",
+      "canonical_href": "/procurements/procurement%3Acontract_reporter_number%3A2138505",
+      "short_title": "MPM-360: Bridge Preservation at the Marine Parkway-Gil Hodges Memorial Bridge and the Cross Bay-Veterans Memorial Bridge.",
+      "agency_name": "MTA - NYC Transit (NYCT)",
+      "vendor_name": null,
+      "contract_amount": 0,
+      "start_date": "2026-08-27",
+      "pin": null,
+      "contract_id": null,
+      "procurement_stages": [
+        "solicitation"
+      ],
+      "primary_stage": "solicitation",
+      "source_systems": [
+        "nys_contract_reporter"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:solicitation:AW9Y",
+      "digest_id": "procurement:solicitation:AW9Y",
+      "canonical_href": "/procurements/procurement%3Asolicitation%3AAW9Y",
+      "short_title": "AW-9Y Security Upgrades at CBB and MPB",
+      "agency_name": null,
+      "vendor_name": null,
+      "contract_amount": 18521000,
+      "start_date": null,
+      "pin": null,
+      "contract_id": null,
+      "procurement_stages": [
+        "bid_opening_result"
+      ],
+      "primary_stage": "bid_opening_result",
+      "source_systems": [
+        "mta_bid_results"
+      ],
+      "type_of_notice_description": null
+    },
+    {
+      "procurement_id": "procurement:solicitation:S48020",
+      "digest_id": "procurement:solicitation:S48020",
+      "canonical_href": "/procurements/procurement%3Asolicitation%3AS48020",
+      "short_title": "CBTC for 6th Ave Line, 63rd St Line and DeKalb Interlocking",
+      "agency_name": "MTA Construction & Development",
+      "vendor_name": null,
+      "contract_amount": null,
+      "start_date": "2026-05-21",
+      "pin": null,
+      "contract_id": null,
+      "procurement_stages": [
+        "solicitation"
+      ],
+      "primary_stage": "solicitation",
+      "source_systems": [
+        "mta_current_opportunities"
       ],
       "type_of_notice_description": null
     }

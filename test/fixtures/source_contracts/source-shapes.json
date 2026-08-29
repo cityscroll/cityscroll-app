@@ -119,6 +119,27 @@
       ]
     },
     {
+      "id": "nys-contract-reporter",
+      "kind": "html",
+      "identifier": "Search",
+      "response_type": "text/html",
+      "fields": ["cr_number", "agency", "title", "issue_date", "due_date", "category", "ad_type", "location"]
+    },
+    {
+      "id": "mta-current-opportunities",
+      "kind": "html",
+      "identifier": "current-opportunities",
+      "response_type": "text/html",
+      "fields": ["solicitation_number", "event_number", "agency", "title", "opening_date"]
+    },
+    {
+      "id": "mta-bid-results",
+      "kind": "html",
+      "identifier": "bid-results",
+      "response_type": "text/html",
+      "fields": ["auc_id", "auc_name", "opening_date", "bidder", "bid_amount"]
+    },
+    {
       "id": "checkbook-contracts",
       "kind": "checkbook",
       "identifier": "Contracts",

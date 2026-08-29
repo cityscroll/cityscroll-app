@@ -1,0 +1,1188 @@
+{
+  "schema_version": 1,
+  "kind": "depot_rederive",
+  "observed_on": "2026-08-29",
+  "class_changes": [],
+  "class_changes_loud": [],
+  "sources_count": 65,
+  "materialized_crosswalks": [
+    {
+      "id": "city-record-pin-x-checkbook-contracts",
+      "rate": null,
+      "metric": null
+    },
+    {
+      "id": "city-record-pin-x-checkbook-spending",
+      "rate": null,
+      "metric": null
+    },
+    {
+      "id": "city-record-pin-x-passport-contracts-epin",
+      "rate": 0.74,
+      "metric": "all_notices_to_contracts"
+    },
+    {
+      "id": "city-record-pin-x-passport-rfx-epin",
+      "rate": 0.444,
+      "metric": "solicitation_to_rfx"
+    },
+    {
+      "id": "city-record-request-x-nycida-projects",
+      "rate": null,
+      "metric": null
+    },
+    {
+      "id": "city-record-vendor-x-doing-business-entities",
+      "rate": 0.7042,
+      "metric": "modern_awards_stem_notices"
+    },
+    {
+      "id": "city-record-x-legistar-events",
+      "rate": 1,
+      "metric": "modern_notices_strict"
+    },
+    {
+      "id": "exam-number-x-dcas-outcomes",
+      "rate": null,
+      "metric": null
+    },
+    {
+      "id": "zap-bbl-x-dob-now-filings",
+      "rate": 0.56,
+      "metric": "complete_sample_dob_any_filing"
+    },
+    {
+      "id": "zap-project-x-bbl",
+      "rate": null,
+      "metric": null
+    },
+    {
+      "id": "zap-projects-x-zap-api-outcomes",
+      "rate": 1,
+      "metric": "ulurp_complete_useful_outcome"
+    }
+  ],
+  "candidate_crosswalks": [
+    {
+      "id": "checkbook-nycha-contracts-x-city-record-via-PIN",
+      "worth_materializing": "yes",
+      "score": 6,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "contract_id",
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-spending-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "yes",
+      "score": 5,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-ocp-recent-contract-awards-via-PIN",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-ocp-recent-contract-awards-via-PIN",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "checkbook-spending-x-ocp-recent-contract-awards-via-PIN",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 4,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-ocp-recent-contract-awards-via-PIN+request_id",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "city-record-attachment-export-cliff",
+        "procurement-ocp-recent-awards",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-ocp-recent-contract-awards-via-request_id",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards",
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ]
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 4,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
+      "worth_materializing": "yes",
+      "score": 4,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed",
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-checkbook-nycha-contracts-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-current-solicitations-ocp-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-checkbook-spending-via-PIN+contract_id",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-current-solicitations-ocp-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "checkbook-spending-x-current-solicitations-ocp-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
+      "id": "city-record-x-dob-certificate-of-occupancy-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-dob-now-job-filings-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-zap-bbl-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-zap-projects-via-BBL",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail",
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-nycida-build-nyc-projects-via-project_id",
+      "worth_materializing": "yes",
+      "score": 3,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-project-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ]
+    },
+    {
+      "id": "city-record-x-legacy-dob-job-filings-via-BBL",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-mappluto-via-BBL",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "city-record-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "meetings-location-residual",
+        "property-parcel-key-residual"
+      ]
+    },
+    {
+      "id": "ocp-recent-contract-awards-x-passport-public-contracts-via-PIN",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-registered-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "abo-local-authorities-x-doing-business-entities-via-vendor_name",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ]
+    },
+    {
+      "id": "active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "exam_no"
+      ],
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ]
+    },
+    {
+      "id": "active-civil-service-list-x-dcas-eligible-list-utilization-via-exam_no",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "exam_no"
+      ],
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ]
+    },
+    {
+      "id": "current-solicitations-ocp-x-ocp-recent-contract-awards-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-registered-unmatched"
+      ]
+    },
+    {
+      "id": "dcas-annual-exam-outcomes-x-dcas-eligible-list-utilization-via-exam_no",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "exam_no"
+      ],
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-dob-now-job-filings-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-legacy-dob-job-filings-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-mappluto-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-bbl-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-certificate-of-occupancy-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-legacy-dob-job-filings-via-BBL+BIN+job_number",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL",
+        "BIN",
+        "job_number"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-mappluto-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "dob-now-job-filings-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "legacy-dob-job-filings-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-bbl-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-unregistered-zoning-application-portal-projects-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-api-outcomes-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-bbl-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mandatory-inclusionary-housing-x-zap-projects-via-project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mappluto-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mappluto-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mappluto-x-zap-bbl-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "mappluto-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "nyc-council-legistar-x-nyc-council-members-via-council_member_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "council_member_id"
+      ],
+      "gaps_would_close": [
+        "meeting-matters-absent"
+      ]
+    },
+    {
+      "id": "ocp-recent-contract-awards-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "passport-public-contracts-x-passport-public-rfx-via-EPIN+PIN",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "EPIN",
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-registered-unmatched"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-bbl-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "suitability-city-owned-leased-property-ll48-x-zap-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-unregistered-zoning-application-portal-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-zap-api-outcomes-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-zap-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendations-x-unregistered-zoning-application-portal-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendations-x-zap-api-outcomes-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "ulurp-recommendations-x-zap-projects-via-ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-bbl-via-BBL+project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id",
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-projects-via-BBL+project_id+ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "zap-api-outcomes-x-zap-bbl-via-BBL+project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id",
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "cfb-campaign-contributions-x-city-clerk-elobbyist-via-person_name_key",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "person_name_key"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "current-solicitations-ocp-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "legacy-dob-job-filings-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "mappluto-x-suitability-city-owned-leased-property-ll48-via-BBL",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "mocs-ll1-plans-x-mocs-ll63-plans-via-agency_+_description_+_term_(reviewed_candidate_only)+published_PIN/EPIN_when_present",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "published_PIN/EPIN_when_present",
+        "agency_+_description_+_term_(reviewed_candidate_only)"
+      ],
+      "gaps_would_close": []
+    },
+    {
+      "id": "ulurp-recommendation-pdfs-x-ulurp-recommendations-via-ulurp_numbers",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "ulurp_numbers"
+      ],
+      "gaps_would_close": []
+    }
+  ],
+  "passport_field_case": {
+    "predicted_grade": "high-risk",
+    "realized_either_rate": 0.78,
+    "realized_either_joined": 5660,
+    "realized_either_total": 7254,
+    "epin_in_graph": true,
+    "passport_checkbook_candidates": [
+      "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "checkbook-contracts-x-passport-public-rfx-via-PIN",
+      "checkbook-nycha-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "checkbook-nycha-contracts-x-passport-public-rfx-via-PIN",
+      "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
+      "checkbook-spending-x-passport-public-rfx-via-PIN"
+    ]
+  },
+  "ranked_ingest_top": [
+    {
+      "rank": 1,
+      "source": "Property notice parcel-key residual",
+      "value_score": 15,
+      "realized_join_rate": null
+    }
+  ],
+  "registry_sha256": "e04cf3564ce4e5743d3e30cfb40f0f8e547f39b7f2e04e3bf94cb49433811724"
+}

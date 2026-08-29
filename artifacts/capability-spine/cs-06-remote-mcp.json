@@ -211,7 +211,7 @@
     },
     {
       "adapter_id": "mcp.browse_contracts@1",
-      "adapter_semantic_sha256": "378d6c01ecf2135f7c02029004713e95c66b3df4e430760dae6307bb517ab29c",
+      "adapter_semantic_sha256": "00aca90e734605ed0c0cebb6b5695cfe5d42c1e65159c2ceb0a31a37434e1112",
       "annotations": {
         "destructiveHint": false,
         "idempotentHint": true,
@@ -228,7 +228,7 @@
       },
       "calls": 1,
       "capability_reference": "contracts.browse@1",
-      "direct_semantic_sha256": "378d6c01ecf2135f7c02029004713e95c66b3df4e430760dae6307bb517ab29c",
+      "direct_semantic_sha256": "00aca90e734605ed0c0cebb6b5695cfe5d42c1e65159c2ceb0a31a37434e1112",
       "name": "browse_contracts",
       "operation_class": "read",
       "parity": "pass",

@@ -56,6 +56,9 @@ function factsFor(object, observations) {
     industry: first("industry"),
     start_date: first("start", "start_date", "contract_start_date"),
     end_date: first("end", "end_date", "contract_end_date"),
+    startDate: first("start_date", "start", "issue_date", "date"),
+    endDate: first("end_date", "end", "contract_end_date", "due_date", "closing_date", "opening_date"),
+    officialUrl: first("official_url", "source_url"),
   };
 }
 
@@ -153,6 +156,16 @@ function checkbookOfficialSource(object, rows) {
   return { href: CHECKBOOK_CONTRACT_SEARCH, label: "Checkbook NYC" };
 }
 
+function nativeOfficialSources(rows) {
+  return rows
+    .filter((entry) => ["nys_contract_reporter", "mta_current_opportunities", "mta_bid_results"].includes(entry.source_system))
+    .map((entry) => ({
+      href: clean(entry.snapshot?.official_url || entry.snapshot?.source_url, 500),
+      label: entry.source_system === "nys_contract_reporter" ? "NYS Contract Reporter" : "MTA official record",
+    }))
+    .filter((item) => item.href);
+}
+
 /**
  * Resident official-source links for a procurement object.
  * PASSPort Public has no per-contract page; the contracts browse portal is
@@ -192,6 +205,7 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
     add(checkbookOfficialSource(object, rows.filter((entry) =>
       entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_nycha_contracts" || entry.source_system === "checkbook_spending")));
   }
+  for (const item of nativeOfficialSources(rows)) add(item);
   return items;
 }
 
@@ -201,8 +215,10 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
   const facts = factsFor(object, observations);
   const factRows = [
     ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Method", facts.method],
-    ["Program", facts.program], ["Industry", facts.industry], ["Start date", facts.start_date], ["End date", facts.end_date],
+    ["Program", facts.program], ["Industry", facts.industry], ["Start date", facts.start_date || facts.startDate], ["End date", facts.end_date || facts.endDate],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
+    ["Contract Reporter number", object?.identity_keys?.contract_reporter_numbers?.[0]],
+    ["Solicitation", object?.identity_keys?.solicitation_ids?.[0]], ["Event", object?.identity_keys?.event_ids?.[0]],
   ].filter(([, value]) => value).map(([label, value]) => `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join("");
   const sourceItems = procurementOfficialSourceItems(object, observations);
   const canonical = procurementCanonicalHref(object);

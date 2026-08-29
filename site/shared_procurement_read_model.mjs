@@ -18,6 +18,11 @@ export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procureme
 export const SHARED_PROCUREMENT_READ_MODEL_VERSION = 1;
 
 const SOURCE_STATUSES = new Set(["available", "stale", "unavailable", "partial"]);
+const NATIVE_PROCUREMENT_SOURCES = new Set([
+  "nys_contract_reporter",
+  "mta_current_opportunities",
+  "mta_bid_results",
+]);
 
 function text(value) {
   const result = String(value ?? "").trim();
@@ -58,7 +63,9 @@ function retainedObservations(records) {
     source_system_id: record.source_system_id || record.source_id || null,
     ingested_at: record.ingested_at || null,
     snapshot: Object.freeze({ ...procurementObservationSnapshot(record) }),
-  })).sort((left, right) => left.source_observation_ref.localeCompare(right.source_observation_ref));
+  })).sort((left, right) => Number(NATIVE_PROCUREMENT_SOURCES.has(left.source_system))
+    - Number(NATIVE_PROCUREMENT_SOURCES.has(right.source_system))
+    || left.source_observation_ref.localeCompare(right.source_observation_ref));
 }
 
 /** Build one source-enveloped aggregate read model without fetching fallbacks. */

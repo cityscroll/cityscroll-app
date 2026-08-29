@@ -66,6 +66,12 @@ export function contractSearchDocumentToMoneyRow(candidate = {}) {
     short_title: contractSearchBridgeClean(carried?.short_title, 500) || document.title,
     pin: contractSearchBridgeClean(carried?.pin, 160) || legacyPin,
     contract_id: contractSearchBridgeClean(carried?.contract_id, 160) || null,
+    ...(contractSearchBridgeClean(carried?.contract_reporter_number, 160)
+      ? { contract_reporter_number: contractSearchBridgeClean(carried.contract_reporter_number, 160) } : {}),
+    ...(contractSearchBridgeClean(carried?.solicitation_id, 160)
+      ? { solicitation_id: contractSearchBridgeClean(carried.solicitation_id, 160) } : {}),
+    ...(contractSearchBridgeClean(carried?.event_id, 160)
+      ? { event_id: contractSearchBridgeClean(carried.event_id, 160) } : {}),
     contract_amount: carried?.contract_amount ?? null,
     vendor_name: contractSearchBridgeClean(carried?.vendor_name, 240) || null,
     official_url: contractSearchBridgeClean(carried?.official_url, 600) || null,

@@ -23,6 +23,9 @@ export const PROCUREMENT_CONSTRUCTOR_SOURCES = Object.freeze([
   "checkbook_contracts",
   "checkbook_nycha_contracts",
   "checkbook_spending",
+  "nys_contract_reporter",
+  "mta_current_opportunities",
+  "mta_bid_results",
 ]);
 
 const CITY_RECORD_SOURCES = new Set([
@@ -31,8 +34,15 @@ const CITY_RECORD_SOURCES = new Set([
   "crol",
 ]);
 
+const NATIVE_PROCUREMENT_SOURCES = new Set([
+  "nys_contract_reporter",
+  "mta_current_opportunities",
+  "mta_bid_results",
+]);
+
 const STAGE_ORDER = Object.freeze([
   "solicitation",
+  "bid_opening_result",
   "intent_to_negotiate",
   "vendor_list",
   "intent_to_award",
@@ -74,6 +84,11 @@ function sourceSystem(record) {
   return text(record?.source_system)?.toLowerCase() || null;
 }
 
+function isNativeProcurementObject(object) {
+  return (object?.source_observation_refs || []).some((ref) =>
+    NATIVE_PROCUREMENT_SOURCES.has(String(ref).split(":")[0]));
+}
+
 function sourceId(record) {
   return text(record?.source_system_id || record?.source_id);
 }
@@ -98,6 +113,9 @@ function identityKeys(record, row = snapshot(record)) {
   let contractId = null;
   let epin = null;
   let publisherId = null;
+  let contractReporterNumber = null;
+  let solicitationId = null;
+  let eventId = null;
 
   if (system === "passport_public_contracts") {
     contractId = exactKey(row.contract_id || row.contractId);
@@ -120,13 +138,36 @@ function identityKeys(record, row = snapshot(record)) {
   } else if (CITY_RECORD_SOURCES.has(system)) {
     epin = exactKey(row.pin || row.epin);
     publisherId = exactKey(row.request_id || sourceId(record));
+  } else if (["nys_contract_reporter", "mta_current_opportunities", "mta_bid_results"].includes(system)) {
+    contractReporterNumber = exactKey(row.contract_reporter_number || row.cr_number || row.cr_number_norm);
+    solicitationId = exactKey(row.solicitation_id || row.solicitation_number || row.auction_id || row.auc_id);
+    eventId = exactKey(row.event_id || row.event_number || row.event || row.solicitation_id || row.solicitation_number || row.auction_id || row.auc_id);
+    publisherId = exactKey(row.source_record_id || sourceId(record));
   }
 
-  return { contract_id: contractId, epin, publisher_id: publisherId };
+  return {
+    contract_id: contractId,
+    epin,
+    publisher_id: publisherId,
+    contract_reporter_number: contractReporterNumber,
+    solicitation_id: solicitationId,
+    event_id: eventId,
+    native: [
+      ["contract_reporter_number", contractReporterNumber],
+      ["solicitation_id", solicitationId],
+      ["event_id", eventId],
+    ].filter(([, value]) => value).map(([field, value]) => ({ field, value })),
+  };
 }
 
 function stageFor(record, row = snapshot(record)) {
   const system = sourceSystem(record);
+  if (["nys_contract_reporter", "mta_current_opportunities", "mta_bid_results"].includes(system)) {
+    const observationType = text(row.observation_type || row.publication_stage)?.toLowerCase();
+    if (observationType === "bid_opening_result" || observationType === "bid_result") return "bid_opening_result";
+    if (observationType === "award") return "award";
+    if (observationType === "opportunity" || observationType === "solicitation") return "solicitation";
+  }
   if (system === "passport_public_rfx") return "solicitation";
   if (system === "checkbook_spending") return "payment";
   if (system === "passport_public_contracts" || system === "checkbook_contracts" || system === "checkbook_nycha_contracts") {
@@ -175,7 +216,10 @@ export function auditProcurementIdentityGate(sourceRecords = [], options = {}) {
   const acceptedJoins = Array.isArray(options.acceptedJoins) ? options.acceptedJoins : [];
   const exactJoins = acceptedJoins.filter((join) =>
     join?.status === "accepted"
-    && ["exact_contract_id", "exact_epin"].includes(join?.basis)
+    && [
+      "exact_contract_id", "exact_epin", "exact_contract_reporter_number",
+      "exact_solicitation_id", "exact_event_id",
+    ].includes(join?.basis)
     && text(join?.matched_value));
   const stableRate = selected.length ? stable.length / selected.length : 1;
   const exactPrecision = acceptedJoins.length ? exactJoins.length / acceptedJoins.length : 1;
@@ -200,6 +244,7 @@ function componentFor(record, basis, matchedValue) {
     matched_value: matchedValue,
     contract_ids: new Set(),
     epins: new Set(),
+    native_keys: new Map(),
   };
 }
 
@@ -208,9 +253,28 @@ function addRecord(component, record) {
   const keys = identityKeys(record);
   if (keys.contract_id) component.contract_ids.add(keys.contract_id);
   if (keys.epin) component.epins.add(keys.epin);
+  for (const { field, value } of keys.native) {
+    if (!component.native_keys.has(field)) component.native_keys.set(field, new Set());
+    component.native_keys.get(field).add(value);
+  }
+}
+
+function nativeBasis(field) {
+  return `exact_${field}`;
+}
+
+function mergeComponents(target, source, components) {
+  for (const record of source.records) addRecord(target, record);
+  const index = components.indexOf(source);
+  if (index >= 0) components.splice(index, 1);
 }
 
 function procurementId(component) {
+  const nativeFields = ["solicitation_id", "event_id", "contract_reporter_number"];
+  for (const field of nativeFields) {
+    const values = [...(component.native_keys.get(field) || [])].sort();
+    if (values.length === 1) return `procurement:${field.replaceAll("_id", "")}:${values[0]}`;
+  }
   if (component.basis === "exact_publisher_source_id") {
     const first = component.records.slice().sort((a, b) =>
       String(observationRef(a)).localeCompare(String(observationRef(b))))[0];
@@ -227,14 +291,31 @@ function procurementId(component) {
 
 function exactComponents(records) {
   const components = [];
+  const byNative = new Map();
+  const nativeRows = [];
   const byContract = new Map();
   const contractRows = [];
   const epinOnlyRows = [];
 
   for (const record of records) {
     const keys = identityKeys(record);
-    if (keys.contract_id) contractRows.push(record);
+    if (keys.native.length) nativeRows.push(record);
+    else if (keys.contract_id) contractRows.push(record);
     else epinOnlyRows.push(record);
+  }
+
+  for (const record of nativeRows) {
+    const keys = identityKeys(record);
+    const candidates = [...new Set(keys.native.flatMap(({ field, value }) => byNative.get(`${field}:${value}`) || []))];
+    let component = candidates[0];
+    if (!component) {
+      const first = keys.native[0];
+      component = componentFor(record, nativeBasis(first.field), first.value);
+      components.push(component);
+    }
+    for (const candidate of candidates.slice(1)) mergeComponents(component, candidate, components);
+    addRecord(component, record);
+    for (const { field, value } of keys.native) byNative.set(`${field}:${value}`, component);
   }
 
   for (const record of contractRows) {
@@ -287,7 +368,13 @@ function identityEdge(record, component, id) {
   const keys = identityKeys(record);
   let basis = component.basis;
   let matchedValue = component.matched_value;
-  if (component.basis === "exact_publisher_source_id") {
+  const native = identityKeys(record).native.find(({ field, value }) => (
+    component.native_keys.get(field)?.has(value)
+  ));
+  if (native) {
+    basis = nativeBasis(native.field);
+    matchedValue = native.value;
+  } else if (component.basis === "exact_publisher_source_id") {
     basis = "exact_publisher_source_id";
     matchedValue = observationRef(record);
   } else if (component.contract_ids.has(keys.contract_id)) {
@@ -328,8 +415,12 @@ function crossSourceJoins(components) {
         const rightKeys = identityKeys(right);
         const contractIds = intersect([leftKeys.contract_id], [rightKeys.contract_id]);
         const epins = intersect([leftKeys.epin], [rightKeys.epin]);
-        const basis = contractIds.length ? "exact_contract_id" : epins.length ? "exact_epin" : null;
-        const matchedValue = contractIds[0] || epins[0] || null;
+        const native = leftKeys.native.find(({ field, value }) => rightKeys.native.some((right) => (
+          right.field === field && right.value === value
+        )));
+        const basis = native ? nativeBasis(native.field)
+          : contractIds.length ? "exact_contract_id" : epins.length ? "exact_epin" : null;
+        const matchedValue = native?.value || contractIds[0] || epins[0] || null;
         if (!basis || !matchedValue) continue;
         joins.push({
           schema: PROCUREMENT_CROSS_SOURCE_JOIN_SCHEMA,
@@ -370,6 +461,16 @@ function createObject(component, edges) {
     stageRefs.get(stage).add(observationRef(record));
   }
   const objectEdges = edges.filter((edge) => edge.procurement_id === id);
+  const identity = {
+    contract_ids: [...component.contract_ids].sort(),
+    epins: [...component.epins].sort(),
+  };
+  const nativeIdentity = {
+    contract_reporter_numbers: [...(component.native_keys.get("contract_reporter_number") || [])].sort(),
+    solicitation_ids: [...(component.native_keys.get("solicitation_id") || [])].sort(),
+    event_ids: [...(component.native_keys.get("event_id") || [])].sort(),
+  };
+  if (Object.values(nativeIdentity).some((values) => values.length)) Object.assign(identity, nativeIdentity);
   return {
     object_type: "procurement",
     schema: PROCUREMENT_OBJECT_SCHEMA,
@@ -377,10 +478,7 @@ function createObject(component, edges) {
     canonical_id: id,
     source_observation_refs: objectEdges.map((edge) => edge.source_observation_ref).sort(),
     stages: sortedStages(stageRefs),
-    identity_keys: {
-      contract_ids: [...component.contract_ids].sort(),
-      epins: [...component.epins].sort(),
-    },
+    identity_keys: identity,
     identity_edges: objectEdges,
     lifecycle: null,
     compatibility: {
@@ -394,6 +492,10 @@ function objectCandidatesForKeys(objects, keys) {
   const byContract = keys.contract_id
     ? objects.filter((object) => object.identity_keys.contract_ids.includes(keys.contract_id)) : [];
   if (byContract.length) return byContract;
+  const native = keys.native.flatMap(({ field, value }) => objects.filter((object) => (
+    object.identity_keys[`${field.replace("_number", "_numbers").replace(/_id$/, "_ids")}`]?.includes(value)
+  )));
+  if (native.length) return [...new Set(native)];
   return keys.epin
     ? objects.filter((object) => object.identity_keys.epins.includes(keys.epin)) : [];
 }
@@ -518,7 +620,8 @@ export function buildProcurementObjects({
     checkbookLookupRows,
     includeUnknown: includeUnknownCheckbookCorroboration,
   });
-  objects.sort((left, right) => left.procurement_id.localeCompare(right.procurement_id));
+  objects.sort((left, right) => Number(isNativeProcurementObject(left)) - Number(isNativeProcurementObject(right))
+    || left.procurement_id.localeCompare(right.procurement_id));
   edges.sort((left, right) => left.source_observation_ref.localeCompare(right.source_observation_ref));
 
   return {
