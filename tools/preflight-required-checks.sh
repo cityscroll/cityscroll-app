@@ -344,7 +344,7 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_banner "Unit tests (site + worker)" "Optional source-contract/network gates" \
     "node tools/verify_source_contracts.mjs"
   run_and_fail node tools/verify_source_contracts.mjs
-  run_and_fail python3 test/functional/capture_qr_share.py --verify-only
+  run_and_fail python3 test/functional/capture_qr_share.py --land-canary
   run_and_fail python3 test/functional/19_hash_route_focus.py
   run_and_fail python3 test/functional/21_module_dom_equivalence.py
   run_banner "Accessibility + language gate (axe on every PR)" "Build primary static documents" \

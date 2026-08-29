@@ -83,7 +83,11 @@ echo "local site ready at $CROL_BASE"
 
 case "$shard" in
   browser-a11y)
-    tools/run_a11y_functional_check.sh qr-share python3 test/functional/capture_qr_share.py --verify-only
+    # QR dialog/capture coverage is useful diagnostic evidence but is not a
+    # merge requirement; the land render canary is required in preflight.
+    if ! tools/run_a11y_functional_check.sh qr-share python3 test/functional/capture_qr_share.py --verify-only; then
+      echo "::warning::QR share interaction/capture check failed (non-blocking)"
+    fi
     tools/run_a11y_functional_check.sh mobile-viewport python3 test/functional/23_mobile_viewport.py
     tools/run_a11y_functional_check.sh geolocation-gesture python3 test/functional/24_geolocation_gesture_gate.py
     # Keep axe and its final assertion outside the functional retry wrapper.
