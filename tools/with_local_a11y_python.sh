@@ -16,4 +16,8 @@ if [[ ! -x "${a11y_venv}/bin/python3" ]]; then
 fi
 
 export PATH="${a11y_venv}/bin:${PATH}"
+# Declares "this command runs with the accessibility job's Playwright setup"
+# so gates like test/qr_share.test.mjs can key off that instead of sniffing
+# whether some python3 happens to have playwright installed.
+export CI_A11Y_JOB=1
 exec "$@"
