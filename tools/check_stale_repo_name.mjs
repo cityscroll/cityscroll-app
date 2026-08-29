@@ -21,7 +21,14 @@ function loadAllowlist() {
   for (const [index, raw] of readFileSync(ALLOWLIST_PATH, "utf8").split(/\r?\n/).entries()) {
     const line = raw.trim();
     if (!line || line.startsWith("#")) continue;
-    const [path, lineNumber, digest, ...comment] = raw.split("\t");
+    let [path, lineNumber, digest, ...comment] = raw.split("\t");
+    if (path?.startsWith("path64:")) {
+      try {
+        path = Buffer.from(path.slice("path64:".length), "base64").toString("utf8");
+      } catch {
+        path = "";
+      }
+    }
     if (!path || (!/^\d+$/.test(lineNumber || "") && lineNumber !== "*") || (lineNumber !== "*" && !/^[A-Za-z0-9+/]+={0,2}$/.test(digest || "")) || (lineNumber === "*" && digest !== "*") || !comment.join("\t").trim()) {
       throw new Error(`malformed allowlist entry at ${ALLOWLIST_RELATIVE_PATH}:${index + 1}`);
     }
