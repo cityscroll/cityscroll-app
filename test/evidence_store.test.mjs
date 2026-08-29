@@ -11,6 +11,12 @@ function run(args) {
   return spawnSync("python3", ["tools/evidence_store.py", ...args], {
     cwd: ROOT,
     encoding: "utf8",
+    env: {
+      ...process.env,
+      GITHUB_RUN_ID: "",
+      GITHUB_REPOSITORY: "",
+      EVIDENCE_ARTIFACT_URL: "",
+    },
   });
 }
 
