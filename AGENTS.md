@@ -129,6 +129,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `tools/build_shared_procurement_read_model.mjs`; focused proof is
   `test/procurement_process_events.test.mjs`.
 
+- **Observed procurement-event strip (PLA-02):** `site/procurement_process_events.mjs` also
+  projects City Record, PASSPort/Checkbook contract, and payment observations into the same
+  chronological `process_events` list. `site/procurement_document.mjs` renders one
+  `#procurement-process` strip of observed events with source-record expansion and omits
+  unobserved intermediates; legacy `stages` remain on the object. Focused proof is
+  `test/procurement_process_events.test.mjs`.
+
 - Release-surface reconciliation: tools/release_surface_reconciliation.mjs is the typed,
   fail-closed join for production release evidence. tools/worker_trigger_coverage.mjs derives
   local Worker imports and verifies that both Worker trigger surfaces cover them; the focused gate

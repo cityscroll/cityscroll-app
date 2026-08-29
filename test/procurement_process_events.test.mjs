@@ -67,7 +67,10 @@ test("Released and Responses Received become explicit process events while legac
   assert.deepEqual(evaluation.process_events.map(({ state, state_basis, publisher_state, deadline }) => ({
     state, state_basis, publisher_state, deadline,
   })), [{ state: "evaluation", state_basis: "explicit", publisher_state: "Responses Received", deadline: "2026-09-18" }]);
-  assert.match(renderProcurementProcessEvents(open.process_events), />Open<\/strong> · Observed 2026-08-01 · Due 2026-09-18/);
+  assert.match(
+    renderProcurementProcessEvents(open.process_events),
+    />Open<\/strong> · Observed <time datetime="2026-08-01">2026-08-01<\/time> · Due 2026-09-18/,
+  );
   assert.match(renderProcurementProcessEvents(evaluation.process_events), /Evaluation · responses no longer accepted/);
 });
 
@@ -120,4 +123,133 @@ test("Selections Made never copies an RFx vendor, but accepts one distinct publi
     generatedAt: "2026-08-18T20:00:00Z",
   });
   assert.equal(withVendor.rows[0].process_events[0].vendor_ref, "Public Vendor");
+});
+
+function journeyRecords({ duplicateAward = false, includePending = true } = {}) {
+  const intent = sourceRecord("city_record", "20261106001", {
+    request_id: "20261106001",
+    pin: "EPIN-JOURNEY",
+    type_of_notice_description: "Intent to Award",
+    short_title: "Bridge inspection",
+    start_date: "2026-11-06",
+  });
+  const award = sourceRecord("city_record", "20261121001", {
+    request_id: "20261121001",
+    pin: "EPIN-JOURNEY",
+    type_of_notice_description: "Award",
+    short_title: "Bridge inspection",
+    start_date: "2026-11-21",
+  });
+  const pending = sourceRecord("passport_public_contracts", "contract:EPINJOURNEY:CTR-PENDING", {
+    ctr_id: "CTR-PENDING",
+    epin: "EPIN-JOURNEY",
+    contract_id: "CT-JOURNEY",
+    title: "Bridge inspection",
+    status: "Pending Registration Package Compilation",
+    status_date: "2026-12-04",
+  });
+  const registered = sourceRecord("passport_public_contracts", "contract:EPINJOURNEY:CTR-REG", {
+    ctr_id: "CTR-REG",
+    epin: "EPIN-JOURNEY",
+    contract_id: "CT-JOURNEY",
+    title: "Bridge inspection",
+    status: "Registered",
+    registration_date: "2027-01-17",
+  });
+  return [
+    intent,
+    award,
+    ...(duplicateAward ? [award] : []),
+    ...(includePending ? [pending] : []),
+    registered,
+  ];
+}
+
+test("Fixture C orders intent, award, pending registration, and registered on the canonical document", () => {
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: journeyRecords(),
+    generatedAt: "2026-08-18T20:00:00Z",
+  });
+  assert.equal(model.rows.length, 1);
+  assert.deepEqual(model.rows[0].process_events.map((event) => event.state), [
+    "intent_to_award",
+    "award",
+    "pending_registration",
+    "registered",
+  ]);
+  assert.ok(model.rows[0].process_events.every((event) => event.source_observation_ref && event.source_receipt_ref));
+  const html = renderProcurementDocument(model.rows[0], model.observations);
+  assert.match(html, /id="procurement-process"/);
+  assert.match(html, /data-process-state="intent_to_award"/);
+  assert.match(html, /data-process-state="award"/);
+  assert.match(html, /data-process-state="pending_registration"/);
+  assert.match(html, /data-process-state="registered"/);
+  assert.match(html, /href="\/notices\/20261106001"/);
+  assert.match(html, /Publisher status: Intent to Award/);
+  assert.doesNotMatch(html, /Observed stages/);
+  assert.doesNotMatch(html, /checkbox|did not happen|missing step|failed/i);
+});
+
+test("duplicate observations of one City Record award do not duplicate strip marks", () => {
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: journeyRecords({ duplicateAward: true }),
+    generatedAt: "2026-08-18T20:00:00Z",
+  });
+  const awardEvents = model.rows[0].process_events.filter((event) => event.state === "award");
+  assert.equal(awardEvents.length, 1);
+  const html = renderProcurementProcessEvents(model.rows[0].process_events);
+  assert.equal(html.split('data-process-state="award"').length - 1, 1);
+});
+
+test("contradictory pending and registered observations stay inspectable", () => {
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: [
+      sourceRecord("passport_public_contracts", "contract:EPINCONFLICT:CTR-P", {
+        ctr_id: "CTR-P",
+        epin: "EPIN-CONFLICT",
+        contract_id: "CT-CONFLICT",
+        status: "Pending Registration Package Compilation",
+        status_date: "2026-12-04",
+      }),
+      sourceRecord("checkbook_contracts", "contract:registered:CT-CONFLICT:VENDOR:prime-vendor:2026-12-05", {
+        id: "CT-CONFLICT",
+        pin: "EPIN-CONFLICT",
+        status: "registered",
+        registered: "2026-12-05",
+      }),
+    ],
+    generatedAt: "2026-08-18T20:00:00Z",
+  });
+  assert.deepEqual(model.rows[0].process_events.map((event) => event.state), [
+    "pending_registration",
+    "registered",
+  ]);
+  const html = renderProcurementProcessEvents(model.rows[0].process_events);
+  assert.match(html, /Publisher status: Pending Registration Package Compilation/);
+  assert.match(html, /Publisher status: registered/);
+});
+
+test("an unobserved pending-registration step stays absent", () => {
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: journeyRecords({ includePending: false }),
+    generatedAt: "2026-08-18T20:00:00Z",
+  });
+  assert.deepEqual(model.rows[0].process_events.map((event) => event.state), [
+    "intent_to_award",
+    "award",
+    "registered",
+  ]);
+  const html = renderProcurementProcessEvents(model.rows[0].process_events);
+  assert.doesNotMatch(html, /data-process-state="pending_registration"/);
+  assert.doesNotMatch(html, /not yet|did not happen|checkbox/i);
+});
+
+test("a procurement with no useful process event omits the strip", () => {
+  assert.equal(renderProcurementProcessEvents([]), "");
+  const html = renderProcurementDocument({
+    procurement_id: "procurement:contract:CT-EMPTY",
+    identity_keys: { contract_ids: ["CT-EMPTY"] },
+    stages: [],
+  }, []);
+  assert.doesNotMatch(html, /id="procurement-process"/);
 });
