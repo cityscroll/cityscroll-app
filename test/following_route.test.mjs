@@ -58,6 +58,8 @@ test("Following preview enhancement keeps refined criteria in the shareable URL"
   const following = readFileSync(new URL("../site/app/following.mjs", import.meta.url), "utf8");
   assert.match(following, /history\.replaceState\(\{\}, \"\", `\$\{url\.pathname\}\$\{url\.search\}`\)/);
   assert.match(following, /data-following-preview-status.*msg\("msgPreviewReady"\)|replaceChildren\(msg\("msgPreviewReady"\)\)/);
+  assert.match(following, /addEventListener\("popstate"/);
+  assert.match(following, /restoreFromLocation/);
 });
 
 test("district watches make the Community Board picker discoverable", () => {
