@@ -3,7 +3,6 @@
   "id": "pr-1058-committees-search",
   "pr": 1058,
   "title": "Committees into production Worker search",
-  "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
   "source": "https://github.com/cityscroll/cityscroll-app/pull/1058",
   "expected_finding_types": [
     "unmapped_surface",

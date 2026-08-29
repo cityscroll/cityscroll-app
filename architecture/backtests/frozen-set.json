@@ -5,7 +5,6 @@
     {
       "id": "land-action-collapse",
       "title": "Land action-ontology collapse: rezoning-wins primary, ULURP clock on ELURP, map/list procedure split",
-      "card": "cityscroll-internal-label/cs-living-architecture-observer-land-action-collapse",
       "path": "architecture/backtests/land-action-collapse.json",
       "feeds": "LA11",
       "observer": "tools/architecture_land_action_observer.mjs"
@@ -14,7 +13,6 @@
       "id": "pr-1076-constellation-ceiling",
       "pr": 1076,
       "title": "PASSPort constellation graph ceiling raise",
-      "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
       "path": "architecture/backtests/pr-1076-constellation-ceiling.json",
       "feeds": "LA11",
       "observer": "tools/architecture_canary_visibility_observer.mjs"
@@ -23,7 +21,6 @@
       "id": "pr-1058-committees-search",
       "pr": 1058,
       "title": "Committees into production Worker search",
-      "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
       "path": "architecture/backtests/pr-1058-committees-search.json",
       "feeds": "LA11",
       "observer": "tools/architecture_canary_visibility_observer.mjs"
@@ -32,7 +29,6 @@
       "id": "pr-1056-exams-eligibility",
       "pr": 1056,
       "title": "Exams public eligibility and Interest Area multi-select",
-      "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
       "path": "architecture/backtests/pr-1056-exams-eligibility.json",
       "feeds": "LA11",
       "observer": "tools/architecture_canary_visibility_observer.mjs"

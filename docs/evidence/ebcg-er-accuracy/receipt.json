@@ -1,6 +1,5 @@
 {
   "schema": "cityscroll.constellation_er_accuracy.v1",
-  "task": "cityscroll-internal-label/ebcg-01-er-accuracy-coverage",
   "target_cohort": {
     "name": "constellation_cross_spine_inferred_edges",
     "gold_slice": "cross_spine_gold_v3:held_out",
