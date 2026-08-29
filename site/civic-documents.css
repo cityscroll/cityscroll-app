@@ -867,6 +867,89 @@ select {
   color: var(--color-text-muted);
 }
 
+.rulemaking-document .rule-version-diff,
+.rulemaking-document .rule-change-evidence {
+  display: grid;
+  gap: var(--space-3);
+  margin-block: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.rulemaking-document .rule-version-diff h3,
+.rulemaking-document .rule-change-evidence h3,
+.rulemaking-document .rule-version-diff h4 {
+  margin: 0;
+}
+
+.rulemaking-document .rule-version-diff-state,
+.rulemaking-document .rule-version-diff-summary,
+.rulemaking-document .rule-version-diff-navigation,
+.rulemaking-document .rule-version-diff-source,
+.rulemaking-document .rule-change-evidence p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.rulemaking-document .rule-version-diff[data-diff-state="unavailable"] {
+  border-style: dashed;
+}
+
+.rulemaking-document .rule-version-diff-regions {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding-inline-start: 1.5rem;
+}
+
+.rulemaking-document .rule-version-diff-region {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas);
+}
+
+.rulemaking-document .rule-version-diff-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.rulemaking-document .rule-version-diff-columns > div {
+  min-width: 0;
+}
+
+.rulemaking-document .rule-version-diff-text {
+  margin: 0;
+  padding: var(--space-2);
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.rulemaking-document .rule-version-diff-removed {
+  border-inline-start: 3px solid #a33;
+  background: color-mix(in srgb, #a33 8%, var(--color-canvas));
+}
+
+.rulemaking-document .rule-version-diff-added {
+  border-inline-start: 3px solid #287a4b;
+  background: color-mix(in srgb, #287a4b 8%, var(--color-canvas));
+}
+
+.rulemaking-document .rule-version-diff-source {
+  font-size: .9375rem;
+}
+
+@media (max-width: 640px) {
+  .rulemaking-document .rule-version-diff-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
 .legislative-matter-document .matter-appearance {
   margin-block: var(--space-5);
   padding: var(--space-5);
