@@ -9,6 +9,7 @@ import {
 } from "./civic_document_chrome.mjs";
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { buildRulesPhaseView } from "./rules_phase_spine.mjs";
+import { renderPetitionHandoff } from "./rules_petition.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -178,6 +179,7 @@ export function renderRulemakingDocument(object, { currentHref = "", now = null 
     comment_channel_url: object.comment_channel_url,
     testimony_url: object.testimony_url,
     petition_url: object.petition_url,
+    petition_handoff: object.petition_handoff,
     follow_href: object.follow_href,
     history_url: object.history_url || object.canonical_href,
   });
@@ -195,6 +197,9 @@ export function renderRulemakingDocument(object, { currentHref = "", now = null 
       body: renderNodeActions(participationItems, { ariaLabel: "Participation actions", extraClass: "rulemaking-participation-actions" }),
       extraClass: "rulemaking-participation",
     })
+    : "";
+  const petition = interaction.lifecycle_state === "effective"
+    ? renderPetitionHandoff(object.petition_handoff, { mode: "rule" })
     : "";
   const actionItems = [];
   const officialHref = clean(object.nyc_rules?.url || object.nyc_rules?.comment_url);
@@ -242,6 +247,7 @@ ${actions}
 ${renderNodeSection({ heading: "What the agency proposes", body: object.proposal_summary ? `<p>${esc(object.proposal_summary)}</p>` : "" })}
 ${renderNodeSection({ heading: "What this changes", body: ruleVersionsMarkup(object), extraClass: "rulemaking-versions" })}
 ${participation}
+${petition}
 ${renderNodeSection({ heading: "Process", body: timeline, extraClass: "rulemaking-process" })}
 ${renderNodeSection({ heading: "Source documents", body: `<ul>${noticeItems}${ruleItems}</ul>` })}
 ${renderNodeFooter({})}
