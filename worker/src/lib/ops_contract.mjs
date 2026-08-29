@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.8.0";
+export const OPS_CONTRACT_VERSION = "1.9.0";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -411,6 +411,30 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "GET reads the rehearsal, hold state, or rendered preview; GET also accepts the read-only SHADOW_STATUS_KEY. POST reruns after repair or overrides named affected digest holds (ADMIN_KEY only).",
   },
   {
+    path: "/admin/ops-alert",
+    methods: ["POST"],
+    auth: "ADMIN_KEY",
+    description: "Private relay for operational alarms; sends only to the operations mailbox through Resend and deduplicates by guard fingerprint.",
+  },
+  {
+    path: "/admin/reliability/digest",
+    methods: ["GET"],
+    auth: "ADMIN_KEY",
+    description: "Digest dead-man check including consecutive-delivery watermark staleness and mail-leg receipts; returns 503 and GitHub-red when unhealthy. Operations email is skipped when the mail rail itself is the finding.",
+  },
+  {
+    path: "/admin/reliability/scheduler",
+    methods: ["POST", "GET"],
+    auth: "ADMIN_KEY",
+    description: "Records an external scheduler heartbeat or checks heartbeat age, pending outbox, and mail-leg receipts; returns 503 when unhealthy.",
+  },
+  {
+    path: "/admin/reliability/mail",
+    methods: ["GET", "POST"],
+    auth: "ADMIN_KEY",
+    description: "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → subscribe@ worker consumer and the operations mailbox. GET returns 503 when a canary is unmatched or outbound send failed. GitHub-red is the independent alarm; this route does not email a dead mail rail. The Gmail forward leg stays dashboard-gated.",
+  },
+  {
     path: "/admin/digest-send-test",
     methods: ["POST"],
     auth: "OPERATOR_PROBE",
@@ -520,6 +544,10 @@ export const KV_NAMESPACES = Object.freeze([
       { prefix: "watchlog:", semantics: "Watch lifecycle events (day + latest)." },
       { prefix: "award:", semantics: "External award cache meta." },
       { prefix: "fc:", semantics: "Forecast cache keys." },
+      { prefix: "ops:digest:", semantics: "Digest shadow/delivery watchdog receipts." },
+      { prefix: "ops:scheduler:", semantics: "External scheduler heartbeat." },
+      { prefix: "ops:alert:", semantics: "Deduped operations-alert fingerprints." },
+      { prefix: "ops:mail:", semantics: "Inbound worker-consumer and outbound operations-mailbox receipts." },
     ],
   },
   {

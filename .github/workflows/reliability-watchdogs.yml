@@ -19,9 +19,17 @@ jobs:
         run: |
           set -euo pipefail
           : "${CITYSCROLL_ADMIN_KEY:?CITYSCROLL_ADMIN_KEY is required}"
+          auth=(-H "authorization: Bearer $CITYSCROLL_ADMIN_KEY")
           case "${{ github.event.schedule || '' }}" in
-            "50 * * * *") endpoint="https://api.cityscroll.org/admin/reliability/scheduler" ;;
-            *) endpoint="https://api.cityscroll.org/admin/reliability/digest" ;;
+            "50 * * * *")
+              curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/scheduler" "${auth[@]}"
+              ;;
+            *)
+              curl --fail-with-body --retry 2 -X POST "https://api.cityscroll.org/admin/reliability/mail" \
+                "${auth[@]}" -H "content-type: application/json" \
+                --data '{"action":"canary"}'
+              sleep 45
+              curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/mail" "${auth[@]}"
+              curl --fail-with-body --retry 2 "https://api.cityscroll.org/admin/reliability/digest" "${auth[@]}"
+              ;;
           esac
-          curl --fail-with-body --retry 2 "$endpoint" \
-            -H "authorization: Bearer $CITYSCROLL_ADMIN_KEY"
