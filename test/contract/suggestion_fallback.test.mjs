@@ -2,7 +2,7 @@
 // FALLBACK_INDICES (see docs/drift-inventory.md #12). Both are last-resort floors
 // for when Worker KV is unavailable; this test keeps a hand edit from introducing drift.
 //
-//   node --test test/contract/suggestion_fallback.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/suggestion_fallback.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

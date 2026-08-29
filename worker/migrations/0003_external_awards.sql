@@ -1,4 +1,4 @@
--- Precomputed NYCHA exact-PIN award matches per notice (crol-list: awards published elsewhere).
+-- Precomputed NYCHA exact-PIN award matches per notice (CityScroll: awards published elsewhere).
 -- Public authorities post solicitations in the City Record but file awards elsewhere. NYCHA's
 -- awards live in Checkbook NYC's Contracts_NYCHA domain and join to a City Record solicitation by
 -- exact PIN. This caches the ranked match set per notice, computed once (ONE Checkbook request per

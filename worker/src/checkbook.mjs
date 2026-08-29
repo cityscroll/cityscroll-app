@@ -1,7 +1,7 @@
 // /checkbook — CORS proxy and data pipeline to the Checkbook NYC API.
 //
 // checkbooknyc.com/api returns no Access-Control-Allow-Origin header, so a browser
-// fetch() from crol-list is blocked by CORS. This makes the request server-side and
+// fetch() from the public site is blocked by CORS. This makes the request server-side and
 // re-emits it with CORS headers the browser accepts. No API key — pure CORS shim.
 //
 // Request shape (POST JSON): { "xml": "<request>...</request>" }

@@ -10,7 +10,7 @@
 // (the single source of truth for the schema, additive — a new field is a new array entry,
 // no migration).
 //
-//   node --test test/nl_alerts_parse.test.mjs   (from the crol-list/ dir)
+//   node --test test/nl_alerts_parse.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

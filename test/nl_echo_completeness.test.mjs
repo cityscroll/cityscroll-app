@@ -15,7 +15,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // complete interpretation, every entry path that resolves through it inherits the fix by
 // construction. This file pins that wiring plus the chip content itself.
 //
-//   node --test test/nl_echo_completeness.test.mjs   (from the crol-list/ dir)
+//   node --test test/nl_echo_completeness.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

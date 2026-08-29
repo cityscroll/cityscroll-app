@@ -84,7 +84,7 @@ function safeModelError(error) {
 
 async function journalBatch({ script, what, why, undo }) {
   await new Promise((resolvePromise, reject) => {
-    const child = spawn("python3", [script, "add", "--actor", "crol-list-obligations-backfill", "--action-class", "batch-mutation", "--what", what, "--why", why, "--undo", undo, "--no-regen"], { stdio: ["ignore", "ignore", "pipe"] });
+    const child = spawn("python3", [script, "add", "--actor", "cityscroll-obligations-backfill", "--action-class", "batch-mutation", "--what", what, "--why", why, "--undo", undo, "--no-regen"], { stdio: ["ignore", "ignore", "pipe"] });
     let stderr = "";
     child.stderr.on("data", (chunk) => { stderr += chunk.toString(); });
     child.on("error", reject);

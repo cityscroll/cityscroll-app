@@ -1,6 +1,6 @@
 // er-07: entity_link + resolution_run schema dual-write (opt-in, no consumers).
 //
-//   node --test test/entity_link_schema.test.mjs   (from crol-list/worker/)
+//   node --test test/entity_link_schema.test.mjs   (from worker/)
 //
 // Asserts migration columns exist (real SQLite apply) and the shadow writer
 // only emits exact-stem auto_link rows when ENTITY_LINK_DUAL_WRITE is true.

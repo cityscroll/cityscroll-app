@@ -2,10 +2,10 @@
 // prior-cycle STRICT matcher (rankPriorCycleCandidates) and the looser NEAR-match "maybe" tier
 // (rankNearMatchCandidates). This is the dual-implemented twin of the client's copies (same
 // convention as lib/lineage.mjs); the fixtures below are the SAME real, live-queried award rows
-// the client's own test uses (crol-list/test/near_match_prior_cycles.test.mjs), so a divergence
+// the client's own test uses (test/near_match_prior_cycles.test.mjs), so a divergence
 // between the two ports fails here.
 //
-//   node --test test/prior_cycle_lib.test.mjs   (from the crol-list/worker/ dir)
+//   node --test test/prior_cycle_lib.test.mjs   (from the worker/ dir)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -33,7 +33,7 @@ test("daysBetween: absolute day gap, null on unparseable", () => {
 });
 
 test("rankPriorCycleCandidates: keeps a real renewal-suffix prior cycle far apart in time", () => {
-  // Real strict-match pair (crol-list/test/unit.test.mjs fixture): ACS "Housing Navigation and
+  // Real strict-match pair (test/unit.test.mjs fixture): ACS "Housing Navigation and
   // Stabilization Services", explicit renewal-suffix PIN, same vendor, ~17 months apart.
   const r = { request_id: "R2", agency_name: "Administration for Children's Services",
     pin: "06823N0030001R001", short_title: "Housing Navigation and Stabilization Services",

@@ -12,7 +12,7 @@
 // every actual call site provides it — and then asserts the two land on the same field/snippet,
 // so a future change to either side's stripping can't quietly re-diverge them.
 //
-//   node --test test/contract/match_evidence_html.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/match_evidence_html.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

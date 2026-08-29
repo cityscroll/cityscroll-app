@@ -2,7 +2,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // The how-to-respond explainer note must describe the buttons actually rendered above it:
 // no "Email a response" callout when a solicitation lists no contact email.
 //
-//   node --test           (from the crol-list/ dir)
+//   node --test           (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

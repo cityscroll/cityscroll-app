@@ -4,7 +4,7 @@
 // re-exports) and that the worker normalize shim stays behavior-identical.
 // No public HTTP ER routes are introduced by this card.
 //
-//   node --test test/entity_resolution_package.test.mjs   (from crol-list/worker/)
+//   node --test test/entity_resolution_package.test.mjs   (from worker/)
 //   node --test worker/test/entity_resolution_package.test.mjs  (from repo root)
 
 import { test } from "node:test";

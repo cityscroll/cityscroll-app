@@ -2,7 +2,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // A zero-result alert preview should help distinguish "quiet day" from "this filter can never
 // match" — long, sentence-like search terms get a hint to simplify to one or two words.
 //
-//   node --test           (from the crol-list/ dir)
+//   node --test           (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

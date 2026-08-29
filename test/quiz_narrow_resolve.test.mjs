@@ -13,7 +13,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // the SAME function the Ask box's apply step already calls, so preview and a saved alert are
 // built from ONE interpreted filter. A literal single word or quoted phrase is left alone.
 //
-//   node --test test/quiz_narrow_resolve.test.mjs   (from the crol-list/ dir)
+//   node --test test/quiz_narrow_resolve.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

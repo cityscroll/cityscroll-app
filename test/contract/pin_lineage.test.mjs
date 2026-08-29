@@ -4,7 +4,7 @@
 // mean the site shows a renewal chain the worker's cron-time enrichment disagrees is real, or
 // vice versa.
 //
-//   node --test test/contract/pin_lineage.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/pin_lineage.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

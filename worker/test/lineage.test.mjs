@@ -24,7 +24,7 @@
 // to keep the fixture readable, same convention PR #61's own test uses for this exact PIN) and
 // correctly excludes it as uncertain rather than counting it as a 125-cycle chain.
 //
-//   node --test test/lineage.test.mjs   (from the crol-list/worker/ dir)
+//   node --test test/lineage.test.mjs   (from the worker/ dir)
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {

@@ -9,7 +9,7 @@
 //   - GET /priorcycle/<id> returns { id, strict, near, eligibleCount, ok } with the edge-cache
 //     header (no-store when ok is false) and validates/sanitizes the id
 //
-//   node --test test/prior_cycle.test.mjs   (from the crol-list/worker/ dir)
+//   node --test test/prior_cycle.test.mjs   (from the worker/ dir)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
