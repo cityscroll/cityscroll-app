@@ -19,6 +19,10 @@ import { renderProcurementObjectCoverageHtml } from "./procurement_coverage_labe
 import { passportPublicOfficialSource } from "../worker/src/lib/passport_parse.mjs";
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
 import { renderCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
+import {
+  buildCrossSourceCoverageLedger,
+  renderCrossSourceCoverageLedger,
+} from "./cross_source_coverage_ledger.mjs";
 import { renderProcurementProcessEvents } from "./procurement_process_events.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
@@ -246,7 +250,15 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
   return items;
 }
 
-export function renderProcurementDocument(object = {}, observations = [], { currentHref = "" } = {}) {
+export function renderProcurementDocument(object = {}, observations = [], {
+  currentHref = "",
+  sourceStatus = {},
+  sourceCoverage,
+  lookups = {},
+  aboResidual,
+  crosswalk = null,
+  registeredContractCoverage = null,
+} = {}) {
   const id = clean(object?.procurement_id, 320);
   if (!id.startsWith("procurement:")) return null;
   const facts = factsFor(object, observations);
@@ -270,6 +282,17 @@ ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contra
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
+${renderCrossSourceCoverageLedger(object?.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
+  object,
+  observations,
+  sourceStatus,
+  sourceCoverage,
+  lookups,
+  aboResidual,
+  crosswalk,
+  registeredContractCoverage,
+  kind: "procurement",
+}))}
 ${renderProcurementObjectCoverageHtml(object, observations)}
 ${renderNodeSection({
   heading: "Observed events",

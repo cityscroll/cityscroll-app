@@ -708,7 +708,12 @@ async function procurementObjectFromAsset(env, request, id) {
     const manifest = await manifestResponse.json();
     if (Array.isArray(manifest?.rows)) {
       const object = manifest.rows.find((row) => row?.procurement_id === id);
-      return object ? { object, observations: manifest.observations } : null;
+      return object ? {
+        object,
+        observations: manifest.observations,
+        sources: manifest.sources,
+        generated_at: manifest.generated_at,
+      } : null;
     }
     const relativeShardPath = procurementShardPathForId(manifest, id);
     if (!relativeShardPath) return null;
@@ -718,7 +723,12 @@ async function procurementObjectFromAsset(env, request, id) {
     const object = Array.isArray(shard?.rows)
       ? shard.rows.find((row) => row?.procurement_id === id)
       : null;
-    return object ? { object, observations: shard.observations } : null;
+    return object ? {
+      object,
+      observations: shard.observations,
+      sources: manifest.sources,
+      generated_at: manifest.generated_at,
+    } : null;
   } catch {
     return null;
   }
@@ -831,7 +841,12 @@ async function handleProcurement(request, env, encodedId) {
   try { id = decodeURIComponent(encodedId); } catch { return new Response("Invalid procurement link", { status: 400 }); }
   let html = null;
   const result = await procurementObjectFromAsset(env, request, id);
-  if (result) html = renderProcurementDocument(result.object, result.observations, { currentHref: request.url });
+  if (result) {
+    html = renderProcurementDocument(result.object, result.observations, {
+      currentHref: request.url,
+      sourceStatus: result.sources,
+    });
+  }
   if (!html) {
     return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Procurement not found · CityScroll</title></head><body><main><h1>Procurement not found</h1><p><a href=\"/browse/contracts/\">Browse contracts</a></p></main></body></html>", {
       status: 404,
