@@ -15,7 +15,7 @@
   "scripts": {
     "analytics:dev-token": "node scripts/analytics-dev-token.mjs",
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --var GIT_COMMIT_SHA:$(git rev-parse HEAD) --var WRANGLER_ENV:production",
     "cf:kv": "wrangler kv namespace create NL_METER && wrangler kv namespace create ALERT_STATE",
     "test": "node --test",
     "test:live": "node --test e2e/nl.mjs e2e/usage.mjs e2e/routes.mjs e2e/suggestions.mjs",
