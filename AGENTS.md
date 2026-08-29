@@ -408,6 +408,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `source_does_not_establish` when a rule is missing. The committed sample source is
   `site/data/community_board_bylaws.json`; focused proof is
   `test/community_board_bylaws.test.mjs`.
+- **Community Board participation:** `site/community_board_participation.mjs` projects retained
+  board-local governance rules and explicitly scoped application sources into compact,
+  source-qualified participation rows. Closed, stale, or unknown application windows never
+  produce a CTA; rebuild `site/data/community_board_participation.json` and its receipt with
+  `node tools/build_community_board_participation.mjs`. Focused proof is
+  `test/community_board_participation.test.mjs`.
 - **Ambiguous community-board search:** `site/community_board_search.mjs` is the shared static/live
   projection for bare-number chooser state, explicit civic-context defaults, canonical card labels,
   and stable rank-without-hiding order. Bare `community board 3` keeps all five borough candidates;

@@ -39,6 +39,7 @@ import {
   buildCommunityBoardMoneyCardView,
   renderCommunityBoardMoneyCard,
 } from "./community_board_money.mjs";
+import { communityBoardParticipationForBoard } from "./community_board_participation.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -449,6 +450,10 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
     sources.communityBoardMoney || sources.money,
     requested,
   );
+  const participation = communityBoardParticipationForBoard(
+    sources.communityBoardParticipation || sources.participation,
+    requested,
+  );
   const categories = COMMUNITY_BOARD_CONSTELLATION_CATEGORIES.map((spec) => buildCategory(
     spec,
     normalizedBoard,
@@ -489,6 +494,7 @@ export function buildCommunityBoardConstellationView(idOrName, sources = {}) {
       versions: boardBylawVersions,
     },
     money,
+    participation,
     categories,
     edge_summary: edgeSummary,
     local_constellation: localConstellation,
