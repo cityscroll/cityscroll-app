@@ -126,7 +126,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   check-runner gate; retained compatibility and historical lines are documented in
   `.github/legacy-name-allowlist.txt`, with focused proof in
   `test/stale_name_guard.test.mjs`. `--write` remaps exact-line entries and drops stale
-  ones; it never allowlists a new occurrence.
+  ones; it never allowlists a new occurrence. In CI (`LEGACY_ALLOWLIST_BASE_SHA`) a new
+  allowlist entry must cover content already present at the merge-base with `main` — the
+  growth rule, including `future:` semantics, is documented in the allowlist header.
 
 - **PASSPort RFx procedural state (PLA-01):** `site/procurement_process_events.mjs` projects
   retained `passport_public_rfx` observations into explicit, source-receipt-linked canonical
