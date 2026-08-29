@@ -21,7 +21,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/before-contracts-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/8d/8de99c216c745e30310cab4c69d01d3ab051d342c6d68c74134f3418337ba2b3.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -33,7 +33,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/before-staffing-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/23/2387c21780562b6fedf6251799a1d1eb36d256c57d24a0172fa33493ab9a416d.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -45,7 +45,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/before-rules-stepper-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/ed/edc1fe3d9600734885bfefaf08d2b665e4da34b15bdc99626c7f5e223b33326e.webp",
       "inner_width": 360,
       "document_scroll_width": 375,
       "overflow_px": 15
@@ -57,7 +57,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/before-reader-action-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/90/90a5f6fcae8d0333347b70ae73b33511e716af0604a1627bc156d0b05cbb2888.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -69,7 +69,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/before-map-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/ec/ec81e598485c972f3b0d0f01c4443b80b3dc1bb7acd68178d52d3b63906affb4.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -81,7 +81,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/before-table-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/9a/9a9494e6e96700ca536f72758ac1e2dce4c375c272769ca7bcfef4d7423c1047.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -93,7 +93,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/before-contracts-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/11/11cdea34bedffc3a0e9ed41ffbed4bf44540c285baa21fdbfe6861688b7ed45b.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -105,7 +105,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/before-staffing-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/7b/7b1c534299d9b2c4bbe4d317457d9df6f28d154d9efc124df3a9245ca003d876.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -117,7 +117,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/before-rules-stepper-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c8/c8807a77ed3f242a37a9636495f1abb0d656360cf612e5a0eaba1993b968fe2c.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -129,7 +129,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/before-reader-action-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/99/99cc19b9582f86bf5b53e0e82b823c52159e5c502bed608ecf999ac3a25f1864.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -141,7 +141,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/before-map-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/8a/8a3817a2fdd03a32b8ed9efc1c4d6adb25c831d53a2f0851208ac4789575d65b.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -153,7 +153,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/before-table-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/d2/d25a6f5698e48360ec45c52b042d03b08bacba83f25164a14d06417073c08183.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -165,7 +165,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/after-contracts-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/93/9371257bb9447a121bbc656f1f11c871f61a65249bb2078e32464363493dfa4a.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -177,7 +177,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/after-staffing-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/f5/f5506d60bcd87bb29100de88375f6d776100f3fd4ef9aeba9082848b8c794906.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -189,7 +189,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/after-rules-stepper-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/53/53c0cc1c704842d7a04e40379042215cc9be4ffbb9da8e0ee74b92f2a95934cc.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -201,7 +201,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/after-reader-action-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/1c/1cf2c93c031e283d7c2814c5d24b5f867ab881cc2173202eb879c040d7ca4e96.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -213,7 +213,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/after-map-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/7f/7f2ab4cfab44864ac963afb783e056b10b8e7203b02eb84b1582de944bd6c1e1.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -225,7 +225,7 @@
         360,
         800
       ],
-      "file": "docs/screenshots/mobile-intentional/after-table-360.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/14/14bfb1440b4e9028a626af83255d7904822317b8f735f401fbffa6c0a21bb6a5.webp",
       "inner_width": 360,
       "document_scroll_width": 360,
       "overflow_px": 0
@@ -237,7 +237,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/after-contracts-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/11/11cdea34bedffc3a0e9ed41ffbed4bf44540c285baa21fdbfe6861688b7ed45b.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -249,7 +249,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/after-staffing-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/7b/7b1c534299d9b2c4bbe4d317457d9df6f28d154d9efc124df3a9245ca003d876.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -261,7 +261,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/after-rules-stepper-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c8/c8807a77ed3f242a37a9636495f1abb0d656360cf612e5a0eaba1993b968fe2c.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -273,7 +273,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/after-reader-action-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/f6/f6459e9187cd4e428655bb810fb45010381c7bdc864f8da88e3548ee47c83380.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -285,7 +285,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/after-map-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/8a/8a3817a2fdd03a32b8ed9efc1c4d6adb25c831d53a2f0851208ac4789575d65b.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0
@@ -297,7 +297,7 @@
         1280,
         900
       ],
-      "file": "docs/screenshots/mobile-intentional/after-table-1280.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/31/31b1fc7c1e87985d263b46420d1102c47e233f570580d9b86fd0ed5bbdbe6447.webp",
       "inner_width": 1280,
       "document_scroll_width": 1280,
       "overflow_px": 0

@@ -20,7 +20,7 @@
         390,
         844
       ],
-      "file": "docs/screenshots/browse-civic-domains/before-now-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/a0/a06e7408d764cc4e0628af7b936d72b7849bb2c71579c1ae929b8009f6054019.webp",
       "overflow_px": 0
     },
     {
@@ -30,7 +30,7 @@
         390,
         844
       ],
-      "file": "docs/screenshots/browse-civic-domains/before-browse-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/65/65a080cf41e1e2674958f5dca51912ac003b2261fcac162b189a52624bb04bd9.webp",
       "overflow_px": 0
     },
     {
@@ -40,7 +40,7 @@
         1440,
         900
       ],
-      "file": "docs/screenshots/browse-civic-domains/before-now-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c6/c6054db0b46c0493e06664295f0ab18466240022ce2731a6d8d55cacb05da988.webp",
       "overflow_px": 0
     },
     {
@@ -50,7 +50,7 @@
         1440,
         900
       ],
-      "file": "docs/screenshots/browse-civic-domains/before-browse-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/72/724721183371b547e9bcaedf650cfc6c2aed3cfac7c4e1973de883ae61d0bcfc.webp",
       "overflow_px": 0
     },
     {
@@ -60,7 +60,7 @@
         390,
         844
       ],
-      "file": "docs/screenshots/browse-civic-domains/after-now-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/ca/caa877c82a60e27703ab939ae9bc536f0f31ed2130c48f43fd45003123e2cd79.webp",
       "overflow_px": 0
     },
     {
@@ -70,7 +70,7 @@
         390,
         844
       ],
-      "file": "docs/screenshots/browse-civic-domains/after-browse-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/5f/5fc73b34cc08324f467108dde15cab2d49828699e4a1029bbc4ae67f47dd3b60.webp",
       "overflow_px": 0
     },
     {
@@ -80,7 +80,7 @@
         1440,
         900
       ],
-      "file": "docs/screenshots/browse-civic-domains/after-now-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c9/c96c9de886f7d0a4b8fb53393ead9a46850b9cd5001ffcf2ac1cdae1c8f177c9.webp",
       "overflow_px": 0
     },
     {
@@ -90,7 +90,7 @@
         1440,
         900
       ],
-      "file": "docs/screenshots/browse-civic-domains/after-browse-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c5/c57893a18a3e8c5a30d5ab98b97a80f7566aed486784cb303ee0b72f8f806028.webp",
       "overflow_px": 0
     }
   ]

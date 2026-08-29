@@ -77,9 +77,9 @@
     }
   ],
   "screenshots": [
-    "after-1440.png",
-    "after-390.png",
-    "before-1440.png",
-    "before-390.png"
+    "backstage://cityscroll-evidence/objects/sha256/08/08d921c016e853dc1de4344074317606941c616ce56280fc9937e303811c382e.webp",
+    "backstage://cityscroll-evidence/objects/sha256/9c/9c3f876982b0a29d8a6198aed552b584ecf955f2ded4ae7e34a2a6a12cee813f.webp",
+    "backstage://cityscroll-evidence/objects/sha256/1d/1dd3e240e18aec28dae406402dbb15bd675805f44221d8e61ebd0a6c6e219424.webp",
+    "backstage://cityscroll-evidence/objects/sha256/f5/f599021ea69e1c50e17a6acf50ad97e246a76d19aea7c9f3e10799874ac86b7d.webp"
   ]
 }
