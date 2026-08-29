@@ -103,6 +103,8 @@ export function buildSharedProcurementReadModel({
       observations,
       acceptedJoins: built.cross_source_identity_joins,
       generatedAt,
+      corroboration: object.checkbook_corroboration || null,
+      checkbookLookupRows,
     });
     if (receipt) object.cross_source_evidence_receipt = receipt;
   }

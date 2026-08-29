@@ -6,12 +6,67 @@
  * provenance beside the comparison result.
  */
 
+import {
+  publicProvenanceProjection,
+} from "../entity_resolution/provenance_graph.mjs";
+import {
+  CURATION_PROVISIONAL_STATE,
+  projectCurationVerdictState,
+} from "../entity_resolution/review/curation_verdicts.mjs";
 import { residentOfficialSource } from "./provenance_disclosure.mjs";
 import { contractIdKey, pinKey } from "./pin_sibling_grouping.mjs";
 
 export const CROSS_SOURCE_EVIDENCE_RECEIPT_SCHEMA =
   "cityscroll.cross_source_evidence_receipt.v1";
 export const CROSS_SOURCE_EVIDENCE_RECEIPT_VERSION = 1;
+
+/** Compact same-record labels. Weaker relations never receive these names. */
+export const COMPACT_SOURCE_LABELS = Object.freeze({
+  checkbook_contracts: "Checkbook",
+  checkbook_spending: "Checkbook",
+  passport_public_contracts: "PASSPort",
+  passport_public_rfx: "PASSPort",
+  "ocp-recent-awards": "OCP",
+  "ocp-recent-contract-awards": "OCP",
+  ocp_awards: "OCP",
+});
+
+export const CROSS_SOURCE_RELATION = Object.freeze({
+  exact: Object.freeze({ id: "exact", label: "same record" }),
+  related_instrument: Object.freeze({ id: "related_instrument", label: "related instrument" }),
+  rejected: Object.freeze({ id: "rejected", label: "rejected" }),
+  ambiguous: Object.freeze({ id: "ambiguous", label: "ambiguous" }),
+  unknown: Object.freeze({ id: "unknown", label: "unknown" }),
+  fuzzy: Object.freeze({ id: "fuzzy", label: "fuzzy" }),
+  untested: Object.freeze({ id: "untested", label: "untested" }),
+});
+
+const BLOCKED_RELATION_STATUSES = new Set([
+  "related_instrument",
+  "needs_review",
+  "needs-review",
+  "rejected",
+  "ambiguous",
+  "unknown",
+  "fuzzy",
+  "untested",
+  "different",
+  "no_edge",
+  "no-edge",
+]);
+const WEAKER_JOIN_BASIS = new Set([
+  "related_instrument",
+  "pin_family",
+  "vendor_amount_date",
+  "title_similarity",
+  "fuzzy",
+  "fuzzy_name",
+]);
+const CURATION_BLOCKS_SAME_RECORD = new Set([
+  CURATION_PROVISIONAL_STATE.REVIEW,
+  CURATION_PROVISIONAL_STATE.REJECT_WITHHELD,
+  CURATION_PROVISIONAL_STATE.ACCEPT_WITHHELD,
+]);
 
 const EXACT_JOIN_BASIS = new Map([
   ["exact_contract_id", "Exact contract ID"],
@@ -150,24 +205,80 @@ function observationRef(observation) {
       : null);
 }
 
-const IDENTITY_POLICY_BLOCKED = new Set([
-  "related_instrument",
-  "needs_review",
-  "needs-review",
-  "ambiguous",
-  "rejected",
-  "unknown",
-  "no_edge",
-  "no-edge",
-]);
+export function compactSourceName(system, fallback = null) {
+  const key = looseText(system)?.toLowerCase();
+  return COMPACT_SOURCE_LABELS[key] || fallback || SOURCE_LABELS[key] || key || "Source";
+}
+
+export function relationForJoin(join = {}) {
+  const identity = looseText(join?.identity_class || join?.relation)?.toLowerCase();
+  const status = looseText(join?.status)?.toLowerCase();
+  const basis = looseText(join?.basis || join?.join_method || join?.join_key)?.toLowerCase();
+  if (identity === "related_instrument" || status === "related_instrument"
+      || basis === "related_instrument" || basis === "pin_family") {
+    return CROSS_SOURCE_RELATION.related_instrument;
+  }
+  if (identity === "rejected" || status === "rejected" || status === "different") {
+    return CROSS_SOURCE_RELATION.rejected;
+  }
+  if (identity === "ambiguous" || status === "ambiguous") return CROSS_SOURCE_RELATION.ambiguous;
+  if (identity === "unknown" || status === "unknown") return CROSS_SOURCE_RELATION.unknown;
+  if (identity === "needs_review" || identity === "needs-review" || identity === "untested"
+      || status === "needs_review" || status === "untested"
+      || identity === "no_edge" || identity === "no-edge") {
+    return CROSS_SOURCE_RELATION.untested;
+  }
+  if (!status && !basis && !identity) return CROSS_SOURCE_RELATION.untested;
+  if (WEAKER_JOIN_BASIS.has(basis) || status === "fuzzy") return CROSS_SOURCE_RELATION.fuzzy;
+  if (EXACT_JOIN_BASIS.has(basis)
+      && (status === "accepted" || status === "corroborated" || status === "matched" || status === "same_contract")) {
+    return CROSS_SOURCE_RELATION.exact;
+  }
+  if (EXACT_JOIN_BASIS.has(basis) && !status) return CROSS_SOURCE_RELATION.untested;
+  if (basis && !EXACT_JOIN_BASIS.has(basis)) return CROSS_SOURCE_RELATION.fuzzy;
+  return CROSS_SOURCE_RELATION.untested;
+}
 
 function acceptedJoin(join) {
-  const status = looseText(join?.status)?.toLowerCase();
-  const identity = looseText(join?.identity_class || join?.relation)?.toLowerCase();
-  const basis = looseText(join?.basis || join?.join_method || join?.join_key)?.toLowerCase();
-  if (IDENTITY_POLICY_BLOCKED.has(status) || IDENTITY_POLICY_BLOCKED.has(identity)) return false;
-  return (status === "accepted" || status === "corroborated" || (status === "matched" && EXACT_JOIN_BASIS.has(basis)))
-    && EXACT_JOIN_BASIS.has(basis);
+  return relationForJoin(join).id === CROSS_SOURCE_RELATION.exact.id
+    && !BLOCKED_RELATION_STATUSES.has(looseText(join?.identity_class)?.toLowerCase())
+    && !BLOCKED_RELATION_STATUSES.has(looseText(join?.status)?.toLowerCase());
+}
+
+function curationBlocksSameRecord(join, curationReceipts) {
+  if (!Array.isArray(curationReceipts) || !curationReceipts.length) return false;
+  const targetId = looseText(join?.curation_target_id || join?.pair_id || join?.decision_target_id);
+  if (!targetId) return false;
+  const state = projectCurationVerdictState(curationReceipts, targetId);
+  if (state.state === "not_yet_observed") return false;
+  if (CURATION_BLOCKS_SAME_RECORD.has(state.state)) return true;
+  const active = curationReceipts.find((receipt) => receipt?.id === state.active_receipt_id);
+  return looseText(active?.reversible_effect?.gold_candidate?.label)?.toLowerCase() === "different";
+}
+
+function provenanceBlocksSameRecord(join, provenanceGraph) {
+  const assertionId = looseText(join?.assertion_id);
+  if (!provenanceGraph || !assertionId) return false;
+  let projection;
+  try {
+    projection = publicProvenanceProjection(provenanceGraph, assertionId);
+  } catch {
+    return true;
+  }
+  const warrant = looseText(projection?.assertion?.warrant_class)?.toLowerCase();
+  if (warrant === "probabilistic" || warrant === "not_yet_classified") return true;
+  if (warrant === "reviewed" && projection?.publication?.active === false) return true;
+  return false;
+}
+
+function provenanceForJoin(join, provenanceGraph) {
+  const assertionId = looseText(join?.assertion_id);
+  if (!provenanceGraph || !assertionId) return null;
+  try {
+    return publicProvenanceProjection(provenanceGraph, assertionId);
+  } catch {
+    return null;
+  }
 }
 
 function exactCorroborationJoin(object) {
@@ -186,7 +297,7 @@ function exactCorroborationJoin(object) {
  * Project already-classified exact Checkbook corroboration into the receipt
  * without constructing a procurement object or minting a route.
  */
-function attachExactCorroboration(object, observations, acceptedJoins) {
+function attachExactCorroboration(object, observations, acceptedJoins, lookupRows = null, generatedAt = null) {
   const classified = exactCorroborationJoin(object);
   if (!classified) return { observations, acceptedJoins };
   const systems = new Set((Array.isArray(observations) ? observations : []).map(sourceSystem).filter(Boolean));
@@ -198,18 +309,27 @@ function attachExactCorroboration(object, observations, acceptedJoins) {
   const { receipt, basis } = classified;
   const nativeId = looseText(receipt.checkbook_contract_id) || "checkbook-corroboration";
   const checkbookRef = `checkbook_contracts:${nativeId}`;
+  const lookup = (Array.isArray(lookupRows) ? lookupRows : []).find((row) => {
+    const id = looseText(row?.contract_id || row?.id || row?.prime_contract_id);
+    return nativeId && id && id.replace(/[^A-Za-z0-9]/g, "").toUpperCase()
+      === nativeId.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+  });
   const checkbook = {
     source_system: "checkbook_contracts",
     source_system_id: nativeId,
     source_observation_ref: checkbookRef,
-    ingested_at: looseText(object?.generated_at) || looseText(passport?.ingested_at),
+    ingested_at: generatedAt || looseText(object?.generated_at) || looseText(passport?.ingested_at),
     coverage: "available",
+    source_url: `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(nativeId)}`,
     snapshot: {
       id: receipt.checkbook_contract_id,
       contract_id: receipt.checkbook_contract_id,
-      pin: receipt.checkbook_pin,
-      current: receipt.checkbook_amount,
-      registered: receipt.checkbook_registered || receipt.registered,
+      pin: lookup?.pin || lookup?.prime_contract_pin || receipt.checkbook_pin,
+      title: lookup?.title,
+      vendor: lookup?.vendor || lookup?.prime_vendor,
+      current: lookup?.current ?? lookup?.current_amount ?? receipt.checkbook_amount,
+      registered: lookup?.registered || lookup?.registration_date || receipt.checkbook_registered || receipt.registered,
+      status: lookup?.status,
     },
   };
   return {
@@ -221,6 +341,10 @@ function attachExactCorroboration(object, observations, acceptedJoins) {
       procurement_id: looseText(object?.procurement_id || object?.object_ref),
       left_source_observation_ref: passportRef,
       right_source_observation_ref: checkbookRef,
+      evidence_only: true,
+      overwrites_canonical: false,
+      assertion_id: receipt.assertion_id,
+      pair_id: receipt.pair_id || receipt.curation_target_id,
     }],
   };
 }
@@ -376,22 +500,35 @@ export function buildCrossSourceEvidenceReceipt({
   sourceStatus = {},
   generatedAt = null,
   factDefinitions = FACT_DEFINITIONS,
+  corroboration = null,
+  checkbookLookupRows = null,
+  provenanceGraph = null,
+  curationReceipts = [],
 } = {}) {
   const objectId = looseText(object?.procurement_id || object?.object_ref || object?.subject_ref);
+  const objectWithCorroboration = object?.checkbook_corroboration || corroboration
+    ? { ...object, checkbook_corroboration: object?.checkbook_corroboration || corroboration }
+    : object;
   const attached = attachExactCorroboration(
-    object,
+    objectWithCorroboration,
     Array.isArray(observations) ? observations : [],
     Array.isArray(acceptedJoins) ? acceptedJoins : [],
+    checkbookLookupRows,
+    generatedAt,
   );
   const byRef = new Map(attached.observations
     .map((observation) => [observationRef(observation), observation])
     .filter(([ref]) => ref));
   const joins = attached.acceptedJoins
     .filter((join) => acceptedJoin(join))
+    .filter((join) => !curationBlocksSameRecord(join, curationReceipts))
+    .filter((join) => !provenanceBlocksSameRecord(join, provenanceGraph))
     .filter((join) => !objectId || !join?.procurement_id || join.procurement_id === objectId)
     .map((join) => ({
       ...join,
       basis: looseText(join.basis || join.join_method || join.join_key)?.toLowerCase(),
+      relation: CROSS_SOURCE_RELATION.exact,
+      provenance: provenanceForJoin(join, provenanceGraph),
       refs: joinRefs(join),
     }))
     .filter((join) => join.refs.length >= 2 && join.refs.every((ref) => byRef.has(ref)));
@@ -445,7 +582,6 @@ export function buildCrossSourceEvidenceReceipt({
       claim_layer: claimLayerForFact(definition, assertions, agrees),
     });
   }
-  if (!facts.length) return null;
 
   const uniqueJoins = [...new Map(joins.map((join) => [
     `${join.refs.slice().sort().join("\0")}\0${join.basis}`,
@@ -453,7 +589,11 @@ export function buildCrossSourceEvidenceReceipt({
       status: "accepted",
       basis: join.basis,
       basis_label: EXACT_JOIN_BASIS.get(join.basis),
+      relation: CROSS_SOURCE_RELATION.exact.id,
+      relation_label: CROSS_SOURCE_RELATION.exact.label,
       matched_value: looseText(join.matched_value),
+      evidence_only: join.evidence_only === true,
+      overwrites_canonical: false,
       source_observation_refs: join.refs.slice().sort(),
     },
   ])).values()];
@@ -465,15 +605,30 @@ export function buildCrossSourceEvidenceReceipt({
       }
     }
   }
+  const constructorSystems = new Set((Array.isArray(object?.source_observation_refs)
+    ? object.source_observation_refs
+    : []).map((ref) => looseText(ref)?.split(":")[0]?.toLowerCase()).filter(Boolean));
   const sourceOutput = sourceRows.map(({ snapshot: _snapshot, ...source }) => ({
     ...source,
+    compact_source_name: compactSourceName(source.source_system, source.source_name),
     field_scope: [...(fieldScopeBySource.get(source.source_system) || [])].sort(),
+    constructor: constructorSystems.has(source.source_system),
   }));
+  const corroborating = constructorSystems.size
+    ? sourceOutput.filter((source) => !source.constructor)
+    : sourceOutput.slice(1);
+  const uniqueAlso = [...new Set((corroborating.length ? corroborating : sourceOutput.slice(1))
+    .map((source) => source.compact_source_name)
+    .filter(Boolean))];
   return Object.freeze({
     schema: CROSS_SOURCE_EVIDENCE_RECEIPT_SCHEMA,
     version: CROSS_SOURCE_EVIDENCE_RECEIPT_VERSION,
     status: facts.some((fact) => fact.status === "disagrees") ? "disagreement" : "corroborated",
     object_ref: objectId,
+    relation: CROSS_SOURCE_RELATION.exact.id,
+    relation_label: CROSS_SOURCE_RELATION.exact.label,
+    also_recorded_in: Object.freeze(uniqueAlso),
+    overwrites_canonical: false,
     sources: Object.freeze(sourceOutput),
     joins: Object.freeze(uniqueJoins),
     facts: Object.freeze(facts),
@@ -530,18 +685,26 @@ function disagreementHtml(fact) {
 
 /** Render the receipt without creating a request-time source lookup. */
 export function renderCrossSourceEvidenceReceipt(receipt) {
-  if (!receipt || !Array.isArray(receipt.sources) || receipt.sources.length < 2
-      || !Array.isArray(receipt.facts) || !receipt.facts.length) return "";
-  const sourceNames = receipt.sources.map((source) => source.source_name).join(" and ");
+  if (!receipt || !Array.isArray(receipt.sources) || receipt.sources.length < 2) return "";
+  if (receipt.relation && receipt.relation !== CROSS_SOURCE_RELATION.exact.id) return "";
+  const also = (Array.isArray(receipt.also_recorded_in) && receipt.also_recorded_in.length
+    ? receipt.also_recorded_in
+    : receipt.sources.slice(1).map((source) => compactSourceName(source.source_system, source.compact_source_name || source.source_name)))
+    .filter(Boolean);
+  if (!also.length) return "";
+  const sourceNames = also.join(" and ");
   const methods = [...new Set((receipt.joins || []).map((join) => join.basis_label).filter(Boolean))].join("; ");
-  const sourceCards = receipt.sources.map((source) => `<li class="cross-source-evidence-source"><strong>${sourceLink(source)}</strong><span>${esc(source.coverage_label || source.coverage || "Coverage not stated")}</span><span>${source.as_of ? `As of ${esc(source.as_of)}` : "As-of date not stated"}</span><span>Accepted join: ${esc((source.accepted_join_methods || []).map((method) => method.label).join("; ") || methods || "Exact identifier")}</span><span>Fields in receipt: ${esc((source.field_scope || []).join(", ") || "none named")}</span></li>`).join("");
-  const disagrees = receipt.facts.filter((fact) => fact.status === "disagrees");
-  const agrees = receipt.facts.filter((fact) => fact.status === "agrees");
+  const sourceCards = receipt.sources.map((source) => {
+    const compact = compactSourceName(source.source_system, source.compact_source_name || source.source_name);
+    return `<li class="cross-source-evidence-source" data-compact-source="${esc(compact)}" data-relation="exact"><strong>${sourceLink(source)}</strong><span>${esc(source.coverage_label || source.coverage || "Coverage not stated")}</span><span>${source.as_of ? `As of ${esc(source.as_of)}` : "As-of date not published"}</span><span>Accepted join: ${esc((source.accepted_join_methods || []).map((method) => method.label).join("; ") || methods || "Exact identifier")}</span><span>Fields in receipt: ${esc((source.field_scope || []).join(", ") || "Not published")}</span></li>`;
+  }).join("");
+  const disagrees = (Array.isArray(receipt.facts) ? receipt.facts : []).filter((fact) => fact.status === "disagrees");
+  const agrees = (Array.isArray(receipt.facts) ? receipt.facts : []).filter((fact) => fact.status === "agrees");
   const factsHtml = `${compactAgreementHtml(agrees)}${disagrees.map(disagreementHtml).join("")}`;
   const lead = disagrees.length
-    ? `<strong>Also recorded in ${esc(sourceNames)}</strong>. These records are linked by an accepted exact identifier. Where publishers differ, each source assertion stays visible and the comparison stays unresolved.`
-    : `<strong>Also recorded in ${esc(sourceNames)}</strong>. These records are linked by an accepted exact identifier.`;
-  return `<section class="node-section node-card cross-source-evidence-receipt" data-cross-source-evidence-receipt="1" data-receipt-status="${esc(receipt.status)}" aria-labelledby="cross-source-evidence-heading"><h2 id="cross-source-evidence-heading">Cross-source evidence</h2><p class="cross-source-evidence-lead">${lead}</p><ul class="cross-source-evidence-sources">${sourceCards}</ul><div class="cross-source-evidence-facts">${factsHtml}</div></section>`;
+    ? `<strong>Also recorded in ${esc(sourceNames)}</strong>. These records share an accepted exact identifier. Where publishers differ, each source assertion stays visible and the comparison stays unresolved.`
+    : `<strong>Also recorded in ${esc(sourceNames)}</strong>. These records share an accepted exact identifier; each publisher keeps its own values.`;
+  return `<section class="node-section node-card cross-source-evidence-receipt" data-cross-source-evidence-receipt="1" data-receipt-status="${esc(receipt.status)}" data-relation="exact" aria-labelledby="cross-source-evidence-heading"><h2 id="cross-source-evidence-heading">Cross-source evidence</h2><p class="cross-source-evidence-lead">${lead}</p><ul class="cross-source-evidence-sources">${sourceCards}</ul><div class="cross-source-evidence-facts">${factsHtml}</div></section>`;
 }
 
 export const crossSourceEvidenceReceiptFacts = FACT_DEFINITIONS;

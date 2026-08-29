@@ -3926,16 +3926,19 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   private. Contract details: `entity_resolution/README.md`. Verify:
   `node --test test/evidence_bearing_provenance_graph.test.mjs`.
 
-- **Source disagreement ledger:** `site/cross_source_evidence_receipt.mjs` is the
-  reader grammar for accepted exact cross-source field conflicts. Amount, date,
+- **Cross-source evidence receipt:** `site/cross_source_evidence_receipt.mjs`
+  projects accepted exact corroboration onto the canonical procurement document
+  as compact “Also recorded in Checkbook / PASSPort / OCP” rows. Amount, date,
   and PIN disagreements keep both source assertions, the publisher field, and
   the as-of basis, and label the CityScroll comparison `unresolved`; agreement
-  stays a compact source-labeled confirmation. Exact Checkbook corroboration may
-  supply evidence-only assertions, but related-instrument, review, ambiguous,
-  rejected, and unknown identity states stay out of the same-record receipt.
-  Canonical object amounts and dates are not rewritten. OCP lifecycle
-  disagreement remains the notice-side regression fixture. Focused proof:
-  `test/cross_source_evidence_receipt.test.mjs`.
+  stays a compact source-labeled confirmation. It consumes constructor joins,
+  Checkbook/PASSPort corroboration, and EBCG provenance / curation decisions;
+  fuzzy, related-instrument, rejected, ambiguous, unknown, and untested
+  observations stay unlabeled. Canonical amounts are not rewritten. AP-06
+  remains a bounded coverage consumer via `citeCityRecordCoverageFromReceipt`
+  and is not an identity owner. Proof:
+  `test/cross_source_evidence_receipt.test.mjs` and
+  `test/analytical_projection.test.mjs`.
 
 - **Cross-source coverage ledger (EBCG-05):** `site/cross_source_coverage_ledger.mjs`
   is the compact object-view lookup-state projection over declared publishers
