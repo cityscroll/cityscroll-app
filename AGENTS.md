@@ -3889,6 +3889,16 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   disagreement remains the notice-side regression fixture. Focused proof:
   `test/cross_source_evidence_receipt.test.mjs`.
 
+- **Cross-source coverage ledger (EBCG-05):** `site/cross_source_coverage_ledger.mjs`
+  is the compact object-view lookup-state projection over declared publishers
+  (`corroborated` | `checked-no-match` | `not-checked` | `ambiguous` |
+  `unavailable` | `stale`). It reuses EBCG-01 `entity_resolution/source_coverage.json`
+  for named denominators/vintages and the procurement/meeting source envelopes;
+  a checked miss is never a world-absence claim. AP-06 registered-contract
+  exact/none/missing-PIN counts stay a separate analytical scope. Procurement and
+  meeting documents render it; focused proof is
+  `test/cross_source_coverage_ledger.test.mjs`.
+
 ## Snapshot-only citywide address geocoder
 
 - `site/precomputed_address_geocoder.mjs` is the exact full-address → BBL read boundary over the 64-shard official PAD artifact in `site/data/address-index/`. Only real and vanity PAD ranges are admitted; pseudo-addresses, ambiguity, and misses stay `unknown`. Refresh with `node tools/build_geocoder_address_index.mjs --from-live`; verify the complete committed snapshot with `--check` and `test/geocoder_snapshot.test.mjs`.
