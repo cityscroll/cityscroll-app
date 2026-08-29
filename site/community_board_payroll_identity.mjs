@@ -268,7 +268,7 @@ export function measureCommunityBoardPayrollIdentity(registry, inventory, opts =
       staff_count: {
         justified: true,
         grain: "published FY payroll rows with leave_status_as_of_june_30=ACTIVE",
-        note: "This is a published-row count at fiscal-year close, not a unique-employee headcount and not adopted personnel budget.",
+        note: "ACTIVE staff_count is the published FY payroll-row count at fiscal-year close.",
       },
       title_count: {
         justified: false,
