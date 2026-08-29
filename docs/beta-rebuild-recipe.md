@@ -6,8 +6,9 @@ a later hosting change. This note is the restore path.
 
 ## What was removed
 
-Restore these files from the pull request that added this recipe (the same
-commit that deletes them):
+Restore these files from
+[pull request #1414](https://github.com/cityscroll/cityscroll-app/pull/1414)
+(the same change that deletes them):
 
 - `.github/workflows/deploy-beta-preview.yml`
 - `.github/workflows/promote-beta.yml`
