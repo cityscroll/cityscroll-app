@@ -92,6 +92,29 @@ export function noticeDeepLink(requestId) {
 }
 
 /**
+ * Watch keys that actually received a digest on this day-log.
+ * Rollup quiet and skipped-cadence sections count: they were in the email.
+ * Config watches and paused rows do not own `lastsent:*` watermarks.
+ */
+export function sentWatchKeysFromDayLog(dayLog) {
+  const keys = [];
+  for (const entry of Array.isArray(dayLog?.entries) ? dayLog.entries : []) {
+    if (!entry || entry.sent !== true) continue;
+    if (entry.kind === "config_watch") continue;
+    if (entry.kind === "rollup" && Array.isArray(entry.sections)) {
+      for (const section of entry.sections) {
+        const id = section?.id || section?.sub || section?.subKey;
+        if (!id || section?.error || section?.skipped === "paused") continue;
+        keys.push(String(id));
+      }
+      continue;
+    }
+    if (entry.id) keys.push(String(entry.id));
+  }
+  return keys;
+}
+
+/**
  * Build the durable day log body from a run's result list.
  * Includes zero-match rows so absence is visible, not skipped.
  */

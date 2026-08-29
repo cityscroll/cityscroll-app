@@ -393,6 +393,8 @@ test("queue path: multi-watch account enqueues one rollup job and consumeDigestJ
     assert.match(sentEmails[0].subject, /watches/);
     assert.match(sentEmails[0].html, /your daily digest/i);
     assert.match(sentEmails[0].html, /Manage watches|manage/i);
+    assert.equal(await ALERT_STATE.get("lastsent:sub:q-a"), today);
+    assert.equal(await ALERT_STATE.get("lastsent:sub:q-b"), today);
   });
 });
 

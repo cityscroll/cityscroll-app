@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   digestWatchdogSnapshot,
+  evaluateWatermarkStaleness,
   recordDigestDeliveryReceipt,
   recordDigestShadowReceipt,
   recordSchedulerHeartbeat,
   schedulerWatchdogSnapshot,
 } from "../src/reliability_watchdogs.mjs";
+import { digestDayLogKey } from "../src/lib/digest_ops.mjs";
 import { OPS_ALERT_TO, sendOpsAlert } from "../src/alerts.mjs";
 
 function kv(seed = {}) {
@@ -51,6 +53,72 @@ test("scheduler watchdog fires on expired heartbeat and pending outbox", async (
   assert.equal(result.ok, false);
   assert.match(result.findings.join("; "), /heartbeat expired/);
   assert.match(result.findings.join("; "), /3 pending/);
+});
+
+test("watermark staleness stays quiet when consecutive sends advanced lastsent", () => {
+  const result = evaluateWatermarkStaleness({
+    day: "2026-08-29",
+    priorDay: "2026-08-28",
+    delivery: { status: "TERMINAL", accepted_sends: 1 },
+    lastsentByWatch: { "sub:a": "2026-08-29" },
+    sentWatchKeysToday: ["sub:a"],
+    sentWatchKeysYesterday: ["sub:a"],
+  });
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.findings, []);
+});
+
+test("watermark staleness fires when two consecutive deliveries share an older lastsent", () => {
+  const result = evaluateWatermarkStaleness({
+    day: "2026-08-29",
+    priorDay: "2026-08-28",
+    delivery: { status: "TERMINAL", accepted_sends: 1 },
+    lastsentByWatch: { "sub:a": "2026-08-25" },
+    sentWatchKeysToday: ["sub:a"],
+    sentWatchKeysYesterday: ["sub:a"],
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.findings.join("; "), /stuck after consecutive sends/);
+  assert.match(result.findings.join("; "), /2026-08-25/);
+});
+
+test("digest watchdog fires watermark staleness after the delivery deadline", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-08-29T14:10:00Z");
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true }, now);
+  await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 1, enqueued: 0 }, now);
+  await ALERT_STATE.put(digestDayLogKey("2026-08-28"), JSON.stringify({
+    day: "2026-08-28",
+    entries: [{ kind: "subscription", sent: true, id: "sub:a" }],
+  }));
+  await ALERT_STATE.put(digestDayLogKey("2026-08-29"), JSON.stringify({
+    day: "2026-08-29",
+    entries: [{ kind: "subscription", sent: true, id: "sub:a" }],
+  }));
+  await ALERT_STATE.put("lastsent:sub:a", "2026-08-25");
+  const result = await digestWatchdogSnapshot({ ALERT_STATE }, { now });
+  assert.equal(result.ok, false);
+  assert.match(result.findings.join("; "), /stuck after consecutive sends/);
+  assert.equal(result.watermark_stuck, 1);
+});
+
+test("digest watchdog stays quiet for consecutive sends whose lastsent reached today", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-08-29T14:10:00Z");
+  await recordDigestShadowReceipt({ ALERT_STATE }, { ok: true }, now);
+  await recordDigestDeliveryReceipt({ ALERT_STATE }, { sent: 1, enqueued: 0 }, now);
+  await ALERT_STATE.put(digestDayLogKey("2026-08-28"), JSON.stringify({
+    day: "2026-08-28",
+    entries: [{ kind: "subscription", sent: true, id: "sub:a" }],
+  }));
+  await ALERT_STATE.put(digestDayLogKey("2026-08-29"), JSON.stringify({
+    day: "2026-08-29",
+    entries: [{ kind: "subscription", sent: true, id: "sub:a" }],
+  }));
+  await ALERT_STATE.put("lastsent:sub:a", "2026-08-29");
+  const result = await digestWatchdogSnapshot({ ALERT_STATE }, { now });
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.findings, []);
 });
 
 test("runtime alarms use the existing Resend path and the ops mailbox", async () => {

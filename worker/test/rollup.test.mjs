@@ -10,6 +10,7 @@ import {
   rollupSendDecision,
   rollupSubject,
   rollupBodySections,
+  digestCoverageSections,
   rollupTocEntries,
   rollupSectionAnchorId,
   isQuietRollupSection,
@@ -26,6 +27,18 @@ const sub = (email, key, extra = {}) => ({
   filter: { keywords: ["x"] },
   freq: "daily",
   ...extra,
+});
+
+test("digestCoverageSections: delivered rollup includes quiet and weekly-skip, not paused or errors", () => {
+  const covered = digestCoverageSections([
+    { subKey: "sub:match", new: 1, action: "match" },
+    { subKey: "sub:quiet", new: 0, action: "none" },
+    { subKey: "sub:weekly", new: 0, skipped: "weekly" },
+    { subKey: "sub:paused", new: 0, skipped: "paused" },
+    { subKey: "sub:broken", new: 0, error: "failed" },
+    { subKey: "sub:district", lens: "district", new: 0, action: "none" },
+  ]).map((section) => section.subKey);
+  assert.deepEqual(covered, ["sub:match", "sub:quiet", "sub:weekly"]);
 });
 
 test("isWatchActive: paused watches are inactive", () => {

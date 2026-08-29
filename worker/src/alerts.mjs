@@ -62,6 +62,7 @@ import {
   rollupSendDecision,
   rollupSubject,
   rollupBodySections,
+  digestCoverageSections,
   rollupTocEntries,
   rollupSectionAnchorId,
   isQuietRollupSection,
@@ -536,7 +537,15 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
           preview = { subject, html, listUnsubscribe: listUnsub || null };
         }
         if (send) {
-          await sendEmail(env, FROM, w.email, subject, html, listUnsub);
+          const providerAccepted = await sendEmail(env, FROM, w.email, subject, html, listUnsub);
+          if (providerAccepted && options.advanceState !== false) {
+            await recordConfirmedWatchSend(env, {
+              key: w.id,
+              day,
+              seenId: w.id,
+              seenIds: rows.map((r) => r.request_id).filter(Boolean),
+            });
+          }
           sentThisRun++; sentToday++;
           await setSendCount(env, day, sentToday);
           await bumpStatAllTime(env.ALERT_STATE, "digest");
@@ -549,12 +558,6 @@ export async function runAlerts(env, watches = cfg.watches || [], options = {}) 
           if (options.simulateDryRunCounters) { sentThisRun++; sentToday++; }
         }
       }
-
-      // Mark seen ONLY on a real send — never advance the seen set when the email wasn't
-      // delivered (dry-run, cap-deferred, or any path where send stays false). Marking on
-      // observe rather than on delivery was the watermark-poisoning bug: a run with no send
-      // silently swallowed fresh notices so the next run treated them as already-seen.
-      if (send && rows.length) await markSeen(env, w.id, rows.map((r) => r.request_id).filter(Boolean));
 
       results.push({
         watch: w.id,
@@ -1266,15 +1269,14 @@ export async function processAccountRollup(env, subs, ctx) {
             throw error;
           }
           if (providerAccepted && ctx.advanceState !== false) {
-            for (const sec of sections) {
-              if (sec.subKey && sectionWantsSend(sec)) {
-                await recordConfirmedWatchSend(env, {
-                  key: sec.subKey,
-                  day: ctx.today,
-                  seenId: sec.seenId,
-                  seenIds: sec.markSeenIds,
-                });
-              }
+            for (const sec of digestCoverageSections(sections)) {
+              const wantsSend = sectionWantsSend(sec);
+              await recordConfirmedWatchSend(env, {
+                key: sec.subKey || sec.sub,
+                day: ctx.today,
+                seenId: wantsSend ? sec.seenId : null,
+                seenIds: wantsSend ? (sec.markSeenIds || []) : [],
+              });
             }
           }
           delivery = reservation?.reserved
@@ -1369,7 +1371,8 @@ async function evaluateSubSection(env, s, ctx) {
   };
   try {
     if (s.freq === "weekly" && !ctx.isMonday) {
-      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "weekly" };
+      const since = (await getLastSent(env, s.key)) || s.createdAt || null;
+      return { ...base, status: SECTION_STATUS.SKIPPED, skipped: "weekly", since };
     }
     if (s.lens === "award") {
       return evaluateAwardSection(env, s, ctx, base);
@@ -2536,8 +2539,9 @@ async function getLastSent(env, id) {
 }
 
 async function setLastSent(env, id, date) {
-  if (!env.ALERT_STATE) return;
-  try { await env.ALERT_STATE.put(`lastsent:${id}`, date); } catch { /* ignore */ }
+  if (!env?.ALERT_STATE?.put) return false;
+  await env.ALERT_STATE.put(`lastsent:${id}`, date);
+  return true;
 }
 
 // Provider acceptance is the delivery commit point. Persist the per-watch watermark and seen

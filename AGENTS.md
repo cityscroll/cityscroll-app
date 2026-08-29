@@ -2383,10 +2383,17 @@ header say `Catching up: N items since your last digest on <date>`. Desk
 rows). Proof: `worker/test/watermark_backlog_digest.test.mjs`.
 
 **Confirmed-send ordering:** after the provider accepts an email, the single-watch,
-account-rollup, and award-watch paths persist `lastsent` and seen identities before
-later outbox, counter, or statistics bookkeeping. Keep this ordering so a partial
-post-send failure cannot reopen the already-delivered window; `advanceState: false`
-continues to suppress these writes for previews and test sends.
+account-rollup, award-watch, and config-watch paths persist `lastsent` and seen
+identities before later outbox, counter, or statistics bookkeeping. Keep this
+ordering so a partial post-send failure cannot reopen the already-delivered window;
+`advanceState: false` continues to suppress these writes for previews and test
+sends. A delivered account rollup advances `lastsent` for every watch in that
+email (quiet and skipped-cadence sections too). Catch-up copy uses the oldest of
+those watermarks, so leaving a quiet sibling stuck repeats "Catching up since
+{date}" on later matching sends. Recovery must not overwrite a later `lastsent`.
+`GET /admin/reliability/digest` flags a watch delivered on consecutive days whose
+`lastsent` still predates day N-1. Proof: `worker/test/watermark_backlog_digest.test.mjs`
+and `worker/test/reliability_watchdogs.test.mjs`.
 
 **Catch-up evaluation** (`runCatchUpDigests`) is evaluation-only: it enqueues
 owed identities into the outbox and does not send. The next regular digest is
