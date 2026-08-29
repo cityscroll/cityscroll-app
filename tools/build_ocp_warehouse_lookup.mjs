@@ -261,6 +261,7 @@ async function bench(rows) {
     let lastCount = 0;
     for (let i = 0; i < 3; i++) {
       const t0 = performance.now();
+      // determinism-lint: allow network live benchmark runs only outside --check
       const resp = await fetch(url);
       const data = resp.ok ? await resp.json() : [];
       samples.push(performance.now() - t0);
@@ -296,6 +297,7 @@ async function bench(rows) {
 
   return {
     phase: "WH-03",
+    // determinism-lint: allow clock benchmark receipt timestamp only outside --check
     measured_at: new Date().toISOString(),
     replaced_fetch: {
       function: "fetchOcpAwardRows",
@@ -329,7 +331,9 @@ function writeOutputs(doc, check) {
     assertLegacyOutputParity(existing);
     return { status: "ok", targets };
   }
+  // determinism-lint: allow write non-check materialization output
   mkdirSync(path.dirname(OUT_SITE), { recursive: true });
+  // determinism-lint: allow write non-check materialization output
   writeFileSync(OUT_SITE, rendered);
   return {
     status: "wrote",
@@ -380,6 +384,7 @@ async function main() {
   assert.ok(rows.length >= 1, "expected at least one OCP row to materialize");
 
   // Freeze materialized_at when --check by reading the canonical site copy.
+  // determinism-lint: allow clock fixture/benchmark materialization timestamp
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_SITE)) {
     try {
@@ -406,7 +411,9 @@ async function main() {
 
   if (args.bench || !args.check) {
     const receipt = await bench(doc.rows);
+    // determinism-lint: allow write benchmark receipt outside --check
     mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+    // determinism-lint: allow write benchmark receipt outside --check
     writeFileSync(BENCH_RECEIPT, stableStringify(receipt));
     console.log("bench:", JSON.stringify(receipt, null, 2));
     console.log("bench_receipt:", path.relative(ROOT, BENCH_RECEIPT));
