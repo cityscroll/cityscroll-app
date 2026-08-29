@@ -14,13 +14,15 @@ const { coarseLandFilter } = require("../site/location_awareness.js");
 const { buildSearchDeepLink, canonicalSearchURL } = require("../site/nl_deeplink.js");
 const indexSource = SITE_SOURCE;
 const qrSource = readFileSync(join(ROOT, "site", "qr_share.js"), "utf8");
-// The functional capture-verify check needs a built site plus committed
-// golden captures, the same setup the CI accessibility job provides
-// (tools/run_a11y_ci_shard.sh) or `make a11y` provides locally
-// (tools/with_local_a11y_python.sh). Gate on that job's own declared marker
-// instead of sniffing whether some system python3 happens to have Playwright
+// The functional capture-verify check needs a Pages-shaped built site (_site)
+// in place before it runs; the CI accessibility job (tools/run_a11y_ci_shard.sh)
+// builds that in an earlier job and only then invokes this check directly, so
+// it declares CI_A11Y_JOB=1 for itself. Gate on that explicit marker instead
+// of sniffing whether some system python3 happens to have Playwright
 // installed — that sniff false-positived on hosts with an unrelated global
 // Playwright install, running this check against an unprepared site tree.
+// Run it locally by building the site first (tools/prepare_functional_site.sh)
+// and then setting CI_A11Y_JOB=1 yourself.
 const inA11yJob = process.env.CI_A11Y_JOB === "1";
 const sandbox = {};
 vm.createContext(sandbox);
