@@ -10,6 +10,12 @@ on:
     branches: [main]
     paths:
       - "worker/**"
+      - "capabilities/**"
+      - "entity_resolution/**"
+      - "ontology/**"
+      - "site/**"
+      - "tools/**"
+      - "warehouse/**"
       - "site/data/district_activity.json"
       - "site/data/district_boundaries.json"
       - "site/data/shared_meeting_read_model.json"
@@ -46,6 +52,16 @@ jobs:
       - name: Install worker dependencies
         working-directory: worker
         run: npm ci
+      - name: Verify Worker trigger coverage from dependency surface
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts
+          node tools/worker_trigger_coverage.mjs --check --output .artifacts/worker-trigger-coverage.json
+          node tools/check_release_surface_reconciliation.mjs \
+            --source-commit "$GITHUB_SHA" \
+            --worker-coverage .artifacts/worker-trigger-coverage.json \
+            --required-stages generation_output,card_reconciliation,generated_evidence_freshness,served_artifact_freshness,pages_deployment,worker_trigger_coverage,worker_startup,worker_release,data_publication,live_smoke,watchdog,scheduler,alert_delivery \
+            --output .artifacts/release-surface-receipt.json || true
       - name: Build versioned Worker route read models
         run: node tools/build_worker_route_read_models.mjs --output-dir "$RUNNER_TEMP/crol-worker-route-read-models" --check
       - name: Verify Worker bundle budget and route read-model canaries
@@ -110,6 +126,7 @@ jobs:
       - name: Keep deploys clear of the digest cron
         run: node tools/wait_for_digest_cron_window.mjs
       - name: Deploy
+        id: worker_deploy
         uses: cloudflare/wrangler-action@v3.14.1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -119,6 +136,33 @@ jobs:
           # account from the API token itself — avoids a second repo secret to keep in sync.
           # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
           # here would clobber real secrets of the same name (see worker/README.md).
+
+      - name: Record Worker provider and publication evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          node tools/update_release_surface_receipt.mjs \
+            --receipt .artifacts/release-surface-receipt.json \
+            --stage worker_release \
+            --status UNKNOWN \
+            --required-stage worker_release \
+            --reason "Cloudflare Workers provider/build identity was not emitted by the deploy action" \
+            --evidence-file .artifacts/worker-trigger-coverage.json
+          node tools/update_release_surface_receipt.mjs \
+            --receipt .artifacts/release-surface-receipt.json \
+            --stage data_publication \
+            --status UNKNOWN \
+            --required-stage data_publication \
+            --reason "D1/KV publication versions were not emitted as one transaction receipt"
+      - name: Retain Worker release-surface receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-worker-release-evidence
+          path: |
+            .artifacts/release-surface-receipt.json
+            .artifacts/worker-trigger-coverage.json
+          if-no-files-found: warn
 
       # The RUM query is intentionally separate from the write binding. Reuse the existing
       # deployment token, whose account permissions include Analytics Engine read, for the Worker

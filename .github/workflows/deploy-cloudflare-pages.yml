@@ -129,7 +129,11 @@ jobs:
             --stage pages_deployment \
             --status "$status" \
             --required-stage pages_deployment \
-            --deployment-url "$DEPLOYMENT_URL"
+            --provider-status "$DEPLOYMENT_OUTCOME" \
+            --deployment-id "$DEPLOYMENT_URL" \
+            --deployment-url "$DEPLOYMENT_URL" \
+            --source-commit "$GITHUB_SHA" \
+            --manifest _site/artifact-manifest.json
       - name: Retain generation and release-surface receipts
         if: always()
         uses: actions/upload-artifact@v4
@@ -154,6 +158,11 @@ jobs:
         with:
           node-version: 20
       - uses: ./.github/actions/setup-playwright
+      - name: Download release-surface receipt from deploy job
+        uses: actions/download-artifact@v4
+        with:
+          path: .
+          merge-multiple: true
       - name: Resolve smoke origin (preview deploy or production alias)
         id: origin
         env:
@@ -195,6 +204,46 @@ jobs:
           CROL_BASE: ${{ steps.origin.outputs.base_url }}
           CROL_DEMO_LINK_IDS: exam-guide
         run: python3 test/functional/20_demo_links.py
+      - name: Capture served artifact identity
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts
+          node --input-type=module - <<'NODE'
+          import { writeFileSync } from "node:fs";
+          const base = "https://cityscroll.pages.dev";
+          let evidence = { status: "FAIL", probe_status: "failed", reason: "served artifact manifest could not be fetched" };
+          try {
+            const response = await fetch(base + "/artifact-manifest.json");
+            const manifest = await response.json();
+            evidence = {
+              status: response.ok ? "PASS" : "FAIL",
+              probe_status: response.ok ? "success" : "failed",
+              http_status: response.status,
+              source_commit_sha: manifest.source_commit_sha || null,
+              served_artifact_hash: manifest.artifact_hash || null
+            };
+          } catch (error) {
+            evidence.reason = String(error?.message || error);
+          }
+          writeFileSync(".artifacts/live-probe.json", JSON.stringify(evidence, null, 2) + "\n");
+          NODE
+          probe_status="$(node -e 'const x=require("./.artifacts/live-probe.json"); process.stdout.write(x.status || "UNKNOWN")')"
+          node tools/update_release_surface_receipt.mjs \
+            --receipt .artifacts/release-surface-receipt.json \
+            --stage live_smoke \
+            --status "$probe_status" \
+            --required-stage live_smoke \
+            --evidence-file .artifacts/live-probe.json
+      - name: Retain final Pages release-surface receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-pages-release-evidence-final
+          path: |
+            .artifacts/release-surface-receipt.json
+            .artifacts/live-probe.json
+          if-no-files-found: warn
       - name: Post-deploy project-connections API smoke
         run: node tools/project_connections_smoke.mjs --timeout-ms 720000 --interval-ms 20000
       - name: Post-deploy project-connections browser smoke

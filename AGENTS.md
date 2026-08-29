@@ -129,6 +129,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `tools/build_shared_procurement_read_model.mjs`; focused proof is
   `test/procurement_process_events.test.mjs`.
 
+- Release-surface reconciliation: tools/release_surface_reconciliation.mjs is the typed,
+  fail-closed join for production release evidence. tools/worker_trigger_coverage.mjs derives
+  local Worker imports and verifies that both Worker trigger surfaces cover them; the focused gate
+  is node --test test/release_surface_reconciliation.test.mjs && node tools/check_release_surface_reconciliation.mjs --check.
 - **Public-site generation postcondition:** `tools/build_public_site.mjs` calls
   `tools/generation_output_guard.mjs` after copying the public tree. The guard requires a
   non-empty `index.html`, writes `.artifacts/generation-output-receipt.json`, and fails before

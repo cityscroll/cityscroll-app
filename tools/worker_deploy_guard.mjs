@@ -44,7 +44,10 @@ export function inspectBundle(path, { startupMs: startupOverride = null } = {}) 
   const rawBytes = Number(output.bytes) || (bundlePath ? readFileSync(bundlePath).byteLength : 0);
   const compressedBytes = Number(output.compressedBytes || output.gzipBytes)
     || (bundlePath ? gzipSync(readFileSync(bundlePath)).byteLength : 0);
-  const startupMs = Number(startupOverride ?? output.startupTimeMs ?? output.startup_ms ?? meta.startupTimeMs);
+  const startupValue = startupOverride ?? output.startupTimeMs ?? output.startup_ms ?? meta.startupTimeMs;
+  const startupMs = startupValue === undefined || startupValue === null || String(startupValue).trim() === ""
+    ? Number.NaN
+    : Number(startupValue);
   const largest = Object.entries(output.inputs || {})
     .map(([input, value]) => ({ input, bytes: Number(value.bytesInOutput) || 0 }))
     .sort((left, right) => right.bytes - left.bytes)
@@ -68,10 +71,9 @@ export function inspectBundle(path, { startupMs: startupOverride = null } = {}) 
 }
 
 function checkBundle(path, startupReport) {
-  // Wrangler's startup profiler enforces the platform budget and currently emits
-  // no numeric duration on a successful run. A numeric report is preferred; a
-  // successful profiler command is itself the passing startup assertion.
-  const result = inspectBundle(path, { startupMs: startupReport ? (parseStartupMs(startupReport) ?? 0) : null });
+  // A successful profiler exit is not a numeric measurement. Preserve null so
+  // the guard cannot turn missing startup output into a passing zero.
+  const result = inspectBundle(path, { startupMs: startupReport ? parseStartupMs(startupReport) : null });
   console.log(JSON.stringify(result, null, 2));
 }
 
