@@ -37,6 +37,7 @@ function sourceRows() {
   const people = readJson("site/data/community_board_people.json");
   const communityBoardBylaws = readJson("site/data/community_board_bylaws.json");
   const communityBoardMoney = readJson("site/data/community_board_money.json");
+  const communityBoardParticipation = readJson("site/data/community_board_participation.json");
   const institutionEdges = {};
   const edgeKeys = new Set();
   const retainEdge = (edge) => {
@@ -102,6 +103,7 @@ function sourceRows() {
     generated_at: scorecard.as_of,
     communityBoardBylaws,
     communityBoardMoney,
+    communityBoardParticipation,
     institutionEdges,
   };
 }
