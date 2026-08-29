@@ -245,6 +245,6 @@ test("shared read model and search/document projection keep the PASSPort amount"
   assert.equal(document.provenance.browse_record.contract_amount, 49689.78);
   assert.doesNotMatch(document.summary, /208,687/);
   const html = renderProcurementDocument(object, model.observations);
-  assert.match(html, /49689\.78/);
+  assert.match(html, /49,689\.78/);
   assert.doesNotMatch(html, /208687/);
 });

@@ -798,8 +798,14 @@ function categoryFromDomain(
     }
   }
 
-  const browsePayload = spec.id === "contracts"
-    ? browseSources.money_open
+  const authorityRows = browseSources.authority_procurement?.notices || [];
+  const authorityRef = `agency:id:${identity.canonical_id}`;
+  const authorityForAgency = spec.id === "contracts" && authorityRows.some((row) =>
+    (Array.isArray(row?.entity_refs_all) ? row.entity_refs_all : []).includes(authorityRef));
+  const browsePayload = authorityForAgency
+    ? browseSources.authority_procurement
+    : spec.id === "contracts"
+      ? browseSources.money_open
     : spec.id === "meetings"
       ? browseSources.meetings_domain
       : null;
@@ -809,7 +815,7 @@ function categoryFromDomain(
       identity,
       payload: browsePayload,
       relation: spec.relation,
-      mode: spec.id === "contracts" ? "open" : "",
+      mode: spec.id === "contracts" ? (authorityForAgency ? "award" : "open") : "",
       limit: AGENCY_BROWSE_PREVIEW_LIMIT,
     });
     const sourceSystem = browsePayload.source?.system
@@ -846,7 +852,7 @@ function categoryFromDomain(
       warrant_summary: summarizeCategoryWarrants(items),
       method: "agency_browse_snapshot_v1",
       view_all_href: matched
-        ? agencyCategoryBrowseHref(identity.canonical_id, spec.id, { asOf, mode: spec.id === "contracts" ? "open" : "" })
+        ? agencyCategoryBrowseHref(identity.canonical_id, spec.id, { asOf, mode: spec.id === "contracts" ? (authorityForAgency ? "award" : "open") : "" })
         : "",
       archive_href: spec.id === "contracts"
         ? agencyCategoryArchiveHref(identity.canonical_id, spec.id)
@@ -1106,6 +1112,7 @@ export function buildAgencyConstellationView(idOrName, sources = {}) {
       sources.vendor_rollups || null,
       {
         money_open: sources.money_open,
+        authority_procurement: sources.authority_procurement,
         meetings_domain: sources.meetings_domain,
         passport_graph: sources.passport_graph,
         native_procurements: sources.native_procurements || sources.procurement_browse,

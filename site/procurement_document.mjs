@@ -33,6 +33,13 @@ function clean(value, max = 500) {
   return String(value ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, max);
 }
 
+function formatAmount(value) {
+  const raw = clean(value);
+  if (!raw) return null;
+  const number = Number(raw.replace(/[$,]/g, ""));
+  return Number.isFinite(number) ? `$${number.toLocaleString("en-US")}` : raw;
+}
+
 function factsFor(object, observations) {
   const index = new Map((Array.isArray(observations) ? observations : [])
     .map((entry) => [entry?.source_observation_ref, entry]));
@@ -50,7 +57,9 @@ function factsFor(object, observations) {
       || `Contract ${object?.identity_keys?.contract_ids?.[0] || object?.identity_keys?.epins?.[0] || "record"}`,
     agency: first("agency_name", "agency"),
     vendor: first("vendor_name", "vendor", "prime_vendor", "payee_name"),
-    amount: first("contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"),
+    amount: formatAmount(first("contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount")),
+    contractNumber: first("contract_number", "transaction_number", "contract_id"),
+    awardDate: first("award_date"),
     method: first("selection_method_description", "procurement_method"),
     program: first("program"),
     industry: first("industry"),
@@ -166,6 +175,24 @@ function nativeOfficialSources(rows) {
     .filter((item) => item.href);
 }
 
+function mtaOfficialSource(entry) {
+  const row = entry?.snapshot || {};
+  const system = String(entry?.source_system || "").toLowerCase();
+  if (system === "mta_cd_awards") {
+    return {
+      href: clean(row.official_source_url, 500) || "https://www.mta.info/agency/construction-and-development/contracting/recent-awards",
+      label: "MTA Construction & Development recent awards",
+    };
+  }
+  if (system === "mta_annual_contracts") {
+    return {
+      href: clean(row.official_source_url, 500) || "https://data.ny.gov/Transportation/MTA-Procurements-Beginning-2018/twsw-2mqa",
+      label: "MTA Procurements · NY Open Data",
+    };
+  }
+  return null;
+}
+
 /**
  * Resident official-source links for a procurement object.
  * PASSPort Public has no per-contract page; the contracts browse portal is
@@ -206,6 +233,10 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
       entry.source_system === "checkbook_contracts" || entry.source_system === "checkbook_nycha_contracts" || entry.source_system === "checkbook_spending")));
   }
   for (const item of nativeOfficialSources(rows)) add(item);
+  for (const row of rows) {
+    const source = mtaOfficialSource(row);
+    if (source) add(source);
+  }
   return items;
 }
 
@@ -214,8 +245,10 @@ export function renderProcurementDocument(object = {}, observations = [], { curr
   if (!id.startsWith("procurement:")) return null;
   const facts = factsFor(object, observations);
   const factRows = [
-    ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Method", facts.method],
-    ["Program", facts.program], ["Industry", facts.industry], ["Start date", facts.start_date || facts.startDate], ["End date", facts.end_date || facts.endDate],
+    ["Agency", facts.agency], ["Vendor", facts.vendor], ["Amount", facts.amount], ["Award date", facts.awardDate],
+    ["Contract number", facts.contractNumber], ["Method", facts.method],
+    ["Program", facts.program], ["Industry", facts.industry],
+    ["Start date", facts.start_date || facts.startDate], ["End date", facts.end_date || facts.endDate],
     ["Contract ID", object?.identity_keys?.contract_ids?.[0]], ["PIN / EPIN", object?.identity_keys?.epins?.[0]],
     ["Contract Reporter number", object?.identity_keys?.contract_reporter_numbers?.[0]],
     ["Solicitation", object?.identity_keys?.solicitation_ids?.[0]], ["Event", object?.identity_keys?.event_ids?.[0]],

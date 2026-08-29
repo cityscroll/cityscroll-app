@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import {
   AWARDS_SOURCE_PATH,
   KEYWORD_INDEX_PATH,
+  MTA_SOURCE_PATH,
   READ_MODEL_PATH,
   SPINE_SOURCE_PATH,
   checkProcurementIndexCoherence,
@@ -45,6 +46,7 @@ const result = checkProcurementIndexCoherence({
   ...(skipSource ? {} : {
     spineBytes: readBytes(argValue("--spine") || SPINE_SOURCE_PATH),
     awardsBytes: readBytes(argValue("--awards") || AWARDS_SOURCE_PATH),
+    mtaBytes: readBytes(argValue("--mta") || MTA_SOURCE_PATH),
   }),
 });
 

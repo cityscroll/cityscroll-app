@@ -4057,6 +4057,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   materializes them; exact solicitation/event/CR identifiers are the only native joins, and bid
   results remain the `bid_opening_result` stage. Focused proof is `test/mta_opportunities.test.mjs`.
 
+- **MTA procurement observations:** `site/data/mta_procurement_sources.json` is the source-qualified
+  fixture for the annual `twsw-2mqa` snapshot and MTA Construction & Development award pages.
+  `worker/src/lib/mta_procurement_source_records.mjs` preserves raw/normalized evidence and exact
+  source IDs; rebuild the shared model and agency projections with their existing builders. Keep
+  MTA operating entities distinct from the parent aggregate and allow cross-source joins only on
+  exact contract identifiers. Focused proof is `test/mta_procurement_source_records.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

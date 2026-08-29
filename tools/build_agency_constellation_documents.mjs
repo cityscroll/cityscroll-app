@@ -65,6 +65,9 @@ function loadSources() {
   if (!existsSync(intelligencePath)) {
     throw new Error("Missing site/data/entity_intelligence_lookup.json");
   }
+  const procurementBrowse = existsSync(procurementBrowsePath) ? readJson(procurementBrowsePath) : null;
+  const authorityRows = (procurementBrowse?.rows || []).filter((row) =>
+    (row?.source_systems || []).some((system) => /^mta_/.test(String(system || ""))));
   return {
     intelligence: readJson(intelligencePath),
     passport_graph: existsSync(passportGraphPath) ? readJson(passportGraphPath) : null,
@@ -83,6 +86,9 @@ function loadSources() {
     money_open: existsSync(moneyOpenPath) ? readJson(moneyOpenPath) : null,
     procurement_browse: existsSync(procurementBrowsePath) ? readJson(procurementBrowsePath) : null,
     cross_spine_gate: existsSync(crossSpineGatePath) ? readJson(crossSpineGatePath) : null,
+    authority_procurement: authorityRows.length
+      ? { ...procurementBrowse, open_as_of: procurementBrowse.generated_at || null, notices: authorityRows }
+      : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
     ocp_awards: existsSync(ocpAwardsPath) ? readJson(ocpAwardsPath) : null,
     publisher_crosswalk: readJson(publisherCrosswalkPath),
@@ -262,6 +268,13 @@ function candidateAgencyIds(sources) {
   for (const agencyId of Object.keys(sources.fiscal_context?.by_agency || {})) {
     ids.add(reconcileAgencyIdentity(agencyId, sources.publisher_agency_rows).canonical_id);
   }
+  for (const row of sources.authority_procurement?.notices || []) {
+    for (const ref of Array.isArray(row?.entity_refs_all) ? row.entity_refs_all : []) {
+      const match = String(ref).match(/^agency:id:(.+)$/);
+      if (match) ids.add(reconcileAgencyIdentity(match[1], sources.publisher_agency_rows).canonical_id);
+    }
+    if (row?.agency_name) ids.add(reconcileAgencyIdentity(row.agency_name, sources.publisher_agency_rows).canonical_id);
+  }
   for (const demo of DEMO_IDS) ids.add(reconcileAgencyIdentity(demo, sources.publisher_agency_rows).canonical_id);
   return [...ids].sort();
 }
@@ -367,6 +380,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     sources.passport_graph?.observed_on,
     sources.passport_graph?.published_graph?.selected_rows,
     sources.fiscal_context?.generated_at,
+    sources.authority_procurement?.generated_at,
   ].filter(Boolean).sort().join("|") || "unknown";
   const publisherRows = publisherAgencyRows(sources.publisher_crosswalk);
   const vendorRollups = buildAgencyVendorRollups(sources.ocp_awards?.rows || [], {
@@ -386,6 +400,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       fiscal_context: sources.fiscal_context,
       procurement_browse: sources.procurement_browse,
       native_procurements: sources.procurement_browse,
+      authority_procurement: sources.authority_procurement,
       generated_at: generatedAt,
     });
     if (!view) continue;

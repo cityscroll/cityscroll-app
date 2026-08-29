@@ -16,6 +16,10 @@ import { buildSharedProcurementReadModelShardArtifacts } from "../site/procureme
 import { buildProcurementBrowseQueryArtifacts } from "../site/procurement_browse_query.mjs";
 import { recordsFromMtaOpportunityFixtures } from "../warehouse/lib/mta_opportunities.mjs";
 import {
+  mtaAnnualContractSourceSystemId,
+  mtaCdAwardSourceSystemId,
+} from "../worker/src/lib/mta_procurement_source_records.mjs";
+import {
   attachCoherenceReceipt,
   sourceModelFingerprint,
 } from "./lib/procurement_index_coherence.mjs";
@@ -29,6 +33,7 @@ const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.m
 const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", import.meta.url);
 const BROWSE_QUERY_SHARD_DIR = new URL("../site/data/procurement_browse_rows/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
+const MTA_SOURCES = new URL("../site/data/mta_procurement_sources.json", import.meta.url);
 
 function norm(value) {
   return String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -43,6 +48,25 @@ function record(sourceSystem, sourceSystemId, row, ingestedAt) {
     normalized_snapshot: serialized,
     raw_snapshot: serialized,
     ingested_at: ingestedAt,
+  };
+}
+
+function mtaRecord(sourceSystem, row, generatedAt) {
+  const normalized = row?.normalized_snapshot || row?.normalized_row || row;
+  const raw = row?.raw_snapshot || row?.raw_row || normalized;
+  const sourceSystemId = sourceSystem === "mta_annual_contracts"
+    ? mtaAnnualContractSourceSystemId(normalized)
+    : sourceSystem === "mta_cd_awards"
+      ? mtaCdAwardSourceSystemId(normalized)
+      : row?.source_record_id || row?.transaction_number || row?.contract_number || null;
+  if (!sourceSystemId || !normalized || !raw) return null;
+  return {
+    source_system: sourceSystem,
+    source_system_id: String(sourceSystemId),
+    content_hash: row?.content_hash || `materialized:${sourceSystemId}`,
+    normalized_snapshot: JSON.stringify(normalized),
+    raw_snapshot: JSON.stringify(raw),
+    ingested_at: row?.retrieved_at || generatedAt || null,
   };
 }
 
@@ -107,7 +131,7 @@ function cityRecord(row, generatedAt) {
   return record("city_record", String(row.request_id), row, generatedAt);
 }
 
-export function procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures = null) {
+export function procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures = null, mta = null) {
   const generatedAt = spine?.generated_at || spine?.observed_on || null;
   const checkbookRows = Array.isArray(spine?.rows?.checkbook_contracts)
     ? spine.rows.checkbook_contracts.filter((row) => (
@@ -130,6 +154,13 @@ export function procurementSourceRecordsFromMaterializations(spine, awards, nati
   const awardRows = (Array.isArray(awards?.rows) ? awards.rows : [])
     .filter((row) => selectedPins.has(norm(row.pin)) && row.request_id);
   const nativeRecords = recordsFromMtaOpportunityFixtures(nativeFixtures || {});
+  const mtaGeneratedAt = mta?.generated_at || generatedAt;
+  const mtaAnnual = (Array.isArray(mta?.annual_contracts) ? mta.annual_contracts : [])
+    .map((row) => mtaRecord("mta_annual_contracts", row, mtaGeneratedAt))
+    .filter(Boolean);
+  const mtaAwards = (Array.isArray(mta?.cd_awards) ? mta.cd_awards : [])
+    .map((row) => mtaRecord("mta_cd_awards", row, mtaGeneratedAt))
+    .filter(Boolean);
   return [
     ...(Array.isArray(spine?.rows?.checkbook_nycha_contracts)
       ? spine.rows.checkbook_nycha_contracts.map((row) => checkbookNychaRecord(row, generatedAt)) : []),
@@ -137,6 +168,8 @@ export function procurementSourceRecordsFromMaterializations(spine, awards, nati
     ...passportRows.map((row) => passportRecord(row, generatedAt)),
     ...awardRows.map((row) => cityRecord(row, awards?.materialized_at || generatedAt)),
     ...nativeRecords,
+    ...mtaAnnual,
+    ...mtaAwards,
   ];
 }
 
@@ -146,7 +179,12 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
       ? JSON.parse(readFileSync(MTA_FIXTURES, "utf8"))
       : { fixtures: [] }
   );
-  const sourceRecords = procurementSourceRecordsFromMaterializations(spine, awards, nativeFixtures);
+  const sourceRecords = procurementSourceRecordsFromMaterializations(
+    spine,
+    awards,
+    nativeFixtures,
+    options.mtaSources,
+  );
   const publication = describeCrolAwardPublication({
     now: spine?.generated_at || null,
     selected: sourceRecords.length,
@@ -172,6 +210,7 @@ export function buildProcurementArtifacts(spine, awards, options = {}) {
   const fingerprint = options.sourceModelFingerprint || sourceModelFingerprint({
     spineBytes: options.spineBytes || Buffer.from(JSON.stringify(spine)),
     awardsBytes: options.awardsBytes || Buffer.from(JSON.stringify(awards)),
+    mtaBytes: options.mtaBytes || (options.mtaSources ? Buffer.from(JSON.stringify(options.mtaSources)) : null),
   });
   const model = attachCoherenceReceipt(unsigned, {
     sourceModelFingerprint: fingerprint,
@@ -291,10 +330,17 @@ function main() {
   const spineBytes = readFileSync(SPINE);
   const awardsBytes = readFileSync(AWARDS);
   const nativeFixturesBytes = readFileSync(MTA_FIXTURES);
+  const mtaBytes = readFileSync(MTA_SOURCES);
   const { model, browse, digest } = buildProcurementArtifacts(
     JSON.parse(spineBytes.toString("utf8")),
     JSON.parse(awardsBytes.toString("utf8")),
-    { spineBytes, awardsBytes, nativeFixtures: JSON.parse(nativeFixturesBytes.toString("utf8")) },
+    {
+      spineBytes,
+      awardsBytes,
+      mtaBytes,
+      nativeFixtures: JSON.parse(nativeFixturesBytes.toString("utf8")),
+      mtaSources: JSON.parse(mtaBytes.toString("utf8")),
+    },
   );
   const outputs = [
     [BROWSE_OUT, serialized(browse)],

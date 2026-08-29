@@ -59,6 +59,7 @@ function orderedObservations(object, index) {
     ["city_record", 0], ["passport_public_contracts", 1], ["passport_public_rfx", 2],
     ["checkbook_nycha_contracts", 3], ["checkbook_contracts", 4], ["checkbook_spending", 5],
     ["nys_contract_reporter", 6], ["mta_current_opportunities", 7], ["mta_bid_results", 8],
+    ["mta_annual_contracts", 9], ["mta_cd_awards", 10],
   ]);
   return observations.sort((left, right) => (
     (priority.get(left.source_system) ?? 9) - (priority.get(right.source_system) ?? 9)
@@ -107,6 +108,15 @@ function coverageFields(object, observations) {
 
 function browseRecord(object, observations, stages, evidence, facts) {
   const requestId = evidence.length === 1 ? evidence[0].request_id : null;
+  const entityRefs = new Set();
+  for (const observation of observations) {
+    const row = observation.snapshot || {};
+    for (const ref of Array.isArray(row.entity_refs_all) ? row.entity_refs_all : []) {
+      if (typeof ref === "string" && ref.trim()) entityRefs.add(ref.trim());
+    }
+    if (row.procuring_institution_id) entityRefs.add(`agency:id:${row.procuring_institution_id}`);
+    if (row.mta_parent_institution_id) entityRefs.add(`agency:id:${row.mta_parent_institution_id}`);
+  }
   return Object.freeze({
     procurement_id: object.procurement_id,
     canonical_href: procurementCanonicalHref(object),
@@ -133,6 +143,7 @@ function browseRecord(object, observations, stages, evidence, facts) {
     selection_method_description: facts.method,
     notice_evidence: Object.freeze(evidence),
     source_systems: Object.freeze([...new Set(observations.map((entry) => entry.source_system))]),
+    ...(entityRefs.size ? { entity_refs_all: Object.freeze([...entityRefs].sort()) } : {}),
     ...coverageFields(object, observations),
   });
 }
@@ -156,7 +167,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
       snapshotsForPublicAmount(object, observations),
       ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"],
     ),
-    startDate: first(rows, ["start_date", "start", "registered", "registration_date", "issue_date", "date"], 40),
+    startDate: first(rows, ["start_date", "award_date", "start", "registered", "registration_date", "issue_date", "date"], 40),
     endDate: first(rows, ["end_date", "end", "contract_end_date", "due_date", "closing_date", "opening_date"], 40),
     method: first(rows, ["selection_method_description", "procurement_method"], 240),
     program: first(rows, ["program"], 240),
