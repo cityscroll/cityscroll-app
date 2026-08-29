@@ -92,6 +92,24 @@
         "shared_source_pairing_key"
       ],
       "unpairable_or_non_text_cases": 0
+    },
+    "version_diff": {
+      "pairs_considered": 1,
+      "usable_version_pairs": 1,
+      "text_extraction": {
+        "available_versions": 2,
+        "unavailable_versions": 0,
+        "non_text_failures": 0
+      },
+      "section_alignment": {
+        "deterministic_pairs": 1,
+        "comparable_pairs": 1,
+        "rate": 1
+      },
+      "non_text_failures": 0,
+      "changed_regions": 2,
+      "observed_comments": 0,
+      "published_agency_explanations": 0
     }
   }
 }

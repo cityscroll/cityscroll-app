@@ -100,6 +100,11 @@ const VERSION_LABELS = Object.freeze({
   emergency: "Emergency version",
 });
 
+function versionAnchor(version) {
+  const value = `${version?.kind || "version"}-${version?.source_id || "unknown"}`;
+  return `rule-version-${value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+}
+
 function versionDateMarkup(version) {
   if (version.effective_date) {
     const basis = version.effective_date_basis === "source_stated" ? "Source-stated" : "Observed";
@@ -126,7 +131,7 @@ function versionMarkup(version) {
   const held = (version.held_references || []).length
     ? `<p class="muted">${version.held_references.length} citation/effect reference${version.held_references.length === 1 ? "" : "s"} held because the source did not provide an exact supported target.</p>`
     : "";
-  return `<article class="rule-version" data-version-kind="${esc(version.kind)}" data-text-status="${esc(version.text_status)}">
+  return `<article id="${esc(versionAnchor(version))}" class="rule-version" data-version-kind="${esc(version.kind)}" data-text-status="${esc(version.text_status)}">
     <header><p class="node-kicker">${esc(VERSION_LABELS[version.kind] || "Rule version")}</p><h3>${esc(version.source_label || VERSION_LABELS[version.kind] || "Rule version")}</h3></header>
     <dl class="rule-version-facts"><div><dt>Published</dt><dd>${esc(version.published_at ? prettyDate(version.published_at) : "Date not stated")}</dd></div>${versionDateMarkup(version)}</dl>
     ${version.text_preview ? `<p class="rule-version-preview">${esc(version.text_preview)}</p>` : ""}
@@ -135,6 +140,76 @@ function versionMarkup(version) {
     ${effects ? `<section class="rule-version-effects"><h4>What this version changes</h4><ul>${effects}</ul></section>` : ""}
     ${held}${source}
   </article>`;
+}
+
+function diffReason(reason) {
+  return {
+    unpaired_versions: "A proposed and adopted version could not be paired from retained source evidence.",
+    ambiguous_pairing: "More than one proposed or adopted document matched the pairing key, so the comparison is held.",
+    non_text_proposed: "The proposed document is scanned or otherwise non-text; a text comparison is unavailable.",
+    non_text_adopted: "The adopted document is scanned or otherwise non-text; a text comparison is unavailable.",
+    text_unavailable_proposed: "The proposed document text was not acquired; a text comparison is unavailable.",
+    text_unavailable_adopted: "The adopted document text was not acquired; a text comparison is unavailable.",
+    ambiguous_section_alignment: "The retained sections could not be aligned deterministically; a text comparison is unavailable.",
+    section_alignment_limit: "The retained documents contain too many sections for a bounded deterministic comparison.",
+    missing_text: "One or both retained documents contain no comparable text.",
+  }[reason] || "The retained documents cannot be compared yet.";
+}
+
+function sourceLinkMarkup(link, label) {
+  return link?.href
+    ? `<a class="ui-official-source-link" href="${esc(link.href)}" target="_blank" rel="noopener noreferrer">${esc(label)}<span aria-hidden="true">↗</span></a>`
+    : `<span class="muted">${esc(label)} link not retained</span>`;
+}
+
+function diffRegionMarkup(region, index) {
+  const proposed = region.proposed_span;
+  const adopted = region.adopted_span;
+  const proposedText = proposed?.text || "No corresponding proposed text";
+  const adoptedText = adopted?.text || "No corresponding adopted text";
+  const proposedSource = proposed ? sourceLinkMarkup({ href: proposed.source_url }, "Proposed source") : "";
+  const adoptedSource = adopted ? sourceLinkMarkup({ href: adopted.source_url }, "Adopted source") : "";
+  return `<li class="rule-version-diff-region" data-region-kind="${esc(region.kind)}">
+    <h4>Changed region ${index + 1}${region.section_label ? ` · ${esc(region.section_label)}` : ""}</h4>
+    <div class="rule-version-diff-columns">
+      <div><p class="muted">Proposed</p><p class="rule-version-diff-text rule-version-diff-removed">${esc(proposedText)}</p><p class="rule-version-diff-source">${proposedSource}</p></div>
+      <div><p class="muted">Adopted</p><p class="rule-version-diff-text rule-version-diff-added">${esc(adoptedText)}</p><p class="rule-version-diff-source">${adoptedSource}</p></div>
+    </div>
+  </li>`;
+}
+
+function ruleVersionDiffMarkup(object) {
+  const diffs = Array.isArray(object.diffs) ? object.diffs : [];
+  const versions = Array.isArray(object.versions) ? object.versions : [];
+  const comments = Array.isArray(object.comment_observations) ? object.comment_observations : [];
+  const explanations = Array.isArray(object.agency_explanations) ? object.agency_explanations : [];
+  if (!versions.length) return "";
+  const diffMarkup = diffs.map((diff) => {
+    const proposed = versions.find((version) => version.id === diff.proposed_version_id);
+    const adopted = versions.find((version) => version.id === diff.adopted_version_id);
+    const proposedAnchor = proposed ? `<a href="#${esc(versionAnchor(proposed))}">Proposed version</a>` : "Proposed version";
+    const adoptedAnchor = adopted ? `<a href="#${esc(versionAnchor(adopted))}">Adopted version</a>` : "Adopted version";
+    if (diff.status !== "available") {
+      const links = (diff.source_links || []).map((link) => sourceLinkMarkup(link, link.kind === "adopted" ? "Adopted source" : "Proposed source")).join(" · ");
+      return `<article class="rule-version-diff" data-diff-state="unavailable"><h3>Proposed-to-adopted text comparison</h3><p class="rule-version-diff-state">${esc(diffReason(diff.reason_code))}</p><p class="rule-version-diff-navigation">${proposedAnchor} · ${adoptedAnchor}${links ? ` · ${links}` : ""}</p></article>`;
+    }
+    const count = Number(diff.changed_region_count) || 0;
+    const regions = (diff.regions || []).map((region, index) => diffRegionMarkup(region, index)).join("");
+    return `<article class="rule-version-diff" data-diff-state="available" data-changed-region-count="${count}">
+      <h3>What changed between proposed and adopted text?</h3>
+      <p class="rule-version-diff-summary">${count ? `${count} changed region${count === 1 ? "" : "s"} found in deterministically aligned sections.` : "No text changes found in the deterministically aligned retained sections."}</p>
+      <p class="rule-version-diff-navigation">${proposedAnchor} · ${adoptedAnchor}</p>
+      ${regions ? `<ol class="rule-version-diff-regions">${regions}</ol>` : ""}
+    </article>`;
+  }).join("");
+  const evidence = comments.length || explanations.length
+    ? `<section class="rule-change-evidence"><h3>Separate change evidence</h3>
+      ${comments.length ? `<p data-change-evidence="comments">Comments observed in ${comments.length} retained source${comments.length === 1 ? "" : "s"}; this is reported separately from text changes.</p>` : ""}
+      ${explanations.map((item) => `<p data-change-evidence="agency-explanation">Agency explanation published: “${esc(item.text)}” ${sourceLinkMarkup({ href: item.source_url }, "Open source")}</p>`).join("")}
+      <p class="muted">Observed comments and text changes are separate facts; this comparison does not establish that comments caused a change.</p>
+    </section>`
+    : "";
+  return `${diffMarkup}${evidence}`;
 }
 
 function ruleVersionsMarkup(object) {
@@ -147,6 +222,7 @@ function ruleVersionsMarkup(object) {
   const coverageNote = `${coverage.proposed_documents || 0} proposed, ${coverage.adopted_documents || 0} adopted; ${coverage.paired_versions || 0} paired version${coverage.paired_versions === 1 ? "" : "s"}.`;
   return `<div class="rule-versions" data-rule-version-count="${versions.length}" data-legal-effect-count="${effects.length}">
     <p class="rule-version-coverage">${esc(coverageNote)} Exact source citations are shown only when retained in the version document.</p>
+    ${ruleVersionDiffMarkup(object)}
     ${versions.map(versionMarkup).join("")}
   </div>`;
 }

@@ -5,6 +5,7 @@ import {
   buildRuleVersionsProjection,
   normalizeRuleVersionDocument,
 } from "../site/rule_versions.mjs";
+import { buildRuleVersionDiff } from "../site/rule_version_diff.mjs";
 import { buildRulemakingObjects } from "../worker/src/lib/rulemaking.mjs";
 import { renderRulemakingDocument } from "../site/rulemaking_document.mjs";
 
@@ -94,6 +95,100 @@ test("rulemaking page renders version text and date provenance", () => {
   assert.match(html, /Read retained text/);
   assert.match(html, /34 RCNY/);
   assert.match(html, /data-legal-effect-count="4"/);
+  assert.match(html, /data-diff-state="available"/);
+  assert.match(html, /data-changed-region-count="1"/);
+  assert.match(html, /Changed region/);
+  assert.match(html, /Proposed source/);
+  assert.match(html, /href="#rule-version-proposed-nyc-rules-dot-bicycle-racks-proposed"/);
+  assert.match(html, /href="#rule-version-adopted-nyc-rules-dot-bicycle-racks-adopted"/);
+});
+
+test("diff retains exact changed spans and deterministic alignment", () => {
+  const left = normalizeRuleVersionDocument({
+    source_id: "left",
+    version_kind: "proposed",
+    source_url: "https://rules.cityofnewyork.us/rule/left/",
+    text: "Definitions. The agency may issue permits. Records are public.",
+  }, { rulemaking_id: RULEMAKING });
+  const right = normalizeRuleVersionDocument({
+    source_id: "right",
+    version_kind: "adopted",
+    source_url: "https://rules.cityofnewyork.us/rule/right/",
+    text: "Definitions. The agency shall issue permits. Records are public.",
+  }, { rulemaking_id: RULEMAKING });
+  const diff = buildRuleVersionDiff(left, right, { basis: "shared_source_pairing_key" });
+  assert.equal(diff.status, "available");
+  assert.equal(diff.alignment.deterministic, true);
+  assert.equal(diff.changed_region_count, 1);
+  assert.equal(diff.regions[0].proposed_span.text, "may");
+  assert.equal(diff.regions[0].adopted_span.text, "shall");
+  assert.equal(diff.regions[0].proposed_span.source_url, left.source_url);
+  assert.equal(diff.regions[0].adopted_span.source_url, right.source_url);
+});
+
+test("non-text and ambiguous or unpaired versions stay explicitly unavailable", () => {
+  const scanned = normalizeRuleVersionDocument({
+    source_id: "scanned",
+    version_kind: "proposed",
+    text_status: "scanned",
+  }, { rulemaking_id: RULEMAKING });
+  const adopted = normalizeRuleVersionDocument({
+    source_id: "adopted",
+    version_kind: "adopted",
+    text: "A final rule.",
+  }, { rulemaking_id: RULEMAKING });
+  assert.equal(buildRuleVersionDiff(scanned, adopted).reason_code, "non_text_proposed");
+
+  const scannedWithOcr = normalizeRuleVersionDocument({
+    source_id: "scanned-with-ocr",
+    version_kind: "proposed",
+    text_status: "scanned",
+    text: "OCR text is present, but the retained document remains scanned.",
+  }, { rulemaking_id: RULEMAKING });
+  assert.equal(scannedWithOcr.text_status, "scanned");
+  assert.equal(buildRuleVersionDiff(scannedWithOcr, adopted).reason_code, "non_text_proposed");
+
+  const projection = buildRuleVersionsProjection([
+    { source_id: "p1", version_kind: "proposed", pairing_key: "ambiguous", text: "Same." },
+    { source_id: "p2", version_kind: "proposed", pairing_key: "ambiguous", text: "Same." },
+    { source_id: "a1", version_kind: "adopted", pairing_key: "ambiguous", text: "Final." },
+  ], { rulemaking_id: RULEMAKING });
+  assert.equal(projection.diffs[0].status, "unavailable");
+  assert.equal(projection.diffs[0].reason_code, "ambiguous_pairing");
+  assert.equal(projection.coverage.ambiguous_pairings, 1);
+  assert.equal(projection.coverage.version_diff.non_text_failures, 0);
+
+  const unpaired = buildRuleVersionsProjection([
+    { source_id: "only-proposed", version_kind: "proposed", text: "A proposal without a final." },
+  ], { rulemaking_id: RULEMAKING });
+  assert.equal(unpaired.diffs[0].status, "unavailable");
+  assert.equal(unpaired.diffs[0].reason_code, "unpaired_versions");
+});
+
+test("comments and agency explanations are separate source observations", () => {
+  const projection = buildRuleVersionsProjection([
+    {
+      source_id: "p-comments",
+      version_kind: "proposed",
+      pairing_key: "evidence",
+      source_url: "https://rules.cityofnewyork.us/rule/evidence/",
+      comment_count: 4,
+      text: "A proposed rule.",
+    },
+    {
+      source_id: "a-explanation",
+      version_kind: "adopted",
+      pairing_key: "evidence",
+      source_url: "https://rules.cityofnewyork.us/rule/evidence/",
+      agency_explanation: "The agency explains the adopted wording in its published response.",
+      text: "An adopted rule. The agency explains the adopted wording in its published response.",
+    },
+  ], { rulemaking_id: RULEMAKING });
+  assert.equal(projection.comment_observations.length, 1);
+  assert.equal(projection.comment_observations[0].count, 4);
+  assert.equal(projection.agency_explanations.length, 1);
+  assert.equal(projection.coverage.version_diff.observed_comments, 1);
+  assert.equal(projection.coverage.version_diff.published_agency_explanations, 1);
 });
 
 test("committed Tier-2 receipt keeps characterization and bridge metrics separate", () => {
@@ -104,4 +199,10 @@ test("committed Tier-2 receipt keeps characterization and bridge metrics separat
   assert.equal(materialization.checks.rule_documents.adopted_documents, 1);
   assert.equal(materialization.checks.version_pairing.proposed_adopted_pairs, 1);
   assert.ok(Object.hasOwn(materialization.checks.legal_citations, "ambiguous_references"));
+  assert.equal(materialization.checks.version_diff.usable_version_pairs, 1);
+  assert.equal(materialization.checks.version_diff.text_extraction.available_versions, 2);
+  assert.equal(materialization.checks.version_diff.section_alignment.rate, 1);
+  assert.equal(materialization.checks.version_diff.non_text_failures, 0);
+  assert.equal(materialization.checks.version_diff.observed_comments, 0);
+  assert.equal(materialization.checks.version_diff.published_agency_explanations, 0);
 });
