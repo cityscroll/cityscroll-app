@@ -9,12 +9,12 @@
  */
 
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
   readFileSync,
   writeFileSync,
-  readdirSync,
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -33,10 +33,20 @@ import {
   DOING_BUSINESS_SOURCE_SYSTEM,
   ER_BATCH_VERSION,
   sqlVerifyVendorResolution,
+  sqlWarehouseOcpSlice,
+  pinnedOcpSnapshotFromReceipt,
+  batchReportFromMetrics,
+  promotionDecision,
+  publicationGate,
+  buildErBatchCheckpoint,
+  erBatchCheckpointFindings,
+  ER_BATCH_STAGE_FILES,
+  OCP_BULK_PROOF_RELATIVE,
+  MAX_LIVE_OCP_ROWS,
 } from "../lib/er_batch.mjs";
 
 const ROOT = REPO_ROOT;
-export const MAX_LIVE_OCP_ROWS = 200;
+export { MAX_LIVE_OCP_ROWS };
 const OCP_SAMPLE = path.join(
   WAREHOUSE_DIR,
   "fixtures",
@@ -64,12 +74,14 @@ function parseArgs(argv) {
     skipMaterialize: false,
     snapshotDate: null,
     reviewReceipt: null,
+    resume: false,
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--from-fixture") out.fromFixture = true;
     else if (a === "--force-headroom") out.force = true;
     else if (a === "--skip-materialize") out.skipMaterialize = true;
+    else if (a === "--resume") out.resume = true;
     else if (a === "--limit") out.limit = Number(argv[++i]);
     else if (a === "--snapshot-date") out.snapshotDate = String(argv[++i]);
     else if (a === "--review-receipt") out.reviewReceipt = String(argv[++i]);
@@ -128,13 +140,52 @@ function loadWarehouseOcp(limit) {
     );
   }
   const table = getDataset(OCP_SOURCE_SYSTEM).table_name;
-  const sql =
-    `SELECT request_id, start_date, agency_name, type_of_notice_description, ` +
-    `pin, contract_amount, vendor_name, short_title ` +
-    `FROM ${table} ` +
-    `WHERE vendor_name IS NOT NULL AND CAST(vendor_name AS VARCHAR) <> '' ` +
-    `LIMIT ${Number(limit)}`;
-  return queryWarehouse(sql);
+  return queryWarehouse(sqlWarehouseOcpSlice(table, limit));
+}
+
+function loadPinnedWarehouseSnapshot() {
+  const bulkProof = path.join(ROOT, OCP_BULK_PROOF_RELATIVE);
+  if (!existsSync(bulkProof)) {
+    throw new Error(
+      `WH-02 OCP bulk receipt missing at ${OCP_BULK_PROOF_RELATIVE}; ` +
+        "WH-04 warehouse replay refuses a live API slice"
+    );
+  }
+  let receipt;
+  try {
+    receipt = JSON.parse(readFileSync(bulkProof, "utf8"));
+  } catch (error) {
+    throw new Error(`cannot read WH-02 OCP bulk receipt: ${error.message || error}`);
+  }
+  return pinnedOcpSnapshotFromReceipt(receipt, OCP_BULK_PROOF_RELATIVE);
+}
+
+function checkpointPath(stageDir) {
+  return path.join(stageDir, "checkpoint.json");
+}
+
+function missingStageFiles(stageDir) {
+  return ER_BATCH_STAGE_FILES.filter(
+    (name) => !existsSync(path.join(stageDir, name))
+  );
+}
+
+function readCheckpoint(stageDir) {
+  const dest = checkpointPath(stageDir);
+  if (!existsSync(dest)) return null;
+  try {
+    return JSON.parse(readFileSync(dest, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function writeCheckpoint(stageDir, checkpoint) {
+  writeFileSync(
+    checkpointPath(stageDir),
+    `${JSON.stringify(checkpoint, null, 2)}\n`,
+    "utf8"
+  );
 }
 
 function loadWarehouseDoingBusiness(limit) {
@@ -189,6 +240,31 @@ function writeJsonl(filePath, rows) {
   writeFileSync(filePath, body, "utf8");
 }
 
+function readJsonl(filePath) {
+  if (!existsSync(filePath)) return [];
+  const text = readFileSync(filePath, "utf8").trim();
+  if (!text) return [];
+  return text.split(/\r?\n/).map((line) => JSON.parse(line));
+}
+
+function sha256Text(value) {
+  return createHash("sha256").update(String(value)).digest("hex");
+}
+
+function fixtureSnapshot(ocpRows, snap) {
+  const sample = existsSync(OCP_SAMPLE) ? readFileSync(OCP_SAMPLE, "utf8") : "";
+  const variants = existsSync(ER_VARIANTS) ? readFileSync(ER_VARIANTS, "utf8") : "";
+  return {
+    source_snapshot_hash: sha256Text(`${sample}\n${variants}`),
+    source_row_count: Array.isArray(ocpRows) ? ocpRows.length : 0,
+    snapshot_date: snap,
+    source_receipt: path.relative(ROOT, OCP_SAMPLE),
+    socrata_dataset_id: null,
+    source_contract_id: OCP_SOURCE_SYSTEM,
+    mode: "fixture",
+  };
+}
+
 function materializeWithPython(stageDir, snap) {
   const py = path.join(WAREHOUSE_DIR, ".venv", "bin", "python");
   if (!existsSync(py)) {
@@ -210,10 +286,15 @@ function materializeWithPython(stageDir, snap) {
   return r.stdout.trim();
 }
 
-function writeProofReceipt(payload) {
-  const dir = path.join(WAREHOUSE_DIR, "receipts", "proof");
+function writeProofReceipt(payload, { fromFixture = false } = {}) {
+  const dir = fromFixture
+    ? path.join(WAREHOUSE_DIR, "receipts")
+    : path.join(WAREHOUSE_DIR, "receipts", "proof");
   mkdirSync(dir, { recursive: true });
-  const dest = path.join(dir, "wh04_er_batch_latest.json");
+  const dest = path.join(
+    dir,
+    fromFixture ? "wh04_er_batch_fixture.json" : "wh04_er_batch_latest.json"
+  );
   writeFileSync(dest, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
   return dest;
 }
@@ -298,6 +379,7 @@ function main(argv = process.argv) {
 Usage:
   node warehouse/scripts/er_batch.mjs --from-fixture --limit 25
   node warehouse/scripts/er_batch.mjs --limit 200
+  node warehouse/scripts/er_batch.mjs --limit 200 --resume
 
 Prefer the capped runner:
   warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --from-fixture --limit 25
@@ -305,46 +387,20 @@ Prefer the capped runner:
     return 0;
   }
 
-  const snap = args.snapshotDate || snapshotDateUtc();
   const mode = args.fromFixture ? "fixture" : "warehouse";
-
-  let ocpRows;
-  let doingBusinessRows = [];
-  if (args.fromFixture) {
-    ocpRows = loadFixtureOcpRows();
-    doingBusinessRows = loadFixtureDoingBusiness();
-  } else {
-    ocpRows = loadWarehouseOcp(args.limit);
-    doingBusinessRows = loadWarehouseDoingBusiness(args.limit);
-  }
-
-  const sourceFetch = args.fromFixture ? null : loadSourceFetchReceipt(snap);
-  const watermarks = {
-    [OCP_SOURCE_SYSTEM]: {
-      snapshot_date: sourceFetch?.snapshot_date || snap,
-      observed_at: sourceFetch?.observed_at || null,
-      source_sha256: sourceFetch?.sha256 || null,
-      last_modified: sourceFetch?.last_modified || null,
-    },
-    ...(doingBusinessRows.length
-      ? { [DOING_BUSINESS_SOURCE_SYSTEM]: { snapshot_date: snap } }
-      : {}),
-  };
-  const batch = runErBatch({
-    ocpRows,
-    doingBusinessRows,
-    limit: args.fromFixture ? args.limit : null, // warehouse path already LIMITed
-    scopeNote:
-      mode === "fixture"
-        ? "WH-04 fixture proof (OCP sample + vendor variants + optional DB sample)"
-        : `WH-04 warehouse slice limit=${args.limit}`,
-    priorEntityLinks: args.fromFixture ? [] : loadWarehousePriorLinks(),
-    watermarks,
-  });
-  const qualityReview = loadQualityReview(args.reviewReceipt, {
-    metrics: batch.metrics,
-    sourceFetch,
-  });
+  const sourceSnapshot = args.fromFixture
+    ? null
+    : loadPinnedWarehouseSnapshot();
+  const snap =
+    args.snapshotDate ||
+    sourceSnapshot?.snapshot_date ||
+    snapshotDateUtc();
+  const warehouseQuery = args.fromFixture
+    ? null
+    : sqlWarehouseOcpSlice(
+        getDataset(OCP_SOURCE_SYSTEM).table_name,
+        args.limit
+      );
 
   const root = warehouseRoot();
   const stageDir = path.join(
@@ -355,24 +411,115 @@ Prefer the capped runner:
   );
   mkdirSync(stageDir, { recursive: true });
 
-  writeJsonl(path.join(stageDir, "entity_link.jsonl"), batch.entity_links);
-  writeJsonl(
-    path.join(stageDir, "canonical_entity.jsonl"),
-    batch.canonical_entities
-  );
-  writeJsonl(path.join(stageDir, "resolution_run.jsonl"), [
-    batch.resolution_run,
-  ]);
-  writeJsonl(path.join(stageDir, "pair_receipt.jsonl"), batch.pair_receipts);
-  writeJsonl(
-    path.join(stageDir, "entity_link_supersession.jsonl"),
-    batch.entity_link_supersessions,
-  );
-  writeFileSync(
-    path.join(stageDir, "metrics.json"),
-    `${JSON.stringify(batch.metrics, null, 2)}\n`,
-    "utf8"
-  );
+  let ocpRows;
+  let doingBusinessRows = [];
+  if (args.fromFixture) {
+    ocpRows = loadFixtureOcpRows();
+    doingBusinessRows = loadFixtureDoingBusiness();
+  }
+
+  const pinnedSnapshot =
+    sourceSnapshot || fixtureSnapshot(ocpRows || [], snap);
+
+  let resumed = false;
+  let batch;
+  if (args.resume) {
+    const checkpoint = readCheckpoint(stageDir);
+    const resumeErrors = erBatchCheckpointFindings(checkpoint, {
+      snapshot: pinnedSnapshot,
+      limit: args.limit,
+      missingFiles: missingStageFiles(stageDir),
+    });
+    if (resumeErrors.length) {
+      throw new Error(
+        `WH-04 --resume refused: ${resumeErrors.join("; ")}`
+      );
+    }
+    resumed = true;
+    batch = {
+      entity_links: readJsonl(path.join(stageDir, "entity_link.jsonl")),
+      canonical_entities: readJsonl(
+        path.join(stageDir, "canonical_entity.jsonl")
+      ),
+      resolution_run: readJsonl(
+        path.join(stageDir, "resolution_run.jsonl")
+      )[0],
+      pair_receipts: readJsonl(path.join(stageDir, "pair_receipt.jsonl")),
+      entity_link_supersessions: readJsonl(
+        path.join(stageDir, "entity_link_supersession.jsonl")
+      ),
+      metrics: JSON.parse(
+        readFileSync(path.join(stageDir, "metrics.json"), "utf8")
+      ),
+      provenance: null,
+    };
+  } else {
+    if (!args.fromFixture) {
+      ocpRows = loadWarehouseOcp(args.limit);
+      doingBusinessRows = loadWarehouseDoingBusiness(args.limit);
+    }
+    const sourceFetchPreview = args.fromFixture
+      ? null
+      : loadSourceFetchReceipt(snap);
+    const watermarks = {
+      [OCP_SOURCE_SYSTEM]: {
+        snapshot_date: pinnedSnapshot.snapshot_date || snap,
+        observed_at: sourceFetchPreview?.observed_at || null,
+        source_sha256: pinnedSnapshot.source_snapshot_hash,
+        last_modified: sourceFetchPreview?.last_modified || null,
+      },
+      ...(doingBusinessRows.length
+        ? { [DOING_BUSINESS_SOURCE_SYSTEM]: { snapshot_date: snap } }
+        : {}),
+    };
+    batch = runErBatch({
+      ocpRows,
+      doingBusinessRows,
+      limit: args.fromFixture ? args.limit : null, // warehouse path already LIMITed
+      scopeNote:
+        mode === "fixture"
+          ? "WH-04 fixture proof (OCP sample + vendor variants + optional DB sample)"
+          : `WH-04 warehouse slice limit=${args.limit} snapshot=${pinnedSnapshot.source_snapshot_hash}`,
+      priorEntityLinks: args.fromFixture ? [] : loadWarehousePriorLinks(),
+      watermarks,
+    });
+    writeJsonl(path.join(stageDir, "entity_link.jsonl"), batch.entity_links);
+    writeJsonl(
+      path.join(stageDir, "canonical_entity.jsonl"),
+      batch.canonical_entities
+    );
+    writeJsonl(path.join(stageDir, "resolution_run.jsonl"), [
+      batch.resolution_run,
+    ]);
+    writeJsonl(path.join(stageDir, "pair_receipt.jsonl"), batch.pair_receipts);
+    writeJsonl(
+      path.join(stageDir, "entity_link_supersession.jsonl"),
+      batch.entity_link_supersessions
+    );
+    writeFileSync(
+      path.join(stageDir, "metrics.json"),
+      `${JSON.stringify(batch.metrics, null, 2)}\n`,
+      "utf8"
+    );
+    writeCheckpoint(
+      stageDir,
+      buildErBatchCheckpoint({
+        snapshot: pinnedSnapshot,
+        limit: args.limit,
+        metrics: batch.metrics,
+        query: warehouseQuery,
+        created_at: new Date().toISOString(),
+      })
+    );
+  }
+
+  const sourceFetch = args.fromFixture ? null : loadSourceFetchReceipt(snap);
+  const qualityReview = loadQualityReview(args.reviewReceipt, {
+    metrics: batch.metrics,
+    sourceFetch: sourceFetch
+      ? { ...sourceFetch, sha256: pinnedSnapshot.source_snapshot_hash }
+      : { sha256: pinnedSnapshot.source_snapshot_hash },
+  });
 
   let materialize = null;
   if (!args.skipMaterialize) {
@@ -400,6 +547,8 @@ Prefer the capped runner:
     }
   }
 
+  const runtimeMs = Number(process.hrtime.bigint() - startedNs) / 1_000_000;
+  const promotion = promotionDecision({ limit: args.limit });
   const receipt = {
     schema_version: 1,
     phase: "WH-04",
@@ -410,13 +559,19 @@ Prefer the capped runner:
     observed_at: new Date().toISOString(),
     limit: args.limit,
     live_ocp_cap: MAX_LIVE_OCP_ROWS,
-    runtime_ms: Number(process.hrtime.bigint() - startedNs) / 1_000_000,
+    runtime_ms: runtimeMs,
+    resumed,
+    source_snapshot: pinnedSnapshot,
+    batch_report: batchReportFromMetrics(batch.metrics, runtimeMs),
+    publication_gate: publicationGate(),
+    promotion,
     source_fetch: sourceFetch,
     metrics: batch.metrics,
     provenance: batch.provenance,
     link_supersessions: batch.entity_link_supersessions,
-    resolution_run_id: batch.resolution_run.id,
-    stage_dir: path.relative(ROOT, stageDir),
+    resolution_run_id: batch.resolution_run?.id || null,
+    stage_dir: relativeRepoPath(stageDir),
+    checkpoint: relativeRepoPath(checkpointPath(stageDir)),
     materialize,
     verify_sql: "warehouse/sql/examples/er_entity_links_verify.sql",
     verify_sql_inline: sqlVerifyVendorResolution({ limit: 20 }),
@@ -428,6 +583,7 @@ Prefer the capped runner:
       default_limit: 200,
       live_ocp_hard_cap: MAX_LIVE_OCP_ROWS,
       incremental: true,
+      resumable: true,
     },
     reuse: {
       entity_resolution: [
@@ -455,7 +611,7 @@ Prefer the capped runner:
       "Keep the 200-row cap. A wider or full-corpus ER run requires a separate decision and new resource and precision evidence.",
   };
 
-  const proofPath = writeProofReceipt(receipt);
+  const proofPath = writeProofReceipt(receipt, { fromFixture: args.fromFixture });
   console.log(
     JSON.stringify(
       {
@@ -464,6 +620,7 @@ Prefer the capped runner:
         snapshot_date: snap,
         metrics: batch.metrics,
         proof: path.relative(ROOT, proofPath),
+        resumed,
         materialize,
       },
       null,
@@ -487,4 +644,10 @@ if (isMain) {
   }
 }
 
-export { main, parseArgs, loadFixtureOcpRows, parseSimpleCsv };
+export {
+  main,
+  parseArgs,
+  loadFixtureOcpRows,
+  parseSimpleCsv,
+  loadPinnedWarehouseSnapshot,
+};

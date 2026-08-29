@@ -25,7 +25,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from cpu_guard import IngestLock, check_headroom, run_capped
-from paths import REPO_ROOT, WAREHOUSE_DIR, receipts_dir
+from paths import REPO_ROOT, WAREHOUSE_DIR
 
 
 MAX_LIVE_OCP_ROWS = 200
@@ -70,6 +70,11 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Optional reviewed quality receipt to validate and attach to the proof",
     )
+    p.add_argument(
+        "--resume",
+        action="store_true",
+        help="Reuse a snapshot-pinned stage checkpoint after revalidating hashes",
+    )
     args = p.parse_args(argv)
 
     if args.limit < 1:
@@ -97,6 +102,8 @@ def main(argv: list[str] | None = None) -> int:
             cmd.extend(["--snapshot-date", args.snapshot_date])
         if args.review_receipt:
             cmd.extend(["--review-receipt", args.review_receipt])
+        if args.resume:
+            cmd.append("--resume")
 
         # Fixture proof is light; warehouse slice still gets taskpolicy wrap.
         if args.from_fixture and args.limit <= 100:
@@ -118,6 +125,7 @@ def main(argv: list[str] | None = None) -> int:
             "from_fixture": bool(args.from_fixture),
             "limit": args.limit,
             "live_ocp_hard_cap": MAX_LIVE_OCP_ROWS,
+            "resume": bool(args.resume),
             "headroom": {
                 "status": headroom.get("status"),
                 "constrained": headroom.get("constrained"),
@@ -130,10 +138,12 @@ def main(argv: list[str] | None = None) -> int:
                 ),
             },
         }
-        out_dir = receipts_dir() / "proof"
-        out_dir.mkdir(parents=True, exist_ok=True)
-        # Merge into committed proof if Node already wrote it.
-        proof_path = out_dir / "wh04_er_batch_latest.json"
+        proof_path = (
+            WAREHOUSE_DIR / "receipts" / "wh04_er_batch_fixture.json"
+            if args.from_fixture
+            else WAREHOUSE_DIR / "receipts" / "proof" / "wh04_er_batch_latest.json"
+        )
+        proof_path.parent.mkdir(parents=True, exist_ok=True)
         if proof_path.is_file():
             try:
                 existing = json.loads(proof_path.read_text(encoding="utf-8"))
@@ -144,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
                 json.dumps(existing, indent=2) + "\n", encoding="utf-8"
             )
         else:
-            (out_dir / "wh04_er_batch_runner.json").write_text(
+            (proof_path.parent / "wh04_er_batch_runner.json").write_text(
                 json.dumps(runner_receipt, indent=2) + "\n", encoding="utf-8"
             )
     return 0
