@@ -87,6 +87,33 @@ test("board dossier embeds the exact read-model money card without changing its 
   assert.match(html, /data-community-board-constellation-category="committees"/);
 });
 
+test("partial board dossier keeps the money card inside the existing hierarchy", () => {
+  const view = buildCommunityBoardConstellationView("bronx-cb-03", {
+    ...sources,
+    communityBoardMoney,
+  });
+  assert.equal(view.money.board_id, "bronx-cb-03");
+  assert.equal(view.money.state, "unmatched_identity");
+  const html = renderCommunityBoardConstellationDocument(view);
+  const about = html.indexOf("data-community-board-about");
+  const money = html.indexOf('id="community-board-money"');
+  const governance = html.indexOf("data-community-board-governance");
+  const committees = html.indexOf('data-community-board-constellation-category="committees"');
+  const meetings = html.indexOf('data-community-board-constellation-category="meetings"');
+  const members = html.indexOf('data-community-board-constellation-category="members"');
+  const sourcesIdx = html.indexOf('data-community-board-constellation-category="sources"');
+  const map = html.indexOf("community-board-local-constellation-heading");
+  assert.ok(about > 0 && money > about);
+  assert.ok(governance === -1 || money < governance);
+  assert.ok(committees > money && meetings > money && members > money && sourcesIdx > money);
+  assert.ok(map > money);
+  assert.match(html, /data-money-state="unmatched_identity"/);
+  assert.match(html, /\$340,425\.00/);
+  assert.match(html, /does not establish an accepted exact financial identity/);
+  assert.match(html, /Sources and coverage/);
+  assert.doesNotMatch(html, /Spending in your district|View payments|remaining budget/i);
+});
+
 test("populated committee data keeps its category section and source-backed record", () => {
   const html = renderCommunityBoardConstellationDocument(buildCommunityBoardConstellationView("bronx-cb-01", {
     ...sources,

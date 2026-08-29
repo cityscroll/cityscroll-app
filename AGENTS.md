@@ -4075,9 +4075,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 - **Community Board money read model:** `site/community_board_money.mjs` joins the landed adopted
   budget and payment actuals artifacts only by exact `board_id` plus fiscal year. Rebuild the shared
-  projection and measurement receipt with `node tools/build_community_board_money.mjs`; focused
-  proof is `test/community_board_money.test.mjs`. Missing, partial, unmatched, empty, and stale
-  source states remain explicit, and uncertified budget/payment ratios stay null.
+  projection and measurement receipt with `node tools/build_community_board_money.mjs`. The board
+  dossier card is `#community-board-money` in `site/community_board_constellation.mjs`. Refresh
+  Bronx CB1 (populated) and Bronx CB3 (payment identity unobserved) evidence at 390px and 1440px
+  with `python3 tools/capture_community_board_money.py` (`--check` verifies the committed
+  manifest). Focused proof is `test/community_board_money.test.mjs`. Missing, partial, unmatched,
+  empty, and stale source states remain explicit, and uncertified budget/payment ratios stay null.
 
 - **Community Board money follow feasibility:** `site/community_board_money_follow_feasibility.mjs`
   measures CB-MONEY-02 payment observations by exact retained transaction identity and calendar
