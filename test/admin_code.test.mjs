@@ -75,6 +75,20 @@ test("provision detail page is source-labeled and does not claim modeled history
   assert.match(html, /No modeled changes yet/);
 });
 
+test("provision detail renders the materialized current version and immutable history", () => {
+  const row = rowFor(lookupAdminCodeCitation("20-912"));
+  const html = renderAdminCodeProvisionDocument(row, {
+    versions: [
+      { id: "version-old", provision_id: row.id, valid_from: null, valid_to: "2026-11-01", text: "Old text.", status: "superseded" },
+      { id: "version-new", provision_id: row.id, valid_from: "2026-11-01", valid_to: null, text: "New text.", status: "current" },
+    ],
+  });
+  assert.match(html, /New text\./);
+  assert.match(html, /Version history/);
+  assert.match(html, /data-code-version-id="version-old"/);
+  assert.match(html, /2026-11-01[\s\S]*current/);
+});
+
 test("Pages edge serves provision detail from a committed shard", async () => {
   const entry = lookupAdminCodeCitation("16-120");
   const shard = rowFor(entry);

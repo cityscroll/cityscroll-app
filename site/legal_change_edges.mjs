@@ -12,6 +12,12 @@ import {
   codeChange,
   legalChangeGraph,
 } from "../ontology/legal_change.mjs";
+export {
+  materializeCodeChange,
+  materializeCodeChanges,
+  readableCodeDiff,
+  resolveCodeChangeEffectiveDate,
+} from "./code_version_materialization.mjs";
 
 export const LEGAL_CHANGE_EDGE_SCHEMA = "cityscroll.legal_change_edge.v1";
 export const ADMIN_CODE_CORPUS_ID = "nyc-administrative-code";
@@ -123,6 +129,19 @@ function targetId(corpusId, citation) {
   return corpusId === ADMIN_CODE_CORPUS_ID ? `${ADMIN_CODE_CORPUS_ID}:${citation}` : null;
 }
 
+function explicitWholeProvisionPatch(text, operationEnd, operation) {
+  if (operation !== "amend") return null;
+  const remainder = String(text || "").slice(operationEnd);
+  const marker = remainder.match(/^\s*to\s+read\s+as\s+follows\s*:\s*/i);
+  if (!marker) return null;
+  const afterText = remainder
+    .slice(marker[0].length)
+    .split(/\n\s*(?=(?:section|sections|subsection|subsections|paragraph|paragraphs)\b)/i)[0]
+    .replace(/[;\s]+$/, "")
+    .trim();
+  return afterText ? { after_text: afterText, scope: "whole_provision" } : null;
+}
+
 function targetResolution(targetIdValue, corpusId, knownProvisionIds) {
   if (corpusId !== ADMIN_CODE_CORPUS_ID) return "unresolved_external_corpus";
   if (!(knownProvisionIds instanceof Set)) return "unknown";
@@ -151,6 +170,7 @@ function explicitMatches(text, { corpus_id: fallbackCorpusId = null } = {}) {
           source_text: clause.text,
           source_start: clause.start,
           source_end: clause.start + clause.text.length,
+          patch: explicitWholeProvisionPatch(text, operationMatch.index + operationMatch[0].length, operation),
         });
       }
     }
@@ -179,6 +199,7 @@ export function extractExplicitCodeChanges(value, options = {}) {
     state: options.state || value?.state || (value?.local_law ? "enacted" : "prospective"),
     effective_at: options.effective_at || value?.effective_at || value?.local_law?.effective_at,
     effective_date_text: options.effective_date_text || value?.effective_date_text || value?.local_law?.effective_date_text,
+    effective_date_clauses: options.effective_date_clauses || value?.effective_date_clauses || value?.local_law?.effective_date_clauses,
     target: {
       corpus_id: match.corpus_id,
       citation: `§ ${match.citation}`,
@@ -191,6 +212,7 @@ export function extractExplicitCodeChanges(value, options = {}) {
       start: match.source_start,
       end: match.source_end,
     },
+    patch: match.patch,
     materialization_confidence: "unknown",
   }));
 }
@@ -255,6 +277,26 @@ function matterHref(change) {
   return /^\d+$/.test(value) ? `/matters/${encodeURIComponent(value)}/` : null;
 }
 
+function materializationMarkup(change) {
+  const materialization = change?.materialization;
+  if (change?.materialization_status === "materialized" && materialization) {
+    const before = materialization.before_text == null
+      ? "No prior provision text"
+      : `<pre class="code-change-text code-change-before">${escapeHtml(materialization.before_text)}</pre>`;
+    const after = materialization.after_text == null
+      ? "Provision is inactive after repeal"
+      : `<pre class="code-change-text code-change-after">${escapeHtml(materialization.after_text)}</pre>`;
+    const diff = materialization.diff?.text
+      ? `<details class="code-change-diff"><summary>Diff</summary><pre>${escapeHtml(materialization.diff.text)}</pre></details>`
+      : "";
+    return `<div class="code-change-materialization" data-materialization-status="materialized"><p><strong>Before</strong></p>${before}<p><strong>After</strong></p>${after}${diff}</div>`;
+  }
+  if (change?.materialization_status === "unresolved" && materialization?.reason && change.state !== "prospective") {
+    return `<p class="code-change-materialization" data-materialization-status="unresolved">CityScroll identified the legal change instruction but has not safely reconstructed the resulting text.</p>`;
+  }
+  return "";
+}
+
 export function renderLegalChangeList(changes = [], { empty = "No explicit statutory changes are modeled." } = {}) {
   const rows = (Array.isArray(changes) ? changes : []).map((change) => {
     const href = targetHref(change);
@@ -266,7 +308,7 @@ export function renderLegalChangeList(changes = [], { empty = "No explicit statu
       ? ` · <a href="${escapeHtml(matterHref(change))}">Matter timeline</a>`
       : "";
     const state = change.state === "prospective" ? "Prospective proposal" : "Enacted change";
-    return `<li data-code-change-id="${escapeHtml(change.id)}" data-code-change-state="${escapeHtml(change.state)}"><strong>${escapeHtml(change.operation.toUpperCase())}</strong> · ${target} <span class="legal-change-state">${escapeHtml(state)}</span>${timeline}${source}<p>${escapeHtml(change.source?.instruction_text || "Source-stated instruction retained.")}</p></li>`;
+    return `<li data-code-change-id="${escapeHtml(change.id)}" data-code-change-state="${escapeHtml(change.state)}"><strong>${escapeHtml(change.operation.toUpperCase())}</strong> · ${target} <span class="legal-change-state">${escapeHtml(state)}</span>${timeline}${source}<p>${escapeHtml(change.source?.instruction_text || "Source-stated instruction retained.")}</p>${materializationMarkup(change)}</li>`;
   });
   return rows.length ? `<ul class="legal-change-list">${rows.join("")}</ul>` : `<p class="legal-change-empty">${escapeHtml(empty)}</p>`;
 }

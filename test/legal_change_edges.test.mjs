@@ -6,9 +6,12 @@ import {
   buildExplicitLegalChangeGraph,
   extractExplicitCodeChanges,
   indexLegalChanges,
+  materializeCodeChange,
   renderLegalChangeSummary,
+  renderLegalChangeList,
 } from "../site/legal_change_edges.mjs";
 import { renderAdminCodeProvisionDocument } from "../site/admin_code.mjs";
+import { codeChange } from "../ontology/legal_change.mjs";
 
 const fixtures = JSON.parse(readFileSync(new URL("./fixtures/legal_change_edges.json", import.meta.url), "utf8"));
 
@@ -101,4 +104,55 @@ test("matter and provision renderers label prospective changes", () => {
   assert.match(html, /data-code-change-state="prospective"/);
   assert.match(html, /Matter timeline/);
   assert.match(html, /Administrative Code § 20-912/);
+});
+
+test("an explicit read-as-follows clause carries a whole-provision patch", () => {
+  const changes = extractExplicitCodeChanges({
+    matter_id: "79105",
+    legal_instrument_id: "local-law:124-2026",
+    state: "enacted",
+    source_ref: "council:local-law:124-2026",
+    effective_at: "2026-11-01",
+    source_text: "Section 16-120 of the administrative code is amended to read as follows: New complete section text.\nSection 20-912 of the administrative code is amended.",
+  });
+  assert.equal(changes[0].patch.scope, "whole_provision");
+  const result = materializeCodeChange(changes[0], {
+    provision: {
+      id: "nyc-administrative-code:16-120",
+      corpus_id: "nyc-administrative-code",
+      citation: "§ 16-120",
+      current_text: "Old complete section text.",
+      source: { source_ref: "alp:16-120", observed_at: "2026-08-24" },
+    },
+  });
+  assert.equal(result.materialization_status, "materialized");
+  assert.equal(result.after_text, "New complete section text.");
+  const rendered = renderLegalChangeList([result.change]);
+  assert.match(rendered, /Before/);
+  assert.match(rendered, /After/);
+  assert.match(rendered, /New complete section text/);
+  assert.match(rendered, /data-materialization-status="materialized"/);
+});
+
+test("CodeChange normalization preserves multiline statutory patch text", () => {
+  const normalized = codeChange({
+    id: "fixture:multiline-patch",
+    matter_id: "79106",
+    operation: "amend",
+    target: {
+      corpus_id: "nyc-administrative-code",
+      provision_id: "nyc-administrative-code:16-120",
+      citation: "§ 16-120",
+    },
+    source: {
+      source_ref: "fixture:multiline-patch",
+      instruction_text: "Section 16-120 is amended.",
+    },
+    patch: {
+      before_text: "Old line one.\nOld line two.",
+      after_text: "New line one.\nNew line two.",
+    },
+  });
+  assert.equal(normalized.patch.before_text, "Old line one.\nOld line two.");
+  assert.equal(normalized.patch.after_text, "New line one.\nNew line two.");
 });
