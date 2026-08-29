@@ -82,11 +82,10 @@ test("PASSPort source keys follow materialization identity", () => {
   assert.equal(passportSourceSystemId("rfx", { epin_norm: "84126P0001001", rfp_id: "RFX-88" }), "rfx:84126P0001001:RFX-88");
 });
 
-test("PASSPort observation capture is explicitly enabled only for production", () => {
+test("PASSPort observation capture is explicitly enabled for production", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
-  const [production, beta = ""] = wrangler.split("[env.beta.vars]");
-  assert.match(production, /PASSPORT_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
-  assert.match(beta, /PASSPORT_SOURCE_RECORD_DUAL_WRITE\s*=\s*"false"/);
+  assert.match(wrangler, /PASSPORT_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
+  assert.doesNotMatch(wrangler, /\[env\.beta/);
 });
 
 test("flag off preserves current PASSPort materialization without observations", async () => {

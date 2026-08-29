@@ -144,9 +144,8 @@ test("unverified project shells and missing observation schema remain fail-soft"
   sqlite.close();
 });
 
-test("production enables ZAP capture while beta remains off", () => {
+test("production enables ZAP capture", () => {
   const wrangler = readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
-  const [production, beta = ""] = wrangler.split("[env.beta.vars]");
-  assert.match(production, /ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
-  assert.match(beta, /ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE\s*=\s*"false"/);
+  assert.match(wrangler, /ZAP_PROJECT_SOURCE_RECORD_DUAL_WRITE\s*=\s*"true"/);
+  assert.doesNotMatch(wrangler, /\[env\.beta/);
 });

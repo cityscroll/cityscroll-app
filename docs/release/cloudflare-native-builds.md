@@ -30,9 +30,7 @@ release receipt.
 
 The Cloudflare Pages workflow runs on pushes to `main`. If the native Pages Git
 integration is also connected, disable its production-branch builds to avoid
-duplicate deployments. The beta preview and promotion lanes remain explicit
-manual workflows because they publish selected review channels, not the
-production release.
+duplicate deployments.
 
 ## Legacy hosting retirement
 

@@ -134,18 +134,19 @@ def main() -> None:
     wrangler = (ROOT / "worker/wrangler.toml").read_text()
     for hostname in (
         "api.cityscroll.org", "api.crol-list.org",
-        "api-beta.cityscroll.org",
     ):
         if hostname not in wrangler:
             failures.append(f"worker routes: missing {hostname}")
     retired_beta_alias = "".join(("api-beta.", "crol", "-", "list", ".org"))
     if retired_beta_alias in wrangler:
         failures.append("worker routes: retired api-beta compatibility host must stay out of wrangler.toml")
+    if "api-beta.cityscroll.org" in wrangler:
+        failures.append("worker routes: retired beta Worker host must stay out of wrangler.toml")
+    if "[env.beta]" in wrangler:
+        failures.append("worker routes: retired Wrangler beta environment must stay out of wrangler.toml")
     for route in CANONICAL_DYNAMIC_PATH_ROUTES:
         if route not in wrangler:
             failures.append(f"worker routes: missing bounded canonical route {route}")
-    if 'CONFIRM_BASE = "https://api-beta.cityscroll.org"' not in wrangler:
-        failures.append("worker routes: beta confirmation links must mint on cityscroll.org")
     if 'CONFIRM_BASE = "https://api.cityscroll.org"' not in wrangler:
         failures.append("worker routes: production confirmation links must mint on cityscroll.org")
     for sender in ("alerts@cityscroll.org", "feedback@cityscroll.org", "subscribe@crol-list.org"):
@@ -183,12 +184,6 @@ def main() -> None:
     if "tag:crol-list.org,2026:" not in feed:
         failures.append("Atom: persistent entry namespace changed")
 
-    beta = (ROOT / "tools/ensure_beta_pages.mjs").read_text()
-    if 'const BETA_DOMAIN = "beta.cityscroll.org";' not in beta:
-        failures.append("beta pointer: expected beta.cityscroll.org")
-    if "crol-list-beta.pages.dev" not in (ROOT / "docs/beta-channel.md").read_text():
-        failures.append("beta previews: stable Pages aliases must remain unchanged")
-
     architecture = (ROOT / "docs/architecture.md").read_text()
     for phrase in (
         "cityscroll.org",
@@ -204,7 +199,7 @@ def main() -> None:
         for failure in failures:
             print(f"  {failure}", file=sys.stderr)
         raise SystemExit(1)
-    print("canonical-domain gate OK — site, API, beta, redirects, and stable identifiers")
+    print("canonical-domain gate OK — site, API, redirects, and stable identifiers")
 
 
 if __name__ == "__main__":

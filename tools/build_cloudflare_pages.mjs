@@ -49,7 +49,6 @@ const args = parseArgs(process.argv.slice(2));
 const sourceDir = resolve(repositoryRoot, args["source-dir"] || ".");
 const siteDir = resolve(repositoryRoot, args["site-dir"] || "_site");
 const refresh = Boolean(args["refresh-decision-outcomes"]);
-const reviewChannel = args["review-channel"] || "";
 const commitSha = args["commit-sha"] || "";
 
 // Architecture fitness runs before any generated artifact. A production build
@@ -121,14 +120,6 @@ if (releaseId) {
 }
 runPython(sourceDir, "stamp_i18n_assets.py", ["--site-root", siteDir, "--stamp"]);
 runPython(sourceDir, "../test/standards/i18n_refs.py", ["--root", siteDir, "--built"]);
-
-if (reviewChannel) {
-  runPython(sourceDir, "prepare_review_artifact.py", [
-    "--site-root", siteDir,
-    "--channel", reviewChannel,
-    "--commit", commitSha,
-  ]);
-}
 
 runPython(sourceDir, "verify_public_artifact.py", ["--site-root", siteDir]);
 console.log(`Cloudflare Pages artifact ready at ${siteDir}`);

@@ -350,7 +350,7 @@ test("Worker route and wrangler bindings are visibly separate while usage stays 
   assert.match(wrangler, /binding = "USAGE_ANALYTICS"\s+dataset = "crol_usage_events_v1"/);
   assert.match(wrangler, /binding = "RUM_ANALYTICS"\s+dataset = "crol_rum_observations_v1"/);
   assert.match(wrangler, /^RUM_INGEST_ENABLED = "true"$/m);
-  assert.match(wrangler, /^\[env\.beta\.vars\][\s\S]*?^RUM_INGEST_ENABLED = "false"$/m);
+  assert.doesNotMatch(wrangler, /\[env\.beta/);
   const publicManifest = JSON.parse(readFileSync(
     new URL("../../site/data/performance-classification-manifest.v1.json", import.meta.url),
     "utf8",

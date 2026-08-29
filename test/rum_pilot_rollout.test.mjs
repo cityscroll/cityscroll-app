@@ -35,7 +35,7 @@ function fieldVitals() {
 test("production switches are on for production and off for beta, preview, and local hosts", () => {
   assert.equal(MANIFEST.collector.production_enabled, true);
   assert.match(WRANGLER, /^RUM_INGEST_ENABLED = "true"$/m);
-  assert.match(WRANGLER, /^\[env\.beta\.vars\][\s\S]*?^RUM_INGEST_ENABLED = "false"$/m);
+  assert.doesNotMatch(WRANGLER, /\[env\.beta/);
   assert.equal(rumCollectionEnabled(MANIFEST, {
     ingestEnabled: "true",
     analyticsEnvironment: "production",

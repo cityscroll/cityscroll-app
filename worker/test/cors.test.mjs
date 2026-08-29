@@ -6,19 +6,17 @@ import {
   isAllowedRequestOrigin,
 } from "../src/lib/cors.mjs";
 import { handleEvent } from "../src/events.mjs";
-import { handleFeedback } from "../src/feedback.mjs";
-import { handleSubscribe } from "../src/subscribe.mjs";
 
-const betaEnv = { DEPLOYMENT_CHANNEL: "beta", ANALYTICS_ENVIRONMENT: "preview" };
-const betaOrigins = [
+const reviewPagesHost = ["crol", "-", "list", "-beta", ".pages.dev"].join("");
+const retiredReviewOrigins = [
   "https://beta.cityscroll.org",
-  "https://crol-list-beta.pages.dev",
-  "https://pr-42.crol-list-beta.pages.dev",
-  "https://a1b2c3d4.crol-list-beta.pages.dev",
+  `https://${reviewPagesHost}`,
+  `https://pr-42.${reviewPagesHost}`,
+  `https://a1b2c3d4.${reviewPagesHost}`,
 ];
 const localDevelopmentOrigin = ["http", ["localhost", "8000"].join(":")].join("://");
 
-test("production origins remain allowed in every environment", () => {
+test("production origins remain allowed", () => {
   for (const origin of [
     "https://cityscroll.org",
     "https://www.cityscroll.org",
@@ -30,7 +28,6 @@ test("production origins remain allowed in every environment", () => {
     "",
   ]) {
     assert.equal(isAllowedRequestOrigin(origin, {}), true, origin);
-    assert.equal(isAllowedRequestOrigin(origin, betaEnv), true, origin);
   }
   assert.equal(
     corsHeaders("https://cityscroll.pages.dev", {})["Access-Control-Allow-Origin"],
@@ -38,54 +35,29 @@ test("production origins remain allowed in every environment", () => {
   );
 });
 
-test("review origins are beta-only and external origins stay rejected", () => {
-  for (const origin of betaOrigins) {
+test("retired review origins and external origins stay rejected", () => {
+  for (const origin of retiredReviewOrigins) {
     assert.equal(isAllowedRequestOrigin(origin, {}), false, origin);
-    assert.equal(isAllowedRequestOrigin(origin, betaEnv), true, origin);
-    assert.equal(corsHeaders(origin, betaEnv)["Access-Control-Allow-Origin"], origin);
+    assert.equal(
+      corsHeaders(origin, {})["Access-Control-Allow-Origin"],
+      "https://cityscroll.org",
+    );
   }
-  assert.equal(isAllowedRequestOrigin("https://example.com", betaEnv), false);
-  assert.equal(isAllowedRequestOrigin("http://pr-42.crol-list-beta.pages.dev", betaEnv), false);
+  assert.equal(isAllowedRequestOrigin("https://example.com", {}), false);
+  assert.equal(isAllowedRequestOrigin(`http://pr-42.${reviewPagesHost}`, {}), false);
 });
 
-test("analytics from beta is accepted but dropped, while production rejects beta origins", async () => {
+test("analytics from retired review origins is rejected", async () => {
   const request = (origin) =>
-    new Request("https://api-beta.cityscroll.org/events", {
+    new Request("https://api.cityscroll.org/events", {
       method: "POST",
       headers: { Origin: origin, "Content-Type": "text/plain" },
       body: JSON.stringify({ event: "page_view", surface: "home" }),
     });
 
-  const production = await handleEvent(request(betaOrigins[0]), {
+  const production = await handleEvent(request(retiredReviewOrigins[0]), {
     ANALYTICS_ENVIRONMENT: "production",
     USAGE_ANALYTICS: { writeDataPoint() { throw new Error("must not write"); } },
   });
   assert.equal(production.status, 403);
-
-  const beta = await handleEvent(request(betaOrigins[0]), betaEnv);
-  assert.equal(beta.status, 204);
-});
-
-test("beta subscription and feedback routes fail closed before side effects", async () => {
-  const subscribe = await handleSubscribe(
-    new Request("https://api-beta.cityscroll.org/subscribe", {
-      method: "POST",
-      headers: { Origin: betaOrigins[1], "Content-Type": "application/json" },
-      body: "{}",
-    }),
-    betaEnv,
-  );
-  assert.equal(subscribe.status, 503);
-  assert.equal((await subscribe.json()).reason, "not-configured");
-
-  const feedback = await handleFeedback(
-    new Request("https://api-beta.cityscroll.org/feedback", {
-      method: "POST",
-      headers: { Origin: betaOrigins[1], "Content-Type": "application/json" },
-      body: "{}",
-    }),
-    betaEnv,
-  );
-  assert.equal(feedback.status, 503);
-  assert.equal((await feedback.json()).reason, "not-configured");
 });
