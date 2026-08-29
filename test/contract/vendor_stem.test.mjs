@@ -3,7 +3,7 @@
 // cron replay (worker) — a stemmed mismatch means a subscriber's watch silently stops matching
 // notices the site itself considers the same vendor.
 //
-//   node --test test/contract/vendor_stem.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/vendor_stem.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

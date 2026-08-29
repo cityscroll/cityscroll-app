@@ -3,7 +3,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Same approach as fallback.test.mjs: pull the real functions out of the source by
 // brace-matching so the tests can't drift from what ships.
 //
-//   node --test           (from the crol-list/ dir)
+//   node --test           (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

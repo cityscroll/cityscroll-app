@@ -1,4 +1,4 @@
--- Precomputed prior-cycle / near-match matches per notice (crol-list Phase 1a).
+-- Precomputed prior-cycle / near-match matches per notice (CityScroll Phase 1a).
 -- Moves the two live SODA calls that priorCycleAwards()/nearMatchCandidates() fired from the
 -- browser (index.html) off the client and into the worker: each notice's {strict, near} match
 -- set is computed once, cached here, and served by GET /priorcycle/<request_id>. Lazily filled

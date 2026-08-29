@@ -1,7 +1,7 @@
 // Pins vendorStem behavior after extraction into lib/normalize.mjs (er-03).
 // compile.mjs re-exports the same function so existing imports stay green.
 //
-//   node --test test/vendor_stem.test.mjs   (from crol-list/worker/)
+//   node --test test/vendor_stem.test.mjs   (from worker/)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -4,7 +4,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // prefillAlertFromLink() is what applyHash() calls to turn that link into a pre-filled
 // builder (and optional real digItemHTML seed for the email-template preview).
 //
-//   node --test test/prefill_alert_from_link.test.mjs   (from the crol-list/ dir)
+//   node --test test/prefill_alert_from_link.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

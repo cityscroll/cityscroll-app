@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.cityscroll.crol-list.external-schedules</string>
+  <string>com.cityscroll.external-schedules</string>
   <key>ProgramArguments</key>
   <array>
     <string>/usr/bin/env</string>
     <string>node</string>
-    <string>__CROL_LIST_ROOT__/tools/external_schedule_runner.mjs</string>
+    <string>__CITYSCROLL_ROOT__/tools/external_schedule_runner.mjs</string>
     <string>--due</string>
   </array>
   <key>StartInterval</key>

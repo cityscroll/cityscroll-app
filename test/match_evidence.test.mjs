@@ -9,7 +9,7 @@ import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // digest preview with nothing visible explaining the match -- the hit was buried in the
 // notice's description, which names the Board of Education Retirement System.
 //
-//   node --test test/match_evidence.test.mjs   (from the crol-list/ dir)
+//   node --test test/match_evidence.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -1,6 +1,6 @@
 # Site/worker drift inventory
 
-crol-list is a static client (`index.html` and root-level `*.js`) plus a Cloudflare Worker
+CityScroll is a static client (`index.html` and root-level `*.js`) plus a Cloudflare Worker
 (`worker/src/`). The two can't share an import across that boundary, so a number of rules —
 parsing, honesty filters, matching heuristics, schemas — are implemented independently on both
 sides "by hand." That's a recurring bug class: a change lands on one side and the other is

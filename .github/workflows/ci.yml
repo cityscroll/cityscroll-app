@@ -188,6 +188,9 @@ jobs:
       - name: Beta preview alias contract
         if: matrix.family == 'static-standards' && github.event_name == 'pull_request'
         run: node tools/check_beta_review_contract.mjs
+      - name: Legacy repository-name guard
+        if: matrix.family == 'static-standards'
+        run: node tools/check_stale_repo_name.mjs
       - name: Expiring beta flag contract
         if: matrix.family == 'static-standards'
         run: node tools/validate_beta_flags.mjs

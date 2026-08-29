@@ -6,7 +6,7 @@
 // library (worker/src/lib/checkbook_lifecycle.mjs) is the characterization surface — it
 // has no fetch or env, so fixtures exercise the join logic directly.
 //
-//   node --test test/contract/procurement_lifecycle.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/procurement_lifecycle.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

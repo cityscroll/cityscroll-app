@@ -11,7 +11,7 @@ import { SITE_SOURCE } from "../helpers/site_source.mjs";
 // (see docs/drift-inventory.md #1). This test pins the CONSTANT itself so a future edit to one
 // call site without the others fails the build instead of shipping unnoticed.
 //
-//   node --test test/contract/money_honesty_cap.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/money_honesty_cap.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -4,7 +4,7 @@
 // site as something like "23,000+ days left" instead of an honest label). Both sides must now
 // agree on WHICH due dates are rolling placeholders, and use the exact same wording for it.
 //
-//   node --test test/contract/rolling_deadline.test.mjs   (from the crol-list/ dir)
+//   node --test test/contract/rolling_deadline.test.mjs   (from the repository root)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";

@@ -1,11 +1,11 @@
 import { SITE_SOURCE } from "./helpers/site_source.mjs";
 // Proves the on-device fallback actually works — so the README can claim it honestly.
 //
-// crol-list is one static index.html with no build step, so there's nothing to import.
+// CityScroll is one static index.html with no build step, so there's nothing to import.
 // Instead we read index.html, pull the three real functions out of it by name (brace-
 // matched, so the test can't drift from the source), and run them under node:test.
 //
-//   node --test            (from the crol-list/ dir)
+//   node --test            (from the repository root)
 //
 // What we assert: deviceParse() turns plain English into a usable filter for every lens,
 // and nlResolve() falls back to that device parse whenever the worker is unset, errors,

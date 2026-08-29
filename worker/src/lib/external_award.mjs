@@ -1,4 +1,4 @@
-// Worker-side copy of the award-source registry + pure resolution logic (crol-list).
+// Worker-side copy of the award-source registry + pure resolution logic (CityScroll).
 //
 // Hand-synced with the static site's external_awards.js — the Worker and the static site can't
 // share one import across that boundary, the same dual-implementation convention this codebase
