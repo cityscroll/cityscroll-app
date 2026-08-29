@@ -17,7 +17,7 @@ import sys
 import time
 from pathlib import Path
 
-from paths import DEFAULT_HEADROOM_CANDIDATES, LOCK_PATH
+from paths import DEFAULT_HEADROOM_CANDIDATES, lock_path
 
 _lock_fh = None
 _DEFAULT_HEADROOM_CANDIDATES = DEFAULT_HEADROOM_CANDIDATES
@@ -31,8 +31,8 @@ class IngestLock:
     set WAREHOUSE_INGEST_LOCK_WAIT=0 for the old fail-fast non-blocking behavior.
     """
 
-    def __init__(self, path: Path = LOCK_PATH, wait_s: float | None = None):
-        self.path = path
+    def __init__(self, path: Path | None = None, wait_s: float | None = None):
+        self.path = path or lock_path()
         self._fh = None
         if wait_s is None:
             env = os.environ.get("WAREHOUSE_INGEST_LOCK_WAIT", "90").strip()
@@ -99,11 +99,17 @@ def headroom_script() -> Path | None:
     return None
 
 
-def check_headroom(*, force: bool = False) -> dict:
+def check_headroom(*, force: bool = False, required: bool = False) -> dict:
     """Gate heavy work. Exit non-zero when CONSTRAINED unless force."""
     script = headroom_script()
     if script is None:
-        return {"status": "unknown", "note": "headroom.py not found; proceeding uncapped is discouraged"}
+        result = {"status": "unknown", "note": "headroom.py not found"}
+        if required and not force:
+            raise SystemExit(
+                "Headroom probe unavailable — refusing required warehouse ingest (CPU discipline).\n"
+                "Set HEADROOM_BIN to the estate headroom.py or run the pack on a configured host."
+            )
+        return result
     try:
         proc = subprocess.run(
             [sys.executable, str(script), "--json"],
@@ -113,6 +119,11 @@ def check_headroom(*, force: bool = False) -> dict:
             check=False,
         )
     except (OSError, subprocess.TimeoutExpired) as e:
+        if required and not force:
+            raise SystemExit(
+                "Headroom probe failed — refusing required warehouse ingest (CPU discipline).\n"
+                f"  detail={e}"
+            ) from e
         return {"status": "unknown", "note": f"headroom probe failed: {e}"}
 
     payload: dict = {}  # code structure (not a sourced data table)
@@ -138,6 +149,11 @@ def check_headroom(*, force: bool = False) -> dict:
             f"  status={status} returncode={proc.returncode}\n"
             "  Re-check: python3 \"$HEADROOM_BIN\" (estate headroom.py)\n"
             "  Defer, run on Mini, or re-try with --force-headroom only for tiny proof.\n"
+            f"  detail={json.dumps(payload)[:400]}"
+        )
+    if required and status == "unknown" and not force:
+        raise SystemExit(
+            "Headroom probe returned UNKNOWN — refusing required warehouse ingest (CPU discipline).\n"
             f"  detail={json.dumps(payload)[:400]}"
         )
     return result
@@ -188,4 +204,3 @@ def require_bulk_ack(*, bulk: bool, ack_large: bool) -> None:
             "--bulk requires --ack-large (full rows.csv export; still one job, headroom-gated, "
             "taskpolicy-wrapped convert)."
         )
-
