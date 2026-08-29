@@ -28,6 +28,15 @@ function text(value, max = 2_000) {
   return result || null;
 }
 
+function legalText(value, max = 50_000) {
+  return String(value ?? "")
+    .replace(/\u0000/g, "")
+    .replace(/[\u0001-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "")
+    .replace(/\r\n?/g, "\n")
+    .trim()
+    .slice(0, max) || null;
+}
+
 function immutable(value) {
   if (Array.isArray(value)) return Object.freeze(value.map(immutable));
   if (!value || typeof value !== "object") return value;
@@ -51,6 +60,26 @@ function sourceEvidence(value = {}) {
     locator: text(value.locator || value.location, 240),
     start: Number.isInteger(value.start) && value.start >= 0 ? value.start : null,
     end: Number.isInteger(value.end) && value.end >= 0 ? value.end : null,
+  });
+}
+
+function materializationPatch(value = {}) {
+  const patch = value.patch || value.materialization_patch || {};
+  const before = legalText(
+    patch.before_text || patch.old_text || patch.before || value.before_text || value.old_text || value.before,
+    50_000,
+  );
+  const after = legalText(
+    patch.after_text || patch.new_text || patch.after || patch.replacement_text
+      || value.after_text || value.new_text || value.after || value.replacement_text || value.added_text,
+    50_000,
+  );
+  if (!before && !after) return null;
+  return immutable({
+    before_text: before,
+    after_text: after,
+    scope: text(patch.scope || patch.mode, 80),
+    source: text(patch.source || patch.basis, 240),
   });
 }
 
@@ -97,6 +126,13 @@ export function localLaw(value = {}) {
     enacted_at: text(value.enacted_at, 40),
     effective_at: text(value.effective_at, 40),
     effective_date_text: text(value.effective_date_text, 2_000),
+    effective_date_clauses: Array.isArray(value.effective_date_clauses)
+      ? immutable(value.effective_date_clauses.map((clause) => ({
+        text: text(clause?.text, 2_000),
+        date: text(clause?.date || clause?.effective_at, 40),
+        scope: text(clause?.scope, 240),
+      })))
+      : [],
     source: value.source ? sourceEvidence({ ...value.source, instruction_text: value.source.instruction_text || value.title || lawNumber }) : null,
   });
 }
@@ -123,8 +159,16 @@ export function codeChange(value = {}) {
     state: text(value.state, 40) || (instrumentId ? "enacted" : "prospective"),
     effective_at: text(value.effective_at, 40),
     effective_date_text: text(value.effective_date_text, 2_000),
+    effective_date_clauses: Array.isArray(value.effective_date_clauses)
+      ? immutable(value.effective_date_clauses.map((clause) => ({
+        text: text(clause?.text, 2_000),
+        date: text(clause?.date || clause?.effective_at, 40),
+        scope: text(clause?.scope, 240),
+      })))
+      : [],
     target,
     source: evidence,
+    patch: materializationPatch(value),
     change_basis: "source_stated",
     materialization_status: text(value.materialization_status, 40) || "unresolved",
     materialization_confidence: text(value.materialization_confidence, 40) || "unknown",
