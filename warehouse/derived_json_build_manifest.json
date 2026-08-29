@@ -113,7 +113,7 @@
         "site/data/non_council_outcome_sources/community_board_committees.json",
         "site/data/shared_procurement_read_model.json"
       ],
-      "output_paths": ["worker/src/data/keyword_search_index.json"]
+      "output_paths": ["worker/src/data/keyword_search_index_shards"]
     },
     {
       "id": "following",
