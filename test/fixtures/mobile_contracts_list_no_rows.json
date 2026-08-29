@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.mobile_render_regression.v1",
+  "fixture_id": "mobile-contracts-list-no-rows",
+  "symptom": "Contracts mobile surface waits for #list .row",
+  "route": "/browse/contracts/#money",
+  "selector": "#list .row",
+  "viewport": {
+    "width": 360,
+    "height": 800
+  },
+  "serve_root": "_site",
+  "expected": "at least one Contracts row renders after the prepared public artifact loads"
+}
