@@ -3,7 +3,6 @@
   "id": "pr-1056-exams-eligibility",
   "pr": 1056,
   "title": "Exams public eligibility and Interest Area multi-select",
-  "card": "cityscroll-internal-label/cs-living-architecture-la11-history-backtest",
   "source": "https://github.com/cityscroll/cityscroll-app/pull/1056",
   "expected_finding_types": [
     "unmapped_surface",

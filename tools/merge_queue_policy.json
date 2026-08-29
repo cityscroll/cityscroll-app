@@ -17,12 +17,6 @@
     "Accessibility + language gate (axe on every PR)",
     "Reading-level ratchet gate (readable-or-else)"
   ],
-  "ejection_observation": {
-    "started_at": "2026-08-04T02:42:09Z",
-    "basis": "Repository-side elder reservation reconciliation merged in commit 15dc19aa7eb3a67d23bece1138a2a29dbb1fda36.",
-    "report_path": "docs/evidence/merge-queue-cap/ejection-report.json",
-    "generator": "node tools/report_merge_queue_ejections.mjs --write"
-  },
   "elder_slot": {
     "enabled": true,
     "detect_and_steer_age_hours": 2,

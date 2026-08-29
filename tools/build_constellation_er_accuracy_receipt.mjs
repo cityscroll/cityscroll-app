@@ -57,7 +57,6 @@ export function buildConstellationErAccuracyReceipt({ gold, shadowCensus = {}, m
 
   return {
     schema: CONSTELLATION_ER_ACCURACY_SCHEMA,
-    task: "cityscroll-internal-label/ebcg-01-er-accuracy-coverage",
     target_cohort: {
       ...report.target_cohort,
       tier: "inferred",
