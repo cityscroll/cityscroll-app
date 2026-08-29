@@ -57,7 +57,10 @@ test("the provider returns ranked groups with explicit measure, denominator, cov
   assert.deepEqual(result.groups[0].contract_ids, ["CT-A", "CT-B"]);
   assert.match(result.groups[0].drill_through.href, /ap_agency=Agency\+A/);
   assert.equal(result.coverage.matched_contract_count, 1);
+  assert.equal(result.coverage.unmatched_contract_count, 1);
   assert.equal(result.coverage.missing_pin_contract_count, 1);
+  assert.match(result.coverage.statement, /CityScroll found an exact City Record notice/);
+  assert.doesNotMatch(result.coverage.statement, /legal noncompliance|city failed/i);
   assert.match(result.population.included, /3 exact registered-contract rows/);
   assert.ok(result.population.excluded.some((entry) => /payment transactions/.test(entry)));
 });

@@ -135,6 +135,27 @@ describe("registered contract analytical projection contract", () => {
       [coverage.matched_contract_count, coverage.unmatched_contract_count, coverage.missing_pin_contract_count],
       [1, 1, 1],
     );
+    const empty = cityRecordCoverage([]);
+    assert.equal(empty.eligible_contract_count, 0);
+    assert.equal(empty.match_rate, null);
+    assert.equal(empty.evaluable_match_rate, null);
+    assert.equal(empty.unmatched_contract_count, 0);
+    assert.equal(empty.missing_pin_contract_count, 0);
+  });
+
+  it("keeps City Record coverage behind a closed methodology disclosure on Contracts", () => {
+    const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+    const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
+    const groupsIndex = html.indexOf('id="contracts-analytics-groups"');
+    const coverageIndex = html.indexOf('id="contracts-analytics-coverage"');
+    assert.ok(groupsIndex > 0 && coverageIndex > groupsIndex);
+    assert.match(html, /<details class="contracts-analytics-coverage" id="contracts-analytics-coverage">/);
+    assert.doesNotMatch(html, /id="contracts-analytics-coverage"[^>]*\sopen/);
+    assert.match(html, /data-i18n="analytics_coverage_disclosure">Data coverage\/methodology</);
+    assert.doesNotMatch(html, /legal noncompliance|city failed to publish|the City failed/i);
+    assert.match(i18n, /CityScroll found or did not find an exact City Record award notice/);
+    assert.doesNotMatch(i18n, /legal noncompliance|city failed to publish/i);
+    assert.match(i18n, /analytics_coverage_empty: "No registered contracts in this selection were evaluated for an exact City Record notice."/);
   });
 
   it("computes vendor shares and top-N shares from the explicit scope denominator", () => {

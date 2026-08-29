@@ -1,107 +1,47 @@
 {
-  "schema": "cityscroll.procurement-analytical-projection.capture.v1",
+  "schema": "cityscroll.procurement-city-record-coverage.capture.v2",
   "captures": [
     {
-      "phase": "before",
-      "viewport": {
-        "width": 390,
-        "height": 844
+      "viewport": 390,
+      "closed": {
+        "open": false,
+        "disclosure": "Data coverage/methodology",
+        "groups": 10,
+        "statement_visible": false
       },
-      "population": null,
-      "groups": [],
-      "page_errors": []
-    },
-    {
-      "phase": "before",
-      "viewport": {
-        "width": 1440,
-        "height": 1000
+      "opened": {
+        "open": true,
+        "statement": "CityScroll found an exact notice for 3,413 of 12,382 eligible contracts (27.6%), representing $34,996,945,016 of $104,557,202,961 in registered value. 7,245 additional contracts representing $47,929,167,035 cannot be evaluated because their PIN is missing.",
+        "rows": 61,
+        "exact": true,
+        "none": true,
+        "missing_pin": true
       },
-      "population": null,
-      "groups": [],
-      "page_errors": []
-    },
-    {
-      "phase": "after",
-      "viewport": {
-        "width": 390,
-        "height": 844
-      },
-      "population": "$104,947,948,439 current registered contract value across 26,270 contracts \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts.",
-      "groups": [
-        {
-          "label": "1. Department of Design and Construction",
-          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction"
-        },
-        {
-          "label": "2. Department of Homeless Services",
-          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services"
-        },
-        {
-          "label": "3. Department of Environmental Protection",
-          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection"
-        }
-      ],
-      "vendor_groups": [
-        {
-          "label": "1. NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
-          "href": "/browse/contracts/?mode=award&ap_vendor=NEW+YORK+CITY+ECONOMIC+DEVELOPMENT+CORPORATION"
-        },
-        {
-          "label": "2. LEON D. DEMATTEIS CONSTRUCTION CORP",
-          "href": "/browse/contracts/?mode=award&ap_vendor=LEON+D.+DEMATTEIS+CONSTRUCTION+CORP"
-        },
-        {
-          "label": "3. Tutor Perini O&G A Joint Venture",
-          "href": "/browse/contracts/?mode=award&ap_vendor=Tutor+Perini+O%26G+A+Joint+Venture"
-        }
-      ],
-      "drill_through": {
-        "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction",
-        "visible_contract_rows": 40,
-        "result_count": "40 or more results"
+      "empty": {
+        "statement": "No registered contracts in this selection were evaluated for an exact City Record notice.",
+        "rows": 0
       },
       "page_errors": []
     },
     {
-      "phase": "after",
-      "viewport": {
-        "width": 1440,
-        "height": 1000
+      "viewport": 1440,
+      "closed": {
+        "open": false,
+        "disclosure": "Data coverage/methodology",
+        "groups": 10,
+        "statement_visible": false
       },
-      "population": "$104,947,948,439 current registered contract value across 26,270 contracts \u00b7 registration FY2025\u2013FY2027. Population: normalized Checkbook registered expense contracts.",
-      "groups": [
-        {
-          "label": "1. Department of Design and Construction",
-          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction"
-        },
-        {
-          "label": "2. Department of Homeless Services",
-          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Homeless+Services"
-        },
-        {
-          "label": "3. Department of Environmental Protection",
-          "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Environmental+Protection"
-        }
-      ],
-      "vendor_groups": [
-        {
-          "label": "1. NEW YORK CITY ECONOMIC DEVELOPMENT CORPORATION",
-          "href": "/browse/contracts/?mode=award&ap_vendor=NEW+YORK+CITY+ECONOMIC+DEVELOPMENT+CORPORATION"
-        },
-        {
-          "label": "2. LEON D. DEMATTEIS CONSTRUCTION CORP",
-          "href": "/browse/contracts/?mode=award&ap_vendor=LEON+D.+DEMATTEIS+CONSTRUCTION+CORP"
-        },
-        {
-          "label": "3. Tutor Perini O&G A Joint Venture",
-          "href": "/browse/contracts/?mode=award&ap_vendor=Tutor+Perini+O%26G+A+Joint+Venture"
-        }
-      ],
-      "drill_through": {
-        "href": "/browse/contracts/?mode=award&ap_agency=Department+of+Design+and+Construction",
-        "visible_contract_rows": 40,
-        "result_count": "40 or more results"
+      "opened": {
+        "open": true,
+        "statement": "CityScroll found an exact notice for 3,413 of 12,382 eligible contracts (27.6%), representing $34,996,945,016 of $104,557,202,961 in registered value. 7,245 additional contracts representing $47,929,167,035 cannot be evaluated because their PIN is missing.",
+        "rows": 61,
+        "exact": true,
+        "none": true,
+        "missing_pin": true
+      },
+      "empty": {
+        "statement": "No registered contracts in this selection were evaluated for an exact City Record notice.",
+        "rows": 0
       },
       "page_errors": []
     }
