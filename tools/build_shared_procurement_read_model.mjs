@@ -39,7 +39,7 @@ function norm(value) {
   return String(value ?? "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
-function record(sourceSystem, sourceSystemId, row, ingestedAt) {
+function record(sourceSystem, sourceSystemId, row, ingestedAt, sourceReceiptRef = null) {
   const serialized = JSON.stringify(row);
   return {
     source_system: sourceSystem,
@@ -48,6 +48,7 @@ function record(sourceSystem, sourceSystemId, row, ingestedAt) {
     normalized_snapshot: serialized,
     raw_snapshot: serialized,
     ingested_at: ingestedAt,
+    ...(sourceReceiptRef ? { source_receipt_ref: sourceReceiptRef } : {}),
   };
 }
 
@@ -127,6 +128,18 @@ function passportRecord(row, generatedAt) {
   );
 }
 
+function passportRfxRecord(row, generatedAt, sourceReceiptRef = null) {
+  const epin = norm(row.epin_norm || row.epin);
+  const rfpId = String(row.rfp_id || epin || "no-publisher-id").trim();
+  return record(
+    "passport_public_rfx",
+    `rfx:${epin || "no-epin"}:${rfpId}`,
+    { ...row, epin_norm: epin },
+    generatedAt,
+    sourceReceiptRef,
+  );
+}
+
 function cityRecord(row, generatedAt) {
   return record("city_record", String(row.request_id), row, generatedAt);
 }
@@ -147,6 +160,9 @@ export function procurementSourceRecordsFromMaterializations(spine, awards, nati
   const passportRows = Array.isArray(spine?.rows?.passport_contracts)
     ? spine.rows.passport_contracts
     : [];
+  const passportRfxRows = Array.isArray(spine?.rows?.passport_rfx)
+    ? spine.rows.passport_rfx
+    : [];
   for (const row of passportRows) {
     const pin = norm(row.epin_norm || row.epin);
     if (pin) selectedPins.add(pin);
@@ -166,6 +182,11 @@ export function procurementSourceRecordsFromMaterializations(spine, awards, nati
       ? spine.rows.checkbook_nycha_contracts.map((row) => checkbookNychaRecord(row, generatedAt)) : []),
     ...checkbookRows.map((row) => checkbookRecord(row, generatedAt)),
     ...passportRows.map((row) => passportRecord(row, generatedAt)),
+    ...passportRfxRows.map((row) => passportRfxRecord(
+      row,
+      generatedAt,
+      spine?.receipts?.passport_join || spine?.receipts?.population_pull || null,
+    )),
     ...awardRows.map((row) => cityRecord(row, awards?.materialized_at || generatedAt)),
     ...nativeRecords,
     ...mtaAnnual,

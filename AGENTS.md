@@ -111,6 +111,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `.github/legacy-name-allowlist.txt`, with focused proof in
   `test/stale_name_guard.test.mjs`.
 
+- **PASSPort RFx procedural state (PLA-01):** `site/procurement_process_events.mjs` projects
+  retained `passport_public_rfx` observations into explicit, source-receipt-linked canonical
+  states while preserving the literal publisher status. The shared materializer is
+  `tools/build_shared_procurement_read_model.mjs`; focused proof is
+  `test/procurement_process_events.test.mjs`.
+
 - **Public-site generation postcondition:** `tools/build_public_site.mjs` calls
   `tools/generation_output_guard.mjs` after copying the public tree. The guard requires a
   non-empty `index.html`, writes `.artifacts/generation-output-receipt.json`, and fails before
