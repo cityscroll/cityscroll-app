@@ -419,7 +419,7 @@ Worker lookup).
 
 **Path now:**
 
-1. **Build/ops** queries DuckDB (or fixture seed) → materializes the canonical
+1. **Build/ops** queries the retained WH-02 DuckDB catalog → materializes the canonical
    `site/data/ocp_awards_warehouse_lookup.json`. Worker D1 deployment SQL reads
    that same file; no duplicate is committed under `worker/src/data/`.
 2. **Edge** looks up the materialization **first** (in-process, sub-ms).
@@ -429,14 +429,20 @@ Worker lookup).
 # Offline / CI (fixture catalog + product_seed demos)
 node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
 
-# After WH-02 bulk is local (full corpus snapshot; still no download here)
+# After WH-02 bulk is available (full corpus snapshot; still no download here)
+export CITYSCROLL_WAREHOUSE_ROOT=/path/to/retained/warehouse
 node tools/build_ocp_warehouse_lookup.mjs --bench
 
-# Drift gate
-node tools/build_ocp_warehouse_lookup.mjs --fixture --check
+# Drift gate for the committed bulk materialization
+node tools/build_ocp_warehouse_lookup.mjs --check
 ```
 
-Speed receipt (measured locally): `warehouse/receipts/proof/wh03_ocp_lookup_speed.json`.
+The default build fails when the retained catalog or its WH-02 OCP receipt is
+missing; it never substitutes product seeds or fixture rows. The explicit
+`--fixture` mode remains an offline characterization path. The committed speed
+receipt (`warehouse/receipts/proof/wh03_ocp_lookup_speed.json`) records the
+warehouse query, source snapshot checksum, source/materialized row counts, and
+p50/p95 timings.
 Product seed demos (public field cases):
 `warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv`.
 

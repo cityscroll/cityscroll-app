@@ -221,7 +221,7 @@ export function lookupOcpInIndex(noticeRow, index) {
  */
 export function buildMaterializationDoc(rows, opts = {}) {
   const list = Array.isArray(rows) ? rows.map(rowToSodaShape).filter(Boolean) : [];
-  return {
+  const doc = {
     schema_version: 1,
     phase: "WH-03",
     source: "warehouse",
@@ -238,6 +238,8 @@ export function buildMaterializationDoc(rows, opts = {}) {
     },
     rows: list,
   };
+  if (opts.source_snapshot) doc.source_snapshot = opts.source_snapshot;
+  return doc;
 }
 
 /** Load product seed CSV (public field-case rows) without DuckDB — offline CI. */
