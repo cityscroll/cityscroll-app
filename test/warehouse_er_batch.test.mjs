@@ -373,8 +373,9 @@ describe("WH-04 fixtures + capped runner layout", () => {
   });
 
   it("verifies the committed 200-row receipt without requiring local parquet", () => {
+    const python = pyBin() || "python3";
     const r = spawnSync(
-      pyBin(),
+      python,
       [join(WAREHOUSE_DIR, "scripts", "verify_er_batch_receipt.py"), "--check"],
       { cwd: ROOT, encoding: "utf8" }
     );
