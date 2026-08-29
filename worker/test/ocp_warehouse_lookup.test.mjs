@@ -13,7 +13,7 @@ import {
 } from "../src/lib/ocp_warehouse_lookup.mjs";
 import { fetchOcpAwardRows } from "../src/checkbook_lifecycle.mjs";
 
-const MATERIALIZATION = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
+const MATERIALIZATION = JSON.parse(readFileSync(new URL("../../site/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 
 function d1ForRows(rows) {
   return {
