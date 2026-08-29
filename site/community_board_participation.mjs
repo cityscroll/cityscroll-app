@@ -7,6 +7,15 @@
  * currency comes only from an explicitly scoped application source.
  */
 
+import { officialSourceLink } from "./affordance_grammar.mjs";
+import {
+  calendarNativeSubscriptionUrl,
+  hasDefensibleDatedOccurrences,
+} from "./calendar_subscription.mjs";
+import { renderNodeSection } from "./civic_document_chrome.mjs";
+import { communityBoardMeetingEdgeAccepted } from "./community_board_institution_edges.mjs";
+import { followingUrlFromWatch } from "./following_view.mjs";
+import { calendarFeedUrlForScope } from "./scope_v0.mjs";
 import {
   buildCommunityBoardBylawGraph,
   currentCommunityBoardBylawVersion,
@@ -29,6 +38,17 @@ export const COMMUNITY_BOARD_APPLICATION_STATES = Object.freeze([
   "not_applicable",
 ]);
 export const COMMUNITY_BOARD_APPLICATION_MAX_AGE_DAYS = 120;
+export const COMMUNITY_BOARD_PARTICIPATION_PATH_KINDS = Object.freeze([
+  "attend_meeting",
+  "add_to_calendar",
+  "follow_board",
+  "follow_committee",
+  "speak_or_comment",
+  "contact_board",
+  "apply_public_committee_membership",
+  "apply_full_board_membership",
+]);
+export const APPLY_NOW_LABEL = "Apply now";
 
 const BOARD_ID = /^[a-z]+(?:-[a-z]+)*-cb-\d{2}$/;
 const SOURCE_ID = /^[A-Za-z][A-Za-z0-9_.:-]{1,239}$/;
@@ -38,6 +58,10 @@ const clean = (value, max = 2_000) => String(value ?? "")
   .replace(/\s+/g, " ")
   .trim()
   .slice(0, max);
+
+const esc = (value) => String(value ?? "").replace(/[<>&"']/g, (char) => ({
+  "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
+}[char]));
 
 function date(value) {
   const match = clean(value, 80).match(/^(\d{4}-\d{2}-\d{2})(?:T|$)/);
@@ -449,3 +473,358 @@ export function communityBoardParticipationForBoard(lookup, requestedBoardId) {
   const requested = boardId(requestedBoardId);
   return requested ? lookup?.by_board?.[requested] || null : null;
 }
+
+function dayStamp(value) {
+  const match = String(value || "").match(/^(\d{4}-\d{2}-\d{2})/);
+  return match ? match[1] : null;
+}
+
+function isOnOrAfter(dateValue, asOf) {
+  const day = dayStamp(dateValue);
+  if (!day) return false;
+  const now = dayStamp(asOf);
+  return now ? day >= now : true;
+}
+
+function participationKind(projection, kind) {
+  return (Array.isArray(projection?.participation) ? projection.participation : [])
+    .find((row) => row?.participation_kind === kind) || null;
+}
+
+function evidenceFrom(source) {
+  if (!source) return null;
+  return {
+    source_url: source.source_url || null,
+    document_id: source.document_id || source.source_id || null,
+    document_title: source.document_title || null,
+    locator: source.locator || null,
+    observed_at: source.observed_at || source.observed_on || null,
+    receipt: source.receipt || null,
+    source_id: source.source_id || source.id || source.bylaw_version_id || null,
+    statement: source.statement || null,
+  };
+}
+
+function establishedSpeaking(record) {
+  if (record?.eligibility?.status !== "established") return false;
+  const value = record.eligibility.value && typeof record.eligibility.value === "object"
+    ? record.eligibility.value
+    : {};
+  if (value.public_session === true || value.may_speak === true || value.speak === true) return true;
+  return /\bspeak|\bcomment|\btestif/i.test(record.eligibility.statement || "");
+}
+
+function acceptedMeetings(meetings = []) {
+  return (Array.isArray(meetings) ? meetings : []).filter((row) => {
+    if (!row || typeof row !== "object") return false;
+    if (row.relation && row.relation !== "hosts_meeting") return false;
+    return communityBoardMeetingEdgeAccepted(row) || row.state === "official";
+  });
+}
+
+function meetingDate(row) {
+  return row?.join?.event_date || row?.event_date || row?.meeting_date || row?.date || null;
+}
+
+function meetingHref(row) {
+  return row?.href || row?.canonical_href || null;
+}
+
+function meetingId(row) {
+  return row?.target_id || row?.to || row?.meeting_id || null;
+}
+
+function isCommitteeMeeting(row) {
+  const host = String(row?.from || row?.committee_ref || "");
+  return host.startsWith("community-board-committee:") || Boolean(row?.committee_name || row?.committee_id);
+}
+
+function boardWatch(requestedBoardId) {
+  const ref = `community-board:${requestedBoardId}`;
+  return { lens: "meetings", filter: { communityBoard: ref } };
+}
+
+function calendarRowsForMeetings(meetings) {
+  return acceptedMeetings(meetings).map((row) => ({
+    meeting_id: meetingId(row),
+    event_date: meetingDate(row),
+  })).filter((row) => row.meeting_id && row.event_date);
+}
+
+function pathRecord({
+  kind,
+  verb,
+  href = null,
+  cta = false,
+  state = "supported",
+  destination_kind = "internal",
+  reason = null,
+  evidence = null,
+}) {
+  return Object.freeze({
+    kind,
+    verb,
+    href,
+    cta: Boolean(cta && href),
+    state,
+    destination_kind,
+    reason: clean(reason, 2_000) || null,
+    evidence: evidence ? Object.freeze({ ...evidence }) : null,
+    cross_board_inference: false,
+  });
+}
+
+/**
+ * Compose the bounded Ways to participate paths for one selected board.
+ * Continuation destinations reuse Following and Calendar; application and
+ * speaking verbs require board-local retained evidence.
+ */
+export function communityBoardParticipationPaths({
+  board_id: requestedBoardId,
+  boardId: boardIdAlias,
+  board = {},
+  participation = null,
+  meetings = [],
+  committees = [],
+  as_of = null,
+} = {}) {
+  const requested = boardId(requestedBoardId || boardIdAlias || board?.body_id || board?.board_id);
+  if (!requested) return Object.freeze([]);
+  const asOf = as_of || participation?.generated_at || null;
+  const paths = [];
+  const upcoming = acceptedMeetings(meetings)
+    .filter((row) => isOnOrAfter(meetingDate(row), asOf) && meetingHref(row))
+    .sort((left, right) => String(meetingDate(left)).localeCompare(String(meetingDate(right))));
+  const nextMeeting = upcoming[0] || null;
+  if (nextMeeting) {
+    const committee = isCommitteeMeeting(nextMeeting);
+    paths.push(pathRecord({
+      kind: "attend_meeting",
+      verb: committee ? "Attend the next committee meeting" : "Attend the next board meeting",
+      href: meetingHref(nextMeeting),
+      cta: true,
+      destination_kind: "internal",
+      reason: meetingDate(nextMeeting) ? `Scheduled ${meetingDate(nextMeeting)}` : null,
+      evidence: evidenceFrom({
+        source_url: nextMeeting.source_url || nextMeeting.provenance?.source_url,
+        receipt: nextMeeting.source_receipt || nextMeeting.provenance?.observed_receipt,
+        observed_at: nextMeeting.source_receipt?.observed_at || nextMeeting.provenance?.observed_at,
+        locator: meetingDate(nextMeeting),
+        document_id: meetingId(nextMeeting),
+        statement: committee
+          ? "This board’s published committee calendar includes an upcoming meeting."
+          : "This board’s published calendar includes an upcoming meeting.",
+      }),
+    }));
+  }
+  const calendarRows = calendarRowsForMeetings(meetings);
+  const calendarWatch = boardWatch(requested);
+  const calendarFeed = hasDefensibleDatedOccurrences("meetings", calendarRows)
+    ? calendarFeedUrlForScope(calendarWatch)
+    : null;
+  const calendarHref = calendarFeed ? calendarNativeSubscriptionUrl(calendarFeed) || calendarFeed : null;
+  if (calendarHref) {
+    paths.push(pathRecord({
+      kind: "add_to_calendar",
+      verb: "Add to calendar",
+      href: calendarHref,
+      cta: true,
+      destination_kind: "calendar",
+      reason: "Standing calendar for this board’s published meetings.",
+      evidence: evidenceFrom(nextMeeting || calendarRows[0] || acceptedMeetings(meetings)[0]),
+    }));
+  }
+  const followHref = followingUrlFromWatch(calendarWatch, { frequency: "weekly" });
+  if (followHref) {
+    paths.push(pathRecord({
+      kind: "follow_board",
+      verb: "Follow this board",
+      href: followHref,
+      cta: true,
+      destination_kind: "internal",
+      reason: "Email when meetings for this board are published.",
+      evidence: evidenceFrom({
+        source_url: board.homepage_url || board.directory_url,
+        document_id: requested,
+        statement: "Follow uses this board’s exact identity.",
+      }),
+    }));
+  }
+  // Follow committee remains omitted until meetings watches can replay a
+  // committee identity without falling back to the whole board.
+  void committees;
+
+  const session = participationKind(participation, "public_session");
+  if (establishedSpeaking(session)) {
+    const speakHref = meetingHref(nextMeeting)
+      || httpsUrl(session.source?.source_url)
+      || httpsUrl(board.homepage_url);
+    paths.push(pathRecord({
+      kind: "speak_or_comment",
+      verb: "Speak or comment at a public session",
+      href: speakHref,
+      cta: Boolean(speakHref),
+      destination_kind: speakHref && speakHref.startsWith("/") ? "internal" : "official",
+      reason: session.eligibility.statement,
+      evidence: evidenceFrom({
+        ...session.source,
+        statement: session.eligibility.statement,
+      }),
+    }));
+  }
+
+  const contactHref = httpsUrl(board.homepage_url) || httpsUrl(board.directory_url);
+  if (contactHref) {
+    paths.push(pathRecord({
+      kind: "contact_board",
+      verb: "Contact this board",
+      href: contactHref,
+      cta: true,
+      destination_kind: "official",
+      reason: board.homepage_url ? "Board homepage" : "City directory entry",
+      evidence: evidenceFrom({
+        source_url: contactHref,
+        document_id: requested,
+        statement: "Contact uses this board’s published homepage or directory listing.",
+      }),
+    }));
+  }
+
+  const committeeMembership = participationKind(participation, "public_committee_membership");
+  if (committeeMembership?.eligibility?.status === "established") {
+    const applyOpen = committeeMembership.application_cta === true
+      && httpsUrl(committeeMembership.application_destination);
+    paths.push(pathRecord({
+      kind: "apply_public_committee_membership",
+      verb: applyOpen ? APPLY_NOW_LABEL : "Public committee membership",
+      href: applyOpen
+        ? httpsUrl(committeeMembership.application_destination)
+        : httpsUrl(committeeMembership.source?.source_url),
+      cta: Boolean(applyOpen),
+      state: applyOpen ? "supported" : (committeeMembership.application_availability?.state === "closed" ? "closed" : "supported"),
+      destination_kind: "official",
+      reason: applyOpen
+        ? committeeMembership.eligibility.statement
+        : (committeeMembership.application_availability?.state === "closed"
+          ? "The published committee application window is closed."
+          : committeeMembership.eligibility.statement),
+      evidence: evidenceFrom({
+        ...committeeMembership.source,
+        statement: committeeMembership.eligibility.statement,
+      }),
+    }));
+  }
+
+  const fullBoard = participationKind(participation, "full_board_membership");
+  const fullBoardEvidence = fullBoard?.source || fullBoard?.evidence?.[0];
+  if (fullBoard?.application_cta === true && httpsUrl(fullBoard.application_destination)) {
+    paths.push(pathRecord({
+      kind: "apply_full_board_membership",
+      verb: APPLY_NOW_LABEL,
+      href: httpsUrl(fullBoard.application_destination),
+      cta: true,
+      destination_kind: "official",
+      reason: fullBoard.eligibility?.statement || "A current full-board application is published for this board.",
+      evidence: evidenceFrom({
+        ...fullBoardEvidence,
+        statement: fullBoard.eligibility?.statement,
+      }),
+    }));
+  } else if (fullBoard?.application_availability?.state === "closed" && fullBoardEvidence) {
+    paths.push(pathRecord({
+      kind: "apply_full_board_membership",
+      verb: "Community Board membership",
+      href: httpsUrl(fullBoardEvidence.source_url),
+      cta: false,
+      state: "closed",
+      destination_kind: "official",
+      reason: "The published application window is closed.",
+      evidence: evidenceFrom({
+        ...fullBoardEvidence,
+        statement: fullBoard.eligibility?.statement,
+      }),
+    }));
+  }
+
+  return Object.freeze(paths);
+}
+
+export function communityBoardParticipationPathsForView(view = {}) {
+  const meetings = view.categories?.find((category) => category.id === "meetings")?.items
+    || view.institution_edges
+    || [];
+  const committees = view.categories?.find((category) => category.id === "committees")?.items || [];
+  return communityBoardParticipationPaths({
+    board_id: view.body_id || view.id,
+    board: view.board,
+    participation: view.participation,
+    meetings,
+    committees,
+    as_of: view.participation?.generated_at || view.summary?.generated_at,
+  });
+}
+
+function pathLink(path, escapeHtml) {
+  if (!path.href) return `<strong>${escapeHtml(path.verb)}</strong>`;
+  if (path.destination_kind === "official") {
+    return officialSourceLink({
+      href: path.href,
+      label: path.verb,
+      className: "board-participation-link",
+      escape: escapeHtml,
+    });
+  }
+  return `<a class="board-participation-link" href="${escapeHtml(path.href)}">${escapeHtml(path.verb)}</a>`;
+}
+
+function pathEvidenceMarkup(path, escapeHtml) {
+  const evidence = path.evidence || {};
+  const sourceLink = evidence.source_url
+    ? officialSourceLink({
+      href: evidence.source_url,
+      label: evidence.document_title || "Open the source",
+      className: "board-source-link",
+      escape: escapeHtml,
+    })
+    : "";
+  const parts = [
+    evidence.statement ? `<p>${escapeHtml(evidence.statement)}</p>` : "",
+    evidence.locator ? `<p>${escapeHtml(evidence.locator)}</p>` : "",
+    evidence.document_id && !/^[a-z][a-z0-9_-]*:/.test(String(evidence.document_id))
+      ? `<p>${escapeHtml(evidence.document_id)}</p>` : "",
+    evidence.observed_at ? `<p>Source checked ${escapeHtml(String(evidence.observed_at).slice(0, 10))}</p>` : "",
+    evidence.receipt?.status ? `<p>Receipt ${escapeHtml(evidence.receipt.status)}</p>` : "",
+    sourceLink ? `<p>${sourceLink}</p>` : "",
+  ].filter(Boolean).join("");
+  if (!parts) return "";
+  return `<details class="inline-disclose board-participation-details"><summary>Why this appears</summary><div class="inline-disclose-body">${parts}</div></details>`;
+}
+
+/** Render the additive Ways to participate section for a selected board. */
+export function renderCommunityBoardParticipationSection(viewOrPaths) {
+  const paths = Array.isArray(viewOrPaths)
+    ? viewOrPaths
+    : communityBoardParticipationPathsForView(viewOrPaths);
+  if (!paths.length) return "";
+  const items = paths.map((path) => {
+    const attrs = [
+      `data-participation-path="${esc(path.kind)}"`,
+      `data-path-state="${esc(path.state)}"`,
+      path.cta ? `data-participation-cta="${esc(path.kind === "apply_full_board_membership" || path.kind === "apply_public_committee_membership" ? "apply-now" : path.kind)}"` : "",
+      path.evidence?.source_id ? `data-source-id="${esc(path.evidence.source_id)}"` : "",
+      path.evidence?.document_id ? `data-document-id="${esc(path.evidence.document_id)}"` : "",
+    ].filter(Boolean).join(" ");
+    return `<li class="node-record board-participation-path" ${attrs}><div class="node-record-main">${pathLink(path, esc)}</div>${path.reason ? `<span class="muted node-muted">${esc(path.reason)}</span>` : ""}${pathEvidenceMarkup(path, esc)}</li>`;
+  }).join("");
+  return renderNodeSection({
+    heading: "Ways to participate",
+    headingId: "ways-to-participate-heading",
+    extraClass: "node-card civic-object-section community-board-participation",
+    attrs: {
+      id: "ways-to-participate",
+      "data-community-board-participation": "1",
+    },
+    body: `<p class="node-lede">Current ways to enter this board’s public work, shown only when this board’s sources support them.</p><ul class="node-record-list board-participation-list">${items}</ul>`,
+  });
+}
+

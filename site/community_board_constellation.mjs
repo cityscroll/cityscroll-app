@@ -39,7 +39,10 @@ import {
   buildCommunityBoardMoneyCardView,
   renderCommunityBoardMoneyCard,
 } from "./community_board_money.mjs";
-import { communityBoardParticipationForBoard } from "./community_board_participation.mjs";
+import {
+  communityBoardParticipationForBoard,
+  renderCommunityBoardParticipationSection,
+} from "./community_board_participation.mjs";
 
 export const COMMUNITY_BOARD_CONSTELLATION_SCHEMA = "cityscroll.community_board_constellation.v1";
 export const COMMUNITY_BOARD_CONSTELLATION_METHOD = "community_board_constellation_v1";
@@ -769,7 +772,7 @@ export function renderCommunityBoardConstellationDocument(view, options = {}) {
 <main id="main" class="node-document civic-object-document" data-civic-object-kind="community-board-constellation" data-subject-ref="${esc(view.subject_ref)}" data-node-document="1">
 ${renderNodeBack({ href: "/community-boards/", label: "Back to community board sources", extraClass: "civic-object-back" })}
 <header class="node-hero civic-object-hero" data-export-class="object_identity"><p class="node-kicker civic-object-kicker">Community board</p><h1>${esc(title)}</h1><p class="node-lede">A local advisory body, its district, committees, proceedings, people, and official source coverage.</p><p class="node-pivot civic-object-pivot"><a href="${esc(place?.view_all_href || "/near-you/")}">Open this board’s place view</a> · <a href="${esc(institution)}">Open this board institution</a> · <a href="${esc(output)}">Open the source directory</a></p></header>
-  ${renderAboutBoardSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardBylawPanel(view.governance)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
+  ${renderAboutBoardSection(view)}${renderCommunityBoardParticipationSection(view)}${renderCommunityBoardMoneyCard(view.money)}${renderCommunityBoardBylawPanel(view.governance)}${renderEmptyCoverageNote(emptyCoverageCategories)}${renderedCategories.map((category) => renderCategory(category, view)).join("")}${edgeRail}${local}${actions}${renderUnjoinedSourceSection(view.source_records)}
 </main>${renderNodeFooter({ extraClass: "civic-object-footer" })}
 <script id="civic-object-payload" type="application/json">${payload}</script><script defer src="${esc(`${prefix}export_workflows.js`)}"></script>
 </body></html>`;

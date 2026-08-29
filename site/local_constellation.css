@@ -23,6 +23,16 @@
 .local-constellation-relation{grid-column:1/-1;color:var(--color-text-soft,#59636f);font-size:.9rem}
 .local-constellation-held-label{color:var(--color-text-soft,#59636f);font-size:.8rem}
 .local-constellation-empty{margin:var(--space-4,20px) 0 0;color:var(--color-text-soft,#59636f)}
+.community-board-participation{border-top:3px solid var(--color-action,#1769aa);}
+.community-board-participation .node-lede{max-width:66ch;}
+.board-participation-list{display:grid;gap:.65rem;}
+.board-participation-path .node-record-main{display:flex;flex-wrap:wrap;gap:.35rem .75rem;align-items:baseline;}
+.board-participation-link{font-weight:700;}
+.board-participation-details{margin-top:.35rem;}
+.board-participation-details summary{color:var(--color-action,#1769aa);cursor:pointer;font-weight:600;}
+@media(max-width:680px){
+  .board-participation-path .node-record-main{display:grid;gap:.25rem;}
+}
 .community-board-money-card{border-top:3px solid var(--color-action,#1769aa);}
 .community-board-money-heading{display:flex;justify-content:space-between;gap:var(--space-4,20px);}
 .community-board-money-kicker{margin:0;color:var(--color-text-soft,#59636f);font:600 .75rem/1.3 var(--font-label,system-ui);letter-spacing:.08em;text-transform:uppercase;}
