@@ -8,7 +8,7 @@
         1440,
         1000
       ],
-      "file": "docs/screenshots/community-boards-map/before-desktop.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/fe/fe7da17e7008fc8df16b3f722acc4c9c3d0291459c1f7adc47c78cecd719914e.webp",
       "overflow_px": 0
     },
     {
@@ -17,7 +17,7 @@
         1440,
         1000
       ],
-      "file": "docs/screenshots/community-boards-map/after-desktop.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/2d/2dd6c5f885557a6062f5c1ba5ab1243666e78ee1e7794f44115bfb36e7608c8e.webp",
       "overflow_px": 0
     },
     {
@@ -26,7 +26,7 @@
         390,
         844
       ],
-      "file": "docs/screenshots/community-boards-map/before-mobile.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/06/06b8f0caafd00a06e0c1e2803df8fbde822470e11741d6018470dc0ebf1464aa.webp",
       "overflow_px": 0
     },
     {
@@ -35,7 +35,7 @@
         390,
         844
       ],
-      "file": "docs/screenshots/community-boards-map/after-mobile.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/79/79d3778c8133ba23d0d12a93287a53546d22855e75de0461ad071ca2eb528be8.webp",
       "overflow_px": 0
     }
   ]

@@ -10,16 +10,16 @@
     ]
   ],
   "captures": [
-    "docs/screenshots/exam-outcomes/joined-6311-390.png",
-    "docs/screenshots/exam-outcomes/open-coherent-6125-390.png",
-    "docs/screenshots/exam-outcomes/pending-7013-390.png",
-    "docs/screenshots/exam-outcomes/list-joined-6024-390.png",
-    "docs/screenshots/exam-outcomes/open-list-390.png",
-    "docs/screenshots/exam-outcomes/joined-6311-1440.png",
-    "docs/screenshots/exam-outcomes/open-coherent-6125-1440.png",
-    "docs/screenshots/exam-outcomes/pending-7013-1440.png",
-    "docs/screenshots/exam-outcomes/list-joined-6024-1440.png",
-    "docs/screenshots/exam-outcomes/open-list-1440.png"
+    "backstage://cityscroll-evidence/objects/sha256/d2/d24141e8ff883bccc2cec27d12fd9067e8f1a0752b2c54ecbe4065d4f6d127c2.webp",
+    "backstage://cityscroll-evidence/objects/sha256/65/658f3fcdc7ee938dfc32f6fd5a4bcd8b5573a73bccf44f8d5334fb3231b10f95.webp",
+    "backstage://cityscroll-evidence/objects/sha256/84/849e797b128ee331ee42e847d579795114a2934c181bc25be953b333acf01ec8.webp",
+    "backstage://cityscroll-evidence/objects/sha256/02/020b26c3d5e820e7ab0332375ef7e7edfb1d9c981dcfeb5abdd27e29bca1acfe.webp",
+    "backstage://cityscroll-evidence/objects/sha256/53/53ce09c258b30c240a64e9c5a7ee929f0872ef8783f79390f443085e59e656e1.webp",
+    "backstage://cityscroll-evidence/objects/sha256/3b/3bcfe3eb2d26bcd959dcba245b9f328c75f6b95a04c5a7c1f76f261cdb769b52.webp",
+    "backstage://cityscroll-evidence/objects/sha256/cf/cf341c89ccf9c5755f7733fe797e632bdbdd7b7facac62366e327b7a430b9a11.webp",
+    "backstage://cityscroll-evidence/objects/sha256/78/784d0997cd78d09c812068c49d2131f4dea4d98a28dd5157793ef158086d7bc0.webp",
+    "backstage://cityscroll-evidence/objects/sha256/34/340ec3a11bd2c8e1287d5cfd7a9caa2bfd58b94263d39d37894ffb8afaf8e175.webp",
+    "backstage://cityscroll-evidence/objects/sha256/b8/b889d88cb4b774da99907fccab1e95f5ee5885c5920b41523e28204848f86ac6.webp"
   ],
   "verify_only": false
 }

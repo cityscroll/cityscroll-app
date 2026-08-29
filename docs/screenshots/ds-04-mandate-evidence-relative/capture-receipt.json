@@ -7,7 +7,7 @@
     390,
     1440
   ],
-  "before_source": "docs/screenshots/mandate-graph-densify/sanitation-conformance-section-*.png",
+  "before_source": "See docs/evidence-tip-migration.json for the content-addressed entries for the sanitation-conformance capture family.",
   "checks": {
     "after_chip": "Evidence found",
     "after_count_line": "1 with evidence",

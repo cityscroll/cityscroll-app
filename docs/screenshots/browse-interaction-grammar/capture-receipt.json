@@ -10,7 +10,7 @@
     {
       "canonical_target": "/notices/20260521015",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/contracts-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/a6/a6a4e0360f2a3d30b5bb4c6191a2c3bb2028510d52a903a0ac5ad74a9eda820d.webp",
       "lens": "contracts",
       "phase": "hydrated",
       "pixel_size": {
@@ -27,7 +27,7 @@
     {
       "canonical_target": "/notices/20260521015",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/contracts-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/4f/4f05888a8a90647c7209aa3cf29bcdb3b23dd7e8ccf139c432c4300ad8c27b60.webp",
       "lens": "contracts",
       "phase": "hydrated",
       "pixel_size": {
@@ -44,7 +44,7 @@
     {
       "canonical_target": "/officials/425/",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/people-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/3a/3a7cd0cacce8b1179fe8590d5c29943ef5cd21b0bcc2840c2cd64725502ee199.webp",
       "lens": "people",
       "phase": "hydrated",
       "pixel_size": {
@@ -61,7 +61,7 @@
     {
       "canonical_target": "/officials/425/",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/people-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/d1/d1e778e13a4d31c67cd5e755c76bdec6850ce68ba0911ca5e6440554209432ee.webp",
       "lens": "people",
       "phase": "hydrated",
       "pixel_size": {
@@ -78,7 +78,7 @@
     {
       "canonical_target": "/browse/zoning/#land/P2026K0001",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/land-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/83/831e3920bd470f90b87f9fe56a17781c6b3209ad268bc47d896f94e2ada04527.webp",
       "lens": "land",
       "phase": "hydrated",
       "pixel_size": {
@@ -95,7 +95,7 @@
     {
       "canonical_target": "/browse/zoning/#land/P2026K0001",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/land-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/db/db9e069908746231b5fe4ffffd4691d7de07e4616224728186fae638ad8c8d37.webp",
       "lens": "land",
       "phase": "hydrated",
       "pixel_size": {
@@ -112,7 +112,7 @@
     {
       "canonical_target": "/notices/20260701009",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/rules-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/b7/b70938e692fe42d32ecd07cb75f8b4a5704b29514759b73304f78b657ff0c7a1.webp",
       "lens": "rules",
       "phase": "hydrated",
       "pixel_size": {
@@ -129,7 +129,7 @@
     {
       "canonical_target": "/notices/20260701009",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/rules-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/d7/d75fa23d175141b343744b4193b5a2e9862775f0c2f1cd0bf4812117e6210581.webp",
       "lens": "rules",
       "phase": "hydrated",
       "pixel_size": {
@@ -146,7 +146,7 @@
     {
       "canonical_target": "/meetings/meeting%3Acity_record%3A20260701005",
       "cards_inspected": 1,
-      "file": "docs/screenshots/browse-interaction-grammar/meetings-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/78/7842cb4fb4bf1773ee602b22f75049799c8ad60650bfe0c365c633623991eb29.webp",
       "lens": "meetings",
       "phase": "hydrated",
       "pixel_size": {
@@ -163,7 +163,7 @@
     {
       "canonical_target": "/meetings/meeting%3Acity_record%3A20260701005",
       "cards_inspected": 1,
-      "file": "docs/screenshots/browse-interaction-grammar/meetings-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/f6/f6a7684f790b91a1b33f4941d99bd24ceeae505dc4ad2375ba2e8ceffad8b0b8.webp",
       "lens": "meetings",
       "phase": "hydrated",
       "pixel_size": {
@@ -180,7 +180,7 @@
     {
       "canonical_target": "/exams/7312/",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/exams-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/54/5473eb2fe1af6a20daac09c11a6ae44d93bce8deccc8fe47840c6d4a15c034b0.webp",
       "lens": "exams",
       "phase": "hydrated",
       "pixel_size": {
@@ -197,7 +197,7 @@
     {
       "canonical_target": "/exams/7312/",
       "cards_inspected": 3,
-      "file": "docs/screenshots/browse-interaction-grammar/exams-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/b0/b0b3addeb0f9b2e914248dafbb39fbb708f27b67b6d8829c597ac53d77242940.webp",
       "lens": "exams",
       "phase": "hydrated",
       "pixel_size": {

@@ -18,97 +18,97 @@
       "fixture": "strict_matter_join",
       "route": "#notice/20260707022",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/strict_matter_join-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/0b/0bda544d104da831671382c77e3123672e58dd66575d3f58457e1f004a56c0b5.webp"
     },
     {
       "fixture": "multi_matter_join",
       "route": "#notice/20260707021",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/multi_matter_join-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/6b/6b8cebe49b03ea598e8bce90f6a3f2a907baf55207771e2b932587c1e0c9489b.webp"
     },
     {
       "fixture": "no_matter_join",
       "route": "#notice/20260728026",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/no_matter_join-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/74/74a3b56999cfa9b8eb9b578cc5991bb27a4f8ab5c3e005f10e5d9d3c2bf2dc58.webp"
     },
     {
       "fixture": "cb_source_backed",
       "route": "/community-boards/manhattan-cb-06/",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/cb_source_backed-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/ac/ac7ff06c9f4bac4c093f3c109cd40a4c23cc8e96c65f0968f93a76794d297824.webp"
     },
     {
       "fixture": "cb_unknown",
       "route": "/community-boards/manhattan-cb-02/",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/cb_unknown-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/e0/e007677dab2769886c73663575c9761b623081be31b6471ea8a915b2120b5488.webp"
     },
     {
       "fixture": "cb_source_map_surface",
       "route": "/community-boards/",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/cb-source-map-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/dc/dc34673224f095c0b678e85ebd9dc8f00e49d3bf4ce6c12f44964be05d612286.webp"
     },
     {
       "fixture": "dot_bicycle_racks_rulemaking",
       "route": "#rules",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-rules-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/9e/9e9be6bab7f6163dabf586aaffe297d744639723c65f801f925737a7dba70c42.webp"
     },
     {
       "fixture": "dot_bicycle_racks_rulemaking",
       "route": "#notice/20260706041",
       "viewport": "desktop",
-      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-lifecycle-desktop.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/19/19a81dd35fe55a6b0d9cf8fb7c753ac245335994c15ab45349847aaedaeeab90.webp"
     },
     {
       "fixture": "strict_matter_join",
       "route": "#notice/20260707022",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/strict_matter_join-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/85/853b0af6211f4619538873370a2b3b3e6e8c7091406967eb62ab242ad7f016e4.webp"
     },
     {
       "fixture": "multi_matter_join",
       "route": "#notice/20260707021",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/multi_matter_join-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/e9/e97954ef08446c29057838cd81a45ed659e8261c4034855716ffca9bdafddb89.webp"
     },
     {
       "fixture": "no_matter_join",
       "route": "#notice/20260728026",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/no_matter_join-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/7a/7ae04140c63d52e19ebf0f789225f99ddc829cb9acc8078f59664cdfcd419f4c.webp"
     },
     {
       "fixture": "cb_source_backed",
       "route": "/community-boards/manhattan-cb-06/",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/cb_source_backed-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/a3/a355470372850364a4fcfbbcaa2ec4790ee0d559679032c396e729198b574514.webp"
     },
     {
       "fixture": "cb_unknown",
       "route": "/community-boards/manhattan-cb-02/",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/cb_unknown-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/60/606d0b27069058e139d7f73540790b4ab5e36bbb2b9a1c2c926f872c6a182140.webp"
     },
     {
       "fixture": "cb_source_map_surface",
       "route": "/community-boards/",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/cb-source-map-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/74/74378665152037b5598fd912485725f73605c75b153acb73185da5e89d74e963.webp"
     },
     {
       "fixture": "dot_bicycle_racks_rulemaking",
       "route": "#rules",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-rules-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/d7/d74547c7a9ea2efeb2dbcec6205f3c6d811b4be1b2305bf1415604b74845fbe5.webp"
     },
     {
       "fixture": "dot_bicycle_racks_rulemaking",
       "route": "#notice/20260706041",
       "viewport": "mobile",
-      "file": "docs/evidence/civic-action-paths/before/dot-bicycle-racks-lifecycle-mobile.png"
+      "file": "backstage://cityscroll-evidence/objects/sha256/44/44a2ab25cc82ebdaebd1441bed1f3fec9c645caf769eb1138a5deb20a002f037.webp"
     }
   ]
 }

@@ -17,7 +17,7 @@
         390,
         900
       ],
-      "file": "docs/screenshots/city-record-decentering/before-rules-card-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/89/8986968eebb5000771e521029f23e7bf4966e68b15d1372c1b685e61d09c465e.webp",
       "inner_width": 390,
       "document_scroll_width": 390,
       "overflow_px": 0,
@@ -30,7 +30,7 @@
         390,
         900
       ],
-      "file": "docs/screenshots/city-record-decentering/before-property-card-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/95/959de2fb5b322eb4419d5c7101071079b2b37c29ca05934595cd7c3de71eef1a.webp",
       "inner_width": 390,
       "document_scroll_width": 390,
       "overflow_px": 0,
@@ -43,7 +43,7 @@
         390,
         900
       ],
-      "file": "docs/screenshots/city-record-decentering/before-meetings-card-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/c7/c779af3085389f84fd1a232c757e597ff911a94bca1fe708b777581d7adc7f2b.webp",
       "inner_width": 390,
       "document_scroll_width": 390,
       "overflow_px": 0,
@@ -56,7 +56,7 @@
         1440,
         1100
       ],
-      "file": "docs/screenshots/city-record-decentering/before-rules-card-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/10/10a74ffde0fdbbf1f61b7a89cb5228d9fbc4ea8cf81c6dc348dbbe666e49b41d.webp",
       "inner_width": 1440,
       "document_scroll_width": 1440,
       "overflow_px": 0,
@@ -69,7 +69,7 @@
         1440,
         1100
       ],
-      "file": "docs/screenshots/city-record-decentering/before-property-card-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/b5/b58a49aef1fc7367f8d3d8d98caafcc2de2887ab58b65217c302c64b1257cc19.webp",
       "inner_width": 1440,
       "document_scroll_width": 1440,
       "overflow_px": 0,
@@ -82,7 +82,7 @@
         1440,
         1100
       ],
-      "file": "docs/screenshots/city-record-decentering/before-meetings-card-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/cb/cb4104fdd335ddef4260ccc357926ddca0b91608a0e40dfa1906502ccc636fdf.webp",
       "inner_width": 1440,
       "document_scroll_width": 1440,
       "overflow_px": 0,
@@ -95,7 +95,7 @@
         390,
         900
       ],
-      "file": "docs/screenshots/city-record-decentering/after-rules-card-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/78/781e5992746f3a52c90ba43b1a77d5c5966da6608ca9f68f9d2fa9bbe3020e1d.webp",
       "inner_width": 390,
       "document_scroll_width": 390,
       "overflow_px": 0,
@@ -108,7 +108,7 @@
         390,
         900
       ],
-      "file": "docs/screenshots/city-record-decentering/after-property-card-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/5e/5ec83dfbc340c06e7009795677f4c875056b433a933068137df2ff47e547033f.webp",
       "inner_width": 390,
       "document_scroll_width": 390,
       "overflow_px": 0,
@@ -121,7 +121,7 @@
         390,
         900
       ],
-      "file": "docs/screenshots/city-record-decentering/after-meetings-card-390.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/f1/f1f8692370b092e86802177f93db2c350e83c4a301c40e5d64c9ddf144476231.webp",
       "inner_width": 390,
       "document_scroll_width": 390,
       "overflow_px": 0,
@@ -134,7 +134,7 @@
         1440,
         1100
       ],
-      "file": "docs/screenshots/city-record-decentering/after-rules-card-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/72/72e0b88e3da85c92b95d6acc3a1618d81b5d545baf3236772af87570984356cf.webp",
       "inner_width": 1440,
       "document_scroll_width": 1440,
       "overflow_px": 0,
@@ -147,7 +147,7 @@
         1440,
         1100
       ],
-      "file": "docs/screenshots/city-record-decentering/after-property-card-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/77/775241c0f0487a07b42408788ac79d219b276f61e346125a41ab4888a72dd2fd.webp",
       "inner_width": 1440,
       "document_scroll_width": 1440,
       "overflow_px": 0,
@@ -160,7 +160,7 @@
         1440,
         1100
       ],
-      "file": "docs/screenshots/city-record-decentering/after-meetings-card-1440.png",
+      "file": "backstage://cityscroll-evidence/objects/sha256/b3/b33dffb3df52932a1f6a799373729a739a1d012d2a8195542482cccf65975f5c.webp",
       "inner_width": 1440,
       "document_scroll_width": 1440,
       "overflow_px": 0,
