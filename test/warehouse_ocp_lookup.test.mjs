@@ -94,6 +94,12 @@ describe("WH-03 committed materialization + speed receipt", () => {
     const site = JSON.parse(readFileSync(LOOKUP_SITE, "utf8"));
     assert.equal(site.schema_version, 1);
     assert.equal(site.phase, "WH-03");
+    assert.equal(site.mode, "bulk_warehouse");
+    assert.match(site.source_snapshot.source_snapshot_hash, /^[0-9a-f]{64}$/);
+    assert.equal(site.source_snapshot.source_row_count, 53251);
+    assert.equal(site.source_snapshot.exported_row_count, 53251);
+    assert.equal(site.source_snapshot.limited, false);
+    assert.equal(site.row_count, 53245);
     assert.ok(site.row_count >= 3);
     assert.equal(existsSync(LOOKUP_WORKER), false, "Worker OCP duplicate must not be committed");
     const tracked = spawnSync("git", ["ls-files", "--", "site/data/ocp_awards_warehouse_lookup.json", "worker/src/data/ocp_awards_warehouse_lookup.json"], { encoding: "utf8" });
@@ -110,6 +116,13 @@ describe("WH-03 committed materialization + speed receipt", () => {
     assert.equal(r.phase, "WH-03");
     assert.equal(r.replaced_fetch.function, "fetchOcpAwardRows");
     assert.equal(r.replaced_fetch.soda_dataset, "qyyg-4tf5");
+    assert.match(r.query, /FROM ocp_recent_contract_awards/);
+    assert.match(r.source_snapshot_hash, /^[0-9a-f]{64}$/);
+    assert.equal(r.source_row_count, 53251);
+    assert.equal(r.row_count, 53245);
+    assert.equal(r.excluded_row_count, 6);
+    assert.ok(r.p50_ms > 0);
+    assert.ok(r.p95_ms >= r.p50_ms);
     assert.ok(r.materialized_index_edge_path);
     assert.ok(
       r.materialized_index_edge_path.p50_ms < 5,

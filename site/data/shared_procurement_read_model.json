@@ -122287,7 +122287,7 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "f962901833f2e8d174647a9008c853546b4c2ce4b331cfe05bde4dfd92633c0d",
+    "source_model_fingerprint": "93f36f3eba28ac26f802b0f2eec1d988b8e68abc084f249991932598e1edc405",
     "generated_at": "2026-08-18T04:05:51.552Z",
     "selected_row_count": 27475,
     "artifact_hashes": {

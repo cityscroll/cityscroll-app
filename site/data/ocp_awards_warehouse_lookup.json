@@ -5,7 +5,7 @@
   "dataset_id": "qyyg-4tf5",
   "table_name": "ocp_recent_contract_awards",
   "mode": "bulk_warehouse",
-  "materialized_at": "2026-08-05T10:40:50.286Z",
+  "materialized_at": "2026-08-29T11:43:49.474Z",
   "row_count": 53245,
   "replaces_live_fetch": {
     "worker": "worker/src/checkbook_lifecycle.mjs#fetchOcpAwardRows",
@@ -532463,5 +532463,13 @@
       "contract_amount": "186956",
       "vendor_name": "Dell Marketing LP"
     }
-  ]
+  ],
+  "source_snapshot": {
+    "snapshot_date": "2026-08-05",
+    "source_snapshot_hash": "305feac515a6fed03fcfda68b2c6a8e6830784c18380b5b6ef280ef6d509e5a6",
+    "source_row_count": 53251,
+    "source_receipt": "ocp-recent-contract-awards_2026-08-05.json",
+    "exported_row_count": 53251,
+    "limited": false
+  }
 }

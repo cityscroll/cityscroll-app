@@ -6,7 +6,7 @@
   "representation": "family-sharded-compressed",
   "shard_schema": "cityscroll.keyword_search_index_shard.v1",
   "logical_index": {
-    "sha256": "59b74070dd5fa705e6b4271e6ae88f6eb6e9a448f1fc0c1ac3b9d4cd216ce253",
+    "sha256": "6cec66ace865b4f45f530ca9dfad2480df8d646edaa6c8cc97c90e1666ba902f",
     "bytes": 54378092,
     "family_count": 11,
     "document_count": 15782
@@ -40,7 +40,7 @@
   },
   "coherence_receipt": {
     "schema": "cityscroll.procurement_index_coherence.v1",
-    "source_model_fingerprint": "f962901833f2e8d174647a9008c853546b4c2ce4b331cfe05bde4dfd92633c0d",
+    "source_model_fingerprint": "93f36f3eba28ac26f802b0f2eec1d988b8e68abc084f249991932598e1edc405",
     "generated_at": "2026-08-18T04:05:51.552Z",
     "selected_row_count": 27475,
     "artifact_hashes": {
