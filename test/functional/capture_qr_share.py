@@ -358,7 +358,7 @@ def verify_interactions(browser: Browser) -> None:
         trigger.click()
         with page.expect_download() as download_info:
             dialog.locator(".qr-dialog-actions button").first.click()
-        assert download_info.value.suggested_filename == "crol-list-qr.png"
+        assert download_info.value.suggested_filename == "cityscroll-qr.png"
         dialog.locator(".qr-dialog-actions button").last.click()
 
         page.select_option("#langSelect", "es")
