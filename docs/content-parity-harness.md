@@ -26,6 +26,38 @@ paint samples, and full-page mobile (390×844) and desktop (1440×900) screensho
 writes `reports/index.html` plus one JSON report per surface. The HTML report is the batch review
 surface; screenshots are linked beside each verdict.
 
+The PNGs are comparison working files; each full-page screenshot is also encoded as WebP and
+copied into the content-addressed owner-proof store under `.artifacts/evidence-store/`. Its receipt
+index records the PR, card, capture kind, phase, viewport, commit, hash, media type, bytes, stable
+URL, retention deadline, and gate receipt. The store uses DuckDB when the optional package in
+`tools/requirements-evidence-store.txt` is installed. It also writes a deterministic JSONL receipt
+index so local capture and verification remain usable without that package; CI capture jobs should
+install the requirements file before running the gate. Objects are addressed by their SHA-256
+bytes and are written once. Ordinary evidence expires after 90 days; a `release`,
+`release-evidence`, or `accepted-release` phase has no retention deadline. Functional goldens and
+fixtures remain in the repository.
+
+In GitHub Actions, the gate derives a stable run URL from `GITHUB_SERVER_URL`,
+`GITHUB_REPOSITORY`, and `GITHUB_RUN_ID`. Upload both the comparison output and store directory
+with the same artifact name after the two captures:
+
+```yaml
+- name: Upload content-parity owner proof
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: content-parity-${{ github.run_id }}
+    path: |
+      .artifacts/content-parity/
+      .artifacts/evidence-store/
+    if-no-files-found: error
+    retention-days: 90
+```
+
+Outside CI, object URLs use the `backstage://` scheme and the receipt retains the local object
+path separately. A `file://` or other local filesystem URL is rejected by
+`tools/verify_evidence_store.mjs`.
+
 The gate is fail-closed:
 
 - every baseline record and field must still exist in the candidate;
