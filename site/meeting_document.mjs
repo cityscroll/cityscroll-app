@@ -13,6 +13,10 @@ import { cleanNoticeText } from "./text_clean.mjs";
 import { canonicalMeetingForRender } from "./meeting_capability_projection.mjs";
 import { buildCouncilHearingActionPath } from "./council_hearing_action_path.mjs";
 import { renderCouncilHearingMatterContinuation } from "./council_hearing_matter_continuation.mjs";
+import {
+  buildCrossSourceCoverageLedger,
+  renderCrossSourceCoverageLedger,
+} from "./cross_source_coverage_ledger.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -612,6 +616,14 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   ${matterContinuationSection}
   ${documents}
   ${minutesSection}
+  ${renderCrossSourceCoverageLedger(record.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
+    object: record,
+    observations: [record],
+    sourceStatus: readModel.sources || {},
+    sourceCoverage: readModel.source_coverage || null,
+    lookups: record.coverage_lookups || {},
+    kind: "meeting",
+  }))}
   ${sourceDetails ? `<details class="node-section meeting-source-details"><summary>Source details</summary><p>${sourceDetails}</p></details>` : ""}
 </main>
 </body>

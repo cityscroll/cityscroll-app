@@ -23,17 +23,26 @@ const EXACT_JOIN_BASIS = new Map([
   ["exact_board_date_publisher_identifier", "Exact board, date, and publisher identifier"],
 ]);
 
-const SOURCE_LABELS = Object.freeze({
+export const CROSS_SOURCE_EVIDENCE_SOURCE_LABELS = Object.freeze({
   city_record: "City Record",
   passport_public_contracts: "PASSPort Public contracts",
   passport_public_rfx: "PASSPort Public solicitations",
   checkbook_contracts: "Checkbook NYC",
   checkbook_spending: "Checkbook NYC spending",
+  checkbook_nycha_contracts: "Checkbook NYCHA",
   "ocp-recent-awards": "Recent Contract Awards (OCP)",
   "ocp-recent-contract-awards": "Recent Contract Awards (OCP)",
   ocp_awards: "Recent Contract Awards (OCP)",
   abo: "NYS Authorities Budget Office",
+  nys_abo_awards: "NYS Authorities Budget Office",
+  community_board: "Community board calendar",
+  nys_contract_reporter: "NYS Contract Reporter",
+  mta_current_opportunities: "MTA current opportunities",
+  mta_bid_results: "MTA bid results",
+  mta_annual_contracts: "MTA annual contracts",
+  mta_cd_awards: "MTA Construction & Development awards",
 });
+const SOURCE_LABELS = CROSS_SOURCE_EVIDENCE_SOURCE_LABELS;
 
 const SOURCE_HREFS = Object.freeze({
   "ocp-recent-awards": "https://data.cityofnewyork.us/d/qyyg-4tf5",
