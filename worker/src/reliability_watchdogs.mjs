@@ -1,3 +1,5 @@
+import { digestDayLogKey, sentWatchKeysFromDayLog } from "./lib/digest_ops.mjs";
+
 export const DIGEST_SHADOW_LEDGER_PREFIX = "ops:digest:shadow:";
 export const DIGEST_DELIVERY_LEDGER_PREFIX = "ops:digest:delivery:";
 export const SCHEDULER_HEARTBEAT_KEY = "ops:scheduler:heartbeat";
@@ -78,21 +80,101 @@ export async function recordSchedulerHeartbeat(env, heartbeat = {}, now = new Da
   return result;
 }
 
+function priorUtcDay(value) {
+  const stamp = day(value);
+  const ms = Date.parse(`${stamp}T00:00:00Z`);
+  if (!Number.isFinite(ms)) return null;
+  return new Date(ms - 86400000).toISOString().slice(0, 10);
+}
+
+/**
+ * Consecutive deliveries that still report an older lastsent.
+ * A delivery receipt for day N plus lastsent before day N-1 means two sends
+ * shared a watermark. Missing receipts skip this check; other findings cover those.
+ */
+export function evaluateWatermarkStaleness({
+  day: today,
+  priorDay,
+  delivery = null,
+  lastsentByWatch = {},
+  sentWatchKeysToday = [],
+  sentWatchKeysYesterday = [],
+} = {}) {
+  const findings = [];
+  const stuck = [];
+  if (!today || !priorDay || !delivery) return { ok: true, findings, stuck };
+  if (delivery.status === "FAILED") return { ok: true, findings, stuck };
+  const accepted = Number(delivery.accepted_sends) || 0;
+  if (accepted <= 0) return { ok: true, findings, stuck };
+
+  const yesterday = new Set((sentWatchKeysYesterday || []).map(String));
+  for (const key of sentWatchKeysToday || []) {
+    if (!yesterday.has(String(key))) continue;
+    const lastsent = lastsentByWatch?.[key];
+    const stamp = lastsent == null || lastsent === "" ? "" : String(lastsent).slice(0, 10);
+    if (!stamp || stamp < priorDay) {
+      stuck.push({ lastsent: stamp || null });
+    }
+  }
+  if (stuck.length) {
+    const oldest = stuck.map((row) => row.lastsent).filter(Boolean).sort()[0] || "missing";
+    findings.push(
+      `${stuck.length} delivered watch watermark(s) stuck after consecutive sends (oldest ${oldest})`,
+    );
+  }
+  return { ok: findings.length === 0, findings, stuck };
+}
+
+async function watermarkStalenessFromStore(env, today, priorDay, delivery) {
+  const todayLog = await readJson(env?.ALERT_STATE, digestDayLogKey(today));
+  const yesterdayLog = await readJson(env?.ALERT_STATE, digestDayLogKey(priorDay));
+  const sentWatchKeysToday = sentWatchKeysFromDayLog(todayLog);
+  const sentWatchKeysYesterday = sentWatchKeysFromDayLog(yesterdayLog);
+  const lastsentByWatch = {};
+  for (const key of sentWatchKeysToday) {
+    if (!sentWatchKeysYesterday.includes(key)) continue;
+    try { lastsentByWatch[key] = (await env?.ALERT_STATE?.get?.(`lastsent:${key}`)) || null; }
+    catch { lastsentByWatch[key] = null; }
+  }
+  return evaluateWatermarkStaleness({
+    day: today,
+    priorDay,
+    delivery,
+    lastsentByWatch,
+    sentWatchKeysToday,
+    sentWatchKeysYesterday,
+  });
+}
+
 export async function digestWatchdogSnapshot(env, { now = new Date(), deadlineHour = 14 } = {}) {
   const today = day(now);
   const shadow = await readJson(env?.ALERT_STATE, `${DIGEST_SHADOW_LEDGER_PREFIX}${today}`);
   const delivery = await readJson(env?.ALERT_STATE, `${DIGEST_DELIVERY_LEDGER_PREFIX}${today}`);
   const dlq = Number(await env?.ALERT_STATE?.get?.(`digest:dlq:${today}`)) || 0;
   const findings = [];
+  let watermark = { ok: true, findings: [], stuck: [] };
   if (!shadow) findings.push("shadow READY receipt missing");
   else if (shadow.status !== "READY") findings.push(`shadow receipt is ${shadow.status}`);
   if (now.getUTCHours() >= deadlineHour) {
     if (!delivery) findings.push("terminal delivery receipt missing");
     else if (delivery.status !== "TERMINAL") findings.push(`delivery receipt is ${delivery.status}`);
     else if (delivery.enqueued > 0 && delivery.accepted_sends === 0) findings.push("enqueued digest has zero accepted sends");
+    const priorDay = priorUtcDay(now);
+    if (priorDay) {
+      watermark = await watermarkStalenessFromStore(env, today, priorDay, delivery);
+      findings.push(...watermark.findings);
+    }
   }
   if (dlq > 0) findings.push(`digest DLQ is non-empty (${dlq})`);
-  return { ok: findings.length === 0, day: today, findings, shadow, delivery, dlq };
+  return {
+    ok: findings.length === 0,
+    day: today,
+    findings,
+    shadow,
+    delivery,
+    dlq,
+    watermark_stuck: watermark.stuck?.length || 0,
+  };
 }
 
 export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeMs = 90 * 60 * 1000 } = {}) {
