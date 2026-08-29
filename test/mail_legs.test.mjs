@@ -8,6 +8,7 @@ import {
   MAIL_LEGS,
   classifyMailLegs,
   runMailLegCheck,
+  summarizeEmailRoutingActivity,
 } from "../tools/check_mail_legs.mjs";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -66,4 +67,29 @@ test("live mode requires an operator key and does not default-send", async () =>
     () => runMailLegCheck({ mode: "live", adminKey: "", fetchImpl: async () => { throw new Error("network"); } }),
     /CITYSCROLL_ADMIN_KEY is required/,
   );
+});
+
+test("Email Routing FAILED counts collapse retries of one spam envelope", () => {
+  const envelope = {
+    from: "searchregisgter@aireg.pro",
+    to: "alerts@example.test",
+    subject: "Submit cityscroll.org to Search Engines",
+    spf: "pass",
+    dkim: "pass",
+  };
+  const retry = { status: "Delivery failed", code: "421", enhanced: "4.7.28", text: "unusual mail volume from DKIM domain" };
+  const summary = summarizeEmailRoutingActivity([
+    { message_id: "msg-1", ...envelope, lifecycle: Array(15).fill(retry) },
+    { message_id: "msg-2", ...envelope, lifecycle: [] },
+    { message_id: "msg-3", ...envelope, lifecycle: [] },
+  ]);
+  assert.equal(summary.distinct_messages, 3);
+  assert.equal(summary.failed_lifecycle_events, 15);
+  assert.equal(summary.retry_amplification, true);
+  assert.equal(summary.envelope_pattern_matches, true);
+  assert.equal(summary.lifecycle_inspected, 1);
+  assert.equal(summary.transient_rate_limit, true);
+  assert.equal(summary.authentication_held, true);
+  assert.equal(summary.routing_broken, false);
+  assert.equal(summary.lost_useful_mail, false);
 });

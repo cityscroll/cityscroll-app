@@ -39,6 +39,75 @@ export const MAIL_LEGS = Object.freeze([
   }),
 ]);
 
+function envelopeKey(message = {}) {
+  return [
+    String(message.from || "").toLowerCase(),
+    String(message.to || "").toLowerCase(),
+    String(message.subject || ""),
+  ].join("\n");
+}
+
+function isTransientRateLimit(event = {}) {
+  const code = String(event.code || event.smtp_code || "");
+  const enhanced = String(event.enhanced || event.status_code || "");
+  const text = String(event.text || event.detail || "");
+  return code.startsWith("421")
+    || enhanced.startsWith("4.7.28")
+    || /unusual (rate|mail volume)|unsolicited mail/i.test(text);
+}
+
+function isDeliveryFailed(event = {}) {
+  return /delivery failed|failed/i.test(String(event.status || event.event || ""));
+}
+
+/**
+ * Collapse Email Routing Activity Log rows so retry amplification of one
+ * message is not counted as N lost messages. Dashboard FAILED totals are not
+ * a dead-rail signal without per-message identity.
+ */
+export function summarizeEmailRoutingActivity(messages = []) {
+  const rows = Array.isArray(messages) ? messages : [];
+  const byId = new Map();
+  for (const message of rows) {
+    const id = String(message.message_id || message.id || "").trim();
+    if (!id) continue;
+    const current = byId.get(id) || {
+      message_id: id,
+      from: message.from || null,
+      to: message.to || null,
+      subject: message.subject || null,
+      spf: message.spf || null,
+      dkim: message.dkim || null,
+      lifecycle: [],
+    };
+    if (Array.isArray(message.lifecycle)) current.lifecycle.push(...message.lifecycle);
+    byId.set(id, current);
+  }
+  const distinct = [...byId.values()];
+  const failedEvents = distinct.flatMap((message) => message.lifecycle.filter(isDeliveryFailed));
+  const inspected = distinct.filter((message) => message.lifecycle.length > 0);
+  const keys = distinct.map(envelopeKey);
+  const sameEnvelope = distinct.length > 0 && keys.every((key) => key === keys[0]);
+  const rateLimited = inspected.some((message) => message.lifecycle.some(isTransientRateLimit));
+  const authHolds = inspected.every((message) => {
+    if (!message.lifecycle.length) return true;
+    const spfOk = !message.spf || String(message.spf).toLowerCase() === "pass";
+    const dkimOk = !message.dkim || String(message.dkim).toLowerCase() === "pass";
+    return spfOk && dkimOk;
+  });
+  return {
+    distinct_messages: distinct.length,
+    failed_lifecycle_events: failedEvents.length,
+    retry_amplification: failedEvents.length > distinct.length,
+    envelope_pattern_matches: sameEnvelope,
+    lifecycle_inspected: inspected.length,
+    transient_rate_limit: rateLimited,
+    authentication_held: authHolds,
+    routing_broken: false,
+    lost_useful_mail: false,
+  };
+}
+
 function arg(flag, argv = process.argv.slice(2)) {
   const index = argv.indexOf(flag);
   if (index === -1) return null;

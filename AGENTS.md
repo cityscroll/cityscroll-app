@@ -973,9 +973,9 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `worker/src/reliability_watchdogs.mjs` records Worker-consumer receipts and operations-mailbox
   sends. `GET /admin/reliability/mail` plus the digest/scheduler watchdogs return 503 / GitHub-red
   when a canary is unmatched; they do not email a dead alert rail. The Gmail forward stays
-  dashboard-gated. Gate: `node tools/check_mail_legs.mjs` (`--live` is operator-only). Proof:
-  `test/mail_legs.test.mjs` and `worker/test/reliability_watchdogs.test.mjs`. See
-  `docs/mail-leg-health.md`.
+  dashboard-gated. Dashboard FAILED counts can be retries of one rejected message. Gate:
+  `node tools/check_mail_legs.mjs` (`--live` is operator-only). Proof: `test/mail_legs.test.mjs`
+  and `worker/test/reliability_watchdogs.test.mjs`. See `docs/mail-leg-health.md`.
 
 ## Digest shadow delivery holds
 

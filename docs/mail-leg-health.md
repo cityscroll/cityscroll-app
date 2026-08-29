@@ -30,8 +30,26 @@ CITYSCROLL_ADMIN_KEY=… node tools/check_mail_legs.mjs --live
 ```
 
 Live mode posts a canary, polls the mail snapshot, and prints per-leg `pass` /
-`fail` / `unprobed`. The Gmail forward line stays `unprobed` until the site owner
-confirms Cloudflare Email Routing on the dashboard.
+`fail` / `unprobed`. The Gmail forward line stays `unprobed` because this
+repository cannot observe the destination inbox or replay a message.
+
+## Interpreting Email Routing failure counts
+
+A dashboard FAILED total is not a count of lost useful mail. Cloudflare Email
+Routing can retry one rejected message many times; those retries are lifecycle
+events on the same message ID. SPF/DKIM passing while Gmail returns `421 4.7.28`
+is a transient unsolicited-volume deferral on the sender's DKIM domain, not
+proof that forwarding is misconfigured.
+
+Collapse Activity Log rows by message ID before acting:
+
+```bash
+node --test test/mail_legs.test.mjs
+```
+
+`summarizeEmailRoutingActivity` in `tools/check_mail_legs.mjs` encodes that
+collapse. Per-message identity (subject, sender, recipient, message ID) is
+required; this view does not expose a body or a replay control.
 
 ## Receipts
 
