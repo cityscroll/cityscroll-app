@@ -157,6 +157,20 @@ export function rollupBodySections(sections = []) {
   });
 }
 
+/**
+ * Watches covered by a delivered rollup email. Catch-up copy uses the oldest
+ * lastsent among these rows, so a confirmed send must advance every one of them
+ * — not only sections that wanted send. Paused rows stay out of the watermark.
+ */
+export function digestCoverageSections(sections = []) {
+  return rollupBodySections(sections).filter((section) => {
+    const key = section.subKey || section.sub;
+    if (!key || section.error) return false;
+    if (section.paused || section.skipped === "paused") return false;
+    return true;
+  });
+}
+
 /** Stable anchor id for a rollup section (email TOC jump links). */
 export function rollupSectionAnchorId(label, index = 0) {
   const slug = String(label || "watch")

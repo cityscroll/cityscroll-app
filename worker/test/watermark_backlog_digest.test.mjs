@@ -352,3 +352,89 @@ test("a normal one-period window does not use the catching-up label", async () =
   }});
   sqlite.close();
 });
+
+test("field case: consecutive mixed-rollup deliveries do not repeat catching-up since Aug 25", async () => {
+  const { sqlite, DB } = makeDb();
+  const matching = sub("sub:matching", "land", { status: "all" });
+  const quiet = sub("sub:quiet-sibling", "land", { status: "all" });
+  insertOwed(sqlite, {
+    watchId: matching.watch_id,
+    itemId: "land:20260829-1",
+    firstOwedAt: "2026-08-29T12:00:00Z",
+    payload: { project_id: "20260829-1", project_name: "Saturday harbor item", public_status: "In review" },
+  });
+  const state = kv();
+  await state.put(`lastsent:${matching.key}`, "2026-08-25");
+  await state.put(`lastsent:${quiet.key}`, "2026-08-25");
+  const firstCtx = { ...runCtx(), today: "2026-08-29", now: new Date("2026-08-29T13:00:00.000Z") };
+  const secondCtx = { ...runCtx(), today: "2026-08-30", now: new Date("2026-08-30T13:00:00.000Z") };
+  await withFetch({ rows: [], fn: async (sent) => {
+    const first = await processAccountRollup(env(DB, state), [matching, quiet], firstCtx);
+    assert.equal(first.error, undefined, first.error || "first send should complete");
+    assert.equal(first.sent, true);
+    assert.equal(first.new, 1);
+    assert.equal(sent.length, 1);
+    const firstText = sent[0].html.replace(/<[^>]+>/g, "");
+    assert.match(firstText, /Catching up: 1 items since your last digest on Aug 25/);
+    assert.equal(await state.get(`lastsent:${matching.key}`), "2026-08-29");
+    assert.equal(
+      await state.get(`lastsent:${quiet.key}`),
+      "2026-08-29",
+      "quiet sibling covered by the delivered email must advance lastsent",
+    );
+
+    insertOwed(sqlite, {
+      watchId: matching.watch_id,
+      itemId: "land:20260830-1",
+      firstOwedAt: "2026-08-30T12:00:00Z",
+      payload: { project_id: "20260830-1", project_name: "Sunday harbor item", public_status: "In review" },
+    });
+    const second = await processAccountRollup(env(DB, state), [matching, quiet], secondCtx);
+    assert.equal(second.error, undefined, second.error || "second send should complete");
+    assert.equal(second.sent, true);
+    assert.equal(second.new, 1);
+    assert.equal(sent.length, 2);
+    const secondText = sent[1].html.replace(/<[^>]+>/g, "");
+    assert.match(secondText, /Sunday harbor item/);
+    assert.doesNotMatch(secondText, /Catching up: 1 items since your last digest on Aug 25/);
+    assert.doesNotMatch(sent[1].subject, /catching up/i);
+    assert.equal(await state.get(`lastsent:${matching.key}`), "2026-08-30");
+    assert.equal(await state.get(`lastsent:${quiet.key}`), "2026-08-30");
+  }});
+  sqlite.close();
+});
+
+test("provider rejection does not advance lastsent", async () => {
+  const { sqlite, DB } = makeDb();
+  const watch = sub("sub:fail-send", "land", { status: "all" });
+  insertOwed(sqlite, {
+    watchId: watch.watch_id,
+    itemId: "land:FAIL-1",
+    firstOwedAt: "2026-08-26T12:00:00Z",
+    payload: { project_id: "FAIL-1", project_name: "Rejected harbor item", public_status: "In review" },
+  });
+  const state = kv();
+  await state.put(`lastsent:${watch.key}`, "2026-08-25");
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (target.includes("api.resend.com/emails")) {
+      return { ok: false, status: 500, text: async () => "provider down" };
+    }
+    return { ok: true, json: async () => [] };
+  };
+  try {
+    const result = await processOneSub(env(DB, state), watch, {
+      ...runCtx(),
+      today: "2026-08-26",
+      now: new Date("2026-08-26T13:00:00.000Z"),
+    });
+    assert.ok(result.error);
+    assert.match(String(result.error), /Resend 500|provider down/);
+    assert.notEqual(result.sent, true);
+    assert.equal(await state.get(`lastsent:${watch.key}`), "2026-08-25");
+  } finally {
+    globalThis.fetch = original;
+  }
+  sqlite.close();
+});

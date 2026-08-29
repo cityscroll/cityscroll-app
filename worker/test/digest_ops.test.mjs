@@ -14,10 +14,31 @@ import {
   recountFresh,
   noticeDeepLink,
   digestDayLogKey,
+  sentWatchKeysFromDayLog,
 } from "../src/lib/digest_ops.mjs";
 
 test("digestDayLogKey: stable prefix", () => {
   assert.equal(digestDayLogKey("2026-07-30"), "digest:daylog:2026-07-30");
+});
+
+test("sentWatchKeysFromDayLog: rollup sections and single watches that sent", () => {
+  assert.deepEqual(sentWatchKeysFromDayLog({
+    entries: [
+      {
+        kind: "rollup",
+        sent: true,
+        id: "account:reader@example.com",
+        sections: [
+          { id: "sub:hit", action: "match" },
+          { id: "sub:quiet", action: "none" },
+          { id: "sub:paused", skipped: "paused" },
+        ],
+      },
+      { kind: "subscription", sent: true, id: "sub:solo" },
+      { kind: "subscription", sent: false, id: "sub:silent" },
+      { kind: "config_watch", sent: true, id: "awards-1m" },
+    ],
+  }).sort(), ["sub:hit", "sub:quiet", "sub:solo"]);
 });
 
 test("noticeDeepLink: public notice document route", () => {
