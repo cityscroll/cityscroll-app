@@ -1,0 +1,1430 @@
+{
+  "schema": "cityscroll.community_board_payroll_identity_receipt.v1",
+  "workstream_card": "CB-MONEY-06",
+  "status": "complete",
+  "generated_at": "2026-08-29T20:00:00.000Z",
+  "reviewed_at": "2026-08-29T20:00:00.000Z",
+  "review_basis": "Exact OPA payroll_number matched to the CB-MONEY-00 expense_budget agency_number roster, with reviewed exact publisher agency_name corroboration including the distinct Staten Island COMMUNITY BD spelling; no fuzzy or geography-based identity.",
+  "sources": {
+    "citywide_payroll": {
+      "source_system": "citywide_payroll",
+      "dataset_id": "k397-673e",
+      "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
+      "native_key_field": "payroll_number",
+      "publisher_label_field": "agency_name",
+      "source_vintage": "2026-04-16",
+      "query_slice": {
+        "fiscal_year": 2025,
+        "window": "fiscal_year=2025 AND (upper(agency_name) like '%COMMUNITY BOARD%' OR upper(agency_name) like '%COMMUNITY BD%')"
+      },
+      "candidate_rows": 186,
+      "identities": [
+        {
+          "source_native_board_key": "341",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #1",
+          "board_id": "manhattan-cb-01",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "342",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #2",
+          "board_id": "manhattan-cb-02",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "343",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #3",
+          "board_id": "manhattan-cb-03",
+          "candidate_rows": 6,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "344",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #4",
+          "board_id": "manhattan-cb-04",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "345",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #5",
+          "board_id": "manhattan-cb-05",
+          "candidate_rows": 3,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "346",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #6",
+          "board_id": "manhattan-cb-06",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "347",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #7",
+          "board_id": "manhattan-cb-07",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "348",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #8",
+          "board_id": "manhattan-cb-08",
+          "candidate_rows": 6,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "349",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #9",
+          "board_id": "manhattan-cb-09",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "350",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #10",
+          "board_id": "manhattan-cb-10",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "351",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #11",
+          "board_id": "manhattan-cb-11",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "352",
+          "publisher_identity": "MANHATTAN COMMUNITY BOARD #12",
+          "board_id": "manhattan-cb-12",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "381",
+          "publisher_identity": "BRONX COMMUNITY BOARD #1",
+          "board_id": "bronx-cb-01",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "382",
+          "publisher_identity": "BRONX COMMUNITY BOARD #2",
+          "board_id": "bronx-cb-02",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "383",
+          "publisher_identity": "BRONX COMMUNITY BOARD #3",
+          "board_id": "bronx-cb-03",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "384",
+          "publisher_identity": "BRONX COMMUNITY BOARD #4",
+          "board_id": "bronx-cb-04",
+          "candidate_rows": 4,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "385",
+          "publisher_identity": "BRONX COMMUNITY BOARD #5",
+          "board_id": "bronx-cb-05",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "386",
+          "publisher_identity": "BRONX COMMUNITY BOARD #6",
+          "board_id": "bronx-cb-06",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "387",
+          "publisher_identity": "BRONX COMMUNITY BOARD #7",
+          "board_id": "bronx-cb-07",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "388",
+          "publisher_identity": "BRONX COMMUNITY BOARD #8",
+          "board_id": "bronx-cb-08",
+          "candidate_rows": 3,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "389",
+          "publisher_identity": "BRONX COMMUNITY BOARD #9",
+          "board_id": "bronx-cb-09",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "390",
+          "publisher_identity": "BRONX COMMUNITY BOARD #10",
+          "board_id": "bronx-cb-10",
+          "candidate_rows": 4,
+          "active_rows": 4
+        },
+        {
+          "source_native_board_key": "391",
+          "publisher_identity": "BRONX COMMUNITY BOARD #11",
+          "board_id": "bronx-cb-11",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "392",
+          "publisher_identity": "BRONX COMMUNITY BOARD #12",
+          "board_id": "bronx-cb-12",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "431",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #1",
+          "board_id": "queens-cb-01",
+          "candidate_rows": 4,
+          "active_rows": 4
+        },
+        {
+          "source_native_board_key": "432",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #2",
+          "board_id": "queens-cb-02",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "433",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #3",
+          "board_id": "queens-cb-03",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "434",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #4",
+          "board_id": "queens-cb-04",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "435",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #5",
+          "board_id": "queens-cb-05",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "436",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #6",
+          "board_id": "queens-cb-06",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "437",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #7",
+          "board_id": "queens-cb-07",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "438",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #8",
+          "board_id": "queens-cb-08",
+          "candidate_rows": 5,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "439",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #9",
+          "board_id": "queens-cb-09",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "440",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #10",
+          "board_id": "queens-cb-10",
+          "candidate_rows": 1,
+          "active_rows": 1
+        },
+        {
+          "source_native_board_key": "441",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #11",
+          "board_id": "queens-cb-11",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "442",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #12",
+          "board_id": "queens-cb-12",
+          "candidate_rows": 3,
+          "active_rows": 0
+        },
+        {
+          "source_native_board_key": "443",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #13",
+          "board_id": "queens-cb-13",
+          "candidate_rows": 1,
+          "active_rows": 1
+        },
+        {
+          "source_native_board_key": "444",
+          "publisher_identity": "QUEENS COMMUNITY BOARD #14",
+          "board_id": "queens-cb-14",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "471",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #1",
+          "board_id": "brooklyn-cb-01",
+          "candidate_rows": 5,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "472",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #2",
+          "board_id": "brooklyn-cb-02",
+          "candidate_rows": 5,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "473",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #3",
+          "board_id": "brooklyn-cb-03",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "474",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #4",
+          "board_id": "brooklyn-cb-04",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "475",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #5",
+          "board_id": "brooklyn-cb-05",
+          "candidate_rows": 3,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "476",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #6",
+          "board_id": "brooklyn-cb-06",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "477",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #7",
+          "board_id": "brooklyn-cb-07",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "478",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #8",
+          "board_id": "brooklyn-cb-08",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "479",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #9",
+          "board_id": "brooklyn-cb-09",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "480",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #10",
+          "board_id": "brooklyn-cb-10",
+          "candidate_rows": 4,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "481",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #11",
+          "board_id": "brooklyn-cb-11",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "482",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #12",
+          "board_id": "brooklyn-cb-12",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "483",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #13",
+          "board_id": "brooklyn-cb-13",
+          "candidate_rows": 4,
+          "active_rows": 4
+        },
+        {
+          "source_native_board_key": "484",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #14",
+          "board_id": "brooklyn-cb-14",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "485",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #15",
+          "board_id": "brooklyn-cb-15",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "486",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #16",
+          "board_id": "brooklyn-cb-16",
+          "candidate_rows": 3,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "487",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #17",
+          "board_id": "brooklyn-cb-17",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "488",
+          "publisher_identity": "BROOKLYN COMMUNITY BOARD #18",
+          "board_id": "brooklyn-cb-18",
+          "candidate_rows": 3,
+          "active_rows": 3
+        },
+        {
+          "source_native_board_key": "491",
+          "publisher_identity": "STATEN ISLAND COMMUNITY BD #1",
+          "board_id": "staten-island-cb-01",
+          "candidate_rows": 2,
+          "active_rows": 2
+        },
+        {
+          "source_native_board_key": "492",
+          "publisher_identity": "STATEN ISLAND COMMUNITY BD #2",
+          "board_id": "staten-island-cb-02",
+          "candidate_rows": 2,
+          "active_rows": 1
+        },
+        {
+          "source_native_board_key": "493",
+          "publisher_identity": "STATEN ISLAND COMMUNITY BD #3",
+          "board_id": "staten-island-cb-03",
+          "candidate_rows": 3,
+          "active_rows": 2
+        }
+      ]
+    }
+  },
+  "accepted_bindings": {
+    "citywide_payroll": 59
+  },
+  "boards_with_no_observed_identity": {
+    "citywide_payroll": []
+  },
+  "boards_with_zero_active_rows": {
+    "citywide_payroll": [
+      "queens-cb-12"
+    ]
+  },
+  "unmatched_identities": [],
+  "ambiguous_identities": [],
+  "rows_covered_by_accepted_bindings": {
+    "citywide_payroll": 186
+  },
+  "measurement": {
+    "accepted_binding_count": 59,
+    "reviewed_accepted_bindings": 59,
+    "false_positive_accepted_bindings": 0,
+    "reviewed_precision": 1,
+    "no_ambiguous_accepted_bindings": true,
+    "coverage_of_59_boards": 1,
+    "candidate_rows": 186,
+    "active_rows": 155,
+    "min_active_rows": 0,
+    "max_active_rows": 4,
+    "k_suppression_threshold": 5,
+    "boards_at_or_above_k_suppression": 0,
+    "acceptance_gate": true
+  },
+  "aggregate_semantics": {
+    "staff_count": {
+      "justified": true,
+      "grain": "published FY payroll rows with leave_status_as_of_june_30=ACTIVE",
+      "note": "This is a published-row count at fiscal-year close, not a unique-employee headcount and not adopted personnel budget."
+    },
+    "title_count": {
+      "justified": false,
+      "reason": "every board has fewer than 5 ACTIVE payroll rows, so a per-board title list reconstructs an org chart"
+    },
+    "title_mix": {
+      "justified": false,
+      "reason": "per-board title mix is withheld at this grain; citywide Community Board title mix may stay a source-level disclosure"
+    },
+    "payroll_measures": {
+      "justified": false,
+      "reason": "per-board dollars and averages would identify compensation on boards with 1–4 ACTIVE rows"
+    }
+  },
+  "hard_rules": {
+    "exact_publisher_key_or_code_first": true,
+    "reviewed_exact_name_only_when_key_is_not_available": true,
+    "fuzzy_similarity_is_not_identity": true,
+    "geography_is_not_identity": true,
+    "work_location_borough_does_not_assign_board": true,
+    "ambiguous_rows_remain_ambiguous": true,
+    "employee_rows_never_served": true,
+    "cb_money_00_financial_sources_unchanged": true
+  },
+  "served_contract": {
+    "employee_rows": false,
+    "allowed_fields": [
+      "board_id",
+      "source_native_board_key",
+      "publisher_identity",
+      "candidate_rows",
+      "active_rows",
+      "leave_status_counts"
+    ],
+    "withheld_fields": [
+      "last_name",
+      "first_name",
+      "mid_init",
+      "base_salary",
+      "regular_gross_paid",
+      "title_description"
+    ]
+  },
+  "employee_field_findings": [],
+  "bindings": [
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "341",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #1",
+      "board_id": "manhattan-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "342",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #2",
+      "board_id": "manhattan-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "343",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #3",
+      "board_id": "manhattan-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 6,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "344",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #4",
+      "board_id": "manhattan-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "345",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #5",
+      "board_id": "manhattan-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "346",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #6",
+      "board_id": "manhattan-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "347",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #7",
+      "board_id": "manhattan-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "348",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #8",
+      "board_id": "manhattan-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 6,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 2,
+        "ON SEPARATION LEAVE": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "349",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #9",
+      "board_id": "manhattan-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "350",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #10",
+      "board_id": "manhattan-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "351",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #11",
+      "board_id": "manhattan-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "352",
+      "publisher_identity": "MANHATTAN COMMUNITY BOARD #12",
+      "board_id": "manhattan-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "381",
+      "publisher_identity": "BRONX COMMUNITY BOARD #1",
+      "board_id": "bronx-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "382",
+      "publisher_identity": "BRONX COMMUNITY BOARD #2",
+      "board_id": "bronx-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "383",
+      "publisher_identity": "BRONX COMMUNITY BOARD #3",
+      "board_id": "bronx-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "384",
+      "publisher_identity": "BRONX COMMUNITY BOARD #4",
+      "board_id": "bronx-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "385",
+      "publisher_identity": "BRONX COMMUNITY BOARD #5",
+      "board_id": "bronx-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "386",
+      "publisher_identity": "BRONX COMMUNITY BOARD #6",
+      "board_id": "bronx-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "387",
+      "publisher_identity": "BRONX COMMUNITY BOARD #7",
+      "board_id": "bronx-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "388",
+      "publisher_identity": "BRONX COMMUNITY BOARD #8",
+      "board_id": "bronx-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "389",
+      "publisher_identity": "BRONX COMMUNITY BOARD #9",
+      "board_id": "bronx-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "390",
+      "publisher_identity": "BRONX COMMUNITY BOARD #10",
+      "board_id": "bronx-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 4
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "391",
+      "publisher_identity": "BRONX COMMUNITY BOARD #11",
+      "board_id": "bronx-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "392",
+      "publisher_identity": "BRONX COMMUNITY BOARD #12",
+      "board_id": "bronx-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "431",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #1",
+      "board_id": "queens-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 4
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "432",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #2",
+      "board_id": "queens-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "ON SEPARATION LEAVE": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "433",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #3",
+      "board_id": "queens-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "434",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #4",
+      "board_id": "queens-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "435",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #5",
+      "board_id": "queens-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "436",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #6",
+      "board_id": "queens-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "437",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #7",
+      "board_id": "queens-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "438",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #8",
+      "board_id": "queens-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "439",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #9",
+      "board_id": "queens-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "440",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #10",
+      "board_id": "queens-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "active_rows": 1,
+      "leave_status_counts": {
+        "ACTIVE": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "441",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #11",
+      "board_id": "queens-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "442",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #12",
+      "board_id": "queens-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 0,
+      "leave_status_counts": {
+        "CEASED": 2,
+        "ON SEPARATION LEAVE": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "443",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #13",
+      "board_id": "queens-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 1,
+      "active_rows": 1,
+      "leave_status_counts": {
+        "ACTIVE": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "444",
+      "publisher_identity": "QUEENS COMMUNITY BOARD #14",
+      "board_id": "queens-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "471",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #1",
+      "board_id": "brooklyn-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "472",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #2",
+      "board_id": "brooklyn-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 5,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1,
+        "ON SEPARATION LEAVE": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "473",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #3",
+      "board_id": "brooklyn-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "474",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #4",
+      "board_id": "brooklyn-cb-04",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "475",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #5",
+      "board_id": "brooklyn-cb-05",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "476",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #6",
+      "board_id": "brooklyn-cb-06",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "477",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #7",
+      "board_id": "brooklyn-cb-07",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "478",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #8",
+      "board_id": "brooklyn-cb-08",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "479",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #9",
+      "board_id": "brooklyn-cb-09",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "480",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #10",
+      "board_id": "brooklyn-cb-10",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "481",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #11",
+      "board_id": "brooklyn-cb-11",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "482",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #12",
+      "board_id": "brooklyn-cb-12",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "483",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #13",
+      "board_id": "brooklyn-cb-13",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 4,
+      "active_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 4
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "484",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #14",
+      "board_id": "brooklyn-cb-14",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "485",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #15",
+      "board_id": "brooklyn-cb-15",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "486",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #16",
+      "board_id": "brooklyn-cb-16",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "487",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #17",
+      "board_id": "brooklyn-cb-17",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "488",
+      "publisher_identity": "BROOKLYN COMMUNITY BOARD #18",
+      "board_id": "brooklyn-cb-18",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "491",
+      "publisher_identity": "STATEN ISLAND COMMUNITY BD #1",
+      "board_id": "staten-island-cb-01",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "492",
+      "publisher_identity": "STATEN ISLAND COMMUNITY BD #2",
+      "board_id": "staten-island-cb-02",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 2,
+      "active_rows": 1,
+      "leave_status_counts": {
+        "ACTIVE": 1,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    },
+    {
+      "source_system": "citywide_payroll",
+      "source_native_key_field": "payroll_number",
+      "source_native_board_key": "493",
+      "publisher_identity": "STATEN ISLAND COMMUNITY BD #3",
+      "board_id": "staten-island-cb-03",
+      "binding_status": "accepted",
+      "binding_method": "exact_publisher_code_with_reviewed_exact_name",
+      "candidate_rows": 3,
+      "active_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "ambiguous": false
+    }
+  ],
+  "artifact": "site/data/community_board_payroll_staff_count.json",
+  "artifact_sha256": "9e4b3973ccfe6a866c9059d5a8482e9825e21186120dd2e9d53c277151b6dd66"
+}

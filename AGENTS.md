@@ -75,6 +75,18 @@
   cutoff through the shared prediction evaluator; the current five-case gold pack is measured but
   bounded, so promotion remains withheld until a recurrent 2022–2025 corpus is retained.
 
+- **Community Board payroll staff counts (CB-MONEY-06):**
+  `site/community_board_payroll_identity.mjs` binds Citywide Payroll
+  `payroll_number` to `community-board:{borough-cb-NN}` using the CB-MONEY-00
+  expense-budget code roster and reviewed exact `agency_name` labels, including
+  Staten Island's publisher `COMMUNITY BD` spelling. Rebuild the ACTIVE-row
+  staff-count artifact and receipt with
+  `node tools/build_community_board_payroll_staff_count.mjs`; `--check` verifies
+  them. Per-board dollars and title mix stay withheld while every board is below
+  the five-row suppression floor. Employee rows are never served. Do not extend
+  CB-MONEY-00 `FINANCIAL_SOURCES`. Focused proof is
+  `test/community_board_payroll_identity.test.mjs`.
+
 - **Adopted Community Board budget facts (CB-MONEY-01):** `site/community_board_adopted_budget.mjs`
   materializes the pinned Expense Budget fiscal-year/publication slice only after exact
   `site/data/community_board_financial_identity_crosswalk.json` resolution. Rebuild the source-
