@@ -60,6 +60,130 @@ function isDeliveryFailed(event = {}) {
   return /delivery failed|failed/i.test(String(event.status || event.event || ""));
 }
 
+/** Closed inventory of bounce, queue, resend, and provider-log recoverability. */
+export const MAIL_RECOVERY_CLASSES = Object.freeze([
+  Object.freeze({
+    id: "inbound_routing_unsolicited",
+    name: "Inbound Email Routing unsolicited forward",
+    this_incident: true,
+    metadata: "activity_log_envelope",
+    body: "gone",
+    queued_copy: "gone",
+    bounce_record: "lifecycle_tempfail_only",
+    resend_path: "none",
+    useful_lost_messages: "none",
+    notes: "Activity Log metadata (subject, sender, recipient, message ID, SPF/DKIM, 421 4.7.28 retries) is the recoverable remainder. Cloudflare exposes no body and no replay. Gmail never accepted the message, so there is no destination copy.",
+  }),
+  Object.freeze({
+    id: "inbound_routing_useful",
+    name: "Inbound Email Routing useful forward",
+    this_incident: false,
+    metadata: "activity_log_envelope",
+    body: "gone",
+    queued_copy: "gone",
+    bounce_record: "lifecycle_tempfail_only",
+    resend_path: "sender_must_resend",
+    useful_lost_messages: "unobserved_in_this_incident",
+    notes: "If useful mail had hit the forward address, the same Activity Log would keep envelope metadata only. The Worker never sees that path. No queued copy or replay exists.",
+  }),
+  Object.freeze({
+    id: "inbound_worker_consumer",
+    name: "Inbound Worker consumer",
+    this_incident: false,
+    metadata: "kv_receipt_after_deploy",
+    body: "gone",
+    queued_copy: "gone",
+    bounce_record: "ignored",
+    resend_path: "none",
+    useful_lost_messages: "unobserved_in_this_incident",
+    notes: "Raw inbound is parsed in memory and not stored. Bounce/DSN senders are ignored. After this change, ALERT_STATE keeps to/time/canary token only. A successful enroll is recoverable as the watch in SUBS, not as the original message.",
+  }),
+  Object.freeze({
+    id: "outbound_digest",
+    name: "Outbound subscriber digest",
+    this_incident: false,
+    metadata: "d1_outbox_and_kv",
+    body: "resend_retrieve_or_reconstruct",
+    queued_copy: "d1_owed_items",
+    bounce_record: "resend_last_event",
+    resend_path: "outbox_drain_or_preview",
+    useful_lost_messages: "unobserved_in_this_incident",
+    notes: "D1 digest_outbox_items keep source identities and payload_json; deliveries may store provider_message_id. That reconstructs a digest from retained civic objects, not the original RFC822. Resend GET /emails/:id can return sent HTML when a provider id and API key exist. No bounce webhook is registered.",
+  }),
+  Object.freeze({
+    id: "outbound_ops_alert",
+    name: "Outbound operations mailbox send",
+    this_incident: false,
+    metadata: "kv_ops_receipt_after_deploy",
+    body: "resend_retrieve_if_provider_id",
+    queued_copy: "gone",
+    bounce_record: "resend_last_event",
+    resend_path: "admin_ops_alert",
+    useful_lost_messages: "never_generated_this_week",
+    notes: "Scheduled Reliability watchdogs returned 401 this week, so emitOpsAlertOnce did not run. After this change, ALERT_STATE stores provider_id on accepted sends. Resend list/retrieve can still find historical outbound mail by time if an API key is present. There is no Worker bounce table.",
+  }),
+]);
+
+export function credentialPresence(env = process.env) {
+  return {
+    github: true,
+    resend: Boolean(env.RESEND_API_KEY),
+    cloudflare: Boolean(env.CLOUDFLARE_API_TOKEN || env.CLOUDFLARE_API_KEY),
+    admin_key: Boolean(env.CITYSCROLL_ADMIN_KEY || env.ADMIN_KEY),
+  };
+}
+
+function reach(store, credentials) {
+  if (store === "github_actions") return credentials.github ? "reachable" : "credential_missing";
+  if (store === "resend_api") return credentials.resend ? "reachable" : "credential_missing";
+  if (store === "cloudflare_kv_d1" || store === "cloudflare_email_routing") {
+    return credentials.cloudflare ? "reachable" : "credential_missing";
+  }
+  if (store === "worker_admin") return credentials.admin_key ? "reachable" : "credential_missing";
+  if (store === "activity_log_export") return "owner_captured";
+  if (store === "none") return "gone";
+  return "unknown";
+}
+
+export function classifyMailRecovery(credentials = credentialPresence()) {
+  const classes = MAIL_RECOVERY_CLASSES.map((row) => {
+    const stores = [];
+    if (row.metadata === "activity_log_envelope") stores.push(["activity_log_export", "metadata"]);
+    if (row.metadata === "kv_receipt_after_deploy" || row.metadata === "kv_ops_receipt_after_deploy") {
+      stores.push(["cloudflare_kv_d1", "metadata"]);
+    }
+    if (row.metadata === "d1_outbox_and_kv") stores.push(["cloudflare_kv_d1", "metadata"]);
+    if (row.body === "resend_retrieve_or_reconstruct" || row.body === "resend_retrieve_if_provider_id") {
+      stores.push(["resend_api", "body_if_sent"]);
+    }
+    if (row.queued_copy === "d1_owed_items") stores.push(["cloudflare_kv_d1", "queued_copy"]);
+    if (row.bounce_record === "resend_last_event") stores.push(["resend_api", "bounce_event"]);
+    if (row.resend_path === "outbox_drain_or_preview" || row.resend_path === "admin_ops_alert") {
+      stores.push(["worker_admin", "resend_path"]);
+    }
+    return {
+      ...row,
+      stores: stores.map(([store, kind]) => ({ store, kind, status: reach(store, credentials) })),
+    };
+  });
+  return {
+    credentials: {
+      github: credentials.github === true,
+      resend: credentials.resend === true,
+      cloudflare: credentials.cloudflare === true,
+      admin_key: credentials.admin_key === true,
+    },
+    classes,
+    this_incident: {
+      distinct_messages: 3,
+      useful_lost_messages: 0,
+      recoverable_bodies: 0,
+      recoverable_metadata: "activity_log_envelope",
+      gone: ["message_bodies", "queued_copies", "replay_controls", "worker_bounce_store"],
+    },
+  };
+}
+
 /**
  * Collapse Email Routing Activity Log rows so retry amplification of one
  * message is not counted as N lost messages. Dashboard FAILED totals are not
@@ -201,7 +325,11 @@ export async function runMailLegCheck({
   sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
   timeoutMs = DEFAULT_LIVE_TIMEOUT_MS,
   pollMs = DEFAULT_POLL_MS,
+  credentials = credentialPresence(),
 } = {}) {
+  if (mode === "recovery") {
+    return { mode: "recovery", ...classifyMailRecovery(credentials) };
+  }
   if (mode === "live") {
     if (!adminKey) throw new Error("CITYSCROLL_ADMIN_KEY is required for live mail-leg checks");
     await postCanary({ baseUrl, adminKey, fetchImpl });
@@ -225,6 +353,17 @@ export async function runMailLegCheck({
 }
 
 function reportLine(result) {
+  if (result.mode === "recovery") {
+    const lines = [
+      `mail-recovery: useful_lost_messages=${result.this_incident.useful_lost_messages}`,
+      `credentials: github=${result.credentials.github} resend=${result.credentials.resend} cloudflare=${result.credentials.cloudflare} admin_key=${result.credentials.admin_key}`,
+      `gone: ${result.this_incident.gone.join(", ")}`,
+    ];
+    for (const row of result.classes) {
+      lines.push(`${row.id}: body=${row.body} queued=${row.queued_copy} bounce=${row.bounce_record} useful=${row.useful_lost_messages}`);
+    }
+    return `${lines.join("\n")}\n`;
+  }
   const lines = result.legs.map((leg) => {
     const verdict = leg.ok === true ? "pass" : leg.ok === false ? "fail" : "unprobed";
     return `${leg.id}: ${verdict} (${leg.status})`;
@@ -235,14 +374,15 @@ function reportLine(result) {
 
 async function main() {
   const live = hasFlag("--live");
+  const recovery = hasFlag("--recovery");
   const fixturePath = arg("--fixture") || DEFAULT_FIXTURE;
   const result = await runMailLegCheck({
-    mode: live ? "live" : "fixture",
+    mode: recovery ? "recovery" : live ? "live" : "fixture",
     fixturePath,
     baseUrl: arg("--base-url") || DEFAULT_API_BASE,
   });
   process.stdout.write(reportLine(result));
-  if (!result.ok) process.exitCode = 1;
+  if (result.mode !== "recovery" && !result.ok) process.exitCode = 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

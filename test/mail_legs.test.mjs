@@ -6,7 +6,9 @@ import path from "node:path";
 
 import {
   MAIL_LEGS,
+  MAIL_RECOVERY_CLASSES,
   classifyMailLegs,
+  classifyMailRecovery,
   runMailLegCheck,
   summarizeEmailRoutingActivity,
 } from "../tools/check_mail_legs.mjs";
@@ -67,6 +69,34 @@ test("live mode requires an operator key and does not default-send", async () =>
     () => runMailLegCheck({ mode: "live", adminKey: "", fetchImpl: async () => { throw new Error("network"); } }),
     /CITYSCROLL_ADMIN_KEY is required/,
   );
+});
+
+test("recovery inventory lists this incident's bodies as gone and useful lost mail as none", async () => {
+  const result = await runMailLegCheck({
+    mode: "recovery",
+    credentials: { github: true, resend: false, cloudflare: false, admin_key: false },
+  });
+  assert.equal(result.this_incident.useful_lost_messages, 0);
+  assert.equal(result.this_incident.recoverable_bodies, 0);
+  assert.ok(result.this_incident.gone.includes("message_bodies"));
+  assert.ok(result.this_incident.gone.includes("queued_copies"));
+  assert.ok(result.this_incident.gone.includes("worker_bounce_store"));
+  const unsolicited = result.classes.find((row) => row.id === "inbound_routing_unsolicited");
+  assert.equal(unsolicited.body, "gone");
+  assert.equal(unsolicited.queued_copy, "gone");
+  assert.equal(unsolicited.resend_path, "none");
+  assert.equal(unsolicited.useful_lost_messages, "none");
+  assert.equal(result.credentials.resend, false);
+  assert.equal(result.credentials.cloudflare, false);
+  const digest = result.classes.find((row) => row.id === "outbound_digest");
+  assert.equal(digest.stores.find((store) => store.store === "resend_api").status, "credential_missing");
+  assert.deepEqual(MAIL_RECOVERY_CLASSES.map((row) => row.id), result.classes.map((row) => row.id));
+});
+
+test("Resend retrieve becomes reachable only when that credential is present", () => {
+  const withKey = classifyMailRecovery({ github: true, resend: true, cloudflare: false, admin_key: false });
+  const digest = withKey.classes.find((row) => row.id === "outbound_digest");
+  assert.equal(digest.stores.find((store) => store.store === "resend_api").status, "reachable");
 });
 
 test("Email Routing FAILED counts collapse retries of one spam envelope", () => {
