@@ -67,7 +67,7 @@
       },
       "shared_read_model": {
         "path": "site/data/shared_procurement_read_model.json",
-        "sha256": "76a4b4dd27e3690ff92a5b6c2b01ae17ed6161696cd6b64117c6fbe0c89e0b57",
+        "sha256": "e1f7c0f54a9863748e10e97a3f1525a2ad988f81de97106e44b5c3cea76d5596",
         "object_count": 13791
       }
     },

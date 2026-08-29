@@ -1,10 +1,10 @@
 {
   "schema": "cityscroll.comparative_fact_read_model.v1",
   "method": "materialized_award_rank_receipts_v1",
-  "generated_at": "2026-08-05T10:40:50.286Z",
+  "generated_at": "2026-08-29T11:43:49.474Z",
   "source_artifact": {
     "dataset_id": "qyyg-4tf5",
-    "materialized_at": "2026-08-05T10:40:50.286Z",
+    "materialized_at": "2026-08-29T11:43:49.474Z",
     "row_count": 53245
   },
   "materialization_scope": {
@@ -15,7 +15,7 @@
   },
   "window": {
     "start": "2024-01-01",
-    "end": "2026-08-05",
+    "end": "2026-08-29",
     "end_inclusive": true
   },
   "small_n_policies": {
@@ -63,8 +63,8 @@
           "end": "2026-08-04"
         },
         "observed": {
-          "start": "2026-08-05",
-          "end": "2026-08-05"
+          "start": "2026-08-29",
+          "end": "2026-08-29"
         },
         "valid_days": 945,
         "observed_days": 0
@@ -81,9 +81,9 @@
         "complete": true
       },
       "freshness": {
-        "reference_day": "2026-08-05",
-        "snapshot_day": "2026-08-05",
-        "latest_day": "2026-08-05",
+        "reference_day": "2026-08-29",
+        "snapshot_day": "2026-08-29",
+        "latest_day": "2026-08-29",
         "latest_source": "observation",
         "age_days": 0,
         "max_age_days": null,
@@ -94,7 +94,7 @@
   "facts": [
     {
       "schema": "cityscroll.comparative_fact.v1",
-      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-05",
+      "fact_id": "comparative_fact:award_amount_rank:ocp_award:20240119104:2024-01-01:2026-08-29",
       "subject": {
         "type": "ocp_award",
         "id": "20240119104",
@@ -111,7 +111,7 @@
       },
       "value": 53000000,
       "peer_class": {
-        "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-08-05",
+        "class_id": "award_amount_rank:ocp-recent-contract-awards:housing-preservation-and-development:2024-01-01:2026-08-29",
         "metric_family": "source_bounded_award_rank",
         "object_type": "award",
         "source_family": "ocp-recent-contract-awards",
@@ -133,7 +133,7 @@
               "source_contract_id": "ocp-recent-contract-awards",
               "source_contract_schema_version": 1,
               "dataset_id": "qyyg-4tf5",
-              "materialized_at": "2026-08-05T10:40:50.286Z",
+              "materialized_at": "2026-08-29T11:43:49.474Z",
               "row_count": 53245
             }
           ],
@@ -144,7 +144,7 @@
           "observation_quality_class": "source_bounded_positive_observation",
           "censoring_class": "historical_window_only",
           "historical_start": "2024-01-01",
-          "historical_end": "2026-08-05"
+          "historical_end": "2026-08-29"
         },
         "eligible_count": 264,
         "observed_count": 264,
@@ -164,7 +164,7 @@
         "observed_count": 264,
         "window": {
           "start": "2024-01-01",
-          "end": "2026-08-05",
+          "end": "2026-08-29",
           "end_inclusive": true
         },
         "rank": 4,
@@ -201,7 +201,7 @@
             "source_contract_id": "ocp-recent-contract-awards",
             "source_contract_schema_version": 1,
             "dataset_id": "qyyg-4tf5",
-            "materialized_at": "2026-08-05T10:40:50.286Z",
+            "materialized_at": "2026-08-29T11:43:49.474Z",
             "row_count": 53245
           }
         ]
@@ -214,7 +214,7 @@
           "source_row_id": "20240119104",
           "source_row_date": "2024-01-25",
           "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
-          "materialized_at": "2026-08-05T10:40:50.286Z"
+          "materialized_at": "2026-08-29T11:43:49.474Z"
         }
       ],
       "provenance": {
@@ -225,11 +225,11 @@
         },
         "source_artifact": {
           "dataset_id": "qyyg-4tf5",
-          "materialized_at": "2026-08-05T10:40:50.286Z",
+          "materialized_at": "2026-08-29T11:43:49.474Z",
           "row_count": 53245
         }
       },
-      "generated_at": "2026-08-05T10:40:50.286Z"
+      "generated_at": "2026-08-29T11:43:49.474Z"
     }
   ]
 }

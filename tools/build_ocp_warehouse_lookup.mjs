@@ -12,25 +12,37 @@
  *   node tools/build_ocp_warehouse_lookup.mjs --limit 5000
  *   node tools/build_ocp_warehouse_lookup.mjs --bench    # print warehouse vs SODA timing
  *
- * Does NOT download bulk data (WH-02). If the catalog is empty/missing, --fixture
- * builds from warehouse fixtures (product_seed + sample) after a tiny offline ingest.
+ * Does NOT download bulk data (WH-02). The default path requires a retained
+ * WH-02 catalog. Use --fixture explicitly for the offline fixture proof.
  */
 
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import {
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+  readdirSync,
+} from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { performance } from "node:perf_hooks";
 
-import { catalogExists, WAREHOUSE_DIR, REPO_ROOT } from "../warehouse/lib/catalog.mjs";
+import {
+  catalogExists,
+  warehouseRoot,
+  WAREHOUSE_DIR,
+  REPO_ROOT,
+} from "../warehouse/lib/catalog.mjs";
 import {
   buildMaterializationDoc,
   exportOcpRowsFromWarehouse,
   loadProductSeedRows,
   lookupOcpAwardRowsFromWarehouse,
   rowToSodaShape,
+  sqlOcpByRequestId,
 } from "../warehouse/lib/ocp_lookup.mjs";
 import { queryWarehouse } from "../warehouse/lib/query.mjs";
 import {
@@ -128,6 +140,49 @@ function ensureFixtureCatalog() {
   }
 }
 
+function loadWarehouseSnapshot() {
+  const receiptsDir = path.join(warehouseRoot(), "receipts");
+  if (!existsSync(receiptsDir)) {
+    throw new Error(
+      `WH-02 receipt directory missing at ${receiptsDir}; ` +
+      "set CITYSCROLL_WAREHOUSE_ROOT to the retained warehouse root",
+    );
+  }
+  const names = readdirSync(receiptsDir)
+    .filter((name) => name.startsWith("ocp-recent-contract-awards_") && name.endsWith(".json"))
+    .sort();
+  if (!names.length) {
+    throw new Error(
+      "WH-02 OCP receipt missing; the default WH-03 build refuses to use fixture or seed rows",
+    );
+  }
+  const receiptName = names.at(-1);
+  const receiptPath = path.join(receiptsDir, receiptName);
+  let receipt;
+  try {
+    receipt = JSON.parse(readFileSync(receiptPath, "utf8"));
+  } catch (error) {
+    throw new Error(`cannot read WH-02 OCP receipt: ${error.message || error}`);
+  }
+  const raw = receipt?.raw || {};
+  const parquet = receipt?.parquet || {};
+  const sourceHash = String(raw.sha256 || "").trim();
+  const rawRows = Number(raw.row_count);
+  const parquetRows = Number(parquet.row_count);
+  if (!/^[0-9a-f]{64}$/i.test(sourceHash) || !Number.isInteger(rawRows) || rawRows < 1) {
+    throw new Error("WH-02 OCP receipt lacks a valid raw source checksum and row count");
+  }
+  if (Number.isInteger(parquetRows) && parquetRows !== rawRows) {
+    throw new Error(`WH-02 OCP raw/Parquet row-count mismatch: ${rawRows} vs ${parquetRows}`);
+  }
+  return {
+    snapshot_date: receipt.snapshot_date || null,
+    source_snapshot_hash: sourceHash.toLowerCase(),
+    source_row_count: rawRows,
+    source_receipt: receiptName,
+  };
+}
+
 function dedupeRows(rows) {
   const seen = new Set();
   const out = [];
@@ -141,7 +196,7 @@ function dedupeRows(rows) {
 }
 
 function collectRows({ fixture, limit }) {
-  if (fixture || !catalogExists()) {
+  if (fixture) {
     if (!catalogExists()) {
       try {
         ensureFixtureCatalog();
@@ -168,18 +223,31 @@ function collectRows({ fixture, limit }) {
     return {
       rows: dedupeRows(cleanRows),
       mode: cleanWarehouseRows.length ? "warehouse" : "verified_seed",
+      sourceSnapshot: {
+        kind: cleanWarehouseRows.length ? "fixture_catalog" : "fixture_seed",
+        source_snapshot_hash: null,
+        source_row_count: cleanWarehouseRows.length || cleanRows.length,
+        source_receipt: null,
+      },
     };
   }
 
-  const rows = publicRecords(
-    exportOcpRowsFromWarehouse({ limit }),
-    "ocp warehouse export",
-  );
-  // Keep product demos even if bulk snapshot is older than those request_ids.
-  const seed = loadProductSeedRows();
+  if (!catalogExists()) {
+    throw new Error(
+      "WH-02 DuckDB catalog missing; default WH-03 build refuses fixture/seed fallback. " +
+      "Set CITYSCROLL_WAREHOUSE_ROOT to the retained warehouse root.",
+    );
+  }
+
+  const exportedRows = exportOcpRowsFromWarehouse({ limit });
+  const rows = publicRecords(exportedRows, "ocp warehouse export");
+  const sourceSnapshot = loadWarehouseSnapshot();
+  sourceSnapshot.exported_row_count = exportedRows.length;
+  sourceSnapshot.limited = limit != null;
   return {
-    rows: dedupeRows(publicRecords([...rows, ...seed], "ocp public materialization")),
+    rows: dedupeRows(rows),
     mode: rows.length > 1000 ? "bulk_warehouse" : "warehouse",
+    sourceSnapshot,
   };
 }
 
@@ -187,16 +255,18 @@ function statsMs(samples, digits = 3) {
   const sorted = [...samples].sort((a, b) => a - b);
   const mean = samples.reduce((a, b) => a + b, 0) / samples.length;
   const p50 = sorted[Math.floor(sorted.length / 2)];
+  const p95 = sorted[Math.max(0, Math.ceil(sorted.length * 0.95) - 1)];
   const round = (n) => Math.round(n * 10 ** digits) / 10 ** digits;
   return {
     samples_ms: samples.slice(0, 5).map((n) => round(n)),
     p50_ms: round(p50),
+    p95_ms: round(p95),
     mean_ms: round(mean),
     n: samples.length,
   };
 }
 
-async function bench(rows) {
+async function bench(rows, sourceSnapshot) {
   // Edge demo id lives in the verified product seed.
   const edgeDemo = rows.find((r) => r.request_id === "20260723031") || rows[0];
   const duckDemo = edgeDemo;
@@ -220,6 +290,9 @@ async function bench(rows) {
       ...statsMs(samples, 2),
       path: last.path,
       rows: last.rows.length,
+      query: sqlOcpByRequestId(duckDemo.request_id),
+      source_snapshot_hash: sourceSnapshot?.source_snapshot_hash || null,
+      source_row_count: sourceSnapshot?.source_row_count || null,
       notice_request_id: duckDemo.request_id,
       note: "Python DuckDB CLI spawn per query — build/ops only, not Worker request path",
     };
@@ -305,6 +378,18 @@ async function bench(rows) {
       soda_dataset: "qyyg-4tf5",
       product: "OCP award side-car on GET /contract-lifecycle",
     },
+    query: sqlOcpByRequestId(edgeDemo.request_id),
+    source_snapshot_hash: sourceSnapshot?.source_snapshot_hash || null,
+    source_row_count: sourceSnapshot?.source_row_count || null,
+    row_count: rows.length,
+    excluded_row_count: sourceSnapshot?.limited
+      ? null
+      : Math.max(0, Number(sourceSnapshot?.source_row_count || rows.length) - rows.length),
+    excluded_reason: sourceSnapshot?.limited
+      ? null
+      : "public payload integrity filter rejected test-only rows",
+    p50_ms: warehouseMs?.p50_ms ?? null,
+    p95_ms: warehouseMs?.p95_ms ?? null,
     warehouse_duckdb_build_path: warehouseMs,
     materialized_index_edge_path: indexMs,
     soda_live_previous_path: sodaMs,
@@ -358,6 +443,22 @@ function checkCommittedServe() {
   assert.ok(existsSync(OUT_SITE), `missing ${path.relative(ROOT, OUT_SITE)}`);
   const siteText = readFileSync(OUT_SITE, "utf8");
   const site = JSON.parse(siteText);
+  assert.equal(site.mode, "bulk_warehouse", "committed OCP lookup must come from the WH-02 bulk catalog");
+  assert.match(
+    String(site.source_snapshot?.source_snapshot_hash || ""),
+    /^[0-9a-f]{64}$/i,
+    "committed OCP lookup must record the WH-02 source snapshot hash",
+  );
+  assert.ok(
+    Number(site.source_snapshot?.source_row_count) >= Number(site.row_count),
+    "committed OCP lookup source row count must cover materialized rows",
+  );
+  assert.equal(
+    site.source_snapshot?.exported_row_count,
+    site.source_snapshot?.source_row_count,
+    "committed OCP lookup must export the complete WH-02 snapshot",
+  );
+  assert.equal(site.source_snapshot?.limited, false, "committed OCP lookup must not be limited");
   assertServePublishLookup(site, SERVE_LOOKUP_CONTRACTS.ocp_awards, {
     now: site.materialized_at,
   });
@@ -377,7 +478,7 @@ async function main() {
     }, null, 2));
     return;
   }
-  const { rows, mode } = collectRows({
+  const { rows, mode, sourceSnapshot } = collectRows({
     fixture: args.fixture,
     limit: args.limit,
   });
@@ -394,7 +495,11 @@ async function main() {
     }
   }
 
-  const doc = buildMaterializationDoc(rows, { mode, now });
+  const doc = buildMaterializationDoc(rows, {
+    mode,
+    now,
+    source_snapshot: sourceSnapshot,
+  });
   // Stable sort for deterministic commits
   doc.rows.sort((a, b) =>
     String(a.request_id || "").localeCompare(String(b.request_id || ""))
@@ -410,7 +515,7 @@ async function main() {
   console.log(JSON.stringify(result, null, 2));
 
   if (args.bench || !args.check) {
-    const receipt = await bench(doc.rows);
+    const receipt = await bench(doc.rows, sourceSnapshot);
     // determinism-lint: allow write benchmark receipt outside --check
     mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
     // determinism-lint: allow write benchmark receipt outside --check
