@@ -1,0 +1,2 @@
+# Optional CI/warehouse backend for the owner-proof receipt index.
+duckdb>=1.0,<2
