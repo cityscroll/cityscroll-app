@@ -88,29 +88,7 @@ if (existsSync(graphTool)) {
   appendOutput("data-source-graph-dir", docsDir);
 }
 
-const optionalBuilds = [
-  ["build_shared_procurement_read_model.mjs", []],
-  ["build_money_resident_snapshot.mjs", []],
-  ["build_notice_context_lookup.mjs", []],
-  ["build_property_resident_snapshot.mjs", []],
-  ["build_primary_documents.mjs", []],
-  ["build_keyword_search_index.mjs", []],
-  ["build_following_procurement_suggestions.mjs", []],
-  ["build_district_activity.mjs", []],
-  ["build_near_you_pages.mjs", []],
-  ["build_following_page.mjs", []],
-  ["build_data_health_page.mjs", []],
-  ["build_exam_documents.mjs", []],
-  ["build_agency_documents.mjs", []],
-  ["build_process_conformance.mjs", []],
-  ["build_agency_lifecycle_conformance.mjs", []],
-  ["build_agency_constellation_documents.mjs", []],
-  ["build_community_board_constellation_documents.mjs", []],
-];
-for (const [tool, toolArgs] of optionalBuilds) {
-  if (existsSync(join(sourceDir, "tools", tool))) runNode(sourceDir, tool, toolArgs);
-  if (existsSync(join(sourceDir, "tools", tool))) runNode(sourceDir, tool, ["--check"]);
-}
+runNode(sourceDir, "derived_json_build_boundary.mjs", ["--source-dir", sourceDir]);
 if (existsSync(join(sourceDir, "tools", "build_url_migration_map.mjs"))) {
   runNode(sourceDir, "build_url_migration_map.mjs", ["--check"]);
 }
