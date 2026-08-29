@@ -1,5 +1,10 @@
 # Project agent memory
 
+- **WH-02 bulk revival:** `warehouse/scripts/verify_bulk_receipts.py --check` validates the
+  committed four-source manifest and receipts while warning when intentionally gitignored
+  raw/Parquet artifacts are absent locally. `warehouse/scripts/ingest.py --resume` revalidates
+  stage metadata and checkpoint page hashes before reuse; bulk runs require a real headroom probe.
+
 - **Action Path v0:** `site/action_path_v0.mjs` is the pure, actorless projection over the
   authoritative `site/action_registry.js` action object. It requires provenance-bearing evidence,
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
