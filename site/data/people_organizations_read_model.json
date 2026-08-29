@@ -52741,7 +52741,52 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 1,
+          "count": 2,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "vendors": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_vendor_awards_12mo_v1"
+        },
+        "meetings": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_browse_snapshot_v1"
+        },
+        "rules": {
+          "status": "empty",
+          "count": 0,
+          "method": "agency_canonical_v1"
+        },
+        "obligations": {
+          "status": "empty",
+          "count": 0,
+          "method": "mandate_expected_vs_observed_v1"
+        },
+        "staffing": {
+          "status": "empty",
+          "count": 0,
+          "method": "publisher_certification_record_v1"
+        }
+      }
+    },
+    {
+      "kind": "agency",
+      "id": "agency:id:mta-construction-development",
+      "label": "mta-construction-development",
+      "href": "/agencies/mta-construction-development/",
+      "entity_ref": "agency:id:mta-construction-development",
+      "relation_state": "published",
+      "detail": "1 linked record categories",
+      "institution": "agency",
+      "institution_label": "Agency",
+      "institution_context": "City agency organization",
+      "search_text": "mta-construction-development agency organization",
+      "categories": {
+        "contracts": {
+          "status": "matched",
+          "count": 2,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -62735,6 +62780,12 @@
       "kind": "agency"
     },
     {
+      "entity_id": "agency:id:mta-construction-development",
+      "label": "mta-construction-development",
+      "href": "/agencies/mta-construction-development/",
+      "kind": "agency"
+    },
+    {
       "entity_id": "vendor:stem:MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS",
       "label": "MYCA Multimedia & Training Solutions LLC",
       "href": "/vendors/MYCA%20MULTIMEDIA%20TRAINING%20SOLUTIONS/",
@@ -64068,7 +64119,7 @@
     "official": 215,
     "exact-person-appointment": 558,
     "committee": 96,
-    "agency": 86,
+    "agency": 87,
     "vendor": 272,
     "notice-only-hire": 80
   },
