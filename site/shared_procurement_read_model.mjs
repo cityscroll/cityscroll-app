@@ -62,7 +62,7 @@ function retainedObservations(records) {
     source_observation_ref: sourceObservationRef,
     source_system: String(record.source_system || "").toLowerCase(),
     source_system_id: record.source_system_id || record.source_id || null,
-    ...(record.source_receipt_ref || (record.source_system === "passport_public_rfx" && record.content_hash)
+    ...(record.source_receipt_ref || record.content_hash
       ? { source_receipt_ref: record.source_receipt_ref || record.content_hash }
       : {}),
     ingested_at: record.ingested_at || null,

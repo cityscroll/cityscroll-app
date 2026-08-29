@@ -271,8 +271,16 @@ ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
 ${renderProcurementObjectCoverageHtml(object, observations)}
-${renderNodeSection({ heading: "Observed process state", body: renderProcurementProcessEvents(object?.process_events) })}
-${renderNodeSection({ heading: "Observed stages", body: stageList(object) })}
+${renderNodeSection({
+  heading: "Observed events",
+  headingId: "procurement-process",
+  extraClass: "procurement-process",
+  body: renderProcurementProcessEvents(object?.process_events),
+})}
+${renderNodeSection({
+  heading: "Observed stages",
+  body: Array.isArray(object?.process_events) && object.process_events.length ? "" : stageList(object),
+})}
 ${renderNodeProvenance({ heading: sourceItems.length ? "Official records" : "", sourceItems })}
 </main>${renderNodeFooter({})}</body></html>`;
   return gateNodePageRender(html);
