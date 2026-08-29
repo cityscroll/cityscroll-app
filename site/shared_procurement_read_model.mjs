@@ -13,6 +13,7 @@ import {
   procurementObservationSnapshot,
 } from "./procurement_object_contract.mjs";
 import { buildCrossSourceEvidenceReceipt } from "./cross_source_evidence_receipt.mjs";
+import { procurementProcessEvents } from "./procurement_process_events.mjs";
 
 export const SHARED_PROCUREMENT_READ_MODEL_SCHEMA = "cityscroll.shared_procurement_read_model.v1";
 export const SHARED_PROCUREMENT_READ_MODEL_VERSION = 1;
@@ -61,6 +62,9 @@ function retainedObservations(records) {
     source_observation_ref: sourceObservationRef,
     source_system: String(record.source_system || "").toLowerCase(),
     source_system_id: record.source_system_id || record.source_id || null,
+    ...(record.source_receipt_ref || (record.source_system === "passport_public_rfx" && record.content_hash)
+      ? { source_receipt_ref: record.source_receipt_ref || record.content_hash }
+      : {}),
     ingested_at: record.ingested_at || null,
     snapshot: Object.freeze({ ...procurementObservationSnapshot(record) }),
   })).sort((left, right) => Number(NATIVE_PROCUREMENT_SOURCES.has(left.source_system))
@@ -92,6 +96,8 @@ export function buildSharedProcurementReadModel({
   const rows = built.objects;
   const observations = retainedObservations(records);
   for (const object of rows) {
+    const processEvents = procurementProcessEvents(object, observations);
+    if (processEvents.length) object.process_events = processEvents;
     const receipt = buildCrossSourceEvidenceReceipt({
       object,
       observations,

@@ -154,6 +154,10 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
   const observations = orderedObservations(object, observationIndex(readModel));
   if (!observations.length || observations.length !== object.source_observation_refs.length) return null;
   const rows = observations.map((entry) => entry.snapshot || {});
+  const vendorRows = observations
+    .filter((entry) => !(entry.source_system === "passport_public_rfx"
+      && String(entry.snapshot?.rfx_status || "").trim().toLowerCase() === "selections made"))
+    .map((entry) => entry.snapshot || {});
   const evidence = noticeEvidence(observations);
   const contractId = object.identity_keys?.contract_ids?.[0] || null;
   const epin = object.identity_keys?.epins?.[0] || null;
@@ -162,7 +166,7 @@ export function materializeProcurementSearchDocument(object = {}, readModel = {}
     title: first(rows, ["short_title", "title", "description"], 500)
       || `Contract ${contractId || epin || object.procurement_id}`,
     agency: first(rows, ["agency_name", "agency"], 240),
-    vendor: first(rows, ["vendor_name", "vendor", "prime_vendor", "payee_name"], 240),
+    vendor: first(vendorRows, ["vendor_name", "vendor", "prime_vendor", "payee_name"], 240),
     amount: numeric(
       snapshotsForPublicAmount(object, observations),
       ["contract_amount", "award_amount", "current_amount", "current", "amount", "check_amount"],
