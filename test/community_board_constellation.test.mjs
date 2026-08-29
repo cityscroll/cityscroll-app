@@ -11,6 +11,7 @@ import {
   communityBoardPlaceHref,
   renderCommunityBoardConstellationDocument,
 } from "../site/community_board_constellation.mjs";
+import { detectNodePageCruft } from "../site/civic_document_chrome.mjs";
 import { entityPivotRouteStatus } from "../site/edge_summary.mjs";
 import { readCommunityBoardMeetingIndex } from "../tools/lib/community_board_meeting_index_io.mjs";
 
@@ -19,6 +20,7 @@ const sourceInventory = JSON.parse(readFileSync(new URL("../site/data/non_counci
 const scorecard = JSON.parse(readFileSync(new URL("../site/data/community_board_minutes_scorecard.json", import.meta.url)));
 const geography = JSON.parse(readFileSync(new URL("../site/data/community_board_geography_lookup.json", import.meta.url)));
 const communityBoardMoney = JSON.parse(readFileSync(new URL("../site/data/community_board_money.json", import.meta.url)));
+const communityBoardParticipation = JSON.parse(readFileSync(new URL("../site/data/community_board_participation.json", import.meta.url)));
 const meetingIndex = readCommunityBoardMeetingIndex(new URL("../site/data/community_board_meeting_index.json", import.meta.url));
 
 const sources = { sourceRegistry, sourceInventory, scorecard, geography };
@@ -286,3 +288,67 @@ test("accepted meeting source rows render once through their semantic meeting ob
   assert.match(visible, /Transportation Committee .*Published event/);
   assert.doesNotMatch(visible, /Board records from official sources|Unjoined source records/);
 });
+
+test("Manhattan CB2 board document composes source-backed ways to participate without an Apply now CTA", () => {
+  const view = buildCommunityBoardConstellationView("manhattan-cb-02", {
+    ...sources,
+    communityBoardParticipation,
+    institutionEdges: {
+      "manhattan-cb-02": [{
+        relation: "hosts_meeting",
+        edge_type: "hosts_meeting",
+        status: "promoted",
+        promoted: true,
+        from: "community-board:manhattan-cb-02",
+        to: "meeting:community_board:cb2-full-board",
+        target_kind: "meeting",
+        target_id: "meeting:community_board:cb2-full-board",
+        target_name: "Manhattan CB2 Full Board",
+        href: "/meetings/meeting%3Acommunity_board%3Acb2-full-board",
+        canonical_href: "/meetings/meeting%3Acommunity_board%3Acb2-full-board",
+        join: { matched: true, event_date: "2026-09-10" },
+        source_receipt: { status: "ok", observed_at: "2026-08-27T00:00:00Z" },
+        provenance: { source_url: "https://cbmanhattan.cityofnewyork.us/cb2/calendar/" },
+      }],
+    },
+  });
+  const html = renderCommunityBoardConstellationDocument(view);
+  assert.equal(view.participation.board_id, "manhattan-cb-02");
+  assert.match(html, /data-community-board-participation="1"/);
+  assert.match(html, /Ways to participate/);
+  assert.match(html, /Attend the next board meeting/);
+  assert.match(html, /Add to calendar/);
+  assert.match(html, /Follow this board/);
+  assert.match(html, /Contact this board/);
+  assert.match(html, /Public committee membership/);
+  assert.match(html, /participation-source:manhattan-bp:2026/);
+  assert.match(html, /About this board/);
+  assert.match(html, /Sources &amp; coverage/);
+  assert.match(html, /Open this board’s place view/);
+  assert.doesNotMatch(html, /Apply now/);
+  assert.doesNotMatch(html, /Speak or comment/);
+  assert.deepEqual(detectNodePageCruft(html), []);
+});
+
+test("a board without equivalent participation evidence keeps records and omits unsupported applications", () => {
+  const html = renderCommunityBoardConstellationDocument(buildCommunityBoardConstellationView("bronx-cb-02", {
+    ...sources,
+    communityBoardParticipation,
+  }));
+  assert.match(html, /data-community-board-participation="1"/);
+  assert.match(html, /Follow this board/);
+  assert.match(html, /Contact this board/);
+  assert.match(html, /About this board/);
+  assert.match(html, /Sources &amp; coverage/);
+  assert.match(html, /District coverage/);
+  assert.match(html, /participation-source:bronx-bp:2026/);
+  assert.match(html, /The published application window is closed/);
+  assert.doesNotMatch(html, /Apply now/);
+  assert.doesNotMatch(html, /Public committee membership/);
+  assert.doesNotMatch(html, /Attend the next/);
+  assert.doesNotMatch(html, /Speak or comment/);
+  assert.doesNotMatch(html, /participation-source:manhattan-bp:2026/);
+  assert.doesNotMatch(html, /No meetings exist/);
+  assert.deepEqual(detectNodePageCruft(html), []);
+});
+

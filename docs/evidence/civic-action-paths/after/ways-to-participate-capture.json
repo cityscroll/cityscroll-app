@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.community_board_participation_capture.v1",
+  "captures": [
+    {
+      "board": "manhattan-cb-02",
+      "viewport": "desktop",
+      "path": "cb_source_backed-desktop.png"
+    },
+    {
+      "board": "manhattan-cb-02",
+      "viewport": "mobile",
+      "path": "cb_source_backed-mobile.png"
+    },
+    {
+      "board": "bronx-cb-02",
+      "viewport": "desktop",
+      "path": "cb_unknown-desktop.png"
+    },
+    {
+      "board": "bronx-cb-02",
+      "viewport": "mobile",
+      "path": "cb_unknown-mobile.png"
+    }
+  ]
+}
