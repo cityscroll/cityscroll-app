@@ -3,10 +3,13 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import {
+  APPLY_NOW_LABEL,
   COMMUNITY_BOARD_PARTICIPATION_UNKNOWN,
   buildCommunityBoardParticipationLookup,
   communityBoardApplicationAvailability,
+  communityBoardParticipationPaths,
   projectCommunityBoardParticipation,
+  renderCommunityBoardParticipationSection,
 } from "../site/community_board_participation.mjs";
 import { buildCommunityBoardParticipationArtifacts } from "../tools/build_community_board_participation.mjs";
 
@@ -171,6 +174,154 @@ test("lookup is a scheduled build artifact and does not perform resident-request
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("Manhattan CB2 ways-to-participate keeps board-local verbs, closed applications, and source receipts", () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = () => { throw new Error("publisher fetch is not allowed"); };
+  try {
+    const participation = projectCommunityBoardParticipation({
+      board_id: "manhattan-cb-02",
+      bylaws,
+      application_sources: sources.sources,
+      as_of: "2026-08-27T00:00:00.000Z",
+    });
+    const meeting = {
+      relation: "hosts_meeting",
+      status: "promoted",
+      promoted: true,
+      from: "community-board:manhattan-cb-02",
+      to: "meeting:community_board:cb2-full-board",
+      target_id: "meeting:community_board:cb2-full-board",
+      target_name: "Manhattan CB2 Full Board",
+      href: "/meetings/meeting%3Acommunity_board%3Acb2-full-board",
+      date: "2026-09-10",
+      provenance: { source_url: "https://cbmanhattan.cityofnewyork.us/cb2/calendar/" },
+      source_receipt: { status: "ok", observed_at: "2026-08-27T00:00:00Z" },
+    };
+    const paths = communityBoardParticipationPaths({
+      board_id: "manhattan-cb-02",
+      board: {
+        body_id: "manhattan-cb-02",
+        homepage_url: "https://cbmanhattan.cityofnewyork.us/cb2/",
+        directory_url: "https://www.nyc.gov/site/communityboards/about/manhattan-boards.page",
+      },
+      participation,
+      meetings: [meeting],
+      committees: [{ target_id: "community-board-committee:manhattan-cb-02:land-use", label: "Land Use" }],
+      as_of: "2026-08-27T00:00:00.000Z",
+    });
+    const byKind = Object.fromEntries(paths.map((path) => [path.kind, path]));
+    assert.equal(byKind.attend_meeting.verb, "Attend the next board meeting");
+    assert.equal(byKind.attend_meeting.href, meeting.href);
+    assert.equal(byKind.add_to_calendar.verb, "Add to calendar");
+    assert.match(byKind.follow_board.href, /lens=meetings/);
+    assert.match(byKind.follow_board.href, /manhattan-cb-02/);
+    assert.equal(byKind.contact_board.href, "https://cbmanhattan.cityofnewyork.us/cb2/");
+    assert.equal(byKind.apply_public_committee_membership.cta, false);
+    assert.notEqual(byKind.apply_public_committee_membership.verb, APPLY_NOW_LABEL);
+    assert.equal(byKind.apply_full_board_membership.cta, false);
+    assert.equal(byKind.apply_full_board_membership.state, "closed");
+    assert.equal(byKind.apply_full_board_membership.evidence.source_id, "participation-source:manhattan-bp:2026");
+    assert.equal(byKind.apply_full_board_membership.evidence.document_id, "manhattan-bp-2026-community-board-applications-open");
+    assert.equal(byKind.speak_or_comment, undefined);
+    assert.equal(byKind.follow_committee, undefined);
+    const html = renderCommunityBoardParticipationSection(paths);
+    assert.match(html, /Ways to participate/);
+    assert.match(html, /Attend the next board meeting/);
+    assert.match(html, /Add to calendar/);
+    assert.match(html, /Follow this board/);
+    assert.match(html, /Contact this board/);
+    assert.match(html, /Public committee membership/);
+    assert.match(html, /The published application window is closed/);
+    assert.match(html, /participation-source:manhattan-bp:2026/);
+    assert.match(html, /Article 7, Public Committee Members/);
+    assert.doesNotMatch(html, /Apply now/);
+    assert.doesNotMatch(html, /Follow this committee/);
+    assert.doesNotMatch(html, /Speak or comment/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("a board without equivalent evidence omits service and application opportunities", () => {
+  const participation = projectCommunityBoardParticipation({
+    board_id: "bronx-cb-02",
+    bylaws,
+    application_sources: [],
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  const paths = communityBoardParticipationPaths({
+    board_id: "bronx-cb-02",
+    board: {
+      body_id: "bronx-cb-02",
+      homepage_url: "https://www.nyc.gov/site/bronxcb2/index.page",
+    },
+    participation,
+    meetings: [],
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  assert.deepEqual(paths.map((path) => path.kind), ["follow_board", "contact_board"]);
+  assert.equal(paths.every((path) => path.cross_board_inference === false), true);
+  const html = renderCommunityBoardParticipationSection(paths);
+  assert.match(html, /Follow this board/);
+  assert.match(html, /Contact this board/);
+  assert.doesNotMatch(html, /Apply now/);
+  assert.doesNotMatch(html, /Public committee membership/);
+  assert.doesNotMatch(html, /Community Board membership/);
+  assert.doesNotMatch(html, /Attend the next/);
+  assert.doesNotMatch(html, /Speak or comment/);
+  assert.doesNotMatch(html, /manhattan-cb-02|participation-source:manhattan-bp:2026/);
+});
+
+test("Manhattan CB6 can offer source-backed speaking without creating an application CTA", () => {
+  const participation = projectCommunityBoardParticipation({
+    board_id: "manhattan-cb-06",
+    bylaws,
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  const paths = communityBoardParticipationPaths({
+    board_id: "manhattan-cb-06",
+    board: { homepage_url: "https://cbsix.org/" },
+    participation,
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  const speak = paths.find((path) => path.kind === "speak_or_comment");
+  assert.equal(speak.verb, "Speak or comment at a public session");
+  assert.match(speak.evidence.locator, /Article VII/);
+  assert.equal(paths.some((path) => path.cta && path.verb === APPLY_NOW_LABEL), false);
+});
+
+test("one board's application evidence cannot mint another board's Apply now path", () => {
+  const manhattan = projectCommunityBoardParticipation({
+    board_id: "manhattan-cb-02",
+    bylaws,
+    application_sources: sources.sources,
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  const queens = projectCommunityBoardParticipation({
+    board_id: "queens-cb-06",
+    bylaws,
+    application_sources: sources.sources,
+    as_of: "2026-08-27T00:00:00.000Z",
+  });
+  const manhattanApply = communityBoardParticipationPaths({
+    board_id: "manhattan-cb-02",
+    participation: manhattan,
+    board: { homepage_url: "https://cbmanhattan.cityofnewyork.us/cb2/" },
+  }).find((path) => path.kind === "apply_full_board_membership");
+  const queensPaths = communityBoardParticipationPaths({
+    board_id: "queens-cb-06",
+    participation: queens,
+    board: { homepage_url: "https://www.nyc.gov/site/queenscb6/index.page" },
+  });
+  assert.equal(manhattanApply.evidence.source_id, "participation-source:manhattan-bp:2026");
+  const queensApply = queensPaths.find((path) => path.kind === "apply_full_board_membership");
+  assert.equal(queensApply.evidence.source_id, "participation-source:queens-bp:2026");
+  assert.notEqual(queensApply.evidence.source_id, manhattanApply.evidence.source_id);
+  assert.equal(queensApply.cta, false);
+  assert.equal(queensPaths.some((path) => path.verb === APPLY_NOW_LABEL), false);
+  assert.equal(queensPaths.some((path) => path.evidence?.source_id === "participation-source:manhattan-bp:2026"), false);
 });
 
 test("committed source and receipt artifacts are reproducible by the scheduled builder", () => {
