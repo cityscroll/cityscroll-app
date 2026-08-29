@@ -9,8 +9,10 @@ the worker — every feature degrades gracefully when it's absent.
 Cloudflare Pages remains the origin for the canonical `cityscroll.org` / `www.cityscroll.org`
 site hostnames. Bounded Worker zone routes serve the dynamic `/near-you*`, `/following*`,
 and `/prefs*` documents on `cityscroll.org`; all other site paths retain the Pages origin.
-The Worker custom domains are `api.cityscroll.org` and the compatibility alias
-`api.crol-list.org`. CORS allowlists retain the old origins for compatibility.
+The Worker is already dual-homed on `api.cityscroll.org` and the compatibility
+alias `api.crol-list.org`. CORS allowlists retain old browser origins for
+compatibility, including `crol-list.jimdc.com` (a GitHub Pages CNAME to
+`jimdc.github.io`, not a Worker route).
 
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.

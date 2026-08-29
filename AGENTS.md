@@ -120,7 +120,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local
   check-runner gate; retained compatibility and historical lines are documented in
   `.github/legacy-name-allowlist.txt`, with focused proof in
-  `test/stale_name_guard.test.mjs`.
+  `test/stale_name_guard.test.mjs`. `--write` remaps exact-line entries and drops stale
+  ones; it never allowlists a new occurrence.
 
 - **PASSPort RFx procedural state (PLA-01):** `site/procurement_process_events.mjs` projects
   retained `passport_public_rfx` observations into explicit, source-receipt-linked canonical

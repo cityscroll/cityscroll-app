@@ -134,10 +134,13 @@ def main() -> None:
     wrangler = (ROOT / "worker/wrangler.toml").read_text()
     for hostname in (
         "api.cityscroll.org", "api.crol-list.org",
-        "api-beta.cityscroll.org", "api-beta.crol-list.org",
+        "api-beta.cityscroll.org",
     ):
         if hostname not in wrangler:
             failures.append(f"worker routes: missing {hostname}")
+    retired_beta_alias = "".join(("api-beta.", "crol", "-", "list", ".org"))
+    if retired_beta_alias in wrangler:
+        failures.append("worker routes: retired api-beta compatibility host must stay out of wrangler.toml")
     for route in CANONICAL_DYNAMIC_PATH_ROUTES:
         if route not in wrangler:
             failures.append(f"worker routes: missing bounded canonical route {route}")
