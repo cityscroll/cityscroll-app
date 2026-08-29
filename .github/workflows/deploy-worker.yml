@@ -155,6 +155,27 @@ jobs:
             --status UNKNOWN \
             --required-stage data_publication \
             --reason "D1/KV publication versions were not emitted as one transaction receipt"
+      - name: Write Worker deployment-health receipt
+        if: always()
+        env:
+          DEPLOYMENT_OUTCOME: ${{ steps.worker_deploy.outcome }}
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/deployment-health
+          node tools/check_deployment_health.mjs --write \
+            --boundary cloudflare-worker \
+            --pipeline deploy-worker \
+            --merged-source-sha "$GITHUB_SHA" \
+            --deployed-commit-sha "$GITHUB_SHA" \
+            --artifact-type worker-commit \
+            --artifact-value "$GITHUB_SHA" \
+            --deployment-id "crol-worker@${GITHUB_SHA}" \
+            --deployment-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --provider-status "$DEPLOYMENT_OUTCOME" \
+            --trigger-coverage .artifacts/worker-trigger-coverage.json \
+            --guard wrangler_worker_deploy:"$DEPLOYMENT_OUTCOME" \
+            --workflow-run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --output .artifacts/deployment-health/cloudflare-worker.json
       - name: Retain Worker release-surface receipt
         if: always()
         uses: actions/upload-artifact@v4
@@ -163,6 +184,7 @@ jobs:
           path: |
             .artifacts/release-surface-receipt.json
             .artifacts/worker-trigger-coverage.json
+            .artifacts/deployment-health/cloudflare-worker.json
           if-no-files-found: warn
 
       # The RUM query is intentionally separate from the write binding. Reuse the existing

@@ -122,6 +122,8 @@ test("Pages deploy retains and binds release-surface evidence", () => {
   assert.match(action, /check_release_surface_reconciliation\.mjs/);
   assert.match(action, /source_health_observations\.json/);
   assert.match(workflow, /update_release_surface_receipt\.mjs/);
+  assert.match(workflow, /check_deployment_health\.mjs --write/);
+  assert.match(workflow, /--boundary cloudflare-pages/);
   assert.match(workflow, /actions\/upload-artifact@v4/);
   assert.match(workflow, /cloudflare-pages-release-evidence-\$\{\{ github\.run_id \}\}/);
   assert.match(workflow, /if-no-files-found: warn/);

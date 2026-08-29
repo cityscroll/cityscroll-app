@@ -1,0 +1,43 @@
+{
+  "schema": "cityscroll.deployment-health-receipt.v1",
+  "kind": "deployment",
+  "boundary": "cloudflare-worker",
+  "boundary_name": "Cloudflare Worker",
+  "pipeline": "deploy-worker",
+  "workflow": ".github/workflows/deploy-worker.yml",
+  "merged_source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "deployed_commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "artifact_identity": {
+    "type": "worker-commit",
+    "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "deployment_reference": {
+    "id": "crol-worker@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "url": "https://github.example.invalid/worker-run-failed",
+    "provider": "cloudflare-workers",
+    "workflow_run_url": "https://github.example.invalid/worker-run-failed"
+  },
+  "guard_results": [
+    {
+      "name": "worker_trigger_coverage",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "name": "wrangler_worker_deploy",
+      "status": "FAIL",
+      "findings": [
+        "wrangler deploy failed"
+      ]
+    }
+  ],
+  "provider_status": "FAIL",
+  "observed_at": "2026-08-29T12:00:00.000Z",
+  "status": "FAIL",
+  "findings": [
+    "Cloudflare Worker provider deployment failed",
+    "Cloudflare Worker guard wrangler_worker_deploy is FAIL",
+    "wrangler_worker_deploy: wrangler deploy failed"
+  ],
+  "reason": "Cloudflare Worker provider deployment failed"
+}

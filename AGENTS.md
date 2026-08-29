@@ -147,6 +147,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   fail-closed join for production release evidence. tools/worker_trigger_coverage.mjs derives
   local Worker imports and verifies that both Worker trigger surfaces cover them; the focused gate
   is node --test test/release_surface_reconciliation.test.mjs && node tools/check_release_surface_reconciliation.mjs --check.
+- **Deployment-health receipts:** `tools/deployment_health_receipt.mjs` is the independent
+  Pages/Worker boundary receipt plus set-completeness check. The required production set is
+  exactly Cloudflare Pages and Cloudflare Worker in `docs/release/cloudflare-native-builds.json`.
+  Each deploy workflow writes `.artifacts/deployment-health/<boundary>.json`; reconciliation is
+  COMPLETE only when both receipts are independently verifiable and match the merged SHA.
+  Digest/scheduler watchdog receipts and the aggregate release-surface receipt are not substitutes.
+  Proof: `test/deployment_health_receipt.test.mjs` and
+  `node tools/check_deployment_health.mjs --check`.
 - **Public-site generation postcondition:** `tools/build_public_site.mjs` calls
   `tools/generation_output_guard.mjs` after copying the public tree. The guard requires a
   non-empty `index.html`, writes `.artifacts/generation-output-receipt.json`, and fails before
@@ -4125,7 +4133,8 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   and served-artifact checks. `tools/check_release_surface_reconciliation.mjs` writes the durable
   `.artifacts/release-surface-receipt.json`; Pages CI uploads it with the generation receipt and
   artifact manifest. Keep source age limits source-declared and do not turn provider deployment
-  timestamps into source acknowledgements.
+  timestamps into source acknowledgements. That aggregate is not a 2/2 Pages+Worker deployment
+  health proof; use `tools/deployment_health_receipt.mjs`.
 
 - **Community Board money read model:** `site/community_board_money.mjs` joins the landed adopted
   budget and payment actuals artifacts only by exact `board_id` plus fiscal year. Rebuild the shared
