@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import functools
 import http.server
+import json
 import os
 from pathlib import Path
 import sys
@@ -26,11 +27,18 @@ from i18n_fixtures import install_routes  # noqa: E402
 from tools.local_site_server import QuietHandler  # noqa: E402
 
 BASE = os.environ.get("CROL_BASE", "")
-VIEWPORT = {"width": 360, "height": 800}  # Source: mobile contract acceptance width.
+MOBILE_CONTRACTS_LIST_NO_ROWS = json.loads(
+    (ROOT / "test" / "fixtures" / "mobile_contracts_list_no_rows.json").read_text()
+)
+VIEWPORT = MOBILE_CONTRACTS_LIST_NO_ROWS["viewport"]
 SURFACES = (
     # The root is a neutral topic entry; Contracts is covered on its canonical
     # document route so this fixture waits for the intended source-backed list.
-    ("contracts", "browse/contracts/#money", "#list .row"),
+    (
+        "contracts",
+        MOBILE_CONTRACTS_LIST_NO_ROWS["route"].lstrip("/"),
+        MOBILE_CONTRACTS_LIST_NO_ROWS["selector"],
+    ),
     (
         "people + organizations",
         "browse/people/",
