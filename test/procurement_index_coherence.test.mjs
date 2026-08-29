@@ -17,6 +17,7 @@ import {
   checkProcurementIndexCoherence,
   sourceModelFingerprint,
 } from "../tools/lib/procurement_index_coherence.mjs";
+import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
 
 const fixture = JSON.parse(readFileSync(
   new URL("./fixtures/procurement_index_coherence/index_only_object.json", import.meta.url),
@@ -97,9 +98,9 @@ test("the committed procurement model and keyword index stay coherent", () => {
   const readModel = readSharedProcurementReadModel(
     new URL("../site/data/shared_procurement_read_model.json", import.meta.url),
   );
-  const keywordIndex = JSON.parse(readFileSync(
-    new URL("../worker/src/data/keyword_search_index.json", import.meta.url),
-    "utf8",
+  const keywordIndex = readKeywordSearchIndexFromShards(new URL(
+    "../worker/src/data/keyword_search_index_shards/manifest.json",
+    import.meta.url,
   ));
   const spineBytes = readFileSync(new URL("../site/data/procurement_spine_sources.json", import.meta.url));
   const awardsBytes = readFileSync(new URL("../site/data/ocp_awards_warehouse_lookup.json", import.meta.url));

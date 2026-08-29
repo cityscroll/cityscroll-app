@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { buildAgencySearchDocuments } from "../site/agency_search_producer.mjs";
@@ -21,9 +21,15 @@ import {
   checkProcurementIndexCoherence,
   formatCoherenceFindings,
 } from "./lib/procurement_index_coherence.mjs";
+import {
+  buildKeywordSearchIndexShardArtifacts,
+  keywordSearchIndexFingerprint,
+  readKeywordSearchIndexFromShards,
+  writeKeywordSearchIndexShardArtifacts,
+} from "../site/keyword_search_index_shards.mjs";
 
 const ROOT = new URL("../", import.meta.url);
-const OUTPUT = new URL("../worker/src/data/keyword_search_index.json", import.meta.url);
+const SHARD_DIR = new URL("../worker/src/data/keyword_search_index_shards/", import.meta.url);
 
 function json(relative) {
   return JSON.parse(readFileSync(new URL(relative, ROOT), "utf8"));
@@ -273,13 +279,22 @@ if (!coherence.ok) {
   process.exit(1);
 }
 const serialized = `${JSON.stringify(stamped, null, 2)}\n`;
+const artifacts = buildKeywordSearchIndexShardArtifacts(stamped);
 if (process.argv.includes("--check")) {
-  if (readFileSync(OUTPUT, "utf8") !== serialized) {
-    console.error(`stale keyword search index: ${fileURLToPath(OUTPUT)}`);
+  let indexed;
+  try {
+    indexed = readKeywordSearchIndexFromShards(SHARD_DIR);
+  } catch (error) {
+    console.error(String(error?.message || error));
     process.exit(1);
   }
-  console.log(`keyword search index current (${serialized.length} bytes)`);
+  if (keywordSearchIndexFingerprint(indexed) !== artifacts.manifest.logical_index.sha256) {
+    console.error(`stale keyword search index shards: ${fileURLToPath(SHARD_DIR)}`);
+    process.exit(1);
+  }
+  console.log(`keyword search index current (${Buffer.byteLength(serialized)} bytes)`);
 } else {
-  writeFileSync(OUTPUT, serialized);
-  console.log(`wrote ${fileURLToPath(OUTPUT)} (${serialized.length} bytes)`);
+  writeKeywordSearchIndexShardArtifacts(artifacts, SHARD_DIR);
+  const compressedBytes = artifacts.shards.reduce((sum, shard) => sum + shard.gzip.byteLength + shard.brotli.byteLength, 0);
+  console.log(`wrote ${artifacts.shards.length} keyword search family shards (${Buffer.byteLength(serialized)} logical bytes, ${compressedBytes} compressed bytes)`);
 }
