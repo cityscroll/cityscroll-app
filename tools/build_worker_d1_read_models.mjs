@@ -12,10 +12,14 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
+import {
+  readKeywordSearchIndexShard,
+  readKeywordSearchIndexShardManifest,
+} from "../site/keyword_search_index_shards.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = resolve(ROOT, "worker", ".d1-read-models");
-const SEARCH_INPUT = resolve(ROOT, "worker", "src", "data", "keyword_search_index.json");
+const SEARCH_SHARD_DIR = resolve(ROOT, "worker", "src", "data", "keyword_search_index_shards");
 const OCP_INPUT = resolve(ROOT, "worker", "src", "data", "ocp_awards_warehouse_lookup.json");
 const ENTITY_INPUT = resolve(ROOT, "worker", "src", "data", "entity_intelligence_lookup.json");
 
@@ -31,13 +35,15 @@ function json(value) {
   return JSON.stringify(value ?? null);
 }
 
-function statementsForSearch(doc) {
+function statementsForSearch({ manifest, dir }) {
   const lines = [
     "DELETE FROM keyword_search_fts;",
     "DELETE FROM keyword_search_documents;",
     "DELETE FROM keyword_search_families;",
   ];
-  for (const [familyId, family] of Object.entries(doc?.families || {})) {
+  for (const descriptor of manifest?.shards || []) {
+    const familyId = descriptor.family;
+    const family = readKeywordSearchIndexShard(dir, descriptor);
     lines.push(`INSERT INTO keyword_search_families (family_id, source, as_of, source_row_count, indexed_count, coverage_json) VALUES (${sqlString(familyId)}, ${nullable(family.source)}, ${nullable(family.as_of)}, ${Number(family.source_row_count) || 0}, ${Number(family.indexed_count) || 0}, ${sqlString(json(family.coverage || []))});`);
     for (const [ordinal, document] of (family.documents || []).entries()) {
       const documentId = `${familyId}:${ordinal}`;
@@ -218,16 +224,17 @@ function statementsForEntityIntelligence(doc) {
 }
 
 function parseArgs(argv) {
-  const out = { outputDir: DEFAULT_OUT };
+  const out = { outputDir: DEFAULT_OUT, check: false };
   for (let i = 2; i < argv.length; i += 1) {
     if (argv[i] === "--output-dir") out.outputDir = resolve(ROOT, argv[++i]);
+    else if (argv[i] === "--check") out.check = true;
     else throw new Error(`Unknown argument: ${argv[i]}`);
   }
   return out;
 }
 
-const { outputDir } = parseArgs(process.argv);
-const keyword = JSON.parse(readFileSync(SEARCH_INPUT, "utf8"));
+const { outputDir, check } = parseArgs(process.argv);
+const keyword = readKeywordSearchIndexShardManifest(SEARCH_SHARD_DIR);
 const ocp = JSON.parse(readFileSync(OCP_INPUT, "utf8"));
 const entity = JSON.parse(readFileSync(ENTITY_INPUT, "utf8"));
 mkdirSync(outputDir, { recursive: true });
@@ -238,9 +245,10 @@ writeFileSync(keywordPath, statementsForSearch(keyword));
 writeFileSync(ocpPath, statementsForOcp(ocp));
 writeFileSync(entityPath, statementsForEntityIntelligence(entity));
 console.log(JSON.stringify({
+  check,
   keyword_sql: keywordPath,
   keyword_bytes: readFileSync(keywordPath).byteLength,
-  keyword_documents: Object.values(keyword.families || {}).reduce((n, family) => n + (family.documents || []).length, 0),
+  keyword_documents: Number(keyword.manifest?.logical_index?.document_count) || 0,
   ocp_sql: ocpPath,
   ocp_bytes: readFileSync(ocpPath).byteLength,
   ocp_rows: Array.isArray(ocp.rows) ? ocp.rows.length : 0,

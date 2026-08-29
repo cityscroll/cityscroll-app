@@ -26,6 +26,7 @@ import { classifyPerformancePathname } from "../site/performance_route_classifie
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = join(ROOT, "architecture", "generated", "facts.json");
+const FALLBACK_GENERATED_AT = "1970-01-01T00:00:00.000Z";
 const CANARY_LIST = "architecture/observer-canaries.json";
 const PERFORMANCE_REGISTRY_PATH = "architecture/performance-observability.v1.json";
 const PERFORMANCE_REGISTRY_SCHEMA_PATH = "architecture/performance-observability.v1.schema.json";
@@ -428,9 +429,7 @@ function buildSearchFacts() {
       path: indexPath,
       schema: index.match(/\bschema:\s*["'](cityscroll\.keyword_search_index(?:\.[^"']+)?)["']/)?.[1] ?? null,
       families,
-      output: index.match(/["']([^"']*keyword_search_index\.json)["']/)?.[1]
-        ? "worker/src/data/keyword_search_index.json"
-        : null,
+      output: "worker/src/data/keyword_search_index_shards/manifest.json",
       source: source(indexPath, lineOf(index, "families:")),
     },
     producers,
@@ -809,7 +808,7 @@ function gitCommitTimestamp() {
 }
 
 function buildFacts({
-  generatedAt = gitCommitTimestamp() || new Date().toISOString(),
+  generatedAt = gitCommitTimestamp() || FALLBACK_GENERATED_AT,
   commit = gitCommit(),
   performanceCandidatePaths,
 } = {}) {
@@ -920,7 +919,7 @@ function main() {
   const check = process.argv.includes("--check");
   const stdout = process.argv.includes("--stdout");
   const facts = buildFacts({
-    generatedAt: process.env.ARCHITECTURE_FACTS_GENERATED_AT || gitCommitTimestamp() || new Date().toISOString(),
+    generatedAt: process.env.ARCHITECTURE_FACTS_GENERATED_AT || gitCommitTimestamp() || FALLBACK_GENERATED_AT,
     commit: gitCommit(),
   });
   const rendered = render(facts);
@@ -938,7 +937,9 @@ function main() {
     process.stdout.write(rendered);
     return;
   }
+  // determinism-lint: allow write output is written only in non-check, non-stdout mode.
   mkdirSync(dirname(OUTPUT), { recursive: true });
+  // determinism-lint: allow write output is written only in non-check, non-stdout mode.
   writeFileSync(OUTPUT, rendered);
   console.log(`wrote ${relative(ROOT, OUTPUT)}`);
 }

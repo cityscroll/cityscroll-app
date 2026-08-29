@@ -40,6 +40,12 @@
   objects with board context; keep `site/committee_search_producer.mjs` Council/Legistar-specific
   and rebuild with `node tools/build_keyword_search_index.mjs`.
 
+- **Keyword index delivery:** `site/keyword_search_index_shards.mjs` owns the compressed,
+  family-sharded keyword index manifest and integrity checks. `node tools/build_keyword_search_index.mjs`
+  regenerates the committed gzip/Brotli shards; `--check` fails closed when the source projection
+  differs. `tools/build_worker_d1_read_models.mjs` consumes the family shards directly, so the
+  removed monolithic JSON must not be reintroduced as a D1 build input.
+
 - **Independent Checkbook payment population (AP-08):** `warehouse/payment_populations.v0.json`
   declares the fiscal-year `Spending` API acquisition separately from the bounded
   `warehouse/scripts/checkbook_spending.mjs` graph-enrichment collector. The acquisition script

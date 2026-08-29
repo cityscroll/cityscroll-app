@@ -18,6 +18,8 @@ on:
       - "site/data/watch_templates.json"
       - "site/data/following_procurement_suggestions.json"
       - "tools/build_worker_d1_read_models.mjs"
+      - "tools/build_keyword_search_index.mjs"
+      - "site/keyword_search_index_shards.mjs"
       - "tools/build_following_procurement_suggestions.mjs"
       - "tools/build_worker_route_read_models.mjs"
       - "tools/worker_deploy_guard.mjs"
@@ -72,6 +74,10 @@ jobs:
           workingDirectory: worker
           wranglerVersion: "4.126.0"
           command: d1 migrations apply crol-notices --remote
+      # The compressed family shards are derived from the source projection. A
+      # stale or tampered shard set must stop deployment before any D1 writes.
+      - name: Verify keyword index source projection and shards
+        run: node tools/build_keyword_search_index.mjs --check
       - name: Build D1 search, OCP, and entity-intelligence read models
         run: node tools/build_worker_d1_read_models.mjs --output-dir worker/.d1-read-models
       - name: Publish D1 search, OCP, and entity-intelligence read models

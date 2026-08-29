@@ -21,11 +21,12 @@ import {
   sodaSellFacingUrl,
 } from "../warehouse/lib/zap_freshness.mjs";
 import { fetchLandDefaultProjects } from "../tools/lib/batch_precompute_snapshots.mjs";
+import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const LOOKUP = join(ROOT, "site/data/zap_projects_warehouse_lookup.json");
 const LOOKUP_WORKER = join(ROOT, "worker/src/data/zap_projects_warehouse_lookup.json");
-const KEYWORD = join(ROOT, "worker/src/data/keyword_search_index.json");
+const KEYWORD = join(ROOT, "worker/src/data/keyword_search_index_shards/manifest.json");
 const WORKFLOW_FRESHNESS = join(
   ROOT,
   ".github/workflows/land-zap-freshness-refresh.yml",
@@ -147,8 +148,8 @@ describe("committed land freshness publish loop", () => {
   });
 
   it("indexes both canaries in the land keyword family", () => {
-    assert.ok(existsSync(KEYWORD), "keyword_search_index missing");
-    const index = JSON.parse(readFileSync(KEYWORD, "utf8"));
+    assert.ok(existsSync(KEYWORD), "keyword_search_index shard manifest missing");
+    const index = readKeywordSearchIndexFromShards(KEYWORD);
     const landDocs = index.families?.land?.documents || [];
     const ids = new Set(
       landDocs.map((doc) =>
