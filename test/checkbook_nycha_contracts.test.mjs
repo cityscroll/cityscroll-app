@@ -18,6 +18,7 @@ import {
 import { collectNychaPages } from "../warehouse/scripts/checkbook_nycha_contracts.mjs";
 import { buildProcurementObjects } from "../site/procurement_object_contract.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
+import { readKeywordSearchIndexFromShards } from "../site/keyword_search_index_shards.mjs";
 
 const xml = `<response><status><result>success</result></status><record_count>1</record_count><transaction><contract_id>BA2335819</contract_id><record_type>Agreement</record_type><vendor>VITAL PLUMBING INC</vendor><pin>19056829</pin><purpose>Steam control valve work</purpose><contract_start_date>2025-01-14</contract_start_date><contract_end_date>2028-01-13</contract_end_date><contract_current_amount>4348681.74</contract_current_amount></transaction></response>`;
 
@@ -135,7 +136,7 @@ test("frozen native row reaches shared search, agency, vendor, and detail artifa
   assert.match(JSON.stringify(vital), /BA2335819/);
   assert.match(JSON.stringify(vital), /checkbook_nycha_contracts/);
 
-  const keyword = JSON.parse(readFileSync("worker/src/data/keyword_search_index.json", "utf8"));
+  const keyword = readKeywordSearchIndexFromShards("worker/src/data/keyword_search_index_shards/manifest.json");
   const indexed = JSON.stringify(keyword);
   assert.equal((indexed.match(/procurement:contract:BA2335819/g) || []).length > 0, true);
   assert.match(indexed, /BA2335819/);

@@ -9,12 +9,16 @@ import {
   buildUniversalSearchCoverageView,
   renderUniversalSearchCoverageHtml,
 } from "../../site/universal_search_coverage_receipt.mjs";
+import { readKeywordSearchIndexFromShards } from "../../site/keyword_search_index_shards.mjs";
 
 const NOTICE_SCHEMA = readFileSync(new URL("../migrations/0001_notices.sql", import.meta.url), "utf8");
 const FACTS_SCHEMA = readFileSync(new URL("../migrations/0010_notice_facts.sql", import.meta.url), "utf8");
 const FTS_SCHEMA = readFileSync(new URL("../migrations/0016_notice_fts.sql", import.meta.url), "utf8");
 const READ_MODEL_SCHEMA = readFileSync(new URL("../migrations/0025_search_and_ocp_read_models.sql", import.meta.url), "utf8");
-const KEYWORD_INDEX = JSON.parse(readFileSync(new URL("../src/data/keyword_search_index.json", import.meta.url), "utf8"));
+const KEYWORD_INDEX = readKeywordSearchIndexFromShards(new URL(
+  "../../worker/src/data/keyword_search_index_shards/manifest.json",
+  import.meta.url,
+));
 const OCP_LOOKUP = JSON.parse(readFileSync(new URL("../src/data/ocp_awards_warehouse_lookup.json", import.meta.url), "utf8"));
 
 function installReadModels(sqlite) {
