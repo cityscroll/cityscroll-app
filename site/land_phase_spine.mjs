@@ -8,6 +8,7 @@
  * Presentation (HTML) lives in site/index.html landSpineHTML.
  */
 
+import { resolveLandActionProcedures } from "./land_action_procedure_resolution.mjs";
 import { buildLandProcedureProfileView } from "./land_procedure_profiles.mjs";
 
 export const LAND_PHASE_SPINE_SCHEMA_VERSION = 1;
@@ -669,6 +670,7 @@ export function buildLandPhaseView(spine, opts = {}) {
     current_phase_id: currentPhaseId,
     current_stage_id: opts.current_stage_id || null,
   });
+  const actionProcedure = resolveLandActionProcedures(procedureFacts);
 
   return {
     schema_version: LAND_PHASE_SPINE_SCHEMA_VERSION,
@@ -706,6 +708,8 @@ export function buildLandPhaseView(spine, opts = {}) {
     // Layer B (normative) remains structurally distinct from chronological,
     // phase, and aggregate Layer C observation fields above.
     procedure_profile: procedureProfile,
+    land_actions: actionProcedure.land_actions,
+    procedure_resolution: actionProcedure.procedure_resolution,
   };
 }
 
