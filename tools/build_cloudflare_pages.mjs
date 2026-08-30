@@ -67,6 +67,7 @@ runNode(sourceDir, "build_source_health_observations.mjs", ["--check"]);
 // data-health page. Check it here so an old projection cannot be copied into
 // the release artifact after current observations succeeded.
 runNode(sourceDir, "build_source_health_public_projection.mjs", ["--check"]);
+runNode(sourceDir, "build_product_updates.mjs", ["--check"]);
 
 if (refresh) {
   runNode(sourceDir, "build_batch_precompute_snapshots.mjs", ["--land-only"]);
