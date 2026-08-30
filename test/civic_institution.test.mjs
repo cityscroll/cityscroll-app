@@ -4,9 +4,12 @@ import test from "node:test";
 import {
   CIVIC_INSTITUTION_PROJECTION_SCHEMA,
   ENTITY_LINK_SCHEMA,
+  REVIEWED_BOROUGH_BOARDS,
+  boroughBoardIdentity,
   buildCivicInstitutionIdentity,
   buildEntityLink,
   parseCivicInstitutionIdentity,
+  parseBoroughBoardIdentity,
   projectCivicInstitution,
   resolveCivicInstitutionLink,
   sourceRecordObservation,
@@ -16,6 +19,17 @@ import {
 const dsny = buildCivicInstitutionIdentity({
   canonicalId: "sanitation",
   canonicalName: "New York City Department of Sanitation",
+});
+
+test("reviewed Borough Board identities are five canonical civic-institution references", () => {
+  assert.equal(REVIEWED_BOROUGH_BOARDS.length, 5);
+  assert.equal(new Set(REVIEWED_BOROUGH_BOARDS.map((row) => row.id)).size, 5);
+  const brooklyn = boroughBoardIdentity("brooklyn");
+  assert.equal(brooklyn.id, "borough-board:brooklyn");
+  assert.equal(brooklyn.institution.id, "civic-institution:brooklyn-borough-board");
+  assert.equal(brooklyn.institution.legacy_subject_ref, "agency:id:brooklyn-borough-board");
+  assert.equal(parseBoroughBoardIdentity("borough-board:queens")?.borough, "Queens");
+  assert.equal(boroughBoardIdentity("citywide"), null);
 });
 
 test("source-preserving institution identity retains the agency compatibility subject", () => {

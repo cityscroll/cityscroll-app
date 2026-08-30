@@ -9,6 +9,7 @@
  */
 
 import { resolveLandActionProcedures } from "./land_action_procedure_resolution.mjs";
+import { projectAffectedReviewBodies } from "./land_affected_review_body.mjs";
 import { buildLandProcedureProfileView } from "./land_procedure_profiles.mjs";
 
 export const LAND_PHASE_SPINE_SCHEMA_VERSION = 1;
@@ -665,6 +666,12 @@ export function buildLandPhaseView(spine, opts = {}) {
     ...(openData && typeof openData === "object" ? openData : {}),
     ...(opts.procedure_facts && typeof opts.procedure_facts === "object" ? opts.procedure_facts : {}),
   };
+  const affectedReviewBodies = procedureFacts.affected_review_body_for?.schema
+    ? procedureFacts.affected_review_body_for
+    : projectAffectedReviewBodies(procedureFacts, { geography: opts.geography });
+  if (!Object.hasOwn(procedureFacts, "affected_review_bodies") && affectedReviewBodies?.facts) {
+    procedureFacts.affected_review_bodies = affectedReviewBodies.facts;
+  }
   const procedureProfile = buildLandProcedureProfileView({
     source: procedureFacts,
     current_phase_id: currentPhaseId,
@@ -710,6 +717,8 @@ export function buildLandPhaseView(spine, opts = {}) {
     procedure_profile: procedureProfile,
     land_actions: actionProcedure.land_actions,
     procedure_resolution: actionProcedure.procedure_resolution,
+    affected_review_body_for: affectedReviewBodies,
+    affected_review_bodies: affectedReviewBodies?.facts || procedureFacts.affected_review_bodies || null,
   };
 }
 

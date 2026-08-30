@@ -734,6 +734,31 @@
       "grounding": "partial"
     },
     {
+      "id": "borough-board",
+      "status": "registered",
+      "layer": "identity",
+      "reason": "Reviewed five-borough identity table for Charter borough boards. It is a civic-institution reference, not a public roster, and never an observed recommendation.",
+      "primary_key_pattern": "borough-board:{borough}",
+      "families": [],
+      "backing": [
+        "cityscroll.civic_institution.v1",
+        "REVIEWED_BOROUGH_BOARDS"
+      ],
+      "properties_ref": [
+        "id",
+        "civic_institution_id",
+        "borough",
+        "borough_slug"
+      ],
+      "identity_contract": {
+        "schema": "cityscroll.civic_institution.v1",
+        "source_qualified": true,
+        "public_route": null,
+        "reviewed_table": true
+      },
+      "grounding": "partial"
+    },
+    {
       "id": "bylaw-version",
       "status": "registered",
       "layer": "semantic",
@@ -1495,6 +1520,34 @@
         "public_graph.edge"
       ],
       "label": "Governed by",
+      "grounding": "partial"
+    },
+    {
+      "id": "affected_review_body_for",
+      "status": "registered",
+      "from": "land_project",
+      "to": "community-board|borough-president|borough-board",
+      "relation": "affected_review_body_for",
+      "reason": "Normative Charter § 196 affected-review-body edge from exact project community districts and Community Board covers relations. Same-borough distinct community districts affect the borough board. The edge is not an observed recommendation, meeting, or disposition.",
+      "contract_ref": "cityscroll.affected_review_body_for.v1",
+      "edge_schema": "cityscroll.affected_review_body_for.v1",
+      "required_evidence": [
+        "exact_project_id",
+        "exact_community_district_tokens",
+        "published_covers_edge",
+        "uniform_procedure",
+        "boundary_vintage",
+        "profile_version",
+        "legal_basis"
+      ],
+      "negative_rule": "Never derive Borough Board involvement from boroughwide importance, title, applicant, address parsing, meeting presence, draft disposition, or a district guess.",
+      "backing": [
+        "zap_projects_warehouse_lookup",
+        "community_board_geography_lookup",
+        "land_procedure_profiles",
+        "REVIEWED_BOROUGH_BOARDS"
+      ],
+      "label": "Affected review body for",
       "grounding": "partial"
     },
     {

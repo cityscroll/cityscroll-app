@@ -15,6 +15,8 @@ import { catalogExists, getDataset, WAREHOUSE_DIR } from "./catalog.mjs";
 import { queryWarehouse } from "./query.mjs";
 import { stampLandRegulatoryEffect } from "../../ontology/land_regulatory_effect.mjs";
 import { stampLandActionProcedureResolution } from "../../site/land_action_procedure_resolution.mjs";
+import { stampAffectedReviewBodies } from "../../site/land_affected_review_body.mjs";
+import communityBoardGeography from "../../site/data/community_board_geography_lookup.json" with { type: "json" };
 import {
   stampZapEnvironmentalProjection,
   ZAP_ENVIRONMENTAL_SOURCE_COLS,
@@ -107,12 +109,15 @@ export function rowToSodaShape(row, opts = {}) {
   out.regulatory_effect_confidence = stamped.regulatory_effect_confidence;
   out.regulatory_effect_basis = stamped.regulatory_effect_basis;
   const asOf = opts.asOf || opts.now || null;
-  return stampLandActionProcedureResolution(stampZapEnvironmentalProjection(out, {
+  return stampAffectedReviewBodies(stampLandActionProcedureResolution(stampZapEnvironmentalProjection(out, {
     asOf,
     cutoff: opts.cutoff || asOf,
     observedAt: opts.observedAt,
     datasetId: opts.datasetId,
-  }), { asOf, sourceVintage: asOf });
+  }), { asOf, sourceVintage: asOf }), {
+    asOf,
+    geography: opts.geography || communityBoardGeography,
+  });
 }
 
 export function sqlZapByProjectId(projectId, table = zapTableName()) {
