@@ -179,6 +179,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   non-empty `index.html`, writes `.artifacts/generation-output-receipt.json`, and fails before
   delivery when the required entrypoint is missing; regression coverage is in
   `test/generation_output_guard.test.mjs`.
+- **Card-projection reconciliation completeness:** `tools/card_reconciliation_guard.mjs`
+  compares a source card inventory with declared projection paths by stable card id.
+  Missing, omitted, stale, mismatched, or malformed inventories fail closed and name the
+  card plus the affected projection; a complete check does not rewrite card status.
+  Sibling projections stay represented when one projection is incomplete. Verify with
+  `node tools/check_card_reconciliation.mjs --check` and
+  `test/card_reconciliation_guard.test.mjs`. Keep this guard separate from generation-output
+  and freshness checks.
 
 - **Owner-proof evidence store:** `tools/evidence_store.py` writes immutable WebP/AVIF captures
   to SHA-256 content-addressed objects and a PR/card/phase/viewport receipt index; the
@@ -4192,7 +4200,9 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
 
 - **Release-surface evidence:** `tools/release_surface_reconciliation.mjs` is the shared receipt
   contract for generation output, card/projection inventory parity, generated-evidence freshness,
-  and served-artifact checks. `tools/check_release_surface_reconciliation.mjs` writes the durable
+  and served-artifact checks. Card completeness is owned by `tools/card_reconciliation_guard.mjs`
+  and is joined into the aggregate only when inventories are supplied.
+  `tools/check_release_surface_reconciliation.mjs` writes the durable
   `.artifacts/release-surface-receipt.json`; Pages CI uploads it with the generation receipt and
   artifact manifest. Keep source age limits source-declared and do not turn provider deployment
   timestamps into source acknowledgements. That aggregate is not a 2/2 Pages+Worker deployment

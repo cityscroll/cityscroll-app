@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.card-projection-inventory.v1",
+  "projections": [
+    {
+      "id": "status-board",
+      "path": "waves.html",
+      "cards": [
+        {
+          "id": "rel-03",
+          "status": "implemented",
+          "source_updated_at": "2026-08-26T10:00:00Z"
+        },
+        {
+          "id": "rel-05",
+          "status": "implemented",
+          "source_updated_at": "2026-08-27T11:00:00Z"
+        }
+      ]
+    }
+  ]
+}

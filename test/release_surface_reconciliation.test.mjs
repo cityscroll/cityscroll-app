@@ -73,8 +73,8 @@ test("card reconciliation catches omission and stale projection without mutating
   const before = JSON.stringify({ sourceCards, generatedBoard });
   const result = reconcileCardProjection({ sourceCards, generatedBoard });
   assert.equal(result.status, "FAIL");
-  assert.ok(result.findings.includes("generated board projection for card rel-03 is stale"));
-  assert.ok(result.findings.includes("source card rel-04 is missing from generated board"));
+  assert.ok(result.findings.includes("generated projection generated-board for card rel-03 is stale"));
+  assert.ok(result.findings.includes("source card rel-04 is missing from projection generated-board"));
   assert.equal(JSON.stringify({ sourceCards, generatedBoard }), before);
 });
 
@@ -93,7 +93,7 @@ test("card reconciliation does not let a missing source receipt masquerade as cu
     generatedBoard: [{ id: "rel-06", status: "implemented" }],
   });
   assert.equal(result.status, "FAIL");
-  assert.deepEqual(result.findings, ["generated board projection for card rel-06 has no source receipt"]);
+  assert.deepEqual(result.findings, ["generated projection generated-board for card rel-06 has no source receipt"]);
 });
 
 test("generated evidence freshness uses the source-declared age and hash", () => {
@@ -142,7 +142,7 @@ test("release receipt retains stage failures and can be written as durable evide
     requiredStages: ["generation_output", "card_reconciliation", "generated_evidence_freshness"],
     stages: {
       generation_output: { status: "PASS", findings: [], evidence: {} },
-      card_reconciliation: { status: "FAIL", findings: ["source card rel-04 is missing from generated board"], evidence: {} },
+      card_reconciliation: { status: "FAIL", findings: ["source card rel-04 is missing from projection generated-board"], evidence: {} },
       generated_evidence_freshness: { status: "PASS", findings: [], evidence: {} },
     },
   });
