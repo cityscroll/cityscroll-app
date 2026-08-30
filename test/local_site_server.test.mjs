@@ -42,6 +42,9 @@ test("full preflight and CI use the route-aware server without touching existing
     "full preflight must prepare primary documents exactly once");
   assert.ok(preflightBuild >= 0 && preflightBuild < preflightServer,
     "full preflight must build primary documents before starting its functional server");
+  const hashRouteFocus = source.indexOf("test/functional/19_hash_route_focus.py");
+  assert.ok(preflightBuild >= 0 && hashRouteFocus >= 0 && preflightBuild < hashRouteFocus,
+    "full preflight must prepare the Pages-shaped artifact before hash-route browser checks");
   assert.match(source, /tools\/local_site_server\.py/);
   assert.match(source, /tools\/local_site_server\.py[\s\\]*\n\s*--directory _site[\s\\]*\n\s*--port/,
     "full preflight must serve the prepared public artifact so client modules resolve");
