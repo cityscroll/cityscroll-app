@@ -4,25 +4,27 @@
  * Check-mode determinism lint.
  *
  * The lint starts at explicit `--check` commands in workflows which can run for
- * a pull request or merge group. It follows local JavaScript imports and shell
- * helper calls, then reports environmental inputs that can make a gate change
- * result without a source change. Schedule-only workflows are monitors, not
- * merge gates, and are intentionally reported separately.
+ * a pull request or merge group. It follows local JavaScript and shell helper
+ * calls, then reports environmental inputs that can make a gate change result
+ * without a source change. Schedule-only workflows are monitors, not merge
+ * gates, and are intentionally reported separately.
  *
- * This is a source inspection tool. It never writes a baseline, receipt, or
- * generated artifact. A finding may be waived only at the finding's line with
- * a reasoned `determinism-lint: allow <category> ...` annotation.
+ * Check mode never writes a baseline, receipt, or generated artifact. A
+ * finding may be waived only at the finding's line with a reasoned
+ * `determinism-lint: allow|inject <category> ...` annotation. Write mode
+ * (`--write-receipt`) is a separate command used only to refresh a committed
+ * fixture receipt.
  */
 
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const WORKFLOW_DIR = path.join(ROOT, ".github", "workflows");
 const SOURCE_EXTENSIONS = new Set([".cjs", ".js", ".mjs", ".py", ".sh"]);
+const RECEIPT_SCHEMA = "cityscroll.determinism-lint.receipt.v1";
 
 const RULES = Object.freeze([
   {
@@ -47,7 +49,7 @@ const RULES = Object.freeze([
   },
   {
     category: "external-data",
-    pattern: /\b(?:--from-(?:live|soda)|--against-live|--live)\b|\b(?:SODA|LIVE|PRODUCTION|EXTERNAL)_?(?:URL|DATA|ORIGIN)\b|\bprocess\.env\.[A-Z0-9_]*(?:URL|DATA|ORIGIN|LIVE|TODAY|DATE|TZ)[A-Z0-9_]*\b/i,
+    pattern: /(?:^|[^\w-])(?:--from-(?:live|soda)|--against-live|--live)\b|\b(?:SODA|LIVE|PRODUCTION|EXTERNAL)_?(?:URL|DATA|ORIGIN)\b|\bprocess\.env\.[A-Z0-9_]*(?:URL|DATA|ORIGIN|LIVE|TODAY|DATE|TZ)[A-Z0-9_]*\b/i,
     remediation: "make the check consume a pinned local fixture or classify the live path as a non-gate monitor",
   },
   {
@@ -86,6 +88,73 @@ function explicitAllowance(source, line, category) {
   return false;
 }
 
+function isInjectedClockLine(text) {
+  const line = String(text || "");
+  if (/\b(?:now|clock|asOf|observedOn|observed_at|nowMs)\s*=\s*(?:[^=\n]*\?\?|[^=\n]*\|\|)/.test(line) && /Date\.now|new\s+Date\s*\(\s*\)/.test(line)) {
+    return true;
+  }
+  if (/\(\s*\{?\s*(?:[\w$]+\s*,\s*)*(?:now|clock|asOf|nowMs)\s*=\s*(?:Date\.now\s*\(\s*\)|new\s+Date\s*\(\s*\))/.test(line)) {
+    return true;
+  }
+  return false;
+}
+
+function innermostIfCondition(source, offset) {
+  let depth = 0;
+  for (let index = offset; index >= 0; index -= 1) {
+    const char = source[index];
+    if (char === "}") depth += 1;
+    else if (char === "{") {
+      if (depth === 0) {
+        const before = source.slice(Math.max(0, index - 240), index);
+        const match = before.match(/if\s*\(([^)]*)\)\s*$/s);
+        return match ? match[1].replace(/\s+/g, " ").trim() : null;
+      }
+      depth -= 1;
+    }
+  }
+  return null;
+}
+
+function isCheckModeCondition(condition) {
+  return /^(?:!?!\s*)?(?:args\.)?check(?:\s*===?\s*true)?$/.test(String(condition || "").trim());
+}
+
+function isWriteModeCondition(condition) {
+  const value = String(condition || "").trim();
+  if (!value) return false;
+  if (/^!\s*(?:args\.)?check(?:\s*===?\s*true)?$/.test(value)) return true;
+  if (/^(?:args\.)?(?:write|fromLive|fromSoda|live|bench)(?:\s*===?\s*true)?$/.test(value)) return true;
+  if (/\b(?:args\.)?(?:write|fromLive|fromSoda)\b/.test(value) && !/\bcheck\b/.test(value)) return true;
+  return false;
+}
+
+function isLiveOnlyCondition(condition) {
+  const value = String(condition || "").trim();
+  return /(?:args\.)?(?:fromLive|fromSoda|live)\b/.test(value) && !/\bcheck\b/.test(value);
+}
+
+function hasPriorCheckReturn(source, offset) {
+  const before = source.slice(Math.max(0, offset - 1200), offset);
+  return /\bif\s*\(\s*(?:args\.)?check\s*\)\s*\{[\s\S]*?\b(?:return|throw)\b[\s\S]*?\}\s*$/.test(before.trimEnd());
+}
+
+function shouldSkipFinding(rule, source, offset) {
+  const line = lineNumber(source, offset);
+  const text = lineAt(source, line);
+  const condition = innermostIfCondition(source, offset);
+  if (rule.category === "clock" && isInjectedClockLine(text)) return true;
+  if (rule.category === "write") {
+    if (isWriteModeCondition(condition)) return true;
+    if (isCheckModeCondition(condition)) return false;
+    if (hasPriorCheckReturn(source, offset)) return true;
+  }
+  if ((rule.category === "network" || rule.category === "external-data") && isLiveOnlyCondition(condition)) {
+    return true;
+  }
+  return false;
+}
+
 function sourceFinding(root, filePath, source, rule, offset, command) {
   const line = lineNumber(source, offset);
   if (rule.category === "timezone") {
@@ -94,6 +163,7 @@ function sourceFinding(root, filePath, source, rule, offset, command) {
     if (/\btoLocaleString\s*\(/.test(context) && !/\b(?:Date|date|time)\b/.test(context)) return null;
   }
   if (explicitAllowance(source, line, rule.category)) return null;
+  if (shouldSkipFinding(rule, source, offset)) return null;
   return {
     category: rule.category,
     detector: rule.pattern.source,
@@ -159,7 +229,8 @@ function hasCheckMode(text) {
 
 function workflowCommandFindings(root, filePath, block) {
   const source = block.text;
-  const findings = analyzeSource({ root, filePath, source, command: `${relative(root, filePath)}:${block.line}` });
+  const findings = analyzeSource({ root, filePath, source, command: `${relative(root, filePath)}:${block.line}` })
+    .map((finding) => ({ ...finding, line: block.line + finding.line - 1 }));
   const absoluteLine = (offset) => block.line + String(source).slice(0, offset).split("\n").length - 1;
   const sourceLine = (offset) => String(source).split("\n")[String(source).slice(0, offset).split("\n").length - 1].trim();
   const add = (category, detector, remediation, offset) => findings.push({
@@ -326,16 +397,132 @@ export function lintRepository({ root = ROOT, workflowDir = path.join(root, ".gi
   };
 }
 
+function rootRelativePath(root, filePath) {
+  if (!filePath) return null;
+  return path.isAbsolute(filePath) ? relative(root, filePath) : String(filePath).split(path.sep).join("/");
+}
+
+export function canonicalEvidence(report, { root = ROOT } = {}) {
+  const compact = (entries, kind) => (entries || []).map((entry) => ({
+    kind,
+    workflow: entry.workflow,
+    line: entry.line,
+    path: rootRelativePath(root, entry.sourcePath || entry.path),
+  })).sort((left, right) => left.workflow.localeCompare(right.workflow) || left.line - right.line || String(left.path).localeCompare(String(right.path)));
+  return {
+    schema: RECEIPT_SCHEMA,
+    gates: compact(report.gates, "gate"),
+    monitors: compact(report.monitors, "monitor"),
+    findings: (report.findings || []).map((finding) => ({
+      category: finding.category,
+      path: finding.path,
+      line: finding.line,
+      source: finding.source,
+      remediation: finding.remediation,
+    })),
+  };
+}
+
+export function stableStringify(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
+
 function formatFinding(finding) {
   return `${finding.path}:${finding.line}: ${finding.category}: ${finding.source}\n  remediation: ${finding.remediation}`;
 }
 
+export function parseArgs(argv = []) {
+  const args = { check: false, writeReceipt: false, fixture: null, now: null };
+  for (let index = 0; index < argv.length; index += 1) {
+    const token = argv[index];
+    if (token === "--check") args.check = true;
+    else if (token === "--write-receipt") args.writeReceipt = true;
+    else if (token === "--fixture") {
+      args.fixture = argv[index + 1];
+      index += 1;
+    } else if (token === "--now") {
+      args.now = argv[index + 1];
+      index += 1;
+    } else {
+      throw new Error(`Unknown argument: ${token}`);
+    }
+  }
+  return args;
+}
+
+export function resolveFixtureRoot(fixturePath, { cwd = process.cwd() } = {}) {
+  if (!fixturePath) return null;
+  const fixture = path.resolve(cwd, fixturePath);
+  const nested = path.join(fixture, "repo");
+  if (existsSync(path.join(nested, ".github", "workflows"))) return { fixture, root: nested };
+  return { fixture, root: fixture };
+}
+
+function expectedReceiptPath(fixture) {
+  return path.join(fixture, "expected", "receipt.json");
+}
+
 export function main(argv = process.argv.slice(2)) {
-  if (!argv.includes("--check")) {
-    process.stderr.write("Usage: node tools/determinism_lint.mjs --check\n");
+  let args;
+  try {
+    args = parseArgs(argv);
+  } catch (error) {
+    process.stderr.write(`${error.message}\n`);
     return 2;
   }
-  const report = lintRepository({ changedOnly: true });
+  if (args.check === args.writeReceipt) {
+    process.stderr.write("Usage: node tools/determinism_lint.mjs --check [--fixture DIR] [--now ISO]\n");
+    process.stderr.write("       node tools/determinism_lint.mjs --write-receipt --fixture DIR\n");
+    return 2;
+  }
+  if (args.now != null && Number.isNaN(Date.parse(args.now))) {
+    process.stderr.write("--now must be an ISO-8601 timestamp\n");
+    return 2;
+  }
+  if (args.writeReceipt && !args.fixture) {
+    process.stderr.write("--write-receipt requires --fixture\n");
+    return 2;
+  }
+
+  const fixture = args.fixture ? resolveFixtureRoot(args.fixture) : null;
+  const root = fixture ? fixture.root : ROOT;
+  const report = lintRepository({
+    root,
+    workflowDir: path.join(root, ".github", "workflows"),
+    changedOnly: !fixture,
+  });
+  const evidence = canonicalEvidence(report, { root });
+  // `--now` is an explicit declared input. It is accepted so callers can replay
+  // a check across clocks, but it is never copied into invariant evidence.
+  void args.now;
+
+  if (args.writeReceipt) {
+    const receiptPath = expectedReceiptPath(fixture.fixture);
+    mkdirSync(path.dirname(receiptPath), { recursive: true });
+    writeFileSync(receiptPath, stableStringify(evidence));
+    process.stdout.write(`wrote ${path.relative(process.cwd(), receiptPath)}\n`);
+    return 0;
+  }
+
+  if (fixture) {
+    const receiptPath = expectedReceiptPath(fixture.fixture);
+    if (!existsSync(receiptPath)) {
+      process.stderr.write(`${relative(ROOT, receiptPath)} is missing; generate it with --write-receipt\n`);
+      return 1;
+    }
+    const expected = readFileSync(receiptPath, "utf8");
+    const actual = stableStringify(evidence);
+    if (expected !== actual) {
+      process.stderr.write("determinism lint fixture receipt drifted:\n");
+      process.stderr.write(`  ${relative(ROOT, receiptPath)}\n`);
+      return 1;
+    }
+    process.stdout.write(
+      `determinism lint passed (${report.gates.length} gate roots; ${report.monitors.length} scheduled monitor roots excluded)\n`,
+    );
+    return 0;
+  }
+
   if (report.findings.length) {
     process.stderr.write("determinism lint failed for required check-mode gates:\n");
     process.stderr.write(`${report.findings.map(formatFinding).join("\n")}\n`);
@@ -349,4 +536,4 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   process.exitCode = main();
 }
 
-export { RULES, stripCommentsPreservingLines };
+export { RECEIPT_SCHEMA, RULES, stripCommentsPreservingLines };
