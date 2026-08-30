@@ -246,6 +246,7 @@ run_and_fail node tools/build_geocoder_address_index.mjs --check
 run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/build_capability_topology.mjs --check
+run_and_fail node tools/build_product_updates.mjs --check
 run_and_fail node tools/run_capability_semantic_scout.mjs \
   --fixture test/fixtures/capability_semantic_scout.json \
   --out artifacts/capability-spine/cs-05-semantic-scout.json \

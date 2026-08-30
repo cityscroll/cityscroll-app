@@ -4233,6 +4233,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   MTA operating entities distinct from the parent aggregate and allow cross-source joins only on
   exact contract identifiers. Focused proof is `test/mta_procurement_source_records.test.mjs`.
 
+- **Product-update candidates:** `site/product_updates_source.mjs` projects the versioned
+  public `site/product-updates.json` artifact from the changelog, checked architecture
+  reconciliation, frozen capability registry, and demo manifest. Joins are exact
+  capability/demo identifiers only. Rebuild with `node tools/build_product_updates.mjs`;
+  `--check` verifies the committed bytes. Focused proof is `test/product_updates_source.test.mjs`.
+
 - **Mailto subscribe later experiment (FS-10):** `site/mailto_subscribe_later.mjs`
   is the fail-closed contract for encoding a reviewed Following sentence to the
   configured inbound subscribe address. It stays disabled until a named FS-05
