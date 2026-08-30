@@ -16,7 +16,6 @@ export const MAIL_CANARY_TOKEN_PREFIX_LENGTH = 8;
 export const HUMAN_OPS_MAILBOXES = Object.freeze([
   "team@cityscroll.org",
   "alerts@cityscroll.org",
-  "alerts@crol-list.org",
 ]);
 
 const day = (value) => new Date(value).toISOString().slice(0, 10);
@@ -186,7 +185,10 @@ export function normalizeMailbox(value) {
 
 export function isHumanOpsMailbox(value) {
   const address = normalizeMailbox(value);
-  return Boolean(address) && HUMAN_OPS_MAILBOXES.includes(address);
+  if (!address) return false;
+  if (HUMAN_OPS_MAILBOXES.includes(address)) return true;
+  const domain = DEFAULT_SUBSCRIBE_ADDRESS.split("@")[1];
+  return Boolean(domain) && address === `alerts@${domain}`;
 }
 
 export function mailCanaryEnvelope(to, cc = []) {

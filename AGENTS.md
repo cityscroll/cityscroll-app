@@ -1046,8 +1046,8 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 - **Mail-leg health:** inbound Email Routing and outbound Resend are separate rails.
   `worker/src/reliability_watchdogs.mjs` records Worker-consumer receipts and operations-mailbox
-  sends. Routine canaries go only to the worker-consumed probe (`subscribe@crol-list.org` by
-  default) and never to `team@cityscroll.org` / `alerts@cityscroll.org`. Failed, missing, or stale
+  sends. Routine canaries go only to the worker-consumed subscribe address and never to
+  `team@cityscroll.org` / `alerts@cityscroll.org`. Failed, missing, or stale
   canaries exception-alert `team@cityscroll.org` once per fingerprint per day; a rejected
   exception stays HTTP/GitHub-red and does not retry through the dead rail.
   `GET /admin/reliability/mail` plus the digest/scheduler watchdogs return 503 / GitHub-red

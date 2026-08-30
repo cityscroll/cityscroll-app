@@ -6,13 +6,15 @@ A failure on one does not prove a failure on the other.
 | Leg | Path | How it is checked |
 |---|---|---|
 | Outbound operations mailbox | Worker Resend send to `team@cityscroll.org` | Exception-only. Failed, missing, or stale canaries and rejected sends alert this mailbox once per finding fingerprint per day. Routine canaries never use it. |
-| Inbound Worker consumer | `subscribe@crol-list.org` → Worker `email()` handler | Canary subject token must appear in an `ops:mail:canary:inbound:<token>` receipt. The probe `to`/`cc` envelope is only that worker-owned address. |
+| Inbound Worker consumer | `subscribe@crol-list.org` → Worker `email()` handler | Canary subject token must appear in an `ops:mail:` inbound receipt |
 | Inbound Gmail forward | `alerts@crol-list.org` and the domain catch-all | Dashboard-gated; this repo cannot observe the destination inbox |
 
-A routine canary is addressed only to the worker-consumed probe (`SUBSCRIBE_ADDRESS`,
-default `subscribe@crol-list.org`). Configuration that resolves to `team@cityscroll.org`,
-`alerts@cityscroll.org`, or `alerts@crol-list.org` is refused before send. The From
-address is not a recipient.
+A routine canary is addressed only to the worker-consumed subscribe address
+(`SUBSCRIBE_ADDRESS`, defaulting to that inbound Worker consumer). Configuration that
+resolves to `team@cityscroll.org`, `alerts@cityscroll.org`, or the Gmail-forward
+address is refused before send. The From address is not a recipient. The probe
+`to`/`cc` envelope is only that worker-owned address, and the inbound match key is
+`ops:mail:canary:inbound:<token>`.
 
 The subject stays exact-prefix `[cityscroll-mail-canary]` plus a 32-hex token.
 
