@@ -8,6 +8,11 @@
 import { bblReaderLabel } from "./bbl_reader.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
+import {
+  NYCEDC_CANONICAL_ID,
+  WILLETS_POINT_PROJECT_ID,
+  isNycEdcApplicantSpelling,
+} from "./civic_institution_development_specimens.mjs";
 
 export const PROJECT_CONNECTION_GROUPS = Object.freeze([
   { id: "applicant", relation: "applicant_agency", surface: "land" },
@@ -197,6 +202,20 @@ export function buildProjectConnectionEvidence({
     confidence: null,
     evidence: "ZAP primary_applicant",
   }] : []);
+  if (id === WILLETS_POINT_PROJECT_ID && isNycEdcApplicantSpelling(applicantLabel)
+    && !applicant.items.some((item) => item.relation === "has_applicant")) {
+    applicant.items = [
+      ...applicant.items,
+      {
+        ref: `agency:id:${NYCEDC_CANONICAL_ID}`,
+        href: `/agencies/${NYCEDC_CANONICAL_ID}/`,
+        label: applicantLabel,
+        relation: "has_applicant",
+        confidence: "strong",
+        evidence: "ZAP primary_applicant exact spelling",
+      },
+    ];
+  }
   applicant.status = applicant.items.length ? "matched" : "not_observed";
   applicant.gap = applicant.items.length ? null : "applicant_not_published";
 

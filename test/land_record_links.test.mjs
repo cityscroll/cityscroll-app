@@ -16,6 +16,13 @@ test("unresolved land applicants remain honest plain text", () => {
   assert.doesNotMatch(html, /href=/);
 });
 
+test("exact NYCEDC ZAP applicant spelling links the retained source value", () => {
+  const html = landRecordApplicantHTML("EDC - Economic Development Corporation for NYC");
+  assert.match(html, /href="\/agencies\/economic-development-corporation\//);
+  assert.match(html, /EDC - Economic Development Corporation for NYC/);
+  assert.match(html, /data-role-relation="has_applicant"/);
+});
+
 test("land record place identifiers use existing near-you scope routes", () => {
   const options = { knownCommunityDistricts: new Set(["Q05"]), knownCouncilDistricts: new Set(["30"]) };
   assert.match(landRecordPlaceHTML("borough", "Queens"), /href="\/near-you\/\?v=0&amp;lens=land&amp;boro=Queens"/);

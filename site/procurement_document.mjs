@@ -24,6 +24,7 @@ import {
   renderCrossSourceCoverageLedger,
 } from "./cross_source_coverage_ledger.mjs";
 import { renderProcurementProcessEvents } from "./procurement_process_events.mjs";
+import { resolveNycEdcDevelopmentRoles } from "./civic_institution_development_roles.mjs";
 
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const CHECKBOOK_CONTRACT_SEARCH = "https://www.checkbooknyc.com/contract_search";
@@ -250,6 +251,27 @@ export function procurementOfficialSourceItems(object = {}, observations = []) {
   return items;
 }
 
+export function renderProcurementInstitutionRoles(object = {}, observations = []) {
+  const resolved = resolveNycEdcDevelopmentRoles({
+    procurement: object,
+    procurementObservations: observations,
+  });
+  const contractor = resolved.accepted.find((edge) => edge.relation_id === "contractor_on");
+  const contracted = resolved.accepted.find((edge) => edge.relation_id === "contracted_by");
+  if (!contractor && !contracted) return "";
+  const rows = [
+    contractor ? `<li class="node-record" data-role-relation="has_contractor" data-role-linking="1">Contractor: <a class="ui-constellation-link" href="${esc(contractor.inverse_href)}">economic-development-corporation</a></li>` : "",
+    contracted ? `<li class="node-record" data-role-relation="contracted_by" data-role-linking="1">Contracted by: <a class="ui-constellation-link" href="${esc(contracted.inverse_href)}">small-business-services</a></li>` : "",
+  ].filter(Boolean).join("");
+  return renderNodeSection({
+    heading: "Institution roles",
+    headingId: "procurement-institution-roles-heading",
+    extraClass: "procurement-institution-roles",
+    attrs: { id: "procurement-institution-roles" },
+    body: `<ul class="node-record-list">${rows}</ul>`,
+  });
+}
+
 export function renderProcurementDocument(object = {}, observations = [], {
   currentHref = "",
   sourceStatus = {},
@@ -282,6 +304,7 @@ ${renderNodeBack({ href: "/browse/contracts/?mode=award", label: "Back to contra
 ${procurementActions(object, facts)}
 ${renderCrossSourceEvidenceReceipt(object?.cross_source_evidence_receipt)}
 ${renderNodeSection({ heading: "Contract facts", body: factRows ? `<dl class="node-facts">${factRows}</dl>` : "" })}
+${renderProcurementInstitutionRoles(object, observations)}
 ${renderCrossSourceCoverageLedger(object?.cross_source_coverage_ledger || buildCrossSourceCoverageLedger({
   object,
   observations,

@@ -92,8 +92,44 @@ function loadSources() {
       ? { ...procurementBrowse, open_as_of: procurementBrowse.generated_at || null, notices: authorityRows }
       : null,
     land_projects: existsSync(landProjectsPath) ? readJson(landProjectsPath) : null,
+    land_default: existsSync(join(SITE, "data/land_default_ulurp.json"))
+      ? readJson(join(SITE, "data/land_default_ulurp.json"))
+      : null,
+    zap_bbl: existsSync(join(SITE, "data/zap_bbl_warehouse_lookup.json"))
+      ? readJson(join(SITE, "data/zap_bbl_warehouse_lookup.json"))
+      : null,
     ocp_awards: existsSync(ocpAwardsPath) ? readJson(ocpAwardsPath) : null,
     publisher_crosswalk: readJson(publisherCrosswalkPath),
+  };
+}
+
+function developmentRoleSourcesFor(id, sources) {
+  if (id !== "economic-development-corporation" && id !== "small-business-services") return null;
+  const projects = sources.land_default?.projects || sources.land_default?.rows || sources.land_projects?.rows || [];
+  const project = projects.find((row) => String(row?.project_id || "").trim() === "2024Q0135") || null;
+  const procurementRows = sources.procurement_browse?.rows || [];
+  const procurement = procurementRows.find((row) => String(row?.pin || "").trim() === "80125S0021001") || null;
+  const meetings = sources.meetings_domain?.meetings || sources.meetings_domain?.rows || sources.meetings_domain || [];
+  const meetingList = Array.isArray(meetings) ? meetings : [];
+  const boroughBoardMeeting = meetingList.find((row) => String(row?.request_id || "").trim() === "20260518003") || null;
+  const bblRows = sources.zap_bbl?.rows || sources.zap_bbl?.projects || (Array.isArray(sources.zap_bbl) ? sources.zap_bbl : []);
+  const bblHit = bblRows.find((row) => String(row?.project_id || "").trim() === "2024Q0135");
+  return {
+    project,
+    procurement,
+    procurementObservations: procurement ? [{
+      source_observation_ref: "passport_public_contracts:contract:80125S0021001:5503551",
+      source_system: "passport_public_contracts",
+      snapshot: {
+        epin: procurement.pin,
+        agency: procurement.agency_name,
+        vendor: procurement.vendor_name,
+        title: procurement.short_title,
+      },
+      ingested_at: procurement.start_date,
+    }] : [],
+    boroughBoardMeeting,
+    projectBbls: Array.isArray(bblHit?.bbls) ? bblHit.bbls : [],
   };
 }
 
@@ -412,6 +448,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       publisherRow: sources.publisher_crosswalk?.entries?.[id] || null,
       view,
       generatedAt,
+      developmentRoleSources: developmentRoleSourcesFor(id, sources),
     });
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;
