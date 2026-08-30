@@ -1356,7 +1356,16 @@ clock (`land:zap-lookup:v1`), not git age. Upcoming hearings are derived at
 `site/data/land_upcoming_hearings.json` is the last-resort floor.
 `fetchLandDefaultProjects` prefers DuckDB only when the milestone frontier
 clears `warehouse/lib/zap_freshness.mjs`; otherwise SODA. Canaries `2025Q0331`
-/ `2026K0123` fail `--check`. The unit test
+/ `2026K0123` fail `--check`. The scheduled lookup also carries cutoff-aware
+CEQR / environmental source fields via `warehouse/lib/zap_environmental_projection.mjs`
+(`ceqr_number`, `ceqr_type`, `ceqr_lead_agency`, `eas_eis` as
+`environmental_review_type`, current environmental milestone/date). Missing
+facts stay explicit; titles, action codes, and land-use milestones never fill
+them. ZAP has no `environmental_status` column, so that field remains
+`source_field_absent`. Keep this depth on the warehouse lookup — not
+`land_default_ulurp.json`. Overlay with
+`node tools/build_zap_warehouse_lookup.mjs --overlay-environmental`. Proof:
+`test/zap_environmental_projection.test.mjs`. The unit test
 `test/warehouse_serve_publish_contract.test.mjs` derives its reference now from
 committed twin `materialized_at` stamps — do not freeze a calendar `now`.
 WH-02 bulk lag: `node tools/check_zap_bulk_freshness.mjs`

@@ -18,7 +18,7 @@ import {
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
-import { loadZapProjectsLookup } from "./lib/zap_projects_lookup_kv.mjs";
+import { loadZapProjectsLookup, shapeZapLookupRow } from "./lib/zap_projects_lookup_kv.mjs";
 import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
 import { attachUlurpStatutoryPredictions } from "./lib/ulurp_statutory_predictions.mjs";
 import zoningStatistics from "./data/zoning_statistics.json" with { type: "json" };
@@ -384,12 +384,14 @@ export async function fetchOpenDataRow(projectId, { lookupDoc } = {}) {
   const where = `project_id='${id.replace(/'/g, "''")}'`;
   const url =
     `${SODA}/hgx4-8ukb.json?$select=project_id,project_name,public_status,project_status,`
-    + `approval_date,completed_date,ulurp_numbers,primary_applicant,borough,community_district,actions,current_milestone,current_milestone_date`
+    + `approval_date,completed_date,ulurp_numbers,primary_applicant,borough,community_district,actions,current_milestone,current_milestone_date,`
+    + `ceqr_number,ceqr_type,ceqr_leadagency,eas_eis,current_envmilestone,current_envmilestone_date`
     + `&$where=${encodeURIComponent(where)}&$limit=1`;
   try {
     const rows = await fetchJson(url);
     if (Array.isArray(rows) && rows[0]) {
-      return { ...rows[0], lookup_path: "soda" };
+      const shaped = shapeZapLookupRow(rows[0]);
+      return { ...(shaped || rows[0]), lookup_path: "soda" };
     }
   } catch {
     // Fail-soft: empty shell so spine/join can still proceed with project_id.

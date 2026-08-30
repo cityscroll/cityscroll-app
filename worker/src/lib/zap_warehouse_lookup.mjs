@@ -26,18 +26,24 @@ const ZAP_OPEN_DATA_COLS = [
   "current_milestone_date",
 ];
 
+function copyCell(value) {
+  if (value == null || value === "") return null;
+  if (typeof value === "boolean") return value ? "true" : "false";
+  if (typeof value === "object") return value;
+  return String(value);
+}
+
 function rowShape(row) {
   if (!row || typeof row !== "object") return null;
   const out = {};
   for (const col of ZAP_OPEN_DATA_COLS) {
-    const v = row[col];
-    out[col] = v == null || v === "" ? null : String(v);
+    out[col] = copyCell(row[col]);
   }
-  // Keep optional extras when present (ulurp_non, primary_applicant, …).
+  // Keep optional extras when present (ulurp_non, CEQR envelope, …).
   for (const [k, v] of Object.entries(row)) {
     if (out[k] !== undefined) continue;
     if (v == null || v === "") continue;
-    out[k] = typeof v === "boolean" ? (v ? "true" : "false") : String(v);
+    out[k] = copyCell(v);
   }
   if (!out.project_id) return null;
   out.project_id = String(out.project_id).trim();

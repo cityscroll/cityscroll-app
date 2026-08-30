@@ -111,6 +111,8 @@ describe("WH-05 pure ZAP materialization index", () => {
     assert.match(sql, /project_id/);
     assert.match(sql, /2022M0258/);
     assert.match(sql, /LIMIT 1/);
+    assert.match(sql, /ceqr_number/);
+    assert.match(sql, /current_envmilestone_date/);
   });
 });
 

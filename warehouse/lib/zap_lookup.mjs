@@ -14,6 +14,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { catalogExists, getDataset, WAREHOUSE_DIR } from "./catalog.mjs";
 import { queryWarehouse } from "./query.mjs";
 import { stampLandRegulatoryEffect } from "../../ontology/land_regulatory_effect.mjs";
+import {
+  stampZapEnvironmentalProjection,
+  ZAP_ENVIRONMENTAL_SOURCE_COLS,
+} from "./zap_environmental_projection.mjs";
 
 export const ZAP_DATASET_KEY = "zap-projects";
 
@@ -42,6 +46,7 @@ export const ZAP_EXTRA_COLS = [
   "app_filed_date",
   "noticed_date",
   "certified_referred",
+  ...ZAP_ENVIRONMENTAL_SOURCE_COLS,
 ];
 
 export const ZAP_ALL_COLS = [...ZAP_SELECT_COLS, ...ZAP_EXTRA_COLS];
@@ -81,7 +86,7 @@ export function zapTableName() {
 /**
  * Normalize a warehouse/SODA row to the SODA field names fetchOpenDataRow returns.
  */
-export function rowToSodaShape(row) {
+export function rowToSodaShape(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
   const out = {};
   for (const col of ZAP_ALL_COLS) {
@@ -100,7 +105,13 @@ export function rowToSodaShape(row) {
   out.regulatory_effect = stamped.regulatory_effect;
   out.regulatory_effect_confidence = stamped.regulatory_effect_confidence;
   out.regulatory_effect_basis = stamped.regulatory_effect_basis;
-  return out;
+  const asOf = opts.asOf || opts.now || null;
+  return stampZapEnvironmentalProjection(out, {
+    asOf,
+    cutoff: opts.cutoff || asOf,
+    observedAt: opts.observedAt,
+    datasetId: opts.datasetId,
+  });
 }
 
 export function sqlZapByProjectId(projectId, table = zapTableName()) {
@@ -258,7 +269,14 @@ export function lookupZapInIndex(projectId, index) {
  * Build the committed materialization document.
  */
 export function buildMaterializationDoc(rows, opts = {}) {
-  const list = Array.isArray(rows) ? rows.map(rowToSodaShape).filter(Boolean) : [];
+  const asOf = opts.now || new Date().toISOString();
+  const list = Array.isArray(rows)
+    ? rows.map((row) => rowToSodaShape(row, {
+      asOf,
+      cutoff: opts.cutoff || asOf,
+      observedAt: opts.observedAt,
+    })).filter(Boolean)
+    : [];
   const mode = opts.mode || "export";
   const fromSoda = mode === "soda_sell_facing" || opts.source === "soda";
   return {
@@ -268,7 +286,7 @@ export function buildMaterializationDoc(rows, opts = {}) {
     dataset_id: getDataset(ZAP_DATASET_KEY).dataset_id,
     table_name: zapTableName(),
     mode,
-    materialized_at: opts.now || new Date().toISOString(),
+    materialized_at: asOf,
     row_count: list.length,
     replaces_live_fetch: {
       worker: "worker/src/zap_outcomes.mjs#fetchOpenDataRow",
