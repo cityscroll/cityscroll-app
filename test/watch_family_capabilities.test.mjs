@@ -6,7 +6,12 @@ import {
   WATCH_FAMILY_CAPABILITIES_SCHEMA,
   rankWatchFamilySuggestions,
 } from "../site/watch_family_capabilities.mjs";
-import { buildFollowingViewModel, renderFollowingDocument, watchFromFollowingParams } from "../site/following_view.mjs";
+import {
+  buildFollowingViewModel,
+  canonicalFollowingScope,
+  renderFollowingDocument,
+  watchFromFollowingParams,
+} from "../site/following_view.mjs";
 
 const EXPECTED_FAMILIES = [
   "contracts-awards",
@@ -57,4 +62,39 @@ test("a family suggestion URL round-trips to the shared editable watch sentence"
   }, { templates: [] }));
   assert.match(html, /Notify me when new zoning records mentioning 'rezoning' are published citywide\./);
   assert.match(html, /data-following-subscribe-form/);
+});
+
+test("a rezoning suggestion and a Zoning plus Brooklyn plus keyword choice share one canonical scope", () => {
+  const landing = renderFollowingDocument(buildFollowingViewModel({}, { templates: [] }));
+  const suggestionHref = landing.match(
+    /data-watch-family-id="rezonings-land-use"[\s\S]*?href="([^"]+)"/,
+  )?.[1];
+  assert.ok(suggestionHref, "Rezonings and land use must link into Following");
+  const suggestionUrl = new URL(suggestionHref.replaceAll("&amp;", "&"));
+  assert.equal(suggestionUrl.searchParams.get("step"), null);
+  const suggestion = watchFromFollowingParams(suggestionUrl.searchParams);
+  assert.equal(suggestion.requested, true);
+  assert.equal(suggestion.lens, "land");
+  assert.deepEqual(suggestion.filter.keywords, ["rezoning"]);
+  assert.equal(suggestion.filter.status, undefined);
+
+  const suggestionThenPlace = canonicalFollowingScope({
+    lens: suggestion.lens,
+    filter: { ...suggestion.filter, boro: "Brooklyn" },
+  });
+  const direct = canonicalFollowingScope(watchFromFollowingParams(new URLSearchParams({
+    lens: "land",
+    boro: "Brooklyn",
+    q: "rezoning",
+  })));
+  assert.deepEqual(suggestionThenPlace, direct);
+  assert.equal(suggestionThenPlace.lens, "land");
+  assert.equal(suggestionThenPlace.filter.boro, "Brooklyn");
+  assert.deepEqual(suggestionThenPlace.filter.keywords, ["rezoning"]);
+
+  const suggestionItem = landing.match(
+    /data-watch-family-id="rezonings-land-use"[\s\S]*?<\/li>/,
+  )?.[0] || "";
+  assert.doesNotMatch(suggestionItem, /<button[^>]*type="submit"/);
+  assert.match(landing, /It does not make a watch/);
 });

@@ -2257,6 +2257,39 @@ select {
   padding-block: var(--space-6);
 }
 
+.following-hero-lead,
+.following-create-lead,
+.following-next-action {
+  max-width: var(--measure);
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-muted);
+  font: .9375rem/1.55 var(--font-body);
+}
+
+.following-next-action {
+  margin-block: var(--space-4) var(--space-3);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.following-more-topics,
+.following-secondary-entry {
+  margin-block-start: var(--space-3);
+}
+
+.following-more-topics > summary,
+.following-secondary-entry > summary {
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--color-text);
+  font: 600 .9375rem/1.4 var(--font-interface);
+}
+
+.following-scope-links[data-following-topic-scope] {
+  display: grid;
+  gap: var(--space-3);
+}
+
 .following-surface-tabs {
   display: flex;
   flex-wrap: wrap;

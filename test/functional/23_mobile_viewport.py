@@ -294,8 +294,10 @@ def run(base: str) -> None:
                 criteriaMethod: document.querySelector('[data-following-preview-form]')?.method,
               primaryActionLabel: document.querySelector('[data-following-preview-form] button[type="submit"]')?.textContent?.trim(),
               quietPrompt: /Follow what you care about/.test(
-                document.querySelector('[data-following-subscribe-panel]')?.textContent || ''
+                document.querySelector('[data-following-panel="create"]')?.textContent || ''
               ),
+              noSubscribeForm: !document.querySelector('[data-following-subscribe-form]'),
+              journey: document.querySelector('[data-following-root]')?.dataset.followingJourney || '',
               topicControls: [...document.querySelectorAll(
                 '[data-following-topic-scope] button.ui-filter-chip[data-following-scope-axis="topic"]'
               )].map(el => ({tag: el.tagName, pressed: el.getAttribute('aria-pressed')})),
@@ -312,6 +314,8 @@ def run(base: str) -> None:
         assert following_contract["primaryActionLabel"] == "Preview matches", following_contract
         assert following_contract["criteriaMethod"] == "get", following_contract
         assert following_contract["quietPrompt"], following_contract
+        assert following_contract["noSubscribeForm"], following_contract
+        assert following_contract["journey"] == "choose", following_contract
         assert len(following_contract["topicControls"]) >= 5, following_contract
         assert len(following_contract["placeControls"]) >= 5, following_contract
         for control_group in (following_contract["topicControls"], following_contract["placeControls"]):

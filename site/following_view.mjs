@@ -57,6 +57,11 @@ const LENS_LABELS = Object.freeze({
   entity: "Agency, vendor, or project",
   mandates: "Mandates",
 });
+/** Compact start topics; remaining lenses stay behind an accessible disclosure. */
+const PRIMARY_LENSES = Object.freeze(["money", "land", "property", "rules", "meetings"]);
+const MORE_LENSES = Object.freeze(["people", "district", "entity", "mandates"]);
+export const FOLLOWING_CREATE_STEP_CHOOSE = "choose";
+export const FOLLOWING_CREATE_STEP_PREVIEW = "preview";
 const FOLLOWING_FREQUENCY_LABELS = Object.freeze({
   daily: "Daily when there are matches",
   weekly: "Weekly digest",
@@ -130,15 +135,31 @@ export function followingLensNeedsRedirect(lens) {
 function normalizedWatch(lens, filter) {
   const wantedLens = canonicalFollowingLens(lens);
   const watch = subscriptionWatchFromScope({ lens: wantedLens, filter: compact(filter) }, { lens: wantedLens });
-  return { lens: canonicalFollowingLens(watch.lens), filter: compact(watch.filter) };
+  const nextFilter = compact(watch.filter);
+  if (nextFilter.status === "all" || nextFilter.status === "any") delete nextFilter.status;
+  const place = nextFilter.borough || nextFilter.boro;
+  if (canonicalFollowingLens(watch.lens) === "land") {
+    if (place) nextFilter.boro = place;
+    delete nextFilter.borough;
+  } else if (place) {
+    nextFilter.borough = place;
+    delete nextFilter.boro;
+  }
+  return { lens: canonicalFollowingLens(watch.lens), filter: nextFilter };
+}
+
+/** Lens plus sanitized filter, independent of cadence or create-step. */
+export function canonicalFollowingScope(input = {}) {
+  return normalizedWatch(input.lens || "money", input.filter || {});
 }
 
 export function watchFromFollowingParams(input) {
   const params = input instanceof URLSearchParams ? input : new URL(input, "https://cityscroll.invalid").searchParams;
   const handoff = followingPreviewHandoffFromParams(params);
-  const requested = params.has("lens") || params.has("filter") || params.has("q") || params.has("agency")
+  const choosing = params.get("step") === FOLLOWING_CREATE_STEP_CHOOSE;
+  const requested = !choosing && (params.has("lens") || params.has("filter") || params.has("q") || params.has("agency")
     || params.has("boro") || params.has("council") || params.has("boardBorough") || params.has("boardNumber")
-    || params.has("notice") || params.has("project");
+    || params.has("notice") || params.has("project"));
   if (handoff.status === "unrecognized_scope") {
     return {
       lens: null,
@@ -216,7 +237,11 @@ export function requestedFollowingTab(locationLike = {}, fallback = "create") {
   const params = new URLSearchParams(search);
   const queryTab = params.get("tab");
   if (queryTab === "watches" || queryTab === "create" || queryTab === "packs") return queryTab;
-  if (watchFromFollowingParams(params).requested || params.has("freq")) return "create";
+  if (
+    watchFromFollowingParams(params).requested
+    || params.has("freq")
+    || params.get("step") === FOLLOWING_CREATE_STEP_CHOOSE
+  ) return "create";
   return fallback;
 }
 
@@ -239,6 +264,7 @@ export function followingUrlFromWatch(watch, options = {}) {
   if (handoff.focus?.kind === "notice") params.set("notice", handoff.focus.id);
   else if (handoff.focus?.kind === "project") params.set("project", handoff.focus.id);
   if (handoff.originRoute) params.set("from", handoff.originRoute);
+  if (options.draft === true) params.set("step", FOLLOWING_CREATE_STEP_CHOOSE);
   return `${base}?${params}`;
 }
 
@@ -621,6 +647,7 @@ export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
     graphContext,
     templates: registry.templates,
     familySuggestions: rankWatchFamilySuggestions(input.suggestionQuery || ""),
+    createStep: unrecognized || requested ? FOLLOWING_CREATE_STEP_PREVIEW : FOLLOWING_CREATE_STEP_CHOOSE,
     followingUrl: unrecognized ? "/following/" : followingUrlFromWatch(watch, {
       frequency,
       matchCount,
@@ -653,8 +680,15 @@ function withTopic(view, lens) {
   return followingUrlFromWatch({
     lens,
     filter: nextFilter,
-    matchCount: view.matchCount,
-  }, { frequency: view.frequency, matchCount: view.matchCount });
+    matchCount: view.requested ? view.matchCount : undefined,
+  }, {
+    frequency: view.frequency,
+    matchCount: view.requested ? view.matchCount : undefined,
+    draft: !view.requested,
+    noticeId: view.noticeId,
+    projectId: view.projectId,
+    originRoute: view.originRoute,
+  });
 }
 
 function communityBoardWatchHref(view) {
@@ -679,8 +713,15 @@ function withPlace(view, borough) {
   return followingUrlFromWatch({
     lens: view.lens,
     filter: nextFilter,
-    matchCount: view.matchCount,
-  }, { frequency: view.frequency, matchCount: view.matchCount });
+    matchCount: view.requested ? view.matchCount : undefined,
+  }, {
+    frequency: view.frequency,
+    matchCount: view.requested ? view.matchCount : undefined,
+    draft: !view.requested,
+    noticeId: view.noticeId,
+    projectId: view.projectId,
+    originRoute: view.originRoute,
+  });
 }
 
 function scopeLinkChip(href, label, { active = false, axis = "", value = "" } = {}) {
@@ -698,13 +739,17 @@ function scopeLinkChip(href, label, { active = false, axis = "", value = "" } = 
   });
 }
 
-/** Topic + place as shareable scope-link chips (not bare selects). */
-function topicPlacePickersHtml(view) {
-  const topic = LENSES.map((lens) => scopeLinkChip(
+function topicChipsHtml(view, lenses) {
+  return lenses.map((lens) => scopeLinkChip(
     withTopic(view, lens),
     LENS_LABELS[lens],
     { active: view.lens === lens, axis: "topic", value: lens },
   )).join("");
+}
+
+/** Topic + place as shareable scope-link chips (not bare selects). */
+function topicPlacePickersHtml(view) {
+  const moreOpen = MORE_LENSES.includes(view.lens) ? " open" : "";
   const currentBorough = placeBorough(view.filter);
   const place = [
     scopeLinkChip(withPlace(view, ""), "Any place", {
@@ -718,19 +763,25 @@ function topicPlacePickersHtml(view) {
       value: borough,
     })),
   ].join("");
-  return `<div class="following-scope-pickers">
+  return `<div class="following-scope-pickers" data-following-primary-start>
     <section class="following-scope-block">
       <p class="following-scope-title">What do you want to follow?</p>
       <div class="following-scope-rail" role="group" aria-label="Topic">
         <p class="following-scope-rail-label">Topic</p>
-        <div class="following-scope-links" data-following-topic-scope>${topic}</div>
+        <div class="following-scope-links" data-following-topic-scope>
+          <div class="following-scope-links" data-following-primary-choice="topic">${topicChipsHtml(view, PRIMARY_LENSES)}</div>
+          <details class="following-more-topics"${moreOpen}>
+            <summary>More topics</summary>
+            <div class="following-scope-links" data-following-more-topics>${topicChipsHtml(view, MORE_LENSES)}</div>
+          </details>
+        </div>
       </div>
     </section>
     <section class="following-scope-block">
       <p class="following-scope-title">Where?</p>
       <div class="following-scope-rail" role="group" aria-label="Place">
         <p class="following-scope-rail-label">Any place / borough</p>
-        <div class="following-scope-links" data-following-place-scope>${place}</div>
+        <div class="following-scope-links" data-following-place-scope data-following-primary-choice="place">${place}</div>
       </div>
     </section>
   </div>`;
@@ -839,13 +890,7 @@ function subscribeHtml(view) {
       <p>This watch link is not recognized, so there is nothing to save.</p>
     </section>`;
   }
-  if (!view.requested) {
-    return `<section class="following-subscribe" data-following-subscribe-panel>
-    <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
-      <p>Follow what you care about. Save a topic, place, agency, or keyword. We email matching public records when they appear.</p>
-      <p class="following-note" data-following-delivery-help>Daily sends when there are matches. Weekly digest sends Monday.</p>
-    </section>`;
-  }
+  if (!view.requested) return "";
   return `<section class="following-subscribe" data-following-subscribe-panel aria-labelledby="following-subscribe-heading">
     <p class="following-kicker">Delivery</p><h2 id="following-subscribe-heading">Create this watch</h2>
     <form method="post" action="${API_BASE}/subscribe" data-following-subscribe-form>
@@ -885,12 +930,16 @@ function familySuggestionsHtml(view) {
   const lead = view.onboarding
     ? "Pick a topic. We’ll show the sentence first. You can change it before you save."
     : "Not sure what to call it? Pick a start. You can change the sentence, check the preview, then make a watch.";
+  const open = view.onboarding ? " open" : "";
   return `<section class="following-suggestions" data-following-suggestions data-suggestion-kind="watch-family" aria-labelledby="following-suggestions-heading">
-    <p class="following-kicker">Suggestions</p>
-    <h2 id="following-suggestions-heading">${esc(title)}</h2>
-    <p>${esc(lead)}</p>
-    <ol class="following-suggestion-list">${suggestions.map(familySuggestionHtml).join("")}</ol>
-    <p class="following-suggestion-note">Pick a suggestion to open its preview. It does not make a watch. Check the sentence, then submit your email.</p>
+    <details class="following-secondary-entry" data-following-suggestions-disclosure${open}>
+      <summary>Need a starting point?</summary>
+      <p class="following-kicker">Suggestions</p>
+      <h2 id="following-suggestions-heading">${esc(title)}</h2>
+      <p>${esc(lead)}</p>
+      <ol class="following-suggestion-list">${suggestions.map(familySuggestionHtml).join("")}</ol>
+      <p class="following-suggestion-note" data-following-choice-boundary>Pick a suggestion to open its preview. It does not make a watch. Check the sentence, then submit your email.</p>
+    </details>
   </section>`;
 }
 
@@ -949,6 +998,12 @@ function controlsHtml(view) {
     <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter || {}))}">
     ${noticeField}${projectField}${originField}
     ${borough ? `<input type="hidden" name="boro" value="${esc(borough)}">` : ""}
+    ${view.requested ? "" : `<input type="hidden" name="freq" value="${esc(view.frequency)}" data-following-choose-freq>`}
+    <p class="following-next-action" data-following-next-action data-following-choice-boundary>${
+      view.requested
+        ? "Review the matching records, then enter your email to create this watch."
+        : "Next: preview matching records. Choosing a topic or place does not start a watch."
+    }</p>
     <details class="following-refinements"${refinementsOpen}>
       <summary>Narrow it down</summary>
       <div class="following-refinement-grid">
@@ -968,9 +1023,9 @@ function controlsHtml(view) {
         </div>
       </div>
     </details>
-    ${cadenceCardsHtml(view)}
+    ${view.requested ? cadenceCardsHtml(view) : ""}
     <div class="following-form-actions">
-      <button type="submit" class="following-form-action-preview" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
+      <button type="submit" class="following-form-action-preview" data-following-primary-choice="preview" aria-label="${view.requested ? "Update matches" : "Preview matches"} before saving">${view.requested ? "Update matches" : "Preview matches"}</button>
     </div>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>
@@ -997,9 +1052,13 @@ function personalSectionHtml(view) {
 }
 
 function createSectionHtml(view) {
-  return `<section id="create" class="following-create" data-following-panel="create" aria-labelledby="following-create-heading">
+  const lead = view.requested
+    ? ""
+    : `<p class="following-create-lead">Save a topic, place, agency, or keyword. We email matching public records when they appear.</p>`;
+  return `<section id="create" class="following-create" data-following-panel="create" data-following-journey="${esc(view.createStep || FOLLOWING_CREATE_STEP_CHOOSE)}" aria-labelledby="following-create-heading">
     <p class="following-kicker">Create</p>
     <h2 id="following-create-heading">Follow what you care about</h2>
+    ${lead}
     ${controlsHtml(view)}
   </section>`;
 }
@@ -1020,11 +1079,12 @@ export function renderFollowingBody(view) {
   const identity = view.requested && view.graphContext ? followingWatchIdentityHtml(view.graphContext) : "";
   const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${identity}${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
-  const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><p class="following-pack-lead">These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div>${view.templates.map(templateHtml).join("")}</div></section>`;
+  const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><details class="following-secondary-entry" data-following-packs-disclosure><summary>Browse watch sets</summary><p class="following-pack-lead" data-following-choice-boundary>These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div>${view.templates.map(templateHtml).join("")}</div></details></section>`;
   // Create flow leads for first-time / empty sessions; client reorders when
   // a recognized multi-watch account loads.
   return `<main id="main" data-following-root data-personal-url="${API_BASE}/following/personal"
     data-following-layout="${view.requested ? "create-first" : "browse"}"
+    data-following-journey="${view.requested ? FOLLOWING_CREATE_STEP_PREVIEW : FOLLOWING_CREATE_STEP_CHOOSE}"
     data-msg-duplicate="You already follow these filters. Manage the saved watch instead of making a copy."
     data-msg-preview-loading="Updating the preview…"
     data-msg-preview-ready="Preview updated."
@@ -1044,6 +1104,7 @@ export function renderFollowingBody(view) {
     ${view.originRoute ? `data-following-origin="${esc(view.originRoute)}"` : ""}>
     <section class="following-hero">
       <h1>Following</h1>
+      ${view.requested ? "" : `<p class="following-hero-lead">Choose a topic and a place. Preview matching records, then save that watch with your email.</p>`}
     </section>
     ${surfaceTabsHtml()}
     ${create}

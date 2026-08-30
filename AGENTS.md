@@ -989,11 +989,15 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   its summary, preview count, results, and `/subscribe` form. Result and detail entry preserve
   that same watch plus compact preview focus through `site/following_preview_handoff.mjs`
   (`notice` / `project` / `from`); unrecognized lenses stay honest and never remap to Contracts.
-  Create flow: live conjunction rule
-  line (`composeWatchRuleSentence`), digItem-shaped preview cards, cadence radio cards with
-  quiet-day/weekly consequences, pack attention cost (`packAttentionCopy`). Client promotes
-  Your watches first when `/following/personal` returns ≥1 watch (manage-first tabs).
-  Create-flow query params (`lens` / `filter` / `freq`) keep the Create tab through
+  Create flow: compact topic-and-place start (`step=choose`) with progressive
+  refinements, then one preview transition, then explicit email save. Topic/place
+  chips stay on choose until Preview matches; suggestions and watch sets enter the
+  same canonical `lens`/`filter` preview and never enroll on selection. Live
+  conjunction rule line (`composeWatchRuleSentence`), digItem-shaped preview cards,
+  cadence radio cards with quiet-day/weekly consequences, pack attention cost
+  (`packAttentionCopy`). Client promotes Your watches first when
+  `/following/personal` returns ≥1 watch (manage-first tabs).
+  Create-flow query params (`lens` / `filter` / `freq` / `step=choose`) keep the Create tab through
   `requestedFollowingTab` even after that promotion; `#your-following` and `?tab=` still win.
   Canonical manage URL is `/following/#your-following` (digest footers use session exchange when a token
   is available; `/prefs` remains account-level). `site/following_personal_state.mjs` owns distinct
