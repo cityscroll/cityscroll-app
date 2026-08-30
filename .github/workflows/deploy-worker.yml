@@ -169,7 +169,7 @@ jobs:
             --deployed-commit-sha "$GITHUB_SHA" \
             --artifact-type worker-commit \
             --artifact-value "$GITHUB_SHA" \
-            --deployment-id "crol-worker@${GITHUB_SHA}" \
+            --deployment-id "cityscroll-worker@${GITHUB_SHA}" \
             --deployment-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
             --provider-status "$DEPLOYMENT_OUTCOME" \
             --trigger-coverage .artifacts/worker-trigger-coverage.json \
