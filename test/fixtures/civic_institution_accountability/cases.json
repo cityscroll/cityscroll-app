@@ -1,0 +1,89 @@
+{
+  "schema": "cityscroll.civic_institution_accountability.fixtures.v1",
+  "gold_obligation": {
+    "obligation_id": "63842-001",
+    "matter_id": "63842",
+    "agency_id": "correction",
+    "agency_name": "Correction",
+    "agency_raw": "Department of Correction",
+    "duty_text": "Issue an incident-level report to the council and to the board of correction on housing requests made related to gender-identity.",
+    "deliverable_type": "report",
+    "deadline": {
+      "kind": "fixed_date",
+      "computed_date": "2020-01-01",
+      "text": "Starting on January 1, 2020",
+      "is_compliance_verdict": false
+    },
+    "citation": "Section 1, subdivision c of Administrative Code § 9-157, paragraph 6",
+    "source": {
+      "matter_id": "63842",
+      "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=63842",
+      "law_text_url": "https://nyc.legistar1.com/nyc/attachments/fbddb83d-4c5b-4e79-9a86-518ea4c2e312.docx",
+      "citation": "Section 1, subdivision c of Administrative Code § 9-157, paragraph 6"
+    },
+    "certification": {
+      "status": "auto_certified",
+      "basis": "auto_certified_quote_verify_v1",
+      "quote_verified": true
+    }
+  },
+  "generic_doc_website_obligation": {
+    "obligation_id": "63842-002",
+    "matter_id": "63842",
+    "agency_id": "correction",
+    "agency_name": "Correction",
+    "agency_raw": "Department of Correction",
+    "duty_text": "Issue an aggregate report of the specified housing-request information on its website.",
+    "citation": "Section 1, subdivision c of Administrative Code § 9-157, paragraph 6",
+    "source": {
+      "matter_id": "63842",
+      "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=63842"
+    },
+    "certification": {
+      "quote_verified": true
+    },
+    "deadline": {
+      "computed_date": "2020-07-01"
+    }
+  },
+  "generic_board_language": {
+    "obligation_id": "63842-001",
+    "matter_id": "63842",
+    "agency_id": "correction",
+    "agency_raw": "Department of Correction",
+    "duty_text": "Issue a report to the board on housing requests.",
+    "citation": "Administrative Code § 9-157",
+    "source": {
+      "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=63842"
+    },
+    "certification": {
+      "quote_verified": true
+    },
+    "deadline": {
+      "computed_date": "2020-01-01"
+    }
+  },
+  "unverified_quote": {
+    "obligation_id": "63842-001",
+    "matter_id": "63842",
+    "agency_id": "correction",
+    "agency_raw": "Department of Correction",
+    "duty_text": "Issue an incident-level report to the council and to the board of correction on housing requests made related to gender-identity.",
+    "citation": "Administrative Code § 9-157",
+    "source": {
+      "legistar_url": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=63842"
+    },
+    "certification": {
+      "quote_verified": false
+    },
+    "deadline": {
+      "computed_date": "2020-01-01"
+    }
+  },
+  "boc_meeting": {
+    "request_id": "20260706036",
+    "agency_name": "Board of Correction",
+    "short_title": "Board of Correction public meeting",
+    "event_date": "2026-07-06"
+  }
+}

@@ -356,6 +356,7 @@ export const CIVIC_INSTITUTION_ROLE_CONFIDENCES = Object.freeze(["strong", "tent
 export const AGENCY_ROLE_COMPATIBILITY_SCHEMA = "cityscroll.agency_role_compatibility.v1";
 
 const MUST_REPORT_NEGATIVE_RULE = "Never infer a report-recipient or oversight edge from duty-text names, OTI reports_to, a shared publisher label, or related_to.";
+const DUTY_BEARER_NEGATIVE_RULE = "Never infer a duty bearer or oversight edge from a generic DOC obligation, generic board language, a Board of Correction meeting, or a shared agency label.";
 const DEVELOPMENT_ROLE_NEGATIVE_RULE = "Never infer an applicant from a project mention, a contractor from a publisher notice, or a selected developer from a company name; require exact party or actor evidence.";
 const ROLE_EVIDENCE = Object.freeze([
   "exact_source_observation",
@@ -386,6 +387,27 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     ]),
     methods: ENTITY_LINK_METHODS,
     negative_rule: MUST_REPORT_NEGATIVE_RULE,
+  }),
+  duty_bearer: Object.freeze({
+    relation: "duty_bearer",
+    inverse: "holds_duty",
+    role: "assigned_duty",
+    inverse_role: "duty_bearer",
+    source_contract: "cityscroll.agency_obligations.v1",
+    from_kind: "obligation",
+    object_kind: "civic-institution",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      "exact_source_observation",
+      "exact_obligation_id",
+      "exact_subject_institution",
+      "quote_verification",
+      "source_fields",
+      "observed_time",
+      "confidence_basis",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: DUTY_BEARER_NEGATIVE_RULE,
   }),
   applicant_on: Object.freeze({
     relation: "applicant_on",
@@ -576,6 +598,17 @@ function tryTypedObject(value, kind) {
       canonical_id: noticeId,
       kind: "meeting",
       href: `/notices/${encodeURIComponent(noticeId)}`,
+    });
+  }
+  if (kind === "obligation") {
+    const match = raw.match(/^(?:obligation:|mandate:)?(\d{3,8}-\d{3})$/);
+    if (!match) return null;
+    const obligationId = match[1];
+    return Object.freeze({
+      id: `obligation:${obligationId}`,
+      canonical_id: obligationId,
+      kind: "obligation",
+      href: `/mandates/${encodeURIComponent(obligationId)}`,
     });
   }
   return null;
