@@ -3168,12 +3168,14 @@ select {
 }
 
 .data-health-condition,
+.data-health-vintage,
 .data-health-coverage {
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-border);
 }
 
 .data-health-status,
+.data-health-vintage-status,
 .data-health-coverage-status {
   margin: 0 0 var(--space-2);
   font-weight: 700;
@@ -3222,6 +3224,11 @@ select {
 
 .data-health-card[data-health-status="Source-unavailable"] .data-health-status {
   color: var(--color-danger);
+}
+
+.data-health-card[data-vintage-status="source-vintage-stale"] .data-health-vintage-status,
+.data-health-card[data-vintage-status="ingestion-stale"] .data-health-vintage-status {
+  color: var(--color-caution);
 }
 
 .data-health-card[data-health-status="UNKNOWN"] .data-health-status,

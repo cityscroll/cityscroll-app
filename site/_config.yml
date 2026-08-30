@@ -16,6 +16,7 @@ exclude:
   - backlog
   - data/source_health_observations.json
   - data/source_vintage_observations.json
+  - data/source_vintage_alternates.json
   - experimental
   - internal
   - node_modules

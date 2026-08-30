@@ -76,7 +76,12 @@ test("data health page materializes the committed public artifact without reques
   assert.match(html, /Publisher updated/);
   assert.match(html, /CityScroll last checked/);
   assert.match(html, /CityScroll serving copy/);
+  assert.match(html, /Official coverage period/);
   assert.match(html, /class="data-health-coverage-heading">Coverage<\/p>/);
+  assert.match(html, /NYC Independent Budget Office fiscal history/);
+  assert.match(html, /Observed through FY2022/);
+  assert.match(html, /source-vintage-stale/);
+  assert.match(html, /https:\/\/comptroller\.nyc\.gov\/reports\/annual-comprehensive-financial-reports\//);
   assert.doesNotMatch(html, /<h4>|aria-label="Freshness"|aria-label="Coverage"/);
   assert.match(html, /For how many records CityScroll holds, see <a href="\/stats.html">Stats<\/a>/);
   assert.doesNotMatch(html, /all operational|all systems operational|data may be incomplete|may be incomplete/i);
@@ -229,6 +234,7 @@ test("committed contract sources stay on the page with honest clock states", () 
     "abo-state-authorities",
     "checkbook-contracts",
     "city-record",
+    "ibo-fiscal-history",
   ];
   for (const id of required) {
     const card = byId[id];

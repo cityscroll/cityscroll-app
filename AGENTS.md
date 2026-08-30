@@ -209,6 +209,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   with `node tools/verify_source_vintage_registry.mjs`; `tools/source_vintage_status.mjs` consumes
   the registry through `loadSourceVintageStatusInputs`. The founding Comptroller ACFR entry is
   contextual evidence for IBO and is never a drop-in replacement for IBO staffing semantics.
+- **Source-vintage Data health surface (SV-3):** `site/source_vintage_public_projection.mjs`
+  allowlists public vintage fields onto the existing source-health projection and Data health
+  page. Retrieval health and semantic coverage stay separate; unknown frontiers stay explicit;
+  a `source-vintage-stale` finding is keyed by `(source_id, alternate_id, frontier)` so repeats
+  do not mint a second card. The proving display is IBO through FY2022 beside the Comptroller
+  ACFR through FY2025. Rebuild with `node tools/build_source_health_public_projection.mjs` then
+  `node tools/build_data_health_page.mjs`. Proof: `test/source_vintage_public_projection.test.mjs`
+  and `test/data_health_page.test.mjs`.
 
 - **IBO agency fiscal history (AP-11):** `warehouse/scripts/ibo_fiscal_history.py` ingests the
   checkpointed FY2022 IBO Agency Expenditures and Actual Full-Time Positions XLSX artifacts under
