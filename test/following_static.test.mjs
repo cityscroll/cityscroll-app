@@ -7,6 +7,7 @@ import { alertsHref } from "../site/alerts_context_carry.mjs";
 import {
   buildFollowingViewModel,
   canonicalFollowingLens,
+  canonicalFollowingScope,
   composeWatchRuleSentence,
   followingPreviewItemHtml,
   followingUrlFromWatch,
@@ -81,7 +82,8 @@ test("Following create flow presents preview-first CTA text", () => {
 
   assert.match(html, /<button[^>]*class="following-form-action-preview"[^>]*>Preview matches<\/button>/);
   assert.doesNotMatch(html, /<button[^>]*>Create this watch<\/button>/);
-  assert.match(html, /<p class="following-kicker">Delivery<\/p><h2>Create a watch<\/h2>/);
+  assert.match(html, /data-following-journey="choose"/);
+  assert.doesNotMatch(html, /data-following-subscribe-form/);
   assert.match(html, /class="following-refinements"/);
   assert.match(html, /<summary>Narrow it down<\/summary>/);
 });
@@ -409,6 +411,7 @@ test("topic and place chips stay on Create a watch when existing watches would p
   assert.equal(topicUrl.searchParams.get("lens"), "mandates");
   assert.equal(topicUrl.searchParams.get("filter"), "{}");
   assert.equal(topicUrl.searchParams.get("freq"), "daily");
+  assert.equal(topicUrl.searchParams.get("step"), "choose");
 
   // Same URL the captain hit: existing watches make promotePersonalWhenWatches
   // reset with fallback "watches". The chip must still keep Create active.
@@ -450,4 +453,64 @@ test("topic and place chips stay on Create a watch when existing watches would p
   );
   // Bare /following with saved watches still opens Your watches.
   assert.equal(requestedFollowingTab({ search: "", hash: "" }, "watches"), "watches");
+});
+
+test("compact Following create journey reaches a Brooklyn rezoning preview with fewer first-page decisions", () => {
+  const empty = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  assert.match(empty, /data-following-journey="choose"/);
+  assert.match(empty, /data-following-primary-start/);
+  assert.match(empty, /<summary>More topics<\/summary>/);
+  assert.match(empty, /<summary>Need a starting point\?<\/summary>/);
+  assert.match(empty, /data-following-suggestions-disclosure>/);
+  assert.match(empty, /data-following-packs-disclosure/);
+  assert.doesNotMatch(empty, /following-cadence-card/);
+  assert.doesNotMatch(empty, /data-following-subscribe-form/);
+  assert.doesNotMatch(empty, /name="email"/);
+  assert.match(empty, /Choosing a topic or place does not start a watch/);
+
+  const zoningHref = empty.match(
+    /data-following-scope-value="land"[^>]*data-filter-href="([^"]+)"/,
+  )?.[1];
+  assert.ok(zoningHref, "Zoning must stay on the compact topic rail");
+  const zoningUrl = new URL(zoningHref.replaceAll("&amp;", "&"));
+  assert.equal(zoningUrl.searchParams.get("lens"), "land");
+  assert.equal(zoningUrl.searchParams.get("step"), "choose");
+  const zoning = watchFromFollowingParams(zoningUrl.searchParams);
+  assert.equal(zoning.requested, false);
+  assert.equal(zoning.lens, "land");
+
+  const zoningHtml = renderFollowingDocument(buildFollowingViewModel(zoning, templates));
+  assert.match(zoningHtml, /data-following-journey="choose"/);
+  assert.doesNotMatch(zoningHtml, /data-following-subscribe-form/);
+  const brooklynHref = zoningHtml.match(
+    /data-following-scope-value="Brooklyn"[^>]*data-filter-href="([^"]+)"/,
+  )?.[1];
+  assert.ok(brooklynHref, "Brooklyn must remain a place choice after Zoning");
+  const brooklyn = watchFromFollowingParams(new URL(brooklynHref.replaceAll("&amp;", "&")).searchParams);
+  assert.equal(brooklyn.requested, false);
+  assert.equal(brooklyn.filter.boro, "Brooklyn");
+
+  const preview = watchFromFollowingParams(new URLSearchParams({
+    lens: "land",
+    boro: "Brooklyn",
+    q: "rezoning",
+    freq: "weekly",
+  }));
+  assert.equal(preview.requested, true);
+  assert.deepEqual(canonicalFollowingScope(preview), {
+    lens: "land",
+    filter: { boro: "Brooklyn", keywords: ["rezoning"] },
+  });
+  const previewHtml = renderFollowingDocument(buildFollowingViewModel({
+    ...preview,
+    matchCount: 3,
+    previewItems: [{ id: "2026K0123", title: "Brooklyn rezoning", url: "/browse/zoning/" }],
+  }, templates));
+  assert.match(previewHtml, /data-following-journey="preview"/);
+  assert.match(previewHtml, /data-following-subscribe-form/);
+  assert.match(previewHtml, /name="email"/);
+  assert.match(previewHtml, /following-cadence-card/);
+  assert.match(previewHtml, /<button[^>]*>Create watch<\/button>/);
+  assert.match(previewHtml, /data-preview-id="2026K0123"/);
+  assert.doesNotMatch(previewHtml, /data-following-suggestions/);
 });

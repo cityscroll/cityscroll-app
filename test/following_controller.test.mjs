@@ -35,3 +35,8 @@ test("Following controller recovers #your-following across tab and history chang
   assert.match(following, /data-following-suggestions/);
   assert.match(following, /insertAfter\.after\(personal\)/);
 });
+
+test("Following controller adopts a preview workspace after a choose-step form post", () => {
+  assert.match(following, /nextRoot\.dataset\.followingJourney/);
+  assert.match(following, /root\.querySelector\("#create"\)\?\.after\(replacement\)/);
+});

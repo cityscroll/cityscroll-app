@@ -386,9 +386,19 @@ async function loadPersonal({ keepExisting = false, focusWatchKey = "" } = {}) {
 
 function adoptFollowingDocument(html) {
   const next = new DOMParser().parseFromString(html, "text/html");
+  const nextRoot = next.querySelector("[data-following-root]");
+  if (nextRoot && root) {
+    if (nextRoot.dataset.followingJourney) root.dataset.followingJourney = nextRoot.dataset.followingJourney;
+    if (nextRoot.dataset.followingLayout) root.dataset.followingLayout = nextRoot.dataset.followingLayout;
+    if (nextRoot.dataset.followingLens) root.dataset.followingLens = nextRoot.dataset.followingLens;
+    if (nextRoot.dataset.followingFilter) root.dataset.followingFilter = nextRoot.dataset.followingFilter;
+  }
   const current = root.querySelector("[data-following-workspace]");
   const replacement = next.querySelector("[data-following-workspace]");
-  if (current && replacement) current.replaceWith(replacement);
+  if (replacement) {
+    if (current) current.replaceWith(replacement);
+    else root.querySelector("#create")?.after(replacement);
+  }
   // Keep refine form + cadence in sync with the previewed document when present.
   const currentForm = root.querySelector("[data-following-preview-form]");
   const nextForm = next.querySelector("[data-following-preview-form]");
