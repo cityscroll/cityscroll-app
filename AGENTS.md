@@ -4183,6 +4183,14 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   MTA operating entities distinct from the parent aggregate and allow cross-source joins only on
   exact contract identifiers. Focused proof is `test/mta_procurement_source_records.test.mjs`.
 
+- **Mailto subscribe later experiment (FS-10):** `site/mailto_subscribe_later.mjs`
+  is the fail-closed contract for encoding a reviewed Following sentence to the
+  configured inbound subscribe address. It stays disabled until a named FS-05
+  routing, delivery-ownership, reply, and composer evidence record is proven, and
+  it never presents mailto as the default or a fallback. Rebuild with
+  `node tools/build_mailto_subscribe_later.mjs`; `--check` verifies the committed
+  stop receipt. Focused proof is `test/mailto_subscribe_later.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
