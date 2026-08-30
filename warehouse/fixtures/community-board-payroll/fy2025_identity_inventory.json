@@ -1,0 +1,635 @@
+{
+  "note": "FY2025 Citywide Payroll Community Board identity inventory. Organizational aggregates only \u2014 no employee names or other person fields.",
+  "soda_dataset": "k397-673e",
+  "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
+  "fiscal_year": 2025,
+  "source_vintage": "2026-04-16",
+  "native_key_field": "payroll_number",
+  "publisher_label_field": "agency_name",
+  "window": "fiscal_year=2025 AND (upper(agency_name) like '%COMMUNITY BOARD%' OR upper(agency_name) like '%COMMUNITY BD%')",
+  "identities": [
+    {
+      "payroll_number": "341",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "342",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #2",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "343",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #3",
+      "candidate_rows": 6,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "344",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #4",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "345",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #5",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "346",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #6",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "347",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #7",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "348",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #8",
+      "candidate_rows": 6,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 2,
+        "ON SEPARATION LEAVE": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "349",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #9",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "350",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #10",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "351",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #11",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "352",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #12",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "381",
+      "agency_name": "BRONX COMMUNITY BOARD #1",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "382",
+      "agency_name": "BRONX COMMUNITY BOARD #2",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "383",
+      "agency_name": "BRONX COMMUNITY BOARD #3",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "384",
+      "agency_name": "BRONX COMMUNITY BOARD #4",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "385",
+      "agency_name": "BRONX COMMUNITY BOARD #5",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "386",
+      "agency_name": "BRONX COMMUNITY BOARD #6",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "387",
+      "agency_name": "BRONX COMMUNITY BOARD #7",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "388",
+      "agency_name": "BRONX COMMUNITY BOARD #8",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "389",
+      "agency_name": "BRONX COMMUNITY BOARD #9",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "390",
+      "agency_name": "BRONX COMMUNITY BOARD #10",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 4
+      },
+      "active_rows": 4
+    },
+    {
+      "payroll_number": "391",
+      "agency_name": "BRONX COMMUNITY BOARD #11",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "392",
+      "agency_name": "BRONX COMMUNITY BOARD #12",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "431",
+      "agency_name": "QUEENS COMMUNITY BOARD #1",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 4
+      },
+      "active_rows": 4
+    },
+    {
+      "payroll_number": "432",
+      "agency_name": "QUEENS COMMUNITY BOARD #2",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "ON SEPARATION LEAVE": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "433",
+      "agency_name": "QUEENS COMMUNITY BOARD #3",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "434",
+      "agency_name": "QUEENS COMMUNITY BOARD #4",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "435",
+      "agency_name": "QUEENS COMMUNITY BOARD #5",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "436",
+      "agency_name": "QUEENS COMMUNITY BOARD #6",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "437",
+      "agency_name": "QUEENS COMMUNITY BOARD #7",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "438",
+      "agency_name": "QUEENS COMMUNITY BOARD #8",
+      "candidate_rows": 5,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 2
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "439",
+      "agency_name": "QUEENS COMMUNITY BOARD #9",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "440",
+      "agency_name": "QUEENS COMMUNITY BOARD #10",
+      "candidate_rows": 1,
+      "leave_status_counts": {
+        "ACTIVE": 1
+      },
+      "active_rows": 1
+    },
+    {
+      "payroll_number": "441",
+      "agency_name": "QUEENS COMMUNITY BOARD #11",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "442",
+      "agency_name": "QUEENS COMMUNITY BOARD #12",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "CEASED": 2,
+        "ON SEPARATION LEAVE": 1
+      },
+      "active_rows": 0
+    },
+    {
+      "payroll_number": "443",
+      "agency_name": "QUEENS COMMUNITY BOARD #13",
+      "candidate_rows": 1,
+      "leave_status_counts": {
+        "ACTIVE": 1
+      },
+      "active_rows": 1
+    },
+    {
+      "payroll_number": "444",
+      "agency_name": "QUEENS COMMUNITY BOARD #14",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "471",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #1",
+      "candidate_rows": 5,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 2
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "472",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #2",
+      "candidate_rows": 5,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1,
+        "ON SEPARATION LEAVE": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "473",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #3",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "474",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #4",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "475",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #5",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "476",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #6",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "477",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #7",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "478",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #8",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "479",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #9",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "480",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #10",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 3,
+        "CEASED": 1
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "481",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #11",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "482",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #12",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "483",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #13",
+      "candidate_rows": 4,
+      "leave_status_counts": {
+        "ACTIVE": 4
+      },
+      "active_rows": 4
+    },
+    {
+      "payroll_number": "484",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #14",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "485",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #15",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "486",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #16",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "487",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #17",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "488",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #18",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 3
+      },
+      "active_rows": 3
+    },
+    {
+      "payroll_number": "491",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #1",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 2
+      },
+      "active_rows": 2
+    },
+    {
+      "payroll_number": "492",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #2",
+      "candidate_rows": 2,
+      "leave_status_counts": {
+        "ACTIVE": 1,
+        "CEASED": 1
+      },
+      "active_rows": 1
+    },
+    {
+      "payroll_number": "493",
+      "agency_name": "STATEN ISLAND COMMUNITY BD #3",
+      "candidate_rows": 3,
+      "leave_status_counts": {
+        "ACTIVE": 2,
+        "CEASED": 1
+      },
+      "active_rows": 2
+    }
+  ],
+  "citywide_title_mix": [
+    {
+      "title_description": "DISTRICT MANAGER",
+      "n": 61
+    },
+    {
+      "title_description": "COMMUNITY COORDINATOR",
+      "n": 49
+    },
+    {
+      "title_description": "COMMUNITY ASSOCIATE",
+      "n": 44
+    },
+    {
+      "title_description": "COMMUNITY ASSISTANT",
+      "n": 16
+    },
+    {
+      "title_description": "COMMUNITY SERVICE AIDE",
+      "n": 7
+    },
+    {
+      "title_description": "ASSISTANT DISTRICT MANAGER",
+      "n": 6
+    },
+    {
+      "title_description": "COLLEGE AIDE",
+      "n": 2
+    },
+    {
+      "title_description": "CLERICAL ASSOCIATE MOST MAYORAL AG",
+      "n": 1
+    }
+  ],
+  "negatives": {
+    "generic_unnumbered": {
+      "payroll_number": null,
+      "agency_name": "COMMUNITY BOARDS"
+    },
+    "unknown_code": {
+      "payroll_number": "999",
+      "agency_name": "UNKNOWN COMMUNITY BOARD #99"
+    },
+    "name_only_without_code": {
+      "payroll_number": null,
+      "agency_name": "BROOKLYN COMMUNITY BOARD #15"
+    },
+    "ambiguous_shared_code": {
+      "payroll_number": "485",
+      "publisher_identities": [
+        "BROOKLYN COMMUNITY BOARD #15",
+        "BROOKLYN COMMUNITY BOARD #16"
+      ]
+    },
+    "geography_mismatch": {
+      "payroll_number": "341",
+      "agency_name": "MANHATTAN COMMUNITY BOARD #1",
+      "work_location_borough": "BROOKLYN"
+    },
+    "employee_row": {
+      "fiscal_year": 2025,
+      "payroll_number": "485",
+      "agency_name": "BROOKLYN COMMUNITY BOARD #15",
+      "last_name": "DOE",
+      "first_name": "JANE",
+      "title_description": "DISTRICT MANAGER",
+      "base_salary": 140000
+    }
+  }
+}
