@@ -12,7 +12,7 @@
     "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "deployment_reference": {
-    "id": "crol-worker@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "id": "cityscroll-worker@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "url": "https://github.example.invalid/worker-run",
     "provider": "cloudflare-workers",
     "workflow_run_url": "https://github.example.invalid/worker-run"
