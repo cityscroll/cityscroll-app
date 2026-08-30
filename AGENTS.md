@@ -131,10 +131,14 @@
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive
-  `cityscroll.civic_institution.v1` envelope and exact-only `cityscroll.entity_link.v1` from retained
-  source observations. Agency profiles materialize its reader disclosure through
+  `cityscroll.civic_institution.v1` envelope, exact-only `cityscroll.entity_link.v1` from retained
+  source observations, and the institution-to-institution
+  `cityscroll.civic_institution_role_edge.v1` contract. Role edges reuse civic-institution
+  identities, keep unknown/held/unresolved non-linking, and project `agency:id:*` plus legacy
+  relation ids as compatibility. Agency profiles materialize identity disclosure through
   `tools/lib/agency_identity_evidence.mjs`; focused proof is in
-  `test/civic_institution.test.mjs` and `test/civic_institution_profile.test.mjs`.
+  `test/civic_institution.test.mjs`, `test/civic_institution_role_edge.test.mjs`, and
+  `test/civic_institution_profile.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local
