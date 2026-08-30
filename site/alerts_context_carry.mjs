@@ -333,9 +333,15 @@ export function alertsHref(scope, opts) {
   const filter = watchFromScope(scopeFromWatch(scope, { language: o.language || scope.language || "en" })).filter;
   const freq = o.freq || scope.freq;
   const matchCount = cleanMatchCount(o.matchCount ?? scope.matchCount);
-  return followingUrlFromWatch({ lens, filter, freq, matchCount }, {
+  const noticeId = o.noticeId ?? scope.noticeId;
+  const projectId = o.projectId ?? scope.projectId;
+  const originRoute = o.originRoute ?? scope.originRoute;
+  return followingUrlFromWatch({ lens, filter, freq, matchCount, noticeId, projectId, originRoute }, {
     frequency: freq,
     matchCount,
+    noticeId,
+    projectId,
+    originRoute,
   });
 }
 
@@ -378,6 +384,7 @@ export function parseAlertsEntryParams(hashOrQuery) {
     noticeId: cleanId(q.get("notice")),
     projectId: cleanId(q.get("project")),
     matchCount: cleanMatchCount(q.get("count")),
+    originRoute: q.get("from") || null,
   };
 }
 

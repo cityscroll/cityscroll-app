@@ -1655,6 +1655,10 @@
     const params = new URLSearchParams();
     params.set("lens", lens);
     params.set("filter", JSON.stringify(filter));
+    if (noticeId) params.set("notice", noticeId);
+    if (projectId) params.set("project", projectId);
+    if (noticeId) params.set("from", "/notices/" + noticeId + "/");
+    else if (projectId) params.set("from", "/browse/zoning/");
     return "https://cityscroll.org/following?" + params.toString();
   }
 

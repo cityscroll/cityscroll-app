@@ -56,6 +56,36 @@ function previewFetch(url) {
   ]), { status: 200, headers: { "Content-Type": "application/json" } }));
 }
 
+test("the edge Following renderer pins a notice-scoped handoff without changing the watch body", async () => {
+  const filter = encodeURIComponent(JSON.stringify({ agency: "Transportation" }));
+  const response = await handleFollowing(new Request(
+    `https://cityscroll.org/following?lens=meetings&filter=${filter}&notice=20260805001&from=%2Fnotices%2F20260805001%2F`,
+  ), {}, {}, { fetchImpl: previewFetch, todayISO: FIXTURE_TODAY });
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /data-following-preview-focus/);
+  assert.match(html, /data-focus-id="20260805001"/);
+  assert.match(html, /name="notice" value="20260805001"/);
+  assert.match(html, /name="from" value="\/notices\/20260805001\//);
+  assert.match(html, /name="lens"[^>]+value="meetings"/);
+  assert.match(html, /data-following-subscribe-form/);
+  assert.doesNotMatch(html, /data-following-handoff-status="unrecognized_scope"/);
+});
+
+test("the edge Following renderer keeps an unrecognized lens from becoming a Contracts watch", async () => {
+  const response = await handleFollowing(new Request(
+    "https://cityscroll.org/following?lens=not-a-lens&filter=%7B%22agency%22%3A%22Parks%22%7D",
+  ), {}, {}, { fetchImpl: previewFetch, todayISO: FIXTURE_TODAY });
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /data-following-handoff-status="unrecognized_scope"/);
+  assert.match(html, /This watch link is not recognized/);
+  assert.doesNotMatch(html, /data-following-subscribe-form/);
+  assert.doesNotMatch(html, /name="lens"[^>]+value="money"/);
+});
+
 test("the edge Following renderer keeps the create-first empty state on a fresh visit", async () => {
   const response = await handleFollowing(new Request("https://cityscroll.org/following/"));
   const html = await response.text();

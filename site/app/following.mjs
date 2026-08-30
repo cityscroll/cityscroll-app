@@ -397,12 +397,25 @@ function wireSubscribe() {
   });
 }
 
+async function restoreFromLocation() {
+  if (!root) return;
+  try {
+    const response = await fetch(`${location.pathname}${location.search}`, { headers: { Accept: "text/html" } });
+    if (!response.ok) return;
+    adoptFollowingDocument(await response.text());
+    wireTabs(requestedTab("create"), { reset: true });
+  } catch {
+    /* current document remains the last honest state */
+  }
+}
+
 if (root) {
   installFilterChipNavigation(root);
   wireTabs("create");
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();
   wireRefineLive();
+  globalThis.addEventListener("popstate", restoreFromLocation);
   followingRum.shellReady({
     hasRoot: true,
     hasCreatePanel: Boolean(root.querySelector('[data-following-panel="create"]')),

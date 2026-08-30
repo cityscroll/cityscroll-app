@@ -50,7 +50,9 @@ test("alertsHref for exemplar opens the server Following preview", () => {
   const p = parseAlertsEntryParams(href);
   assert.equal(p.lens, "meetings");
   assert.equal(p.filter.agency, "Transportation");
-  assert.equal(p.noticeId, null);
+  assert.equal(p.noticeId, "20260716009");
+  assert.match(href, /notice=20260716009/);
+  assert.match(href, /from=%2Fnotices%2F20260716009%2F/);
   assert.equal(isContextAlertsHash(href), false, "Following is a document route, not a legacy hash route");
   assert.equal(isContextAlertsHash("#alerts"), false);
 });

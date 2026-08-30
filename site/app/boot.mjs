@@ -121,7 +121,10 @@ async function watchFromFilters(lens){
   if(carry && typeof carry.alertScopeFromLensState === "function"){
     const scope = carry.alertScopeFromLensState(lens, state);
     if(scope){
-      location.assign(carry.alertsHref(scope, {matchCount:currentLensResultCount(lens)}));
+      location.assign(carry.alertsHref(scope, {
+        matchCount:currentLensResultCount(lens),
+        originRoute:`${location.pathname}${location.search}`,
+      }));
       return;
     }
   }
@@ -471,7 +474,10 @@ async function currentAlertsEntryHref(){
     if(hasBits){
       const carry = await ensureAlertsContextCarry();
       const scope = carry && carry.alertScopeFromLensState(tab, state);
-      if(scope) return carry.alertsHref(scope, {matchCount:currentLensResultCount(tab)});
+      if(scope) return carry.alertsHref(scope, {
+        matchCount:currentLensResultCount(tab),
+        originRoute:`${location.pathname}${location.search}`,
+      });
     }
   }
   return "/following/";
