@@ -56,6 +56,8 @@ function observationRow(observation, view) {
 const ROLE_LABELS = Object.freeze({
   must_report_to: "must report to",
   receives_report_from: "receives reports from",
+  duty_bearer: "duty bearer",
+  holds_duty: "holds duty",
   applicant_on: "applicant on",
   has_applicant: "has applicant",
   contractor_on: "contractor on",
@@ -75,7 +77,8 @@ function roleEndpoint(id, href, linking, displayName = null) {
     .replace(/^civic-institution:/, "")
     .replace(/^project:/, "")
     .replace(/^procurement:contract:/, "")
-    .replace(/^meetings:notice:/, "");
+    .replace(/^meetings:notice:/, "")
+    .replace(/^obligation:/, "duty ");
   if (linking && href) {
     return `<a class="ui-constellation-link agency-edge-link" href="${esc(href)}">${esc(label)}</a>`;
   }
@@ -123,6 +126,12 @@ const PROCUREMENT_RELATIONS = new Set([
   "contracts_with",
 ]);
 const PROCEEDING_RELATIONS = new Set(["presents_transaction_at", "presents_transaction"]);
+const ACCOUNTABILITY_RELATIONS = new Set([
+  "must_report_to",
+  "receives_report_from",
+  "duty_bearer",
+  "holds_duty",
+]);
 
 function renderRoleGroup({
   rows,
@@ -149,13 +158,80 @@ function renderRoleGroup({
   });
 }
 
+function recipientLink(recipient) {
+  if (!recipient?.canonical_id) return "";
+  const href = recipient.href || `/agencies/${esc(recipient.canonical_id)}/`;
+  return `<a class="ui-constellation-link agency-edge-link" data-accountability-recipient="${esc(recipient.canonical_id)}" href="${esc(href)}">${esc(recipient.display_name || recipient.canonical_id)}</a>`;
+}
+
+function dutyCard(dutyEdges) {
+  const accepted = dutyEdges.filter((edge) => edge.status === "accepted");
+  const sample = accepted[0] || dutyEdges[0];
+  if (!sample?.obligation_id) return "";
+  const recipients = Array.isArray(sample.sibling_recipients) ? sample.sibling_recipients : [];
+  const phrases = [...new Set(dutyEdges.map((edge) => edge.recipient_phrase).filter(Boolean))];
+  const sourceHref = sample.source_url || sample.provenance?.source_url || null;
+  const mandateHref = sample.mandate_href || `/mandates/${encodeURIComponent(sample.obligation_id)}`;
+  const citation = sample.citation || "";
+  const details = [
+    citation ? `Citation: ${citation}` : "",
+    sample.quote_verified ? "Quote verified against the statute text" : "",
+    sample.observed_date ? `Observed ${sample.observed_date}` : "",
+    sample.source_receipt ? `Receipt ${sample.source_receipt}` : "",
+    phrases.length ? `Recipient phrase: “${phrases.join("”; “")}”` : "",
+  ].filter(Boolean).join(" · ");
+  const recipientHtml = recipients.length
+    ? `<p class="node-inline-actions civic-object-inline-actions">Named recipients: ${recipients.map(recipientLink).join(", ")}</p>`
+    : "";
+  const relationRows = accepted.map((edge) => roleRow(edge)).join("");
+  return `<article class="node-record agency-accountability-duty" data-accountability-obligation="${esc(sample.obligation_id)}" data-quote-verified="${sample.quote_verified ? "1" : "0"}" data-matter-id="${esc(sample.provenance?.source_record_id || sample.obligation_id)}">
+    <div class="node-record-main"><a class="ui-constellation-link agency-edge-link" href="${esc(mandateHref)}">${esc(sample.duty_text || `Duty ${sample.obligation_id}`)}</a></div>
+    <span class="muted node-muted">${esc(details)}</span>
+    ${recipientHtml}
+    ${sourceHref ? `<p class="node-inline-actions civic-object-inline-actions">${sourceHref.startsWith("http") ? `<a class="ui-official-source-link" href="${esc(sourceHref)}" target="_blank" rel="noopener noreferrer">Source law ↗</a>` : `<a class="ui-constellation-link agency-edge-link" href="${esc(sourceHref)}">Source law</a>`}</p>` : ""}
+    <ul class="node-record-list">${relationRows}</ul>
+  </article>`;
+}
+
+function isAccountabilityEdge(edge) {
+  return ACCOUNTABILITY_RELATIONS.has(edge?.relation_id) && Boolean(edge?.obligation_id);
+}
+
+function renderAccountabilityGroup(rows, evidence) {
+  const dutyRows = rows.filter((edge) => isAccountabilityEdge(edge) && edge.status !== "unknown");
+  if (!dutyRows.length) return "";
+  const byObligation = new Map();
+  for (const edge of dutyRows) {
+    const key = edge.obligation_id || edge.vintage || "unscoped";
+    if (!byObligation.has(key)) byObligation.set(key, []);
+    byObligation.get(key).push(edge);
+  }
+  const cards = [...byObligation.values()].map(dutyCard).filter(Boolean).join("");
+  if (!cards) return "";
+  const body = `<p class="node-muted">These report-recipient roles come from one quote-verified statute duty and keep that duty’s named recipients. They are not a general oversight map.</p>
+    ${cards}
+    <p class="muted node-muted" data-accountability-boundary="1">No broader oversight or governance edge is sourced from this duty.</p>`;
+  return renderNodeSection({
+    heading: "Accountability",
+    headingId: "agency-institution-accountability-heading",
+    exportClass: "object_role_edges",
+    extraClass: "node-card civic-object-section agency-institution-accountability",
+    attrs: {
+      id: "agency-institution-accountability",
+      "data-role-schema": evidence.role_edge_schema || "cityscroll.civic_institution_role_edge.v1",
+    },
+    body,
+  });
+}
+
 export function renderAgencyRoleEdgeSection(view = {}) {
   const evidence = view.identity_evidence;
   const rows = roleBag(evidence);
   const institutionRows = rows.filter((edge) =>
     !PROJECT_RELATIONS.has(edge.relation_id)
     && !PROCUREMENT_RELATIONS.has(edge.relation_id)
-    && !PROCEEDING_RELATIONS.has(edge.relation_id));
+    && !PROCEEDING_RELATIONS.has(edge.relation_id)
+    && !isAccountabilityEdge(edge));
   return `${renderRoleGroup({
     rows: rows.filter((edge) => PROJECT_RELATIONS.has(edge.relation_id)),
     heading: "Projects",
@@ -180,7 +256,7 @@ export function renderAgencyRoleEdgeSection(view = {}) {
     extraClass: "agency-institution-proceedings",
     intro: "A Borough Board transaction role appears only when the exact notice, date, quote, and retained source passage prove the selection.",
     evidence,
-  })}${institutionRows.length ? renderRoleGroup({
+  })}${renderAccountabilityGroup(rows, evidence)}${institutionRows.length ? renderRoleGroup({
     rows: institutionRows,
     heading: "Institution roles",
     headingId: "agency-institution-roles-heading",

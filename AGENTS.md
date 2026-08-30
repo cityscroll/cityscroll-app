@@ -140,9 +140,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `site/civic_institution_development_roles.mjs`: exact ZAP `primary_applicant` and SBS
   contract party fields mint `applicant_on` / `contractor_on` / `contracted_by`; Borough
   Board `presents_transaction_at` stays an explicit gap without a retained selection
-  passage. Focused proof is in `test/civic_institution.test.mjs`,
+  passage. DOC reporting accountability is
+  `site/civic_institution_accountability.mjs`: only obligation `63842-001`
+  mints `duty_bearer` plus `must_report_to` City Council and Board of Correction
+  edges from quote-verified recipient phrases; the reciprocal
+  `receives_report_from` view stays on that same duty. Focused proof is in
+  `test/civic_institution.test.mjs`,
   `test/civic_institution_role_edge.test.mjs`, `test/civic_institution_profile.test.mjs`,
-  and `test/civic_institution_development_roles.test.mjs`.
+  `test/civic_institution_development_roles.test.mjs`, and
+  `test/civic_institution_accountability.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local
