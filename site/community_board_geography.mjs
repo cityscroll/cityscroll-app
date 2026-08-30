@@ -61,6 +61,20 @@ export function communityDistrictIdFromBoardOntology(boardId, geography = {}) {
   return matches.size === 1 ? [...matches][0] : null;
 }
 
+/**
+ * Inverse of the published `covers` edge. District parsing and address
+ * geocoding stay outside this lookup.
+ */
+export function communityBoardIdFromCommunityDistrict(communityDistrictId, geography = {}) {
+  const cd = clean(communityDistrictId).match(/^([MXKQR]\d{2})$/i)?.[1]?.toUpperCase() || null;
+  if (!cd || geography?.gate?.publication_allowed !== true) return null;
+  const matches = new Set((Array.isArray(geography.public_edges) ? geography.public_edges : [])
+    .filter((edge) => edge?.type === "covers" && edge.to === `community-district:${cd}`)
+    .map((edge) => clean(edge.from).match(/^community-board:([a-z]+(?:-[a-z]+)*-cb-\d{2})$/)?.[1] || null)
+    .filter(Boolean));
+  return matches.size === 1 ? [...matches][0] : null;
+}
+
 export function communityDistrictIdForBoard(row = {}) {
   const prefix = BOROUGH_PREFIX[clean(row.borough)];
   const district = Number(row.district);

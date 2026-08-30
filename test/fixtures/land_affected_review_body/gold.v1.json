@@ -1,0 +1,101 @@
+{
+  "schema": "cityscroll.affected_review_body_for.fixtures.v1",
+  "legal_basis": {
+    "citation": "NYC Charter § 196",
+    "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824"
+  },
+  "derivation_rules": {
+    "community_board": "exact_cd_covers",
+    "borough_president": "exact_borough_of_affected_cds",
+    "borough_board": "same_borough_distinct_community_districts"
+  },
+  "specimens": {
+    "positive-2025K0305": {
+      "project_id": "2025K0305",
+      "expect": {
+        "status": "resolved",
+        "community_districts": ["K11", "K13"],
+        "body_refs": [
+          "community-board:brooklyn-cb-11",
+          "community-board:brooklyn-cb-13",
+          "borough-president:brooklyn",
+          "borough-board:brooklyn"
+        ],
+        "borough_board": true
+      }
+    },
+    "negative-single-cd-2025M0252": {
+      "project_id": "2025M0252",
+      "expect": {
+        "status": "resolved",
+        "community_districts": ["M05"],
+        "body_refs": [
+          "community-board:manhattan-cb-05",
+          "borough-president:manhattan"
+        ],
+        "borough_board": false
+      }
+    }
+  },
+  "negatives": [
+    {
+      "id": "cross-borough",
+      "row": {
+        "project_id": "CROSSBORO",
+        "borough": "Brooklyn",
+        "community_district": "K11,M05",
+        "actions": "MM",
+        "ulurp_numbers": "250308MMK",
+        "ulurp_non": "ULURP"
+      },
+      "expect": {
+        "status": "resolved",
+        "borough_board": false,
+        "body_refs": [
+          "community-board:brooklyn-cb-11",
+          "community-board:manhattan-cb-05",
+          "borough-president:brooklyn",
+          "borough-president:manhattan"
+        ]
+      }
+    },
+    {
+      "id": "missing-cd",
+      "row": {
+        "project_id": "MISSINGCD",
+        "borough": "Brooklyn",
+        "actions": "MM",
+        "ulurp_numbers": "250308MMK",
+        "ulurp_non": "ULURP"
+      },
+      "expect": {
+        "status": "unresolved",
+        "reason": "missing_location",
+        "borough_board": false
+      }
+    },
+    {
+      "id": "title-only",
+      "row": {
+        "project_id": "TITLEONLY",
+        "project_name": "Brooklyn Community Boards 11 and 13 mapping at Coney Island",
+        "primary_applicant": "Watershore Views LLC",
+        "current_milestone": "Community Board Review"
+      },
+      "expect": {
+        "status": "unresolved",
+        "reason": "missing_location",
+        "borough_board": false
+      }
+    },
+    {
+      "id": "draft-only",
+      "row": {
+        "project_id": "2025K0305"
+      },
+      "expect": {
+        "observed_recommendations": 0
+      }
+    }
+  ]
+}

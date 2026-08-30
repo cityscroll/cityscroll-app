@@ -7,6 +7,21 @@
  * publisher value, or reviewed publisher alias supplies the join.
  */
 
+import {
+  BOROUGH_BOARD_IDENTITY_BASIS,
+  BOROUGH_BOARD_IDENTITY_SOURCE_URL,
+  BOROUGH_BOARD_ID,
+  REVIEWED_BOROUGH_BOARDS as BOROUGH_BOARD_ROWS,
+  boroughBoardIdentity as lookupBoroughBoard,
+  parseBoroughBoardIdentity as parseBoroughBoardRef,
+} from "../site/borough_board_identity.mjs";
+
+export {
+  BOROUGH_BOARD_IDENTITY_BASIS,
+  BOROUGH_BOARD_IDENTITY_SOURCE_URL,
+  BOROUGH_BOARD_ID,
+};
+
 export const CIVIC_INSTITUTION_PROJECTION_SCHEMA = "cityscroll.civic_institution.v1";
 export const CIVIC_INSTITUTION_SCHEMA = CIVIC_INSTITUTION_PROJECTION_SCHEMA;
 export const ENTITY_LINK_SCHEMA = "cityscroll.entity_link.v1";
@@ -121,6 +136,27 @@ export function parseCivicInstitutionIdentity(value) {
 
 export function isCivicInstitutionIdentity(value) {
   return Boolean(parseCivicInstitutionIdentity(value));
+}
+
+/** Civic-institution envelopes for the reviewed five Borough Board identities. */
+export const REVIEWED_BOROUGH_BOARDS = Object.freeze(BOROUGH_BOARD_ROWS.map((row) => Object.freeze({
+  ...row,
+  institution: civicInstitutionIdentity({
+    canonicalId: `${row.borough_slug}-borough-board`,
+    canonicalName: row.canonical_name,
+    institutionKind: "board",
+    institutionKindBasis: BOROUGH_BOARD_IDENTITY_BASIS,
+  }),
+})));
+
+export function boroughBoardIdentity(value) {
+  const row = lookupBoroughBoard(value);
+  if (!row) return null;
+  return REVIEWED_BOROUGH_BOARDS.find((item) => item.id === row.id) || null;
+}
+
+export function parseBoroughBoardIdentity(value) {
+  return boroughBoardIdentity(parseBoroughBoardRef(value)?.borough_slug);
 }
 
 /** Additive envelope for a civic institution and its source observations. */

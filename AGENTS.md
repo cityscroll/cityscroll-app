@@ -1851,6 +1851,17 @@ unknown. Keep `actions`, `ulurp_numbers`, `ulurp_non`, filters, routes, and
 phase-spine inputs unchanged. Specimens: `2024M0244` mixed, `2025K0305` uniform,
 `2026K0123` unknown. Focused proof: `test/land_action_procedure_resolution.test.mjs`.
 
+- **Land affected-review-body edges (LDP-04):** `site/land_affected_review_body.mjs`
+  projects source-qualified `affected_review_body_for` from exact ZAP community
+  districts, published Community Board `covers` relations, the procedure
+  profile/version, and the reviewed five Borough Board identities in
+  `site/borough_board_identity.mjs` (civic-institution envelopes in
+  `ontology/civic_institution.mjs`). Borough Board involvement is the same-borough
+  distinct-CD rule and NYC Charter § 196 only. The edge is normative and never an
+  observed recommendation, meeting, or draft disposition. Missing location and
+  mixed/unknown procedure stay unresolved. Focused proof:
+  `test/land_affected_review_body.test.mjs`.
+
 ## Land/ZAP event spine
 
 `GET /zap-outcomes?id=` returns `record.spine`: a date-normalized rail joining ZAP API
