@@ -1,0 +1,20 @@
+{
+  "schema": "cityscroll.card-inventory.v1",
+  "cards": [
+    {
+      "id": "rel-03",
+      "status": "implemented",
+      "updated_at": "2026-08-27T10:00:00Z"
+    },
+    {
+      "id": "rel-05",
+      "status": "implemented",
+      "updated_at": "2026-08-27T11:00:00Z"
+    },
+    {
+      "id": "rel-07",
+      "status": "implemented",
+      "updated_at": "2026-08-27T12:00:00Z"
+    }
+  ]
+}
