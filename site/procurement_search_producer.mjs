@@ -12,6 +12,37 @@ import {
   admitSearchDocument,
 } from "./search_document_contract.mjs";
 import { snapshotsForPublicAmount } from "./checkbook_passport_corroboration.mjs";
+import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
+
+const MTA_PARENT_AGENCY_ID = "metropolitan-transportation-authority";
+const MTA_FAMILY_AGENCY_IDS = new Set([
+  MTA_PARENT_AGENCY_ID,
+  "mta-construction-and-development",
+  "n-y-c-transit-authority",
+  "triborough-bridge-and-tunnel-authority",
+  "long-island-rail-road",
+  "metro-north-railroad",
+  "mta-bus",
+]);
+const AUTHORITY_NATIVE_SOURCES = new Set([
+  "checkbook_nycha_contracts",
+  "nys_contract_reporter",
+  "mta_current_opportunities",
+  "mta_bid_results",
+  "mta_annual_contracts",
+  "mta_cd_awards",
+]);
+
+function civicAgencyId(value) {
+  const raw = clean(value, 200).replace(/^agency:id:/i, "");
+  if (!raw) return null;
+  return agencyRouteAliasTarget(raw) || resolveAgencyIdentity(raw).canonical_id;
+}
+
+function civicAgencyRef(value) {
+  const id = civicAgencyId(value);
+  return id ? `agency:id:${id}` : null;
+}
 
 export const PROCUREMENT_SEARCH_PRODUCER_SCHEMA = "cityscroll.procurement_search_producer.v1";
 
@@ -109,14 +140,34 @@ function coverageFields(object, observations) {
 function browseRecord(object, observations, stages, evidence, facts) {
   const requestId = evidence.length === 1 ? evidence[0].request_id : null;
   const entityRefs = new Set();
+  const snapshots = observations.map((entry) => entry.snapshot || {});
+  const authorityNative = observations.some((entry) => AUTHORITY_NATIVE_SOURCES.has(entry.source_system));
   for (const observation of observations) {
     const row = observation.snapshot || {};
     for (const ref of Array.isArray(row.entity_refs_all) ? row.entity_refs_all : []) {
-      if (typeof ref === "string" && ref.trim()) entityRefs.add(ref.trim());
+      if (!authorityNative) {
+        if (typeof ref === "string" && ref.trim()) entityRefs.add(ref.trim());
+        continue;
+      }
+      const canonical = civicAgencyRef(ref);
+      if (canonical) entityRefs.add(canonical);
     }
-    if (row.procuring_institution_id) entityRefs.add(`agency:id:${row.procuring_institution_id}`);
-    if (row.mta_parent_institution_id) entityRefs.add(`agency:id:${row.mta_parent_institution_id}`);
+    if (!authorityNative) {
+      if (row.procuring_institution_id) entityRefs.add(`agency:id:${row.procuring_institution_id}`);
+      if (row.mta_parent_institution_id) entityRefs.add(`agency:id:${row.mta_parent_institution_id}`);
+      continue;
+    }
+    const procuring = civicAgencyRef(row.procuring_institution_id || row.agency_id);
+    if (procuring) entityRefs.add(procuring);
+    const parent = civicAgencyRef(row.mta_parent_institution_id);
+    if (parent) entityRefs.add(parent);
+    if (procuring && MTA_FAMILY_AGENCY_IDS.has(civicAgencyId(row.procuring_institution_id || row.agency_id))) {
+      entityRefs.add(`agency:id:${MTA_PARENT_AGENCY_ID}`);
+    }
   }
+  const agencyId = authorityNative
+    ? civicAgencyId(first(snapshots, ["agency_id", "procuring_institution_id"], 200))
+    : first(snapshots, ["agency_id", "procuring_institution_id"], 200);
   return Object.freeze({
     procurement_id: object.procurement_id,
     canonical_href: procurementCanonicalHref(object),
@@ -126,7 +177,7 @@ function browseRecord(object, observations, stages, evidence, facts) {
     ...(requestId ? { request_id: requestId } : {}),
     start_date: facts.startDate,
     end_date: facts.endDate,
-    agency_id: first(observations.map((entry) => entry.snapshot || {}), ["agency_id", "procuring_institution_id"], 200),
+    agency_id: agencyId,
     agency_name: facts.agency,
     short_title: facts.title,
     pin: object.identity_keys?.epins?.[0] || null,
@@ -139,7 +190,7 @@ function browseRecord(object, observations, stages, evidence, facts) {
       ? { event_id: object.identity_keys.event_ids[0] } : {}),
     contract_amount: facts.amount,
     vendor_name: facts.vendor,
-    official_url: first(observations.map((entry) => entry.snapshot || {}), ["official_url", "source_url"], 600),
+    official_url: first(snapshots, ["official_url", "official_source_url", "source_url"], 600),
     selection_method_description: facts.method,
     notice_evidence: Object.freeze(evidence),
     source_systems: Object.freeze([...new Set(observations.map((entry) => entry.source_system))]),

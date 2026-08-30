@@ -577,8 +577,16 @@ function categoryFromDomain(
   vendorRollups = null,
   browseSources = {},
 ) {
-  const nativeRows = (browseSources.native_procurements?.rows || []).filter((row) =>
-    row?.agency_id === `agency:id:${identity.canonical_id}`);
+  const nativeRows = (browseSources.native_procurements?.rows || []).filter((row) => {
+    const systems = Array.isArray(row?.source_systems) ? row.source_systems : [];
+    if (!systems.includes("checkbook_nycha_contracts")) return false;
+    const agencyId = String(row?.agency_id || "");
+    const refs = Array.isArray(row?.entity_refs_all) ? row.entity_refs_all : [];
+    const canonical = identity.canonical_id;
+    return agencyId === canonical
+      || agencyId === `agency:id:${canonical}`
+      || refs.includes(`agency:id:${canonical}`);
+  });
   if (spec.id === "vendors") {
     const rollup = vendorRollups?.by_id?.[identity.canonical_id] || [];
     const nativeVendors = [...new Map(nativeRows.map((row) => [String(row.vendor_name || "").toUpperCase(), {

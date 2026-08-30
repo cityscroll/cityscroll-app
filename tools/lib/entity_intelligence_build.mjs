@@ -12,6 +12,7 @@ import {
   observationFromPassportContractRow,
   observationFromCheckbookContractRow,
   observationFromCheckbookNychaContractRow,
+  observationFromMtaCdAwardRow,
   observationFromPaymentRow,
   observationFromLandRow,
   observationFromRulesRow,
@@ -915,6 +916,11 @@ export function collectProcurementSpineObservations(root, opts = {}) {
   add(passportSelection.rows, observationFromPassportContractRow, "passport-public-contracts");
   add(checkbookSelection.rows, observationFromCheckbookContractRow, "checkbook-contracts");
   add(nativeCheckbookRows, observationFromCheckbookNychaContractRow, "checkbook_nycha_contracts");
+  const mtaSources = loadJsonIfExists(path.join(root, "site/data/mta_procurement_sources.json"));
+  const mtaAwards = (Array.isArray(mtaSources?.cd_awards) ? mtaSources.cd_awards : [])
+    .map((row) => row?.normalized_snapshot || row)
+    .filter(Boolean);
+  add(mtaAwards, observationFromMtaCdAwardRow, "mta_cd_awards");
 
   const combinedCheckbookSelection = {
     ...checkbookSelection,
@@ -1315,7 +1321,9 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
   // bounded cross-domain richness census is full. This is an additive route
   // for the admitted native population, not a broader vendor-name census.
   const nativeCorpus = buildIntelligenceCorpus(
-    observations.filter((row) => row?.source_system === "checkbook_nycha_contracts"),
+    observations.filter((row) => (
+      row?.source_system === "checkbook_nycha_contracts" || row?.source_system === "mta_cd_awards"
+    )),
     { max_per_domain: opts.max_per_domain || 6, max_entities: 20, prefer_multi_domain: false },
   );
   const nativeAdditions = nativeCorpus.entities.filter((entity) => !corpus.by_ref?.[entity.root?.ref]);

@@ -30,6 +30,7 @@ export {
   observationFromPassportContractRow,
   observationFromCheckbookContractRow,
   observationFromCheckbookNychaContractRow,
+  observationFromMtaCdAwardRow,
   observationFromPaymentRow,
   procurementContractLinksForObservations,
   observationFromLandRow,

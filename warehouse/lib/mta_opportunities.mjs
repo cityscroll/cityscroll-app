@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 export const MTA_OPPORTUNITY_ADAPTER_SCHEMA = "cityscroll.mta_opportunity_adapter.v1";
+export const MTA_PARENT_INSTITUTION_ID = "metropolitan-transportation-authority";
 
 const NATIVE_SOURCES = new Set([
   "nys_contract_reporter",
@@ -43,6 +44,7 @@ function normalizedRow(fixture) {
     ad_type: row.ad_type || null,
     location: row.location || null,
     official_url: fixture.receipt?.url || null,
+    mta_parent_institution_id: MTA_PARENT_INSTITUTION_ID,
     source_values: { ...row },
     source_receipt: { ...fixture.receipt },
   };
