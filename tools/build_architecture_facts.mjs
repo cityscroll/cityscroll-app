@@ -41,7 +41,7 @@ const PERFORMANCE_BROWSER_MANIFEST_PATH = "site/data/performance-classification-
 const PERFORMANCE_WORKER_ALLOWLIST_PATH = "worker/src/data/performance-validation-allowlist.v1.json";
 const PERFORMANCE_OPERATOR_LABELS_PATH = "worker/src/data/performance-operator-labels.v1.json";
 const PERFORMANCE_CANDIDATE_SOURCE_PATH = "site/sitemap.xml";
-const GENERATOR_VERSION = "1.6.0";
+const GENERATOR_VERSION = "1.7.0";
 
 function absolute(repoPath) {
   return join(ROOT, repoPath);
@@ -558,6 +558,31 @@ function buildRuleVersionFacts() {
   };
 }
 
+function buildCodeVersionFacts() {
+  const materializationPath = "site/code_version_materialization.mjs";
+  const edgesPath = "site/legal_change_edges.mjs";
+  const pagePath = "site/admin_code.mjs";
+  const materialization = text(materializationPath);
+  return {
+    sources: [materializationPath, edgesPath, pagePath],
+    materialization: {
+      path: materializationPath,
+      schema: materialization.match(/export const CODE_VERSION_MATERIALIZATION_SCHEMA\s*=\s*["']([^"']+)["']/)?.[1] || null,
+      statuses: [...materialization.matchAll(/"(materialized|partially_materialized|unresolved)"/g)].map((match) => match[1])
+        .filter((value, index, values) => values.indexOf(value) === index),
+      source: source(materializationPath, lineOf(materialization, "export function materializeCodeChange")),
+    },
+    edges: {
+      path: edgesPath,
+      source: source(edgesPath),
+    },
+    provision_page: {
+      path: pagePath,
+      source: source(pagePath, lineOf(text(pagePath), "renderAdminCodeProvisionDocument")),
+    },
+  };
+}
+
 function buildCivicGeographyFacts() {
   const registryModulePath = "site/civic_geography_registry.mjs";
   const artifactPath = "site/data/geography/layer_registry.json";
@@ -826,6 +851,7 @@ function buildFacts({
   const pagesEdge = buildPagesEdgeFacts();
   const materializers = buildMaterializerFacts();
   const ruleVersions = buildRuleVersionFacts();
+  const codeVersions = buildCodeVersionFacts();
   const civicGeography = buildCivicGeographyFacts();
   const performanceObservability = buildPerformanceObservabilityFacts({
     ...(performanceCandidatePaths ? { candidatePathnames: performanceCandidatePaths } : {}),
@@ -837,6 +863,7 @@ function buildFacts({
     ...pagesEdge.sources,
     ...materializers.sources,
     ...ruleVersions.sources,
+    ...codeVersions.sources,
     ...civicGeography.sources,
     ...performanceObservability.sources,
   ]) {
@@ -891,6 +918,7 @@ function buildFacts({
       primary_documents: materializers.primary_documents,
     },
     rule_versions: ruleVersions,
+    code_versions: codeVersions,
     civic_geography: civicGeography.registry,
     performance_observability: {
       catalog: performanceObservability.catalog,

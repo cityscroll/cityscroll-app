@@ -40,6 +40,14 @@ const CANARY_SLICES = {
       payload: agency ? { producer_id: agency.producer_id ?? null, path: agency.path ?? null } : null,
     };
   },
+  "code-version-materialization": (facts) => ({
+    count: facts.code_versions?.materialization?.schema ? 1 : 0,
+    payload: {
+      schema: facts.code_versions?.materialization?.schema ?? null,
+      statuses: facts.code_versions?.materialization?.statuses ?? [],
+      path: facts.code_versions?.materialization?.path ?? null,
+    },
+  }),
   "civic-geography-registry": (facts) => ({
     count: facts.civic_geography?.layer_count ?? 0,
     payload: {

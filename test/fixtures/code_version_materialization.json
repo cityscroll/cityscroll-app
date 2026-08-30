@@ -1,0 +1,202 @@
+{
+  "schema": "cityscroll.code_version_materialization_fixtures.v1",
+  "provision": {
+    "schema": "cityscroll.code_provision.v1",
+    "id": "nyc-administrative-code:16-120",
+    "corpus_id": "nyc-administrative-code",
+    "citation": "§ 16-120",
+    "heading": "Receptacles",
+    "level": "section",
+    "status": "current",
+    "current_text": "Old statutory text.\nSecond paragraph.",
+    "source": {
+      "source_ref": "alp:16-120",
+      "observed_at": "2026-08-24",
+      "content_hash": "sha256:old"
+    }
+  },
+  "safe_add": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:add",
+      "operation": "add",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": "2026-11-01",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:20-912",
+        "citation": "§ 20-912"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 20-912 is added.",
+        "observed_at": "2026-08-24"
+      },
+      "patch": {
+        "after_text": "Added statutory text."
+      }
+    },
+    "as_of": "2026-11-01"
+  },
+  "safe_amend": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:amend",
+      "operation": "amend",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": "2026-11-01",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:16-120",
+        "citation": "§ 16-120"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 16-120 is amended.",
+        "observed_at": "2026-08-24"
+      },
+      "patch": {
+        "before_text": "Old statutory text.",
+        "after_text": "New statutory text."
+      }
+    },
+    "as_of": "2026-11-01"
+  },
+  "safe_repeal": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:repeal",
+      "operation": "repeal",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": "2026-11-01",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:16-120",
+        "citation": "§ 16-120"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 16-120 is repealed.",
+        "observed_at": "2026-08-24",
+        "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102"
+      }
+    },
+    "as_of": "2026-11-01"
+  },
+  "delayed": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:delayed",
+      "operation": "amend",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": null,
+      "effective_date_text": "This local law takes effect ninety days after enactment.",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:16-120",
+        "citation": "§ 16-120"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 16-120 is amended.",
+        "observed_at": "2026-08-24"
+      },
+      "patch": {
+        "before_text": "Old statutory text.",
+        "after_text": "New statutory text."
+      }
+    },
+    "enacted_at": "2026-08-01",
+    "as_of": "2026-08-01"
+  },
+  "partial": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:partial",
+      "operation": "amend",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": null,
+      "effective_date_text": "Subdivision a takes effect January 1, 2027 and subdivision b takes effect February 1, 2027.",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:16-120",
+        "citation": "§ 16-120"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 16-120 is amended.",
+        "observed_at": "2026-08-24"
+      },
+      "patch": {
+        "before_text": "Old statutory text.",
+        "after_text": "New statutory text."
+      }
+    },
+    "enacted_at": "2026-08-01",
+    "as_of": "2026-08-01"
+  },
+  "conditional": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:conditional",
+      "operation": "amend",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": null,
+      "effective_date_text": "This section takes effect upon certification by the commissioner.",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:16-120",
+        "citation": "§ 16-120"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 16-120 is amended.",
+        "observed_at": "2026-08-24"
+      },
+      "patch": {
+        "before_text": "Old statutory text.",
+        "after_text": "New statutory text."
+      }
+    },
+    "enacted_at": "2026-08-01",
+    "as_of": "2026-08-01"
+  },
+  "patch_failure": {
+    "change": {
+      "schema": "cityscroll.code_change.v1",
+      "id": "local-law:123-2026:patch-failure",
+      "operation": "amend",
+      "state": "enacted",
+      "matter_id": "79102",
+      "legal_instrument_id": "local-law:123-2026",
+      "effective_at": "2026-11-01",
+      "target": {
+        "corpus_id": "nyc-administrative-code",
+        "provision_id": "nyc-administrative-code:16-120",
+        "citation": "§ 16-120"
+      },
+      "source": {
+        "source_ref": "council:local-law:123-2026",
+        "instruction_text": "Section 16-120 is amended.",
+        "observed_at": "2026-08-24"
+      },
+      "patch": {
+        "before_text": "Text that is not present.",
+        "after_text": "Fabricated text must not appear."
+      }
+    },
+    "as_of": "2026-11-01"
+  }
+}
