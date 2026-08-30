@@ -114,10 +114,15 @@
   `worker/test/land_prediction_member_stance.test.mjs`.
 
 - **Stage-aware institutional feature vector (LUP2-C5):**
-  `worker/src/lib/land_prediction_features.mjs` adapts the C2 snapshot and C4 stance contracts
-  into one cutoff-aware layer with explicit sparse-feature unknowns, evidence traces, and a
-  learnable local-member-by-stage interaction. It supplies no coefficients or veto rule; focused
-  proof and the contract shape are in `worker/test/land_prediction_features.test.mjs` and
+  `worker/src/lib/land_prediction_features.mjs` adapts the C2 snapshot, C3 historical actor
+  resolution, and C4 stance contracts into one cutoff-aware layer. It normalizes application
+  type through `site/land_use_action_type.mjs` and procedural stage through
+  `site/land_phase_spine.mjs` / `site/land_status_facets.mjs`, keeps sparse-feature unknowns
+  explicit, traces populated features to cutoff/identity/relation/observation, and declares a
+  learnable local-member-by-stage interaction. It never substitutes a current member or encodes
+  a veto. Focused proof and the contract shape are in
+  `worker/test/land_prediction_features.test.mjs`,
+  `test/fixtures/land_prediction_features/`, and
   `docs/land-use-prediction-features-v1.md`.
 
 - **Interpretable land-use predictor (LUP2-C6):**

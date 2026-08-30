@@ -1,0 +1,125 @@
+{
+  "id": "complete",
+  "application_id": "2024A0001",
+  "prediction_as_of": "2024-06-01T00:00:00.000Z",
+  "procedural_stage": "cpc",
+  "features": [
+    {
+      "key": "application_type",
+      "value": "ZM",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/application-1", "record_id": "application-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "community_board_recommendation",
+      "value": "favorable",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/cb-1", "record_id": "cb-1", "relation": "community_board_action" },
+      "confidence": 0.8
+    },
+    {
+      "key": "borough_president_action",
+      "value": "favorable",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/bp-1", "record_id": "bp-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "cpc_recommendation",
+      "value": "favorable",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/cpc-rec-1", "record_id": "cpc-rec-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "cpc_disposition",
+      "value": "approved",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/cpc-disp-1", "record_id": "cpc-disp-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "cpc_vote",
+      "value": "6-0",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/cpc-vote-1", "record_id": "cpc-vote-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "council_subcommittee_action",
+      "value": "referred",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/subcommittee-1", "record_id": "subcommittee-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "land_use_committee_action",
+      "value": "recommended",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/committee-1", "record_id": "committee-1" },
+      "confidence": 0.8
+    },
+    {
+      "key": "modifications",
+      "value": "height_condition",
+      "evidence_type": "official_record",
+      "observed_at": "2024-05-20T00:00:00.000Z",
+      "effective_at": "2024-05-20T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/condition-1", "record_id": "condition-1" },
+      "confidence": 0.8
+    }
+  ],
+  "historical_actors": [
+    {
+      "role": "local_council_member",
+      "actor_id": "official:123",
+      "resolution": "resolved",
+      "observed_at": "2022-01-02T00:00:00.000Z",
+      "effective_at": "2022-01-01T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/term-123", "source_record_id": "term:123" }
+    }
+  ],
+  "stance": {
+    "application_id": "2024A0001",
+    "member_id": "official:123",
+    "as_of": "2024-06-01T00:00:00.000Z",
+    "evidence": [
+      {
+        "evidence_id": "stance-1",
+        "application_id": "2024A0001",
+        "member_id": "official:123",
+        "direction": "support",
+        "evidence_type": "direct_public_statement",
+        "source": { "url": "https://example.invalid/stance-1", "record_id": "stance-1" },
+        "source_language": "The member expressed support.",
+        "observed_at": "2024-05-25T00:00:00.000Z",
+        "effective_at": "2024-05-25T00:00:00.000Z",
+        "confidence": 0.9
+      }
+    ]
+  },
+  "expect": {
+    "procedural_stage": "cpc",
+    "application_type": "rezoning",
+    "local_council_member_stance": "support",
+    "interaction_key": "local_council_member_stance@cpc",
+    "actor_id": "official:123"
+  }
+}
