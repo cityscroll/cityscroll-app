@@ -7,6 +7,7 @@ import {
   FEDERATED_SEARCH_LENS_IDS,
   FEDERATED_SEARCH_RESULT_SCHEMA,
   FEDERATED_SEARCH_SCHEMA,
+  buildFederatedRequestedScope,
 } from "../capabilities/federated_search.mjs";
 import { canonicalSearchCoverage } from "../site/search_capability_projection.mjs";
 
@@ -26,6 +27,7 @@ function federatedEnvelope(coverage, results = []) {
     ranking_policy: { policy: "cityscroll.cross_lens_rank.v1" },
     results,
     coverage,
+    requested_scope: buildFederatedRequestedScope(null, coverage.by_lens),
   };
 }
 

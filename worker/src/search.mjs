@@ -662,11 +662,12 @@ export function workerFederatedSearch(env, { lenses = productionFederatedProvide
   return Object.freeze({
     capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
     providerId: FEDERATED_SEARCH_PROVIDER_ID,
-    async execute({ query, limit }) {
+    async execute({ query, limit, scope }) {
       return federateUniversalSearch({
         query,
         lenses,
         limit: limit ?? FEDERATED_SEARCH_LIMITS.defaultResults,
+        scope,
       });
     },
   });
@@ -870,10 +871,26 @@ export async function handleSearch(request, env, {
   const query = cleanQuery(url.searchParams.get("q"));
   if (!query) return json({ ok: false, reason: "missing-query" }, 400, cors);
   const resolved = resolveKeywordQuery(query);
-  const federation = await executeFederatedSearch(
-    federatedProvider,
-    { query: resolved.raw_query, limit: RESULT_LIMIT },
-  );
+  const scopeValues = url.searchParams.getAll("scope")
+    .flatMap((value) => String(value).split(","))
+    .map((value) => value.trim())
+    .filter(Boolean);
+  let federation;
+  try {
+    federation = await executeFederatedSearch(
+      federatedProvider,
+      {
+        query: resolved.raw_query,
+        limit: RESULT_LIMIT,
+        ...(scopeValues.length ? { scope: { lenses: scopeValues } } : {}),
+      },
+    );
+  } catch (error) {
+    if (error instanceof TypeError) {
+      return json({ ok: false, reason: "invalid-request", error: error.message }, 400, cors);
+    }
+    throw error;
+  }
   const peopleLane = federatedCollectionLane("people", federation, resolved);
   const vendorLane = federatedCollectionLane("vendors", federation, resolved);
   const parcelsLane = federatedCollectionLane("parcels", federation, resolved);

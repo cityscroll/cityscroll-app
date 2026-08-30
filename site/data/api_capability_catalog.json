@@ -785,9 +785,9 @@
     {
       "reference": "search.federated@1",
       "id": "search.federated",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "Search Federated",
-      "description": "Search the registered public CityScroll lenses in one bounded result set. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
+      "description": "Search the registered public CityScroll lenses in one bounded result set. Optional scope selects only allowlisted registered lenses. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
       "owner": "universal-search",
       "operation": "read",
       "authority": {
@@ -804,6 +804,23 @@
       "input_contract": {
         "schema": "cityscroll.capability.search_federated.input.v1",
         "query": "bounded resident search text; no arbitrary filter or store query",
+        "scope": {
+          "schema": "cityscroll.capability.search_federated.scope.v1",
+          "omitted": "legacy all-registered-lens federation, including auxiliary legal-code recall",
+          "lenses": [
+            "notices",
+            "people",
+            "agencies",
+            "vendors",
+            "committees",
+            "community_boards",
+            "exams",
+            "parcels",
+            "land",
+            "meetings"
+          ],
+          "mapping": "closed allowlist of registered federation lenses; presentation lanes and store queries are rejected"
+        },
         "lenses": [
           "notices",
           "people",
@@ -828,14 +845,25 @@
         "schema": "cityscroll.universal_search_federator.v1",
         "resultSchema": "cityscroll.universal_search_result.v1",
         "coverageSchema": "cityscroll.universal_search_coverage.v1",
+        "requestedScopeSchema": "cityscroll.universal_search_requested_scope.v1",
         "fields": [
           "schema",
           "query",
           "ranking_policy",
           "results",
-          "coverage"
+          "coverage",
+          "requested_scope"
         ],
         "coverageStates": [
+          "matched",
+          "empty",
+          "partial",
+          "stale",
+          "not_indexed",
+          "provider_unavailable",
+          "out_of_scope"
+        ],
+        "requestedCoverageStates": [
           "matched",
           "empty",
           "partial",
@@ -849,7 +877,8 @@
           "partial",
           "stale",
           "not_indexed",
-          "provider_unavailable"
+          "provider_unavailable",
+          "out_of_scope"
         ],
         "coverageSemantics": {
           "matched": "one or more admitted documents were observed",
@@ -857,7 +886,8 @@
           "partial": "the lens participated using the available portion of its registered source index",
           "stale": "the lens result is retained with an out-of-date source clock",
           "not_indexed": "the lens has no registered served index for this request",
-          "provider_unavailable": "the registered lens provider failed; absence is not an empty result"
+          "provider_unavailable": "the registered lens provider failed; absence is not an empty result",
+          "out_of_scope": "the lens was not in the requested allowlist and was not queried"
         },
         "representations": [
           {
@@ -897,10 +927,31 @@
               "partial",
               "stale",
               "not_indexed",
-              "provider_unavailable"
+              "provider_unavailable",
+              "out_of_scope"
             ],
             "maximumResults": 10,
-            "maximumCardsPerLane": 8
+            "maximumCardsPerLane": 8,
+            "requestedScope": "all_registered_lenses"
+          }
+        },
+        {
+          "input": {
+            "query": "parks",
+            "limit": 10,
+            "scope": {
+              "schema": "cityscroll.capability.search_federated.scope.v1",
+              "lenses": [
+                "agencies"
+              ]
+            }
+          },
+          "output": {
+            "requestedLenses": [
+              "agencies"
+            ],
+            "unrequestedState": "out_of_scope",
+            "maximumResults": 10
           }
         },
         {
@@ -931,7 +982,8 @@
         "sourceObservations": "results[].source_observation_refs and results[].edge_provenance.matches[]",
         "matchEvidence": "results[].match_fields",
         "exactSourceRoute": "results[].canonical_href",
-        "coverageByLens": "coverage.by_lens[].state and coverage.by_lens[].source"
+        "coverageByLens": "coverage.by_lens[].state and coverage.by_lens[].source",
+        "requestedScope": "requested_scope.lenses and requested_scope.by_lens[].state"
       },
       "freshness": {
         "owner": "registered lens read models",

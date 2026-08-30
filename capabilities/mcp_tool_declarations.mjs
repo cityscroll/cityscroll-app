@@ -4,9 +4,11 @@
 
 import {
   FEDERATED_SEARCH_CAPABILITY_REFERENCE,
+  FEDERATED_SEARCH_LENS_IDS,
   FEDERATED_SEARCH_LIMITS,
   FEDERATED_SEARCH_OUTPUT_SCHEMA,
   FEDERATED_SEARCH_PROVIDER_ID,
+  FEDERATED_SEARCH_SCOPE_SCHEMA,
 } from "./federated_search.mjs";
 import {
   NOTICE_SEARCH_CAPABILITY_REFERENCE,
@@ -301,12 +303,30 @@ const SUBSCRIBABLE_LENSES = ["money", "people", "land", "property", "rules", "me
 export const MCP_TOOLS = [
   {
     name: "search_federated",
-    description: "Search the registered public CityScroll lenses in one bounded result set. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
+    description: "Search the registered public CityScroll lenses in one bounded result set. Optional scope selects only allowlisted registered lenses. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
     inputSchema: {
       type: "object", additionalProperties: false,
       properties: {
         query: { type: "string", minLength: 1, maxLength: FEDERATED_SEARCH_LIMITS.queryMaximumLength, description: "Resident search terms, up to 240 characters." },
         limit: { type: "integer", minimum: 1, maximum: FEDERATED_SEARCH_LIMITS.maximumResults, default: FEDERATED_SEARCH_LIMITS.defaultResults },
+        scope: {
+          description: "Closed allowlist of registered federation lenses. Omit to search every registered lens.",
+          anyOf: [
+            { type: "string", enum: [...FEDERATED_SEARCH_LENS_IDS] },
+            { type: "array", minItems: 1, items: { type: "string", enum: [...FEDERATED_SEARCH_LENS_IDS] } },
+            {
+              type: "object", additionalProperties: false,
+              required: ["lenses"],
+              properties: {
+                schema: { type: "string", const: FEDERATED_SEARCH_SCOPE_SCHEMA },
+                lenses: {
+                  type: "array", minItems: 1,
+                  items: { type: "string", enum: [...FEDERATED_SEARCH_LENS_IDS] },
+                },
+              },
+            },
+          ],
+        },
       },
       required: ["query"],
     },

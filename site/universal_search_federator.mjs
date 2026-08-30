@@ -14,6 +14,8 @@ import {
   FEDERATED_SEARCH_LENS_IDS,
   FEDERATED_SEARCH_RESULT_SCHEMA,
   FEDERATED_SEARCH_SCHEMA,
+  buildFederatedRequestedScope,
+  normalizeFederatedSearchScope,
 } from "../capabilities/federated_search.mjs";
 
 export const UNIVERSAL_SEARCH_FEDERATOR_SCHEMA = FEDERATED_SEARCH_SCHEMA;
@@ -247,12 +249,12 @@ function missingCoverage(lensId) {
   });
 }
 
-function unavailableCoverage(lensId) {
+function unavailableCoverage(lensId, reason = "lens_provider_failed") {
   return deepFreeze({
     lens: lensId,
     participated: true,
     state: "provider_unavailable",
-    reason: "lens_provider_failed",
+    reason,
     matched_count: null,
     candidate_count: null,
     invalid_candidate_count: null,
@@ -263,16 +265,44 @@ function unavailableCoverage(lensId) {
   });
 }
 
-async function queryLens(lensId, provider, query, tokens, limit) {
+function outOfScopeCoverage(lensId) {
+  return deepFreeze({
+    lens: lensId,
+    participated: false,
+    state: "out_of_scope",
+    reason: "lens_not_in_requested_scope",
+    matched_count: null,
+    candidate_count: null,
+    invalid_candidate_count: null,
+    indexed_count: null,
+    as_of: null,
+    source: null,
+    method: null,
+  });
+}
+
+async function queryLens(lensId, provider, query, tokens, limit, {
+  requested = true,
+  failClosedOnOmittedCoverage = false,
+} = {}) {
   if (!provider || typeof provider.search !== "function") {
     return { candidates: [], coverage: missingCoverage(lensId) };
   }
   try {
     const response = await provider.search({ query, tokens, limit });
-    const declared = plainObject(response?.coverage) ? response.coverage : {};
-    const method = clean(declared.method, 120) || "unknown";
+    const declared = plainObject(response?.coverage) ? response.coverage : null;
+    if (requested && failClosedOnOmittedCoverage && !declared) {
+      return { candidates: [], coverage: unavailableCoverage(lensId, "requested_coverage_omitted") };
+    }
+    if (requested && declared?.state === "out_of_scope") {
+      return { candidates: [], coverage: unavailableCoverage(lensId, "invalid_coverage_state") };
+    }
+    const coverage = declared || {};
+    const method = clean(coverage.method, 120) || "unknown";
     const prepared = prepareCandidates(response?.candidates, lensId, method);
-    let state = COVERAGE_STATES.has(declared.state) ? declared.state : "partial";
+    let state = COVERAGE_STATES.has(coverage.state) && coverage.state !== "out_of_scope"
+      ? coverage.state
+      : "partial";
     if (prepared.invalidCount > 0 && !["not_indexed", "provider_unavailable"].includes(state)) {
       state = "partial";
     }
@@ -283,16 +313,16 @@ async function queryLens(lensId, provider, query, tokens, limit) {
         lens: lensId,
         participated: true,
         state,
-        reason: clean(declared.reason, 240)
+        reason: clean(coverage.reason, 240)
           || (prepared.invalidCount ? "one_or_more_candidates_failed_admission" : null),
         matched_count: prepared.candidates.length,
         candidate_count: Array.isArray(response?.candidates) ? response.candidates.length : 0,
         invalid_candidate_count: prepared.invalidCount,
-        indexed_count: nullableCount(declared.indexed_count),
-        as_of: clean(declared.as_of, 80) || null,
-        source: clean(declared.source, 240) || null,
+        indexed_count: nullableCount(coverage.indexed_count),
+        as_of: clean(coverage.as_of, 80) || null,
+        source: clean(coverage.source, 240) || null,
         method,
-        ...(plainObject(declared.details) ? { details: declared.details } : {}),
+        ...(plainObject(coverage.details) ? { details: coverage.details } : {}),
       }),
     };
   } catch {
@@ -335,12 +365,14 @@ function rounded(value) {
   return Number(value.toFixed(6));
 }
 
-function coverageReceipt(coverageByLens, merged) {
+function coverageReceipt(coverageByLens, merged, requestedLenses = UNIVERSAL_SEARCH_LENS_IDS) {
+  const requested = new Set(requestedLenses);
   const rows = Object.values(coverageByLens);
   const observedCount = rows.reduce((sum, row) => (
     sum + (row.matched_count ?? 0)
   ), 0);
   const incompleteLenses = UNIVERSAL_SEARCH_LENS_IDS.filter((lensId) => {
+    if (!requested.has(lensId)) return false;
     const row = coverageByLens[lensId];
     // An observation clock alone cannot prove corpus completeness. Providers
     // must also publish an indexed row count before a lens is complete.
@@ -362,7 +394,9 @@ function coverageReceipt(coverageByLens, merged) {
 
   return {
     schema: UNIVERSAL_SEARCH_COVERAGE_SCHEMA,
-    all_lenses_participated: rows.every((row) => row.participated),
+    all_lenses_participated: UNIVERSAL_SEARCH_LENS_IDS
+      .filter((lensId) => requested.has(lensId))
+      .every((lensId) => coverageByLens[lensId].participated),
     complete_count: isComplete ? observedCount : null,
     observed_count: observedCount,
     total_matches: merged.length,
@@ -384,15 +418,28 @@ function coverageReceipt(coverageByLens, merged) {
  * Provider failures are isolated and represented in coverage; they never turn
  * a successful lens into an empty response.
  */
-export async function federateUniversalSearch({ query, lenses = {}, limit = 40 } = {}) {
+export async function federateUniversalSearch({ query, lenses = {}, limit = 40, scope } = {}) {
   const normalized = normalizeUniversalSearchQuery(query);
   const tokens = normalized ? normalized.split(/\s+/) : [];
   const boundedLimit = Math.max(0, Math.min(100, Number(limit) || 0));
-  const queried = await Promise.all([...UNIVERSAL_SEARCH_LENS_IDS, ...UNIVERSAL_SEARCH_AUXILIARY_LENS_IDS].map((lensId) => (
-    queryLens(lensId, lenses?.[lensId], normalized, tokens, boundedLimit)
+  const requestedScope = normalizeFederatedSearchScope(scope);
+  const requested = new Set(requestedScope.lenses);
+  const queryLensIds = requestedScope.omitted
+    ? [...UNIVERSAL_SEARCH_LENS_IDS, ...UNIVERSAL_SEARCH_AUXILIARY_LENS_IDS]
+    : requestedScope.lenses;
+  const queried = await Promise.all(queryLensIds.map((lensId) => (
+    queryLens(lensId, lenses?.[lensId], normalized, tokens, boundedLimit, {
+      requested: requested.has(lensId),
+      failClosedOnOmittedCoverage: !requestedScope.omitted,
+    })
   )));
-  const coverageByLens = Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lensId, index) => (
-    [lensId, queried[index].coverage]
+  const queriedByLens = Object.fromEntries(queryLensIds.map((lensId, index) => (
+    [lensId, queried[index]]
+  )));
+  const coverageByLens = Object.fromEntries(UNIVERSAL_SEARCH_LENS_IDS.map((lensId) => (
+    [lensId, requested.has(lensId)
+      ? queriedByLens[lensId].coverage
+      : outOfScopeCoverage(lensId)]
   )));
   const merged = mergeByStableIdentity(queried.flatMap((result) => result.candidates));
   merged.sort((left, right) => compareGlobal(left.winner, right.winner));
@@ -443,7 +490,7 @@ export async function federateUniversalSearch({ query, lenses = {}, limit = 40 }
     });
   });
 
-  const coverage = coverageReceipt(coverageByLens, merged);
+  const coverage = coverageReceipt(coverageByLens, merged, requestedScope.lenses);
   return deepFreeze({
     schema: UNIVERSAL_SEARCH_FEDERATOR_SCHEMA,
     query: { normalized, tokens },
@@ -453,5 +500,6 @@ export async function federateUniversalSearch({ query, lenses = {}, limit = 40 }
       ...coverage,
       returned_count: results.length,
     },
+    requested_scope: buildFederatedRequestedScope(requestedScope, coverageByLens),
   });
 }
