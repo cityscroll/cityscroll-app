@@ -1,0 +1,20 @@
+name: Required checks
+on:
+  pull_request:
+  merge_group:
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node tools/positive_gate.mjs --check
+      - run: node tools/reachable_gate.mjs --check
+      - run: node tools/negative_clock.mjs --check
+      - run: node tools/negative_network.mjs --check
+      - run: node tools/negative_write.mjs --check
+      - run: node tools/negative_external.mjs --check
+      - run: node tools/allowlisted_gate.mjs --check
+      - run: node tools/injected_now.mjs --check
+      - run: node tools/write_mode.mjs --check
+      - run: |
+          node tools/positive_gate.mjs --check
+          curl https://production.example.test/health

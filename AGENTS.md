@@ -4240,7 +4240,11 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   commands in pull-request/merge-group workflows through local helpers and rejects ambient clock,
   timezone, random, live-network, external-data, and write dependencies. Schedule-only workflows
   are monitor roots; line-local waivers require a reasoned `determinism-lint: allow|inject` note.
-  Focused proof is `test/determinism_lint.test.mjs`.
+  Injected `now` parameters and write-mode branches stay distinct from ambient check-mode
+  dependencies. Replay the committed fixtures with
+  `node tools/determinism_lint.mjs --check --fixture test/fixtures/determinism-lint`;
+  `--check` never writes the baseline or generated receipt. Focused proof is
+  `test/determinism_lint.test.mjs`.
 
 - **Authority-native procurement admission (ANP-03):** `warehouse/lib/mta_opportunities.mjs` and
   `warehouse/fixtures/authority-native-procurement/mta-opportunities.v1.json` preserve the

@@ -19,6 +19,16 @@ test("test clock audit rejects new wall-clock reads in tests", () => {
   );
 });
 
+test("test clock audit ignores lint fixture sources that are not tests", () => {
+  const diff = [
+    "+++ b/test/fixtures/determinism-lint/repo/tools/negative_clock.mjs",
+    "@@ -0,0 +1,2 @@",
+    `+const started = ${wallNow};`,
+    `+const local = ${wallDate};`,
+  ].join("\n");
+  assert.deepEqual(findUninjectedClockAdditions(diff), []);
+});
+
 test("test clock audit permits fixed dates and injectable defaults", () => {
   const diff = [
     "+++ b/worker/test/example.test.mjs",

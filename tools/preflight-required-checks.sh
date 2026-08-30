@@ -266,6 +266,7 @@ run_and_fail node tools/build_data_health_page.mjs --check
 run_and_fail node tools/depot_rederive.mjs --check
 run_and_fail node tools/validate_beta_flags.mjs
 run_and_fail node tools/audit-test-clocks.mjs
+run_and_fail node tools/determinism_lint.mjs --check
 run_and_fail node --test test/*.test.mjs
 run_and_fail node --test test/contract/*.test.mjs
 

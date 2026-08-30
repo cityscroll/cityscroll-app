@@ -1,0 +1,131 @@
+{
+  "schema": "cityscroll.determinism-lint.receipt.v1",
+  "gates": [
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 9,
+      "path": "tools/positive_gate.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 10,
+      "path": "tools/reachable_gate.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 11,
+      "path": "tools/negative_clock.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 12,
+      "path": "tools/negative_network.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 13,
+      "path": "tools/negative_write.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 14,
+      "path": "tools/negative_external.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 15,
+      "path": "tools/allowlisted_gate.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 16,
+      "path": "tools/injected_now.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 17,
+      "path": "tools/write_mode.mjs"
+    },
+    {
+      "kind": "gate",
+      "workflow": ".github/workflows/required.yml",
+      "line": 18,
+      "path": "tools/positive_gate.mjs"
+    }
+  ],
+  "monitors": [
+    {
+      "kind": "monitor",
+      "workflow": ".github/workflows/monitor.yml",
+      "line": 9,
+      "path": "tools/monitor_live.mjs"
+    }
+  ],
+  "findings": [
+    {
+      "category": "network",
+      "path": ".github/workflows/required.yml",
+      "line": 19,
+      "source": "curl https://production.example.test/health",
+      "remediation": "read a checked-in fixture or inject a hermetic transport; move live sampling to a scheduled monitor"
+    },
+    {
+      "category": "clock",
+      "path": "tools/helper_clock.mjs",
+      "line": 2,
+      "source": "return new Date();",
+      "remediation": "inject a fixed clock/now value from the check fixture; do not read the ambient clock"
+    },
+    {
+      "category": "clock",
+      "path": "tools/negative_clock.mjs",
+      "line": 2,
+      "source": "const started = Date.now();",
+      "remediation": "inject a fixed clock/now value from the check fixture; do not read the ambient clock"
+    },
+    {
+      "category": "clock",
+      "path": "tools/negative_clock.mjs",
+      "line": 3,
+      "source": "const local = new Date();",
+      "remediation": "inject a fixed clock/now value from the check fixture; do not read the ambient clock"
+    },
+    {
+      "category": "timezone",
+      "path": "tools/negative_clock.mjs",
+      "line": 4,
+      "source": "const label = local.toLocaleString();",
+      "remediation": "format with an explicit UTC or named timeZone, or compare canonical timestamps"
+    },
+    {
+      "category": "external-data",
+      "path": "tools/negative_external.mjs",
+      "line": 3,
+      "source": "return run(\"--from-live\");",
+      "remediation": "make the check consume a pinned local fixture or classify the live path as a non-gate monitor"
+    },
+    {
+      "category": "network",
+      "path": "tools/negative_network.mjs",
+      "line": 2,
+      "source": "return fetch(\"https://production.example.test/health\");",
+      "remediation": "read a checked-in fixture or inject a hermetic transport; move live sampling to a scheduled monitor"
+    },
+    {
+      "category": "write",
+      "path": "tools/negative_write.mjs",
+      "line": 6,
+      "source": "writeFileSync(\"baseline.json\", \"{}\\n\");",
+      "remediation": "separate write mode from --check and guard every mutation behind the non-check branch"
+    }
+  ]
+}
