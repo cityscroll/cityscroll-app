@@ -86,13 +86,33 @@ test("the edge Following renderer keeps an unrecognized lens from becoming a Con
   assert.doesNotMatch(html, /name="lens"[^>]+value="money"/);
 });
 
+test("choose-step Following URLs keep scope without previewing or saving", async () => {
+  const response = await handleFollowing(new Request(
+    "https://cityscroll.org/following?lens=land&filter=%7B%22boro%22%3A%22Brooklyn%22%7D&freq=weekly&step=choose",
+  ), {}, {}, {
+    fetchImpl: () => {
+      throw new Error("preview fetch must not run on choose");
+    },
+  });
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.match(html, /data-following-journey="choose"/);
+  assert.match(html, /following-scope-link on"[^>]*data-following-scope-value="land"/);
+  assert.match(html, /following-scope-link on"[^>]*data-following-scope-value="Brooklyn"/);
+  assert.doesNotMatch(html, /data-following-subscribe-form/);
+  assert.doesNotMatch(html, /name="email"/);
+  assert.match(html, /Choosing a topic or place does not start a watch/);
+});
+
 test("the edge Following renderer keeps the create-first empty state on a fresh visit", async () => {
   const response = await handleFollowing(new Request("https://cityscroll.org/following/"));
   const html = await response.text();
 
   assert.equal(response.status, 200);
   assert.match(html, /data-following-preview-form/);
-  assert.match(html, /data-following-subscribe-panel/);
+  assert.match(html, /data-following-journey="choose"/);
+  assert.doesNotMatch(html, /data-following-subscribe-form/);
   assert.match(html, /Save a topic, place, agency, or keyword\. We email matching public records when they appear\./);
   assert.match(html, /data-personal-watch-list/);
 });

@@ -16,6 +16,7 @@
   </div></header>
 <main id="main" data-following-root data-personal-url="https://api.cityscroll.org/following/personal"
     data-following-layout="browse"
+    data-following-journey="choose"
     data-msg-duplicate="You already follow these filters. Manage the saved watch instead of making a copy."
     data-msg-preview-loading="Updating the preview…"
     data-msg-preview-ready="Preview updated."
@@ -35,28 +36,36 @@
     >
     <section class="following-hero">
       <h1>Following</h1>
+      <p class="following-hero-lead">Choose a topic and a place. Preview matching records, then save that watch with your email.</p>
     </section>
     <nav class="following-surface-tabs" data-following-tabs hidden role="tablist" aria-label="Following sections">
     <button type="button" class="following-surface-tab" role="tab" id="following-tab-watches" data-following-tab="watches" aria-controls="your-following" aria-selected="false">Your watches</button>
     <button type="button" class="following-surface-tab" role="tab" id="following-tab-create" data-following-tab="create" aria-controls="create" aria-selected="true">Create a watch</button>
     <button type="button" class="following-surface-tab" role="tab" id="following-tab-packs" data-following-tab="packs" aria-controls="packs" aria-selected="false">Watch sets</button>
   </nav>
-    <section id="create" class="following-create" data-following-panel="create" aria-labelledby="following-create-heading">
+    <section id="create" class="following-create" data-following-panel="create" data-following-journey="choose" aria-labelledby="following-create-heading">
     <p class="following-kicker">Create</p>
     <h2 id="following-create-heading">Follow what you care about</h2>
-    <div class="following-scope-pickers">
+    <p class="following-create-lead">Save a topic, place, agency, or keyword. We email matching public records when they appear.</p>
+    <div class="following-scope-pickers" data-following-primary-start>
     <section class="following-scope-block">
       <p class="following-scope-title">What do you want to follow?</p>
       <div class="following-scope-rail" role="group" aria-label="Topic">
         <p class="following-scope-rail-label">Topic</p>
-        <div class="following-scope-links" data-following-topic-scope><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="topic" data-following-scope-value="money" data-scope-edge="following.topic.money" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily">Contracts and RFPs</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="people" data-scope-edge="following.topic.people" data-filter-href="https://cityscroll.org/following?lens=people&amp;filter=%7B%7D&amp;freq=daily">Staffing and exams</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="land" data-scope-edge="following.topic.land" data-filter-href="https://cityscroll.org/following?lens=land&amp;filter=%7B%7D&amp;freq=daily">Zoning</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="property" data-scope-edge="following.topic.property" data-filter-href="https://cityscroll.org/following?lens=property&amp;filter=%7B%7D&amp;freq=daily">Property</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="rules" data-scope-edge="following.topic.rules" data-filter-href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%7D&amp;freq=daily">Rules</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="meetings" data-scope-edge="following.topic.meetings" data-filter-href="https://cityscroll.org/following?lens=meetings&amp;filter=%7B%7D&amp;freq=daily">Hearings and meetings</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="district" data-scope-edge="following.topic.district" data-filter-href="https://cityscroll.org/following?lens=district&amp;filter=%7B%7D&amp;freq=daily">City Council District weekly</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="entity" data-scope-edge="following.topic.entity" data-filter-href="https://cityscroll.org/following?lens=entity&amp;filter=%7B%7D&amp;freq=daily">Agency, vendor, or project</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="mandates" data-scope-edge="following.topic.mandates" data-filter-href="https://cityscroll.org/following?lens=mandates&amp;filter=%7B%7D&amp;freq=daily">Mandates</button></div>
+        <div class="following-scope-links" data-following-topic-scope>
+          <div class="following-scope-links" data-following-primary-choice="topic"><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="topic" data-following-scope-value="money" data-scope-edge="following.topic.money" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Contracts and RFPs</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="land" data-scope-edge="following.topic.land" data-filter-href="https://cityscroll.org/following?lens=land&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Zoning</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="property" data-scope-edge="following.topic.property" data-filter-href="https://cityscroll.org/following?lens=property&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Property</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="rules" data-scope-edge="following.topic.rules" data-filter-href="https://cityscroll.org/following?lens=rules&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Rules</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="meetings" data-scope-edge="following.topic.meetings" data-filter-href="https://cityscroll.org/following?lens=meetings&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Hearings and meetings</button></div>
+          <details class="following-more-topics">
+            <summary>More topics</summary>
+            <div class="following-scope-links" data-following-more-topics><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="people" data-scope-edge="following.topic.people" data-filter-href="https://cityscroll.org/following?lens=people&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Staffing and exams</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="district" data-scope-edge="following.topic.district" data-filter-href="https://cityscroll.org/following?lens=district&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">City Council District weekly</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="entity" data-scope-edge="following.topic.entity" data-filter-href="https://cityscroll.org/following?lens=entity&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Agency, vendor, or project</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="topic" data-following-scope-value="mandates" data-scope-edge="following.topic.mandates" data-filter-href="https://cityscroll.org/following?lens=mandates&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Mandates</button></div>
+          </details>
+        </div>
       </div>
     </section>
     <section class="following-scope-block">
       <p class="following-scope-title">Where?</p>
       <div class="following-scope-rail" role="group" aria-label="Place">
         <p class="following-scope-rail-label">Any place / borough</p>
-        <div class="following-scope-links" data-following-place-scope><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="place" data-following-scope-value="all" data-scope-edge="following.place.all" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily">Any place</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Manhattan" data-scope-edge="following.place.Manhattan" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Manhattan%22%7D&amp;freq=daily">Manhattan</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Brooklyn" data-scope-edge="following.place.Brooklyn" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Brooklyn%22%7D&amp;freq=daily">Brooklyn</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Queens" data-scope-edge="following.place.Queens" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Queens%22%7D&amp;freq=daily">Queens</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Bronx" data-scope-edge="following.place.Bronx" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Bronx%22%7D&amp;freq=daily">Bronx</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Staten Island" data-scope-edge="following.place.Staten Island" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Staten+Island%22%7D&amp;freq=daily">Staten Island</button></div>
+        <div class="following-scope-links" data-following-place-scope data-following-primary-choice="place"><button type="button" class="ui-filter-chip following-scope-link on" aria-pressed="true" data-following-scope-axis="place" data-following-scope-value="all" data-scope-edge="following.place.all" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%7D&amp;freq=daily&amp;step=choose">Any place</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Manhattan" data-scope-edge="following.place.Manhattan" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Manhattan%22%7D&amp;freq=daily&amp;step=choose">Manhattan</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Brooklyn" data-scope-edge="following.place.Brooklyn" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Brooklyn%22%7D&amp;freq=daily&amp;step=choose">Brooklyn</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Queens" data-scope-edge="following.place.Queens" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Queens%22%7D&amp;freq=daily&amp;step=choose">Queens</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Bronx" data-scope-edge="following.place.Bronx" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Bronx%22%7D&amp;freq=daily&amp;step=choose">Bronx</button><button type="button" class="ui-filter-chip following-scope-link" aria-pressed="false" data-following-scope-axis="place" data-following-scope-value="Staten Island" data-scope-edge="following.place.Staten Island" data-filter-href="https://cityscroll.org/following?lens=money&amp;filter=%7B%22borough%22%3A%22Staten+Island%22%7D&amp;freq=daily&amp;step=choose">Staten Island</button></div>
       </div>
     </section>
   </div>
@@ -65,6 +74,8 @@
     <input type="hidden" name="filter" value="{}">
 
 
+    <input type="hidden" name="freq" value="daily" data-following-choose-freq>
+    <p class="following-next-action" data-following-next-action data-following-choice-boundary>Next: preview matching records. Choosing a topic or place does not start a watch.</p>
     <details class="following-refinements">
       <summary>Narrow it down</summary>
       <div class="following-refinement-grid">
@@ -84,23 +95,9 @@
         </div>
       </div>
     </details>
-    <fieldset class="following-cadence" data-following-cadence>
-    <legend>Email frequency</legend>
-    <div class="following-cadence-cards">
-      <label class="following-cadence-card is-selected">
-        <input type="radio" name="freq" value="daily" checked data-following-freq="daily">
-        <span class="following-cadence-title">Daily</span>
-        <span class="following-cadence-copy">Daily when there are matches.</span>
-      </label>
-      <label class="following-cadence-card">
-        <input type="radio" name="freq" value="weekly" data-following-freq="weekly">
-        <span class="following-cadence-title">Weekly</span>
-        <span class="following-cadence-copy">Weekly digest.</span>
-      </label>
-    </div>
-  </fieldset>
+
     <div class="following-form-actions">
-      <button type="submit" class="following-form-action-preview" aria-label="Preview matches before saving">Preview matches</button>
+      <button type="submit" class="following-form-action-preview" data-following-primary-choice="preview" aria-label="Preview matches before saving">Preview matches</button>
     </div>
     <p data-following-preview-status role="status" aria-live="polite"></p>
   </form>
@@ -109,10 +106,12 @@
   </div>
   </section>
     <section class="following-suggestions" data-following-suggestions data-suggestion-kind="watch-family" aria-labelledby="following-suggestions-heading">
-    <p class="following-kicker">Suggestions</p>
-    <h2 id="following-suggestions-heading">Explore ways to follow CityScroll</h2>
-    <p>Not sure what to call it? Pick a start. You can change the sentence, check the preview, then make a watch.</p>
-    <ol class="following-suggestion-list"><li class="following-suggestion" data-following-suggestion data-suggestion-kind="watch-family" data-watch-family-id="contracts-awards" data-suggestion-rank="1">
+    <details class="following-secondary-entry" data-following-suggestions-disclosure>
+      <summary>Need a starting point?</summary>
+      <p class="following-kicker">Suggestions</p>
+      <h2 id="following-suggestions-heading">Explore ways to follow CityScroll</h2>
+      <p>Not sure what to call it? Pick a start. You can change the sentence, check the preview, then make a watch.</p>
+      <ol class="following-suggestion-list"><li class="following-suggestion" data-following-suggestion data-suggestion-kind="watch-family" data-watch-family-id="contracts-awards" data-suggestion-rank="1">
     <div>
       <h3>Contracts and awards</h3>
       <p>Follow new City contracts, RFPs, and awards.</p>
@@ -123,7 +122,7 @@
       <h3>Rezonings and land use</h3>
       <p>Follow zoning changes and land-use review.</p>
     </div>
-    <a class="ui-constellation-link following-suggestion-link" href="https://cityscroll.org/following?lens=land&amp;filter=%7B%22status%22%3A%22all%22%2C%22keywords%22%3A%5B%22rezoning%22%5D%7D&amp;freq=weekly"><span aria-hidden="true">◆</span>Preview and edit</a>
+    <a class="ui-constellation-link following-suggestion-link" href="https://cityscroll.org/following?lens=land&amp;filter=%7B%22keywords%22%3A%5B%22rezoning%22%5D%7D&amp;freq=weekly"><span aria-hidden="true">◆</span>Preview and edit</a>
   </li><li class="following-suggestion" data-following-suggestion data-suggestion-kind="watch-family" data-watch-family-id="meetings" data-suggestion-rank="3">
     <div>
       <h3>Meetings and hearings</h3>
@@ -179,17 +178,14 @@
     </div>
     <a class="ui-constellation-link following-suggestion-link" href="https://cityscroll.org/following?lens=district&amp;filter=%7B%22councilDistrict%22%3A%221%22%7D&amp;freq=weekly"><span aria-hidden="true">◆</span>Preview and edit</a>
   </li></ol>
-    <p class="following-suggestion-note">Pick a suggestion to open its preview. It does not make a watch. Check the sentence, then submit your email.</p>
+      <p class="following-suggestion-note" data-following-choice-boundary>Pick a suggestion to open its preview. It does not make a watch. Check the sentence, then submit your email.</p>
+    </details>
   </section>
-    <div class="following-workspace" data-following-workspace data-following-panel-workspace><section class="following-subscribe" data-following-subscribe-panel>
-    <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
-      <p>Follow what you care about. Save a topic, place, agency, or keyword. We email matching public records when they appear.</p>
-      <p class="following-note" data-following-delivery-help>Daily sends when there are matches. Weekly digest sends Monday.</p>
-    </section></div>
+    <div class="following-workspace" data-following-workspace data-following-panel-workspace></div>
     <section id="your-following" class="following-personal" data-following-panel="watches" data-following-personal-mode="secondary" aria-labelledby="following-personal-heading">
     <p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list data-personal-state="unrecognized"><div data-personal-state="unrecognized" data-session-recognized="false"><p>Open a CityScroll email to see your watches.</p><p class="following-personal-recovery"><a href="#create" data-following-create-recovery>Create a watch</a></p></div></div><p data-personal-status role="status" aria-live="polite"></p>
   </section>
-    <section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><p class="following-pack-lead">These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div><article class="following-pack" data-pack-id="restaurants" data-suggestion-kind="pack">
+    <section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><details class="following-secondary-entry" data-following-packs-disclosure><summary>Browse watch sets</summary><p class="following-pack-lead" data-following-choice-boundary>These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div><article class="following-pack" data-pack-id="restaurants" data-suggestion-kind="pack">
     <h3>Restaurant rules</h3>
     <p class="following-pack-cost" data-pack-attention>This set makes 1 watch. You get one weekly email with 1 section.</p>
     <p class="following-pack-count" data-pack-match-count="6">6 matching records</p>
@@ -219,7 +215,7 @@
     </li></ul>
     <a class="ui-constellation-link following-pack-results-link" href="/browse/rules/?facet=%7B%22entity_refs_all%22%3A%5B%22agency%3Aid%3Abuildings%22%5D%7D"><span aria-hidden="true">◆</span>See matches</a>
     <a class="ui-constellation-link following-pack-link" href="/following/packs/construction-safety/"><span aria-hidden="true">◆</span>Open this pack</a>
-  </article></div></section>
+  </article></div></details></section>
   </main>
 <footer class="following-footer">Check each item at its source.</footer>
 <script defer src="/analytics.js?v=1.3.0"></script>

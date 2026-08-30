@@ -789,8 +789,12 @@
             "selector": "[data-following-preview-form]"
           },
           {
-            "selector": "[data-following-subscribe-panel]",
+            "selector": "[data-following-panel=\"create\"]",
             "text": "Follow what you care about"
+          },
+          {
+            "selector": "[data-following-choice-boundary]",
+            "text": "does not start a watch"
           }
         ],
         "notVisible": [
@@ -995,8 +999,8 @@
             "text": "What do you want to follow?"
           },
           {
-            "selector": "[data-following-subscribe-panel]",
-            "text": "Follow what you care about"
+            "selector": "[data-following-choice-boundary]",
+            "text": "does not start a watch"
           },
           {
             "selector": "[data-following-preview-form]"

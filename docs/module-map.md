@@ -44,7 +44,7 @@ Start here for JavaScript work on the main site. Read the named module and `core
 | `site/parcel_scope.mjs` | Pure exact-BBL typed scope composition and bounded observed parcel biography over committed disposition, ZAP, and tax-lien materializations. |
 | `site/parcel_biography_ui.mjs` | Pure lazy HTML renderer for the observed parcel biography; Property retains route and fetch ownership. |
 | `site/near_you_view.mjs` | Shared static/edge Near-you view model and HTML renderer over versioned scope, district activity, and boundaries. |
-| `site/following_view.mjs` | Shared static/edge Following view model and HTML renderer. The saved scope drives the summary, count, preview, and subscription form. |
+| `site/following_view.mjs` | Shared static/edge Following view model and HTML renderer. The create journey is choose (`step=choose`) then one preview transition then explicit `/subscribe` save; topic/place chips, suggestions, and watch sets carry the same `lens`/`filter` and do not enroll on selection. |
 | `site/app/following.mjs` | Following-only personal island plus preview, duplicate-warning, and submission enhancements. Public reading and forms do not depend on it. |
 | `site/app/alerts.mjs` | Legacy hash-route watch UI retained for source characterization only; it is not in the home loader graph. |
 | `site/app/procurement-lifecycle.mjs` | Contract-lifecycle stages, sources, documents, payment state, and lifecycle cards. |

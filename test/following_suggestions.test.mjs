@@ -2,7 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { buildFollowingViewModel, renderFollowingDocument } from "../site/following_view.mjs";
+import {
+  buildFollowingViewModel,
+  canonicalFollowingScope,
+  renderFollowingDocument,
+  watchFromFollowingParams,
+} from "../site/following_view.mjs";
 import templates from "../site/data/watch_templates.json" with { type: "json" };
 import moneyOpen from "../site/data/money_default_open.json" with { type: "json" };
 import rulesOpen from "../site/data/rules_domain_observations.json" with { type: "json" };
@@ -93,4 +98,17 @@ test("the committed Worker registry is the source-row results-backed projection"
     expected,
   );
   assert.equal(Object.hasOwn(artifact, "rows"), false);
+});
+
+test("watch-set cards stay a Following suggestion kind and do not subscribe on their own", () => {
+  const suggested = buildResultsBackedWatchTemplateRegistry(registry, openSources, { todayISO: "2026-08-12" });
+  const html = renderFollowingDocument(buildFollowingViewModel({}, suggested));
+  assert.match(html, /data-following-packs-disclosure/);
+  assert.match(html, /data-pack-id="live-set"/);
+  assert.match(html, /Each watch is made only after you check and submit/);
+  assert.doesNotMatch(html.match(/data-pack-id="live-set"[\s\S]*?<\/article>/)?.[0] || "", /data-following-subscribe-form/);
+  assert.match(html, /data-pack-id="live-set"[\s\S]*following-pack-link[^>]*href="\/following\/packs\/live-set\/"/);
+  const suggestion = watchFromFollowingParams(new URLSearchParams("lens=land&filter=%7B%22keywords%22%3A%5B%22rezoning%22%5D%7D&freq=weekly"));
+  const direct = watchFromFollowingParams(new URLSearchParams("lens=land&q=rezoning&freq=weekly"));
+  assert.deepEqual(canonicalFollowingScope(suggestion), canonicalFollowingScope(direct));
 });
