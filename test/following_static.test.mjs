@@ -77,6 +77,20 @@ test("Following renders the public control center and a complete no-JavaScript f
   assert.match(html, /class="document-brand brand-lockup home"/);
 });
 
+test("Following demo permalinks prove the compact create journey", () => {
+  const manifest = JSON.parse(readFileSync(new URL("../site/demo/demo-links.json", import.meta.url), "utf8"));
+  const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
+  const builder = manifest.entries.find((entry) => entry.id === "alerts-builder");
+  const carry = manifest.entries.find((entry) => entry.id === "alerts-context-carry-notice");
+  assert.ok(builder && carry);
+  assert.equal(builder.expectations.visible[1].selector, '[data-following-panel="create"]');
+  assert.match(html, /data-following-panel="create"/);
+  assert.match(html, /Follow what you care about/);
+  assert.match(html, /data-following-choice-boundary/);
+  assert.doesNotMatch(html, /data-following-subscribe-panel/);
+  assert.equal(carry.expectations.visible[1].selector, "[data-following-choice-boundary]");
+});
+
 test("Following create flow presents preview-first CTA text", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
 

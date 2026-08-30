@@ -197,6 +197,9 @@ function setTab(tab, { historyMode = "replace" } = {}) {
     if (match && panel.id === "your-following") {
       panel.querySelector("details.following-personal-details")?.setAttribute("open", "");
     }
+    if (match && panel.id === "packs") {
+      panel.querySelector("[data-following-packs-disclosure]")?.setAttribute("open", "");
+    }
   }
   const workspace = root.querySelector("[data-following-panel-workspace]");
   if (workspace) workspace.hidden = tab !== "create";
