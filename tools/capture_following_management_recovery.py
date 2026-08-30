@@ -122,7 +122,7 @@ def install_routes(page: Page, specimen: str) -> None:
         route.fulfill(status=404, content_type="application/json", body="{}")
 
     page.route("https://api.cityscroll.org/**", api)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", api)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", api)
     page.route("https://data.cityofnewyork.us/**", lambda route: route.abort())
 
 
