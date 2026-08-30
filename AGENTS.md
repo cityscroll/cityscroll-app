@@ -1445,6 +1445,15 @@ batch — never live ArcGIS on the resident hot path:
 canaries `3012660036` / `2026K0123` and `5017800015` / `2025R0257`). Focused proof:
 `node --test test/bbl_mappluto_centroids.test.mjs test/land_map_resolution_model.test.mjs`.
 
+**Land default mapability census:** `tools/lib/land_mapability_census.mjs` is the
+denominator-first join of the pinned 40-row `land_default_ulurp.json` corpus to
+exact WH-06 BBL keys and finite retained MapPLUTO centroids. Rebuild the
+committed receipt with `node tools/build_land_mapability_census.mjs`; `--check`
+verifies it. Geocoded points, district guesses, neighboring parcels, and
+outcome-only coordinates stay out of the numerator. This receipt does not ship
+a browse Map or change Land filters. Focused proof:
+`test/land_mapability_census.test.mjs`.
+
 **WH-07 City Record PIN-chain serve (first history projection):** materialize
 procurement-with-pin siblings from the WH-07 `city_record` bulk into
 `site/data/city_record_pin_chain_warehouse_lookup.json` (+ Worker twin).
