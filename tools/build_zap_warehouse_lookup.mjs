@@ -13,6 +13,8 @@
  *   node tools/build_zap_warehouse_lookup.mjs --check --against-live  # + sell-facing drift
  *   node tools/build_zap_warehouse_lookup.mjs --limit 500
  *   node tools/build_zap_warehouse_lookup.mjs --bench    # print warehouse vs SODA timing
+ *   node tools/build_zap_warehouse_lookup.mjs --overlay-environmental
+ *     # additive CEQR/environmental fields on the committed sell-facing lookup
  *
  * --from-soda is the closed refresh→publish path (no DuckDB required). Bulk DuckDB
  * export remains available when the catalog is fresh.
@@ -32,6 +34,7 @@ import {
   sellFacingIdDelta,
   sodaSellFacingUrl,
 } from "../warehouse/lib/zap_freshness.mjs";
+import { gzipSync } from "node:zlib";
 import {
   buildMaterializationDoc,
   buildZapLookupIndex,
@@ -42,6 +45,14 @@ import {
   parseCsv,
   rowToSodaShape,
 } from "../warehouse/lib/zap_lookup.mjs";
+import {
+  overlayZapEnvironmentalSourceFields,
+  stampZapEnvironmentalProjection,
+  summarizeZapEnvironmentalProjection,
+  zapEnvironmentalProjectionFindings,
+  ZAP_ENVIRONMENTAL_PROJECTION_SCHEMA,
+  ZAP_ENVIRONMENTAL_SOURCE_COLS,
+} from "../warehouse/lib/zap_environmental_projection.mjs";
 import {
   assertServePublishTwins,
   SERVE_LOOKUP_CONTRACTS,
@@ -64,6 +75,14 @@ const BENCH_RECEIPT = path.join(
   "wh05_zap_lookup_speed.json"
 );
 const SAMPLE_CSV = path.join(WAREHOUSE_DIR, "fixtures", "zap-projects", "sample.csv");
+const LAND_DEFAULT = path.join(ROOT, "site", "data", "land_default_ulurp.json");
+const ENV_RECEIPT = path.join(
+  ROOT,
+  "warehouse",
+  "receipts",
+  "proof",
+  "zap_environmental_projection_latest.json",
+);
 
 function parseArgs(argv) {
   const out = {
@@ -74,6 +93,7 @@ function parseArgs(argv) {
     all: false,
     fromSoda: false,
     againstLive: false,
+    overlayEnvironmental: false,
   };
   for (let i = 2; i < argv.length; i++) {
     if (argv[i] === "--fixture") out.fixture = true;
@@ -82,6 +102,7 @@ function parseArgs(argv) {
     else if (argv[i] === "--all") out.all = true;
     else if (argv[i] === "--from-soda" || argv[i] === "--from-live") out.fromSoda = true;
     else if (argv[i] === "--against-live") out.againstLive = true;
+    else if (argv[i] === "--overlay-environmental") out.overlayEnvironmental = true;
     else if (argv[i] === "--limit") out.limit = Number(argv[++i]);
   }
   return out;
@@ -164,6 +185,97 @@ export async function fetchSellFacingFromSoda(fetchImpl = fetch, opts = {}) {
     offset += batch.length;
   }
   return rows;
+}
+
+function sodaInList(ids) {
+  return ids.map((id) => `'${String(id).replace(/'/g, "''")}'`).join(",");
+}
+
+export async function fetchEnvironmentalSourceByProjectIds(ids, fetchImpl = fetch) {
+  const unique = [...new Set((ids || []).map((id) => String(id || "").trim()).filter(Boolean))];
+  const byId = new Map();
+  const select = ["project_id", ...ZAP_ENVIRONMENTAL_SOURCE_COLS].join(",");
+  for (let i = 0; i < unique.length; i += 40) {
+    const batch = unique.slice(i, i + 40);
+    const params = new URLSearchParams({
+      $select: select,
+      $where: `project_id in(${sodaInList(batch)})`,
+      $limit: String(batch.length),
+    });
+    const url = `https://data.cityofnewyork.us/resource/hgx4-8ukb.json?${params}`;
+    const rows = await fetchJson(fetchImpl, url);
+    for (const row of Array.isArray(rows) ? rows : []) {
+      const id = String(row?.project_id || "").trim();
+      if (id) byId.set(id, row);
+    }
+  }
+  return byId;
+}
+
+export function enrichLookupRowsWithEnvironmentalSource(rows, sourceById, opts = {}) {
+  const asOf = opts.asOf || opts.now || null;
+  return (rows || []).map((row) => {
+    const id = String(row?.project_id || "").trim();
+    const merged = overlayZapEnvironmentalSourceFields(row, sourceById.get(id) || {});
+    return stampZapEnvironmentalProjection(merged, {
+      asOf,
+      cutoff: opts.cutoff || asOf,
+      observedAt: opts.observedAt,
+    });
+  });
+}
+
+function measureLandDefaultFirstPaint() {
+  const landBuf = readFileSync(LAND_DEFAULT);
+  const landDoc = JSON.parse(landBuf);
+  const leaked = (landDoc.projects || []).some(
+    (project) => "environmental_projection" in project || "ceqr_number" in project,
+  );
+  return {
+    artifact: "site/data/land_default_ulurp.json",
+    land_default_bytes: landBuf.length,
+    land_default_gzip_bytes: gzipSync(landBuf).length,
+    land_default_has_environmental_projection: leaked,
+    growth_pct: leaked ? null : 0,
+    threshold_pct: 5,
+    policy:
+      "environmental depth stays on zap_projects_warehouse_lookup; land_default_ulurp.json is unchanged",
+  };
+}
+
+function writeEnvironmentalReceipt(doc, opts = {}) {
+  const firstPaint = measureLandDefaultFirstPaint();
+  const coverage = summarizeZapEnvironmentalProjection(doc.rows || []);
+  const receipt = {
+    schema: ZAP_ENVIRONMENTAL_PROJECTION_SCHEMA,
+    dataset_id: "hgx4-8ukb",
+    // determinism-lint: allow clock receipt timestamp only outside --check
+    generated_at: opts.generatedAt || new Date().toISOString(),
+    lookup_materialized_at: doc.materialized_at || null,
+    overlay_as_of: opts.asOf || null,
+    mode: opts.mode || doc.mode || null,
+    coverage,
+    first_paint: firstPaint,
+    findings: zapEnvironmentalProjectionFindings(doc),
+  };
+  // determinism-lint: allow write environmental receipt only outside --check
+  mkdirSync(path.dirname(ENV_RECEIPT), { recursive: true });
+  // determinism-lint: allow write environmental receipt only outside --check
+  writeFileSync(ENV_RECEIPT, stableStringify(receipt));
+  return receipt;
+}
+
+function assertEnvironmentalLookup(doc) {
+  const findings = zapEnvironmentalProjectionFindings(doc);
+  assert.equal(findings.join("\n"), "", findings.join("\n"));
+  const firstPaint = measureLandDefaultFirstPaint();
+  assert.equal(firstPaint.land_default_has_environmental_projection, false);
+  assert.ok(firstPaint.growth_pct == null || firstPaint.growth_pct <= firstPaint.threshold_pct);
+  if (existsSync(ENV_RECEIPT)) {
+    const receipt = JSON.parse(readFileSync(ENV_RECEIPT, "utf8"));
+    assert.equal(receipt.schema, ZAP_ENVIRONMENTAL_PROJECTION_SCHEMA);
+    assert.equal(receipt.first_paint.land_default_has_environmental_projection, false);
+  }
 }
 
 async function collectRows({ fixture, limit, all, fromSoda, fetchImpl = fetch }) {
@@ -310,6 +422,7 @@ async function bench(rows) {
     let lastCount = 0;
     for (let i = 0; i < 3; i++) {
       const t0 = performance.now();
+      // determinism-lint: allow network live benchmark runs only outside --check
       const resp = await fetch(url);
       const data = resp.ok ? await resp.json() : [];
       samples.push(performance.now() - t0);
@@ -344,6 +457,7 @@ async function bench(rows) {
 
   return {
     phase: "WH-05",
+    // determinism-lint: allow clock benchmark receipt timestamp only outside --check
     measured_at: new Date().toISOString(),
     replaced_fetch: {
       function: "fetchOpenDataRow",
@@ -378,7 +492,9 @@ function writeOutputs(doc, check) {
     return { status: "ok", targets };
   }
   for (const filePath of targets) {
+    // determinism-lint: allow write non-check materialization output
     mkdirSync(path.dirname(filePath), { recursive: true });
+    // determinism-lint: allow write non-check materialization output
     writeFileSync(filePath, rendered);
   }
   return {
@@ -398,6 +514,7 @@ function checkCommittedCanariesAndTwins() {
   assertServePublishTwins(site, worker, SERVE_LOOKUP_CONTRACTS.zap_projects, {
     now: site.materialized_at,
   });
+  assertEnvironmentalLookup(site);
   return site;
 }
 
@@ -421,6 +538,31 @@ async function main() {
     return;
   }
 
+  if (args.overlayEnvironmental && !args.fromSoda && !args.fixture) {
+    const committed = loadCommittedLookup();
+    // determinism-lint: allow clock overlay as-of only outside --check
+    const asOf = new Date().toISOString();
+    const sourceById = await fetchEnvironmentalSourceByProjectIds(
+      (committed.rows || []).map((row) => row.project_id),
+    );
+    committed.rows = enrichLookupRowsWithEnvironmentalSource(committed.rows, sourceById, {
+      asOf,
+      cutoff: asOf,
+    });
+    committed.rows.sort((a, b) =>
+      String(a.project_id || "").localeCompare(String(b.project_id || "")),
+    );
+    committed.row_count = committed.rows.length;
+    const written = writeOutputs(committed, args.check);
+    const receipt = writeEnvironmentalReceipt(committed, {
+      asOf,
+      generatedAt: asOf,
+      mode: "committed_overlay",
+    });
+    console.log(JSON.stringify({ ...written, environmental: receipt.coverage.counts }, null, 2));
+    return;
+  }
+
   const { rows, mode } = await collectRows({
     fixture: args.fixture,
     limit: args.limit,
@@ -429,6 +571,7 @@ async function main() {
   });
   assert.ok(rows.length >= 1, "expected at least one ZAP row to materialize");
 
+  // determinism-lint: allow clock fixture/benchmark materialization timestamp
   let now = new Date().toISOString();
   if (args.check && existsSync(OUT_WORKER)) {
     try {
@@ -451,6 +594,15 @@ async function main() {
   }
 
   const written = writeOutputs(doc, args.check);
+  if (!args.check) {
+    writeEnvironmentalReceipt(doc, {
+      asOf: now,
+      generatedAt: now,
+      mode: doc.mode,
+    });
+  } else {
+    assertEnvironmentalLookup(doc);
+  }
   if (args.check && args.againstLive) {
     written.against_live = await checkAgainstLive(loadCommittedLookup());
   }
@@ -458,7 +610,9 @@ async function main() {
 
   if (args.bench) {
     const receipt = await bench(doc.rows);
+    // determinism-lint: allow write benchmark receipt outside --check
     mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });
+    // determinism-lint: allow write benchmark receipt outside --check
     writeFileSync(BENCH_RECEIPT, stableStringify(receipt));
     console.log(`bench receipt → ${path.relative(ROOT, BENCH_RECEIPT)}`);
     if (receipt.speedup?.summary) console.log(receipt.speedup.summary);

@@ -1,0 +1,40 @@
+{
+  "schema": "cityscroll.zap_environmental_projection.v1",
+  "dataset_id": "hgx4-8ukb",
+  "generated_at": "2026-08-30T04:07:05.331Z",
+  "lookup_materialized_at": "2026-08-23T07:59:09.786Z",
+  "overlay_as_of": "2026-08-30T04:07:05.331Z",
+  "mode": "committed_overlay",
+  "coverage": {
+    "schema": "cityscroll.zap_environmental_projection.v1",
+    "source_dataset_id": "hgx4-8ukb",
+    "unsupported_fields": [
+      {
+        "field": "environmental_status",
+        "gap": "zap_projects_hgx4-8ukb_has_no_environmental_status_column",
+        "note": "ZAP Open Data publishes CEQR type, EAS/EIS document flag, and the current environmental milestone; it does not publish a separate environmental-status column."
+      }
+    ],
+    "counts": {
+      "row_count": 238,
+      "ceqr_number_present": 213,
+      "ceqr_type_present": 219,
+      "ceqr_lead_agency_present": 207,
+      "environmental_review_type_present": 114,
+      "environmental_milestone_present": 120,
+      "environmental_milestone_date_present": 120,
+      "ceqr_number_absent": 25,
+      "environmental_status_source_field_absent": 238
+    }
+  },
+  "first_paint": {
+    "artifact": "site/data/land_default_ulurp.json",
+    "land_default_bytes": 249323,
+    "land_default_gzip_bytes": 28368,
+    "land_default_has_environmental_projection": false,
+    "growth_pct": 0,
+    "threshold_pct": 5,
+    "policy": "environmental depth stays on zap_projects_warehouse_lookup; land_default_ulurp.json is unchanged"
+  },
+  "findings": []
+}

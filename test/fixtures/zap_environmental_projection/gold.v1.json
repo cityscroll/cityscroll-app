@@ -1,0 +1,174 @@
+{
+  "schema": "cityscroll.zap_environmental_projection.fixtures.v1",
+  "dataset_id": "hgx4-8ukb",
+  "as_of": "2026-08-23T08:00:00.000Z",
+  "cutoff": "2026-08-23T08:00:00.000Z",
+  "cases": [
+    {
+      "id": "positive-source-backed",
+      "note": "Publisher CEQR, lead agency, EAS flag, and environmental milestone.",
+      "row": {
+        "project_id": "2024K0240",
+        "project_name": "289 Kent Avenue Rezoning",
+        "actions": "ZM; ZR",
+        "ceqr_number": "26DCP046K",
+        "ceqr_type": "Type I",
+        "ceqr_leadagency": "DCP",
+        "eas_eis": "EAS",
+        "current_envmilestone": "EAS - Review Filed EAS",
+        "current_envmilestone_date": "2026-04-07T00:00:00.000"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "present", "value": "26DCP046K", "source_field": "ceqr_number" },
+        "ceqr_type": { "presence": "present", "value": "Type I", "source_field": "ceqr_type" },
+        "ceqr_lead_agency": { "presence": "present", "value": "DCP", "source_field": "ceqr_leadagency" },
+        "environmental_review_type": { "presence": "present", "value": "EAS", "source_field": "eas_eis" },
+        "environmental_status": { "presence": "source_field_absent", "value": null },
+        "environmental_milestone": { "presence": "present", "value": "EAS - Review Filed EAS", "source_field": "current_envmilestone" },
+        "environmental_milestone_date": { "presence": "present", "value": "2026-04-07T00:00:00.000", "source_field": "current_envmilestone_date" }
+      }
+    },
+    {
+      "id": "positive-ceqr-without-eas",
+      "note": "CEQR identifier present; EAS/EIS document flag unpublished.",
+      "row": {
+        "project_id": "2022M0258",
+        "project_name": "Timbale Terrace",
+        "actions": "HA; PQ",
+        "ceqr_number": "22HPD059M",
+        "ceqr_type": "Type I",
+        "ceqr_leadagency": "HPD"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "present", "value": "22HPD059M" },
+        "ceqr_lead_agency": { "presence": "present", "value": "HPD" },
+        "environmental_review_type": { "presence": "absent", "value": null },
+        "environmental_milestone": { "presence": "absent", "value": null }
+      }
+    },
+    {
+      "id": "eas-only-no-ceqr",
+      "note": "EAS document flag without a CEQR identifier.",
+      "row": {
+        "project_id": "EASONLY01",
+        "project_name": "EAS without identifier",
+        "actions": "ZM",
+        "eas_eis": "EAS",
+        "current_envmilestone": "EAS - Review Draft EAS",
+        "current_envmilestone_date": "2026-03-01T00:00:00.000"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "absent", "value": null },
+        "environmental_review_type": { "presence": "present", "value": "EAS" },
+        "environmental_milestone": { "presence": "present", "value": "EAS - Review Draft EAS" }
+      }
+    },
+    {
+      "id": "legacy-no-new-fields",
+      "note": "Pre-enrichment row shape: no CEQR/environmental source columns.",
+      "row": {
+        "project_id": "2025K0305",
+        "project_name": "Westshore LSGD Mapping Actions",
+        "actions": "MM",
+        "ulurp_numbers": "250308MMK",
+        "current_milestone": "MM - Review Filed Land Use Application",
+        "app_filed_date": "2025-06-24T00:00:00.000"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "absent", "value": null },
+        "ceqr_type": { "presence": "absent", "value": null },
+        "ceqr_lead_agency": { "presence": "absent", "value": null },
+        "environmental_review_type": { "presence": "absent", "value": null },
+        "environmental_status": { "presence": "source_field_absent", "value": null },
+        "environmental_milestone": { "presence": "absent", "value": null },
+        "environmental_milestone_date": { "presence": "absent", "value": null }
+      }
+    },
+    {
+      "id": "absent",
+      "row": {
+        "project_id": "ABSENT01",
+        "project_name": "No environmental fields"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "absent", "value": null }
+      }
+    },
+    {
+      "id": "title-only",
+      "note": "CEQR-looking token appears only in the project title.",
+      "row": {
+        "project_id": "TITLE01",
+        "project_name": "Rezoning under CEQR 26DCP139X at 100 Main Street"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "title_only", "value": null }
+      }
+    },
+    {
+      "id": "malformed",
+      "row": {
+        "project_id": "BADCEQR1",
+        "project_name": "Pending review",
+        "ceqr_number": "CEQR pending",
+        "current_envmilestone_date": "not-a-date"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "malformed", "value": null },
+        "environmental_milestone_date": { "presence": "malformed", "value": null }
+      }
+    },
+    {
+      "id": "conflicting",
+      "row": {
+        "project_id": "CONFLICT1",
+        "ceqr_number": "26DCP139X; 26DCP140X"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "conflicting", "value": null }
+      }
+    },
+    {
+      "id": "stale",
+      "note": "Environmental milestone date is after the projection cutoff.",
+      "row": {
+        "project_id": "STALE01",
+        "ceqr_number": "26DCP046K",
+        "current_envmilestone": "EAS - Review Filed EAS",
+        "current_envmilestone_date": "2026-12-01T00:00:00.000"
+      },
+      "cutoff": "2026-08-23T08:00:00.000Z",
+      "expect": {
+        "ceqr_number": { "presence": "present", "value": "26DCP046K" },
+        "environmental_milestone_date": { "presence": "stale", "value": null }
+      }
+    },
+    {
+      "id": "action-eas-is-not-review-type",
+      "note": "EAS in the land-use action list is not an environmental-review document flag.",
+      "row": {
+        "project_id": "2026K0123",
+        "project_name": "1550 Bedford Avenue Rezoning",
+        "actions": "UK; ZM; ZR; EAS",
+        "ceqr_number": "78DCP250K",
+        "ceqr_type": "Type I",
+        "ceqr_leadagency": "DCP",
+        "eas_eis": "EAS"
+      },
+      "expect": {
+        "ceqr_number": { "presence": "present", "value": "78DCP250K" },
+        "environmental_review_type": { "presence": "present", "value": "EAS", "source_field": "eas_eis" }
+      }
+    },
+    {
+      "id": "action-eas-without-eas-eis-column",
+      "row": {
+        "project_id": "ACTIONEAS",
+        "actions": "UK; ZM; ZR; EAS"
+      },
+      "expect": {
+        "environmental_review_type": { "presence": "absent", "value": null }
+      }
+    }
+  ]
+}
