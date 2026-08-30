@@ -320,6 +320,15 @@ export const CIVIC_INSTITUTION_ROLE_CONFIDENCES = Object.freeze(["strong", "tent
 export const AGENCY_ROLE_COMPATIBILITY_SCHEMA = "cityscroll.agency_role_compatibility.v1";
 
 const MUST_REPORT_NEGATIVE_RULE = "Never infer a report-recipient or oversight edge from duty-text names, OTI reports_to, a shared publisher label, or related_to.";
+const DEVELOPMENT_ROLE_NEGATIVE_RULE = "Never infer an applicant from a project mention, a contractor from a publisher notice, or a selected developer from a company name; require exact party or actor evidence.";
+const ROLE_EVIDENCE = Object.freeze([
+  "exact_source_observation",
+  "exact_ids",
+  "source_fields",
+  "source_receipt",
+  "observed_time",
+  "confidence_basis",
+]);
 
 export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
   must_report_to: Object.freeze({
@@ -328,6 +337,7 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     role: "report_submitter",
     inverse_role: "report_recipient",
     source_contract: "cityscroll.agency_obligations.v1",
+    from_kind: "civic-institution",
     object_kind: "civic-institution",
     legacy_relation_id: "statute_duty",
     required_evidence: Object.freeze([
@@ -340,6 +350,64 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     ]),
     methods: ENTITY_LINK_METHODS,
     negative_rule: MUST_REPORT_NEGATIVE_RULE,
+  }),
+  applicant_on: Object.freeze({
+    relation: "applicant_on",
+    inverse: "has_applicant",
+    role: "applicant",
+    inverse_role: "has_applicant",
+    source_contract: "zap-projects",
+    from_kind: "civic-institution",
+    object_kind: "project",
+    legacy_relation_id: "applicant_agency",
+    required_evidence: ROLE_EVIDENCE,
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: DEVELOPMENT_ROLE_NEGATIVE_RULE,
+  }),
+  contractor_on: Object.freeze({
+    relation: "contractor_on",
+    inverse: "has_contractor",
+    role: "contractor",
+    inverse_role: "has_contractor",
+    source_contract: "passport_public_contracts",
+    from_kind: "civic-institution",
+    object_kind: "procurement",
+    legacy_relation_id: null,
+    required_evidence: ROLE_EVIDENCE,
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: DEVELOPMENT_ROLE_NEGATIVE_RULE,
+  }),
+  contracted_by: Object.freeze({
+    relation: "contracted_by",
+    inverse: "contracts_with",
+    role: "contracting_institution",
+    inverse_role: "contractor",
+    source_contract: "passport_public_contracts",
+    from_kind: "civic-institution",
+    object_kind: "civic-institution",
+    legacy_relation_id: null,
+    required_evidence: ROLE_EVIDENCE,
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: DEVELOPMENT_ROLE_NEGATIVE_RULE,
+  }),
+  presents_transaction_at: Object.freeze({
+    relation: "presents_transaction_at",
+    inverse: "presents_transaction",
+    role: "transaction_presenter",
+    inverse_role: "presents_transaction",
+    source_contract: "city_record_meetings",
+    from_kind: "civic-institution",
+    object_kind: "meeting",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_notice",
+      "exact_date",
+      "exact_quote",
+      "retained_source_passage",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: DEVELOPMENT_ROLE_NEGATIVE_RULE,
   }),
 });
 
@@ -415,9 +483,20 @@ function tryInstitution(value) {
   const raw = value?.id || value?.institution_ref || value?.canonical_id || value;
   if (raw == null || raw === "") return null;
   const parsed = parseCivicInstitutionIdentity(raw);
-  if (parsed) return parsed;
+  if (parsed) {
+    return Object.freeze({
+      ...parsed,
+      kind: "civic-institution",
+      href: compatibilityHref(parsed.canonical_id),
+    });
+  }
   try {
-    return parseCivicInstitutionIdentity(institutionId(raw));
+    const identity = parseCivicInstitutionIdentity(institutionId(raw));
+    return Object.freeze({
+      ...identity,
+      kind: "civic-institution",
+      href: compatibilityHref(identity.canonical_id),
+    });
   } catch {
     return null;
   }
@@ -425,6 +504,49 @@ function tryInstitution(value) {
 
 function compatibilityHref(canonicalId) {
   return canonicalId ? `/agencies/${canonicalId}/` : null;
+}
+
+function tryTypedObject(value, kind) {
+  if (kind === "civic-institution") return tryInstitution(value);
+  const raw = clean(value?.id || value?.object_ref || value?.ref || value, 320);
+  if (!raw) return null;
+  if (kind === "project") {
+    const match = raw.match(/^(?:project:)?([A-Za-z0-9][A-Za-z0-9_-]{2,24})$/);
+    if (!match) return null;
+    const projectId = match[1];
+    return Object.freeze({
+      id: `project:${projectId}`,
+      canonical_id: projectId,
+      kind: "project",
+      href: `/browse/zoning/#land/${encodeURIComponent(projectId)}`,
+    });
+  }
+  if (kind === "procurement") {
+    const id = raw.startsWith("procurement:") ? raw : null;
+    if (!id) return null;
+    return Object.freeze({
+      id,
+      canonical_id: id,
+      kind: "procurement",
+      href: `/procurements/${encodeURIComponent(id)}`,
+    });
+  }
+  if (kind === "meeting") {
+    const match = raw.match(/^(?:meetings:notice:|meeting:city_record:|notice:)?(\d{8,12})$/);
+    if (!match) return null;
+    const noticeId = match[1];
+    return Object.freeze({
+      id: `meetings:notice:${noticeId}`,
+      canonical_id: noticeId,
+      kind: "meeting",
+      href: `/notices/${encodeURIComponent(noticeId)}`,
+    });
+  }
+  return null;
+}
+
+function endpointHref(endpoint, fallbackHref = null) {
+  return clean(fallbackHref, 500) || endpoint?.href || null;
 }
 
 function roleEdgeId({ relation, from, to, sourceObservation }) {
@@ -447,6 +569,7 @@ function roleEdgeProvenance(sourceObservation, observed, basis, vintage) {
     source_value: sourceObservation?.source_value || null,
     source_url: sourceObservation?.source_url || null,
     source_dataset: sourceObservation?.source_dataset || null,
+    source_receipt: sourceObservation?.source_record_ref || sourceObservation?.source_record_id || null,
     observed_at: observed,
     basis: clean(basis, 240) || null,
     vintage: clean(vintage, 80) || observed,
@@ -467,6 +590,10 @@ function roleEdgeEnvelope({
   status,
   reason = null,
   linking,
+  objectHref = null,
+  subjectHref = null,
+  objectDisplayName = null,
+  reversed = false,
 }) {
   const observed = sourceObservation?.observed_at
     ? timestamp(sourceObservation.observed_at, "observed_at")
@@ -474,21 +601,30 @@ function roleEdgeEnvelope({
   const asOfStamp = timestamp(asOf || observed, "as_of");
   const vintageStamp = clean(vintage, 80) || asOfStamp;
   const refs = evidenceRefsFrom(evidenceRefs);
+  const relationId = reversed ? spec.inverse : spec.relation;
+  const inverseId = reversed ? spec.relation : spec.inverse;
+  const role = reversed ? spec.inverse_role : spec.role;
+  const inverseRole = reversed ? spec.role : spec.inverse_role;
+  const fromKind = from.kind || spec.from_kind || "civic-institution";
+  const objectKind = to.kind || spec.object_kind || "civic-institution";
   return Object.freeze({
     schema: CIVIC_INSTITUTION_ROLE_EDGE_SCHEMA,
     version: CIVIC_INSTITUTION_ROLE_EDGE_VERSION,
-    id: roleEdgeId({ relation: spec.relation, from: from.id, to: to.id, sourceObservation }),
-    relation_id: spec.relation,
-    relation: spec.relation,
-    inverse: spec.inverse,
-    role: spec.role,
-    inverse_role: spec.inverse_role,
+    id: roleEdgeId({ relation: relationId, from: from.id, to: to.id, sourceObservation }),
+    relation_id: relationId,
+    relation: relationId,
+    inverse: inverseId,
+    role,
+    inverse_role: inverseRole,
     from: from.id,
     to: to.id,
     subject_ref: from.id,
     object_ref: to.id,
     subject_canonical_id: from.canonical_id,
     object_canonical_id: to.canonical_id,
+    from_kind: fromKind,
+    object_kind: objectKind,
+    object_display_name: clean(objectDisplayName, 240) || null,
     source_contract: spec.source_contract,
     required_evidence: spec.required_evidence,
     materialization: "civic_institution_role_edge",
@@ -502,8 +638,8 @@ function roleEdgeEnvelope({
     status,
     reason,
     linking,
-    href: linking ? compatibilityHref(to.canonical_id) : null,
-    inverse_href: linking ? compatibilityHref(from.canonical_id) : null,
+    href: linking ? endpointHref(to, objectHref) : null,
+    inverse_href: linking ? endpointHref(from, subjectHref) : null,
     negative_rule: spec.negative_rule,
     provenance: roleEdgeProvenance(sourceObservation, observed, basis, vintageStamp),
   });
@@ -576,6 +712,9 @@ export function buildCivicInstitutionRoleEdge({
   method = null,
   resolutionStatus = "accepted",
   objectDisplayName = null,
+  objectHref = null,
+  subjectHref = null,
+  reason = null,
 } = {}) {
   const relationToken = clean(relation, 80).toLowerCase();
   if (GENERIC_RELATIONS.has(relationToken)) {
@@ -609,8 +748,10 @@ export function buildCivicInstitutionRoleEdge({
     });
   }
   const spec = oriented.spec;
-  const from = tryInstitution(oriented.reversed ? object : subject);
-  const to = tryInstitution(oriented.reversed ? subject : object);
+  const fromKind = oriented.reversed ? spec.object_kind : (spec.from_kind || "civic-institution");
+  const toKind = oriented.reversed ? (spec.from_kind || "civic-institution") : spec.object_kind;
+  const from = tryTypedObject(oriented.reversed ? object : subject, fromKind);
+  const to = tryTypedObject(oriented.reversed ? subject : object, toKind);
   if (!from || !to) {
     return unresolvedRoleResult({
       spec,
@@ -636,20 +777,21 @@ export function buildCivicInstitutionRoleEdge({
     return unresolvedRoleResult({
       spec, from, to, sourceObservation, evidenceRefs, asOf, vintage, method,
       status: "held",
-      reason: clean(basis, 240) || "held_by_graph_policy",
+      reason: clean(reason, 240) || clean(basis, 240) || "held_by_graph_policy",
     });
   }
   if (resolutionStatus === "collision" || resolutionStatus === "conflict" || resolutionStatus === "unresolved") {
     return unresolvedRoleResult({
       spec, from, to, sourceObservation, evidenceRefs, asOf, vintage, method,
-      reason: resolutionStatus === "collision" ? "conflicting_endpoints" : "unresolved_role",
+      reason: clean(reason, 240)
+        || (resolutionStatus === "collision" ? "conflicting_endpoints" : "unresolved_role"),
     });
   }
   if (!sourceObservation?.source_record_ref) {
     return unresolvedRoleResult({
       spec, from, to, evidenceRefs, asOf, vintage, method,
       status: "unknown",
-      reason: "source_observation_missing",
+      reason: clean(reason, 240) || "source_observation_missing",
     });
   }
   const refs = evidenceRefsFrom(evidenceRefs);
@@ -657,7 +799,7 @@ export function buildCivicInstitutionRoleEdge({
     return unresolvedRoleResult({
       spec, from, to, sourceObservation, asOf, vintage, method,
       status: "unknown",
-      reason: "evidence_missing",
+      reason: clean(reason, 240) || "evidence_missing",
     });
   }
   const exactMethod = normalizedMethod(method || "exact_source_identifier");
@@ -668,7 +810,8 @@ export function buildCivicInstitutionRoleEdge({
     return unresolvedRoleResult({
       spec, from, to, sourceObservation, evidenceRefs: refs, asOf, vintage, method: exactMethod,
       status: exactConfidence === "tentative" ? "held" : "unresolved",
-      reason: exactConfidence === "tentative" ? "tentative_non_linking" : "unresolved_role",
+      reason: clean(reason, 240)
+        || (exactConfidence === "tentative" ? "tentative_non_linking" : "unresolved_role"),
       confidence: exactConfidence || "unknown",
     });
   }
@@ -685,6 +828,10 @@ export function buildCivicInstitutionRoleEdge({
     method: exactMethod,
     status: "accepted",
     linking: true,
+    objectHref,
+    subjectHref,
+    objectDisplayName,
+    reversed: oriented.reversed,
   });
 }
 
@@ -720,9 +867,11 @@ export function invertCivicInstitutionRoleEdge(edge) {
     object_ref: edge.from,
     subject_canonical_id: edge.object_canonical_id,
     object_canonical_id: edge.subject_canonical_id,
+    from_kind: edge.object_kind || spec.object_kind,
+    object_kind: edge.from_kind || spec.from_kind || "civic-institution",
     linking,
-    href: linking ? compatibilityHref(edge.subject_canonical_id) : null,
-    inverse_href: linking ? compatibilityHref(edge.object_canonical_id) : null,
+    href: linking ? edge.inverse_href : null,
+    inverse_href: linking ? edge.href : null,
   });
 }
 
@@ -779,19 +928,24 @@ export function resolveCivicInstitutionRoleEdges(candidates = []) {
 /** Dual-readable agency subject projection; never rewrites agency identities. */
 export function legacyAgencyRoleProjection(edge) {
   if (!edge || edge.schema !== CIVIC_INSTITUTION_ROLE_EDGE_SCHEMA) return null;
-  const spec = CIVIC_INSTITUTION_ROLE_RELATIONS[edge.relation_id || edge.relation];
+  const spec = CIVIC_INSTITUTION_ROLE_RELATIONS[edge.relation_id || edge.relation]
+    || Object.values(CIVIC_INSTITUTION_ROLE_RELATIONS).find((entry) => entry.inverse === (edge.relation_id || edge.relation));
   if (!spec || !edge.subject_canonical_id) return null;
+  const institutionSubject = (edge.from_kind || spec.from_kind || "civic-institution") === "civic-institution";
+  const institutionObject = (edge.object_kind || spec.object_kind) === "civic-institution";
   return Object.freeze({
     schema: AGENCY_ROLE_COMPATIBILITY_SCHEMA,
-    subject_ref: `agency:id:${edge.subject_canonical_id}`,
-    object_ref: edge.object_canonical_id ? `agency:id:${edge.object_canonical_id}` : null,
-    relation: spec.legacy_relation_id,
+    subject_ref: institutionSubject ? `agency:id:${edge.subject_canonical_id}` : edge.subject_ref,
+    object_ref: institutionObject && edge.object_canonical_id
+      ? `agency:id:${edge.object_canonical_id}`
+      : (edge.object_ref || null),
+    relation: spec.legacy_relation_id || spec.relation,
     role_relation: spec.relation,
     inverse: spec.inverse,
     status: edge.status,
     linking: Boolean(edge.linking),
     href: edge.linking ? edge.href : null,
-    canonical_id: edge.subject_canonical_id,
+    canonical_id: institutionSubject ? edge.subject_canonical_id : null,
   });
 }
 

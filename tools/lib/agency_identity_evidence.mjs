@@ -6,6 +6,7 @@ import {
   sourceIdentityEvidence,
   sourceRecordObservation,
 } from "../../ontology/civic_institution.mjs";
+import { developmentRolesForInstitution } from "../../site/civic_institution_development_roles.mjs";
 
 export const AGENCY_IDENTITY_EVIDENCE_SCHEMA = "cityscroll.civic_institution_identity_evidence.v1";
 export const AGENCY_IDENTITY_EVIDENCE_METHOD = "source_preserving_agency_identity_v1";
@@ -60,12 +61,29 @@ function itemObservation(item, identity, generatedAt) {
  * Materialize the additive identity disclosure from retained source rows and
  * already-built record provenance. It performs no request-time acquisition.
  */
+function mergeRoleBags(left, right) {
+  const seen = new Set((left.accepted || []).map((edge) => edge.id));
+  const accepted = [...(left.accepted || [])];
+  for (const edge of right.accepted || []) {
+    if (seen.has(edge.id)) continue;
+    seen.add(edge.id);
+    accepted.push(edge);
+  }
+  return {
+    accepted,
+    held: [...(left.held || []), ...(right.held || [])],
+    unknown: [...(left.unknown || []), ...(right.unknown || [])],
+    unresolved: [...(left.unresolved || []), ...(right.unresolved || [])],
+  };
+}
+
 export function buildAgencyIdentityEvidence({
   identity,
   publisherRow = null,
   view,
   generatedAt = null,
   roleCandidates = [],
+  developmentRoleSources = null,
 } = {}) {
   if (!identity?.canonical_id) return null;
   // A routed profile is not itself a source identity. Route-only and
@@ -142,7 +160,13 @@ export function buildAgencyIdentityEvidence({
     }
   }
 
-  const roleEdges = resolveCivicInstitutionRoleEdges(roleCandidates);
+  let roleEdges = resolveCivicInstitutionRoleEdges(roleCandidates);
+  if (developmentRoleSources && identity.canonical_id) {
+    roleEdges = mergeRoleBags(
+      roleEdges,
+      developmentRolesForInstitution(identity.canonical_id, developmentRoleSources),
+    );
+  }
   return {
     schema: AGENCY_IDENTITY_EVIDENCE_SCHEMA,
     method: AGENCY_IDENTITY_EVIDENCE_METHOD,
