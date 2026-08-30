@@ -1115,6 +1115,103 @@
       "grounding": "partial"
     },
     {
+      "id": "applicant_on",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "project",
+      "relation": "applicant_on",
+      "inverse": "has_applicant",
+      "reason": "NYCEDC land-use applicant role emitted only from an exact ZAP primary_applicant value on a named project. Project mentions and nearby titles never mint the edge.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "legacy_agency_relation": "applicant_agency",
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer an applicant from a project mention, a contractor from a publisher notice, or a selected developer from a company name.",
+      "label": "Applicant on",
+      "grounding": "partial"
+    },
+    {
+      "id": "contractor_on",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "procurement",
+      "relation": "contractor_on",
+      "inverse": "has_contractor",
+      "reason": "NYCEDC contractor role emitted only from exact retained contract vendor party fields on a named EPIN.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer a contractor from an EDC publisher notice or a company name without exact party fields.",
+      "label": "Contractor on",
+      "grounding": "partial"
+    },
+    {
+      "id": "contracted_by",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "civic-institution",
+      "relation": "contracted_by",
+      "inverse": "contracts_with",
+      "reason": "SBS contracting role emitted only from exact retained contract agency party fields on the same EPIN as the NYCEDC vendor party.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer SBS as the contracting institution from a generic City contract.",
+      "label": "Contracted by",
+      "grounding": "partial"
+    },
+    {
+      "id": "presents_transaction_at",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "meeting",
+      "relation": "presents_transaction_at",
+      "inverse": "presents_transaction",
+      "reason": "Borough Board transaction-presenter role emitted only from an exact notice, date, quote, and retained source passage naming the selection.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer a selected developer from a company name or from a Borough Board notice that lacks a retained selection passage.",
+      "label": "Presents transaction at",
+      "grounding": "gap"
+    },
+    {
       "id": "same_person",
       "status": "registered",
       "from": "person",

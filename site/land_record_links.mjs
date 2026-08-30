@@ -2,6 +2,10 @@
 
 import { resolveAgencyIdentity } from "./agency_identity.mjs";
 import { constellationLink } from "./affordance_grammar.mjs";
+import {
+  NYCEDC_CANONICAL_ID,
+  isNycEdcApplicantSpelling,
+} from "./civic_institution_development_specimens.mjs";
 import { boroughMapPivotHref, normalizeBoroughScope } from "./borough_scope_links.mjs";
 import { districtMapPivotHref } from "./district_scope_facets.mjs";
 import { entityChipHTML } from "./entity_pivot.mjs";
@@ -40,6 +44,19 @@ function councilDistrictLabel(value, labelFor) {
 export function landRecordApplicantHTML(value, { escape = escapeHtml } = {}) {
   const label = clean(value);
   if (!label) return "";
+  if (isNycEdcApplicantSpelling(label)) {
+    return constellationLink({
+      href: `/agencies/${NYCEDC_CANONICAL_ID}/`,
+      label,
+      className: "land-record-applicant-link",
+      attributes: {
+        "data-link-confidence": "strong",
+        "data-role-relation": "has_applicant",
+        "data-applicant-id": NYCEDC_CANONICAL_ID,
+      },
+      escape,
+    }) || escape(label);
+  }
   const identity = resolveAgencyIdentity(label);
   if (!identity?.matched || !identity.canonical_id) return escape(label);
   return entityChipHTML({
