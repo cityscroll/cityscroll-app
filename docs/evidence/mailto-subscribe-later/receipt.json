@@ -1,0 +1,150 @@
+{
+  "schema": "cityscroll.mailto_subscribe_later.v1",
+  "version": 1,
+  "workstream_card": "FS-10",
+  "generated_at": "2026-08-29T00:00:00.000Z",
+  "experiment_state": "disabled_prerequisites_unproven",
+  "enabled": false,
+  "removable_harness_shipped": false,
+  "subscribe_address_source": "worker/wrangler.toml",
+  "subscribe_address_key": "SUBSCRIBE_ADDRESS",
+  "encoding": {
+    "method": "rfc6068_mailto_subject_body",
+    "destination": "configured_SUBSCRIBE_ADDRESS_only",
+    "inbound_body_char_limit": 2000,
+    "href_char_limit": 1800
+  },
+  "enrollment_reuse": {
+    "parser": "worker/src/inbound.mjs#pickLens",
+    "interpreter": "worker/src/nl.mjs#parseLensFilter",
+    "enroll": "worker/src/subscribe.mjs#enrollAndWelcome",
+    "source": "inbound_email",
+    "welcome": "worker/src/subscribe.mjs#sendWelcome",
+    "manage": "worker/src/prefs.mjs",
+    "unsubscribe": "worker/src/unsubscribe.mjs",
+    "loop_guard": "worker/src/inbound.mjs#shouldIgnore",
+    "actor_cap_per_day": 5,
+    "surface_cap_env": "INBOUND_MAX_PER_DAY",
+    "opt_in": "single_opt_in"
+  },
+  "ui": {
+    "default": false,
+    "fallback": false,
+    "presented": false
+  },
+  "auto_enrollment": false,
+  "email_sent": false,
+  "dns_altered": false,
+  "deliverability_claimed": false,
+  "primary_journey_subscribe_mailto": [],
+  "prerequisites": {
+    "schema": "cityscroll.fs05_email_domain_prerequisite.v1",
+    "axes": {
+      "routing": {
+        "status": "incomplete",
+        "evidence_id": null,
+        "reason": "Inbound Email Routing still targets the configured Worker SUBSCRIBE_ADDRESS. No named FS-05 routing proof is retained."
+      },
+      "delivery_ownership": {
+        "status": "absent",
+        "evidence_id": null,
+        "reason": "No named deliverability or ownership evidence record exists."
+      },
+      "reply_handling": {
+        "status": "incomplete",
+        "evidence_id": null,
+        "reason": "Outbound From uses the public alerts sender with Reply-To on the compatibility domain because the current public host has no apex MX. No named reply-handling proof is retained."
+      },
+      "composer_behavior": {
+        "status": "absent",
+        "evidence_id": null,
+        "reason": "Desktop, mobile, webmail, and no-handler composer behavior is not retained as named evidence."
+      }
+    },
+    "stop_reasons": [
+      "routing:incomplete",
+      "delivery_ownership:absent",
+      "reply_handling:incomplete",
+      "composer_behavior:absent"
+    ]
+  },
+  "cases": {
+    "desktop_mail_client": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "external_composer_handoff; completion_unobserved"
+    },
+    "mobile_mail_client": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "may_lack_handler; honest_failure_no_auto_enroll"
+    },
+    "webmail": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "composer_handoff_unreliable; not_a_supported_fallback"
+    },
+    "no_handler": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "honest_failure; no_auto_enroll; no_form_bypass"
+    },
+    "encoded_content": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "rfc6068_subject_and_body; reviewed_destination_only"
+    },
+    "completion_cap": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "reuse_inbound_actor_and_surface_caps; client_cannot_count_sends"
+    },
+    "loop_guard": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "reuse_shouldIgnore; no_reply_to_own_domains_or_auto_submitted"
+    },
+    "privacy_copy": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "name_subscribe_destination_only; no_copy_when_disabled"
+    },
+    "reply": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "inbound_welcome_and_degraded_reply_only_after_fs05_proof"
+    },
+    "routing": {
+      "specified": true,
+      "measured": false,
+      "result": "not_run",
+      "required_behavior": "named_fs05_routing_record_required; mail_leg_canary_is_not_proof"
+    }
+  },
+  "privacy": {
+    "credentials_present": false,
+    "resident_addresses_present": false,
+    "destination_addresses": [
+      "configured_SUBSCRIBE_ADDRESS"
+    ],
+    "sentence_copied_to_mail_client": false
+  },
+  "measured_stop": {
+    "reason": "fs05_routing_delivery_reply_and_composer_prerequisites_unproven",
+    "details": [
+      "routing:incomplete",
+      "delivery_ownership:absent",
+      "reply_handling:incomplete",
+      "composer_behavior:absent"
+    ]
+  }
+}

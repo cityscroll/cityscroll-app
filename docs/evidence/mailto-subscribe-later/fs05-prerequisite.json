@@ -1,0 +1,34 @@
+{
+  "schema": "cityscroll.fs05_email_domain_prerequisite.v1",
+  "version": 1,
+  "observed_at": "2026-08-29T00:00:00.000Z",
+  "subscribe_address_source": "worker/wrangler.toml",
+  "subscribe_address_key": "SUBSCRIBE_ADDRESS",
+  "notes": "Inbound subscribe remains on the configured Worker SUBSCRIBE_ADDRESS. Mail-leg inbound canaries are operations health and are not FS-05 routing, delivery-ownership, reply-handling, or composer proof. This record does not send mail, alter DNS, or claim deliverability.",
+  "axes": {
+    "routing": {
+      "status": "incomplete",
+      "evidence_id": null,
+      "observed_at": "2026-08-29T00:00:00.000Z",
+      "reason": "Inbound Email Routing still targets the configured Worker SUBSCRIBE_ADDRESS. No named FS-05 routing proof is retained."
+    },
+    "delivery_ownership": {
+      "status": "absent",
+      "evidence_id": null,
+      "observed_at": null,
+      "reason": "No named deliverability or ownership evidence record exists."
+    },
+    "reply_handling": {
+      "status": "incomplete",
+      "evidence_id": null,
+      "observed_at": "2026-08-29T00:00:00.000Z",
+      "reason": "Outbound From uses the public alerts sender with Reply-To on the compatibility domain because the current public host has no apex MX. No named reply-handling proof is retained."
+    },
+    "composer_behavior": {
+      "status": "absent",
+      "evidence_id": null,
+      "observed_at": null,
+      "reason": "Desktop, mobile, webmail, and no-handler composer behavior is not retained as named evidence."
+    }
+  }
+}
