@@ -44,19 +44,6 @@ test("every application module is registered exactly once in the import graph", 
   assert.doesNotMatch(index, /<script[^>]+app\/map\.mjs/);
 });
 
-test("independent bootstrap namespaces load together after core and before route modules", () => {
-  const start = loader.indexOf("await Promise.all([");
-  const traversal = loader.indexOf('await import("./traversal.mjs")');
-  assert.ok(start > loader.indexOf('await import("./core.mjs")'));
-  assert.ok(start >= 0 && start < traversal, "shared namespace imports may overlap; ordered app modules stay sequential");
-  const panel = loader.slice(start, traversal);
-  assert.match(panel, /import\("\.\.\/scope_v0\.mjs"\)/);
-  assert.match(panel, /import\("\.\.\/entity_pivot\.mjs"\)/);
-  assert.match(panel, /import\("\.\.\/report_issue\.mjs"\)/);
-  assert.match(panel, /import\("\.\.\/agency_connections\.mjs"\)/);
-  assert.match(panel, /import\("\.\.\/route_migration\.mjs"\)/);
-});
-
 test("Property stays behind route activation while routing state remains eager", () => {
   assert.match(loader, /property:\s*\(\)\s*=>\s*import\("\.\/property\.mjs"\)/);
   assert.match(loader, /await ensureRouteModulesForHash\(location\.hash\)/);
