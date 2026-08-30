@@ -4,6 +4,12 @@ import {
   followingCadenceLabel,
   requestedFollowingTab,
 } from "../following_view.mjs";
+import {
+  followingManagementUrl,
+  followingPersonalIslandHtml,
+  followingPersonalUiState,
+  followingUrlForTab,
+} from "../following_personal_state.mjs";
 import { communityBoardIdFromSelection } from "../community_board_watch.mjs";
 import { runtimeRumSemanticMilestones } from "../rum_static_record_instrumentation.mjs";
 import {
@@ -166,7 +172,18 @@ function watchCountFromPersonal() {
   return host.querySelectorAll("[data-watch-key]").length;
 }
 
-function setTab(tab) {
+function syncLocationForTab(tab, historyMode = "replace") {
+  if (historyMode === "none" || !globalThis.history) return;
+  const current = String(location.hash || "").replace(/^#/, "");
+  const next = tab === "watches" ? "your-following" : tab;
+  if (historyMode === "replace" && tab === "create" && !current) return;
+  if (current === next) return;
+  const url = followingUrlForTab(location, tab);
+  if (historyMode === "push") history.pushState({ followingTab: tab }, "", url);
+  else history.replaceState({ followingTab: tab }, "", url);
+}
+
+function setTab(tab, { historyMode = "replace" } = {}) {
   if (!root) return;
   const tabs = root.querySelectorAll("[data-following-tab]");
   for (const button of tabs) {
@@ -183,6 +200,16 @@ function setTab(tab) {
   }
   const workspace = root.querySelector("[data-following-panel-workspace]");
   if (workspace) workspace.hidden = tab !== "create";
+  const suggestions = root.querySelector("[data-following-suggestions]");
+  if (suggestions) suggestions.hidden = tab !== "create";
+  if (tab === "watches") {
+    const personal = root.querySelector("#your-following");
+    const tabsBar = root.querySelector("[data-following-tabs]");
+    const hero = root.querySelector(".following-hero");
+    const insertAfter = tabsBar || hero;
+    if (personal && insertAfter) insertAfter.after(personal);
+  }
+  syncLocationForTab(tab, historyMode);
 }
 
 function requestedTab(fallback) {
@@ -196,7 +223,7 @@ function wireTabs(defaultTab = "create", { reset = false } = {}) {
   if (!tabs.dataset.wired) {
     tabs.dataset.wired = "true";
     for (const button of tabs.querySelectorAll("[data-following-tab]")) {
-      button.addEventListener("click", () => setTab(button.dataset.followingTab));
+      button.addEventListener("click", () => setTab(button.dataset.followingTab, { historyMode: "push" }));
     }
   }
   if (reset || !tabs.dataset.selected) {
@@ -263,24 +290,97 @@ function promotePersonalWhenWatches() {
   duplicateWarning();
 }
 
-async function loadPersonal() {
-  const host = root?.querySelector("[data-personal-watch-list]");
+function personalHost() {
+  return root?.querySelector("[data-personal-watch-list]");
+}
+
+function personalStatus() {
+  return root?.querySelector("[data-personal-status]");
+}
+
+function stampPersonalHost(state) {
+  const host = personalHost();
+  if (!host) return;
+  host.dataset.personalState = state;
+  host.setAttribute("aria-busy", state === "loading" ? "true" : "false");
+}
+
+function offerStatusRetry() {
+  const status = personalStatus();
+  if (!status || status.querySelector("[data-personal-retry]")) return;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "following-personal-retry";
+  button.dataset.personalRetry = "true";
+  button.textContent = msg("msgPersonalRetry");
+  status.append(" ", button);
+}
+
+function paintPersonalIsland(state, { keepExisting = false } = {}) {
+  const host = personalHost();
+  if (!host) return;
+  const hasWatches = Boolean(host.querySelector("[data-watch-key]"));
+  if (keepExisting && hasWatches && (state === "loading" || state === "unavailable" || state === "error")) {
+    stampPersonalHost(state === "loading" ? (host.dataset.personalState || "recognized") : state);
+    if (state === "unavailable" || state === "error") offerStatusRetry();
+    return;
+  }
+  stampPersonalHost(state);
+  if (state === "recognized") return;
+  host.innerHTML = followingPersonalIslandHtml(state);
+}
+
+function focusWatch(key) {
+  if (!key || typeof CSS === "undefined" || typeof CSS.escape !== "function") return;
+  const card = personalHost()?.querySelector(`[data-watch-key="${CSS.escape(key)}"]`);
+  if (!card) return;
+  if (!card.hasAttribute("tabindex")) card.setAttribute("tabindex", "-1");
+  card.focus();
+}
+
+function markManagementDestination() {
+  const url = followingManagementUrl(location);
+  if (`${location.pathname}${location.search}${location.hash}` === url) return;
+  history.replaceState({ followingTab: "watches" }, "", url);
+}
+
+async function loadPersonal({ keepExisting = false, focusWatchKey = "" } = {}) {
+  const host = personalHost();
   if (!host) return;
   followingRum.retrievalStart();
+  paintPersonalIsland("loading", { keepExisting });
   try {
     const response = await fetch(root.dataset.personalUrl, { credentials: "include", headers: { Accept: "text/html" } });
     if (!response.ok) {
       followingRum.watchListReady({ resultState: "unavailable" });
+      paintPersonalIsland("unavailable", { keepExisting });
+      const status = personalStatus();
+      if (keepExisting && status && host.querySelector("[data-watch-key]")) {
+        status.textContent = msg("msgPersonalLoadError");
+        offerStatusRetry();
+      }
       return;
     }
     host.innerHTML = await response.text();
+    const nextState = followingPersonalUiState({
+      sessionRecognized: host.querySelector("[data-session-recognized]")?.getAttribute("data-session-recognized") === "true",
+      watchCount: host.querySelectorAll("[data-watch-key]").length,
+      responseOk: true,
+    });
+    stampPersonalHost(host.querySelector("[data-personal-state]")?.getAttribute("data-personal-state") || nextState);
     followingRum.watchListReady({ resultState: followingPersonalOutcomeFromHost(host) });
     wirePersonalForms();
     duplicateWarning();
     promotePersonalWhenWatches();
+    if (focusWatchKey) focusWatch(focusWatchKey);
   } catch {
     followingRum.watchListReady({ resultState: "error" });
-    /* public page and management link remain complete */
+    paintPersonalIsland("error", { keepExisting });
+    const status = personalStatus();
+    if (keepExisting && status && host.querySelector("[data-watch-key]")) {
+      status.textContent = msg("msgPersonalLoadError");
+      offerStatusRetry();
+    }
   }
 }
 
@@ -304,12 +404,14 @@ function adoptFollowingDocument(html) {
 }
 
 function wirePersonalForms() {
-  const host = root?.querySelector("[data-personal-watch-list]");
-  const status = root?.querySelector("[data-personal-status]");
+  const host = personalHost();
+  const status = personalStatus();
   if (!host) return;
   for (const form of host.querySelectorAll("form" + "[data-watch-action]")) {
     if (form.dataset.enhanced === "true") continue;
-    if (new URL(form.action, location.href).origin !== location.origin) continue;
+    const actionUrl = form.getAttribute("action") || "";
+    const actionOrigin = new URL(actionUrl, location.href).origin;
+    if (actionOrigin !== location.origin && actionOrigin !== "https://cityscroll.org") continue;
     form.dataset.enhanced = "true";
     form.addEventListener("submit", async (event) => {
       if (form.dataset.confirm && !globalThis.confirm(form.dataset.confirm)) {
@@ -317,11 +419,12 @@ function wirePersonalForms() {
         return;
       }
       event.preventDefault();
+      const watchKey = form.closest("[data-watch-key]")?.getAttribute("data-watch-key") || "";
       const button = form.querySelector("button" + "[type=submit]");
       if (button) button.disabled = true;
       if (status) status.textContent = msg("msgPersonalSaving");
       try {
-        const response = await fetch(form.action, {
+        const response = await fetch(actionUrl, {
           method: "POST",
           headers: { Accept: "application/json", "Content-Type": "application/x-www-form-urlencoded" },
           credentials: "include",
@@ -330,14 +433,43 @@ function wirePersonalForms() {
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error("watch-action");
         if (status) status.textContent = result.flash?.message || msg("msgPersonalSaved");
-        await loadPersonal();
+        markManagementDestination();
+        await loadPersonal({ keepExisting: true, focusWatchKey: watchKey });
       } catch {
         if (status) status.textContent = msg("msgPersonalError");
+        offerStatusRetry();
       } finally {
         if (button) button.disabled = false;
       }
     });
   }
+}
+
+function wirePersonalRecovery() {
+  if (!root || root.dataset.personalRecoveryWired === "true") return;
+  root.dataset.personalRecoveryWired = "true";
+  root.addEventListener("click", (event) => {
+    const retry = event.target.closest?.("[data-personal-retry]");
+    if (retry) {
+      event.preventDefault();
+      loadPersonal({ keepExisting: true });
+      return;
+    }
+    const create = event.target.closest?.("[data-following-create-recovery]");
+    if (create) {
+      event.preventDefault();
+      setTab("create", { historyMode: "push" });
+    }
+  });
+}
+
+function wireLocationSync() {
+  if (!root || root.dataset.locationSyncWired === "true") return;
+  root.dataset.locationSyncWired = "true";
+  window.addEventListener("popstate", async () => {
+    await restoreFromLocation();
+    setTab(requestedTab("create"), { historyMode: "none" });
+  });
 }
 
 async function preview(event) {
@@ -389,6 +521,11 @@ function wireSubscribe() {
       if (!response.ok || !result.ok) throw new Error(result.reason || "subscribe");
       if (status) status.textContent = msg("msgSubmitReady");
       form.elements.email.value = "";
+      await loadPersonal({ keepExisting: true });
+      if (watchCountFromPersonal() > 0) {
+        markManagementDestination();
+        setTab("watches", { historyMode: "push" });
+      }
     } catch {
       if (status) status.textContent = msg("msgSubmitError");
     } finally {
@@ -415,7 +552,8 @@ if (root) {
   root.querySelector("[data-following-preview-form]")?.addEventListener("submit", preview);
   wireSubscribe();
   wireRefineLive();
-  globalThis.addEventListener("popstate", restoreFromLocation);
+  wirePersonalRecovery();
+  wireLocationSync();
   followingRum.shellReady({
     hasRoot: true,
     hasCreatePanel: Boolean(root.querySelector('[data-following-panel="create"]')),

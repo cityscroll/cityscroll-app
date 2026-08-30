@@ -349,7 +349,7 @@ test("disabled collector leaves Following fetch and public markup unchanged", ()
   const following = readFileSync(new URL("../site/app/following.mjs", import.meta.url), "utf8");
   const view = readFileSync(new URL("../site/following_view.mjs", import.meta.url), "utf8");
   assert.match(following, /fetch\(root\.dataset\.personalUrl/);
-  assert.match(following, /if \(!response\.ok\) \{\s*followingRum\.watchListReady\(\{ resultState: "unavailable" \}\);\s*return;/);
+  assert.match(following, /if \(!response\.ok\) \{[\s\S]*?followingRum\.watchListReady\(\{ resultState: "unavailable" \}\)[\s\S]*?return;/);
   assert.match(view, /data-following-root/);
   assert.match(view, /data-personal-watch-list/);
   assert.doesNotMatch(view, /rum_|CROLRum|createFollowingRum/);

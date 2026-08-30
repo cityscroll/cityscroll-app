@@ -1,0 +1,12 @@
+{
+  "label": "after",
+  "route": "/following/#your-following",
+  "viewports": [
+    390,
+    1440
+  ],
+  "specimens": [
+    "recognized",
+    "error"
+  ]
+}

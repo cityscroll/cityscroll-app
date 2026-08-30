@@ -26,6 +26,8 @@
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
+    data-msg-personal-load-error="Could not load saved watches. Try again."
+    data-msg-personal-retry="Try again"
     data-following-lens="money"
     data-following-filter="{}"
     data-following-scope-status="ok"
@@ -185,7 +187,7 @@
       <p class="following-note" data-following-delivery-help>Daily sends when there are matches. Weekly digest sends Monday.</p>
     </section></div>
     <section id="your-following" class="following-personal" data-following-panel="watches" data-following-personal-mode="secondary" aria-labelledby="following-personal-heading">
-    <p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list><p>Open a CityScroll email to see your watches.</p></div><p data-personal-status role="status" aria-live="polite"></p>
+    <p class="following-kicker">Saved</p><h2 id="following-personal-heading">Your watches</h2><div data-personal-watch-list data-personal-state="unrecognized"><div data-personal-state="unrecognized" data-session-recognized="false"><p>Open a CityScroll email to see your watches.</p><p class="following-personal-recovery"><a href="#create" data-following-create-recovery>Create a watch</a></p></div></div><p data-personal-status role="status" aria-live="polite"></p>
   </section>
     <section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><p class="following-pack-lead">These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div><article class="following-pack" data-pack-id="restaurants" data-suggestion-kind="pack">
     <h3>Restaurant rules</h3>

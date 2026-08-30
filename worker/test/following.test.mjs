@@ -199,9 +199,28 @@ test("the personal island endpoint stays anonymous without a recognized session"
   assert.equal(response.status, 200);
   assert.match(response.headers.get("cache-control") || "", /no-store/);
   assert.match(html, /data-session-recognized="false"/);
+  assert.match(html, /data-personal-state="unrecognized"/);
   assert.match(html, /Open a CityScroll email to see your watches/);
+  assert.match(html, /data-following-create-recovery/);
   assert.doesNotMatch(html, /href="[^"]*prefs/);
   assert.doesNotMatch(html, /data-watch-key=/);
+});
+
+test("the recognized-session island stays empty without inventing a watch", async () => {
+  const store = kv();
+  const token = await signToken(SIGNING_FIXTURE, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
+  const response = await handleFollowing(new Request(
+    "https://api.cityscroll.org/following/personal",
+    { headers: { Cookie: `cs_session=${token}`, Origin: "https://cityscroll.org" } },
+  ), { TOKEN_SECRET: SIGNING_FIXTURE, SUBS: store });
+  const html = await response.text();
+
+  assert.match(html, /data-session-recognized="true"/);
+  assert.match(html, /data-personal-state="empty"/);
+  assert.match(html, /No saved watches yet/);
+  assert.match(html, /data-following-create-recovery/);
+  assert.doesNotMatch(html, /data-watch-key=/);
+  assert.doesNotMatch(html, /name="action"/);
 });
 
 test("the recognized-session island shows a concise watch summary and management controls", async () => {
@@ -222,6 +241,7 @@ test("the recognized-session island shows a concise watch summary and management
 
   assert.match(html, /data-watch-key="sub:meetings-queens"/);
   assert.match(html, /data-session-recognized="true"/);
+  assert.match(html, /data-personal-state="recognized"/);
   assert.match(html, /data-watch-lens="meetings"/);
   assert.match(html, /Transportation/);
   assert.match(html, /Active · (Daily when there are matches|Weekly digest)/);

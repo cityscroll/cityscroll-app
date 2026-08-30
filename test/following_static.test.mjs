@@ -175,7 +175,9 @@ test("Following has a useful server-rendered empty state before personalization"
   const html = renderFollowingDocument(buildFollowingViewModel({}, templates));
 
   assert.match(html, /data-personal-watch-list/);
+  assert.match(html, /data-personal-state="unrecognized"/);
   assert.match(html, /Open a CityScroll email to see your watches/);
+  assert.match(html, /data-following-create-recovery/);
   assert.match(
     html,
     /Save a topic, place, agency, or keyword\. We email matching public records when they appear\./,
