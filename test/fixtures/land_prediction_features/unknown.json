@@ -1,0 +1,22 @@
+{
+  "id": "unknown",
+  "application_id": "2024A0001",
+  "prediction_as_of": "2024-06-01T00:00:00.000Z",
+  "procedural_stage": "pre_certification",
+  "features": [],
+  "historical_actors": [
+    {
+      "role": "local_council_member",
+      "actor_id": null,
+      "resolution": "unknown",
+      "observed_at": null,
+      "effective_at": null,
+      "source": null
+    }
+  ],
+  "expect": {
+    "procedural_stage": "pre_certification",
+    "local_council_member_stance_state": "unknown",
+    "actor_resolution": "unknown"
+  }
+}

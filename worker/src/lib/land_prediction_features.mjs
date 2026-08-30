@@ -14,6 +14,23 @@ import {
   LAND_PREDICTION_MEMBER_STANCE_SCHEMA,
   validateLandMemberStance,
 } from "./land_prediction_member_stance.mjs";
+import {
+  LAND_PREDICTION_ACTOR_RESOLUTION_SCHEMA,
+  resolveLandUseApplicationActors,
+} from "./land_prediction_actor_resolution.mjs";
+import {
+  LAND_ULURP_PHASES,
+  mapMilestoneToPhase,
+} from "./land_phase_spine.mjs";
+import {
+  LAND_USE_ACTION_CODE_FAMILY,
+  normalizeLandUseActionType,
+} from "../../../site/land_use_action_type.mjs";
+import {
+  LAND_FAMILY_OPTIONS,
+  LAND_STAGE_OPTIONS,
+  landStageForRow,
+} from "../../../site/land_status_facets.mjs";
 
 export const LAND_PREDICTION_FEATURE_VECTOR_SCHEMA =
   "cityscroll.land_prediction_feature_vector.v1";
@@ -97,7 +114,33 @@ const EVIDENCE_FIELDS = new Set([
   "observed_at",
   "effective_at",
   "source",
+  "cutoff",
+  "identity",
+  "relation",
+  "observation",
 ]);
+
+const LAND_PHASE_IDS = new Set(LAND_ULURP_PHASES);
+const LAND_STAGE_IDS = new Set(LAND_STAGE_OPTIONS.map((option) => option.id));
+const LAND_FAMILY_IDS = new Set(
+  LAND_FAMILY_OPTIONS.map((option) => option.id).filter((id) => id !== "any"),
+);
+const STAGE_ALIASES = Object.freeze({
+  council: "city_council",
+  city_council: "city_council",
+  citycouncil: "city_council",
+  "city council": "city_council",
+  cb: "community_board",
+  communityboard: "community_board",
+  "community board": "community_board",
+  bp: "borough_president",
+  boroughpresident: "borough_president",
+  "borough president": "borough_president",
+  mayor: "mayoral_appeals",
+  mayoral_appeals: "mayoral_appeals",
+  "mayoral appeals": "mayoral_appeals",
+  "city planning": "cpc",
+});
 
 const INTERACTION_FIELDS = new Set([
   "feature_key",
@@ -163,6 +206,110 @@ function canonicalKey(value, label = "feature key") {
   return KEY_ALIASES.get(key) || key;
 }
 
+function compactToken(value) {
+  return String(value ?? "").trim().toLowerCase().replaceAll("-", "_").replaceAll(/\s+/g, " ");
+}
+
+export function canonicalProceduralStage(value, landRow = null) {
+  const raw = compactToken(value);
+  if (raw && LAND_PHASE_IDS.has(raw)) return raw;
+  if (raw && STAGE_ALIASES[raw] && LAND_PHASE_IDS.has(STAGE_ALIASES[raw])) return STAGE_ALIASES[raw];
+  const underscored = raw.replaceAll(" ", "_");
+  if (underscored && LAND_PHASE_IDS.has(underscored)) return underscored;
+  if (underscored && STAGE_ALIASES[underscored] && LAND_PHASE_IDS.has(STAGE_ALIASES[underscored])) {
+    return STAGE_ALIASES[underscored];
+  }
+  if (landRow && typeof landRow === "object" && !Array.isArray(landRow)) {
+    const fromRow = landStageForRow(landRow);
+    if (LAND_PHASE_IDS.has(fromRow) || LAND_STAGE_IDS.has(fromRow)) return fromRow;
+  }
+  if (raw && LAND_STAGE_IDS.has(raw)) return raw;
+  if (raw) {
+    const fromMilestone = mapMilestoneToPhase(value);
+    const looksLikeMilestone = /referral|certified|disposition|hearing|review session|filed|withdrawn|terminated/i.test(String(value ?? ""));
+    if (looksLikeMilestone && LAND_PHASE_IDS.has(fromMilestone)) return fromMilestone;
+  }
+  return requiredText(value, "procedural_stage");
+}
+
+export function canonicalApplicationType(value) {
+  if (value === null || value === undefined || value === "") return value;
+  if (typeof value === "string") {
+    const code = value.trim().toUpperCase();
+    if (Object.hasOwn(LAND_USE_ACTION_CODE_FAMILY, code)) return LAND_USE_ACTION_CODE_FAMILY[code];
+    const family = compactToken(value).replaceAll(" ", "_");
+    if (LAND_FAMILY_IDS.has(family)) return family;
+    return value;
+  }
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    const type = normalizeLandUseActionType(value);
+    if (type.families.length === 1) return type.families[0];
+    if (type.families.length > 1) {
+      return { codes: type.codes, families: type.families, primary: type.primary };
+    }
+  }
+  return canonicalJson(value);
+}
+
+function identityFrom(source, fallback = null) {
+  if (!source || typeof source !== "object" || Array.isArray(source)) return fallback;
+  const value = source.identity ?? source.actor_id ?? source.member_id ?? source.official_id;
+  return value === null || value === undefined || value === "" ? fallback : String(value);
+}
+
+function relationFrom(source, fallback = null) {
+  if (!source || typeof source !== "object" || Array.isArray(source)) return fallback;
+  const value = source.relation ?? source.relation_type ?? source.observation_kind;
+  return value === null || value === undefined || value === "" ? fallback : String(value);
+}
+
+function observationFrom(source, fallback = null) {
+  if (typeof source === "string" && source.trim()) return source.trim();
+  if (!source || typeof source !== "object" || Array.isArray(source)) return fallback;
+  const value = source.observation
+    ?? source.observation_id
+    ?? source.source_record_id
+    ?? source.record_id
+    ?? source.evidence_id;
+  return value === null || value === undefined || value === "" ? fallback : String(value);
+}
+
+function localCouncilActors(actors = []) {
+  return actors.filter((actor) => {
+    const role = String(actor?.role ?? "");
+    return role === "local_council_member" || role.startsWith("local_council_member:");
+  });
+}
+
+function resolvedLocalMemberIds(actors = []) {
+  return new Set(
+    localCouncilActors(actors)
+      .filter((actor) => actor.resolution === "resolved" && actor.actor_id)
+      .map((actor) => String(actor.actor_id)),
+  );
+}
+
+function evidenceTrace(row, context) {
+  const source = sourceFor(row.source, "evidence.source");
+  return {
+    evidence_id: row.evidence_id === null || row.evidence_id === undefined || row.evidence_id === ""
+      ? null
+      : String(row.evidence_id),
+    evidence_type: requiredText(row.evidence_type, "evidence.evidence_type"),
+    observed_at: canonicalInstant(row.observed_at, "evidence.observed_at"),
+    effective_at: canonicalInstant(row.effective_at, "evidence.effective_at"),
+    source,
+    cutoff: context.cutoff,
+    identity: identityFrom(row, identityFrom(source, context.identity ?? null)),
+    relation: row.relation === null || row.relation === undefined || row.relation === ""
+      ? relationFrom(source, context.relation ?? null)
+      : String(row.relation),
+    observation: row.observation === null || row.observation === undefined || row.observation === ""
+      ? observationFrom(source, row.evidence_id == null ? context.observation ?? null : String(row.evidence_id))
+      : String(row.observation),
+  };
+}
+
 function confidence(value, label) {
   if (value === null || value === undefined || value === "") return null;
   const result = Number(value);
@@ -211,15 +358,15 @@ function unknownFeature(key) {
   };
 }
 
-function featureEvidence(feature) {
+function featureEvidence(feature, context) {
   if (feature.state === "unknown" || !feature.source) return [];
-  return [{
+  return [evidenceTrace({
     evidence_id: sourceEvidenceId(feature.source),
     evidence_type: feature.evidence_type,
     observed_at: feature.observed_at,
     effective_at: feature.effective_at,
     source: feature.source,
-  }];
+  }, context)];
 }
 
 function sourceEvidenceId(source) {
@@ -240,17 +387,31 @@ function normalizeSnapshotFeature(feature, cutoff) {
   if (state !== "unknown" && !feature.source) {
     throw new TypeError(`feature ${key}.source is required when state is ${state}`);
   }
+  const rawValue = state === "unknown" || state === "no_known_position" ? null : canonicalJson(feature.value);
+  const value = key === "application_type" && rawValue !== null
+    ? canonicalApplicationType(rawValue)
+    : key === "procedural_stage" && rawValue !== null
+      ? canonicalProceduralStage(rawValue)
+      : rawValue;
+  const source = sourceFor(feature.source, `feature ${key}.source`);
   const normalized = {
     key,
-    value: state === "unknown" || state === "no_known_position" ? null : canonicalJson(feature.value),
+    value,
     state,
     evidence_type: requiredText(feature.evidence_type, `feature ${key}.evidence_type`),
     observed_at: observedAt,
     effective_at: effectiveAt,
-    source: sourceFor(feature.source, `feature ${key}.source`),
+    source,
     confidence: confidence(feature.confidence, `feature ${key}.confidence`),
   };
-  const evidence = Array.isArray(feature.evidence) ? feature.evidence.map((row) => canonicalJson(row)) : featureEvidence(normalized);
+  const context = {
+    cutoff,
+    identity: identityFrom(source),
+    relation: relationFrom(source),
+    observation: observationFrom(source),
+  };
+  const evidence = (Array.isArray(feature.evidence) ? feature.evidence : featureEvidence(normalized, context))
+    .map((row) => evidenceTrace(row, context));
   return {
     ...normalized,
     evidence,
@@ -261,22 +422,42 @@ function normalizeSnapshotFeature(feature, cutoff) {
   };
 }
 
-function stanceFeature(record, cutoff, applicationId) {
+function stanceFeature(record, cutoff, applicationId, actors = []) {
+  const locals = localCouncilActors(actors);
+  const resolvedIds = resolvedLocalMemberIds(actors);
+  const vacant = locals.length > 0 && locals.every((actor) => actor.resolution === "vacant");
+  if (vacant) {
+    return {
+      ...unknownFeature("local_council_member_stance"),
+      evidence_type: "historical_actor_vacant",
+    };
+  }
   if (!record) return unknownFeature("local_council_member_stance");
   if (record.application_id !== applicationId) {
     throw new TypeError("member stance application_id mismatch");
   }
   if (record.as_of !== cutoff) throw new TypeError("member stance as_of must equal prediction_as_of");
+  if (resolvedIds.size && !resolvedIds.has(record.member_id)) {
+    return {
+      ...unknownFeature("local_council_member_stance"),
+      evidence_type: "historical_actor_identity_mismatch",
+    };
+  }
   const selectedIds = new Set(record.resolution.selected_evidence_ids);
   const selected = record.evidence.filter((row) => selectedIds.has(row.evidence_id));
   const direction = record.resolution.direction;
   const state = direction === "unknown"
     ? "unknown"
     : direction === "mixed_or_unclear" ? "neutral_mixed" : "known";
+  const context = {
+    cutoff,
+    identity: record.member_id,
+    relation: "local_council_member_stance",
+  };
   if (!selected.length || state === "unknown") {
     return {
       ...unknownFeature("local_council_member_stance"),
-      evidence: selected.map(stanceEvidence),
+      evidence: selected.map((row) => stanceEvidence(row, context)),
       evidence_ids: selected.map((row) => row.evidence_id).sort(),
       evidence_type: selected.length ? "stance_resolution_unknown" : "no_stance_evidence_at_cutoff",
     };
@@ -294,22 +475,26 @@ function stanceFeature(record, cutoff, applicationId) {
       contract: LAND_PREDICTION_MEMBER_STANCE_SCHEMA,
       application_id: record.application_id,
       member_id: record.member_id,
+      identity: record.member_id,
       evidence_ids: selected.map((row) => row.evidence_id).sort(),
     },
     confidence: record.resolution.confidence,
-    evidence: selected.map(stanceEvidence),
+    evidence: selected.map((row) => stanceEvidence(row, context)),
     evidence_ids: selected.map((row) => row.evidence_id).sort(),
   };
 }
 
-function stanceEvidence(row) {
-  return {
+function stanceEvidence(row, context) {
+  return evidenceTrace({
     evidence_id: row.evidence_id,
     evidence_type: row.evidence_type,
     observed_at: row.observed_at,
     effective_at: row.effective_at,
     source: row.source,
-  };
+    identity: row.member_id,
+    relation: "local_council_member_stance",
+    observation: row.evidence_id,
+  }, context);
 }
 
 function scalarSignalRows(signals = {}) {
@@ -336,7 +521,9 @@ function snapshotForInput(input) {
     if (input.prediction_as_of && canonicalInstant(input.prediction_as_of, "prediction_as_of", { required: true }) !== snapshot.prediction_as_of) {
       throw new TypeError("snapshot prediction_as_of does not match feature-vector input");
     }
-    if (input.procedural_stage && String(input.procedural_stage).trim() !== snapshot.procedural_stage) {
+    if (input.procedural_stage
+        && canonicalProceduralStage(input.procedural_stage, input.land_row)
+          !== canonicalProceduralStage(snapshot.procedural_stage, input.land_row)) {
       throw new TypeError("snapshot procedural_stage does not match feature-vector input");
     }
     return snapshot;
@@ -360,37 +547,76 @@ function snapshotForInput(input) {
   });
 }
 
-function snapshotStageFeature(snapshot) {
+function snapshotStageFeature(snapshot, landRow = null) {
   const existing = snapshot.features.find((feature) => canonicalKey(feature.key) === "procedural_stage");
-  if (existing) return normalizeSnapshotFeature(existing, snapshot.prediction_as_of);
+  if (existing) {
+    const normalized = normalizeSnapshotFeature(existing, snapshot.prediction_as_of);
+    return {
+      ...normalized,
+      value: canonicalProceduralStage(normalized.value ?? snapshot.procedural_stage, landRow),
+    };
+  }
+  const stage = canonicalProceduralStage(snapshot.procedural_stage, landRow);
+  const source = {
+    contract: LAND_PREDICTION_SNAPSHOT_SCHEMA,
+    application_id: snapshot.application_id,
+    prediction_as_of: snapshot.prediction_as_of,
+    field: "procedural_stage",
+  };
+  const evidenceId = `${snapshot.application_id}:procedural_stage:${snapshot.prediction_as_of}`;
   return {
     key: "procedural_stage",
-    value: snapshot.procedural_stage,
+    value: stage,
     state: "known",
     evidence_type: "snapshot_procedural_stage",
     observed_at: null,
     effective_at: snapshot.prediction_as_of,
-    source: {
-      contract: LAND_PREDICTION_SNAPSHOT_SCHEMA,
-      application_id: snapshot.application_id,
-      prediction_as_of: snapshot.prediction_as_of,
-      field: "procedural_stage",
-    },
+    source,
     confidence: null,
-    evidence: [{
-      evidence_id: `${snapshot.application_id}:procedural_stage:${snapshot.prediction_as_of}`,
+    evidence: [evidenceTrace({
+      evidence_id: evidenceId,
       evidence_type: "snapshot_procedural_stage",
       observed_at: null,
       effective_at: snapshot.prediction_as_of,
-      source: {
-        contract: LAND_PREDICTION_SNAPSHOT_SCHEMA,
-        application_id: snapshot.application_id,
-        prediction_as_of: snapshot.prediction_as_of,
-        field: "procedural_stage",
-      },
-    }],
-    evidence_ids: [`${snapshot.application_id}:procedural_stage:${snapshot.prediction_as_of}`],
+      source,
+      relation: "procedural_stage",
+      observation: evidenceId,
+    }, { cutoff: snapshot.prediction_as_of })],
+    evidence_ids: [evidenceId],
   };
+}
+
+function actorResolutionForInput(input, snapshot) {
+  const supplied = input.actor_resolution || input.historical_actor_resolution || null;
+  if (supplied) {
+    assertPlainObject(supplied, "actor_resolution");
+    if (supplied.schema !== LAND_PREDICTION_ACTOR_RESOLUTION_SCHEMA) {
+      throw new TypeError("actor_resolution schema mismatch");
+    }
+    if (String(supplied.application_id).trim() !== snapshot.application_id) {
+      throw new TypeError("actor_resolution application_id does not match snapshot");
+    }
+    if (canonicalInstant(supplied.prediction_as_of, "actor_resolution.prediction_as_of", { required: true })
+        !== snapshot.prediction_as_of) {
+      throw new TypeError("actor_resolution prediction_as_of does not match snapshot");
+    }
+    if (!Array.isArray(supplied.historical_actors)) {
+      throw new TypeError("actor_resolution.historical_actors must be an array");
+    }
+    return supplied;
+  }
+  const application = input.application || input.actor_resolution_application || null;
+  const options = input.actor_resolution_options || null;
+  if (!application && !options) return null;
+  return resolveLandUseApplicationActors(application || {
+    application_id: snapshot.application_id,
+    prediction_as_of: snapshot.prediction_as_of,
+  }, {
+    prediction_as_of: snapshot.prediction_as_of,
+    ...(options || {}),
+    boundaries: options?.boundaries || input.boundaries,
+    personHub: options?.personHub || options?.person_hub || input.personHub || input.person_hub,
+  });
 }
 
 function sortFeatures(features) {
@@ -451,9 +677,15 @@ function validateFeature(feature, cutoff) {
   for (const row of feature.evidence) {
     assertPlainObject(row, `feature ${key} evidence`);
     assertExactFields(row, EVIDENCE_FIELDS, `feature ${key} evidence`);
+    for (const field of EVIDENCE_FIELDS) {
+      if (!Object.hasOwn(row, field)) throw new TypeError(`feature ${key} evidence missing: ${field}`);
+    }
     if (!row.source) throw new TypeError(`feature ${key} evidence source is required`);
     requiredText(row.evidence_type, `feature ${key} evidence.evidence_type`);
     sourceFor(row.source, `feature ${key} evidence.source`);
+    if (row.cutoff !== cutoff) {
+      throw new TypeError(`feature ${key} evidence cutoff must equal prediction_as_of`);
+    }
     const observedAt = canonicalInstant(row.observed_at, `feature ${key} evidence.observed_at`);
     const effectiveAt = canonicalInstant(row.effective_at, `feature ${key} evidence.effective_at`);
     const availableAt = observedAt || effectiveAt;
@@ -483,7 +715,7 @@ export function validateLandPredictionFeatureVector(vector) {
   }
   const applicationId = requiredText(vector.application_id, "application_id");
   const cutoff = canonicalInstant(vector.prediction_as_of, "prediction_as_of", { required: true });
-  const stage = requiredText(vector.procedural_stage, "procedural_stage");
+  const stage = canonicalProceduralStage(vector.procedural_stage);
   if (!Array.isArray(vector.features)) throw new TypeError("features must be an array");
   if (!Array.isArray(vector.stage_interactions)) throw new TypeError("stage_interactions must be an array");
   if (!Array.isArray(vector.historical_actors)) throw new TypeError("historical_actors must be an array");
@@ -519,6 +751,9 @@ export function validateLandPredictionFeatureVector(vector) {
 export function buildLandPredictionFeatureVector(input = {}) {
   assertPlainObject(input, "land prediction feature vector input");
   const snapshot = snapshotForInput(input);
+  const stage = canonicalProceduralStage(snapshot.procedural_stage, input.land_row);
+  const actorResolution = actorResolutionForInput(input, snapshot);
+  const historicalActors = actorResolution?.historical_actors ?? snapshot.historical_actors;
   const stance = input.member_stance || input.local_council_member_stance || null;
   const validatedStance = stance ? validateLandMemberStance(stance) : null;
   if (validatedStance) {
@@ -532,26 +767,29 @@ export function buildLandPredictionFeatureVector(input = {}) {
 
   const features = [];
   const supplied = snapshot.features.map((feature) => normalizeSnapshotFeature(feature, snapshot.prediction_as_of));
-  const stageFeature = snapshotStageFeature(snapshot);
+  const stageFeature = snapshotStageFeature(snapshot, input.land_row);
   const seen = new Set();
   for (const feature of [...supplied, stageFeature]) {
     if (feature.key === "procedural_stage" && seen.has(feature.key)) continue;
     features.push(feature);
     seen.add(feature.key);
   }
-  if (validatedStance) features.push(stanceFeature(
-    validatedStance,
-    snapshot.prediction_as_of,
-    snapshot.application_id,
-  ));
+  if (validatedStance || vacantOrResolvedActors(historicalActors)) {
+    features.push(stanceFeature(
+      validatedStance,
+      snapshot.prediction_as_of,
+      snapshot.application_id,
+      historicalActors,
+    ));
+  }
   for (const key of INSTITUTIONAL_FEATURE_KEYS) {
     if (!seen.has(key) && !features.some((feature) => feature.key === key)) features.push(unknownFeature(key));
   }
 
   const stageInteractions = STAGE_INTERACTION_FEATURES.map((featureKey) => ({
     feature_key: featureKey,
-    stage: snapshot.procedural_stage,
-    interaction_key: `${featureKey}@${snapshot.procedural_stage}`,
+    stage,
+    interaction_key: `${featureKey}@${stage}`,
     estimation: "learnable_stage_interaction",
   }));
   return validateLandPredictionFeatureVector({
@@ -559,11 +797,16 @@ export function buildLandPredictionFeatureVector(input = {}) {
     schema: LAND_PREDICTION_FEATURE_VECTOR_SCHEMA,
     application_id: snapshot.application_id,
     prediction_as_of: snapshot.prediction_as_of,
-    procedural_stage: snapshot.procedural_stage,
+    procedural_stage: stage,
     features: sortFeatures(features),
     stage_interactions: stageInteractions,
-    historical_actors: snapshot.historical_actors,
+    historical_actors: historicalActors,
   });
+}
+
+function vacantOrResolvedActors(actors) {
+  const locals = localCouncilActors(actors);
+  return locals.some((actor) => actor.resolution === "vacant" || actor.resolution === "resolved");
 }
 
 export const buildStageAwareInstitutionalFeatureVector = buildLandPredictionFeatureVector;

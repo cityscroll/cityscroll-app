@@ -9,10 +9,15 @@ the later interpretable predictor.
 ## Contract
 
 `buildLandPredictionFeatureVector()` accepts a validated C2 snapshot through
-`snapshot` (or builds one from the same C2 inputs) and an optional validated C4
-`member_stance` record. It carries C2's `historical_actors` unchanged so the
-cutoff-aware C3 resolution remains alongside the features. It emits the
-following institutional keys, even when a
+`snapshot` (or builds one from the same C2 inputs), an optional validated C4
+`member_stance` record, and an optional validated C3 `actor_resolution` record.
+It normalizes `application_type` through the land-use action-family map and
+`procedural_stage` through the ULURP phase spine (plus status-facet aliases such
+as `council` → `city_council`). It does not invent a family from a descriptive
+label. Historical actors come from C3 when supplied, otherwise from the C2
+snapshot. A local-member stance is attached only when its `official:{PersonId}`
+matches a historically resolved actor; a vacant seat or a current-member identity
+stays explicit `unknown`. It emits the following institutional keys, even when a
 source has no observation:
 
 ```text
@@ -33,7 +38,8 @@ An absent signal is a feature with `state: "unknown"`, a null value, and an
 empty evidence trace. This is different from C2's
 `no_known_position` and `neutral_mixed` states. A populated feature retains its
 source, source clocks, confidence, and an `evidence` array with inspectable
-source references. C4 stance rows retain the selected evidence IDs and source
+source references plus `cutoff`, `identity`, `relation`, and `observation`
+when those facts exist. C4 stance rows retain the selected evidence IDs and source
 locators; conflicts therefore remain traceable rather than becoming a single
 unexplained value.
 
@@ -53,10 +59,14 @@ The feature layer supplies no coefficient, threshold, directional outcome, or
 member-veto rule. A stance is evidence about a project, not a deterministic
 decision rule.
 
+Named fixtures under `test/fixtures/land_prediction_features/` cover complete,
+sparse, cutoff-boundary, conflicting, unknown, and multi-stage applications.
+
 Focused proof:
 
 ```sh
 node --test worker/test/land_prediction_features.test.mjs \
   worker/test/land_prediction_snapshot.test.mjs \
+  worker/test/land_prediction_actor_resolution.test.mjs \
   worker/test/land_prediction_member_stance.test.mjs
 ```

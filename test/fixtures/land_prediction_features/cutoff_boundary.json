@@ -1,0 +1,32 @@
+{
+  "id": "cutoff_boundary",
+  "application_id": "2024A0001",
+  "prediction_as_of": "2024-06-01T00:00:00.000Z",
+  "procedural_stage": "cpc",
+  "features": [
+    {
+      "key": "cpc_vote",
+      "value": "approved",
+      "evidence_type": "official_record",
+      "observed_at": "2024-06-01T00:00:00.000Z",
+      "effective_at": "2024-06-01T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/on-cutoff", "record_id": "on-cutoff" },
+      "confidence": 0.8
+    },
+    {
+      "key": "land_use_committee_action",
+      "value": "recommended",
+      "evidence_type": "official_record",
+      "observed_at": "2024-06-02T00:00:00.000Z",
+      "effective_at": "2024-06-02T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/after-cutoff", "record_id": "after-cutoff" },
+      "confidence": 0.8
+    }
+  ],
+  "historical_actors": [],
+  "expect": {
+    "procedural_stage": "cpc",
+    "cpc_vote": "approved",
+    "land_use_committee_action_state": "unknown"
+  }
+}
