@@ -1140,6 +1140,44 @@
       "grounding": "partial"
     },
     {
+      "id": "duty_bearer",
+      "status": "registered",
+      "from": "mandate",
+      "to": "civic-institution",
+      "relation": "duty_bearer",
+      "inverse": "holds_duty",
+      "reason": "Obligation-to-institution duty-bearer role emitted only from an exact quote-verified agency obligation. Generic DOC duties, generic board language, Board of Correction meetings, and shared publisher labels remain non-linking.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis",
+        "as_of",
+        "vintage"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer a duty bearer or oversight edge from a generic DOC obligation, generic board language, a Board of Correction meeting, or a shared agency label.",
+      "label": "Duty bearer",
+      "grounding": "partial"
+    },
+    {
       "id": "applicant_on",
       "status": "registered",
       "from": "civic-institution",

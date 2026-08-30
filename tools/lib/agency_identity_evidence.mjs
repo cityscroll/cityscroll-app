@@ -7,6 +7,7 @@ import {
   sourceRecordObservation,
 } from "../../ontology/civic_institution.mjs";
 import { developmentRolesForInstitution } from "../../site/civic_institution_development_roles.mjs";
+import { accountabilityRolesForInstitution } from "../../site/civic_institution_accountability.mjs";
 
 export const AGENCY_IDENTITY_EVIDENCE_SCHEMA = "cityscroll.civic_institution_identity_evidence.v1";
 export const AGENCY_IDENTITY_EVIDENCE_METHOD = "source_preserving_agency_identity_v1";
@@ -84,6 +85,7 @@ export function buildAgencyIdentityEvidence({
   generatedAt = null,
   roleCandidates = [],
   developmentRoleSources = null,
+  accountabilitySources = null,
 } = {}) {
   if (!identity?.canonical_id) return null;
   // A routed profile is not itself a source identity. Route-only and
@@ -165,6 +167,12 @@ export function buildAgencyIdentityEvidence({
     roleEdges = mergeRoleBags(
       roleEdges,
       developmentRolesForInstitution(identity.canonical_id, developmentRoleSources),
+    );
+  }
+  if (accountabilitySources && identity.canonical_id) {
+    roleEdges = mergeRoleBags(
+      roleEdges,
+      accountabilityRolesForInstitution(identity.canonical_id, accountabilitySources),
     );
   }
   return {

@@ -32,6 +32,7 @@ import {
 import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
 import { buildAgencyIdentityEvidence } from "./lib/agency_identity_evidence.mjs";
+import { accountabilitySourcesFromLookup } from "../site/civic_institution_accountability.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -449,6 +450,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       view,
       generatedAt,
       developmentRoleSources: developmentRoleSourcesFor(id, sources),
+      accountabilitySources: accountabilitySourcesFromLookup(sources.obligations),
     });
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;
