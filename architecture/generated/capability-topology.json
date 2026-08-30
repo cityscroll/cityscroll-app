@@ -541,7 +541,7 @@
     {
       "reference": "search.federated@1",
       "id": "search.federated",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "owner": "universal-search",
       "operation": "read",
       "authority": {
@@ -581,10 +581,31 @@
               "partial",
               "stale",
               "not_indexed",
-              "provider_unavailable"
+              "provider_unavailable",
+              "out_of_scope"
             ],
             "maximumResults": 10,
-            "maximumCardsPerLane": 8
+            "maximumCardsPerLane": 8,
+            "requestedScope": "all_registered_lenses"
+          }
+        },
+        {
+          "input": {
+            "query": "parks",
+            "limit": 10,
+            "scope": {
+              "schema": "cityscroll.capability.search_federated.scope.v1",
+              "lenses": [
+                "agencies"
+              ]
+            }
+          },
+          "output": {
+            "requestedLenses": [
+              "agencies"
+            ],
+            "unrequestedState": "out_of_scope",
+            "maximumResults": 10
           }
         },
         {
@@ -616,14 +637,16 @@
         "partial",
         "stale",
         "not_indexed",
-        "provider_unavailable"
+        "provider_unavailable",
+        "out_of_scope"
       ],
       "provenance": {
         "objectIdentity": "results[].object_ref",
         "sourceObservations": "results[].source_observation_refs and results[].edge_provenance.matches[]",
         "matchEvidence": "results[].match_fields",
         "exactSourceRoute": "results[].canonical_href",
-        "coverageByLens": "coverage.by_lens[].state and coverage.by_lens[].source"
+        "coverageByLens": "coverage.by_lens[].state and coverage.by_lens[].source",
+        "requestedScope": "requested_scope.lenses and requested_scope.by_lens[].state"
       },
       "freshness": {
         "owner": "registered lens read models",
@@ -1376,10 +1399,31 @@
                 "partial",
                 "stale",
                 "not_indexed",
-                "provider_unavailable"
+                "provider_unavailable",
+                "out_of_scope"
               ],
               "maximumResults": 10,
-              "maximumCardsPerLane": 8
+              "maximumCardsPerLane": 8,
+              "requestedScope": "all_registered_lenses"
+            }
+          },
+          {
+            "input": {
+              "query": "parks",
+              "limit": 10,
+              "scope": {
+                "schema": "cityscroll.capability.search_federated.scope.v1",
+                "lenses": [
+                  "agencies"
+                ]
+              }
+            },
+            "output": {
+              "requestedLenses": [
+                "agencies"
+              ],
+              "unrequestedState": "out_of_scope",
+              "maximumResults": 10
             }
           },
           {

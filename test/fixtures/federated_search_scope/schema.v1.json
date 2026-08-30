@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.capability.search_federated.scope_fixture.v1",
+  "capability_reference": "search.federated@1",
+  "input_schema": "cityscroll.capability.search_federated.input.v1",
+  "scope_schema": "cityscroll.capability.search_federated.scope.v1",
+  "requested_scope_schema": "cityscroll.universal_search_requested_scope.v1",
+  "allowlisted_lenses": [
+    "notices",
+    "people",
+    "agencies",
+    "vendors",
+    "committees",
+    "community_boards",
+    "exams",
+    "parcels",
+    "land",
+    "meetings"
+  ],
+  "requested_coverage_states": [
+    "matched",
+    "empty",
+    "partial",
+    "stale",
+    "not_indexed",
+    "provider_unavailable"
+  ],
+  "unrequested_coverage_state": "out_of_scope"
+}

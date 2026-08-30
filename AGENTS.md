@@ -4236,6 +4236,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   Focused proof is `worker/test/feedback_desk.test.mjs` plus the admin feedback
   cases in `worker/test/admin.test.mjs`.
 
+- **Federated search scope:** `capabilities/federated_search.mjs` owns the additive
+  closed `scope` allowlist over registered lenses. Adapters must not rank, rewrite
+  identity, or query an arbitrary store. Omitted scope keeps all-lens federation;
+  unrequested lenses report `out_of_scope` on the `requested_scope` receipt.
+  Contract: `docs/federated-search-scope.md`. Proof:
+  `test/federated_search_scope.test.mjs` plus `test/federated_search_capability.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

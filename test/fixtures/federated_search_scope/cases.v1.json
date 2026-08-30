@@ -1,0 +1,90 @@
+{
+  "schema": "cityscroll.capability.search_federated.scope_fixture.v1",
+  "cases": [
+    {
+      "id": "all-registered-legacy-omit",
+      "input": { "query": "parks", "limit": 10 },
+      "expected": {
+        "query": { "normalized": "parks", "tokens": ["parks"] },
+        "result_object_refs": ["agency:id:parks-and-recreation"],
+        "result_lenses": ["agencies"],
+        "coverage_by_lens": {
+          "notices": "empty",
+          "people": "empty",
+          "agencies": "matched",
+          "vendors": "empty",
+          "committees": "empty",
+          "community_boards": "empty",
+          "exams": "empty",
+          "parcels": "empty",
+          "land": "empty",
+          "meetings": "empty"
+        },
+        "requested_scope": {
+          "omitted": true,
+          "mode": "all_registered_lenses",
+          "lenses": [
+            "notices",
+            "people",
+            "agencies",
+            "vendors",
+            "committees",
+            "community_boards",
+            "exams",
+            "parcels",
+            "land",
+            "meetings"
+          ]
+        }
+      }
+    },
+    {
+      "id": "one-allowlisted-agencies",
+      "input": {
+        "query": "parks",
+        "limit": 10,
+        "scope": {
+          "schema": "cityscroll.capability.search_federated.scope.v1",
+          "lenses": ["agencies"]
+        }
+      },
+      "expected": {
+        "query": { "normalized": "parks", "tokens": ["parks"] },
+        "result_object_refs": ["agency:id:parks-and-recreation"],
+        "result_lenses": ["agencies"],
+        "coverage_by_lens": {
+          "notices": "out_of_scope",
+          "people": "out_of_scope",
+          "agencies": "matched",
+          "vendors": "out_of_scope",
+          "committees": "out_of_scope",
+          "community_boards": "out_of_scope",
+          "exams": "out_of_scope",
+          "parcels": "out_of_scope",
+          "land": "out_of_scope",
+          "meetings": "out_of_scope"
+        },
+        "requested_scope": {
+          "omitted": false,
+          "mode": "allowlisted",
+          "lenses": ["agencies"]
+        }
+      }
+    },
+    {
+      "id": "unknown-scope",
+      "input": { "query": "parks", "scope": { "lenses": ["contracts"] } },
+      "error": "unknown or unregistered lens"
+    },
+    {
+      "id": "arbitrary-scope-store",
+      "input": { "query": "parks", "scope": { "lenses": ["agencies"], "store": "d1" } },
+      "error": "arbitrary scope field"
+    },
+    {
+      "id": "arbitrary-top-level-filter",
+      "input": { "query": "parks", "where": "raw SQL" },
+      "error": "arbitrary field"
+    }
+  ]
+}

@@ -31,6 +31,7 @@ const STATE_LABELS = Object.freeze({
   stale: "older snapshot",
   not_indexed: "not indexed",
   provider_unavailable: "unavailable",
+  out_of_scope: "out of scope",
 });
 
 const VARYING_NOTE_COPY = Object.freeze({

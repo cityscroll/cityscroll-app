@@ -55,7 +55,12 @@ function provider() {
     capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
     providerId: FEDERATED_SEARCH_CAPABILITY.provider.id,
     execute(input) {
-      return federateUniversalSearch({ query: input.query, lenses, limit: input.limit });
+      return federateUniversalSearch({
+        query: input.query,
+        lenses,
+        limit: input.limit,
+        scope: input.scope,
+      });
     },
   };
 }
@@ -83,6 +88,45 @@ test("MCP adapter delegates to the same capability provider result", async () =>
   );
   const body = await mcp.json();
   assert.deepEqual(body.result.structuredContent, direct);
+});
+
+test("MCP adapter preserves scoped federation through the same capability envelope", async () => {
+  const explicit = provider();
+  const direct = await executeFederatedSearch(explicit, {
+    query: "parks",
+    limit: 10,
+    scope: { lenses: ["agencies"] },
+  });
+  const mcp = await handleMcp(
+    mcpPost({
+      jsonrpc: "2.0",
+      id: 3,
+      method: "tools/call",
+      params: { name: "search_federated", arguments: { query: "parks", limit: 10, scope: { lenses: ["agencies"] } } },
+    }),
+    { SUBS: { async get() { return null; }, async put() {} } },
+    { federatedProvider: explicit },
+  );
+  const body = await mcp.json();
+  assert.deepEqual(body.result.structuredContent, direct);
+  assert.equal(direct.requested_scope.omitted, false);
+  assert.equal(direct.coverage.by_lens.notices.state, "out_of_scope");
+});
+
+test("MCP adapter rejects unknown scope instead of widening", async () => {
+  const response = await handleMcp(
+    mcpPost({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: { name: "search_federated", arguments: { query: "parks", scope: { lenses: ["contracts"] } } },
+    }),
+    { SUBS: { async get() { return null; }, async put() {} } },
+    { federatedProvider: provider() },
+  );
+  const body = await response.json();
+  assert.equal(body.error.code, -32603);
+  assert.match(body.error.message, /unknown or unregistered lens/);
 });
 
 test("MCP adapter rejects arbitrary query fields instead of silently widening the contract", async () => {

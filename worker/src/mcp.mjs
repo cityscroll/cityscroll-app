@@ -19,6 +19,7 @@
 import { noticeSearchTerms, workerD1NoticeSearch } from "./lib/notices.mjs";
 import {
   executeFederatedSearch,
+  FEDERATED_SEARCH_INPUT_FIELDS,
   FEDERATED_SEARCH_LIMITS,
 } from "../../capabilities/federated_search.mjs";
 import {
@@ -94,7 +95,7 @@ import { formatPeopleGetText, formatOrganizationsBrowseText, mcpPeopleGetInput, 
 import { workerMeetingGet } from "./hearings.mjs";
 
 const PROTOCOL_VERSION = "2025-06-18";
-const FEDERATED_SEARCH_INPUT_FIELDS = new Set(["query", "limit"]);
+const FEDERATED_SEARCH_MCP_INPUT_FIELDS = new Set(FEDERATED_SEARCH_INPUT_FIELDS);
 const SUBSCRIBABLE = new Set(["money", "people", "land", "property", "rules", "meetings"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -139,13 +140,17 @@ export function mcpNoticeSearchInput(args = {}) {
 
 export function mcpFederatedSearchInput(args = {}) {
   for (const field of Object.keys(args || {})) {
-    if (!FEDERATED_SEARCH_INPUT_FIELDS.has(field)) {
+    if (!FEDERATED_SEARCH_MCP_INPUT_FIELDS.has(field)) {
       throw new TypeError(`search_federated does not accept arbitrary field: ${field}`);
     }
   }
   const query = String(args.query || "").trim();
   const limit = args.limit == null ? FEDERATED_SEARCH_LIMITS.defaultResults : Number(args.limit);
-  return { query, limit };
+  return {
+    query,
+    limit,
+    ...(Object.hasOwn(args || {}, "scope") ? { scope: args.scope } : {}),
+  };
 }
 
 export function mcpNoticeGetInput(args = {}) {
