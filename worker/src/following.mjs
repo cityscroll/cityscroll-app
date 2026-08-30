@@ -14,6 +14,7 @@ import { resolveLens, sanitize } from "./lib/filter.mjs";
 import { corsHeaders } from "./lib/cors.mjs";
 import { emailFromRequest } from "./session.mjs";
 import { issuePrefsCredential, listWatchesForEmail } from "./prefs.mjs";
+import { followingPersonalIslandHtml } from "../../site/following_personal_state.mjs";
 
 const SITE_ORIGIN = "https://cityscroll.org";
 const LEGACY_DOCUMENT_HOSTS = new Set(["api.cityscroll.org", "api.crol-list.org"]);
@@ -114,11 +115,9 @@ function personalWatchHtml(watch, credential) {
 }
 
 function personalHtml(watches, credential, recognized) {
-  if (!recognized) {
-    return `<div data-session-recognized="false"><p>Open a CityScroll email to see your watches.</p></div>`;
-  }
-  if (!watches?.length) return `<div data-session-recognized="true"><p>No saved watches yet. Create one above to save a watch and get updates on matching City Record rows.</p></div>`;
-  return `<div data-session-recognized="true">${watches.map((watch) => personalWatchHtml(watch, credential)).join("")}</div>`;
+  if (!recognized) return followingPersonalIslandHtml("unrecognized");
+  if (!watches?.length) return followingPersonalIslandHtml("empty");
+  return `<div data-session-recognized="true" data-personal-state="recognized">${watches.map((watch) => personalWatchHtml(watch, credential)).join("")}</div>`;
 }
 
 async function handlePersonal(request, env) {

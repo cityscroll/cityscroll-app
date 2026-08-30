@@ -955,7 +955,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   Create-flow query params (`lens` / `filter` / `freq`) keep the Create tab through
   `requestedFollowingTab` even after that promotion; `#your-following` and `?tab=` still win.
   Canonical manage URL is `/following/#your-following` (digest footers use session exchange when a token
-  is available; `/prefs` remains account-level). Personal watches load only through
+  is available; `/prefs` remains account-level). `site/following_personal_state.mjs` owns distinct
+  loading, unrecognized, empty, recognized, unavailable, and error copy for that island;
+  session controls stay off until the personal fetch is recognized, and cadence/pause/unsubscribe
+  refresh the same watch card. Personal watches load only through
   `/following/personal`; `site/app/alerts.mjs` is not part of the home loader graph.
   Suggested Watch sets are results-backed: `site/following_suggestions.mjs` gates and counts the
   editorial shapes against the canonical open money, rules, and meetings snapshots. Both
