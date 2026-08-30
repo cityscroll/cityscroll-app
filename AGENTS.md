@@ -1815,6 +1815,14 @@ normative sibling. It never creates or rewrites `record.spine` observations; mil
 mixed-action, and missing-procedure inputs remain unresolved. Focused proof:
 `test/land_procedure_profiles.test.mjs`.
 
+**Land action procedure resolution:** `site/land_action_procedure_resolution.mjs`
+projects additive `land_actions[]` and `procedure_resolution=uniform|mixed|unknown`
+from exact action tokens plus matching ULURP/application/CEQR identifiers. Mixed
+is a positive output; unsupported tokens, missing ids, and sibling copy remain
+unknown. Keep `actions`, `ulurp_numbers`, `ulurp_non`, filters, routes, and
+phase-spine inputs unchanged. Specimens: `2024M0244` mixed, `2025K0305` uniform,
+`2026K0123` unknown. Focused proof: `test/land_action_procedure_resolution.test.mjs`.
+
 ## Land/ZAP event spine
 
 `GET /zap-outcomes?id=` returns `record.spine`: a date-normalized rail joining ZAP API

@@ -1,0 +1,122 @@
+{
+  "schema": "cityscroll.land_action_procedure_resolution.fixtures.v1",
+  "specimens": {
+    "mixed-2024M0244": {
+      "project_id": "2024M0244",
+      "expect": {
+        "procedure_resolution": "mixed",
+        "action_count": 5,
+        "action_types": ["ZS", "ZM", "ZR", "LD", "LD"],
+        "application_ids": [
+          "C260015ZSM",
+          "C260013ZMM",
+          "N260014ZRM",
+          "260201LDM",
+          "260202LDM"
+        ]
+      }
+    },
+    "uniform-2025K0305": {
+      "project_id": "2025K0305",
+      "expect": {
+        "procedure_resolution": "uniform",
+        "action_count": 1,
+        "action_types": ["MM"],
+        "application_ids": ["250308MMK"],
+        "procedure_id": "ulurp_197c"
+      }
+    },
+    "unknown-2026K0123": {
+      "project_id": "2026K0123",
+      "expect": {
+        "procedure_resolution": "unknown",
+        "action_count": 4,
+        "action_types": ["UK", "ZM", "ZR", "EAS"],
+        "resolved_count": 0
+      }
+    }
+  },
+  "negatives": [
+    {
+      "id": "title-only",
+      "row": {
+        "project_id": "TITLEONLY",
+        "project_name": "C260015ZSM ULURP rezoning at 801 Eleventh Avenue",
+        "current_milestone": "City Council Review"
+      },
+      "expect": {
+        "procedure_resolution": "unknown",
+        "action_count": 0
+      }
+    },
+    {
+      "id": "milestone-only",
+      "row": {
+        "project_id": "MILESTONE",
+        "current_milestone": "ULURP - City Council Review",
+        "ulurp_non": "ULURP"
+      },
+      "expect": {
+        "procedure_resolution": "unknown",
+        "action_count": 0
+      }
+    },
+    {
+      "id": "missing-id",
+      "row": {
+        "project_id": "MISSINGID",
+        "actions": "ZM",
+        "ulurp_non": "ULURP",
+        "current_milestone": "ZM - Review Filed Land Use Application"
+      },
+      "expect": {
+        "procedure_resolution": "unknown",
+        "unresolved_reason": "missing_application_id"
+      }
+    },
+    {
+      "id": "mismatched-action",
+      "row": {
+        "project_id": "MISMATCH",
+        "actions": "ZS",
+        "ulurp_numbers": "C260013ZMM",
+        "ulurp_non": "ULURP"
+      },
+      "expect": {
+        "procedure_resolution": "unknown",
+        "unresolved_reason": "missing_application_id",
+        "application_id": null
+      }
+    },
+    {
+      "id": "duplicate-action-id-mismatch",
+      "row": {
+        "project_id": "DUPLICATE",
+        "actions": "LD; LD",
+        "ulurp_numbers": "260201LDM",
+        "ulurp_non": "ULURP"
+      },
+      "expect": {
+        "procedure_resolution": "unknown",
+        "action_count": 2,
+        "unresolved_reason": "identifier_count_mismatch"
+      }
+    },
+    {
+      "id": "applicant-address-count",
+      "row": {
+        "project_id": "HEURISTIC",
+        "actions": "ZM; ZR",
+        "primary_applicant": "Department of City Planning",
+        "project_name": "Ordinary ULURP",
+        "borough": "Manhattan",
+        "address": "City Hall",
+        "current_milestone": "Community Board Review"
+      },
+      "expect": {
+        "procedure_resolution": "unknown",
+        "resolved_count": 0
+      }
+    }
+  ]
+}
