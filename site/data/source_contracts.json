@@ -40,7 +40,7 @@
         "serve_contract_id": null
       },
       "health_policy": {
-        "public_visibility": "backstage-only",
+        "public_visibility": "public",
         "backstage_detail": "receipts-and-errors",
         "relationship_coverage": "separate"
       },

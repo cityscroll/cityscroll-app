@@ -61,6 +61,7 @@ const PRODUCT_AREAS = Object.freeze([
 ]);
 
 const PRODUCT_AREA_BY_SOURCE = Object.freeze({
+  "ibo-fiscal-history": "agencies",
   "city-record": "notices",
   "abo-local-authorities": "contracts",
   "abo-local-development-corporations": "contracts",
@@ -137,6 +138,13 @@ const COVERAGE_LABELS = Object.freeze({
   limited_coverage: "Limited coverage",
   held_or_failed_join: "Held or failed relationship match",
   UNKNOWN: "UNKNOWN",
+});
+
+const VINTAGE_STATUS_LABELS = Object.freeze({
+  current: "Reaches the newest official period CityScroll has verified",
+  "ingestion-stale": "CityScroll has not retrieved a current copy",
+  "source-vintage-stale": "source-vintage-stale",
+  unknown: "UNKNOWN",
 });
 
 const HEALTH_REASON_COPY = Object.freeze({
@@ -283,6 +291,55 @@ export function dataHealthRowIsNeverAcquired(row, options = {}) {
   return reasons.includes("source-disabled");
 }
 
+function fiscalLabel(year) {
+  return Number.isInteger(year) ? `FY${year}` : null;
+}
+
+function coveragePeriodLabel(coverage) {
+  return fiscalLabel(coverage?.max_fiscal_year) || formatPublicDate(coverage?.max_date);
+}
+
+function lagLabel(lag) {
+  if (!Number.isFinite(Number(lag?.value)) || !lag?.unit) return "UNKNOWN";
+  if (lag.unit === "fiscal_years") {
+    return Number(lag.value) === 1 ? "1 fiscal year" : `${lag.value} fiscal years`;
+  }
+  if (lag.unit === "days") {
+    return Number(lag.value) === 1 ? "1 day" : `${lag.value} days`;
+  }
+  return "UNKNOWN";
+}
+
+function vintageView(vintage) {
+  const status = VINTAGE_STATUS_LABELS[vintage?.status] ? vintage.status : "unknown";
+  const observed = coveragePeriodLabel(vintage?.observed_coverage);
+  const expectedDays = Number.isFinite(Number(vintage?.expected_lag_tolerance_days))
+    ? Number(vintage.expected_lag_tolerance_days)
+    : null;
+  const newer = vintage?.newer_source;
+  const newerPeriod = coveragePeriodLabel(newer?.observed_coverage) || newer?.publisher_vintage;
+  return {
+    status,
+    status_label: VINTAGE_STATUS_LABELS[status],
+    observed_label: observed ? `Observed through ${observed}` : "UNKNOWN",
+    publisher_vintage: clean(vintage?.publisher_vintage) || "UNKNOWN",
+    retrieved_label: formatPublicDate(vintage?.retrieved_at) || "UNKNOWN",
+    expected_lag_label: expectedDays === null
+      ? "UNKNOWN"
+      : (expectedDays === 1 ? "1 day" : `${expectedDays} days`),
+    current_lag_label: lagLabel(vintage?.current_lag),
+    newer_source: newer?.url
+      ? {
+        publisher: clean(newer.publisher) || "Newer official source",
+        url: newer.url,
+        artifact_url: newer.artifact_url || null,
+        period_label: newerPeriod || "UNKNOWN",
+        relation: newer.relation,
+      }
+      : null,
+  };
+}
+
 function sourceCard(row) {
   const healthStatus = HEALTH_LABELS[row?.health?.status] ? row.health.status : "UNKNOWN";
   return {
@@ -303,6 +360,7 @@ function sourceCard(row) {
     coverage_label: coverageLabel(row?.relationship_coverage?.status),
     coverage_note: uniqueSentences(row?.relationship_coverage?.reason_codes, COVERAGE_REASON_COPY).join(" "),
     coverage_measured: formatPublicDate(row?.relationship_coverage?.measured_at),
+    vintage: vintageView(row?.source_vintage),
   };
 }
 
@@ -348,6 +406,44 @@ function renderClock(clock) {
   </div>`;
 }
 
+function renderVintage(vintage) {
+  const newer = vintage?.newer_source;
+  const newerLink = newer
+    ? `<p class="data-health-note"><a class="data-health-official" href="${esc(newer.url)}" target="_blank" rel="noopener noreferrer">${esc(newer.publisher)} ${esc(newer.period_label)} ↗</a></p>`
+    : "";
+  const artifact = newer?.artifact_url
+    ? `<p class="data-health-note"><a class="data-health-official" href="${esc(newer.artifact_url)}" target="_blank" rel="noopener noreferrer">${esc(newer.period_label)} report ↗</a></p>`
+    : "";
+  return `<div class="data-health-vintage" data-vintage-status="${esc(vintage.status)}">
+      <p class="data-health-coverage-heading">Official coverage period</p>
+      <p class="data-health-vintage-status">${esc(vintage.status_label)}</p>
+      <dl class="data-health-clocks">
+        <div class="data-health-clock" data-clock-state="${vintage.observed_label === "UNKNOWN" ? "UNKNOWN" : "KNOWN"}">
+          <dt>Observed coverage</dt>
+          <dd><span class="data-health-clock-value">${esc(vintage.observed_label)}</span></dd>
+        </div>
+        <div class="data-health-clock" data-clock-state="${vintage.publisher_vintage === "UNKNOWN" ? "UNKNOWN" : "KNOWN"}">
+          <dt>Publisher vintage</dt>
+          <dd><span class="data-health-clock-value">${esc(vintage.publisher_vintage)}</span></dd>
+        </div>
+        <div class="data-health-clock" data-clock-state="${vintage.retrieved_label === "UNKNOWN" ? "UNKNOWN" : "KNOWN"}">
+          <dt>CityScroll retrieved</dt>
+          <dd><span class="data-health-clock-value">${esc(vintage.retrieved_label)}</span></dd>
+        </div>
+        <div class="data-health-clock" data-clock-state="${vintage.expected_lag_label === "UNKNOWN" ? "UNKNOWN" : "KNOWN"}">
+          <dt>Expected lag</dt>
+          <dd><span class="data-health-clock-value">${esc(vintage.expected_lag_label)}</span></dd>
+        </div>
+        <div class="data-health-clock" data-clock-state="${vintage.current_lag_label === "UNKNOWN" ? "UNKNOWN" : "KNOWN"}">
+          <dt>Current lag</dt>
+          <dd><span class="data-health-clock-value">${esc(vintage.current_lag_label)}</span></dd>
+        </div>
+      </dl>
+      ${newerLink}
+      ${artifact}
+    </div>`;
+}
+
 function renderSourceCard(card) {
   const official = card.official_url
     ? `<a class="data-health-official" href="${esc(card.official_url)}" target="_blank" rel="noopener noreferrer">Official page ↗</a>`
@@ -364,7 +460,7 @@ function renderSourceCard(card) {
   const coverageWhen = card.coverage_measured
     ? `<p class="data-health-coverage-when">Measured ${esc(card.coverage_measured)}</p>`
     : "";
-  return `<article class="data-health-card" data-health-status="${esc(card.health_status)}" data-mode="${esc(card.mode)}">
+  return `<article class="data-health-card" data-health-status="${esc(card.health_status)}" data-vintage-status="${esc(card.vintage.status)}" data-mode="${esc(card.mode)}">
     <header class="data-health-card-head">
       <h3>${esc(card.name)}</h3>
       ${cadence}
@@ -375,6 +471,7 @@ function renderSourceCard(card) {
       ${note}
       <dl class="data-health-clocks">${card.clocks.map(renderClock).join("")}</dl>
     </div>
+    ${renderVintage(card.vintage)}
     <div class="data-health-coverage">
       <p class="data-health-coverage-heading">Coverage</p>
       <p class="data-health-coverage-status">${esc(card.coverage_label)}</p>
@@ -407,7 +504,7 @@ export function renderDataHealthBody(view) {
   return `<main id="main" class="data-health-page" data-data-health="ready" tabindex="-1">
     <header class="data-health-hero">
       <h1>${DATA_HEALTH_TITLE}</h1>
-      <p class="data-health-lede">Where CityScroll's public records come from, when each source last changed, and where coverage is limited.</p>
+      <p class="data-health-lede">Where CityScroll's public records come from, when each source last changed, whether the served copy reaches the newest official period, and where coverage is limited.</p>
       <p class="data-health-crosslink">For how many records CityScroll holds, see <a href="/stats.html">Stats</a>.</p>
       ${asOf}
     </header>

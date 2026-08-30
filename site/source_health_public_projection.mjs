@@ -4,7 +4,22 @@
 // redacts those objects in place: it constructs a new, closed public shape from
 // an explicit allowlist and then applies a deny-list as a second safety net.
 
+import { unknownPublicSourceVintage } from "./source_vintage_public_projection.mjs";
+
 export const PUBLIC_SOURCE_HEALTH_SCHEMA = "cityscroll.public_source_health.v1";
+
+const PUBLIC_VINTAGE_STATUSES = new Set([
+  "current",
+  "ingestion-stale",
+  "source-vintage-stale",
+  "unknown",
+]);
+
+const PUBLIC_VINTAGE_RELATIONS = new Set([
+  "same-measure-newer",
+  "newer-official-context",
+  "alternate-format",
+]);
 
 const PUBLIC_HEALTH_STATUSES = new Set([
   "Healthy",
@@ -136,7 +151,53 @@ function publicCoverage(coverage) {
   };
 }
 
-function publicRow(contract, observation) {
+function publicVintage(value) {
+  const fallback = unknownPublicSourceVintage();
+  if (!value || typeof value !== "object" || Array.isArray(value)) return fallback;
+  const coverage = value.observed_coverage || {};
+  const lag = value.current_lag || {};
+  const newer = value.newer_source;
+  return {
+    observed_coverage: {
+      max_fiscal_year: Number.isInteger(coverage.max_fiscal_year) ? coverage.max_fiscal_year : null,
+      max_date: validInstant(coverage.max_date),
+    },
+    publisher_vintage: clean(value.publisher_vintage) || null,
+    retrieved_at: validInstant(value.retrieved_at),
+    expected_lag_tolerance_days: value.expected_lag_tolerance_days == null
+      ? null
+      : (Number.isFinite(Number(value.expected_lag_tolerance_days))
+        ? Number(value.expected_lag_tolerance_days)
+        : null),
+    current_lag: {
+      value: lag.value == null ? null : (Number.isFinite(Number(lag.value)) ? Number(lag.value) : null),
+      unit: clean(lag.unit) || null,
+    },
+    status: PUBLIC_VINTAGE_STATUSES.has(value.status) ? value.status : "unknown",
+    newer_source: newer && typeof newer === "object" && !Array.isArray(newer)
+      && PUBLIC_VINTAGE_RELATIONS.has(newer.relation)
+      && safeOfficialUrl(newer.url)
+      ? {
+        alternate_id: clean(newer.alternate_id) || null,
+        publisher: clean(newer.publisher) || null,
+        url: safeOfficialUrl(newer.url),
+        artifact_url: safeOfficialUrl(newer.artifact_url),
+        relation: newer.relation,
+        replacement_eligible: newer.replacement_eligible === true,
+        observed_coverage: {
+          max_fiscal_year: Number.isInteger(newer.observed_coverage?.max_fiscal_year)
+            ? newer.observed_coverage.max_fiscal_year
+            : null,
+          max_date: validInstant(newer.observed_coverage?.max_date),
+        },
+        publisher_vintage: clean(newer.publisher_vintage) || null,
+        scope_note: clean(newer.scope_note) || null,
+      }
+      : null,
+  };
+}
+
+function publicRow(contract, observation, vintage) {
   return {
     source_id: contract.id,
     name: clean(contract.name),
@@ -148,6 +209,7 @@ function publicRow(contract, observation) {
       : "UNKNOWN",
     health: publicHealth(observation),
     relationship_coverage: publicCoverage(observation?.relationship_coverage),
+    source_vintage: publicVintage(vintage),
   };
 }
 
@@ -241,6 +303,7 @@ export function validatePublicSourceHealthProjection(projection, registry = null
       "mode",
       "health",
       "relationship_coverage",
+      "source_vintage",
     ], path, errors);
     if (!clean(row?.source_id)) errors.push(`${path}.source_id: missing canonical id`);
     if (seen.has(row?.source_id)) errors.push(`${path}.source_id: duplicate public row`);
@@ -269,11 +332,48 @@ export function validatePublicSourceHealthProjection(projection, registry = null
       `${path}.relationship_coverage`,
       errors,
     );
+    unexpectedKeys(row?.source_vintage, [
+      "observed_coverage",
+      "publisher_vintage",
+      "retrieved_at",
+      "expected_lag_tolerance_days",
+      "current_lag",
+      "status",
+      "newer_source",
+    ], `${path}.source_vintage`, errors);
+    unexpectedKeys(
+      row?.source_vintage?.observed_coverage,
+      ["max_fiscal_year", "max_date"],
+      `${path}.source_vintage.observed_coverage`,
+      errors,
+    );
+    unexpectedKeys(
+      row?.source_vintage?.current_lag,
+      ["value", "unit"],
+      `${path}.source_vintage.current_lag`,
+      errors,
+    );
+    if (!PUBLIC_VINTAGE_STATUSES.has(row?.source_vintage?.status)) {
+      errors.push(`${path}.source_vintage.status: invalid vintage status`);
+    }
+    if (row?.source_vintage?.newer_source) {
+      unexpectedKeys(row.source_vintage.newer_source, [
+        "alternate_id",
+        "publisher",
+        "url",
+        "artifact_url",
+        "relation",
+        "replacement_eligible",
+        "observed_coverage",
+        "publisher_vintage",
+        "scope_note",
+      ], `${path}.source_vintage.newer_source`, errors);
+    }
   });
   return [...new Set(errors)].sort();
 }
 
-export function buildPublicSourceHealthProjection(registry, observations) {
+export function buildPublicSourceHealthProjection(registry, observations, options = {}) {
   const contracts = Array.isArray(registry?.contracts) ? registry.contracts : [];
   const contractIds = new Set();
   for (const contract of contracts) {
@@ -289,11 +389,18 @@ export function buildPublicSourceHealthProjection(registry, observations) {
     if (observationById.has(id)) throw new Error(`${id}: duplicate observation`);
     observationById.set(id, observation);
   }
+  const vintageById = options.vintageById instanceof Map
+    ? options.vintageById
+    : new Map(Object.entries(options.vintageById || {}));
 
   const sources = contracts
     .filter((contract) => contract?.health_policy?.public_visibility === "public")
     .sort((left, right) => left.id.localeCompare(right.id))
-    .map((contract) => publicRow(contract, observationById.get(contract.id)));
+    .map((contract) => publicRow(
+      contract,
+      observationById.get(contract.id),
+      vintageById.get(contract.id),
+    ));
   const projection = {
     schema: PUBLIC_SOURCE_HEALTH_SCHEMA,
     generated_at: validInstant(observations?.generated_at),

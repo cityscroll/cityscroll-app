@@ -163,6 +163,7 @@ constructed from a closed allowlist in
 - `mode` from `freshness_contract.mode`
 - `health.status`, allowlisted `reason_codes`, and the three clocks
 - `relationship_coverage.status`, `measured_at`, and allowlisted reasons
+- `source_vintage`: observed coverage period, publisher vintage, retrieval time, expected/current lag, classification (`current` / `ingestion-stale` / `source-vintage-stale` / `unknown`), and a verified newer-source URL when one exists. This is semantic coverage, not a second ingestion-health clock. Receipts, consumer ids, and internal paths stay backstage.
 
 Public clock bases are rewritten to `publisher_record`,
 `cityscroll_check` / `cityscroll_acquisition`, or

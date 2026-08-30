@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -10,6 +10,8 @@ import {
   publicSourceHealthProjectionText,
   validatePublicSourceHealthProjection,
 } from "../site/source_health_public_projection.mjs";
+import { publicSourceVintage, unknownPublicSourceVintage } from "../site/source_vintage_public_projection.mjs";
+import { classifySourceVintage } from "./source_vintage_status.mjs";
 
 export const CONTRACTS_PATH = fileURLToPath(
   new URL("../site/data/source_contracts.json", import.meta.url),
@@ -20,6 +22,44 @@ export const OBSERVATIONS_PATH = fileURLToPath(
 export const OUTPUT_PATH = fileURLToPath(
   new URL("../site/data/source_health_public.json", import.meta.url),
 );
+export const VINTAGE_OBSERVATIONS_PATH = fileURLToPath(
+  new URL("../site/data/source_vintage_observations.json", import.meta.url),
+);
+export const VINTAGE_ALTERNATES_PATH = fileURLToPath(
+  new URL("../site/data/source_vintage_alternates.json", import.meta.url),
+);
+
+function loadJsonIfPresent(path) {
+  return existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : null;
+}
+
+export function publicVintageById(registry, observations, options = {}) {
+  const vintageObservations = options.vintageObservations
+    || (options.loadCommittedVintage === false ? null : loadJsonIfPresent(VINTAGE_OBSERVATIONS_PATH));
+  const alternateRegistry = options.alternateRegistry
+    || (options.loadCommittedVintage === false ? null : loadJsonIfPresent(VINTAGE_ALTERNATES_PATH));
+  const vintageById = {};
+  const healthById = new Map((observations?.observations || []).map((row) => [row.source_id, row]));
+  const vintageBySource = new Map((vintageObservations?.observations || []).map((row) => [row.source_id, row]));
+  const alternates = Array.isArray(alternateRegistry?.alternates) ? alternateRegistry.alternates : [];
+  for (const contract of registry?.contracts || []) {
+    const observation = vintageBySource.get(contract.id) || null;
+    if (!observation) {
+      vintageById[contract.id] = unknownPublicSourceVintage();
+      continue;
+    }
+    const classification = classifySourceVintage({
+      contract,
+      source: observation,
+      healthObservation: healthById.get(contract.id) || null,
+      alternateRegistry,
+      asOf: options.asOf || observations?.generated_at || vintageObservations?.generated_at,
+    });
+    const alternate = alternates.find((row) => row.alternate_id === classification.alternate_source_id) || null;
+    vintageById[contract.id] = publicSourceVintage({ observation, classification, alternate });
+  }
+  return vintageById;
+}
 
 function readJson(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -39,7 +79,13 @@ function evidenceHash(projection) {
 export function generatePublicSourceHealthProjection(options = {}) {
   const registry = options.registry || readJson(CONTRACTS_PATH);
   const observations = options.observations || readJson(OBSERVATIONS_PATH);
-  return buildPublicSourceHealthProjection(registry, observations);
+  const vintageById = options.vintageById || publicVintageById(registry, observations, {
+    vintageObservations: options.vintageObservations,
+    alternateRegistry: options.alternateRegistry,
+    loadCommittedVintage: options.loadCommittedVintage !== false,
+    asOf: options.asOf,
+  });
+  return buildPublicSourceHealthProjection(registry, observations, { vintageById });
 }
 
 export function checkPublicSourceHealthProjection(options = {}) {

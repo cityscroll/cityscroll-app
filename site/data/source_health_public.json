@@ -2,7 +2,7 @@
   "schema": "cityscroll.public_source_health.v1",
   "generated_at": "2026-08-29T11:43:49.474Z",
   "available": true,
-  "source_count": 58,
+  "source_count": 59,
   "sources": [
     {
       "source_id": "abo-local-authorities",
@@ -38,6 +38,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -74,6 +89,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -108,6 +138,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-04T11:26:00.000Z",
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -144,6 +189,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -180,6 +240,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 45,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -216,6 +291,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -252,6 +342,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -288,6 +393,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -324,6 +444,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-11T20:00:00.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -358,6 +493,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-18T04:05:51.552Z",
+        "expected_lag_tolerance_days": 45,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -394,6 +544,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 45,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -428,6 +593,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-11T19:25:33.574Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-11T19:25:33.574Z",
+        "expected_lag_tolerance_days": 45,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -464,6 +644,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-11T20:00:00.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -500,6 +695,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 365,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -536,6 +746,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 730,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -572,6 +797,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -608,6 +848,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-05T10:41:44.000Z",
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -644,6 +899,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -680,6 +950,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -716,6 +1001,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 90,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -752,6 +1052,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 730,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -788,6 +1103,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -824,6 +1154,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 400,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -860,6 +1205,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -896,6 +1256,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 21,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -932,6 +1307,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -968,6 +1358,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1002,6 +1407,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-03T04:27:32.000Z",
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1036,6 +1456,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-24T08:25:03.900Z",
+        "expected_lag_tolerance_days": 400,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1072,6 +1507,83 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
+      }
+    },
+    {
+      "source_id": "ibo-fiscal-history",
+      "name": "NYC Independent Budget Office fiscal history",
+      "publisher": "New York City Independent Budget Office",
+      "official_url": "https://ns2.ibo.nyc.ny.us/fiscalhistory.html",
+      "expected_cadence": "Annual fiscal-history workbook releases",
+      "mode": "periodic",
+      "health": {
+        "status": "Healthy",
+        "reason_codes": [],
+        "clocks": {
+          "publisher_updated": {
+            "at": "2023-06-14T13:40:02.000Z",
+            "state": "KNOWN",
+            "basis": "publisher_record"
+          },
+          "cityscroll_checked_acquired": {
+            "at": "2026-08-27T17:59:48.000Z",
+            "state": "KNOWN",
+            "basis": "cityscroll_acquisition"
+          },
+          "cityscroll_serving": {
+            "at": null,
+            "state": "UNKNOWN",
+            "basis": null
+          }
+        }
+      },
+      "relationship_coverage": {
+        "status": "UNKNOWN",
+        "measured_at": null,
+        "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": 2022,
+          "max_date": null
+        },
+        "publisher_vintage": "FY2022",
+        "retrieved_at": "2026-08-27T17:59:48.000Z",
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": 3,
+          "unit": "fiscal_years"
+        },
+        "status": "source-vintage-stale",
+        "newer_source": {
+          "alternate_id": "comptroller-acfr",
+          "publisher": "New York City Comptroller",
+          "url": "https://comptroller.nyc.gov/reports/annual-comprehensive-financial-reports/",
+          "artifact_url": "https://comptroller.nyc.gov/wp-content/uploads/2025/11/ACFR-2025.pdf",
+          "relation": "newer-official-context",
+          "replacement_eligible": false,
+          "observed_coverage": {
+            "max_fiscal_year": 2025,
+            "max_date": null
+          },
+          "publisher_vintage": "FY2025",
+          "scope_note": "official citywide financial statements; contextual to IBO staffing and expenditure history"
+        }
       }
     },
     {
@@ -1108,6 +1620,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1144,6 +1671,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1180,6 +1722,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1216,6 +1773,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1252,6 +1824,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1288,6 +1875,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1324,6 +1926,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1360,6 +1977,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 45,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1394,6 +2026,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-24T08:25:03.900Z",
+        "expected_lag_tolerance_days": 60,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1430,6 +2077,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1466,6 +2128,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1502,6 +2179,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-11T20:00:00.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 90,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1538,6 +2230,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 30,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1574,6 +2281,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1610,6 +2332,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1646,6 +2383,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 45,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1682,6 +2434,21 @@
         "status": "limited_coverage",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 550,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1718,6 +2485,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1754,6 +2536,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1788,6 +2585,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-05T10:36:28.000Z",
+        "expected_lag_tolerance_days": 14,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1824,6 +2636,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 3,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1860,6 +2687,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-02T17:02:36.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 3,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1896,6 +2738,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 365,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1932,6 +2789,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-12T00:00:00.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -1968,6 +2840,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-12T00:00:00.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 0,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -2004,6 +2891,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": null,
+        "expected_lag_tolerance_days": 7,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -2038,6 +2940,21 @@
         "status": "UNKNOWN",
         "measured_at": null,
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-05T10:36:34.000Z",
+        "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     },
     {
@@ -2072,6 +2989,21 @@
         "status": "complete_for_declared_scope",
         "measured_at": "2026-08-16T12:00:00.000Z",
         "reason_codes": []
+      },
+      "source_vintage": {
+        "observed_coverage": {
+          "max_fiscal_year": null,
+          "max_date": null
+        },
+        "publisher_vintage": null,
+        "retrieved_at": "2026-08-03T05:05:03.000Z",
+        "expected_lag_tolerance_days": 120,
+        "current_lag": {
+          "value": null,
+          "unit": null
+        },
+        "status": "unknown",
+        "newer_source": null
       }
     }
   ]

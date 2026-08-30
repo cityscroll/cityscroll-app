@@ -108,7 +108,9 @@ test("public source health is rebuilt from an explicit field allowlist", () => {
     "mode",
     "health",
     "relationship_coverage",
+    "source_vintage",
   ]);
+  assert.equal(projection.sources[0].source_vintage.status, "unknown");
   assert.equal(projection.sources[0].health.clocks.cityscroll_serving.basis, "cityscroll_materialization");
   assert.equal("row_count" in projection.sources[0].relationship_coverage, false);
   assert.equal(publicSourceHealthProjectionLeaks(projection).length, 0);
@@ -422,7 +424,7 @@ test("committed public artifact is canonical, generated, and contains no backsta
   const registry = JSON.parse(readFileSync(new URL("../site/data/source_contracts.json", import.meta.url)));
   const observations = JSON.parse(readFileSync(new URL("../site/data/source_health_observations.json", import.meta.url)));
   const committed = JSON.parse(readFileSync(new URL("../site/data/source_health_public.json", import.meta.url)));
-  assert.deepEqual(committed, buildPublicSourceHealthProjection(registry, observations));
+  assert.deepEqual(committed, generatePublicSourceHealthProjection({ registry, observations }));
   assert.deepEqual(validatePublicSourceHealthProjection(committed, registry), []);
   assert.deepEqual(publicSourceHealthProjectionLeaks(committed), []);
   assert.ok(committed.sources.length > 0);

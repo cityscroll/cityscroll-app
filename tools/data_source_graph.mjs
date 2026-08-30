@@ -6,6 +6,12 @@ import { dirname, isAbsolute, join, relative } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { redactCredentialValues } from "./source_health_observations.mjs";
+import { classifySourceVintage } from "./source_vintage_status.mjs";
+import {
+  backstageSourceVintage,
+  findingsFromVintageClassifications,
+  unknownBackstageSourceVintage,
+} from "../site/source_vintage_public_projection.mjs";
 
 export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 export const DEFAULT_OUTPUT_DIR = "docs";
@@ -18,6 +24,8 @@ const CORE_INPUTS = [
   "docs/data-sources.md",
   "site/data/source_contracts.json",
   "site/data/source_health_observations.json",
+  "site/data/source_vintage_observations.json",
+  "site/data/source_vintage_alternates.json",
   "site/data/gap_taxonomy.json",
   "warehouse/datasets.v0.json",
   "worker/wrangler.toml",
@@ -325,6 +333,7 @@ function deskHealthFor(contract, observation, ingest, researchState) {
     join_gate: joinGate,
     operator_notes: operatorNotes,
     research_state: researchState,
+    source_vintage: unknownBackstageSourceVintage(),
   };
 }
 
@@ -505,6 +514,7 @@ function deriveBlockedSources(gapTaxonomy) {
       join_gate: { status: "blocked", join_status: "held", row_count: null, measured_at: null, reason_codes: ["access-not-authorized"] },
       operator_notes: [redactCredentialValues(source.status_note)],
       research_state: { status: source.status, kind: "access-blocked", wishlist_gap_id: source.wishlist_gap_id },
+      source_vintage: unknownBackstageSourceVintage(),
       data_offered: source.data_offered,
       access_mechanisms: source.access_mechanisms,
       policy_citations: source.policy_citations,
@@ -553,6 +563,7 @@ function deriveCandidateSources(gapTaxonomy) {
         serving_fallback: { active: false, valid: false, status: "not-applicable" },
         join_gate: { status: "not-measured", join_status: "candidate", row_count: null, measured_at: null, reason_codes: ["candidate-source"] },
         operator_notes: [],
+        source_vintage: unknownBackstageSourceVintage(),
         research_state: {
           status: source.status,
           kind: "candidate",
@@ -572,6 +583,8 @@ export function buildDataSourceGraph({
   externalAwardText = "",
   receipts = new Map(),
   healthObservations = { observations: [] },
+  vintageObservations = { observations: [] },
+  alternateRegistry = { alternates: [] },
   inputs = [],
 } = {}) {
   const contracts = registry?.contracts || [];
@@ -579,6 +592,8 @@ export function buildDataSourceGraph({
   const gapSources = new Set((gapTaxonomy.sources || []).map((source) => source.source_contract_id).filter(Boolean));
   const gapSourcesByContract = new Map((gapTaxonomy.sources || []).filter((source) => source.source_contract_id).map((source) => [source.source_contract_id, source]));
   const healthById = sourceHealthIndex(registry, healthObservations);
+  const vintageById = new Map((vintageObservations?.observations || []).map((row) => [row.source_id, row]));
+  const alternatesById = new Map((alternateRegistry?.alternates || []).map((row) => [row.alternate_id, row]));
   const context = { warehouse: warehouse.datasets ? warehouse : { datasets: warehouse }, cron, workerText, weeklyDays: weeklyGate(externalAwardText) };
   const liveSources = contracts.map((contract) => {
     const evidence = receipts.get(contract.id) || [];
@@ -591,6 +606,25 @@ export function buildDataSourceGraph({
       kind: contract.status === "disabled" ? "blocked" : hasWishlist ? "tracked-gap" : "operational",
       join_keys: Array.isArray(gapSource?.join_keys) ? gapSource.join_keys : Array.isArray(contract.join_keys) ? contract.join_keys : [],
     };
+    const vintageObservation = vintageById.get(contract.id) || null;
+    const classification = vintageObservation
+      ? classifySourceVintage({
+        contract,
+        source: vintageObservation,
+        healthObservation: healthById.get(contract.id) || null,
+        alternateRegistry,
+        asOf: healthObservations?.generated_at || vintageObservations?.generated_at,
+      })
+      : null;
+    const alternate = classification
+      ? (alternatesById.get(classification.alternate_source_id) || null)
+      : null;
+    const findings = classification
+      ? findingsFromVintageClassifications([classification], {
+        observationsById: vintageById,
+        alternatesById,
+      })
+      : [];
     return {
       id: contract.id,
       name: contract.name,
@@ -615,6 +649,14 @@ export function buildDataSourceGraph({
       latest_evidence: evidence[0] || null,
       code_references: (contract.code_references || []).map((ref) => ref.path),
       ...deskHealthFor(contract, healthById.get(contract.id), ingest, researchState),
+      source_vintage: vintageObservation
+        ? backstageSourceVintage({
+          observation: vintageObservation,
+          classification,
+          alternate,
+          findings,
+        })
+        : unknownBackstageSourceVintage(),
     };
   });
   const blockedSources = deriveBlockedSources(gapTaxonomy);
@@ -717,7 +759,11 @@ function selectSource(id){
   const fallback=s.serving_fallback?.active?'<strong>Active:</strong> '+escapeHtml(s.serving_fallback.status)+(s.serving_fallback.valid?' · valid last-known-good':' · validity unknown'):'Not active';
   const join=s.join_gate||{};
   const notes=(s.operator_notes||[]).length?'<h3>Operator notes</h3><ul>'+s.operator_notes.map(note=>'<li>'+escapeHtml(note)+'</li>').join('')+'</ul>':'';
-  details.innerHTML='<div class="eyebrow">'+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · '+escapeHtml(s.delivery_tier)+'</p><h3>Health</h3><p><strong>'+escapeHtml(s.health?.status||'Unknown')+'</strong>'+reasons+'<br><small>contract '+escapeHtml(s.contract_fingerprint||'UNKNOWN')+'</small></p><h3>Freshness watchdog</h3><p><strong>'+escapeHtml(watchdog.status||'UNKNOWN')+'</strong>'+(watchdog.reason_codes?.length?'<br><small>'+watchdog.reason_codes.map(escapeHtml).join(' · ')+'</small>':'')+'</p><h3>Collecting body</h3><p>'+escapeHtml(s.body)+'</p><h3>Endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Adapters</h3>'+adapters+'<h3>Our ingest</h3><p><strong>'+escapeHtml(s.ingest.job)+'</strong><br>'+escapeHtml(s.ingest.cadence)+'<br>'+escapeHtml(s.ingest.transform)+'</p><h3>Three clocks</h3>'+clocks+'<h3>Acquisition and scheduler clocks</h3>'+freshnessClocks+'<h3>Freshness events</h3>'+freshnessEvents+'<h3>Serving fallback</h3><p>'+fallback+'</p><h3>Runs and exact errors</h3>'+runs+'<h3>Receipts</h3>'+receipts+'<h3>Join gate</h3><p><strong>'+escapeHtml(join.status||'unknown')+'</strong> · '+escapeHtml(join.join_status||'unknown')+'<br><small>rows '+escapeHtml(join.row_count??'UNKNOWN')+' · measured '+atText(join.measured_at)+'</small></p><h3>Freshness contract</h3><p><strong>Publisher cadence:</strong> '+escapeHtml(s.publisher_cadence)+'<br>'+escapeHtml(s.approach)+freshness+'</p><h3>Coverage</h3><p>'+escapeHtml(s.coverage)+'</p>'+notes+gap+wishlist+'<h3>Surfaces</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';
+  const vintage=s.source_vintage||{};
+  const vintageLag=vintage.current_lag||{};
+  const vintageCoverage=vintage.observed_coverage||{};
+  const vintageHtml='<h3>Source vintage</h3><p><strong>'+escapeHtml(vintage.status||'unknown')+'</strong>'+(vintage.ingestion_stale===true?' · ingestion stale':vintage.ingestion_stale===false?' · ingestion not stale':'')+'<br><small>observed FY '+escapeHtml(vintageCoverage.max_fiscal_year??'UNKNOWN')+' · publisher '+escapeHtml(vintage.publisher_vintage||'UNKNOWN')+' · retrieved '+atText(vintage.retrieved_at)+' · lag '+escapeHtml(vintageLag.value??'UNKNOWN')+' '+(vintageLag.unit||'')+'</small>'+(vintage.retrieval?.receipt_ref?'<br><small>'+escapeHtml(vintage.retrieval.receipt_ref)+'</small>':'')+((vintage.downstream_consumer_ids||[]).length?'<br><small>consumers '+vintage.downstream_consumer_ids.map(escapeHtml).join(', ')+'</small>':'')+((vintage.findings||[]).length?'<br><small>finding '+escapeHtml(vintage.findings[0].finding_key)+'</small>':'')+'</p>';
+  details.innerHTML='<div class="eyebrow">'+escapeHtml(s.endpoint.identity)+'</div><h2>'+escapeHtml(s.name)+'</h2><p><span class="status status-'+escapeHtml(s.status)+'">'+escapeHtml(s.status)+'</span> · '+escapeHtml(s.delivery_tier)+'</p><h3>Health</h3><p><strong>'+escapeHtml(s.health?.status||'Unknown')+'</strong>'+reasons+'<br><small>contract '+escapeHtml(s.contract_fingerprint||'UNKNOWN')+'</small></p>'+vintageHtml+'<h3>Freshness watchdog</h3><p><strong>'+escapeHtml(watchdog.status||'UNKNOWN')+'</strong>'+(watchdog.reason_codes?.length?'<br><small>'+watchdog.reason_codes.map(escapeHtml).join(' · ')+'</small>':'')+'</p><h3>Collecting body</h3><p>'+escapeHtml(s.body)+'</p><h3>Endpoint</h3><p class="endpoint">'+endpoint+'</p><h3>Adapters</h3>'+adapters+'<h3>Our ingest</h3><p><strong>'+escapeHtml(s.ingest.job)+'</strong><br>'+escapeHtml(s.ingest.cadence)+'<br>'+escapeHtml(s.ingest.transform)+'</p><h3>Three clocks</h3>'+clocks+'<h3>Acquisition and scheduler clocks</h3>'+freshnessClocks+'<h3>Freshness events</h3>'+freshnessEvents+'<h3>Serving fallback</h3><p>'+fallback+'</p><h3>Runs and exact errors</h3>'+runs+'<h3>Receipts</h3>'+receipts+'<h3>Join gate</h3><p><strong>'+escapeHtml(join.status||'unknown')+'</strong> · '+escapeHtml(join.join_status||'unknown')+'<br><small>rows '+escapeHtml(join.row_count??'UNKNOWN')+' · measured '+atText(join.measured_at)+'</small></p><h3>Freshness contract</h3><p><strong>Publisher cadence:</strong> '+escapeHtml(s.publisher_cadence)+'<br>'+escapeHtml(s.approach)+freshness+'</p><h3>Coverage</h3><p>'+escapeHtml(s.coverage)+'</p>'+notes+gap+wishlist+'<h3>Surfaces</h3><p>'+s.surfaces.map(escapeHtml).join(' · ')+'</p>';
   render();
 }
 function highlight(id){svg.querySelectorAll(".edge").forEach(node=>node.classList.toggle("active",node.classList.contains("edge-"+CSS.escape(id))))}
@@ -739,6 +785,12 @@ export function generatedGraphFiles({ inputs = inputManifest() } = {}) {
     externalAwardText: readFileSync(join(ROOT, "worker/src/external_award.mjs"), "utf8"),
     receipts: receiptEvidence(registry.contracts, receiptPaths),
     healthObservations: readJson("site/data/source_health_observations.json"),
+    vintageObservations: existsSync(join(ROOT, "site/data/source_vintage_observations.json"))
+      ? readJson("site/data/source_vintage_observations.json")
+      : { observations: [] },
+    alternateRegistry: existsSync(join(ROOT, "site/data/source_vintage_alternates.json"))
+      ? readJson("site/data/source_vintage_alternates.json")
+      : { alternates: [] },
     inputs,
   });
   return {
@@ -754,8 +806,10 @@ function outputDirectory(path = DEFAULT_OUTPUT_DIR) {
 export function writeGeneratedGraphFiles({ outputDir = DEFAULT_OUTPUT_DIR, inputs } = {}) {
   const directory = outputDirectory(outputDir);
   const files = generatedGraphFiles({ inputs });
+  // determinism-lint: allow write non-check graph materialization only
   mkdirSync(directory, { recursive: true });
   for (const [filename, contents] of Object.entries(files)) {
+    // determinism-lint: allow write non-check graph materialization only
     writeFileSync(join(directory, filename), contents);
   }
   return files;

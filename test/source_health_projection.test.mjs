@@ -480,4 +480,6 @@ test("ABO Worker KV weekly refresh and GET /externalaward are observed as the se
 test("raw receipt observations remain backstage until a strict public projection exists", () => {
   const publicBuildConfig = readFileSync(new URL("../site/_config.yml", import.meta.url), "utf8");
   assert.match(publicBuildConfig, /^\s+- data\/source_health_observations\.json$/m);
+  assert.match(publicBuildConfig, /^\s+- data\/source_vintage_observations\.json$/m);
+  assert.match(publicBuildConfig, /^\s+- data\/source_vintage_alternates\.json$/m);
 });

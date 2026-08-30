@@ -3429,7 +3429,7 @@
     },
     {
       "source_id": "ibo-fiscal-history",
-      "contract_fingerprint": "a57f672d45cb856accc41b4ab81a1db1027491981b6a5ead9e69434798fb27cb",
+      "contract_fingerprint": "94696354dae01fe7565a9dbbdaef0c3195c9beb6e994281e1edba2a1e51c7bbc",
       "health": {
         "status": "Healthy",
         "reason_codes": [],
