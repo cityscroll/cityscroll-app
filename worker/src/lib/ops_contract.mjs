@@ -7,7 +7,7 @@
 // Desk panels pin min_version and validate fixtures against this schema so hard-coded
 // key prefixes, digest modes, and daylog actions cannot drift silently.
 
-export const OPS_CONTRACT_VERSION = "1.9.0";
+export const OPS_CONTRACT_VERSION = "1.9.1";
 export const OPS_CONTRACT_ID = "ops-contract.v1";
 
 /** Digest delivery / evaluation modes the worker may stamp on receipts and daylogs. */
@@ -432,7 +432,7 @@ export const ADMIN_ROUTES = Object.freeze([
     path: "/admin/reliability/mail",
     methods: ["GET", "POST"],
     auth: "ADMIN_KEY",
-    description: "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → subscribe@ worker consumer and the operations mailbox. GET returns 503 when a canary is unmatched or outbound send failed. GitHub-red is the independent alarm; this route does not email a dead mail rail. The Gmail forward leg stays dashboard-gated.",
+    description: "Mail-leg health snapshot and canary. POST {action:canary} probes Resend → the worker-consumed subscribe address only; healthy rounds do not email team@. GET returns 503 when a canary is unmatched, stale, or a send failed, and exception-alerts team@ once per finding fingerprint per day. A rejected exception stays red through HTTP/GitHub-red rather than retrying the dead mail rail. Additive findings_history, canary_state, envelope, and token_prefix fields are source-labeled. The Gmail forward leg stays dashboard-gated.",
   },
   {
     path: "/admin/digest-send-test",
