@@ -31,6 +31,7 @@ const MODEL_OUT = new URL("../site/data/shared_procurement_read_model.json", imp
 const MODEL_SHARD_DIR = new URL("../site/data/shared_procurement_read_model/", import.meta.url);
 const BROWSE_OUT = new URL("../site/data/procurement_browse_rows.json", import.meta.url);
 const BROWSE_QUERY_OUT = new URL("../site/data/procurement_browse_query.json", import.meta.url);
+const BROWSE_QUERY_ROWS_OUT = new URL("../site/data/procurement_browse_query_rows.json", import.meta.url);
 const BROWSE_QUERY_SHARD_DIR = new URL("../site/data/procurement_browse_rows/", import.meta.url);
 const DIGEST_OUT = new URL("../site/data/procurement_digest_snapshot.json", import.meta.url);
 const MTA_SOURCES = new URL("../site/data/mta_procurement_sources.json", import.meta.url);
@@ -312,6 +313,7 @@ function checkOrWriteBrowseQueryArtifacts(browse, sourceModelFingerprint) {
   });
   const outputs = [
     [BROWSE_QUERY_OUT, `${JSON.stringify(artifacts.manifest)}\n`],
+    [BROWSE_QUERY_ROWS_OUT, serialized(artifacts.queryRowsArtifact)],
     ...artifacts.manifest.shards.map((descriptor, index) => [
       browseQueryShardPath(descriptor),
       serialized(artifacts.shards[index]),

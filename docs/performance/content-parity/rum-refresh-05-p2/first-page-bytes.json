@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.rum_refresh_05_first_page_bytes.v1",
+  "additive": false,
+  "full_snapshot_path": "site/data/procurement_browse_rows.json",
+  "full_snapshot_bytes": 21278918,
+  "query_rows_bytes": 11808198,
+  "first_page_manifest_bytes": 57120,
+  "first_page_source": "bounded-first-page",
+  "first_page_row_count": 40,
+  "first_page_fetches": ["data/procurement_browse_query.json"],
+  "lab_parse_full_snapshot_ms": 40.11,
+  "lab_parse_first_page_manifest_ms": 0.09,
+  "notes": [
+    "Lab parse times are local-machine traces, not field RUM.",
+    "Estimates are not additive with Notice, bootstrap, Agency, or Near You guesses."
+  ]
+}
