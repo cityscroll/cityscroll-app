@@ -986,7 +986,8 @@ test("client island recognizes promoted document routes without converting entit
   assert.match(routing, /function documentRouteRaw\(\)/);
   assert.match(routing, /\^\\\/notices\\\//);
   assert.match(routing, /\^\\\/browse/);
-  assert.match(main, /CrolRouteMigration = await import/);
+  assert.match(main, /import\("\.\.\/route_migration\.mjs"\)/);
+  assert.match(main, /CrolRouteMigration = routeMigrationModule/);
   assert.doesNotMatch(routing, /pathname.*(?:entity|matter)/);
 });
 

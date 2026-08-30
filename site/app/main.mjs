@@ -18,11 +18,19 @@ await import("./core.mjs");
 appImportTimingMark("core-end");
 let noticeContextPromise = NOTICE_ROUTE ? import(NOTICE_CONTEXT_MODULE_PATH) : null;
 if(noticeContextPromise) appImportTimingMark("notice-context-start");
-globalThis.CrolScope = await import("../scope_v0.mjs");
-globalThis.CrolEntityPivots = await import("../entity_pivot.mjs");
-globalThis.CrolReportIssue = await import("../report_issue.mjs");
-globalThis.CrolAgencyConnections = await import("../agency_connections.mjs");
-globalThis.CrolRouteMigration = await import("../route_migration.mjs");
+// Independent namespace modules have no load-order side effects with each other.
+const [scopeModule, entityPivotsModule, reportIssueModule, agencyConnectionsModule, routeMigrationModule] = await Promise.all([
+  import("../scope_v0.mjs"),
+  import("../entity_pivot.mjs"),
+  import("../report_issue.mjs"),
+  import("../agency_connections.mjs"),
+  import("../route_migration.mjs"),
+]);
+globalThis.CrolScope = scopeModule;
+globalThis.CrolEntityPivots = entityPivotsModule;
+globalThis.CrolReportIssue = reportIssueModule;
+globalThis.CrolAgencyConnections = agencyConnectionsModule;
+globalThis.CrolRouteMigration = routeMigrationModule;
 await import("./traversal.mjs");
 await import("./contracts-rum.mjs");
 await import("./money-list.mjs");

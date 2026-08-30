@@ -630,9 +630,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   with `tools/lib/community_board_meeting_index_io.mjs`.
 - **Contracts bounded query projection:** non-default Contracts Browse uses
   `site/procurement_browse_query.mjs` and Pages-build-generated
-  `site/data/procurement_browse_query.json` plus
+  `site/data/procurement_browse_query.json`,
+  `site/data/procurement_browse_query_rows.json`, plus
   `site/data/procurement_browse_rows/`; those deploy-time artifacts are
-  gitignored and must not be committed. Rebuild them with
+  gitignored and must not be committed. Default Recent Awards and Archive first
+  pages read the compact manifest only and must not parse the full snapshot or
+  the query-row file. Rebuild them with
   `node tools/build_shared_procurement_read_model.mjs`; the query projection must stay
   field-equivalent to `filterMoneySnapshot`, and full-row hydration must retain the
   legacy fallback. Proof lives in `test/procurement_browse_query.test.mjs`.
