@@ -277,6 +277,18 @@ function matterHref(change) {
   return /^\d+$/.test(value) ? `/matters/${encodeURIComponent(value)}/` : null;
 }
 
+function lawLinkMarkup(change) {
+  const instrument = change?.legal_instrument_id ? escapeHtml(change.legal_instrument_id) : "";
+  const href = matterHref(change);
+  const isRepeal = change?.operation === "repeal";
+  const label = isRepeal ? "Repealing law" : "Enacting law";
+  if (!instrument && !href) return "";
+  if (href) {
+    return ` · <a href="${escapeHtml(href)}" data-legal-instrument-id="${instrument}">${label}</a>`;
+  }
+  return ` · <span data-legal-instrument-id="${instrument}">${label}</span>`;
+}
+
 function materializationMarkup(change) {
   const materialization = change?.materialization;
   if (change?.materialization_status === "materialized" && materialization) {
@@ -307,8 +319,9 @@ export function renderLegalChangeList(changes = [], { empty = "No explicit statu
     const timeline = matterHref(change)
       ? ` · <a href="${escapeHtml(matterHref(change))}">Matter timeline</a>`
       : "";
+    const law = change.state === "prospective" ? "" : lawLinkMarkup(change);
     const state = change.state === "prospective" ? "Prospective proposal" : "Enacted change";
-    return `<li data-code-change-id="${escapeHtml(change.id)}" data-code-change-state="${escapeHtml(change.state)}"><strong>${escapeHtml(change.operation.toUpperCase())}</strong> · ${target} <span class="legal-change-state">${escapeHtml(state)}</span>${timeline}${source}<p>${escapeHtml(change.source?.instruction_text || "Source-stated instruction retained.")}</p>${materializationMarkup(change)}</li>`;
+    return `<li data-code-change-id="${escapeHtml(change.id)}" data-code-change-state="${escapeHtml(change.state)}" data-code-change-operation="${escapeHtml(change.operation)}"><strong>${escapeHtml(change.operation.toUpperCase())}</strong> · ${target} <span class="legal-change-state">${escapeHtml(state)}</span>${law}${timeline}${source}<p>${escapeHtml(change.source?.instruction_text || "Source-stated instruction retained.")}</p>${materializationMarkup(change)}</li>`;
   });
   return rows.length ? `<ul class="legal-change-list">${rows.join("")}</ul>` : `<p class="legal-change-empty">${escapeHtml(empty)}</p>`;
 }

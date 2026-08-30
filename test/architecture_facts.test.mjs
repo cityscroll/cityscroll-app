@@ -30,13 +30,14 @@ test("generated architecture facts contain every LA4 section", () => {
     "exams",
     "pages_edge",
     "materializers",
+    "code_versions",
     "civic_geography",
     "performance_observability",
   ]) {
     assert.ok(key in facts, key);
   }
   assert.equal(facts.schema, "cityscroll.architecture.facts.v1");
-  assert.equal(facts.generator.version, "1.6.0");
+  assert.equal(facts.generator.version, "1.7.0");
   assert.ok(facts.commit);
   assert.ok(facts.source_paths.includes("worker/wrangler.toml"));
 });
@@ -137,6 +138,7 @@ test("registered architecture canaries are first-class observed", () => {
     "tools/build_agency_constellation_documents.mjs",
     "tools/lib/entity_intelligence_build.mjs",
     "site/exams_surface.mjs",
+    "site/code_version_materialization.mjs",
     "site/pages_edge.mjs",
     "site/_routes.json",
     "tools/build_primary_documents.mjs",

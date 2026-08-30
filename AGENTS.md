@@ -10,6 +10,14 @@
   or rejected pairs out of identity. Promotion past the 200-row proof stays blocked.
   `warehouse/scripts/verify_er_batch_receipt.py --check` validates the committed receipt.
 
+- **Administrative Code versions (LL-P1A):** `site/code_version_materialization.mjs` is the
+  fail-closed derived read model over explicit CodeChange edges. Safe ADD/AMEND/REPEAL emit
+  immutable `cityscroll.code_version.v1` intervals; delayed dates keep enacted visibility
+  separate from current-law text; unsafe/conditional/partial patches stay
+  `materialization_status: unresolved` with no fabricated version. Proof:
+  `test/code_version_materialization.test.mjs` plus
+  `test/fixtures/code_version_materialization.json`.
+
 - **Action Path v0:** `site/action_path_v0.mjs` is the pure, actorless projection over the
   authoritative `site/action_registry.js` action object. It requires provenance-bearing evidence,
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
