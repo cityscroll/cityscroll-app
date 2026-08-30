@@ -131,13 +131,13 @@ function effectiveDateClause(change, options) {
 
   const text = clean(change?.effective_date_text || options?.effective_date_text || law.effective_date_text, 2_000);
   if (!text) return { effective_at: null, basis: "unknown", resolution: "unresolved", reason: "no operative effective date" };
-  if (/\b(?:conditional|conditioned|upon|unless|subject to|if|except|provided|different|separate|respectively|subdivision|paragraph)\b/i.test(text)) {
-    return { effective_at: null, basis: "source_stated", resolution: "unresolved", reason: "conditional effective date" };
-  }
   const explicitDates = text.match(/\b\d{4}-\d{2}-\d{2}\b/g) || [];
   const namedDates = text.match(/\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2}(?:st|nd|rd|th)?(?:,)?\s+\d{4}\b/gi) || [];
   if (explicitDates.length > 1 || namedDates.length > 1 || /\b(?:different|separate|respectively|each\s+provision)\b/i.test(text)) {
     return { effective_at: null, basis: "source_stated", resolution: "unresolved", reason: "effective dates are clause-specific" };
+  }
+  if (/\b(?:conditional|conditioned|upon|unless|subject to|if|except|provided that)\b/i.test(text)) {
+    return { effective_at: null, basis: "source_stated", resolution: "unresolved", reason: "conditional effective date" };
   }
   const sourceDate = dateFromText(text);
   if (sourceDate) return { effective_at: sourceDate, basis: "source_stated_text", resolution: "resolved", reason: null };
@@ -281,11 +281,31 @@ function initialVersions(provision, versions) {
   })];
 }
 
-function currentVersion(versions, effectiveAt) {
-  return [...versions]
-    .filter((version) => !version.valid_to && (!version.valid_from || !effectiveAt || version.valid_from <= effectiveAt))
-    .sort((left, right) => String(left.valid_from || "").localeCompare(String(right.valid_from || "")))
-    .at(-1) || null;
+function versionCovers(version, asOf) {
+  const from = validDate(version?.valid_from);
+  const to = validDate(version?.valid_to);
+  if (from && from > asOf) return false;
+  if (to && to <= asOf) return false;
+  return true;
+}
+
+function sortVersions(versions) {
+  return [...versions].sort((left, right) => String(left.valid_from || "").localeCompare(String(right.valid_from || "")));
+}
+
+export function selectCodeVersionAt(versions = [], asOf = null) {
+  const rows = (Array.isArray(versions) ? versions : []).filter((version) => version && version.provision_id);
+  const dated = validDate(asOf);
+  if (dated) {
+    return sortVersions(rows.filter((version) => versionCovers(version, dated))).at(-1) || null;
+  }
+  return sortVersions(rows.filter((version) => !version.valid_to && !validDate(version.valid_from))).at(-1)
+    || sortVersions(rows.filter((version) => !version.valid_to)).at(-1)
+    || null;
+}
+
+function openVersionAt(versions, effectiveAt) {
+  return sortVersions(versions.filter((version) => !version.valid_to && (!version.valid_from || !effectiveAt || version.valid_from <= effectiveAt))).at(-1) || null;
 }
 
 function changeWithStatus(change, status, confidence, materialization) {
@@ -357,7 +377,7 @@ function replaceExact(text, before, after) {
   return text.replace(before, after);
 }
 
-function codeVersionFor(provisionId, text, effectiveAt, change, context) {
+function codeVersionFor(provisionId, text, effectiveAt, change, context, status = "current") {
   return normalizeVersion({
     provision_id: provisionId,
     valid_from: effectiveAt,
@@ -366,20 +386,51 @@ function codeVersionFor(provisionId, text, effectiveAt, change, context) {
     source_ref: change.source?.source_ref || change.source?.url,
     observed_at: context.observed_at || change.source?.observed_at,
     content_hash: hash(text),
-    status: "current",
+    status,
     materialized_from_change_id: change.id,
     legal_instrument_id: change.legal_instrument_id,
   });
 }
 
-function closeVersion(version, effectiveAt, change) {
+function versionStatusAt(effectiveAt, asOf, operativeStatus = "current") {
+  const dated = validDate(asOf);
+  if (dated && effectiveAt && dated < effectiveAt) return "pending";
+  return operativeStatus;
+}
+
+function closeVersion(version, effectiveAt, change, status = "superseded") {
   return normalizeVersion({
     ...version,
     valid_to: effectiveAt,
-    status: "superseded",
+    status,
+    source_ref: version.source_ref,
+    observed_at: version.observed_at,
+    content_hash: version.content_hash,
     materialized_from_change_id: version.materialized_from_change_id || null,
     legal_instrument_id: version.legal_instrument_id || change.legal_instrument_id || null,
   });
+}
+
+function deriveProvision(provision, change, versions, asOf, { repealed = false, effectiveAt = null } = {}) {
+  const dated = validDate(asOf);
+  if (repealed && dated && effectiveAt && dated >= effectiveAt) {
+    return makeProvision(provision, change, "", "repealed");
+  }
+  const operative = selectCodeVersionAt(versions, dated);
+  if (!dated) {
+    return makeProvision(
+      provision,
+      change,
+      provision?.current_text ?? "",
+      provision?.status || "current",
+    );
+  }
+  return makeProvision(
+    provision,
+    change,
+    operative?.text ?? provision?.current_text ?? "",
+    "current",
+  );
 }
 
 export function readableCodeDiff(before, after) {
@@ -408,7 +459,8 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
   const id = provisionIdFor(change, provision);
   if (!id || change.target?.corpus_id !== ADMIN_CODE) return unresolved(change, date, "target is not an ingested Administrative Code provision", existingVersions, provision);
 
-  const active = currentVersion(existingVersions, date.effective_at);
+  const asOf = validDate(context.as_of || context.now);
+  const active = openVersionAt(existingVersions, date.effective_at);
   if (["amend", "repeal"].includes(operation) && !active) {
     return unresolved(change, date, "no active prior version is available", existingVersions, provision);
   }
@@ -421,7 +473,7 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
       : patch.before_text ? replaceExact(active.text, patch.before_text, patch.after_text) : null;
     if (after == null) return unresolved(change, date, "before text is absent or ambiguous in the active version", existingVersions, provision);
     const closed = closeVersion(active, date.effective_at, change);
-    const next = codeVersionFor(id, after, date.effective_at, change, context);
+    const next = codeVersionFor(id, after, date.effective_at, change, context, versionStatusAt(date.effective_at, asOf));
     const nextVersions = existingVersions.filter((version) => version.id !== active.id).concat(closed, next);
     const materialization = {
       status: "materialized",
@@ -433,7 +485,7 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
       superseded_version_id: closed.id,
       version_id: next.id,
     };
-    const updated = makeProvision(provision, change, after, "current");
+    const updated = deriveProvision(provision, change, nextVersions, asOf, { effectiveAt: date.effective_at });
     return freeze({
       schema: CODE_VERSION_MATERIALIZATION_SCHEMA,
       change: changeWithStatus(change, "materialized", "high", materialization),
@@ -455,8 +507,9 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
     const after = patch?.after_text;
     if (!after) return unresolved(change, date, "addition does not contain text for the new provision", existingVersions, provision);
     if (provision && (provision.current_text || existingVersions.length)) return unresolved(change, date, "addition targets an already materialized provision", existingVersions, provision);
-    const next = codeVersionFor(id, after, date.effective_at, change, context);
-    const updated = makeProvision(provision, change, after, "current");
+    const next = codeVersionFor(id, after, date.effective_at, change, context, versionStatusAt(date.effective_at, asOf));
+    const nextVersions = [next];
+    const updated = deriveProvision(null, change, nextVersions, asOf || date.effective_at, { effectiveAt: date.effective_at });
     const materialization = {
       status: "materialized",
       effective_at: date.effective_at,
@@ -474,7 +527,7 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
       effective_at: date.effective_at,
       effective_date_basis: date.basis,
       reason: null,
-      versions: [next],
+      versions: nextVersions,
       provision: updated,
       before_text: null,
       after_text: after,
@@ -484,14 +537,26 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
 
   if (operation === "repeal") {
     const closed = closeVersion(active, date.effective_at, change);
-    const updated = makeProvision(provision, change, "", "repealed");
+    const inactive = codeVersionFor(
+      id,
+      "",
+      date.effective_at,
+      change,
+      context,
+      versionStatusAt(date.effective_at, asOf, "repealed"),
+    );
+    const nextVersions = existingVersions.filter((version) => version.id !== active.id).concat(closed, inactive);
+    const updated = deriveProvision(provision, change, nextVersions, asOf, {
+      repealed: true,
+      effectiveAt: date.effective_at,
+    });
     const materialization = {
       status: "materialized",
       effective_at: date.effective_at,
       effective_date_basis: date.basis,
       before_text: active.text,
       after_text: null,
-      diff: null,
+      diff: readableCodeDiff(active.text, ""),
       superseded_version_id: closed.id,
     };
     return freeze({
@@ -502,11 +567,11 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
       effective_at: date.effective_at,
       effective_date_basis: date.basis,
       reason: null,
-      versions: existingVersions.filter((version) => version.id !== active.id).concat(closed),
+      versions: nextVersions,
       provision: updated,
       before_text: active.text,
       after_text: null,
-      diff: null,
+      diff: materialization.diff,
     });
   }
 

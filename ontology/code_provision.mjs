@@ -76,7 +76,7 @@ export function codeProvision(value = {}) {
 
 export function codeVersion(value = {}) {
   const provisionId = clean(value.provision_id, 240);
-  if (!/^nyc-admin-code:[a-z0-9]+-[a-z0-9.]+$/i.test(provisionId)) {
+  if (!/^(?:nyc-admin-code|nyc-administrative-code):[a-z0-9]+-[a-z0-9.]+$/i.test(provisionId)) {
     throw new TypeError("CodeVersion requires a CodeProvision id");
   }
   const textValue = String(value.text ?? "");

@@ -18,6 +18,11 @@
       "why": "Agency SearchDocument producer. PR 1076 touched this file; it is absent from the observer's closed source set, so constellation/search-producer changes do not appear in facts."
     },
     {
+      "id": "code-version-materialization",
+      "path": "site/code_version_materialization.mjs",
+      "why": "Fail-closed Administrative Code version materialization. Effective-date intervals, repeal history, and unresolved patches are architecture-affecting."
+    },
+    {
       "id": "civic-geography-registry",
       "path": "site/civic_geography_registry.mjs",
       "why": "Typed civic-geography control plane. Layer types, classes, canonical IDs, source contracts, coverage rules, and declared uses are architecture-affecting even when legacy district routes remain unchanged."

@@ -40,6 +40,7 @@ test("filter covers site search, constellation, and materialization canaries", (
     "site/agency_constellation_model.mjs",
     "site/agency_search_producer.mjs",
     "site/exams_surface.mjs",
+    "site/code_version_materialization.mjs",
     "site/pages_edge.mjs",
     "site/_routes.json",
     "tools/build_agency_constellation_documents.mjs",

@@ -8,6 +8,7 @@ import {
   searchAdminCodeDocuments as searchDocumentsForQuery,
 } from "./admin_code_search.mjs";
 import { renderLegalChangeList } from "./legal_change_edges.mjs";
+import { selectCodeVersionAt } from "./code_version_materialization.mjs";
 
 export const ADMIN_CODE_CORPUS_ID = "nyc-administrative-code";
 export const ADMIN_CODE_SEARCH_LENS = "legal_code";
@@ -44,12 +45,19 @@ function escapeHtml(value) {
     .replaceAll("'", "&#39;");
 }
 
-export function renderAdminCodeProvisionDocument(row, { currentHref = null, changes = [], versions = [] } = {}) {
+export function renderAdminCodeProvisionDocument(row, { currentHref = null, changes = [], versions = [], as_of = null } = {}) {
   if (!row) return null;
-  const currentVersion = Array.isArray(versions)
-    ? versions.filter((version) => version?.provision_id === row.id && !version.valid_to).at(-1)
-    : null;
-  const renderedRow = currentVersion ? { ...row, current_text: currentVersion.text, status: currentVersion.status || row.status } : row;
+  const scopedVersions = Array.isArray(versions)
+    ? versions.filter((version) => version?.provision_id === row.id)
+    : [];
+  const currentVersion = selectCodeVersionAt(scopedVersions, as_of);
+  const renderedRow = currentVersion
+    ? {
+      ...row,
+      current_text: currentVersion.status === "repealed" ? "" : (currentVersion.text ?? row.current_text),
+      status: currentVersion.status === "repealed" ? "repealed" : "current",
+    }
+    : row;
   const canonical = `https://cityscroll.org${adminCodeHref(renderedRow.citation)}`;
   const sourceUrl = renderedRow.source?.url || "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1";
   const hierarchy = Array.isArray(renderedRow.hierarchy) && renderedRow.hierarchy.length
@@ -66,7 +74,7 @@ export function renderAdminCodeProvisionDocument(row, { currentHref = null, chan
   const proposals = targetChanges.filter((change) => change.state === "prospective");
   const enacted = targetChanges.filter((change) => change.state !== "prospective");
   const versionMarkup = Array.isArray(versions) && versions.length
-    ? `<section class="history" aria-labelledby="version-history"><h3 id="version-history">Version history</h3><ul class="legal-change-list">${versions.filter((version) => version?.provision_id === renderedRow.id).sort((left, right) => String(left.valid_from || "").localeCompare(String(right.valid_from || ""))).map((version) => `<li data-code-version-id="${escapeHtml(version.id)}"><strong>${escapeHtml(version.valid_from || "Unknown start")}</strong>${version.valid_to ? ` – ${escapeHtml(version.valid_to)}` : " – current"} · ${escapeHtml(version.status || "current")}</li>`).join("")}</ul></section>`
+    ? `<section class="history" aria-labelledby="version-history"><h3 id="version-history">Version history</h3><ul class="legal-change-list">${scopedVersions.sort((left, right) => String(left.valid_from || "").localeCompare(String(right.valid_from || ""))).map((version) => `<li data-code-version-id="${escapeHtml(version.id)}"><strong>${escapeHtml(version.valid_from || "Unknown start")}</strong>${version.valid_to ? ` – ${escapeHtml(version.valid_to)}` : version.status === "pending" ? " – not yet operative" : " – current"} · ${escapeHtml(version.status || "current")}</li>`).join("")}</ul></section>`
     : "";
   const changesMarkup = targetChanges.length
     ? `<section class="history" aria-labelledby="changes"><h3 id="changes">Changed by</h3>${renderLegalChangeList(enacted, { empty: "No modeled enacted changes yet." })}</section><section class="history" aria-labelledby="proposals"><h3 id="proposals">Current proposals</h3>${renderLegalChangeList(proposals, { empty: "No current explicit proposals." })}</section>${versionMarkup}`
