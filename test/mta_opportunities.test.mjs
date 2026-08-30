@@ -39,6 +39,11 @@ test("S48020 and event 0000541781 are searchable current-opportunity identifiers
   assert.equal(row.event_id, "0000541781");
   assert.equal(row.end_date, "10/16/2026");
   assert.equal(row.source_systems.includes("mta_current_opportunities"), true);
+  assert.equal(row.agency_id, "mta-construction-and-development");
+  assert.deepEqual([...row.entity_refs_all].sort(), [
+    "agency:id:metropolitan-transportation-authority",
+    "agency:id:mta-construction-and-development",
+  ]);
 });
 
 test("bid results remain bid-opening evidence and never become awards or winning vendors", () => {

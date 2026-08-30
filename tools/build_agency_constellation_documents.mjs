@@ -67,7 +67,9 @@ function loadSources() {
   }
   const procurementBrowse = existsSync(procurementBrowsePath) ? readJson(procurementBrowsePath) : null;
   const authorityRows = (procurementBrowse?.rows || []).filter((row) =>
-    (row?.source_systems || []).some((system) => /^mta_/.test(String(system || ""))));
+    (row?.source_systems || []).some((system) => (
+      /^mta_/.test(String(system || "")) || system === "nys_contract_reporter"
+    )));
   return {
     intelligence: readJson(intelligencePath),
     passport_graph: existsSync(passportGraphPath) ? readJson(passportGraphPath) : null,

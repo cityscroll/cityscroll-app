@@ -62,7 +62,9 @@ export function agencyBrowseRowObject(row, { facet, relation, sourceSystem = "ci
   const stage = clean(row?.primary_stage, 80).toLowerCase();
   const objectKind = facet === "meetings"
     ? (type.includes("hearing") ? "hearing" : "meeting")
-    : (stage === "award" || type.includes("award") ? "award" : "contract");
+    : stage === "bid_opening_result" ? "bid_opening_result"
+      : stage === "solicitation" ? "solicitation"
+      : (stage === "award" || type.includes("award") ? "award" : "contract");
   const when = clean(row?.event_date || row?.start_date || row?.date, 40) || null;
   return {
     subject_ref: requestId ? `notice:${requestId}` : procurementId,

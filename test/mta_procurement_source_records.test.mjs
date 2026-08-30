@@ -14,7 +14,7 @@ import {
 import { buildProcurementArtifacts } from "../tools/build_shared_procurement_read_model.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
 import { buildAgencyConstellationView } from "../site/agency_constellation_model.mjs";
-import { resolveAgencyIdentity } from "../site/agency_identity.mjs";
+import { agencyRouteAliasTarget, resolveAgencyIdentity } from "../site/agency_identity.mjs";
 
 const fixture = JSON.parse(readFileSync(new URL("../site/data/mta_procurement_sources.json", import.meta.url)));
 
@@ -127,6 +127,8 @@ test("MTA operating-entity identities stay distinct from the parent and each oth
     ["MTA C&D", "mta-construction-and-development"],
   ]);
   for (const [label, id] of expected) assert.equal(resolveAgencyIdentity(label).canonical_id, id, label);
+  assert.equal(agencyRouteAliasTarget("mta-nyct"), "n-y-c-transit-authority");
+  assert.equal(agencyRouteAliasTarget("mta-construction-development"), "mta-construction-and-development");
   assert.equal(new Set(expected.values()).size, expected.size);
 });
 

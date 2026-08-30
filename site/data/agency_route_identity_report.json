@@ -1,12 +1,12 @@
 {
   "schema": "cityscroll.agency_route_identity_report.v1",
-  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T10:40:50.286Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-28T16:31:37.977Z",
+  "generated_at": "12783|2026-08-02T10:22:34.003Z|2026-08-05T10:40:50.286Z|2026-08-07T23:52:53.226Z|2026-08-11T21:12:40.677Z|2026-08-12T16:01:38.473Z|2026-08-05T20:50:48.662Z|2026-08-06T00:00:00Z|2026-08-07T23:52:53.226Z|2026-08-15|2026-08-15T19:35:39.293Z|2026-08-18|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-18T04:05:51.552Z|2026-08-26T00:00:00.000Z|2026-08-27T17:59:48Z|2026-08-29T11:43:49.474Z|2026-08-30T16:27:58.717Z",
   "method": "exact_publisher_crosswalk_with_reviewed_route_dispositions_v1",
   "publisher_canonical_count": 116,
-  "constellation_only_source_count": 22,
+  "constellation_only_source_count": 23,
   "classification_counts": {
     "alias_to_canonical": 16,
-    "legitimate_non_crosswalk_entity": 4,
+    "legitimate_non_crosswalk_entity": 5,
     "unresolved": 2
   },
   "cases": [
@@ -114,6 +114,21 @@
       "canonical_path": "/agencies/office-of-the-mayor/",
       "redirect_from": "/agencies/mayoralty/",
       "basis": "publisher budget-code identity"
+    },
+    {
+      "source_id": "mta-construction-and-development",
+      "names": [
+        "MTA Construction & Development"
+      ],
+      "sources": [
+        "entity_intelligence"
+      ],
+      "classification": "legitimate_non_crosswalk_entity",
+      "canonical_id": "mta-construction-and-development",
+      "canonical_name": "MTA Construction & Development",
+      "canonical_path": "/agencies/mta-construction-and-development/",
+      "redirect_from": null,
+      "basis": "distinct MTA operating authority; no parent merge"
     },
     {
       "source_id": "n-y-c-housing-authority",

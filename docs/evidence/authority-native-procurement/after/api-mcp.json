@@ -1,0 +1,61 @@
+{
+  "schema": "cityscroll.anp.api_mcp_receipt.v1",
+  "http_route": "GET /contract",
+  "mcp_tools": [
+    "get_contract",
+    "browse_contracts"
+  ],
+  "population": 5,
+  "records": [
+    {
+      "procurement_id": "procurement:contract:BA2335819",
+      "primary_stage": "contract",
+      "official_url": "https://www.checkbooknyc.com/nycha_contract_details/agency/162/datasource/checkbook_nycha/contract/BA2335819",
+      "source_observation_refs": [
+        "checkbook_nycha_contracts:contract:BA2335819:Agreement"
+      ],
+      "agency_id": "housing-authority",
+      "vendor_name": "VITAL PLUMBING INC"
+    },
+    {
+      "procurement_id": "procurement:contract:A37703",
+      "primary_stage": "award",
+      "official_url": "https://www.mta.info/agency/construction-and-development/contracting/recent-awards",
+      "source_observation_refs": [
+        "mta_cd_awards:award:A37703"
+      ],
+      "agency_id": "mta-construction-and-development",
+      "vendor_name": "Gramercy Group, Inc."
+    },
+    {
+      "procurement_id": "procurement:solicitation:S48020",
+      "primary_stage": "solicitation",
+      "official_url": "https://www.mta.info/agency/construction-and-development/contracting/current-opportunities",
+      "source_observation_refs": [
+        "mta_current_opportunities:mta-current:S48020:0000541781"
+      ],
+      "agency_id": "mta-construction-and-development",
+      "vendor_name": null
+    },
+    {
+      "procurement_id": "procurement:contract_reporter_number:2138505",
+      "primary_stage": "solicitation",
+      "official_url": "https://www.nyscr.ny.gov/Ads/Search?Keyword=2138505&Status=Open",
+      "source_observation_refs": [
+        "nys_contract_reporter:contract-reporter:2138505"
+      ],
+      "agency_id": "n-y-c-transit-authority",
+      "vendor_name": null
+    },
+    {
+      "procurement_id": "procurement:solicitation:AW9Y",
+      "primary_stage": "bid_opening_result",
+      "official_url": "https://www.mta.info/agency/construction-and-development/contracting/bid-results",
+      "source_observation_refs": [
+        "mta_bid_results:mta-bid-results:AW-9Y:TDP-ASSOCIATES-INC"
+      ],
+      "agency_id": "mta-construction-and-development",
+      "vendor_name": null
+    }
+  ]
+}

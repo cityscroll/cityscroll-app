@@ -51441,7 +51441,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 8,
+          "count": 7,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -52566,7 +52566,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 3,
+          "count": 2,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -52696,7 +52696,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 2,
+          "count": 5,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -52741,52 +52741,7 @@
       "categories": {
         "contracts": {
           "status": "matched",
-          "count": 2,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "vendors": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_vendor_awards_12mo_v1"
-        },
-        "meetings": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_browse_snapshot_v1"
-        },
-        "rules": {
-          "status": "empty",
-          "count": 0,
-          "method": "agency_canonical_v1"
-        },
-        "obligations": {
-          "status": "empty",
-          "count": 0,
-          "method": "mandate_expected_vs_observed_v1"
-        },
-        "staffing": {
-          "status": "empty",
-          "count": 0,
-          "method": "publisher_certification_record_v1"
-        }
-      }
-    },
-    {
-      "kind": "agency",
-      "id": "agency:id:mta-construction-development",
-      "label": "mta-construction-development",
-      "href": "/agencies/mta-construction-development/",
-      "entity_ref": "agency:id:mta-construction-development",
-      "relation_state": "published",
-      "detail": "1 linked record categories",
-      "institution": "agency",
-      "institution_label": "Agency",
-      "institution_context": "City agency organization",
-      "search_text": "mta-construction-development agency organization",
-      "categories": {
-        "contracts": {
-          "status": "matched",
-          "count": 2,
+          "count": 3,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -52823,15 +52778,15 @@
       "href": "/agencies/n-y-c-transit-authority/",
       "entity_ref": "agency:id:n-y-c-transit-authority",
       "relation_state": "published",
-      "detail": "1 linked record categories",
+      "detail": "2 linked record categories",
       "institution": "agency",
       "institution_label": "Agency",
       "institution_context": "City agency organization",
       "search_text": "N.Y.C. Transit Authority agency organization",
       "categories": {
         "contracts": {
-          "status": "empty",
-          "count": 0,
+          "status": "matched",
+          "count": 1,
           "method": "agency_browse_snapshot_v1"
         },
         "vendors": {
@@ -53106,7 +53061,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 5,
+          "count": 4,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -53916,7 +53871,7 @@
         },
         "vendors": {
           "status": "matched",
-          "count": 8,
+          "count": 7,
           "method": "agency_vendor_awards_12mo_v1"
         },
         "meetings": {
@@ -54326,16 +54281,17 @@
       "href": "/vendors/4TECH%20SOLUTIONS/",
       "entity_ref": "vendor:stem:4TECH%20SOLUTIONS",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "3 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:district-attorney-new-york-county"
+        "agency:id:district-attorney-new-york-county",
+        "agency:id:office-of-the-mayor"
       ],
-      "award_count": 2,
+      "award_count": 3,
       "search_text": "4Tech Solutions, LLC vendor organization",
-      "agency_count": 1
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -54448,24 +54404,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:ADROIT%20CONSULTANTS",
-      "label": "Adroit Consultants LLC",
-      "href": "/vendors/ADROIT%20CONSULTANTS/",
-      "entity_ref": "vendor:stem:ADROIT%20CONSULTANTS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:office-of-the-mayor"
-      ],
-      "award_count": 1,
-      "search_text": "Adroit Consultants LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:AFFORDABLE%20SERVICES%20GROUP",
       "label": "Affordable Services Group LLC",
       "href": "/vendors/AFFORDABLE%20SERVICES%20GROUP/",
@@ -54498,24 +54436,6 @@
       ],
       "award_count": 1,
       "search_text": "Aita Consulting Services Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:ALFRED%20EXECUTIVE%20TRANSPORTATION",
-      "label": "Alfred Executive Transportation LLC",
-      "href": "/vendors/ALFRED%20EXECUTIVE%20TRANSPORTATION/",
-      "entity_ref": "vendor:stem:ALFRED%20EXECUTIVE%20TRANSPORTATION",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:law-department"
-      ],
-      "award_count": 1,
-      "search_text": "Alfred Executive Transportation LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -54707,16 +54627,17 @@
       "href": "/vendors/AWE-HUH%20CREATIVE%20SERVICES/",
       "entity_ref": "vendor:stem:AWE-HUH%20CREATIVE%20SERVICES",
       "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
+      "detail": "2 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:buildings"
+        "agency:id:buildings",
+        "agency:id:taxi-and-limousine-commission"
       ],
-      "award_count": 1,
+      "award_count": 2,
       "search_text": "Awe-Huh Creative Services LLC vendor organization",
-      "agency_count": 1
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -55301,7 +55222,7 @@
       "href": "/vendors/COMPULINK%20TECHNOLOGIES/",
       "entity_ref": "vendor:stem:COMPULINK%20TECHNOLOGIES",
       "relation_state": "published",
-      "detail": "16 linked awards across 3 agencies",
+      "detail": "13 linked awards across 3 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
@@ -55310,7 +55231,7 @@
         "agency:id:district-attorney-new-york-county",
         "agency:id:financial-information-services-agency"
       ],
-      "award_count": 16,
+      "award_count": 13,
       "search_text": "Compulink Technologies Inc vendor organization",
       "agency_count": 3
     },
@@ -55462,6 +55383,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:DERIVE%20TECHNOLOGIES",
+      "label": "Derive Technologies LLC",
+      "href": "/vendors/DERIVE%20TECHNOLOGIES/",
+      "entity_ref": "vendor:stem:DERIVE%20TECHNOLOGIES",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:office-of-the-mayor"
+      ],
+      "award_count": 1,
+      "search_text": "Derive Technologies LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
       "label": "Dewberry-GF Resident Engineering JV",
       "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
@@ -55530,24 +55469,6 @@
       ],
       "award_count": 1,
       "search_text": "DNS Media Group Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:DOYLE%20SECURITY%20SERVICES",
-      "label": "Doyle Security Services Inc.",
-      "href": "/vendors/DOYLE%20SECURITY%20SERVICES/",
-      "entity_ref": "vendor:stem:DOYLE%20SECURITY%20SERVICES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:employees-retirement-system"
-      ],
-      "award_count": 1,
-      "search_text": "Doyle Security Services Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -55790,6 +55711,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:FINESSE%20CREATIONS",
+      "label": "Finesse Creations Inc",
+      "href": "/vendors/FINESSE%20CREATIONS/",
+      "entity_ref": "vendor:stem:FINESSE%20CREATIONS",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:police-department"
+      ],
+      "award_count": 1,
+      "search_text": "Finesse Creations Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:FORT%20GREENE%20COUNCIL",
       "label": "Fort Greene Council Inc.",
       "href": "/vendors/FORT%20GREENE%20COUNCIL/",
@@ -55822,6 +55761,24 @@
       ],
       "award_count": 2,
       "search_text": "Franco Belli Plumbing & Heating & Sons, Inc. vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:FRANGLAIS%20MANAGEMENT",
+      "label": "Franglais Management LLC",
+      "href": "/vendors/FRANGLAIS%20MANAGEMENT/",
+      "entity_ref": "vendor:stem:FRANGLAIS%20MANAGEMENT",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:consumer-and-worker-protection"
+      ],
+      "award_count": 1,
+      "search_text": "Franglais Management LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -55985,24 +55942,6 @@
       ],
       "award_count": 5,
       "search_text": "Grand Street Settlement Inc vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES",
-      "label": "Great Performances Artists as Waitresses Inc",
-      "href": "/vendors/GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES/",
-      "entity_ref": "vendor:stem:GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:office-of-the-mayor"
-      ],
-      "award_count": 1,
-      "search_text": "Great Performances Artists as Waitresses Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -56223,24 +56162,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:HIRE%20BREAKTHROUGH",
-      "label": "Hire Breakthrough LLC",
-      "href": "/vendors/HIRE%20BREAKTHROUGH/",
-      "entity_ref": "vendor:stem:HIRE%20BREAKTHROUGH",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:mayors-office-of-contract-services"
-      ],
-      "award_count": 1,
-      "search_text": "Hire Breakthrough LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:HYLAN%20DATACOM%20ELECTRICAL",
       "label": "Hylan Datacom & Electrical LLC",
       "href": "/vendors/HYLAN%20DATACOM%20ELECTRICAL/",
@@ -56349,24 +56270,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:INDUSTRIAL%20STRENGTH%20INDUSTRIES",
-      "label": "Industrial Strength Industries LLC",
-      "href": "/vendors/INDUSTRIAL%20STRENGTH%20INDUSTRIES/",
-      "entity_ref": "vendor:stem:INDUSTRIAL%20STRENGTH%20INDUSTRIES",
-      "relation_state": "published",
-      "detail": "6 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:fire-department"
-      ],
-      "award_count": 6,
-      "search_text": "Industrial Strength Industries LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:INFO%20PEOPLE",
       "label": "InFo People Corporation",
       "href": "/vendors/INFO%20PEOPLE/",
@@ -56381,42 +56284,6 @@
       ],
       "award_count": 2,
       "search_text": "InFo People Corporation vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:INFOPEOPLE",
-      "label": "Infopeople Corporation",
-      "href": "/vendors/INFOPEOPLE/",
-      "entity_ref": "vendor:stem:INFOPEOPLE",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:consumer-and-worker-protection"
-      ],
-      "award_count": 1,
-      "search_text": "Infopeople Corporation vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:INFRA%20TECH%20LOZIER%20ENGINEERING%20JV",
-      "label": "Infra Tech Lozier Engineering JV",
-      "href": "/vendors/INFRA%20TECH%20LOZIER%20ENGINEERING%20JV/",
-      "entity_ref": "vendor:stem:INFRA%20TECH%20LOZIER%20ENGINEERING%20JV",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:design-and-construction"
-      ],
-      "award_count": 1,
-      "search_text": "Infra Tech Lozier Engineering JV vendor organization",
       "agency_count": 1
     },
     {
@@ -56548,20 +56415,20 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:JACOBS%20CIVIL%20CONSULTANTS",
-      "label": "Jacobs Civil Consultants",
-      "href": "/vendors/JACOBS%20CIVIL%20CONSULTANTS/",
-      "entity_ref": "vendor:stem:JACOBS%20CIVIL%20CONSULTANTS",
+      "id": "vendor:stem:J%20PIZZIRUSSO%20LANDSCAPING",
+      "label": "J. Pizzirusso Landscaping Corp",
+      "href": "/vendors/J%20PIZZIRUSSO%20LANDSCAPING/",
+      "entity_ref": "vendor:stem:J%20PIZZIRUSSO%20LANDSCAPING",
       "relation_state": "published",
       "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:office-of-the-mayor"
+        "agency:id:design-and-construction"
       ],
       "award_count": 1,
-      "search_text": "Jacobs Civil Consultants vendor organization",
+      "search_text": "J. Pizzirusso Landscaping Corp vendor organization",
       "agency_count": 1
     },
     {
@@ -56617,24 +56484,6 @@
       ],
       "award_count": 3,
       "search_text": "JRCRUZ Corp vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:JURISOLUTIONS",
-      "label": "JURISolutions, Inc.",
-      "href": "/vendors/JURISOLUTIONS/",
-      "entity_ref": "vendor:stem:JURISOLUTIONS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:finance"
-      ],
-      "award_count": 1,
-      "search_text": "JURISolutions, Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -56729,6 +56578,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:LC%20INTERPRETING%20SERVICES",
+      "label": "LC Interpreting Services LLC",
+      "href": "/vendors/LC%20INTERPRETING%20SERVICES/",
+      "entity_ref": "vendor:stem:LC%20INTERPRETING%20SERVICES",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:office-of-the-mayor"
+      ],
+      "award_count": 1,
+      "search_text": "LC Interpreting Services LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:LEADSONLINE",
       "label": "LeadsOnline LLC",
       "href": "/vendors/LEADSONLINE/",
@@ -56819,24 +56686,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:MEGA%20BUSINESS%20SYSTEMS",
-      "label": "Mega Business Systems",
-      "href": "/vendors/MEGA%20BUSINESS%20SYSTEMS/",
-      "entity_ref": "vendor:stem:MEGA%20BUSINESS%20SYSTEMS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:cultural-affairs"
-      ],
-      "award_count": 1,
-      "search_text": "Mega Business Systems vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:METROEXPRESS%20SERVICES",
       "label": "MetroExpress Services Inc.",
       "href": "/vendors/METROEXPRESS%20SERVICES/",
@@ -56887,6 +56736,24 @@
       ],
       "award_count": 1,
       "search_text": "Mindbreeze Corporation vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:MKCTHREADS",
+      "label": "MKCThreads Inc",
+      "href": "/vendors/MKCTHREADS/",
+      "entity_ref": "vendor:stem:MKCTHREADS",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:office-of-the-mayor"
+      ],
+      "award_count": 1,
+      "search_text": "MKCThreads Inc vendor organization",
       "agency_count": 1
     },
     {
@@ -57060,14 +56927,14 @@
       "href": "/vendors/NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT/",
       "entity_ref": "vendor:stem:NEW%20YORK%20CENTER%20FOR%20INTERPERSONAL%20DEVELOPMENT",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:probation"
       ],
-      "award_count": 2,
+      "award_count": 1,
       "search_text": "New York Center for Interpersonal Development Inc vendor organization",
       "agency_count": 1
     },
@@ -57201,6 +57068,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
+      "label": "New York State Technology Enterprise Corporation",
+      "href": "/vendors/NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE/",
+      "entity_ref": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:fire-department"
+      ],
+      "award_count": 1,
+      "search_text": "New York State Technology Enterprise Corporation vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
       "label": "Newtown Creek CSO Partners A Joint Venture",
       "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
@@ -57305,24 +57190,6 @@
       ],
       "award_count": 1,
       "search_text": "Olympic Plumbing & Heating Services, Inc. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:OVERWATCH%20SERVICES",
-      "label": "Overwatch Services LLC",
-      "href": "/vendors/OVERWATCH%20SERVICES/",
-      "entity_ref": "vendor:stem:OVERWATCH%20SERVICES",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:consumer-and-worker-protection"
-      ],
-      "award_count": 1,
-      "search_text": "Overwatch Services LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -57507,24 +57374,6 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:PRESHER%20WINDOWS",
-      "label": "Presher Windows LLC",
-      "href": "/vendors/PRESHER%20WINDOWS/",
-      "entity_ref": "vendor:stem:PRESHER%20WINDOWS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:taxi-and-limousine-commission"
-      ],
-      "award_count": 1,
-      "search_text": "Presher Windows LLC vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
       "id": "vendor:stem:PRISMATIC%20DEVELOPMENT",
       "label": "Prismatic Development Corp.",
       "href": "/vendors/PRISMATIC%20DEVELOPMENT/",
@@ -57580,23 +57429,21 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
-      "label": "Quality and Assurance Technology Corp.",
+      "label": "Quality and Assurance Technology Corp",
       "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
       "entity_ref": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
       "relation_state": "published",
-      "detail": "5 linked awards across 4 agencies",
+      "detail": "3 linked awards across 2 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:comptroller",
         "agency:id:district-attorney-new-york-county",
-        "agency:id:office-of-the-mayor",
         "agency:id:taxi-and-limousine-commission"
       ],
-      "award_count": 5,
-      "search_text": "Quality and Assurance Technology Corp. vendor organization",
-      "agency_count": 4
+      "award_count": 3,
+      "search_text": "Quality and Assurance Technology Corp vendor organization",
+      "agency_count": 2
     },
     {
       "kind": "vendor",
@@ -57654,19 +57501,37 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:RANGAM%20CONSULTANTS",
+      "label": "Rangam Consultants Inc",
+      "href": "/vendors/RANGAM%20CONSULTANTS/",
+      "entity_ref": "vendor:stem:RANGAM%20CONSULTANTS",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:employees-retirement-system"
+      ],
+      "award_count": 1,
+      "search_text": "Rangam Consultants Inc vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:REPLICATIONS",
       "label": "Replications Inc.",
       "href": "/vendors/REPLICATIONS/",
       "entity_ref": "vendor:stem:REPLICATIONS",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:education"
       ],
-      "award_count": 2,
+      "award_count": 1,
       "search_text": "Replications Inc. vendor organization",
       "agency_count": 1
     },
@@ -57997,21 +57862,22 @@
     {
       "kind": "vendor",
       "id": "vendor:stem:SHI%20INTERNATIONAL",
-      "label": "SHI International Corp",
+      "label": "SHI International Corp.",
       "href": "/vendors/SHI%20INTERNATIONAL/",
       "entity_ref": "vendor:stem:SHI%20INTERNATIONAL",
       "relation_state": "published",
-      "detail": "3 linked awards across 2 agencies",
+      "detail": "4 linked awards across 3 agencies",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
+        "agency:id:finance",
         "agency:id:investigation",
         "agency:id:mayors-office-of-contract-services"
       ],
-      "award_count": 3,
-      "search_text": "SHI International Corp vendor organization",
-      "agency_count": 2
+      "award_count": 4,
+      "search_text": "SHI International Corp. vendor organization",
+      "agency_count": 3
     },
     {
       "kind": "vendor",
@@ -58183,14 +58049,14 @@
       "href": "/vendors/STATEWIDE%20DEMOLITION/",
       "entity_ref": "vendor:stem:STATEWIDE%20DEMOLITION",
       "relation_state": "published",
-      "detail": "16 linked awards across 1 agency",
+      "detail": "15 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:housing-preservation-and-development"
       ],
-      "award_count": 16,
+      "award_count": 15,
       "search_text": "Statewide Demolition Corp vendor organization",
       "agency_count": 1
     },
@@ -58214,20 +58080,20 @@
     },
     {
       "kind": "vendor",
-      "id": "vendor:stem:STRATEGIC%20VALUE%20SOLUTIONS",
-      "label": "Strategic Value Solutions Inc.",
-      "href": "/vendors/STRATEGIC%20VALUE%20SOLUTIONS/",
-      "entity_ref": "vendor:stem:STRATEGIC%20VALUE%20SOLUTIONS",
+      "id": "vendor:stem:SUCCESS-ID",
+      "label": "Success-ID LLC",
+      "href": "/vendors/SUCCESS-ID/",
+      "entity_ref": "vendor:stem:SUCCESS-ID",
       "relation_state": "published",
       "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
-        "agency:id:office-of-the-mayor"
+        "agency:id:consumer-and-worker-protection"
       ],
       "award_count": 1,
-      "search_text": "Strategic Value Solutions Inc. vendor organization",
+      "search_text": "Success-ID LLC vendor organization",
       "agency_count": 1
     },
     {
@@ -58614,6 +58480,24 @@
     },
     {
       "kind": "vendor",
+      "id": "vendor:stem:TOTALCAPTION",
+      "label": "TotalCaption LLC",
+      "href": "/vendors/TOTALCAPTION/",
+      "entity_ref": "vendor:stem:TOTALCAPTION",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:office-of-the-mayor"
+      ],
+      "award_count": 1,
+      "search_text": "TotalCaption LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
       "id": "vendor:stem:TRANSDEV%20FLEET%20SERVICES",
       "label": "Transdev Fleet Services Inc.",
       "href": "/vendors/TRANSDEV%20FLEET%20SERVICES/",
@@ -58673,14 +58557,14 @@
       "href": "/vendors/UNITED%20METRO%20ENERGY/",
       "entity_ref": "vendor:stem:UNITED%20METRO%20ENERGY",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:citywide-administrative-services"
       ],
-      "award_count": 2,
+      "award_count": 1,
       "search_text": "United Metro Energy Corp. vendor organization",
       "agency_count": 1
     },
@@ -58772,24 +58656,6 @@
       ],
       "award_count": 5,
       "search_text": "Urban Resource Institute vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS",
-      "label": "Variety Boys and Girls Club of Queens Inc.",
-      "href": "/vendors/VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS/",
-      "entity_ref": "vendor:stem:VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:education"
-      ],
-      "award_count": 1,
-      "search_text": "Variety Boys and Girls Club of Queens Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -59142,15 +59008,33 @@
       "href": "/vendors/WUKKOUT/",
       "entity_ref": "vendor:stem:WUKKOUT",
       "relation_state": "published",
-      "detail": "2 linked awards across 1 agency",
+      "detail": "1 linked awards across 1 agency",
       "institution": "vendor",
       "institution_label": "Vendor",
       "institution_context": "Published supplier organization",
       "agency_ids": [
         "agency:id:office-of-labor-relations"
       ],
-      "award_count": 2,
+      "award_count": 1,
       "search_text": "Wukkout LLC vendor organization",
+      "agency_count": 1
+    },
+    {
+      "kind": "vendor",
+      "id": "vendor:stem:XPOSURE%20FOUNDATION",
+      "label": "Xposure Foundation Inc.",
+      "href": "/vendors/XPOSURE%20FOUNDATION/",
+      "entity_ref": "vendor:stem:XPOSURE%20FOUNDATION",
+      "relation_state": "published",
+      "detail": "1 linked awards across 1 agency",
+      "institution": "vendor",
+      "institution_label": "Vendor",
+      "institution_context": "Published supplier organization",
+      "agency_ids": [
+        "agency:id:education"
+      ],
+      "award_count": 1,
+      "search_text": "Xposure Foundation Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -59205,24 +59089,6 @@
       ],
       "award_count": 3,
       "search_text": "Zaman Construction Corp. vendor organization",
-      "agency_count": 1
-    },
-    {
-      "kind": "vendor",
-      "id": "vendor:stem:ZHL%20GROUP",
-      "label": "ZHL Group Inc.",
-      "href": "/vendors/ZHL%20GROUP/",
-      "entity_ref": "vendor:stem:ZHL%20GROUP",
-      "relation_state": "published",
-      "detail": "1 linked awards across 1 agency",
-      "institution": "vendor",
-      "institution_label": "Vendor",
-      "institution_context": "Published supplier organization",
-      "agency_ids": [
-        "agency:id:police-department"
-      ],
-      "award_count": 1,
-      "search_text": "ZHL Group Inc. vendor organization",
       "agency_count": 1
     },
     {
@@ -60734,12 +60600,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:ADROIT%20CONSULTANTS",
-      "label": "Adroit Consultants LLC",
-      "href": "/vendors/ADROIT%20CONSULTANTS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:AFFORDABLE%20SERVICES%20GROUP",
       "label": "Affordable Services Group LLC",
       "href": "/vendors/AFFORDABLE%20SERVICES%20GROUP/",
@@ -60774,12 +60634,6 @@
       "label": "Alexa Avilés",
       "href": "/officials/7825/",
       "kind": "official"
-    },
-    {
-      "entity_id": "vendor:stem:ALFRED%20EXECUTIVE%20TRANSPORTATION",
-      "label": "Alfred Executive Transportation LLC",
-      "href": "/vendors/ALFRED%20EXECUTIVE%20TRANSPORTATION/",
-      "kind": "vendor"
     },
     {
       "entity_id": "entity:official:7747",
@@ -61580,6 +61434,12 @@
       "kind": "agency"
     },
     {
+      "entity_id": "vendor:stem:DERIVE%20TECHNOLOGIES",
+      "label": "Derive Technologies LLC",
+      "href": "/vendors/DERIVE%20TECHNOLOGIES/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV",
       "label": "Dewberry-GF Resident Engineering JV",
       "href": "/vendors/DEWBERRY-GF%20RESIDENT%20ENGINEERING%20JV/",
@@ -61626,12 +61486,6 @@
       "label": "Donovan J. Richards",
       "href": "/officials/7617/",
       "kind": "official"
-    },
-    {
-      "entity_id": "vendor:stem:DOYLE%20SECURITY%20SERVICES",
-      "label": "Doyle Security Services Inc.",
-      "href": "/vendors/DOYLE%20SECURITY%20SERVICES/",
-      "kind": "vendor"
     },
     {
       "entity_id": "vendor:stem:E-J%20ELECTRIC%20INSTALLATION",
@@ -61796,6 +61650,12 @@
       "kind": "agency"
     },
     {
+      "entity_id": "vendor:stem:FINESSE%20CREATIONS",
+      "label": "Finesse Creations Inc",
+      "href": "/vendors/FINESSE%20CREATIONS/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "agency:id:fire-department",
       "label": "Fire Department of the City of New York",
       "href": "/agencies/fire-department/",
@@ -61817,6 +61677,12 @@
       "entity_id": "vendor:stem:FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS",
       "label": "Franco Belli Plumbing & Heating & Sons, Inc.",
       "href": "/vendors/FRANCO%20BELLI%20PLUMBING%20HEATING%20SONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:FRANGLAIS%20MANAGEMENT",
+      "label": "Franglais Management LLC",
+      "href": "/vendors/FRANGLAIS%20MANAGEMENT/",
       "kind": "vendor"
     },
     {
@@ -61895,12 +61761,6 @@
       "entity_id": "vendor:stem:GRAND%20STREET%20SETTLEMENT",
       "label": "Grand Street Settlement Inc",
       "href": "/vendors/GRAND%20STREET%20SETTLEMENT/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES",
-      "label": "Great Performances Artists as Waitresses Inc",
-      "href": "/vendors/GREAT%20PERFORMANCES%20ARTISTS%20AS%20WAITRESSES/",
       "kind": "vendor"
     },
     {
@@ -62024,12 +61884,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:HIRE%20BREAKTHROUGH",
-      "label": "Hire Breakthrough LLC",
-      "href": "/vendors/HIRE%20BREAKTHROUGH/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:418",
       "label": "Howard L. Lasher",
       "href": "/officials/418/",
@@ -62090,12 +61944,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "vendor:stem:INDUSTRIAL%20STRENGTH%20INDUSTRIES",
-      "label": "Industrial Strength Industries LLC",
-      "href": "/vendors/INDUSTRIAL%20STRENGTH%20INDUSTRIES/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:7623",
       "label": "Inez D. Barron",
       "href": "/officials/7623/",
@@ -62111,18 +61959,6 @@
       "entity_id": "vendor:stem:INFO%20PEOPLE",
       "label": "InFo People Corporation",
       "href": "/vendors/INFO%20PEOPLE/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:INFOPEOPLE",
-      "label": "Infopeople Corporation",
-      "href": "/vendors/INFOPEOPLE/",
-      "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:INFRA%20TECH%20LOZIER%20ENGINEERING%20JV",
-      "label": "Infra Tech Lozier Engineering JV",
-      "href": "/vendors/INFRA%20TECH%20LOZIER%20ENGINEERING%20JV/",
       "kind": "vendor"
     },
     {
@@ -62174,9 +62010,9 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:JACOBS%20CIVIL%20CONSULTANTS",
-      "label": "Jacobs Civil Consultants",
-      "href": "/vendors/JACOBS%20CIVIL%20CONSULTANTS/",
+      "entity_id": "vendor:stem:J%20PIZZIRUSSO%20LANDSCAPING",
+      "label": "J. Pizzirusso Landscaping Corp",
+      "href": "/vendors/J%20PIZZIRUSSO%20LANDSCAPING/",
       "kind": "vendor"
     },
     {
@@ -62342,12 +62178,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:JURISOLUTIONS",
-      "label": "JURISolutions, Inc.",
-      "href": "/vendors/JURISOLUTIONS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:JUSTICE%20INNOVATION",
       "label": "Justice Innovation Inc",
       "href": "/vendors/JUSTICE%20INNOVATION/",
@@ -62484,6 +62314,12 @@
       "label": "Lawrence A. Warden",
       "href": "/officials/397/",
       "kind": "official"
+    },
+    {
+      "entity_id": "vendor:stem:LC%20INTERPRETING%20SERVICES",
+      "label": "LC Interpreting Services LLC",
+      "href": "/vendors/LC%20INTERPRETING%20SERVICES/",
+      "kind": "vendor"
     },
     {
       "entity_id": "vendor:stem:LEADSONLINE",
@@ -62678,12 +62514,6 @@
       "kind": "agency"
     },
     {
-      "entity_id": "vendor:stem:MEGA%20BUSINESS%20SYSTEMS",
-      "label": "Mega Business Systems",
-      "href": "/vendors/MEGA%20BUSINESS%20SYSTEMS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:5278",
       "label": "Melinda R. Katz",
       "href": "/officials/5278/",
@@ -62750,6 +62580,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:MKCTHREADS",
+      "label": "MKCThreads Inc",
+      "href": "/vendors/MKCTHREADS/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:MODINE%20CONTRACTING",
       "label": "Modine Contracting Corp.",
       "href": "/vendors/MODINE%20CONTRACTING/",
@@ -62777,12 +62613,6 @@
       "entity_id": "agency:id:mta-construction-and-development",
       "label": "MTA Construction & Development",
       "href": "/agencies/mta-construction-and-development/",
-      "kind": "agency"
-    },
-    {
-      "entity_id": "agency:id:mta-construction-development",
-      "label": "mta-construction-development",
-      "href": "/agencies/mta-construction-development/",
       "kind": "agency"
     },
     {
@@ -62948,6 +62778,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE",
+      "label": "New York State Technology Enterprise Corporation",
+      "href": "/vendors/NEW%20YORK%20STATE%20TECHNOLOGY%20ENTERPRISE/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE",
       "label": "Newtown Creek CSO Partners A Joint Venture",
       "href": "/vendors/NEWTOWN%20CREEK%20CSO%20PARTNERS%20A%20JOINT%20VENTURE/",
@@ -63086,12 +62922,6 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:OVERWATCH%20SERVICES",
-      "label": "Overwatch Services LLC",
-      "href": "/vendors/OVERWATCH%20SERVICES/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "vendor:stem:P%20T%20II%20CONTRACTING",
       "label": "P&T II Contracting Corp",
       "href": "/vendors/P%20T%20II%20CONTRACTING/",
@@ -63206,12 +63036,6 @@
       "kind": "vendor"
     },
     {
-      "entity_id": "vendor:stem:PRESHER%20WINDOWS",
-      "label": "Presher Windows LLC",
-      "href": "/vendors/PRESHER%20WINDOWS/",
-      "kind": "vendor"
-    },
-    {
       "entity_id": "entity:official:31",
       "label": "Priscilla A. Wooten",
       "href": "/officials/31/",
@@ -63243,7 +63067,7 @@
     },
     {
       "entity_id": "vendor:stem:QUALITY%20AND%20ASSURANCE%20TECHNOLOGY",
-      "label": "Quality and Assurance Technology Corp.",
+      "label": "Quality and Assurance Technology Corp",
       "href": "/vendors/QUALITY%20AND%20ASSURANCE%20TECHNOLOGY/",
       "kind": "vendor"
     },
@@ -63281,6 +63105,12 @@
       "entity_id": "vendor:stem:RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS",
       "label": "Raj Somas DBA Rusd Solutions",
       "href": "/vendors/RAJ%20SOMAS%20DBA%20RUSD%20SOLUTIONS/",
+      "kind": "vendor"
+    },
+    {
+      "entity_id": "vendor:stem:RANGAM%20CONSULTANTS",
+      "label": "Rangam Consultants Inc",
+      "href": "/vendors/RANGAM%20CONSULTANTS/",
       "kind": "vendor"
     },
     {
@@ -63525,7 +63355,7 @@
     },
     {
       "entity_id": "vendor:stem:SHI%20INTERNATIONAL",
-      "label": "SHI International Corp",
+      "label": "SHI International Corp.",
       "href": "/vendors/SHI%20INTERNATIONAL/",
       "kind": "vendor"
     },
@@ -63638,9 +63468,9 @@
       "kind": "official"
     },
     {
-      "entity_id": "vendor:stem:STRATEGIC%20VALUE%20SOLUTIONS",
-      "label": "Strategic Value Solutions Inc.",
-      "href": "/vendors/STRATEGIC%20VALUE%20SOLUTIONS/",
+      "entity_id": "vendor:stem:SUCCESS-ID",
+      "label": "Success-ID LLC",
+      "href": "/vendors/SUCCESS-ID/",
       "kind": "vendor"
     },
     {
@@ -63818,6 +63648,12 @@
       "kind": "official"
     },
     {
+      "entity_id": "vendor:stem:TOTALCAPTION",
+      "label": "TotalCaption LLC",
+      "href": "/vendors/TOTALCAPTION/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "entity:official:424",
       "label": "Tracy L. Boyland",
       "href": "/officials/424/",
@@ -63900,12 +63736,6 @@
       "label": "Vanessa L. Gibson",
       "href": "/officials/7622/",
       "kind": "official"
-    },
-    {
-      "entity_id": "vendor:stem:VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS",
-      "label": "Variety Boys and Girls Club of Queens Inc.",
-      "href": "/vendors/VARIETY%20BOYS%20AND%20GIRLS%20CLUB%20OF%20QUEENS/",
-      "kind": "vendor"
     },
     {
       "entity_id": "vendor:stem:VCLOUD%20TECH",
@@ -64070,6 +63900,12 @@
       "kind": "vendor"
     },
     {
+      "entity_id": "vendor:stem:XPOSURE%20FOUNDATION",
+      "label": "Xposure Foundation Inc.",
+      "href": "/vendors/XPOSURE%20FOUNDATION/",
+      "kind": "vendor"
+    },
+    {
       "entity_id": "vendor:stem:Y%20AND%20S%20TECHNOLOGIES",
       "label": "Y and S Technologies, Inc.",
       "href": "/vendors/Y%20AND%20S%20TECHNOLOGIES/",
@@ -64104,12 +63940,6 @@
       "label": "Zaman Construction Corp.",
       "href": "/vendors/ZAMAN%20CONSTRUCTION/",
       "kind": "vendor"
-    },
-    {
-      "entity_id": "vendor:stem:ZHL%20GROUP",
-      "label": "ZHL Group Inc.",
-      "href": "/vendors/ZHL%20GROUP/",
-      "kind": "vendor"
     }
   ],
   "counts": {
@@ -64119,8 +63949,8 @@
     "official": 215,
     "exact-person-appointment": 558,
     "committee": 96,
-    "agency": 87,
-    "vendor": 272,
+    "agency": 86,
+    "vendor": 267,
     "notice-only-hire": 80
   },
   "relation_states": [

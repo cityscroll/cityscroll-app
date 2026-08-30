@@ -77,7 +77,7 @@ function factsFor(object, observations) {
     end_date: first("end", "end_date", "contract_end_date"),
     startDate: first("start_date", "start", "issue_date", "date"),
     endDate: first("end_date", "end", "contract_end_date", "due_date", "closing_date", "opening_date"),
-    officialUrl: first("official_url", "source_url"),
+    officialUrl: first("official_url", "official_source_url", "source_url"),
   };
 }
 

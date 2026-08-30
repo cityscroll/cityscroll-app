@@ -57,7 +57,7 @@
     "artifacts": {
       "browse_rows": {
         "path": "site/data/procurement_browse_rows.json",
-        "sha256": "57d58a76f62f71b08a205a2038317650934f792b04ab6d25df65650f20f1091e",
+        "sha256": "0ccabfd99e309a0ee7eb04009ad728a3f404c2115a159544113d053d3b7c2dd6",
         "row_count": 13791
       },
       "spine_sources": {
