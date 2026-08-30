@@ -7,6 +7,10 @@
 
 import { LAND_ZAP_FRESHNESS_CANARIES } from "../../../warehouse/lib/land_zap_canaries.mjs";
 import { stampLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
+import {
+  stampZapEnvironmentalProjection,
+  ZAP_ENVIRONMENTAL_SOURCE_COLS,
+} from "../../../warehouse/lib/zap_environmental_projection.mjs";
 import zapProjectsLookupFloor from "../data/zap_projects_warehouse_lookup.json" with { type: "json" };
 import { readKvValue } from "./preset_fallback_kv.mjs";
 
@@ -47,6 +51,7 @@ const ZAP_STORE_COLS = Object.freeze([
   "app_filed_date",
   "noticed_date",
   "certified_referred",
+  ...ZAP_ENVIRONMENTAL_SOURCE_COLS,
 ]);
 
 const ZAP_SODA_COLS = Object.freeze([...ZAP_STORE_COLS, "project_brief"]);
@@ -62,7 +67,7 @@ function cell(value) {
   return String(value);
 }
 
-export function shapeZapLookupRow(row) {
+export function shapeZapLookupRow(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
   const out = {};
   for (const col of ZAP_STORE_COLS) out[col] = cell(row[col]);
@@ -72,7 +77,12 @@ export function shapeZapLookupRow(row) {
   out.regulatory_effect = stamped.regulatory_effect;
   out.regulatory_effect_confidence = stamped.regulatory_effect_confidence;
   out.regulatory_effect_basis = stamped.regulatory_effect_basis;
-  return out;
+  const asOf = opts.asOf || opts.now || null;
+  return stampZapEnvironmentalProjection(out, {
+    asOf,
+    cutoff: opts.cutoff || asOf,
+    observedAt: opts.observedAt,
+  });
 }
 
 export function sodaSellFacingLookupUrl({ limit = 1000, offset = 0 } = {}) {
@@ -136,10 +146,10 @@ export function zapProjectsLookupStale(record, nowMs = Date.now()) {
   return nowMs - stamped > ZAP_PROJECTS_LOOKUP_MAX_AGE_MS;
 }
 
-function mergeSeedRows(sodaRows, floorRows) {
+function mergeSeedRows(sodaRows, floorRows, opts = {}) {
   const byId = new Map();
   for (const raw of sodaRows || []) {
-    const row = shapeZapLookupRow(raw);
+    const row = shapeZapLookupRow(raw, opts);
     if (row) byId.set(row.project_id, row);
   }
   const required = new Set([
@@ -149,7 +159,7 @@ function mergeSeedRows(sodaRows, floorRows) {
   for (const raw of floorRows || []) {
     const id = String(raw?.project_id || "").trim();
     if (!id || byId.has(id) || !required.has(id)) continue;
-    const row = shapeZapLookupRow(raw);
+    const row = shapeZapLookupRow(raw, opts);
     if (row) byId.set(row.project_id, row);
   }
   return [...byId.values()].sort((left, right) =>
@@ -158,7 +168,8 @@ function mergeSeedRows(sodaRows, floorRows) {
 
 export function buildZapProjectsLookupDoc(sodaRows, opts = {}) {
   const floor = opts.floor || committedZapProjectsLookupFloor();
-  const rows = mergeSeedRows(sodaRows, floor.rows);
+  const asOf = opts.now || new Date().toISOString();
+  const rows = mergeSeedRows(sodaRows, floor.rows, { asOf, cutoff: opts.cutoff || asOf });
   return {
     schema_version: ZAP_PROJECTS_LOOKUP_SCHEMA_VERSION,
     phase: "WH-05",
@@ -166,7 +177,7 @@ export function buildZapProjectsLookupDoc(sodaRows, opts = {}) {
     dataset_id: ZAP_PROJECTS_SODA_DATASET,
     table_name: "zap_projects",
     mode: opts.mode || "soda_sell_facing",
-    materialized_at: opts.now || new Date().toISOString(),
+    materialized_at: asOf,
     row_count: rows.length,
     replaces_live_fetch: {
       worker: "worker/src/zap_outcomes.mjs#fetchOpenDataRow",
