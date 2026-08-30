@@ -1,0 +1,52 @@
+{
+  "id": "conflicting",
+  "application_id": "2024A0001",
+  "prediction_as_of": "2024-06-01T00:00:00.000Z",
+  "procedural_stage": "cpc",
+  "features": [],
+  "historical_actors": [
+    {
+      "role": "local_council_member",
+      "actor_id": "official:123",
+      "resolution": "resolved",
+      "observed_at": "2022-01-02T00:00:00.000Z",
+      "effective_at": "2022-01-01T00:00:00.000Z",
+      "source": { "url": "https://example.invalid/term-123", "source_record_id": "term:123" }
+    }
+  ],
+  "stance": {
+    "application_id": "2024A0001",
+    "member_id": "official:123",
+    "as_of": "2024-06-01T00:00:00.000Z",
+    "evidence": [
+      {
+        "evidence_id": "oppose-1",
+        "application_id": "2024A0001",
+        "member_id": "official:123",
+        "direction": "oppose",
+        "evidence_type": "hearing_or_meeting_remarks",
+        "source": { "url": "https://example.invalid/oppose-1", "record_id": "oppose-1" },
+        "source_language": "The member opposed the application.",
+        "observed_at": "2024-05-25T00:00:00.000Z",
+        "effective_at": "2024-05-25T00:00:00.000Z",
+        "confidence": 0.8
+      },
+      {
+        "evidence_id": "conditional-1",
+        "application_id": "2024A0001",
+        "member_id": "official:123",
+        "direction": "conditional",
+        "evidence_type": "requested_project_modification",
+        "source": { "url": "https://example.invalid/conditional-1", "record_id": "conditional-1" },
+        "source_language": "The member requested a condition.",
+        "observed_at": "2024-05-25T00:00:00.000Z",
+        "effective_at": "2024-05-25T00:00:00.000Z",
+        "confidence": 0.7
+      }
+    ]
+  },
+  "expect": {
+    "local_council_member_stance_state": "neutral_mixed",
+    "evidence_ids": ["conditional-1", "oppose-1"]
+  }
+}

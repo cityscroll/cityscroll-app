@@ -1,0 +1,13 @@
+{
+  "id": "sparse",
+  "application_id": "2024A0001",
+  "prediction_as_of": "2024-06-01T00:00:00.000Z",
+  "procedural_stage": "community_board",
+  "features": [],
+  "historical_actors": [],
+  "expect": {
+    "procedural_stage": "community_board",
+    "interaction_key": "local_council_member_stance@community_board",
+    "unknown_except": ["procedural_stage"]
+  }
+}
