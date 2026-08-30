@@ -26,9 +26,11 @@ Cloudflare secret and is never written by the build.
 
 Before enabling the Worker production integration, run one preview build and
 compare its version with the current public release. Then enable the production
-branch and observe one release end to end. Cloudflare's build history is the
-Worker release receipt; GitHub Actions plus the post-deploy smoke are the Pages
-release receipt.
+branch and observe one release end to end. Each production pipeline writes its
+own deployment-health receipt (`cloudflare-pages` or `cloudflare-worker`).
+Cross-boundary health is 2/2 only when both independently verifiable receipts
+match the merged source SHA; runtime digest or scheduler receipts are not
+substitutes.
 
 The Cloudflare Pages workflow runs on pushes to `main`. If the native Pages Git
 integration is also connected, disable its production-branch builds to avoid

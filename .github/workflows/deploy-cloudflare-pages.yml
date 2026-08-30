@@ -134,6 +134,33 @@ jobs:
             --deployment-url "$DEPLOYMENT_URL" \
             --source-commit "$GITHUB_SHA" \
             --manifest _site/artifact-manifest.json
+      - name: Write Pages deployment-health receipt
+        if: always()
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          DEPLOYMENT_OUTCOME: ${{ steps.deploy.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/deployment-health
+          artifact_value=""
+          if [ -f _site/artifact-manifest.json ]; then
+            artifact_value="$(node -e 'const fs=require("fs"); const m=JSON.parse(fs.readFileSync("_site/artifact-manifest.json","utf8")); process.stdout.write(m.artifact_hash || "")')"
+          fi
+          node tools/check_deployment_health.mjs --write \
+            --boundary cloudflare-pages \
+            --pipeline deploy-cloudflare-pages \
+            --merged-source-sha "$GITHUB_SHA" \
+            --deployed-commit-sha "$GITHUB_SHA" \
+            --artifact-type pages-artifact-hash \
+            --artifact-value "$artifact_value" \
+            --deployment-id "$DEPLOYMENT_URL" \
+            --deployment-url "$DEPLOYMENT_URL" \
+            --provider-status "$DEPLOYMENT_OUTCOME" \
+            --generation-receipt .artifacts/generation-output-receipt.json \
+            --guard wrangler_pages_deploy:"$DEPLOYMENT_OUTCOME" \
+            --workflow-run-url "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --output .artifacts/deployment-health/cloudflare-pages.json
       - name: Retain generation and release-surface receipts
         if: always()
         uses: actions/upload-artifact@v4
@@ -142,6 +169,7 @@ jobs:
           path: |
             .artifacts/generation-output-receipt.json
             .artifacts/release-surface-receipt.json
+            .artifacts/deployment-health/cloudflare-pages.json
             _site/artifact-manifest.json
           if-no-files-found: warn
 

@@ -2,6 +2,20 @@
   "schema": "cityscroll.cloudflare-native-builds.v1",
   "repository": "cityscroll/cityscroll-app",
   "source_control": "github",
+  "required_production_boundaries": [
+    {
+      "id": "cloudflare-pages",
+      "name": "Cloudflare Pages",
+      "pipeline": "deploy-cloudflare-pages",
+      "workflow": ".github/workflows/deploy-cloudflare-pages.yml"
+    },
+    {
+      "id": "cloudflare-worker",
+      "name": "Cloudflare Worker",
+      "pipeline": "deploy-worker",
+      "workflow": ".github/workflows/deploy-worker.yml"
+    }
+  ],
   "pages": {
     "project": "cityscroll",
     "release_control_plane": "github_actions",
