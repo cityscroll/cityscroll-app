@@ -29,6 +29,7 @@ import {
 } from "./alerts.mjs";
 import {
   digestWatchdogSnapshot,
+  emitMailExceptionAlerts,
   emitOpsAlertOnce,
   mailWatchdogHasMailFindings,
   mailWatchdogSnapshot,
@@ -174,22 +175,23 @@ export async function handleAdminMailWatchdog(req, env, { now = new Date(), fetc
     try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
     if (body?.action !== "canary") return json({ error: "action-canary-required" }, 400);
     const inboundWorker = await sendInboundWorkerCanary(env, { now, fetchImpl });
-    const outboundOps = await emitOpsAlertOnce(env, {
-      guard: "mail-leg-canary",
-      fingerprint: dayStamp(now),
-      subject: "CityScroll mail-leg canary",
-      text: `Outbound operations mailbox probe for ${dayStamp(now)}.`,
-    });
-    const snapshot = await mailWatchdogSnapshot(env, { now });
-    return json({ ok: true, inbound_worker: inboundWorker, outbound_ops: outboundOps, snapshot }, 200);
+    let snapshot = await mailWatchdogSnapshot(env, { now });
+    let exceptionAlert = [];
+    if (!snapshot.ok) exceptionAlert = await emitMailExceptionAlerts(env, snapshot, { now });
+    snapshot = await mailWatchdogSnapshot(env, { now });
+    return json({
+      ok: snapshot.ok,
+      inbound_worker: inboundWorker,
+      outbound_ops: { sent: false, reason: "healthy-canary-silent" },
+      exception_alert: exceptionAlert,
+      snapshot,
+    }, snapshot.ok ? 200 : 503);
   }
   if (req.method !== "GET") return json({ error: "method" }, 405);
-  const snapshot = await mailWatchdogSnapshot(env, { now });
+  let snapshot = await mailWatchdogSnapshot(env, { now });
+  if (!snapshot.ok) await emitMailExceptionAlerts(env, snapshot, { now });
+  snapshot = await mailWatchdogSnapshot(env, { now });
   return json(snapshot, snapshot.ok ? 200 : 503);
-}
-
-function dayStamp(now) {
-  return new Date(now).toISOString().slice(0, 10);
 }
 
 // Extracts the operator key exactly the way the shared gates do: ?key= query param or an

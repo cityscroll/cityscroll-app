@@ -99,6 +99,14 @@ test("Resend retrieve becomes reachable only when that credential is present", (
   assert.equal(digest.stores.find((store) => store.store === "resend_api").status, "reachable");
 });
 
+test("public data-health renderer does not carry mail-canary ops state", () => {
+  const page = readFileSync(path.join(ROOT, "site/data_health_page.mjs"), "utf8");
+  assert.doesNotMatch(page, /cityscroll-mail-canary/);
+  assert.doesNotMatch(page, /ops:mail:canary/);
+  assert.doesNotMatch(page, /findings_history/);
+  assert.doesNotMatch(page, /SUBSCRIBE_ADDRESS/);
+});
+
 test("Email Routing FAILED counts collapse retries of one spam envelope", () => {
   const envelope = {
     from: "searchregisgter@aireg.pro",

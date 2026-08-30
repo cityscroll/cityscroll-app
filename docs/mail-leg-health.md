@@ -5,14 +5,24 @@ A failure on one does not prove a failure on the other.
 
 | Leg | Path | How it is checked |
 |---|---|---|
-| Outbound operations mailbox | Worker Resend send to `team@cityscroll.org` | `POST /admin/reliability/mail` canary records provider acceptance |
+| Outbound operations mailbox | Worker Resend send to `team@cityscroll.org` | Exception-only. Failed, missing, or stale canaries and rejected sends alert this mailbox once per finding fingerprint per day. Routine canaries never use it. |
 | Inbound Worker consumer | `subscribe@crol-list.org` → Worker `email()` handler | Canary subject token must appear in an `ops:mail:` inbound receipt |
 | Inbound Gmail forward | `alerts@crol-list.org` and the domain catch-all | Dashboard-gated; this repo cannot observe the destination inbox |
 
+A routine canary is addressed only to the worker-consumed subscribe address
+(`SUBSCRIBE_ADDRESS`, defaulting to that inbound Worker consumer). Configuration that
+resolves to `team@cityscroll.org`, `alerts@cityscroll.org`, or the Gmail-forward
+address is refused before send. The From address is not a recipient. The probe
+`to`/`cc` envelope is only that worker-owned address, and the inbound match key is
+`ops:mail:canary:inbound:<token>`.
+
+The subject stays exact-prefix `[cityscroll-mail-canary]` plus a 32-hex token.
+
 `GET /admin/reliability/mail` and the digest/scheduler watchdogs fail closed (HTTP 503)
-when a canary is unmatched or an operations send is rejected. A dead alert rail does
-**not** try to email itself; the scheduled Reliability watchdogs workflow is the
-independent GitHub-red alarm.
+when a canary is unmatched, stale, or an operations send is rejected. Healthy canary
+rounds send no human operations mail. A rejected exception alert stays a durable
+finding; the scheduled Reliability watchdogs workflow is the independent GitHub-red
+alarm and does not retry through the broken mail leg.
 
 ## Pre/post-cutover gate
 
@@ -87,5 +97,6 @@ secrets are supplied. Fixture `--recovery` does not call providers.
 - Inbound Worker deliveries write `ops:mail:inbound:latest` even when the message
   is ignored as a loop or the enroll path is unconfigured.
 - Operations-mailbox sends write `ops:mail:outbound:latest` with Resend acceptance.
-- Canaries write `ops:mail:canary:latest` and, on Worker receipt,
-  `ops:mail:canary:inbound:<token>`.
+- Canaries write `ops:mail:canary:latest` (including the effective `to`/`cc`
+  envelope) and, on Worker receipt, `ops:mail:canary:inbound:<token>`.
+- Exception findings append a bounded history at `ops:mail:findings:history`.
