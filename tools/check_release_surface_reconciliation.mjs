@@ -97,6 +97,7 @@ async function main(argv = process.argv.slice(2)) {
   stages.card_reconciliation = reconcileCardProjection({
     sourceCards: sourceCardsPath ? json(sourceCardsPath) : undefined,
     generatedBoard: generatedBoardPath ? json(generatedBoardPath) : undefined,
+    projectionPath: generatedBoardPath || undefined,
   });
 
   const sourceReceiptPath = argument(argv, "--source-receipt");

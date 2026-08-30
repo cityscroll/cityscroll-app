@@ -4,6 +4,8 @@ import { createHash } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
+import { evaluateCardReconciliation } from "./card_reconciliation_guard.mjs";
+
 export const RELEASE_SURFACE_RECEIPT_SCHEMA = "cityscroll.release-surface-receipt.v1";
 export const RELEASE_SURFACE_STAGES = Object.freeze([
   "generation_output",
@@ -86,62 +88,23 @@ function rowsFrom(value, fields) {
   return null;
 }
 
-function rowId(row) {
-  return valueFrom(row, ["id", "card_id", "source_id", "key", "slug"]);
-}
-
-function sourceFingerprint(row) {
-  return valueFrom(row, ["fingerprint", "content_hash", "sha256", "source_hash", "updated_at"]);
-}
-
-function projectionFingerprint(row) {
-  return valueFrom(row, ["source_fingerprint", "source_hash", "fingerprint", "source_updated_at", "updated_at"]);
-}
-
-export function reconcileCardProjection({ sourceCards, generatedBoard } = {}) {
-  const sourceRows = rowsFrom(sourceCards, ["cards", "entries", "items"]);
-  const boardRows = rowsFrom(generatedBoard, ["cards", "entries", "items"]);
-  if (!sourceRows) return statusResult("UNKNOWN", ["source card inventory is missing"]);
-  if (!boardRows) return statusResult("UNKNOWN", ["generated board inventory is missing"]);
-
-  const findings = [];
-  const sourceById = new Map();
-  const boardById = new Map();
-  for (const row of sourceRows) {
-    const id = rowId(row);
-    if (!id) findings.push("source card is missing an id");
-    else if (sourceById.has(id)) findings.push(`duplicate source card: ${id}`);
-    else sourceById.set(id, row);
+export function reconcileCardProjection({
+  sourceCards,
+  generatedBoard,
+  projections,
+  projectionPath,
+} = {}) {
+  const supplied = [sourceCards, generatedBoard, projections].some((value) => value !== undefined && value !== null);
+  if (!supplied) {
+    return statusResult("UNKNOWN", ["source card inventory is missing"]);
   }
-  for (const row of boardRows) {
-    const id = rowId(row);
-    if (!id) findings.push("generated board entry is missing an id");
-    else if (boardById.has(id)) findings.push(`duplicate generated board entry: ${id}`);
-    else boardById.set(id, row);
-  }
-
-  for (const [id, source] of sourceById) {
-    const projection = boardById.get(id);
-    if (!projection) {
-      findings.push(`source card ${id} is missing from generated board`);
-      continue;
-    }
-    const expected = sourceFingerprint(source);
-    const actual = projectionFingerprint(projection);
-    if (expected && actual && expected !== actual) {
-      findings.push(`generated board projection for card ${id} is stale`);
-    } else if (expected && !actual) {
-      findings.push(`generated board projection for card ${id} has no source receipt`);
-    }
-  }
-  for (const id of boardById.keys()) {
-    if (!sourceById.has(id)) findings.push(`generated board has no source card: ${id}`);
-  }
-
-  return statusResult(findings.length ? "FAIL" : "PASS", findings, {
-    source_card_count: sourceRows.length,
-    generated_board_count: boardRows.length,
+  const result = evaluateCardReconciliation({
+    sourceCards,
+    generatedBoard,
+    projections,
+    projectionPath,
   });
+  return statusResult(result.status, result.findings, result.evidence);
 }
 
 export function evaluateGenerationReceipt(receipt, { sourceCommitSha, expectedManifest } = {}) {
