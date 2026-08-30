@@ -1046,9 +1046,13 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 - **Mail-leg health:** inbound Email Routing and outbound Resend are separate rails.
   `worker/src/reliability_watchdogs.mjs` records Worker-consumer receipts and operations-mailbox
-  sends. `GET /admin/reliability/mail` plus the digest/scheduler watchdogs return 503 / GitHub-red
-  when a canary is unmatched; they do not email a dead alert rail. The Gmail forward stays
-  dashboard-gated. Dashboard FAILED counts can be retries of one rejected message. Gate:
+  sends. Routine canaries go only to the worker-consumed probe (`subscribe@crol-list.org` by
+  default) and never to `team@cityscroll.org` / `alerts@cityscroll.org`. Failed, missing, or stale
+  canaries exception-alert `team@cityscroll.org` once per fingerprint per day; a rejected
+  exception stays HTTP/GitHub-red and does not retry through the dead rail.
+  `GET /admin/reliability/mail` plus the digest/scheduler watchdogs return 503 / GitHub-red
+  when a canary is unmatched. The Gmail forward stays dashboard-gated. Dashboard FAILED
+  counts can be retries of one rejected message. Gate:
   `node tools/check_mail_legs.mjs` (`--live` operator-only; `--recovery` lists recoverable vs gone).
   Proof: `test/mail_legs.test.mjs` and `worker/test/reliability_watchdogs.test.mjs`. See `docs/mail-leg-health.md`.
 

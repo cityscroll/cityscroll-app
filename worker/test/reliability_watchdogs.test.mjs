@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  HUMAN_OPS_MAILBOXES,
   digestWatchdogSnapshot,
   evaluateWatermarkStaleness,
   mailCanaryTokenFromSubject,
@@ -11,6 +12,7 @@ import {
   recordInboundEmailReceipt,
   recordOutboundOpsSendReceipt,
   recordSchedulerHeartbeat,
+  resolveMailCanaryTarget,
   schedulerWatchdogSnapshot,
   sendInboundWorkerCanary,
 } from "../src/reliability_watchdogs.mjs";
@@ -158,7 +160,26 @@ test("mail canary token is parsed only from the exact subject prefix", () => {
     mailCanaryTokenFromSubject("[cityscroll-mail-canary] 0123456789abcdef0123456789abcdef"),
     "0123456789abcdef0123456789abcdef",
   );
+  assert.equal(
+    mailCanaryTokenFromSubject("[cityscroll-mail-canary] 0123456789ABCDEF0123456789ABCDEF"),
+    "0123456789abcdef0123456789abcdef",
+  );
+  assert.equal(mailCanaryTokenFromSubject("[CITYSCROLL-MAIL-CANARY] 0123456789abcdef0123456789abcdef"), null);
   assert.equal(mailCanaryTokenFromSubject("construction awards over $500k"), null);
+});
+
+test("mail canary target refuses human operations mailboxes", () => {
+  const refused = resolveMailCanaryTarget({ SUBSCRIBE_ADDRESS: "team@cityscroll.org" });
+  assert.equal(refused.ok, false);
+  assert.equal(refused.reason, "human-ops-mailbox-refused");
+  assert.deepEqual(HUMAN_OPS_MAILBOXES, [
+    "team@cityscroll.org",
+    "alerts@cityscroll.org",
+    "alerts@crol-list.org",
+  ]);
+  const allowed = resolveMailCanaryTarget({ SUBSCRIBE_ADDRESS: "subscribe@crol-list.org" });
+  assert.equal(allowed.ok, true);
+  assert.deepEqual(allowed.envelope, { to: ["subscribe@crol-list.org"], cc: [] });
 });
 
 test("inbound receipts record ignored loop mail and canary tokens", async () => {
@@ -271,9 +292,197 @@ test("mail watchdog POST canary records the worker-consumer probe without enroll
     const body = await response.json();
     assert.equal(body.inbound_worker.target, "subscribe@crol-list.org");
     assert.match(body.inbound_worker.token, /^[0-9a-f]{32}$/);
-    assert.ok(sent.some((row) => row.body.to === "subscribe@crol-list.org"));
-    assert.ok(sent.some((row) => row.body.to === OPS_ALERT_TO));
+    assert.equal(body.inbound_worker.token_prefix, body.inbound_worker.token.slice(0, 8));
+    assert.deepEqual(body.inbound_worker.envelope, { to: ["subscribe@crol-list.org"], cc: [] });
+    assert.equal(body.outbound_ops.sent, false);
+    assert.equal(body.outbound_ops.reason, "healthy-canary-silent");
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].body.to, "subscribe@crol-list.org");
+    assert.deepEqual(sent[0].body.cc, []);
+    assert.match(sent[0].body.subject, /^\[cityscroll-mail-canary\] [0-9a-f]{32}$/);
+    assert.ok(sent.every((row) => row.body.to !== OPS_ALERT_TO));
     assert.ok(sent.every((row) => !/enroll|watch/i.test(row.body.subject || "")));
+  } finally {
+    globalThis.fetch = previous;
+  }
+});
+
+test("mail canary round trip records the inbound token receipt", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-08-29T14:10:00Z");
+  const token = "0123456789abcdef0123456789abcdef";
+  await sendInboundWorkerCanary({
+    ALERT_STATE,
+    RESEND_API_KEY: "test-key",
+    SUBSCRIBE_ADDRESS: "subscribe@crol-list.org",
+  }, {
+    now,
+    token,
+    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
+  });
+  await recordInboundEmailReceipt({ ALERT_STATE }, {
+    from: "alerts@cityscroll.org",
+    to: "subscribe@crol-list.org",
+    headers: headers(`[cityscroll-mail-canary] ${token}`),
+  }, new Date("2026-08-29T14:10:20Z"));
+  const snapshot = await mailWatchdogSnapshot({ ALERT_STATE }, { now: new Date("2026-08-29T14:10:30Z") });
+  assert.equal(snapshot.ok, true);
+  assert.equal(snapshot.canary_state, "healthy");
+  assert.equal(snapshot.canary_inbound.canary_token, token);
+  assert.equal(ALERT_STATE.store.has(`ops:mail:canary:inbound:${token}`), true);
+});
+
+test("healthy mail watchdog GET does not email the operations mailbox", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-08-29T14:10:30Z");
+  const token = "0123456789abcdef0123456789abcdef";
+  await sendInboundWorkerCanary({
+    ALERT_STATE,
+    RESEND_API_KEY: "rk",
+  }, {
+    now: new Date("2026-08-29T14:10:00Z"),
+    token,
+    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
+  });
+  await recordInboundEmailReceipt({ ALERT_STATE }, {
+    to: "subscribe@crol-list.org",
+    headers: headers(`[cityscroll-mail-canary] ${token}`),
+  }, now);
+  let sent = 0;
+  const previous = globalThis.fetch;
+  globalThis.fetch = async () => {
+    sent += 1;
+    return { ok: true, json: async () => ({ id: "should-not-send" }) };
+  };
+  try {
+    const response = await handleAdminMailWatchdog(
+      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
+      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk" },
+      { now },
+    );
+    assert.equal(response.status, 200);
+    assert.equal(sent, 0);
+  } finally {
+    globalThis.fetch = previous;
+  }
+});
+
+test("stale canary GET exception-alerts the operations mailbox once", async () => {
+  const ALERT_STATE = kv();
+  const sentAt = new Date("2026-08-27T14:10:00Z");
+  const now = new Date("2026-08-29T14:10:00Z");
+  const token = "0123456789abcdef0123456789abcdef";
+  await sendInboundWorkerCanary({
+    ALERT_STATE,
+    RESEND_API_KEY: "rk",
+  }, {
+    now: sentAt,
+    token,
+    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
+  });
+  await recordInboundEmailReceipt({ ALERT_STATE }, {
+    to: "subscribe@crol-list.org",
+    headers: headers(`[cityscroll-mail-canary] ${token}`),
+  }, sentAt);
+  const sent = [];
+  const previous = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    sent.push(JSON.parse(options.body));
+    return { ok: true, json: async () => ({ id: "exception" }) };
+  };
+  try {
+    const first = await handleAdminMailWatchdog(
+      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
+      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
+      { now },
+    );
+    const second = await handleAdminMailWatchdog(
+      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
+      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
+      { now },
+    );
+    assert.equal(first.status, 503);
+    assert.equal(second.status, 503);
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].to, OPS_ALERT_TO);
+    const body = await second.json();
+    assert.match(body.findings.join("; "), /stale/);
+    assert.equal(body.findings_history[0].delivery_status, "sent");
+    assert.equal(body.findings_history[0].type, "canary-stale");
+  } finally {
+    globalThis.fetch = previous;
+  }
+});
+
+test("rejected exception alert stays red without retrying the dead mail rail", async () => {
+  const ALERT_STATE = kv();
+  const now = new Date("2026-08-29T14:25:00Z");
+  await sendInboundWorkerCanary({
+    ALERT_STATE,
+    RESEND_API_KEY: "rk",
+  }, {
+    now: new Date("2026-08-29T14:10:00Z"),
+    token: "0123456789abcdef0123456789abcdef",
+    fetchImpl: async () => ({ ok: true, json: async () => ({ id: "canary" }) }),
+  });
+  let sent = 0;
+  const previous = globalThis.fetch;
+  globalThis.fetch = async () => {
+    sent += 1;
+    return { ok: false, status: 500, text: async () => "resend-rejected", json: async () => ({}) };
+  };
+  try {
+    const first = await handleAdminMailWatchdog(
+      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
+      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
+      { now },
+    );
+    const second = await handleAdminMailWatchdog(
+      new Request("https://w/admin/reliability/mail?key=s3cr3t"),
+      { ADMIN_KEY: "s3cr3t", ALERT_STATE, RESEND_API_KEY: "rk", ALERTS_FROM: "CityScroll <alerts@cityscroll.org>" },
+      { now },
+    );
+    assert.equal(first.status, 503);
+    assert.equal(second.status, 503);
+    assert.equal(sent, 1);
+    const body = await second.json();
+    assert.match(body.findings.join("; "), /not received|not accepted/);
+    assert.ok(body.findings_history.some((row) => row.delivery_status === "rejected" || row.delivery_status === "http-fallback"));
+  } finally {
+    globalThis.fetch = previous;
+  }
+});
+
+test("mail canary POST refuses a human operations target before send", async () => {
+  const ALERT_STATE = kv();
+  const sent = [];
+  const previous = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    sent.push(JSON.parse(options.body));
+    return { ok: true, json: async () => ({ id: "should-not-send" }) };
+  };
+  try {
+    const response = await handleAdminMailWatchdog(
+      new Request("https://w/admin/reliability/mail?key=s3cr3t", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action: "canary" }),
+      }),
+      {
+        ADMIN_KEY: "s3cr3t",
+        ALERT_STATE,
+        RESEND_API_KEY: "rk",
+        SUBSCRIBE_ADDRESS: "team@cityscroll.org",
+        ALERTS_FROM: "CityScroll <alerts@cityscroll.org>",
+      },
+      { now: new Date("2026-08-29T14:10:00Z"), fetchImpl: globalThis.fetch },
+    );
+    assert.equal(response.status, 503);
+    const body = await response.json();
+    assert.equal(body.inbound_worker.reason, "human-ops-mailbox-refused");
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].to, OPS_ALERT_TO);
+    assert.equal(body.inbound_worker.envelope.to[0], "team@cityscroll.org");
   } finally {
     globalThis.fetch = previous;
   }
