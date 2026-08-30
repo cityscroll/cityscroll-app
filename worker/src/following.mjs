@@ -149,6 +149,15 @@ export async function handleFollowing(request, env = {}, ctx = {}, options = {})
   }
 
   const parsed = watchFromFollowingParams(url.searchParams);
+  if (parsed.scopeStatus === "unrecognized_scope") {
+    const view = buildFollowingViewModel({
+      ...parsed,
+      previewItems: [],
+      previewError: null,
+    }, suggestedTemplates);
+    const html = renderFollowingDocument(view, { assetPrefix: `${SITE_ORIGIN}/`, siteBase: SITE_ORIGIN });
+    return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: publicHeaders() });
+  }
   const watch = { lens: parsed.lens, filter: sanitize(parsed.lens, parsed.filter) };
   const preview = parsed.requested
     ? await previewFor(watch, options.fetchImpl || fetch, options.todayISO, env)

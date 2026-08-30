@@ -933,7 +933,10 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
   `test/project_connections_smoke.test.mjs` so source-data drift cannot mask a successful deploy.
 - Following is static-first at `site/following/index.html` and edge-rendered at `GET /following`
   through the shared `site/following_view.mjs` renderer. A saved scope is the single contract for
-  its summary, preview count, results, and `/subscribe` form. Create flow: live conjunction rule
+  its summary, preview count, results, and `/subscribe` form. Result and detail entry preserve
+  that same watch plus compact preview focus through `site/following_preview_handoff.mjs`
+  (`notice` / `project` / `from`); unrecognized lenses stay honest and never remap to Contracts.
+  Create flow: live conjunction rule
   line (`composeWatchRuleSentence`), digItem-shaped preview cards, cadence radio cards with
   quiet-day/weekly consequences, pack attention cost (`packAttentionCopy`). Client promotes
   Your watches first when `/following/personal` returns ≥1 watch (manage-first tabs).

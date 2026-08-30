@@ -3,6 +3,14 @@
     "docs/screenshots/browse-people-cb-card/before-mobile.png": "Public before/after evidence for the Community Board card rendering fix.",
     "docs/screenshots/browse-people-cb-card/before-desktop.png": "Public before/after evidence for the Community Board card rendering fix.",
     "docs/screenshots/browse-people-cb-card/after-mobile.png": "Public before/after evidence for the Community Board card rendering fix.",
-    "docs/screenshots/browse-people-cb-card/after-desktop.png": "Public before/after evidence for the Community Board card rendering fix."
+    "docs/screenshots/browse-people-cb-card/after-desktop.png": "Public before/after evidence for the Community Board card rendering fix.",
+    "docs/screenshots/following-preview-handoff/before-positive-390.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/before-positive-1440.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/after-positive-390.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/after-positive-1440.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/before-empty-390.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/before-empty-1440.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/after-empty-390.png": "Public before/after evidence for Following create-flow handoff from a notice.",
+    "docs/screenshots/following-preview-handoff/after-empty-1440.png": "Public before/after evidence for Following create-flow handoff from a notice."
   }
 }

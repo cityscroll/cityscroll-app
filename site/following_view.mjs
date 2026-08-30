@@ -24,6 +24,14 @@ import {
 } from "./community_board_watch.mjs";
 import { communityBoardPlaceHref } from "./community_board_links.mjs";
 import { rankWatchFamilySuggestions } from "./watch_family_capabilities.mjs";
+import {
+  followingFocusHref,
+  followingPreviewHandoffFromParams,
+  followingPreviewHandoffFromScope,
+  pinFollowingPreviewItems,
+  previewItemMatchesFocus,
+  reviewedFollowingLens,
+} from "./following_preview_handoff.mjs";
 
 const API_BASE = "https://api.cityscroll.org";
 const SITE_BASE = "https://cityscroll.org";
@@ -35,6 +43,7 @@ const LENSES = Object.freeze([
 /** Legacy URL / storage aliases → canonical lens. */
 const LENS_ALIASES = Object.freeze({
   obligations: "mandates", // upstream extract vocabulary; product term is mandates
+  award: "money",
 });
 const LENS_LABELS = Object.freeze({
   money: "Contracts and RFPs",
@@ -125,8 +134,25 @@ function normalizedWatch(lens, filter) {
 
 export function watchFromFollowingParams(input) {
   const params = input instanceof URLSearchParams ? input : new URL(input, "https://cityscroll.invalid").searchParams;
+  const handoff = followingPreviewHandoffFromParams(params);
   const requested = params.has("lens") || params.has("filter") || params.has("q") || params.has("agency")
-    || params.has("boro") || params.has("council") || params.has("boardBorough") || params.has("boardNumber");
+    || params.has("boro") || params.has("council") || params.has("boardBorough") || params.has("boardNumber")
+    || params.has("notice") || params.has("project");
+  if (handoff.status === "unrecognized_scope") {
+    return {
+      lens: null,
+      filter: {},
+      requested: true,
+      frequency: handoff.frequency,
+      matchCount: handoff.matchCount,
+      onboarding: params.get("onboarding") === "1",
+      handoff,
+      noticeId: handoff.focus?.kind === "notice" ? handoff.focus.id : null,
+      projectId: handoff.focus?.kind === "project" ? handoff.focus.id : null,
+      originRoute: handoff.originRoute,
+      scopeStatus: handoff.status,
+    };
+  }
   let filter = {};
   try {
     const parsed = JSON.parse(params.get("filter") || "{}");
@@ -152,12 +178,25 @@ export function watchFromFollowingParams(input) {
   }
   if (params.has("type")) setOrDelete("noticeType", params.get("type"));
   const watch = normalizedWatch(lens, filter);
+  const nextHandoff = followingPreviewHandoffFromScope({
+    ...watch,
+    freq: cleanFrequency(params.get("freq")),
+    matchCount: cleanCount(params.get("count")),
+    noticeId: handoff.focus?.kind === "notice" ? handoff.focus.id : null,
+    projectId: handoff.focus?.kind === "project" ? handoff.focus.id : null,
+    originRoute: handoff.originRoute,
+  });
   return {
     ...watch,
     requested,
-    frequency: cleanFrequency(params.get("freq")),
-    matchCount: cleanCount(params.get("count")),
+    frequency: nextHandoff.frequency,
+    matchCount: nextHandoff.matchCount,
     onboarding: params.get("onboarding") === "1",
+    handoff: nextHandoff,
+    noticeId: nextHandoff.focus?.kind === "notice" ? nextHandoff.focus.id : null,
+    projectId: nextHandoff.focus?.kind === "project" ? nextHandoff.focus.id : null,
+    originRoute: nextHandoff.originRoute,
+    scopeStatus: nextHandoff.status,
   };
 }
 
@@ -182,13 +221,23 @@ export function requestedFollowingTab(locationLike = {}, fallback = "create") {
 
 export function followingUrlFromWatch(watch, options = {}) {
   const base = String(options.base || `${SITE_BASE}/following`).replace(/\/$/, "");
-  if (!watch || !watch.lens) return options.emptyBase || "/following/";
-  const normalized = normalizedWatch(watch.lens, watch.filter);
+  const reviewed = reviewedFollowingLens(watch?.lens);
+  if (!watch || reviewed.status !== "ok") return options.emptyBase || "/following/";
+  const normalized = normalizedWatch(reviewed.lens, watch.filter);
   const params = subscriptionParamsFromWatch(normalized);
   const frequency = String(options.frequency || watch.freq || "").toLowerCase();
   if (frequency === "daily" || frequency === "weekly") params.set("freq", frequency);
   const count = cleanCount(options.matchCount ?? watch.matchCount);
   if (count != null) params.set("count", String(count));
+  const handoff = options.handoff || followingPreviewHandoffFromScope({
+    ...normalized,
+    noticeId: options.noticeId ?? watch.noticeId,
+    projectId: options.projectId ?? watch.projectId,
+    originRoute: options.originRoute ?? watch.originRoute,
+  }, options);
+  if (handoff.focus?.kind === "notice") params.set("notice", handoff.focus.id);
+  else if (handoff.focus?.kind === "project") params.set("project", handoff.focus.id);
+  if (handoff.originRoute) params.set("from", handoff.originRoute);
   return `${base}?${params}`;
 }
 
@@ -501,11 +550,12 @@ export function isCitywideWatchScope(filter = {}) {
  * Slim digItem-shaped preview card (title, meta, phase chip, next step, deep link).
  * Shares the awareness fields feedItems may attach without pulling the full digest renderer.
  */
-export function followingPreviewItemHtml(item) {
+export function followingPreviewItemHtml(item, options = {}) {
   const row = item || {};
   const mapped = migrateLegacyUrl(row.url || "/browse/");
   const href = mapped.target || row.url || "/browse/";
   const title = row.title || "Untitled record";
+  const focused = !!options.focused;
   const summary = row.summary ? `<p class="following-dig-meta">${esc(row.summary)}</p>` : "";
   const phase = row.phase
     ? `<span class="following-dig-phase">${esc(row.phase)}</span>`
@@ -516,7 +566,9 @@ export function followingPreviewItemHtml(item) {
   const chips = phase
     ? `<div class="following-dig-awareness" aria-label="Status">${phase}</div>`
     : "";
-  return `<li class="following-digitem" data-preview-id="${esc(row.id)}">
+  const focusClass = focused ? " is-focus" : "";
+  const focusAttr = focused ? ` data-preview-focus="true"` : "";
+  return `<li class="following-digitem${focusClass}" data-preview-id="${esc(row.id)}"${focusAttr}>
     <div class="following-dig-title">${constellationLink({ href, label: title, className: "following-record-link", escape: esc })}</div>
     ${summary}
     ${chips}
@@ -526,34 +578,60 @@ export function followingPreviewItemHtml(item) {
 }
 
 export function buildFollowingViewModel(input = {}, templateRegistry = {}) {
-  const watch = normalizedWatch(input.lens || "money", input.filter || {});
+  const scopeStatus = input.scopeStatus || input.handoff?.status || "ok";
+  const unrecognized = scopeStatus === "unrecognized_scope";
+  const watch = unrecognized
+    ? { lens: "money", filter: {} }
+    : normalizedWatch(input.lens || "money", input.filter || {});
   const requested = input.requested == null
-    ? !!(input.lens || Object.keys(input.filter || {}).length || input.previewItems)
+    ? !!(input.lens || Object.keys(input.filter || {}).length || input.previewItems || input.noticeId || input.projectId)
     : !!input.requested;
-  const previewItems = Array.isArray(input.previewItems) ? input.previewItems.slice(0, 5) : [];
-  const matchCount = cleanCount(input.matchCount);
+  const handoff = input.handoff
+    || (unrecognized
+      ? followingPreviewHandoffFromScope({ lens: "not-a-lens" })
+      : followingPreviewHandoffFromScope({
+        ...watch,
+        freq: input.frequency,
+        matchCount: input.matchCount,
+        noticeId: input.noticeId,
+        projectId: input.projectId,
+        originRoute: input.originRoute,
+      }));
+  const previewItems = unrecognized
+    ? []
+    : pinFollowingPreviewItems(Array.isArray(input.previewItems) ? input.previewItems : [], handoff);
+  const matchCount = unrecognized ? null : cleanCount(input.matchCount);
   const registry = normalizeWatchTemplateRegistry(templateRegistry);
   const frequency = cleanFrequency(input.frequency);
-  const ruleSentence = composeWatchRuleSentence(watch.lens, watch.filter, { frequency });
-  const graphContext = buildFollowingGraphContext({ ...watch, frequency });
+  const ruleSentence = unrecognized ? "" : composeWatchRuleSentence(watch.lens, watch.filter, { frequency });
+  const graphContext = unrecognized ? null : buildFollowingGraphContext({ ...watch, frequency });
+  const publicWatch = unrecognized ? null : watch;
   return {
     schema: "cityscroll.following_view.v1",
-    ...watch,
-    requested,
+    ...(publicWatch || { lens: null, filter: {} }),
+    requested: unrecognized ? true : requested,
     onboarding: input.onboarding === true,
     frequency,
-    matchCount: matchCount == null && requested ? previewItems.length : matchCount,
+    matchCount: matchCount == null && requested && !unrecognized ? previewItems.length : matchCount,
     previewItems,
-    previewError: input.previewError || null,
-    scopeSummary: scopeSummary(watch.lens, watch.filter),
+    previewError: unrecognized ? null : (input.previewError || null),
+    scopeSummary: unrecognized ? [] : scopeSummary(watch.lens, watch.filter),
     ruleSentence,
     graphContext,
     templates: registry.templates,
     familySuggestions: rankWatchFamilySuggestions(input.suggestionQuery || ""),
-    followingUrl: followingUrlFromWatch(watch, {
+    followingUrl: unrecognized ? "/following/" : followingUrlFromWatch(watch, {
       frequency,
       matchCount,
+      noticeId: handoff.focus?.kind === "notice" ? handoff.focus.id : null,
+      projectId: handoff.focus?.kind === "project" ? handoff.focus.id : null,
+      originRoute: handoff.originRoute,
     }),
+    handoff,
+    noticeId: handoff.focus?.kind === "notice" ? handoff.focus.id : null,
+    projectId: handoff.focus?.kind === "project" ? handoff.focus.id : null,
+    originRoute: handoff.originRoute,
+    scopeStatus: unrecognized ? "unrecognized_scope" : (handoff.status || "ok"),
   };
 }
 
@@ -665,7 +743,7 @@ function ruleLineHtml(view) {
 }
 
 function scopeHtml(view) {
-  if (!view.requested) return "";
+  if (!view.requested || view.scopeStatus === "unrecognized_scope") return "";
   const chips = view.scopeSummary.map((chip) => (
     `<li class="qchip following-scope-chip" data-scope-axis="${esc(chip.axis)}">${esc(chip.label)}</li>`
   )).join("");
@@ -680,17 +758,55 @@ function scopeHtml(view) {
   </section>`;
 }
 
+function previewFocusHtml(view) {
+  const href = followingFocusHref(view.handoff);
+  if (!href || view.scopeStatus === "unrecognized_scope") return "";
+  const focus = view.handoff?.focus;
+  const kind = focus?.kind || "record";
+  const label = kind === "notice"
+    ? "Open the record you were reading"
+    : kind === "project"
+      ? "Open the zoning search you started from"
+      : "Back to the page you started from";
+  const origin = view.originRoute && view.originRoute !== href
+    ? `<p class="following-handoff-origin">${constellationLink({
+      href: view.originRoute,
+      label: "Back to your search",
+      className: "following-handoff-origin-link",
+      escape: esc,
+    })}</p>`
+    : "";
+  return `<aside class="following-preview-focus" data-following-preview-focus data-focus-kind="${esc(kind)}"${focus?.id ? ` data-focus-id="${esc(focus.id)}"` : ""}>
+    <p>Started from this record.</p>
+    <p>${constellationLink({ href, label, className: "following-handoff-focus-link", escape: esc })}</p>
+    ${origin}
+  </aside>`;
+}
+
 function previewHtml(view) {
   if (!view.requested) return "";
+  if (view.scopeStatus === "unrecognized_scope") {
+    return `<section class="following-preview" data-following-preview-panel data-following-handoff-status="unrecognized_scope" aria-labelledby="following-preview-heading">
+    <p class="following-kicker">Preview</p><h2 id="following-preview-heading">This watch link is not recognized</h2>
+    <p class="following-note" role="status" data-following-handoff-status="unrecognized_scope">This watch link is not recognized. Nothing was saved. Start from a search or a record.</p>
+  </section>`;
+  }
   const count = view.matchCount ?? view.previewItems.length;
   const body = view.previewError
     ? `<p class="following-note" role="status">${esc(view.previewError)}</p>`
     : view.previewItems.length
-      ? `<ol class="following-diglist">${view.previewItems.map(followingPreviewItemHtml).join("")}</ol>`
+      ? `<ol class="following-diglist">${view.previewItems.map((item) => followingPreviewItemHtml(item, {
+        focused: previewItemMatchesFocus(item, view.handoff),
+      })).join("")}</ol>`
       : `<p class="following-empty">No matches now — still watch for new.</p>`;
+  const partial = !view.previewError && view.handoff?.focus && !view.previewItems.some((item) => previewItemMatchesFocus(item, view.handoff))
+    ? `<p class="following-note" data-following-preview-partial="true">The record you started from is not in the current matches. The saved watch still uses the criteria above.</p>`
+    : "";
   return `<section class="following-preview" data-following-preview-panel data-scope-count="${count}" aria-labelledby="following-preview-heading">
     <p class="following-kicker">Preview</p><h2 id="following-preview-heading">${count} matching records</h2>
     <p>${view.previewItems.length < count ? `${view.previewItems.length} recent matches are shown.` : "Every current match is shown."}</p>
+    ${previewFocusHtml(view)}
+    ${partial}
     ${body}
   </section>`;
 }
@@ -716,6 +832,12 @@ function cadenceCardsHtml(view, { name = "freq", form = "preview" } = {}) {
 }
 
 function subscribeHtml(view) {
+  if (view.scopeStatus === "unrecognized_scope") {
+    return `<section class="following-subscribe" data-following-subscribe-panel data-following-handoff-status="unrecognized_scope">
+    <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
+      <p>This watch link is not recognized, so there is nothing to save.</p>
+    </section>`;
+  }
   if (!view.requested) {
     return `<section class="following-subscribe" data-following-subscribe-panel>
     <p class="following-kicker">Delivery</p><h2>Create a watch</h2>
@@ -800,6 +922,9 @@ function templateHtml(template) {
 }
 
 function controlsHtml(view) {
+  if (view.scopeStatus === "unrecognized_scope") {
+    return `<p class="following-note" role="status" data-following-handoff-status="unrecognized_scope">This watch link is not recognized. Choose a topic below or start from a search.</p>`;
+  }
   const query = Array.isArray(view.filter.keywords) ? view.filter.keywords.join(" ") : "";
   const borough = placeBorough(view.filter);
   const refinementsOpen = query || view.filter.agency || view.filter.councilDistrict || view.filter.communityBoard || view.lens === "meetings" ? " open" : "";
@@ -814,10 +939,14 @@ function controlsHtml(view) {
     `<option value="">Choose a board</option>`,
     ...COMMUNITY_BOARD_PICKER_NUMBERS.map((number) => `<option value="${number}"${boardSelection.number === number ? " selected" : ""}>${number}</option>`),
   ].join("");
+  const noticeField = view.noticeId ? `<input type="hidden" name="notice" value="${esc(view.noticeId)}">` : "";
+  const projectField = view.projectId ? `<input type="hidden" name="project" value="${esc(view.projectId)}">` : "";
+  const originField = view.originRoute ? `<input type="hidden" name="from" value="${esc(view.originRoute)}">` : "";
   return `${topicPlacePickersHtml(view)}
   <form class="following-form" method="get" action="${SITE_BASE}/following" data-following-preview-form>
-    <input type="hidden" name="lens" value="${esc(view.lens)}">
-    <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter))}">
+    <input type="hidden" name="lens" value="${esc(view.lens || "money")}">
+    <input type="hidden" name="filter" value="${esc(JSON.stringify(view.filter || {}))}">
+    ${noticeField}${projectField}${originField}
     ${borough ? `<input type="hidden" name="boro" value="${esc(borough)}">` : ""}
     <details class="following-refinements"${refinementsOpen}>
       <summary>Narrow it down</summary>
@@ -887,7 +1016,7 @@ export function renderFollowingBody(view) {
   const create = createSectionHtml(view);
   // Handoff landing: scope chips + count + rule line before email (workspace order).
   // Panel workspace attribute supports the multi-watch surface tabs from main.
-  const identity = view.requested ? followingWatchIdentityHtml(view.graphContext) : "";
+  const identity = view.requested && view.graphContext ? followingWatchIdentityHtml(view.graphContext) : "";
   const workspace = `<div class="following-workspace" data-following-workspace data-following-panel-workspace>${identity}${scopeHtml(view)}${previewHtml(view)}${subscribeHtml(view)}</div>`;
   const personal = personalSectionHtml(view);
   const packs = `<section id="packs" class="following-packs" data-following-panel="packs" aria-labelledby="following-packs-heading"><p class="following-kicker">Start with a set</p><h2 id="following-packs-heading">Watch sets</h2><p class="following-pack-lead">These packs are one type of suggestion. Each watch is made only after you check and submit.</p><div>${view.templates.map(templateHtml).join("")}</div></section>`;
@@ -905,8 +1034,11 @@ export function renderFollowingBody(view) {
     data-msg-personal-saving="Saving…"
     data-msg-personal-saved="Saved."
     data-msg-personal-error="Could not save that change. Try again."
-    data-following-lens="${esc(view.lens)}"
-    data-following-filter="${esc(JSON.stringify(view.filter))}">
+    data-following-lens="${esc(view.lens || "")}"
+    data-following-filter="${esc(JSON.stringify(view.filter || {}))}"
+    data-following-scope-status="${esc(view.scopeStatus || "ok")}"
+    ${view.noticeId ? `data-following-focus-kind="notice" data-following-focus-id="${esc(view.noticeId)}"` : view.projectId ? `data-following-focus-kind="project" data-following-focus-id="${esc(view.projectId)}"` : ""}
+    ${view.originRoute ? `data-following-origin="${esc(view.originRoute)}"` : ""}>
     <section class="following-hero">
       <h1>Following</h1>
     </section>
