@@ -1,6 +1,8 @@
 import {
+  CIVIC_INSTITUTION_ROLE_EDGE_SCHEMA,
   buildCivicInstitutionIdentity,
   buildEntityLink,
+  resolveCivicInstitutionRoleEdges,
   sourceIdentityEvidence,
   sourceRecordObservation,
 } from "../../ontology/civic_institution.mjs";
@@ -63,6 +65,7 @@ export function buildAgencyIdentityEvidence({
   publisherRow = null,
   view,
   generatedAt = null,
+  roleCandidates = [],
 } = {}) {
   if (!identity?.canonical_id) return null;
   // A routed profile is not itself a source identity. Route-only and
@@ -139,6 +142,7 @@ export function buildAgencyIdentityEvidence({
     }
   }
 
+  const roleEdges = resolveCivicInstitutionRoleEdges(roleCandidates);
   return {
     schema: AGENCY_IDENTITY_EVIDENCE_SCHEMA,
     method: AGENCY_IDENTITY_EVIDENCE_METHOD,
@@ -148,10 +152,18 @@ export function buildAgencyIdentityEvidence({
       href: view?.path || `/agencies/${identity.canonical_id}/`,
     },
     observations,
+    role_edge_schema: CIVIC_INSTITUTION_ROLE_EDGE_SCHEMA,
+    role_edges: roleEdges.accepted,
+    role_edge_held: roleEdges.held,
+    role_edge_unknown: roleEdges.unknown,
+    role_edge_unresolved: roleEdges.unresolved,
     coverage: {
       accepted_count: observations.length,
       source_observation_count: observations.length,
       unresolved_count: 0,
+      role_edge_accepted_count: roleEdges.accepted.length,
+      role_edge_held_count: roleEdges.held.length,
+      role_edge_unresolved_count: roleEdges.unresolved.length,
     },
     provenance: {
       source_dataset: "t3jq-9nkf",

@@ -1,0 +1,118 @@
+{
+  "schema": "cityscroll.civic_institution_role_edge.fixtures.v1",
+  "as_of": "2020-01-01",
+  "vintage": "obligation:63842-001",
+  "cases": {
+    "accepted_doc_board_of_correction": {
+      "id": "accepted_doc_board_of_correction",
+      "subject": "civic-institution:correction",
+      "object": "civic-institution:board-of-correction",
+      "relation": "must_report_to",
+      "method": "exact_source_identifier",
+      "confidence": "strong",
+      "basis": "exact_statute_addressee",
+      "resolutionStatus": "accepted",
+      "sourceObservation": {
+        "sourceSystem": "legistar",
+        "sourceRecordId": "legistar:63842-001",
+        "sourceField": "duty_addressee",
+        "sourceValue": "board of correction",
+        "sourceUrl": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=63842",
+        "sourceDataset": "agency_obligations",
+        "observedAt": "2020-01-01T00:00:00.000Z"
+      },
+      "evidenceRefs": ["obligation:63842-001", "legistar:63842"]
+    },
+    "accepted_doc_city_council": {
+      "id": "accepted_doc_city_council",
+      "subject": "civic-institution:correction",
+      "object": "civic-institution:city-council",
+      "relation": "must_report_to",
+      "method": "exact_source_identifier",
+      "confidence": "strong",
+      "basis": "exact_statute_addressee",
+      "resolutionStatus": "accepted",
+      "sourceObservation": {
+        "sourceSystem": "legistar",
+        "sourceRecordId": "legistar:63842-001",
+        "sourceField": "duty_addressee",
+        "sourceValue": "the council",
+        "sourceUrl": "https://nyc.legistar.com/Gateway.aspx?M=L&ID=63842",
+        "sourceDataset": "agency_obligations",
+        "observedAt": "2020-01-01T00:00:00.000Z"
+      },
+      "evidenceRefs": ["obligation:63842-001", "legistar:63842"]
+    },
+    "missing_source": {
+      "id": "missing_source",
+      "subject": "civic-institution:correction",
+      "object": "civic-institution:board-of-correction",
+      "relation": "must_report_to",
+      "method": "exact_source_identifier",
+      "confidence": "strong",
+      "resolutionStatus": "accepted",
+      "evidenceRefs": ["obligation:63842-001"]
+    },
+    "conflicting_eep": {
+      "id": "conflicting_eep",
+      "subject": "civic-institution:correction",
+      "relation": "must_report_to",
+      "objectCandidates": [
+        "civic-institution:equal-employ-practices-comm",
+        "civic-institution:equal-employment-practices-commission"
+      ],
+      "method": "exact_normalized_publisher_value",
+      "confidence": "strong",
+      "objectDisplayName": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
+      "sourceObservation": {
+        "sourceSystem": "city_record",
+        "sourceRecordId": "city_record:eep-collision",
+        "sourceField": "agency_name",
+        "sourceValue": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
+        "observedAt": "2026-08-09"
+      },
+      "evidenceRefs": ["city_record:eep-collision"]
+    },
+    "held_oti_reports_to": {
+      "id": "held_oti_reports_to",
+      "subject": "civic-institution:sanitation",
+      "object": "civic-institution:office-of-the-mayor",
+      "relation": "must_report_to",
+      "method": "exact_source_identifier",
+      "confidence": "strong",
+      "basis": "oti_reports_to_is_not_oversight",
+      "resolutionStatus": "held",
+      "sourceObservation": {
+        "sourceSystem": "oti",
+        "sourceRecordId": "sanitation",
+        "sourceField": "reports_to",
+        "sourceValue": "Deputy Mayor for Operations",
+        "sourceDataset": "t3jq-9nkf",
+        "observedAt": "2026-08-09"
+      },
+      "evidenceRefs": ["oti:sanitation"]
+    },
+    "legacy_published_by_agency": {
+      "id": "legacy_published_by_agency",
+      "relationId": "published_by_agency",
+      "agencyCanonicalId": "sanitation",
+      "recordRef": "notice:20260708002",
+      "recordHref": "/notices/20260708002"
+    },
+    "generic_related_to": {
+      "id": "generic_related_to",
+      "subject": "civic-institution:sanitation",
+      "object": "civic-institution:correction",
+      "relation": "related_to",
+      "confidence": "strong",
+      "sourceObservation": {
+        "sourceSystem": "city_record",
+        "sourceRecordId": "city_record:generic",
+        "sourceField": "agency_name",
+        "sourceValue": "Sanitation",
+        "observedAt": "2026-08-09"
+      },
+      "evidenceRefs": ["city_record:generic"]
+    }
+  }
+}

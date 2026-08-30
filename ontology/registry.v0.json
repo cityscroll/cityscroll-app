@@ -272,7 +272,8 @@
       "backing": [
         "cityscroll.civic_institution.v1",
         "agency:id:*",
-        "cityscroll.entity_link.v1"
+        "cityscroll.entity_link.v1",
+        "cityscroll.civic_institution_role_edge.v1"
       ],
       "properties_ref": [
         "canonical_id",
@@ -280,7 +281,8 @@
         "legacy_subject_ref",
         "institution_kind",
         "legal_form",
-        "source_observations"
+        "source_observations",
+        "role_edges"
       ],
       "identity_contract": {
         "schema": "cityscroll.civic_institution.v1",
@@ -289,7 +291,8 @@
         "same_name_never_merges": true,
         "legacy_agency_subject_retained": true,
         "institution_kind_independent": true,
-        "source_observation_link_schema": "cityscroll.entity_link.v1"
+        "source_observation_link_schema": "cityscroll.entity_link.v1",
+        "role_edge_schema": "cityscroll.civic_institution_role_edge.v1"
       },
       "grounding": "partial"
     },
@@ -1070,6 +1073,45 @@
       ],
       "negative_rule": "Never infer from acronym, OTI org_type, similar name, meeting title, address, or fuzzy similarity.",
       "label": "Source identity link",
+      "grounding": "partial"
+    },
+    {
+      "id": "must_report_to",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "civic-institution",
+      "relation": "must_report_to",
+      "inverse": "receives_report_from",
+      "reason": "Institution-to-institution report role emitted only from an exact source observation that names both civic-institution endpoints. Duty-text names, OTI reports_to, and generic related_to remain non-linking.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis",
+        "as_of",
+        "vintage"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "legacy_agency_relation": "statute_duty",
+      "negative_rule": "Never infer a report-recipient or oversight edge from duty-text names, OTI reports_to, a shared publisher label, or related_to.",
+      "label": "Must report to",
       "grounding": "partial"
     },
     {
