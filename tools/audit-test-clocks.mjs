@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-const TEST_PATH = /^(?:test|worker\/test)\/.*\.(?:js|mjs|cjs)$/;
+const TEST_PATH = /^(?:test|worker\/test)\/(?!fixtures\/).*\.(?:js|mjs|cjs)$/;
 const WALL_CLOCK = /\b(?:new\s+Date\s*\(\s*\)|Date\.now\s*\(\s*\))/;
 const INJECTED_DEFAULT = /\b(?:now|clock|nowMs)\s*=\s*(?:new\s+Date\s*\(\s*\)|Date\.now\s*\(\s*\))/i;
 

@@ -1,0 +1,9 @@
+name: Scheduled monitor
+on:
+  schedule:
+    - cron: "17 * * * *"
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - run: node tools/monitor_live.mjs --check

@@ -316,7 +316,9 @@ jobs:
         if: matrix.family == 'static-standards'
         # Required checks must not acquire ambient clock, timezone, random, network,
         # external-data, or write-mode dependencies. Scheduled monitors are excluded.
-        run: node tools/determinism_lint.mjs --check
+        run: |
+          node tools/determinism_lint.mjs --check
+          node tools/determinism_lint.mjs --check --fixture test/fixtures/determinism-lint
       - name: Accessibility gate regression proof
         if: matrix.family == 'static-standards'
         run: python3 test/functional/a11y_gate_test.py
