@@ -63,6 +63,7 @@ import {
   ADMIN_PERFORMANCE_SCHEMA,
   readAdminPerformance,
 } from "./admin_performance.mjs";
+import { projectFeedbackDeskItem } from "./lib/feedback_desk.mjs";
 import { timingSafeEqualString } from "./lib/secret_compare.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
 import { readDigestShadow, runDigestShadow } from "./digest_shadow.mjs";
@@ -505,9 +506,11 @@ async function liveWatchRecordsByMask(store) {
 }
 
 // GET /admin/feedback?key=… — operator read of stored feedback rows, straight from the worker's
-// OWN FEEDBACK binding. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only. Newest first. Emails
-// are redacted here (the notification email carries the real Reply-To); only `fb:` rows are read,
-// so the rate-limit counters (rl:*) in the same namespace stay out of the listing.
+// OWN FEEDBACK binding. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only. Newest first. The
+// desk projection round-trips stored report target/evidence/provenance and keeps missing
+// context explicit. Reporter email, IP, and user-agent stay in the durable row and
+// notification mail; they are not returned here. Only `fb:` rows are read, so rate-limit
+// counters (rl:*) in the same namespace stay out of the listing.
 export async function handleAdminFeedback(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
@@ -521,15 +524,7 @@ export async function handleAdminFeedback(req, env) {
     for (const k of res.keys) {
       let v = null;
       try { v = JSON.parse(await env.FEEDBACK.get(k.name)); } catch { /* skip */ }
-      if (v) items.push({
-        id: k.name,
-        category: v.category,
-        message: v.message,
-        email: v.email ? redactEmail(v.email) : "",
-        ip: v.ip,
-        ua: v.ua,
-        at: v.at,
-      });
+      if (v) items.push(projectFeedbackDeskItem(k.name, v));
     }
     cursor = res.list_complete ? null : res.cursor;
   } while (cursor);
