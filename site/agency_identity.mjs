@@ -107,6 +107,8 @@ const ROUTE_ALIAS_TARGETS = new Map([
   ["district-attorney-special-narcotics", "office-of-special-narcotics-prosecutor"],
   ["hra-department-of-social-services", "human-resources-administration"],
   ["mayoralty", "office-of-the-mayor"],
+  ["mta-construction-development", "mta-construction-and-development"],
+  ["mta-nyct", "n-y-c-transit-authority"],
   ["n-y-c-housing-authority", "housing-authority"],
   ["new-york-city-emergency-management", "emergency-management"],
   ["new-york-city-police-department", "police-department"],
@@ -123,6 +125,7 @@ const ROUTE_ALIAS_TARGETS = new Map([
 const STANDALONE_ROUTES = new Map([
   ["board-meetings", ["Board Meetings", "unresolved"]],
   ["department-of-social-services", ["Department of Social Services", "legitimate_non_crosswalk_entity"]],
+  ["mta-construction-and-development", ["MTA Construction & Development", "legitimate_non_crosswalk_entity"]],
   ["n-y-c-transit-authority", ["N.Y.C. Transit Authority", "legitimate_non_crosswalk_entity"]],
   ["new-york-city-fire-pension-fund", ["New York City Fire Pension Fund", "legitimate_non_crosswalk_entity"]],
   ["triborough-bridge-and-tunnel-authority", ["Triborough Bridge and Tunnel Authority", "legitimate_non_crosswalk_entity", "Triborough Bridge And Tunnel Authority"]],

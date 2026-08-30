@@ -153,14 +153,14 @@ test("Office of the Mayor meeting-name variants resolve to one canonical agency"
 });
 
 test("all reviewed constellation-only routes have an explicit non-fuzzy disposition", () => {
-  assert.equal(AGENCY_ROUTE_CLASSIFICATIONS.length, 20);
+  assert.equal(AGENCY_ROUTE_CLASSIFICATIONS.length, 23);
   assert.deepEqual(
     Object.fromEntries(["alias_to_canonical", "legitimate_non_crosswalk_entity", "unresolved"]
       .map((classification) => [
         classification,
         AGENCY_ROUTE_CLASSIFICATIONS.filter((row) => row.classification === classification).length,
       ])),
-    { alias_to_canonical: 16, legitimate_non_crosswalk_entity: 4, unresolved: 0 },
+    { alias_to_canonical: 18, legitimate_non_crosswalk_entity: 5, unresolved: 0 },
   );
 });
 
@@ -828,12 +828,12 @@ test("lookup materialization includes Parks multi-category demo when built", () 
   assert.equal(lookup.by_id["housing-authority"].subject_ref, "agency:id:housing-authority");
 
   const report = JSON.parse(readFileSync(join(ROOT, "site/data/agency_route_identity_report.json"), "utf8"));
-  assert.equal(report.constellation_only_source_count, 22);
+  assert.equal(report.constellation_only_source_count, 23);
   assert.deepEqual(report.classification_counts, {
     alias_to_canonical: 16,
-    legitimate_non_crosswalk_entity: 4,
+    legitimate_non_crosswalk_entity: 5,
     unresolved: 2,
   });
-  assert.equal(report.cases.length, 22);
+  assert.equal(report.cases.length, 23);
   assert.ok(report.cases.every((row) => row.classification && row.basis));
 });

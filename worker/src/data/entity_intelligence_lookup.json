@@ -3,14 +3,14 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-28T16:31:37.977Z",
-  "observation_count": 3548,
+  "generated_at": "2026-08-30T16:27:58.717Z",
+  "observation_count": 3549,
   "entity_count": 200,
   "multi_domain_count": 37,
   "selection": {
     "strategy": "multi_domain_then_mandate_agency_reserve_then_richness_fill",
     "cap": 200,
-    "candidate_count": 1511,
+    "candidate_count": 1512,
     "reason_counts": {
       "multi_domain": 37,
       "mandate_agency_reserve": 17,
@@ -346428,17 +346428,18 @@
         "coverage_rate": 0.14285714285714285
       }
     },
-    "vendor:stem:MAN%20UP": {
+    "agency:id:mta-construction-and-development": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
       "method": "cross_domain_identity_v2",
       "method_version": "2.0.0",
       "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:MAN%20UP",
-        "id": "stem:MAN%20UP",
-        "stem": "MAN UP",
-        "display_name": "MAN UP INC"
+        "kind": "agency",
+        "ref": "agency:id:mta-construction-and-development",
+        "id": "id:mta-construction-and-development",
+        "canonical_id": "mta-construction-and-development",
+        "canonical_name": "MTA Construction & Development",
+        "display_name": "MTA Construction & Development"
       },
       "domains": {
         "money": {
@@ -346447,137 +346448,40 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20210625111",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "00221N0026-FY22 Man Up",
-              "when": "2021-07-01",
-              "amount": 4235000,
-              "public_status": null,
-              "pin": "00221N0026001",
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20210625111",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MAN%20UP",
-              "root_kind": "vendor",
-              "href": "#notice/20210625111",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:20210625111",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "2021-07-01",
-                "input_value": "Man Up Inc"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT1-002-20228800279",
+              "subject_ref": "contract:A37703",
               "domain": "money",
               "object_kind": "contract",
-              "label": "MAN UP INC",
-              "when": "07/01/2021",
-              "amount": null,
+              "label": "Gramercy Group, Inc.",
+              "when": "July 20, 2026",
+              "amount": 10713000,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT1-002-20228800279",
+              "contract_id": "A37703",
               "document_id": null,
               "project_id": null,
               "request_id": null,
               "event_id": null,
               "ulurp_numbers": null,
               "bbls": null,
-              "root_ref": "vendor:stem:MAN%20UP",
-              "root_kind": "vendor",
+              "root_ref": "agency:id:mta-construction-and-development",
+              "root_kind": "agency",
               "href": null,
               "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
+                "source_system": "mta_cd_awards",
+                "source_record_id": "mta_cd_awards:ct:A37703",
                 "source_fields": [
-                  "vendor_name"
+                  "agency_name"
                 ],
-                "basis": "money_vendor_name",
-                "observed_at": "07/01/2021",
-                "input_value": "MAN UP INC"
+                "basis": "money_agency_name",
+                "observed_at": "July 20, 2026",
+                "input_value": "MTA Construction & Development"
               },
-              "link_type": "named_vendor",
+              "link_type": "published_by_agency",
               "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT126020278801038",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MAN UP INC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "26025N8138KXLR001",
-              "contract_id": "CT126020278801038",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MAN%20UP",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:26025N8138KXLR001",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MAN UP INC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT126020278801041",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MAN UP INC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "26025N0125007R001",
-              "contract_id": "CT126020278801041",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MAN%20UP",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:26025N0125007R001",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MAN UP INC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
+              "method": "agency_canonical_v1"
             }
           ],
-          "count": 4
+          "count": 1
         },
         "land": {
           "status": "empty",
@@ -346624,335 +346528,41 @@
       },
       "links": [
         {
-          "type": "named_vendor",
-          "from": "contract:CT1-002-20228800279",
-          "to": "vendor:stem:MAN%20UP",
-          "method": "vendor_stem_v1",
+          "type": "published_by_agency",
+          "from": "contract:A37703",
+          "to": "agency:id:mta-construction-and-development",
+          "method": "agency_canonical_v1",
           "method_version": "1",
           "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
+            "source_system": "mta_cd_awards",
+            "source_record_id": "mta_cd_awards:ct:A37703",
             "source_fields": [
-              "vendor_name"
+              "agency_name"
             ],
-            "basis": "money_vendor_name",
-            "observed_at": "07/01/2021",
-            "input_value": "MAN UP INC",
+            "basis": "money_agency_name",
+            "observed_at": "July 20, 2026",
+            "input_value": "MTA Construction & Development",
             "domain": "money",
             "cross_domain": true
           },
           "confidence": "strong",
           "domain": "money",
           "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
+            "source_system": "mta_cd_awards",
+            "source_record_id": "mta_cd_awards:ct:A37703",
             "source_fields": [
-              "vendor_name"
+              "agency_name"
             ],
-            "basis": "money_vendor_name",
-            "observed_at": "07/01/2021",
-            "input_value": "MAN UP INC"
+            "basis": "money_agency_name",
+            "observed_at": "July 20, 2026",
+            "input_value": "MTA Construction & Development"
           },
           "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT1-002-20228800279",
-          "to": "pin:00221N0026001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "07/01/2021",
-            "input_value": "00221N0026001",
-            "join_key": "epin",
-            "join_value": "00221N0026001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "07/01/2021",
-            "input_value": "00221N0026001",
-            "join_key": "epin",
-            "join_value": "00221N0026001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT126020278801038",
-          "to": "vendor:stem:MAN%20UP",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N8138KXLR001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MAN UP INC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N8138KXLR001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MAN UP INC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT126020278801038",
-          "to": "pin:26025N8138KXLR001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N8138KXLR001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "26025N8138KXLR001",
-            "join_key": "pin",
-            "join_value": "26025N8138KXLR001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N8138KXLR001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "26025N8138KXLR001",
-            "join_key": "pin",
-            "join_value": "26025N8138KXLR001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT126020278801041",
-          "to": "vendor:stem:MAN%20UP",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N0125007R001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MAN UP INC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N0125007R001",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MAN UP INC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT126020278801041",
-          "to": "pin:26025N0125007R001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N0125007R001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "26025N0125007R001",
-            "join_key": "pin",
-            "join_value": "26025N0125007R001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:26025N0125007R001",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "26025N0125007R001",
-            "join_key": "pin",
-            "join_value": "26025N0125007R001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "notice:20210625111",
-          "to": "vendor:stem:MAN%20UP",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210625111",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2021-07-01",
-            "input_value": "Man Up Inc",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210625111",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "2021-07-01",
-            "input_value": "Man Up Inc"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "references_contract",
-          "from": "notice:20210625111",
-          "to": "contract:CT1-002-20228800279",
-          "method": "passport_contract_join_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
-            "source_fields": [
-              "epin",
-              "pin"
-            ],
-            "basis": "procurement_pin_exact",
-            "observed_at": "07/01/2021",
-            "input_value": "00221N0026001",
-            "related_source_system": "warehouse",
-            "related_source_record_id": "warehouse:20210625111",
-            "join_key": "pin_epin",
-            "join_value": "00221N0026001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228800279",
-            "source_fields": [
-              "epin",
-              "pin"
-            ],
-            "basis": "procurement_pin_exact",
-            "observed_at": "07/01/2021",
-            "input_value": "00221N0026001",
-            "related_source_system": "warehouse",
-            "related_source_record_id": "warehouse:20210625111",
-            "join_key": "pin_epin",
-            "join_value": "00221N0026001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "notice:20210625111",
-          "to": "pin:00221N0026001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210625111",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2021-07-01",
-            "input_value": "00221N0026001",
-            "join_key": "pin",
-            "join_value": "00221N0026001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:20210625111",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "observed_at": "2021-07-01",
-            "input_value": "00221N0026001",
-            "join_key": "pin",
-            "join_value": "00221N0026001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
         }
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 5,
+        "deterministic": 0,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -346963,24 +346573,24 @@
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 9,
-        "join_key_link_count": 5,
+        "total_linked_objects": 1,
+        "link_count": 1,
+        "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
     },
-    "vendor:stem:MARSH": {
+    "vendor:stem:GRAMERCY%20GROUP": {
       "ok": true,
       "version": "cross_domain_object_link_v2",
       "method": "cross_domain_identity_v2",
       "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
-        "ref": "vendor:stem:MARSH",
-        "id": "stem:MARSH",
-        "stem": "MARSH",
-        "display_name": "MARSH USA LLC"
+        "ref": "vendor:stem:GRAMERCY%20GROUP",
+        "id": "stem:GRAMERCY%20GROUP",
+        "stem": "GRAMERCY GROUP",
+        "display_name": "Gramercy Group, Inc."
       },
       "domains": {
         "money": {
@@ -346989,138 +346599,40 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "contract:CT1-002-20238800819",
+              "subject_ref": "contract:A37703",
               "domain": "money",
               "object_kind": "contract",
-              "label": "MARSH USA LLC",
-              "when": "07/01/2022",
-              "amount": null,
+              "label": "Gramercy Group, Inc.",
+              "when": "July 20, 2026",
+              "amount": 10713000,
               "public_status": null,
               "pin": null,
-              "contract_id": "CT1-002-20238800819",
+              "contract_id": "A37703",
               "document_id": null,
               "project_id": null,
               "request_id": null,
               "event_id": null,
               "ulurp_numbers": null,
               "bbls": null,
-              "root_ref": "vendor:stem:MARSH",
+              "root_ref": "vendor:stem:GRAMERCY%20GROUP",
               "root_kind": "vendor",
               "href": null,
               "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:CT1-002-20238800819",
+                "source_system": "mta_cd_awards",
+                "source_record_id": "mta_cd_awards:ct:A37703",
                 "source_fields": [
                   "vendor_name"
                 ],
                 "basis": "money_vendor_name",
-                "observed_at": "07/01/2022",
-                "input_value": "MARSH USA LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT1-002-20228805665",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MARSH USA LLC",
-              "when": "04/01/2022",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT1-002-20228805665",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MARSH",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:CT1-002-20228805665",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "04/01/2022",
-                "input_value": "MARSH USA LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT1-002-20228803622",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MARSH USA LLC",
-              "when": "04/01/2022",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": "CT1-002-20228803622",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MARSH",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "passport-public-contracts",
-                "source_record_id": "passport-public-contracts:ct:CT1-002-20228803622",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "observed_at": "04/01/2022",
-                "input_value": "MARSH USA LLC"
-              },
-              "link_type": "named_vendor",
-              "confidence": "strong",
-              "method": "vendor_stem_v1"
-            },
-            {
-              "subject_ref": "contract:CT100220278801283",
-              "domain": "money",
-              "object_kind": "contract",
-              "label": "MARSH USA LLC",
-              "when": null,
-              "amount": null,
-              "public_status": null,
-              "pin": "00225N8001KXLR002",
-              "contract_id": "CT100220278801283",
-              "document_id": null,
-              "project_id": null,
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:MARSH",
-              "root_kind": "vendor",
-              "href": null,
-              "provenance": {
-                "source_system": "checkbook-contracts",
-                "source_record_id": "checkbook-contracts:pin:00225N8001KXLR002",
-                "source_fields": [
-                  "vendor_name"
-                ],
-                "basis": "money_vendor_name",
-                "input_value": "MARSH USA LLC"
+                "observed_at": "July 20, 2026",
+                "input_value": "Gramercy Group, Inc."
               },
               "link_type": "named_vendor",
               "confidence": "strong",
               "method": "vendor_stem_v1"
             }
           ],
-          "count": 4
+          "count": 1
         },
         "land": {
           "status": "empty",
@@ -347168,292 +346680,40 @@
       "links": [
         {
           "type": "named_vendor",
-          "from": "contract:CT1-002-20228803622",
-          "to": "vendor:stem:MARSH",
+          "from": "contract:A37703",
+          "to": "vendor:stem:GRAMERCY%20GROUP",
           "method": "vendor_stem_v1",
           "method_version": "1",
           "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228803622",
+            "source_system": "mta_cd_awards",
+            "source_record_id": "mta_cd_awards:ct:A37703",
             "source_fields": [
               "vendor_name"
             ],
             "basis": "money_vendor_name",
-            "observed_at": "04/01/2022",
-            "input_value": "MARSH USA LLC",
+            "observed_at": "July 20, 2026",
+            "input_value": "Gramercy Group, Inc.",
             "domain": "money",
             "cross_domain": true
           },
           "confidence": "strong",
           "domain": "money",
           "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228803622",
+            "source_system": "mta_cd_awards",
+            "source_record_id": "mta_cd_awards:ct:A37703",
             "source_fields": [
               "vendor_name"
             ],
             "basis": "money_vendor_name",
-            "observed_at": "04/01/2022",
-            "input_value": "MARSH USA LLC"
+            "observed_at": "July 20, 2026",
+            "input_value": "Gramercy Group, Inc."
           },
           "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT1-002-20228803622",
-          "to": "pin:00222P0001001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228803622",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "04/01/2022",
-            "input_value": "00222P0001001",
-            "join_key": "epin",
-            "join_value": "00222P0001001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228803622",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "04/01/2022",
-            "input_value": "00222P0001001",
-            "join_key": "epin",
-            "join_value": "00222P0001001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT1-002-20228805665",
-          "to": "vendor:stem:MARSH",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228805665",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "04/01/2022",
-            "input_value": "MARSH USA LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228805665",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "04/01/2022",
-            "input_value": "MARSH USA LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT1-002-20228805665",
-          "to": "pin:00222S0001001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228805665",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "04/01/2022",
-            "input_value": "00222S0001001",
-            "join_key": "epin",
-            "join_value": "00222S0001001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20228805665",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "04/01/2022",
-            "input_value": "00222S0001001",
-            "join_key": "epin",
-            "join_value": "00222S0001001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT1-002-20238800819",
-          "to": "vendor:stem:MARSH",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20238800819",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "07/01/2022",
-            "input_value": "MARSH USA LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20238800819",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "observed_at": "07/01/2022",
-            "input_value": "MARSH USA LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT1-002-20238800819",
-          "to": "pin:00220P8148KXLR001",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20238800819",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "07/01/2022",
-            "input_value": "00220P8148KXLR001",
-            "join_key": "epin",
-            "join_value": "00220P8148KXLR001",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "passport-public-contracts",
-            "source_record_id": "passport-public-contracts:ct:CT1-002-20238800819",
-            "source_fields": [
-              "epin"
-            ],
-            "basis": "money_epin",
-            "observed_at": "07/01/2022",
-            "input_value": "00220P8148KXLR001",
-            "join_key": "epin",
-            "join_value": "00220P8148KXLR001",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
-        },
-        {
-          "type": "named_vendor",
-          "from": "contract:CT100220278801283",
-          "to": "vendor:stem:MARSH",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:00225N8001KXLR002",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MARSH USA LLC",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:00225N8001KXLR002",
-            "source_fields": [
-              "vendor_name"
-            ],
-            "basis": "money_vendor_name",
-            "input_value": "MARSH USA LLC"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "shares_authority_key",
-          "from": "contract:CT100220278801283",
-          "to": "pin:00225N8001KXLR002",
-          "method": "pin_authority_key_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:00225N8001KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "00225N8001KXLR002",
-            "join_key": "pin",
-            "join_value": "00225N8001KXLR002",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "checkbook-contracts",
-            "source_record_id": "checkbook-contracts:pin:00225N8001KXLR002",
-            "source_fields": [
-              "pin"
-            ],
-            "basis": "money_pin",
-            "input_value": "00225N8001KXLR002",
-            "join_key": "pin",
-            "join_value": "00225N8001KXLR002",
-            "match": "exact",
-            "tier": "deterministic_exact_key"
-          },
-          "layer": "cross_domain_object_link_v2",
-          "tier": "deterministic_exact_key",
-          "tier_version": "cross_spine_edge_policy_v2"
         }
       ],
       "shadow_edges": [],
       "edge_routing": {
-        "deterministic": 4,
+        "deterministic": 0,
         "public_inferred": 0,
         "evidence_only": 0,
         "no_edge": 0
@@ -347464,9 +346724,9 @@
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
         "domains_empty": 6,
-        "total_linked_objects": 4,
-        "link_count": 8,
-        "join_key_link_count": 4,
+        "total_linked_objects": 1,
+        "link_count": 1,
+        "join_key_link_count": 0,
         "cross_spine_shadow_count": 0,
         "coverage_rate": 0.14285714285714285
       }
@@ -347678,6 +346938,18 @@
         "confidence": "strong"
       }
     ],
+    "contract:A37703": [
+      {
+        "entity_ref": "agency:id:mta-construction-and-development",
+        "relation": "published_by_agency",
+        "confidence": "strong"
+      },
+      {
+        "entity_ref": "vendor:stem:GRAMERCY%20GROUP",
+        "relation": "named_vendor",
+        "confidence": "strong"
+      }
+    ],
     "contract:BA2335819": [
       {
         "entity_ref": "agency:id:housing-authority",
@@ -347772,11 +347044,6 @@
       {
         "entity_ref": "agency:id:office-of-criminal-justice-002",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MAN%20UP",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -347874,11 +347141,6 @@
       {
         "entity_ref": "agency:id:management-and-budget",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MARSH",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -348067,11 +347329,6 @@
       {
         "entity_ref": "agency:id:management-and-budget",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MARSH",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -348320,11 +347577,6 @@
       {
         "entity_ref": "agency:id:mayoralty",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MARSH",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -359964,11 +359216,6 @@
         "entity_ref": "agency:id:mayoralty",
         "relation": "published_by_agency",
         "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MARSH",
-        "relation": "named_vendor",
-        "confidence": "strong"
       }
     ],
     "contract:CT100220278801511": [
@@ -362419,22 +361666,12 @@
         "entity_ref": "agency:id:youth-and-community-development",
         "relation": "published_by_agency",
         "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MAN%20UP",
-        "relation": "named_vendor",
-        "confidence": "strong"
       }
     ],
     "contract:CT126020278801041": [
       {
         "entity_ref": "agency:id:youth-and-community-development",
         "relation": "published_by_agency",
-        "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MAN%20UP",
-        "relation": "named_vendor",
         "confidence": "strong"
       }
     ],
@@ -368526,11 +367763,6 @@
         "entity_ref": "agency:id:mayors-office-of-criminal-justice",
         "relation": "published_by_agency",
         "confidence": "strong"
-      },
-      {
-        "entity_ref": "vendor:stem:MAN%20UP",
-        "relation": "named_vendor",
-        "confidence": "strong"
       }
     ],
     "notice:20210625112": [
@@ -373063,7 +372295,7 @@
     "provenance": {
       "denominator": "site/data/ocp_awards_warehouse_lookup.json",
       "denominator_dataset_id": "qyyg-4tf5",
-      "denominator_materialized_at": "2026-08-05T10:40:50.286Z",
+      "denominator_materialized_at": "2026-08-29T11:43:49.474Z",
       "denominator_row_count": 53245,
       "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
       "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",
@@ -374872,19 +374104,19 @@
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "vendor:stem:MAN%20UP",
-      "kind": "vendor",
-      "display_name": "MAN UP INC",
+      "ref": "agency:id:mta-construction-and-development",
+      "kind": "agency",
+      "display_name": "MTA Construction & Development",
       "domains_matched": 1,
-      "total_linked_objects": 4,
+      "total_linked_objects": 1,
       "coverage_rate": 0.14285714285714285
     },
     {
-      "ref": "vendor:stem:MARSH",
+      "ref": "vendor:stem:GRAMERCY%20GROUP",
       "kind": "vendor",
-      "display_name": "MARSH USA LLC",
+      "display_name": "Gramercy Group, Inc.",
       "domains_matched": 1,
-      "total_linked_objects": 4,
+      "total_linked_objects": 1,
       "coverage_rate": 0.14285714285714285
     },
     {

@@ -4268,6 +4268,14 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   materializes them; exact solicitation/event/CR identifiers are the only native joins, and bid
   results remain the `bid_opening_result` stage. Focused proof is `test/mta_opportunities.test.mjs`.
 
+- **Authority-native procurement surfaces (ANP-04):** admitted NYCHA and MTA fixtures share the
+  ordinary procurement search, Browse, detail, agency, vendor, Follow, digest, HTTP, and MCP
+  paths. `site/procurement_search_producer.mjs` canonicalizes operating-entity refs (including
+  `mta-nyct` / `mta-construction-development` aliases) and parent aggregation; exact
+  `procurement_id` watches compile regardless of award-stage heuristics. Rebuild the shared
+  model, keyword family, entity intelligence, and agency constellation after fixture changes.
+  Focused proof is `test/authority_native_procurement_surfaces.test.mjs`.
+
 - **MTA procurement observations:** `site/data/mta_procurement_sources.json` is the source-qualified
   fixture for the annual `twsw-2mqa` snapshot and MTA Construction & Development award pages.
   `worker/src/lib/mta_procurement_source_records.mjs` preserves raw/normalized evidence and exact

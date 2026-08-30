@@ -394,7 +394,7 @@ export function observationFromMoneyRow(row, opts = {}) {
   const typeDesc = clean(row.type_of_notice_description).toLowerCase();
   const contractObservation = opts.objectKind === "contract"
     || row.object_kind === "contract"
-    || /passport|checkbook_contracts|checkbook_nycha_contracts/i.test(sourceSystem);
+    || /passport|checkbook_contracts|checkbook_nycha_contracts|mta_cd_awards/i.test(sourceSystem);
   let object_kind = contractObservation ? "contract" : "award";
   if (typeDesc.includes("solicit")) object_kind = "solicitation";
   else if (typeDesc.includes("intent to award")) object_kind = "intent_to_award";
@@ -465,6 +465,30 @@ export function observationFromCheckbookContractRow(row, opts = {}) {
       ...opts,
       sourceSystem: opts.sourceSystem || "checkbook-contracts",
       objectKind: "contract",
+    },
+  );
+}
+
+/** Shape an MTA Construction & Development award as a named vendor contract. */
+export function observationFromMtaCdAwardRow(row, opts = {}) {
+  if (!row || typeof row !== "object") return null;
+  if (String(row.observation_type || "").toLowerCase() === "bid_opening_result") return null;
+  const vendorName = clean(row.vendor_name || row.firm);
+  const contractId = clean(row.contract_id || row.contract_number);
+  if (!vendorName || !contractId) return null;
+  return observationFromMoneyRow(
+    {
+      ...row,
+      contract_id: contractId,
+      agency_name: row.agency_name || row.source_agency_label || "MTA Construction & Development",
+      vendor_name: vendorName,
+      object_kind: "award",
+      award_date: row.award_date,
+    },
+    {
+      ...opts,
+      sourceSystem: opts.sourceSystem || "mta_cd_awards",
+      objectKind: "award",
     },
   );
 }

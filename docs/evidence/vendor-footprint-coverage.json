@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "title": "Vendor footprint coverage and promotion receipt",
-  "generated_at": "2026-08-28T16:31:37.977Z",
+  "generated_at": "2026-08-30T16:27:58.717Z",
   "status": "qualified",
   "qualifier_required": true,
   "sections": [
@@ -129,7 +129,7 @@
   "provenance": {
     "denominator": "site/data/ocp_awards_warehouse_lookup.json",
     "denominator_dataset_id": "qyyg-4tf5",
-    "denominator_materialized_at": "2026-08-05T10:40:50.286Z",
+    "denominator_materialized_at": "2026-08-29T11:43:49.474Z",
     "denominator_row_count": 53245,
     "numerator": "full-corpus exact vendor profile aggregate (vendor_stem_v1)",
     "precision_receipt": "warehouse/receipts/proof/wh04_er_batch_latest.json",

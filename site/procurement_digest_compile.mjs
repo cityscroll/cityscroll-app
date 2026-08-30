@@ -201,6 +201,7 @@ function rowMatchesFilter(row, filter = {}, lens = "money") {
     if (stem.length < 3) return false;
     return vendorStem(row.vendor_name) === stem;
   }
+  if (filter.procurement_id) return true;
   if (filter.agency && text(row.agency_name, 240) !== text(filter.agency, 240)) return false;
   if (filter.minAmount != null && (row.contract_amount == null || Number(row.contract_amount) < Number(filter.minAmount))) {
     return false;

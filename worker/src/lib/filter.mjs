@@ -209,7 +209,7 @@ function clampField(name, v) {
       return typeof v === "string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
     case "procurement_id": {
       const s = typeof v === "string" ? v.trim() : "";
-      return /^procurement:[a-z0-9-]+:[A-Za-z0-9._:-]{3,120}$/.test(s) ? s : null;
+      return /^procurement:[a-z0-9_-]+:[A-Za-z0-9._:-]{3,120}$/.test(s) ? s : null;
     }
     case "closingWeek":
       return !!v;
