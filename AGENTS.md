@@ -1486,6 +1486,15 @@ then geometry. It accepts no geocode, live GIS, address similarity, or
 district placement; current Land detail/list routes stay on
 `site/app/land.mjs`. Focused proof: `test/land_project_geography.test.mjs`.
 
+**Land project map points:** `site/land_project_map_points.mjs` materializes the
+bounded `cityscroll.land_project_map_points.v1` projection from the default Land
+snapshot, retained WH-06 project-to-BBL rows, MapPLUTO centroids, and that
+resolver. The resident artifact is mapped canonical project ids only; unmapped,
+rejected, and source-missing rows stay on
+`site/data/land_project_map_points_receipt.json`. Rebuild with
+`node tools/build_land_project_map_points.mjs`; `--check` verifies. Focused proof:
+`test/land_project_map_points.test.mjs`.
+
 **WH-07 City Record PIN-chain serve (first history projection):** materialize
 procurement-with-pin siblings from the WH-07 `city_record` bulk into
 `site/data/city_record_pin_chain_warehouse_lookup.json` (+ Worker twin).

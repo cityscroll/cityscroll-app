@@ -1,0 +1,533 @@
+{
+  "schema": "cityscroll.land_project_map_points_receipt.v1",
+  "resolver_version": "cityscroll.land_project_geography.v1",
+  "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
+  "rejected_placement_methods": [
+    "address_geocode",
+    "borough_centroid",
+    "district_guess",
+    "neighboring_parcel",
+    "outcome_point"
+  ],
+  "inputs": {
+    "land_default": {
+      "path": "site/data/land_default_ulurp.json",
+      "count": 40,
+      "vintage": {
+        "generated_at": "2026-08-23T07:59:14.162Z",
+        "schema_version": 1,
+        "delivery_tier": "inline-at-build"
+      },
+      "sha256": "3f60a1ac51f8e80ebec80d0895be41541174da5cadc80c1021bf8d7bcbdb9443"
+    },
+    "zap_bbl": {
+      "path": "site/data/zap_bbl_warehouse_lookup.json",
+      "count": 24542,
+      "vintage": {
+        "phase": "WH-06",
+        "dataset_id": "2iga-a6mk",
+        "mode": "bulk_warehouse",
+        "materialized_at": "2026-08-05T10:41:38.120Z"
+      },
+      "sha256": "310a681d014bd31a5e18b5c567664615e204502c0f15dea1582dfd6f38955edf"
+    },
+    "mappluto_centroids": {
+      "path": "site/data/bbl_mappluto_centroids_lookup.json",
+      "count": 1092,
+      "vintage": {
+        "source": "mappluto",
+        "mode": "mappluto_pluto_csv",
+        "materialized_at": "2026-08-18T03:13:42.683Z"
+      },
+      "sha256": "236d627b8f34767d433f80ba3c60a381bc4189c04b77d64aa75a92becce3c426"
+    },
+    "join_keys": [
+      "project_id",
+      "bbl"
+    ]
+  },
+  "counts": {
+    "universe": 40,
+    "mapped": 29,
+    "unmapped": 0,
+    "rejected": 0,
+    "source_missing": 11
+  },
+  "output": {
+    "mapped": 29,
+    "unmapped": 0,
+    "rejected": 0,
+    "source_missing": 11
+  },
+  "mapped_project_ids": [
+    "2026R0127",
+    "2025K0305",
+    "2024Q0325",
+    "2024M0244",
+    "2025M0338",
+    "2024K0358",
+    "2023M0213",
+    "2019K0383",
+    "2025K0287",
+    "2024K0286",
+    "2023M0116",
+    "2024Q0219",
+    "2026R0186",
+    "2025K0284",
+    "2023X0149",
+    "2022K0416",
+    "2025Q0142",
+    "2025Q0247",
+    "2025R0137",
+    "2025Q0316",
+    "2026Q0210",
+    "2025M0395",
+    "2022K0430",
+    "2024K0196",
+    "2023Q0303",
+    "2025K0154",
+    "2024K0421",
+    "2022Q0449",
+    "2023K0183"
+  ],
+  "unmapped_project_ids": [],
+  "rejected_project_ids": [],
+  "source_missing_project_ids": [
+    "2020M0385",
+    "2020K0444",
+    "2024Q0135",
+    "P2012X0048",
+    "2020Q0317",
+    "2023M0452",
+    "2026K0123",
+    "2024K0214",
+    "2025M0252",
+    "2025R0222",
+    "2026K0233"
+  ],
+  "unmapped_exact_bbl_missing_centroid": [
+    "2020M0385",
+    "2020K0444",
+    "2024Q0135",
+    "P2012X0048",
+    "2020Q0317",
+    "2023M0452"
+  ],
+  "unmapped_no_retained_bbl": [
+    "2026K0123",
+    "2024K0214",
+    "2025M0252",
+    "2025R0222",
+    "2026K0233"
+  ],
+  "outcomes": [
+    {
+      "project_id": "2020M0385",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 2,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2020K0444",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 8,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2024Q0135",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 25,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "P2012X0048",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 11,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2020Q0317",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 2,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2023M0452",
+      "status": "source_missing",
+      "reason": "exact_bbl_missing_centroid",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 1,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2026R0127",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "5007087501"
+    },
+    {
+      "project_id": "2025K0305",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25,
+      "exact_bbl_count": 25,
+      "selected_bbl": "3069440327"
+    },
+    {
+      "project_id": "2026K0123",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2024Q0325",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12,
+      "exact_bbl_count": 12,
+      "selected_bbl": "4161200071"
+    },
+    {
+      "project_id": "2024K0214",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2024M0244",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 8,
+      "exact_bbl_count": 8,
+      "selected_bbl": "1011070005"
+    },
+    {
+      "project_id": "2025M0338",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6,
+      "exact_bbl_count": 6,
+      "selected_bbl": "1010170001"
+    },
+    {
+      "project_id": "2024K0358",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2,
+      "exact_bbl_count": 2,
+      "selected_bbl": "3025900001"
+    },
+    {
+      "project_id": "2023M0213",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 7,
+      "exact_bbl_count": 7,
+      "selected_bbl": "1011070005"
+    },
+    {
+      "project_id": "2019K0383",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6,
+      "exact_bbl_count": 6,
+      "selected_bbl": "3067330029"
+    },
+    {
+      "project_id": "2025K0287",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "3025900025"
+    },
+    {
+      "project_id": "2025M0252",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2024K0286",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "3023560001"
+    },
+    {
+      "project_id": "2023M0116",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "1002670019"
+    },
+    {
+      "project_id": "2024Q0219",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12,
+      "exact_bbl_count": 12,
+      "selected_bbl": "4113840038"
+    },
+    {
+      "project_id": "2026R0186",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "5028100080"
+    },
+    {
+      "project_id": "2025K0284",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "3061090001"
+    },
+    {
+      "project_id": "2023X0149",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 12,
+      "exact_bbl_count": 12,
+      "selected_bbl": "2031110071"
+    },
+    {
+      "project_id": "2022K0416",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 6,
+      "exact_bbl_count": 6,
+      "selected_bbl": "3075580014"
+    },
+    {
+      "project_id": "2025Q0142",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "4020030001"
+    },
+    {
+      "project_id": "2025Q0247",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 2,
+      "exact_bbl_count": 2,
+      "selected_bbl": "4022210001"
+    },
+    {
+      "project_id": "2025R0222",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2025R0137",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3,
+      "exact_bbl_count": 3,
+      "selected_bbl": "5000090022"
+    },
+    {
+      "project_id": "2025Q0316",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25,
+      "exact_bbl_count": 25,
+      "selected_bbl": "4002760035"
+    },
+    {
+      "project_id": "2026Q0210",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 25,
+      "exact_bbl_count": 25,
+      "selected_bbl": "4100010001"
+    },
+    {
+      "project_id": "2025M0395",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "1008097502"
+    },
+    {
+      "project_id": "2022K0430",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 23,
+      "exact_bbl_count": 25,
+      "selected_bbl": "3017160061"
+    },
+    {
+      "project_id": "2026K0233",
+      "status": "source_missing",
+      "reason": "no_retained_bbl",
+      "method": "unmapped",
+      "precision": null,
+      "bbl_count": 0,
+      "exact_bbl_count": 0,
+      "selected_bbl": null
+    },
+    {
+      "project_id": "2024K0196",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 5,
+      "exact_bbl_count": 5,
+      "selected_bbl": "3031620021"
+    },
+    {
+      "project_id": "2023Q0303",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 11,
+      "exact_bbl_count": 11,
+      "selected_bbl": "4069730025"
+    },
+    {
+      "project_id": "2025K0154",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 3,
+      "exact_bbl_count": 3,
+      "selected_bbl": "3019900030"
+    },
+    {
+      "project_id": "2024K0421",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 11,
+      "exact_bbl_count": 11,
+      "selected_bbl": "3084870021"
+    },
+    {
+      "project_id": "2022Q0449",
+      "status": "mapped",
+      "reason": null,
+      "method": "multi_bbl_anchor",
+      "precision": "anchor",
+      "bbl_count": 14,
+      "exact_bbl_count": 14,
+      "selected_bbl": "4035220023"
+    },
+    {
+      "project_id": "2023K0183",
+      "status": "mapped",
+      "reason": null,
+      "method": "single_bbl_centroid",
+      "precision": "exact",
+      "bbl_count": 1,
+      "exact_bbl_count": 1,
+      "selected_bbl": "3070550013"
+    }
+  ],
+  "generation": {
+    "derivation": "node tools/build_land_project_map_points.mjs",
+    "resolver_version": "cityscroll.land_project_geography.v1",
+    "join_version": "exact_project_id_wh06_bbl_mappluto_centroid_v1",
+    "payload_path": "site/data/land_project_map_points.json",
+    "payload_bytes": 4822,
+    "payload_sha256": "0e8f2629818d3e0d7284c426074cac817cb3074fbcc1aabe168fd1f77b770c5c"
+  }
+}

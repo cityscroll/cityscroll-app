@@ -1,0 +1,40 @@
+{
+  "landDefault": {
+    "count": 5,
+    "generated_at": "2026-08-23T07:59:14.162Z",
+    "schema_version": 1,
+    "delivery_tier": "inline-at-build",
+    "projects": [
+      { "project_id": "2026R0127", "project_name": "Single lot specimen" },
+      { "project_id": "2025K0305", "project_name": "Multi lot specimen" },
+      { "project_id": "2026K0123", "project_name": "No retained BBL" },
+      { "project_id": "2020M0385", "project_name": "Exact BBL missing centroid" },
+      { "project_id": "REJECTED1", "project_name": "Rejected geocode only" }
+    ]
+  },
+  "zapBbl": {
+    "phase": "WH-06",
+    "dataset_id": "2iga-a6mk",
+    "mode": "bulk_warehouse",
+    "materialized_at": "2026-08-05T10:41:38.120Z",
+    "project_count": 4,
+    "rows": [
+      { "project_id": "2026R0127", "bbls": ["5007087501"] },
+      { "project_id": "2025K0305", "bbls": ["3069440002", "3069440004", "3069440007"] },
+      { "project_id": "2020M0385", "bbls": ["1010060013"] },
+      { "project_id": "UNRELATED", "bbls": ["1000380001"] }
+    ]
+  },
+  "mapplutoCentroids": {
+    "source": "mappluto",
+    "mode": "mappluto_pluto_csv",
+    "materialized_at": "2026-08-18T03:13:42.683Z",
+    "bbl_count": 4,
+    "by_bbl": {
+      "5007087501": { "lat": 40.6128941, "lon": -74.1198445 },
+      "3069440002": { "lat": 40.60, "lon": -74.04 },
+      "3069440004": { "lat": 40.66, "lon": -73.98 },
+      "3069440007": { "lat": 40.70, "lon": -74.00 }
+    }
+  }
+}
