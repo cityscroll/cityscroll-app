@@ -8,7 +8,7 @@
 | Scope | Catalog + pure evaluation flywheel — no production graph store, no public route |
 | Product name | **Civic Graph** (object–link–action registry + evaluation harness) |
 | Supersedes | — |
-| Related | `docs/adr/entity-resolution-taxonomy.md`, `docs/adr/civic-time-event-contract.md`, `docs/action-log.md`, `docs/civic-graph.md` |
+| Related | `docs/adr/entity-resolution-taxonomy.md`, `docs/adr/civic-time-event-contract.md`, `docs/action-log.md`, `docs/civic-graph.md`, `docs/adr/person-source-identity-seam.md` |
 
 ## Context
 

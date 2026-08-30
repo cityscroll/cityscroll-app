@@ -38,6 +38,9 @@
   `community-board-person:{board}:{key}` identities and its capability allowlist keeps generic,
   Community Board, agency, and vendor-contact profiles out of Council-only surfaces. No generic
   person route or source adapter is implied; focused proof is `test/person_ontology.test.mjs`.
+  Representation inventory and source-identity seam:
+  `docs/evidence/person-representation-inventory.md`,
+  `docs/adr/person-source-identity-seam.md`.
 
 - **Community Board people and roles:** `site/community_board_relations.mjs` is the source-qualified,
   board-local contract for `community-board-person` identities and temporal role edges. Keep these
