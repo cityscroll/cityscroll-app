@@ -1470,6 +1470,14 @@ outcome-only coordinates stay out of the numerator. This receipt does not ship
 a browse Map or change Land filters. Focused proof:
 `test/land_mapability_census.test.mjs`.
 
+**Known-point Land geography:** `site/land_project_geography.mjs` is the pure
+resolver over already materialized publisher, BBL-centroid, property, and
+geometry points. Priority is publisher, one exact BBL centroid, a real
+nearest-mean `multi_bbl_anchor` (never a synthetic average), then property,
+then geometry. It accepts no geocode, live GIS, address similarity, or
+district placement; current Land detail/list routes stay on
+`site/app/land.mjs`. Focused proof: `test/land_project_geography.test.mjs`.
+
 **WH-07 City Record PIN-chain serve (first history projection):** materialize
 procurement-with-pin siblings from the WH-07 `city_record` bulk into
 `site/data/city_record_pin_chain_warehouse_lookup.json` (+ Worker twin).
