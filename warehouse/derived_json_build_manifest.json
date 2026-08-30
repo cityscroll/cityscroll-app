@@ -239,6 +239,17 @@
         "site/data/community_board_money.json"
       ],
       "output_paths": ["site/data/community_board_constellation_lookup.json"]
+    },
+    {
+      "id": "community-board-payroll-staff-count",
+      "generator": "tools/build_community_board_payroll_staff_count.mjs",
+      "source_paths": [
+        "site/data/community_board_financial_identity_crosswalk.json",
+        "warehouse/fixtures/community-board-payroll/fy2025_identity_inventory.json"
+      ],
+      "output_paths": [
+        "site/data/community_board_payroll_staff_count.json"
+      ]
     }
   ]
 }
