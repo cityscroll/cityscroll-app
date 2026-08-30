@@ -14,11 +14,9 @@ import {
   normalizeFederatedSearchScope,
   validateFederatedSearchInput,
 } from "../capabilities/federated_search.mjs";
-import { mcpFederatedSearchInput } from "../worker/src/mcp.mjs";
 import { federateUniversalSearch } from "../site/universal_search_federator.mjs";
 import { buildUniversalSearchCoverageView } from "../site/universal_search_coverage_receipt.mjs";
 import { handleSearch } from "../worker/src/search.mjs";
-import { handleMcp } from "../worker/src/mcp.mjs";
 
 const SCHEMA = JSON.parse(readFileSync(new URL("./fixtures/federated_search_scope/schema.v1.json", import.meta.url)));
 const CASES = JSON.parse(readFileSync(new URL("./fixtures/federated_search_scope/cases.v1.json", import.meta.url)));
@@ -94,14 +92,6 @@ function provider(options = {}) {
       });
     },
   };
-}
-
-function mcpPost(body) {
-  return new Request("https://api.cityscroll.org/mcp", {
-    method: "POST",
-    headers: { "content-type": "application/json", "CF-Connecting-IP": "203.0.113.71" },
-    body: JSON.stringify(body),
-  });
 }
 
 function projection(result) {
@@ -284,36 +274,23 @@ test("stable result identity is unchanged when the same allowlist is replayed", 
   );
 });
 
-test("HTTP, MCP, and fixture adapters share validation, ranking, identity, and requested coverage", async () => {
+test("HTTP and fixture adapters share validation, ranking, identity, and requested coverage", async () => {
   const httpProvider = provider();
-  const mcpProvider = provider();
   const fixtureProvider = provider();
   const input = { query: "parks", limit: 10, scope: { lenses: ["agencies"] } };
-  const direct = await executeFederatedSearch(fixtureProvider, mcpFederatedSearchInput(input));
+  const direct = await executeFederatedSearch(fixtureProvider, input);
   const http = await handleSearch(
     new Request("https://api.cityscroll.org/search?q=parks&scope=agencies"),
     {},
     { federatedProvider: httpProvider },
   );
   const httpBody = await http.json();
-  const mcp = await handleMcp(
-    mcpPost({
-      jsonrpc: "2.0",
-      id: 3,
-      method: "tools/call",
-      params: { name: "search_federated", arguments: input },
-    }),
-    { SUBS: { async get() { return null; }, async put() {} } },
-    { federatedProvider: mcpProvider },
-  );
-  const mcpBody = await mcp.json();
   assert.deepEqual(httpBody.federated, direct);
-  assert.deepEqual(mcpBody.result.structuredContent, direct);
   assert.equal(httpBody.capability_reference, FEDERATED_SEARCH_CAPABILITY_REFERENCE);
   assert.equal(direct.requested_scope.schema, FEDERATED_SEARCH_REQUESTED_SCOPE_SCHEMA);
 });
 
-test("HTTP and MCP reject unknown scope instead of widening", async () => {
+test("HTTP rejects unknown scope instead of widening", async () => {
   const http = await handleSearch(
     new Request("https://api.cityscroll.org/search?q=parks&scope=contracts"),
     {},
@@ -323,20 +300,6 @@ test("HTTP and MCP reject unknown scope instead of widening", async () => {
   const httpBody = await http.json();
   assert.equal(httpBody.reason, "invalid-request");
   assert.match(httpBody.error, /unknown or unregistered lens/);
-
-  const mcp = await handleMcp(
-    mcpPost({
-      jsonrpc: "2.0",
-      id: 4,
-      method: "tools/call",
-      params: { name: "search_federated", arguments: { query: "parks", scope: { lenses: ["contracts"] } } },
-    }),
-    { SUBS: { async get() { return null; }, async put() {} } },
-    { federatedProvider: provider() },
-  );
-  const mcpBody = await mcp.json();
-  assert.equal(mcpBody.error.code, -32603);
-  assert.match(mcpBody.error.message, /unknown or unregistered lens/);
 });
 
 test("normalizeFederatedSearchScope keeps registered order and rejects empty allowlists", () => {

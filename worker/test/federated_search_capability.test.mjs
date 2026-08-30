@@ -113,6 +113,22 @@ test("MCP adapter preserves scoped federation through the same capability envelo
   assert.equal(direct.coverage.by_lens.notices.state, "out_of_scope");
 });
 
+test("MCP adapter rejects unknown scope instead of widening", async () => {
+  const response = await handleMcp(
+    mcpPost({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: { name: "search_federated", arguments: { query: "parks", scope: { lenses: ["contracts"] } } },
+    }),
+    { SUBS: { async get() { return null; }, async put() {} } },
+    { federatedProvider: provider() },
+  );
+  const body = await response.json();
+  assert.equal(body.error.code, -32603);
+  assert.match(body.error.message, /unknown or unregistered lens/);
+});
+
 test("MCP adapter rejects arbitrary query fields instead of silently widening the contract", async () => {
   const response = await handleMcp(
     mcpPost({
