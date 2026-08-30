@@ -209,7 +209,7 @@ def install_common_routes(page: Page) -> None:
     page.route("https://**", lambda route: route.abort())
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
     page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
-    page.route("https://crol-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {}))
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {}))
     page.route("https://challenges.cloudflare.com/**", lambda route: route.abort())
     page.route("https://fonts.googleapis.com/**", lambda route: route.abort())
     page.route("https://fonts.gstatic.com/**", lambda route: route.abort())
@@ -255,7 +255,7 @@ def install_notice_routes(page: Page, notice: dict) -> None:
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", soda)
     page.route("https://api.cityscroll.org/**", api)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", api)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", api)
 
 
 def install_stats_routes(page: Page, payload: dict) -> None:
@@ -265,7 +265,7 @@ def install_stats_routes(page: Page, payload: dict) -> None:
         json_response(route, payload)
 
     page.route("https://api.cityscroll.org/stats", stats)
-    page.route("https://crol-worker.crol-worker.workers.dev/stats", stats)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/stats", stats)
 
 
 def install_quiz_routes(page: Page, award_row: dict, nl_filter: dict) -> None:
@@ -288,7 +288,7 @@ def install_quiz_routes(page: Page, award_row: dict, nl_filter: dict) -> None:
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", soda)
     page.route("https://api.cityscroll.org/**", api)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", api)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", api)
 
 
 def open_notice(page: Page, base_url: str, hash_suffix: str, expect_offer: bool | None = None) -> None:

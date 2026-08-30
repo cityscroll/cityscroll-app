@@ -43,7 +43,7 @@ const INTERPRETATION_REPORT_CATEGORIES = Object.freeze(new Set([
 
 const DEFAULT_FALLBACK_HREF = "/about.html#feedback";
 const API_ORIGIN = () => globalThis.CROL_API_ORIGIN || "https://api.cityscroll.org";
-const API_FALLBACK_ORIGIN = () => globalThis.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
+const API_FALLBACK_ORIGIN = () => globalThis.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
 
 function reportClean(value, max = 500) {
   const result = String(value ?? "")

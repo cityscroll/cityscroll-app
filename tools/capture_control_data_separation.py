@@ -108,13 +108,13 @@ def json_response(route: Route, payload: object, status: int = 200) -> None:
 def install_routes(page: Page) -> None:
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, [NOTICE]))
     page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {"ok": False}, 404))
-    page.route("https://crol-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {"ok": False}, 404))
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {"ok": False}, 404))
     page.route(
         "https://api.cityscroll.org/rules*",
         lambda route: json_response(route, {"generated_at": "2026-08-04T12:00:00Z", "rules": [RULE]}),
     )
     page.route(
-        "https://crol-worker.crol-worker.workers.dev/rules*",
+        "https://cityscroll-worker.crol-worker.workers.dev/rules*",
         lambda route: json_response(route, {"generated_at": "2026-08-04T12:00:00Z", "rules": [RULE]}),
     )
 

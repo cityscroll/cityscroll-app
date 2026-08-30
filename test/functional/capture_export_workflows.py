@@ -116,7 +116,7 @@ def install_routes(page: Page) -> None:
 
     page.route("https://data.cityofnewyork.us/**", city_data)
     page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
-    page.route("https://crol-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {}))
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {}))
 
 
 def annotate(page: Page, selector: str, label: str) -> None:

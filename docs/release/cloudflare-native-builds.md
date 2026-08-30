@@ -16,7 +16,7 @@ builds `_site`, deploys branch `main`, and smokes the immutable deployment befor
 checking route parity. The manual trigger is a recovery path for redeploying a
 selected `main` revision; it is not required for normal merges.
 
-The site owner must connect the repository to the existing `crol-worker` Worker
+The site owner must connect the repository to the existing `cityscroll-worker` Worker
 through Workers Builds, set its root directory to `worker`, and configure the
 production and preview commands from the JSON contract. Those commands stamp
 `GIT_COMMIT_SHA` and `WRANGLER_ENV` onto `GET /health` so a later route-parity

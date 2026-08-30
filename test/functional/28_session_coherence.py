@@ -107,7 +107,7 @@ def install_routes(page: Page, recognized: bool) -> None:
             route.continue_()
 
     page.route("https://api.cityscroll.org/**", api)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", api)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", api)
     page.route("https://cityscroll.org/**", canonical)
     page.route("https://data.cityofnewyork.us/**", lambda route: route.abort())
 

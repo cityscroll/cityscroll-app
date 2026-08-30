@@ -157,7 +157,7 @@ def install_notice_routes(
         fulfill_json(route, TRANSLATION)
 
     page.route("https://api.cityscroll.org/translate/**", translate)
-    page.route("https://crol-worker.crol-worker.workers.dev/translate/**", translate)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/translate/**", translate)
     page.route(
         "**/property-locations*",
         lambda route: fulfill_json(

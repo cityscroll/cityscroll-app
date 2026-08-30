@@ -9,14 +9,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-const BASE = (process.env.CROL_WORKER_URL || "https://crol-worker.crol-worker.workers.dev").replace(/\/+$/, "");
+const BASE = (process.env.CROL_WORKER_URL || "https://cityscroll-worker.crol-worker.workers.dev").replace(/\/+$/, "");
 const ORIGIN = { Origin: "https://cityscroll.org" };
 const json = (body) => ({ method: "POST", headers: { "Content-Type": "application/json", ...ORIGIN }, body: JSON.stringify(body) });
 
 test("health", async () => {
   const r = await fetch(`${BASE}/health`);
   assert.equal(r.status, 200);
-  assert.match(await r.text(), /crol-worker ok/);
+  assert.match(await r.text(), /cityscroll-worker ok/);
 });
 
 test("feed.xml money: valid Atom with entries and permalink links", async () => {

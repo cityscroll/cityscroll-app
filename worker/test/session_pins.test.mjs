@@ -175,7 +175,7 @@ test("session cookie header is shared by the canonical site and API subdomain", 
   assert.equal(readSessionCookie("foo=1; cs_session=tok123; bar=2"), "tok123");
   assert.deepEqual(readSessionCookies("cs_session=legacy; cs_session=shared"), ["legacy", "shared"]);
   assert.equal(canIssueSharedSessionCookie("https://api.cityscroll.org/session"), true);
-  assert.equal(canIssueSharedSessionCookie("https://crol-worker.crol-worker.workers.dev/session"), false);
+  assert.equal(canIssueSharedSessionCookie("https://cityscroll-worker.crol-worker.workers.dev/session"), false);
   assert.equal(canIssueSharedSessionCookie("https://api.crol-list.org/session"), false);
 });
 
@@ -246,14 +246,14 @@ test("compatibility hosts never advertise a session canonical documents cannot r
   const e = env();
   const fixtureEmail = ["user", "example.test"].join("@");
   const cookieTok = await signToken(SECRET, sessionPayload(fixtureEmail), { ttlSeconds: 3600 });
-  const status = await handleSession(new Request("https://crol-worker.crol-worker.workers.dev/session", {
+  const status = await handleSession(new Request("https://cityscroll-worker.crol-worker.workers.dev/session", {
     headers: { Origin: "https://cityscroll.org", Cookie: `cs_session=${cookieTok}` },
   }), e, "/session");
   assert.deepEqual(await status.json(), { ok: true, recognized: false });
   assert.equal(status.headers.get("Set-Cookie"), null);
 
   const emailToken = await issueEmailSessionToken(e, fixtureEmail);
-  const exchange = await handleSession(new Request("https://crol-worker.crol-worker.workers.dev/session", {
+  const exchange = await handleSession(new Request("https://cityscroll-worker.crol-worker.workers.dev/session", {
     method: "POST",
     headers: { "Content-Type": "application/json", Origin: "https://cityscroll.org" },
     body: JSON.stringify({ token: emailToken }),

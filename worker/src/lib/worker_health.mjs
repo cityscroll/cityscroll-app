@@ -1,8 +1,8 @@
-// Public Worker liveness payload. Existing probes match the `crol-worker ok`
+// Public Worker liveness payload. Existing probes match the `cityscroll-worker ok`
 // marker as text; commit and wrangler environment are additive identity fields
 // injected at deploy time (`GIT_COMMIT_SHA`, `WRANGLER_ENV`).
 
-export const HEALTH_OK_MARKER = "crol-worker ok";
+export const HEALTH_OK_MARKER = "cityscroll-worker ok";
 
 const COMMIT_RE = /^[0-9a-f]{7,64}$/i;
 const ENV_RE = /^[A-Za-z][A-Za-z0-9_-]{0,63}$/;

@@ -152,7 +152,7 @@ def main() -> None:
         for pattern in (
             "**/api.cityscroll.org/**",
             "**/api.crol-list.org/**",
-            "**/crol-worker.crol-worker.workers.dev/**",
+            "**/cityscroll-worker.crol-worker.workers.dev/**",
         ):
             context.route(pattern, first_party)
         context.route("**/data/procurement_browse_query.json", local_bounded_procurement_query)

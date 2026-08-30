@@ -13,7 +13,7 @@ import path from "node:path";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 
 /** API Worker health body. */
-export const API_HEALTH_MARKER = /crol-worker ok/;
+export const API_HEALTH_MARKER = /cityscroll-worker ok/;
 
 /**
  * Catalog of named checks. `incident` is the field case each check is designed to
@@ -243,7 +243,7 @@ export function classifyWorkerAccess(probe = {}) {
     };
   }
   if (!API_HEALTH_MARKER.test(String(probe.healthBody || ""))) {
-    return { ok: false, reason: "GET /health body missing crol-worker ok marker" };
+    return { ok: false, reason: "GET /health body missing cityscroll-worker ok marker" };
   }
   if (probe.statsStatus !== 200) {
     return {

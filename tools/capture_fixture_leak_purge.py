@@ -66,7 +66,7 @@ def install_local_entity_route(page: Page) -> None:
         fulfill_json(route, view)
 
     page.route("https://api.cityscroll.org/entity-intelligence**", entity)
-    page.route("https://crol-worker.crol-worker.workers.dev/entity-intelligence**", entity)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/entity-intelligence**", entity)
 
 
 def capture_agency(browser: Browser, base: str, phase: str, local: bool) -> None:

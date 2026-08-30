@@ -202,8 +202,3 @@ docs/unblocked-plans-2026-08.md
 docs/evidence/hosting-dual-host-metrics.json
 docs/evidence/index-module-split.json
 site/agencies/
-fp:A006:1458970bfb5f1e6f # Projection is the canonical term for a generated contract view, not estimated data.
-fp:A006:1b250ea199bec73d # Projection is the canonical term for a generated contract view, not estimated data.
-fp:A006:21902391baeeaa67 # Projections are deterministic generated artifacts, not estimated data.
-fp:A006:7d5195525333c6a9 # Projection policy controls public/private fields; it does not interpolate data.
-fp:L142:3284fbdff961957e # privateZoning is a test variable for the private operator inventory, not a secret value.

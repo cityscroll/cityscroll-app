@@ -459,7 +459,7 @@ def install_demo_routes(page) -> None:
 
     page.route("https://api.cityscroll.org/**", worker)
     page.route("https://api.crol-list.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", city_data)
     # Newest route wins over install_routes' unfiltered ZAP_ROWS fixture.
     page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", zap_projects)

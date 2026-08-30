@@ -126,7 +126,7 @@ def install_routes(page: Page) -> None:
 
     page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", zap)
     page.route("https://api.cityscroll.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
 
 
 def capture_live_before() -> list[dict]:

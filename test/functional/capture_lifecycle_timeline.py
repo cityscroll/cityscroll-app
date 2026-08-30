@@ -139,7 +139,7 @@ def install_routes(page: Page, lifecycle_data: dict) -> None:
             json_response(route, {})
 
     page.route("https://api.cityscroll.org/**", worker_api)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker_api)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker_api)
 
 
 def annotate(page: Page, selector: str, label: str) -> None:

@@ -148,7 +148,7 @@ def install_routes(page) -> None:
     page.route("https://data.cityofnewyork.us/**", city_data)
     page.route("https://api.cityscroll.org/**", worker)
     page.route("https://api.crol-list.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
 
 
 def capture_state(browser, tree: Path, state: str, width: int, height: int) -> dict:

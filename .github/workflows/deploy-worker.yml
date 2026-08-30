@@ -63,7 +63,7 @@ jobs:
             --required-stages generation_output,card_reconciliation,generated_evidence_freshness,served_artifact_freshness,pages_deployment,worker_trigger_coverage,worker_startup,worker_release,data_publication,live_smoke,watchdog,scheduler,alert_delivery \
             --output .artifacts/release-surface-receipt.json || true
       - name: Build versioned Worker route read models
-        run: node tools/build_worker_route_read_models.mjs --output-dir "$RUNNER_TEMP/crol-worker-route-read-models" --check
+        run: node tools/build_worker_route_read_models.mjs --output-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models" --check
       - name: Verify Worker bundle budget and route read-model canaries
         # worker_deploy_guard enforces the 64 MiB uncompressed budget, 10 MB compressed budget, and 1 second startup ceiling.
         # Keep the startup profiler on a Wrangler release whose bundled workerd supports the
@@ -71,15 +71,15 @@ jobs:
         working-directory: worker
         run: |
           set -euo pipefail
-          bundle_dir="$RUNNER_TEMP/crol-worker-bundle"
+          bundle_dir="$RUNNER_TEMP/cityscroll-worker-bundle"
           mkdir -p "$bundle_dir"
           npx wrangler@4.126.0 deploy --dry-run --outdir "$bundle_dir" --metafile "$bundle_dir/meta.json"
           npx wrangler@4.126.0 check startup > "$bundle_dir/startup.txt"
           node ../tools/worker_deploy_guard.mjs \
             --metafile "$bundle_dir/meta.json" \
             --startup-report "$bundle_dir/startup.txt" \
-            --read-model-dir "$RUNNER_TEMP/crol-worker-route-read-models" \
-            --kv-dir "$RUNNER_TEMP/crol-worker-route-read-models"
+            --read-model-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models" \
+            --kv-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models"
       # Apply pending D1 migrations before code deploy. CREATE TABLE IF NOT EXISTS migrations
       # are idempotent; skipping this left passport_* tables missing in production and turned
       # every PASSPort lifecycle lookup into lookup_status=error.
@@ -111,7 +111,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
-          route_dir="$RUNNER_TEMP/crol-worker-route-read-models"
+          route_dir="$RUNNER_TEMP/cityscroll-worker-route-read-models"
           for bulk_file in "$route_dir"/near-you.bulk.*.json "$route_dir"/meetings.bulk.*.json; do
             [ -f "$bulk_file" ] || continue
             npx wrangler@4.126.0 kv bulk put "$bulk_file" --binding ALERT_STATE --remote --config worker/wrangler.toml

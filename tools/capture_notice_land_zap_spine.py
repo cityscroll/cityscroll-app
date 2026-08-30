@@ -269,7 +269,7 @@ def install_before_routes(page: Page) -> None:
         json_response(route, {})
 
     page.route("https://api.cityscroll.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
 
 
 def install_after_routes(page: Page) -> None:
@@ -290,7 +290,7 @@ def install_after_routes(page: Page) -> None:
             json_response(route, {})
 
     page.route("https://api.cityscroll.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
 
 
 def capture_state(

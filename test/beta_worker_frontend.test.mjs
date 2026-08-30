@@ -11,7 +11,7 @@ test("interactive pages default to the production API origin", () => {
     assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.cityscroll\.org"/, page);
     assert.match(
       source,
-      /window\.CROL_API_FALLBACK_ORIGIN \|\| "https:\/\/crol-worker\.crol-worker\.workers\.dev"/,
+      /window\.CROL_API_FALLBACK_ORIGIN \|\| "https:\/\/cityscroll-worker\.crol-worker\.workers\.dev"/,
       page,
     );
   }
