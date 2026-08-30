@@ -149,6 +149,7 @@ test("release receipt retains stage failures and can be written as durable evide
   writeReleaseSurfaceReceipt(receipt, path);
   const persisted = JSON.parse(await readFile(path, "utf8"));
   assert.equal(persisted.schema, "cityscroll.release-surface-receipt.v1");
+  assert.equal(persisted.kind, "release-surface");
   assert.equal(persisted.status, "FAIL");
   assert.match(persisted.findings[0], /rel-04/);
 });

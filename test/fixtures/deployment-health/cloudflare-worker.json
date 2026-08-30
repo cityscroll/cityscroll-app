@@ -1,0 +1,37 @@
+{
+  "schema": "cityscroll.deployment-health-receipt.v1",
+  "kind": "deployment",
+  "boundary": "cloudflare-worker",
+  "boundary_name": "Cloudflare Worker",
+  "pipeline": "deploy-worker",
+  "workflow": ".github/workflows/deploy-worker.yml",
+  "merged_source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "deployed_commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "artifact_identity": {
+    "type": "worker-commit",
+    "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "deployment_reference": {
+    "id": "crol-worker@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "url": "https://github.example.invalid/worker-run",
+    "provider": "cloudflare-workers",
+    "workflow_run_url": "https://github.example.invalid/worker-run"
+  },
+  "guard_results": [
+    {
+      "name": "worker_trigger_coverage",
+      "status": "PASS",
+      "findings": []
+    },
+    {
+      "name": "wrangler_worker_deploy",
+      "status": "PASS",
+      "findings": []
+    }
+  ],
+  "provider_status": "PASS",
+  "observed_at": "2026-08-29T12:00:00.000Z",
+  "status": "PASS",
+  "findings": [],
+  "reason": "Cloudflare Worker deployment-health receipt is independently verifiable"
+}

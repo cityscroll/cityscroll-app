@@ -581,6 +581,7 @@ export function buildReleaseSurfaceReceipt({
       : "PASS";
   return {
     schema: RELEASE_SURFACE_RECEIPT_SCHEMA,
+    kind: "release-surface",
     version: 1,
     source_commit_sha: sourceCommitSha || null,
     status,

@@ -4,6 +4,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { loadDeclaredProductionBoundaries } from "./deployment_health_receipt.mjs";
+
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const read = (path) => readFileSync(join(root, path), "utf8");
 const config = JSON.parse(read("docs/release/cloudflare-native-builds.json"));
@@ -29,6 +31,11 @@ const deployOnMainPushWithPaths = (workflow, name, paths) => {
 };
 
 requireCheck(config.schema === "cityscroll.cloudflare-native-builds.v1", "native build contract schema is missing");
+try {
+  loadDeclaredProductionBoundaries(config);
+} catch (error) {
+  failures.push(String(error.message || error));
+}
 requireCheck(config.pages?.release_control_plane === "github_actions", "Pages releases must be owned by GitHub Actions");
 requireCheck(config.pages?.production_branch === "main", "Pages production branch must remain main");
 requireCheck(config.pages?.build_output_directory === "_site", "Pages output directory must remain _site");

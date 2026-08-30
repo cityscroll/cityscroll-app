@@ -25,6 +25,8 @@ test("Worker routes retain API domains and claim only canonical dynamic-document
 test("Worker deploys when shared Following source changes and smokes the canonical empty state", () => {
   const workflow = read(".github/workflows/deploy-worker.yml");
   assert.match(workflow, /push:\n\s+branches: \[main\]/);
+  assert.match(workflow, /check_deployment_health\.mjs --write/);
+  assert.match(workflow, /--boundary cloudflare-worker/);
   assert.match(workflow, /- "worker\/\*\*"/);
   assert.match(workflow, /- "site\/following_view\.mjs"/);
   assert.match(workflow, /- "site\/data\/watch_templates\.json"/);
