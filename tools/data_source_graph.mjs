@@ -806,8 +806,10 @@ function outputDirectory(path = DEFAULT_OUTPUT_DIR) {
 export function writeGeneratedGraphFiles({ outputDir = DEFAULT_OUTPUT_DIR, inputs } = {}) {
   const directory = outputDirectory(outputDir);
   const files = generatedGraphFiles({ inputs });
+  // determinism-lint: allow write non-check graph materialization only
   mkdirSync(directory, { recursive: true });
   for (const [filename, contents] of Object.entries(files)) {
+    // determinism-lint: allow write non-check graph materialization only
     writeFileSync(join(directory, filename), contents);
   }
   return files;
