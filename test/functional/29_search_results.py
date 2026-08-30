@@ -354,9 +354,9 @@ def main():
             json_response(route, fallback_payload(results, query))
 
         page.route("https://api.cityscroll.org/search/candidates?*", search_api)
-        page.route("https://crol-worker.crol-worker.workers.dev/search/candidates?*", search_api)
+        page.route("https://cityscroll-worker.crol-worker.workers.dev/search/candidates?*", search_api)
         page.route("https://api.cityscroll.org/search?*", keyword_search_api)
-        page.route("https://crol-worker.crol-worker.workers.dev/search?*", keyword_search_api)
+        page.route("https://cityscroll-worker.crol-worker.workers.dev/search?*", keyword_search_api)
         page.route(
             "**/data/money_resident_snapshot.json",
             lambda route: json_response(route, POLICE_CONTRACT_SNAPSHOT),

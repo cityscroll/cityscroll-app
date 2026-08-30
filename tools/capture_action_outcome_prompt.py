@@ -88,7 +88,7 @@ def main() -> None:
             page.route("**/resource/dg92-zbpx.json**", lambda route: fulfill_json(route, [notice]))
             page.route("**/contract-lifecycle**", lambda route: fulfill_json(route, lifecycle))
             page.route("https://api.cityscroll.org/**", lambda route: route.abort())
-            page.route("https://crol-worker.crol-worker.workers.dev/**", lambda route: route.abort())
+            page.route("https://cityscroll-worker.crol-worker.workers.dev/**", lambda route: route.abort())
             page.goto(f"{base}#notice/{NOTICE_ID}", wait_until="domcontentloaded")
             page.wait_for_selector("#nactions a[data-action-outcome-index]")
             page.wait_for_timeout(150)

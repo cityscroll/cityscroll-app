@@ -109,10 +109,10 @@ def install_routes(page: Page) -> None:
     page.route("https://data.ny.gov/**", empty_json)
     page.route("https://geosearch.planninglabs.nyc/**", empty_json)
     page.route("https://api.cityscroll.org/**", empty_obj)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", empty_obj)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", empty_obj)
     page.route("https://data.cityofnewyork.us/**", soda)
     page.route("https://api.cityscroll.org/translate/**", translate)
-    page.route("https://crol-worker.crol-worker.workers.dev/translate/**", translate)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/translate/**", translate)
 
 
 def capture(page: Page, base_url: str, width: int, height: int) -> Path:

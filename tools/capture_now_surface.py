@@ -145,7 +145,7 @@ def route_worker(page: Page, endpoint: str, body: object) -> None:
     for origin in (
         "https://api.cityscroll.org",
         "https://api.crol-list.org",
-        "https://crol-worker.crol-worker.workers.dev",
+        "https://cityscroll-worker.crol-worker.workers.dev",
     ):
         page.route(f"{origin}/{endpoint}*", fixed_json(body))
 
@@ -153,7 +153,7 @@ def route_worker(page: Page, endpoint: str, body: object) -> None:
 def install_routes(page: Page) -> None:
     page.route("https://api.cityscroll.org/**", lambda route: route.abort())
     page.route("https://api.crol-list.org/**", lambda route: route.abort())
-    page.route("https://crol-worker.crol-worker.workers.dev/**", lambda route: route.abort())
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", lambda route: route.abort())
     page.route("https://data.cityofnewyork.us/**", fixed_json([]))
     route_worker(page, "rules", SOURCES["rules"])
     route_worker(page, "property-locations", SOURCES["property"])

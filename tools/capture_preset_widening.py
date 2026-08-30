@@ -98,7 +98,7 @@ def install_routes(page: Page) -> None:
             route.fulfill(status=200, content_type="application/json", body="[]")
 
     page.route("https://api.cityscroll.org/**", crol_api)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", crol_api)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", crol_api)
     page.route("https://data.cityofnewyork.us/**", city_data)
     page.route("https://data.ny.gov/**", lambda route: route.fulfill(status=200, content_type="application/json", body="[]"))
     page.route("https://geosearch.planninglabs.nyc/**", lambda route: route.fulfill(status=200, content_type="application/json", body='{"features":[]}'))

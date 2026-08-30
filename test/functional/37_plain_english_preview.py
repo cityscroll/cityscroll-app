@@ -69,7 +69,7 @@ def install_routes(page: Page, *, search_status: int = 200) -> None:
         json_response(route, {"ok": False}, status=503)
 
     page.route("https://api.cityscroll.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
 
 
 def drive_preview(page: Page, topic: str, trigger: str) -> str:

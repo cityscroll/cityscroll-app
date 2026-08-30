@@ -125,7 +125,7 @@ Browser (cityscroll.org — Cloudflare Pages production site with Worker routes)
         │
         │  secret / server-side routes only
         ▼
-  api.cityscroll.org  (Cloudflare Worker "crol-worker" — worker/ in this repo;
+  api.cityscroll.org  (Cloudflare Worker "cityscroll-worker" — worker/ in this repo;
                       api.crol-list.org and workers.dev aliases kept alive for in-flight confirm links)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
         ├──  /search            ranked public notice search over the D1 FTS5 mirror

@@ -34,7 +34,7 @@ function healthyFetch(url) {
     }), { server: "cloudflare", "content-type": "application/json" }));
   }
   if (parsed.hostname === "api.cityscroll.org") {
-    return Promise.resolve(response(200, "crol-worker ok", { server: "cloudflare" }));
+    return Promise.resolve(response(200, "cityscroll-worker ok", { server: "cloudflare" }));
   }
   if (parsed.pathname === "/robots.txt") {
     return Promise.resolve(response(200, "Sitemap: https://cityscroll.org/sitemap.xml", pagesHeaders));

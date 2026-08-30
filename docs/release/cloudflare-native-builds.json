@@ -29,7 +29,7 @@
     "native_git_integration_required": false
   },
   "worker": {
-    "name": "crol-worker",
+    "name": "cityscroll-worker",
     "root_directory": "worker",
     "production_branch": "main",
     "build_command": "npm ci",

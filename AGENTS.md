@@ -984,11 +984,11 @@ are not public). Detector: `detectNodePageCruft` in `civic_document_chrome.mjs`.
 
 ## Digest cron deploy safety
 
-- Worker `GET /health` (and `GET /`) returns JSON whose `status` stays `crol-worker ok`.
+- Worker `GET /health` (and `GET /`) returns JSON whose `status` stays `cityscroll-worker ok`.
   Deploy paths inject `commit` (`GIT_COMMIT_SHA`) and `environment` (`WRANGLER_ENV`)
   with wrangler `--var` only — never the GitHub Action bulk `vars:` input. A route-parity
   check should `JSON.parse` the body and compare those fields, while existing text
-  probes may still match `/crol-worker ok/`.
+  probes may still match `/cityscroll-worker ok/`.
 
 - Production Worker deploys must run `node tools/wait_for_digest_cron_window.mjs`
   immediately before `wrangler deploy`. Wrangler rewrites Cron Trigger configuration,

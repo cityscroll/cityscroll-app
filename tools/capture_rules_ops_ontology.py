@@ -332,7 +332,7 @@ def install_routes(page: Page) -> None:
         lambda route: json_response(route, {"ok": False, "reason": "fixture"}, 404),
     )
     page.route(
-        "https://crol-worker.crol-worker.workers.dev/**",
+        "https://cityscroll-worker.crol-worker.workers.dev/**",
         lambda route: json_response(route, {"ok": False, "reason": "fixture"}, 404),
     )
     page.route(
@@ -340,7 +340,7 @@ def install_routes(page: Page) -> None:
         lambda route: json_response(route, RULES_VIEW),
     )
     page.route(
-        "https://crol-worker.crol-worker.workers.dev/rules*",
+        "https://cityscroll-worker.crol-worker.workers.dev/rules*",
         lambda route: json_response(route, RULES_VIEW),
     )
 

@@ -106,7 +106,7 @@ test("WORKER ACCESS requires health, stats JSON, and site-origin CORS on /events
   assert.equal(
     classifyWorkerAccess({
       healthStatus: 200,
-      healthBody: "crol-worker ok",
+      healthBody: "cityscroll-worker ok",
       statsStatus: 200,
       statsOkJson: true,
       eventsCorsOrigin: "https://cityscroll.org",
@@ -117,7 +117,7 @@ test("WORKER ACCESS requires health, stats JSON, and site-origin CORS on /events
   assert.match(
     classifyWorkerAccess({
       healthStatus: 200,
-      healthBody: "crol-worker ok",
+      healthBody: "cityscroll-worker ok",
       statsStatus: 200,
       statsOkJson: true,
       eventsCorsOrigin: null,
@@ -191,7 +191,7 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
     if (u.endsWith("/health")) {
       return {
         status: 200,
-        text: async () => "crol-worker ok",
+        text: async () => "cityscroll-worker ok",
         headers: { get: () => null },
       };
     }

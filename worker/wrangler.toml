@@ -1,4 +1,4 @@
-name = "crol-worker"
+name = "cityscroll-worker"
 main = "src/worker.mjs"
 compatibility_date = "2026-07-27"
 # No nodejs_compat needed — the Worker uses only fetch + Web APIs (no npm runtime deps).

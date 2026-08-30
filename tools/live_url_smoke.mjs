@@ -54,7 +54,7 @@ function meetingTargetsForBase(base) {
 }
 
 /** API Worker health body marker (not HTML). */
-export const API_HEALTH_MARKER = /crol-worker ok/;
+export const API_HEALTH_MARKER = /cityscroll-worker ok/;
 
 /** Bodies that look like an error shell even when status is 200. */
 export const ERROR_BODY_PATTERNS = [

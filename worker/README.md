@@ -1,7 +1,7 @@
-# crol-worker
+# cityscroll-worker
 
 The thin serverless backend for **[CityScroll](https://cityscroll.org)** — a single
-**Cloudflare Worker** at `https://api.cityscroll.org` (custom domain; `crol-worker.crol-worker.workers.dev` remains an alias). CityScroll itself is
+**Cloudflare Worker** at `https://api.cityscroll.org` (custom domain; `cityscroll-worker.crol-worker.workers.dev` remains an alias). CityScroll itself is
 100% static (one `index.html` on Cloudflare Pages, no keys); everything that needs a held secret,
 a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
 the worker — every feature degrades gracefully when it's absent.
@@ -29,7 +29,7 @@ compatibility, including `crol-list.jimdc.com` (a GitHub Pages CNAME to
         │
         │  the rest go to the worker (const API in index.html)
         ▼
-   crol-worker (Cloudflare Worker + KV + Cron Triggers)
+   cityscroll-worker (Cloudflare Worker + KV + Cron Triggers)
 ```
 
 The frontend defaults to `https://api.cityscroll.org` through `window.CROL_API_ORIGIN`.
@@ -83,7 +83,7 @@ Reader-facing HTML uses canonical `cityscroll.org` paths. Existing API-host link
 | `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
-| `/` `/health` | GET | liveness JSON (`status` remains `crol-worker ok`) plus deploy `commit` SHA and wrangler `environment` | none |
+| `/` `/health` | GET | liveness JSON (`status` remains `cityscroll-worker ok`) plus deploy `commit` SHA and wrangler `environment` | none |
 
 ## The daily digest (ZAP lookup + hearings + exams `0 8 * * *`; shadow `0 10 * * *` ≈ 6am ET; send `0 13 * * *` ≈ 9am ET)
 

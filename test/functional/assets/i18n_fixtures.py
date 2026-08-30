@@ -1110,13 +1110,13 @@ def install_routes(page):
             return
         route.fulfill(status=200, content_type="application/json", body=json.dumps({"ok": False}))
     page.route("https://api.cityscroll.org/contract-lifecycle*", contract_lifecycle)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
-    page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
-    page.route("https://crol-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))
-    page.route("https://crol-worker.crol-worker.workers.dev/rules*", fixed(RULES_VIEW))
-    page.route("https://crol-worker.crol-worker.workers.dev/zap-outcomes?id=2022M0258",
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", lambda r: r.abort())
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/rules*", fixed(RULES_VIEW))
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/zap-outcomes?id=2022M0258",
                fixed(NOTICE_LAND_ZAP_OUTCOMES))
-    page.route("https://crol-worker.crol-worker.workers.dev/contract-lifecycle*", contract_lifecycle)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/contract-lifecycle*", contract_lifecycle)
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())
     page.route("https://unpkg.com/**", lambda r: r.abort())

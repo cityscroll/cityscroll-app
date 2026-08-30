@@ -100,7 +100,7 @@ def main() -> None:
 
                 page.route("https://api.cityscroll.org/**", worker)
                 page.route("https://api.crol-list.org/**", worker)
-                page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+                page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
                 page.goto(
                     f"http://127.0.0.1:{PORT}/#notice/{NOTICE_ID}",
                     wait_until="domcontentloaded",

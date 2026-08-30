@@ -210,7 +210,7 @@ def install_routes(page: Page, fixture: dict[str, Any], unexpected: list[str]) -
 
     page.route("https://data.cityofnewyork.us/**", city_data)
     page.route("https://api.cityscroll.org/**", worker_data)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker_data)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker_data)
 
     def reject_unknown(route: Route) -> None:
         unexpected.append(route.request.url)

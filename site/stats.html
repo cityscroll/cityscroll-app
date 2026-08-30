@@ -118,7 +118,7 @@
   paint();
   initSubpageLangSwitcher(paint);
   const primary = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
-  const fallback = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
+  const fallback = window.CROL_API_FALLBACK_ORIGIN || "https://cityscroll-worker.crol-worker.workers.dev";
   const bases = primary === fallback ? [primary] : [primary, fallback];
   (async () => {
     const publicSchema = document.getElementById("main").dataset.statsSchema;
