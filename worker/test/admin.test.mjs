@@ -9,9 +9,12 @@ import {
   checkOperatorProbeKey,
   checkDigestShadowAuth,
   handleAdminDigestSendTest,
+  handleAdminFeedback,
   handleAdminStats,
   renderAdminStatsPage,
 } from "../src/admin.mjs";
+import { deskItemLeaksPrivateFields } from "../src/lib/feedback_desk.mjs";
+import { buildContractReportTarget } from "../../site/report_issue.mjs";
 import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 import { SUGGESTION_LENSES } from "../src/lib/preset_fallback_kv.mjs";
@@ -389,4 +392,85 @@ test("handleAdminZapOutcomesRefresh: success returns refresh summary plus timest
   assert.equal(body.status, "skipped");
   assert.equal(body.reason, "no-kv");
   assert.ok(body.triggeredAt);
+});
+
+function feedbackKv(map = {}) {
+  return {
+    get: async (k) => (Object.prototype.hasOwnProperty.call(map, k) ? map[k] : null),
+    put: async (k, v) => { map[k] = v; },
+    list: async ({ prefix = "" } = {}) => ({
+      keys: Object.keys(map).filter((name) => name.startsWith(prefix)).map((name) => ({ name })),
+      list_complete: true,
+    }),
+  };
+}
+
+test("handleAdminFeedback: 404 without ADMIN_KEY, 401 with the wrong key", async () => {
+  const store = feedbackKv({
+    "fb:1": JSON.stringify({ category: "bug", message: "Something broke on the money tab.", at: "2026-08-29T00:00:00.000Z" }),
+  });
+  assert.equal((await handleAdminFeedback(new Request("https://w/admin/feedback?key=s3cr3t"), { FEEDBACK: store })).status, 404);
+  assert.equal((await handleAdminFeedback(new Request("https://w/admin/feedback"), { ADMIN_KEY: "s3cr3t", FEEDBACK: store })).status, 401);
+  assert.equal((await handleAdminFeedback(new Request("https://w/admin/feedback?key=nope"), { ADMIN_KEY: "s3cr3t", FEEDBACK: store })).status, 401);
+});
+
+test("handleAdminFeedback: contextual report fields round-trip; private metadata stays off the wire", async () => {
+  const target = buildContractReportTarget({
+    procurement_id: "procurement:contract:CT123",
+    canonical_href: "/procurements/procurement%3Acontract%3ACT123",
+    short_title: "Street repair contract",
+    vendor_name: "Acme Works",
+    source_observation_refs: ["passport_public_contracts:row-1"],
+  });
+  const store = feedbackKv({
+    "fb:100:one": JSON.stringify({
+      category: "report",
+      message: "The published vendor name does not match the source record.",
+      evidence: "Public contract source row",
+      report_target: target,
+      report: {
+        category: "information_wrong",
+        explanation: "The published vendor name does not match the source record.",
+        evidence: "Public contract source row",
+      },
+      at: "2026-08-29T18:00:00.000Z",
+      email: "reporter@example.com",
+      ip: "203.0.113.88",
+      ua: "CityScrollTest/1.0",
+      adjudication: { verdict: "confirmed", notes: "keep this adjudication private" },
+    }),
+    "fb:90:generic": JSON.stringify({
+      category: "general",
+      message: "The about page feedback form is hard to find.",
+      at: "2026-08-29T17:00:00.000Z",
+      email: "reporter@example.com",
+      ip: "203.0.113.88",
+      ua: "CityScrollTest/1.0",
+    }),
+    "rl:ip:ignored": JSON.stringify({ n: 3 }),
+  });
+  const response = await handleAdminFeedback(
+    new Request("https://w/admin/feedback?key=s3cr3t"),
+    { ADMIN_KEY: "s3cr3t", FEEDBACK: store },
+  );
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.feedbackCount, 2);
+  assert.equal(body.totalFbKeys, 2);
+  assert.deepEqual(body.items.map((item) => item.id), ["fb:100:one", "fb:90:generic"]);
+  assert.equal(body.items[0].target_id, target.target_id);
+  assert.equal(body.items[0].canonical_url, target.canonical_url);
+  assert.equal(body.items[0].report.category, "information_wrong");
+  assert.equal(body.items[1].target_status, "missing");
+  assert.equal(body.items[1].report_target, null);
+  const serialized = JSON.stringify(body);
+  assert.equal(serialized.includes("reporter@example.com"), false);
+  assert.equal(serialized.includes("203.0.113.88"), false);
+  assert.equal(serialized.includes("CityScrollTest/1.0"), false);
+  assert.equal(serialized.includes("keep this adjudication private"), false);
+  for (const item of body.items) {
+    assert.equal(deskItemLeaksPrivateFields(item, [
+      "reporter@example.com", "203.0.113.88", "CityScrollTest/1.0", "keep this adjudication private",
+    ]), false);
+  }
 });
