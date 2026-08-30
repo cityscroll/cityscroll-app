@@ -12,8 +12,11 @@ import { mergeCanonicalProcurementBrowseRows } from "./contract_search_bridge.mj
 
 export const PROCUREMENT_BROWSE_QUERY_SCHEMA = "cityscroll.procurement_browse_query.v1";
 export const PROCUREMENT_BROWSE_QUERY_SHARD_SCHEMA = "cityscroll.procurement_browse_query_shard.v1";
+export const PROCUREMENT_BROWSE_QUERY_ROWS_SCHEMA = "cityscroll.procurement_browse_query_rows.v1";
 export const DEFAULT_BROWSE_QUERY_PAGE_SIZE = 40;
 export const DEFAULT_BROWSE_QUERY_SHARD_ROWS = 512;
+export const PROCUREMENT_BROWSE_QUERY_ROWS_PATH = "procurement_browse_query_rows.json";
+export const PROCUREMENT_BROWSE_FIRST_PAGE_MODES = Object.freeze(["award", "archive"]);
 
 // Keep this list aligned with filterMoneySnapshot and moneyRowHTML. A field
 // added to either consumer must be added here and covered by the equivalence
@@ -63,6 +66,31 @@ function queryOptions(options = {}) {
   };
 }
 
+function hasMergingBaseRows(options = {}) {
+  return Array.isArray(options.baseRows) && options.baseRows.length > 0;
+}
+
+/** Default Recent Awards / Archive first pages can use the precomputed slice. */
+export function procurementBrowseFirstPageKey(options = {}) {
+  if (hasMergingBaseRows(options)) return null;
+  const opts = queryOptions(options);
+  if (!PROCUREMENT_BROWSE_FIRST_PAGE_MODES.includes(opts.mode)) return null;
+  if (opts.agency || opts.keyword || opts.method || opts.closingWeek) return null;
+  if (opts.minAmount != null || opts.maxAmount != null || opts.category) return null;
+  if (opts.months != null || opts.excludeSpecial) return null;
+  if (opts.entityRefs.length || opts.contractObjectRef) return null;
+  if (opts.sort !== "newest") return null;
+  if (opts.limit !== DEFAULT_BROWSE_QUERY_PAGE_SIZE) return null;
+  return opts.mode;
+}
+
+function queryRowsFromManifest(manifest) {
+  if (Array.isArray(manifest?.query_rows) && manifest.query_rows.length === manifest.row_count) {
+    return manifest.query_rows;
+  }
+  return null;
+}
+
 /**
  * Query the bounded rows using the same resident filter and sort contract as
  * the legacy full projection. The returned `total` is deliberately exposed so
@@ -89,7 +117,6 @@ export function buildProcurementBrowseQueryArtifacts(
   const fullRows = Array.isArray(browse?.rows) ? browse.rows : [];
   const queryRows = fullRows.map(queryRowFromFullRow);
   const shards = [];
-  const rowShardById = {};
   for (let offset = 0; offset < fullRows.length; offset += shardRows) {
     const index = shards.length;
     const rows = fullRows.slice(offset, offset + shardRows);
@@ -103,40 +130,69 @@ export function buildProcurementBrowseQueryArtifacts(
       rows,
     };
     shards.push(shard);
-    for (const row of rows) {
-      if (row?.procurement_id) rowShardById[row.procurement_id] = shardPath(index);
-    }
   }
+  const fingerprint = browse?.source_model_fingerprint
+    || browse?.coherence_receipt?.source_model_fingerprint
+    || null;
+  const firstPages = Object.fromEntries(PROCUREMENT_BROWSE_FIRST_PAGE_MODES.map((mode) => {
+    const page = queryProcurementBrowseRows(queryRows, { mode, sort: "newest" });
+    return [mode, {
+      rows: page.rows,
+      total: page.total,
+      facets: page.facets,
+    }];
+  }));
+  const queryRowsArtifact = {
+    schema: PROCUREMENT_BROWSE_QUERY_ROWS_SCHEMA,
+    version: 1,
+    source_fingerprint: fingerprint,
+    row_count: queryRows.length,
+    query_rows: queryRows,
+  };
   const manifest = {
     schema: PROCUREMENT_BROWSE_QUERY_SCHEMA,
-    version: 1,
+    version: 2,
     source_model_schema: browse?.source_model_schema || null,
     generated_at: browse?.generated_at || null,
-    source_model_fingerprint: browse?.source_model_fingerprint
-      || browse?.coherence_receipt?.source_model_fingerprint
-      || null,
+    source_model_fingerprint: fingerprint,
     row_count: fullRows.length,
     query_fields: PROCUREMENT_BROWSE_QUERY_FIELDS,
-    query_rows: queryRows,
+    query_rows_path: PROCUREMENT_BROWSE_QUERY_ROWS_PATH,
+    query_rows_bytes: serializedBytes(queryRowsArtifact),
+    first_pages: firstPages,
     shards: shards.map((shard, index) => ({
       path: shardPath(index),
       bytes: serializedBytes(shard),
       row_count: shard.rows.length,
     })),
-    row_shard_by_id: rowShardById,
   };
-  return { manifest, shards };
+  return { manifest, shards, queryRowsArtifact };
+}
+
+export function validateProcurementBrowseQueryRows(manifest, artifact) {
+  return Boolean(
+    artifact?.schema === PROCUREMENT_BROWSE_QUERY_ROWS_SCHEMA
+    && artifact?.version === 1
+    && artifact?.source_fingerprint === manifest?.source_model_fingerprint
+    && Array.isArray(artifact?.query_rows)
+    && artifact.query_rows.length === manifest?.row_count,
+  );
 }
 
 export function validateProcurementBrowseQueryManifest(manifest) {
+  if (
+    manifest?.schema !== PROCUREMENT_BROWSE_QUERY_SCHEMA
+    || ![1, 2].includes(manifest?.version)
+    || !Number.isInteger(manifest.row_count)
+    || !Array.isArray(manifest.shards)
+    || !manifest.source_model_fingerprint
+  ) return false;
+  const inline = queryRowsFromManifest(manifest);
+  if (manifest.version === 1) return Boolean(inline);
   return Boolean(
-    manifest?.schema === PROCUREMENT_BROWSE_QUERY_SCHEMA
-    && manifest?.version === 1
-    && Array.isArray(manifest.query_rows)
-    && Number.isInteger(manifest.row_count)
-    && manifest.query_rows.length === manifest.row_count
-    && Array.isArray(manifest.shards)
-    && manifest.source_model_fingerprint,
+    typeof manifest.query_rows_path === "string"
+    && manifest.first_pages
+    && PROCUREMENT_BROWSE_FIRST_PAGE_MODES.every((mode) => Array.isArray(manifest.first_pages?.[mode]?.rows)),
   );
 }
 
@@ -150,12 +206,27 @@ export function validateProcurementBrowseQueryShard(manifest, shard, descriptor 
   );
 }
 
-export function queryProcurementBrowseManifest(manifest, options = {}) {
+export function queryProcurementBrowseManifest(manifest, options = {}, queryRows = null) {
   if (!validateProcurementBrowseQueryManifest(manifest)) {
     throw new Error("invalid procurement browse query manifest");
   }
-  const result = queryProcurementBrowseRows(manifest.query_rows, options);
-  const facetResult = queryProcurementBrowseRows(manifest.query_rows, {
+  const rows = queryRows || queryRowsFromManifest(manifest);
+  if (!Array.isArray(rows) || rows.length !== manifest.row_count) {
+    const firstPageKey = procurementBrowseFirstPageKey(options);
+    const precomputed = firstPageKey ? manifest.first_pages?.[firstPageKey] : null;
+    if (precomputed && Array.isArray(precomputed.rows)) {
+      return {
+        rows: precomputed.rows,
+        total: precomputed.total,
+        facets: precomputed.facets,
+        ordered_ids: precomputed.rows.map((row) => row?.procurement_id || row?.request_id).filter(Boolean),
+        source: "first-page",
+      };
+    }
+    throw new Error("procurement query rows unavailable");
+  }
+  const result = queryProcurementBrowseRows(rows, options);
+  const facetResult = queryProcurementBrowseRows(rows, {
     ...options,
     method: "",
   });
@@ -183,9 +254,7 @@ export function combineProcurementBrowseQueryShards(manifest, shards = []) {
   if (rows.length !== manifest.row_count || byId.size !== manifest.row_count) {
     throw new Error("procurement shard row count mismatch");
   }
-  const hydrated = manifest.query_rows.map((row) => byId.get(row?.procurement_id));
-  if (hydrated.some((row) => !row)) throw new Error("procurement shard identity mismatch");
-  return hydrated;
+  return rows;
 }
 
 /**
@@ -193,6 +262,11 @@ export function combineProcurementBrowseQueryShards(manifest, shards = []) {
  * Any bounded-artifact failure falls back to the legacy full projection before
  * resolving, so callers never receive a silently empty or truncated result.
  */
+function dataUrl(path) {
+  const value = String(path || "");
+  return value.startsWith("data/") ? value : `data/${value}`;
+}
+
 export async function loadProcurementBrowseQuery({
   fetchImpl = globalThis.fetch,
   manifestUrl = "data/procurement_browse_query.json",
@@ -204,7 +278,20 @@ export async function loadProcurementBrowseQuery({
     const response = await fetchImpl(manifestUrl);
     if (!response?.ok) throw new Error("bounded procurement artifact unavailable");
     const manifest = await response.json();
-    const firstPage = queryProcurementBrowseManifest(manifest, options);
+    let queryRows = queryRowsFromManifest(manifest);
+    const firstPageKey = procurementBrowseFirstPageKey(options);
+    if (!firstPageKey || !manifest.first_pages?.[firstPageKey]) {
+      if (!queryRows) {
+        const rowsResponse = await fetchImpl(dataUrl(manifest.query_rows_path || PROCUREMENT_BROWSE_QUERY_ROWS_PATH));
+        if (!rowsResponse?.ok) throw new Error("procurement query rows unavailable");
+        const artifact = await rowsResponse.json();
+        if (!validateProcurementBrowseQueryRows(manifest, artifact)) {
+          throw new Error("procurement query rows freshness mismatch");
+        }
+        queryRows = artifact.query_rows;
+      }
+    }
+    const firstPage = queryProcurementBrowseManifest(manifest, options, queryRows);
     let hydrationPromise = null;
     const hydrate = () => {
       if (!hydrationPromise) {
@@ -222,7 +309,12 @@ export async function loadProcurementBrowseQuery({
       }
       return hydrationPromise;
     };
-    return { ...firstPage, source: "bounded-query", manifest, hydrate };
+    return {
+      ...firstPage,
+      source: firstPage.source === "first-page" ? "bounded-first-page" : "bounded-query",
+      manifest,
+      hydrate,
+    };
   } catch (_error) {
     return loadLegacy();
   }

@@ -53,6 +53,7 @@
         "site/data/procurement_browse_rows.json",
         "site/data/procurement_browse_rows",
         "site/data/procurement_browse_query.json",
+        "site/data/procurement_browse_query_rows.json",
         "site/data/procurement_digest_snapshot.json"
       ]
     },

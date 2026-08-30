@@ -1075,12 +1075,10 @@ async function search(){
     const defaultSearch=isDefaultMoneySearchState({
       mode,agency,kw,methodSel,closingWeek,minAmount:minamt,sort,nlResolved:moneyNlResolved,
     });
-    const snapshot=defaultSearch
-      ? await loadMoneyDefaultSnapshot()
-      : await loadMoneyResidentSnapshot();
-    const retainedRows=defaultSearch
-      ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
-      : moneySnapshotRows(snapshot);
+    const awardArchive=mode==="award"||mode==="archive";
+    const snapshotPromise=defaultSearch
+      ? loadMoneyDefaultSnapshot()
+      : loadMoneyResidentSnapshot();
     const activeFacetValues=globalThis.CROL_ACTIVE_SCOPE_FACET_VALUES||{};
     const entityRefs=Array.isArray(activeFacetValues.entity_refs_all)
       ? activeFacetValues.entity_refs_all
@@ -1088,27 +1086,70 @@ async function search(){
     const contractIdentity=contractIdentityFromFacetValues(activeFacetValues);
     const scopedVendorStem=vendorStemsFromEntityRefs(entityRefs)[0]||"";
     const retrievalQuery=kw||scopedVendorStem;
-    const searchDocuments=((contractIdentity||retrievalQuery)&&(mode==="award"||mode==="archive"))
-      ? await loadContractSearchDocuments(retrievalQuery,contractIdentity)
-      : [];
-    const searchedRows=mergeContractSearchRows(retainedRows,searchDocuments);
+    const needsSearch=Boolean((contractIdentity||retrievalQuery)&&awardArchive);
     const common={
       mode,agency,keyword:kw,closingWeek,minAmount:minamt||null,maxAmount,category,months,
       excludeSpecial,entityRefs,contractObjectRef:contractIdentity?.object_ref||"",sort,today:todayISO(),weekEnd:weekOutISO(),
       monthEnd:months?addMonthsISO(todayISO(),months):null,
     };
-    const canonicalSnapshot=(mode==="award"||mode==="archive")
+    const analyticalScope = mode === "award" ? analyticalUrlFilters() : {};
+    const analyticalScopeActive = analyticalScope.fact === "payment"
+      || Object.entries(analyticalScope).some(([key, value]) => !["fact", "payment_view"].includes(key) && value != null && value !== "");
+    const compactFirstPage=awardArchive && !needsSearch && !analyticalScopeActive
+      && !agency && !methodSel && !closingWeek && !minamt
+      && !category && maxAmount==null && months==null && !excludeSpecial
+      && !entityRefs.length && !contractIdentity
+      && (!sort || sort==="newest");
+    const firstPageProcurementPromise=compactFirstPage
+      ? loadMoneyProcurementSnapshot({...common,method:methodSel},[])
+      : null;
+    const canonicalFirstPage=firstPageProcurementPromise?await firstPageProcurementPromise:null;
+    if(canonicalFirstPage){
+      const snapshotRows=canonicalFirstPage.rows || [];
+      loadMethodFacet(snapshotRows,canonicalFirstPage.facets?.method);
+      const rows=snapshotRows.slice(0,40);
+      if(stale()) return;
+      paintMoneyRows(rows,{
+        autoSelect:true,
+        narrowed:false,
+        lineageRows:snapshotRows,
+        rumInteraction,
+      });
+      if(mode==="award"){
+        loadAnalyticalProjection().then((analyticsProjection)=>{
+          if(stale()) return;
+          bindAnalyticalControls();
+          if(analyticsProjection) renderAnalyticalProjection(analyticsProjection);
+        }).catch(()=>{});
+      }
+      Promise.all([
+        snapshotPromise.catch(()=>null),
+        Promise.resolve(typeof canonicalFirstPage.hydrate==="function"?canonicalFirstPage.hydrate():canonicalFirstPage.hydrate),
+      ]).then(([snapshot,hydrated])=>{
+        if(stale() || !Array.isArray(hydrated?.rows)) return;
+        const retainedRows=moneySnapshotRows(snapshot);
+        currentMoneyLineageRows=mergeCanonicalProcurementBrowseRows(retainedRows,hydrated.rows);
+        loadLineageBadges(currentMoneyLineageRows);
+      }).catch(()=>{});
+      return true;
+    }
+    const snapshot=await snapshotPromise;
+    const retainedRows=defaultSearch
+      ? filterStillOpenMoneyNotices(snapshot?.notices,todayISO())
+      : moneySnapshotRows(snapshot);
+    const searchDocuments=needsSearch
+      ? await loadContractSearchDocuments(retrievalQuery,contractIdentity)
+      : [];
+    const searchedRows=mergeContractSearchRows(retainedRows,searchDocuments);
+    const canonicalSnapshot=awardArchive
       ? await loadMoneyProcurementSnapshot({...common,method:methodSel},searchedRows)
       : {rows:[],facets:{},hydrate:Promise.resolve({rows:[]})};
-    const snapshotRows=(mode==="award"||mode==="archive")
+    const snapshotRows=awardArchive
       ? (canonicalSnapshot?.rows || [])
       : retainedRows;
     const analyticsProjection = mode === "award" ? await loadAnalyticalProjection() : null;
     bindAnalyticalControls();
     if (analyticsProjection) renderAnalyticalProjection(analyticsProjection);
-    const analyticalScope = mode === "award" ? analyticalUrlFilters() : {};
-    const analyticalScopeActive = analyticalScope.fact === "payment"
-      || Object.entries(analyticalScope).some(([key, value]) => !["fact", "payment_view"].includes(key) && value != null && value !== "");
     const analyticalScopeRows = analyticalScopeActive
       ? analyticalScope.fact === "payment"
         ? filterAnalyticalPayments(analyticsProjection?.payment?.rows || [], analyticalScope).map(analyticalPaymentMoneyRow)
