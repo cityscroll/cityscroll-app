@@ -4206,6 +4206,14 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   `node tools/build_mailto_subscribe_later.mjs`; `--check` verifies the committed
   stop receipt. Focused proof is `test/mailto_subscribe_later.test.mjs`.
 
+- **Contextual report desk projection:** `worker/src/lib/feedback_desk.mjs` is the
+  allowlisted `/admin/feedback` read model over stored `fb:` rows. It round-trips
+  target, evidence, provenance, canonical URL, and target identity with explicit
+  nulls; reporter email/IP/UA and adjudication notes stay off the response.
+  Target reconstruction is fail-closed and never infers a claim from free text.
+  Focused proof is `worker/test/feedback_desk.test.mjs` plus the admin feedback
+  cases in `worker/test/admin.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
