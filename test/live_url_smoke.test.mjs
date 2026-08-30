@@ -296,7 +296,7 @@ test("post-flip header assertion fails when x-github-request-id is still present
   const apiHealth = classifyProbe({
     statusChain: [{ status: 200 }],
     finalStatus: 200,
-    body: "crol-worker ok",
+    body: "cityscroll-worker ok",
     marker: API_HEALTH_MARKER,
   });
   assert.equal(apiHealth.ok, true);

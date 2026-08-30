@@ -18,7 +18,7 @@ import {
 const MAX_QUERY_LENGTH = 240;
 const SEARCH_TIMEOUT_MS = 12000;
 const SEARCH_API_ORIGIN = "https://api.cityscroll.org";
-const SEARCH_API_FALLBACK_ORIGIN = "https://crol-worker.crol-worker.workers.dev";
+const SEARCH_API_FALLBACK_ORIGIN = "https://cityscroll-worker.crol-worker.workers.dev";
 const LANES = Object.freeze([
   "contracts",
   "people-organizations",

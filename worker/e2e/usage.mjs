@@ -4,7 +4,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-const BASE = (process.env.CROL_WORKER_URL || "https://crol-worker.crol-worker.workers.dev").replace(/\/+$/, "");
+const BASE = (process.env.CROL_WORKER_URL || "https://cityscroll-worker.crol-worker.workers.dev").replace(/\/+$/, "");
 const USAGE = `${BASE}/usage`;
 const KEY = process.env.USAGE_KEY || "";
 

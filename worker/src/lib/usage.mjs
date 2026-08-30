@@ -1,7 +1,7 @@
 // Pure, dependency-free helpers for the read-only /usage endpoint — unit-testable
 // and runtime-agnostic (identical under Node tests and the Cloudflare Workers runtime).
 //
-// /usage reports crol-worker's Anthropic (Claude Haiku) spend by reading the NL_METER
+// /usage reports cityscroll-worker's Anthropic (Claude Haiku) spend by reading the NL_METER
 // KV day-counters that /nl already increments — shared surface-cap key format
 // `m:nl:<YYYY-MM-DD>`, with a legacy `nl:<YYYY-MM-DD>` fallback during migration.
 // Cost is an ESTIMATE: call count × a fixed per-call token

@@ -1,4 +1,4 @@
-// /usage — read-only JSON report of crol-worker's Anthropic (Claude Haiku) spend, for an
+// /usage — read-only JSON report of cityscroll-worker's Anthropic (Claude Haiku) spend, for an
 // external caller (James's daily briefing) to fetch. Reads the NL_METER KV day-counters
 // that /nl increments; it never writes and never calls the model.
 //

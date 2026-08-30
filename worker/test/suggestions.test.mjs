@@ -338,7 +338,7 @@ const FRESH_NOW = Date.parse(FRESH_AT);
 test("handleSuggestions: serves the stored validated set", async () => {
   const stored = { generatedAt: FRESH_AT, minResults: 3, byLens: { money: [{ idx: 0, count: 42 }] } };
   const env = { ALERT_STATE: { get: async () => JSON.stringify(stored) } };
-  const req = new Request("https://crol-worker.example/suggestions", { headers: { origin: "https://cityscroll.org" } });
+  const req = new Request("https://cityscroll-worker.example/suggestions", { headers: { origin: "https://cityscroll.org" } });
   const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
@@ -347,7 +347,7 @@ test("handleSuggestions: serves the stored validated set", async () => {
 
 test("handleSuggestions: empty KV uses the in-code floor", async () => {
   const env = { ALERT_STATE: { get: async () => null } };
-  const req = new Request("https://crol-worker.example/suggestions");
+  const req = new Request("https://cityscroll-worker.example/suggestions");
   const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
@@ -358,7 +358,7 @@ test("handleSuggestions: empty KV uses the in-code floor", async () => {
 
 test("handleSuggestions: unparseable KV uses the in-code floor", async () => {
   const env = { ALERT_STATE: { get: async () => "{not-json" } };
-  const req = new Request("https://crol-worker.example/suggestions");
+  const req = new Request("https://cityscroll-worker.example/suggestions");
   const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
@@ -368,7 +368,7 @@ test("handleSuggestions: unparseable KV uses the in-code floor", async () => {
 
 test("handleSuggestions: KV read failure uses the in-code floor", async () => {
   const env = { ALERT_STATE: { get: async () => { throw new Error("kv unavailable"); } } };
-  const req = new Request("https://crol-worker.example/suggestions");
+  const req = new Request("https://cityscroll-worker.example/suggestions");
   const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
@@ -376,7 +376,7 @@ test("handleSuggestions: KV read failure uses the in-code floor", async () => {
 });
 
 test("handleSuggestions: missing ALERT_STATE uses the in-code floor", async () => {
-  const req = new Request("https://crol-worker.example/suggestions");
+  const req = new Request("https://cityscroll-worker.example/suggestions");
   const res = await handleSuggestions(req, {}, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
@@ -386,7 +386,7 @@ test("handleSuggestions: missing ALERT_STATE uses the in-code floor", async () =
 test("handleSuggestions: stale KV uses the in-code floor", async () => {
   const stored = { generatedAt: "2026-08-17T12:00:00.000Z", minResults: 3, byLens: { money: [{ idx: 0, count: 42 }] } };
   const env = { ALERT_STATE: { get: async () => JSON.stringify(stored) } };
-  const req = new Request("https://crol-worker.example/suggestions");
+  const req = new Request("https://cityscroll-worker.example/suggestions");
   const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();
@@ -409,7 +409,7 @@ test("handleSuggestions: slim preset:fallback payload matches the read path shap
       },
     },
   };
-  const req = new Request("https://crol-worker.example/suggestions");
+  const req = new Request("https://cityscroll-worker.example/suggestions");
   const res = await handleSuggestions(req, env, undefined, { nowMs: FRESH_NOW });
   assert.equal(res.status, 200);
   const body = await res.json();

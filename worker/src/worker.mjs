@@ -1,4 +1,4 @@
-// crol-worker — single Cloudflare Worker.
+// cityscroll-worker — single Cloudflare Worker.
 //   fetch:     routes  POST /nl  and  POST /checkbook
 //   scheduled: runs the daily alerts digest (cron in wrangler.toml)
 //

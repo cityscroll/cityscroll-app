@@ -1,4 +1,4 @@
-// Regression guard for the List-Unsubscribe header crol-worker emits on every digest, now that
+// Regression guard for the List-Unsubscribe header cityscroll-worker emits on every digest, now that
 // the builders live in `optin-token` (extracted 2026-07-02). Proves the exact header string
 // alerts.mjs sends is unchanged after the swap.
 import { test } from "node:test";

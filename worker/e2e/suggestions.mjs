@@ -11,7 +11,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { SUGGESTION_POOL, FALLBACK_INDICES, MIN_SUGGESTION_RESULTS, suggestionCountParams } from "../src/lib/suggestions.mjs";
 
-const BASE = (process.env.CROL_WORKER_URL || "https://crol-worker.crol-worker.workers.dev").replace(/\/+$/, "");
+const BASE = (process.env.CROL_WORKER_URL || "https://cityscroll-worker.crol-worker.workers.dev").replace(/\/+$/, "");
 const todayISO = new Date().toISOString().slice(0, 10);
 
 async function resolveFilter(lens, text) {

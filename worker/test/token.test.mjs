@@ -1,4 +1,4 @@
-// Regression guard for the confirm/unsubscribe token contract crol-worker depends on, now that
+// Regression guard for the confirm/unsubscribe token contract cityscroll-worker depends on, now that
 // signToken/verifyToken live in the `optin-token` package (extracted 2026-07-02). The exhaustive
 // unit suite ships with the package; this asserts the specific properties /subscribe, /confirm,
 // and /unsubscribe rely on, exercised through the real dependency so a bad swap fails CI here.

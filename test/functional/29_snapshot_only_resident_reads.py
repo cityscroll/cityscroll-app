@@ -23,7 +23,7 @@ PUBLISHER_PATTERNS = (
 FIRST_PARTY_API_PATTERNS = (
     "**/api.cityscroll.org/**",
     "**/api.crol-list.org/**",
-    "**/crol-worker.crol-worker.workers.dev/**",
+    "**/cityscroll-worker.crol-worker.workers.dev/**",
 )
 SURFACES = (
     ("contracts", "/browse/contracts/", "#list .row"),

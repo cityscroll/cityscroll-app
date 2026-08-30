@@ -241,7 +241,7 @@ def install_routes(page: Page, record: dict) -> None:
 
     page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", zap)
     page.route("https://api.cityscroll.org/**", worker)
-    page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
+    page.route("https://cityscroll-worker.crol-worker.workers.dev/**", worker)
 
 
 def capture_variant(page: Page, base_url: str, record: dict, out: Path, *, expect_statutory: bool) -> dict:

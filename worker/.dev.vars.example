@@ -1,4 +1,4 @@
-# crol-worker — local secrets for `wrangler dev`. Copy to `.dev.vars` (gitignored).
+# cityscroll-worker — local secrets for `wrangler dev`. Copy to `.dev.vars` (gitignored).
 # In production these are NOT here — set them with `wrangler secret put <NAME>`.
 
 # /nl (model-backed natural-language search). Without it, /nl returns { degraded:true }.

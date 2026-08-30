@@ -53,7 +53,7 @@ test("GET /health remains HTTP 200 with the existing marker and parseable identi
   assert.equal(response.status, 200);
   assert.match(response.headers.get("Content-Type"), /application\/json/);
   const text = await response.text();
-  assert.match(text, /crol-worker ok/);
+  assert.match(text, /cityscroll-worker ok/);
   const body = JSON.parse(text);
   assert.equal(body.status, HEALTH_OK_MARKER);
   assert.equal(body.commit, COMMIT);
@@ -64,7 +64,7 @@ test("unstamped health still exposes the liveness marker and null identity", asy
   const response = handleWorkerHealth({});
   const text = await response.text();
   assert.equal(response.status, 200);
-  assert.match(text, /crol-worker ok/);
+  assert.match(text, /cityscroll-worker ok/);
   assert.deepEqual(JSON.parse(text), {
     status: HEALTH_OK_MARKER,
     commit: null,

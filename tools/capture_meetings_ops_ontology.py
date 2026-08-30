@@ -259,7 +259,7 @@ def install_routes(page: Page) -> None:
         ),
     )
     page.route(
-        "https://crol-worker.crol-worker.workers.dev/**",
+        "https://cityscroll-worker.crol-worker.workers.dev/**",
         lambda route: (
             json_response(route, HEARINGS_VIEW)
             if "/hearings" in route.request.url

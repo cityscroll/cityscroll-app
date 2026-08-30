@@ -315,7 +315,7 @@ with sync_playwright() as pw:
                        if key != "project_connections"},
         })),
     )[-1])
-    p6.route("https://crol-worker.crol-worker.workers.dev/zap-outcomes?id=2022M0258", lambda route: (
+    p6.route("https://cityscroll-worker.crol-worker.workers.dev/zap-outcomes?id=2022M0258", lambda route: (
         connection_requests.append("fallback"),
         route.fulfill(status=200, content_type="application/json", body=json.dumps({
             "ok": True, "cached": True,
