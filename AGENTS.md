@@ -4127,6 +4127,22 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   is `worker/test/mcp_capability_adapter.test.mjs` and
   `worker/test/mcp_streamable_http_interop.test.mjs`.
 
+- **CS-07 Cloudflare OS composition proof:** isolated Gadget at
+  `integrations/cloudflare-os-entity-research/` runs the frozen four-tool public-read
+  workbook through named-tool Gatekeeper MCP. Verify with
+  `node tools/verify_cloudflare_os_proof.mjs`. Focused proof:
+  `worker/test/cloudflare_os_composition.test.mjs`.
+
+- **CS-08 Code Mode measurement:** isolated reversible A/B at
+  `integrations/cloudflare-os-code-mode/` compares pinned typed Code Mode with the
+  same CS-07 ordinary MCP composition. It is a measurement card, not a production
+  migration. Rebuild/check `artifacts/capability-spine/cs-08-code-mode.json` with
+  `node tools/verify_code_mode_measurement.mjs --repetitions 30 --require-parity
+  --max-p95-regression 0.10`. A win requires zero semantic/provenance failures,
+  identical fail-closed behavior, no added store reads, ≤10% p95 wall-clock
+  regression, and either ≥25% lower median model-input tokens or ≥2 fewer external
+  round trips. Focused proof: `worker/test/code_mode_measurement.test.mjs`.
+
 ## Client module publication
 
 - `tools/client_module_graph.mjs` follows module scripts and local imports in
