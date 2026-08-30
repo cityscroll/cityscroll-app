@@ -1,0 +1,138 @@
+{
+  "schema": "cityscroll.product_updates.v1",
+  "method": "product_updates_source_v1",
+  "as_of": "2026-08-29T17:07:20-04:00",
+  "observed_commit": "92c6620147af9b92bd46a7715a453efca4b7884c",
+  "source_inputs": [
+    {
+      "id": "changelog",
+      "path": "site/changelog-data.json"
+    },
+    {
+      "id": "architecture_reconciliation",
+      "path": "architecture/generated/reconciliation.json"
+    },
+    {
+      "id": "capability_registry",
+      "path": "capabilities/registry.mjs"
+    },
+    {
+      "id": "demo_manifest",
+      "path": "site/demo/demo-links.json"
+    }
+  ],
+  "candidates": [
+    {
+      "schema": "cityscroll.product_update_candidate.v1",
+      "id": "notice.get@1::notice-sanitation-connected-mandate",
+      "source_event": {
+        "kind": "architecture_reconciliation",
+        "path": "architecture/generated/reconciliation.json",
+        "schema": "cityscroll.architecture.reconciliation.v1",
+        "status": "checked",
+        "baseline": "architecture/generated/watermark.json",
+        "observed_commit": "92c6620147af9b92bd46a7715a453efca4b7884c",
+        "as_of": "2026-08-29T17:07:20-04:00"
+      },
+      "capability": {
+        "reference": "notice.get@1",
+        "id": "notice.get",
+        "version": "1.0.0"
+      },
+      "observed_commit": "92c6620147af9b92bd46a7715a453efca4b7884c",
+      "as_of": "2026-08-29T17:07:20-04:00",
+      "claim": "A rule notice pivots to the law that required it, its agency, and a mandate watch; publication evidence becomes a traversable civic object.",
+      "demo": {
+        "id": "notice-sanitation-connected-mandate",
+        "url": "notices/20260605008",
+        "pathname": "/notices/20260605008",
+        "feature": "notice-mandate-pivot"
+      },
+      "provenance": {
+        "changelog": {
+          "path": "site/changelog-data.json",
+          "used": false,
+          "pr": null
+        },
+        "architecture_reconciliation": {
+          "path": "architecture/generated/reconciliation.json",
+          "schema": "cityscroll.architecture.reconciliation.v1",
+          "status": "checked",
+          "baseline": "architecture/generated/watermark.json"
+        },
+        "capability_registry": {
+          "path": "capabilities/registry.mjs",
+          "reference": "notice.get@1",
+          "version": "1.0.0"
+        },
+        "demo_manifest": {
+          "path": "site/demo/demo-links.json",
+          "demo_id": "notice-sanitation-connected-mandate"
+        }
+      },
+      "state": "eligible",
+      "eligible": true,
+      "reason": null,
+      "reason_detail": null
+    },
+    {
+      "schema": "cityscroll.product_update_candidate.v1",
+      "id": "search.federated@1::semantic-search-housing",
+      "source_event": {
+        "kind": "architecture_reconciliation",
+        "path": "architecture/generated/reconciliation.json",
+        "schema": "cityscroll.architecture.reconciliation.v1",
+        "status": "checked",
+        "baseline": "architecture/generated/watermark.json",
+        "observed_commit": "92c6620147af9b92bd46a7715a453efca4b7884c",
+        "as_of": "2026-08-29T17:07:20-04:00"
+      },
+      "capability": {
+        "reference": "search.federated@1",
+        "id": "search.federated",
+        "version": "1.0.0"
+      },
+      "observed_commit": "92c6620147af9b92bd46a7715a453efca4b7884c",
+      "as_of": "2026-08-29T17:07:20-04:00",
+      "claim": "One concept query returns cited passages across Rules and Meetings while preserving six typed lanes instead of flattening civic objects.",
+      "demo": {
+        "id": "semantic-search-housing",
+        "url": "search/?q=housing",
+        "pathname": "/search/",
+        "feature": "semantic-cross-source-search"
+      },
+      "provenance": {
+        "changelog": {
+          "path": "site/changelog-data.json",
+          "used": false,
+          "pr": null
+        },
+        "architecture_reconciliation": {
+          "path": "architecture/generated/reconciliation.json",
+          "schema": "cityscroll.architecture.reconciliation.v1",
+          "status": "checked",
+          "baseline": "architecture/generated/watermark.json"
+        },
+        "capability_registry": {
+          "path": "capabilities/registry.mjs",
+          "reference": "search.federated@1",
+          "version": "1.0.0"
+        },
+        "demo_manifest": {
+          "path": "site/demo/demo-links.json",
+          "demo_id": "semantic-search-housing"
+        }
+      },
+      "state": "eligible",
+      "eligible": true,
+      "reason": null,
+      "reason_detail": null
+    }
+  ],
+  "eligible_ids": [
+    "notice.get@1::notice-sanitation-connected-mandate",
+    "search.federated@1::semantic-search-housing"
+  ],
+  "ineligible_ids": [],
+  "content_hash": "2cd85988f3e4399335310edaca4d6ffbc47ec89bc752e05f6006963d18ef71aa"
+}
