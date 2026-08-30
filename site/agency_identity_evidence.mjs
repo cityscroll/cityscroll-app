@@ -53,27 +53,84 @@ function observationRow(observation, view) {
   </li>`;
 }
 
+const ROLE_LABELS = Object.freeze({
+  must_report_to: "must report to",
+  receives_report_from: "receives reports from",
+});
+
+function roleLabel(edge) {
+  return ROLE_LABELS[edge.relation_id] || String(edge.role || edge.relation_id || "role").replace(/_/g, " ");
+}
+
+function roleEndpoint(id, href, linking) {
+  const label = String(id || "").replace(/^civic-institution:/, "");
+  if (linking && href) {
+    return `<a class="ui-constellation-link agency-edge-link" href="${esc(href)}">${esc(label)}</a>`;
+  }
+  return `<span data-role-unlinked="1">${esc(label || "unresolved institution")}</span>`;
+}
+
+function roleRow(edge) {
+  const details = [
+    `Role: ${roleLabel(edge)}`,
+    edge.confidence ? `Confidence: ${confidenceLabel(edge.confidence)}` : "",
+    edge.as_of ? `As of ${edge.as_of}` : "",
+    edge.vintage ? `Vintage ${edge.vintage}` : "",
+    edge.provenance?.source_system ? `Source ${edge.provenance.source_system}` : "",
+    edge.reason && edge.status !== "accepted" ? `Status: ${edge.status} (${edge.reason})` : "",
+  ].filter(Boolean).join(" · ");
+  return `<li class="node-record agency-role-edge-record" data-role-relation="${esc(edge.relation_id || "")}" data-role-status="${esc(edge.status || "")}" data-role-linking="${edge.linking ? "1" : "0"}">
+    <div class="node-record-main">${roleEndpoint(edge.from, edge.inverse_href, edge.linking)} <span aria-hidden="true">→</span> ${esc(roleLabel(edge))} ${roleEndpoint(edge.to, edge.href, edge.linking)}</div>
+    <span class="muted node-muted">${esc(details)}</span>
+  </li>`;
+}
+
+export function renderAgencyRoleEdgeSection(view = {}) {
+  const evidence = view.identity_evidence;
+  const rows = [
+    ...(Array.isArray(evidence?.role_edges) ? evidence.role_edges : []),
+    ...(Array.isArray(evidence?.role_edge_held) ? evidence.role_edge_held : []),
+    ...(Array.isArray(evidence?.role_edge_unresolved) ? evidence.role_edge_unresolved : []),
+  ].filter((edge) => edge && edge.status !== "unknown");
+  if (!rows.length) return "";
+  const body = `<p class="node-muted">These roles are institution-to-institution and keep exact source evidence. Missing, held, and unresolved roles stay unlinked.</p>
+    <ul class="node-record-list">${rows.map((edge) => roleRow(edge)).join("")}</ul>`;
+  return renderNodeSection({
+    heading: "Institution roles",
+    headingId: "agency-institution-roles-heading",
+    exportClass: "object_role_edges",
+    extraClass: "node-card civic-object-section agency-institution-roles",
+    attrs: {
+      id: "agency-institution-roles",
+      "data-role-schema": evidence.role_edge_schema || "cityscroll.civic_institution_role_edge.v1",
+    },
+    body,
+  });
+}
+
 /** Render only accepted source observations; unknown links remain absent. */
 export function renderAgencyIdentitySection(view = {}) {
   const evidence = view.identity_evidence;
   const observations = Array.isArray(evidence?.observations) ? evidence.observations : [];
-  if (!observations.length) return "";
-  const kind = evidence.institution?.institution_kind;
-  const kindCopy = kind
-    ? ` Independently grounded institution kind: ${kind}.`
-    : " Institution classification: unclassified until independent evidence supports a kind.";
-  const body = `<p class="node-muted">These source observations resolve to this profile through exact publisher identity evidence. Source spellings and publisher classifications remain separate from institution classification.${kindCopy}</p>
+  const identityHtml = observations.length ? (() => {
+    const kind = evidence.institution?.institution_kind;
+    const kindCopy = kind
+      ? ` Independently grounded institution kind: ${kind}.`
+      : " Institution classification: unclassified until independent evidence supports a kind.";
+    const body = `<p class="node-muted">These source observations resolve to this profile through exact publisher identity evidence. Source spellings and publisher classifications remain separate from institution classification.${kindCopy}</p>
     <ul class="node-record-list">${observations.map((observation) => observationRow(observation, view)).join("")}</ul>`;
-  return renderNodeSection({
-    heading: "Source identity",
-    headingId: "agency-source-identity-heading",
-    exportClass: "object_identity_evidence",
-    extraClass: "node-card civic-object-section agency-source-identity",
-    attrs: {
-      id: "agency-source-identity",
-      "data-identity-schema": evidence.schema || "",
-      "data-identity-status": evidence.status || "matched",
-    },
-    body,
-  });
+    return renderNodeSection({
+      heading: "Source identity",
+      headingId: "agency-source-identity-heading",
+      exportClass: "object_identity_evidence",
+      extraClass: "node-card civic-object-section agency-source-identity",
+      attrs: {
+        id: "agency-source-identity",
+        "data-identity-schema": evidence.schema || "",
+        "data-identity-status": evidence.status || "matched",
+      },
+      body,
+    });
+  })() : "";
+  return `${identityHtml}${renderAgencyRoleEdgeSection(view)}`;
 }
