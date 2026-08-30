@@ -59,7 +59,12 @@ function provider() {
     capabilityReference: FEDERATED_SEARCH_CAPABILITY_REFERENCE,
     providerId: FEDERATED_SEARCH_CAPABILITY.provider.id,
     execute(input) {
-      return federateUniversalSearch({ query: input.query, lenses, limit: input.limit });
+      return federateUniversalSearch({
+        query: input.query,
+        lenses,
+        limit: input.limit,
+        scope: input.scope,
+      });
     },
   };
 }

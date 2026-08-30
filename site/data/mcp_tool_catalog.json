@@ -21,7 +21,7 @@
       "name": "search_federated",
       "operation_class": "read",
       "authority_class": "public_read",
-      "description": "Search the registered public CityScroll lenses in one bounded result set. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
+      "description": "Search the registered public CityScroll lenses in one bounded result set. Optional scope selects only allowlisted registered lenses. Preserves per-lens coverage, source observations, exact object routes, and federated ranking; it does not expose a raw store or arbitrary query language.",
       "schema_reference": "search.federated@1",
       "capability_reference": "search.federated@1",
       "input_schema": {
@@ -39,6 +39,77 @@
             "minimum": 1,
             "maximum": 100,
             "default": 40
+          },
+          "scope": {
+            "description": "Closed allowlist of registered federation lenses. Omit to search every registered lens.",
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "notices",
+                  "people",
+                  "agencies",
+                  "vendors",
+                  "committees",
+                  "community_boards",
+                  "exams",
+                  "parcels",
+                  "land",
+                  "meetings"
+                ]
+              },
+              {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "notices",
+                    "people",
+                    "agencies",
+                    "vendors",
+                    "committees",
+                    "community_boards",
+                    "exams",
+                    "parcels",
+                    "land",
+                    "meetings"
+                  ]
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "lenses"
+                ],
+                "properties": {
+                  "schema": {
+                    "type": "string",
+                    "const": "cityscroll.capability.search_federated.scope.v1"
+                  },
+                  "lenses": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "notices",
+                        "people",
+                        "agencies",
+                        "vendors",
+                        "committees",
+                        "community_boards",
+                        "exams",
+                        "parcels",
+                        "land",
+                        "meetings"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         "required": [
@@ -53,7 +124,8 @@
           "query",
           "ranking_policy",
           "results",
-          "coverage"
+          "coverage",
+          "requested_scope"
         ],
         "properties": {
           "schema": {
@@ -92,6 +164,9 @@
           },
           "coverage": {
             "type": "object"
+          },
+          "requested_scope": {
+            "type": "object"
           }
         }
       },
@@ -120,10 +195,31 @@
               "partial",
               "stale",
               "not_indexed",
-              "provider_unavailable"
+              "provider_unavailable",
+              "out_of_scope"
             ],
             "maximumResults": 10,
-            "maximumCardsPerLane": 8
+            "maximumCardsPerLane": 8,
+            "requestedScope": "all_registered_lenses"
+          }
+        },
+        {
+          "input": {
+            "query": "parks",
+            "limit": 10,
+            "scope": {
+              "schema": "cityscroll.capability.search_federated.scope.v1",
+              "lenses": [
+                "agencies"
+              ]
+            }
+          },
+          "output": {
+            "requestedLenses": [
+              "agencies"
+            ],
+            "unrequestedState": "out_of_scope",
+            "maximumResults": 10
           }
         },
         {

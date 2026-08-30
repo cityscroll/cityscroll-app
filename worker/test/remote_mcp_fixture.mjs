@@ -16,7 +16,7 @@ import { buildSharedProcurementReadModel } from "../../site/shared_procurement_r
 import { workerCitedPassages } from "../src/cited_retrieval.mjs";
 import { workerD1EntityDossier } from "../src/entity_dossier.mjs";
 import { workerD1NoticeSearch } from "../src/lib/notices.mjs";
-import { mcpCitedPassagesInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
+import { mcpCitedPassagesInput, mcpFederatedSearchInput, mcpNoticeGetInput, mcpNoticeSearchInput } from "../src/mcp.mjs";
 import { mcpContractsAnalysisInput } from "../src/contracts.mjs";
 import { workerNoticeGet } from "../src/notice.mjs";
 import { workerD1EntityRelationships } from "../src/public_relationship_graph.mjs";
@@ -296,7 +296,7 @@ export async function directCapabilityResults(env) {
   const federatedArgs = argsFor("search_federated");
   results.set("search_federated", await executeFederatedSearch(
     workerFederatedSearch(env),
-    { query: federatedArgs.query, limit: federatedArgs.limit },
+    mcpFederatedSearchInput(federatedArgs),
   ));
   const noticeSearchArgs = argsFor("search_notices");
   results.set("search_notices", await executeNoticeSearch(
