@@ -20,6 +20,7 @@ import {
 } from "../site/analytical_payment_projection.mjs";
 import {
   cityRecordCoverage,
+  citeCityRecordCoverageFromReceipt,
   analyticalDrillThroughHref,
   preserveAnalyticalProjectionQuery,
   contractAmountBand,
@@ -141,6 +142,28 @@ describe("registered contract analytical projection contract", () => {
     assert.equal(empty.evaluable_match_rate, null);
     assert.equal(empty.unmatched_contract_count, 0);
     assert.equal(empty.missing_pin_contract_count, 0);
+    const exactRow = projected.find((row) => row.city_record_match === "exact");
+    const cited = citeCityRecordCoverageFromReceipt(exactRow, {
+      schema: "cityscroll.cross_source_evidence_receipt.v1",
+      relation: "exact",
+      joins: [{ relation: "exact", status: "accepted" }],
+      sources: [{ source_system: "city_record" }, { source_system: "checkbook_contracts" }],
+    });
+    assert.equal(cited.city_record_match, "exact");
+    assert.equal(cited.coverage_receipt_ref, "cityscroll.cross_source_evidence_receipt.v1");
+    const fuzzyCited = citeCityRecordCoverageFromReceipt(exactRow, {
+      relation: "fuzzy",
+      joins: [{ relation: "fuzzy" }],
+      sources: [{ source_system: "city_record" }],
+    });
+    assert.equal(fuzzyCited.coverage_receipt_ref, null);
+    assert.equal(fuzzyCited.city_record_match, "exact");
+    const unmatched = projected.find((row) => row.city_record_match === "none");
+    assert.equal(citeCityRecordCoverageFromReceipt(unmatched, {
+      relation: "exact",
+      joins: [{ relation: "exact", status: "accepted" }],
+      sources: [{ source_system: "city_record" }],
+    }).city_record_match, "none");
   });
 
   it("keeps City Record coverage behind a closed methodology disclosure on Contracts", () => {

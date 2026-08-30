@@ -2,7 +2,15 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  buildProvenanceGraph,
+} from "../entity_resolution/provenance_graph.mjs";
+import {
+  CURATION_REVIEW_POLICY_VERSION,
+  buildCurationVerdictReceipt,
+} from "../entity_resolution/review/curation_verdicts.mjs";
+import {
   buildCrossSourceEvidenceReceipt,
+  relationForJoin,
   renderCrossSourceEvidenceReceipt,
 } from "../site/cross_source_evidence_receipt.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
@@ -43,6 +51,40 @@ const exactJoin = {
   right_source_observation_ref: checkbook.source_observation_ref,
 };
 
+function goldSides() {
+  return {
+    left: { source_system: "passport_public_contracts", native_key: "CT-1", display_name: "HNTB Corporation" },
+    right: { source_system: "checkbook_contracts", native_key: "CT-1", display_name: "HNTB Corporation" },
+  };
+}
+
+function verdict(decision, extra = {}) {
+  return buildCurationVerdictReceipt({
+    id: `verdict-${decision.toLowerCase()}`,
+    actor: "desk:fixture-1",
+    decision,
+    target: {
+      kind: "entity_pair",
+      id: "pair-ct-1",
+      edge_family: "procurement_identity",
+      gold_candidate: { entity_type: "contract", ...goldSides() },
+    },
+    evidence_refs: [
+      { kind: "source_record", id: passport.source_observation_ref },
+      { kind: "source_record", id: checkbook.source_observation_ref },
+    ],
+    model_version: "conventional_v2",
+    rule_version: CURATION_REVIEW_POLICY_VERSION,
+    review_policy: {
+      version: CURATION_REVIEW_POLICY_VERSION,
+      status: "satisfied",
+      reasons: ["authenticated_review_complete"],
+    },
+    timestamp: "2026-08-21T00:00:00.000Z",
+    ...extra,
+  });
+}
+
 test("exact procurement joins produce a source-named receipt with per-fact provenance", () => {
   const receipt = buildCrossSourceEvidenceReceipt({
     object: { procurement_id: "procurement:contract:CT1" },
@@ -64,6 +106,13 @@ test("exact procurement joins produce a source-named receipt with per-fact prove
   assert.equal(receipt.sources[1].coverage, "partial");
   assert.equal(receipt.sources[0].source_native_id, "contract:EPIN-1:CTR-1");
   assert.equal(receipt.joins[0].basis_label, "Exact contract ID");
+  assert.equal(receipt.relation, "exact");
+  assert.deepEqual(receipt.also_recorded_in, ["Checkbook"]);
+  assert.equal(receipt.overwrites_canonical, false);
+  assert.ok(receipt.sources.every((source) => source.source_href));
+  assert.ok(receipt.sources.every((source) => source.as_of === "2026-08-20T12:00:00Z"));
+  assert.ok(receipt.sources.every((source) => source.accepted_join_methods[0].label === "Exact contract ID"));
+  assert.ok(receipt.sources.find((source) => source.source_system === "passport_public_contracts").field_scope.includes("current_amount"));
 
   const amount = receipt.facts.find((fact) => fact.key === "amount");
   assert.equal(amount.status, "disagrees");
@@ -71,6 +120,7 @@ test("exact procurement joins produce a source-named receipt with per-fact prove
   assert.ok(amount.assertions.every((assertion) => assertion.provenance.source_record_id));
   assert.ok(amount.assertions.every((assertion) => assertion.provenance.as_of === "2026-08-20T12:00:00Z"));
   const html = renderCrossSourceEvidenceReceipt(receipt);
+  assert.match(html, /Also recorded in Checkbook/);
   assert.match(html, /\$100,000/);
   assert.match(html, /\$102,500/);
   assert.match(html, /PASSPort Public contracts/);
@@ -78,6 +128,8 @@ test("exact procurement joins produce a source-named receipt with per-fact prove
   assert.match(html, /publisher field: current_amount/);
   assert.match(html, /publisher field: current/);
   assert.match(html, /as of 2026-08-20T12:00:00Z/);
+  assert.match(html, /Accepted join: Exact contract ID/);
+  assert.match(html, /data-relation="exact"/);
   assert.match(html, /CityScroll interpretation: different amount values/);
   assert.match(html, /Resolution unresolved \(no derived conclusion\)/);
   assert.match(html, /data-claim="source_assertion"/);
@@ -111,30 +163,48 @@ test("OCP exact request-id joins retain both source assertions without collapsin
   });
 
   assert.equal(receipt.status, "disagreement");
-  assert.equal(receipt.sources.find((source) => source.source_system === "ocp-recent-awards").source_name, "Recent Contract Awards (OCP)");
+  const ocpSource = receipt.sources.find((source) => source.source_system === "ocp-recent-awards");
+  assert.equal(ocpSource.source_name, "Recent Contract Awards (OCP)");
+  assert.equal(ocpSource.compact_source_name, "OCP");
+  assert.equal(ocpSource.source_native_id, "award:20260720001");
+  assert.equal(ocpSource.source_href, "https://data.cityofnewyork.us/d/qyyg-4tf5");
+  assert.equal(ocpSource.as_of, "2026-08-20T12:00:00Z");
+  assert.deepEqual(ocpSource.accepted_join_methods.map((method) => method.id), ["request_id"]);
+  assert.ok(ocpSource.field_scope.includes("contract_amount"));
+  assert.deepEqual(receipt.also_recorded_in, ["OCP"]);
   assert.equal(receipt.facts.find((fact) => fact.key === "amount").status, "disagrees");
   assert.deepEqual(receipt.facts.find((fact) => fact.key === "date").assertions.map((assertion) => assertion.assertion), [
     "2026-07-15", "2026-07-30",
   ]);
+  assert.match(renderCrossSourceEvidenceReceipt(receipt), /Also recorded in OCP/);
 });
 
-test("fuzzy, rejected, ambiguous, review, related-instrument, and unknown observations never get the same-record receipt", () => {
+test("fuzzy, related-instrument, rejected, ambiguous, unknown, and untested observations never get the same-record receipt", () => {
   const cases = [
     { status: "accepted", basis: "vendor_amount_date" },
+    { status: "related_instrument", basis: "pin_family" },
+    { status: "rejected", basis: "exact_contract_id" },
     { status: "needs_review", basis: "exact_contract_id" },
     { status: "ambiguous", basis: "exact_request_id" },
     { status: "unknown", basis: "exact_request_id" },
-    { status: "rejected", basis: "exact_contract_id" },
     { status: "related_instrument", basis: "exact_contract_id" },
     { status: "accepted", basis: "exact_contract_id", identity_class: "related_instrument" },
     { status: "accepted", basis: "pin_family" },
+    { status: null, basis: null },
   ];
   for (const state of cases) {
+    const join = { ...exactJoin, ...state };
+    assert.notEqual(relationForJoin(join).id, "exact", `${JSON.stringify(state)}`);
     assert.equal(buildCrossSourceEvidenceReceipt({
       object: { procurement_id: "procurement:contract:CT1" },
       observations: [passport, checkbook],
-      acceptedJoins: [{ ...exactJoin, ...state }],
+      acceptedJoins: [join],
     }), null, `${JSON.stringify(state)} must stay out of the receipt`);
+    assert.equal(renderCrossSourceEvidenceReceipt(buildCrossSourceEvidenceReceipt({
+      object: { procurement_id: "procurement:contract:CT1" },
+      observations: [passport, checkbook],
+      acceptedJoins: [join],
+    })), "");
   }
 });
 
@@ -155,7 +225,7 @@ test("agreement stays a compact source-labeled confirmation without a disagreeme
   assert.equal(receipt.status, "corroborated");
   assert.ok(receipt.facts.every((fact) => fact.status === "agrees"));
   const html = renderCrossSourceEvidenceReceipt(receipt);
-  assert.match(html, /Also recorded in PASSPort Public contracts and Checkbook NYC/);
+  assert.match(html, /Also recorded in Checkbook/);
   assert.match(html, /Amount — .*PASSPort Public contracts.*\$100,000.*Checkbook NYC.*\$100,000/s);
   assert.match(html, /class="cross-source-evidence-agreement"/);
   assert.doesNotMatch(html, /Sources disagree/);
@@ -230,7 +300,7 @@ test("the shared procurement model materializes and serves the receipt on the ca
   assert.ok(object.cross_source_evidence_receipt);
   const html = renderProcurementDocument(object, model.observations);
   assert.match(html, /data-cross-source-evidence-receipt="1"/);
-  assert.match(html, /Also recorded in PASSPort Public contracts and Checkbook NYC/);
+  assert.match(html, /Also recorded in Checkbook/);
   assert.match(html, /Sources disagree/);
   assert.match(html, /\$100,000/);
   assert.match(html, /\$102,500/);
@@ -238,4 +308,142 @@ test("the shared procurement model materializes and serves the receipt on the ca
   assert.match(html, /data-claim="cityscroll_interpretation"/);
   assert.doesNotMatch(html, /data-claim="derived_conclusion"/);
   assert.doesNotMatch(html, /selected a winning|corrected amount|canonical winner/i);
+  assert.doesNotMatch(html, /Always-on warning/);
+});
+
+test("accepted Checkbook corroboration appears as Also recorded in Checkbook without overwriting PASSPort", () => {
+  const passportRecord = {
+    ...passport,
+    source_system_id: "contract:EPIN-1:CTR-1",
+    normalized_snapshot: JSON.stringify(passport.snapshot),
+    raw_snapshot: JSON.stringify(passport.snapshot),
+  };
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: [passportRecord],
+    checkbookLookupRows: [{
+      contract_id: "CT-1",
+      pin: "EPIN-1",
+      vendor: "HNTB Corporation",
+      current: 102500,
+      registered: "2026-07-20",
+      vendorRecordType: "Prime Vendor",
+    }],
+    generatedAt: "2026-08-21T00:00:00Z",
+  });
+  const object = model.rows[0];
+  assert.equal(object.checkbook_corroboration.status, "corroborated");
+  assert.equal(object.checkbook_corroboration.overwrites_passport_amount, false);
+  assert.ok(object.cross_source_evidence_receipt);
+  assert.deepEqual(object.cross_source_evidence_receipt.also_recorded_in, ["Checkbook"]);
+  assert.equal(object.cross_source_evidence_receipt.overwrites_canonical, false);
+  const checkbookSource = object.cross_source_evidence_receipt.sources.find((source) => source.source_system === "checkbook_contracts");
+  assert.equal(checkbookSource.source_native_id, "CT-1");
+  assert.match(checkbookSource.source_href, /checkbooknyc\.com/);
+  assert.equal(checkbookSource.accepted_join_methods[0].id, "contract_id_exact");
+  const html = renderProcurementDocument(object, model.observations);
+  assert.match(html, /Also recorded in Checkbook/);
+  assert.match(html, /100,000/);
+  assert.doesNotMatch(html, /Always-on/);
+});
+
+test("related-instrument Checkbook hits stay off the same-record receipt", () => {
+  const model = buildSharedProcurementReadModel({
+    sourceRecords: [{
+      source_system: "passport_public_contracts",
+      source_system_id: "contract:85021B0087001C011:TAMEER-2305",
+      content_hash: "tameer-hash",
+      normalized_snapshot: JSON.stringify({
+        contract_id: "CT1-850-20228802305",
+        epin: "85021B0087001C011",
+        vendor: "TAMEER INC",
+        current_amount: 26112.93,
+      }),
+      raw_snapshot: JSON.stringify({
+        contract_id: "CT1-850-20228802305",
+        epin: "85021B0087001C011",
+        vendor: "TAMEER INC",
+        current_amount: 26112.93,
+      }),
+      ingested_at: "2026-08-20T12:00:00Z",
+    }],
+    checkbookLookupRows: [{
+      contract_id: "CT185020218800001",
+      pin: "85021B0087001C010",
+      vendor: "TAMEER INC",
+      current: 1779343.45,
+      vendorRecordType: "Prime Vendor",
+    }],
+    generatedAt: "2026-08-21T00:00:00Z",
+  });
+  const object = model.rows[0];
+  assert.ok(["related_instrument", "needs_review"].includes(object.checkbook_corroboration.identity_class));
+  assert.equal(object.cross_source_evidence_receipt, undefined);
+  assert.doesNotMatch(renderProcurementDocument(object, model.observations) || "", /Also recorded in/);
+});
+
+test("a rejected curation decision keeps an exact join off the same-record label", () => {
+  const rejected = verdict("REJECT");
+  assert.equal(rejected.reversible_effect.gold_candidate.label, "different");
+  assert.equal(buildCrossSourceEvidenceReceipt({
+    object: { procurement_id: "procurement:contract:CT1" },
+    observations: [passport, checkbook],
+    acceptedJoins: [{ ...exactJoin, pair_id: "pair-ct-1" }],
+    curationReceipts: [rejected],
+  }), null);
+});
+
+test("reviewed exact provenance may corroborate; probabilistic warrant cannot", () => {
+  const evidence = [
+    { kind: "source_record", id: "src-passport", source_system: "passport_public_contracts", source_system_id: "CT-1", observed_at: "2026-08-20T12:00:00Z" },
+    { kind: "source_record", id: "src-checkbook", source_system: "checkbook_contracts", source_system_id: "CT-1", observed_at: "2026-08-20T12:00:00Z" },
+    { kind: "resolution_run", id: "resolution-run:exact", method: "contract_id_exact", model_version: "v1", policy_version: "v1", observed_at: "2026-08-20T12:00:00Z" },
+  ];
+  function graph(warrant) {
+    return buildProvenanceGraph({
+      assertions: [{
+        assertion_key: "procurement_identity:pair-ct-1",
+        assertion_id: "assertion:procurement_identity:pair-ct-1:v1",
+        version: 1,
+        claim_class: "cityscroll_interpretation",
+        assertion_kind: "procurement_identity",
+        subject_ref: "source_record:src-passport",
+        predicate: "same_entity_as",
+        object_ref: "source_record:src-checkbook",
+        status: warrant === "exact" ? "accepted" : "candidate",
+        warrant_class: warrant,
+        evidence_refs: [{ kind: "source_record", id: "src-passport" }, { kind: "source_record", id: "src-checkbook" }],
+        produced_by_refs: [{ kind: "resolution_run", id: "resolution-run:exact" }],
+      }],
+      evidence,
+    });
+  }
+  const exact = buildCrossSourceEvidenceReceipt({
+    object: { procurement_id: "procurement:contract:CT1" },
+    observations: [passport, checkbook],
+    acceptedJoins: [{ ...exactJoin, assertion_id: "assertion:procurement_identity:pair-ct-1:v1" }],
+    provenanceGraph: graph("exact"),
+  });
+  assert.equal(exact.relation, "exact");
+  assert.equal(buildCrossSourceEvidenceReceipt({
+    object: { procurement_id: "procurement:contract:CT1" },
+    observations: [passport, checkbook],
+    acceptedJoins: [{ ...exactJoin, assertion_id: "assertion:procurement_identity:pair-ct-1:v1" }],
+    provenanceGraph: graph("probabilistic"),
+  }), null);
+});
+
+test("objects without accepted corroboration stay quiet", () => {
+  const receipt = buildCrossSourceEvidenceReceipt({
+    object: { procurement_id: "procurement:contract:SOLO" },
+    observations: [passport],
+    acceptedJoins: [],
+  });
+  assert.equal(receipt, null);
+  const html = renderProcurementDocument({
+    procurement_id: "procurement:contract:SOLO",
+    identity_keys: { contract_ids: ["SOLO"] },
+    title: "Solo contract",
+  }, [passport]);
+  assert.doesNotMatch(html, /Also recorded in/);
+  assert.doesNotMatch(html, /data-cross-source-evidence-receipt/);
 });

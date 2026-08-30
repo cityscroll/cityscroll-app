@@ -367,6 +367,27 @@ function coverageStats(rows) {
   };
 }
 
+/**
+ * Bounded AP-06 consumer of an already-accepted cross-source receipt.
+ * Cites exact City Record corroboration next to an existing exact-PIN match.
+ * Never rewrites identity keys, never promotes fuzzy/related-instrument rows,
+ * and never mixes registered-contract value with payment measures.
+ */
+export function citeCityRecordCoverageFromReceipt(row, receipt) {
+  const match = row?.city_record_match;
+  const exactReceipt = receipt?.relation === "exact"
+    && Array.isArray(receipt?.joins)
+    && receipt.joins.some((join) => join.relation === "exact" || join.status === "accepted")
+    && Array.isArray(receipt?.sources)
+    && receipt.sources.some((source) => String(source.source_system || "").toLowerCase() === "city_record");
+  return {
+    ...row,
+    coverage_receipt_ref: match === CITY_RECORD_MATCHES.exact && exactReceipt
+      ? receipt.schema || "cityscroll.cross_source_evidence_receipt.v1"
+      : null,
+  };
+}
+
 export function cityRecordCoverage(rows, { min_amount = CITY_RECORD_COVERAGE_DEFAULT_THRESHOLD, registration_fiscal_year, contract_amount_band, agency } = {}) {
   const filtered = filterAnalyticalContracts(rows, {
     min_amount,
