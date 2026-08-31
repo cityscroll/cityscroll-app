@@ -33,6 +33,35 @@ function digest(relative) {
   return createHash("sha256").update(fixtureText(relative)).digest("hex");
 }
 
+test("declared membership keeps disjoint card projections complete without requiring every card on every path", () => {
+  const result = evaluateCardReconciliation({
+    sourceCards: {
+      schema: "cityscroll.card-inventory.v1",
+      cards: [
+        { id: "card-a", status: "implemented", fingerprint: "a.v1" },
+        { id: "card-b", status: "implemented", fingerprint: "b.v1" },
+      ],
+    },
+    projections: {
+      schema: "cityscroll.card-projection-inventory.v1",
+      membership: "declared",
+      projections: [
+        {
+          id: "surface-a",
+          path: "site/data/a.json",
+          cards: [{ id: "card-a", status: "implemented", source_fingerprint: "a.v1" }],
+        },
+        {
+          id: "surface-b",
+          path: "site/data/b.json",
+          cards: [{ id: "card-b", status: "implemented", source_fingerprint: "b.v1" }],
+        },
+      ],
+    },
+  });
+  assert.equal(result.status, "PASS", result.findings.join("; "));
+});
+
 test("an omitted card fails with the card id and declared projection path", () => {
   const sourceCards = fixture("missing-card/source-cards.json");
   const projections = fixture("missing-card/projections.json");
@@ -219,7 +248,7 @@ test("durable receipts retain exact mismatch findings", async () => {
     projections: fixture("missing-card/projections.json"),
   });
   const receipt = buildCardReconciliationReceipt({ result, observedAt: NOW });
-  writeCardReconciliationReceipt(receipt, path);
+  writeCardReconciliationReceipt(receipt, path, { write: true });
   const persisted = JSON.parse(await readFile(path, "utf8"));
   assert.equal(persisted.schema, CARD_RECONCILIATION_RECEIPT_SCHEMA);
   assert.match(persisted.findings[0], /rel-05/);

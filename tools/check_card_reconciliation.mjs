@@ -9,6 +9,7 @@ import {
   evaluateCardReconciliationFromPaths,
   writeCardReconciliationReceipt,
 } from "./card_reconciliation_guard.mjs";
+import { checkArchitectureEvidence } from "./architecture_evidence_shards.mjs";
 
 function argument(argv, name, fallback = null) {
   const index = argv.indexOf(name);
@@ -22,9 +23,22 @@ function main(argv = process.argv.slice(2)) {
       rootDir: process.cwd(),
       now: observedAt,
     });
-    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
-    if (result.status !== "PASS") {
-      for (const finding of result.findings) console.error(`card reconciliation: ${finding}`);
+    const liveEvidence = checkArchitectureEvidence({ root: process.cwd() });
+    const findings = [
+      ...result.findings,
+      ...liveEvidence.findings.map((row) => `architecture-evidence: ${row}`),
+    ];
+    const status = result.status === "PASS" && liveEvidence.status === "PASS" ? "PASS" : "FAIL";
+    const combined = {
+      ...result,
+      status,
+      findings,
+      reason: findings[0] || result.reason,
+      architecture_evidence: liveEvidence.receipt,
+    };
+    process.stdout.write(`${JSON.stringify(combined, null, 2)}\n`);
+    if (status !== "PASS") {
+      for (const finding of findings) console.error(`card reconciliation: ${finding}`);
       process.exitCode = 1;
     }
     return;
@@ -46,7 +60,7 @@ function main(argv = process.argv.slice(2)) {
     sourceCommitSha,
     observedAt,
   });
-  writeCardReconciliationReceipt(receipt, resolve(outputPath));
+  writeCardReconciliationReceipt(receipt, resolve(outputPath), { write: true });
   process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`);
   if (receipt.status !== "PASS") {
     for (const finding of receipt.findings) console.error(`card reconciliation: ${finding}`);

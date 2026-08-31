@@ -1,0 +1,17 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-map-view/lm-02-project-point-materializer",
+  "status": "implemented",
+  "fingerprint": "lm-02-project-point-materializer.v1",
+  "updated_at": "2026-08-30T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-project-map-points",
+      "path": "site/data/land_project_map_points.json"
+    },
+    {
+      "id": "land-project-map-points-receipt",
+      "path": "site/data/land_project_map_points_receipt.json"
+    }
+  ]
+}
