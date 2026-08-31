@@ -1,0 +1,115 @@
+{
+  "schema": "cityscroll.civic_action_paths_documentation.v1",
+  "method": "civic_action_paths_documentation_v1",
+  "card_id": "cityscroll-civic-action-paths/cap-9",
+  "derived_projection": true,
+  "semantic_graph_noun": false,
+  "exact_replay_family": "rules.request_ids",
+  "actorless": true,
+  "unknown_as_zero": false,
+  "cross_board_inference": false,
+  "non_causality": "CityScroll reports what happened to the rulemaking and never attributes adoption or effectiveness to a resident comment.",
+  "documentation": "docs/civic-action-paths.md",
+  "headings": [
+    "Action Path v0 contract",
+    "Continuation safety",
+    "Council hearing continuation",
+    "DOT City-Owned Bicycle Racks",
+    "Community Board evidence policy",
+    "Domain coverage",
+    "Remaining gaps",
+    "Future adapter guidance",
+    "Visual evidence",
+    "Verification"
+  ],
+  "implementation_refs": [
+    "site/action_path_v0.mjs",
+    "site/action_registry.js",
+    "site/council_hearing_matter_continuation.mjs",
+    "site/council_hearing_action_path.mjs",
+    "site/civic_outcome_transition.mjs",
+    "site/community_board_participation.mjs",
+    "worker/src/lib/continuation_replay.mjs",
+    "ontology/action_path_coverage.mjs",
+    "tools/lib/action_path_generalization_audit.mjs"
+  ],
+  "tests": [
+    "test/action_path_v0.test.mjs",
+    "test/action_path_coverage.test.mjs",
+    "test/action_path_generalization_audit.test.mjs",
+    "test/council_hearing_matter_continuation.test.mjs",
+    "test/civic_outcome_transition.test.mjs",
+    "test/community_board_participation.test.mjs",
+    "test/civic_action_paths_documentation.test.mjs",
+    "worker/test/continuation_replay.test.mjs"
+  ],
+  "fixtures": [
+    "test/fixtures/action_path_v0.json",
+    "ontology/fixtures/dimensions/action_path_coverage.json",
+    "site/data/meeting_outcomes_snapshot.json",
+    "site/data/community_board_participation.json",
+    "site/data/rules_domain_observations.json"
+  ],
+  "canaries": {
+    "council_single_matter": {
+      "request_id": "20260707022",
+      "subject_ref": "matter:79200",
+      "later_state": "Laid Over by Subcommittee"
+    },
+    "council_multiple_matters": {
+      "request_id": "20260707021"
+    },
+    "council_unmatched": {
+      "request_id": "20260728026"
+    },
+    "dot_bicycle_racks": {
+      "subject_ref": "rulemaking:dot:bicycle-owned-racks",
+      "t1_notice": "20260317026",
+      "t2_notice": "20260706041",
+      "t3_effective": "2026-08-13"
+    },
+    "community_board_positive": "community-board:manhattan-cb-02",
+    "community_board_negative": "community-board:bronx-cb-02"
+  },
+  "evidence": {
+    "before": {
+      "manifest": "docs/evidence/civic-action-paths/before/capture-manifest.json",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "capture_count": 16
+    },
+    "after": {
+      "manifest": "docs/evidence/civic-action-paths/after/capture-manifest.json",
+      "ways_to_participate": "docs/evidence/civic-action-paths/after/ways-to-participate-capture.json",
+      "viewports": [
+        {
+          "name": "desktop",
+          "width": 1440,
+          "height": 1000
+        },
+        {
+          "name": "mobile",
+          "width": 390,
+          "height": 844
+        }
+      ],
+      "capture_count": 12,
+      "board_capture_count": 4
+    }
+  },
+  "remaining_gaps": [
+    "matter:{legistar_id} exact compiler family",
+    "community-board committee-identity replay",
+    "land, money, staffing, and property Action Path continuation adapters"
+  ]
+}

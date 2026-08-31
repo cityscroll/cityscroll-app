@@ -16,6 +16,13 @@ catalog that unifies:
 | Assertions | Source assertion vs product interpretation | `assertion_*` |
 | Kinetic actions | Reader action rail + privacy-safe action log | `kinetic_action_types` |
 
+Action Path v0 is a kinetic capability (`action_path_v0`), not a semantic
+object. It wraps an already validated reader action with a grounded target and
+an optional exact continuation. Do not register `action_path`, `intervention`,
+or a generic resident-action node in `object_types`. Coverage measurement is
+`ontology/action_path_coverage.mjs`. The architecture receipt is
+[`docs/civic-action-paths.md`](civic-action-paths.md).
+
 **Identity is not the whole graph.** Entity resolution remains link-not-merge: four type
 families plus shadow dual-write. The Civic Graph catalogs the wider civic noun set
 (payments, meetings, exams, franchise, …) including types that are still `unregistered`
