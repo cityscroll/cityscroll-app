@@ -26,7 +26,7 @@ import {
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const html = SITE_SOURCE;
 const i18n = readFileSync(join(ROOT, "site/i18n.js"), "utf8");
-const agents = readFileSync(join(ROOT, "AGENTS.md"), "utf8");
+const alertsApp = readFileSync(join(ROOT, "site/app/alerts.mjs"), "utf8");
 
 test("demo account has more than one active watch so rollup applies", () => {
   const watches = demoRollupWatches();
@@ -128,6 +128,6 @@ test("public demo contract opens the top-level watch manager in Following", () =
   assert.ok(entry.expectations.visible.some((loc) => loc.selector === "[data-personal-watch-list]"));
 });
 
-test("project memory documents alerts rollup prefs surface", () => {
-  assert.match(agents, /alerts-rollup-prefs|#alerts\?view=rollup|multi-watch digest rollup/i);
+test("the owning client module documents the alerts rollup prefs surface", () => {
+  assert.match(alertsApp, /alerts-rollup-prefs|#alerts\?view=rollup|multi-watch digest rollup/i);
 });

@@ -1,0 +1,28 @@
+{
+  "schema": "cityscroll.agents_router_policy.v1",
+  "initial_ceiling_bytes": 12000,
+  "ceiling_history_bytes": [12000],
+  "max_bytes": 12000,
+  "instruction_files": ["AGENTS.md"],
+  "compatibility_aliases": {},
+  "required_pointers": [
+    "README.md",
+    "ARCHITECTURE.md",
+    "docs/architecture.md",
+    "docs/adr",
+    "docs/module-map.md",
+    "site/data/source_contracts.json",
+    "docs/data-sources.md",
+    "architecture/resident-read-policy.json",
+    "architecture/evidence.d/README.md",
+    "docs/repository-control-plane/classification.v1.json",
+    "docs/repository-control-plane/semantic-owner-mapping.v1.json",
+    "test",
+    "worker/test",
+    "tools/preflight-required-checks.sh",
+    "tools/architecture_evidence_shards.mjs",
+    "tools/reconcile_architecture.mjs",
+    "docs/release/cloudflare-native-builds.md"
+  ],
+  "local_guidance": []
+}
