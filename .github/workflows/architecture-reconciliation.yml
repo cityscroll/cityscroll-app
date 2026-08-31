@@ -10,6 +10,7 @@ on:
     paths:
       - "ARCHITECTURE.md"
       - "architecture/**"
+      - "architecture-evidence/**"
       - "docs/adr/**"
       - "docs/architecture.md"
       - "entity_resolution/**"

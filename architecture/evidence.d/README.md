@@ -3,8 +3,10 @@
 `architecture/evidence.d/` is the source-owned architecture-evidence registry.
 
 Each card or change owns one stable entry file. Unrelated changes must not edit
-another card's entry or a shared hand-maintained inventory. The committed files
-under `architecture-evidence/` are generated compatibility inventories.
+another card's entry or a shared generated inventory. The files
+`architecture-evidence/source-cards.json` and
+`architecture-evidence/projections.json` are derived at check/build time and
+must not be tracked.
 
 ## Entry identity
 
@@ -21,7 +23,8 @@ Entries use `cityscroll.architecture-evidence-entry.v1`. The machine schema is
 ## Aggregation
 
 `node tools/architecture_evidence_shards.mjs --check` discovers every entry,
-sorts by `id`, validates schema and identity, and emits the existing
+sorts by `id`, validates schema and identity, and derives the existing
 `cityscroll.card-inventory.v1` / `cityscroll.card-projection-inventory.v1`
-aggregates. `--write` refreshes the generated compatibility files. Do not
-hand-edit those generated files.
+aggregates in memory. `--check` is read-only. `--write` may emit the same
+shapes under `.artifacts/architecture-evidence/` for local inspection. A
+guard rejects attempts to track or edit the generated aggregate paths.
