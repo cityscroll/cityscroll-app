@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 
 import { spawnSync } from "node:child_process";
-import { existsSync, appendFileSync, writeFileSync } from "node:fs";
+import { existsSync, appendFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
+import { performance } from "node:perf_hooks";
 import { fileURLToPath } from "node:url";
 
 const scriptRoot = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = dirname(scriptRoot);
+let timingReceiptPath = null;
+let timingStartedAt = 0;
+const timingStages = [];
 
 function parseArgs(argv) {
   const result = {};
@@ -26,19 +30,38 @@ function parseArgs(argv) {
   return result;
 }
 
-function run(command, args, cwd) {
+function writeTimingReceipt(result = "running") {
+  if (!timingReceiptPath) return;
+  mkdirSync(dirname(timingReceiptPath), { recursive: true });
+  writeFileSync(timingReceiptPath, `${JSON.stringify({
+    schema: "cityscroll.pages_build_timing.v1",
+    result,
+    elapsed_ms: Math.round(performance.now() - timingStartedAt),
+    stages: timingStages,
+  }, null, 2)}\n`);
+}
+
+function run(command, args, cwd, stage = command) {
   console.log(`$ ${command} ${args.join(" ")}`);
+  const startedAt = performance.now();
   const result = spawnSync(command, args, { cwd, stdio: "inherit" });
+  timingStages.push({
+    stage,
+    command,
+    duration_ms: Math.round(performance.now() - startedAt),
+    result: result.error ? "environment-error" : result.status === 0 ? "pass" : "fail",
+  });
+  writeTimingReceipt(result.error || result.status !== 0 ? "fail" : "running");
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
 function runNode(sourceDir, tool, args = []) {
-  run(process.execPath, [join(sourceDir, "tools", tool), ...args], sourceDir);
+  run(process.execPath, [join(sourceDir, "tools", tool), ...args], sourceDir, tool);
 }
 
 function runPython(sourceDir, tool, args = []) {
-  run("python3", [join(sourceDir, "tools", tool), ...args], sourceDir);
+  run("python3", [join(sourceDir, "tools", tool), ...args], sourceDir, tool);
 }
 
 function appendOutput(name, value) {
@@ -50,6 +73,11 @@ const sourceDir = resolve(repositoryRoot, args["source-dir"] || ".");
 const siteDir = resolve(repositoryRoot, args["site-dir"] || "_site");
 const refresh = Boolean(args["refresh-decision-outcomes"]);
 const commitSha = args["commit-sha"] || "";
+timingReceiptPath = args["timing-receipt"]
+  ? resolve(sourceDir, args["timing-receipt"])
+  : (process.env.CITYSCROLL_BUILD_TIMING_RECEIPT ? resolve(sourceDir, process.env.CITYSCROLL_BUILD_TIMING_RECEIPT) : null);
+timingStartedAt = performance.now();
+writeTimingReceipt();
 
 // Architecture fitness runs before any generated artifact. A production build
 // must never be the first place a resident live-data dependency is discovered.
@@ -79,7 +107,7 @@ if (refresh) {
     join(sourceDir, "test/batch_precompute_snapshots.test.mjs"),
     join(sourceDir, "test/zap_outcomes.test.mjs"),
     join(sourceDir, "test/meeting_outcomes_static.test.mjs"),
-  ], sourceDir);
+  ], sourceDir, "refresh-decision-outcome-tests");
 }
 
 const graphTool = join(sourceDir, "tools", "data_source_graph.mjs");
@@ -90,7 +118,9 @@ if (existsSync(graphTool)) {
   appendOutput("data-source-graph-dir", docsDir);
 }
 
-runNode(sourceDir, "derived_json_build_boundary.mjs", ["--source-dir", sourceDir]);
+const derivedArgs = ["--source-dir", sourceDir];
+if (timingReceiptPath) derivedArgs.push("--timing-receipt", `${timingReceiptPath}.derived.json`);
+runNode(sourceDir, "derived_json_build_boundary.mjs", derivedArgs);
 if (existsSync(join(sourceDir, "tools", "build_url_migration_map.mjs"))) {
   runNode(sourceDir, "build_url_migration_map.mjs", ["--check"]);
 }
@@ -125,4 +155,5 @@ runPython(sourceDir, "stamp_i18n_assets.py", ["--site-root", siteDir, "--stamp"]
 runPython(sourceDir, "../test/standards/i18n_refs.py", ["--root", siteDir, "--built"]);
 
 runPython(sourceDir, "verify_public_artifact.py", ["--site-root", siteDir]);
+writeTimingReceipt("pass");
 console.log(`Cloudflare Pages artifact ready at ${siteDir}`);
