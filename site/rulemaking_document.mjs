@@ -10,6 +10,7 @@ import {
 import { rulesCardInteractionProjection } from "./rules_card_interaction.mjs";
 import { buildRulesPhaseView } from "./rules_phase_spine.mjs";
 import { renderPetitionHandoff } from "./rules_petition.mjs";
+import { renderRulesExceptionModes } from "./rules_exception_modes.mjs";
 
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -277,6 +278,7 @@ export function renderRulemakingDocument(object, { currentHref = "", now = null 
   const petition = interaction.lifecycle_state === "effective"
     ? renderPetitionHandoff(object.petition_handoff, { mode: "rule" })
     : "";
+  const exceptions = renderRulesExceptionModes(object.exception_modes);
   const actionItems = [];
   const officialHref = clean(object.nyc_rules?.url || object.nyc_rules?.comment_url);
   if (officialHref) actionItems.push({ kind: "source", href: officialHref, label: "Open official rule page" });
@@ -322,6 +324,10 @@ ${agency ? `<p class="node-lede">${esc(agency)}</p>` : ""}
 ${actions}
 ${renderNodeSection({ heading: "What the agency proposes", body: object.proposal_summary ? `<p>${esc(object.proposal_summary)}</p>` : "" })}
 ${renderNodeSection({ heading: "What this changes", body: ruleVersionsMarkup(object), extraClass: "rulemaking-versions" })}
+${renderNodeSection({
+  body: exceptions,
+  extraClass: "rulemaking-exceptions",
+})}
 ${participation}
 ${petition}
 ${renderNodeSection({ heading: "Process", body: timeline, extraClass: "rulemaking-process" })}

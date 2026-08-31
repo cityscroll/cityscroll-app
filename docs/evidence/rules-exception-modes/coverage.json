@@ -1,0 +1,193 @@
+{
+  "schema": "cityscroll.rules_exception_modes_receipt.v1",
+  "generated_at": "2026-08-31T00:00:00Z",
+  "extraction": {
+    "method": "rules_exception_modes_v1",
+    "version": "v1"
+  },
+  "case_count": 12,
+  "per_mode": {
+    "emergency_finding": {
+      "established": 6,
+      "conflict": 0,
+      "unknown": 0,
+      "unsupported": 1,
+      "absent": 5,
+      "exact_passage": 7,
+      "date_supported": 0,
+      "date_precision": {
+        "day": 0,
+        "immediate": 0,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 0,
+        "unknown": 0,
+        "none": 12
+      },
+      "source_vintage_present": 7,
+      "source_vintage_unknown": 0,
+      "unresolved_or_conflicting": 1
+    },
+    "emergency_effective_date": {
+      "established": 3,
+      "conflict": 0,
+      "unknown": 3,
+      "unsupported": 0,
+      "absent": 6,
+      "exact_passage": 3,
+      "date_supported": 3,
+      "date_precision": {
+        "day": 2,
+        "immediate": 1,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 0,
+        "unknown": 0,
+        "none": 9
+      },
+      "source_vintage_present": 3,
+      "source_vintage_unknown": 3,
+      "unresolved_or_conflicting": 3
+    },
+    "emergency_expiration": {
+      "established": 3,
+      "conflict": 1,
+      "unknown": 2,
+      "unsupported": 0,
+      "absent": 6,
+      "exact_passage": 4,
+      "date_supported": 3,
+      "date_precision": {
+        "day": 3,
+        "immediate": 0,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 1,
+        "unknown": 0,
+        "none": 8
+      },
+      "source_vintage_present": 4,
+      "source_vintage_unknown": 2,
+      "unresolved_or_conflicting": 3
+    },
+    "emergency_extension": {
+      "established": 1,
+      "conflict": 0,
+      "unknown": 5,
+      "unsupported": 0,
+      "absent": 6,
+      "exact_passage": 1,
+      "date_supported": 1,
+      "date_precision": {
+        "day": 1,
+        "immediate": 0,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 0,
+        "unknown": 0,
+        "none": 11
+      },
+      "source_vintage_present": 1,
+      "source_vintage_unknown": 5,
+      "unresolved_or_conflicting": 5
+    },
+    "unanticipated_in_agenda": {
+      "established": 1,
+      "conflict": 0,
+      "unknown": 0,
+      "unsupported": 0,
+      "absent": 11,
+      "exact_passage": 1,
+      "date_supported": 0,
+      "date_precision": {
+        "day": 0,
+        "immediate": 0,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 0,
+        "unknown": 0,
+        "none": 12
+      },
+      "source_vintage_present": 1,
+      "source_vintage_unknown": 0,
+      "unresolved_or_conflicting": 0
+    },
+    "hearing_waived": {
+      "established": 1,
+      "conflict": 0,
+      "unknown": 0,
+      "unsupported": 0,
+      "absent": 11,
+      "exact_passage": 1,
+      "date_supported": 0,
+      "date_precision": {
+        "day": 0,
+        "immediate": 0,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 0,
+        "unknown": 0,
+        "none": 12
+      },
+      "source_vintage_present": 1,
+      "source_vintage_unknown": 0,
+      "unresolved_or_conflicting": 0
+    },
+    "public_purpose": {
+      "established": 2,
+      "conflict": 0,
+      "unknown": 0,
+      "unsupported": 0,
+      "absent": 10,
+      "exact_passage": 2,
+      "date_supported": 0,
+      "date_precision": {
+        "day": 0,
+        "immediate": 0,
+        "upon_filing": 0,
+        "upon_publication": 0,
+        "duration": 0,
+        "conflict": 0,
+        "unknown": 0,
+        "none": 12
+      },
+      "source_vintage_present": 2,
+      "source_vintage_unknown": 0,
+      "unresolved_or_conflicting": 0
+    }
+  },
+  "procedure_projection": {
+    "ordinary_spine": 7,
+    "emergency_branches": 6,
+    "unsupported_exception_candidates": 1
+  },
+  "date_evidence": {
+    "unknown_is_not_expired": true,
+    "absent_is_not_unanticipated": true,
+    "missing_extension_is_not_expiration": true,
+    "exception_is_not_lifecycle_stage": true
+  },
+  "blended_exception_rate": null,
+  "generated_from": "test/fixtures/rules_exception_modes/gold.v1.json",
+  "characterization_completed_at": "2026-08-31T00:00:00Z",
+  "case_ids": [
+    "confirmed-emergency",
+    "immediate-effectiveness",
+    "expiry",
+    "qualifying-extension",
+    "ordinary-plus-exception-branch",
+    "explicit-unanticipated",
+    "absent-unanticipated",
+    "hearing-waived",
+    "public-purpose",
+    "conflicting-dates",
+    "weak-missing-passage",
+    "unsupported-candidate"
+  ]
+}
