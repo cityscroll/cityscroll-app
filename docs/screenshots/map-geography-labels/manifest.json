@@ -17,7 +17,7 @@
   "checks": "polygon-label-list identity and visible-label overlap",
   "captures": [
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/7c/7cc67cf3b111e5a1fd96d78d2e81e1bff0c39687044e9e0e9b7509eb3b6c7053.webp",
+      "file": null,
       "zoom": "borough",
       "width": 390,
       "paths": [
@@ -40,7 +40,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/61/61694f013f700bccac4bb2d89416c6aaaf5539ecb9e28118fa422064612a5490.webp",
+      "file": null,
       "zoom": "district",
       "width": 390,
       "paths": [
@@ -81,7 +81,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/73/733410d7f4f6715ccf9ee4a50601e353aec44fc1467a3e866c5a0d18ce61a92d.webp",
+      "file": null,
       "zoom": "borough",
       "width": 1440,
       "paths": [
@@ -104,7 +104,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/f5/f573cd2dc6671a4487254c1dcc5f764464fb2a2a49c13967622d31bf30f96358.webp",
+      "file": null,
       "zoom": "district",
       "width": 1440,
       "paths": [
@@ -145,7 +145,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/c5/c57804be09007f9f968696205da8cd2e35deb6215f9118d1c23150b86c4ffa41.webp",
+      "file": null,
       "zoom": "borough",
       "width": 390,
       "paths": [
@@ -174,7 +174,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/8d/8d6fa2c338d0f0d1807774cda03a3a308b97e1e10b37e9a355ba5ac32e5e9565.webp",
+      "file": null,
       "zoom": "district",
       "width": 390,
       "paths": [
@@ -230,7 +230,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/b8/b8f45dd86b6f6c985f69c5a2fcdf90a317373de6bc6cef88d827d26c2de577cc.webp",
+      "file": null,
       "zoom": "borough",
       "width": 1440,
       "paths": [
@@ -259,7 +259,7 @@
       "overlaps": []
     },
     {
-      "file": "backstage://cityscroll-evidence/objects/sha256/0a/0ad4910b12f58a11c9757b5c35035236d6d3600b55b3fa2b9c3cf0fc299ddf3a.webp",
+      "file": null,
       "zoom": "district",
       "width": 1440,
       "paths": [

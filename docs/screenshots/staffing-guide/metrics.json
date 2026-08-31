@@ -27,7 +27,7 @@
   },
   "notes": "Guide incremental weight is the dependency-free staffing module plus the precomputed exam JSON. The Staffing-page exam module and exam tags reuse that artifact; no NYC API request is required to render them.",
   "captures": [
-    "backstage://cityscroll-evidence/objects/sha256/39/399b28be0a26f02fa2635c4f05cea56f74297815775f2e4d58e8898bc3d78a63.webp",
-    "backstage://cityscroll-evidence/objects/sha256/14/140fcedee5171eb702248848680ea70f5321c2cb02913556f867ea1611f175d6.webp"
+    null,
+    null
   ]
 }

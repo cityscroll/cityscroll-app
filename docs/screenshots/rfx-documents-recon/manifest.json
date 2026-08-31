@@ -1,5 +1,5 @@
 {
-  "backstage://cityscroll-evidence/objects/sha256/78/78816e03accba982ae6206fa85e5ed73c6caf9e4fcc17fc22c9973079e96162b.webp": {
+  "private-evidence-ref:e947de96ecc8ed58d7b2e0344fe14bc9a7fd1ae950c848e02b609446ea2d2707": {
     "sha256": "5ece4de605b5c01a370e39d97a986f6142d03f72848061219bee0ac894cba677",
     "bytes": 87229,
     "viewport": [
@@ -7,7 +7,7 @@
       844
     ]
   },
-  "backstage://cityscroll-evidence/objects/sha256/a9/a9bcb4d4c4734becf512e93f8e4294bd33d69a2083d69695a23fac605a377c93.webp": {
+  "private-evidence-ref:ee451626fff93acaebfad4245843073831c4f4513449ba242dae74393d9033a1": {
     "sha256": "643246c633b28e3a490a34133da46100751d92ae5054223115867d99c6c22d96",
     "bytes": 95699,
     "viewport": [

@@ -17,7 +17,7 @@ coverage wording, static-first delivery, and degraded states remain unchanged.
 
 ## Observable result and evidence
 
-- Baseline and after screenshots are byte-identical at [390px](backstage://cityscroll-evidence/objects/sha256/d8/d8561a5ff9afe7f17b0c4531fe3f2bb3735a7b0e9a763d6fae8d5eaeb0194269.webp) / [after](backstage://cityscroll-evidence/objects/sha256/d8/d8561a5ff9afe7f17b0c4531fe3f2bb3735a7b0e9a763d6fae8d5eaeb0194269.webp) and [1440px](backstage://cityscroll-evidence/objects/sha256/7f/7f05abf331eb7c5edf02c15e15c04250e160ea9385e4e4116a3df925f19438b5.webp) / [after](backstage://cityscroll-evidence/objects/sha256/7f/7f05abf331eb7c5edf02c15e15c04250e160ea9385e4e4116a3df925f19438b5.webp).
+- Baseline and after screenshots are byte-identical at 390px (owner-only evidence retained under the registered RCP-03 disposition) / after (owner-only evidence retained under the registered RCP-03 disposition) and 1440px (owner-only evidence retained under the registered RCP-03 disposition) / after (owner-only evidence retained under the registered RCP-03 disposition).
 - URLs, headings, lane labels, result cards, provenance links, match counts, and incomplete-source wording are covered by `test/functional/29_search_results.py`.
 - A response without a federated envelope, or with an invalid envelope, retains the prior projection coverage and existing unavailable/empty rendering. This is graceful degradation, not a relaxed assertion of a valid capability response.
 - Focused contract coverage is in `test/search_capability_projection.test.mjs`; the shared provider equivalence remains covered by `test/federated_search_capability.test.mjs`.

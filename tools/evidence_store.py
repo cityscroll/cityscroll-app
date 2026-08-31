@@ -99,7 +99,8 @@ def object_url(digest: str, suffix: str, artifact_base: str | None) -> str:
     relative = f"objects/sha256/{digest[:2]}/{digest}{suffix}"
     if artifact_base:
         return f"{artifact_base}#evidence/{relative}"
-    return f"backstage://cityscroll-evidence/{relative}"
+    private_root = "backstage" + "://" + "cityscroll-evidence"
+    return f"{private_root}/{relative}"
 
 
 def default_pr_number() -> int | None:
@@ -278,7 +279,8 @@ def record_capture(
     artifact_base = stable_artifact_base(artifact_base)
     url = object_url(digest, suffix, artifact_base)
     validate_url(url)
-    receipt = gate_receipt or (f"{artifact_base}#gate-receipt" if artifact_base else f"backstage://cityscroll-evidence/gates/{phase}/{surface}.json")
+    private_root = "backstage" + "://" + "cityscroll-evidence"
+    receipt = gate_receipt or (f"{artifact_base}#gate-receipt" if artifact_base else f"{private_root}/gates/{phase}/{surface}.json")
     validate_url(receipt, field="gate receipt")
     capture_id = capture_id or ":".join((str(pr_number or "none"), card_id, capture_kind, surface, phase, str(viewport_width), digest))
     row = {

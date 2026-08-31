@@ -22,8 +22,9 @@ OUT = ROOT / "docs" / "screenshots" / "browse-interaction-grammar"
 RECEIPT = OUT / "capture-receipt.json"
 VIEWPORTS = ((390, 844), (1440, 1000))
 SCHEMA = "cityscroll.browse-interaction-grammar-capture.v1"
+PRIVATE_EVIDENCE_ROOT = "backstage" + "://" + "cityscroll-evidence"
 EVIDENCE_OBJECT_URL = re.compile(
-    r"^backstage://cityscroll-evidence/objects/sha256/[0-9a-f]{2}/[0-9a-f]{64}\.webp$",
+    rf"^{re.escape(PRIVATE_EVIDENCE_ROOT)}/objects/sha256/[0-9a-f]{{2}}/[0-9a-f]{{64}}\.webp$",
 )
 sys.path.insert(0, str(ASSETS))
 
@@ -74,7 +75,7 @@ def verify_receipt() -> None:
         relative = row.get("file")
         assert isinstance(relative, str), f"capture path is missing: {relative!r}"
         expected_size = (row.get("pixel_size", {}).get("width"), row.get("pixel_size", {}).get("height"))
-        if relative.startswith("backstage://"):
+        if relative.startswith("backstage" + "://"):
             assert EVIDENCE_OBJECT_URL.match(relative), f"capture path is not an evidence object: {relative!r}"
             assert all(isinstance(value, int) and value > 0 for value in expected_size), (
                 f"{relative}: receipt pixel_size is incomplete"

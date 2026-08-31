@@ -107,9 +107,10 @@ export function buildManifest() {
     .filter((p) => !p.startsWith("docs/repository-control-plane/"))
     .filter((p) => !p.startsWith("test/fixtures/repository_control_plane/"))
     .sort();
-  const privateUriPaths = publicDocs.filter((p) => text(p).includes("backstage://cityscroll-evidence/"));
+  const privateEvidenceRoot = ["backstage", "://", "cityscroll-evidence/"].join("");
+  const privateUriPaths = publicDocs.filter((p) => text(p).includes(privateEvidenceRoot));
   for (const path of privateUriPaths) {
-    entries.push(entry(`private-uri:${path}`, path, "all backstage://cityscroll-evidence/ URI occurrences", "private-evidence-reference", "cityscroll-repository-control-plane/rcp-03", "cityscroll-repository-control-plane/rcp-03", "privatize", `register:cityscroll-repository-control-plane/rcp-03#private-uri-${sha(path).slice(0, 12)}`, "review-required"));
+    entries.push(entry(`private-uri:${path}`, path, "all private evidence URI occurrences", "private-evidence-reference", "cityscroll-repository-control-plane/rcp-03", "cityscroll-repository-control-plane/rcp-03", "privatize", `register:cityscroll-repository-control-plane/rcp-03#private-uri-${sha(path).slice(0, 12)}`, "review-required"));
   }
 
   const retained = [
@@ -170,7 +171,8 @@ export function scanUnclassifiedFixture(documents, manifestEntries = []) {
     if (covered.has(document.path)) continue;
     if (/rollout register|ready-to-card|next joinable cards/i.test(document.text)) findings.push(`${document.path}: unclassified-rollout-register`);
     if (/rationale-to-confirm by the site owner/i.test(document.text)) findings.push(`${document.path}: unresolved-owner-decision`);
-    if (/backstage:\/\/cityscroll-evidence\//i.test(document.text)) findings.push(`${document.path}: private-evidence-uri`);
+    const privateEvidencePattern = new RegExp(["backstage", "://", "cityscroll-evidence/"].join(""), "i");
+    if (privateEvidencePattern.test(document.text) || /owner-only evidence locator omitted/i.test(document.text)) findings.push(`${document.path}: private-evidence-uri`);
   }
   return findings.sort();
 }

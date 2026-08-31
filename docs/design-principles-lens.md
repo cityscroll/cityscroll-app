@@ -37,11 +37,10 @@ against both.
 
 ## 2. First principles (from the held canon)
 
-Mined from the library, not memory. Each quote was verified against the indexed source;
-citations are `[cangshu doc]`.
+The references below use ordinary public bibliographic citations.
 
 ### 2.1 Tufte — maximize the data-ink ratio, erase the rest
-*The Visual Display of Quantitative Information* [cangshu 699].
+Edward R. Tufte, *The Visual Display of Quantitative Information*, 2nd ed. (Graphics Press, 2001).
 
 - **Data-ink ratio** (p.91): *"Maximize the data-ink ratio, within reason."* The ink a
   reader is here for is the notices. Five rail labels, a decorative stepper, and a
@@ -59,7 +58,7 @@ citations are `[cangshu doc]`.
 one counted card.
 
 ### 2.2 Krug — don't make me think; mindless choices; cut the words
-*Don't Make Me Think, Revisited* [cangshu 854].
+Steve Krug, *Don't Make Me Think, Revisited*, 3rd ed. (New Riders, 2014).
 
 - **First law** (§"Guiding Principles"): *"Don't make me think."* A self-evident page
   needs no analysis before use. Six co-equal filter taxonomies demand exactly that
@@ -77,7 +76,7 @@ one counted card.
 one affordance; strip label chrome.
 
 ### 2.3 Norman — affordances, signifiers, knowledge in the world
-*The Design of Everyday Things* [cangshu 853].
+Don Norman, *The Design of Everyday Things*, rev. ed. (Basic Books, 2013).
 
 - **Affordance vs signifier** (Ch.1): *"Affordances determine what actions are possible.
   Signifiers communicate where the action should take place."* The pipeline stepper is a
@@ -93,15 +92,9 @@ one affordance; strip label chrome.
 when the controls are collapsed; offer a one-click clear.
 
 ### 2.4 About Face — variation is the enemy
-*About Face* [cangshu 851]: *"Unnecessary variation is the enemy of a coherent, usable
+Alan Cooper et al., *About Face: The Essentials of Interaction Design*, 4th ed. (Wiley, 2014): *"Unnecessary variation is the enemy of a coherent, usable
 design."* Five chip rails + one select + one stepper is five visual treatments for the
 single idea "narrow this list." One treatment.
-
-### 2.5 Pending acquisitions
-*Refactoring UI* (Wathan & Schoger), *Information Dashboard Design* (Few), and *Forms
-That Work* (Jarrett & Gaffney) are filed for the library but not yet indexed; their
-guidance (visual hierarchy by de-emphasis; declutter to raise the signal; ask only for
-what's needed) is consistent with the rulings above and is cited here as **pending**.
 
 ## 3. Exemplars (praxis leg)
 
