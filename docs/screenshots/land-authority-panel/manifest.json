@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "feature": "land-authority-panel",
+  "files": [
+    {
+      "name": "cpc-390.png",
+      "bytes": 82773,
+      "sha256": "1cf5f033be58b29f7715880cb51409f906615a51b9f37c7d6c7453c9566747e9",
+      "viewport": [
+        390,
+        844
+      ],
+      "project_id": "2025M0252"
+    },
+    {
+      "name": "cpc-1440.png",
+      "bytes": 82493,
+      "sha256": "99550307e03217d4f1151886595b99c0c3f4b25e8cdd50c95ca852d0cfc81490",
+      "viewport": [
+        1440,
+        900
+      ],
+      "project_id": "2025M0252"
+    },
+    {
+      "name": "multi-cd-draft-390.png",
+      "bytes": 82803,
+      "sha256": "d11161ca18848b26a2dd1ded7b569d1698b596068248d7aa5ab753dfe5a24c84",
+      "viewport": [
+        390,
+        844
+      ],
+      "project_id": "2025K0305"
+    },
+    {
+      "name": "multi-cd-draft-1440.png",
+      "bytes": 83602,
+      "sha256": "7508157cd0e11d7ba6d465ff6ce778a557bafddf66f20d265f3e00f1a5f774cb",
+      "viewport": [
+        1440,
+        900
+      ],
+      "project_id": "2025K0305"
+    },
+    {
+      "name": "council-390.png",
+      "bytes": 84158,
+      "sha256": "30920e507c371487be45055cbef92c40fb63fc05517e737fcc4c37886545da7e",
+      "viewport": [
+        390,
+        844
+      ],
+      "project_id": "2026Q0210"
+    },
+    {
+      "name": "council-1440.png",
+      "bytes": 86402,
+      "sha256": "5449f000f7e9ac1864aa5c35a0d7b824ec3a66a7a1a935503e5af79094e16dd0",
+      "viewport": [
+        1440,
+        900
+      ],
+      "project_id": "2026Q0210"
+    }
+  ]
+}

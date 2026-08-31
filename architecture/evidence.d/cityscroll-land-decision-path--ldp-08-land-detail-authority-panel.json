@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-land-decision-path/ldp-08-land-detail-authority-panel",
+  "status": "implemented",
+  "fingerprint": "ldp-08-land-detail-authority-panel.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "land-authority-panel-view",
+      "path": "site/land_authority_summary_view.mjs"
+    },
+    {
+      "id": "land-authority-panel-tests",
+      "path": "test/land_authority_panel.test.mjs"
+    },
+    {
+      "id": "land-authority-panel-captures",
+      "path": "docs/screenshots/land-authority-panel"
+    }
+  ]
+}
