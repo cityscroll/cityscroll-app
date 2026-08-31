@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   INJECTED_FAILURE,
   createGrantedInvoker,
+  modelInputTokens,
   runCodeModeMeasurement,
   serialized,
 } from "../../integrations/cloudflare-os-code-mode/src/experiment.mjs";
@@ -29,6 +30,35 @@ test("CS-08 sandbox refuses ungranted tools before dispatch", async () => {
   );
   assert.equal(dispatched, 0);
   assert.equal(createGrantedInvoker, sandboxInvoker);
+});
+
+test("matched-arm token accounting ignores retrieval duration", () => {
+  const fixture = {
+    entity_id: "vendor:name:acme",
+    notice_query: "acme",
+    cited_query: "acme",
+  };
+  const record = (duration) => ({
+    tool: "search_notices",
+    arguments: { q: "acme", limit: 10 },
+    structured_content: { retrieval: { method: "fts5_bm25", duration_ms: duration, rows_read: 2, result_count: 2 } },
+  });
+  assert.equal(
+    modelInputTokens({
+      arm: "ordinary_mcp",
+      protocol: "ordinary-mcp",
+      fixture,
+      records: [record(0.5)],
+      compactResult: { groups: {}, calls: [] },
+    }),
+    modelInputTokens({
+      arm: "code_mode",
+      protocol: "ordinary-mcp",
+      fixture,
+      records: [record(2.627)],
+      compactResult: { groups: {}, calls: [] },
+    }),
+  );
 });
 
 test("CS-08 matched ordinary-MCP arms stay at parity and do not win", async () => {
