@@ -274,7 +274,7 @@ run_and_fail node --test test/contract/*.test.mjs
 
 run_banner "Unit tests (site + worker)" "Worker dependencies + worker unit tests" \
   "node --test (inside worker/)"
-(cd worker && run_and_fail npm ci)
+run_and_fail tools/install_worker_dependencies.sh
 (cd worker && run_and_fail node --test)
 
 if [[ "$RUN_READING_LEVEL" == "1" ]]; then

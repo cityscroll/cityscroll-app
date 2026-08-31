@@ -181,12 +181,21 @@ jobs:
           # main and check whether a new allowlist entry covers pre-existing
           # content or content the same change just introduced.
           fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        if: matrix.family == 'worker'
+        with:
+          version: 10.15.1
+          run_install: false
       - uses: actions/setup-node@v4
+        if: matrix.family == 'worker'
         with:
           node-version: "22"
-          cache: npm
-          cache-dependency-path: worker/package-lock.json
-
+          cache: pnpm
+          cache-dependency-path: worker/pnpm-lock.yaml
+      - uses: actions/setup-node@v4
+        if: matrix.family != 'worker'
+        with:
+          node-version: "22"
       - name: Legacy repository-name guard
         if: matrix.family == 'static-standards'
         env:
@@ -352,8 +361,7 @@ jobs:
         run: node --test test/contract/*.test.mjs
       - name: Worker dependencies
         if: matrix.family == 'worker'
-        run: npm ci
-        working-directory: worker
+        run: tools/install_worker_dependencies.sh
       - name: Worker unit tests
         if: matrix.family == 'worker'
         run: node --test
