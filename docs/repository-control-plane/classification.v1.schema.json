@@ -26,14 +26,14 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "path", "selector", "content_class", "canonical_owner", "kraken_id", "disposition", "stable_replacement_reference", "history_treatment", "source"],
+        "required": ["id", "path", "selector", "content_class", "canonical_owner", "register_id", "disposition", "stable_replacement_reference", "history_treatment", "source"],
         "properties": {
           "id": { "type": "string", "minLength": 1 },
           "path": { "type": "string", "minLength": 1 },
           "selector": { "type": "string", "minLength": 1 },
           "content_class": { "type": "string", "minLength": 1 },
           "canonical_owner": { "type": "string", "minLength": 1 },
-          "kraken_id": { "type": "string", "minLength": 1 },
+          "register_id": { "type": "string", "minLength": 1 },
           "disposition": { "enum": ["keep", "split", "migrate", "privatize", "archive", "delete-from-tip"] },
           "stable_replacement_reference": { "type": "string", "minLength": 1 },
           "history_treatment": { "enum": ["none", "review-required"] },

@@ -21,7 +21,7 @@ test("manifest enumerates every required current-main candidate", () => {
 
 test("validation fails closed on every required field", () => {
   const manifest = buildManifest();
-  for (const field of ["canonical_owner", "kraken_id", "stable_replacement_reference", "history_treatment"]) {
+  for (const field of ["canonical_owner", "register_id", "stable_replacement_reference", "history_treatment"]) {
     const candidate = structuredClone(manifest);
     delete candidate.entries[0][field];
     assert.ok(validateManifest(candidate).some((finding) => finding.includes(`missing ${field}`)));
