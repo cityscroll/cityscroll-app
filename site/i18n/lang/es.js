@@ -1764,6 +1764,7 @@
     notice_land_join_method_project_id: "id de proyecto exacto",
     notice_land_open_land_detail: "Abrir la página completa del proyecto de zonificación",
     notice_about_project: "Sobre este proyecto",
+    notice_about_project_proof_summary: "Ver prueba",
     notice_about_project_proof: "Vinculado por {identifier} desde {fields} con {method}. Esto no es una recomendación ni una decisión.",
     notice_land_ambiguous_html: "Más de un proyecto ZAP comparte estos números ULURP ({keys}). Abra un proyecto abajo — no inventamos una sola cronología.",
     notice_land_this_notice_html: "Este aviso del City Record forma parte del expediente de audiencia pública del proyecto.",

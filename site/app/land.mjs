@@ -1803,7 +1803,7 @@ function noticeLandSpineHTML(record, phaseTools, joinMeta){
   const landLink=projectId
     ?`<div class="about-project lc-pct" data-canonical-relation="about_project" data-project-id="${escUiHtml(projectId)}" data-is-decision="false">
       <a class="view" href="#land/${escUiHtml(projectId)}">${t("notice_about_project")}</a>
-      <details class="about-project-proof"><summary>${t("notice_land_open_land_detail")}</summary>
+      <details class="about-project-proof"><summary>${t("notice_about_project_proof_summary")}</summary>
         <p>${t("notice_about_project_proof",{identifier,fields,method})}</p>
       </details>
     </div>`
