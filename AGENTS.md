@@ -242,6 +242,13 @@
   committed receipt. Focused proof is `worker/test/land_prediction_backtest.test.mjs`
   and `test/land_prediction_backtest.test.mjs`.
 
+- **Land-use predictor shadow gate (LUP2-C9):** `worker/src/lib/land_prediction_shadow.mjs`
+  evaluates the incumbent and V2 from one validated snapshot, returns the incumbent as the
+  authoritative result through every V2/storage failure, and records operator-only comparison
+  evidence with explicit missingness. Its promotion receipt fails closed against compatible C7
+  evidence and explicit review; the current C7 receipt keeps V2 shadow-only. Proof:
+  `worker/test/land_prediction_shadow.test.mjs`.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive

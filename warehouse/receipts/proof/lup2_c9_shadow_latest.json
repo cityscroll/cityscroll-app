@@ -1,0 +1,35 @@
+{
+  "schema": "cityscroll.land_prediction_promotion_gate.v1",
+  "expected": {
+    "schema": "cityscroll.land_prediction_backtest.proof.v1",
+    "version": "lup2-c7-gold.v1",
+    "predictor_model_version": "2.0.0",
+    "minimum_test_n": 16
+  },
+  "evidence": {
+    "schema": "cityscroll.land_prediction_backtest.proof.v1",
+    "version": "lup2-c7-gold.v1",
+    "sha256": "e43be55e5ae77f8651018ab6c9e8873893cdc11c66fcb6546c5ff821727b172b"
+  },
+  "checks": {
+    "receipt_schema": true,
+    "receipt_version": true,
+    "model_pack": true,
+    "held_out_coverage": true,
+    "timing_available": true,
+    "kill_criterion_passed": true,
+    "c7_allows_product_promotion": false,
+    "explicit_review_approval": false
+  },
+  "decision": {
+    "state": "withheld",
+    "reviewer": null
+  },
+  "resulting_status": "shadow_only_until_backtest_gate",
+  "incumbent_authoritative": true,
+  "reason": "missing, incompatible, failed, or unapproved C7 evidence",
+  "source": "warehouse/receipts/proof/lup2_c7_stance_backtest_latest.json",
+  "comparison_schema": "cityscroll.land_prediction_shadow_comparison.v1",
+  "fixture": "test/fixtures/land_prediction_shadow/gold.v1.json",
+  "generated_at": "2026-08-31T00:00:00.000Z"
+}
