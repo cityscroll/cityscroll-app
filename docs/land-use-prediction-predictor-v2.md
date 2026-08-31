@@ -34,8 +34,32 @@ the incumbent `land_prediction_baseline_v1` path: a supplied
 `fallback_predictor` is invoked on failure, or the result carries an honest
 fallback descriptor with no invented baseline approval probability.
 
+## Explanation and evidence contract
+
+`worker/src/lib/land_prediction_explanation.mjs` defines
+`cityscroll.land_prediction_explanation.v1`. It separates material
+`known_reasons` from `unknown_signals`; each stable reason retains the feature
+state, modeled direction, non-causal explanation, and evidence references.
+Evidence references are `resolvable` only when they carry an exact stable route
+or URL. A source reference without a retained observation remains
+`source_statement_status: unavailable`, and an unresolved route is explicitly
+`unavailable`; neither state is treated as proof that evidence does not exist.
+
+`compareLandPredictionExplanations` emits the deterministic
+`cityscroll.land_prediction_explanation_comparison.v1` shape. It reports model
+and probability changes as measurements and classifies reason IDs as added,
+removed, changed, unchanged, or still unknown. Temporal ordering is not exposed
+as a causal explanation for a probability movement. Institutional features are
+described only as predictive associations; control remains unavailable unless a
+separate source-backed contract establishes it.
+
+The land-detail coherence seam preserves a valid shadow explanation or exposes
+an honest unavailable state. It does not make V2 resident-authoritative, remove
+the incumbent heuristic, or alter C7's withheld promotion decision.
+
 Focused verification:
 
 ```sh
 node --test worker/test/land_prediction_predictor.test.mjs
+node --test worker/test/land_prediction_explanation.test.mjs
 ```

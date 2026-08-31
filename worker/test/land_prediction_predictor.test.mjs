@@ -104,6 +104,9 @@ test("emits a probability, timestamp, feature states, evidence contributors, and
   assert.ok(prediction.major_contributors.length > 0);
   assert.ok(prediction.major_contributors.some((item) => item.evidence_ids.includes("new-stance")));
   assert.equal(prediction.explanation.basis.includes("not a causal claim"), true);
+  assert.equal(prediction.explanation.schema, "cityscroll.land_prediction_explanation.v1");
+  assert.equal(prediction.explanation.interpretation.causal_interpretation, "unavailable");
+  assert.equal(prediction.promotion_status, "shadow_only_until_backtest_gate");
   assert.equal(prediction.fallback.used, false);
 });
 

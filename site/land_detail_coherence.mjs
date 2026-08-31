@@ -359,6 +359,18 @@ export function buildLandProjectState(opts = {}) {
     today: opts.today || null,
   });
 
+  const explanation = opts.prediction?.promotion_status === "shadow_only_until_backtest_gate"
+    && opts.prediction?.explanation?.schema === "cityscroll.land_prediction_explanation.v1"
+    ? opts.prediction.explanation
+    : {
+        schema: "cityscroll.land_prediction_explanation.v1",
+        schema_version: 1,
+        status: "unavailable",
+        known_reasons: [],
+        unknown_signals: [],
+        unavailable_note: "A grounded shadow-prediction explanation is unavailable; the incumbent prediction remains unchanged.",
+      };
+
   return {
     schema_version: 1,
     project_id: outcomeRecord?.project_id || listRow?.project_id || phaseView?.project_id || null,
@@ -374,5 +386,6 @@ export function buildLandProjectState(opts = {}) {
     next_phase: phaseView?.next || report.next_phase,
     next_hearing: report.next_hearing,
     coherence: report,
+    prediction_explanation: explanation,
   };
 }
