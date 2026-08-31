@@ -736,30 +736,30 @@ jobs:
   # after their digest and identity manifest pass verification.
   browser-pr-site:
     name: Shared browser site artifact
-    needs: [changes, unit]
+    needs: [changes]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Browser artifact fast path
-        if: always() && (needs.changes.outputs.unit_full != 'true' || (needs.changes.outputs.frontend != 'true' && needs.changes.outputs.perf != 'true') || needs.unit.result != 'success')
+        if: always() && (needs.changes.outputs.unit_full != 'true' || (needs.changes.outputs.frontend != 'true' && needs.changes.outputs.perf != 'true'))
         run: echo "No browser site artifact is needed for this path set."
       - uses: actions/checkout@v4
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         with:
           persist-credentials: false
       - name: Setup Node for artifact identity
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Calculate exact build-input identity
         id: site-identity
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         run: node tools/site_artifact_identity.mjs identity --commit-sha "$GITHUB_SHA" --github-output "$GITHUB_OUTPUT"
       - name: Restore exact-input site cache
         id: site-cache
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -769,7 +769,7 @@ jobs:
           key: browser-pr-site-${{ runner.os }}-${{ steps.site-identity.outputs.build-input-identity }}
       - name: Validate exact-input site cache
         id: cached-site
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         run: |
           set -euo pipefail
           if [ "${{ steps.site-cache.outputs.cache-hit }}" = "true" ] && \
@@ -780,19 +780,19 @@ jobs:
             echo "ready=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Build verified site artifact
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success' && steps.cached-site.outputs.ready != 'true'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && steps.cached-site.outputs.ready != 'true'
         uses: ./.github/actions/build-site
       - name: Stamp rebuilt site artifact identity
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success' && steps.cached-site.outputs.ready != 'true'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && steps.cached-site.outputs.ready != 'true'
         run: node tools/site_artifact_identity.mjs stamp --commit-sha "$GITHUB_SHA"
       - name: Verify site digest and exact build identity
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         run: node tools/site_artifact_identity.mjs verify --commit-sha "$GITHUB_SHA"
       - name: Check Cloudflare Pages per-file size budget
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         run: node tools/check_pages_bundle_sizes.mjs --site-dir _site
       - name: Save exact-input site cache
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success' && steps.cached-site.outputs.ready != 'true'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && steps.cached-site.outputs.ready != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -801,7 +801,7 @@ jobs:
             _site.identity.json
           key: browser-pr-site-${{ runner.os }}-${{ steps.site-identity.outputs.build-input-identity }}
       - name: Upload shared verified site artifact
-        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true') && needs.unit.result == 'success'
+        if: success() && needs.changes.outputs.unit_full == 'true' && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.perf == 'true')
         uses: actions/upload-artifact@v4
         with:
           # Keep the handoff stable when "rerun failed jobs" advances run_attempt
