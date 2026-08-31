@@ -1,0 +1,66 @@
+name: Cold-build canary
+
+on:
+  schedule:
+    - cron: "37 4 * * 2"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cold-build-canary
+  cancel-in-progress: false
+
+jobs:
+  cold-build:
+    name: Cache-busted cold Pages build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run isolated cache-missed build
+        id: canary
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          receipt="$RUNNER_TEMP/cityscroll-cold-build-canary.json"
+          node tools/cold_build_canary.mjs \
+            --source-dir . \
+            --site-dir "$RUNNER_TEMP/cityscroll-cold-build-site-${GITHUB_RUN_ID}" \
+            --timing-receipt "$RUNNER_TEMP/pages-build-timing.json" \
+            --receipt "$receipt" \
+            --policy tools/cold_build_canary_policy.json \
+            --canary-id "run-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+          echo "receipt=$receipt" >> "$GITHUB_OUTPUT"
+      - name: Upload cold-build receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cold-build-canary-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/cityscroll-cold-build-canary.json
+            ${{ runner.temp }}/pages-build-timing.json*
+          if-no-files-found: error
+          retention-days: 30
+      - name: Verify cold-build result and calibration
+        if: always()
+        run: |
+          set -euo pipefail
+          receipt="$RUNNER_TEMP/cityscroll-cold-build-canary.json"
+          test -f "$receipt" || { echo "Cold-build canary produced no receipt; inspect the runner/build setup." >&2; exit 1; }
+          node tools/cold_build_canary.mjs \
+            --check-receipt "$receipt" \
+            --source-dir . \
+            --policy tools/cold_build_canary_policy.json
+          if [ "${{ steps.canary.outcome }}" != "success" ]; then
+            echo "Cold-build canary failed before verification; see the receipt for product-build-regression or environment classification." >&2
+            exit 1
+          fi

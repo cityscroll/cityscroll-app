@@ -9,11 +9,12 @@ import { performance } from "node:perf_hooks";
 const SCHEMA = "cityscroll.derived_json_build_receipt.v1";
 
 function parseArgs(argv) {
-  const args = { sourceDir: ".", receipt: null, validateOnly: false };
+  const args = { sourceDir: ".", receipt: null, timingReceipt: null, validateOnly: false };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--source-dir") args.sourceDir = argv[++index];
     else if (arg === "--receipt") args.receipt = argv[++index];
+    else if (arg === "--timing-receipt") args.timingReceipt = argv[++index];
     else if (arg === "--validate-only") args.validateOnly = true;
     else throw new Error(`Unexpected argument: ${arg}`);
   }
@@ -142,12 +143,14 @@ function main() {
   const families = [];
 
   for (const family of manifest.generated_families) {
+    const familyStartedAt = performance.now();
     const sourceHashes = Object.fromEntries(family.source_paths.map((path) => [path, fileHash(sourceDir, path)]));
     run(sourceDir, family.generator);
     run(sourceDir, family.generator, ["--check"]);
     families.push({
       id: family.id,
       generator: family.generator,
+      duration_ms: Math.round(performance.now() - familyStartedAt),
       source_hashes: sourceHashes,
       outputs: outputHashes(sourceDir, family.output_paths),
     });
@@ -175,6 +178,16 @@ function main() {
     families,
   };
   writeFileSync(receiptPath, `${JSON.stringify(receipt, null, 2)}\n`);
+  if (args.timingReceipt) {
+    const timingReceiptPath = absolute(sourceDir, args.timingReceipt);
+    mkdirSync(resolve(timingReceiptPath, ".."), { recursive: true });
+    writeFileSync(timingReceiptPath, `${JSON.stringify({
+      schema: "cityscroll.derived_json_build_timing.v1",
+      result: "pass",
+      elapsed_ms: Math.round(elapsedMs),
+      families: families.map(({ id, generator, duration_ms }) => ({ id, generator, duration_ms })),
+    }, null, 2)}\n`);
+  }
   console.log(`Derived JSON build boundary complete (${families.length} families)`);
 }
 

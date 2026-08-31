@@ -4613,6 +4613,12 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   percentiles. Proof: `test/notice_context_readiness.test.mjs` and
   `test/notice_context_progressive.test.mjs`.
 
+- **Cold-build canary (MH-03):** `tools/cold_build_canary.mjs` runs the provider-neutral
+  Pages build with isolated output and no artifact restore, while
+  `tools/cold_build_canary_policy.json` keeps hit and miss timing calibration explicit.
+  The scheduled/manual workflow is `.github/workflows/cold-build-canary.yml`; focused proof is
+  `node --test test/cold_build_canary.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
