@@ -12,6 +12,7 @@ import { buildRuleVersionsProjection } from "../../../site/rule_versions.mjs";
 import { resolveAgencyIdentity } from "../../../site/agency_identity.mjs";
 import { buildPetitionHandoff } from "../../../site/rules_petition.mjs";
 import { buildRulesExceptionModesProjection } from "../../../site/rules_exception_modes.mjs";
+import { projectRulemakingAuthority } from "../../../site/rulemaking_authority.mjs";
 
 export const RULEMAKING_OBJECT_SCHEMA = "cityscroll.rulemaking.v1";
 
@@ -190,7 +191,8 @@ function petitionAgencyResolution(row) {
   };
 }
 
-function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} } = {}) {
+function objectForRows(rows, options = {}) {
+  const { now = null, ruleVersionDocumentsByRequestId = {} } = options;
   const ids = new Set(rows.map(recordRequestId).filter(Boolean));
   if (ids.size < 2 || !rows.every(isGrounded)) return null;
   const subject = clean(rows[0].rulemaking_subject_ref, 700);
@@ -319,6 +321,13 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
     follow_href: followHref,
     history_url: `/rules/${encodeURIComponent(subject)}/`,
     generated_at: clean(rows[0].generated_at, 80) || null,
+    authority: projectRulemakingAuthority({
+      rulemaking: { rulemaking_id: subject },
+      documents: versionProjection.versions,
+      versions: options.codeVersions || [],
+      changes: options.codeChanges || [],
+      provision: options.provision || null,
+    }),
   };
 }
 

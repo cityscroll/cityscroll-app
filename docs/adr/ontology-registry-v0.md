@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Updated | 2026-08-27 (community-board people and temporal role contract) |
+| Updated | 2026-08-31 (Administrative Code provision identity and cites_authority join) |
 | Scope | Catalog + pure evaluation flywheel — no production graph store, no public route |
 | Product name | **Civic Graph** (object–link–action registry + evaluation harness) |
 | Supersedes | — |
@@ -91,6 +91,17 @@ cannot select Council votes, committee memberships, lobbying, campaign finance, 
 `/officials/{id}/` route. Those capabilities remain available only to the exact legacy
 `official:{PersonId}` object and its existing Council profile family. Community Board, agency,
 and vendor-contact profiles therefore remain separate even when their display names match.
+
+### 1d. Administrative Code provision identity and rulemaking authority joins
+
+The registry already catalogs a distinct `code_provision` object for persistent Administrative
+Code identity and a `creates_mandate` join. This increment adds the `cites_authority` link from
+`rulemaking` to that same provision. The provision is not an RCNY rule and is not a duplicate
+rulemaking or mandate object. `cites_authority` is emitted only from an exact source-stated
+Administrative Code citation in a retained source document. Generic “authority” strings, nearby
+citations, text similarity, RCNY-only citations, external statutes, and missing source documents
+remain non-linking. Authority-at-publication is a validity-interval lookup over existing
+CodeVersions and never infers a new duty, deadline, power, or compliance result.
 
 ### 2. Zero production risk for v0
 
