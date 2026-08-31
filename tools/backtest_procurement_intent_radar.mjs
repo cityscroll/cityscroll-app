@@ -13,12 +13,32 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractSource, containsRfpBaseline } from "../warehouse/lib/procurement_intent_extractor.mjs";
+import { containsRfpBaseline, EXTRACTION_VERSION } from "../warehouse/lib/procurement_intent_extractor.mjs";
 import { buildProspectiveProcess } from "../ontology/procurement_intent.mjs";
-import { matchHistoricalIntent } from "../warehouse/lib/procurement_intent_realization_matcher.mjs";
+import {
+  matchHistoricalIntent,
+  REALIZATION_MATCHER_VERSION,
+} from "../warehouse/lib/procurement_intent_realization_matcher.mjs";
 import { buildPrediction } from "../worker/src/lib/prediction_contract.mjs";
-import { evaluatePredictionBacktest } from "../worker/src/lib/prediction_calibration.mjs";
+import {
+  evaluatePredictionBacktest,
+  PREDICTION_CALIBRATION_VERSION,
+} from "../worker/src/lib/prediction_calibration.mjs";
 import { evaluateForecasts } from "../worker/src/lib/forecast_calibration.mjs";
+import {
+  CORPUS_FROM,
+  CORPUS_THROUGH,
+  EXCLUSION_RULES,
+  INCLUSION_RULES,
+  LABELED_FIXTURE_ARTIFACT,
+  RETAINED_MEETINGS_ARTIFACT,
+  assertCutoffForecast,
+  buildCorpusCoverage,
+  hashFile,
+  leakageCheck,
+  loadCorpusCoverageFromRepo,
+  reconstructAtCutoff,
+} from "../warehouse/lib/procurement_intent_corpus.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const BACKTEST_SCHEMA = "cityscroll.procurement_intent_radar.corpus_backtest.v1";
@@ -26,8 +46,7 @@ export const BACKTEST_VERSION = "pir-corpus-backtest.v1";
 export const DEFAULT_INPUT = join(ROOT, "test/fixtures/procurement_intent_radar/gold_fixtures.v0.json");
 export const DEFAULT_OUTPUT = join(ROOT, "warehouse/fixtures/procurement-intent-radar/corpus_backtest.v1.json");
 export const DEFAULT_REPORT = join(ROOT, "docs/evidence/procurement-intent-radar/corpus-backtest.md");
-const CORPUS_FROM = "2022-01-01";
-const CORPUS_THROUGH = "2025-12-31";
+export const DEFAULT_COVERAGE = join(ROOT, "warehouse/fixtures/procurement-intent-radar/corpus_coverage.v1.json");
 const TERMINAL_EVENT_KIND = "procurement.notice_published";
 const OPEN_EVENT_KIND = "meetings.council_event";
 const PROBABILITY = 0.5;
@@ -145,56 +164,6 @@ function expectedRefs(rows) {
   return rows.map((row) => `procurement:${row.source_system}:${row.epin}`).sort();
 }
 
-function scanKeys(value, path = "") {
-  const findings = [];
-  if (!value || typeof value !== "object") return findings;
-  for (const [key, child] of Object.entries(value)) {
-    const childPath = path ? `${path}.${key}` : key;
-    if (["epin", "pin", "vendor", "vendor_ref", "vendor_name", "published_at", "realized_at", "realized_by", "later_title", "coverage"].includes(key)) {
-      findings.push({ type: "hindsight_field", path: childPath });
-    }
-    findings.push(...scanKeys(child, childPath));
-  }
-  return findings;
-}
-
-function leakageCheck(fixture, extracted, realization) {
-  const upstream = { source: extracted.source, candidate: extracted.candidate, assertion: extracted.assertion };
-  const serialized = JSON.stringify(upstream);
-  const findings = scanKeys(upstream);
-  for (const row of realization) {
-    for (const [field, value] of Object.entries({
-      epin: row.epin,
-      title: row.title,
-      vendor: row.vendor,
-      published_at: row.published_at,
-    })) {
-      // A publisher title can legitimately repeat a name already present in
-      // the source span (for example, the ACS ATD fixture). That is historical
-      // source language, not a future naming feature. Only flag a later value
-      // that is present upstream without appearing in the source itself.
-      const historicalLabels = [fixture.source.source_span_text, extracted.assertion?.object_text || ""];
-      if (value && !historicalLabels.some((label) => label.includes(String(value))) && serialized.includes(String(value))) {
-        findings.push({ type: "future_value_in_upstream", field, value: String(value) });
-      }
-    }
-  }
-  const negative = fixture.kind === "negative";
-  return {
-    passed: findings.length === 0,
-    checked: [
-      "future EPIN/PIN",
-      "solicitation title",
-      "vendor",
-      "later coverage fields",
-      "future publication clock",
-    ],
-    findings,
-    historical_input_only: true,
-    negative_control: negative,
-  };
-}
-
 function timingError(assertion, realizedAt) {
   const window = assertion.expected_window;
   const p50 = window.earliest && window.latest
@@ -228,10 +197,11 @@ function aggregateCalibration(forecasts) {
 }
 
 function buildCase(fixture) {
-  const extracted = extractSource(fixture.source);
+  const reconstructed = reconstructAtCutoff(fixture.source);
+  const extracted = reconstructed.extracted;
   const assertion = extracted.assertion;
   const realizations = assertion ? realizationRows(fixture, assertion) : [];
-  const leakage = leakageCheck(fixture, extracted, realizations);
+  const leakage = leakageCheck({ fixture, extracted, realizations });
   const baselineWouldCandidate = containsRfpBaseline(fixture.source.source_span_text);
   if (!assertion) {
     return {
@@ -342,7 +312,7 @@ function linkMetrics(rows) {
   };
 }
 
-function buildArtifact(input = readJson(DEFAULT_INPUT)) {
+function buildArtifact(input = readJson(DEFAULT_INPUT), { coverage } = {}) {
   if (!Array.isArray(input.cases)) throw new TypeError("fixture pack must contain cases");
   const rows = input.cases.map(buildCase);
   const positive = rows.filter((row) => row.kind === "positive");
@@ -366,7 +336,7 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
     // and calibration primitive; the per-assertion scorecard remains the
     // authoritative exact-event resolver result.
     const realized = row.outcomes.occurrence === "hit";
-    return [{
+    const forecast = {
       id: `pir-occurrence:${row.id}`,
       cutoff: row.source.observed_at,
       feature_observed_at: row.source.observed_at,
@@ -376,7 +346,9 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
       outcome: realized ? 1 : 0,
       outcome_observed_at: row.chosen_realization?.published_at || nextDay(row.source.observed_at),
       lead_days: row.outcomes.lead_days,
-    }];
+    };
+    assertCutoffForecast(forecast);
+    return [forecast];
   });
   const leads = positive.map((row) => row.outcomes.lead_days).filter(Number.isFinite);
   const timingRows = positive.filter((row) => row.outcomes.timing !== "not_scored");
@@ -384,11 +356,13 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
   const leakageFailures = rows.flatMap((row) => row.leakage.findings.map((finding) => ({ assertion_id: row.id, ...finding })));
   const links = linkMetrics(positive);
   const occurrenceCalibration = aggregateCalibration(forecasts);
+  const corpusCoverage = coverage || buildCorpusCoverage({ labeledPack: input });
   const recurrence = {
     value_type: "measured",
     resolved_assertions: positive.filter((row) => row.outcomes.occurrence === "hit").length,
-    sufficient_for_recurrent_corpus_claim: positive.filter((row) => row.outcomes.occurrence === "hit").length >= 20,
-    note: "The committed five-case gold pack is a contract fixture, not a full 2022–2025 corpus; no population estimate is emitted.",
+    sufficient_for_recurrent_corpus_claim: Boolean(corpusCoverage.sufficient_for_recurrent_corpus_claim)
+      && positive.filter((row) => row.outcomes.occurrence === "hit").length >= 20,
+    note: corpusCoverage.limitation,
   };
   const gates = {
     extraction_precision: {
@@ -416,9 +390,9 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
   return {
     schema: BACKTEST_SCHEMA,
     backtest_version: BACKTEST_VERSION,
-    as_of: "2026-08-27",
+    as_of: corpusCoverage.as_of || "2026-08-30",
     corpus: {
-      source_artifact: "test/fixtures/procurement_intent_radar/gold_fixtures.v0.json",
+      source_artifact: LABELED_FIXTURE_ARTIFACT,
       source_policy: "Council-attributable dated source spans only; official-source citations retained in fixtures",
       from: CORPUS_FROM,
       through: CORPUS_THROUGH,
@@ -427,33 +401,48 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
       measured_source_count: rows.length,
       measured_positive_assertions: positive.length,
       measured_negative_controls: rows.length - positive.length,
-      retained_app_corpus_council_text_rows: 0,
-      coverage_note: "This is a measured fixture result, not an estimate of all Council material from 2022–2025.",
+      retained_app_corpus_council_text_rows: corpusCoverage.retained_app_corpus?.text_bearing_council_rows ?? 0,
+      labeled_fixture_year_coverage: corpusCoverage.labeled_fixture?.year_coverage || null,
+      retained_corpus_year_coverage: corpusCoverage.retained_app_corpus?.year_coverage || null,
+      inclusion_rules: INCLUSION_RULES,
+      exclusion_rules: EXCLUSION_RULES,
+      coverage_note: corpusCoverage.limitation,
+      coverage_receipt: "warehouse/fixtures/procurement-intent-radar/corpus_coverage.v1.json",
     },
     protocol: {
       kind: "per_assertion_temporal_cutoff",
-      reconstruction_cutoff: "meeting observed_at; predictions generated on the next UTC day to satisfy the shared strict pre-split training rule",
+      reconstruction_cutoff: "meeting observed_at after sealing hindsight fields; predictions generated on the next UTC day to satisfy the shared strict pre-split training rule",
       training_from: CORPUS_FROM,
       future_information_allowed: false,
       prediction_inputs: ["source span", "source metadata", "source event clock"],
       excluded_from_prediction_inputs: ["future EPIN/PIN", "solicitation title", "vendor", "later coverage", "future naming features"],
       resolution: "shared evaluatePredictionBacktest exact subject_ref + event_kind join",
       link_resolution: "retrospective matcher; publisher fields are scoring observations, not prediction features",
+      evaluator_versions: {
+        extractor: EXTRACTION_VERSION,
+        realization_matcher: REALIZATION_MATCHER_VERSION,
+        prediction_calibration: PREDICTION_CALIBRATION_VERSION,
+        forecast_calibration: "worker/src/lib/forecast_calibration.mjs",
+      },
     },
     assertions: rows,
     metrics: {
-      extraction,
-      realization_link: links,
+      extraction: { ...extraction, cutoff: "per-assertion observed_at", denominator: extraction.reviewed_sources },
+      realization_link: { ...links, cutoff: "retrospective after meeting-date reconstruction", denominator: links.reviewed_pairs },
       abstention: {
         value_type: "measured",
+        cutoff: "per-assertion observed_at",
+        denominator: rows.length,
         extraction_count: extraction.abstained,
         extraction_rate: round(extraction.abstained / rows.length),
         timing_not_scored_count: positive.filter((row) => row.outcomes.timing === "not_scored").length,
         review_or_unmatched_count: positive.filter((row) => ["review", "unmatched"].includes(row.match.status)).length,
       },
-      occurrence: occurrenceCalibration,
+      occurrence: { ...occurrenceCalibration, cutoff: "per-assertion observed_at", denominator: occurrenceCalibration.denominator },
       timing: {
         value_type: "measured",
+        cutoff: "agency-stated expected_window vs first accepted realization",
+        denominator: timingRows.length,
         assertions_scored: timingRows.length,
         window_hits: timingHits,
         window_misses: timingRows.length - timingHits,
@@ -463,6 +452,8 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
       },
       lead_time_days: {
         value_type: "measured",
+        cutoff: "observed_at to first accepted realization published_at",
+        denominator: leads.length,
         count: leads.length,
         mean: leads.length ? round(leads.reduce((sum, value) => sum + value, 0) / leads.length, 1) : null,
         p25: quantile(leads, 0.25),
@@ -490,11 +481,14 @@ function buildArtifact(input = readJson(DEFAULT_INPUT)) {
       tolerated_failures: 0,
       passed: leakageFailures.length === 0,
     },
+    coverage: corpusCoverage,
     promotion: {
       status: "withheld",
       product_promotion_allowed: false,
       gates,
-      reason: "Precision and temporal checks pass on the bounded fixture pack, but it does not establish recurrence for the full 2022–2025 corpus; this result cannot authorize product promotion.",
+      reason: leakageFailures.length
+        ? "Temporal leakage failures are disqualifying; product promotion is not authorized."
+        : "Precision and temporal checks on the bounded fixture pack do not establish recurrence for the full 2022–2025 corpus; this result cannot authorize product promotion.",
     },
   };
 }
@@ -507,7 +501,11 @@ function reportMarkdown(artifact) {
     "",
     `As of ${artifact.as_of}. This is a measured result on the committed gold fixture pack, not an estimate of all Council material from ${corpus.from} through ${corpus.through}.`,
     "",
-    `The input contains ${corpus.measured_source_count} dated source spans: ${corpus.measured_positive_assertions} manually reviewed future-procurement assertions and ${corpus.measured_negative_controls} negative controls. The retained app corpus currently has ${corpus.retained_app_corpus_council_text_rows} Council text rows, so this backtest does not claim full-corpus coverage.`,
+    `The labeled fixture contains ${corpus.measured_source_count} dated source spans: ${corpus.measured_positive_assertions} manually reviewed future-procurement assertions and ${corpus.measured_negative_controls} negative controls. The retained app corpus currently has ${corpus.retained_app_corpus_council_text_rows} PIR-eligible Council text rows in ${corpus.from}–${corpus.through}, so this backtest does not claim full-corpus coverage.`,
+    "",
+    "Inclusion: Council-attributable dated testimony, transcript, or briefing-paper spans with official-source citations. Exclusion: Community Board meetings, City Record notices without those passages, future-dated retained meetings, and any post-cutoff EPIN, title, vendor, coverage, or naming feature.",
+    "",
+    `Evaluator versions: extractor ${artifact.protocol.evaluator_versions.extractor}; matcher ${artifact.protocol.evaluator_versions.realization_matcher}; prediction calibration ${artifact.protocol.evaluator_versions.prediction_calibration}.`,
     "",
     "## Promotion decision",
     "",
@@ -546,25 +544,70 @@ function reportMarkdown(artifact) {
   return `${lines.join("\n")}\n`;
 }
 
-export function buildBacktestArtifact(input = readJson(DEFAULT_INPUT)) {
-  return buildArtifact(input);
+export function loadDefaultCoverage() {
+  return loadCorpusCoverageFromRepo(ROOT, {
+    labeledPath: DEFAULT_INPUT,
+    meetingsPath: join(ROOT, RETAINED_MEETINGS_ARTIFACT),
+    asOf: "2026-08-30",
+  });
 }
 
-export function writeBacktest({ input = DEFAULT_INPUT, output = DEFAULT_OUTPUT, report = DEFAULT_REPORT } = {}) {
-  const artifact = buildBacktestArtifact(readJson(resolve(input)));
+export function buildBacktestArtifact(input, options = {}) {
+  const pack = input ?? readJson(DEFAULT_INPUT);
+  if (options.coverage) return buildArtifact(pack, { coverage: options.coverage });
+  const meetingsPath = join(ROOT, RETAINED_MEETINGS_ARTIFACT);
+  const coverage = buildCorpusCoverage({
+    labeledPack: pack,
+    retainedMeetings: existsSync(meetingsPath) ? readJson(meetingsPath) : { rows: [] },
+    retainedMeetingsSha256: existsSync(meetingsPath) ? hashFile(meetingsPath) : null,
+    labeledPackSha256: options.labeledPackSha256 ?? null,
+    asOf: "2026-08-30",
+  });
+  return buildArtifact(pack, { coverage });
+}
+
+export function writeBacktest({
+  input = DEFAULT_INPUT,
+  output = DEFAULT_OUTPUT,
+  report = DEFAULT_REPORT,
+  coverageOutput = DEFAULT_COVERAGE,
+} = {}) {
+  const coverage = loadCorpusCoverageFromRepo(ROOT, {
+    labeledPath: resolve(input),
+    meetingsPath: join(ROOT, RETAINED_MEETINGS_ARTIFACT),
+    asOf: "2026-08-30",
+  });
+  const artifact = buildArtifact(readJson(resolve(input)), { coverage });
   writeJson(resolve(output), artifact);
+  writeJson(resolve(coverageOutput), coverage);
   mkdirSync(dirname(resolve(report)), { recursive: true });
   writeFileSync(resolve(report), reportMarkdown(artifact), "utf8");
   return artifact;
 }
 
-export function checkBacktest({ input = DEFAULT_INPUT, output = DEFAULT_OUTPUT, report = DEFAULT_REPORT } = {}) {
-  const artifact = buildBacktestArtifact(readJson(resolve(input)));
+export function checkBacktest({
+  input = DEFAULT_INPUT,
+  output = DEFAULT_OUTPUT,
+  report = DEFAULT_REPORT,
+  coverageOutput = DEFAULT_COVERAGE,
+} = {}) {
+  const coverage = loadCorpusCoverageFromRepo(ROOT, {
+    labeledPath: resolve(input),
+    meetingsPath: join(ROOT, RETAINED_MEETINGS_ARTIFACT),
+    asOf: "2026-08-30",
+  });
+  const artifact = buildArtifact(readJson(resolve(input)), { coverage });
+  if (artifact.temporal_integrity.leakage_failures.length !== 0) {
+    throw new Error("corpus backtest has temporal leakage failures; leakage is a hard failure");
+  }
   if (!existsSync(resolve(output)) || readFileSync(resolve(output), "utf8") !== `${JSON.stringify(artifact, null, 2)}\n`) {
     throw new Error("corpus backtest JSON is stale; rebuild without --check");
   }
   if (!existsSync(resolve(report)) || readFileSync(resolve(report), "utf8") !== reportMarkdown(artifact)) {
     throw new Error("corpus backtest report is stale; rebuild without --check");
+  }
+  if (!existsSync(resolve(coverageOutput)) || readFileSync(resolve(coverageOutput), "utf8") !== `${JSON.stringify(coverage, null, 2)}\n`) {
+    throw new Error("corpus coverage receipt is stale; rebuild without --check");
   }
   return artifact;
 }
