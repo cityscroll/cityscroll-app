@@ -360,6 +360,7 @@ const DUTY_BEARER_NEGATIVE_RULE = "Never infer a duty bearer or oversight edge f
 const DEVELOPMENT_ROLE_NEGATIVE_RULE = "Never infer an applicant from a project mention, a contractor from a publisher notice, or a selected developer from a company name; require exact party or actor evidence.";
 const COUNCIL_COMMITTEE_NEGATIVE_RULE = "Never connect a committee because its display name resembles Zoning and Franchises, because a City Record notice is published by Council, or because a meeting date is nearby. Do not infer chair status without valid dates and exact is_chair evidence.";
 const BOROUGH_OFFICE_NEGATIVE_RULE = "Never infer an appointment from a Borough President title, board geography, a person on a board roster, a publisher label, or generic appointed-member wording. Do not re-key a Community Board as an agency or mint a parent-child agency edge.";
+const GOVERNING_BODY_NEGATIVE_RULE = "Never infer a NYCHA Board from a housing-authority contract, a BERS committee from a similarly named NYCHA notice, or a July 15 meeting from an expected calendar target without a retained record. Do not merge BERS with NYCHA because OTI assigns both to a public-benefit or pension bucket. Generic board titles, route spelling, vendor evidence, and staffing evidence never mint a governing edge.";
 const ROLE_EVIDENCE = Object.freeze([
   "exact_source_observation",
   "exact_ids",
@@ -476,6 +477,7 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     inverse_role: "committee",
     source_contract: "cityscroll.council_committee_proceeding_source_contract.v1",
     from_kind: "civic-institution",
+    from_kinds: Object.freeze(["civic-institution", "board"]),
     object_kind: "committee",
     legacy_relation_id: null,
     required_evidence: Object.freeze([
@@ -483,7 +485,7 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
       "exact_body_id",
     ]),
     methods: ENTITY_LINK_METHODS,
-    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+    negative_rule: `${COUNCIL_COMMITTEE_NEGATIVE_RULE} ${GOVERNING_BODY_NEGATIVE_RULE}`,
   }),
   hosts_meeting: Object.freeze({
     relation: "hosts_meeting",
@@ -492,7 +494,7 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
     inverse_role: "hosted_by",
     source_contract: "cityscroll.council_committee_proceeding_source_contract.v1",
     from_kind: "committee",
-    from_kinds: Object.freeze(["committee", "civic-institution"]),
+    from_kinds: Object.freeze(["committee", "civic-institution", "board"]),
     object_kind: "meeting",
     legacy_relation_id: null,
     required_evidence: Object.freeze([
@@ -502,7 +504,25 @@ export const CIVIC_INSTITUTION_ROLE_RELATIONS = Object.freeze({
       "verified_join",
     ]),
     methods: ENTITY_LINK_METHODS,
-    negative_rule: COUNCIL_COMMITTEE_NEGATIVE_RULE,
+    negative_rule: `${COUNCIL_COMMITTEE_NEGATIVE_RULE} ${GOVERNING_BODY_NEGATIVE_RULE}`,
+  }),
+  governed_by: Object.freeze({
+    relation: "governed_by",
+    inverse: "governing_body_of",
+    role: "governed_institution",
+    inverse_role: "governing_body",
+    source_contract: "cityscroll.governing_body_source_contract.v1",
+    from_kind: "civic-institution",
+    object_kind: "board",
+    legacy_relation_id: null,
+    required_evidence: Object.freeze([
+      ...ROLE_EVIDENCE,
+      "exact_parent_institution",
+      "exact_body_id",
+      "official_governance_source",
+    ]),
+    methods: ENTITY_LINK_METHODS,
+    negative_rule: GOVERNING_BODY_NEGATIVE_RULE,
   }),
   holds_office: Object.freeze({
     relation: "holds_office",
@@ -754,14 +774,35 @@ function tryTypedObject(value, kind) {
     });
   }
   if (kind === "committee") {
-    const match = raw.match(/^(?:committee:)?(\d+)$/);
-    if (!match) return null;
-    const bodyId = match[1];
+    const numeric = raw.match(/^(?:committee:)?(\d+)$/);
+    if (numeric) {
+      const bodyId = numeric[1];
+      return Object.freeze({
+        id: `committee:${bodyId}`,
+        canonical_id: bodyId,
+        kind: "committee",
+        href: `/committees/${encodeURIComponent(bodyId)}/`,
+      });
+    }
+    const slug = raw.match(/^(?:committee:)?([a-z][a-z0-9]*(?:-[a-z0-9]+)+)$/i);
+    if (!slug) return null;
+    const bodyId = slug[1].toLowerCase();
     return Object.freeze({
       id: `committee:${bodyId}`,
       canonical_id: bodyId,
       kind: "committee",
-      href: `/committees/${encodeURIComponent(bodyId)}/`,
+      href: null,
+    });
+  }
+  if (kind === "board") {
+    const match = raw.match(/^(?:board:)?([a-z][a-z0-9]*(?:-[a-z0-9]+)+)$/i);
+    if (!match) return null;
+    const bodyId = match[1].toLowerCase();
+    return Object.freeze({
+      id: `board:${bodyId}`,
+      canonical_id: bodyId,
+      kind: "board",
+      href: null,
     });
   }
   if (kind === "official") {

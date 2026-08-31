@@ -231,13 +231,23 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   exact publisher identity, and keeps `appoints_members_of` Brooklyn CB-15
   unresolved until an official appointment source names the board and scope.
   Titles, geography, rosters, and generic “appointed member” wording never
-  mint appointment. Focused proof is in
+  mint appointment. NYCHA and BERS governing bodies are
+  `site/civic_institution_governing_bodies.mjs`: the housing authority mints
+  `governed_by` the NYCHA Board, `has_committee` Audit and Finance, and
+  `hosts_meeting` for City Record `20260624001` and `20260625034` from
+  official governance pages plus exact publisher identity; BERS Board of
+  Trustees and Executive Committee stay unresolved until parent identity and
+  a retained meeting exist, and the `employees-retirement-system` route
+  versus `board-of-education-retirement-system` crosswalk mismatch remains
+  explicit. OTI buckets, generic board titles, vendor/staffing rows, and the
+  July 15 calendar target never mint an edge. Focused proof is in
   `test/civic_institution.test.mjs`,
   `test/civic_institution_role_edge.test.mjs`, `test/civic_institution_profile.test.mjs`,
   `test/civic_institution_development_roles.test.mjs`,
   `test/civic_institution_accountability.test.mjs`,
-  `test/civic_institution_council_committees.test.mjs`, and
-  `test/civic_institution_borough_office.test.mjs`.
+  `test/civic_institution_council_committees.test.mjs`,
+  `test/civic_institution_borough_office.test.mjs`, and
+  `test/civic_institution_governing_bodies.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local
