@@ -1,8 +1,12 @@
 # Procurement Intent Radar corpus backtest
 
-As of 2026-08-27. This is a measured result on the committed gold fixture pack, not an estimate of all Council material from 2022-01-01 through 2025-12-31.
+As of 2026-08-30. This is a measured result on the committed gold fixture pack, not an estimate of all Council material from 2022-01-01 through 2025-12-31.
 
-The input contains 5 dated source spans: 3 manually reviewed future-procurement assertions and 2 negative controls. The retained app corpus currently has 0 Council text rows, so this backtest does not claim full-corpus coverage.
+The labeled fixture contains 5 dated source spans: 3 manually reviewed future-procurement assertions and 2 negative controls. The retained app corpus currently has 0 PIR-eligible Council text rows in 2022-01-01–2025-12-31, so this backtest does not claim full-corpus coverage.
+
+Inclusion: Council-attributable dated testimony, transcript, or briefing-paper spans with official-source citations. Exclusion: Community Board meetings, City Record notices without those passages, future-dated retained meetings, and any post-cutoff EPIN, title, vendor, coverage, or naming feature.
+
+Evaluator versions: extractor pir-phase1.0; matcher pir-realization-matcher.v1; prediction calibration prediction_calibration_v1.
 
 ## Promotion decision
 

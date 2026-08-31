@@ -6,6 +6,12 @@
       "status": "implemented",
       "fingerprint": "lm-02-project-point-materializer.v1",
       "updated_at": "2026-08-30T00:00:00.000Z"
+    },
+    {
+      "id": "cityscroll-procurement-intent-radar/pir-4",
+      "status": "implemented",
+      "fingerprint": "pir-4-corpus-backtest.v1",
+      "updated_at": "2026-08-30T00:00:00.000Z"
     }
   ]
 }

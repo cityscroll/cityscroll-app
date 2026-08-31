@@ -73,10 +73,14 @@
   sealed and keep `retained_data_present` false until exact EPIN rows are actually retained.
 
 - **Procurement Intent Radar corpus backtest:** `tools/backtest_procurement_intent_radar.mjs`
-  emits the deterministic JSON/report pair under `warehouse/fixtures/procurement-intent-radar/`
-  and `docs/evidence/procurement-intent-radar/`. It evaluates each assertion at its meeting-date
-  cutoff through the shared prediction evaluator; the current five-case gold pack is measured but
-  bounded, so promotion remains withheld until a recurrent 2022–2025 corpus is retained.
+  reconstructs each candidate at its meeting-date cutoff through
+  `warehouse/lib/procurement_intent_corpus.mjs`, then reuses the PIR-3 matcher and
+  shared prediction/forecast evaluators. It emits the JSON/report/coverage receipt
+  under `warehouse/fixtures/procurement-intent-radar/` and
+  `docs/evidence/procurement-intent-radar/`. The five-case gold pack is a fixture
+  control spanning 2022–2025, not a recurrent population estimate; promotion stays
+  withheld while retained Council text is absent. Leakage is a hard `--check`
+  failure. Proof: `test/procurement_intent_radar_backtest.test.mjs`.
 
 - **Community Board payroll staff counts (CB-MONEY-06):**
   `site/community_board_payroll_identity.mjs` binds Citywide Payroll

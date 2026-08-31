@@ -69,3 +69,17 @@ Focused proof:
 ```sh
 node --test test/procurement_intent_realization_matcher.test.mjs
 ```
+
+## Corpus backtest
+
+`tools/backtest_procurement_intent_radar.mjs` reconstructs each labeled source
+at its meeting-date cutoff, scores later realizations only after that cutoff,
+and writes the JSON/report/coverage receipt. The five-case gold pack remains a
+fixture control. The retained meeting read model currently contributes zero
+PIR-eligible 2022–2025 Council text rows, so promotion stays withheld.
+
+```sh
+node tools/backtest_procurement_intent_radar.mjs
+node tools/backtest_procurement_intent_radar.mjs --check
+node --test test/procurement_intent_radar_backtest.test.mjs
+```
