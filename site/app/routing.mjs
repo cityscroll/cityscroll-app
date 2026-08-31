@@ -413,6 +413,7 @@ const DEEPLINK_LENSES = {
   entity:   ["name", "kind", "tab", "entity_refs_all"],
   mandates: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
   obligations: ["agency_id", "agency", "mandate_id", "deliverable_type", "windowDays"],
+  legal_code: ["provision_id"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial", "closingWeek", "route", "name", "tab", "entity_refs_all", "connection_relation"],
   award:    ["requestId", "agency"],
 };
@@ -429,6 +430,15 @@ function deeplinkClampField(name, v){
     case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
     case "communityBoard": return normalizeCommunityBoardRef(v);
     case "agency_id": { const s=typeof v==="string"?v.trim().toLowerCase():""; return /^[a-z0-9][a-z0-9-]{1,80}$/.test(s)?s:null; }
+    case "provision_id": {
+      const s = typeof v === "string" ? v.trim() : "";
+      const citation = s
+        .replace(/[§]/g, " ")
+        .replace(/^(?:nyc-administrative-code|nyc-admin-code):/i, "")
+        .trim()
+        .match(/^(\d+[a-z]?-[0-9a-z.]+)$/i);
+      return citation ? `nyc-administrative-code:${citation[1].toLowerCase()}` : null;
+    }
     case "mandate_id": {
       // Exact statutory duty id — bare id or legacy mandate:/obligation: subject ref.
       // Keep field-for-field parity with worker/src/lib/filter.mjs + site/mandate_subject_ref.mjs.
@@ -523,6 +533,7 @@ function sanitizeDeepLinkFilter(lens, input){
   for(const name of fields) out[name] = deeplinkClampField(name, f[name]);
   if(!out.geographies?.length) delete out.geographies;
   if(!out.procurement_id) delete out.procurement_id;
+  if(!out.provision_id) delete out.provision_id;
   return out;
 }
 // raw is already percent-decoded (URLSearchParams.get()). null on anything malformed, truncated
