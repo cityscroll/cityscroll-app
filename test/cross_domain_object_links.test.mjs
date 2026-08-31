@@ -710,6 +710,7 @@ describe("entity intelligence view — Parks multi-domain", () => {
       "sited_on_parcel",
       "sits_on_parcel",
       "decides_land_project",
+      "about_project",
     ]);
     const allLinks = Object.values(doc.by_ref).flatMap((entry) => entry.links || []);
     const exactLinks = allLinks.filter((link) => exactTypes.has(link.type));
@@ -815,8 +816,12 @@ describe("meeting → land reverse object-link (ULURP / ZAP)", () => {
     assert.ok(join.links.length >= 1);
     const edge = join.links.find((l) => l.type === "decides_land_project");
     assert.ok(edge, "expected decides_land_project edge");
+    const about = join.links.find((l) => l.type === "about_project");
+    assert.ok(about, "expected about_project edge");
     assert.equal(edge.from, "notice:20240801001");
     assert.equal(edge.to, "project:2022M0258");
+    assert.equal(about.to, "project:2022M0258");
+    assert.equal(about.is_decision, false);
     assert.equal(edge.domain, "meetings");
     assert.equal(edge.method, MEETING_LAND_ULURP_METHOD);
     assert.ok(edge.provenance?.source_system);
@@ -847,6 +852,9 @@ describe("meeting → land reverse object-link (ULURP / ZAP)", () => {
     assert.ok(edge);
     assert.equal(edge.to, "project:2022M0258");
     assert.equal(edge.method, MEETING_LAND_ZAP_METHOD);
+    const about = join.links.find((l) => l.type === "about_project");
+    assert.ok(about);
+    assert.equal(about.method, MEETING_LAND_ZAP_METHOD);
   });
 
   it("hearing body with no ULURP/ZAP ref produces no land reverse link", () => {
@@ -896,6 +904,7 @@ describe("meeting → land reverse object-link (ULURP / ZAP)", () => {
     const { links } = linkObservation(meeting);
     assert.ok(links.some((l) => l.type === "hosts_meeting"));
     assert.ok(links.some((l) => l.type === "decides_land_project" && l.to === "project:2022M0258"));
+    assert.ok(links.some((l) => l.type === "about_project" && l.to === "project:2022M0258"));
 
     const view = buildEntityIntelligence(
       { kind: "agency", name: "Housing Preservation and Development" },

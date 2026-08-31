@@ -160,6 +160,7 @@ export function buildEntityIntelligenceIndex(observations, opts = {}) {
     "paid_to_vendor",
     "contract_published_by_agency",
     "decides_land_project",
+    "about_project",
   ];
   const join_key_edge_count = edges.filter((e) => joinKeyTypes.includes(e.link_type)).length;
 
