@@ -11,6 +11,7 @@ import {
 import { buildRuleVersionsProjection } from "../../../site/rule_versions.mjs";
 import { resolveAgencyIdentity } from "../../../site/agency_identity.mjs";
 import { buildPetitionHandoff } from "../../../site/rules_petition.mjs";
+import { buildRulesExceptionModesProjection } from "../../../site/rules_exception_modes.mjs";
 
 export const RULEMAKING_OBJECT_SCHEMA = "cityscroll.rulemaking.v1";
 
@@ -158,6 +159,16 @@ function ruleVersionDocuments(rows, options = {}) {
   });
 }
 
+function exceptionSourceDocuments(rows, versionDocs = []) {
+  return [
+    ...rows.flatMap((row) => [
+      ...(Array.isArray(row.exception_source_documents) ? row.exception_source_documents : []),
+      ...(Array.isArray(row.nyc_rules?.exception_source_documents) ? row.nyc_rules.exception_source_documents : []),
+    ]),
+    ...versionDocs,
+  ];
+}
+
 function petitionAgencyResolution(row) {
   const explicit = row?.agency_resolution || row?.nyc_rules?.agency_resolution;
   if (explicit) return explicit;
@@ -213,6 +224,21 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
     entry_point: "effective_rule",
     lifecycle_state: lifecycle.state,
   });
+  const exceptionModes = buildRulesExceptionModesProjection({
+    rulemaking_id: subject,
+    documents: exceptionSourceDocuments(rows, versionProjection.versions.map((version) => ({
+      source_id: version.source_id,
+      source_system: version.source_system,
+      source_url: version.source_url,
+      source_label: version.source_label,
+      published_at: version.published_at,
+      text: version.text,
+      version_kind: version.kind,
+      title: version.source_label,
+    }))),
+    events,
+    versions: versionProjection.versions,
+  });
   const notices = rows
     .map((row) => {
       const id = recordRequestId(row);
@@ -265,6 +291,8 @@ function objectForRows(rows, { now = null, ruleVersionDocumentsByRequestId = {} 
     current_stage: clean(stitched?.stage, 80) || null,
     lifecycle_state: interaction.lifecycle_state,
     current_phase: phaseView.current?.phase_id || null,
+    procedure_mode: exceptionModes.procedure_mode,
+    exception_modes: exceptionModes,
     notices,
     events,
     phases: phaseView.phases,

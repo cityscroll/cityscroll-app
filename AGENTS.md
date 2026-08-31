@@ -54,6 +54,17 @@
   `test/capa_addendum_shared_fixtures.test.mjs`. CityScroll never submits or tracks
   petitions.
 
+- **Rulemaking exception modes (RD-M6):** `site/rules_exception_modes.mjs` attaches
+  source-backed emergency finding, effective-date, expiration, extension,
+  unanticipated-in-agenda, hearing-waived, and public-purpose assertions to a
+  rulemaking. The ordinary four-phase / five-event Rules spine stays intact;
+  exceptions never become invented lifecycle dots. Absence is not unanticipated,
+  unknown is not expired, and a missing extension is not proof of expiration.
+  Rebuild the per-mode receipt with
+  `node tools/build_rules_exception_modes.mjs`; `--check` verifies it. Proof:
+  `test/rules_exception_modes.test.mjs` plus
+  `test/fixtures/rules_exception_modes/gold.v1.json`.
+
 - **Action Path v0:** `site/action_path_v0.mjs` is the pure, actorless projection over the
   authoritative `site/action_registry.js` action object. It requires provenance-bearing evidence,
   preserves multiple continuation candidates without selecting one, and suppresses unsupported or
