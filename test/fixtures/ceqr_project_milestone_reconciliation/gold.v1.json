@@ -1,0 +1,26 @@
+{
+  "materialized_at": "2026-08-31T12:00:00.000Z",
+  "zap_rows": [
+    { "project_id": "EXACT", "ceqr_number": " 26dcp139x ", "environmental_milestone": null, "environmental_milestone_date": null },
+    { "project_id": "EAS_ONLY", "ceqr_number": null, "actions": "UK; ZM; EAS", "project_name": "Matching title", "project_description": "Matching description", "address": "100 Main Street", "borough": "Brooklyn", "primary_applicant": "Same applicant", "latitude": 40.7, "longitude": -73.9 },
+    { "project_id": "DUP_A", "ceqr_number": "25DCP049M" },
+    { "project_id": "DUP_B", "ceqr_number": "25DCP049M" },
+    { "project_id": "REVISION", "ceqr_number": "24DCP100K" }
+  ],
+  "project_rows": [
+    { ":id": "project-exact", "ceqr": "26DCP139X", "project_name": "2 Ploughmans Bush SNAD", "project_description": "Exact row", "borough": "Bronx", "lead_agency": "Department of City Planning", "url": "https://a002-ceqraccess.nyc.gov/ceqr/ProjectInformation/ProjectDetail/18047-26DCP139X" },
+    { ":id": "title-only", "ceqr": "23DCP991K", "project_name": "Matching title" },
+    { ":id": "description-only", "ceqr": "23DCP992K", "project_description": "Matching description" },
+    { ":id": "address-only", "ceqr": "23DCP993K", "address": "100 Main Street" },
+    { ":id": "borough-only", "ceqr": "23DCP994K", "borough": "Brooklyn" },
+    { ":id": "applicant-only", "ceqr": "23DCP995K", "applicant": "Same applicant" },
+    { ":id": "geography-only", "ceqr": "23DCP996K", "latitude": 40.7, "longitude": -73.9 },
+    { ":id": "revision-a", "ceqr": "24DCP100K", "project_name": "Revision A" },
+    { ":id": "revision-b", "ceqr": "24DCP100K", "project_name": "Revision B" }
+  ],
+  "milestone_rows": [
+    { ":id": "milestone-exact", "ceqr": "26DCP139X", "project_name": "2 Ploughmans Bush SNAD", "milestone_name": "Type II Memo", "milestone_date": "2026-05-22T00:00:00.000" },
+    { ":id": "milestone-duplicate", "ceqr": "26DCP139X", "project_name": "2 Ploughmans Bush SNAD", "milestone_name": "Type II Memo", "milestone_date": "2026-05-22T00:00:00.000" },
+    { ":id": "milestone-revision", "ceqr": "26DCP139X", "project_name": "2 Ploughmans Bush SNAD", "milestone_name": "Type II Memo", "milestone_date": "2026-05-23T00:00:00.000" }
+  ]
+}
