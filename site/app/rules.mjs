@@ -11,6 +11,10 @@ import { agencyScopeLinksHTML } from "../agency_scope_links.mjs";
 import { bindCardinalityAdaptiveFacets } from "../cardinality_adaptive_facets.mjs";
 import { listEntityMentionHTML } from "../list_entity_pivots.mjs";
 import { rulesCardInteractionProjection } from "../rules_card_interaction.mjs";
+import {
+  buildRulemakingLifecycleReportTarget,
+  renderReportIssueAffordance,
+} from "../report_issue.mjs";
 
 /* ===== Rules explorer: process-stage rail + multi-notice rulemaking collapse.
    Pure model: site/rules_explorer.mjs (same list-ontology pattern as property_explorer).
@@ -138,11 +142,13 @@ function rulesExplorerCardHTML(entry, terms){
     }).filter(Boolean).join(" · ");
     if(chips) siblingsHtml=`<div class="rules-siblings">${t("rules_siblings_label")}: ${chips}</div>`;
   }
+  const lifecycleReport=renderReportIssueAffordance(buildRulemakingLifecycleReportTarget(entry));
   return `<div class="fcard rules-fcard" data-request-id="${escUiHtml(r.request_id||"")}" data-rulemaking-kind="${escUiHtml(entry.kind||"notice")}" data-process-stage="${escUiHtml(processStage||"unstaged")}">
       <div class="ftype">${r.type_of_notice_description||""}${agencyMention?" · "+agencyMention:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${processLine}
       <div class="ui-object-card-primary"><div class="ftitle">${interactionTitle}</div>${interactionCopy}</div>
       ${siblingsHtml}
+      ${lifecycleReport?`<div class="ui-object-card-report">${lifecycleReport}</div>`:""}
       ${rulePlaceChips(r._ruleLocation)}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
       ${digEvidenceHTML(mev)}

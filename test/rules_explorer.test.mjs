@@ -33,6 +33,7 @@ import {
 } from "../site/rules_phase_spine.mjs";
 import { renderObjectCardActionRail } from "../site/affordance_grammar.mjs";
 import { rulesCardInteractionProjection } from "../site/rules_card_interaction.mjs";
+import { buildRulemakingLifecycleReportTarget } from "../site/report_issue.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RULES_APP_SOURCE = readFileSync(join(ROOT, "site/app/rules.mjs"), "utf8");
@@ -309,6 +310,13 @@ test("buildRulesExplorerEntries collapses multi-notice rulemakings to one card",
   assert.equal(single.fine_stage, "comment-open");
   assert.equal(single.action_key, "rule_action_comment");
   assert.ok(single.comment_url);
+  const lifecycleTarget = buildRulemakingLifecycleReportTarget(multi[0]);
+  assert.equal(lifecycleTarget.object_id, "rulemaking:hpd:natural-gas-detectors");
+  assert.equal(lifecycleTarget.claim_anchor.claim_type, "lifecycle");
+  assert.equal(lifecycleTarget.canonical_url, "/#rules");
+  assert.ok(lifecycleTarget.constituent_object_ids.includes("notice:20260301011"));
+  assert.ok(lifecycleTarget.constituent_object_ids.includes("notice:20260701011"));
+  assert.equal(buildRulemakingLifecycleReportTarget(single), null);
 });
 
 test("low-confidence multi-notice joins do not collapse", () => {
@@ -574,6 +582,9 @@ test("public Rules domain presents chain membership as an ordinary facet", () =>
   assert.match(cardTemplate, /renderObjectCardTitle\(/);
   assert.match(cardTemplate, /renderObjectCardCopy\(/);
   assert.match(cardTemplate, /renderObjectCardActionRail\(/);
+  assert.match(cardTemplate, /buildRulemakingLifecycleReportTarget\(entry\)/);
+  assert.match(cardTemplate, /renderReportIssueAffordance/);
+  assert.match(cardTemplate, /ui-object-card-report/);
   assert.doesNotMatch(cardTemplate, /compactCardActions|data-link=|rule_action_open_notice/);
   const processLineTemplate = cardTemplate.slice(
     cardTemplate.indexOf('const processLine='),

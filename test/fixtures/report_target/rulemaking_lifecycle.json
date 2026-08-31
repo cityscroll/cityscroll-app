@@ -1,0 +1,97 @@
+{
+  "eligible": {
+    "kind": "rulemaking",
+    "notice_count": 3,
+    "subject_ref": "rulemaking:hpd:natural-gas-detectors",
+    "title": "Natural gas detector rule",
+    "rule_url": "https://rules.cityofnewyork.us/?p=9001",
+    "members": [
+      {
+        "request_id": "20260301011",
+        "source_record_id": "20260301011",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260301011",
+        "role": "proposal"
+      },
+      {
+        "request_id": "20260415011",
+        "source_record_id": "20260415011",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260415011",
+        "role": "hearing"
+      },
+      {
+        "request_id": "20260701011",
+        "source_record_id": "20260701011",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701011",
+        "role": "adoption"
+      }
+    ]
+  },
+  "ineligible": [
+    {
+      "name": "single-notice-card",
+      "entry": {
+        "kind": "notice",
+        "notice_count": 1,
+        "subject_ref": "notice:20260301011",
+        "title": "Proposed Rule — Natural Gas Detectors",
+        "members": [
+          {
+            "request_id": "20260301011",
+            "source_record_id": "20260301011"
+          }
+        ]
+      }
+    },
+    {
+      "name": "rulemaking-one-member",
+      "entry": {
+        "kind": "rulemaking",
+        "notice_count": 1,
+        "subject_ref": "rulemaking:hpd:natural-gas-detectors",
+        "title": "Natural gas detector rule",
+        "members": [
+          {
+            "request_id": "20260301011",
+            "source_record_id": "20260301011"
+          }
+        ]
+      }
+    },
+    {
+      "name": "missing-rulemaking-identifier",
+      "entry": {
+        "kind": "rulemaking",
+        "notice_count": 2,
+        "subject_ref": "notice:20260301011",
+        "title": "Natural gas detector rule",
+        "members": [
+          { "request_id": "20260301011" },
+          { "request_id": "20260701011" }
+        ]
+      }
+    },
+    {
+      "name": "members-without-source-ids",
+      "entry": {
+        "kind": "rulemaking",
+        "notice_count": 2,
+        "subject_ref": "rulemaking:hpd:natural-gas-detectors",
+        "title": "Natural gas detector rule",
+        "members": [
+          { "title": "Proposal without a request id" },
+          { "title": "Adoption without a request id" }
+        ]
+      }
+    },
+    {
+      "name": "agenda-item",
+      "entry": {
+        "kind": "agenda",
+        "notice_count": 1,
+        "subject_ref": "agenda:hpd:natural-gas",
+        "title": "Anticipated rulemaking topic",
+        "members": [{ "id": "agenda:hpd:natural-gas" }]
+      }
+    }
+  ]
+}
