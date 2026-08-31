@@ -38,6 +38,12 @@ import {
   SPECIMEN_OFFICE_NOTICE_IDS,
 } from "../site/civic_institution_borough_office.mjs";
 import defaultProceedings from "../site/data/council_committee_proceedings.json" with { type: "json" };
+import defaultGoverningProceedings from "../site/data/governing_body_proceedings.json" with { type: "json" };
+import {
+  BERS_CROSSWALK_ID,
+  BERS_ROUTE_ID,
+  NYCHA_CANONICAL_ID,
+} from "../site/civic_institution_governing_bodies.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -114,6 +120,9 @@ function loadSources() {
     council_committee_proceedings: existsSync(join(SITE, "data/council_committee_proceedings.json"))
       ? readJson(join(SITE, "data/council_committee_proceedings.json"))
       : defaultProceedings,
+    governing_body_proceedings: existsSync(join(SITE, "data/governing_body_proceedings.json"))
+      ? readJson(join(SITE, "data/governing_body_proceedings.json"))
+      : defaultGoverningProceedings,
     meeting_outcomes: existsSync(join(SITE, "data/meeting_outcomes_snapshot.json"))
       ? readJson(join(SITE, "data/meeting_outcomes_snapshot.json"))
       : null,
@@ -143,6 +152,20 @@ function committeeRoleSourcesFor(id, sources) {
     proceedings: sources.council_committee_proceedings || defaultProceedings,
     meetingOutcomes: sources.meeting_outcomes || null,
     generatedAt: sources.committee_graph?.generated_at,
+  };
+}
+
+function governingBodySourcesFor(id, sources) {
+  if (![NYCHA_CANONICAL_ID, BERS_ROUTE_ID, BERS_CROSSWALK_ID].includes(id)) return null;
+  const entries = sources.publisher_crosswalk?.entries || {};
+  return {
+    proceedings: sources.governing_body_proceedings || defaultGoverningProceedings,
+    publisherRow: entries[id] || null,
+    publisherById: {
+      [NYCHA_CANONICAL_ID]: entries[NYCHA_CANONICAL_ID] || null,
+      [BERS_CROSSWALK_ID]: entries[BERS_CROSSWALK_ID] || null,
+    },
+    generatedAt: sources.generated_at || sources.publisher_crosswalk?.generated_at,
   };
 }
 
@@ -495,6 +518,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       accountabilitySources: accountabilitySourcesFromLookup(sources.obligations),
       committeeRoleSources: committeeRoleSourcesFor(id, sources),
       boroughOfficeSources: boroughOfficeSourcesFor(id, sources),
+      governingBodySources: governingBodySourcesFor(id, sources),
     });
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;

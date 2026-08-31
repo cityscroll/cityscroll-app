@@ -10,6 +10,7 @@ import { developmentRolesForInstitution } from "../../site/civic_institution_dev
 import { accountabilityRolesForInstitution } from "../../site/civic_institution_accountability.mjs";
 import { councilCommitteeRolesForInstitution } from "../../site/civic_institution_council_committees.mjs";
 import { boroughOfficeRolesForInstitution } from "../../site/civic_institution_borough_office.mjs";
+import { governingBodiesForInstitution } from "../../site/civic_institution_governing_bodies.mjs";
 
 export const AGENCY_IDENTITY_EVIDENCE_SCHEMA = "cityscroll.civic_institution_identity_evidence.v1";
 export const AGENCY_IDENTITY_EVIDENCE_METHOD = "source_preserving_agency_identity_v1";
@@ -90,6 +91,7 @@ export function buildAgencyIdentityEvidence({
   accountabilitySources = null,
   committeeRoleSources = null,
   boroughOfficeSources = null,
+  governingBodySources = null,
 } = {}) {
   if (!identity?.canonical_id) return null;
   // A routed profile is not itself a source identity. Route-only and
@@ -191,6 +193,14 @@ export function buildAgencyIdentityEvidence({
       boroughOfficeRolesForInstitution(identity.canonical_id, boroughOfficeSources),
     );
   }
+  let governanceGaps = [];
+  let identityReconciliations = [];
+  if (governingBodySources && identity.canonical_id) {
+    const governance = governingBodiesForInstitution(identity.canonical_id, governingBodySources);
+    roleEdges = mergeRoleBags(roleEdges, governance);
+    governanceGaps = governance.gaps || [];
+    identityReconciliations = governance.identity_states || [];
+  }
   return {
     schema: AGENCY_IDENTITY_EVIDENCE_SCHEMA,
     method: AGENCY_IDENTITY_EVIDENCE_METHOD,
@@ -205,6 +215,8 @@ export function buildAgencyIdentityEvidence({
     role_edge_held: roleEdges.held,
     role_edge_unknown: roleEdges.unknown,
     role_edge_unresolved: roleEdges.unresolved,
+    governance_gaps: governanceGaps,
+    identity_reconciliations: identityReconciliations,
     coverage: {
       accepted_count: observations.length,
       source_observation_count: observations.length,

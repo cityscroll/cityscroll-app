@@ -188,8 +188,8 @@ test("generic DOC duties, board language, meetings, and unverified quotes never 
   assert.equal(oversees.status, "held");
   assert.equal(oversees.reason, "unsupported_i2i_relation");
   assert.equal(oversees.linking, false);
-  assert.equal(governed.status, "held");
   assert.equal(governed.linking, false);
+  assert.notEqual(governed.status, "accepted");
 });
 
 test("mandate claim URLs, agency ids, statute_duty category, and citations stay unchanged", () => {

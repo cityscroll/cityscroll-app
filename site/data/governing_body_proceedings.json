@@ -1,0 +1,162 @@
+{
+  "schema": "cityscroll.governing_body_proceedings.v1",
+  "source_contract": "cityscroll.governing_body_source_contract.v1",
+  "generated_at": "2026-08-31T00:00:00.000Z",
+  "negative_rule": "Never infer a NYCHA Board from a housing-authority contract, a BERS committee from a similarly named NYCHA notice, or a July 15 meeting from an expected calendar target without a retained record. Do not merge BERS with NYCHA because OTI assigns both to a public-benefit or pension bucket.",
+  "identities": [
+    {
+      "route_key": "housing-authority",
+      "crosswalk_key": "housing-authority",
+      "status": "accepted",
+      "reason": null
+    },
+    {
+      "route_key": "employees-retirement-system",
+      "crosswalk_key": "board-of-education-retirement-system",
+      "status": "unresolved",
+      "reason": "route_crosswalk_mismatch",
+      "label": "The Employees’ Retirement System route is not a verified join to the Board of Education Retirement System (BERS) crosswalk identity."
+    }
+  ],
+  "bodies": [
+    {
+      "body_id": "nycha-board",
+      "body_kind": "board",
+      "name": "NYCHA Board",
+      "parent_institution_id": "housing-authority",
+      "identity_status": "accepted",
+      "source_system": "nycha_official",
+      "source_record_id": "nycha-board-meetings",
+      "source_field": "board_meetings_page",
+      "source_value": "NYCHA Board",
+      "source_url": "https://www.nyc.gov/site/nycha/about/board-meetings.page",
+      "source_receipt": "nycha_official:nycha-board-meetings:board_meetings_page",
+      "observed_at": "2026-07-16T00:00:00.000Z"
+    },
+    {
+      "body_id": "bers-board-of-trustees",
+      "body_kind": "board",
+      "name": "BERS Board of Trustees",
+      "parent_institution_id": "board-of-education-retirement-system",
+      "identity_status": "unresolved",
+      "identity_reason": "route_crosswalk_mismatch",
+      "source_system": "bers_official",
+      "source_record_id": "bers-board-of-trustees",
+      "source_field": "board_of_trustees_page",
+      "source_value": "Board of Trustees",
+      "source_url": "https://www.bers.nyc.gov/site/bers/about/board-of-trustees.page",
+      "source_receipt": "bers_official:bers-board-of-trustees:board_of_trustees_page",
+      "observed_at": "2026-08-31T00:00:00.000Z"
+    }
+  ],
+  "committees": [
+    {
+      "body_id": "nycha-audit-finance",
+      "body_kind": "committee",
+      "name": "Audit and Finance Committee",
+      "parent_board_id": "nycha-board",
+      "parent_institution_id": "housing-authority",
+      "identity_status": "accepted",
+      "source_system": "nycha_official",
+      "source_record_id": "nycha-audit-committee-meetings",
+      "source_field": "audit_committee_meetings_page",
+      "source_value": "Audit and Finance Committee",
+      "source_url": "https://www.nyc.gov/site/nycha/about/audit-committee-meetings.page",
+      "source_receipt": "nycha_official:nycha-audit-committee-meetings:audit_committee_meetings_page",
+      "observed_at": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "body_id": "bers-executive",
+      "body_kind": "committee",
+      "name": "Executive Committee",
+      "parent_board_id": "bers-board-of-trustees",
+      "parent_institution_id": "board-of-education-retirement-system",
+      "identity_status": "unresolved",
+      "identity_reason": "route_crosswalk_mismatch",
+      "source_system": "bers_official",
+      "source_record_id": "bers-executive-committee",
+      "source_field": "standing_committees",
+      "source_value": "Executive Committee",
+      "source_url": "https://www.bers.nyc.gov/site/bers/about/board-of-trustees.page",
+      "source_receipt": "bers_official:bers-executive-committee:standing_committees",
+      "observed_at": "2026-08-31T00:00:00.000Z"
+    }
+  ],
+  "meetings": [
+    {
+      "body_id": "nycha-board",
+      "body_kind": "board",
+      "parent_institution_id": "housing-authority",
+      "meeting_id": "meeting:city_record:20260624001",
+      "request_id": "20260624001",
+      "title": "New York City Housing Authority Board Meeting",
+      "agency_name": "Housing Authority",
+      "event_date": "2026-07-29",
+      "join_method": "exact_official_body_and_publisher_meeting",
+      "source_system": "city_record",
+      "source_record_id": "20260624001",
+      "source_field": "request_id",
+      "source_value": "20260624001",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624001",
+      "source_receipt": "city_record:20260624001:request_id",
+      "observed_at": "2026-07-16T00:00:00.000Z"
+    },
+    {
+      "body_id": "nycha-board",
+      "body_kind": "board",
+      "parent_institution_id": "housing-authority",
+      "meeting_id": "meeting:city_record:20260528032",
+      "request_id": "20260528032",
+      "title": "New York City Housing Authority Board Meeting",
+      "agency_name": "Housing Authority",
+      "event_date": "2026-06-24",
+      "join_method": "exact_official_body_and_publisher_meeting",
+      "source_system": "city_record",
+      "source_record_id": "20260528032",
+      "source_field": "request_id",
+      "source_value": "20260528032",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260528032",
+      "source_receipt": "city_record:20260528032:request_id",
+      "observed_at": "2026-06-10T00:00:00.000Z"
+    },
+    {
+      "body_id": "nycha-audit-finance",
+      "body_kind": "committee",
+      "parent_institution_id": "housing-authority",
+      "meeting_id": "meeting:city_record:20260625034",
+      "request_id": "20260625034",
+      "title": "NYCHA Audit and Finance Committee Meeting.",
+      "agency_name": "Housing Authority",
+      "event_date": "2026-07-15",
+      "join_method": "exact_official_body_and_publisher_meeting",
+      "source_system": "city_record",
+      "source_record_id": "20260625034",
+      "source_field": "request_id",
+      "source_value": "20260625034",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260625034",
+      "source_receipt": "city_record:20260625034:request_id",
+      "observed_at": "2026-07-01T00:00:00.000Z"
+    }
+  ],
+  "gaps": [
+    {
+      "kind": "meeting",
+      "institution_id": "board-of-education-retirement-system",
+      "route_key": "employees-retirement-system",
+      "body_id": "bers-executive",
+      "target": "2026-07-15",
+      "status": "unavailable",
+      "reason": "no_retained_source_record",
+      "label": "July 15, 2026 BERS meeting is not in the current snapshot"
+    },
+    {
+      "kind": "identity",
+      "institution_id": "board-of-education-retirement-system",
+      "route_key": "employees-retirement-system",
+      "crosswalk_key": "board-of-education-retirement-system",
+      "status": "unresolved",
+      "reason": "route_crosswalk_mismatch",
+      "label": "BERS crosswalk identity is not verified against the Employees’ Retirement System route"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "as_of": "2026-07-29",
+  "nycha_id": "housing-authority",
+  "nycha_board_id": "nycha-board",
+  "nycha_committee_id": "nycha-audit-finance",
+  "nycha_board_meeting": "20260624001",
+  "nycha_audit_meeting": "20260625034",
+  "nycha_prior_board_meeting": "20260528032",
+  "bers_crosswalk_id": "board-of-education-retirement-system",
+  "bers_route_id": "employees-retirement-system",
+  "bers_board_id": "bers-board-of-trustees",
+  "bers_committee_id": "bers-executive",
+  "bers_target_date": "2026-07-15",
+  "bers_fixture_meeting": "20260113999",
+  "nycha_publisher": {
+    "canonical_name": "New York City Housing Authority",
+    "org_type": "Public Benefit or Development Organization",
+    "acronym": "NYCHA",
+    "variants": ["Housing Authority"],
+    "match_method": "normalized+budget"
+  },
+  "bers_publisher": {
+    "canonical_name": "Board of Education Retirement System",
+    "org_type": "Pension Fund",
+    "acronym": "BERS",
+    "variants": ["Board of Education Retirement System"],
+    "match_method": "normalized"
+  },
+  "official_bers_complete": {
+    "generated_at": "2026-08-31T00:00:00.000Z",
+    "identities": [
+      {
+        "route_key": "board-of-education-retirement-system",
+        "crosswalk_key": "board-of-education-retirement-system",
+        "status": "accepted",
+        "reason": null
+      }
+    ],
+    "bodies": [
+      {
+        "body_id": "bers-board-of-trustees",
+        "body_kind": "board",
+        "name": "BERS Board of Trustees",
+        "parent_institution_id": "board-of-education-retirement-system",
+        "identity_status": "accepted",
+        "source_system": "bers_official",
+        "source_record_id": "bers-board-of-trustees",
+        "source_field": "board_of_trustees_page",
+        "source_value": "Board of Trustees",
+        "source_url": "https://www.bers.nyc.gov/site/bers/about/board-of-trustees.page",
+        "source_receipt": "bers_official:bers-board-of-trustees:board_of_trustees_page",
+        "observed_at": "2026-01-13T00:00:00.000Z"
+      }
+    ],
+    "committees": [
+      {
+        "body_id": "bers-executive",
+        "body_kind": "committee",
+        "name": "Executive Committee",
+        "parent_board_id": "bers-board-of-trustees",
+        "parent_institution_id": "board-of-education-retirement-system",
+        "identity_status": "accepted",
+        "source_system": "bers_official",
+        "source_record_id": "bers-executive-committee",
+        "source_field": "standing_committees",
+        "source_value": "Executive Committee",
+        "source_url": "https://www.bers.nyc.gov/site/bers/about/board-of-trustees.page",
+        "source_receipt": "bers_official:bers-executive-committee:standing_committees",
+        "observed_at": "2026-01-13T00:00:00.000Z"
+      }
+    ],
+    "meetings": [
+      {
+        "body_id": "bers-executive",
+        "body_kind": "committee",
+        "parent_institution_id": "board-of-education-retirement-system",
+        "meeting_id": "meeting:city_record:20260113999",
+        "request_id": "20260113999",
+        "title": "BERS Executive Committee Meeting",
+        "agency_name": "Board of Education Retirement System",
+        "event_date": "2026-01-13",
+        "join_method": "exact_official_body_and_publisher_meeting",
+        "source_system": "city_record",
+        "source_record_id": "20260113999",
+        "source_field": "request_id",
+        "source_value": "20260113999",
+        "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260113999",
+        "source_receipt": "city_record:20260113999:request_id",
+        "observed_at": "2026-01-13T00:00:00.000Z"
+      }
+    ],
+    "gaps": []
+  },
+  "negatives": {
+    "generic_board_title": "Board Meeting",
+    "similar_committee_name": "Audit Committee",
+    "oti_org_type": "Public Benefit or Development Organization",
+    "calendar_target": "2026-07-15",
+    "vendor_row": "vendor:stem:GARTNER",
+    "staffing_row": "7042"
+  }
+}

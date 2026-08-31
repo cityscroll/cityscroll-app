@@ -625,11 +625,29 @@
       "grounding": "partial"
     },
     {
+      "id": "board",
+      "status": "registered",
+      "layer": "semantic",
+      "reason": "An institution-scoped governing board is identified by an official governance record and parent civic-institution, never by a generic board title, OTI bucket, or meeting-title string.",
+      "primary_key_pattern": "board:{source_body_id}",
+      "families": [],
+      "backing": [
+        "cityscroll.civic_institution_role_edge.v1",
+        "cityscroll.governing_body_source_contract.v1"
+      ],
+      "properties_ref": [
+        "body_id",
+        "parent_institution_id",
+        "source_url"
+      ],
+      "grounding": "partial"
+    },
+    {
       "id": "committee",
       "status": "registered",
       "layer": "semantic",
-      "reason": "Publisher-issued Legistar BodyId is the stable identity; BodyName remains a mutable label. Membership edge publication is held until the dated authenticated sample clears its exact-key gate.",
-      "primary_key_pattern": "committee:{OfficeRecordBodyId}",
+      "reason": "Publisher-issued Legistar BodyId is the stable identity for Council committees; non-Legistar committees use a parent-scoped official source slug. BodyName remains a mutable label. Membership edge publication is held until the dated authenticated sample clears its exact-key gate.",
+      "primary_key_pattern": "committee:{OfficeRecordBodyId}|committee:{source_body_id}",
       "families": [],
       "backing": [
         "public_graph.node",
@@ -1506,9 +1524,9 @@
     {
       "id": "hosts_meeting",
       "status": "registered",
-      "from": "community-board|committee|civic-institution",
+      "from": "community-board|committee|civic-institution|board",
       "to": "meeting",
-      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins, an exact Council committee EventBodyId join, or an exact Borough President office publisher-identity join with a retained source receipt.",
+      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins, an exact Council committee EventBodyId join, an exact Borough President office publisher-identity join, or an exact official governing-body/committee join with a retained source receipt.",
       "contract_ref": "cityscroll.community_board_hosts_meeting_source_contract.v1",
       "edge_schema": "cityscroll.community_board_hosts_meeting_edge.v1",
       "required_evidence": [
@@ -1596,9 +1614,9 @@
     {
       "id": "has_committee",
       "status": "registered",
-      "from": "community-board|civic-institution",
+      "from": "community-board|civic-institution|board",
       "to": "community-board-committee|committee",
-      "reason": "Materialized from a Community Board to a reviewed board-local committee, or from City Council to an exact Legistar body id. Same-named committees remain distinct identities and are never joined by display name.",
+      "reason": "Materialized from a Community Board to a reviewed board-local committee, from City Council to an exact Legistar body id, or from an official institution-scoped board to a named standing committee. Same-named committees remain distinct identities and are never joined by display name.",
       "contract_ref": "cityscroll.community_board_has_committee_source_contract.v1",
       "edge_schema": "cityscroll.community_board_has_committee_edge.v1",
       "required_evidence": [
@@ -1618,9 +1636,9 @@
     {
       "id": "governed_by",
       "status": "registered",
-      "from": "community-board",
-      "to": "bylaw-version",
-      "reason": "A Community Board is governed only by its own retained, publisher-identified bylaw version. Superseded versions remain linked for history and missing rules remain source_does_not_establish.",
+      "from": "community-board|civic-institution",
+      "to": "bylaw-version|board",
+      "reason": "A Community Board is governed only by its own retained, publisher-identified bylaw version. A civic institution is governed_by a board only from an official governance record naming that parent. Superseded bylaw versions remain linked for history; missing meetings and unverified parent identity remain unresolved.",
       "contract_ref": "cityscroll.community_board_bylaw_source.v1",
       "edge_schema": "cityscroll.community_board_governed_by_edge.v1",
       "required_evidence": [
