@@ -1,0 +1,8 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "fixture/card",
+  "status": "implemented",
+  "fingerprint": "fixture.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [{ "id": "fixture", "path": "site/example.mjs" }]
+}
