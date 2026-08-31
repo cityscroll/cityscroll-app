@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.repository_evidence_placement.v1",
   "card": "cityscroll-repository-control-plane/rcp-03",
-  "inspected_main_commit": "2c310bcff9b71c3704493801ef23182375c5357d",
+  "inspected_main_commit": "21c3d22a3b2314506fda73229e77c80cc3c26de4",
   "generated_at": "2026-08-31T00:00:00.000Z",
   "privacy_model": "placement-not-deletion",
   "private_inventory": {
@@ -561,9 +561,9 @@
       "site/",
       "worker/"
     ],
-    "file_count": 2744,
-    "sha256": "5a588f5f64a069a97bd4a05e018ae03e680da9af2ec54f16ac64c3720d142c20",
-    "expected_after_sha256": "5a588f5f64a069a97bd4a05e018ae03e680da9af2ec54f16ac64c3720d142c20"
+    "file_count": 2748,
+    "sha256": "8ac9f96df77b3d52dabd1c410d7cb6ba021f62309e517a011f7469ee656dc2f9",
+    "expected_after_sha256": "8ac9f96df77b3d52dabd1c410d7cb6ba021f62309e517a011f7469ee656dc2f9"
   },
   "history_treatment": "none; this is a tip-level placement change"
 }

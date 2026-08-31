@@ -7,7 +7,7 @@ import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const BASE = "2c310bcff9b71c3704493801ef23182375c5357d";
+const BASE = "21c3d22a3b2314506fda73229e77c80cc3c26de4";
 const OUTPUT = resolve(ROOT, "docs/repository-control-plane/evidence-placement.v1.json");
 const PRIVATE_MARKER = ["backstage", "://", "cityscroll-evidence/"].join("");
 const CARD = "cityscroll-repository-control-plane/rcp-03";
