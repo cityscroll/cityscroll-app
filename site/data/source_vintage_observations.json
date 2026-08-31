@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-08-29T11:43:49.474Z",
+  "generated_at": "2026-08-31T15:25:45.297Z",
   "contract_count": 63,
   "observations": [
     {
@@ -980,10 +980,10 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-08-24T08:25:03.900Z",
+        "retrieved_at": "2026-08-31T15:25:44.983Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
-        "run_id": "doing-business-entities:2026-08-24T08:25:03.900Z"
+        "run_id": "doing-business-entities:2026-08-31T15:25:44.983Z"
       },
       "expected_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
       "expected_lag_tolerance_days": 400,

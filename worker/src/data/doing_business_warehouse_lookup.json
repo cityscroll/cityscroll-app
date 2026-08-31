@@ -5,7 +5,7 @@
   "dataset_id": "72mk-a8z7",
   "table_name": "doing_business_entities",
   "mode": "bulk_soda",
-  "materialized_at": "2026-08-24T08:25:03.900Z",
+  "materialized_at": "2026-08-31T15:25:45.297Z",
   "row_count": 10770,
   "publisher_row_count": 10787,
   "replaces_live_fetch": {
