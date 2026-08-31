@@ -6,6 +6,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  buildAgencyConstellationClaimReportTarget,
+  buildAgencyConstellationReportTarget,
   buildLandRegulatoryEffectReportTarget,
   buildMeetingGroupingReportTarget,
   buildRulemakingLifecycleReportTarget,
@@ -21,6 +23,10 @@ import { renderProcurementDocument } from "../site/procurement_document.mjs";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RULEMAKING_LIFECYCLE_FIXTURES = JSON.parse(readFileSync(
   join(ROOT, "test/fixtures/report_target/rulemaking_lifecycle.json"),
+  "utf8",
+));
+const AGENCY_CLAIM_FIXTURES = JSON.parse(readFileSync(
+  join(ROOT, "test/fixtures/report_target/agency_claim_deep_link.json"),
   "utf8",
 ));
 
@@ -177,6 +183,24 @@ test("higher-inference cards use the shared report target affordance", async () 
   assert.match(cardTemplate, /ui-object-card-report/);
   assert.match(index, /data-i18n="footer_feedback">Feedback/);
   assert.match(reportIssueAction(null).href, /about\.html#feedback/);
+  const agency = await fs.readFile(new URL("../site/agency_constellation.mjs", import.meta.url), "utf8");
+  assert.match(agency, /buildAgencyConstellationClaimReportTarget/);
+  assert.match(agency, /activeClaimId/);
+  const claimHtml = renderReportIssueAffordance(buildAgencyConstellationClaimReportTarget({
+    ...AGENCY_CLAIM_FIXTURES.profile,
+    claim: AGENCY_CLAIM_FIXTURES.staffing_claim,
+    activeClaimId: AGENCY_CLAIM_FIXTURES.staffing_claim.claim_id,
+  }));
+  assert.match(claimHtml, />Report an issue<\/button>/);
+  assert.match(claimHtml, /staffing:exam:6306/);
+  assert.doesNotMatch(claimHtml, /agency:id:police-department#identity/);
+  assert.equal(
+    renderReportIssueAffordance(buildAgencyConstellationReportTarget({
+      ...AGENCY_CLAIM_FIXTURES.profile,
+      activeClaimId: "staffing:exam:6306",
+    })),
+    "",
+  );
   const eligibleHtml = renderReportIssueAffordance(
     buildRulemakingLifecycleReportTarget(RULEMAKING_LIFECYCLE_FIXTURES.eligible),
   );

@@ -450,7 +450,37 @@ test("rendered document is a parcel-shaped civic object with ER basis stamp", ()
   assert.match(html, /main:not\(:has\(#mandates-conformance\)\) a\[href\$="#mandates-conformance"\]/);
   assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\//);
   assert.doesNotMatch(html, /civil-service certification|provenance inspector/i);
+  assert.match(html, /data-agency-report="1"/);
+  assert.match(html, /agency:id:parks-and-recreation#identity/);
+  assert.doesNotMatch(html, /data-report-claim-id=/);
   assert.deepEqual(detectNodePageCruft(html), []);
+});
+
+test("claim deep-link report names the staffing exam and keeps the agency profile as context", () => {
+  const view = buildAgencyConstellationView(PARKS, {
+    intelligence,
+    certification,
+    obligations,
+    staffing_exams: staffingExams,
+  });
+  const staffing = view.categories.find((category) => category.id === "staffing");
+  const claim = staffing.items[0].claim;
+  assert.match(claim.claim_id, /^staffing:exam:\d{4}$/);
+
+  const html = renderAgencyConstellationDocument(view, { activeClaimId: claim.claim_id });
+  const button = html.match(/<button class="ui-report-issue"[\s\S]*?<\/button>/)?.[0] || "";
+  assert.match(html, /data-agency-report="1"/);
+  assert.match(button, new RegExp(claim.claim_id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(button, />Report an issue<\/button>/);
+  assert.match(html, /data-report-claim-id="/);
+  assert.match(html, /data-report-entity-ref="agency:id:parks-and-recreation"/);
+  assert.doesNotMatch(button, /agency:id:parks-and-recreation#identity/);
+  assert.doesNotMatch(button, /\[object Object\]/);
+  assert.match(html, /rel="canonical" href="https:\/\/cityscroll\.org\/agencies\/parks-and-recreation\/\?claim=/);
+
+  const missing = renderAgencyConstellationDocument(view, { activeClaimId: "staffing:exam:0000" });
+  assert.doesNotMatch(missing, /<button class="ui-report-issue"/);
+  assert.doesNotMatch(missing, /data-report-claim-id=/);
 });
 
 test("deferred agency relationships preserve as-of projection and empty output", () => {

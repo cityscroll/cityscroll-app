@@ -1,0 +1,118 @@
+{
+  "profile": {
+    "entity_ref": "agency:id:police-department",
+    "canonical_url": "/agencies/police-department/",
+    "object_label": "Police Department",
+    "identity_lookup_href": "/data/people_organizations_read_model.json"
+  },
+  "staffing_claim": {
+    "claim_id": "staffing:exam:6306",
+    "subject_ref": "exam:6306",
+    "root_ref": "agency:id:police-department",
+    "category_id": "staffing",
+    "relation": "certified to the agency",
+    "label": "Police Officer",
+    "inspect_href": "/agencies/police-department/?claim=staffing%3Aexam%3A6306",
+    "where": {
+      "source_system": { "available": true, "value": "socrata" },
+      "source_record_id": { "available": true, "value": "a9md-ynri:6306:nypd" },
+      "source_href": { "available": true, "value": "https://data.cityofnewyork.us/d/a9md-ynri" }
+    }
+  },
+  "negative": [
+    {
+      "name": "profile-only-url",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "object_label": "Police Department"
+      }
+    },
+    {
+      "name": "unaddressable-category",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "object_label": "Police Department",
+        "activeClaimId": "unknown:exam:6306",
+        "claim": {
+          "claim_id": "unknown:exam:6306",
+          "subject_ref": "exam:6306",
+          "root_ref": "agency:id:police-department",
+          "category_id": "unknown",
+          "label": "Police Officer"
+        }
+      }
+    },
+    {
+      "name": "claim-missing-from-profile",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "object_label": "Police Department",
+        "activeClaimId": "staffing:exam:6306"
+      }
+    },
+    {
+      "name": "subject-mismatch",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "object_label": "Police Department",
+        "activeClaimId": "staffing:exam:6306",
+        "claim": {
+          "claim_id": "staffing:exam:6306",
+          "subject_ref": "exam:9999",
+          "root_ref": "agency:id:police-department",
+          "category_id": "staffing",
+          "label": "Wrong exam"
+        }
+      }
+    },
+    {
+      "name": "wrong-agency-context",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "object_label": "Police Department",
+        "activeClaimId": "staffing:exam:6306",
+        "claim": {
+          "claim_id": "staffing:exam:6306",
+          "subject_ref": "exam:6306",
+          "root_ref": "agency:id:parks-and-recreation",
+          "category_id": "staffing",
+          "label": "Police Officer"
+        }
+      }
+    },
+    {
+      "name": "incomplete-profile",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "activeClaimId": "staffing:exam:6306",
+        "claim": {
+          "claim_id": "staffing:exam:6306",
+          "subject_ref": "exam:6306",
+          "root_ref": "agency:id:police-department",
+          "category_id": "staffing",
+          "label": "Police Officer"
+        }
+      }
+    },
+    {
+      "name": "malformed-claim-id",
+      "input": {
+        "entity_ref": "agency:id:police-department",
+        "canonical_url": "/agencies/police-department/",
+        "object_label": "Police Department",
+        "activeClaimId": "not a claim",
+        "claim": {
+          "claim_id": "not a claim",
+          "subject_ref": "exam:6306",
+          "category_id": "staffing"
+        }
+      }
+    }
+  ]
+}
