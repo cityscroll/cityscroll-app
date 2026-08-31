@@ -20,7 +20,7 @@ export const institutionNavigationSection = Object.freeze({
       publisherRow: constellation.identity_evidence?.observations?.some((row) => row.source_system === "oti")
         ? { canonical_name: constellation.display_name }
         : null,
-      routeIdentityReport: defaultRouteIdentityReport,
+      routeIdentityReport: constellation.route_identity_report || defaultRouteIdentityReport,
       hasRoute: true,
     });
     return renderInstitutionProfileNavigation(projection);

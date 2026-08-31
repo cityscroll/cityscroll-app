@@ -52,6 +52,37 @@ const publisherRows = publisherAgencyRows(publisherCrosswalk);
 
 const PARKS = "parks-and-recreation";
 
+test("institution navigation uses the in-memory route identity report bound on the view", () => {
+  const section = AGENCY_CONSTELLATION_SECTIONS.find((row) => row.id === "institution-navigation");
+  const html = section.render({
+    view: {
+      kind: "agency-constellation",
+      canonical_id: "housing-authority",
+      display_name: "New York City Housing Authority",
+      identity_evidence: {
+        observations: [{ source_system: "oti" }],
+        institution: { classification_status: "unclassified" },
+      },
+      categories: [],
+      route_identity_report: {
+        schema: "cityscroll.agency_route_identity_report.v1",
+        generated_at: "2099-01-02T00:00:00.000Z",
+        cases: [{
+          classification: "alias_to_canonical",
+          source_id: "n-y-c-housing-authority",
+          canonical_id: "housing-authority",
+          redirect_from: "/agencies/n-y-c-housing-authority/",
+          canonical_path: "/agencies/housing-authority/",
+          basis: "punctuation-only publisher alias",
+        }],
+        collisions: { ambiguous_publisher_keys: [] },
+      },
+    },
+  });
+  assert.match(html, /2099-01-02/);
+  assert.match(html, /n-y-c-housing-authority/);
+});
+
 test("section registry composes every capability in stable order", () => {
   assert.deepEqual(
     AGENCY_CONSTELLATION_SECTIONS.map(({ id, order }) => [id, order]),
