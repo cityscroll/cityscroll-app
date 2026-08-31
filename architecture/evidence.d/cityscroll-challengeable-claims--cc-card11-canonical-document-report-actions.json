@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-challengeable-claims/cc-card11-canonical-document-report-actions",
+  "status": "implemented",
+  "fingerprint": "cc-card11-canonical-document-report-actions.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "meeting-document-report-actions",
+      "path": "site/meeting_document.mjs"
+    },
+    {
+      "id": "notice-document-report-actions",
+      "path": "site/pages_edge.mjs"
+    },
+    {
+      "id": "rulemaking-lifecycle-report-target",
+      "path": "site/report_issue.mjs"
+    },
+    {
+      "id": "report-target-contract",
+      "path": "site/report_target.mjs"
+    }
+  ]
+}

@@ -379,6 +379,29 @@ test("anchor parsing rejects positional or malformed anchors", () => {
   assert.throws(() => parseReportClaimAnchor("contract:CT123#vendor#first"), /claim anchor/);
 });
 
+test("notice relationship anchors resolve the canonical notice object", () => {
+  const target = buildReportTargetFromAnchor("notice:20240515016#agency", {
+    object_label: "Forest management",
+    claim_anchor: {
+      claim_type: "relationship",
+      relation_type: "published_by_agency",
+      object_id: "agency:id:parks-and-recreation",
+      object_label: "Parks & Recreation",
+    },
+    source: {
+      source_system: "city_record",
+      source_record_id: "20240515016",
+      source_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20240515016",
+    },
+  });
+  assert.equal(target.object_type, "notice");
+  assert.equal(target.object_id, "notice:20240515016");
+  assert.equal(target.canonical_url, "/notices/20240515016");
+  assert.equal(target.claim_anchor.claim_type, "relationship");
+  assert.equal(target.claim_anchor.field_or_semantic_key, "agency");
+  assert.deepEqual(target.provenance.source_record_ids, ["20240515016"]);
+});
+
 test("serialization and re-resolution are deterministic", () => {
   const target = buildReportTarget({
     object_type: "meeting",
