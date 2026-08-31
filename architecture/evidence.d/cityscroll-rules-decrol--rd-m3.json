@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-rules-decrol/rd-m3",
+  "status": "implemented",
+  "fingerprint": "rd-m3-rule-versions-and-effects.v2",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "rule-version-projection",
+      "path": "site/rule_versions.mjs"
+    },
+    {
+      "id": "rule-version-materializer",
+      "path": "tools/build_rule_versions.mjs"
+    },
+    {
+      "id": "rule-version-receipt",
+      "path": "warehouse/receipts/proof/rule_versions_latest.json"
+    }
+  ]
+}
