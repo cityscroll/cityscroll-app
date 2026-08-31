@@ -210,6 +210,17 @@
   Focused proof is `worker/test/land_prediction_predictor.test.mjs` and usage is documented in
   `docs/land-use-prediction-predictor-v2.md`.
 
+- **Land-use stance backtest (LUP2-C7):** `worker/src/lib/land_prediction_backtest.mjs`
+  compares the existing process baseline, baseline plus formal-process signals,
+  baseline plus local-member stance, and the full V2 feature set on cutoff-safe
+  held-out applications. It reports Brier/log-loss, stage, coverage, timing, and
+  ablations, preserves H1/H2 as rival predictive hypotheses, and withholds
+  major-feature promotion when the kill criterion is met. The incumbent
+  `land_prediction_baseline_v1` path stays authoritative. Rebuild with
+  `node tools/build_land_prediction_backtest.mjs`; `--check` verifies the
+  committed receipt. Focused proof is `worker/test/land_prediction_backtest.test.mjs`
+  and `test/land_prediction_backtest.test.mjs`.
+
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
 - **Source-preserving civic institutions:** `ontology/civic_institution.mjs` defines the additive

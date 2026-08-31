@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-landuse-prediction-v2/lup2-c7",
+  "status": "implemented",
+  "fingerprint": "lup2-c7-stance-backtest.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "lup2-c7-backtest-lib",
+      "path": "worker/src/lib/land_prediction_backtest.mjs"
+    },
+    {
+      "id": "lup2-c7-gold-fixture",
+      "path": "test/fixtures/land_prediction_backtest/gold.v1.json"
+    },
+    {
+      "id": "lup2-c7-backtest-receipt",
+      "path": "warehouse/fixtures/land-use-prediction-v2/stance_backtest.v1.json"
+    },
+    {
+      "id": "lup2-c7-backtest-report",
+      "path": "docs/evidence/land-use-prediction-v2/stance-backtest.md"
+    },
+    {
+      "id": "lup2-c7-backtest-contract",
+      "path": "docs/land-use-prediction-backtest-v2.md"
+    }
+  ]
+}

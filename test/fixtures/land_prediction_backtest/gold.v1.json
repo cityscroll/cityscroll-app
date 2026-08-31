@@ -1,0 +1,554 @@
+{
+  "schema": "cityscroll.land_prediction_backtest.gold.v1",
+  "version": "lup2-c7-gold.v1",
+  "frozen": true,
+  "purpose": "Cutoff-safe synthetic control pack for whether local-member stance improves held-out land-use prediction. This is a fixture control, not a recurrent population estimate.",
+  "split": {
+    "train_from": "2022-01-01",
+    "train_to": "2023-12-31",
+    "test_from": "2024-01-01",
+    "test_to": "2024-12-31",
+    "rule": "A case is train when prediction_as_of is on or before train_to, and test when prediction_as_of is on or after test_from. Labels use outcome_at strictly after the cutoff."
+  },
+  "eligible": [
+    {
+      "id": "train-formal-fav-01",
+      "application_id": "2022F0001",
+      "prediction_as_of": "2022-06-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2022-09-01T00:00:00.000Z",
+      "cohorts": ["formal"],
+      "features": {
+        "community_board_action": "favorable",
+        "borough_president_action": "favorable",
+        "cpc_disposition": "approved"
+      }
+    },
+    {
+      "id": "train-formal-fav-02",
+      "application_id": "2022F0002",
+      "prediction_as_of": "2022-09-15T00:00:00.000Z",
+      "procedural_stage": "borough_president",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2022-12-01T00:00:00.000Z",
+      "cohorts": ["formal"],
+      "features": {
+        "community_board_action": "favorable",
+        "borough_president_action": "favorable"
+      }
+    },
+    {
+      "id": "train-formal-unfav-01",
+      "application_id": "2022F0003",
+      "prediction_as_of": "2022-07-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2022-10-01T00:00:00.000Z",
+      "cohorts": ["formal"],
+      "features": {
+        "community_board_action": "unfavorable",
+        "borough_president_action": "unfavorable",
+        "cpc_disposition": "disapproved"
+      }
+    },
+    {
+      "id": "train-formal-unfav-02",
+      "application_id": "2022F0004",
+      "prediction_as_of": "2023-02-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "PP",
+      "outcome": "disapproved",
+      "outcome_at": "2023-05-01T00:00:00.000Z",
+      "cohorts": ["formal"],
+      "features": {
+        "community_board_action": "unfavorable"
+      }
+    },
+    {
+      "id": "train-stance-support-01",
+      "application_id": "2022S0001",
+      "prediction_as_of": "2022-05-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2022-08-15T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2022-04-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-stance-support-02",
+      "application_id": "2022S0002",
+      "prediction_as_of": "2022-11-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2023-02-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2022-10-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-stance-support-03",
+      "application_id": "2023S0003",
+      "prediction_as_of": "2023-04-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2023-07-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2023-03-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-stance-oppose-01",
+      "application_id": "2022O0001",
+      "prediction_as_of": "2022-08-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2022-11-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2022-07-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-stance-oppose-02",
+      "application_id": "2023O0002",
+      "prediction_as_of": "2023-03-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2023-06-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2023-02-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-stance-oppose-03",
+      "application_id": "2023O0003",
+      "prediction_as_of": "2023-06-01T00:00:00.000Z",
+      "procedural_stage": "borough_president",
+      "application_type": "PP",
+      "outcome": "disapproved",
+      "outcome_at": "2023-09-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2023-05-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-both-align-approve",
+      "application_id": "2023B0001",
+      "prediction_as_of": "2023-05-15T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2023-08-15T00:00:00.000Z",
+      "cohorts": ["formal", "lift"],
+      "features": {
+        "community_board_action": "favorable",
+        "cpc_disposition": "approved",
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2023-04-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-both-align-deny",
+      "application_id": "2023B0002",
+      "prediction_as_of": "2023-08-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2023-11-01T00:00:00.000Z",
+      "cohorts": ["formal", "lift"],
+      "features": {
+        "community_board_action": "unfavorable",
+        "cpc_disposition": "disapproved",
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2023-07-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-missing-01",
+      "application_id": "2022M0001",
+      "prediction_as_of": "2022-04-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2022-07-01T00:00:00.000Z",
+      "cohorts": ["missing_features"],
+      "features": {}
+    },
+    {
+      "id": "train-missing-02",
+      "application_id": "2023M0002",
+      "prediction_as_of": "2023-01-15T00:00:00.000Z",
+      "procedural_stage": "pre_certification",
+      "application_type": "PP",
+      "outcome": "disapproved",
+      "outcome_at": "2023-04-15T00:00:00.000Z",
+      "cohorts": ["missing_features"],
+      "features": {}
+    },
+    {
+      "id": "train-stage-council-support",
+      "application_id": "2023C0001",
+      "prediction_as_of": "2023-09-01T00:00:00.000Z",
+      "procedural_stage": "city_council",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2023-10-01T00:00:00.000Z",
+      "cohorts": ["stage_difference"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2023-08-20T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "train-null-formal-wins",
+      "application_id": "2023N0001",
+      "prediction_as_of": "2023-07-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2023-10-01T00:00:00.000Z",
+      "cohorts": ["null_lift"],
+      "features": {
+        "community_board_action": "favorable",
+        "cpc_disposition": "approved",
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2023-06-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-lift-early-support-01",
+      "application_id": "2024L0001",
+      "prediction_as_of": "2024-03-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-06-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-02-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-lift-early-support-02",
+      "application_id": "2024L0002",
+      "prediction_as_of": "2024-04-15T00:00:00.000Z",
+      "procedural_stage": "borough_president",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-07-15T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-03-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-lift-early-oppose-01",
+      "application_id": "2024L0003",
+      "prediction_as_of": "2024-02-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2024-05-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2024-01-10T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-lift-early-oppose-02",
+      "application_id": "2024L0004",
+      "prediction_as_of": "2024-05-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "PP",
+      "outcome": "disapproved",
+      "outcome_at": "2024-08-01T00:00:00.000Z",
+      "cohorts": ["lift"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2024-04-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-null-formal-already-01",
+      "application_id": "2024N0001",
+      "prediction_as_of": "2024-03-15T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-06-15T00:00:00.000Z",
+      "cohorts": ["null_lift"],
+      "features": {
+        "community_board_action": "favorable",
+        "borough_president_action": "favorable",
+        "cpc_disposition": "approved",
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-02-15T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-null-formal-already-02",
+      "application_id": "2024N0002",
+      "prediction_as_of": "2024-06-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2024-09-01T00:00:00.000Z",
+      "cohorts": ["null_lift"],
+      "features": {
+        "community_board_action": "unfavorable",
+        "borough_president_action": "unfavorable",
+        "cpc_disposition": "disapproved",
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2024-05-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-null-stance-noise-01",
+      "application_id": "2024N0003",
+      "prediction_as_of": "2024-04-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-07-01T00:00:00.000Z",
+      "cohorts": ["null_lift"],
+      "features": {
+        "community_board_action": "favorable",
+        "cpc_disposition": "approved",
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2024-03-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-null-stance-noise-02",
+      "application_id": "2024N0004",
+      "prediction_as_of": "2024-07-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2024-10-01T00:00:00.000Z",
+      "cohorts": ["null_lift"],
+      "features": {
+        "community_board_action": "unfavorable",
+        "cpc_disposition": "disapproved",
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-06-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-late-stance-01",
+      "application_id": "2024T0001",
+      "prediction_as_of": "2024-08-01T00:00:00.000Z",
+      "procedural_stage": "city_council",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-08-06T00:00:00.000Z",
+      "cohorts": ["late_stance"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-07-31T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-late-stance-02",
+      "application_id": "2024T0002",
+      "prediction_as_of": "2024-09-01T00:00:00.000Z",
+      "procedural_stage": "city_council",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2024-09-08T00:00:00.000Z",
+      "cohorts": ["late_stance"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "oppose",
+          "observed_at": "2024-08-30T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-sparse-unknown-stance-01",
+      "application_id": "2024P0001",
+      "prediction_as_of": "2024-03-20T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-06-20T00:00:00.000Z",
+      "cohorts": ["sparse_stance"],
+      "features": {
+        "community_board_action": "favorable",
+        "cpc_disposition": "approved"
+      }
+    },
+    {
+      "id": "test-sparse-unknown-stance-02",
+      "application_id": "2024P0002",
+      "prediction_as_of": "2024-05-20T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "disapproved",
+      "outcome_at": "2024-08-20T00:00:00.000Z",
+      "cohorts": ["sparse_stance"],
+      "features": {
+        "community_board_action": "unfavorable",
+        "cpc_disposition": "disapproved"
+      }
+    },
+    {
+      "id": "test-missing-features-01",
+      "application_id": "2024M0001",
+      "prediction_as_of": "2024-02-15T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-05-15T00:00:00.000Z",
+      "cohorts": ["missing_features"],
+      "features": {}
+    },
+    {
+      "id": "test-missing-features-02",
+      "application_id": "2024M0002",
+      "prediction_as_of": "2024-06-15T00:00:00.000Z",
+      "procedural_stage": "pre_certification",
+      "application_type": "PP",
+      "outcome": "disapproved",
+      "outcome_at": "2024-09-15T00:00:00.000Z",
+      "cohorts": ["missing_features"],
+      "features": {}
+    },
+    {
+      "id": "test-stage-cb-support",
+      "application_id": "2024G0001",
+      "prediction_as_of": "2024-04-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-07-01T00:00:00.000Z",
+      "cohorts": ["stage_difference"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-03-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "test-stage-council-support",
+      "application_id": "2024G0002",
+      "prediction_as_of": "2024-10-01T00:00:00.000Z",
+      "procedural_stage": "city_council",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-10-31T00:00:00.000Z",
+      "cohorts": ["stage_difference"],
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-09-15T00:00:00.000Z"
+        }
+      }
+    }
+  ],
+  "negatives": [
+    {
+      "id": "neg-leakage-outcome-before-cutoff",
+      "kind": "leakage",
+      "application_id": "2024X0001",
+      "prediction_as_of": "2024-06-01T00:00:00.000Z",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-05-01T00:00:00.000Z",
+      "features": {
+        "local_council_member_stance": "support"
+      }
+    },
+    {
+      "id": "neg-leakage-future-stance",
+      "kind": "leakage",
+      "application_id": "2024X0002",
+      "prediction_as_of": "2024-06-01T00:00:00.000Z",
+      "procedural_stage": "community_board",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-09-01T00:00:00.000Z",
+      "features": {
+        "local_council_member_stance": {
+          "value": "support",
+          "observed_at": "2024-07-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "neg-invalid-cutoff",
+      "kind": "invalid_cutoff",
+      "application_id": "2024X0003",
+      "prediction_as_of": "not-a-date",
+      "procedural_stage": "cpc",
+      "application_type": "ZM",
+      "outcome": "approved",
+      "outcome_at": "2024-09-01T00:00:00.000Z",
+      "features": {}
+    }
+  ]
+}
