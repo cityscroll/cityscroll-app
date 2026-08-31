@@ -39,6 +39,7 @@ import {
   handleAdminOpsAlert,
   handleAdminDigestWatchdog,
   handleAdminSchedulerHeartbeat,
+  handleAdminOpsHealth,
   handleAdminMailWatchdog,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
@@ -218,6 +219,7 @@ export default {
     if (pathname === "/admin/ops-alert") return handleAdminOpsAlert(request, env);
     if (pathname === "/admin/reliability/digest") return handleAdminDigestWatchdog(request, env);
     if (pathname === "/admin/reliability/scheduler") return handleAdminSchedulerHeartbeat(request, env);
+    if (pathname === "/admin/reliability/ops-health") return handleAdminOpsHealth(request, env);
     if (pathname === "/admin/reliability/mail") return handleAdminMailWatchdog(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);

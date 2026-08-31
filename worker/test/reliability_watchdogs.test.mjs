@@ -13,13 +13,15 @@ import {
   recordInboundEmailReceipt,
   recordOutboundOpsSendReceipt,
   recordSchedulerHeartbeat,
+  canonicalOpsFailureSignature,
+  emitOpsAlertOnce,
   resolveMailCanaryTarget,
   schedulerWatchdogSnapshot,
   sendInboundWorkerCanary,
 } from "../src/reliability_watchdogs.mjs";
 import { digestDayLogKey } from "../src/lib/digest_ops.mjs";
 import { OPS_ALERT_TO, sendOpsAlert } from "../src/alerts.mjs";
-import { handleAdminDigestWatchdog, handleAdminMailWatchdog } from "../src/admin.mjs";
+import { handleAdminDigestWatchdog, handleAdminMailWatchdog, handleAdminOpsAlert, handleAdminOpsHealth } from "../src/admin.mjs";
 
 function kv(seed = {}) {
   const store = new Map(Object.entries(seed));
@@ -63,6 +65,71 @@ test("scheduler watchdog fires on expired heartbeat and pending outbox", async (
   assert.equal(result.ok, false);
   assert.match(result.findings.join("; "), /heartbeat expired/);
   assert.match(result.findings.join("; "), /3 pending/);
+});
+
+test("ops failures have lossless stable signatures and restart-stable daily rollups", async () => {
+  const ALERT_STATE = kv();
+  const sent = [];
+  const previous = globalThis.fetch;
+  globalThis.fetch = async (_url, options) => {
+    sent.push(JSON.parse(options.body));
+    return { ok: true, json: async () => ({ id: `mail-${sent.length}` }) };
+  };
+  const base = {
+    guard: "served-artifact-freshness",
+    stage: "served_artifact_freshness",
+    findings: ["artifact hash mismatch at 2026-08-31T12:00:00Z", "source commit mismatch"],
+    first_seen: "2026-08-31T12:00:00Z",
+    last_seen: "2026-08-31T12:00:00Z",
+    workflow_run_url: "https://github.com/cityscroll/cityscroll-app/actions/runs/123",
+    receipt_url: "https://github.com/cityscroll/cityscroll-app/actions/runs/123#artifacts",
+  };
+  try {
+    const signature = await canonicalOpsFailureSignature(base);
+    assert.equal(signature, await canonicalOpsFailureSignature({ ...base, findings: [...base.findings].reverse() }));
+    assert.notEqual(signature, await canonicalOpsFailureSignature({ ...base, stage: "generation_output" }));
+    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, now: new Date(base.last_seen) })).sent, true);
+    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-08-31T12:05:00Z", now: new Date("2026-08-31T12:05:00Z") })).sent, false);
+    assert.equal(sent.length, 1);
+    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-09-01T12:05:00Z", now: new Date("2026-09-01T12:05:00Z") })).sent, true);
+    assert.equal((await emitOpsAlertOnce({ ALERT_STATE, RESEND_API_KEY: "rk" }, { ...base, last_seen: "2026-09-01T12:06:00Z", now: new Date("2026-09-01T12:06:00Z") })).sent, false);
+    assert.equal(sent.length, 2);
+    assert.match(sent[0].html, /broke: artifact hash mismatch/);
+    assert.match(sent[0].html, /actions\/runs\/123/);
+    assert.equal((sent[0].html.match(/<p>/g) || []).length, 1);
+    assert.doesNotMatch(sent[0].html, /<h1>/);
+    assert.doesNotMatch(sent[0].html, /\{\s*&quot;guard&quot;/);
+  } finally { globalThis.fetch = previous; }
+});
+
+test("admin ops alert rejects unstructured or untrusted links", async () => {
+  const env = { ADMIN_KEY: "secret", ALERT_STATE: kv() };
+  const observedAt = "2026-08-31T12:00:00.000Z";
+  const malformed = await handleAdminOpsAlert(new Request("https://w/admin/ops-alert", {
+    method: "POST", headers: { authorization: "Bearer secret", "content-type": "application/json" },
+    body: JSON.stringify({ guard: "g", text: "raw caller text" }),
+  }), env);
+  assert.equal(malformed.status, 400);
+  const badLink = await handleAdminOpsAlert(new Request("https://w/admin/ops-alert", {
+    method: "POST", headers: { authorization: "Bearer secret", "content-type": "application/json" },
+    body: JSON.stringify({ guard: "g", stage: "s", findings: ["failed"], first_seen: observedAt, last_seen: observedAt, workflow_run_url: "https://evil.invalid/run", receipt_url: "https://evil.invalid/raw" }),
+  }), env);
+  assert.equal(badLink.status, 400);
+});
+
+test("private ops-health endpoint emits a sanitized no-store envelope with unavailable states", async () => {
+  const response = await handleAdminOpsHealth(
+    new Request("https://w/admin/reliability/ops-health", { headers: { authorization: "Bearer secret" } }),
+    { ADMIN_KEY: "secret", ALERT_STATE: kv() },
+    { now: new Date("2026-08-31T12:00:00Z") },
+  );
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("cache-control"), "private, no-store");
+  const body = await response.json();
+  assert.equal(body.schema, "cityscroll.ops-health-sanitized.v1");
+  assert.equal(body.freshness.status, "unavailable");
+  assert.deepEqual(body.alerts.items, []);
+  assert.doesNotMatch(JSON.stringify(body), /recipient|authorization|token|@[a-z0-9.-]+/i);
 });
 
 test("watermark staleness stays quiet when consecutive sends advanced lastsent", () => {
