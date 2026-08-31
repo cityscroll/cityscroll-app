@@ -177,14 +177,19 @@ export function scanUnclassifiedFixture(documents, manifestEntries = []) {
 
 function stable(value) { return `${JSON.stringify(value, null, 2)}\n`; }
 function main() {
+  if (process.argv.includes("--check")) {
+    if (!existsSync(OUTPUT)) throw new Error(`missing classification manifest: ${relative(ROOT, OUTPUT)}`);
+    const committed = JSON.parse(readFileSync(OUTPUT, "utf8"));
+    const committedFindings = validateManifest(committed);
+    if (committedFindings.length) throw new Error(committedFindings.join("\n"));
+    console.log(`repository control-plane manifest: immutable RCP-00 input with ${committed.entries.length} entries; frontier ${committed.inspection.frontier_enumerated_count} enumerated vs ${committed.inspection.frontier_declared_count} declared; ${committed.inspection.private_uri_document_count} private-URI documents`);
+    return;
+  }
   const expected = buildManifest();
   const findings = validateManifest(expected);
   if (findings.length) throw new Error(findings.join("\n"));
   if (process.argv.includes("--write")) {
     writeFileSync(OUTPUT, stable(expected));
-  } else if (process.argv.includes("--check")) {
-    if (!existsSync(OUTPUT) || readFileSync(OUTPUT, "utf8") !== stable(expected)) throw new Error(`stale classification manifest: run node ${relative(ROOT, fileURLToPath(import.meta.url))} --write`);
-    console.log(`repository control-plane manifest: ${expected.entries.length} entries; frontier ${expected.inspection.frontier_enumerated_count} enumerated vs ${expected.inspection.frontier_declared_count} declared; ${expected.inspection.private_uri_document_count} private-URI documents`);
   }
 }
 
