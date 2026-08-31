@@ -28,6 +28,14 @@
   `test/code_provision_history.test.mjs` plus
   `test/fixtures/code_provision_history.json`.
 
+- **Follow provision watches (LL-P1C):** `site/code_provision_watch_scope.mjs` serializes
+  one stable `provision_id` through the existing Following path; `site/code_provision_watch.mjs`
+  projects proposed, passed/enacted, and effective events plus optional exact rule
+  citations. Wording and current-version changes do not rewrite the watch. Missing,
+  conditional, stale, or inexact relations stay unsupported/unknown and never silently
+  broaden to an agency, topic, or all-legislation watch. Proof:
+  `test/code_provision_watch.test.mjs` plus `test/fixtures/code_provision_watch.json`.
+
 - **Rulemaking petition handoff:** `site/rules_petition.mjs` is the source-qualified
   official NYC Rules petition envelope. Eligible agency pages expose “Petition this
   agency”; effective-rule case files expose “How to petition [agency]”. Missing form

@@ -12,6 +12,10 @@ import {
 } from "./property_commercial.mjs";
 import { obligationDigestRowsForAgency } from "../../../site/agency_obligations.mjs";
 import {
+  canonicalCodeProvisionId,
+  provisionWatchDigestRows,
+} from "../../../site/code_provision_watch.mjs";
+import {
   mandatePredictionDigestRowsForAgency,
   mergeObligationDigestWithPredictions,
 } from "../../../site/mandate_prediction_alerts.mjs";
@@ -53,6 +57,7 @@ export const STAFFING_EXAMS = "https://cityscroll.org/data/staffing_exams.json";
 const DISTRICT_WEEKLY_DIGESTS = "https://cityscroll.org/data/district_weekly_digests.json";
 const DISTRICT_ACTIVITY = "https://cityscroll.org/data/district_activity.json";
 const AGENCY_OBLIGATIONS = "https://cityscroll.org/data/agency_obligations_lookup.json";
+const CODE_PROVISION_WATCH_EVENTS = "https://cityscroll.org/data/code_provision_watch_events.json";
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
 // type_of_notice_description + address/method feed digest action rails (handoffs).
@@ -318,6 +323,30 @@ export function compileSub(sub, todayISO) {
         const rows = Array.isArray(record?.items) ? record.items.filter((row) => row?.district_item_id) : [];
         return record?.total === rows.length ? rows : [];
       },
+    };
+  }
+
+  if (sub.lens === "legal_code") {
+    const provisionId = canonicalCodeProvisionId(f.provision_id);
+    if (!provisionId) return null;
+    const extra = Object.keys(f).filter((key) => {
+      if (key === "provision_id") return false;
+      const value = f[key];
+      if (value == null || value === "" || value === false) return false;
+      if (Array.isArray(value) && value.length === 0) return false;
+      return true;
+    });
+    if (extra.length) return null;
+    return {
+      url: CODE_PROVISION_WATCH_EVENTS,
+      params: {},
+      idField: "alert_id",
+      kind: "legal_code",
+      transformRows: (payload) => provisionWatchDigestRows(payload, {
+        provision_id: provisionId,
+        as_of: todayISO,
+        confirmed: true,
+      }),
     };
   }
 
