@@ -1,11 +1,31 @@
 /**
  * Resident renderer for a bounded Land authority summary.
- * Accepts a precomputed summary only — it does not resolve procedure or fetch.
+ * Accepts a precomputed summary only — it does not resolve procedure or fetch
+ * a publisher. Profile, phase, geography, and published-opportunity facts stay
+ * in separate DOM/data structures.
  */
 
 import { communityBoardPageHref } from "./community_board_links.mjs";
+import { calendarNativeSubscriptionUrl } from "./calendar_subscription.mjs";
+import {
+  projectCalendarFeedUrl,
+  projectCalendarFollowHref,
+} from "./project_calendar.mjs";
 
 export const LAND_AUTHORITY_SUMMARY_URL = "data/land_authority_summary.json";
+export const LAND_AUTHORITY_PANEL_HEADING = "Where this stands";
+
+export const GEOGRAPHY_LEGAL_BASIS = Object.freeze({
+  citation: "NYC Charter § 196",
+  source_url: "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-824",
+});
+
+const ADVISORY_BODY_PREFIXES = Object.freeze([
+  "community-board:",
+  "borough-president:",
+  "borough-board:",
+]);
+
 let landAuthorityLookup = null;
 
 export function rememberLandAuthoritySummaries(payload) {
@@ -43,6 +63,13 @@ function clean(value) {
   return text || null;
 }
 
+function applyVars(text, vars) {
+  if (!vars) return text;
+  return String(text).replace(/\{(\w+)\}/g, (match, name) => (
+    Object.hasOwn(vars, name) ? String(vars[name] ?? "") : match
+  ));
+}
+
 function actorHref(bodyRef) {
   const ref = clean(bodyRef);
   if (!ref) return null;
@@ -60,7 +87,7 @@ function actorLabel(bodyRef, translate) {
     const borough = board[1].replace(/-/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase());
     return `${borough} Community Board ${Number(board[2])}`;
   }
-  if (ref === "agency:id:city-council") return translate("land_phase_city_council");
+  if (ref === "agency:id:city-council") return translate("land_authority_actor_council");
   if (ref === "agency:id:city-planning-commission") return translate("land_phase_cpc");
   if (ref === "agency:id:city-planning") return translate("land_authority_actor_dcp");
   if (ref === "agency:id:mayor") return translate("land_phase_mayoral_appeals");
@@ -75,6 +102,13 @@ function actorLabel(bodyRef, translate) {
     return `${borough} Borough Board`;
   }
   return ref || translate("land_authority_unknown");
+}
+
+function actorStandLabel(bodyRef, translate) {
+  const ref = clean(bodyRef) || "";
+  if (ref === "agency:id:city-council") return translate("land_authority_actor_short_council");
+  if (ref === "agency:id:city-planning-commission") return translate("land_authority_actor_short_cpc");
+  return actorLabel(bodyRef, translate);
 }
 
 function linkedActor(bodyRef, { t, esc }) {
@@ -94,6 +128,11 @@ function roleKey(role) {
   return `land_authority_role_${role}`;
 }
 
+function roleHereKey(role) {
+  if (!role) return null;
+  return `land_authority_role_here_${role}`;
+}
+
 function stageLabel(stage, translate) {
   if (!stage || stage.status === "unknown" || !stage.spine_phase_id) {
     return translate("land_authority_unknown");
@@ -104,8 +143,10 @@ function stageLabel(stage, translate) {
 }
 
 function publishedLabel(published, translate, esc) {
-  if (!published || published.status === "unknown") return esc(translate("land_authority_unknown"));
-  if (published.status === "none") return esc(translate("land_authority_none_published"));
+  if (!published || published.status === "unknown") {
+    return esc(translate("land_authority_not_found"));
+  }
+  if (published.status === "none") return esc(translate("land_authority_not_found"));
   const date = published.date ? ` (${esc(published.date)})` : "";
   const label = published.label || published.representing || translate("land_future_hearing");
   return `${esc(label)}${date}`;
@@ -117,22 +158,128 @@ function observedStatusCopy(observed, translate) {
   return null;
 }
 
+function isAdvisoryBody(bodyRef) {
+  const ref = clean(bodyRef) || "";
+  return ADVISORY_BODY_PREFIXES.some((prefix) => ref.startsWith(prefix));
+}
+
+function whyKind(summary) {
+  if (summary?.status === "unknown") return "unknown";
+  const refs = Array.isArray(summary?.current_actor_refs) ? summary.current_actor_refs : [];
+  if (refs.some((ref) => String(ref).startsWith("community-board:"))) return "community_board";
+  if (refs.some((ref) => String(ref).startsWith("borough-board:"))) return "borough_board";
+  if (refs.some((ref) => String(ref).startsWith("borough-president:"))) return "borough_president";
+  return "profile";
+}
+
+function whyCopy(summary, translate) {
+  if (summary?.status === "unknown") {
+    const reasonKey = summary.reason ? `land_authority_reason_${summary.reason}` : "land_authority_why_unknown";
+    const labeled = translate(reasonKey);
+    return labeled === reasonKey ? translate("land_authority_why_unknown") : labeled;
+  }
+  const kind = whyKind(summary);
+  if (kind === "community_board") return translate("land_authority_why_community_board");
+  if (kind === "borough_board") return translate("land_authority_why_borough_board");
+  if (kind === "borough_president") return translate("land_authority_why_borough_president");
+  return translate("land_authority_why_profile");
+}
+
+function whyProvenanceKind(summary) {
+  const kind = whyKind(summary);
+  if (kind === "unknown") return "unknown";
+  if (kind === "profile") return "profile";
+  return "geography";
+}
+
+export function profileLegalBasis(summary) {
+  const profile = summary?.source_basis?.profile || {};
+  const basis = profile.legal_basis && typeof profile.legal_basis === "object"
+    ? profile.legal_basis
+    : null;
+  const procedureId = profile.procedure_id || summary?.procedure_id || null;
+  const stageId = profile.stage_id || summary?.current_stage?.stage_id || null;
+  if (!basis && !procedureId) return null;
+  return {
+    citation: basis?.citation || null,
+    source_url: basis?.source_url || null,
+    registry_version: profile.registry_version || null,
+    procedure_id: procedureId,
+    stage_id: stageId,
+  };
+}
+
+export function landAuthorityPanelProjection(summary) {
+  if (!summary || summary.schema !== "cityscroll.land_authority_summary.v1") return null;
+  const published = summary.published_next_opportunity || {};
+  return {
+    project_id: summary.project_id || null,
+    status: summary.status || "unknown",
+    reason: summary.reason || null,
+    current_role: summary.current_role || null,
+    current_stage_id: summary.current_stage?.stage_id || null,
+    expected_next_stage_id: summary.expected_next_stage?.stage_id || null,
+    published_next_status: published.status || "unknown",
+    published_next_source_id: published.source_id || null,
+    observed_status: summary.observed?.status || "no_observation",
+    why_kind: whyKind(summary),
+    why_provenance: whyProvenanceKind(summary),
+    profile_citation: profileLegalBasis(summary),
+    phase_milestone: summary.source_basis?.phase?.current_milestone || null,
+    geography_status: summary.source_basis?.geography?.status || null,
+    publisher_checked: summary.source_basis?.publisher?.checked === true
+      || published.status === "none"
+      || published.status === "published",
+  };
+}
+
+function sourceLink(href, label, esc) {
+  if (!href || !label) return esc(label || "");
+  return `<a href="${esc(href)}" rel="noopener noreferrer" target="_blank">${esc(label)}</a>`;
+}
+
+function panelActionsHTML(projectId, esc, translate) {
+  if (!projectId) return "";
+  const followUrl = projectCalendarFollowHref(projectId);
+  const feedUrl = projectCalendarFeedUrl(projectId);
+  const webcalUrl = calendarNativeSubscriptionUrl(feedUrl);
+  const bits = [];
+  if (followUrl) {
+    bits.push(`<a class="act project-follow-btn" data-land-authority-follow="1" data-project-follow="project" href="${esc(followUrl)}">${esc(translate("land_authority_follow_next"))}</a>`);
+  }
+  if (webcalUrl) {
+    bits.push(`<a class="act calendar-subscribe-btn" data-land-authority-calendar="1" data-calendar-subscription="scope" data-calendar-subscription-feed="${esc(feedUrl)}" data-calendar-subscription-webcal="${esc(webcalUrl)}" href="${esc(webcalUrl)}">${esc(translate("land_authority_add_calendar"))}</a>`);
+  }
+  if (!bits.length) return "";
+  return `<div class="land-authority-actions" data-land-authority-actions="1">${bits.join("")}</div>`;
+}
+
 export function landAuthoritySummaryHTML(summary, { t, escape } = {}) {
   if (!summary || summary.schema !== "cityscroll.land_authority_summary.v1") return "";
-  const translate = typeof t === "function" ? t : (key) => key;
+  const translate = typeof t === "function"
+    ? (key, vars) => applyVars(t(key, vars), vars)
+    : (key) => key;
   const esc = typeof escape === "function" ? escape : (value) => String(value ?? "");
   const unknown = translate("land_authority_unknown");
   const actors = Array.isArray(summary.current_actor_refs) ? summary.current_actor_refs : [];
   const actorHTML = actors.length
     ? actors.map((ref) => linkedActor(ref, { t: translate, esc })).join(", ")
     : esc(unknown);
+  const standActor = actors.length ? actorStandLabel(actors[0], translate) : unknown;
   const role = summary.current_role
     ? translate(roleKey(summary.current_role))
     : unknown;
+  const roleHere = summary.current_role
+    ? translate(roleHereKey(summary.current_role))
+    : unknown;
+  const resolvedRole = role === roleKey(summary.current_role) ? summary.current_role : role;
+  const resolvedRoleHere = roleHere === roleHereKey(summary.current_role)
+    ? resolvedRole
+    : roleHere;
   const effect = summary.effect || unknown;
   const expected = summary.expected_next_stage?.stage_id
     ? stageLabel(summary.expected_next_stage, translate)
-    : unknown;
+    : (summary.status === "unknown" ? unknown : translate("land_authority_no_expected"));
   const published = publishedLabel(summary.published_next_opportunity, translate, esc);
   const observed = summary.observed || {};
   const recs = Array.isArray(observed.recommendations) ? observed.recommendations : [];
@@ -148,27 +295,69 @@ export function landAuthoritySummaryHTML(summary, { t, escape } = {}) {
       const body = row.body_ref
         ? linkedActor(row.body_ref, { t: translate, esc })
         : esc(row.representing || unknown);
-      return `<li data-land-authority-observed="1" data-body-ref="${esc(row.body_ref || "")}" data-source-id="${esc(row.source_id || "")}">${body}: ${esc(row.value || unknown)}${tally}</li>`;
+      const advisory = isAdvisoryBody(row.body_ref);
+      const advisoryBit = advisory
+        ? ` <span class="land-authority-advisory" data-land-authority-advisory="1">${esc(translate("land_authority_advisory"))}</span>`
+        : "";
+      return `<li data-land-authority-observed="1" data-land-authority-observed-kind="${advisory ? "advisory" : "observed"}" data-body-ref="${esc(row.body_ref || "")}" data-source-id="${esc(row.source_id || "")}">${body}: ${esc(row.value || unknown)}${tally}${advisoryBit}</li>`;
     }).join("")
     : observedCopy
       ? `<li data-land-authority-observed="${esc(observed.status)}">${esc(observedCopy)}</li>`
       : "";
   const affected = Array.isArray(summary.affected_actor_refs) ? summary.affected_actor_refs : [];
   const affectedHTML = affected.map((row) => (
-    `<li data-land-authority-affected="1" data-role="${esc(row.role || "")}">${linkedActor(row.body_ref, { t: translate, esc })}</li>`
+    `<li data-land-authority-affected="1" data-role="${esc(row.role || "")}" data-land-authority-provenance="geography">${linkedActor(row.body_ref, { t: translate, esc })}</li>`
   )).join("");
+  const why = whyCopy(summary, translate);
+  const whyKindValue = whyKind(summary);
+  const whyProvenance = whyProvenanceKind(summary);
+  const stage = stageLabel(summary.current_stage, translate);
+  const stand = summary.status === "unknown"
+    ? translate("land_authority_stand_unknown")
+    : translate("land_authority_stand", {
+      stage,
+      actor: standActor,
+      role: resolvedRoleHere,
+      why,
+    });
+  const citation = profileLegalBasis(summary);
+  const phaseMilestone = summary.source_basis?.phase?.current_milestone || "";
+  const publisher = summary.published_next_opportunity || {};
+  const publisherCopy = publisher.status === "published"
+    ? `${publisher.label || publisher.representing || ""} ${publisher.date || ""}`.trim()
+    : translate("land_authority_not_found");
+  const profileCitation = citation?.citation
+    ? sourceLink(citation.source_url, citation.citation, esc)
+    : esc(translate("land_authority_not_found"));
+  const geographyCitation = sourceLink(
+    GEOGRAPHY_LEGAL_BASIS.source_url,
+    GEOGRAPHY_LEGAL_BASIS.citation,
+    esc,
+  );
 
-  return `<section class="land-authority-summary" data-land-authority-summary="1" data-land-authority-summary-first-paint="1" data-status="${esc(summary.status)}" data-procedure-id="${esc(summary.procedure_id || "")}" data-procedure-resolution="${esc(summary.procedure_resolution || "")}" data-reason="${esc(summary.reason || "")}">
-    <div class="land-authority-kicker">${esc(translate("land_authority_heading"))}</div>
+  return `<section class="land-authority-summary" id="land-authority-summary" data-land-authority-summary="1" data-land-authority-summary-first-paint="1" data-project-id="${esc(summary.project_id || "")}" data-status="${esc(summary.status)}" data-procedure-id="${esc(summary.procedure_id || "")}" data-procedure-resolution="${esc(summary.procedure_resolution || "")}" data-reason="${esc(summary.reason || "")}">
+    <h3 class="land-authority-kicker">${esc(translate("land_authority_heading"))}</h3>
+    <p class="land-authority-stand" data-land-authority-stand="1">${esc(stand)}</p>
     <dl class="land-authority-facts">
+      <div data-land-authority-provenance="phase"><dt>${esc(translate("land_authority_stage"))}</dt><dd data-land-authority-stage="${esc(summary.current_stage?.stage_id || "")}">${esc(stage)}</dd></div>
       <div><dt>${esc(translate("land_authority_actor"))}</dt><dd data-land-authority-actor="1">${actorHTML}</dd></div>
-      <div><dt>${esc(translate("land_authority_stage"))}</dt><dd data-land-authority-stage="${esc(summary.current_stage?.stage_id || "")}">${esc(stageLabel(summary.current_stage, translate))}</dd></div>
-      <div><dt>${esc(translate("land_authority_role"))}</dt><dd data-land-authority-role="${esc(summary.current_role || "")}">${esc(role === roleKey(summary.current_role) ? summary.current_role : role)}</dd></div>
-      <div><dt>${esc(translate("land_authority_effect"))}</dt><dd data-land-authority-effect="1">${esc(fieldValue(summary.status, summary.effect, unknown, (value) => value) === unknown ? unknown : effect)}</dd></div>
-      <div><dt>${esc(translate("land_authority_expected_next"))}</dt><dd data-land-authority-expected-next="${esc(summary.expected_next_stage?.stage_id || "")}">${esc(expected)}</dd></div>
-      <div><dt>${esc(translate("land_authority_published_next"))}</dt><dd data-land-authority-published-next="${esc(summary.published_next_opportunity?.status || "unknown")}" data-source-id="${esc(summary.published_next_opportunity?.source_id || "")}">${published}</dd></div>
+      <div data-land-authority-provenance="profile"><dt>${esc(translate("land_authority_role"))}</dt><dd data-land-authority-role="${esc(summary.current_role || "")}">${esc(resolvedRole)}</dd></div>
+      <div data-land-authority-provenance="profile"><dt>${esc(translate("land_authority_effect"))}</dt><dd data-land-authority-effect="1">${esc(fieldValue(summary.status, summary.effect, unknown, (value) => value) === unknown ? unknown : effect)}</dd></div>
+      <div data-land-authority-why-kind="${esc(whyKindValue)}" data-land-authority-provenance="${esc(whyProvenance)}"><dt>${esc(translate("land_authority_why"))}</dt><dd data-land-authority-why="1">${esc(why)}</dd></div>
+      <div data-land-authority-provenance="profile"><dt>${esc(translate("land_authority_expected_next"))}</dt><dd data-land-authority-expected-next="${esc(summary.expected_next_stage?.stage_id || "")}">${esc(expected)}</dd></div>
+      <div data-land-authority-provenance="publisher"><dt>${esc(translate("land_authority_published_next"))}</dt><dd data-land-authority-published-next="${esc(publisher.status || "unknown")}" data-source-id="${esc(publisher.source_id || "")}">${published}</dd></div>
     </dl>
-    ${affectedHTML ? `<div class="land-authority-affected"><div class="land-authority-subhead">${esc(translate("land_authority_affected"))}</div><ul>${affectedHTML}</ul></div>` : ""}
+    <div class="land-authority-provenance" data-land-authority-sources="1">
+      <div class="land-authority-subhead">${esc(translate("land_authority_provenance"))}</div>
+      <ul>
+        <li data-land-authority-provenance="profile" data-registry-version="${esc(citation?.registry_version || "")}" data-procedure-id="${esc(citation?.procedure_id || "")}">${esc(translate("land_authority_provenance_profile"))}: ${profileCitation}</li>
+        <li data-land-authority-provenance="phase" data-source-field="current_milestone">${esc(translate("land_authority_provenance_phase"))}: ${esc(phaseMilestone || translate("land_authority_not_found"))}</li>
+        <li data-land-authority-provenance="geography" data-source-type="affected_review_body_for">${esc(translate("land_authority_provenance_geography"))}: ${geographyCitation}</li>
+        <li data-land-authority-provenance="publisher" data-source-id="${esc(publisher.source_id || "")}">${esc(translate("land_authority_provenance_publisher"))}: ${esc(publisherCopy)}</li>
+      </ul>
+    </div>
+    ${panelActionsHTML(summary.project_id, esc, translate)}
+    ${affectedHTML ? `<div class="land-authority-affected" data-land-authority-provenance="geography"><div class="land-authority-subhead">${esc(translate("land_authority_affected"))}</div><ul>${affectedHTML}</ul></div>` : ""}
     ${observedHTML ? `<div class="land-authority-observed"><div class="land-authority-subhead">${esc(translate("land_authority_observed"))}</div><ul>${observedHTML}</ul></div>` : ""}
   </section>`;
 }
