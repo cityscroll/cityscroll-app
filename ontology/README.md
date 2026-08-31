@@ -20,8 +20,9 @@ cards only when metrics show a real gap.
 | `grounding.mjs` | Grounding states, validation, receipt metrics |
 | `load.mjs` / `sync.mjs` / `live_inventory.mjs` | Load registry; import live allowlists; fail on drift |
 | `flywheel.mjs` | Pure intelligence receipt + enrichment card planner (ontology-enrichment dimension) |
+| `action_path_coverage.mjs` | Grounded Action Path coverage ratios and diagnostic classes |
 | `flywheel_run.mjs` | Multi-dimension orchestrator (all dimensions → reconciled queue) |
-| `dimensions/` | Evaluators: data-integrity (**population not-published-rate** core), readability, ontology-enrichment, coverage, cross-source-consistency |
+| `dimensions/` | Evaluators: data-integrity (**population not-published-rate** core), readability, ontology-enrichment, coverage, cross-source-consistency, ontology-coherence, action-path |
 | `dimensions/not_published_rate.mjs` | Pure rate + classification for “city does not publish X” credibility audit |
 | `card_queue.mjs` | Rank, dedupe, ledger reconcile (idempotent emit) |
 | `engineering_lessons.mjs` + `engineering-lessons.md` | Recurring-class extraction |

@@ -21,6 +21,10 @@ import {
   evaluateOntologyCoherence,
   DIMENSION_ID as ONTOLOGY_COHERENCE,
 } from "./ontology_coherence.mjs";
+import {
+  evaluateActionPathCoverage,
+  DIMENSION_ID as ACTION_PATH,
+} from "./action_path_coverage.mjs";
 
 export { DIMENSION_IDS, MULTI_FLYWHEEL_POLICY_VERSION, MULTI_CARD_SCHEMA, makeDimensionCard, rankCards } from "./shared.mjs";
 
@@ -33,6 +37,7 @@ export const DIMENSION_EVALUATORS = Object.freeze({
   [LOCATION_RESOLUTION]: evaluateLocationResolution,
   [SURFACE_LOAD]: evaluateSurfaceLoad,
   [ONTOLOGY_COHERENCE]: evaluateOntologyCoherence,
+  [ACTION_PATH]: evaluateActionPathCoverage,
 });
 
 export function getEvaluator(dimensionId) {

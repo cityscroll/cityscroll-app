@@ -1,0 +1,450 @@
+{
+  "schema": "cityscroll.action_path_coverage.v1",
+  "method": "action_path_coverage_v1",
+  "version": 1,
+  "dimension": "action-path",
+  "stopping_rule": true,
+  "reward_button_density": false,
+  "unknown_as_zero": false,
+  "metrics": {
+    "actions_sampled": {
+      "value": 16,
+      "basis": "measured"
+    },
+    "actions_with_grounded_target": {
+      "value": 14,
+      "basis": "measured"
+    },
+    "actions_with_grounded_continuation": {
+      "value": 4,
+      "basis": "measured"
+    },
+    "continuations_proposed": {
+      "value": 7,
+      "basis": "measured"
+    },
+    "continuations_exactly_replayable": {
+      "value": 4,
+      "basis": "measured"
+    },
+    "entities_sampled": {
+      "value": 16,
+      "basis": "measured"
+    },
+    "entities_with_current_action": {
+      "value": 10,
+      "basis": "measured"
+    },
+    "application_ctas": {
+      "value": 1,
+      "basis": "measured"
+    },
+    "current_application_ctas_with_current_source": {
+      "value": 1,
+      "basis": "measured"
+    },
+    "cross_board_inference_violations": {
+      "value": 0,
+      "basis": "measured"
+    },
+    "grounded_target_rate": {
+      "value": 0.875,
+      "basis": "derived"
+    },
+    "grounded_continuation_rate": {
+      "value": 0.25,
+      "basis": "derived"
+    },
+    "exact_replay_rate": {
+      "value": 0.571429,
+      "basis": "derived"
+    },
+    "current_action_rate": {
+      "value": 0.625,
+      "basis": "derived"
+    },
+    "current_application_cta_rate": {
+      "value": 1,
+      "basis": "derived"
+    }
+  },
+  "classifications": {
+    "no_action": [
+      "council-unavailable-action",
+      "cb-manhattan-closed-apply",
+      "cb-bronx-no-apply",
+      "no-action-archive"
+    ],
+    "action_only": [
+      "council-action-only",
+      "council-unmatched-live",
+      "cb-current-application"
+    ],
+    "target_unknown": [
+      "target-unknown-comment"
+    ],
+    "continuation_unknown": [
+      "council-multiple-candidates"
+    ],
+    "continuation_not_replayable": [
+      "council-single-continuation",
+      "council-unsupported-lossy"
+    ],
+    "grounded_path": [
+      "dot-t1-before-hearing",
+      "dot-t2-after-adoption",
+      "dot-t3-after-effective"
+    ],
+    "stale_opportunity": [
+      "dot-t1-after-comment-close",
+      "cb-stale-application"
+    ]
+  },
+  "rows": [
+    {
+      "id": "council-action-only",
+      "family": "council",
+      "entity_ref": "notice:20260827001",
+      "as_of": "2026-09-01",
+      "classification": "action_only",
+      "action_type": "attend",
+      "target_ref": "meeting:city_record:20260827001",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "council-action-only"
+        }
+      ]
+    },
+    {
+      "id": "council-single-continuation",
+      "family": "council",
+      "entity_ref": "matter:79200",
+      "as_of": "2026-09-10",
+      "classification": "continuation_not_replayable",
+      "action_type": "attend",
+      "target_ref": "meeting:city_record:20260707022",
+      "continuation_ref": "matter:79200",
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "council-single-continuation"
+        }
+      ]
+    },
+    {
+      "id": "council-multiple-candidates",
+      "family": "council",
+      "entity_ref": "meeting:city_record:20260707021",
+      "as_of": null,
+      "classification": "continuation_unknown",
+      "action_type": "attend",
+      "target_ref": "meeting:city_record:20260707021",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "council-multiple-candidates"
+        }
+      ]
+    },
+    {
+      "id": "council-unsupported-lossy",
+      "family": "council",
+      "entity_ref": "meeting:city_record:20260707022",
+      "as_of": null,
+      "classification": "continuation_not_replayable",
+      "action_type": "attend",
+      "target_ref": "meeting:city_record:20260707022",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "council-unsupported-lossy"
+        }
+      ]
+    },
+    {
+      "id": "council-unavailable-action",
+      "family": "council",
+      "entity_ref": "notice:20260827002",
+      "as_of": "2026-08-01",
+      "classification": "no_action",
+      "action_type": "comment",
+      "target_ref": "notice:20260827002",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "council-unavailable-action"
+        }
+      ]
+    },
+    {
+      "id": "council-unmatched-live",
+      "family": "council",
+      "entity_ref": "meeting:city_record:20260728026",
+      "as_of": null,
+      "classification": "action_only",
+      "action_type": "document",
+      "target_ref": "meeting:city_record:20260728026",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "site/data/meeting_outcomes_snapshot.json",
+          "locator": "20260728026"
+        },
+        {
+          "kind": "source",
+          "ref": "site/council_hearing_action_path.mjs"
+        }
+      ]
+    },
+    {
+      "id": "dot-t1-before-hearing",
+      "family": "rules",
+      "entity_ref": "rulemaking:dot:bicycle-owned-racks",
+      "as_of": "2026-04-01",
+      "classification": "grounded_path",
+      "action_type": "comment",
+      "target_ref": "notice:20260317026",
+      "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+      "exact_replay": true,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "dot-t1-before-hearing"
+        }
+      ]
+    },
+    {
+      "id": "dot-t2-after-adoption",
+      "family": "rules",
+      "entity_ref": "rulemaking:dot:bicycle-owned-racks",
+      "as_of": "2026-07-20",
+      "classification": "grounded_path",
+      "action_type": "document",
+      "target_ref": "notice:20260706041",
+      "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+      "exact_replay": true,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "dot-t2-after-adoption"
+        }
+      ]
+    },
+    {
+      "id": "dot-t3-after-effective",
+      "family": "rules",
+      "entity_ref": "rulemaking:dot:bicycle-owned-racks",
+      "as_of": "2026-08-20",
+      "classification": "grounded_path",
+      "action_type": "document",
+      "target_ref": "notice:20260706041",
+      "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+      "exact_replay": true,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "dot-t3-after-effective"
+        }
+      ]
+    },
+    {
+      "id": "dot-t1-after-comment-close",
+      "family": "rules",
+      "entity_ref": "rulemaking:dot:bicycle-owned-racks",
+      "as_of": "2026-08-20T00:00:00.000Z",
+      "classification": "stale_opportunity",
+      "action_type": "comment",
+      "target_ref": "notice:20260317026",
+      "continuation_ref": "rulemaking:dot:bicycle-owned-racks",
+      "exact_replay": true,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "test/fixtures/action_path_v0.json",
+          "locator": "dot-t1-after-comment-close"
+        }
+      ]
+    },
+    {
+      "id": "cb-manhattan-closed-apply",
+      "family": "community_board",
+      "entity_ref": "community-board:manhattan-cb-02",
+      "as_of": "2026-08-27T00:00:00.000Z",
+      "classification": "no_action",
+      "action_type": "apply_full_board_membership",
+      "target_ref": "community-board:manhattan-cb-02",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "site/data/community_board_bylaws.json",
+          "locator": "manhattan-cb-02"
+        },
+        {
+          "kind": "test",
+          "ref": "test/community_board_participation.test.mjs"
+        }
+      ]
+    },
+    {
+      "id": "cb-bronx-no-apply",
+      "family": "community_board",
+      "entity_ref": "community-board:bronx-cb-02",
+      "as_of": "2026-08-27T00:00:00.000Z",
+      "classification": "no_action",
+      "action_type": "apply_full_board_membership",
+      "target_ref": "community-board:bronx-cb-02",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "site/data/community_board_bylaws.json",
+          "locator": "bronx-cb-02"
+        },
+        {
+          "kind": "test",
+          "ref": "test/community_board_participation.test.mjs"
+        }
+      ]
+    },
+    {
+      "id": "cb-current-application",
+      "family": "community_board",
+      "entity_ref": "community-board:manhattan-cb-06",
+      "as_of": "2026-08-27T00:00:00.000Z",
+      "classification": "action_only",
+      "action_type": "apply_public_committee_membership",
+      "target_ref": "community-board:manhattan-cb-06",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": true,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "ontology/fixtures/dimensions/action_path_coverage.json",
+          "locator": "cb-current-application"
+        }
+      ]
+    },
+    {
+      "id": "cb-stale-application",
+      "family": "community_board",
+      "entity_ref": "community-board:queens-cb-02",
+      "as_of": "2026-08-27T00:00:00.000Z",
+      "classification": "stale_opportunity",
+      "action_type": "apply_public_committee_membership",
+      "target_ref": "community-board:queens-cb-02",
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "ontology/fixtures/dimensions/action_path_coverage.json",
+          "locator": "cb-stale-application"
+        }
+      ]
+    },
+    {
+      "id": "no-action-archive",
+      "family": "negative",
+      "entity_ref": "notice:20200101001",
+      "as_of": "2026-08-27T00:00:00.000Z",
+      "classification": "no_action",
+      "action_type": null,
+      "target_ref": null,
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "ontology/fixtures/dimensions/action_path_coverage.json",
+          "locator": "no-action-archive"
+        }
+      ]
+    },
+    {
+      "id": "target-unknown-comment",
+      "family": "negative",
+      "entity_ref": "notice:20260801001",
+      "as_of": "2026-08-27T00:00:00.000Z",
+      "classification": "target_unknown",
+      "action_type": "comment",
+      "target_ref": null,
+      "continuation_ref": null,
+      "exact_replay": false,
+      "application_cta": false,
+      "cross_board_inference": false,
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "ontology/fixtures/dimensions/action_path_coverage.json",
+          "locator": "target-unknown-comment"
+        }
+      ]
+    }
+  ],
+  "gate": {
+    "cross_board_inference_violations": 0,
+    "broad_fallback": false,
+    "synthetic_action_reward": false,
+    "unknown_as_zero": false,
+    "reward_button_density": false
+  },
+  "generated_from": "ontology/fixtures/dimensions/action_path_coverage.json",
+  "exact_replay_family": "rules.request_ids",
+  "dot_bicycle_racks": {
+    "rulemaking_subject": "rulemaking:dot:bicycle-owned-racks",
+    "same_rulemaking": true
+  }
+}

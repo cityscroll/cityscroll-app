@@ -24,6 +24,7 @@ import {
   actionabilityInputFromSample,
   measureActionabilitySample,
 } from "./actionability_sample.mjs";
+import { collectActionPathCoverageRows } from "../tools/lib/action_path_coverage.mjs";
 import { createRequire } from "node:module";
 
 export { QUEUE_SCHEMA, MULTI_FLYWHEEL_POLICY_VERSION };
@@ -139,6 +140,7 @@ export function loadDefaultInputs(root, { mode = "fixture", surfaceLoadPath = nu
     cross_spine,
     cross_spine_bundles,
     actionability,
+    action_path_coverage_rows: collectActionPathCoverageRows(root),
   };
 }
 

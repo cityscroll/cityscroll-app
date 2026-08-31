@@ -10,14 +10,18 @@ and board surfaces lives in
 [`docs/evidence/civic-action-paths/before/characterization-receipt.md`](evidence/civic-action-paths/before/characterization-receipt.md).
 The machine generalization audit is
 [`docs/evidence/civic-action-paths/generalization-audit.json`](evidence/civic-action-paths/generalization-audit.json).
+Grounded coverage ratios and diagnostic classes are
+[`docs/evidence/civic-action-paths/action-path-coverage.json`](evidence/civic-action-paths/action-path-coverage.json).
 
 ## Current coverage boundary
 
 CAP-7 records whether an action exists, whether a natural continuation is
 grounded, whether that continuation is exactly replayable, and whether a
-follow-on card is warranted. Exact replay in force is the CAP-2
-`rules.request_ids` family. A document hash, a compiler field, or a count of
-rail buttons is not exact replay.
+follow-on card is warranted. CAP-8 measures those distinctions as ratios over
+retained Council, DOT rulemaking, and Community Board evidence, including
+legitimate no-action and stale-opportunity cases. Exact replay in force is the
+CAP-2 `rules.request_ids` family. A document hash, a compiler field, or a count
+of rail buttons is not exact replay and is not a coverage target.
 
 The required Rules canary is the real DOT City-Owned Bicycle Racks
 rulemaking: notice `20260317026` (proposal / T1 hearing and comment-open)
@@ -31,7 +35,10 @@ Refresh:
 ```text
 node tools/build_action_path_generalization_audit.mjs
 node tools/build_action_path_generalization_audit.mjs --check
+node tools/build_action_path_coverage.mjs
+node tools/build_action_path_coverage.mjs --check
 node --test test/action_path_generalization_audit.test.mjs \
+  test/action_path_coverage.test.mjs \
   test/action_path_v0.test.mjs \
   test/council_hearing_matter_continuation.test.mjs \
   test/community_board_participation.test.mjs

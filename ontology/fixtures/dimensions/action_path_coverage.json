@@ -1,0 +1,160 @@
+{
+  "schema": "cityscroll.action_path_coverage_sample.v1",
+  "as_of": "2026-08-27T00:00:00.000Z",
+  "note": "Curated Action Path coverage sample. Cases point at retained Council, DOT, and Community Board evidence plus explicit no-action, unknown-target, current-application, and stale-opportunity controls. This is not a button inventory.",
+  "cases": [
+    {
+      "id": "council-action-only",
+      "family": "council",
+      "from": "action_path_v0",
+      "key": "action_only"
+    },
+    {
+      "id": "council-single-continuation",
+      "family": "council",
+      "from": "action_path_v0",
+      "key": "single_continuation",
+      "replay": "matter"
+    },
+    {
+      "id": "council-multiple-candidates",
+      "family": "council",
+      "from": "action_path_v0",
+      "key": "multiple_candidates"
+    },
+    {
+      "id": "council-unsupported-lossy",
+      "family": "council",
+      "from": "action_path_v0",
+      "key": "unsupported_lossy"
+    },
+    {
+      "id": "council-unavailable-action",
+      "family": "council",
+      "from": "action_path_v0",
+      "key": "unavailable_action"
+    },
+    {
+      "id": "council-unmatched-live",
+      "family": "council",
+      "from": "council_hearing",
+      "request_id": "20260728026"
+    },
+    {
+      "id": "dot-t1-before-hearing",
+      "family": "rules",
+      "from": "action_path_v0",
+      "key": "dot_bicycle_racks.t1_before_hearing",
+      "replay": "dot"
+    },
+    {
+      "id": "dot-t2-after-adoption",
+      "family": "rules",
+      "from": "action_path_v0",
+      "key": "dot_bicycle_racks.t2_after_adoption",
+      "replay": "dot"
+    },
+    {
+      "id": "dot-t3-after-effective",
+      "family": "rules",
+      "from": "action_path_v0",
+      "key": "dot_bicycle_racks.t3_after_effective_date",
+      "replay": "dot"
+    },
+    {
+      "id": "dot-t1-after-comment-close",
+      "family": "rules",
+      "from": "action_path_v0",
+      "key": "dot_bicycle_racks.t1_before_hearing",
+      "replay": "dot",
+      "as_of": "2026-08-20T00:00:00.000Z",
+      "opportunity_claimed_current": true
+    },
+    {
+      "id": "cb-manhattan-closed-apply",
+      "family": "community_board",
+      "from": "community_board_path",
+      "board_id": "manhattan-cb-02",
+      "path_kind": "apply_full_board_membership"
+    },
+    {
+      "id": "cb-bronx-no-apply",
+      "family": "community_board",
+      "from": "community_board_path",
+      "board_id": "bronx-cb-02",
+      "path_kind": "apply_full_board_membership"
+    },
+    {
+      "id": "cb-current-application",
+      "family": "community_board",
+      "from": "application_source",
+      "board_id": "manhattan-cb-06",
+      "application_source": {
+        "id": "participation-source:fixture:manhattan-cb-06-open",
+        "participation_kind": "public_committee_membership",
+        "applies_to_board_ids": ["manhattan-cb-06"],
+        "application_status": "open",
+        "application_destination": "https://cbsix.org/get-involved/",
+        "observed_at": "2026-08-20T00:00:00.000Z",
+        "receipt": {
+          "status": "ok",
+          "observed_at": "2026-08-20T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "cb-stale-application",
+      "family": "community_board",
+      "from": "application_source",
+      "board_id": "queens-cb-02",
+      "opportunity_claimed_current": true,
+      "application_source": {
+        "id": "participation-source:fixture:queens-cb-02-stale",
+        "participation_kind": "public_committee_membership",
+        "applies_to_board_ids": ["queens-cb-02"],
+        "application_status": "open",
+        "application_destination": "https://forms.gle/RMhAwKYmjUXn1Vsh6",
+        "observed_at": "2025-01-01T00:00:00.000Z",
+        "receipt": {
+          "status": "ok",
+          "observed_at": "2025-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "id": "no-action-archive",
+      "family": "negative",
+      "from": "explicit",
+      "entity_ref": "notice:20200101001",
+      "action_present": false,
+      "action_available": false,
+      "target_status": "missing",
+      "continuation_status": "none",
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "ontology/fixtures/dimensions/action_path_coverage.json",
+          "locator": "no-action-archive"
+        }
+      ]
+    },
+    {
+      "id": "target-unknown-comment",
+      "family": "negative",
+      "from": "explicit",
+      "entity_ref": "notice:20260801001",
+      "action_present": true,
+      "action_available": true,
+      "action_type": "comment",
+      "target_status": "unknown",
+      "continuation_status": "none",
+      "evidence": [
+        {
+          "kind": "fixture",
+          "ref": "ontology/fixtures/dimensions/action_path_coverage.json",
+          "locator": "target-unknown-comment"
+        }
+      ]
+    }
+  ]
+}
