@@ -18,6 +18,16 @@
   `test/code_version_materialization.test.mjs` plus
   `test/fixtures/code_version_materialization.json`.
 
+- **Provision history and law-at-time-T (LL-P1B):** `site/code_provision_history.mjs` is the
+  validity-interval query and bidirectional law↔provision index over immutable CodeVersions.
+  `getProvisionAsOf` returns old text before an effective date, new text on or after it,
+  and an explicit repealed or redesignated state afterward; unknown validity stays unknown
+  and is never filled from observation time or current publisher text. REDESIGNATE keeps a
+  `redesignated_as` relation and “formerly …” copy without fabricating statutory text.
+  Shareable provision URLs use `?as_of=YYYY-MM-DD`. Proof:
+  `test/code_provision_history.test.mjs` plus
+  `test/fixtures/code_provision_history.json`.
+
 - **Rulemaking petition handoff:** `site/rules_petition.mjs` is the source-qualified
   official NYC Rules petition envelope. Eligible agency pages expose “Petition this
   agency”; effective-rule case files expose “How to petition [agency]”. Missing form

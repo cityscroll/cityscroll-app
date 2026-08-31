@@ -9,7 +9,7 @@ export const CODE_CHANGE_OPERATIONS = Object.freeze([
 ]);
 
 export const LEGAL_CHANGE_RELATIONS = Object.freeze([
-  "enacted_as", "contains", "targets", "changes", "proposes_change_to",
+  "enacted_as", "contains", "targets", "changes", "proposes_change_to", "redesignated_as",
 ]);
 
 const OPERATION_SET = new Set(CODE_CHANGE_OPERATIONS);
@@ -80,6 +80,25 @@ function materializationPatch(value = {}) {
     after_text: after,
     scope: text(patch.scope || patch.mode, 80),
     source: text(patch.source || patch.basis, 240),
+  });
+}
+
+function redesignationEnvelope(value = {}) {
+  const input = value.redesignation || value;
+  const formerLabel = text(input.former_label || input.formerly, 240);
+  const successorLabel = text(input.successor_label || input.as || input.redesignated_as, 240);
+  const formerCitation = text(input.former_citation, 240);
+  const successorCitation = text(input.successor_citation, 240);
+  const successorProvisionId = text(input.successor_provision_id || input.successor_id, 320);
+  if (!formerLabel && !successorLabel && !formerCitation && !successorCitation && !successorProvisionId) {
+    return null;
+  }
+  return immutable({
+    former_label: formerLabel,
+    former_citation: formerCitation,
+    successor_label: successorLabel,
+    successor_citation: successorCitation,
+    successor_provision_id: successorProvisionId,
   });
 }
 
@@ -169,6 +188,7 @@ export function codeChange(value = {}) {
     target,
     source: evidence,
     patch: materializationPatch(value),
+    redesignation: redesignationEnvelope(value.redesignation || value),
     change_basis: "source_stated",
     materialization_status: text(value.materialization_status, 40) || "unresolved",
     materialization_confidence: text(value.materialization_confidence, 40) || "unknown",
@@ -191,6 +211,18 @@ export function legalChangeGraph({ matter = null, local_law: lawInput = null, ch
     for (const change of normalizedChanges) {
       edges.push({ relation: "contains", from_ref: law.id, to_ref: change.id, state: "enacted" });
       edges.push({ relation: "targets", from_ref: change.id, to_ref: change.target.provision_id || null, target: change.target, state: "enacted" });
+      edges.push({ relation: "changes", from_ref: law.id, to_ref: change.target.provision_id || null, target: change.target, change_id: change.id, state: "enacted" });
+      if (change.operation === "redesignate" && change.redesignation?.successor_provision_id) {
+        edges.push({
+          relation: "redesignated_as",
+          from_ref: change.target.provision_id || null,
+          to_ref: change.redesignation.successor_provision_id,
+          former_label: change.redesignation.former_label,
+          successor_label: change.redesignation.successor_label,
+          change_id: change.id,
+          state: "enacted",
+        });
+      }
     }
   } else {
     for (const change of normalizedChanges) {

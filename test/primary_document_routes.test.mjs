@@ -852,6 +852,9 @@ test("Pages edge routing is a narrow waist and explicitly excludes the public St
   assert.ok(routes.include.includes("/vendors/*"));
   assert.ok(routes.include.includes("/officials/*"));
   assert.ok(routes.include.includes("/committees/*"));
+  // Without this include, Pages never invokes the worker for Administrative
+  // Code as-of documents and the route falls back to the SPA shell.
+  assert.ok(routes.include.includes("/administrative-code/*"));
   assert.ok(routes.include.includes("/browse/*"));
   // Without this include, Pages serves the static data-health file and the
   // visibility gate in pages_edge never runs.

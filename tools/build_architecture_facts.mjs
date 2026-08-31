@@ -561,10 +561,11 @@ function buildRuleVersionFacts() {
 function buildCodeVersionFacts() {
   const materializationPath = "site/code_version_materialization.mjs";
   const edgesPath = "site/legal_change_edges.mjs";
+  const historyPath = "site/code_provision_history.mjs";
   const pagePath = "site/admin_code.mjs";
   const materialization = text(materializationPath);
   return {
-    sources: [materializationPath, edgesPath, pagePath],
+    sources: [materializationPath, edgesPath, historyPath, pagePath],
     materialization: {
       path: materializationPath,
       schema: materialization.match(/export const CODE_VERSION_MATERIALIZATION_SCHEMA\s*=\s*["']([^"']+)["']/)?.[1] || null,
