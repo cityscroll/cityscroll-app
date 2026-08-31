@@ -9,6 +9,7 @@ import { LAND_ZAP_FRESHNESS_CANARIES } from "../../../warehouse/lib/land_zap_can
 import { stampLandRegulatoryEffect } from "../../../site/land_regulatory_effect.mjs";
 import { stampLandActionProcedureResolution } from "../../../site/land_action_procedure_resolution.mjs";
 import { stampAffectedReviewBodies } from "../../../site/land_affected_review_body.mjs";
+import { stampLandAuthoritySummary } from "../../../site/land_authority_summary.mjs";
 import communityBoardGeography from "../data/community_board_geography_lookup.json" with { type: "json" };
 import {
   stampZapEnvironmentalProjection,
@@ -81,13 +82,18 @@ export function shapeZapLookupRow(row, opts = {}) {
   out.regulatory_effect_confidence = stamped.regulatory_effect_confidence;
   out.regulatory_effect_basis = stamped.regulatory_effect_basis;
   const asOf = opts.asOf || opts.now || null;
-  return stampAffectedReviewBodies(stampLandActionProcedureResolution(stampZapEnvironmentalProjection(out, {
+  return stampLandAuthoritySummary(stampAffectedReviewBodies(stampLandActionProcedureResolution(stampZapEnvironmentalProjection(out, {
     asOf,
     cutoff: opts.cutoff || asOf,
     observedAt: opts.observedAt,
   }), { asOf, sourceVintage: asOf }), {
     asOf,
     geography: opts.geography || communityBoardGeography,
+  }), {
+    asOf,
+    geography: opts.geography || communityBoardGeography,
+    outcomes: opts.outcomes,
+    publishedOpportunities: opts.publishedOpportunities,
   });
 }
 

@@ -1917,6 +1917,15 @@ phase-spine inputs unchanged. Specimens: `2024M0244` mixed, `2025K0305` uniform,
   mixed/unknown procedure stay unresolved. Focused proof:
   `test/land_affected_review_body.test.mjs`.
 
+- **Land authority summary (LDP-05):** `site/land_authority_summary.mjs` materializes
+  a bounded Tier A `authority_summary` for Land first paint. Current actor, stage,
+  role, and effect stay source-backed and separate from expected next stage and a
+  published next opportunity; `next_procedural_body` is source-explicit and is
+  never copied from the profile successor. Mixed, stale, draft-only, and unresolved
+  inputs stay unknown or no-observation. Rebuild with
+  `node tools/build_land_authority_summary.mjs`; `--check` verifies the committed
+  artifact. Focused proof is `test/land_authority_summary.test.mjs`.
+
 ## Land/ZAP event spine
 
 `GET /zap-outcomes?id=` returns `record.spine`: a date-normalized rail joining ZAP API

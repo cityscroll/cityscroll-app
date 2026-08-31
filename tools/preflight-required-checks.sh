@@ -245,6 +245,7 @@ run_and_fail node tools/no_live_external_reads.mjs --check
 run_and_fail node tools/build_geocoder_address_index.mjs --check
 run_and_fail node tools/build_bbl_mappluto_centroids.mjs --check
 run_and_fail node tools/build_land_project_map_points.mjs --check
+run_and_fail node tools/build_land_authority_summary.mjs --check
 run_and_fail node tools/generate_source_docs.mjs --check
 run_and_fail node tools/build_capability_topology.mjs --check
 run_and_fail node tools/build_product_updates.mjs --check

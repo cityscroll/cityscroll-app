@@ -1,0 +1,61 @@
+{
+  "schema": "cityscroll.land_authority_summary.fixtures.v1",
+  "specimens": {
+    "council-2026Q0210": {
+      "project_id": "2026Q0210",
+      "expect": {
+        "status": "resolved",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "current_stage_id": "ulurp_197c.city_council_review",
+        "current_phase_id": "city_council",
+        "current_actor_refs": ["agency:id:city-council"],
+        "current_role": "conditional_decision_maker",
+        "affected_body_refs": [
+          "community-board:queens-cb-12",
+          "borough-president:queens"
+        ],
+        "observed_cb": "community-board:queens-cb-12",
+        "observed_value": "Favorable",
+        "published_next_status": "none"
+      }
+    },
+    "multi-cd-draft-2025K0305": {
+      "project_id": "2025K0305",
+      "expect": {
+        "status": "resolved",
+        "procedure_id": "ulurp_197c",
+        "procedure_resolution": "uniform",
+        "current_stage_id": "ulurp_197c.application_certification",
+        "current_phase_id": "pre_application",
+        "current_role": "administrative_certifier",
+        "affected_body_refs": [
+          "community-board:brooklyn-cb-11",
+          "community-board:brooklyn-cb-13",
+          "borough-president:brooklyn",
+          "borough-board:brooklyn"
+        ],
+        "observed_status": "draft_only",
+        "expected_next_stage_id": "ulurp_197c.community_board_review",
+        "published_next_status": "published",
+        "published_next_body": "agency:id:city-planning-commission"
+      }
+    },
+    "cpc-vs-observed-2025M0252": {
+      "project_id": "2025M0252",
+      "expect": {
+        "status": "resolved",
+        "procedure_id": "ulurp_197c",
+        "current_stage_id": "ulurp_197c.city_planning_commission_review",
+        "current_phase_id": "cpc",
+        "current_actor_refs": ["agency:id:city-planning-commission"],
+        "current_role": "decision_maker",
+        "observed_bodies": [
+          "community-board:manhattan-cb-05",
+          "borough-president:manhattan"
+        ],
+        "expected_next_stage_id": null
+      }
+    }
+  }
+}

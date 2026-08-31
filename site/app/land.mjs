@@ -57,6 +57,7 @@ import {
 } from "../report_issue.mjs";
 import { zoningHearingRowsForScope } from "../zoning_hearing_calendar.mjs";
 import { projectCalendarActionsHTML as projectCalendarActions } from "../project_calendar.mjs";
+import { attachAuth, authHTML, loadAuth } from "../land_authority_summary_view.mjs";
 
 /* ===================== LAND ===================== */
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
@@ -139,13 +140,10 @@ let landUpcomingHearingsPromise=null;
 let landProjectsSnapshotPromise=null,landBblSnapshotPromise=null,landBblCentroidSnapshotPromise=null,landMeetingsSnapshotPromise=null,landPropertySnapshotPromise=null;
 function loadLandDefaultSnapshot(){
   if(!landDefaultSnapshotPromise){
-    landDefaultSnapshotPromise=fetch(LAND_DEFAULT_SNAPSHOT_URL)
-      .then(r=>r.ok?r.json():null)
-      .then(snapshot=>{
-        seedLandOutcomeSnapshot(snapshot);
-        return snapshot;
-      })
-      .catch(()=>null);
+    landDefaultSnapshotPromise=Promise.all([
+      fetch(LAND_DEFAULT_SNAPSHOT_URL).then(r=>r.ok?r.json():null),
+      loadAuth(),
+    ]).then(([s,a])=>{ seedLandOutcomeSnapshot(s); return attachAuth(s,a); }).catch(()=>null);
   }
   return landDefaultSnapshotPromise;
 }
@@ -850,6 +848,7 @@ async function landSelect(i, el){
   if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   else html+=`<div class="scope" id="land-brief" hidden></div>`;
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
+  html+=authHTML(r.authority_summary,{t,escape:escUiHtml});
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   // Action rail first (what can I do now); utility controls stay secondary.
   html+=`<div id="land-actions" class="next-action-rail-host"></div>
