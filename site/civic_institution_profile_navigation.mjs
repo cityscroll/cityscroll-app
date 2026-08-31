@@ -123,6 +123,30 @@ const IDENTITY_COPY = Object.freeze({
   oti_only: "A publisher classification is retained as source evidence and is not an institution kind.",
 });
 
+const BASIS_LABELS = Object.freeze({
+  agency_canonical_v1: "joined agency records",
+  agency_browse_snapshot_v1: "agency record snapshot",
+  agency_vendor_awards_12mo_v1: "recent vendor awards",
+  publisher_certification_record_v1: "exam certification records",
+  mandate_expected_vs_observed_v1: "mandate evidence",
+  source_preserving_agency_identity_v1: "publisher identity evidence",
+  "agency_route_identity_report.v1": "agency route identity report",
+  agency_route_identity_report: "agency route identity report",
+  entity_link: "source identity",
+});
+
+function readerToken(value) {
+  const raw = clean(value, 240);
+  if (!raw) return "";
+  if (BASIS_LABELS[raw]) return BASIS_LABELS[raw];
+  return raw
+    .replace(/_/g, " ")
+    .replace(/\.v\d+$/i, "")
+    .replace(/\s+v\d+$/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function clean(value, max = 500) {
   return String(value ?? "")
     .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -462,7 +486,7 @@ function blockedCapabilities(generatedAt) {
       id: "institution_kind",
       label: "Institution kind",
       state: "blocked",
-      source_basis: "OTI org_type is publisher vocabulary, not institution_kind",
+      source_basis: "publisher organization type is source vocabulary",
       vintage: dayStamp(generatedAt),
       href: null,
       relation_id: null,
@@ -603,9 +627,9 @@ function renderCapabilityList(rows, { matchedOnly = false } = {}) {
       ? ` · ${row.parcel_hrefs.map((href) => `<a class="ui-constellation-link agency-edge-link" href="${esc(href)}">${esc(href.replace(/^\/parcels\//, "").replace(/\/$/, ""))}</a>`).join(", ")}`
       : "";
     const meta = [
-      row.source_basis ? `Basis ${row.source_basis}` : "",
+      row.source_basis ? `Basis ${readerToken(row.source_basis)}` : "",
       row.vintage ? `As of ${row.vintage}` : "",
-      row.relation_id ? `Relation ${row.relation_id.replace(/_/g, " ")}` : "",
+      row.relation_id ? `Relation ${readerToken(row.relation_id)}` : "",
     ].filter(Boolean).join(" · ");
     return `<li class="institution-nav-item" data-capability="${esc(row.id)}" data-evidence-state="${esc(row.state)}">
       <div class="institution-nav-main">${label}${stateChip(row.state)}${parcels}</div>
@@ -619,7 +643,7 @@ function renderAliasList(edges, heading) {
   return `<h3 class="institution-nav-subhead">${esc(heading)}</h3>
     <ul class="institution-nav-list">${edges.map((edge) => `<li class="institution-nav-item" data-relation="${esc(edge.relation_id)}" data-source-id="${esc(edge.source_id)}" data-canonical-id="${esc(edge.canonical_id)}" data-collision="${edge.collision ? "1" : "0"}">
       <div class="institution-nav-main"><a class="ui-constellation-link agency-edge-link" href="${esc(edge.href)}">${esc(edge.source_id.replace(/-/g, " "))} → ${esc(edge.canonical_id.replace(/-/g, " "))}</a></div>
-      <span class="muted node-muted">Route alias · ${esc(edge.disposition_basis)} · Redirect ${esc(edge.redirect_path)} · Source report ${esc(edge.source_report)} · Vintage ${esc(dayStamp(edge.vintage) || "report")}</span>
+      <span class="muted node-muted">Route alias · ${esc(edge.disposition_basis)} · Redirect ${esc(edge.redirect_path)} · Source report ${esc(readerToken(edge.source_report))} · Vintage ${esc(dayStamp(edge.vintage) || "report")}</span>
     </li>`).join("")}</ul>`;
 }
 
@@ -629,7 +653,7 @@ function renderCategoryList(rows) {
       ? `<a class="ui-constellation-link agency-edge-link" href="${esc(row.href)}">${esc(row.label || row.id)}</a>`
       : `<span>${esc(row.label || row.id)}</span>`;
     const meta = [
-      row.source_basis ? `Basis ${row.source_basis}` : "",
+      row.source_basis ? `Basis ${readerToken(row.source_basis)}` : "",
       row.vintage ? `As of ${row.vintage}` : "",
       row.count != null ? `${row.count} joined` : "",
     ].filter(Boolean).join(" · ");
@@ -661,7 +685,7 @@ export function renderInstitutionProfileNavigation(projection) {
     ${firstPaint}
     <details class="institution-nav-disclosure" id="institution-profile-navigation-details">
       <summary>Inspect coverage details</summary>
-      <p class="muted node-muted">Source report ${esc(projection.provenance?.source_report || "")} · Route ${esc(projection.provenance?.route || "")}${dayStamp(projection.provenance?.vintage) ? ` · Vintage ${esc(dayStamp(projection.provenance.vintage))}` : ""}</p>
+      <p class="muted node-muted">Source report ${esc(readerToken(projection.provenance?.source_report || ""))} · Route ${esc(projection.provenance?.route || "")}${dayStamp(projection.provenance?.vintage) ? ` · Vintage ${esc(dayStamp(projection.provenance.vintage))}` : ""}</p>
       <h3 class="institution-nav-subhead">Role capabilities</h3>
       ${renderCapabilityList(projection.role_capabilities)}
       <h3 class="institution-nav-subhead">Category evidence</h3>
