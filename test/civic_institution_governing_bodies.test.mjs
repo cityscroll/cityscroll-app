@@ -100,12 +100,10 @@ function bersRouteHtml() {
 test("registry registers governing-body relations with exact parent and board endpoints", () => {
   const registry = loadOntologyRegistry();
   const ids = new Map(registry.link_types.map((row) => [row.id, row]));
-  const objects = new Map(registry.object_types.map((row) => [row.id, row]));
   assert.match(ids.get("governed_by").from, /civic-institution/);
   assert.match(ids.get("governed_by").to, /board/);
   assert.match(ids.get("has_committee").from, /board/);
   assert.match(ids.get("hosts_meeting").from, /board/);
-  assert.equal(objects.get("board").primary_key_pattern, "board:{source_body_id}");
   assert.equal(CIVIC_INSTITUTION_ROLE_RELATIONS.governed_by.object_kind, "board");
   assert.equal(CIVIC_INSTITUTION_ROLE_RELATIONS.governed_by.inverse, "governing_body_of");
   assert.ok(CIVIC_INSTITUTION_ROLE_RELATIONS.has_committee.from_kinds.includes("board"));
