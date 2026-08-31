@@ -10,6 +10,18 @@
       "path": "site/civic_institution_borough_office.mjs"
     },
     {
+      "id": "borough-office-role-contract",
+      "path": "ontology/civic_institution.mjs"
+    },
+    {
+      "id": "borough-office-role-registry",
+      "path": "ontology/registry.v0.json"
+    },
+    {
+      "id": "borough-office-constellation-builder",
+      "path": "tools/build_agency_constellation_documents.mjs"
+    },
+    {
       "id": "borough-office-role-fixtures",
       "path": "test/fixtures/civic_institution_borough_office/cases.json"
     },
