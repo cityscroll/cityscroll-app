@@ -1,0 +1,252 @@
+{
+  "schema": "cityscroll.rulemaking_authority_fixtures.v1",
+  "extraction_version": "1.0.0",
+  "provision": {
+    "schema": "cityscroll.code_provision.v1",
+    "id": "nyc-administrative-code:16-120",
+    "corpus_id": "nyc-administrative-code",
+    "citation": "§ 16-120",
+    "heading": "Receptacles",
+    "level": "section",
+    "status": "current",
+    "current_text": "Current publisher text must not fill a historical authority lookup.",
+    "source": {
+      "source_ref": "alp:16-120",
+      "observed_at": "2026-08-24T08:25:03.900Z",
+      "content_hash": "sha256:old",
+      "url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-1"
+    }
+  },
+  "versions": [
+    {
+      "schema": "cityscroll.code_version.v1",
+      "id": "code-version:16-120:2024-01-01",
+      "provision_id": "nyc-administrative-code:16-120",
+      "valid_from": "2024-01-01",
+      "valid_to": "2026-11-01",
+      "status": "current",
+      "text": "Receptacles must be kept covered at the time of publication.",
+      "source_ref": "alp:16-120:2024",
+      "observed_at": "2024-01-15T00:00:00.000Z",
+      "content_hash": "sha256:publication"
+    },
+    {
+      "schema": "cityscroll.code_version.v1",
+      "id": "code-version:16-120:2026-11-01",
+      "provision_id": "nyc-administrative-code:16-120",
+      "valid_from": "2026-11-01",
+      "valid_to": null,
+      "status": "current",
+      "text": "Amended receptacles text after the rule was published.",
+      "source_ref": "council:local-law:123-2026",
+      "observed_at": "2026-08-24T00:00:00.000Z",
+      "content_hash": "sha256:amended"
+    }
+  ],
+  "repealed_versions": [
+    {
+      "schema": "cityscroll.code_version.v1",
+      "id": "code-version:16-120:repealed",
+      "provision_id": "nyc-administrative-code:16-120",
+      "valid_from": "2024-01-01",
+      "valid_to": "2026-11-01",
+      "status": "current",
+      "text": "Receptacles must be kept covered at the time of publication.",
+      "source_ref": "alp:16-120:2024",
+      "observed_at": "2024-01-15T00:00:00.000Z",
+      "content_hash": "sha256:publication"
+    },
+    {
+      "schema": "cityscroll.code_version.v1",
+      "id": "code-version:16-120:repealed-terminal",
+      "provision_id": "nyc-administrative-code:16-120",
+      "valid_from": "2026-11-01",
+      "valid_to": null,
+      "status": "repealed",
+      "text": "",
+      "source_ref": "council:local-law:123-2026",
+      "observed_at": "2026-08-24T00:00:00.000Z",
+      "content_hash": "sha256:repealed"
+    }
+  ],
+  "amend_change": {
+    "schema": "cityscroll.code_change.v1",
+    "id": "local-law:123-2026:amend",
+    "operation": "amend",
+    "state": "enacted",
+    "matter_id": "79102",
+    "legal_instrument_id": "local-law:123-2026",
+    "effective_at": "2026-11-01",
+    "target": {
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:16-120",
+      "citation": "§ 16-120"
+    },
+    "source": {
+      "source_ref": "council:local-law:123-2026",
+      "instruction_text": "Section 16-120 is amended.",
+      "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102",
+      "observed_at": "2026-08-24T00:00:00.000Z"
+    }
+  },
+  "repeal_change": {
+    "schema": "cityscroll.code_change.v1",
+    "id": "local-law:123-2026:repeal",
+    "operation": "repeal",
+    "state": "enacted",
+    "matter_id": "79102",
+    "legal_instrument_id": "local-law:123-2026",
+    "effective_at": "2026-11-01",
+    "target": {
+      "corpus_id": "nyc-administrative-code",
+      "provision_id": "nyc-administrative-code:16-120",
+      "citation": "§ 16-120"
+    },
+    "source": {
+      "source_ref": "council:local-law:123-2026",
+      "instruction_text": "Section 16-120 is REPEALED.",
+      "url": "https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=79102",
+      "observed_at": "2026-08-24T00:00:00.000Z"
+    }
+  },
+  "rulemaking": {
+    "schema": "cityscroll.rulemaking.v1",
+    "rulemaking_id": "rulemaking:dsny:receptacles",
+    "object_type": "rulemaking",
+    "canonical_href": "/rules/rulemaking%3Adsny%3Areceptacles/",
+    "agency": "DSNY",
+    "title": "Receptacle cover rules"
+  },
+  "cases": {
+    "exact_admin_code": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "request_id": "20260317099",
+          "version_kind": "adopted",
+          "published_at": "2026-03-25",
+          "observed_at": "2026-03-26T12:00:00.000Z",
+          "text": "Authority: pursuant to Section 16-120 of the New York City Administrative Code. The adopted rule amends 16 RCNY § 1-02."
+        }
+      ]
+    },
+    "rule_date_version": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "request_id": "20260317099",
+          "published_at": "2026-03-25",
+          "observed_at": "2026-03-26T12:00:00.000Z",
+          "text": "Authority: pursuant to Administrative Code § 16-120."
+        }
+      ]
+    },
+    "amended_authority": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "request_id": "20260317099",
+          "published_at": "2026-03-25",
+          "observed_at": "2026-03-26T12:00:00.000Z",
+          "text": "Authority: pursuant to Administrative Code § 16-120."
+        }
+      ]
+    },
+    "repealed_authority": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "request_id": "20260317099",
+          "published_at": "2026-03-25",
+          "observed_at": "2026-03-26T12:00:00.000Z",
+          "text": "Authority: pursuant to Administrative Code § 16-120."
+        }
+      ]
+    },
+    "ambiguous_citation": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:proposed",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "published_at": "2026-03-01",
+          "observed_at": "2026-03-02T12:00:00.000Z",
+          "text": "Authority: pursuant to sections 16-120 and 16-121 of the New York City Administrative Code."
+        }
+      ]
+    },
+    "rcny_citation": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dot:bicycle-racks:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+          "published_at": "2026-07-14",
+          "observed_at": "2026-07-15T12:00:00.000Z",
+          "text": "Authority: pursuant to 34 RCNY § 4-12(p). The adopted rule amends 34 RCNY § 4-12(p)."
+        }
+      ]
+    },
+    "external_statute": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dot:bicycle-racks:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/city-owned-bicycle-racks/",
+          "published_at": "2026-07-14",
+          "observed_at": "2026-07-15T12:00:00.000Z",
+          "text": "Authority: pursuant to Section 2903(a) of the New York City Charter."
+        }
+      ]
+    },
+    "malformed_section": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:proposed",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "published_at": "2026-03-01",
+          "observed_at": "2026-03-02T12:00:00.000Z",
+          "authority_citation": "Administrative Code § 16",
+          "text": "Authority: pursuant to Administrative Code § 16."
+        }
+      ]
+    },
+    "missing_source_document": {
+      "documents": []
+    },
+    "unsupported_corpus": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dob:construction:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/construction/",
+          "published_at": "2026-04-01",
+          "observed_at": "2026-04-02T12:00:00.000Z",
+          "text": "Authority: pursuant to the New York City Building Code."
+        }
+      ]
+    },
+    "unresolved_version": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:adopted",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "published_at": "2022-06-01",
+          "observed_at": "2022-06-02T12:00:00.000Z",
+          "text": "Authority: pursuant to Administrative Code § 16-120."
+        }
+      ]
+    },
+    "generic_authority": {
+      "documents": [
+        {
+          "source_id": "nyc_rules:dsny:receptacles:proposed",
+          "source_url": "https://rules.cityofnewyork.us/rule/receptacle-covers/",
+          "published_at": "2026-03-01",
+          "observed_at": "2026-03-02T12:00:00.000Z",
+          "text": "Under the authority vested in the commissioner, the agency proposes this rule."
+        }
+      ]
+    }
+  }
+}

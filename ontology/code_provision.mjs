@@ -4,6 +4,10 @@ import { createHash } from "node:crypto";
 
 export const CODE_PROVISION_SCHEMA = "cityscroll.code_provision.v1";
 export const CODE_VERSION_SCHEMA = "cityscroll.code_version.v1";
+export const CITES_AUTHORITY_SCHEMA = "cityscroll.cites_authority.v1";
+export const CITES_AUTHORITY_RELATION = "cites_authority";
+export const CITED_AS_AUTHORITY_BY_RELATION = "cited_as_authority_by";
+export const ADMIN_CODE_CORPUS_ID = "nyc-administrative-code";
 export const CODE_PROVISION_LEVELS = Object.freeze([
   "title", "chapter", "subchapter", "appendix", "part", "article",
   "subarticle", "section", "subsection", "paragraph", "subparagraph", "item",
@@ -33,8 +37,13 @@ export function codeProvisionId(section) {
   return `nyc-admin-code:${citation}`;
 }
 
+export function publicCodeProvisionId(sectionOrId) {
+  const citation = normalizeCodeCitation(sectionOrId);
+  return citation ? `${ADMIN_CODE_CORPUS_ID}:${citation}` : null;
+}
+
 export function provisionHref(sectionOrId) {
-  const citation = String(sectionOrId || "").replace(/^nyc-admin-code:/i, "");
+  const citation = String(sectionOrId || "").replace(/^nyc-admin(?:istrative)?-code:/i, "");
   return `/administrative-code/${encodeURIComponent(citation)}/`;
 }
 

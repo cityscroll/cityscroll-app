@@ -45,6 +45,16 @@
   deadline, power, or agency. Proof: `test/statutory_mandate_provision_join.test.mjs` plus
   `test/fixtures/statutory_mandate_provision_join.json`.
 
+- **CAPA authority joins (LL-P2B):** `site/rulemaking_authority.mjs` is the fail-closed
+  `AgencyRulemaking → cites_authority → CodeProvision` projector. Only an exact
+  source-stated Administrative Code citation in a retained source document mints
+  the public relation; RCNY, Charter, external statutes, generic “authority”
+  strings, nearby or ambiguous citations, malformed sections, and missing
+  documents stay unresolved. Authority-at-publication uses LL-P1B `getProvisionAsOf`
+  when a known CodeVersion covers the rule date; later provision changes are
+  possible authority-basis changes only. Proof:
+  `test/rulemaking_authority.test.mjs` plus `test/fixtures/rulemaking_authority.json`.
+
 - **Rulemaking petition handoff:** `site/rules_petition.mjs` is the source-qualified
   official NYC Rules petition envelope. Eligible agency pages expose “Petition this
   agency”; effective-rule case files expose “How to petition [agency]”. Missing form
