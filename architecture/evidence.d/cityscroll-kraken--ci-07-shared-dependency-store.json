@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-kraken/ci-07-shared-dependency-store",
+  "status": "implemented",
+  "fingerprint": "ci-07-shared-dependency-store.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "worker-package-manager-contract",
+      "path": "worker/package.json"
+    },
+    {
+      "id": "worker-dependency-lockfile",
+      "path": "worker/pnpm-lock.yaml"
+    },
+    {
+      "id": "shared-store-installer",
+      "path": "tools/install_worker_dependencies.sh"
+    },
+    {
+      "id": "shared-store-verification",
+      "path": "tools/verify_shared_dependency_store.mjs"
+    }
+  ]
+}

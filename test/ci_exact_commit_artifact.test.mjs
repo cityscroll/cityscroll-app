@@ -50,13 +50,13 @@ test("artifact identity verifies digest, tree, lockfile, tool, and derived build
   t.after(() => rmSync(directory, { recursive: true, force: true }));
   mkdirSync(join(directory, "worker"));
   mkdirSync(join(directory, "_site"));
-  writeFileSync(join(directory, "worker/package-lock.json"), "{\"lockfileVersion\":3}\n");
+  writeFileSync(join(directory, "worker/pnpm-lock.yaml"), "lockfileVersion: '9.0'\n");
   writeFileSync(join(directory, "_site/index.html"), "<!doctype html><title>Exact</title>\n");
   const git = (...args) => execFileSync("git", args, { cwd: directory, env: ISOLATED_GIT_ENV });
   git("init", "--quiet");
   git("config", "user.name", "CI Artifact Test");
   git("config", "user.email", "ci-artifact@example.invalid");
-  git("add", "worker/package-lock.json");
+  git("add", "worker/pnpm-lock.yaml");
   git("commit", "--quiet", "-m", "Add lockfile");
 
   const tool = join(ROOT, "tools/site_artifact_identity.mjs");
@@ -86,7 +86,7 @@ test("artifact identity verifies digest, tree, lockfile, tool, and derived build
   assert.match(tampered.stderr, /checksum mismatch/);
 
   writeFileSync(join(directory, "_site/index.html"), "<!doctype html><title>Exact</title>\n");
-  writeFileSync(join(directory, "worker/package-lock.json"), "{\"lockfileVersion\":2}\n");
+  writeFileSync(join(directory, "worker/pnpm-lock.yaml"), "lockfileVersion: '8.0'\n");
   const wrongLock = spawnSync(process.execPath, [tool, "verify"], {
     cwd: directory,
     encoding: "utf8",

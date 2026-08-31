@@ -51,7 +51,7 @@ export function collectWorkerDependencyPaths({ rootDir = process.cwd(), entry = 
   // These files influence the provider build even though they are not imported
   // by JavaScript source. Keeping them measured prevents dependency or trigger
   // configuration changes from becoming invisible.
-  for (const path of ["worker/package.json", "worker/package-lock.json", "worker/wrangler.toml"]) {
+  for (const path of ["worker/package.json", "worker/pnpm-lock.yaml", "worker/wrangler.toml"]) {
     if (existsSync(resolve(root, path))) seen.add(path);
   }
   return [...seen].sort();

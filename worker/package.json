@@ -2,6 +2,7 @@
   "name": "cityscroll-worker",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.15.1",
   "type": "module",
   "description": "Thin serverless backend for CityScroll: NL→query (Claude Haiku), a Checkbook NYC proxy, and a scheduled alert digest. Deployed as a single Cloudflare Worker.",
   "engines": {
@@ -24,5 +25,12 @@
   "devDependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
     "wrangler": "^4.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ]
   }
 }

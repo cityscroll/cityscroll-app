@@ -27,7 +27,7 @@ import { attachProjectConnectionsSection } from "./project_connections.mjs";
 import { dualWriteZapProjectObservations } from "./lib/zap_project_source_records.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
-// during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
+// during site unit tests (before the worker dependency install). Auth is loaded only on the admin path.
 
 export {
   parseZapApiProject,
