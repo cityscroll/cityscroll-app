@@ -289,6 +289,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/civic_institution_council_committees.test.mjs`,
   `test/civic_institution_borough_office.test.mjs`, and
   `test/civic_institution_governing_bodies.test.mjs`.
+  Institution profile navigation is `site/civic_institution_profile_navigation.mjs`:
+  it keeps `agency:id:*` subjects and `/agencies/<slug>/` routes, exposes
+  matched/empty/unknown/blocked category states with source basis and vintage,
+  and emits `route_alias_of` only for reviewed aliases already in the route
+  identity report. Collisions, unresolved routes, OTI buckets, and Community
+  Board `body_id` stay non-linking. Proof:
+  `test/civic_institution_profile_navigation.test.mjs`.
 
 - Add durable project-specific notes here as they are discovered through real work.
 - **Legacy repository-name prevention:** `tools/check_stale_repo_name.mjs` is the CI and local

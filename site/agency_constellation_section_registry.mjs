@@ -15,9 +15,11 @@ import { rulesSection } from "./agency_constellation_sections/rules.mjs";
 import { staffingSection } from "./agency_constellation_sections/staffing.mjs";
 import { vendorsSection } from "./agency_constellation_sections/vendors.mjs";
 import { identitySection } from "./agency_constellation_sections/identity.mjs";
+import { institutionNavigationSection } from "./agency_constellation_sections/institution_navigation.mjs";
 
 const registeredSections = [
   asOfSection,
+  institutionNavigationSection,
   identitySection,
   mandatePredictionsSection,
   mandateReportsSection,

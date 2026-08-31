@@ -2,6 +2,12 @@ import { BROWSE_FACETS, BROWSE_OBJECTS, buildBrowseView, renderBrowseView } from
 import { BROWSE_CONCEPTS } from "./browse_concept_view.mjs";
 import { constellationLink, officialSourceLink } from "./affordance_grammar.mjs";
 import { agencyRouteAliasTarget, resolveAgencyIdentity } from "./agency_identity.mjs";
+import {
+  agencyRouteUncertaintyKind,
+  defaultRouteIdentityReport,
+  projectInstitutionProfileNavigation,
+  renderInstitutionUncertaintyDocument,
+} from "./civic_institution_profile_navigation.mjs";
 import { renderMeetingOutcomesFirstPaint } from "./meeting_outcomes_static.mjs";
 import { renderMeetingDocument } from "./meeting_document.mjs";
 import { renderProcurementDocument } from "./procurement_document.mjs";
@@ -1152,8 +1158,9 @@ async function handleEntity(request, env, entity) {
   if (entity.family === "agencies" && !wantsInteractive) {
     const documentPath = `/agencies/${encodeURIComponent(id)}/`;
     const document = await staticAsset(env, request, documentPath);
+    let probe = "";
     if (document.ok) {
-      const probe = await document.clone().text();
+      probe = await document.clone().text();
       if (probe.includes('data-civic-object-kind="agency-constellation"')) {
         // Preserve shareable as_of + claim query params on the composed document canonical.
         const params = new URLSearchParams();
@@ -1165,6 +1172,25 @@ async function handleEntity(request, env, entity) {
         const canonicalPath = query ? `${documentPath}?${query}` : documentPath;
         return handleComposedObject(request, env, documentPath, canonicalPath);
       }
+    }
+    const uncertaintyKind = agencyRouteUncertaintyKind(id, defaultRouteIdentityReport);
+    if (uncertaintyKind && !probe.includes('data-civic-object-kind="agency-constellation"')) {
+      const projection = projectInstitutionProfileNavigation({
+        identity: { canonical_id: id, canonical_name: id.replace(/-/g, " ") },
+        publisherRow: null,
+        hasRoute: uncertaintyKind === "unresolved",
+        routeIdentityReport: defaultRouteIdentityReport,
+      });
+      const body = renderInstitutionUncertaintyDocument(projection, {
+        title: uncertaintyKind === "collision" ? "Publisher identity collision" : "Unresolved agency route",
+      });
+      return new Response(request.method === "HEAD" ? null : body, {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          "Cache-Control": "public, max-age=120, s-maxage=300, stale-while-revalidate=3600",
+        },
+      });
     }
   }
   const asset = await staticAsset(env, request, "/");

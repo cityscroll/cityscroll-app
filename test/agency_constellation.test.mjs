@@ -57,6 +57,7 @@ test("section registry composes every capability in stable order", () => {
     AGENCY_CONSTELLATION_SECTIONS.map(({ id, order }) => [id, order]),
     [
       ["as-of", 0],
+      ["institution-navigation", 4],
       ["identity", 5],
       ["mandate-predictions", 10],
       ["mandate-reports", 20],
@@ -500,7 +501,10 @@ test("deferred agency relationships preserve as-of projection and empty output",
     certification: { edges: [], by_agency: [], by_exam: [], generated_at: "test" },
     obligations: { by_agency: {}, generated_at: "test" },
   });
-  assert.equal(renderAgencyConstellationDeferredFragment(emptyView).trim(), "");
+  const empty = renderAgencyConstellationDeferredFragment(emptyView).trim();
+  assert.match(empty, /id="institution-profile-navigation"/);
+  assert.doesNotMatch(empty, /data-agency-constellation-category=/);
+  assert.doesNotMatch(empty, /class="agency-connections"/);
 });
 
 test("shared agency template leads with compact actions and connected-record cards", () => {
