@@ -88,6 +88,7 @@ export const PRIMARY_JOURNEY_FILES = Object.freeze([
   "site/following_view.mjs",
   "site/app/following.mjs",
   "site/home_entry.mjs",
+  "site/home_following_entry.mjs",
   "site/following/index.html",
   "site/index.html",
 ]);
