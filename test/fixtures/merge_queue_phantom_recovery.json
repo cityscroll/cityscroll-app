@@ -1,0 +1,90 @@
+{
+  "schema": "cityscroll.merge_queue_phantom_recovery.fixture.v1",
+  "positive": {
+    "target": {
+      "owner": "cityscroll",
+      "repo": "cityscroll-app",
+      "pullNumber": 1490,
+      "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "pullRequest": {
+      "id": "PR_kwDOExample1490",
+      "number": 1490,
+      "state": "OPEN",
+      "baseRefName": "main",
+      "headRefOid": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "mergeStateStatus": "CLEAN",
+      "mergeable": "MERGEABLE",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "autoMergeRequest": { "enabled": true, "mergeMethod": "SQUASH" },
+      "requiredChecks": [
+        { "name": "Unit tests (site + worker)", "status": "COMPLETED", "conclusion": "SUCCESS" },
+        { "name": "Accessibility + language gate (axe on every PR)", "status": "COMPLETED", "conclusion": "SUCCESS" },
+        { "name": "Reading-level ratchet gate (readable-or-else)", "status": "COMPLETED", "conclusion": "SUCCESS" }
+      ]
+    },
+    "batches": [],
+    "afterDequeue": {
+      "id": "PR_kwDOExample1490",
+      "number": 1490,
+      "headRefOid": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "isInMergeQueue": false
+    },
+    "afterEnqueue": {
+      "id": "PR_kwDOExample1490",
+      "number": 1490,
+      "headRefOid": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "isInMergeQueue": true
+    },
+    "afterBatches": [
+      { "id": "MQB_1490_a", "pullNumber": 1490, "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }
+    ],
+    "expectedReceipt": {
+      "schema": "cityscroll.merge_queue_phantom_recovery.v1",
+      "kind": "exact-signature-phantom-queue",
+      "signature": "28131b0429b5e98484eaca5374b22aa0a46f0b64fe0b045a5b89a68e51323319",
+      "target": {
+        "owner": "cityscroll",
+        "repo": "cityscroll-app",
+        "pullNumber": 1490,
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "preconditions": {
+        "mergeStateStatus": "CLEAN",
+        "mergeable": "MERGEABLE",
+        "standingMergeIntent": true,
+        "isInMergeQueue": false,
+        "exactHeadBatchCount": 0,
+        "requiredChecks": [
+          "Unit tests (site + worker)",
+          "Accessibility + language gate (axe on every PR)",
+          "Reading-level ratchet gate (readable-or-else)"
+        ]
+      },
+      "transition": {
+        "dequeuePullRequest": 1,
+        "enableAutoMerge": 1,
+        "mergeMethod": "SQUASH"
+      },
+      "result": {
+        "isInMergeQueue": true,
+        "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "batchId": "MQB_1490_a"
+      },
+      "receiptId": "c198ad816978aaaf83b8f14d4305a00b9b8820edebadcfec59724fc8a93d08a8"
+    }
+  },
+  "negativeCases": [
+    { "name": "red", "errorCode": "FAILING_CHECKS", "requiredCheck": { "conclusion": "FAILURE" } },
+    { "name": "pending", "errorCode": "PENDING_CHECKS", "requiredCheck": { "status": "IN_PROGRESS", "conclusion": null } },
+    { "name": "unstable", "errorCode": "UNSTABLE_CHECKS", "pullRequest": { "checksStable": false } },
+    { "name": "conflicting", "errorCode": "CONFLICTING", "pullRequest": { "mergeStateStatus": "CONFLICTING" } },
+    { "name": "unknown", "errorCode": "UNKNOWN_MERGE_STATE", "pullRequest": { "mergeStateStatus": "UNKNOWN" } },
+    { "name": "changed-head", "errorCode": "CHANGED_HEAD", "pullRequest": { "headRefOid": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" } },
+    { "name": "missing-intent", "errorCode": "MISSING_INTENT", "pullRequest": { "autoMergeRequest": null } },
+    { "name": "already-queued", "errorCode": "ALREADY_QUEUED", "pullRequest": { "isInMergeQueue": true } },
+    { "name": "active-batch", "errorCode": "ACTIVE_BATCH", "batches": [{ "id": "MQB_existing", "pullNumber": 1490, "headSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" }] },
+    { "name": "replayed-signature", "errorCode": "REPLAYED_SIGNATURE", "pullRequest": {}, "auditReceipt": { "signature": "any" } }
+  ]
+}
