@@ -11,7 +11,7 @@
         "agency": "Transportation",
         "lifecycle_stage": "proposed",
         "rule_page_id": "city-owned-bicycle-racks",
-        "document_placement": "detail_page_linked_pdf",
+        "document_placement": "html_detail_body",
         "link_stability": "stable_official_url",
         "authority_location": "document_body",
         "citation_extractability": "text_extractable",
@@ -48,17 +48,77 @@
         "link_stability": "stable_official_url",
         "authority_location": "document_body",
         "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "explicit_source_pairing_key",
+        "source_url": "https://rules.cityofnewyork.us/rule/commercial-waste-zones/"
+      },
+      {
+        "agency": "Health",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "food-service",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "unstable_query_url",
+        "authority_location": "document_body",
+        "citation_extractability": "scanned_non_text",
         "proposed_adopted_pairability": "source_ids_unpairable",
-        "source_url": "https://rules.cityofnewyork.us/"
+        "source_url": "https://rules.cityofnewyork.us/rule/food-service/"
+      },
+      {
+        "agency": "Consumer and Worker Protection",
+        "lifecycle_stage": "adopted",
+        "rule_page_id": "worker-protection",
+        "document_placement": "html_detail_body",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "text_extractable",
+        "proposed_adopted_pairability": "adopted_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/worker-protection/"
+      },
+      {
+        "agency": "Environmental Protection",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "water-use",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "stable_official_url",
+        "authority_location": "document_body",
+        "citation_extractability": "acquisition_failed",
+        "proposed_adopted_pairability": "proposed_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/water-use/"
+      },
+      {
+        "agency": "Parks and Recreation",
+        "lifecycle_stage": "proposed",
+        "rule_page_id": "park-use",
+        "document_placement": "source_did_not_publish",
+        "link_stability": "stable_official_url",
+        "authority_location": "source_not_published",
+        "citation_extractability": "source_not_published",
+        "proposed_adopted_pairability": "proposed_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/park-use/"
+      },
+      {
+        "agency": "Taxi and Limousine Commission",
+        "lifecycle_stage": "adopted",
+        "rule_page_id": "vehicle-license",
+        "document_placement": "detail_page_linked_pdf",
+        "link_stability": "unstable_query_url",
+        "authority_location": "not_attempted",
+        "citation_extractability": "not_attempted",
+        "proposed_adopted_pairability": "adopted_only",
+        "source_url": "https://rules.cityofnewyork.us/rule/vehicle-license/"
       }
     ]
   },
   "checks": {
     "characterization": {
-      "sample_count": 4,
+      "sample_count": 9,
       "agencies": [
         "Buildings",
+        "Consumer and Worker Protection",
+        "Environmental Protection",
+        "Health",
+        "Parks and Recreation",
         "Sanitation",
+        "Taxi and Limousine Commission",
         "Transportation"
       ],
       "lifecycle_stages": [
@@ -70,36 +130,52 @@
       "required_fields_present": true
     },
     "rule_documents": {
-      "proposed_documents": 1,
-      "adopted_documents": 1,
+      "bounded_document_denominator": 10,
+      "proposed_documents": 6,
+      "adopted_documents": 4,
+      "cases_with_both_versions": 1,
       "paired_versions": 1,
-      "acquisition_failures": 0
+      "acquisition_failures": 5,
+      "source_not_published": 1,
+      "fetch_not_attempted": 1,
+      "extracted_empty": 1,
+      "scanned_or_non_text": 1
     },
     "legal_citations": {
-      "exact_citation_count": 4,
+      "exact_citation_count": 17,
       "exact_citation_precision": {
-        "numerator": 4,
-        "denominator": 4,
-        "value": 1,
+        "numerator": 7,
+        "denominator": 9,
+        "value": 0.7777777777777778,
         "basis": "source_sample_expected_citation_keys"
       },
-      "resolvable_targets": 0,
-      "ambiguous_references": 2
+      "resolvable_targets": 6,
+      "canonical_resolutions_by_corpus": {
+        "rcny": 4,
+        "nyc-charter": 5,
+        "nyc-admin-code": 4
+      },
+      "ambiguous_references": 1
     },
     "version_pairing": {
       "proposed_adopted_pairs": 1,
       "source_id_pairing_evidence": [
         "shared_source_pairing_key"
       ],
-      "unpairable_or_non_text_cases": 0
+      "pair_rate": {
+        "numerator": 1,
+        "denominator": 4,
+        "value": 0.25
+      },
+      "unpairable_or_non_text_cases": 8
     },
     "version_diff": {
-      "pairs_considered": 1,
+      "pairs_considered": 9,
       "usable_version_pairs": 1,
       "text_extraction": {
-        "available_versions": 2,
-        "unavailable_versions": 0,
-        "non_text_failures": 0
+        "available_versions": 5,
+        "unavailable_versions": 5,
+        "non_text_failures": 1
       },
       "section_alignment": {
         "deterministic_pairs": 1,
@@ -107,7 +183,7 @@
         "rate": 1
       },
       "non_text_failures": 0,
-      "changed_regions": 2,
+      "changed_regions": 4,
       "observed_comments": 0,
       "published_agency_explanations": 0
     }
