@@ -9,5 +9,16 @@
     "confirmed_at": "2026-08-31T00:00:00.000Z",
     "routing_state": "existing Cloudflare Email Routing rule forwards to the owner destination"
   },
+  "production_verification": {
+    "status": "deferred-to-production",
+    "when": "after the merged commit deploys through the normal Worker pipeline",
+    "required_observations": [
+      "one controlled operational alert delivered to james@cityscroll.org",
+      "no corresponding controlled alert delivered to team@cityscroll.org",
+      "signature dedupe and private ops-health receipt retained"
+    ],
+    "pre_merge_blocker": "the existing keyword-search shard freshness gate fails on main and prevents a branch deployment",
+    "scope": "pre-existing defect tracked separately"
+  },
   "credentials_retained": false
 }
