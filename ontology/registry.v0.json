@@ -1275,6 +1275,82 @@
       "grounding": "gap"
     },
     {
+      "id": "holds_office",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "person-leader",
+      "relation": "holds_office",
+      "inverse": "officeholder_of",
+      "reason": "Elected-office officeholder role emitted only from the retained agency-crosswalk head observation with source fields and valid time. Titles and nearby person names never mint the edge.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis",
+        "as_of",
+        "vintage"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer an appointment from a Borough President title, board geography, a person on a board roster, a publisher label, or generic appointed-member wording.",
+      "label": "Holds office",
+      "grounding": "partial"
+    },
+    {
+      "id": "appoints_members_of",
+      "status": "registered",
+      "from": "civic-institution",
+      "to": "community-board",
+      "relation": "appoints_members_of",
+      "inverse": "members_appointed_by",
+      "reason": "Board-level appointment-authority role emitted only from an official Borough President or city appointment source that names the Community Board body id and appointment scope. Geography, titles, rosters, and generic appointed-member wording stay unresolved.",
+      "edge_schema": "cityscroll.civic_institution_role_edge.v1",
+      "required_fields": [
+        "relation_id",
+        "role",
+        "from",
+        "to",
+        "inverse",
+        "source_contract",
+        "source_observation",
+        "evidence_refs",
+        "confidence",
+        "basis",
+        "as_of",
+        "vintage"
+      ],
+      "allowed_methods": [
+        "exact_source_identifier",
+        "exact_normalized_publisher_value",
+        "reviewed_publisher_alias"
+      ],
+      "allowed_statuses": [
+        "accepted",
+        "unknown",
+        "held",
+        "unresolved"
+      ],
+      "negative_rule": "Never infer an appointment from a Borough President title, board geography, a person on a board roster, a publisher label, or generic appointed-member wording. Do not re-key a Community Board as an agency.",
+      "label": "Appoints members of",
+      "grounding": "gap"
+    },
+    {
       "id": "same_person",
       "status": "registered",
       "from": "person",
@@ -1430,9 +1506,9 @@
     {
       "id": "hosts_meeting",
       "status": "registered",
-      "from": "community-board|committee",
+      "from": "community-board|committee|civic-institution",
       "to": "meeting",
-      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins or an exact Council committee EventBodyId join with a retained source receipt.",
+      "reason": "Organization-facing meeting family is published only from exact board/date/publisher joins, an exact Council committee EventBodyId join, or an exact Borough President office publisher-identity join with a retained source receipt.",
       "contract_ref": "cityscroll.community_board_hosts_meeting_source_contract.v1",
       "edge_schema": "cityscroll.community_board_hosts_meeting_edge.v1",
       "required_evidence": [

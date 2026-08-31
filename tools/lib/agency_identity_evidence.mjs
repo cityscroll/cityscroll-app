@@ -9,6 +9,7 @@ import {
 import { developmentRolesForInstitution } from "../../site/civic_institution_development_roles.mjs";
 import { accountabilityRolesForInstitution } from "../../site/civic_institution_accountability.mjs";
 import { councilCommitteeRolesForInstitution } from "../../site/civic_institution_council_committees.mjs";
+import { boroughOfficeRolesForInstitution } from "../../site/civic_institution_borough_office.mjs";
 
 export const AGENCY_IDENTITY_EVIDENCE_SCHEMA = "cityscroll.civic_institution_identity_evidence.v1";
 export const AGENCY_IDENTITY_EVIDENCE_METHOD = "source_preserving_agency_identity_v1";
@@ -88,6 +89,7 @@ export function buildAgencyIdentityEvidence({
   developmentRoleSources = null,
   accountabilitySources = null,
   committeeRoleSources = null,
+  boroughOfficeSources = null,
 } = {}) {
   if (!identity?.canonical_id) return null;
   // A routed profile is not itself a source identity. Route-only and
@@ -181,6 +183,12 @@ export function buildAgencyIdentityEvidence({
     roleEdges = mergeRoleBags(
       roleEdges,
       councilCommitteeRolesForInstitution(identity.canonical_id, committeeRoleSources),
+    );
+  }
+  if (boroughOfficeSources && identity.canonical_id) {
+    roleEdges = mergeRoleBags(
+      roleEdges,
+      boroughOfficeRolesForInstitution(identity.canonical_id, boroughOfficeSources),
     );
   }
   return {
