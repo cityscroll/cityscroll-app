@@ -35,6 +35,7 @@ import {
   mailWatchdogSnapshot,
   recordSchedulerHeartbeat,
   schedulerWatchdogSnapshot,
+  OPS_ALERT_HISTORY_KEY,
   sendInboundWorkerCanary,
 } from "./reliability_watchdogs.mjs";
 import {
@@ -110,7 +111,7 @@ export function checkAdminKey(req, env) {
   if (!env.ADMIN_KEY) return { ok: false, res: json({ error: "not found" }, 404) };
   const url = new URL(req.url);
   const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-  if (key !== env.ADMIN_KEY) return { ok: false, res: json({ error: "unauthorized" }, 401) };
+  if (!timingSafeEqualString(key, env.ADMIN_KEY)) return { ok: false, res: json({ error: "unauthorized" }, 401) };
   return { ok: true };
 }
 
@@ -120,7 +121,7 @@ export function checkOperatorProbeKey(req, env) {
   if (!env.ADMIN_KEY && !env.ANALYTICS_DEV_KEY) return { ok: false, res: json({ error: "not found" }, 404) };
   const url = new URL(req.url);
   const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-  if (key !== env.ADMIN_KEY && key !== env.ANALYTICS_DEV_KEY) return { ok: false, res: json({ error: "unauthorized" }, 401) };
+  if (!timingSafeEqualString(key, env.ADMIN_KEY) && !timingSafeEqualString(key, env.ANALYTICS_DEV_KEY)) return { ok: false, res: json({ error: "unauthorized" }, 401) };
   return { ok: true };
 }
 
@@ -130,8 +131,46 @@ export async function handleAdminOpsAlert(req, env) {
   if (req.method !== "POST") return json({ error: "method" }, 405);
   let body;
   try { body = await req.json(); } catch { return json({ error: "invalid-json" }, 400); }
-  if (!body?.guard || !body?.text) return json({ error: "guard-and-text-required" }, 400);
-  return json({ ok: true, ...(await emitOpsAlertOnce(env, body)) }, 200);
+  const validRunUrl = (value) => {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && url.hostname === "github.com"
+        && /^\/cityscroll\/cityscroll-app\/actions\/runs\/\d+\/?$/.test(url.pathname);
+    } catch { return false; }
+  };
+  const validReceiptUrl = (value) => {
+    try {
+      const url = new URL(value);
+      return validRunUrl(`${url.origin}${url.pathname}`) && (!url.hash || url.hash === "#artifacts");
+    } catch { return false; }
+  };
+  if (!body?.guard || !body?.stage || !Array.isArray(body?.findings) || !body.findings.length) {
+    return json({ error: "guard-stage-findings-required" }, 400);
+  }
+  if (!body.first_seen || !body.last_seen || !Number.isFinite(Date.parse(body.first_seen)) || !Number.isFinite(Date.parse(body.last_seen))) {
+    return json({ error: "first-last-seen-required" }, 400);
+  }
+  if (!validRunUrl(body.workflow_run_url) || !validReceiptUrl(body.receipt_url)) {
+    return json({ error: "validated-run-and-receipt-links-required" }, 400);
+  }
+  const alert = await emitOpsAlertOnce(env, body);
+  if (body.guard === "served-artifact-freshness" && env?.ALERT_STATE?.put) {
+    let prior = null;
+    try { prior = JSON.parse(await env.ALERT_STATE.get("ops:freshness:history:v1") || "null"); } catch {}
+    const receipt = {
+      stage: body.stage,
+      status: "FAIL",
+      observed_at: body.last_seen,
+      workflow_run_url: body.workflow_run_url,
+      receipt_url: body.receipt_url,
+      signature: alert.signature,
+    };
+    const receipts = [receipt, ...(Array.isArray(prior?.receipts) ? prior.receipts : [])].slice(0, 30);
+    await env.ALERT_STATE.put("ops:freshness:history:v1", JSON.stringify({
+      schema: "cityscroll.freshness-history.v1", status: "FAIL", observed_at: body.last_seen, receipts,
+    }));
+  }
+  return json({ ok: true, ...alert }, 200);
 }
 
 export async function handleAdminDigestWatchdog(req, env, { now = new Date() } = {}) {
@@ -170,6 +209,37 @@ export async function handleAdminSchedulerHeartbeat(req, env, { now = new Date()
     });
   }
   return json(snapshot, snapshot.ok ? 200 : 503);
+}
+
+export async function handleAdminOpsHealth(req, env, { now = new Date() } = {}) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method" }, 405);
+  const read = async (key) => {
+    try { return JSON.parse(await env?.ALERT_STATE?.get?.(key) || "null"); } catch { return null; }
+  };
+  const [mail, scheduler, alerts, freshness] = await Promise.all([
+    mailWatchdogSnapshot(env, { now }),
+    schedulerWatchdogSnapshot(env, { now }),
+    read(OPS_ALERT_HISTORY_KEY),
+    read("ops:freshness:history:v1"),
+  ]);
+  return privateJson({
+    schema: "cityscroll.ops-health-sanitized.v1",
+    generated_at: now.toISOString(),
+    canary: {
+      status: mail.canary_state || "unavailable",
+      observed_at: mail.canary_inbound?.received_at || mail.canary?.sent_at || null,
+      age_ms: mail.canary_age_ms,
+      findings: mail.findings.slice(0, 20),
+    },
+    watchdog: {
+      scheduler: { ok: scheduler.ok, findings: scheduler.findings.slice(0, 20), heartbeat: scheduler.heartbeat },
+      mail: { ok: mail.ok, findings: mail.findings.slice(0, 20), history: mail.findings_history.slice(0, 30) },
+    },
+    freshness: freshness || { status: "unavailable", receipts: [] },
+    alerts: alerts || { schema: "cityscroll.ops-alert-history.v1", items: [] },
+  }, 200);
 }
 
 export async function handleAdminMailWatchdog(req, env, { now = new Date(), fetchImpl = globalThis.fetch } = {}) {
