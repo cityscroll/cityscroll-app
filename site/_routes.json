@@ -13,6 +13,7 @@
     "/vendors/*",
     "/officials/*",
     "/committees/*",
+    "/administrative-code/*",
     "/browse",
     "/exams/*",
     "/following/packs/*",

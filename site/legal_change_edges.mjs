@@ -129,6 +129,88 @@ function targetId(corpusId, citation) {
   return corpusId === ADMIN_CODE_CORPUS_ID ? `${ADMIN_CODE_CORPUS_ID}:${citation}` : null;
 }
 
+const REDESIGNATION_UNIT = "(?:paragraphs?|subdivisions?|subsections?|subparagraphs?|items?|sections?)";
+
+function citationFromLabel(label) {
+  const match = String(label || "").match(/([0-9]+[A-Za-z]?-[0-9A-Za-z.]+)/);
+  return match ? normalizeAdminCodeCitation(match[1]) : null;
+}
+
+export function parseRedesignationClause(clause) {
+  const input = clean(clause, 8_000);
+  if (!input) return null;
+  const match = input.match(new RegExp(
+    `\\b(${REDESIGNATION_UNIT}\\s+[0-9A-Za-z.-]+)\\b[\\s\\S]{0,240}?\\bis(?:\\s+hereby)?\\s+redesignated\\s+as\\s+(${REDESIGNATION_UNIT}\\s+[0-9A-Za-z.-]+)\\b`,
+    "i",
+  ));
+  if (!match) return null;
+  const formerLabel = clean(match[1], 240);
+  const successorLabel = clean(match[2], 240);
+  return {
+    former_label: formerLabel,
+    former_citation: citationFromLabel(formerLabel),
+    successor_label: successorLabel,
+    successor_citation: citationFromLabel(successorLabel),
+  };
+}
+
+export function redesignationCopy(change, perspective = "successor") {
+  const redesignation = change?.redesignation;
+  if (!redesignation) return null;
+  if (perspective === "former" && redesignation.successor_label) {
+    return `Redesignated as ${redesignation.successor_label}`;
+  }
+  if (redesignation.former_label) return `Formerly ${redesignation.former_label}`;
+  if (redesignation.former_citation) return `Formerly § ${redesignation.former_citation}`;
+  return null;
+}
+
+function attachRedesignation(match) {
+  const parsed = parseRedesignationClause(match.source_text);
+  if (!parsed && !match.redesignation) return match;
+  const successorCitation = parsed?.successor_citation || match.redesignation?.successor_citation || null;
+  const formerCitation = parsed?.former_citation || match.citation;
+  return {
+    ...match,
+    redesignation: {
+      former_label: parsed?.former_label || match.redesignation?.former_label || null,
+      former_citation: formerCitation,
+      successor_label: parsed?.successor_label || match.redesignation?.successor_label || null,
+      successor_citation: successorCitation,
+      successor_provision_id: successorCitation && match.corpus_id === ADMIN_CODE_CORPUS_ID
+        ? targetId(match.corpus_id, successorCitation)
+        : match.redesignation?.successor_provision_id || null,
+    },
+  };
+}
+
+function collapseRedesignateMatches(matches) {
+  const kept = [];
+  const groups = new Map();
+  for (const match of matches) {
+    if (match.operation !== "redesignate") {
+      kept.push(match);
+      continue;
+    }
+    const key = `${match.corpus_id}:${match.source_start}`;
+    groups.set(key, [...(groups.get(key) || []), match]);
+  }
+  for (const group of groups.values()) {
+    const [former, maybeSuccessor] = group;
+    const withRelation = attachRedesignation(former);
+    if (
+      maybeSuccessor
+      && withRelation.redesignation?.successor_citation
+      && maybeSuccessor.citation === withRelation.redesignation.successor_citation
+    ) {
+      kept.push(withRelation);
+      continue;
+    }
+    kept.push(withRelation);
+  }
+  return kept;
+}
+
 function explicitWholeProvisionPatch(text, operationEnd, operation) {
   if (operation !== "amend") return null;
   const remainder = String(text || "").slice(operationEnd);
@@ -176,12 +258,12 @@ function explicitMatches(text, { corpus_id: fallbackCorpusId = null } = {}) {
     }
   }
   const seen = new Set();
-  return matches.filter((match) => {
+  return collapseRedesignateMatches(matches.filter((match) => {
     const key = `${match.operation}:${match.corpus_id}:${match.citation}:${match.source_start}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
-  }).sort((left, right) => left.source_start - right.source_start || left.citation.localeCompare(right.citation, "en-US", { numeric: true }));
+  })).sort((left, right) => left.source_start - right.source_start || left.citation.localeCompare(right.citation, "en-US", { numeric: true }));
 }
 
 export function extractExplicitCodeChanges(value, options = {}) {
@@ -213,6 +295,7 @@ export function extractExplicitCodeChanges(value, options = {}) {
       end: match.source_end,
     },
     patch: match.patch,
+    redesignation: match.redesignation,
     materialization_confidence: "unknown",
   }));
 }
@@ -235,12 +318,24 @@ export function indexLegalChanges(graphs = []) {
   const normalized = graphs.filter((graph) => graph?.schema === LEGAL_CHANGE_GRAPH_SCHEMA);
   const byProvision = new Map();
   const byMatter = new Map();
+  const byLaw = new Map();
   for (const graph of normalized) {
     const matterId = graph.matter?.id || graph.local_law?.matter_id || null;
+    const lawId = graph.local_law?.id || null;
     if (matterId) byMatter.set(matterId, [...(byMatter.get(matterId) || []), graph]);
     for (const change of graph.changes) {
-      const provisionId = change.target.provision_id;
-      if (provisionId) byProvision.set(provisionId, [...(byProvision.get(provisionId) || []), { graph, change }]);
+      const provisionIds = [
+        change.target.provision_id,
+        change.redesignation?.successor_provision_id,
+      ].filter(Boolean);
+      const uniqueIds = [...new Set(provisionIds)];
+      for (const provisionId of uniqueIds) {
+        byProvision.set(provisionId, [...(byProvision.get(provisionId) || []), { graph, change }]);
+      }
+      const instrumentId = change.legal_instrument_id || lawId;
+      if (instrumentId) {
+        byLaw.set(instrumentId, [...(byLaw.get(instrumentId) || []), { graph, change }]);
+      }
     }
   }
   return Object.freeze({
@@ -248,6 +343,7 @@ export function indexLegalChanges(graphs = []) {
     graphs: Object.freeze(normalized),
     by_provision: Object.freeze(Object.fromEntries(byProvision)),
     by_matter: Object.freeze(Object.fromEntries(byMatter)),
+    by_law: Object.freeze(Object.fromEntries(byLaw)),
   });
 }
 
@@ -321,7 +417,11 @@ export function renderLegalChangeList(changes = [], { empty = "No explicit statu
       : "";
     const law = change.state === "prospective" ? "" : lawLinkMarkup(change);
     const state = change.state === "prospective" ? "Prospective proposal" : "Enacted change";
-    return `<li data-code-change-id="${escapeHtml(change.id)}" data-code-change-state="${escapeHtml(change.state)}" data-code-change-operation="${escapeHtml(change.operation)}"><strong>${escapeHtml(change.operation.toUpperCase())}</strong> · ${target} <span class="legal-change-state">${escapeHtml(state)}</span>${law}${timeline}${source}<p>${escapeHtml(change.source?.instruction_text || "Source-stated instruction retained.")}</p>${materializationMarkup(change)}</li>`;
+    const formerly = redesignationCopy(change, "successor");
+    const redesignationMarkup = formerly
+      ? `<p class="code-change-formerly" data-redesignation="1">${escapeHtml(formerly)}</p>`
+      : "";
+    return `<li data-code-change-id="${escapeHtml(change.id)}" data-code-change-state="${escapeHtml(change.state)}" data-code-change-operation="${escapeHtml(change.operation)}"><strong>${escapeHtml(change.operation.toUpperCase())}</strong> · ${target} <span class="legal-change-state">${escapeHtml(state)}</span>${law}${timeline}${source}<p>${escapeHtml(change.source?.instruction_text || "Source-stated instruction retained.")}</p>${redesignationMarkup}${materializationMarkup(change)}</li>`;
   });
   return rows.length ? `<ul class="legal-change-list">${rows.join("")}</ul>` : `<p class="legal-change-empty">${escapeHtml(empty)}</p>`;
 }

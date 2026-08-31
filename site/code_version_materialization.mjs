@@ -535,6 +535,110 @@ export function materializeCodeChange(change = {}, { provision = null, versions 
     });
   }
 
+  if (operation === "redesignate") {
+    const redesignation = change.redesignation;
+    if (!redesignation?.former_label && !redesignation?.successor_label && !redesignation?.successor_provision_id) {
+      return unresolved(change, date, "redesignation is missing an explicit former or successor identity", existingVersions, provision);
+    }
+    const successorId = redesignation.successor_provision_id;
+    const wholeProvisionMove = Boolean(successorId && successorId !== id);
+    if (wholeProvisionMove && !active) {
+      return unresolved(change, date, "no active prior version is available", existingVersions, provision);
+    }
+    if (wholeProvisionMove) {
+      const closed = closeVersion(active, date.effective_at, change, "superseded");
+      const inactive = codeVersionFor(
+        id,
+        "",
+        date.effective_at,
+        change,
+        context,
+        versionStatusAt(date.effective_at, asOf, "redesignated"),
+      );
+      const successor = codeVersionFor(
+        successorId,
+        active.text,
+        date.effective_at,
+        change,
+        context,
+        versionStatusAt(date.effective_at, asOf),
+      );
+      const nextVersions = existingVersions.filter((version) => version.id !== active.id).concat(closed, inactive);
+      const successorProvision = deriveProvision(
+        makeProvision(null, {
+          ...change,
+          target: {
+            ...change.target,
+            provision_id: successorId,
+            citation: redesignation.successor_citation ? `§ ${redesignation.successor_citation}` : change.target.citation,
+          },
+        }, active.text, "current"),
+        change,
+        [successor],
+        asOf || date.effective_at,
+        { effectiveAt: date.effective_at },
+      );
+      const materialization = {
+        status: "materialized",
+        effective_at: date.effective_at,
+        effective_date_basis: date.basis,
+        before_text: active.text,
+        after_text: active.text,
+        diff: readableCodeDiff(active.text, active.text),
+        superseded_version_id: closed.id,
+        version_id: successor.id,
+        redesignation,
+      };
+      const moved = Boolean(asOf && date.effective_at && asOf >= date.effective_at);
+      const updated = deriveProvision(provision, change, nextVersions, asOf, {
+        effectiveAt: date.effective_at,
+      });
+      return freeze({
+        schema: CODE_VERSION_MATERIALIZATION_SCHEMA,
+        change: changeWithStatus(change, "materialized", "high", materialization),
+        materialization_status: "materialized",
+        materialization_confidence: "high",
+        effective_at: date.effective_at,
+        effective_date_basis: date.basis,
+        reason: null,
+        versions: nextVersions,
+        provision: updated && moved
+          ? { ...updated, status: "redesignated", current_text: "" }
+          : updated,
+        successor_versions: [successor],
+        successor_provision: successorProvision,
+        before_text: active.text,
+        after_text: active.text,
+        diff: materialization.diff,
+        redesignation,
+      });
+    }
+    const materialization = {
+      status: "materialized",
+      effective_at: date.effective_at,
+      effective_date_basis: date.basis,
+      before_text: active?.text || provision?.current_text || null,
+      after_text: active?.text || provision?.current_text || null,
+      diff: null,
+      redesignation,
+    };
+    return freeze({
+      schema: CODE_VERSION_MATERIALIZATION_SCHEMA,
+      change: changeWithStatus(change, "materialized", "high", materialization),
+      materialization_status: "materialized",
+      materialization_confidence: "high",
+      effective_at: date.effective_at,
+      effective_date_basis: date.basis,
+      reason: null,
+      versions: existingVersions,
+      provision: deriveProvision(provision, change, existingVersions, asOf, { effectiveAt: date.effective_at }),
+      before_text: materialization.before_text,
+      after_text: materialization.after_text,
+      diff: null,
+      redesignation,
+    });
+  }
+
   if (operation === "repeal") {
     const closed = closeVersion(active, date.effective_at, change);
     const inactive = codeVersionFor(
@@ -605,6 +709,10 @@ export function materializeCodeChanges(changes = [], { provisions = [], versions
     if (result.materialization_status === "materialized" && result.provision?.id) {
       provisionMap.set(result.provision.id, result.provision);
       versionsMap.set(result.provision.id, result.versions);
+    }
+    if (result.materialization_status === "materialized" && result.successor_provision?.id) {
+      provisionMap.set(result.successor_provision.id, result.successor_provision);
+      versionsMap.set(result.successor_provision.id, result.successor_versions || []);
     }
   }
   const materialized = results.filter((result) => result.materialization_status === "materialized").length;
