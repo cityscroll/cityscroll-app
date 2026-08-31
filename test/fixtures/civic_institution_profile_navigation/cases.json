@@ -1,0 +1,18 @@
+{
+  "as_of": "2026-08-31",
+  "dsny": {
+    "canonical_id": "sanitation",
+    "canonical_name": "New York City Department of Sanitation"
+  },
+  "nycedc": {
+    "canonical_id": "economic-development-corporation",
+    "canonical_name": "Economic Development Corporation"
+  },
+  "eep_key": "EQUAL EMPLOYMENT PRACTICES COMMISSION",
+  "unresolved": [
+    "nyc-taxi-and-limousine-commission",
+    "office-of-criminal-justice-128"
+  ],
+  "housing_alias": "n-y-c-housing-authority",
+  "board_id": "brooklyn-cb-15"
+}

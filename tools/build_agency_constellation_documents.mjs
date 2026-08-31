@@ -509,6 +509,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
     });
     if (!view) continue;
     const identity = reconcileAgencyIdentity(id, publisherRows);
+    view.route_identity_report = identityReport;
     view.identity_evidence = buildAgencyIdentityEvidence({
       identity,
       publisherRow: sources.publisher_crosswalk?.entries?.[id] || null,
@@ -580,7 +581,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
         subject_ref: view.subject_ref,
         generated_at: generatedAt,
         view,
-      })}\n`,
+      }, (key, value) => key === "route_identity_report" ? undefined : value)}\n`,
     ]);
   }
 

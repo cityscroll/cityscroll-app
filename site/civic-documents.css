@@ -3529,3 +3529,64 @@ select {
     justify-self: start;
   }
 }
+
+.institution-nav-capabilities {
+  margin: 0 0 var(--space-3);
+}
+
+.institution-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.institution-nav-item {
+  display: grid;
+  gap: 2px;
+}
+
+.institution-nav-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.institution-nav-state {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 1px 8px;
+  color: var(--color-text-muted);
+  font-size: .68rem;
+  line-height: 1.2;
+}
+
+.institution-nav-item[data-evidence-state="blocked"] .institution-nav-state,
+.institution-nav-item[data-evidence-state="unresolved"] .institution-nav-state,
+.institution-nav-stop[data-identity-state] {
+  border-color: var(--color-caution, #8a5a00);
+  color: var(--color-caution, #8a5a00);
+}
+
+.institution-nav-stop {
+  margin: 0 0 var(--space-3);
+}
+
+.institution-nav-disclosure {
+  margin: var(--space-3) 0 0;
+}
+
+.institution-nav-disclosure > summary {
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: .9rem;
+}
+
+.institution-nav-subhead {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: 1rem;
+}

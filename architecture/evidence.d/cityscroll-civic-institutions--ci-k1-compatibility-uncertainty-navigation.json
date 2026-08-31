@@ -1,0 +1,25 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-civic-institutions/ci-k1-compatibility-uncertainty-navigation",
+  "status": "implemented",
+  "fingerprint": "ci-k1-compatibility-uncertainty-navigation.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "institution-profile-navigation",
+      "path": "site/civic_institution_profile_navigation.mjs"
+    },
+    {
+      "id": "agency-profile-navigation-section",
+      "path": "site/agency_constellation_sections/institution_navigation.mjs"
+    },
+    {
+      "id": "institution-profile-navigation-fixtures",
+      "path": "test/fixtures/civic_institution_profile_navigation/cases.json"
+    },
+    {
+      "id": "institution-profile-navigation-tests",
+      "path": "test/civic_institution_profile_navigation.test.mjs"
+    }
+  ]
+}
