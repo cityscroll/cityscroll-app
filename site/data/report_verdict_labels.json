@@ -1,0 +1,31 @@
+{
+  "schema": "cityscroll.report_verdict_labels.v1",
+  "generated_for": "2026-08-31",
+  "labels": [
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:confirmed",
+      "label": "corrected"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:correct",
+      "label": "reviewed"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:ambiguous",
+      "label": "unresolved"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:upstream",
+      "label": "reviewed"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:duplicate",
+      "label": "duplicate"
+    }
+  ]
+}
