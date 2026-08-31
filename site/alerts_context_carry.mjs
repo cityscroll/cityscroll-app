@@ -14,6 +14,11 @@
 
 import { scopeFromWatch, watchFromScope } from "./scope_v0.mjs";
 import { followingUrlFromWatch } from "./following_view.mjs";
+export {
+  HOME_FOLLOWING_ONBOARDING_HREF,
+  homeFollowingEntryHref,
+  isHomeFollowingOnboardingHref,
+} from "./home_following_entry.mjs";
 
 export const SECTION_TO_LENS = Object.freeze({
   Procurement: "money",

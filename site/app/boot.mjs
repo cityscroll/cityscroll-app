@@ -121,15 +121,24 @@ async function watchFromFilters(lens){
   if(carry && typeof carry.alertScopeFromLensState === "function"){
     const scope = carry.alertScopeFromLensState(lens, state);
     if(scope){
-      location.assign(carry.alertsHref(scope, {
-        matchCount:currentLensResultCount(lens),
-        originRoute:`${location.pathname}${location.search}`,
-      }));
+      const href = typeof carry.homeFollowingEntryHref === "function"
+        ? carry.homeFollowingEntryHref(scope, {
+          matchCount:currentLensResultCount(lens),
+          originRoute:`${location.pathname}${location.search}`,
+        })
+        : carry.alertsHref(scope, {
+          matchCount:currentLensResultCount(lens),
+          originRoute:`${location.pathname}${location.search}`,
+        });
+      location.assign(href);
       return;
     }
   }
-  // If context adaptation ever fails, the common server form remains the safe entry.
-  location.assign("/following/");
+  // If context adaptation ever fails, open the canonical Following onboarding entry.
+  const entry = carry && typeof carry.homeFollowingEntryHref === "function"
+    ? carry.homeFollowingEntryHref()
+    : "/following/?onboarding=1";
+  location.assign(entry);
 }
 document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
 
@@ -440,25 +449,33 @@ function currentLensFilterState(tab){
 
 async function currentAlertsEntryHref(){
   const hash = location.hash || "";
-  // On the alerts page itself, keep the current hash (or bare).
-  if(hash === "#alerts" || hash.startsWith("#alerts?")) return "/following/";
+  const onboarding = "/following/?onboarding=1";
+  // Bare or leftover #alerts is a generic Following entry, not a scoped watch.
+  if(hash === "#alerts" || hash.startsWith("#alerts?")) return onboarding;
+  const toFollowing = async (scope, opts) => {
+    const carry = await ensureAlertsContextCarry();
+    if (carry && typeof carry.homeFollowingEntryHref === "function") {
+      return carry.homeFollowingEntryHref(scope, opts);
+    }
+    return onboarding;
+  };
   // Notice detail → notice-scoped entry.
   if(/^#notice\//.test(hash) && lastNoticeContext && lastNoticeContext.row){
     const carry = await ensureAlertsContextCarry();
-    if(!carry) return "/following/";
-    return carry.alertsHref(carry.alertScopeFromNotice(lastNoticeContext.row));
+    if(!carry) return onboarding;
+    return toFollowing(carry.alertScopeFromNotice(lastNoticeContext.row));
   }
   // Land project detail (#land/<project_id>).
   if(/^#land\//.test(hash)){
     const id = decodeURIComponent(hash.slice(6).split("?")[0] || "");
     if(id){
       const carry = await ensureAlertsContextCarry();
-      if(!carry) return "/following/";
+      if(!carry) return onboarding;
       const row = (typeof lRows !== "undefined" && Array.isArray(lRows))
         ? lRows.find(r => r && String(r.project_id) === id)
         : null;
-      if(row) return carry.alertsHref(carry.alertScopeFromLandProject(row));
-      return carry.alertsHref({ lens: "land", filter: { keywords: [], status: "all" }, digKind: "rezone", projectId: id });
+      if(row) return toFollowing(carry.alertScopeFromLandProject(row));
+      return toFollowing({ lens: "land", filter: { keywords: [], status: "all" }, digKind: "rezone", projectId: id });
     }
   }
   // Active lens tab with filters.
@@ -474,13 +491,13 @@ async function currentAlertsEntryHref(){
     if(hasBits){
       const carry = await ensureAlertsContextCarry();
       const scope = carry && carry.alertScopeFromLensState(tab, state);
-      if(scope) return carry.alertsHref(scope, {
+      if(scope) return toFollowing(scope, {
         matchCount:currentLensResultCount(tab),
         originRoute:`${location.pathname}${location.search}`,
       });
     }
   }
-  return "/following/";
+  return onboarding;
 }
 
 async function syncAlertsEntryHrefs(){

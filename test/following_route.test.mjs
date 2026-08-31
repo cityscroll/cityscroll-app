@@ -4,9 +4,15 @@ import test from "node:test";
 
 import {
   buildFollowingViewModel,
+  canonicalFollowingScope,
   renderFollowingDocument,
+  watchFromFollowingParams,
 } from "../site/following_view.mjs";
 import { followingManagementUrl } from "../site/following_personal_state.mjs";
+import {
+  HOME_FOLLOWING_ONBOARDING_HREF,
+  homeFollowingEntryHref,
+} from "../site/home_following_entry.mjs";
 
 test("Following keeps a scoped watch's canonical return path visible without a token", () => {
   const html = renderFollowingDocument(buildFollowingViewModel({
@@ -71,6 +77,44 @@ test("manage-watches recovery stays on the canonical Following route", () => {
   assert.match(following, /data-personal-retry/);
   assert.match(following, /keepExisting: true/);
   assert.doesNotMatch(following, /\/prefs\/new|\/alerts\/manage/);
+});
+
+test("generic homepage onboarding opens the Following choose step", () => {
+  const watch = watchFromFollowingParams(new URL(HOME_FOLLOWING_ONBOARDING_HREF, "https://cityscroll.org").searchParams);
+  const html = renderFollowingDocument(buildFollowingViewModel(watch, { templates: [] }));
+  assert.equal(watch.onboarding, true);
+  assert.equal(watch.requested, false);
+  assert.match(html, /data-following-journey="choose"/);
+  assert.match(html, /Choose what to follow/);
+  assert.doesNotMatch(html, /data-following-subscribe-form/);
+});
+
+test("homepage scoped entry round-trips the canonical Following URL", () => {
+  const href = homeFollowingEntryHref({
+    lens: "meetings",
+    filter: { keywords: ["curb"], borough: "Queens" },
+    frequency: "weekly",
+  });
+  const parsed = watchFromFollowingParams(new URL(href, "https://cityscroll.org").searchParams);
+  assert.deepEqual(
+    canonicalFollowingScope(parsed),
+    canonicalFollowingScope({ lens: "meetings", filter: { keywords: ["curb"], borough: "Queens" } }),
+  );
+  const html = renderFollowingDocument(buildFollowingViewModel({ ...parsed, requested: true }));
+  assert.match(html, /Notify me when new hearings and meetings mentioning 'curb' are published in Queens\./);
+  assert.match(html, /name="email"/);
+});
+
+test("invalid homepage context and direct Following entry stay on the canonical builder", () => {
+  assert.equal(homeFollowingEntryHref({ lens: "not-a-lens", filter: { keywords: ["x"] } }), HOME_FOLLOWING_ONBOARDING_HREF);
+  const direct = renderFollowingDocument(buildFollowingViewModel({}));
+  assert.match(direct, /data-following-journey="choose"/);
+  assert.match(direct, /Follow what you care about/);
+  const unrecognized = renderFollowingDocument(buildFollowingViewModel(
+    watchFromFollowingParams(new URLSearchParams("lens=not-a-lens&filter=%7B%7D")),
+  ));
+  assert.match(unrecognized, /data-following-journey="preview"/);
+  assert.doesNotMatch(unrecognized, /data-watch-key|recognized="true"/);
 });
 
 test("district watches make the Community Board picker discoverable", () => {
