@@ -219,53 +219,18 @@ a substitution where the term carries legal force.
 | cordwood | wood measured in cords | Keep the number and unit. |
 | shall | must | Use only where the source imposes a requirement. |
 
-## Ranked plan for ships 2–4
+## Observed remediation classes
 
-### 2. Typed timed-event extraction
+The census identifies three distinct defect classes: typed event semantics,
+source-grounded actions, and pattern-specific plain-language rendering. The
+measurements, legal-language cautions, corpus hashes, and negative examples above
+remain the reproducible evidence. Implementation objectives and sequencing are not
+maintained here; their ownership disposition is recorded in the
+[RCP-01 receipt](repository-control-plane/semantic-owner-mapping.v1.json).
 
-Highest priority because an incorrect deadline can cause direct harm.
+## Reproduction contract
 
-1. Introduce a typed Property event record with `kind`, start/end or deadline, source field,
-   exact evidence span, and confidence.
-2. Cover hearing, auction-window start/end, bid/proposal deadline, inspection/showing,
-   accommodation-request deadline, and result/award date separately.
-3. Require a bid or proposal anchor for `bid_deadline`; remove the unqualified “no later
-   than” match. Add the hearing and UDAAP cases above as negative fixtures.
-4. Distinguish `event_date` semantics by pattern before using it as an action deadline.
-5. Re-run this census and require zero known cross-type false positives. Preserve honest
-   empty values when a date is absent.
-
-### 3. Source-grounded action extraction
-
-1. Map typed events and literal verbs to `bid`, `inspect`, `attend/be heard`, `inquire or
-   claim`, `request accommodation`, and `review result` actions.
-2. Surface the exact method the notice gives: URL, email, mailing address, phone, or venue.
-3. Do not create an `object` or `comment` action for this baseline corpus: neither action is
-   present in the rendered Property body measured here. Add them only when future source
-   text supplies the act, method, and any deadline.
-4. Gate past sales and hearings so expired actions become historical context, not live calls
-   to action.
-5. Measure action coverage and source-span precision by pattern with this script's signal and
-   current-extraction sections.
-
-### 4. Pattern-specific plain-language templates
-
-1. Add a short CityScroll-authored summary for each measured pattern: what is happening,
-   key dates, what a reader can do, and where the statement came from.
-2. Build summaries only from extracted source fields and evidence spans. Never infer legal
-   effect, eligibility, ownership, or an unstated deadline.
-3. Pair unavoidable legal terms with the faithful definitions above. Keep the official
-   notice disclosure verbatim and clearly labeled.
-4. Extend the census with a `plain_summary` surface and ratchet that authored text to grade
-   7 or below. Keep the official-body distribution as an invariant reference rather than
-   claiming CityScroll rewrote the source.
-5. Start with disposition/UDAAP/acquisition templates: 146 notices, nearly all above grade
-   12, with a shared hearing and accommodation structure. Follow with unclaimed-property
-   notices because they have the highest body grade and a distinct claim workflow.
-
-## Ratchet contract
-
-Future ships should run the same bounded corpus where comparable, record the new corpus
+Changes to these surfaces run the same bounded corpus where comparable, record the new corpus
 hash when the source changes, and report both coverage and precision:
 
 - official title/body grade distribution by pattern;

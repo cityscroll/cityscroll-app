@@ -33,7 +33,7 @@ The generated register in `docs/data-sources.md` is the public surface for this 
 | `stats.html` | `GET /stats` edge cache | `edge-materialized` + cron prewarm | Public City Record corpus/source/language coverage; no product-use telemetry. | Daily `prewarmStats` keeps the official corpus aggregate warm. Private operational counters are assembled only on authenticated `/admin/stats`. |
 | `about.html` / `api.html` / `analytics.js` / `stats.html` | `fetch` to `window.CROL_API_ORIGIN` + fallback `window.CROL_API_FALLBACK_ORIGIN` (e.g. `/stats`, `/forecast`, `/property-locations`, etc.) | `edge-materialized` | These endpoints already use worker delivery and are cache-safe by route pattern. | Aligned, no migration needed (stats prewarm above). |
 
-## Migration plan and proof obligations
+## Current delivery classification and proof contract
 
 - Class-1 candidates (`inline-at-build`): no new candidates identified beyond existing committed build artifacts.
 - Class-2 candidates (`edge-materialized`): existing Worker paths are already in use and match the precompute-first target.
@@ -42,7 +42,7 @@ The generated register in `docs/data-sources.md` is the public surface for this 
 
 ## Audit hash-compare + parity note
 
-Any future class-1/class-2 migration from this list should include:
+Any change to a class-1/class-2 path is verified with:
 
 1. 20-sample p95 latency check pre/post migration.
 2. Deterministic golden-output hash compare for pages depending on that surface.
