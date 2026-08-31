@@ -133,7 +133,7 @@ export function buildReceipt(policy, rootText) {
     directory_guidance_audit: {
       tracked_instruction_paths: audit.actual,
       retained_local_files: [],
-      materiality: "No independent subtree-local instruction file exists. CLAUDE.md is a compatibility symlink to the root authority."
+      materiality: "No tracked independent subtree-local instruction file exists."
     },
     pointer_resolution: Object.fromEntries((policy.required_pointers || []).map((path) => [path, existsSync(join(ROOT, path)) ? "resolved" : "missing"])),
     architecture_preflight: {

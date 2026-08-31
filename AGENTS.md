@@ -74,10 +74,9 @@ contracts. Do not turn it into a delivery log, roadmap, module inventory, or car
 
 ## Directory guidance
 
-There are currently no independent directory-local `AGENTS.md` or `CLAUDE.md` files. Root
-[`CLAUDE.md`](CLAUDE.md) is a compatibility symlink to this file, not a second authority. Add local
-guidance only when a documented material subtree rule changes how files there must be edited or
-verified; keep it current-contract-only and register it in the instruction audit policy.
+There are currently no tracked directory-local `AGENTS.md` or `CLAUDE.md` files. Add local guidance
+only when a documented material subtree rule changes how files there must be edited or verified;
+keep it current-contract-only and register it in the instruction audit policy.
 
 ## Maintaining this file
 

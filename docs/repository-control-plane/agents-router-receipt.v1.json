@@ -17,8 +17,8 @@
       "lines": 4641
     },
     "after": {
-      "bytes": 6214,
-      "lines": 88
+      "bytes": 6115,
+      "lines": 87
     },
     "initial_ceiling_bytes": 12000,
     "current_ceiling_bytes": 12000
@@ -57,7 +57,7 @@
       "AGENTS.md"
     ],
     "retained_local_files": [],
-    "materiality": "No independent subtree-local instruction file exists. CLAUDE.md is a compatibility symlink to the root authority."
+    "materiality": "No tracked independent subtree-local instruction file exists."
   },
   "pointer_resolution": {
     "README.md": "resolved",

@@ -4,9 +4,7 @@
   "ceiling_history_bytes": [12000],
   "max_bytes": 12000,
   "instruction_files": ["AGENTS.md"],
-  "compatibility_aliases": {
-    "CLAUDE.md": "AGENTS.md"
-  },
+  "compatibility_aliases": {},
   "required_pointers": [
     "README.md",
     "ARCHITECTURE.md",
