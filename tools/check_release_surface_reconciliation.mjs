@@ -23,6 +23,7 @@ import {
   writeReleaseSurfaceReceipt,
 } from "./release_surface_reconciliation.mjs";
 import { verifyWorkerTriggerCoverage } from "./worker_trigger_coverage.mjs";
+import { reconcileDerivedArchitectureEvidence } from "./architecture_evidence_shards.mjs";
 
 const DEFAULT_OUTPUT = ".artifacts/release-surface-receipt.json";
 
@@ -94,11 +95,13 @@ async function main(argv = process.argv.slice(2)) {
 
   const sourceCardsPath = argument(argv, "--source-cards");
   const generatedBoardPath = argument(argv, "--generated-board");
-  stages.card_reconciliation = reconcileCardProjection({
-    sourceCards: sourceCardsPath ? json(sourceCardsPath) : undefined,
-    generatedBoard: generatedBoardPath ? json(generatedBoardPath) : undefined,
-    projectionPath: generatedBoardPath || undefined,
-  });
+  stages.card_reconciliation = sourceCardsPath || generatedBoardPath
+    ? reconcileCardProjection({
+      sourceCards: sourceCardsPath ? json(sourceCardsPath) : undefined,
+      generatedBoard: generatedBoardPath ? json(generatedBoardPath) : undefined,
+      projectionPath: generatedBoardPath || undefined,
+    })
+    : reconcileDerivedArchitectureEvidence({ root: process.cwd() });
 
   const sourceReceiptPath = argument(argv, "--source-receipt");
   if (sourceReceiptPath) {

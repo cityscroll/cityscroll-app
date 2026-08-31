@@ -9,6 +9,7 @@ import {
   replayOutbox,
 } from "../tools/external_schedule_outbox.mjs";
 import { auditSchedulerOwnership } from "../tools/audit_scheduler_ownership.mjs";
+import { publishHeartbeat } from "../tools/external_schedule_runner.mjs";
 
 function fakeGithub() {
   const issues = [];
@@ -89,4 +90,32 @@ test("targeted scheduled ownership is independent of GitHub Actions", async () =
   const audit = await auditSchedulerOwnership();
   assert.equal(audit.ok, true, audit.errors.join("; "));
   assert.deepEqual(audit.targets, ["action-links-live", "source-contracts-live", "digest-shadow-monitor"]);
+});
+
+test("scheduler heartbeat distinguishes missing credential, rejection, and verified liveness", async () => {
+  const stateDir = await mkdtemp(join(tmpdir(), "crol-heartbeat-"));
+  const now = new Date("2026-08-31T12:00:00.000Z");
+  const priorKey = process.env.CITYSCROLL_ADMIN_KEY;
+  const priorUrl = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL;
+  process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = "https://api.example.test/admin/reliability/scheduler";
+  try {
+    delete process.env.CITYSCROLL_ADMIN_KEY;
+    assert.equal((await publishHeartbeat(stateDir, now, [])).status, "unconfigured");
+    process.env.CITYSCROLL_ADMIN_KEY = "secret";
+    assert.equal((await publishHeartbeat(stateDir, now, [], { fetchImpl: async () => ({ ok: false, status: 403 }) })).status, "failed");
+    let requests = 0;
+    const success = await publishHeartbeat(stateDir, now, ["controlled-job"], {
+      fetchImpl: async (_url, options = {}) => {
+        requests += 1;
+        if (options.method === "POST") return { ok: true, status: 200 };
+        return { ok: true, status: 200, json: async () => ({ ok: true }) };
+      },
+    });
+    assert.equal(success.status, "succeeded");
+    assert.equal(success.verified, true);
+    assert.equal(requests, 2);
+  } finally {
+    if (priorKey == null) delete process.env.CITYSCROLL_ADMIN_KEY; else process.env.CITYSCROLL_ADMIN_KEY = priorKey;
+    if (priorUrl == null) delete process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL; else process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL = priorUrl;
+  }
 });

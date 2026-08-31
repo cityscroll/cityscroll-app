@@ -2471,9 +2471,8 @@ export async function sendOpsAlert(env, { guard, subject, text, observedAt = new
     return result;
   }
   const safeGuard = String(guard || "reliability").slice(0, 80);
-  const safeGuardHtml = safeGuard.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-  const body = `<h1>${safeGuardHtml}</h1><p>${String(text || "Reliability check failed.")
-    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>")}</p><p>Observed at ${observedAt}</p>`;
+  const body = `<p>${String(text || `${safeGuard} failed at ${observedAt}.`)
+    .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", " ")}</p>`;
   try {
     const accepted = await sendEmail(env, env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>", OPS_ALERT_TO,
       subject || `CityScroll reliability alert: ${safeGuard}`, body, null, false);

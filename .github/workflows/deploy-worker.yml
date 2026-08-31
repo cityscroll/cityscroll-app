@@ -60,8 +60,8 @@ jobs:
           node tools/check_release_surface_reconciliation.mjs \
             --source-commit "$GITHUB_SHA" \
             --worker-coverage .artifacts/worker-trigger-coverage.json \
-            --required-stages generation_output,card_reconciliation,generated_evidence_freshness,served_artifact_freshness,pages_deployment,worker_trigger_coverage,worker_startup,worker_release,data_publication,live_smoke,watchdog,scheduler,alert_delivery \
-            --output .artifacts/release-surface-receipt.json || true
+            --required-stages card_reconciliation,worker_trigger_coverage \
+            --output .artifacts/release-surface-receipt.json
       - name: Build versioned Worker route read models
         run: node tools/build_worker_route_read_models.mjs --output-dir "$RUNNER_TEMP/cityscroll-worker-route-read-models" --check
       - name: Verify Worker bundle budget and route read-model canaries

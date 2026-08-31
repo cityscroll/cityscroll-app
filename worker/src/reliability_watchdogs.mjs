@@ -12,6 +12,8 @@ export const MAIL_CANARY_STALE_MS = 36 * 60 * 60 * 1000;
 export const DEFAULT_SUBSCRIBE_ADDRESS = "subscribe@crol-list.org";
 export const MAIL_FINDINGS_HISTORY_KEY = "ops:mail:findings:history";
 export const MAIL_FINDINGS_HISTORY_LIMIT = 30;
+export const OPS_ALERT_HISTORY_KEY = "ops:alert:history:v1";
+export const OPS_ALERT_HISTORY_LIMIT = 50;
 export const MAIL_CANARY_TOKEN_PREFIX_LENGTH = 8;
 export const HUMAN_OPS_MAILBOXES = Object.freeze([
   "team@cityscroll.org",
@@ -434,18 +436,93 @@ export async function schedulerWatchdogSnapshot(env, { now = new Date(), maxAgeM
   return { ok: findings.length === 0, findings, heartbeat, mail };
 }
 
-export async function emitOpsAlertOnce(env, { guard, fingerprint, subject, text, persistAttempt = false } = {}) {
-  const alertKey = `ops:alert:${guard}:${fingerprint || new Date().toISOString().slice(0, 13)}`;
-  if (await env?.ALERT_STATE?.get?.(alertKey)) return { sent: false, reason: "already-alerted" };
+function normalizedFinding(value) {
+  return String(value || "")
+    .replace(/\b\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z\b/g, "<timestamp>")
+    .replace(/\b(?:run|request|deployment)[-_ ]?id[=: ]+[A-Za-z0-9_-]+\b/gi, (match) => match.replace(/[=: ].*$/, "=<id>"))
+    .replace(/\s+/g, " ").trim();
+}
+
+export async function canonicalOpsFailureSignature({ guard, stage = "unknown", findings = [], fingerprint } = {}) {
+  if (fingerprint) return String(fingerprint).slice(0, 128);
+  const material = JSON.stringify({
+    guard: String(guard || ""),
+    stage: String(stage || "unknown"),
+    findings: [...new Set((Array.isArray(findings) ? findings : [findings]).map(normalizedFinding).filter(Boolean))].sort(),
+  });
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(material));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function alertParagraph(record, { rollup = false } = {}) {
+  const what = record.findings[0] || `${record.guard} failed`;
+  const prefix = rollup ? `${record.guard} repeated ${record.count} times` : `${record.guard} broke`;
+  return `${prefix}: ${what}. First seen ${record.first_seen}; last seen ${record.last_seen}. Workflow run: ${record.latest_run_url}. Raw receipt: ${record.latest_receipt_url}.`;
+}
+
+async function updateAlertHistory(kv, record) {
+  const history = await readJson(kv, OPS_ALERT_HISTORY_KEY);
+  const items = [record, ...(Array.isArray(history?.items) ? history.items : []).filter((row) => row.signature !== record.signature)]
+    .slice(0, OPS_ALERT_HISTORY_LIMIT);
+  await putJson(kv, OPS_ALERT_HISTORY_KEY, {
+    schema: "cityscroll.ops-alert-history.v1",
+    observed_at: record.last_seen,
+    items,
+  });
+}
+
+export async function emitOpsAlertOnce(env, input = {}) {
+  const now = input.now instanceof Date ? input.now : new Date(input.last_seen || Date.now());
+  const guard = String(input.guard || "reliability").slice(0, 80);
+  const findings = (Array.isArray(input.findings) ? input.findings : [input.text]).map(normalizedFinding).filter(Boolean).slice(0, 20);
+  const signature = await canonicalOpsFailureSignature({ ...input, guard, findings });
+  const alertKey = `ops:alert:signature:${signature}`;
+  const prior = await readJson(env?.ALERT_STATE, alertKey);
+  const firstSeen = prior?.first_seen || input.first_seen || now.toISOString();
+  const record = {
+    schema: "cityscroll.ops-alert-signature.v1",
+    signature,
+    guard,
+    stage: String(input.stage || prior?.stage || "unknown").slice(0, 80),
+    findings,
+    first_seen: firstSeen,
+    last_seen: input.last_seen || now.toISOString(),
+    count: (Number(prior?.count) || 0) + 1,
+    latest_run_url: input.workflow_run_url || prior?.latest_run_url || null,
+    latest_receipt_url: input.receipt_url || prior?.latest_receipt_url || null,
+    sent_at: prior?.sent_at || null,
+    rollup_day: prior?.rollup_day || null,
+    delivery_finding: prior?.delivery_finding || null,
+  };
+  const today = day(now);
+  const rollup = !!prior && prior.rollup_day !== today && day(prior.last_seen) !== today;
+  const shouldSend = !prior || rollup;
+  if (!shouldSend) {
+    await putJson(env?.ALERT_STATE, alertKey, record);
+    await updateAlertHistory(env?.ALERT_STATE, record);
+    return { sent: false, reason: "already-alerted", signature, record };
+  }
   const { sendOpsAlert } = await import("./alerts.mjs");
   let result;
   try {
-    result = await sendOpsAlert(env, { guard, subject, text });
+    result = await sendOpsAlert(env, {
+      guard,
+      subject: input.subject || `CityScroll reliability alert: ${guard}`,
+      text: alertParagraph(record, { rollup }),
+      observedAt: record.last_seen,
+    });
   } catch (error) {
     result = { accepted: false, reason: "resend-rejected", error: String(error?.message || error) };
   }
-  if (result.accepted || persistAttempt) await env?.ALERT_STATE?.put?.(alertKey, new Date().toISOString());
-  return { sent: !!result.accepted, result, reason: result.accepted ? null : (result.reason || "rejected") };
+  if (result.accepted) {
+    record.sent_at = record.last_seen;
+    if (rollup) record.rollup_day = today;
+  } else {
+    record.delivery_finding = { observed_at: record.last_seen, reason: result.reason || "rejected" };
+  }
+  await putJson(env?.ALERT_STATE, alertKey, record);
+  await updateAlertHistory(env?.ALERT_STATE, record);
+  return { sent: !!result.accepted, result, reason: result.accepted ? null : (result.reason || "rejected"), signature, record };
 }
 
 async function appendMailFindingsHistory(env, records, now = new Date()) {

@@ -274,12 +274,12 @@ async function pendingOutboxCount(stateDir) {
   } catch { return 0; }
 }
 
-async function publishHeartbeat(stateDir, now, dueJobs) {
+export async function publishHeartbeat(stateDir, now, dueJobs, { fetchImpl = fetch } = {}) {
   const url = process.env.CITYSCROLL_SCHEDULER_HEARTBEAT_URL
     || "https://api.cityscroll.org/admin/reliability/scheduler";
   const key = process.env.CITYSCROLL_ADMIN_KEY || process.env.ADMIN_KEY;
   if (!url || !key) return { status: "unconfigured" };
-  const response = await fetch(url, {
+  const response = await fetchImpl(url, {
     method: "POST",
     headers: { authorization: `Bearer ${key}`, "content-type": "application/json" },
     body: JSON.stringify({
@@ -289,7 +289,18 @@ async function publishHeartbeat(stateDir, now, dueJobs) {
       due_jobs: dueJobs,
     }),
   });
-  return { status: response.ok ? "succeeded" : "failed", http_status: response.status };
+  if (!response.ok) return { status: "failed", http_status: response.status };
+  const verification = await fetchImpl(url, {
+    headers: { authorization: `Bearer ${key}` },
+  });
+  let snapshot = null;
+  try { snapshot = await verification.json(); } catch {}
+  return {
+    status: verification.ok && snapshot?.ok === true ? "succeeded" : "failed",
+    http_status: response.status,
+    verification_status: verification.status,
+    verified: verification.ok && snapshot?.ok === true,
+  };
 }
 
 async function main() {
@@ -300,15 +311,17 @@ async function main() {
   const selected = arg("--job");
   const now = new Date();
   const due = selected ? jobs.jobs.filter((job) => job.id === selected) : jobs.jobs.filter((job) => job.schedule.some((expression) => cronMatches(expression, now)));
-  const heartbeat = await publishHeartbeat(stateDir, now, due.map((job) => job.id));
   const summaries = [];
   for (const job of due) {
     const output = await runScheduledJob(job, { stateDir, now });
     summaries.push({ id: job.id, status: output.result.status });
   }
   const replayAfter = await replayOutbox({ stateDir, github });
+  // Scheduler liveness is a postcondition of the real cycle, distinct from every
+  // scheduled-job and digest-shadow receipt. A rejected write makes the cycle fail.
+  const heartbeat = await publishHeartbeat(stateDir, new Date(), due.map((job) => job.id));
   process.stdout.write(`${JSON.stringify({ replayBefore, heartbeat, due: summaries, replayAfter }, null, 2)}\n`);
-  if (summaries.some((summary) => summary.status !== "healthy")) process.exitCode = 1;
+  if (heartbeat.status !== "succeeded" || summaries.some((summary) => summary.status !== "healthy")) process.exitCode = 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main().catch((error) => { console.error(error?.stack || error); process.exitCode = 1; });
