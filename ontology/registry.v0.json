@@ -1820,15 +1820,124 @@
     },
     {
       "id": "about_project",
-      "status": "unregistered",
-      "from": "notice",
+      "status": "registered",
+      "from": "notice|meeting",
       "to": "project",
-      "reason": "Land spine joins exist in product code without a shared link-type id.",
+      "relation": "about_project",
+      "inverse": "has_related_proceeding",
+      "reason": "Exact City Record ULURP or ZAP meeting join that the record concerns a land project. Compatibility consumers keep decides_land_project until migration is complete.",
+      "contract_ref": "cityscroll.land_project_decision_relation.v1",
+      "edge_schema": "cityscroll.land_project_decision_relation.v1",
+      "required_evidence": [
+        "source_record",
+        "exact_join_key",
+        "exact_join_value",
+        "source_fields",
+        "method_version",
+        "observed_time",
+        "semantic_threshold"
+      ],
+      "semantic_threshold": "exact_project_or_application_or_ulurp_reference",
+      "negative_rule": "A meeting title, venue, body identity, date, draft row, or exact project join never proves decides, issues_recommendation, adopts, or rejects.",
       "backing": [
-        "land_event_spine"
+        "land_event_spine",
+        "object_links.makeMeetingLandProjectLink",
+        "land_project_decision_relations"
       ],
       "label": "About project",
-      "grounding": "gap"
+      "grounding": "partial"
+    },
+    {
+      "id": "reviews_project",
+      "status": "registered",
+      "from": "notice|meeting",
+      "to": "project",
+      "relation": "reviews_project",
+      "inverse": "reviewed_at",
+      "reason": "Exact meeting join for a review hearing. The hearing reviews the project; it is not a documented disposition.",
+      "contract_ref": "cityscroll.land_project_decision_relation.v1",
+      "edge_schema": "cityscroll.land_project_decision_relation.v1",
+      "required_evidence": [
+        "source_record",
+        "exact_join_key",
+        "exact_join_value",
+        "source_fields",
+        "method_version",
+        "observed_time",
+        "semantic_threshold"
+      ],
+      "semantic_threshold": "exact_project_or_application_or_ulurp_reference",
+      "negative_rule": "Never treat a Community Board, Borough President, Borough Board, CPC, or Council hearing as a decision from the meeting edge alone.",
+      "backing": [
+        "object_links.makeMeetingLandProjectLink",
+        "land_project_decision_relations"
+      ],
+      "label": "Reviews project",
+      "grounding": "partial"
+    },
+    {
+      "id": "decides_land_project",
+      "status": "registered",
+      "from": "notice|meeting",
+      "to": "project",
+      "relation": "decides_land_project",
+      "inverse": "has_meeting_join",
+      "reason": "Staged compatibility projection of exact meeting→land-project joins. Canonical semantics are about_project or reviews_project. Existing entity-intelligence, project-connections, calendar, agency, and pivot consumers keep this id until migration is complete.",
+      "contract_ref": "cityscroll.land_project_decision_relation.v1",
+      "edge_schema": "cityscroll.land_project_decision_relation.v1",
+      "compatibility_for": [
+        "about_project",
+        "reviews_project"
+      ],
+      "required_evidence": [
+        "source_record",
+        "exact_join_key",
+        "exact_join_value",
+        "source_fields",
+        "method_version",
+        "observed_time",
+        "semantic_threshold"
+      ],
+      "semantic_threshold": "exact_project_or_application_or_ulurp_reference",
+      "negative_rule": "Compatibility only. This identifier does not mean the meeting decided the project.",
+      "backing": [
+        "object_links.makeMeetingLandProjectLink",
+        "project_connections",
+        "project_calendar",
+        "entity_intelligence"
+      ],
+      "label": "Meeting-land project join (compatibility)",
+      "grounding": "partial"
+    },
+    {
+      "id": "project_disposition",
+      "status": "registered",
+      "from": "community-board|borough-president|borough-board|agency",
+      "to": "project",
+      "relation": "project_disposition",
+      "inverse": "has_disposition_from",
+      "reason": "Documented ZAP disposition with an explicit authoritative outcome. Draft, pending, hearing-only, and meeting-join rows stay non-decisional.",
+      "contract_ref": "cityscroll.land_project_decision_relation.v1",
+      "edge_schema": "cityscroll.land_project_decision_relation.v1",
+      "required_evidence": [
+        "source_record",
+        "exact_join_key",
+        "exact_join_value",
+        "source_fields",
+        "method_version",
+        "observed_time",
+        "semantic_threshold",
+        "explicit_authoritative_disposition"
+      ],
+      "semantic_threshold": "explicit_authoritative_disposition",
+      "negative_rule": "Draft status, pending labels, meeting presence, and exact project joins never mint a documented decision.",
+      "backing": [
+        "zap_outcomes",
+        "project_connections",
+        "land_project_decision_relations"
+      ],
+      "label": "Project disposition",
+      "grounding": "partial"
     },
     {
       "id": "item_on_agenda",

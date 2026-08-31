@@ -1,0 +1,101 @@
+{
+  "schema": "cityscroll.land_project_decision_relation.audit.v1",
+  "id": "cityscroll-land-decision-path/ldp-06-decides-land-project-audit",
+  "method": "land_project_decision_relation_v1",
+  "method_version": "1.0.0",
+  "migration": "staged_compatibility",
+  "compatibility_relation": "decides_land_project",
+  "canonical_relations": [
+    "about_project",
+    "reviews_project",
+    "issues_recommendation",
+    "project_disposition",
+    "adopts",
+    "rejects"
+  ],
+  "specimens": {
+    "hearing_2023X0149": {
+      "project_id": "2023X0149",
+      "notice_id": "20260608005",
+      "ulurp_token": "240206ZMX",
+      "source_fields": ["body", "ulurp_numbers"],
+      "method": "exact_ulurp_token_v1",
+      "tier": "deterministic_exact_key",
+      "canonical_relation": "reviews_project",
+      "is_decision": false
+    },
+    "draft_2025K0305": {
+      "project_id": "2025K0305",
+      "disposition_names": [
+        "2025K0305_MM_BK CB11",
+        "2025K0305_MM_BK CB13",
+        "2025K0305_MM_BK BP"
+      ],
+      "status": "Draft",
+      "is_decision": false
+    }
+  },
+  "producers": [
+    {
+      "id": "makeMeetingLandProjectLink",
+      "path": "entity_resolution/cross_domain/object_links.mjs",
+      "emits": "decides_land_project",
+      "role": "exact meeting→project join; compatibility identifier only"
+    },
+    {
+      "id": "joinMeetingsToLandProjects",
+      "path": "entity_resolution/cross_domain/object_links.mjs",
+      "emits": "decides_land_project"
+    },
+    {
+      "id": "meetingLandLinksForObservation",
+      "path": "entity_resolution/cross_domain/object_links.mjs",
+      "emits": "decides_land_project"
+    },
+    {
+      "id": "buildEntityIntelligence",
+      "path": "tools/build_entity_intelligence.mjs",
+      "emits": "decides_land_project"
+    },
+    {
+      "id": "project_connections_city_record_notices",
+      "path": "site/project_connections.mjs",
+      "emits": "decides_land_project",
+      "role": "exact notice event_date rows reuse the compatibility identifier"
+    }
+  ],
+  "consumers": [
+    {
+      "id": "project_connections",
+      "path": "site/project_connections.mjs",
+      "reads": "decides_land_project",
+      "canonical": "about_project|reviews_project"
+    },
+    {
+      "id": "project_calendar",
+      "path": "site/project_calendar.mjs",
+      "reads": "decides_land_project"
+    },
+    {
+      "id": "entity_intelligence_index",
+      "path": "warehouse/lib/entity_intelligence_index.mjs",
+      "reads": "decides_land_project"
+    },
+    {
+      "id": "worker_d1_read_models",
+      "path": "tools/build_worker_d1_read_models.mjs",
+      "reads": "decides_land_project"
+    },
+    {
+      "id": "land_project_connections_ui",
+      "path": "site/app/land.mjs",
+      "reads": "project_connections groups"
+    },
+    {
+      "id": "functional_pivots",
+      "path": "test/functional/05_entity_pages_pivots.py",
+      "reads": "decides_land_project"
+    }
+  ],
+  "negative_rule": "A meeting title, venue, body identity, date, draft row, or exact project join never proves decides, issues_recommendation, adopts, or rejects."
+}
