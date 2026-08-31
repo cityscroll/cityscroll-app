@@ -24,12 +24,12 @@
   "exam_count": 228,
   "screenshots": {
     "before": [
-      "backstage://cityscroll-evidence/objects/sha256/a0/a046398afba365c6805f0f873cc5f7cacbb2f5e4a654b5c427b1af3904b4bf42.webp",
-      "backstage://cityscroll-evidence/objects/sha256/99/994f6df2c4bc150e6bdf2e3bc814013f59b7f17e77de72920f4ec41f6808aea2.webp"
+      null,
+      null
     ],
     "after": [
-      "backstage://cityscroll-evidence/objects/sha256/46/46c96889a10604535d569fdfd4ef98272c5321f8993e535ba5d8ac8eda765cf3.webp",
-      "backstage://cityscroll-evidence/objects/sha256/d1/d19b1dc2f8e2383473a8f6ef0d558599943a4fd5472f686b3a6be7c68d5093e2.webp"
+      null,
+      null
     ]
   }
 }

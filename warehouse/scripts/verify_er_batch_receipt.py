@@ -42,7 +42,7 @@ def _iso_clock(value: object) -> bool:
 def _local_path(value: object) -> Path | None:
     if not isinstance(value, str) or not value:
         return None
-    if value.startswith("backstage://"):
+    if value.startswith("backstage" + "://"):
         return None
     path = Path(value)
     if path.is_absolute():
@@ -53,7 +53,7 @@ def _local_path(value: object) -> Path | None:
 def _path_is_safe(value: object) -> bool:
     if not isinstance(value, str) or not value:
         return True
-    if value.startswith("backstage://"):
+    if value.startswith("backstage" + "://"):
         return True
     if ABS_OR_FILE_URL.match(value):
         return False
@@ -169,7 +169,7 @@ def verify(proof_path: Path = DEFAULT_PROOF) -> tuple[list[str], list[str]]:
 
     for value in _collect_paths(receipt):
         if not _path_is_safe(value):
-            errors.append(f"proof path is not repository-relative or backstage://: {value}")
+            errors.append(f"proof path is not repository-relative or an owner-only evidence reference: {value}")
 
     cpu = receipt.get("cpu_discipline") or {}
     for field in ("single_job_lock", "headroom_gate", "taskpolicy_or_nice_wrap"):

@@ -114,9 +114,9 @@
     "activity_fetch_cache": "no-cache (was force-cache — stale zeros for returning browsers)"
   },
   "screenshots": [
-    "backstage://cityscroll-evidence/objects/sha256/9e/9e89b39a0d26b763c556ba931190b1d6e576c2d4dacedcebc1582df618129a4e.webp",
-    "backstage://cityscroll-evidence/objects/sha256/0a/0a5f74ee42b09d98d0e6a042882cdc46b78239f28c0e3c1567612ff5b6c354b8.webp",
-    "backstage://cityscroll-evidence/objects/sha256/5a/5a9f707b5583b6aee6e03d9a5194650e9cbcf28d87d787590e3544c83e32e701.webp",
-    "backstage://cityscroll-evidence/objects/sha256/ea/ea79dcd5e5cb4f771c5a5d6914bfb051588783d6b11cf8a1f49ddb558b7f217a.webp"
+    null,
+    null,
+    null,
+    null
   ]
 }

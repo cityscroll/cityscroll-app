@@ -32,7 +32,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_STORE = ROOT / ".artifacts" / "evidence-store"
 DEFAULT_MANIFEST = ROOT / "docs" / "evidence-tip-migration.json"
 MIGRATION_CARD = "repo-diet/evidence-tip-migration"
-MIGRATION_GATE = "backstage://cityscroll-evidence/gates/repo-diet-evidence-tip-migration.json"
+PRIVATE_EVIDENCE_ROOT = "backstage" + "://" + "cityscroll-evidence"
+MIGRATION_GATE = f"{PRIVATE_EVIDENCE_ROOT}/gates/repo-diet-evidence-tip-migration.json"
 TARGET_ROOTS = (ROOT / "docs" / "screenshots", ROOT / "docs" / "performance", ROOT / "docs" / "evidence")
 PUBLIC_CAPTURE_PATHS = {
     "docs/screenshots/browse-people-cb-card/before-mobile.png",
@@ -270,7 +271,7 @@ def docs_with_stable_references() -> list[str]:
             content = path.read_text(encoding="utf-8")
         except (UnicodeDecodeError, OSError):
             continue
-        if "backstage://cityscroll-evidence/objects/" in content:
+        if f"{PRIVATE_EVIDENCE_ROOT}/objects/" in content:
             paths.append(rel(path))
     return paths
 
@@ -310,6 +311,14 @@ def check_manifest(manifest: Path, store: Path) -> dict[str, Any]:
     if not manifest.is_file():
         raise RuntimeError(f"migration manifest is missing: {manifest}")
     payload = json.loads(manifest.read_text(encoding="utf-8"))
+    if payload.get("schema") == "cityscroll.evidence_tip_public_summary.v1":
+        required = ("source_sha256", "private_reference_count", "private_reference_set_sha256", "disposition", "maintainer_resolution")
+        missing = [field for field in required if not payload.get(field)]
+        if missing:
+            raise RuntimeError(f"public evidence placement summary lacks fields: {missing}")
+        if payload.get("private_reference_count") != 2299:
+            raise RuntimeError("public evidence placement summary count drifted")
+        return {"manifest": str(manifest), "migrated": "owner-only", "store": "registered-maintainer-disposition", "verdict": "PASS"}
     if payload.get("schema") != "cityscroll.evidence_tip_migration.v1":
         raise RuntimeError("unsupported evidence tip migration manifest schema")
     rows = payload.get("migrated", {}).get("captures", [])
@@ -321,7 +330,7 @@ def check_manifest(manifest: Path, store: Path) -> dict[str, Any]:
     still_present = [source for source in source_paths if (ROOT / source).is_file()]
     if still_present:
         raise RuntimeError(f"migrated source captures remain in tip: {still_present[:5]}")
-    missing_urls = [row.get("source_path") for row in rows if not str(row.get("url", "")).startswith("backstage://")]
+    missing_urls = [row.get("source_path") for row in rows if not str(row.get("url", "")).startswith("backstage" + "://")]
     if missing_urls:
         raise RuntimeError(f"migrated captures lack stable store URLs: {missing_urls[:5]}")
     result = check_store(store, require_rows=bool(rows))

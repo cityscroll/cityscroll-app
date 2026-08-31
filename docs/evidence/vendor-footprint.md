@@ -41,7 +41,7 @@ are retained in the all-row denominator.
 
 | Previous reader view | Count-receipted reader view |
 |---|---|
-| ![CAMBA sections displayed zero and implementation terminology](backstage://cityscroll-evidence/objects/sha256/13/13baffe795a923251a8070c5041e926b157f9989b7183dd68fe8f1b4dac9a4e2.webp) | ![CAMBA sections display name-mention counts and reader language](backstage://cityscroll-evidence/objects/sha256/6a/6a2a441a2836fef168e866bbb3fe3a00b065ceec2acf52d5f0b8f2eb3a911f00.webp) |
+| !CAMBA sections displayed zero and implementation terminology (owner-only evidence retained under the registered RCP-03 disposition) | !CAMBA sections display name-mention counts and reader language (owner-only evidence retained under the registered RCP-03 disposition) |
 
 ## Promotion gates
 

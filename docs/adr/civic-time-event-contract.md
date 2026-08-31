@@ -40,11 +40,11 @@ rather than rewriting prior stored states (p. 249), and express valid, transacti
 bitemporal time-slice queries as one or two interval-containment predicates
 (pp. 309–312).
 
-The Snodgrass edition is held and read as Cangshu #1183. The author’s
+The cited edition is Richard T. Snodgrass, *Developing Time-Oriented Database Applications
+in SQL* (Morgan Kaufmann, 1999). The author’s
 [publication catalog](https://www2.cs.arizona.edu/~rts/publications.html) is the canonical
-public source. Cangshu #1182 contains a partial Warwick course-note reference for C. J.
-Date, Hugh Darwen, and Nikos Lorentzos; page-cited synthesis from the named books remains
-debt. The publisher pages for
+public source. A partial course-note reference did not establish enough bibliographic detail
+for a public citation and remains owner-only research under the RCP-03 disposition. The publisher pages for
 [*Temporal Data & the Relational Model*](https://shop.elsevier.com/books/temporal-data-and-the-relational-model/date/978-1-55860-855-9)
 and [*Time and Relational Theory*](https://shop.elsevier.com/books/time-and-relational-theory/date/978-0-12-800631-3)
 identify the outstanding canon without claiming it has been synthesized.

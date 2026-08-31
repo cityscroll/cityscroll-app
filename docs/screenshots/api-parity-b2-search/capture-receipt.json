@@ -32,10 +32,10 @@
     "sample_status": 200
   },
   "screenshots": {
-    "before_390": "backstage://cityscroll-evidence/objects/sha256/d8/d8561a5ff9afe7f17b0c4531fe3f2bb3735a7b0e9a763d6fae8d5eaeb0194269.webp",
-    "after_390": "backstage://cityscroll-evidence/objects/sha256/d8/d8561a5ff9afe7f17b0c4531fe3f2bb3735a7b0e9a763d6fae8d5eaeb0194269.webp",
-    "before_1440": "backstage://cityscroll-evidence/objects/sha256/7f/7f05abf331eb7c5edf02c15e15c04250e160ea9385e4e4116a3df925f19438b5.webp",
-    "after_1440": "backstage://cityscroll-evidence/objects/sha256/7f/7f05abf331eb7c5edf02c15e15c04250e160ea9385e4e4116a3df925f19438b5.webp",
+    "before_390": null,
+    "after_390": null,
+    "before_1440": null,
+    "after_1440": null,
     "sha256_equal_pairs": true
   }
 }

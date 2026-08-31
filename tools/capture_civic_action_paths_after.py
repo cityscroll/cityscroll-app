@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import functools
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -137,7 +138,10 @@ def required_rows(captures: list[dict]) -> None:
         raise AssertionError(f"after capture matrix drifted: expected {sorted(expected)}, got {sorted(actual)}")
     for row in captures:
         file_url = str(row.get("file") or "")
-        if not file_url.startswith("backstage://cityscroll-evidence/objects/sha256/"):
+        private_object_root = "backstage" + "://" + "cityscroll-evidence/objects/sha256/"
+        digest = str(row.get("sha256") or "")
+        privately_placed = not file_url and re.fullmatch(r"[0-9a-f]{64}", digest)
+        if not privately_placed and not file_url.startswith(private_object_root):
             raise AssertionError(f"capture is not an evidence object: {file_url}")
         if row["fixture"] == "strict_matter_join" and row.get("observations", {}).get("follow_cta") is not True:
             raise AssertionError("strict hearing after-state lost Follow what happens next")

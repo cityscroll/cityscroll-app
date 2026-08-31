@@ -4,15 +4,15 @@
     1440
   ],
   "captures": [
-    "backstage://cityscroll-evidence/objects/sha256/2a/2aef54fd004227f19e2b27a973827aeba57c77a71e6f98d78b2781969aa5b43f.webp",
-    "backstage://cityscroll-evidence/objects/sha256/2a/2a9ad1e75ffd94532767b2c0946e5447894f654527d35351fea5f5e748710931.webp",
-    "backstage://cityscroll-evidence/objects/sha256/fd/fd6c4fd371063e235741c6058b36bf5ac7ae9e3cd0c29982896ee6ff1e96b54d.webp",
-    "backstage://cityscroll-evidence/objects/sha256/2c/2c90a8e77c06f7a1d68f81587dca9e36dc96f82b63bd79537c694d6f3303085e.webp"
+    null,
+    null,
+    null,
+    null
   ],
   "sha256": {
-    "backstage://cityscroll-evidence/objects/sha256/2a/2aef54fd004227f19e2b27a973827aeba57c77a71e6f98d78b2781969aa5b43f.webp": "bac415ed2d4e54acd71f1ab483c6ef5097eb078e8f79e7ef23756dbd270578b9",
-    "backstage://cityscroll-evidence/objects/sha256/2a/2a9ad1e75ffd94532767b2c0946e5447894f654527d35351fea5f5e748710931.webp": "cbec1ba1dc4ec5467e0ca034c2bbbe273fe28e25b815d697fc2b9dc4c71e515f",
-    "backstage://cityscroll-evidence/objects/sha256/fd/fd6c4fd371063e235741c6058b36bf5ac7ae9e3cd0c29982896ee6ff1e96b54d.webp": "c48fbbeaa5e8b23e416e58f4989c1314a078554b77f5ff5cf07d798fb39fb48d",
-    "backstage://cityscroll-evidence/objects/sha256/2c/2c90a8e77c06f7a1d68f81587dca9e36dc96f82b63bd79537c694d6f3303085e.webp": "e82da28fbea492227ad336548d7445925c22174940668ada319955d8697d5ecf"
+    "private-evidence-ref:9fa26b540fee0c31975a7057f5b9dcfd0dea323f567c5b0af38699deb6e56fd7": "bac415ed2d4e54acd71f1ab483c6ef5097eb078e8f79e7ef23756dbd270578b9",
+    "private-evidence-ref:cee8ac6294a79329568b81b67d3cd9bd6ff48170ce885462cbb68d4318b8b250": "cbec1ba1dc4ec5467e0ca034c2bbbe273fe28e25b815d697fc2b9dc4c71e515f",
+    "private-evidence-ref:05aa0f291b301e853e3f0dd1f1e9e3f9e555f2199796f20921d4ccbcd044fbc7": "c48fbbeaa5e8b23e416e58f4989c1314a078554b77f5ff5cf07d798fb39fb48d",
+    "private-evidence-ref:1e2c5e770cf81e588ab0baddd8849229bc6cde022a4f65160b911e3aa31ae533": "e82da28fbea492227ad336548d7445925c22174940668ada319955d8697d5ecf"
   }
 }

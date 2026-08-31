@@ -20,14 +20,14 @@ all three data grids retained `hidden`, leaving headings and an error message bu
 values. The screenshot below is the production page code running with the endpoint made
 unavailable.
 
-- Before, [390 px annotated capture](backstage://cityscroll-evidence/objects/sha256/c9/c9b68f87f323477d50013981f61187bbe91bd0e5ed0d3e6b1159a65a7fca9e10.webp)
-- Before, [1440 px annotated capture](backstage://cityscroll-evidence/objects/sha256/17/172ba4759bb4cd0a8077f2ec67ef815e8d99bc5f890c70d9108b0d16d597687e.webp)
+- Before, 390 px annotated capture (owner-only evidence retained under the registered RCP-03 disposition)
+- Before, 1440 px annotated capture (owner-only evidence retained under the registered RCP-03 disposition)
 
 The matching post-fix fixtures keep the same panels visible, fill their values, and show
 per-panel provenance:
 
-- After, [390 px annotated capture](backstage://cityscroll-evidence/objects/sha256/57/57aa8fbe1e7138285807c3c4f47f8fe6ece6f162b4b7aa31c9c1985249cfa0f4.webp)
-- After, [1440 px annotated capture](backstage://cityscroll-evidence/objects/sha256/21/210b986c1f89f880599735093a286916f617705e7010daee420d2089432ac562.webp)
+- After, 390 px annotated capture (owner-only evidence retained under the registered RCP-03 disposition)
+- After, 1440 px annotated capture (owner-only evidence retained under the registered RCP-03 disposition)
 
 ## Findings and causes
 
