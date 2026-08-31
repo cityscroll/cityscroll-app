@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_intent_radar.corpus_backtest.v1",
   "backtest_version": "pir-corpus-backtest.v1",
-  "as_of": "2026-08-27",
+  "as_of": "2026-08-30",
   "corpus": {
     "source_artifact": "test/fixtures/procurement_intent_radar/gold_fixtures.v0.json",
     "source_policy": "Council-attributable dated source spans only; official-source citations retained in fixtures",
@@ -13,11 +13,37 @@
     "measured_positive_assertions": 3,
     "measured_negative_controls": 2,
     "retained_app_corpus_council_text_rows": 0,
-    "coverage_note": "This is a measured fixture result, not an estimate of all Council material from 2022–2025."
+    "labeled_fixture_year_coverage": {
+      "2022": 1,
+      "2023": 1,
+      "2024": 1,
+      "2025": 2
+    },
+    "retained_corpus_year_coverage": {
+      "2022": 0,
+      "2023": 0,
+      "2024": 0,
+      "2025": 0
+    },
+    "inclusion_rules": [
+      "Council-attributable dated source spans only",
+      "source_type is agency_testimony, council_transcript, or council_briefing_paper",
+      "observed_at is a calendar day from 2022-01-01 through 2025-12-31",
+      "official-source citations are retained with the source span"
+    ],
+    "exclusion_rules": [
+      "Community Board meetings",
+      "City Record meeting notices without transcript, testimony, or briefing-paper passages",
+      "future-dated retained meeting rows",
+      "future EPIN/PIN, solicitation title, vendor, later coverage, and future naming features",
+      "unofficial secondary coverage used as a historical feature"
+    ],
+    "coverage_note": "Labeled gold cases are fixture controls spanning 2022–2025. They are not a recurrent estimate of all Council material. The retained app meeting corpus currently contributes zero PIR-eligible 2022–2025 source spans.",
+    "coverage_receipt": "warehouse/fixtures/procurement-intent-radar/corpus_coverage.v1.json"
   },
   "protocol": {
     "kind": "per_assertion_temporal_cutoff",
-    "reconstruction_cutoff": "meeting observed_at; predictions generated on the next UTC day to satisfy the shared strict pre-split training rule",
+    "reconstruction_cutoff": "meeting observed_at after sealing hindsight fields; predictions generated on the next UTC day to satisfy the shared strict pre-split training rule",
     "training_from": "2022-01-01",
     "future_information_allowed": false,
     "prediction_inputs": [
@@ -33,7 +59,13 @@
       "future naming features"
     ],
     "resolution": "shared evaluatePredictionBacktest exact subject_ref + event_kind join",
-    "link_resolution": "retrospective matcher; publisher fields are scoring observations, not prediction features"
+    "link_resolution": "retrospective matcher; publisher fields are scoring observations, not prediction features",
+    "evaluator_versions": {
+      "extractor": "pir-phase1.0",
+      "realization_matcher": "pir-realization-matcher.v1",
+      "prediction_calibration": "prediction_calibration_v1",
+      "forecast_calibration": "worker/src/lib/forecast_calibration.mjs"
+    }
   },
   "assertions": [
     {
@@ -406,11 +438,13 @@
           "solicitation title",
           "vendor",
           "later coverage fields",
-          "future publication clock"
+          "future publication clock",
+          "future naming features"
         ],
         "findings": [],
         "historical_input_only": true,
-        "negative_control": false
+        "negative_control": false,
+        "reconstruction_cutoff": "2025-05-19"
       },
       "controls": {
         "contains_rfp_baseline": true,
@@ -710,11 +744,13 @@
           "solicitation title",
           "vendor",
           "later coverage fields",
-          "future publication clock"
+          "future publication clock",
+          "future naming features"
         ],
         "findings": [],
         "historical_input_only": true,
-        "negative_control": false
+        "negative_control": false,
+        "reconstruction_cutoff": "2024-10-09"
       },
       "controls": {
         "contains_rfp_baseline": true,
@@ -1004,11 +1040,13 @@
           "solicitation title",
           "vendor",
           "later coverage fields",
-          "future publication clock"
+          "future publication clock",
+          "future naming features"
         ],
         "findings": [],
         "historical_input_only": true,
-        "negative_control": false
+        "negative_control": false,
+        "reconstruction_cutoff": "2022-03-09"
       },
       "controls": {
         "contains_rfp_baseline": true,
@@ -1054,11 +1092,13 @@
           "solicitation title",
           "vendor",
           "later coverage fields",
-          "future publication clock"
+          "future publication clock",
+          "future naming features"
         ],
         "findings": [],
         "historical_input_only": true,
-        "negative_control": true
+        "negative_control": true,
+        "reconstruction_cutoff": "2025-03-20"
       },
       "controls": {
         "contains_rfp_baseline": true,
@@ -1104,11 +1144,13 @@
           "solicitation title",
           "vendor",
           "later coverage fields",
-          "future publication clock"
+          "future publication clock",
+          "future naming features"
         ],
         "findings": [],
         "historical_input_only": true,
-        "negative_control": true
+        "negative_control": true,
+        "reconstruction_cutoff": "2023-04-24"
       },
       "controls": {
         "contains_rfp_baseline": true,
@@ -1127,7 +1169,9 @@
       "false_negative": 0,
       "precision": 1,
       "recall": 1,
-      "abstained": 2
+      "abstained": 2,
+      "cutoff": "per-assertion observed_at",
+      "denominator": 5
     },
     "realization_link": {
       "value_type": "measured",
@@ -1138,10 +1182,14 @@
       "false_negative": 0,
       "precision": 1,
       "recall": 1,
-      "reviewed_precision": 1
+      "reviewed_precision": 1,
+      "cutoff": "retrospective after meeting-date reconstruction",
+      "denominator": 4
     },
     "abstention": {
       "value_type": "measured",
+      "cutoff": "per-assertion observed_at",
+      "denominator": 5,
       "extraction_count": 2,
       "extraction_rate": 0.4,
       "timing_not_scored_count": 0,
@@ -1168,10 +1216,13 @@
         }
       ],
       "maximum_calibration_gap": 0.5,
-      "shared_forecast_evaluator": "worker/src/lib/forecast_calibration.mjs"
+      "shared_forecast_evaluator": "worker/src/lib/forecast_calibration.mjs",
+      "cutoff": "per-assertion observed_at"
     },
     "timing": {
       "value_type": "measured",
+      "cutoff": "agency-stated expected_window vs first accepted realization",
+      "denominator": 3,
       "assertions_scored": 3,
       "window_hits": 1,
       "window_misses": 2,
@@ -1182,6 +1233,8 @@
     },
     "lead_time_days": {
       "value_type": "measured",
+      "cutoff": "observed_at to first accepted realization published_at",
+      "denominator": 3,
       "count": 3,
       "mean": 167.7,
       "p25": 142,
@@ -1235,6 +1288,117 @@
     "tolerated_failures": 0,
     "passed": true
   },
+  "coverage": {
+    "schema": "cityscroll.procurement_intent_radar.corpus_coverage.v1",
+    "coverage_version": "pir-corpus-coverage.v1",
+    "as_of": "2026-08-30",
+    "from": "2022-01-01",
+    "through": "2025-12-31",
+    "inclusion_rules": [
+      "Council-attributable dated source spans only",
+      "source_type is agency_testimony, council_transcript, or council_briefing_paper",
+      "observed_at is a calendar day from 2022-01-01 through 2025-12-31",
+      "official-source citations are retained with the source span"
+    ],
+    "exclusion_rules": [
+      "Community Board meetings",
+      "City Record meeting notices without transcript, testimony, or briefing-paper passages",
+      "future-dated retained meeting rows",
+      "future EPIN/PIN, solicitation title, vendor, later coverage, and future naming features",
+      "unofficial secondary coverage used as a historical feature"
+    ],
+    "labeled_fixture": {
+      "artifact": "test/fixtures/procurement_intent_radar/gold_fixtures.v0.json",
+      "schema": "cityscroll.procurement_intent_radar.fixtures.v0",
+      "fixture_version": "0.1.0",
+      "case_count": 5,
+      "positive_assertions": 3,
+      "negative_controls": 2,
+      "year_coverage": {
+        "2022": 1,
+        "2023": 1,
+        "2024": 1,
+        "2025": 2
+      },
+      "vintages": [
+        {
+          "id": "compass-dycd-2025-05-19",
+          "kind": "positive",
+          "observed_at": "2025-05-19",
+          "source_type": "agency_testimony",
+          "source_record_id": "council:testimony:dycd-fy2026-executive-budget",
+          "citation_url": "https://legistar.council.nyc.gov/View.ashx?GUID=73A1E0BF-3D78-4A7F-9DEB-70D949A5751F&ID=14582598&M=F",
+          "citation_authority": "nyc_council",
+          "in_corpus_window": true
+        },
+        {
+          "id": "hra-dv-beds-2024-10-09",
+          "kind": "positive",
+          "observed_at": "2024-10-09",
+          "source_type": "council_transcript",
+          "source_record_id": "council:transcript:general-welfare:2024-10-09",
+          "citation_url": "https://legistar.council.nyc.gov/View.ashx?GUID=55F96206-8A74-4F38-BF33-DCB6340E1BA7&ID=13400292&M=F",
+          "citation_authority": "nyc_council",
+          "in_corpus_window": true
+        },
+        {
+          "id": "acs-atd-2022-03-09",
+          "kind": "positive",
+          "observed_at": "2022-03-09",
+          "source_type": "council_briefing_paper",
+          "source_record_id": "council:finance-briefing:acs-fy2023-preliminary",
+          "citation_url": "https://council.nyc.gov/budget/wp-content/uploads/sites/54/2022/03/ACS.pdf",
+          "citation_authority": "nyc_council",
+          "in_corpus_window": true
+        },
+        {
+          "id": "negative-reported-recollection-2025-03-20",
+          "kind": "negative",
+          "observed_at": "2025-03-20",
+          "source_type": "council_transcript",
+          "source_record_id": "council:transcript:children-youth:2025-03-20",
+          "citation_url": "https://citymeetings.nyc/meetings/new-york-city-council/2025-03-20-1000-am-committee-on-children-and-youth/",
+          "citation_authority": "public_index",
+          "in_corpus_window": true
+        },
+        {
+          "id": "negative-past-tense-rfp-2023-04-24",
+          "kind": "negative",
+          "observed_at": "2023-04-24",
+          "source_type": "council_transcript",
+          "source_record_id": "council:transcript:oversight-public-safety-general-welfare:2023-04-24",
+          "citation_url": "https://legistar.council.nyc.gov/View.ashx?GUID=031FAD04-4A78-467C-93F5-CFB41DDF474F&ID=11975422&M=F",
+          "citation_authority": "nyc_council",
+          "in_corpus_window": true
+        }
+      ],
+      "role": "labeled_fixture_control",
+      "recurrent_corpus_claim": false,
+      "sha256": "61efeb2224fa3de7ef980c1f05388a4a9e90f86f6b1003372a08f73e4d766580"
+    },
+    "retained_app_corpus": {
+      "artifact": "site/data/shared_meeting_read_model.json",
+      "schema": "cityscroll.shared_meeting_read_model.v1",
+      "generated_at": "2026-08-15T02:48:42.018Z",
+      "checked_at": "2026-08-25T01:57:25.541Z",
+      "row_count": 522,
+      "event_dates_in_corpus_window": 0,
+      "event_dates_outside_corpus_window": 522,
+      "year_coverage": {
+        "2022": 0,
+        "2023": 0,
+        "2024": 0,
+        "2025": 0
+      },
+      "city_council_agency_rows": 6,
+      "pir_eligible_source_type_rows": 0,
+      "text_bearing_council_rows": 0,
+      "note": "The retained meeting read model is a current/upcoming meeting snapshot. It does not retain 2022–2025 Council transcripts, agency testimony, or Finance Division briefing papers.",
+      "sha256": "17c8b6107777835c49b1d98a72dc6b1c2f88e7a47f45c69da763c039e9a87afa"
+    },
+    "sufficient_for_recurrent_corpus_claim": false,
+    "limitation": "Labeled gold cases are fixture controls spanning 2022–2025. They are not a recurrent estimate of all Council material. The retained app meeting corpus currently contributes zero PIR-eligible 2022–2025 source spans."
+  },
   "promotion": {
     "status": "withheld",
     "product_promotion_allowed": false,
@@ -1263,10 +1427,10 @@
         "value_type": "measured",
         "resolved_assertions": 3,
         "sufficient_for_recurrent_corpus_claim": false,
-        "note": "The committed five-case gold pack is a contract fixture, not a full 2022–2025 corpus; no population estimate is emitted.",
+        "note": "Labeled gold cases are fixture controls spanning 2022–2025. They are not a recurrent estimate of all Council material. The retained app meeting corpus currently contributes zero PIR-eligible 2022–2025 source spans.",
         "passed": false
       }
     },
-    "reason": "Precision and temporal checks pass on the bounded fixture pack, but it does not establish recurrence for the full 2022–2025 corpus; this result cannot authorize product promotion."
+    "reason": "Precision and temporal checks on the bounded fixture pack do not establish recurrence for the full 2022–2025 corpus; this result cannot authorize product promotion."
   }
 }
