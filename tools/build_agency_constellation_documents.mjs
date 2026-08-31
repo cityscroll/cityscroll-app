@@ -33,6 +33,7 @@ import { buildAgencyVendorRollups } from "../site/agency_vendor_rollup.mjs";
 import { ACCEPTED_IDENTITY_CLASSIFICATIONS } from "../site/agency_search_producer.mjs";
 import { buildAgencyIdentityEvidence } from "./lib/agency_identity_evidence.mjs";
 import { accountabilitySourcesFromLookup } from "../site/civic_institution_accountability.mjs";
+import defaultProceedings from "../site/data/council_committee_proceedings.json" with { type: "json" };
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SITE = join(ROOT, "site");
@@ -101,6 +102,27 @@ function loadSources() {
       : null,
     ocp_awards: existsSync(ocpAwardsPath) ? readJson(ocpAwardsPath) : null,
     publisher_crosswalk: readJson(publisherCrosswalkPath),
+    committee_graph: existsSync(join(SITE, "data/committee_graph_lookup.json"))
+      ? readJson(join(SITE, "data/committee_graph_lookup.json"))
+      : (existsSync(join(ROOT, "worker/src/data/committee_graph_lookup.json"))
+        ? readJson(join(ROOT, "worker/src/data/committee_graph_lookup.json"))
+        : null),
+    council_committee_proceedings: existsSync(join(SITE, "data/council_committee_proceedings.json"))
+      ? readJson(join(SITE, "data/council_committee_proceedings.json"))
+      : defaultProceedings,
+    meeting_outcomes: existsSync(join(SITE, "data/meeting_outcomes_snapshot.json"))
+      ? readJson(join(SITE, "data/meeting_outcomes_snapshot.json"))
+      : null,
+  };
+}
+
+function committeeRoleSourcesFor(id, sources) {
+  if (id !== "city-council") return null;
+  return {
+    committeeGraph: sources.committee_graph || null,
+    proceedings: sources.council_committee_proceedings || defaultProceedings,
+    meetingOutcomes: sources.meeting_outcomes || null,
+    generatedAt: sources.committee_graph?.generated_at,
   };
 }
 
@@ -451,6 +473,7 @@ export function buildAgencyConstellationMaterialization(sources = loadSources())
       generatedAt,
       developmentRoleSources: developmentRoleSourcesFor(id, sources),
       accountabilitySources: accountabilitySourcesFromLookup(sources.obligations),
+      committeeRoleSources: committeeRoleSourcesFor(id, sources),
     });
     // Keep pages for agencies with at least one matched category, plus demos.
     if (view.summary.matched_categories === 0 && !DEMO_IDS.includes(id)) continue;

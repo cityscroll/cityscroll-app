@@ -66,6 +66,16 @@ const ROLE_LABELS = Object.freeze({
   contracts_with: "contracts with",
   presents_transaction_at: "presents a transaction at",
   presents_transaction: "presents transaction",
+  has_committee: "has committee",
+  part_of: "part of",
+  hosts_meeting: "hosts meeting",
+  hosted_by: "hosted by",
+  member_of: "member of",
+  has_member: "has member",
+  chairs: "chairs",
+  chaired_by: "chaired by",
+  considers: "considers",
+  considered_at: "considered at",
 });
 
 function roleLabel(edge) {
@@ -78,6 +88,10 @@ function roleEndpoint(id, href, linking, displayName = null) {
     .replace(/^project:/, "")
     .replace(/^procurement:contract:/, "")
     .replace(/^meetings:notice:/, "")
+    .replace(/^meeting:city_record:/, "")
+    .replace(/^committee:/, "committee ")
+    .replace(/^official:/, "")
+    .replace(/^land-matter:/, "")
     .replace(/^obligation:/, "duty ");
   if (linking && href) {
     return `<a class="ui-constellation-link agency-edge-link" href="${esc(href)}">${esc(label)}</a>`;
@@ -90,6 +104,7 @@ function roleRow(edge) {
     `Role: ${roleLabel(edge)}`,
     edge.confidence ? `Confidence: ${confidenceLabel(edge.confidence)}` : "",
     edge.as_of ? `As of ${edge.as_of}` : "",
+    edge.valid_from ? `Valid ${edge.valid_from}${edge.valid_to ? `–${edge.valid_to}` : ""}` : "",
     edge.vintage ? `Vintage ${edge.vintage}` : "",
     edge.provenance?.source_system ? `Source ${edge.provenance.source_system}` : "",
     edge.provenance?.source_field && edge.provenance?.source_value
@@ -99,7 +114,7 @@ function roleRow(edge) {
     edge.method ? `Method: ${methodLabel(edge.method)}` : "",
     edge.reason && edge.status !== "accepted" ? `Status: ${edge.status} (${edge.reason})` : "",
   ].filter(Boolean).join(" · ");
-  return `<li class="node-record agency-role-edge-record" data-role-relation="${esc(edge.relation_id || "")}" data-role-status="${esc(edge.status || "")}" data-role-linking="${edge.linking ? "1" : "0"}" data-role-object-kind="${esc(edge.object_kind || "")}">
+  return `<li class="node-record agency-role-edge-record" data-role-relation="${esc(edge.relation_id || "")}" data-role-status="${esc(edge.status || "")}" data-role-linking="${edge.linking ? "1" : "0"}" data-role-object-kind="${esc(edge.object_kind || "")}" data-body-id="${esc(edge.body_id || edge.object_canonical_id || "")}" data-valid-from="${esc(edge.valid_from || "")}" data-source-receipt="${esc(edge.source_receipt || edge.provenance?.source_receipt || "")}">
     <div class="node-record-main">${roleEndpoint(edge.from, edge.inverse_href, edge.linking)} <span aria-hidden="true">→</span> ${esc(roleLabel(edge))} ${roleEndpoint(edge.to, edge.href, edge.linking, edge.object_display_name)}</div>
     <span class="muted node-muted">${esc(details)}</span>
     ${Array.isArray(edge.parcel_trail) && edge.parcel_trail.length
@@ -132,6 +147,10 @@ const ACCOUNTABILITY_RELATIONS = new Set([
   "duty_bearer",
   "holds_duty",
 ]);
+const COMMITTEE_RELATIONS = new Set([
+  "has_committee",
+  "part_of",
+]);
 
 function renderRoleGroup({
   rows,
@@ -153,6 +172,7 @@ function renderRoleGroup({
     attrs: {
       id: sectionId,
       "data-role-schema": evidence.role_edge_schema || "cityscroll.civic_institution_role_edge.v1",
+      ...(sectionId === "agency-institution-committees" ? { "data-committee-rail": "1" } : {}),
     },
     body,
   });
@@ -231,6 +251,7 @@ export function renderAgencyRoleEdgeSection(view = {}) {
     !PROJECT_RELATIONS.has(edge.relation_id)
     && !PROCUREMENT_RELATIONS.has(edge.relation_id)
     && !PROCEEDING_RELATIONS.has(edge.relation_id)
+    && !COMMITTEE_RELATIONS.has(edge.relation_id)
     && !isAccountabilityEdge(edge));
   return `${renderRoleGroup({
     rows: rows.filter((edge) => PROJECT_RELATIONS.has(edge.relation_id)),
@@ -255,6 +276,14 @@ export function renderAgencyRoleEdgeSection(view = {}) {
     sectionId: "agency-institution-proceedings",
     extraClass: "agency-institution-proceedings",
     intro: "A Borough Board transaction role appears only when the exact notice, date, quote, and retained source passage prove the selection.",
+    evidence,
+  })}${renderRoleGroup({
+    rows: rows.filter((edge) => COMMITTEE_RELATIONS.has(edge.relation_id)),
+    heading: "Committees",
+    headingId: "agency-institution-committees-heading",
+    sectionId: "agency-institution-committees",
+    extraClass: "agency-institution-committees",
+    intro: "These committee links use exact Legistar body ids. A similar name, a Council publisher label, or a nearby meeting date does not create a committee.",
     evidence,
   })}${renderAccountabilityGroup(rows, evidence)}${institutionRows.length ? renderRoleGroup({
     rows: institutionRows,
