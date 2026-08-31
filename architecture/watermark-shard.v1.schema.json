@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cityscroll.architecture.watermark-shard.v1",
+  "title": "CityScroll reviewed architecture watermark shard",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "owner", "updated_at", "commit", "value"],
+  "properties": {
+    "schema": { "const": "cityscroll.architecture.watermark-shard.v1" },
+    "id": { "type": "string", "pattern": "^(observer-coverage|ontology|bindings|performance-observability|canary:[a-z0-9][a-z0-9-]*)$" },
+    "owner": { "type": "string" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "commit": { "type": ["string", "null"] },
+    "value": {}
+  }
+}

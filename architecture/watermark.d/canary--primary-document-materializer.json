@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:primary-document-materializer",
+  "owner": "canary:primary-document-materializer",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "tools/build_primary_documents.mjs",
+    "count": 5,
+    "fingerprint": "b8862d5e48ec6a5c7e2761f1cf77d1979b29df3852ff6c480a8527cb3dd249b8"
+  }
+}
