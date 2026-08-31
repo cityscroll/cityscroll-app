@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.owner-alert-deliverability-gate.v1",
+  "observed_at": "2026-08-31T00:00:00.000Z",
+  "address": "james@cityscroll.org",
+  "status": "deliverable",
+  "architecture_impact": "none-recipient-only-terminal-routing-change",
+  "evidence": {
+    "kind": "site-owner-confirmation",
+    "confirmed_at": "2026-08-31T00:00:00.000Z",
+    "routing_state": "existing Cloudflare Email Routing rule forwards to the owner destination"
+  },
+  "credentials_retained": false
+}

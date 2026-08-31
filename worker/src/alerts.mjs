@@ -119,7 +119,7 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
 // stats:page_view, stats:catday:*, stats:alert_confirmed) so a list-prefix scan or
 // exact get can never confuse a page-view counter with a send cap or last-sent clock.
 export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
-export const OPS_ALERT_TO = "team@cityscroll.org";
+export const OPS_ALERT_TO = "james@cityscroll.org";
 
 export function digestRunDayKey(day) {
   return `digest:run:${day}`;

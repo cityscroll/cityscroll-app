@@ -213,7 +213,8 @@ test("runtime alarms use the existing Resend path and the ops mailbox", async ()
     assert.equal(request.url, "https://api.resend.com/emails");
     const payload = JSON.parse(request.options.body);
     assert.equal(payload.to, OPS_ALERT_TO);
-    assert.equal(payload.to, "team@cityscroll.org");
+    assert.equal(payload.to, "james@cityscroll.org");
+    assert.notEqual(payload.to, "team@cityscroll.org");
   } finally {
     globalThis.fetch = previous;
   }
@@ -237,7 +238,7 @@ test("mail canary token is parsed only from the exact subject prefix", () => {
 });
 
 test("mail canary target refuses human operations mailboxes", () => {
-  const refused = resolveMailCanaryTarget({ SUBSCRIBE_ADDRESS: "team@cityscroll.org" });
+  const refused = resolveMailCanaryTarget({ SUBSCRIBE_ADDRESS: "james@cityscroll.org" });
   assert.equal(refused.ok, false);
   assert.equal(refused.reason, "human-ops-mailbox-refused");
   assert.equal(isHumanOpsMailbox("alerts@cityscroll.org"), true);
@@ -537,7 +538,7 @@ test("mail canary POST refuses a human operations target before send", async () 
         ADMIN_KEY: "s3cr3t",
         ALERT_STATE,
         RESEND_API_KEY: "rk",
-        SUBSCRIBE_ADDRESS: "team@cityscroll.org",
+        SUBSCRIBE_ADDRESS: "james@cityscroll.org",
         ALERTS_FROM: "CityScroll <alerts@cityscroll.org>",
       },
       { now: new Date("2026-08-29T14:10:00Z"), fetchImpl: globalThis.fetch },
@@ -547,7 +548,7 @@ test("mail canary POST refuses a human operations target before send", async () 
     assert.equal(body.inbound_worker.reason, "human-ops-mailbox-refused");
     assert.equal(sent.length, 1);
     assert.equal(sent[0].to, OPS_ALERT_TO);
-    assert.equal(body.inbound_worker.envelope.to[0], "team@cityscroll.org");
+    assert.equal(body.inbound_worker.envelope.to[0], "james@cityscroll.org");
   } finally {
     globalThis.fetch = previous;
   }

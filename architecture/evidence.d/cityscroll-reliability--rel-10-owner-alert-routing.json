@@ -1,0 +1,13 @@
+{
+  "schema": "cityscroll.architecture-evidence-entry.v1",
+  "id": "cityscroll-reliability/rel-10-owner-alert-routing",
+  "status": "implemented",
+  "fingerprint": "rel-10-owner-alert-routing.v1",
+  "updated_at": "2026-08-31T00:00:00.000Z",
+  "projections": [
+    {
+      "id": "owner-alert-routing-evidence",
+      "path": "docs/evidence/owner-alert-routing/deliverability-gate.json"
+    }
+  ]
+}
