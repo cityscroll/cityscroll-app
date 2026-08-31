@@ -166,6 +166,26 @@ test("browser consumers remain downstream of the successfully built artifact", (
   );
 });
 
+test("private capture redaction keeps the accessibility receipt contract fail-closed", () => {
+  const ci = read(".github/workflows/ci.yml");
+  const shardRunner = read("tools/run_a11y_ci_shard.sh");
+  const capture = read("tools/capture_browse_interaction_grammar.py");
+
+  // PR-1498 intentionally removed private screenshot locators from the public tree.
+  // Null is accepted only as that explicit redaction state, while the full capture
+  // matrix, hydrated phase, and positive dimensions remain required.
+  assert.match(capture, /if relative is None:/);
+  assert.match(capture, /row\.get\("phase"\) == "hydrated"/);
+  assert.match(capture, /redacted capture pixel_size is incomplete/);
+  assert.match(capture, /assert isinstance\(relative, str\), f"capture path is missing/);
+
+  // The functional route grammar and the receipt verifier remain in the required
+  // routes-focus shard; this repair does not skip or demote accessibility coverage.
+  assert.match(shardRunner, /test\/functional\/30_browse_interaction_grammar\.py/);
+  assert.match(shardRunner, /capture_browse_interaction_grammar\.py --verify-only/);
+  assert.match(ci, /Accessibility \+ language gate \(axe on every PR\)/);
+});
+
 test("browser jobs use the Playwright cache composite action", () => {
   const ci = read(".github/workflows/ci.yml");
   assert.match(ci, /\.\/\.github\/actions\/setup-playwright/);

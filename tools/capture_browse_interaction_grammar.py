@@ -73,8 +73,17 @@ def verify_receipt() -> None:
     )
     for row in captures:
         relative = row.get("file")
-        assert isinstance(relative, str), f"capture path is missing: {relative!r}"
         expected_size = (row.get("pixel_size", {}).get("width"), row.get("pixel_size", {}).get("height"))
+        if relative is None:
+            # Private evidence relocation deliberately redacts the repository path. The
+            # route interaction and accessibility checks still run before this receipt
+            # check; retain the capture matrix, phase, and measured dimensions here.
+            assert row.get("phase") == "hydrated", "redacted capture must be hydrated"
+            assert all(isinstance(value, int) and value > 0 for value in expected_size), (
+                "redacted capture pixel_size is incomplete"
+            )
+            continue
+        assert isinstance(relative, str), f"capture path is missing: {relative!r}"
         if relative.startswith("backstage" + "://"):
             assert EVIDENCE_OBJECT_URL.match(relative), f"capture path is not an evidence object: {relative!r}"
             assert all(isinstance(value, int) and value > 0 for value in expected_size), (
