@@ -32,6 +32,11 @@ import {
 } from "./community_board_institution_edges.mjs";
 import { communityBoardPageHref } from "./community_board_links.mjs";
 import { renderNodeBack } from "./civic_document_chrome.mjs";
+import {
+  buildCanonicalDocumentReportTarget,
+  buildCanonicalDocumentRelationshipReportTarget,
+  renderReportIssueAffordance,
+} from "./report_issue.mjs";
 import { renderRulemakingDocument } from "./rulemaking_document.mjs";
 import { renderRegulatoryAgendaDocument } from "./regulatory_agenda_document.mjs";
 import regulatoryAgenda from "./data/regulatory_agenda.json" with { type: "json" };
@@ -537,6 +542,47 @@ async function handleComposedObject(request, env, pathname, canonicalPath) {
   return transformed;
 }
 
+function noticeReportSource(id) {
+  return {
+    source_system: "city_record",
+    source_record_id: id,
+    source_url: `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`,
+  };
+}
+
+function noticeDocumentReportTarget(row, id, title) {
+  if (!row || !id) return null;
+  return buildCanonicalDocumentReportTarget({
+    object_type: "notice",
+    object_id: `notice:${id}`,
+    canonical_url: `/notices/${encodeURIComponent(id)}`,
+    object_label: title,
+    source: noticeReportSource(id),
+  });
+}
+
+function noticeRelationshipReportTarget(row, id, title, {
+  semantic_key,
+  relation_type,
+  related_object_id,
+  related_object_label,
+  edge = null,
+} = {}) {
+  if (!row || !id) return null;
+  return buildCanonicalDocumentRelationshipReportTarget({
+    object_type: "notice",
+    object_id: `notice:${id}`,
+    canonical_url: `/notices/${encodeURIComponent(id)}`,
+    object_label: title,
+    semantic_key,
+    relation_type,
+    related_object_id,
+    related_object_label,
+    source: noticeReportSource(id),
+    edge,
+  });
+}
+
 export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklinksLookup = null, options = {}) {
   const kind = row?.type_of_notice_description || row?.section_name || "Public record";
   const title = row?.short_title || (row ? `${kind} ${id}` : `CityScroll public record ${id}`);
@@ -615,6 +661,23 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       <p>${sourceLink}</p>
     </div>`;
   }
+  const documentReport = renderReportIssueAffordance(noticeDocumentReportTarget(row, id, title));
+  const agencyReport = identity.matched
+    ? renderReportIssueAffordance(noticeRelationshipReportTarget(row, id, title, {
+      semantic_key: "agency",
+      relation_type: "published_by_agency",
+      related_object_id: `agency:id:${identity.canonical_id}`,
+      related_object_label: agency,
+    }))
+    : "";
+  const vendorReport = vendor
+    ? renderReportIssueAffordance(noticeRelationshipReportTarget(row, id, title, {
+      semantic_key: "vendor",
+      relation_type: "named_vendor",
+      related_object_id: entityRouteRef("vendor", vendor),
+      related_object_label: vendor,
+    }))
+    : "";
   const noticeSource = {
     kind: "notice",
     id: id,
@@ -656,6 +719,14 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   // Public mandate backlinks only — empty lookup / unmatched notice → no section.
   const mandateBacklinksHTML = renderNoticeMandateBacklinksForId(mandateBacklinksLookup, id, { esc });
   const projectId = String(row.project_id || row.project || row.ulurp_number || "").trim();
+  const projectReport = /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(projectId)
+    ? renderReportIssueAffordance(noticeRelationshipReportTarget(row, id, title, {
+      semantic_key: "project",
+      relation_type: "related_land_use_project",
+      related_object_id: `project:${projectId}`,
+      related_object_label: row.project_name || projectId,
+    }))
+    : "";
   const projectPivot = /^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(projectId)
     ? `<p class="notice-entity-pivot">${renderEntityPivotLink({
       relation_label: "related land-use project",
@@ -664,7 +735,7 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       target_name: row.project_name || projectId,
       canonical_href: `#land/${encodeURIComponent(projectId)}`,
       source: noticeSource,
-    }, { className: "notice-project-link", escape: esc })}</p>`
+    }, { className: "notice-project-link", escape: esc })}${projectReport ? ` ${projectReport}` : ""}</p>`
     : "";
   const boardEdge = communityBoardMeetingEdgeFromRow(row);
   const boardId = boardEdge?.from?.replace(/^community-board:/, "")
@@ -673,6 +744,15 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
   const boardHref = boardEdge?.board_href || communityBoardPageHref(boardId);
   const boardName = row.board_name || boardEdge?.board_name
     || (boardId ? `Community Board ${boardId.replace(/^[a-z-]+-cb-/, "")}` : null);
+  const boardReport = boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref && boardId
+    ? renderReportIssueAffordance(noticeRelationshipReportTarget(row, id, title, {
+      semantic_key: "community-board",
+      relation_type: "hosted_by_community_board",
+      related_object_id: `community-board:${boardId}`,
+      related_object_label: boardName,
+      edge: boardEdge,
+    }))
+    : "";
   const boardPivot = boardEdge && communityBoardMeetingEdgeAccepted(boardEdge) && boardHref
     ? `<p class="notice-entity-pivot">${renderEntityPivotLink({
       relation_label: "hosted by community board",
@@ -681,7 +761,17 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       target_name: boardName,
       canonical_href: boardHref,
       source: { kind: "meeting", id: row.meeting_id || `meeting:city_record:${id}`, name: title, canonical_href: `/notices/${encodeURIComponent(id)}` },
-    }, { className: "notice-community-board-link", escape: esc })}</p>`
+    }, { className: "notice-community-board-link", escape: esc })}${boardReport ? ` ${boardReport}` : ""}</p>`
+    : "";
+  const relatedObjectReport = projectedTarget
+    && projectedTarget.id
+    && `project:${projectedTarget.id}` !== `project:${projectId}`
+    ? renderReportIssueAffordance(noticeRelationshipReportTarget(row, id, title, {
+      semantic_key: "related_object",
+      relation_type: "identified_canonical_object",
+      related_object_id: projectedTarget.id,
+      related_object_label: projectedTarget.label,
+    }))
     : "";
   return `<div style="max-width:880px;margin:0 auto" data-edge-rendered="notice" data-notice-id="${esc(id)}">
     ${renderNodeBack({ href: "/browse/", label: "Back to Browse", currentHref: options.currentHref, extraClass: "edge-notice-back" })}
@@ -690,14 +780,14 @@ export function renderEdgeNotice(row, id, meetingOutcome = null, mandateBacklink
       <h2 class="rolename" lang="en" dir="ltr">${esc(title)}</h2>
       ${projectPivot}
       ${boardPivot}
-      <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
+      <dl class="glance"><dt>Agency</dt><dd lang="en" dir="ltr">${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</dd>${vendorLink ? `<dt>Vendor</dt><dd lang="en" dir="ltr">${vendorLink}${vendorReport ? ` ${vendorReport}` : ""}</dd>` : ""}${facts.map(([label, value]) => `<dt>${esc(label)}</dt><dd lang="en" dir="ltr">${esc(value)}</dd>`).join("")}</dl>
       ${civicTimeHistoryHTML}
       ${attachmentUrl ? `<p class="notice-attachment-fallback">The official notice content is in an attachment: <a href="${esc(attachmentUrl)}" target="_blank" rel="noopener noreferrer">Read the attachment</a>.</p>` : ""}
       ${row.additional_description_1 ? `<details class="scope"><summary>Notice text</summary><p lang="en" dir="ltr">${esc(row.additional_description_1)}</p></details>` : ""}
       ${mandateBacklinksHTML}
       ${noticeLocalConstellationHTML}
       ${renderMeetingOutcomesFirstPaint(meetingOutcome, id)}
-      <div class="actions">${browseLink}${followingLink}</div>
+      <div class="actions">${browseLink}${followingLink}${documentReport}${relatedObjectReport}</div>
       <p>${sourceLink}</p>
     </article>
   </div>`;

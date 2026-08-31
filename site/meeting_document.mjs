@@ -17,6 +17,11 @@ import {
   buildCrossSourceCoverageLedger,
   renderCrossSourceCoverageLedger,
 } from "./cross_source_coverage_ledger.mjs";
+import {
+  buildCanonicalDocumentReportTarget,
+  buildCanonicalDocumentRelationshipReportTarget,
+  renderReportIssueAffordance,
+} from "./report_issue.mjs";
 
 export const MEETING_DOCUMENT_SCHEMA = "cityscroll.meeting_document.v1";
 export const MEETING_DOCUMENT_ROLES = Object.freeze([
@@ -358,6 +363,63 @@ function meetingSource(record, id, title, canonical) {
   };
 }
 
+function meetingReportSource(record) {
+  return {
+    source_system: record?.source_system || null,
+    source_record_id: record?.source_record_id || null,
+    source_url: record?.source_url || record?.compatibility?.publisher_href || null,
+  };
+}
+
+function meetingDocumentReportTarget(record, id, title, canonical) {
+  return buildCanonicalDocumentReportTarget({
+    object_type: "meeting",
+    object_id: id,
+    canonical_url: canonical,
+    object_label: title,
+    source: meetingReportSource(record),
+  });
+}
+
+function meetingAgencyRelationshipReportTarget(record, id, title, canonical, agency) {
+  const href = agencyHref(record);
+  if (!agency || !href) return null;
+  const agencyId = String(record?.institution_refs?.agency_ref || "").replace(/^agency:id:/, "")
+    || resolveAgencyIdentity(agency)?.canonical_id;
+  if (!agencyId) return null;
+  return buildCanonicalDocumentRelationshipReportTarget({
+    object_type: "meeting",
+    object_id: id,
+    canonical_url: canonical,
+    object_label: title,
+    semantic_key: "agency",
+    relation_type: "organized_by_agency",
+    related_object_id: `agency:id:${agencyId}`,
+    related_object_label: agency,
+    source: meetingReportSource(record),
+  });
+}
+
+function meetingBoardRelationshipReportTarget(record, id, title, canonical, board) {
+  if (!board) return null;
+  const edge = communityBoardMeetingEdgeFromRow(record);
+  const displayed = record.source_system === "community_board"
+    || (edge && communityBoardMeetingEdgeAccepted(edge));
+  if (!displayed) return null;
+  return buildCanonicalDocumentRelationshipReportTarget({
+    object_type: "meeting",
+    object_id: id,
+    canonical_url: canonical,
+    object_label: title,
+    semantic_key: "community-board",
+    relation_type: "hosted_by_community_board",
+    related_object_id: `community-board:${board}`,
+    related_object_label: record.board_name || "Community Board",
+    source: meetingReportSource(record),
+    edge,
+  });
+}
+
 function boardPivot(record, board, edge, source) {
   if (!board || (record.source_system !== "community_board" && !edge)) return "";
   const href = communityBoardPageHref(board);
@@ -514,6 +576,19 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
   const agencyLink = agency
     ? agencyPivot(record, agency, sourceEntity)
     : "";
+  const documentReport = renderReportIssueAffordance(
+    meetingDocumentReportTarget(record, id, title, canonical),
+  );
+  const agencyReport = agencyHref(record)
+    ? renderReportIssueAffordance(
+      meetingAgencyRelationshipReportTarget(record, id, title, canonical, agency),
+    )
+    : "";
+  const boardReport = boardLink
+    ? renderReportIssueAffordance(
+      meetingBoardRelationshipReportTarget(record, id, title, canonical, board),
+    )
+    : "";
   const legacy = safeHref(record.compatibility?.legacy_notice_href);
   const checked = record.source_receipt?.observed_at;
   const documentLinks = meetingDocumentLinks(record);
@@ -583,11 +658,12 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
     : "";
   const relatedLinksSection = relatedLinksDetails(record);
   const institutionSection = boardLink || agencyLink || committeeLink
-    ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}</p>` : ""}${agencyLink ? `<p>${agencyLink}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
+    ? `<section class="node-section civic-object-section meeting-section meeting-institution"><h2>Institution</h2>${boardLink ? `<p>${boardLink}${boardReport ? ` ${boardReport}` : ""}</p>` : ""}${agencyLink ? `<p>${agencyLink}${agencyReport ? ` ${agencyReport}` : ""}</p>` : ""}${committeeLink ? `<p>Committee: ${committeeLink}</p>` : ""}</section>`
     : "";
   const actions = [
     id && meetingCalendarHasEventTime(record) ? `<a class="node-action civic-object-action primary" href="/meeting.ics?id=${encodeURIComponent(id)}">Add to calendar</a>` : "",
     legacy ? `<a class="node-action civic-object-action" href="${esc(legacy)}">Open the City Record notice</a>` : "",
+    documentReport,
   ].filter(Boolean).join("");
   return `<!doctype html>
 <html lang="en">
@@ -599,6 +675,7 @@ export function renderMeetingDocument(record = {}, readModel = {}) {
 <link rel="canonical" href="https://cityscroll.org${esc(canonical)}">
 <link rel="stylesheet" href="/brand.css">
 <link rel="stylesheet" href="/civic-documents.css">
+<script type="module" src="/report_issue.mjs"></script>
 </head>
 <body>
 <header class="document-mast"><div class="document-mast-inner"><a class="document-brand brand-lockup home" href="/">CityScroll</a><nav class="document-nav" aria-label="Primary"><a href="/now/">Now</a><a href="/near-you/">Near you</a><a href="/following/">Following</a><a href="/browse/">Browse</a></nav></div></header>
