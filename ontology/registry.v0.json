@@ -1697,6 +1697,31 @@
       "grounding": "partial"
     },
     {
+      "id": "route_alias_of",
+      "status": "registered",
+      "from": "agency_route_alias",
+      "to": "civic-institution|agency",
+      "relation": "route_alias_of",
+      "inverse": "has_route_alias",
+      "reason": "A reviewed legacy agency route is an alias of a stable civic-institution or retained agency subject only when the route identity report and ROUTE_ALIAS_TARGETS both declare that exact pair. Redirect plus visible compatibility evidence is the materialization.",
+      "contract_ref": "cityscroll.agency_route_identity_report.v1",
+      "edge_schema": "cityscroll.institution_profile_navigation.v1",
+      "required_evidence": [
+        "source_id",
+        "canonical_id",
+        "redirect_path",
+        "disposition_basis",
+        "non_collision_status"
+      ],
+      "negative_rule": "Unresolved, ambiguous, legitimate external, source-only, route-only, and generic self-labeled routes do not become aliases. Colliding comparison keys never mint route_alias_of.",
+      "backing": [
+        "agency_route_identity_report",
+        "ROUTE_ALIAS_TARGETS"
+      ],
+      "label": "Route alias of",
+      "grounding": "partial"
+    },
+    {
       "id": "affected_review_body_for",
       "status": "registered",
       "from": "land_project",

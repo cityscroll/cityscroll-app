@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Updated | 2026-08-31 (Administrative Code provision identity and cites_authority join) |
+| Updated | 2026-08-31 (Administrative Code provision identity and cites_authority join; reviewed `route_alias_of` compatibility edge) |
 | Scope | Catalog + pure evaluation flywheel — no production graph store, no public route |
 | Product name | **Civic Graph** (object–link–action registry + evaluation harness) |
 | Supersedes | — |
