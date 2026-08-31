@@ -115,8 +115,8 @@ const STATE_COPY = Object.freeze({
 
 const IDENTITY_COPY = Object.freeze({
   matched: "This profile uses a reviewed publisher identity and a stable agency route.",
-  collision: "More than one publisher identity shares this comparison key. CityScroll does not choose a canonical profile.",
-  unresolved: "This route has no exact publisher-crosswalk identity, so it does not open a guessed profile.",
+  collision: "More than one publisher identity shares this comparison key. Inspect the evidence below to see both identities.",
+  unresolved: "This route has no exact publisher-crosswalk identity. It stays on an evidence page until an exact join exists.",
   route_only: "This route is retained without a publisher crosswalk row.",
   source_only: "A publisher identity exists without a generated agency route.",
   legitimate_external: "This body is retained separately. It is not merged into a parent institution.",
@@ -472,11 +472,11 @@ function blockedCapabilities(generatedAt) {
       id: "community_board_child",
       label: "Community Board membership",
       state: "blocked",
-      source_basis: "Community Board identity stays on body_id, not as a generic agency child",
+      source_basis: "Community Board identity uses board-local body ids on board pages",
       vintage: dayStamp(generatedAt),
       href: null,
       relation_id: null,
-      copy: "Individual Community Boards keep board-local body ids. This profile is not their parent.",
+      copy: "Individual Community Boards keep board-local body ids on their own pages.",
     }),
   ]);
 }
@@ -649,7 +649,7 @@ export function renderInstitutionProfileNavigation(projection) {
     ? `<div class="institution-nav-capabilities" data-institution-nav-capabilities="1">${matched}</div>`
     : "";
   const collision = identity.status === "collision"
-    ? `<p class="institution-nav-stop" data-identity-state="collision">Publisher comparison key ${esc(identity.comparison_key || "")} matches more than one identity. Open the evidence below rather than a guessed profile.</p>`
+    ? `<p class="institution-nav-stop" data-identity-state="collision">Publisher comparison key ${esc(identity.comparison_key || "")} matches more than one identity. Inspect the evidence below to see both identities.</p>`
     : "";
   const unresolved = identity.status === "unresolved"
     ? `<p class="institution-nav-stop" data-identity-state="unresolved">${esc(identity.copy)}</p>`

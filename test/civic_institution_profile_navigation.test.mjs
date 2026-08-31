@@ -255,7 +255,7 @@ test("EEP collision, unresolved routes, OTI buckets, and Community Boards stay u
     assert.equal(projection.role_capabilities.every((row) => row.state === "blocked" || row.id === "institution_kind" || row.id === "community_board_child"), true);
     const page = renderInstitutionUncertaintyDocument(projection);
     assert.match(page, /data-identity-state="unresolved"/);
-    assert.match(page, /does not open a guessed profile/);
+    assert.match(page, /stays on an evidence page/);
     assert.doesNotMatch(page, /href="\/agencies\/taxi-and-limousine-commission\//);
   }
 
