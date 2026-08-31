@@ -43,6 +43,7 @@ export const PROPERTY_SECTION = "Property Disposition";
 export const DETAIL_BODY_LIMIT = 6000;
 export const SEARCH_EXCERPT_RADIUS = 70;
 export const DEFAULT_LIMIT = 300;
+export const DEFAULT_FETCH_ATTEMPTS = 4;
 export const SOURCE_DATASET = "dg92-zbpx";
 export const SOURCE_URL = `https://data.cityofnewyork.us/resource/${SOURCE_DATASET}.json`;
 
@@ -594,7 +595,10 @@ export function reportAsMarkdown(report) {
   ].join("\n");
 }
 
-async function fetchCorpus({ asOf = null, limit = DEFAULT_LIMIT } = {}) {
+export async function fetchCorpus(
+  { asOf = null, limit = DEFAULT_LIMIT } = {},
+  { fetchImpl = fetch, sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds)), attempts = DEFAULT_FETCH_ATTEMPTS } = {},
+) {
   const where = [`section_name='${PROPERTY_SECTION.replaceAll("'", "''")}'`];
   if (asOf) where.push(`start_date <= '${asOf}T23:59:59.999'`);
   const params = new URLSearchParams({
@@ -604,8 +608,16 @@ async function fetchCorpus({ asOf = null, limit = DEFAULT_LIMIT } = {}) {
     "$limit": String(limit),
   });
   const url = `${SOURCE_URL}?${params}`;
-  const response = await fetch(url, { headers: { "User-Agent": "CityScroll property accessibility census" } });
-  if (!response.ok) throw new Error(`City Record query failed: HTTP ${response.status}`);
+  let response;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    response = await fetchImpl(url, { headers: { "User-Agent": "CityScroll property accessibility census" } });
+    if (response.ok) break;
+    const retryable = response.status === 429 || response.status >= 500;
+    if (!retryable || attempt === attempts) {
+      throw new Error(`City Record query failed: HTTP ${response.status} after ${attempt} attempt${attempt === 1 ? "" : "s"}`);
+    }
+    await sleep(250 * (2 ** (attempt - 1)));
+  }
   const rows = await response.json();
   if (!Array.isArray(rows)) throw new Error("City Record query did not return an array");
   return { rows, source: url };
