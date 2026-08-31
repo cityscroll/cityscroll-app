@@ -5,12 +5,13 @@
  * to inspect coverage-hash, canary fingerprint, ontology, and binding trend.
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import {
+  WATERMARK_DIRECTORY_RELATIVE,
   WATERMARK_RELATIVE,
+  aggregateWatermarkShards,
   isWatermark,
   loadWatermark,
 } from "./architecture_watermark.mjs";
@@ -73,26 +74,36 @@ export function projectChangeHistory(watermarks = []) {
   }
   return {
     schema: CHANGE_HISTORY_SCHEMA,
-    source: WATERMARK_RELATIVE,
+    source: WATERMARK_DIRECTORY_RELATIVE,
     count: entries.length,
     entries,
   };
 }
 
 function gitShowWatermark(root, commit) {
-  const raw = execFileSync("git", ["show", `${commit}:${WATERMARK_RELATIVE}`], {
+  try {
+    const raw = execFileSync("git", ["show", `${commit}:${WATERMARK_RELATIVE}`], { cwd: root, encoding: "utf8" });
+    const document = JSON.parse(raw);
+    if (isWatermark(document)) return document;
+  } catch {
+    // Post-migration commits carry reviewed shards instead.
+  }
+  const names = execFileSync("git", ["ls-tree", "-r", "--name-only", commit, "--", WATERMARK_DIRECTORY_RELATIVE], {
     cwd: root,
     encoding: "utf8",
-  });
-  const document = JSON.parse(raw);
-  if (!isWatermark(document)) return null;
-  return document;
+  }).trim().split("\n").filter((name) => name.endsWith(".json"));
+  if (!names.length) return null;
+  const shards = names.map((name) => JSON.parse(execFileSync("git", ["show", `${commit}:${name}`], {
+    cwd: root,
+    encoding: "utf8",
+  })));
+  return aggregateWatermarkShards(shards);
 }
 
 export function loadWatermarkHistory({ root = ROOT } = {}) {
   const snapshots = [];
   try {
-    const hashes = execFileSync("git", ["log", "--pretty=%H", "--", WATERMARK_RELATIVE], {
+    const hashes = execFileSync("git", ["log", "--pretty=%H", "--", WATERMARK_RELATIVE, WATERMARK_DIRECTORY_RELATIVE], {
       cwd: root,
       encoding: "utf8",
     }).trim().split("\n").filter(Boolean);
@@ -107,19 +118,11 @@ export function loadWatermarkHistory({ root = ROOT } = {}) {
   } catch {
     // Detached or non-git callers can still project the working-tree file.
   }
-  const currentPath = join(root, WATERMARK_RELATIVE);
-  if (existsSync(currentPath)) {
-    const current = JSON.parse(readFileSync(currentPath, "utf8"));
-    if (isWatermark(current)) {
-      const last = snapshots[snapshots.length - 1];
-      if (!last || last.observer_coverage_hash !== current.observer_coverage_hash
-        || last.commit !== current.commit) {
-        snapshots.push(current);
-      }
-    }
-  } else {
-    const loaded = loadWatermark({ root });
-    if (loaded) snapshots.push(loaded);
+  const loaded = loadWatermark({ root });
+  if (loaded) {
+    const last = snapshots[snapshots.length - 1];
+    if (!last || last.observer_coverage_hash !== loaded.observer_coverage_hash
+      || last.commit !== loaded.commit) snapshots.push(loaded);
   }
   return snapshots;
 }

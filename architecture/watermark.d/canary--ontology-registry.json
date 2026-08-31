@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:ontology-registry",
+  "owner": "canary:ontology-registry",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "ontology/registry.v0.json",
+    "count": 156,
+    "fingerprint": "1c3804d3e1c4d2d586c35b7f4dcd7733887ee4d1b79f44318583a113de61e52f"
+  }
+}

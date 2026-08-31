@@ -30,7 +30,7 @@
         "path": "architecture/generated/reconciliation.json",
         "schema": "cityscroll.architecture.reconciliation.v1",
         "status": "checked",
-        "baseline": "architecture/generated/watermark.json",
+        "baseline": "architecture/watermark.d",
         "observed_commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
         "as_of": "2026-08-31T11:57:44Z"
       },
@@ -58,7 +58,7 @@
           "path": "architecture/generated/reconciliation.json",
           "schema": "cityscroll.architecture.reconciliation.v1",
           "status": "checked",
-          "baseline": "architecture/generated/watermark.json"
+          "baseline": "architecture/watermark.d"
         },
         "capability_registry": {
           "path": "capabilities/registry.mjs",
@@ -83,7 +83,7 @@
         "path": "architecture/generated/reconciliation.json",
         "schema": "cityscroll.architecture.reconciliation.v1",
         "status": "checked",
-        "baseline": "architecture/generated/watermark.json",
+        "baseline": "architecture/watermark.d",
         "observed_commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
         "as_of": "2026-08-31T11:57:44Z"
       },
@@ -111,7 +111,7 @@
           "path": "architecture/generated/reconciliation.json",
           "schema": "cityscroll.architecture.reconciliation.v1",
           "status": "checked",
-          "baseline": "architecture/generated/watermark.json"
+          "baseline": "architecture/watermark.d"
         },
         "capability_registry": {
           "path": "capabilities/registry.mjs",
@@ -134,5 +134,5 @@
     "search.federated@1::semantic-search-housing"
   ],
   "ineligible_ids": [],
-  "content_hash": "4435bf2d4a6d738046f568cb185d6adaa4ad046e6217a6dc489fdae49da93d97"
+  "content_hash": "30e27e3364abfe8292be41867bce6cde094269cd7b89c2e8174b5bd1c98e8a18"
 }

@@ -1,0 +1,12 @@
+{
+  "schema": "cityscroll.architecture.watermark-shard.v1",
+  "id": "canary:rule-version-projection",
+  "owner": "canary:rule-version-projection",
+  "updated_at": "2026-08-31T11:57:44Z",
+  "commit": "9a29cbe2ec285d832e95902f3e1015ec81784707",
+  "value": {
+    "path": "site/rule_versions.mjs",
+    "count": 1,
+    "fingerprint": "7106777c2c2334d1aae9091256e312c0ad2abb6430bec7dd83b76206e1c66f95"
+  }
+}

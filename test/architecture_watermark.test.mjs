@@ -1,19 +1,27 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { createHash } from "node:crypto";
 
 import { buildFacts } from "../tools/build_architecture_facts.mjs";
 import {
   WATERMARK_RELATIVE,
+  WATERMARK_DIRECTORY_RELATIVE,
+  WATERMARK_SHARD_SCHEMA,
+  aggregateWatermarkShards,
   WATERMARK_SCHEMA,
   buildWatermark,
   isWatermark,
   loadWatermark,
+  loadWatermarkShards,
   observerCoverageHash,
+  writeWatermarkShards,
 } from "../tools/architecture_watermark.mjs";
 
 const facts = buildFacts({ generatedAt: "2026-08-16T00:00:00Z", commit: "test-commit" });
-const committed = JSON.parse(readFileSync(new URL("../architecture/generated/watermark.json", import.meta.url), "utf8"));
+const committed = loadWatermark();
 
 test("committed watermark is compact, schema-stamped, and not a facts dump", () => {
   assert.equal(committed.schema, WATERMARK_SCHEMA);
@@ -81,7 +89,91 @@ test("watermark projection is structurally valid and regenerable from current fa
   const loaded = loadWatermark();
   assert.equal(loaded.schema, WATERMARK_SCHEMA);
   assert.equal(isWatermark(loaded), true);
+  assert.equal(WATERMARK_DIRECTORY_RELATIVE, "architecture/watermark.d");
   assert.equal(WATERMARK_RELATIVE, "architecture/generated/watermark.json");
+});
+
+test("reviewed watermark shards have deterministic ids, owners, and paths", () => {
+  const shards = loadWatermarkShards();
+  assert.ok(shards.length > 4);
+  assert.ok(shards.every((shard) => shard.schema === WATERMARK_SHARD_SCHEMA));
+  assert.ok(shards.every((shard) => shard.owner === shard.id));
+  assert.deepEqual(aggregateWatermarkShards(shards), committed);
+  const rendered = `${JSON.stringify(committed, null, 2)}\n`;
+  assert.equal(createHash("sha256").update(rendered).digest("hex"), "d08ab51671330b48b167416ba96dffce509668539225ec818caa31fafe587532");
+});
+
+test("same-key candidates fail instead of resolving by order", () => {
+  const shard = loadWatermarkShards().find((entry) => entry.id === "ontology");
+  assert.throws(
+    () => aggregateWatermarkShards([...loadWatermarkShards(), structuredClone(shard)]),
+    /duplicate semantic key ontology; reviewed handoff required/,
+  );
+});
+
+test("reviewed advancement is explicit and changes only the selected owner shard", () => {
+  const root = mkdtempSync(join(tmpdir(), "watermark-write-"));
+  mkdirSync(join(root, "architecture"), { recursive: true });
+  cpSync(new URL("../architecture/watermark.d", import.meta.url), join(root, "architecture", "watermark.d"), { recursive: true });
+  cpSync(new URL("../architecture/observer-canaries.json", import.meta.url), join(root, "architecture", "observer-canaries.json"));
+  const before = new Map(loadWatermarkShards({ root }).map((shard) => [shard.id, JSON.stringify(shard)]));
+  const next = structuredClone(committed);
+  next.generated_at = "2026-09-01T00:00:00.000Z";
+  next.commit = "reviewed-next";
+  next.canaries["production-search"].count += 1;
+  try {
+    assert.throws(() => writeWatermarkShards(next, { root }), /requires at least one explicit/);
+    writeWatermarkShards(next, { root, keys: ["canary:production-search"] });
+    const after = new Map(loadWatermarkShards({ root }).map((shard) => [shard.id, JSON.stringify(shard)]));
+    const changed = [...after.keys()].filter((id) => before.get(id) !== after.get(id));
+    assert.deepEqual(changed, ["canary:production-search"]);
+    assert.equal(loadWatermark({ root }).canaries["production-search"].count, committed.canaries["production-search"].count + 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("independent cards own disjoint watermark and evidence shard paths", () => {
+  const cardA = ["architecture/watermark.d/canary--production-search.json", "architecture/evidence.d/work-a--card-a.json"];
+  const cardB = ["architecture/watermark.d/canary--agency-search-producer.json", "architecture/evidence.d/work-b--card-b.json"];
+  assert.deepEqual(cardA.filter((path) => cardB.includes(path)), []);
+  for (const paths of [cardA, cardB]) {
+    assert.equal(paths.some((path) => path === WATERMARK_RELATIVE), false);
+    assert.equal(paths.some((path) => path.startsWith("architecture-evidence/")), false);
+  }
+});
+
+test("malformed, duplicate, id/path-mismatched, unsupported, and missing shards fail closed", () => {
+  const root = mkdtempSync(join(tmpdir(), "watermark-shards-"));
+  const source = new URL("../architecture/watermark.d", import.meta.url);
+  const target = join(root, "architecture", "watermark.d");
+  mkdirSync(join(root, "architecture"), { recursive: true });
+  cpSync(source, target, { recursive: true });
+  try {
+    writeFileSync(join(target, "wrong.json"), JSON.stringify({ ...loadWatermarkShards()[0], id: "canary:production-search" }));
+    assert.throws(() => loadWatermarkShards({ root }), /id\/path mismatch|duplicate semantic key/);
+    rmSync(join(target, "wrong.json"));
+    writeFileSync(join(target, "canary--production-search.json"), "{");
+    assert.throws(() => loadWatermarkShards({ root }), /malformed JSON/);
+    cpSync(source, target, { recursive: true, force: true });
+    rmSync(join(target, "ontology.json"));
+    assert.throws(() => loadWatermarkShards({ root }), /missing required baseline key ontology/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a reintroduced generated watermark is rejected as a second baseline", () => {
+  const root = mkdtempSync(join(tmpdir(), "watermark-legacy-"));
+  mkdirSync(join(root, "architecture", "generated"), { recursive: true });
+  mkdirSync(join(root, "architecture"), { recursive: true });
+  cpSync(new URL("../architecture/watermark.d", import.meta.url), join(root, "architecture", "watermark.d"), { recursive: true });
+  writeFileSync(join(root, WATERMARK_RELATIVE), JSON.stringify(committed));
+  try {
+    assert.throws(() => loadWatermark({ root }), /must not be present as baseline input/);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("a new known canary changes the coverage hash and canary inventory", () => {
