@@ -17,6 +17,9 @@ import {
   serializeReportTarget,
 } from "../site/report_target.mjs";
 import {
+  buildAgencyConstellationClaimReportTarget,
+  buildAgencyConstellationReportTarget,
+  buildEntityProfileReportTarget,
   buildLandRegulatoryEffectReportTarget,
   buildMeetingGroupingReportTarget,
   buildContractVendorRelationshipReportTarget,
@@ -26,6 +29,10 @@ import {
 
 const RULEMAKING_LIFECYCLE_FIXTURES = JSON.parse(readFileSync(
   join(dirname(fileURLToPath(import.meta.url)), "fixtures/report_target/rulemaking_lifecycle.json"),
+  "utf8",
+));
+const AGENCY_CLAIM_FIXTURES = JSON.parse(readFileSync(
+  join(dirname(fileURLToPath(import.meta.url)), "fixtures/report_target/agency_claim_deep_link.json"),
   "utf8",
 ));
 
@@ -367,6 +374,7 @@ test("land regulatory-effect target carries the derived meaning and cited source
 
 test("anchor parsing rejects positional or malformed anchors", () => {
   assert.deepEqual(parseReportClaimAnchor("contract:CT123#vendor").claim_type, "field");
+  assert.equal(parseReportClaimAnchor("staffing:exam:6306#certified_to_agency").claim_type, "relationship");
   assert.throws(() => parseReportClaimAnchor("contract:CT123"), /claim anchor/);
   assert.throws(() => parseReportClaimAnchor("contract:CT123#vendor#first"), /claim anchor/);
 });
@@ -385,4 +393,68 @@ test("serialization and re-resolution are deterministic", () => {
     },
   });
   assert.equal(serializeReportTarget(target), serializeReportTarget(resolveReportTarget(JSON.parse(serializeReportTarget(target)))));
+});
+
+test("staffing claim deep-link identifies the exam while retaining agency profile context", () => {
+  const { profile, staffing_claim: claim } = AGENCY_CLAIM_FIXTURES;
+  const target = buildAgencyConstellationClaimReportTarget({
+    ...profile,
+    claim,
+    activeClaimId: claim.claim_id,
+  });
+
+  assert.equal(target.object_id, profile.entity_ref);
+  assert.equal(target.object_label, profile.object_label);
+  assert.equal(target.claim_anchor.object_ref, "staffing:exam:6306");
+  assert.equal(target.claim_anchor.anchor, "staffing:exam:6306#certified_to_agency");
+  assert.equal(target.claim_anchor.claim_type, "relationship");
+  assert.equal(target.claim_anchor.subject_id, profile.entity_ref);
+  assert.equal(target.claim_anchor.object_id, "exam:6306");
+  assert.equal(target.canonical_url, claim.inspect_href);
+  assert.deepEqual(target.constituent_object_ids, [profile.entity_ref, "exam:6306"]);
+  assert.deepEqual(target.provenance.source_record_ids, ["a9md-ynri:6306:nypd"]);
+  assert.deepEqual(target.provenance.source_urls, ["https://data.cityofnewyork.us/d/a9md-ynri"]);
+  assert.deepEqual(target.provenance.systems, ["socrata"]);
+  assert.match(target.description, /Police Department is connected to Police Officer/);
+  assert.notEqual(target.claim_anchor.claim_type, "identity");
+  assert.notEqual(target.claim_anchor.anchor, `${profile.entity_ref}#identity`);
+  assert.equal(
+    serializeReportTarget(target),
+    serializeReportTarget(resolveReportTarget(JSON.parse(serializeReportTarget(target)))),
+  );
+});
+
+test("profile-only agency URLs keep identity targets and claim paths never fall back", () => {
+  const { profile, staffing_claim: claim, negative } = AGENCY_CLAIM_FIXTURES;
+  const profileTarget = buildAgencyConstellationReportTarget(profile);
+  assert.equal(profileTarget.claim_anchor.claim_type, "identity");
+  assert.equal(profileTarget.claim_anchor.anchor, `${profile.entity_ref}#identity`);
+  assert.equal(profileTarget.canonical_url, profile.canonical_url);
+  assert.equal(buildEntityProfileReportTarget(profile).target_id, profileTarget.target_id);
+
+  const claimTarget = buildAgencyConstellationReportTarget({
+    ...profile,
+    claim,
+    activeClaimId: claim.claim_id,
+  });
+  assert.equal(claimTarget.claim_anchor.object_ref, "staffing:exam:6306");
+  assert.notEqual(claimTarget.target_id, profileTarget.target_id);
+
+  for (const { name, input } of negative) {
+    if (name === "profile-only-url") {
+      const target = buildAgencyConstellationReportTarget(input);
+      assert.equal(target.claim_anchor.claim_type, "identity", name);
+      continue;
+    }
+    assert.equal(
+      buildAgencyConstellationClaimReportTarget(input),
+      null,
+      `${name} must fail closed`,
+    );
+    assert.equal(
+      buildAgencyConstellationReportTarget(input),
+      null,
+      `${name} must not emit a profile-only fallback`,
+    );
+  }
 });

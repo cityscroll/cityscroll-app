@@ -49,6 +49,12 @@ const CLAIM_KEY_TYPES = Object.freeze({
   lifecycle: "lifecycle",
   "regulatory-effect": "interpretation",
   regulatory_effect: "interpretation",
+  certified_to_agency: "relationship",
+  published_by_agency: "relationship",
+  hosts_meeting: "relationship",
+  issued_rule: "relationship",
+  top_vendor_by_award_12mo: "relationship",
+  statute_duty: "relationship",
 });
 
 function reportTargetClean(value, max = 1_000) {

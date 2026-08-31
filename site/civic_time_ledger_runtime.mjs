@@ -19,6 +19,7 @@ import {
   renderWhyBelieveControl,
   sourceSystemReaderLabel,
 } from "./graph_edge_provenance.mjs";
+import { syncAgencyConstellationClaimReport } from "./report_issue.mjs";
 import { officialSourceLink } from "./affordance_grammar.mjs";
 import { runtimeRumSemanticMilestones } from "./rum_static_record_instrumentation.mjs";
 import {
@@ -315,7 +316,9 @@ async function loadAgencyView(href) {
 }
 
 function wireAgencyDocument(main, nowView, { viewHref = null } = {}) {
-  mountEdgeProvenanceClient(main.ownerDocument || document);
+  const documentRef = main.ownerDocument || document;
+  mountEdgeProvenanceClient(documentRef);
+  syncAgencyConstellationClaimReport(documentRef, { claims: nowView?.claims || [] });
   const initial = parseAsOfFromSearch(location.search);
   if (!nowView) {
     const loader = main.__civicAgencyViewLoader || (() => loadAgencyView(viewHref || main.dataset.civicObjectViewHref));
@@ -347,6 +350,7 @@ function wireAgencyDocument(main, nowView, { viewHref = null } = {}) {
       ? projectAgencyConstellationAsOf(nowView, normalizeAsOfDay(initial), { axis: "valid" })
       : nowView)
     : nowView;
+  syncAgencyConstellationClaimReport(documentRef, { claims: displayView?.claims || nowView.claims || [] });
   reportAgencyDocumentReadiness(main, displayView);
   wireCopy(main);
 
