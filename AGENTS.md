@@ -4463,6 +4463,13 @@ Verify: `node --test test/checkbook_spending_collector.test.mjs` and
   rehearsal with `node tools/cc9_adjudication_rehearsal.mjs`; `--check`
   verifies it. Focused proof is `test/report_adjudication.test.mjs`.
 
+- **Rules browse lifecycle reports (CC-10):** `buildRulemakingLifecycleReportTarget`
+  in `site/report_issue.mjs` is the shared lifecycle target. Rules browse cards in
+  `site/app/rules.mjs` attach it only for eligible multi-notice rulemakings and
+  fail closed otherwise; generic Feedback stays on the site footer. Proof:
+  `test/report_target.test.mjs`, `test/report_issue_ui.test.mjs`, and
+  `test/rules_explorer.test.mjs`.
+
 - **Federated search scope:** `capabilities/federated_search.mjs` owns the additive
   closed `scope` allowlist over registered lenses. Adapters must not rank, rewrite
   identity, or query an arbitrary store. Omitted scope keeps all-lens federation;

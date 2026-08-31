@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import {
   buildLandRegulatoryEffectReportTarget,
   buildMeetingGroupingReportTarget,
+  buildRulemakingLifecycleReportTarget,
   buildContractReportTarget,
   buildContractVendorRelationshipReportTarget,
   buildProjectParcelRelationshipReportTarget,
@@ -12,6 +17,12 @@ import {
   REPORT_CATEGORIES,
 } from "../site/report_issue.mjs";
 import { renderProcurementDocument } from "../site/procurement_document.mjs";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const RULEMAKING_LIFECYCLE_FIXTURES = JSON.parse(readFileSync(
+  join(ROOT, "test/fixtures/report_target/rulemaking_lifecycle.json"),
+  "utf8",
+));
 
 const contract = {
   procurement_id: "procurement:contract:CT123",
@@ -121,10 +132,12 @@ test("grouping and derived-meaning affordances render the durable target", () =>
       proposed: { districts: [{ citation: { url: "https://zr.planning.nyc.gov/article-ii/chapter-3/23-22" } }] },
     },
   });
+  const rulesTarget = buildRulemakingLifecycleReportTarget(RULEMAKING_LIFECYCLE_FIXTURES.eligible);
 
   for (const [target, anchor] of [
     [meetingTarget, "meeting:city_record:20260814001#collapsed_notices"],
     [landTarget, "landuse:2026K0123#regulatory-effect"],
+    [rulesTarget, "rulemaking:hpd:natural-gas-detectors#lifecycle"],
   ]) {
     const html = renderReportIssueAffordance(target);
     assert.match(html, />Report an issue<\/button>/);
@@ -132,18 +145,43 @@ test("grouping and derived-meaning affordances render the durable target", () =>
     assert.match(target.description, /\S/);
     assert.ok(target.constituent_object_ids.length);
   }
+  for (const { name, entry } of RULEMAKING_LIFECYCLE_FIXTURES.ineligible) {
+    assert.equal(
+      renderReportIssueAffordance(buildRulemakingLifecycleReportTarget(entry)),
+      "",
+      `${name} must omit the contextual report action`,
+    );
+  }
 });
 
 test("higher-inference cards use the shared report target affordance", async () => {
   const fs = await import("node:fs/promises");
-  const [meetings, land] = await Promise.all([
+  const [meetings, land, rules, index] = await Promise.all([
     fs.readFile(new URL("../site/app/feed-actions.mjs", import.meta.url), "utf8"),
     fs.readFile(new URL("../site/app/land.mjs", import.meta.url), "utf8"),
+    fs.readFile(new URL("../site/app/rules.mjs", import.meta.url), "utf8"),
+    fs.readFile(new URL("../site/index.html", import.meta.url), "utf8"),
   ]);
   assert.match(meetings, /buildMeetingGroupingReportTarget/);
   assert.match(meetings, /renderReportIssueAffordance/);
   assert.match(land, /buildLandRegulatoryEffectReportTarget/);
   assert.match(land, /renderReportIssueAffordance/);
+  assert.match(rules, /buildRulemakingLifecycleReportTarget/);
+  assert.match(rules, /renderReportIssueAffordance/);
+  assert.match(rules, /function rulesExplorerCardHTML/);
+  const cardTemplate = rules.slice(
+    rules.indexOf("function rulesExplorerCardHTML"),
+    rules.indexOf("let rulesActionBandToolsPromise"),
+  );
+  assert.match(cardTemplate, /buildRulemakingLifecycleReportTarget\(entry\)/);
+  assert.match(cardTemplate, /ui-object-card-report/);
+  assert.match(index, /data-i18n="footer_feedback">Feedback/);
+  assert.match(reportIssueAction(null).href, /about\.html#feedback/);
+  const eligibleHtml = renderReportIssueAffordance(
+    buildRulemakingLifecycleReportTarget(RULEMAKING_LIFECYCLE_FIXTURES.eligible),
+  );
+  assert.match(eligibleHtml, />Report an issue<\/button>/);
+  assert.doesNotMatch(eligibleHtml, />Feedback</);
 });
 
 test("report module contains navigation teardown and submits the immutable target", async () => {
