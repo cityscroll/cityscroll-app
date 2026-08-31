@@ -347,6 +347,7 @@ export function buildLandAuthoritySummary(input = {}) {
           source_type: "reviewed_static_registry",
           registry_version: LAND_PROCEDURE_PROFILE_REGISTRY_VERSION,
           procedure_id: procedureId,
+          legal_basis: (profile.legal_basis && profile.legal_basis[0]) || null,
         }
       : null,
     phase: milestone
@@ -474,6 +475,9 @@ export function buildLandAuthoritySummary(input = {}) {
         stage_id: stage.stage_id,
         role: stage.role,
         effect_source: "reviewed_static_registry",
+        legal_basis: (stage.legal_basis && stage.legal_basis[0])
+          || sourceBasis.profile.legal_basis
+          || null,
       },
     },
     expected_next_stage: compactStage(next),

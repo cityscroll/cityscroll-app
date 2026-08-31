@@ -152,6 +152,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c(b)",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.application_certification",
           "role": "administrative_certifier",
           "effect_source": "reviewed_static_registry"
@@ -421,6 +425,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -525,6 +533,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c(b)",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.application_certification",
           "role": "administrative_certifier",
           "effect_source": "reviewed_static_registry"
@@ -1231,6 +1243,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -1335,6 +1351,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -1439,6 +1459,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -1543,6 +1567,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -1733,6 +1761,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -1837,6 +1869,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -2182,6 +2218,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -2283,7 +2323,11 @@
         "profile": {
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
-          "procedure_id": "ulurp_197c"
+          "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          }
         },
         "phase": {
           "source_type": "publisher_current_milestone",
@@ -2368,6 +2412,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -2472,6 +2520,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -2576,6 +2628,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-d(b)-(c)",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+          },
           "stage_id": "ulurp_197c.city_council_review",
           "role": "conditional_decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -2681,7 +2737,11 @@
         "profile": {
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
-          "procedure_id": "ulurp_197c"
+          "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          }
         },
         "phase": {
           "source_type": "publisher_current_milestone",
@@ -2910,6 +2970,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-c",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-834"
+          },
           "stage_id": "ulurp_197c.city_planning_commission_review",
           "role": "decision_maker",
           "effect_source": "reviewed_static_registry"
@@ -3083,6 +3147,10 @@
           "source_type": "reviewed_static_registry",
           "registry_version": "2026-08-27.v1",
           "procedure_id": "ulurp_197c",
+          "legal_basis": {
+            "citation": "NYC Charter § 197-d(b)-(c)",
+            "source_url": "https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-6746"
+          },
           "stage_id": "ulurp_197c.city_council_review",
           "role": "conditional_decision_maker",
           "effect_source": "reviewed_static_registry"

@@ -444,7 +444,7 @@
   "generation": {
     "derivation": "node tools/build_land_authority_summary.mjs",
     "payload_path": "site/data/land_authority_summary.json",
-    "payload_bytes": 111148,
-    "payload_sha256": "b7dc59fc4eb680ddf7fe2ee0d937e397f7084985d0e84555c262712a2326e3f6"
+    "payload_bytes": 114468,
+    "payload_sha256": "1a60be2e3e9ed60d8f95b070db48c78e96e9051dc9a1ea7df29e5b2eb380288b"
   }
 }

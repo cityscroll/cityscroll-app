@@ -2007,6 +2007,16 @@ phase-spine inputs unchanged. Specimens: `2024M0244` mixed, `2025K0305` uniform,
   `node tools/build_land_authority_summary.mjs`; `--check` verifies the committed
   artifact. Focused proof is `test/land_authority_summary.test.mjs`.
 
+- **Land detail authority panel (LDP-08):** `site/land_authority_summary_view.mjs`
+  projects that retained summary into a first-paint “Where this stands” panel on
+  Land detail. Profile role/effect, phase evidence, geography reason, and
+  published opportunity stay in distinct DOM/data structures with provenance
+  links. An expected profile successor is labeled expected and is never a
+  published next event; Community Board and Borough President observations stay
+  advisory. The panel does not fetch a publisher. Capture with
+  `python3 tools/capture_land_authority_panel.py`. Focused proof is
+  `test/land_authority_panel.test.mjs`.
+
 ## Land/ZAP event spine
 
 `GET /zap-outcomes?id=` returns `record.spine`: a date-normalized rail joining ZAP API
