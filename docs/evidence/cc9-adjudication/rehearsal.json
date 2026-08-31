@@ -1,0 +1,286 @@
+{
+  "schema": "cityscroll.report_adjudication_rehearsal.v1",
+  "generated_for": "2026-08-31",
+  "rehearsal_scope": "seeded_fixture_rehearsal_only",
+  "claim": "This is a bounded rehearsal of the private adjudication loop, not a public review process.",
+  "cases": [
+    {
+      "id": "CC9-CONFIRMED-001",
+      "class": "confirmed_named_source_change",
+      "ok": true,
+      "error": null,
+      "civic_result_changed": true,
+      "public_label": {
+        "schema": "cityscroll.report_verdict_label.v1",
+        "id": "fb:cc9:confirmed",
+        "label": "corrected"
+      },
+      "handoff_kinds": [
+        "report_status",
+        "adjudication",
+        "source_of_truth_change",
+        "reprojection",
+        "reporter_resolution"
+      ],
+      "handoff_results": [
+        {
+          "kind": "report_status",
+          "result": "recorded"
+        },
+        {
+          "kind": "adjudication",
+          "result": "recorded"
+        },
+        {
+          "kind": "source_of_truth_change",
+          "result": "named"
+        },
+        {
+          "kind": "reprojection",
+          "result": "applied"
+        },
+        {
+          "kind": "reporter_resolution",
+          "result": "recorded"
+        }
+      ],
+      "reporter_outcome": "corrected"
+    },
+    {
+      "id": "CC9-CORRECT-AS-DISPLAYED-001",
+      "class": "correct_as_displayed",
+      "ok": true,
+      "error": null,
+      "civic_result_changed": false,
+      "public_label": {
+        "schema": "cityscroll.report_verdict_label.v1",
+        "id": "fb:cc9:correct",
+        "label": "reviewed"
+      },
+      "handoff_kinds": [
+        "report_status",
+        "adjudication",
+        "source_of_truth_change",
+        "reprojection",
+        "reporter_resolution"
+      ],
+      "handoff_results": [
+        {
+          "kind": "report_status",
+          "result": "recorded"
+        },
+        {
+          "kind": "adjudication",
+          "result": "recorded"
+        },
+        {
+          "kind": "source_of_truth_change",
+          "result": "skipped"
+        },
+        {
+          "kind": "reprojection",
+          "result": "skipped"
+        },
+        {
+          "kind": "reporter_resolution",
+          "result": "recorded"
+        }
+      ],
+      "reporter_outcome": "reviewed"
+    },
+    {
+      "id": "CC9-AMBIGUOUS-001",
+      "class": "ambiguous_or_insufficient_evidence",
+      "ok": true,
+      "error": null,
+      "civic_result_changed": false,
+      "public_label": {
+        "schema": "cityscroll.report_verdict_label.v1",
+        "id": "fb:cc9:ambiguous",
+        "label": "unresolved"
+      },
+      "handoff_kinds": [
+        "report_status",
+        "adjudication",
+        "source_of_truth_change",
+        "reprojection",
+        "reporter_resolution"
+      ],
+      "handoff_results": [
+        {
+          "kind": "report_status",
+          "result": "recorded"
+        },
+        {
+          "kind": "adjudication",
+          "result": "recorded"
+        },
+        {
+          "kind": "source_of_truth_change",
+          "result": "skipped"
+        },
+        {
+          "kind": "reprojection",
+          "result": "skipped"
+        },
+        {
+          "kind": "reporter_resolution",
+          "result": "recorded"
+        }
+      ],
+      "reporter_outcome": "unresolved"
+    },
+    {
+      "id": "CC9-UPSTREAM-001",
+      "class": "upstream_source_error",
+      "ok": true,
+      "error": null,
+      "civic_result_changed": false,
+      "public_label": {
+        "schema": "cityscroll.report_verdict_label.v1",
+        "id": "fb:cc9:upstream",
+        "label": "reviewed"
+      },
+      "handoff_kinds": [
+        "report_status",
+        "adjudication",
+        "source_of_truth_change",
+        "reprojection",
+        "reporter_resolution"
+      ],
+      "handoff_results": [
+        {
+          "kind": "report_status",
+          "result": "recorded"
+        },
+        {
+          "kind": "adjudication",
+          "result": "recorded"
+        },
+        {
+          "kind": "source_of_truth_change",
+          "result": "skipped"
+        },
+        {
+          "kind": "reprojection",
+          "result": "skipped"
+        },
+        {
+          "kind": "reporter_resolution",
+          "result": "recorded"
+        }
+      ],
+      "reporter_outcome": "reviewed"
+    },
+    {
+      "id": "CC9-DUPLICATE-001",
+      "class": "duplicate",
+      "ok": true,
+      "error": null,
+      "civic_result_changed": false,
+      "public_label": {
+        "schema": "cityscroll.report_verdict_label.v1",
+        "id": "fb:cc9:duplicate",
+        "label": "duplicate"
+      },
+      "handoff_kinds": [
+        "report_status",
+        "adjudication",
+        "source_of_truth_change",
+        "reprojection",
+        "reporter_resolution"
+      ],
+      "handoff_results": [
+        {
+          "kind": "report_status",
+          "result": "recorded"
+        },
+        {
+          "kind": "adjudication",
+          "result": "recorded"
+        },
+        {
+          "kind": "source_of_truth_change",
+          "result": "skipped"
+        },
+        {
+          "kind": "reprojection",
+          "result": "skipped"
+        },
+        {
+          "kind": "reporter_resolution",
+          "result": "recorded"
+        }
+      ],
+      "reporter_outcome": "duplicate"
+    }
+  ],
+  "negatives": [
+    {
+      "id": "CC9-NEGATIVE-EVIDENCE-001",
+      "class": "missing_evidence",
+      "ok": false,
+      "error": "evidence_required",
+      "civic_result_changed": false,
+      "public_label": null,
+      "handoff_kinds": []
+    },
+    {
+      "id": "CC9-NEGATIVE-SCOPE-001",
+      "class": "scope_violation",
+      "ok": false,
+      "error": "scope_violation",
+      "civic_result_changed": false,
+      "public_label": null,
+      "handoff_kinds": []
+    },
+    {
+      "id": "CC9-NEGATIVE-AUTO-001",
+      "class": "automatic_correction_forbidden",
+      "ok": false,
+      "error": "automatic_correction_forbidden",
+      "civic_result_changed": false,
+      "public_label": null,
+      "handoff_kinds": []
+    }
+  ],
+  "public_labels": [
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:confirmed",
+      "label": "corrected"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:correct",
+      "label": "reviewed"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:ambiguous",
+      "label": "unresolved"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:upstream",
+      "label": "reviewed"
+    },
+    {
+      "schema": "cityscroll.report_verdict_label.v1",
+      "id": "fb:cc9:duplicate",
+      "label": "duplicate"
+    }
+  ],
+  "handoff_kinds": [
+    "report_status",
+    "adjudication",
+    "source_of_truth_change",
+    "reprojection",
+    "reporter_resolution"
+  ],
+  "limitations": [
+    "Corrections apply only to the named rehearsal civic envelope.",
+    "Private actor, evidence, and reasoning stay off the public seam.",
+    "Unresolved or skipped source changes leave the civic result unchanged."
+  ]
+}
